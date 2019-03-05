@@ -32,7 +32,7 @@ final class LogicalOperatorsFixer extends AbstractFixer
             'Use `&&` and `||` logical operators instead of `and` and `or`.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 if ($a == "foo" and ($b == "bar" or $c == "baz")) {
 }

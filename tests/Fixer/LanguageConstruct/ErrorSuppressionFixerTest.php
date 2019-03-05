@@ -27,15 +27,13 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
-        if ($config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -121,5 +119,16 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
                 ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['trigger_error']],
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
+            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );'
+        );
     }
 }

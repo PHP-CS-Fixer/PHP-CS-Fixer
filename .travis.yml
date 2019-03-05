@@ -89,13 +89,18 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
-            before_script:
-                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag,native_function_invocation -q || travis_terminate 1
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: 7.2
+            php: 7.3
+            before_script:
+                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
+            php: 7.3
             env: COLLECT_COVERAGE=1
             before_install:
                 # check phpdbg
@@ -128,7 +133,11 @@ jobs:
             php: 7.1
             install: ./dev-tools/build.sh
             script:
-                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_PHAR_TESTS=0 vendor/bin/phpunit tests/Smoke/
+                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+
+            before_deploy:
+                # ensure that deployment is happening only if tag matches version of PHP CS Fixer
+                - test $(php dev-tools/info-extractor.php | jq .version.vnumber) == "\"$TRAVIS_TAG\""
             deploy:
                 provider: releases
                 api_key:

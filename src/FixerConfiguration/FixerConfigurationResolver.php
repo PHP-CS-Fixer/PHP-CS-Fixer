@@ -62,9 +62,9 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             if ($option instanceof AliasedFixerOption) {
                 $alias = $option->getAlias();
 
-                if (array_key_exists($alias, $options)) {
+                if (\array_key_exists($alias, $options)) {
                     // @TODO 2.12 Trigger a deprecation notice and add a test for it
-                    if (array_key_exists($name, $options)) {
+                    if (\array_key_exists($name, $options)) {
                         throw new InvalidOptionsException(sprintf('Aliased option %s/%s is passed multiple times.', $name, $alias));
                     }
 

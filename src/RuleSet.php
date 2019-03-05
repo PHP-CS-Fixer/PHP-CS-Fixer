@@ -189,6 +189,7 @@ final class RuleSet implements RuleSetInterface
             'native_function_invocation' => [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                 'scope' => 'namespaced',
+                'strict' => true,
             ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
@@ -217,6 +218,7 @@ final class RuleSet implements RuleSetInterface
             'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
             'method_chaining_indentation' => true,
             'multiline_comment_opening_closing' => true,
+            'multiline_whitespace_before_semicolons' => ['strategy' => 'new_line_for_chained_calls'],
             'no_alternative_syntax' => true,
             'no_binary_string' => true,
             'no_extra_blank_lines' => ['tokens' => [
@@ -235,6 +237,7 @@ final class RuleSet implements RuleSetInterface
             'no_superfluous_elseif' => true,
             'no_unneeded_curly_braces' => true,
             'no_unneeded_final_method' => true,
+            'no_unset_cast' => true,
             'no_useless_else' => true,
             'no_useless_return' => true,
             'ordered_class_elements' => true,
@@ -247,6 +250,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_order' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,
             'phpdoc_types_order' => true,
+            'phpdoc_var_annotation_correct_order' => true,
             'return_assignment' => true,
             'single_line_comment_style' => true,
         ],
@@ -405,7 +409,7 @@ final class RuleSet implements RuleSetInterface
      */
     public function hasRule($rule)
     {
-        return array_key_exists($rule, $this->rules);
+        return \array_key_exists($rule, $this->rules);
     }
 
     /**

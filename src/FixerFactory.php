@@ -163,7 +163,7 @@ final class FixerFactory
 
         $fixerNames = array_keys($ruleSet->getRules());
         foreach ($fixerNames as $name) {
-            if (!array_key_exists($name, $this->fixersByName)) {
+            if (!\array_key_exists($name, $this->fixersByName)) {
                 throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
             }
 
@@ -226,7 +226,7 @@ final class FixerFactory
 
         $fixerName = $fixer->getName();
 
-        return array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : [];
+        return \array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : [];
     }
 
     /**
@@ -243,7 +243,7 @@ final class FixerFactory
             $report[$fixer] = array_filter(
                 $fixers,
                 static function ($candidate) use ($report, $fixer) {
-                    return !array_key_exists($candidate, $report) || !\in_array($fixer, $report[$candidate], true);
+                    return !\array_key_exists($candidate, $report) || !\in_array($fixer, $report[$candidate], true);
                 }
             );
 

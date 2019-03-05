@@ -39,7 +39,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer
             'Converts `::class` keywords to FQCN strings.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 use Foo\Bar\Baz;
 

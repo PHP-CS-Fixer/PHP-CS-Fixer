@@ -39,15 +39,13 @@ final class BracesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixControlContinuationBracesCases
      */
-    public function testFixControlContinuationBraces($expected, $input = null, array $configuration = null)
+    public function testFixControlContinuationBraces($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -814,15 +812,13 @@ class Foo {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
-    public function testFixMissingBracesAndIndent($expected, $input = null, array $configuration = null)
+    public function testFixMissingBracesAndIndent($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -2746,15 +2742,13 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixClassyBracesCases
      */
-    public function testFixClassyBraces($expected, $input = null, array $configuration = null)
+    public function testFixClassyBraces($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -2933,15 +2927,13 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixAnonFunctionInShortArraySyntaxCases
      */
-    public function testFixAnonFunctionInShortArraySyntax($expected, $input = null, array $configuration = null)
+    public function testFixAnonFunctionInShortArraySyntax($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -3053,15 +3045,13 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCommentBeforeBraceCases
      */
-    public function testFixCommentBeforeBrace($expected, $input = null, array $configuration = null)
+    public function testFixCommentBeforeBrace($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -3150,16 +3140,14 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCommentBeforeBrace70Cases
      * @requires PHP 7.0
      */
-    public function testFixCommentBeforeBrace70($expected, $input = null, array $configuration = null)
+    public function testFixCommentBeforeBrace70($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -3196,15 +3184,13 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
-    public function testFixWhitespaceBeforeBrace($expected, $input = null, array $configuration = null)
+    public function testFixWhitespaceBeforeBrace($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -3417,15 +3403,13 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixFunctionsCases
      */
-    public function testFixFunctions($expected, $input = null, array $configuration = null)
+    public function testFixFunctions($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -3781,15 +3765,13 @@ class Foo
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixMultiLineStructuresCases
      */
-    public function testFixMultiLineStructures($expected, $input = null, array $configuration = null)
+    public function testFixMultiLineStructures($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -3905,15 +3887,13 @@ class Foo
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixSpaceAroundTokenCases
      */
-    public function testFixSpaceAroundToken($expected, $input = null, array $configuration = null)
+    public function testFixSpaceAroundToken($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -4106,15 +4086,13 @@ declare   (   ticks   =   1   )   {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFinallyCases
      */
-    public function testFinally($expected, $input = null, array $configuration = null)
+    public function testFinally($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -4209,15 +4187,13 @@ declare   (   ticks   =   1   )   {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFunctionImportCases
      */
-    public function testFunctionImport($expected, $input = null, array $configuration = null)
+    public function testFunctionImport($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -4263,16 +4239,14 @@ declare   (   ticks   =   1   )   {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, array $configuration = null)
+    public function testFix70($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -4920,15 +4894,13 @@ use const some\a\{ConstA, ConstB, ConstC};
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider providePreserveLineAfterControlBraceCases
      */
-    public function testPreserveLineAfterControlBrace($expected, $input = null, array $configuration = null)
+    public function testPreserveLineAfterControlBrace($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -5042,16 +5014,12 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixWithAllowOnelineLambdaCases
      */
-    public function testFixWithAllowSingleLineClosure($expected, $input = null, array $configuration = null)
+    public function testFixWithAllowSingleLineClosure($expected, $input = null)
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
-
         $this->fixer->configure([
             'allow_single_line_closure' => true,
         ]);
@@ -5126,15 +5094,13 @@ if (true)
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null, array $configuration = null)
+    public function testMessyWhitespaces($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 

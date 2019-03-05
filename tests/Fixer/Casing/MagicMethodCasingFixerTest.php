@@ -312,4 +312,15 @@ function __Tostring() {}',
             '
         );
     }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php $foo->__invoke(1, );',
+            '<?php $foo->__INVOKE(1, );'
+        );
+    }
 }

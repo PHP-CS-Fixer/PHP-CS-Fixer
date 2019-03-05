@@ -353,7 +353,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
             )
-            ->getFixers();
+            ->getFixers()
+        ;
     }
 
     /**
@@ -384,13 +385,16 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
                 $linterProphecy
                     ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+                ;
                 $linterProphecy
                     ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+                ;
                 $linterProphecy
                     ->isAsync()
-                    ->willReturn(false);
+                    ->willReturn(false)
+                ;
 
                 $linter = $linterProphecy->reveal();
             } else {

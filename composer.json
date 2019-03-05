@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^5.6 || >=7.0 <7.3",
+        "php": "^5.6 || ^7.0",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^1.4",
@@ -30,9 +30,6 @@
         "symfony/polyfill-php72": "^1.4",
         "symfony/process": "^3.0 || ^4.0",
         "symfony/stopwatch": "^3.0 || ^4.0"
-    },
-    "conflict": {
-        "hhvm": "*"
     },
     "require-dev": {
         "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
@@ -58,7 +55,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.14-dev"
+            "dev-master": "2.15-dev"
         }
     },
     "autoload": {

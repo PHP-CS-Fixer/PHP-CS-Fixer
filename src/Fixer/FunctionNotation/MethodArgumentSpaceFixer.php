@@ -377,7 +377,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     private function fixNewline(Tokens $tokens, $index, $indentation, $override = true)
     {
-        if ($this->isNewline($tokens[$index + 1]) || $tokens[$index + 1]->isComment()) {
+        if ($tokens[$index + 1]->isComment()) {
             return;
         }
 

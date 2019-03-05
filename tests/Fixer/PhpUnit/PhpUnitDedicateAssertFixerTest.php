@@ -497,6 +497,11 @@ $a# 5
                     $this->test(); // $this->assertSame($b, %s($a));
                 ',
             ],
+            'do not fix 7' => [
+                '<?php
+                    $this->assertSame(2, count($array) - 1);
+                ',
+            ],
         ];
     }
 
@@ -538,6 +543,60 @@ $a# 5
             [
                 '<?php $this->assertCount(1, $a);',
                 '<?php $this->assertSame(1, \%s($a));',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $this->assertNan($a, );',
+                '<?php $this->assertTrue(is_nan($a), );',
+            ],
+            [
+                '<?php $this->assertNan($a);',
+                '<?php $this->assertTrue(is_nan($a, ));',
+            ],
+            [
+                '<?php $this->assertNan($a, );',
+                '<?php $this->assertTrue(is_nan($a, ), );',
+            ],
+            [
+                '<?php $this->assertInternalType(\'array\', $a,);',
+                '<?php $this->assertTrue(is_array($a,),);',
+            ],
+            [
+                '<?php
+                   $this->assertNan($b);
+               ',
+                '<?php
+                   $this->assertTrue(\is_nan($b,));
+               ',
+            ],
+            [
+                '<?php
+                   $this->assertFileExists($f, \'message\',);
+               ',
+                '<?php
+                   $this->assertTrue(file_exists($f,), \'message\',);
+               ',
+            ],
+            [
+                '<?php $this->assertNan($y  , );',
+                '<?php $this->assertTrue(is_nan($y)  , );',
             ],
         ];
     }

@@ -136,12 +136,16 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             $parentOperations = [T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL];
             $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
+            // possible trailing comma removed
+            $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
+            if ($tokens[$prevIndex]->equals(',')) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+            }
+
             if (!$isContainingDangerousConstructs) {
-                if (!$wrapIntoParentheses) {
-                    // closing parenthesis removed with leading spaces
-                    $tokens->removeLeadingWhitespace($referenceEnd);
-                    $tokens->clearAt($referenceEnd);
-                }
+                // closing parenthesis removed with leading spaces
+                $tokens->removeLeadingWhitespace($referenceEnd);
+                $tokens->clearAt($referenceEnd);
 
                 // opening parenthesis removed with trailing spaces
                 $tokens->removeLeadingWhitespace($matches[1]);
@@ -160,15 +164,12 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             if (true === $this->configuration['use_yoda_style']) {
                 if ($wrapIntoParentheses) {
                     array_unshift($replacement, new Token('('));
+                    $tokens->insertAt($referenceEnd + 1, new Token(')'));
                 }
 
                 $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
             } else {
                 $replacement = array_reverse($replacement);
-                if ($isContainingDangerousConstructs) {
-                    array_unshift($replacement, new Token(')'));
-                }
-
                 if ($wrapIntoParentheses) {
                     $replacement[] = new Token(')');
                     $tokens[$isNullIndex] = new Token('(');
@@ -176,7 +177,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                     $tokens->clearAt($isNullIndex);
                 }
 
-                $tokens->overrideRange($referenceEnd, $referenceEnd, $replacement);
+                $tokens->insertAt($referenceEnd + 1, $replacement);
             }
 
             // nested is_null calls support

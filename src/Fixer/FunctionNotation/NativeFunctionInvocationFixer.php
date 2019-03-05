@@ -74,7 +74,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
             'Add leading `\` before function invocation to speed up resolving.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 function baz($options)
 {
@@ -87,7 +87,7 @@ function baz($options)
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 function baz($options)
 {
@@ -182,7 +182,7 @@ $c = get_class($d);
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if ('all' === $this->configuration['scope']) {
-            $this->fixFunctionCalls($tokens, $this->functionFilter, 0, \count($tokens) - 1);
+            $this->fixFunctionCalls($tokens, $this->functionFilter, 0, \count($tokens) - 1, false);
 
             return;
         }
@@ -191,12 +191,8 @@ $c = get_class($d);
 
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
-        foreach (\array_reverse($namespaces) as $namespace) {
-            if ('' === $namespace->getFullName()) {
-                continue;
-            }
-
-            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex());
+        foreach (array_reverse($namespaces) as $namespace) {
+            $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex(), '' === $namespace->getFullName());
         }
     }
 
@@ -210,8 +206,8 @@ $c = get_class($d);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(\sprintf(
+                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                            throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
                             ));
@@ -226,8 +222,8 @@ $c = get_class($d);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
-                            throw new InvalidOptionsException(\sprintf(
+                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                            throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
                             ));
@@ -240,7 +236,7 @@ $c = get_class($d);
                         ];
 
                         if ('@' === $functionName[0] && !\in_array($functionName, $sets, true)) {
-                            throw new InvalidOptionsException(\sprintf('Unknown set "%s", known sets are "%s".', $functionName, \implode('", "', $sets)));
+                            throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are "%s".', $functionName, implode('", "', $sets)));
                         }
                     }
 
@@ -252,6 +248,10 @@ $c = get_class($d);
                 ->setAllowedValues(['all', 'namespaced'])
                 ->setDefault('all')
                 ->getOption(),
+            (new FixerOptionBuilder('strict', 'Whether leading `\` of function call not meant to have it should be removed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false) // @TODO: 3.0 change to true as default
+                ->getOption(),
         ]);
     }
 
@@ -260,8 +260,9 @@ $c = get_class($d);
      * @param callable $functionFilter
      * @param int      $start
      * @param int      $end
+     * @param bool     $tryToRemove
      */
-    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, $start, $end)
+    private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, $start, $end, $tryToRemove)
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
@@ -271,18 +272,27 @@ $c = get_class($d);
                 continue;
             }
 
-            if (!$functionFilter($tokens[$index]->getContent())) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if (!$functionFilter($tokens[$index]->getContent()) || $tryToRemove) {
+                if (!$this->configuration['strict']) {
+                    continue;
+                }
+                if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+                }
+
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                 continue; // do not bother if previous token is already namespace separator
             }
 
             $insertAtIndexes[] = $index;
         }
 
-        foreach (\array_reverse($insertAtIndexes) as $index) {
+        foreach (array_reverse($insertAtIndexes) as $index) {
             $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
         }
     }
@@ -297,7 +307,7 @@ $c = get_class($d);
         if (\in_array(self::SET_ALL, $this->configuration['include'], true)) {
             if (\count($exclude) > 0) {
                 return static function ($functionName) use ($exclude) {
-                    return !isset($exclude[\strtolower($functionName)]);
+                    return !isset($exclude[strtolower($functionName)]);
                 };
             }
 
@@ -315,18 +325,18 @@ $c = get_class($d);
 
         foreach ($this->configuration['include'] as $additional) {
             if ('@' !== $additional[0]) {
-                $include[\strtolower($additional)] = true;
+                $include[strtolower($additional)] = true;
             }
         }
 
         if (\count($exclude) > 0) {
             return static function ($functionName) use ($include, $exclude) {
-                return isset($include[\strtolower($functionName)]) && !isset($exclude[\strtolower($functionName)]);
+                return isset($include[strtolower($functionName)]) && !isset($exclude[strtolower($functionName)]);
             };
         }
 
         return static function ($functionName) use ($include) {
-            return isset($include[\strtolower($functionName)]);
+            return isset($include[strtolower($functionName)]);
         };
     }
 
@@ -336,7 +346,8 @@ $c = get_class($d);
     private function getAllCompilerOptimizedFunctionsNormalized()
     {
         return $this->normalizeFunctionNames([
-            // @see https://github.com/php/php-src/blob/php-7.2.6/Zend/zend_compile.c "zend_try_compile_special_func"
+            // @see https://github.com/php/php-src/blob/PHP-7.4/Zend/zend_compile.c "zend_try_compile_special_func"
+            'array_key_exists',
             'array_slice',
             'assert',
             'boolval',
@@ -384,7 +395,7 @@ $c = get_class($d);
      */
     private function getAllInternalFunctionsNormalized()
     {
-        return $this->normalizeFunctionNames(\get_defined_functions()['internal']);
+        return $this->normalizeFunctionNames(get_defined_functions()['internal']);
     }
 
     /**
@@ -395,7 +406,7 @@ $c = get_class($d);
     private function normalizeFunctionNames(array $functionNames)
     {
         foreach ($functionNames as $index => $functionName) {
-            $functionNames[\strtolower($functionName)] = true;
+            $functionNames[strtolower($functionName)] = true;
             unset($functionNames[$index]);
         }
 

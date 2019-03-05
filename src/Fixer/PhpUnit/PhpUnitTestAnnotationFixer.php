@@ -391,9 +391,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             }
 
             if (!$needsAnnotation &&
-                false !== \strpos($lines[$i]->getContent(), ' @test') &&
-                false === \strpos($lines[$i]->getContent(), '@testWith') &&
-                false === \strpos($lines[$i]->getContent(), '@testdox')
+                false !== strpos($lines[$i]->getContent(), ' @test') &&
+                false === strpos($lines[$i]->getContent(), '@testWith') &&
+                false === strpos($lines[$i]->getContent(), '@testdox')
             ) {
                 // We remove @test from the doc block
                 $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
@@ -439,9 +439,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     private function getSingleLineDocBlockEntry($line)
     {
         $line = $line[0];
-        $line = \str_replace('*/', '', $line);
+        $line = str_replace('*/', '', $line);
         $line = trim($line);
-        $line = \str_split($line);
+        $line = str_split($line);
         $i = \count($line);
         do {
             --$i;
@@ -477,7 +477,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function removeTestPrefixFromDependsAnnotation(Line $line)
     {
-        $line = \str_split($line->getContent());
+        $line = str_split($line->getContent());
 
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
         $dependsFunctionName = implode('', \array_slice($line, $dependsIndex));
@@ -497,7 +497,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function addTestPrefixToDependsAnnotation(Line $line)
     {
-        $line = \str_split($line->getContent());
+        $line = str_split($line->getContent());
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
         $dependsFunctionName = implode('', \array_slice($line, $dependsIndex));
 

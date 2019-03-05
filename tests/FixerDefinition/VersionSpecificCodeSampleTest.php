@@ -65,7 +65,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
         $versionSpecification
             ->isSatisfiedBy($version)
-            ->willReturn($isSatisfied);
+            ->willReturn($isSatisfied)
+        ;
 
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',

@@ -32,7 +32,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(null);
         $this->doTest(
-             '<?php declare(ticks=1);',
+            '<?php declare(ticks=1);',
             '<?php declare(ticks= 1);'
         );
     }

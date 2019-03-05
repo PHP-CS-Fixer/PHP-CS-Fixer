@@ -206,7 +206,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         }
 
         $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION])) {
+        if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
             return null;
         }
 
@@ -220,7 +220,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
 
         // test if the function call is to a native PHP function
         $lowerContent = strtolower($tokens[$index]->getContent());
-        if (!array_key_exists($lowerContent, $this->functionsFixMap)) {
+        if (!\array_key_exists($lowerContent, $this->functionsFixMap)) {
             return null;
         }
 
