@@ -1874,13 +1874,13 @@ Exit code
 
 Exit code is built using following bit flags:
 
-* 0 - OK. 
-* 1 - General error (or PHP minimal requirement not matched). 
-* 4 - Some files have invalid syntax (only in dry-run mode). 
-* 8 - Some files need fixing (only in dry-run mode). 
-* 16 - Configuration error of the application. 
-* 32 - Configuration error of a Fixer. 
-* 64 - Exception raised within the application. 
+*  0 - OK.
+*  1 - General error (or PHP minimal requirement not matched).
+*  4 - Some files have invalid syntax (only in dry-run mode).
+*  8 - Some files need fixing (only in dry-run mode).
+* 16 - Configuration error of the application.
+* 32 - Configuration error of a Fixer.
+* 64 - Exception raised within the application.
 
 (Applies to exit code of the `fix` command only)
 
