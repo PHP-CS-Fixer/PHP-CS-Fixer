@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-27T12:08:08Z
+
+Not sure about the name, `single_trait_import_per_statement` or `single_trait_use_per_statement` makes more sense imo
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-27T12:13:01Z
+
+I looked at the [docs](http://php.net/manual/en/language.oop5.traits.php) for the correct terminology but didn't found anything concluding, so all names are fine with me :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2018-11-27T23:13:57Z
+
+Please add some tests with `use` statements with `{ }`, like this (example from http://php.net/manual/de/language.oop5.traits.php#example-214):
+
+```php
+class Talker {
+    use A, B {
+        B::smallTalk insteadof A;
+        A::bigTalk insteadof B;
+    }
+}
+```
+
+Do we want to change this one?
+It seems to work: https://3v4l.org/oGJJr, but I would prefer to not change it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-04T06:57:28Z
+
+Suggestions for adding this fixer to a set?
