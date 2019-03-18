@@ -63,7 +63,7 @@ final class FileFilterIterator extends \FilterIterator
             );
         }
 
-        $path = $file->getRealPath();
+        $path = $file->isLink() ? $file->getPathname() : $file->getRealPath();
 
         if (isset($this->visitedElements[$path])) {
             return false;

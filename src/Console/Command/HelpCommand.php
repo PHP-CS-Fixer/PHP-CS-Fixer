@@ -258,22 +258,22 @@ Then, add the following command to your CI:
 
 %%%CI_INTEGRATION%%%
 
-Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
+Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
-Exit codes
-----------
+Exit code
+---------
 
 Exit code is built using following bit flags:
 
-*  0 OK.
-*  1 General error (or PHP minimal requirement not matched).
-*  4 Some files have invalid syntax (only in dry-run mode).
-*  8 Some files need fixing (only in dry-run mode).
-* 16 Configuration error of the application.
-* 32 Configuration error of a Fixer.
-* 64 Exception raised within the application.
+*  0 - OK.
+*  1 - General error (or PHP minimal requirement not matched).
+*  4 - Some files have invalid syntax (only in dry-run mode).
+*  8 - Some files need fixing (only in dry-run mode).
+* 16 - Configuration error of the application.
+* 32 - Configuration error of a Fixer.
+* 64 - Exception raised within the application.
 
-(applies to exit codes of the `fix` command only)
+(Applies to exit code of the `fix` command only)
 EOF
         ;
 

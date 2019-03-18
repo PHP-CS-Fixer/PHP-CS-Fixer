@@ -107,4 +107,47 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php
+    class FooTest extends TestCase
+    {
+        public function testFoo()
+        {
+            $this->createMock("Foo",);
+            $this->createMock("Bar"  ,);
+            $this->createMock("Baz"  ,  );
+            $this->createMock($foo(1, 2), );
+            $this->createMock($foo(3, 4, ));
+            $this->createMock($foo(5, 6, ), );
+            $this->createPartialMock("Foo", ["aaa"], );
+            $this->createPartialMock("Foo", ["bbb", ], );
+            $this->getMock("Foo", ["aaa"], ["argument"], );
+            $this->getMock("Foo", ["bbb", ], ["argument", ], );
+        }
+    }',
+            '<?php
+    class FooTest extends TestCase
+    {
+        public function testFoo()
+        {
+            $this->getMock("Foo",);
+            $this->getMock("Bar"  ,);
+            $this->getMock("Baz"  ,  );
+            $this->getMock($foo(1, 2), );
+            $this->getMock($foo(3, 4, ));
+            $this->getMock($foo(5, 6, ), );
+            $this->getMock("Foo", ["aaa"], );
+            $this->getMock("Foo", ["bbb", ], );
+            $this->getMock("Foo", ["aaa"], ["argument"], );
+            $this->getMock("Foo", ["bbb", ], ["argument", ], );
+        }
+    }'
+        );
+    }
 }

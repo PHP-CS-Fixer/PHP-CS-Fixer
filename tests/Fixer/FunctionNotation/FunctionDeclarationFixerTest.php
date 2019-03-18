@@ -39,15 +39,13 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = null)
+    public function testFix($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -338,15 +336,13 @@ foo#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFix54Cases
      */
-    public function test54($expected, $input = null, array $configuration = null)
+    public function test54($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -385,16 +381,14 @@ foo#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null, array $configuration = null)
+    public function test70($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }

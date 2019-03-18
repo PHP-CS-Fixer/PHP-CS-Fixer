@@ -64,8 +64,8 @@ final class Transformers
      */
     public function transform(Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
-            foreach ($this->items as $transformer) {
+        foreach ($this->items as $transformer) {
+            foreach ($tokens as $index => $token) {
                 $transformer->process($tokens, $token, $index);
             }
         }
@@ -91,10 +91,21 @@ final class Transformers
 
         $registered = true;
 
+        foreach ($this->findBuiltInTransformers() as $transformer) {
+            $this->registerTransformer($transformer);
+        }
+    }
+
+    /**
+     * @return \Generator|TransformerInterface[]
+     */
+    private function findBuiltInTransformers()
+    {
         foreach (Finder::create()->files()->in(__DIR__.'/Transformer') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = __NAMESPACE__.'\\Transformer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
-            $this->registerTransformer(new $class());
+
+            yield new $class();
         }
     }
 }

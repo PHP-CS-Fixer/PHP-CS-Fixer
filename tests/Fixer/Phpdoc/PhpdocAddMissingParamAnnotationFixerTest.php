@@ -20,7 +20,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer
  */
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
@@ -75,11 +74,11 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
         $this->fixer->configure($config ?: ['only_untyped' => false]);
 
@@ -294,12 +293,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, array $config = null)
+    public function testFix70($expected, $input = null, array $config = [])
     {
         $this->fixer->configure($config ?: ['only_untyped' => false]);
 
@@ -335,12 +334,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null, array $config = null)
+    public function testFix71($expected, $input = null, array $config = [])
     {
         $this->fixer->configure($config ?: ['only_untyped' => false]);
 
@@ -369,11 +368,11 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null, array $config = null)
+    public function testMessyWhitespaces($expected, $input = null, array $config = [])
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($config ?: ['only_untyped' => false]);

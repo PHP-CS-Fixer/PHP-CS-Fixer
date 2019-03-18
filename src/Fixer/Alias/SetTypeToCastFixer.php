@@ -189,6 +189,10 @@ settype($bar, "null");
         $closeParenthesisIndex
     ) {
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeParenthesisIndex);
+        $prevIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
+        if ($tokens[$prevIndex]->equals(',')) {
+            $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
+        }
         $tokens->clearTokenAndMergeSurroundingWhitespace($secondArgumentStart);
         $tokens->clearTokenAndMergeSurroundingWhitespace($commaIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($firstArgumentStart);

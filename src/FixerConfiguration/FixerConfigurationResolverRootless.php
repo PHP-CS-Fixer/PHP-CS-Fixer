@@ -71,7 +71,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
      */
     public function resolve(array $options)
     {
-        if (!empty($options) && !array_key_exists($this->root, $options)) {
+        if (!empty($options) && !\array_key_exists($this->root, $options)) {
             $names = array_map(
                 function (FixerOptionInterface $option) {
                     return $option->getName();

@@ -101,7 +101,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
                     }
                 }
 
-                $content = implode($lines);
+                $content = implode('', $lines);
                 if ('' !== $content) {
                     $tokens[$index] = new Token([$token->getId(), $content]);
                 } else {

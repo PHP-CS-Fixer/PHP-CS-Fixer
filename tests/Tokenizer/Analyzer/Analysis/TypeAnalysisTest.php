@@ -35,6 +35,11 @@ final class TypeAnalysisTest extends TestCase
     {
         $analysis = new TypeAnalysis('string', 1, 2);
         $this->assertSame('string', $analysis->getName());
+        $this->assertFalse($analysis->isNullable());
+
+        $analysis = new TypeAnalysis('?\foo\bar', 1, 2);
+        $this->assertSame('\foo\bar', $analysis->getName());
+        $this->assertTrue($analysis->isNullable());
     }
 
     public function testStartIndex()

@@ -261,7 +261,7 @@ class Annotation
      */
     public function getContent()
     {
-        return implode($this->lines);
+        return implode('', $this->lines);
     }
 
     public function supportTypes()

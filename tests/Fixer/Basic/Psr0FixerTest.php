@@ -57,6 +57,21 @@ EOF;
         $this->doTest($expected, $input, $file);
     }
 
+    public function testIgnoreMultipleClassyInFile()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+interface SomeInterfaceToBeUsedInTests {}
+class blah {}
+/* class foo */
+EOF;
+
+        $this->doTest($expected, null, $file);
+    }
+
     public function testFixClassName()
     {
         $file = $this->getTestFile(__FILE__);
@@ -179,6 +194,35 @@ EOF;
     /**
      * @requires PHP 7.0
      */
+    public function testClassWithAnonymousClass()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+class Psr0FixerTest {
+    public function foo() {
+        return new class() implements FooInterface {};
+    }
+}
+EOF;
+        $input = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+class stdClass {
+    public function foo() {
+        return new class() implements FooInterface {};
+    }
+}
+EOF;
+
+        $this->doTest($expected, $input, $file);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
     public function testIgnoreAnonymousClass()
     {
         $file = $this->getTestFile(__FILE__);
@@ -195,6 +239,24 @@ EOF;
 <?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 new class extends stdClass {};
+EOF;
+
+        $this->doTest($expected, null, $file);
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testIgnoreMultipleClassWithAnonymousClass()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+class ClassOne {};
+new class extends stdClass {};
+class ClassTwo {};
 EOF;
 
         $this->doTest($expected, null, $file);
