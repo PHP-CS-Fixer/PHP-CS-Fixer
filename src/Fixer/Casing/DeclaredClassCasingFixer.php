@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class DeclaredClassCasingFixer extends AbstractFixer
 {
+    /**
+     * @var string[]
+     */
     private static $declaredClassNames;
 
     public function __construct()
@@ -83,7 +86,7 @@ final class DeclaredClassCasingFixer extends AbstractFixer
         $beforeClassName = $tokens->getPrevMeaningfulToken($index);
         $lower = strtolower($token->getContent());
 
-        $isDeclaredClass = null;
+        $declaredClass = null;
 
         if (
             array_key_exists($lower, self::$declaredClassNames)
@@ -108,9 +111,9 @@ final class DeclaredClassCasingFixer extends AbstractFixer
                 $tokens[$tokens->getPrevMeaningfulToken($beforeClassName)]->isGivenKind([T_STRING])
             )
         ) {
-            $isDeclaredClass = $lower;
+            $declaredClass = $lower;
         }
 
-        return $isDeclaredClass;
+        return $declaredClass;
     }
 }
