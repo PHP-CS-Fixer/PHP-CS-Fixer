@@ -1780,6 +1780,11 @@ Choose from the list of available rules:
 
   PHP multi-line arrays should have a trailing comma.
 
+  Configuration options:
+
+  - ``after_heredoc`` (``bool``): whether a trailing comma should also be placed
+    after heredoc end; defaults to ``false``
+
 * **trim_array_spaces** [@Symfony, @PhpCsFixer]
 
   Arrays should be formatted like function/method arguments, without
