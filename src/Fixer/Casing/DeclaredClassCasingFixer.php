@@ -89,7 +89,7 @@ final class DeclaredClassCasingFixer extends AbstractFixer
         $declaredClass = null;
 
         if (
-            array_key_exists($lower, self::$declaredClassNames)
+            \array_key_exists($lower, self::$declaredClassNames)
             &&
             !$tokens[$beforeClassName]->isGivenKind(
                 [
