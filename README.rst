@@ -1177,6 +1177,11 @@ Choose from the list of available rules:
 
   In array declaration, there MUST NOT be a whitespace before each comma.
 
+  Configuration options:
+
+  - ``after_heredoc`` (``bool``): whether the whitespace between heredoc end and
+    comma should be removed; defaults to ``false``
+
 * **no_whitespace_in_blank_line** [@Symfony, @PhpCsFixer]
 
   Remove trailing whitespace at the end of blank lines.

@@ -140,4 +140,39 @@ EOF
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                "<?php \$x = array(<<<'EOF'
+<?php \$a = '\\foo\\bar\\\\';
+EOF, <<<'EOF'
+<?php \$a = \"\\foo\\bar\\\\\";
+EOF
+                    );",
+                "<?php \$x = array(<<<'EOF'
+<?php \$a = '\\foo\\bar\\\\';
+EOF
+                , <<<'EOF'
+<?php \$a = \"\\foo\\bar\\\\\";
+EOF
+                    );",
+                ['after_heredoc' => true],
+            ],
+        ];
+    }
 }
