@@ -125,7 +125,7 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: nightly
+            php: 7.4snapshot
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
 
         -
@@ -151,5 +151,5 @@ jobs:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
 
     allow_failures:
-        - php: nightly
+        - php: 7.4snapshot
         - env: COLLECT_COVERAGE=1
