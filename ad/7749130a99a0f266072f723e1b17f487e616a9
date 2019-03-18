@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-15T06:58:54Z
+
+Thanks for the PR. Looks good to me, all changes are on internal classes/interfaces so no BC breaks :)
+
+@localheinz could you take a look as well as author of the original cache files?
