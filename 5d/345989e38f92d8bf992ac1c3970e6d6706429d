@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-15T20:49:30Z
+
+-0
++1 when we will have nice rule for that
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-07-15T20:54:46Z
+
+Rule > AutoReview
+all except listed one is too demanding, nice reasoning is good to have, i won't provide full spec now, but Doctrine ORM classes shall not be final
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-07-15T21:30:53Z
+
+#3923
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-14T18:11:57Z
+
+I think this is RTM TBH
