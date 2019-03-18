@@ -80,6 +80,7 @@ final class RuleSet implements RuleSetInterface
             'magic_method_casing' => true,
             'method_argument_space' => true,
             'native_function_casing' => true,
+            'native_function_type_declaration_casing' => true,
             'new_with_braces' => true,
             'no_blank_lines_after_class_opening' => true,
             'no_blank_lines_after_phpdoc' => true,
