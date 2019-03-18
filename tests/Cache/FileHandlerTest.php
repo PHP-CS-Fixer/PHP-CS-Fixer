@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -79,14 +80,7 @@ final class FileHandlerTest extends TestCase
     {
         $file = $this->getFile();
 
-        $signature = new Signature(
-            PHP_VERSION,
-            '2.0',
-            [
-                'foo',
-                'bar',
-            ]
-        );
+        $signature = $this->createSignature();
 
         $cache = new Cache($signature);
 
@@ -110,14 +104,7 @@ final class FileHandlerTest extends TestCase
             preg_quote($file, '#')
         ));
 
-        $cache = new Cache(new Signature(
-            PHP_VERSION,
-            '2.0',
-            [
-                'foo',
-                'bar',
-            ]
-        ));
+        $cache = new Cache($this->createSignature());
 
         $handler = new FileHandler($file);
 
@@ -128,14 +115,7 @@ final class FileHandlerTest extends TestCase
     {
         $file = $this->getFile();
 
-        $cache = new Cache(new Signature(
-            PHP_VERSION,
-            '2.0',
-            [
-                'foo',
-                'bar',
-            ]
-        ));
+        $cache = new Cache($this->createSignature());
 
         $handler = new FileHandler($file);
 
@@ -160,14 +140,7 @@ final class FileHandlerTest extends TestCase
             preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
         ));
 
-        $handler->write(new Cache(new Signature(
-            PHP_VERSION,
-            '2.0',
-            [
-                'foo',
-                'bar',
-            ]
-        )));
+        $handler->write(new Cache($this->createSignature()));
     }
 
     public function testWriteCacheToNonWriteableFile()
@@ -187,14 +160,7 @@ final class FileHandlerTest extends TestCase
             preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
         ));
 
-        $handler->write(new Cache(new Signature(
-            PHP_VERSION,
-            '2.0',
-            [
-                'foo',
-                'bar',
-            ]
-        )));
+        $handler->write(new Cache($this->createSignature()));
     }
 
     public function testWriteCacheFilePermissions()
@@ -205,14 +171,7 @@ final class FileHandlerTest extends TestCase
         $this->assertFileNotExists($file);
 
         $handler = new FileHandler($file);
-        $handler->write(new Cache(new Signature(
-            PHP_VERSION,
-            '2.0',
-            [
-                'foo',
-                'bar',
-            ]
-        )));
+        $handler->write(new Cache($this->createSignature()));
 
         $this->assertFileExists($file);
         $this->assertTrue(@is_file($file), sprintf('Failed cache "%s" `is_file`.', $file));
@@ -228,5 +187,22 @@ final class FileHandlerTest extends TestCase
     private function getFile()
     {
         return __DIR__.'/.php_cs.cache';
+    }
+
+    /**
+     * @return SignatureInterface
+     */
+    private function createSignature()
+    {
+        return new Signature(
+            PHP_VERSION,
+            '2.0',
+            '    ',
+            PHP_EOL,
+            [
+                'foo',
+                'bar',
+            ]
+        );
     }
 }

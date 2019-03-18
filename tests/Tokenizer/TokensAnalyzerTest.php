@@ -891,6 +891,26 @@ preg_replace_callback(
     {
         $cases = [
             [
+                '<?php $a .= $b; ?>',
+                [3 => true],
+            ],
+            [
+                '<?php $a . \'a\' ?>',
+                [3 => true],
+            ],
+            [
+                '<?php $a &+ $b;',
+                [3 => true],
+            ],
+            [
+                '<?php $a && $b;',
+                [3 => true],
+            ],
+            [
+                '<?php $a & $b;',
+                [3 => true],
+            ],
+            [
                 '<?php [] + [];',
                 [4 => true],
             ],

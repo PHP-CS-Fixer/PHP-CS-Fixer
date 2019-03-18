@@ -217,4 +217,54 @@ $foo#5
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            'null cast' => [
+                '<?php $foo = null;',
+                '<?php settype($foo, "null");',
+            ],
+            'boolean' => [
+                '<?php $foo = (bool) $foo;',
+                '<?php settype($foo, "boolean", );',
+            ],
+            'comments with line breaks' => [
+                '<?php #0
+#1
+$foo = (int) $foo#2
+#3
+#4
+#5
+#6
+#7
+#8
+#9
+;#10',
+                '<?php #0
+#1
+settype#2
+#3
+(#4
+$foo#5
+,#6
+"integer"#7
+,#8
+)#9
+;#10',
+            ],
+        ];
+    }
 }

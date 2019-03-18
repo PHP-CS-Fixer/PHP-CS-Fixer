@@ -313,13 +313,14 @@ class Tokens extends \SplFixedArray
 
         if (!$this[$index] || !$this[$index]->equals($newval)) {
             $this->changed = true;
+
+            if (isset($this[$index])) {
+                $this->unregisterFoundToken($this[$index]);
+            }
+
+            $this->registerFoundToken($newval);
         }
 
-        if (isset($this[$index])) {
-            $this->unregisterFoundToken($this[$index]);
-        }
-
-        $this->registerFoundToken($newval);
         parent::offsetSet($index, $newval);
     }
 
@@ -1006,7 +1007,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeLeadingWhitespace($index, $whitespaces = null)
     {
-        $this->removeWhitespaceSafely($index, 1, $whitespaces);
+        $this->removeWhitespaceSafely($index, -1, $whitespaces);
     }
 
     /**
@@ -1015,7 +1016,7 @@ class Tokens extends \SplFixedArray
      */
     public function removeTrailingWhitespace($index, $whitespaces = null)
     {
-        $this->removeWhitespaceSafely($index, -1, $whitespaces);
+        $this->removeWhitespaceSafely($index, 1, $whitespaces);
     }
 
     /**
@@ -1235,15 +1236,16 @@ class Tokens extends \SplFixedArray
         $this->clearAt($nextIndex);
     }
 
-    private function removeWhitespaceSafely($index, $offset, $whitespaces = null)
+    private function removeWhitespaceSafely($index, $direction, $whitespaces = null)
     {
-        if (isset($this[$index - $offset]) && $this[$index - $offset]->isWhitespace()) {
+        $whitespaceIndex = $this->getNonEmptySibling($index, $direction);
+        if (isset($this[$whitespaceIndex]) && $this[$whitespaceIndex]->isWhitespace()) {
             $newContent = '';
-            $tokenToCheck = $this[$index - $offset];
+            $tokenToCheck = $this[$whitespaceIndex];
 
             // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
-            if (isset($this[$index - $offset - 1]) && $this[$index - $offset - 1]->isComment() && '/*' !== substr($this[$index - $offset - 1]->getContent(), 0, 2)) {
-                list($emptyString, $newContent, $whitespacesToCheck) = Preg::split('/^(\R)/', $this[$index - $offset]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+            if (isset($this[$whitespaceIndex - 1]) && $this[$whitespaceIndex - 1]->isComment() && '/*' !== substr($this[$whitespaceIndex - 1]->getContent(), 0, 2)) {
+                list($emptyString, $newContent, $whitespacesToCheck) = Preg::split('/^(\R)/', $this[$whitespaceIndex]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
                 if ('' === $whitespacesToCheck) {
                     return;
                 }
@@ -1255,9 +1257,9 @@ class Tokens extends \SplFixedArray
             }
 
             if ('' === $newContent) {
-                $this->clearAt($index - $offset);
+                $this->clearAt($whitespaceIndex);
             } else {
-                $this[$index - $offset] = new Token([T_WHITESPACE, $newContent]);
+                $this[$whitespaceIndex] = new Token([T_WHITESPACE, $newContent]);
             }
         }
     }

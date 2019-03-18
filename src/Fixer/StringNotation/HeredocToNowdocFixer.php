@@ -33,7 +33,7 @@ final class HeredocToNowdocFixer extends AbstractFixer
             'Convert `heredoc` to `nowdoc` where possible.',
             [
                 new CodeSample(
-<<<'EOF'
+                    <<<'EOF'
 <?php $a = <<<"TEST"
 Foo
 TEST;

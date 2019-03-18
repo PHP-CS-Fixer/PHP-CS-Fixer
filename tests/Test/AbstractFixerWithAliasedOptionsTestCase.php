@@ -73,7 +73,7 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
 
             $alias = $option->getAlias();
 
-            if (array_key_exists($alias, $configuration)) {
+            if (\array_key_exists($alias, $configuration)) {
                 $configuration[$option->getName()] = $configuration[$alias];
                 unset($configuration[$alias]);
             }

@@ -26,15 +26,13 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      *
      * @dataProvider provideTestCases
      */
-    public function testFix($expected, $input = null, array $config = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
-        if ($config) {
-            $this->fixer->configure($config);
-        }
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -260,5 +258,26 @@ get_called_class#1
         $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
         $this->fixer->configure(['pi123']);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFix70Cases
+     */
+    public function testFix70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php function &PHPversion(){} ?>',
+            ],
+        ];
     }
 }

@@ -33,7 +33,7 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
             'DocBlocks must start with two asterisks, multiline comments must start with a single asterisk, after the opening slash. Both must end with a single asterisk before the closing slash.',
             [
                 new CodeSample(
-<<<'EOT'
+                    <<<'EOT'
 <?php
 
 /******
@@ -81,11 +81,11 @@ EOT
 
             // Fix opening
             if ($token->isGivenKind(T_COMMENT)) {
-                $newContent = Preg::replace('/^\\/\\*\\*+/', '/*', $newContent);
+                $newContent = Preg::replace('/^\\/\\*{2,}(?!\\/)/', '/*', $newContent);
             }
 
             // Fix closing
-            $newContent = Preg::replace('/\\*+\\*\\/$/', '*/', $newContent);
+            $newContent = Preg::replace('/(?<!\\/)\\*{2,}\\/$/', '*/', $newContent);
 
             if ($newContent !== $originalContent) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);

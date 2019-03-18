@@ -301,9 +301,9 @@ return $foo === count($bar);
     ) {
         $type = $tokens[$compareOperatorIndex]->getId();
         $content = $tokens[$compareOperatorIndex]->getContent();
-        if (array_key_exists($type, $this->candidatesMap)) {
+        if (\array_key_exists($type, $this->candidatesMap)) {
             $tokens[$compareOperatorIndex] = clone $this->candidatesMap[$type];
-        } elseif (array_key_exists($content, $this->candidatesMap)) {
+        } elseif (\array_key_exists($content, $this->candidatesMap)) {
             $tokens[$compareOperatorIndex] = clone $this->candidatesMap[$content];
         }
 
@@ -527,7 +527,7 @@ return $foo === count($bar);
                 if (
                     $tokens[$index]->isCast()
                     || $tokens[$index]->isGivenKind(T_INSTANCEOF)
-                    || $tokens[$index]->equalsAny(['.', '!'])
+                    || $tokens[$index]->equals('!')
                     || $tokenAnalyzer->isBinaryOperator($index)
                 ) {
                     return false;

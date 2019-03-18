@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -23,7 +24,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -175,7 +175,9 @@ EOF;
             }
 
             $content = $token->getContent();
-            $newContent = $this->fixDocBlock($content);
+            $docBlock = new DocBlock($content);
+            $this->fixDocBlock($docBlock);
+            $newContent = $docBlock->getContent();
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([T_DOC_COMMENT, $newContent]);
             }
@@ -215,18 +217,15 @@ EOF;
     }
 
     /**
-     * @param string $content
-     *
-     * @return string
+     * @param DocBlock $docBlock
      */
-    private function fixDocBlock($content)
+    private function fixDocBlock(DocBlock $docBlock)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-        $lines = Utils::splitLines($content);
 
-        for ($i = 0, $l = \count($lines); $i < $l; ++$i) {
+        for ($i = 0, $l = \count($docBlock->getLines()); $i < $l; ++$i) {
             $items = [];
-            $matches = $this->getMatches($lines[$i]);
+            $matches = $this->getMatches($docBlock->getLine($i)->getContent());
 
             if (null === $matches) {
                 continue;
@@ -236,11 +235,11 @@ EOF;
             $items[] = $matches;
 
             while (true) {
-                if (!isset($lines[++$i])) {
+                if (null === $docBlock->getLine(++$i)) {
                     break 2;
                 }
 
-                $matches = $this->getMatches($lines[$i], true);
+                $matches = $this->getMatches($docBlock->getLine($i)->getContent(), true);
                 if (null === $matches) {
                     break;
                 }
@@ -269,7 +268,7 @@ EOF;
             foreach ($items as $j => $item) {
                 if (null === $item['tag']) {
                     if ('@' === $item['desc'][0]) {
-                        $lines[$current + $j] = $item['indent'].' * '.$item['desc'].$lineEnding;
+                        $docBlock->getLine($current + $j)->setContent($item['indent'].' * '.$item['desc'].$lineEnding);
 
                         continue;
                     }
@@ -290,7 +289,7 @@ EOF;
                         .$item['desc']
                         .$lineEnding;
 
-                    $lines[$current + $j] = $line;
+                    $docBlock->getLine($current + $j)->setContent($line);
 
                     continue;
                 }
@@ -324,11 +323,9 @@ EOF;
                     $line .= $lineEnding;
                 }
 
-                $lines[$current + $j] = $line;
+                $docBlock->getLine($current + $j)->setContent($line);
             }
         }
-
-        return implode($lines);
     }
 
     /**
@@ -378,7 +375,7 @@ EOF;
     {
         $indent = self::ALIGN_VERTICAL === $this->align ? $verticalAlignIndent : $leftAlignIndent;
 
-        return \str_repeat(' ', $indent);
+        return str_repeat(' ', $indent);
     }
 
     /**

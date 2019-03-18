@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Config;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
@@ -173,11 +174,14 @@ final class CacheTest extends TestCase
     public function provideCanConvertToAndFromJsonCases()
     {
         $toolInfo = new ToolInfo();
+        $config = new Config();
 
         return [
             [new Signature(
                 PHP_VERSION,
                 '2.0',
+                '  ',
+                "\r\n",
                 [
                     'foo' => true,
                     'bar' => true,
@@ -186,6 +190,8 @@ final class CacheTest extends TestCase
             [new Signature(
                 PHP_VERSION,
                 $toolInfo->getVersion(),
+                $config->getIndent(),
+                $config->getLineEnding(),
                 [
                     // value encoded in ANSI, not UTF
                     'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
@@ -201,6 +207,8 @@ final class CacheTest extends TestCase
         $signature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class);
         $signature->getPhpVersion()->willReturn('7.1.0');
         $signature->getFixerVersion()->willReturn('2.2.0');
+        $signature->getIndent()->willReturn('    ');
+        $signature->getLineEnding()->willReturn(PHP_EOL);
         $signature->getRules()->willReturn([
             $invalidUtf8Sequence => true,
         ]);

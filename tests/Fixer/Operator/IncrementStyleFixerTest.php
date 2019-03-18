@@ -138,6 +138,36 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
             ['<?php foo($a, ++$b);'],
             ['<?php $a[++$b];'],
             ['<?php echo ++$a;'],
+
+            [
+                '<?php class Test {
+    public function foo() {
+        $a = 123;
+        ++self::$st;
+    }
+}',
+                '<?php class Test {
+    public function foo() {
+        $a = 123;
+        self::$st++;
+    }
+}',
+            ],
+
+            [
+                '<?php class Test {
+    public function foo() {
+        $a = 123;
+        ++static::$st;
+    }
+}',
+                '<?php class Test {
+    public function foo() {
+        $a = 123;
+        static::$st++;
+    }
+}',
+            ],
         ];
     }
 }
