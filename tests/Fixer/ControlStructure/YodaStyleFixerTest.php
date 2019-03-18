@@ -446,6 +446,11 @@ $a#4
                 ['always_move_variable' => true],
             ],
             [
+                '<?php return $myVar . $b === $k;',
+                '<?php return $k === $myVar . $b;',
+                ['always_move_variable' => true],
+            ],
+            [
                 '<?php return $myVar - 2 === $k;',
                 '<?php return $k === $myVar - 2;',
                 ['always_move_variable' => true],
