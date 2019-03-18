@@ -21,8 +21,10 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Generator\NamespacedStringTokenGenerator;
 use PhpCsFixer\Tokenizer\Resolver\TypeShortNameResolver;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -156,15 +158,21 @@ class SomeClass
         }
 
         $typeName = $type->getName();
-        $shortType = (new TypeShortNameResolver())->resolve($tokens, $type->getName());
+        $shortType = (new TypeShortNameResolver())->resolve($tokens, $typeName);
         if ($shortType === $typeName) {
             return;
+        }
+
+        $shortType = (new NamespacedStringTokenGenerator())->generate($shortType);
+
+        if (true === $type->isNullable()) {
+            array_unshift($shortType, new Token([CT::T_NULLABLE_TYPE, '?']));
         }
 
         $tokens->overrideRange(
             $type->getStartIndex(),
             $type->getEndIndex(),
-            (new NamespacedStringTokenGenerator())->generate($shortType)
+            $shortType
         );
     }
 }

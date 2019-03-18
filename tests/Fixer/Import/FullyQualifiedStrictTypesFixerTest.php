@@ -28,8 +28,8 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideCodeWithReturnTypesCases
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testCodeWithReturnTypes($expected, $input = null)
     {
@@ -37,10 +37,23 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @requires PHP 7.1
+     *
+     * @dataProvider provideCodeWithReturnTypesCasesWithNullableCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testCodeWithReturnTypesWithNullable($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
      * @dataProvider provideCodeWithoutReturnTypesCases
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testCodeWithoutReturnTypes($expected, $input = null)
     {
@@ -50,8 +63,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     public function provideCodeWithReturnTypesCases()
     {
         return [
-            // Import common strict types:
-            [
+            'Import common strict types' => [
                 '<?php
 
 use Foo\Bar;
@@ -75,8 +87,7 @@ class SomeClass
     }
 }',
             ],
-            // Test namespace fixes:
-            [
+            'Test namespace fixes' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -102,8 +113,7 @@ class SomeClass
     }
 }',
             ],
-            // Test multi namespace fixes
-            [
+            'Test multi namespace fixes' => [
                 '<?php
 namespace Foo\Other {
 }
@@ -119,8 +129,7 @@ namespace Foo\Bar {
     }
 }',
             ],
-            // Test fixes in interface
-            [
+            'Test fixes in interface' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -142,8 +151,7 @@ interface SomeClass
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
 }',
             ],
-            // Test fixes in trait
-            [
+            'Test fixes in trait' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -169,8 +177,7 @@ trait SomeClass
     }
 }',
             ],
-            // Test fixes in regular functions
-            [
+            'Test fixes in regular functions' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -196,8 +203,7 @@ function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\B
     public function provideCodeWithoutReturnTypesCases()
     {
         return [
-            // Import common strict types:
-            [
+            'Import common strict types' => [
                 '<?php
 
 use Foo\Bar;
@@ -219,8 +225,7 @@ class SomeClass
     }
 }',
             ],
-            // Test namespace fixes:
-            [
+            'Test namespace fixes' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -242,8 +247,7 @@ class SomeClass
     }
 }',
             ],
-            // Test multi namespace fixes
-            [
+            'Test multi namespace fixes' => [
                 '<?php
 namespace Foo\Other {
 }
@@ -257,8 +261,7 @@ namespace Foo\Bar {
     }
 }',
             ],
-            // Test fixes in interface
-            [
+            'Test fixes in interface' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -280,8 +283,7 @@ interface SomeClass
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz);
 }',
             ],
-            // Test fixes in trait
-            [
+            'Test fixes in trait' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -307,8 +309,7 @@ trait SomeClass
     }
 }',
             ],
-            // Test fixes in regular functions
-            [
+            'Test fixes in regular functions' => [
                 '<?php
 
 namespace Foo\Bar;
@@ -328,8 +329,7 @@ function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\B
 {
 }',
             ],
-            // Test partial namespace and use imports
-            [
+            'Test partial namespace and use imports' => [
                 '<?php
 
 namespace Ping\Pong;
@@ -371,12 +371,43 @@ class SomeClass
     ){}
 }',
             ],
-            // Test reference
-            [
+            'Test reference' => [
                 '<?php
 function withReference(Exception &$e) {}',
                 '<?php
 function withReference(\Exception &$e) {}',
+            ],
+        ];
+    }
+
+    public function provideCodeWithReturnTypesCasesWithNullableCases()
+    {
+        return [
+            'Test namespace fixes with nullable types' => [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, ?Zoof\Buz $barbuz): ?Baz
+    {
+    }
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, ?\Foo\Bar\Zoof\Buz $barbuz): ?\Foo\Bar\Baz
+    {
+    }
+}',
             ],
         ];
     }
