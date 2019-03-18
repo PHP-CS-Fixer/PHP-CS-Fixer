@@ -9,6 +9,7 @@ PHP 7.3 test.
     "heredoc_indentation": true,
     "list_syntax": {"syntax": "short"},
     "mb_str_functions": true,
+    "method_argument_space": {"after_heredoc": true},
     "method_chaining_indentation": true,
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
@@ -101,6 +102,13 @@ $a = [<<<'EOD'
     EOD
 ];
 
+foo(
+    <<<'EOD'
+        bar
+        EOD,
+    'baz'
+);
+
 --INPUT--
 <?php
 
@@ -175,3 +183,11 @@ EOD
 bar
 EOD
 ];
+
+foo(
+    <<<'EOD'
+bar
+EOD
+    ,
+    'baz'
+);
