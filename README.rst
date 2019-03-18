@@ -1704,6 +1704,10 @@ Choose from the list of available rules:
   - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
     double-quoted strings that contains single-quotes; defaults to ``false``
 
+* **single_trait_insert_per_statement** [@Symfony, @PhpCsFixer]
+
+  Each trait ``use`` must be done as single statement.
+
 * **space_after_semicolon** [@Symfony, @PhpCsFixer]
 
   Fix whitespace after a semicolon.
