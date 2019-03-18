@@ -20,7 +20,7 @@ use PhpCsFixer\Preg;
  * @author Graham Campbell <graham@alt-three.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Annotation
+final class Annotation
 {
     /**
      * Regex to match any types, shall be used with `x` modifier.

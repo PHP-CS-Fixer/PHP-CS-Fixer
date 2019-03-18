@@ -19,7 +19,7 @@ use PhpCsFixer\Preg;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class Tag
+final class Tag
 {
     /**
      * All the tags defined by the proposed PSR PHPDoc standard.

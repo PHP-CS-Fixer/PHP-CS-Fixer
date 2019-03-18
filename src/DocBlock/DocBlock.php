@@ -21,7 +21,7 @@ use PhpCsFixer\Preg;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class DocBlock
+final class DocBlock
 {
     /**
      * The array of lines.

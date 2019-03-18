@@ -27,7 +27,7 @@ use PhpCsFixer\Utils;
  * @method Token current()
  * @method Token offsetGet($index)
  */
-class Tokens extends \SplFixedArray
+final class Tokens extends \SplFixedArray
 {
     const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
     const BLOCK_TYPE_CURLY_BRACE = 2;

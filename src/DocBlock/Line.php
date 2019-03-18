@@ -19,7 +19,7 @@ use PhpCsFixer\Preg;
  *
  * @author Graham Campbell <graham@alt-three.com>
  */
-class Line
+final class Line
 {
     /**
      * The content of this line.
