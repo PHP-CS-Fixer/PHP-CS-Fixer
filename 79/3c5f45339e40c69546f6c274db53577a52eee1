@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-01-01T14:06:11Z
+
+What about adding some code to https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/tests/Fixtures/Integration/misc/PHP7_3.test?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-01-01T15:37:22Z
+
+> What about adding some code to https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/tests/Fixtures/Integration/misc/PHP7_3.test?
+
+done!
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-01-01T15:37:54Z
+
+When this pr is accepted, I will add similar PRs for some other fixers.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-01-09T22:53:28Z
+
+There is a new config option `after_heredoc` now.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-02-07T19:05:23Z
+
+anything to do here?
