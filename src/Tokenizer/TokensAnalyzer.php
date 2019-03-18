@@ -504,6 +504,7 @@ final class TokensAnalyzer
             '>' => true,
             '|' => true,
             '^' => true,
+            '.' => true,
         ];
 
         static $potentialUnaryNonArrayOperators = [

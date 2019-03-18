@@ -527,7 +527,7 @@ return $foo === count($bar);
                 if (
                     $tokens[$index]->isCast()
                     || $tokens[$index]->isGivenKind(T_INSTANCEOF)
-                    || $tokens[$index]->equalsAny(['.', '!'])
+                    || $tokens[$index]->equals('!')
                     || $tokenAnalyzer->isBinaryOperator($index)
                 ) {
                     return false;
