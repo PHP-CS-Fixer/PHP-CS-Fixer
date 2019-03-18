@@ -82,6 +82,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { function bar() { new Foo\Baz(); } }',
             ],
             [
+                '<?php class Foo { function bar() { Baz\Foo::class; } }',
+            ],
+            [
                 '<?php class Foo { function bar() { function ($a = self::BAZ) { new self(); }; } }',
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ],
