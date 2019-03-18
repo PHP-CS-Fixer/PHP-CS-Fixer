@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by drupol at 2019-02-12T09:27:58Z
+
+Here's the patch for branch 2.14: https://gist.github.com/drupol/c43a4ba8712782e104194fdc015c8ede
+We need it for our project.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-02-12T20:30:22Z
+
+thanks for the patch @drupol .
+yet, to not waste your time on it, if you send a PR against older branch, after PR would be merged, that branch would also be merged into higher branch - and usually git does that without conflicts, and for small conflicts I resolve them myself.
+it's very rare that for same change we ask original author to prepare independent patches for different branches - it's only in case of super complex change - in other words, don't prepare the "other branch patches" except if you was explicitly asked for ;)
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-02-12T20:47:55Z
+
+Allrigthty!
+
+Thanks.
