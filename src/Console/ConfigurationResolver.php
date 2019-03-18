@@ -202,6 +202,8 @@ final class ConfigurationResolver
                     new Signature(
                         PHP_VERSION,
                         $this->toolInfo->getVersion(),
+                        $this->getConfig()->getIndent(),
+                        $this->getConfig()->getLineEnding(),
                         $this->getRules()
                     ),
                     $this->isDryRun(),
