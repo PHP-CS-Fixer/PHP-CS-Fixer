@@ -40,12 +40,16 @@ final class NoUnsetCastFixerTest extends AbstractFixerTestCase
                 "<?php\n\$a =(unset)\$z;",
             ],
             'simple form II' => [
-                "<?php\n\$a = null;",
-                "<?php\n\$a = (unset)\$z;",
+                "<?php\n\$b = null;",
+                "<?php\n\$b = (unset)\$z;",
+            ],
+            'simple form III' => [
+                "<?php\n\$c = null?>",
+                "<?php\n\$c = (unset)\$z?>",
             ],
             'lot of spaces' => [
-                "<?php\n\$a = \t \t \t null;",
-                "<?php\n\$a = \t (unset)\$z\t \t ;",
+                "<?php\n\$d = \t \t \t null;",
+                "<?php\n\$d = \t (unset)\$z\t \t ;",
             ],
             'comments' => [
                 '<?php
@@ -75,6 +79,24 @@ $b#7
             ],
             [
                 "<?php\n(unset) \$b;",
+            ],
+            [
+                '<?php $r = (unset) f(1);',
+            ],
+            [
+                '<?php $r = (unset) (new C())->mf(3);',
+            ],
+            [
+                '<?php $r = (unset) $f(1);',
+            ],
+            [
+                '<?php $r = (unset) $c::sf(2) ?>',
+            ],
+            [
+                '<?php $r = (unset) $a[0];',
+            ],
+            [
+                '<?php $r = (unset) $n**f($n);',
             ],
         ];
     }

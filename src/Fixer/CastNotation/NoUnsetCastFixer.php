@@ -70,6 +70,11 @@ final class NoUnsetCastFixer extends AbstractFixer
             return;
         }
 
+        $afterVar = $tokens->getNextMeaningfulToken($varIndex);
+        if (null === $afterVar || !$tokens[$afterVar]->equalsAny([';', [T_CLOSE_TAG]])) {
+            return;
+        }
+
         $nextIsWhiteSpace = $tokens[$assignmentIndex + 1]->isWhitespace();
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
