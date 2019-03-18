@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-29T10:07:06Z
+
+Is this to work with class methods as well? Tests and description should be updated to reflect that if so.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-11-29T10:32:43Z
+
+>Is this to work with class methods as well? Tests and description should be updated to reflect that if so.
+
+I've updated some tests, I don't think the doc is off as methods are function (not always true the otherway around)
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-29T12:30:09Z
+
+Oh one last thing from me, could you add a test for `interface` as well?
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-29T14:47:04Z
+
+LGTM 👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-04T06:57:17Z
+
+Suggestions for adding this fixer to a set? (maybe a PHP migration one, SF, projects one?)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-11T18:21:59Z
+
+maybe the sets `[@Symfony, @PhpCsFixer]` are OK? :)
