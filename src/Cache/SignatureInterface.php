@@ -30,6 +30,16 @@ interface SignatureInterface
     public function getFixerVersion();
 
     /**
+     * @return string
+     */
+    public function getIndent();
+
+    /**
+     * @return string
+     */
+    public function getLineEnding();
+
+    /**
      * @return array
      */
     public function getRules();

@@ -433,6 +433,19 @@ EOF
                     'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
                 ],
             ],
+            [
+                <<<'EOF'
+<?php
+class HavingPropertyWithNameAsMethodToUpdateTest extends PHPUnit
+{
+    public function foo()
+    {
+        $this->assertSame = 42;
+    }
+}
+EOF
+                ,
+            ],
         ];
     }
 }
