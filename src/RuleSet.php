@@ -82,6 +82,7 @@ final class RuleSet implements RuleSetInterface
                 'on_multiline' => 'ignore',
             ],
             'native_function_casing' => true,
+            'native_function_type_declaration_casing' => true,
             'new_with_braces' => true,
             'no_blank_lines_after_class_opening' => true,
             'no_blank_lines_after_phpdoc' => true,
@@ -146,6 +147,7 @@ final class RuleSet implements RuleSetInterface
                 'comment_types' => ['hash'],
             ],
             'single_quote' => true,
+            'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,
             ],

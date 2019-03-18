@@ -14,6 +14,7 @@ PHP 7.3 test.
     "native_function_invocation": {"include": ["get_class"]},
     "no_unset_cast": true,
     "no_unset_on_property": true,
+    "no_whitespace_before_comma_in_array": {"after_heredoc": true},
     "php_unit_dedicate_assert": true,
     "php_unit_expectation": true,
     "php_unit_mock": true,
@@ -86,12 +87,19 @@ in_array($b, $c, true, ); // `strict_param` rule
 foo(null === $a, ); // `yoda_style` rule
 $a = null; // `no_unset_cast` rule
 $foo->bar = null; // `no_unset_on_property` rule
-// `heredoc_indentation` rule
+
+// https://wiki.php.net/rfc/flexible_heredoc_nowdoc_syntaxes
     $a = <<<'EOD'
         abc
             def
             ghi
         EOD;
+$a = [<<<'EOD'
+    foo
+    EOD, <<<'EOD'
+    bar
+    EOD
+];
 
 --INPUT--
 <?php
@@ -153,9 +161,17 @@ trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
 foo($a === null, ); // `yoda_style` rule
 $a =(unset)$z; // `no_unset_cast` rule
 unset($foo->bar,); // `no_unset_on_property` rule
-// `heredoc_indentation` rule
+
+// https://wiki.php.net/rfc/flexible_heredoc_nowdoc_syntaxes
     $a = <<<'EOD'
 abc
     def
     ghi
 EOD;
+$a = [<<<'EOD'
+foo
+EOD
+    , <<<'EOD'
+bar
+EOD
+];

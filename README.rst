@@ -893,6 +893,10 @@ Choose from the list of available rules:
   - ``strict`` (``bool``): whether leading ``\`` of function call not meant to have it
     should be removed; defaults to ``false``
 
+* **native_function_type_declaration_casing** [@Symfony, @PhpCsFixer]
+
+  Native type hints for functions should use the correct case.
+
 * **new_with_braces** [@Symfony, @PhpCsFixer]
 
   All instances created with new keyword must be followed by braces.
@@ -1119,6 +1123,11 @@ Choose from the list of available rules:
 * **no_whitespace_before_comma_in_array** [@Symfony, @PhpCsFixer]
 
   In array declaration, there MUST NOT be a whitespace before each comma.
+
+  Configuration options:
+
+  - ``after_heredoc`` (``bool``): whether the whitespace between heredoc end and
+    comma should be removed; defaults to ``false``
 
 * **no_whitespace_in_blank_line** [@Symfony, @PhpCsFixer]
 
@@ -1636,6 +1645,10 @@ Choose from the list of available rules:
 
   - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
     double-quoted strings that contains single-quotes; defaults to ``false``
+
+* **single_trait_insert_per_statement** [@Symfony, @PhpCsFixer]
+
+  Each trait ``use`` must be done as single statement.
 
 * **space_after_semicolon** [@Symfony, @PhpCsFixer]
 
