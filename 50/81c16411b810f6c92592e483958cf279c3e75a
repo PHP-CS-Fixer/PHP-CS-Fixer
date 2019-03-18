@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-03-18T08:00:39Z
+
+Would it be bad if we have both? Still all would finish before `5.6`.
+
+> I think we can safely ignore PHP 8 for now, and instead check PHP 7.4 build results.
+
+With `allow_failures` we ignore `7.4` as well.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-03-18T08:15:52Z
+
+> Would it be bad if we have both?
+
+8 is far far away, it would just be a waste of resources, both electric and maintainers time, to me.
+
+> With `allow_failures` we ignore `7.4` as well.
+
+I would remove it from `allow_failures` too, I just didn't want to push anything but a fix in this PR.
