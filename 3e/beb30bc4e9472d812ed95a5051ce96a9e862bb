@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-31T12:48:14Z
+
+I let myself resolve the conflicts, readme was not regenerated after changes
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-01-03T14:22:42Z
+
+I will mark as risky. However, in the case of our own code base, isn't it bad practise anyway to have this interface-duplication? I mean, `DefinedFixerInterface extends FixerInterface`, why `implements` them both? (Also: why does php break one way but not the other? Strange...)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-07T18:23:42Z
+
+>isn't it bad practise anyway to have this interface-duplication?
+
+it doesn't harm to be explicit, it could also be because it makes merging over the various branches more easy, but maybe it is (indeed) overcomplete and can be cleaned up some day in another PR
+
+>why does php break one way but not the other? Strange...
+
+I have no idea, it really puzzles me!, sadly it does break, so please update to be `risky`
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-07T18:58:50Z
+
+I wouldn't consider it a bad idea. If you want to implement interfaces A and B, you may not know, not control, or even not care internal detail that B also implement A under the hood. Yet, this rule can break the code in current PHP engine, so we need risky flag with good explanation to the user why is it so.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-03-14T10:43:00Z
+
+@keradus all changes have been processed (like, 3 months ago 😜) could you update your review?
