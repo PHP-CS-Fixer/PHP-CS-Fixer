@@ -814,6 +814,8 @@ Choose from the list of available rules:
 
   Configuration options:
 
+  - ``after_heredoc`` (``bool``): whether the whitespace between heredoc end and
+    comma should be removed; defaults to ``false``
   - ``ensure_fully_multiline`` (``bool``): ensure every argument of a multiline
     argument list is on its own line; defaults to ``false``. DEPRECATED: use
     option ``on_multiline`` instead
@@ -1710,6 +1712,11 @@ Choose from the list of available rules:
 * **trailing_comma_in_multiline_array** [@Symfony, @PhpCsFixer]
 
   PHP multi-line arrays should have a trailing comma.
+
+  Configuration options:
+
+  - ``after_heredoc`` (``bool``): whether a trailing comma should also be placed
+    after heredoc end; defaults to ``false``
 
 * **trim_array_spaces** [@Symfony, @PhpCsFixer]
 

@@ -794,6 +794,49 @@ INPUT
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                <<<'EXPECTED'
+<?php
+foo(
+    <<<'EOD'
+        bar
+        EOD,
+    'baz'
+);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+foo(
+    <<<'EOD'
+        bar
+        EOD
+    ,
+    'baz'
+);
+INPUT
+                ,
+                ['after_heredoc' => true],
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideFixDeprecatedCases
      *
      * @group legacy
