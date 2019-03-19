@@ -1252,6 +1252,19 @@ Choose from the list of available rules:
     should be sorted alphabetically or by length, or not sorted; defaults
     to ``'alpha'``; DEPRECATED alias: ``sortAlgorithm``
 
+* **ordered_interfaces**
+
+  Orders the interfaces in an ``implements`` or ``interface extends`` clause.
+
+  *Risky rule: risky for ``implements`` when specifying both an interface and its parent interface, because PHP doesn't break on ``parent, child`` but does on ``child, parent``.*
+
+  Configuration options:
+
+  - ``direction`` (``'ascend'``, ``'descend'``): which direction the interfaces should
+    be ordered; defaults to ``'ascend'``
+  - ``order`` (``'alpha'``, ``'length'``): how the interfaces should be ordered;
+    defaults to ``'alpha'``
+
 * **php_unit_construct** [@Symfony:risky, @PhpCsFixer:risky]
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
