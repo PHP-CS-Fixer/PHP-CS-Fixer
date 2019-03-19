@@ -431,7 +431,7 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
-* **declared_class_casing**
+* **declared_class_casing** [@Symfony, @PhpCsFixer]
 
   Classes should be referred to using the correct casing.
 

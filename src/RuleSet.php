@@ -70,6 +70,7 @@ final class RuleSet implements RuleSetInterface
             'class_definition' => ['single_line' => true],
             'concat_space' => ['spacing' => 'none'],
             'declare_equal_normalize' => true,
+            'declared_class_casing' => true,
             'function_typehint_space' => true,
             'include' => true,
             'increment_style' => true,

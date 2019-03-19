@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -117,6 +118,21 @@ final class DeclaredClassCasingFixerTest extends AbstractFixerTestCase
                     use exception;
                 }
                 ',
+            ],
+            [
+                '<?php
+                use stdclass as exception;
+                ',
+            ],
+            [
+                '<?php
+                class Foo {
+                    const stdclass = 1;
+                }
+                ',
+            ],
+            'imported constant '.Application::VERSION => [
+                sprintf('<?php echo %s::VERSION; new PhpCsFixer\Console\APPLICATION();', strtoupper(Application::class)),
             ],
         ];
     }

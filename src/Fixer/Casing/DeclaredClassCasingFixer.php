@@ -29,17 +29,6 @@ final class DeclaredClassCasingFixer extends AbstractFixer
      */
     private static $declaredClassNames;
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        if (null === self::$declaredClassNames) {
-            foreach (get_declared_classes() as $class) {
-                self::$declaredClassNames[strtolower($class)] = $class;
-            }
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -65,8 +54,16 @@ final class DeclaredClassCasingFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        if (null === self::$declaredClassNames) {
+            foreach (get_declared_classes() as $class) {
+                self::$declaredClassNames[strtolower($class)] = $class;
+            }
+        }
+
         foreach ($tokens as $index => $token) {
-            if ($name = $this->declaredClass($index, $token, $tokens)) {
+            $name = $this->declaredClass($index, $token, $tokens);
+
+            if (null !== $name) {
                 $tokens[$index] = new Token([T_STRING, self::$declaredClassNames[$name]]);
             }
         }
@@ -83,37 +80,37 @@ final class DeclaredClassCasingFixer extends AbstractFixer
      */
     private function declaredClass($index, Token $token, Tokens $tokens)
     {
-        $beforeClassName = $tokens->getPrevMeaningfulToken($index);
         $lower = strtolower($token->getContent());
 
-        $declaredClass = null;
-
-        if (
-            \array_key_exists($lower, self::$declaredClassNames)
-            &&
-            !$tokens[$beforeClassName]->isGivenKind(
-                [
-                    T_CLASS,
-                    T_AS,
-                    T_DOUBLE_COLON,
-                    T_OBJECT_OPERATOR,
-                    T_FUNCTION,
-                    T_CONST,
-                    T_TRAIT,
-                    T_USE,
-                    CT::T_USE_TRAIT,
-                ]
-            )
-            &&
-            !(
-                $tokens[$beforeClassName]->isGivenKind(T_NS_SEPARATOR)
-                &&
-                $tokens[$tokens->getPrevMeaningfulToken($beforeClassName)]->isGivenKind([T_STRING])
-            )
-        ) {
-            $declaredClass = $lower;
+        if (!\array_key_exists($lower, self::$declaredClassNames)) {
+            return null;
         }
 
-        return $declaredClass;
+        $notBeforeTypes = [
+            T_CLASS,
+            T_AS,
+            T_DOUBLE_COLON,
+            T_OBJECT_OPERATOR,
+            T_FUNCTION,
+            T_CONST,
+            T_TRAIT,
+            T_USE,
+            CT::T_USE_TRAIT,
+        ];
+
+        $beforeClassName = $tokens->getPrevMeaningfulToken($index);
+
+        if ($tokens[$beforeClassName]->isGivenKind($notBeforeTypes)) {
+            return null;
+        }
+
+        if (
+            $tokens[$beforeClassName]->isGivenKind(T_NS_SEPARATOR)
+            && $tokens[$tokens->getPrevMeaningfulToken($beforeClassName)]->isGivenKind([T_STRING])
+        ) {
+            return null;
+        }
+
+        return $lower;
     }
 }
