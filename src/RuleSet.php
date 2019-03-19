@@ -368,6 +368,10 @@ final class RuleSet implements RuleSetInterface
             '@PHPUnit57Migration:risky' => true,
             'php_unit_namespaced' => ['target' => PhpUnitTargetVersion::VERSION_6_0],
         ],
+        '@PHPUnit75Migration:risky' => [
+            '@PHPUnit60Migration:risky' => true,
+            'php_unit_dedicate_assert_internal_type' => ['target' => PhpUnitTargetVersion::VERSION_7_5],
+        ],
     ];
 
     /**
