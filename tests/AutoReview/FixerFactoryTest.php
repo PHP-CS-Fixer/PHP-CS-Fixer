@@ -161,6 +161,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
+            [$fixers['php_unit_dedicate_assert'], $fixers['php_unit_dedicate_assert_internal_type']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']],
