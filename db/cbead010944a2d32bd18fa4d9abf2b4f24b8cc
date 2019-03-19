@@ -1,0 +1,9 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-18T07:41:00Z
+
+Hi and thank you for this PR,
+
+Templating like mixing html and PHP leads to interesting formatting challenges and we typically do not try to resolve all of these in this project. However, you fix seems small and clean, so if this helps people out than I'm :+1:
+
+Please target the 2.12 branch with your PR so we'll have this fix on the lowest supported branch, we'll merge this upstream from there.
