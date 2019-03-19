@@ -342,6 +342,11 @@ class Foo
                 continue;
             }
 
+            /* if CLOSE_TAG is after { on the same line, do not indent. e.g. <?php if ($condition) { ?> */
+            if ($tokens[$tokens->getNextNonWhitespace($startBraceIndex, " \t")]->isGivenKind(T_CLOSE_TAG)) {
+                continue;
+            }
+
             $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startBraceIndex);
 
             $indent = $this->detectIndent($tokens, $index);
