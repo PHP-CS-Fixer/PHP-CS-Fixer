@@ -1298,6 +1298,13 @@ Choose from the list of available rules:
   - ``target`` (``'5.4'``, ``'5.5'``, ``'newest'``): target version of PHPUnit; defaults to
     ``'newest'``
 
+* **php_unit_mock_short_will_return**
+
+  Usage of PHPUnit's mock e.g. ``->will($this->returnValue(..))`` must be
+  replaced by its shorter equivalent such as ``->willReturn(...)``.
+
+  *Risky rule: risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.*
+
 * **php_unit_namespaced** [@PHPUnit48Migration:risky, @PHPUnit50Migration:risky, @PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky, @PHPUnit75Migration:risky]
 
   PHPUnit classes MUST be used in namespaced version, e.g.

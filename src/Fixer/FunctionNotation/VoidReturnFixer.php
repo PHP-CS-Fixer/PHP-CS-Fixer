@@ -200,7 +200,7 @@ final class VoidReturnFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind(T_YIELD)) {
+            if ($tokens[$i]->isGivenKind([T_YIELD, T_YIELD_FROM])) {
                 return false; // Generators cannot return void.
             }
 
