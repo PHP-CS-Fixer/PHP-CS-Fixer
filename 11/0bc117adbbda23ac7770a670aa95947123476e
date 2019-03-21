@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-27T18:17:46Z
+
+@SpacePossum done, you can remove `WIP` label and review ;)
+
+Do want to include https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4160 and rename the fixer?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-28T11:21:56Z
+
+Not sure about one fixer for all mockery-will-fixing... its sounds like a good idea to me to be honest but lets see what others think.
+
+In the meantime, please add a PHP7.3 test case with something like
+`$someMock->method("someMethod")->will($this->returnValue( 10  ,  ));`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-18T19:43:51Z
+
+@kubawerlos can you rebase and squash for me? :)
