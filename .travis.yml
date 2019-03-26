@@ -118,8 +118,24 @@ jobs:
 
                 # Composer: boost installation
                 - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+
+                # Require PHPUnit 8
+                - composer require --dev --no-update phpunit/phpunit:^8
+
+                # Install PCOV
+                - |
+                    git clone --single-branch --branch=v1.0.2 --depth=1 https://github.com/krakjoe/pcov
+                    cd pcov
+                    phpize
+                    ./configure
+                    make clean install
+                    echo "extension=pcov.so" > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/pcov.ini
+                    cd $TRAVIS_BUILD_DIR
+            before_script:
+                # Make code compatible with PHPUnit 8
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer fix --rules=void_return -q tests || return 0
             script:
-                - phpdbg -qrr vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
+                - vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
                 - php vendor/bin/php-coveralls -v
 
         -
@@ -152,4 +168,3 @@ jobs:
 
     allow_failures:
         - php: 7.4snapshot
-        - env: COLLECT_COVERAGE=1
