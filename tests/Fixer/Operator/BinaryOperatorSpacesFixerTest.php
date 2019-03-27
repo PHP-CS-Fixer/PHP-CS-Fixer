@@ -401,6 +401,14 @@ $a//
                     );',
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
             ],
+            'bug multiple runs' => [
+                '<?php
+$a = $a - $c + 1;
+$b = $b + $c - 1;
+                ',
+                null,
+                ['default' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE],
+            ],
         ];
     }
 
