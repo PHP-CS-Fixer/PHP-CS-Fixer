@@ -342,8 +342,16 @@ class Foo
                 continue;
             }
 
+            $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($startBraceIndex, " \t");
+            $nextNonWhitespace = $tokens[$nextNonWhitespaceIndex];
+
             /* if CLOSE_TAG is after { on the same line, do not indent. e.g. <?php if ($condition) { ?> */
-            if ($tokens[$tokens->getNextNonWhitespace($startBraceIndex, " \t")]->isGivenKind(T_CLOSE_TAG)) {
+            if ($nextNonWhitespace->isGivenKind(T_CLOSE_TAG)) {
+                continue;
+            }
+
+            /* if CLOSE_TAG is after { on the next line and a comment on this line, do not indent. e.g. <?php if ($condition) { // \n?> */
+            if ($nextNonWhitespace->isComment() && $tokens[$tokens->getNextMeaningfulToken($nextNonWhitespaceIndex)]->isGivenKind(T_CLOSE_TAG)) {
                 continue;
             }
 
