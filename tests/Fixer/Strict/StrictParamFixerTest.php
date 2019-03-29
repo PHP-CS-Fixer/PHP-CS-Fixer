@@ -155,6 +155,16 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
         array_keys($foo, $bar);
     }',
             ],
+            [
+                '<?php
+    use function \base64_decode;
+    foo($bar);',
+            ],
+            [
+                '<?php
+    use function Baz\base64_decode;
+    foo($bar);',
+            ],
         ];
     }
 
