@@ -45,7 +45,7 @@ final class PhpdocOrderFixer extends AbstractFixer
 /**
  * Hello there!
  *
- * @throws Exception|RuntimeException dfsdf
+ * @throws Exception|RuntimeException foo
  * @custom Test!
  * @return int  Return the number of changes.
  * @param string $foo

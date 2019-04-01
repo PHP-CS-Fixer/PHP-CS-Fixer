@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer;
 
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
