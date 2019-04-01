@@ -24,6 +24,20 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 {
+    public function testFixWithTrailingSpace()
+    {
+        $expected = '<?php
+/**
+ * Test.
+ */';
+
+        $input = '<?php
+/**
+ * Test         '.'
+ */';
+        $this->doTest($expected, $input);
+    }
+
     public function testFix()
     {
         $expected = <<<'EOF'

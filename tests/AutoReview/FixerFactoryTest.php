@@ -183,8 +183,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_order'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_return_self_reference'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_scalar'], $fixers['phpdoc_to_return_type']],
-            [$fixers['phpdoc_separation'], $fixers['phpdoc_trim']],
-            [$fixers['phpdoc_summary'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_to_comment'], $fixers['no_empty_comment']],
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
@@ -274,18 +272,13 @@ final class FixerFactoryTest extends TestCase
         // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
-            'class_attributes_separation,indentation_type.test',
             'indentation_type,phpdoc_indent.test',
             'method_separation,braces.test',
-            'method_separation,indentation_type.test',
-            'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
             'phpdoc_order,phpdoc_separation.test',
             'phpdoc_order,phpdoc_trim.test',
-            'phpdoc_separation,phpdoc_trim.test',
-            'phpdoc_summary,phpdoc_trim.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
