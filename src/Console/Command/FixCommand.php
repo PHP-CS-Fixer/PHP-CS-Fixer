@@ -169,12 +169,22 @@ final class FixCommand extends Command
             }
 
             $configFile = $resolver->getConfigFile();
-            $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+            $stdErr->writeln(
+                sprintf(
+                    'Loaded config <comment>%s</comment>%s.',
+                    $resolver->getConfig()->getName(),
+                    null === $configFile ? '' : ' from "' . $configFile . '"'
+                ),
+                OutputInterface::VERBOSITY_VERBOSE
+            );
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
                 if (is_file($cacheFile)) {
-                    $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
+                    $stdErr->writeln(
+                        sprintf('Using cache file "%s".', $cacheFile),
+                        OutputInterface::VERBOSITY_VERY_VERBOSE
+                    );
                 }
             }
         }
@@ -184,7 +194,11 @@ final class FixCommand extends Command
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(
-                sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
+                sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    'Paths from configuration file have been overridden by paths provided as command arguments.'
+                ),
+                OutputInterface::VERBOSITY_VERBOSE
             );
         }
 
