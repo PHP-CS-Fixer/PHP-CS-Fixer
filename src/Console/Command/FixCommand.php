@@ -173,7 +173,7 @@ final class FixCommand extends Command
                 sprintf(
                     'Loaded config <comment>%s</comment>%s.',
                     $resolver->getConfig()->getName(),
-                    null === $configFile ? '' : ' from "' . $configFile . '"'
+                    null === $configFile ? '' : ' from "'.$configFile.'"'
                 ),
                 OutputInterface::VERBOSITY_VERBOSE
             );
