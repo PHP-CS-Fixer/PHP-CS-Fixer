@@ -183,7 +183,7 @@ final class FixCommand extends Command
                 if (is_file($cacheFile)) {
                     $stdErr->writeln(
                         sprintf('Using cache file "%s".', $cacheFile),
-                        OutputInterface::VERBOSITY_VERY_VERBOSE
+                        OutputInterface::VERBOSITY_VERBOSE
                     );
                 }
             }
