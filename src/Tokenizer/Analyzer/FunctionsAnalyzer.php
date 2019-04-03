@@ -40,9 +40,20 @@ final class FunctionsAnalyzer
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
+        if ($tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, T_OBJECT_OPERATOR, CT::T_RETURN_REF, T_STRING])
+            || !$tokens[$nextIndex]->equals('(')) {
+            return false;
+        }
 
-        return !$tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, T_OBJECT_OPERATOR, CT::T_RETURN_REF, T_STRING])
-            && $tokens[$nextIndex]->equals('(');
+        $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
+        $functionName = $tokens[$index]->getContent();
+        foreach ($namespaceUsesAnalyzer->getDeclarationsFromTokens($tokens) as $useDeclaration) {
+            if ($useDeclaration->isFunction() && $useDeclaration->getShortName() === $functionName) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

@@ -110,6 +110,16 @@ final class FunctionsAnalyzerTest extends TestCase
                 '<?php namespace\foo("bar");',
                 3,
             ],
+            [
+                true,
+                '<?php use function foo\bar; baz("qux");',
+                10,
+            ],
+            [
+                false,
+                '<?php use function foo\bar; bar("baz");',
+                10,
+            ],
         ];
     }
 

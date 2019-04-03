@@ -565,6 +565,42 @@ namespace {
     }
 
     /**
+     * @dataProvider provideFixWithImportedFunctionCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixImportedFunction($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'include' => ['@all'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixWithImportedFunctionCases()
+    {
+        return [
+            [
+                '<?php
+use function foo\json_decode;
+json_decode($foo);
+',
+            ],
+            [
+                '<?php
+use function foo\bar as json_decode;
+json_decode($foo);
+',
+            ],
+        ];
+    }
+
+    /**
      * @requires PHP 7.3
      */
     public function testFix73()
