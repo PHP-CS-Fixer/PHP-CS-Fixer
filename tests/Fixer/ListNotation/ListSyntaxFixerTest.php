@@ -88,6 +88,17 @@ $a#
 ;#',
         ];
 
+        $cases[] = ['<?php
+
+class Test
+{
+    public function updateAttributeKey($key, $value)
+    {
+        $this->{camel_case($attributes)}[$key] = $value;
+    }
+}',
+        ];
+
         return $cases;
     }
 
