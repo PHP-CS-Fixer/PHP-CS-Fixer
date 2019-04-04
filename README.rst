@@ -1696,6 +1696,11 @@ Choose from the list of available rules:
 
   *Risky rule: risky when using dynamic calls like get_called_class() or late static binding.*
 
+* **self_static_accessor**
+
+  Inside a final class or anonymous class ``self`` should be preferred to
+  ``static``.
+
 * **semicolon_after_instruction** [@Symfony, @PhpCsFixer]
 
   Instructions must be terminated with a semicolon.
