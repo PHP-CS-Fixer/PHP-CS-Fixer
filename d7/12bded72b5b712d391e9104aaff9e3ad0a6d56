@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-05T08:54:04Z
+
+I looked into the priority issue some more. The ideal situation would be:
+
+```
+CurlyBraceTransformer
+	after SquareBraceTransformer because of:
+		T_ARRAY_SQUARE_BRACE_CLOSE
+
+SquareBraceTransformer
+	after CurlyBraceTransformer because of:
+		CT::T_DYNAMIC_PROP_BRACE_CLOSE
+		CT::T_DYNAMIC_VAR_BRACE_CLOSE
+		CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE
+```
+
+however, without splitting up the transformers this cannot be resolved.
+The reason why CurlyBraceTransformer needs T_ARRAY_SQUARE_BRACE_CLOSE is for cases like:
+
+```php
+<?php $a = $b[0]{1};
+```
+
+Currently this is not an issue, because the transformer already/also accepts `]`.
+The only other meaning `]` that could become an issue would be destructuring;
+
+```php
+<?php [$a]{1} = 1;
+```
+
+however these cases are always invalid in syntax and during execution.
