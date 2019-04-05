@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: method_separation, indentation_type
+--RULESET--
+{"method_separation": true, "indentation_type": true}
+--EXPECT--
+<?php
+
+class Sample
+{
+    public function lintFile($path){}
+
+    public function lintSource($source){}
+}
+
+--INPUT--
+<?php
+
+class Sample
+{	public function lintFile($path){}
+    public function lintSource($source){}
+}
