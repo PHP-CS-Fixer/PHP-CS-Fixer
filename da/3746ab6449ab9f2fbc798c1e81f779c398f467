@@ -1,0 +1,81 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-31T10:42:12Z
+
+Hi @hco , thanks for your PR, idea looks interesting indeed.
+Before going into details of the code, we need to ensure that format is valid.
+please upload schema of this format to `/doc`
+
+---------------------------------------------------------------------------
+
+by hco at 2019-01-31T10:50:18Z
+
+@keradus I think Gitlab does not provide a schema :-(
+
+Or would a self-written schema help?
+
+---------------------------------------------------------------------------
+
+by hco at 2019-01-31T10:50:38Z
+
+Oh - and thanks for the fast feedback!
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-02-04T08:41:32Z
+
+as a first step i would suggest you asking gitlab for schema, maybe it's there, but they forgot to publish it, or simply it's published but we can't find it? it happened before ;)
+
+I'm totally up for having a gitlab support, just let us ensure it works the best and it's stable, meaning we have the schema first.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-02-17T17:53:49Z
+
+@hco , any update on this ? had you manage to find/ask for gitlab official schema ?
+
+---------------------------------------------------------------------------
+
+by hco at 2019-02-17T18:37:32Z
+
+I asked, but got no response yet. :(
+
+---------------------------------------------------------------------------
+
+by hco at 2019-02-20T18:05:46Z
+
+So the current state is that they are pointing me to code climate, which would require us to generate more fields, which are not necessary for supporting gitlab.
+In addition, code climate does not currently provide an official schema. Asked them as well.
+
+Anything I can do while we wait?
+
+---------------------------------------------------------------------------
+
+by hco at 2019-03-07T06:48:01Z
+
+No response from Code Climate yet.
+
+I currently think that the only think I could do is write my own schema for GitLab-CI.
+Do you think that this would give us more benefit than the existing tests? 🤔
+
+Do you have other suggestions on what I should do?
+
+The Travis build failure is nothing I need to work on, right?
+
+---------------------------------------------------------------------------
+
+by hco at 2019-03-14T19:36:25Z
+
+Done. Thanks for the feedback!
+
+The change did not involve any test, though. I think this is outside of the scope of this PR, but maybe there should be a testcase added for this to the `AbstractReporterTestCase`, right?
+
+If you agree, I can tackle that later aswell.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-15T06:56:08Z
+
+Thanks for the changes, this PR looks good to me :)
+
+If you've some time for a test for the `AbstractReporterTestCase` please give it a shot. I remember hunting down the not-escaped bug on the previous reporters, so if we can catch it in the future by a test it would great. For me it is not blocking for this PR though.
