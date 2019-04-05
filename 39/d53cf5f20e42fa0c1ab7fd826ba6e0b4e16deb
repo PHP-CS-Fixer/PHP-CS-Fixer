@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by ntzm at 2018-11-28T11:29:15Z
+
+Don't really understand this change, were the old test cases invalid?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-03T17:12:37Z
+
+I was looking to prove the issue, but I couldn't really. Looking at 2.12 we use
+>$tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+
+and
+
+>$siblingIndex = $tokens->getNextTokenOfKind($siblingIndex, [[T_COMMENT]]);
+
+so maybe there are more oddities (like unnecessary wrapping into an array). However the fix here is that `T_CLOSE_TAG` is never a match IIUC.
