@@ -221,6 +221,17 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             [
                 '<?php "foo"[1];//[]',
             ],
+            [
+                '<?php
+
+class Test
+{
+    public function updateAttributeKey($key, $value)
+    {
+        $this->{camel_case($attributes)}[$key] = $value;
+    }
+}',
+            ],
         ];
     }
 

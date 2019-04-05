@@ -486,6 +486,8 @@ $b = 1;
             ['<?php use A\B;'],
             ['<?php use A\B?>'],
             ['<?php use A\B;use A\D; return 1;'],
+            ["<?php use A\\B?>\n\n<?php use D\\E\\F?>"],
+            ['<?php use Y\B;use A\D; return 1;'],
             [
                 '<?php
                     use A\B;

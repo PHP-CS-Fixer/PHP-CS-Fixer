@@ -47,6 +47,15 @@ final class SquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must run after CurlyBraceTransformer
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         // Short array syntax was introduced in PHP 5.4, but the fixer is smart
