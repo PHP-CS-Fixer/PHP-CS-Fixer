@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: class_attributes_separation, indentation_type
+--RULESET--
+{"class_attributes_separation": true, "indentation_type": true}
+--EXPECT--
+<?php
+
+class Sample
+{
+    private $a;
+
+    /** second in a hour */
+    private $d;
+}
+
+--INPUT--
+<?php
+
+class Sample
+{	private $a;
+    /** second in a hour */
+    private $d;
+}
