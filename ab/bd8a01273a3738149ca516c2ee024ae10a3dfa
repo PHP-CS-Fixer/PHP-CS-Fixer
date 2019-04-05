@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-10T18:49:09Z
+
+Thanks for all the profiling on priorities!
+I didn't catch up on all the bigger PR's and comments, however I wander; can't this conflict be avoided if the `braces` uses the line ending that `line_ending` enforces, or maybe be more `eol style`-agnostic  ? Just curious :)
+
+--edit: bunch of typos and wording
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-01-11T09:39:04Z
+
+I just checked, braces never _inserts_ hardcoded newlines, they come from the whitespace config. It does do some string-magic with `\n`s though, however at the moment I wouldn't know how to actually fix that (without spending hours for deeply understanding `braces`).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-04T15:17:49Z
+
+note to self, 7.3 failures are not related to this PR
