@@ -362,7 +362,7 @@ switch($a) {
 
     private function removeBetweenUse($index)
     {
-        $next = $this->tokens->getNextTokenOfKind($index, [';', T_CLOSE_TAG]);
+        $next = $this->tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
             return;
         }

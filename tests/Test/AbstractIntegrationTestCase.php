@@ -409,6 +409,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * @todo Remove me when this class will end up in dedicated package.
      *
      * @param string $expected
+     *
+     * @return PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString||PHPUnit\Framework\Constraint\IsIdentical|PHPUnit_Framework_Constraint_IsIdentical
      */
     private static function createIsIdenticalStringConstraint($expected)
     {
