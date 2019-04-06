@@ -22,25 +22,54 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class ClassAnalyzer
 {
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens $tokens
-     * @param $classIndex
+     * @param Tokens $tokens
+     * @param int    $classIndex
      *
      * @return array
+     *               Contains information about the class being analyzed
      */
     public function getClassDefinition(Tokens $tokens, $classIndex)
     {
-        return $this->getClassDefinitionType($tokens, $classIndex);
+        $openIndex = $tokens->getNextTokenOfKind($classIndex, ['{']);
+        $prev = $tokens->getPrevMeaningfulToken($classIndex);
+        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classIndex;
+
+        $extends = false;
+        $implements = false;
+        $anonymousClass = false;
+
+        if (!$tokens[$classIndex]->isGivenKind(T_TRAIT)) {
+            $extends = $tokens->findGivenKind(T_EXTENDS, $classIndex, $openIndex);
+            $extends = 0 !== \count($extends) ? $this->getClassInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
+
+            if (!$tokens[$classIndex]->isGivenKind(T_INTERFACE)) {
+                $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classIndex, $openIndex);
+                $implements = \count($implements) ? $this->getClassInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
+                $tokensAnalyzer = new TokensAnalyzer($tokens);
+                $anonymousClass = $tokensAnalyzer->isAnonymousClass($classIndex);
+            }
+        }
+
+        return [
+            'start' => $startIndex,
+            'classy' => $classIndex,
+            'open' => $openIndex,
+            'extends' => $extends,
+            'implements' => $implements,
+            'anonymousClass' => $anonymousClass,
+        ];
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens $tokens
-     * @param $classIndex
+     * @param Tokens $tokens
+     * @param int    $classIndex
      *
-     * @return null|\PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis
+     * @return null|TypeAnalysis
+     *                           Get the class extends if any, null otherwise
      */
     public function getClassExtends(Tokens $tokens, $classIndex)
     {
-        $definition = $this->getClassDefinitionType($tokens, $classIndex);
+        $definition = $this->getClassDefinition($tokens, $classIndex);
 
         if (!isset($definition['extends']['start'])) {
             return null;
@@ -65,11 +94,12 @@ final class ClassAnalyzer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens $tokens
-     * @param $startIndex
-     * @param $label
+     * @param Tokens $tokens
+     * @param int    $startIndex
+     * @param string $label
      *
      * @return array
+     *               Contains information about the class inheritance
      */
     public function getClassInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
@@ -90,43 +120,5 @@ final class ClassAnalyzer
         }
 
         return $implementsInfo;
-    }
-
-    /**
-     * @param $tokens
-     * @param $classIndex
-     *
-     * @return array
-     */
-    private function getClassDefinitionType(Tokens $tokens, $classIndex)
-    {
-        $openIndex = $tokens->getNextTokenOfKind($classIndex, ['{']);
-        $prev = $tokens->getPrevMeaningfulToken($classIndex);
-        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classIndex;
-
-        $extends = false;
-        $implements = false;
-        $anonymousClass = false;
-
-        if (!$tokens[$classIndex]->isGivenKind(T_TRAIT)) {
-            $extends = $tokens->findGivenKind(T_EXTENDS, $classIndex, $openIndex);
-            $extends = \count($extends) ? $this->getClassInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
-
-            if (!$tokens[$classIndex]->isGivenKind(T_INTERFACE)) {
-                $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classIndex, $openIndex);
-                $implements = \count($implements) ? $this->getClassInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
-                $tokensAnalyzer = new TokensAnalyzer($tokens);
-                $anonymousClass = $tokensAnalyzer->isAnonymousClass($classIndex);
-            }
-        }
-
-        return [
-            'start' => $startIndex,
-            'classy' => $classIndex,
-            'open' => $openIndex,
-            'extends' => $extends,
-            'implements' => $implements,
-            'anonymousClass' => $anonymousClass,
-        ];
     }
 }
