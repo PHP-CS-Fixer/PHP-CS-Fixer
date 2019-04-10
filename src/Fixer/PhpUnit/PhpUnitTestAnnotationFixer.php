@@ -337,7 +337,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
-            new Token([T_DOC_COMMENT, '/**'.$lineEnd."${originalIndent} * @test".$lineEnd."${originalIndent} */"]),
+            new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @test".$lineEnd."{$originalIndent} */"]),
             new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
         ];
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);

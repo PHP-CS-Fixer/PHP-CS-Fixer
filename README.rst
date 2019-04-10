@@ -1629,6 +1629,11 @@ Choose from the list of available rules:
 
   *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 
+* **simple_to_complex_string_variable** [@PhpCsFixer]
+
+  Converts explicit variables in double-quoted strings and heredoc syntax
+  from simple to complex format (``${`` to ``{$``).
+
 * **simplified_null_return**
 
   A return statement wishing to return ``void`` should not return ``null``.

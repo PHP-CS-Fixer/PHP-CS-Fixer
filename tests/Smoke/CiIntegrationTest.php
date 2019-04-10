@@ -98,14 +98,14 @@ final class CiIntegrationTest extends AbstractSmokeTest
     ) {
         self::executeScript(array_merge(
             [
-                "git checkout -b ${branchName} -q",
+                "git checkout -b {$branchName} -q",
             ],
             $caseCommands
         ));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
         $steps = [
-            "COMMIT_RANGE=\"master..${branchName}\"",
+            "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",
             $integrationScript[5],
             $integrationScript[6],

@@ -111,7 +111,7 @@ Files that were not fixed due to errors reported during %s:
 @@ @@
  same line
 -deleted
-+${diffSpecificContext}
++{$diffSpecificContext}
 EOT;
 
         $lintError = new Error(Error::TYPE_LINT, __FILE__, new LintingException(), [$fixerName], $diff);
