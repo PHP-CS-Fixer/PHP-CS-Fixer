@@ -70,6 +70,9 @@ final class TextDiffTest extends TestCase
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
 %A$output->writeln('<error>'.(int) $output.'</error>');%A
+%A$output->writeln('<error> TEST </error>');%A
+%A$output->writeln('<error>'.(int)$output.'</error>');%A
+%A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
         $cases = [];
         foreach (['txt', 'xml', 'junit'] as $format) {

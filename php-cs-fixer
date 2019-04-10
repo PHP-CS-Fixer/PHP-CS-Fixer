@@ -58,6 +58,8 @@ if ($require) {
     } else {
         require_once __DIR__.'/vendor/autoload.php';
     }
+
+    unset($a);
 }
 unset($require);
 
