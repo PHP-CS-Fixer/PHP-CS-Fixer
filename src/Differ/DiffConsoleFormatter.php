@@ -62,9 +62,10 @@ final class DiffConsoleFormatter
             implode(
                 PHP_EOL,
                 array_map(
-                    function ($string) use ($isDecorated, $lineTemplate) {
+                    static function ($line) use ($isDecorated, $lineTemplate) {
                         if ($isDecorated) {
-                            $string = Preg::replaceCallback(
+                            $count = 0;
+                            $line = Preg::replaceCallback(
                                 [
                                     '/^(\+.*)/',
                                     '/^(\-.*)/',
@@ -81,11 +82,17 @@ final class DiffConsoleFormatter
 
                                     return sprintf('<fg=%s>%s</fg=%s>', $colour, OutputFormatter::escape($matches[0]), $colour);
                                 },
-                                $string
+                                $line,
+                                1,
+                                $count
                             );
+
+                            if (0 === $count) {
+                                $line = OutputFormatter::escape($line);
+                            }
                         }
 
-                        return sprintf($lineTemplate, $string);
+                        return sprintf($lineTemplate, $line);
                     },
                     Preg::split('#\R#u', $diff)
                 )
