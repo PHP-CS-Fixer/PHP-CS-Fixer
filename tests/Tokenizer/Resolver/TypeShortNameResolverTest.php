@@ -42,12 +42,12 @@ final class TypeShortNameResolverTest extends TestCase
     {
         return [
             [
-                '<?php',
+                '<?php ',
                 'SomeType',
                 'SomeType',
             ],
             [
-                '<?php',
+                '<?php ',
                 'string',
                 'string',
             ],
