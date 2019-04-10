@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: explicit_string_variable,simple_to_complex_string_variable
+--RULESET--
+{"explicit_string_variable": true, "simple_to_complex_string_variable": true}
+--EXPECT--
+<?php
+$name = 'World';
+echo "Hello {$name}!";
+
+--INPUT--
+<?php
+$name = 'World';
+echo "Hello $name!";
