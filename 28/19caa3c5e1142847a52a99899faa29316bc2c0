@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-03-01T22:27:01Z
+
+Can you point to `2.12` branch?
+
+---------------------------------------------------------------------------
+
+by prisis at 2019-03-01T22:44:54Z
+
+But this https://github.com/mikey179/vfsStream/pull/174/files should be merged first and packagist should be updated
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-04-09T10:17:18Z
+
+> But this mikey179/vfsStream/pull/174/files should be merged first and packagist should be updated
+
+This is actually not necessary. This is evident because composer succeeded on travis...
+
+This PR should be merged straight away.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-04-09T10:48:12Z
+
+> composer succeeded on travis...
+
+This can be used as well as argument to not merge it yet.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-04-09T16:54:56Z
+
+> This can be used as well as argument to not merge it yet.
+
+I don't see how? Composer succeeding on travis means that there is no 3rd party blocker.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-04-09T17:30:47Z
+
+Because composer is succeeding on travis without this change.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-04-09T17:38:59Z
+
+Composer 2.0 would be failing though.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-04-09T18:02:40Z
+
+Yeah, in [2021](https://github.com/composer/composer/milestones/2.0) ;)
+
+No need to hurry with this one, they will rename repo sooner than Composer 2.0 will be released.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-09T19:37:07Z
+
+@lolli42 can you rebase this PR on 2.12? if not we can proceed merging https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4367 as alternative I think
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-04-09T19:54:32Z
+
+> No need to hurry with this one, they will rename repo sooner than Composer 2.0 will be released.
+
+My point is that they don't need to rename the repo. The name is already lowercase, regardless of what they named it in their composer.json. The packagist registry considers is lowercase. This is exactly why there was never a third-party blocker here.
