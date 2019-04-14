@@ -241,7 +241,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             ]);
 
             // apply changes
-            $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $docContent = $doc->getContent();
+            if ('' === $docContent) {
+                $docContent = '/** */';
+            }
+            $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $docContent]);
             $tokens->insertAt($braceIndex + 1, $newMethods);
 
             $whitespaceIndex = $braceIndex + $newMethods->getSize() + 1;
@@ -265,7 +269,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return '';
         }
 
-        $content = $matches[1];
+        $content = Preg::replace('/\*+\/$/', '', $matches[1]);
 
         if (Preg::match('/\R/u', $content)) {
             $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
