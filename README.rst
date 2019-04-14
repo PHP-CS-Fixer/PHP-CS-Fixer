@@ -959,7 +959,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when any of the functions are overridden.*
 
-* **method_argument_space** [@PSR2, @Symfony, @PhpCsFixer]
+* **method_argument_space** [@PSR2, @Symfony, @PhpCsFixer, @PHP73Migration, @PHP74Migration, @PHP80Migration]
 
   In method arguments and method call, there MUST NOT be a space before
   each comma and there MUST be one space after each comma. Argument lists
@@ -1330,7 +1330,7 @@ Choose from the list of available rules:
   There should not be an empty ``return`` statement at the end of a
   function.
 
-* **no_whitespace_before_comma_in_array** [@Symfony, @PhpCsFixer]
+* **no_whitespace_before_comma_in_array** [@Symfony, @PhpCsFixer, @PHP73Migration, @PHP74Migration, @PHP80Migration]
 
   In array declaration, there MUST NOT be a whitespace before each comma.
 
@@ -2106,7 +2106,7 @@ Choose from the list of available rules:
 
   Removes extra spaces between colon and case value.
 
-* **switch_continue_to_break** [@Symfony, @PhpCsFixer, @PHP73Migration, @PHP74Migration, @PHP80Migration]
+* **switch_continue_to_break** [@Symfony, @PhpCsFixer]
 
   Switch case must not be ended with ``continue`` but with ``break``.
 
@@ -2124,7 +2124,7 @@ Choose from the list of available rules:
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
-* **trailing_comma_in_multiline_array** [@Symfony, @PhpCsFixer]
+* **trailing_comma_in_multiline_array** [@Symfony, @PhpCsFixer, @PHP73Migration, @PHP74Migration, @PHP80Migration]
 
   PHP multi-line arrays should have a trailing comma.
 

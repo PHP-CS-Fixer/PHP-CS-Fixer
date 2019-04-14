@@ -391,7 +391,9 @@ final class RuleSet implements RuleSetInterface
         '@PHP73Migration' => [
             '@PHP71Migration' => true,
             'heredoc_indentation' => true,
-            'switch_continue_to_break' => true,
+            'method_argument_space' => ['after_heredoc' => true],
+            'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],
+            'trailing_comma_in_multiline_array' => ['after_heredoc' => true],
         ],
         '@PHP74Migration' => [
             '@PHP73Migration' => true,

@@ -4,24 +4,21 @@ PHP 7.3 test.
 {
     "@Symfony": true,
     "@Symfony:risky": true,
-    "@PHP71Migration:risky": true,
     "@PHP73Migration": true,
+    "@PHP71Migration:risky": true,
     "list_syntax": {"syntax": "short"},
     "mb_str_functions": true,
-    "method_argument_space": {"after_heredoc": true},
     "method_chaining_indentation": true,
     "multiline_whitespace_before_semicolons": true,
     "native_function_invocation": {"include": ["get_class"]},
     "no_unset_cast": true,
     "no_unset_on_property": true,
-    "no_whitespace_before_comma_in_array": {"after_heredoc": true},
     "php_unit_dedicate_assert": true,
     "php_unit_expectation": true,
     "php_unit_mock": true,
     "php_unit_strict": true,
     "php_unit_test_case_static_method_calls": {"call_type": "this"},
-    "strict_param": true,
-    "trailing_comma_in_multiline_array": {"after_heredoc": true}
+    "strict_param": true
 }
 --REQUIREMENTS--
 {"php": 70300, "php<": 80000}
