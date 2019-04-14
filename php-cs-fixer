@@ -11,10 +11,6 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- */
 if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
     error_reporting(-1);
 }
