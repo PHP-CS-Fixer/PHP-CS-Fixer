@@ -233,4 +233,54 @@ EOF;
 
         $this->fixer->configure(['groups' => ['__TEST__']]);
     }
+
+    public function testRemoveSpacesBeforeAndAfterPipe()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param self|array|Foo $bar
+     *
+     * @return int|float|callback
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param self | array | Foo $bar
+     *
+     * @return int | float | callback
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testRemoveSpacesBeforeAndAfterPipe2()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param self|array<int|string>|Foo $bar
+     *
+     * @return int|float|callback
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param self | array<int | string> | Foo $bar
+     *
+     * @return int | float | callback
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }

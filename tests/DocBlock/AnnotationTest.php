@@ -242,6 +242,22 @@ final class AnnotationTest extends TestCase
                 ['int[]', 'null'],
             ],
             [
+                ' * @method int[] | null method()',
+                ['int[] ', ' null'],
+            ],
+            [
+                ' * @method int | null| array method()',
+                ['int ', ' null', ' array'],
+            ],
+            [
+                ' * @method int[] | null| array| ?string method()',
+                ['int[] ', ' null', ' array', ' ?string'],
+            ],
+            [
+                ' * @method int[] | array<int | string> |null method()',
+                ['int[] ', ' array<int | string> ', 'null'],
+            ],
+            [
                 ' * @method int[]|null|?int|array method()',
                 ['int[]', 'null', '?int', 'array'],
             ],

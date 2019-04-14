@@ -51,7 +51,15 @@ class Annotation
             )
         )
         (?:
+            (?<whitespaceBeforePipe>[[:blank:]]*)
             \|
+            (?<whitespaceAfterPipe>[[:blank:]]*)
+            (?:(?&simple)|(?&array)|(?&generic))
+        )?
+        (?:
+            (?:[[:blank:]]*)
+            \|
+            (?:[[:blank:]]*)
             (?:(?&simple)|(?&array)|(?&generic))
         )*
     )
@@ -197,6 +205,7 @@ class Annotation
 
             $content = $this->getTypesContent();
 
+            $previousWhitespace = '';
             while ('' !== $content && false !== $content) {
                 Preg::match(
                     '{^'.self::REGEX_TYPES.'$}x',
@@ -204,8 +213,21 @@ class Annotation
                     $matches
                 );
 
-                $this->types[] = $matches['type'];
-                $content = substr($content, \strlen($matches['type']) + 1);
+                $whitespaceBeforePipe = '';
+                if (isset($matches['whitespaceBeforePipe'])) {
+                    $whitespaceBeforePipe = $matches['whitespaceBeforePipe'];
+                }
+
+                $this->types[] = $previousWhitespace.$matches['type'].$whitespaceBeforePipe;
+
+                $whitespaceAfterPipe = '';
+                if (isset($matches['whitespaceAfterPipe'])) {
+                    $whitespaceAfterPipe = $matches['whitespaceAfterPipe'];
+                }
+
+                $previousWhitespace = $whitespaceAfterPipe;
+
+                $content = substr($content, \strlen($matches['type']) + \strlen($whitespaceBeforePipe) + 1 + \strlen($whitespaceAfterPipe));
             }
         }
 
