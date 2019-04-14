@@ -352,7 +352,7 @@ $this->assertTrue(is_readable($a));
             $defaultNamespaceTokenIndex = false;
         }
 
-        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING) || 'count' !== strtolower($tokens[$countCallIndex]->getContent())) {
+        if (!$tokens[$countCallIndex]->equals([T_STRING, 'count'], false)) {
             return; // not a call to "count"
         }
 
@@ -362,12 +362,19 @@ $this->assertTrue(is_readable($a));
             return;
         }
 
+        $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex);
+
+        $afterCountCallCloseBraceIndex = $tokens->getNextMeaningfulToken($countCallCloseBraceIndex);
+        if (!$tokens[$afterCountCallCloseBraceIndex]->equalsAny([')', ','])) {
+            return;
+        }
+
         $this->removeFunctionCall(
             $tokens,
             $defaultNamespaceTokenIndex,
             $countCallIndex,
             $countCallOpenBraceIndex,
-            $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex)
+            $countCallCloseBraceIndex
         );
 
         $tokens[$assertCall['index']] = new Token([

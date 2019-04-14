@@ -41,7 +41,7 @@ final class UseTransformer extends AbstractTransformer
      */
     public function getPriority()
     {
-        // Should run after CurlyBraceTransformer
+        // Should run after CurlyBraceTransformer and before TypeColonTransformer
         return -5;
     }
 

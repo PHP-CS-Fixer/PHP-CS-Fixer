@@ -82,6 +82,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractFixer implemen
         'assertClassNotHasAttribute' => true,
         'assertClassNotHasStaticAttribute' => true,
         'assertContains' => true,
+        'assertContainsEquals' => true,
         'assertContainsOnly' => true,
         'assertContainsOnlyInstancesOf' => true,
         'assertCount' => true,
@@ -147,6 +148,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractFixer implemen
         'assertLessThanOrEqual' => true,
         'assertNan' => true,
         'assertNotContains' => true,
+        'assertNotContainsEquals' => true,
         'assertNotContainsOnly' => true,
         'assertNotCount' => true,
         'assertNotEmpty' => true,
@@ -377,6 +379,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         for ($index = $endIndex - 1; $index > $startIndex; --$index) {
             if (!$tokens[$index]->isGivenKind(T_STRING) || !isset($this->staticMethods[$tokens[$index]->getContent()])) {
+                continue;
+            }
+
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (!$tokens[$nextIndex]->equals('(')) {
                 continue;
             }
 

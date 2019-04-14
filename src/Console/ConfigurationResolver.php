@@ -202,6 +202,8 @@ final class ConfigurationResolver
                     new Signature(
                         PHP_VERSION,
                         $this->toolInfo->getVersion(),
+                        $this->getConfig()->getIndent(),
+                        $this->getConfig()->getLineEnding(),
                         $this->getRules()
                     ),
                     $this->isDryRun(),
@@ -885,7 +887,7 @@ final class ConfigurationResolver
      */
     private function setOption($name, $value)
     {
-        if (!array_key_exists($name, $this->options)) {
+        if (!\array_key_exists($name, $this->options)) {
             throw new InvalidConfigurationException(sprintf('Unknown option name: "%s".', $name));
         }
 

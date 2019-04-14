@@ -41,7 +41,7 @@ final class Cache implements CacheInterface
 
     public function has($file)
     {
-        return array_key_exists($file, $this->hashes);
+        return \array_key_exists($file, $this->hashes);
     }
 
     public function get($file)
@@ -75,6 +75,8 @@ final class Cache implements CacheInterface
         $json = json_encode([
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
+            'indent' => $this->getSignature()->getIndent(),
+            'lineEnding' => $this->getSignature()->getLineEnding(),
             'rules' => $this->getSignature()->getRules(),
             'hashes' => $this->hashes,
         ]);
@@ -111,6 +113,8 @@ final class Cache implements CacheInterface
         $requiredKeys = [
             'php',
             'version',
+            'indent',
+            'lineEnding',
             'rules',
             'hashes',
         ];
@@ -127,6 +131,8 @@ final class Cache implements CacheInterface
         $signature = new Signature(
             $data['php'],
             $data['version'],
+            $data['indent'],
+            $data['lineEnding'],
             $data['rules']
         );
 

@@ -44,7 +44,7 @@ final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurationDef
             'PHPUnit methods like `assertSame` should be used instead of `assertEquals`.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testSomeTest()

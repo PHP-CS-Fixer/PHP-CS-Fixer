@@ -96,8 +96,10 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],
+            [$fixers['line_ending'], $fixers['braces']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
+            [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
             [$fixers['method_separation'], $fixers['braces']],
             [$fixers['method_separation'], $fixers['indentation_type']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
@@ -182,8 +184,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_order'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_return_self_reference'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_scalar'], $fixers['phpdoc_to_return_type']],
-            [$fixers['phpdoc_separation'], $fixers['phpdoc_trim']],
-            [$fixers['phpdoc_summary'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_to_comment'], $fixers['no_empty_comment']],
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
@@ -273,28 +273,24 @@ final class FixerFactoryTest extends TestCase
         // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
-            'class_attributes_separation,indentation_type.test',
             'indentation_type,phpdoc_indent.test',
             'method_separation,braces.test',
-            'method_separation,indentation_type.test',
-            'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
             'phpdoc_order,phpdoc_separation.test',
             'phpdoc_order,phpdoc_trim.test',
-            'phpdoc_separation,phpdoc_trim.test',
-            'phpdoc_summary,phpdoc_trim.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
+        $integrationTestName = $this->generateIntegrationTestName($first, $second);
 
-        if (\in_array($this->generateIntegrationTestName($first, $second), $casesWithoutTests, true)) {
-            $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $this->generateIntegrationTestName($first, $second)));
-            $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $this->generateIntegrationTestName($first, $second)));
+        if (\in_array($integrationTestName, $casesWithoutTests, true)) {
+            $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $integrationTestName));
+            $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $integrationTestName));
         }
 
-        $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $this->generateIntegrationTestName($first, $second)));
+        $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $integrationTestName));
     }
 
     public function provideFixersPriorityPairsHaveIntegrationTestCases()
@@ -370,7 +366,7 @@ final class FixerFactoryTest extends TestCase
 
         $this->assertSame(
             1,
-            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 

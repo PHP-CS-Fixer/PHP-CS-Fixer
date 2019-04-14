@@ -155,6 +155,16 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
         array_keys($foo, $bar);
     }',
             ],
+            [
+                '<?php
+    use function \base64_decode;
+    foo($bar);',
+            ],
+            [
+                '<?php
+    use function Baz\base64_decode;
+    foo($bar);',
+            ],
         ];
     }
 
@@ -164,8 +174,8 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
     public function testFix73()
     {
         $this->doTest(
-             '<?php in_array($b, $c, true, );',
-             '<?php in_array($b, $c, );'
+            '<?php in_array($b, $c, true, );',
+            '<?php in_array($b, $c, );'
          );
     }
 }

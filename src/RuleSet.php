@@ -392,7 +392,7 @@ final class RuleSet implements RuleSetInterface
      */
     public function hasRule($rule)
     {
-        return array_key_exists($rule, $this->rules);
+        return \array_key_exists($rule, $this->rules);
     }
 
     /**

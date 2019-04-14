@@ -28,27 +28,28 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = null)
+    public function testFix($expected, $input = null, array $configuration = [])
     {
-        if (null !== $configuration) {
-            $this->fixer->configure($configuration);
-        }
         $indent = '    ';
         $lineEnding = "\n";
-        if (null !== $input) {
-            if (false !== strpos($input, "\t")) {
+
+        if (null !== $expected) {
+            if (false !== strpos($expected, "\t")) {
                 $indent = "\t";
-            } elseif (preg_match('/\n  \S/', $input)) {
+            } elseif (preg_match('/\n  \S/', $expected)) {
                 $indent = '  ';
             }
-            if (false !== strpos($input, "\r")) {
+
+            if (false !== strpos($expected, "\r")) {
                 $lineEnding = "\r\n";
             }
         }
+
+        $this->fixer->configure($configuration);
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig(
             $indent,
             $lineEnding
@@ -60,15 +61,12 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $configuration
+     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
-    public function testFixWithDifferentLineEndings(
-        $expected,
-        $input = null,
-        array $configuration = null
-    ) {
+    public function testFixWithDifferentLineEndings($expected, $input = null, array $configuration = [])
+    {
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
         }
@@ -359,7 +357,7 @@ INPUT
 f(
     1,
     2,
-3
+    3
 );',
                 '<?php
 f(1,2,
@@ -396,7 +394,6 @@ INPUT
 functionCall(
     'a',
     'b',
-
     'c'
 );
 EXPECTED
@@ -718,7 +715,7 @@ call_user_func(
     function ($arguments) {
     echo 'a', 'b';
 },
-$argv
+    $argv
 );
 EXPECTED
                 ,

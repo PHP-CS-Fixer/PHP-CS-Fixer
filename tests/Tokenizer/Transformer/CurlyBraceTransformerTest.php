@@ -82,21 +82,21 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
     public function provideProcessCases()
     {
         return [
-            [
+            'curly open/close I' => [
                 '<?php echo "This is {$great}";',
                 [
                     5 => T_CURLY_OPEN,
                     7 => CT::T_CURLY_CLOSE,
                 ],
             ],
-            [
+            'curly open/close II' => [
                 '<?php $a = "a{$b->c()}d";',
                 [
                     7 => T_CURLY_OPEN,
                     13 => CT::T_CURLY_CLOSE,
                 ],
             ],
-            [
+            'dynamic var brace open/close' => [
                 '<?php echo "I\'d like an {${beers::$ale}}\n";',
                 [
                     5 => T_CURLY_OPEN,
@@ -105,32 +105,28 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     12 => CT::T_CURLY_CLOSE,
                 ],
             ],
-
-            [
+            'dollar curly brace open/close' => [
                 '<?php echo "This is ${great}";',
                 [
                     5 => T_DOLLAR_OPEN_CURLY_BRACES,
                     7 => CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 ],
             ],
-
-            [
+            'dynamic property brace open/close' => [
                 '<?php $foo->{$bar};',
                 [
                     3 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
                     5 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
                 ],
             ],
-
-            [
+            'dynamic variable brace open/close' => [
                 '<?php ${$bar};',
                 [
                     2 => CT::T_DYNAMIC_VAR_BRACE_OPEN,
                     4 => CT::T_DYNAMIC_VAR_BRACE_CLOSE,
                 ],
             ],
-
-            [
+            'array index curly brace open/close' => [
                 '<?php
                     echo $arr{$index};
                     echo $arr[$index];
@@ -141,7 +137,15 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     7 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 ],
             ],
-            [
+            'array index curly brace open/close, after square index' => [
+                '<?php $b = [1]{0};
+                ',
+                [
+                    8 => CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                    10 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                ],
+            ],
+            'array index curly brace open/close, nested' => [
                 '<?php
                     echo $nestedArray{$index}{$index2}[$index3]{$index4};
                 ',
@@ -154,7 +158,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     16 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 ],
             ],
-            [
+            'array index curly brace open/close, repeated' => [
                 '<?php
                     echo $array{0}->foo;
                     echo $collection->items{1}->property;
@@ -166,7 +170,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     19 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 ],
             ],
-            [
+            'array index curly brace open/close, minimal' => [
                 '<?php
                     echo [1]{0};
                     echo array(1){0};
@@ -178,8 +182,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     20 => CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 ],
             ],
-
-            [
+            'mixed' => [
                 '<?php echo "This is {$great}";
                     $a = "a{$b->c()}d";
                     echo "I\'d like an {${beers::$ale}}\n";
@@ -195,7 +198,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     39 => CT::T_CURLY_CLOSE,
                 ],
             ],
-            ['<?php if (1) {} class Foo{ } function bar(){ }'],
+            'do not touch' => ['<?php if (1) {} class Foo{ } function bar(){ }'],
         ];
     }
 

@@ -49,7 +49,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
      */
     public function getPriority()
     {
-        // should run after BracesFixer
+        // should run after BracesFixer, MethodChainingIndentationFixer
+        // should run before AlignMultilineCommentFixer and BinaryOperatorSpacesFixer
         return -30;
     }
 
@@ -300,7 +301,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     private function extractIndent($content)
     {
-        if (Preg::match('/\R([\t ]*)[^\r\n]*$/', $content, $matches)) {
+        if (Preg::match('/\R([\t ]*)[^\r\n]*$/D', $content, $matches)) {
             return $matches[1];
         }
 

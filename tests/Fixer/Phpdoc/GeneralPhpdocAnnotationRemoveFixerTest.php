@@ -27,7 +27,7 @@ final class GeneralPhpdocAnnotationRemoveFixerTest extends AbstractFixerTestCase
      *
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
+     * @param array       $config
      */
     public function testFix($expected, $input = null, array $config = [])
     {

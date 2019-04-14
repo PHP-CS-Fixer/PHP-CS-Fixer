@@ -154,7 +154,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     {
         if (
             null !== $configuration &&
-            (array_key_exists('align_equals', $configuration) || array_key_exists('align_double_arrow', $configuration))
+            (\array_key_exists('align_equals', $configuration) || \array_key_exists('align_double_arrow', $configuration))
         ) {
             $configuration = $this->resolveOldConfig($configuration);
         }
@@ -319,7 +319,7 @@ $h = $i===  $j;
     {
         $tokenContent = strtolower($tokens[$index]->getContent());
 
-        if (!array_key_exists($tokenContent, $this->operators)) {
+        if (!\array_key_exists($tokenContent, $this->operators)) {
             return; // not configured to be changed
         }
 

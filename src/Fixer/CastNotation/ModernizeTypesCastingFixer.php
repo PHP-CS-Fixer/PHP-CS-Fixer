@@ -110,6 +110,10 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 $preserveParenthesises = $countParamTokens > 1;
 
+                $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesis);
+                $afterCloseParenthesisToken = $tokens[$afterCloseParenthesisIndex];
+                $wrapInParenthesises = $afterCloseParenthesisToken->equals('[') || $afterCloseParenthesisToken->isGivenKind(T_POW);
+
                 // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
                 if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
@@ -123,6 +127,9 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     new Token($newToken),
                     new Token([T_WHITESPACE, ' ']),
                 ];
+                if ($wrapInParenthesises) {
+                    array_unshift($replacementSequence, new Token('('));
+                }
 
                 if (!$preserveParenthesises) {
                     // closing parenthesis removed with leading spaces
@@ -136,6 +143,10 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 } else {
                     // we'll need to provide a space after a casting operator
                     $tokens->removeTrailingWhitespace($functionName);
+                }
+
+                if ($wrapInParenthesises) {
+                    $tokens->insertAt($closeParenthesis, new Token(')'));
                 }
 
                 $tokens->overrideRange($functionName, $functionName, $replacementSequence);

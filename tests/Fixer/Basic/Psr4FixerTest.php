@@ -232,6 +232,24 @@ EOF;
     }
 
     /**
+     * @requires PHP 7.0
+     */
+    public function testIgnoreMultipleClassWithAnonymousClass()
+    {
+        $file = $this->getTestFile(__FILE__);
+
+        $expected = <<<'EOF'
+<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+class ClassOne {};
+new class extends stdClass {};
+class ClassTwo {};
+EOF;
+
+        $this->doTest($expected, null, $file);
+    }
+
+    /**
      * @param string $filename
      *
      * @dataProvider provideIgnoredCases

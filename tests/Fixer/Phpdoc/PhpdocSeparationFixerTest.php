@@ -585,4 +585,31 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    public function testWithSpacing()
+    {
+        $expected = '<?php
+    /**
+     * Foo
+     *
+     * @bar 123
+     *
+     * {@inheritdoc}       '.'
+     *
+     *   @param string $expected
+     * @param string $input
+     */';
+
+        $input = '<?php
+    /**
+     * Foo
+     * @bar 123
+     *
+     * {@inheritdoc}       '.'
+     *   @param string $expected
+     * @param string $input
+     */';
+
+        $this->doTest($expected, $input);
+    }
 }
