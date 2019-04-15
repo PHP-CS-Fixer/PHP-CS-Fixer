@@ -122,6 +122,10 @@ EOF;
                 '<?php $a = "My name is $array[foo] !";',
             ],
             [
+                '<?php $a = "My name is {$array[$foo]} !";',
+                '<?php $a = "My name is $array[$foo] !";',
+            ],
+            [
                 '<?php $a = "Closure not allowed ${closure}() text";',
                 '<?php $a = "Closure not allowed $closure() text";',
             ],
