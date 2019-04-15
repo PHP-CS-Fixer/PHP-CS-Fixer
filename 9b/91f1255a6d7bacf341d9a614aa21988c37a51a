@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-03-26T18:59:56Z
+
+Problem: PHPUnit 8 requires function from `TestCase` (such as `setUp`) to have `void` return type, thus installing PHPUnit with current codebase is not possible. But, to have PCOV we need PHPUnit 8.
+
+Either way we need some compromise:
+ - we allow PHPUnit 8 in `composer.json` and every job installing it must add `void` return types before running tests
+- we don't allow PHPUnit 8 in `composer.json`, but require it only when collecting code coverage
+
+I went with 2nd one as requiring less changes.
+
+@SpacePossum can you remove the `WIP` label? Let the review begin.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-03-28T05:08:02Z
+
+can you elaborate about switch to pcov, perhaps? some reasoning, comparison, sth ?
+probably a link to sth already existing would be enough
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-03-28T21:05:46Z
+
+Switch to PCOV is for a simple reason - phpdbg was not capable of calculating coverage for our test suite - it was hitting the limit of opened stream resources, explained [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3929#issuecomment-405922620), inspired by [this](https://github.com/sebastianbergmann/php-code-coverage/blob/7.0.3/.travis.yml#L35) with some benchmarks [here](https://kubawerlos.github.io/slides/2019-03-26_Warszawskie_Dni_Informatyki_Wprowadzenie_do_PHPUnit.html#/34).
