@@ -215,7 +215,7 @@ $this->assertNotSame(null, $d);
             return $sequenceIndexes[3];
         }
 
-        $tokens[$sequenceIndexes[0]] = new Token([T_STRING, $map[$firstParameterToken->getContent()]]);
+        $tokens[$sequenceIndexes[0]] = new Token([T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
         $tokens->clearRange($sequenceIndexes[2], $tokens->getNextNonWhitespace($sequenceIndexes[3]) - 1);
 
         return $sequenceIndexes[3];
