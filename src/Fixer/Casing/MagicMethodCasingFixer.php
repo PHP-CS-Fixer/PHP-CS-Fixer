@@ -33,10 +33,12 @@ final class MagicMethodCasingFixer extends AbstractFixer
         '__get' => '__get',
         '__invoke' => '__invoke',
         '__isset' => '__isset',
+        '__serialize' => '__serialize',
         '__set' => '__set',
         '__set_state' => '__set_state',
         '__sleep' => '__sleep',
         '__tostring' => '__toString',
+        '__unserialize' => '__unserialize',
         '__unset' => '__unset',
         '__wakeup' => '__wakeup',
     ];
