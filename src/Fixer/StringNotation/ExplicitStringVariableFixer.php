@@ -90,8 +90,9 @@ EOT
             ];
 
             $nextIndex = $index + 1;
+            $squareBracketCount = 0;
             while (!$this->isStringPartToken($tokens[$nextIndex])) {
-                if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
+                if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE) && 1 !== $squareBracketCount) {
                     $distinctVariableIndex = $nextIndex;
                     $variableTokens[$distinctVariableIndex] = [
                         'tokens' => [$nextIndex => $tokens[$nextIndex]],
@@ -101,6 +102,10 @@ EOT
                 } else {
                     $variableTokens[$distinctVariableIndex]['tokens'][$nextIndex] = $tokens[$nextIndex];
                     $variableTokens[$distinctVariableIndex]['lastVariableTokenIndex'] = $nextIndex;
+
+                    if ($tokens[$nextIndex]->equalsAny(['[', ']'])) {
+                        ++$squareBracketCount;
+                    }
                 }
 
                 ++$nextIndex;
