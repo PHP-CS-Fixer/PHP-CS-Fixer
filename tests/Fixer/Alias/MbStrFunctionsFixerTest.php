@@ -37,7 +37,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $cases = [
             ['<?php $x = "strlen";'],
             ['<?php $x = Foo::strlen("bar");'],
             ['<?php $x = new strlen("bar");'],
@@ -62,5 +62,18 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
                 }',
             ],
         ];
+
+        if (\function_exists('mb_str_split')) {
+            $cases[] = [
+                '<?php $a = mb_str_split($a);',
+                '<?php $a = str_split($a);',
+            ];
+        } else {
+            $cases[] = [
+                '<?php $a = str_split($a);',
+            ];
+        }
+
+        return $cases;
     }
 }
