@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-04-16T08:28:13Z
+
+Sounds legit: https://3v4l.org/dHF7s
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-04-16T14:09:26Z
+
+Fix published in https://github.com/kubawerlos/PHP-CS-Fixer/pull/3
+
+Also added test cases for `"My name is $array[$foo][$bar] !"`: https://3v4l.org/ZhNsX
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-04-17T06:10:48Z
+
+@SpacePossum not a `WIP` anymore
