@@ -137,6 +137,35 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
             '<?php trait Foo {public function __toString(){}}',
             '<?php trait Foo {public function __tostring(){}}',
         ];
+
+        yield '(un)serialize' => [
+            '<?php
+
+class Foo extends Bar
+{
+    public function __serialize() {
+        $this->__serialize();
+    }
+
+    public function __unserialize($payload) {
+        $this->__unserialize($this_>$a);
+    }
+}
+',
+            '<?php
+
+class Foo extends Bar
+{
+    public function __SERIALIZE() {
+        $this->__SERIALIZE();
+    }
+
+    public function __unSERIALIZE($payload) {
+        $this->__unSERIALIZE($this_>$a);
+    }
+}
+',
+        ];
     }
 
     /**
