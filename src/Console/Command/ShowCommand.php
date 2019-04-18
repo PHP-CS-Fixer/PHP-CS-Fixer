@@ -433,14 +433,14 @@ final class ShowCommand extends Command
 
         $output->writeln(
             sprintf(
-            "\nCopy and paste the following <info>%d</info> undefined rules in your <comment>%s</comment> config file %s.\n\n"
+                "\nCopy and paste the following <info>%d</info> undefined rules in your <comment>%s</comment> config file %s.\n\n"
             ."// Below the rules I don't want to use\n"
             ."%s;\n"
             .'// END Rules to never use',
-            \count($this->undefinedFixers),
-            $this->configName,
-            $this->configFile,
-            $line
+                \count($this->undefinedFixers),
+                $this->configName,
+                $this->configFile,
+                $line
         )
         );
     }
