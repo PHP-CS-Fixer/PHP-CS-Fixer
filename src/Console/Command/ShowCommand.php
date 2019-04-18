@@ -82,7 +82,7 @@ final class ShowCommand extends Command
     private $enabledFixers;
 
     /** @var FixerInterface[] */
-    private $enabledFixersTroughInheritance;
+    private $enabledFixersThroughInheritance;
 
     /** @var FixerInterface[] */
     private $undefinedFixers;
@@ -204,7 +204,7 @@ final class ShowCommand extends Command
         $this->enabledFixers = $resolver->getRules();
 
         // fixers that are in enabled, but not in configured!
-        $this->enabledFixersTroughInheritance = array_diff_key($this->enabledFixers, $this->configuredFixers);
+        $this->enabledFixersThroughInheritance = array_diff_key($this->enabledFixers, $this->configuredFixers);
 
         // Get the RuleSets and their Fixers
         $ruleSets = [];
@@ -258,7 +258,7 @@ final class ShowCommand extends Command
         $this->fixerList[$fixer->getName()]['name'] = $fixer->getName();
         $this->fixerList[$fixer->getName()]['is_configured'] = $this->isFixerConfigured($fixer);
         $this->fixerList[$fixer->getName()]['is_enabled'] = $this->isFixerEnabled($fixer);
-        $this->fixerList[$fixer->getName()]['is_enabled_trough_inheritance'] = $this->isFixerEnabledTroughInheritance($fixer);
+        $this->fixerList[$fixer->getName()]['is_enabled_Through_inheritance'] = $this->isFixerEnabledThroughInheritance($fixer);
         $this->fixerList[$fixer->getName()]['is_risky'] = $this->isFixerRisky($fixer);
         $this->fixerList[$fixer->getName()]['is_inherited'] = false;
         $this->fixerList[$fixer->getName()]['is_deprecated'] = $this->isFixerDeprecated($fixer);
@@ -382,7 +382,7 @@ final class ShowCommand extends Command
                 $icon = self::THICK;
             }
 
-            if ($fixer['is_enabled_trough_inheritance']) {
+            if ($fixer['is_enabled_Through_inheritance']) {
                 $color = '<fg=green>%s %s (>)</>';
                 $icon = self::THICK;
             }
@@ -441,7 +441,7 @@ final class ShowCommand extends Command
     private function dumpComparison(OutputInterface $output)
     {
         if (empty($this->undefinedFixers)) {
-            $output->writeln("\nYou are aware of all exsisting rules! Yeah!");
+            $output->writeln("\nYou are aware of all existing rules! Yeah!");
 
             return;
         }
@@ -490,9 +490,9 @@ final class ShowCommand extends Command
      *
      * @return bool
      */
-    private function isFixerEnabledTroughInheritance(FixerInterface $fixer)
+    private function isFixerEnabledThroughInheritance(FixerInterface $fixer)
     {
-        return isset($this->enabledFixersTroughInheritance[$fixer->getName()]);
+        return isset($this->enabledFixersThroughInheritance[$fixer->getName()]);
     }
 
     /**
