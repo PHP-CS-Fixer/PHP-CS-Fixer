@@ -207,6 +207,7 @@ final class ShowCommand extends Command
         $this->enabledFixersTroughInheritance = array_diff_key($this->enabledFixers, $this->configuredFixers);
 
         // Get the RuleSets and their Fixers
+        $ruleSets = [];
         foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
