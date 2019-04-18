@@ -35,24 +35,28 @@ final class ShowCommand extends Command
 {
     /**
      * @var string
+     *
      * @internal
      */
     const COMMAND_NAME = 'show';
 
     /**
      * @var string
+     *
      * @internal
      */
     const THICK = "\xE2\x9C\x94";
 
     /**
      * @var string
+     *
      * @internal
      */
     const CROSS = "\xE2\x9C\x96";
 
     /**
      * @var string
+     *
      * @internal
      */
     const PLUS = "\xe2\x9c\x9a";
@@ -241,7 +245,7 @@ final class ShowCommand extends Command
     private function processRuleSet($name, RuleSetInterface $set)
     {
         /**
-         * @var string $rule
+         * @var string
          * @var bool   $value
          */
         foreach ($set->getRules() as $rule => $value) {
