@@ -19,9 +19,9 @@ use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
+use PhpCsFixer\Console\Command\ListFixersCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
-use PhpCsFixer\Console\Command\ShowCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\PharChecker;
@@ -58,13 +58,13 @@ final class Application extends BaseApplication
         $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
         $this->add(new ListFilesCommand($this->toolInfo));
+        $this->add(new ListFixersCommand($this->toolInfo));
         $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
             new PharChecker()
         ));
-        $this->add(new ShowCommand($this->toolInfo));
     }
 
     public static function getMajorVersion(): int

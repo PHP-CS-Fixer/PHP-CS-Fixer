@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
-use PhpCsFixer\Console\Command\ShowCommand;
+use PhpCsFixer\Console\Command\ListFixersCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,9 +24,9 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\ShowCommand
+ * @covers \PhpCsFixer\Console\Command\ListFixersCommand
  */
-final class ShowCommandTest extends TestCase
+final class ListCommandTest extends TestCase
 {
     /**
      * @var Application
@@ -50,9 +50,9 @@ final class ShowCommandTest extends TestCase
      */
     private function doTestExecute()
     {
-        $this->application->add(new ShowCommand(new ToolInfo()));
+        $this->application->add(new ListFixersCommand(new ToolInfo()));
 
-        $command = $this->application->find('show');
+        $command = $this->application->find('list');
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
