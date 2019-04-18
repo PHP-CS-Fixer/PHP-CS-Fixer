@@ -168,7 +168,7 @@ final class ShowCommand extends Command
                     new InputOption('compare', '', InputOption::VALUE_NONE, 'Dumps the comparing result between your config and all available fixers in a copy-and-pastable format ready for the .php_cs file.'),
                 ]
             )
-            ->setDescription('Shows existent Fixers with the ones actually configured or enabled by inheritance.')
+            ->setDescription('Lists all available fixers and shows which ones are enabled, inherited or disabled.')
         ;
     }
 
