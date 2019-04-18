@@ -33,9 +33,28 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ShowCommand extends Command
 {
+    /**
+     * @var string
+     * @internal
+     */
     const COMMAND_NAME = 'show';
+
+    /**
+     * @var string
+     * @internal
+     */
     const THICK = "\xE2\x9C\x94";
+
+    /**
+     * @var string
+     * @internal
+     */
     const CROSS = "\xE2\x9C\x96";
+
+    /**
+     * @var string
+     * @internal
+     */
     const PLUS = "\xe2\x9c\x9a";
 
     /** @var ToolInfoInterface */
