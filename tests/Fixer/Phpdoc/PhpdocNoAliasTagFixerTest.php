@@ -90,7 +90,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider providePropertyCases
-     * @expectedDeprecation Passing "replacements" at the root of the configuration is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
+     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "phpdoc_no_alias_tag" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
      */
     public function testLegacyPropertyFix($expected, $input = null)
     {

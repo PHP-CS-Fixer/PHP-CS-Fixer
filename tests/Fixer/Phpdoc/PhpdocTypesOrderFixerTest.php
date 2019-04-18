@@ -485,6 +485,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var null|Foo|Foo[]|Foo\Bar|Foo_Bar */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
+            [
+                '<?php /** @return array<array<string, int>> */',
+            ],
         ];
     }
 

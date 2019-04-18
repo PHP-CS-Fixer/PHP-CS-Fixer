@@ -11,7 +11,7 @@
  */
 
 /**
- * Input for @see \Symfony\CS\Tests\Console\TextDiffTest.
+ * Input for @see \PhpCsFixer\Tests\TextDiffTest.
  *
  * @author SpacePossum
  *
@@ -21,6 +21,8 @@ final class TextDiffTestInput
 {
     public function foo($output)
     {
+        $output->writeln('<error>'.(int)$output.'</error>');
+        $output->writeln('<error> TEST </error>');
         $output->writeln('<error>'.(int)$output.'</error>');
     }
 }

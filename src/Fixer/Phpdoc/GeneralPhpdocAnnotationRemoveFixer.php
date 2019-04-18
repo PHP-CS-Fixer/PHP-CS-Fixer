@@ -34,7 +34,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Configured annotations should be omitted from phpdocs.',
+            'Configured annotations should be omitted from PHPDoc.',
             [
                 new CodeSample(
                     '<?php
@@ -73,7 +73,7 @@ function foo() {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (!count($this->configuration['annotations'])) {
+        if (!\count($this->configuration['annotations'])) {
             return;
         }
 
@@ -112,6 +112,6 @@ function foo() {}
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

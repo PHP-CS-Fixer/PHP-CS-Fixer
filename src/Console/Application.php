@@ -36,7 +36,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.11.0-DEV';
+    const VERSION = '2.15.0-DEV';
     const VERSION_CODENAME = '';
 
     /**
@@ -46,7 +46,9 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        error_reporting(-1);
+        if (!getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            error_reporting(-1);
+        }
 
         parent::__construct('PHP CS Fixer', self::VERSION);
 
@@ -76,9 +78,6 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            if (FixCommand::COMMAND_NAME === $this->getCommandName($input)) {
-                $warningsDetector->detectXdebug();
-            }
             foreach ($warningsDetector->getWarnings() as $warning) {
                 $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
             }

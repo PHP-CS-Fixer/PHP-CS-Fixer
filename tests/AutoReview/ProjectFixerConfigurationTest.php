@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -23,13 +24,13 @@ use PhpCsFixer\ToolInfo;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
     public function testCreate()
     {
-        /** @var \PhpCsFixer\Config $config */
-        $config = require __DIR__.'/../../.php_cs.dist';
+        $config = $this->loadConfig();
 
         $this->assertInstanceOf(\PhpCsFixer\Config::class, $config);
         $this->assertEmpty($config->getCustomFixers());
@@ -44,5 +45,20 @@ final class ProjectFixerConfigurationTest extends TestCase
         );
 
         $resolver->getFixers();
+    }
+
+    public function testRuleDefinedAlpha()
+    {
+        $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
+        sort($rulesSorted);
+        $this->assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
+    }
+
+    /**
+     * @return Config
+     */
+    private function loadConfig()
+    {
+        return require __DIR__.'/../../.php_cs.dist';
     }
 }

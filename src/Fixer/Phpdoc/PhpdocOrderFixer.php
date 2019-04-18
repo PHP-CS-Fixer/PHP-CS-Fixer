@@ -38,14 +38,14 @@ final class PhpdocOrderFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Annotations in phpdocs should be ordered so that param annotations come first, then throws annotations, then return annotations.',
+            'Annotations in PHPDoc should be ordered so that `@param` annotations come first, then `@throws` annotations, then `@return` annotations.',
             [
                 new CodeSample(
                     '<?php
 /**
  * Hello there!
  *
- * @throws Exception|RuntimeException dfsdf
+ * @throws Exception|RuntimeException foo
  * @custom Test!
  * @return int  Return the number of changes.
  * @param string $foo

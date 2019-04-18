@@ -53,6 +53,99 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFixLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['param'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code An HTTP response status code
+     * @param bool $debug
+     * @param mixed &$reference A parameter passed by reference
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     * @param    bool         $debug
+     * @param  mixed    &$reference     A parameter passed by reference
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixPartiallyUntyped()
+    {
+        $this->fixer->configure(['tags' => ['param']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param         $id
+     * @param         $parentId
+     * @param int     $websiteId
+     * @param         $position
+     * @param int[][] $siblings
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param      $id
+     * @param    $parentId
+     * @param int $websiteId
+     * @param        $position
+     * @param int[][]  $siblings
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixPartiallyUntypedLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['param'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param $id
+     * @param $parentId
+     * @param int $websiteId
+     * @param $position
+     * @param int[][] $siblings
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param      $id
+     * @param    $parentId
+     * @param int $websiteId
+     * @param        $position
+     * @param int[][]  $siblings
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testFixMultiLineDesc()
     {
         $this->fixer->configure(['tags' => ['param', 'property', 'method']]);
@@ -98,6 +191,51 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFixMultiLineDescLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['param', 'property', 'method'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code An HTTP response status code
+     *                  See constants
+     * @param bool $debug
+     * @param bool $debug See constants
+     *                    See constants
+     * @param mixed &$reference A parameter passed by reference
+     * @property mixed $foo A foo
+     *                      See constants
+     * @method static baz($bop) A method that does a thing
+     *                          It does it well
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     * @property   mixed   $foo     A foo
+     *                               See constants
+     * @method static   baz($bop)   A method that does a thing
+     *                          It does it well
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testFixMultiLineDescWithThrows()
     {
         $this->fixer->configure(['tags' => ['param', 'return', 'throws']]);
@@ -113,6 +251,53 @@ EOF;
      * @param bool            $debug      See constants
      *                                    See constants
      * @param mixed           &$reference A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo description foo
+     *             description foo
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $debug
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     * description foo
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixMultiLineDescWithThrowsLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['param', 'return', 'throws'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code An HTTP response status code
+     *                  See constants
+     * @param bool $debug
+     * @param bool $debug See constants
+     *                    See constants
+     * @param mixed &$reference A parameter passed by reference
      *
      * @return Foo description foo
      *
@@ -304,6 +489,64 @@ EOF;
         $this->doTest($expected);
     }
 
+    public function testFixTestLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['param'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int $a
+     * @param string $b
+     *
+     * @dataProvider     dataJobCreation
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param     int       $a
+     * @param     string    $b
+     *
+     * @dataProvider     dataJobCreation
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testFixTest()
+    {
+        $this->fixer->configure(['tags' => ['param']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param int         $a
+     * @param string|null $b
+     *
+     * @dataProvider   dataJobCreation
+     */
+
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param     int       $a
+     * @param     string|null    $b
+     *
+     * @dataProvider   dataJobCreation
+     */
+
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testFixWithVar()
     {
         $this->fixer->configure(['tags' => ['var']]);
@@ -487,17 +730,59 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testDifferentIndentationLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['param', 'return'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+/**
+ * @param int $limit
+ * @param string $more
+ *
+ * @return array
+ */
+
+        /**
+         * @param int $limit
+         * @param string $more
+         *
+         * @return array
+         */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+/**
+ * @param   int       $limit
+ * @param   string       $more
+ *
+ * @return array
+ */
+
+        /**
+         * @param   int       $limit
+         * @param   string       $more
+         *
+         * @return array
+         */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     /**
-     * @param array       $config
-     * @param string      $expected
-     * @param null|string $input
+     * @param array                  $config
+     * @param string                 $expected
+     * @param string                 $input
+     * @param WhitespacesFixerConfig $whitespacesFixerConfig
      *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(array $config, $expected, $input = null)
+    public function testMessyWhitespaces(array $config, $expected, $input, WhitespacesFixerConfig $whitespacesFixerConfig)
     {
         $this->fixer->configure($config);
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
+        $this->fixer->setWhitespacesConfig($whitespacesFixerConfig);
 
         $this->doTest($expected, $input);
     }
@@ -509,11 +794,31 @@ EOF;
                 ['tags' => ['type']],
                 "<?php\r\n\t/**\r\n\t * @type Type This is a variable.\r\n\t */",
                 "<?php\r\n\t/**\r\n\t * @type   Type   This is a variable.\r\n\t */",
+                new WhitespacesFixerConfig("\t", "\r\n"),
             ],
             [
                 ['tags' => ['param', 'return']],
                 "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
                 "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+                new WhitespacesFixerConfig("\t", "\r\n"),
+            ],
+            [
+                [],
+                "<?php\r\n/**\r\n * @param int    \$limit\r\n * @param string \$more\r\n *\r\n * @return array\r\n */",
+                "<?php\r\n/**\r\n * @param   int       \$limit\r\n * @param   string       \$more\r\n *\r\n * @return array\r\n */",
+                new WhitespacesFixerConfig("\t", "\r\n"),
+            ],
+            [
+                [],
+                "<?php\n/**\n * @param int \$a\n * @param int \$b\n *               ABC\n */",
+                "<?php\n/**\n * @param    int \$a\n * @param    int   \$b\n * ABC\n */",
+                new WhitespacesFixerConfig('    ', "\n"),
+            ],
+            [
+                [],
+                "<?php\r\n/**\r\n * @param int \$z\r\n * @param int \$b\r\n *               XYZ\r\n */",
+                "<?php\r\n/**\r\n * @param    int \$z\r\n * @param    int   \$b\r\n * XYZ\r\n */",
+                new WhitespacesFixerConfig('    ', "\r\n"),
             ],
         ];
     }
@@ -715,6 +1020,29 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testAlignsMethodWithoutParametersLeftAlign()
+    {
+        $this->fixer->configure(['tags' => ['method', 'property'], 'align' => 'left']);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @property string $foo Desc
+     * @method int foo() Description
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @property    string   $foo     Desc
+     * @method int      foo()          Description
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testDoesNotFormatMethod()
     {
         $this->fixer->configure(['tags' => ['method']]);
@@ -802,7 +1130,6 @@ EOF;
      * @param string $expected
      * @param string $input
      *
-     *
      * @dataProvider provideVariadicCases
      */
     public function testVariadicParams(array $config, $expected, $input)
@@ -852,6 +1179,35 @@ final class Sample
     /**
      * @param int     $a
      * @param int     $b
+     * @param array[] ...$c
+     */
+    public function sample2($a, $b, ...$c)
+    {
+    }
+}
+',
+                '<?php
+final class Sample
+{
+    /**
+     * @param int       $a
+     * @param int    $b
+     * @param array[]      ...$c
+     */
+    public function sample2($a, $b, ...$c)
+    {
+    }
+}
+',
+            ],
+            [
+                ['tags' => ['param'], 'align' => 'left'],
+                '<?php
+final class Sample
+{
+    /**
+     * @param int $a
+     * @param int $b
      * @param array[] ...$c
      */
     public function sample2($a, $b, ...$c)

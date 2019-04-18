@@ -56,7 +56,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_NAMESPACE)) {

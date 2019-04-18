@@ -15,6 +15,8 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
+use PhpCsFixer\WhitespacesFixerConfig;
+use stdClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -69,7 +71,7 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        $this->assertGreaterThan(0, count($factory->getFixers()));
+        $this->assertGreaterThan(0, \count($factory->getFixers()));
     }
 
     /**
@@ -90,7 +92,7 @@ final class FixerFactoryTest extends TestCase
         }
 
         // There are no rules that forces $fxs[1] to be prioritized before $fxs[3]. We should not test against that
-        $this->assertSame([$fxs[2], $fxs[0]], array_slice($factory->getFixers(), 0, 2));
+        $this->assertSame([$fxs[2], $fxs[0]], \array_slice($factory->getFixers(), 0, 2));
     }
 
     /**
@@ -109,9 +111,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($f1, false);
         $factory->registerCustomFixers([$f2, $f3]);
 
-        $this->assertTrue(in_array($f1, $factory->getFixers(), true));
-        $this->assertTrue(in_array($f2, $factory->getFixers(), true));
-        $this->assertTrue(in_array($f3, $factory->getFixers(), true));
+        $this->assertTrue(\in_array($f1, $factory->getFixers(), true));
+        $this->assertTrue(\in_array($f2, $factory->getFixers(), true));
+        $this->assertTrue(\in_array($f3, $factory->getFixers(), true));
     }
 
     /**
@@ -241,6 +243,102 @@ final class FixerFactoryTest extends TestCase
                 ]
             )
         );
+    }
+
+    public function testSetWhitespacesConfig()
+    {
+        $factory = new FixerFactory();
+        $config = new WhitespacesFixerConfig();
+
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\WhitespacesAwareFixerInterface::class);
+        $fixer->getName()->willReturn('foo');
+        $fixer->setWhitespacesConfig($config)->shouldBeCalled();
+
+        $factory->registerFixer($fixer->reveal(), false);
+
+        $factory->setWhitespacesConfig($config);
+    }
+
+    public function testRegisterFixerInvalidName()
+    {
+        $factory = new FixerFactory();
+
+        $fixer = $this->createFixerDouble('0');
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Fixer named "0" has invalid name.');
+
+        $factory->registerFixer($fixer, false);
+    }
+
+    public function testConfigureNonConfigurableFixer()
+    {
+        $factory = new FixerFactory();
+
+        $fixer = $this->createFixerDouble('non_configurable');
+        $factory->registerFixer($fixer, false);
+
+        $this->expectException(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
+        );
+        $this->expectExceptionMessage(
+            '[non_configurable] Is not configurable.'
+        );
+
+        $factory->useRuleSet(new RuleSet([
+            'non_configurable' => ['bar' => 'baz'],
+        ]));
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideConfigureFixerWithNonArrayCases
+     */
+    public function testConfigureFixerWithNonArray($value)
+    {
+        $factory = new FixerFactory();
+
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
+        $fixer->getName()->willReturn('foo');
+
+        $factory->registerFixer($fixer->reveal(), false);
+
+        $this->expectException(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
+        );
+        $this->expectExceptionMessage(
+            '[foo] Configuration must be an array and may not be empty.'
+        );
+
+        $factory->useRuleSet(new RuleSet([
+            'foo' => $value,
+        ]));
+    }
+
+    public function provideConfigureFixerWithNonArrayCases()
+    {
+        return [
+            ['bar'],
+            [new stdClass()],
+            [5],
+            [5.5],
+        ];
+    }
+
+    public function testConfigurableFixerIsConfigured()
+    {
+        $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
+        $fixer->getName()->willReturn('foo');
+        $fixer->configure(['bar' => 'baz'])->shouldBeCalled();
+
+        $factory = new FixerFactory();
+
+        $factory->registerFixer($fixer->reveal(), false);
+
+        $factory->useRuleSet(new RuleSet([
+            'foo' => ['bar' => 'baz'],
+        ]));
     }
 
     private function createFixerDouble($name, $priority = 0)

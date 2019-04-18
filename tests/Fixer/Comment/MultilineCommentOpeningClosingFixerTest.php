@@ -27,20 +27,20 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideDocblocksCases
+     * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideDocblocksCases()
+    public function provideFixCases()
     {
         return [
             ['<?php /** Opening DocBlock */'],
             [
-                '<?php /* Opening Multiline comment */',
-                '<?php /*** Opening Multiline comment */',
+                '<?php /* Opening comment */',
+                '<?php /*** Opening comment */',
             ],
             [
                 '<?php /*\ Opening false-DocBlock */',
@@ -51,47 +51,55 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
                 '<?php /** Closing DocBlock ***/',
             ],
             [
-                '<?php /* Closing Multiline comment */',
-                '<?php /* Closing Multiline comment ***/',
+                '<?php /* Closing comment */',
+                '<?php /* Closing comment ***/',
             ],
             [
-<<<'EOT'
+                '<?php /**/',
+                '<?php /***/',
+            ],
+            [
+                '<?php /**/',
+                '<?php /********/',
+            ],
+            [
+                <<<'EOT'
 <?php
 
 /*
  * WUT
  */
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
 <?php
 
 /********
  * WUT
  ********/
 EOT
-,
+                ,
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 
 /*\
  * False DocBlock
  */
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
 <?php
 
 /**\
  * False DocBlock
  */
 EOT
-,
+                ,
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 # Hash
 #*** Hash asterisk
@@ -105,7 +113,7 @@ Weird multiline comment
 */
 
 EOT
-,
+                ,
             ],
         ];
     }

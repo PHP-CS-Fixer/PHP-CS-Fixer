@@ -33,7 +33,7 @@ final class HeredocToNowdocFixer extends AbstractFixer
             'Convert `heredoc` to `nowdoc` where possible.',
             [
                 new CodeSample(
-<<<'EOF'
+                    <<<'EOF'
 <?php $a = <<<"TEST"
 Foo
 TEST;
@@ -101,7 +101,7 @@ EOF
     {
         return new Token([
             $token->getId(),
-            Preg::replace('/(?<=^<<<)([ \t]*)"?([^\s"]+)"?/', '$1\'$2\'', $token->getContent()),
+            Preg::replace('/^([Bb]?<<<)([ \t]*)"?([^\s"]+)"?/', '$1$2\'$3\'', $token->getContent()),
         ]);
     }
 }

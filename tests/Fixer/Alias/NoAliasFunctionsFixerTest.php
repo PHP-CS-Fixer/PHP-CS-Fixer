@@ -37,82 +37,85 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        /** @var $aliases string[] */
-        $aliases = static::getStaticAttribute(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'aliases');
-
         $cases = [];
-        foreach ($aliases as $alias => $master) {
-            // valid cases
-            $cases[] = ["<?php \$smth->${alias}(\$a);"];
-            $cases[] = ["<?php {$alias}Smth(\$a);"];
-            $cases[] = ["<?php smth_${alias}(\$a);"];
-            $cases[] = ["<?php new ${alias}(\$a);"];
-            $cases[] = ["<?php new Smth\\${alias}(\$a);"];
-            $cases[] = ["<?php Smth\\${alias}(\$a);"];
-            $cases[] = ["<?php namespace\\${alias}(\$a);"];
-            $cases[] = ["<?php Smth::${alias}(\$a);"];
-            $cases[] = ["<?php new ${alias}\\smth(\$a);"];
-            $cases[] = ["<?php ${alias}::smth(\$a);"];
-            $cases[] = ["<?php ${alias}\\smth(\$a);"];
-            $cases[] = ['<?php "SELECT ... '.$alias.'(\$a) ...";'];
-            $cases[] = ['<?php "SELECT ... '.strtoupper($alias).'($a) ...";'];
-            $cases[] = ["<?php 'test'.'${alias}' . 'in concatenation';"];
-            $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
-            $cases[] = [
-                '<?php
-class '.ucfirst($alias).'ing
-{
-    const '.$alias.' = 1;
 
-    public function '.$alias.'($'.$alias.')
+        foreach (['internalSet', 'imapSet'] as $setStaticAttributeName) {
+            /** @var string[] $aliases */
+            $aliases = $this->getStaticAttribute(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, $setStaticAttributeName);
+
+            foreach ($aliases as $alias => $master) {
+                // valid cases
+                $cases[] = ["<?php \$smth->{$alias}(\$a);"];
+                $cases[] = ["<?php {$alias}Smth(\$a);"];
+                $cases[] = ["<?php smth_{$alias}(\$a);"];
+                $cases[] = ["<?php new {$alias}(\$a);"];
+                $cases[] = ["<?php new Smth\\{$alias}(\$a);"];
+                $cases[] = ["<?php Smth\\{$alias}(\$a);"];
+                $cases[] = ["<?php namespace\\{$alias}(\$a);"];
+                $cases[] = ["<?php Smth::{$alias}(\$a);"];
+                $cases[] = ["<?php new {$alias}\\smth(\$a);"];
+                $cases[] = ["<?php {$alias}::smth(\$a);"];
+                $cases[] = ["<?php {$alias}\\smth(\$a);"];
+                $cases[] = ['<?php "SELECT ... '.$alias.'(\$a) ...";'];
+                $cases[] = ['<?php "SELECT ... '.strtoupper($alias).'($a) ...";'];
+                $cases[] = ["<?php 'test'.'{$alias}' . 'in concatenation';"];
+                $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
+                $cases[] = [
+                    '<?php
+    class '.ucfirst($alias).'ing
     {
-        if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
-            echo '.$alias.';
+        const '.$alias.' = 1;
+
+        public function '.$alias.'($'.$alias.')
+        {
+            if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
+                echo '.$alias.';
+            }
         }
     }
-}
 
-class '.$alias.' extends '.ucfirst($alias).'ing{
-    const '.$alias.' = "'.$alias.'";
-}
-',
-            ];
+    class '.$alias.' extends '.ucfirst($alias).'ing{
+        const '.$alias.' = "'.$alias.'";
+    }
+    ',
+                ];
 
-            // cases to be fixed
-            $cases[] = [
-                "<?php ${master}(\$a);",
-                "<?php ${alias}(\$a);",
-            ];
-            $cases[] = [
-                "<?php \\${master}(\$a);",
-                "<?php \\${alias}(\$a);",
-            ];
-            $cases[] = [
-                "<?php \$ref = &${master}(\$a);",
-                "<?php \$ref = &${alias}(\$a);",
-            ];
-            $cases[] = [
-                "<?php \$ref = &\\${master}(\$a);",
-                "<?php \$ref = &\\${alias}(\$a);",
-            ];
-            $cases[] = [
-                "<?php ${master}
-                            (\$a);",
-                "<?php ${alias}
-                            (\$a);",
-            ];
-            $cases[] = [
-                "<?php /* foo */ ${master} /** bar */ (\$a);",
-                "<?php /* foo */ ${alias} /** bar */ (\$a);",
-            ];
-            $cases[] = [
-                "<?php a(${master}());",
-                "<?php a(${alias}());",
-            ];
-            $cases[] = [
-                "<?php a(\\${master}());",
-                "<?php a(\\${alias}());",
-            ];
+                // cases to be fixed
+                $cases[] = [
+                    "<?php {$master}(\$a);",
+                    "<?php {$alias}(\$a);",
+                ];
+                $cases[] = [
+                    "<?php \\{$master}(\$a);",
+                    "<?php \\{$alias}(\$a);",
+                ];
+                $cases[] = [
+                    "<?php \$ref = &{$master}(\$a);",
+                    "<?php \$ref = &{$alias}(\$a);",
+                ];
+                $cases[] = [
+                    "<?php \$ref = &\\{$master}(\$a);",
+                    "<?php \$ref = &\\{$alias}(\$a);",
+                ];
+                $cases[] = [
+                    "<?php {$master}
+                                (\$a);",
+                    "<?php {$alias}
+                                (\$a);",
+                ];
+                $cases[] = [
+                    "<?php /* foo */ {$master} /** bar */ (\$a);",
+                    "<?php /* foo */ {$alias} /** bar */ (\$a);",
+                ];
+                $cases[] = [
+                    "<?php a({$master}());",
+                    "<?php a({$alias}());",
+                ];
+                $cases[] = [
+                    "<?php a(\\{$master}());",
+                    "<?php a(\\{$alias}());",
+                ];
+            }
         }
 
         // static case to fix - in case previous generation is broken
@@ -153,5 +156,89 @@ abstract class A
         ];
 
         return $cases;
+    }
+
+    /**
+     * @param string                  $expected
+     * @param string                  $input
+     * @param array<string, string[]> $configuration
+     *
+     * @dataProvider provideFixWithConfigurationCases
+     */
+    public function testFixWithConfiguration($expected, $input, array $configuration)
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithConfigurationCases()
+    {
+        return [
+            [
+                '<?php
+                    $a = rtrim($b);
+                    $a = imap_header($imap_stream, 1);
+                    mbereg_search_getregs();
+                ',
+                '<?php
+                    $a = chop($b);
+                    $a = imap_header($imap_stream, 1);
+                    mbereg_search_getregs();
+                ',
+                ['sets' => ['@internal']],
+            ],
+            [
+                '<?php
+                    $a = chop($b);
+                    $a = imap_headerinfo($imap_stream, 1);
+                    mb_ereg_search_getregs();
+                ',
+                '<?php
+                    $a = chop($b);
+                    $a = imap_header($imap_stream, 1);
+                    mb_ereg_search_getregs();
+                ',
+                ['sets' => ['@IMAP']],
+            ],
+            [
+                '<?php
+                    $a = chop($b);
+                    $a = imap_header($imap_stream, 1);
+                    mb_ereg_search_getregs();
+                ',
+                '<?php
+                    $a = chop($b);
+                    $a = imap_header($imap_stream, 1);
+                    mbereg_search_getregs();
+                ',
+                ['sets' => ['@mbreg']],
+            ],
+            [
+                '<?php
+                    $a = rtrim($b);
+                    $a = imap_headerinfo($imap_stream, 1);
+                    mb_ereg_search_getregs();
+                ',
+                '<?php
+                    $a = chop($b);
+                    $a = imap_header($imap_stream, 1);
+                    mbereg_search_getregs();
+                ',
+                ['sets' => ['@all']],
+            ],
+            [
+                '<?php
+                    $a = chop($b);
+                    $a = imap_headerinfo($imap_stream, 1);
+                    mb_ereg_search_getregs();
+                ',
+                '<?php
+                    $a = chop($b);
+                    $a = imap_header($imap_stream, 1);
+                    mbereg_search_getregs();
+                ',
+                ['sets' => ['@IMAP', '@mbreg']],
+            ],
+        ];
     }
 }

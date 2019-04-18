@@ -35,6 +35,13 @@ abstract class AbstractReporterTestCase extends TestCase
         $this->reporter = $this->createReporter();
     }
 
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        $this->reporter = null;
+    }
+
     final public function testGetFormat()
     {
         $this->assertSame(

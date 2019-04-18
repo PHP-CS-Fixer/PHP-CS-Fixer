@@ -91,39 +91,6 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param array  $expected
-     * @param string $input
-     *
-     * @dataProvider provideSplitLinesCases
-     */
-    public function testSplitLines(array $expected, $input)
-    {
-        $this->assertSame($expected, Utils::splitLines($input));
-    }
-
-    public function provideSplitLinesCases()
-    {
-        return [
-            [
-                ["\t aaa\n", " bbb\n", "\t"],
-                "\t aaa\n bbb\n\t",
-            ],
-            [
-                ["aaa\r\n", " bbb\r\n"],
-                "aaa\r\n bbb\r\n",
-            ],
-            [
-                ["aaa\r\n", " bbb\n"],
-                "aaa\r\n bbb\n",
-            ],
-            [
-                ["aaa\r\n\n\n\r\n", " bbb\n"],
-                "aaa\r\n\n\n\r\n bbb\n",
-            ],
-        ];
-    }
-
-    /**
      * @param string       $spaces
      * @param array|string $input  token prototype
      *
@@ -255,6 +222,43 @@ final class UtilsTest extends TestCase
             [
                 '`a`, `b` and `c`',
                 ['a', 'b', 'c'],
+            ],
+        ];
+    }
+
+    /**
+     * @param int   $expected
+     * @param array $options
+     *
+     * @dataProvider provideCalculateBitmaskCases
+     */
+    public function testCalculateBitmask($expected, array $options)
+    {
+        $this->assertSame($expected, Utils::calculateBitmask($options));
+    }
+
+    public function provideCalculateBitmaskCases()
+    {
+        return [
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
+            ],
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
+            ],
+            [
+                JSON_HEX_TAG,
+                ['JSON_HEX_TAG'],
+            ],
+            [
+                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
+                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
+            ],
+            [
+                0,
+                [],
             ],
         ];
     }

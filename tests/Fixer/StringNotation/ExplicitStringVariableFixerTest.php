@@ -38,8 +38,8 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
     {
         $input = $expected = '<?php';
         for ($inc = 1; $inc < 15; ++$inc) {
-            $input .= " \$var${inc} = \"My name is \$name!\";";
-            $expected .= " \$var${inc} = \"My name is \${name}!\";";
+            $input .= " \$var{$inc} = \"My name is \$name!\";";
+            $expected .= " \$var{$inc} = \"My name is \${name}!\";";
         }
 
         return [
@@ -52,11 +52,15 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
                 '<?php $a = "My name is $name!";',
             ],
             [
-'<?php $a = <<<EOF
+                '<?php "My name is ${james}${bond}!";',
+                '<?php "My name is $james$bond!";',
+            ],
+            [
+                '<?php $a = <<<EOF
 My name is ${name}!
 EOF;
 ',
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is $name!
 EOF;
 ',
@@ -74,11 +78,11 @@ EOF;
                 '<?php $a = "end $b";',
             ],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 ${b}
 EOF;
 ',
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 $b
 EOF;
 ',
@@ -87,20 +91,20 @@ EOF;
             ['<?php $a = "My name is " . $name;'],
             ['<?php $a = "My name is {$name}!";'],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is {$name}!
 EOF;
 ',
-],
+            ],
             ['<?php $a = "My name is {$user->name}";'],
             [
-'<?php $a = <<<EOF
+                '<?php $a = <<<EOF
 My name is {$user->name}
 EOF;
 ',
-],
+            ],
             [
-'<?php $a = <<<\'EOF\'
+                '<?php $a = <<<\'EOF\'
 $b
 EOF;
 ',
@@ -114,8 +118,16 @@ EOF;
                 '<?php $a = "My name is $array[1] !";',
             ],
             [
-                '<?php $a = "My name is {$array[MY_CONSTANT]} !";',
-                '<?php $a = "My name is $array[MY_CONSTANT] !";',
+                '<?php $a = "My name is {$array[\'foo\']} !";',
+                '<?php $a = "My name is $array[foo] !";',
+            ],
+            [
+                '<?php $a = "My name is {$array[$foo]} !";',
+                '<?php $a = "My name is $array[$foo] !";',
+            ],
+            [
+                '<?php $a = "My name is {$array[$foo]}[${bar}] !";',
+                '<?php $a = "My name is $array[$foo][$bar] !";',
             ],
             [
                 '<?php $a = "Closure not allowed ${closure}() text";',
@@ -128,6 +140,10 @@ EOF;
             [
                 '<?php $a = "Complex array chaining not allowed {$array[1]}[2][MY_CONSTANT] text";',
                 '<?php $a = "Complex array chaining not allowed $array[1][2][MY_CONSTANT] text";',
+            ],
+            [
+                '<?php $a = "Concatenation: ${james}${bond}{$object->property}{$array[1]}!";',
+                '<?php $a = "Concatenation: $james$bond$object->property$array[1]!";',
             ],
             [
                 '<?php $a = "{$a->b} start";',
@@ -144,6 +160,53 @@ EOF;
             [
                 '<?php $a = "end {$a[1]}";',
                 '<?php $a = "end $a[1]";',
+            ],
+            [
+                '<?php $a = b"{$a->b} start";',
+                '<?php $a = b"$a->b start";',
+            ],
+            [
+                '<?php $a = b"end {$a->b}";',
+                '<?php $a = b"end $a->b";',
+            ],
+            [
+                '<?php $a = b"{$a[1]} start";',
+                '<?php $a = b"$a[1] start";',
+            ],
+            [
+                '<?php $a = b"end {$a[1]}";',
+                '<?php $a = b"end $a[1]";',
+            ],
+            [
+                '<?php $a = B"{$a->b} start";',
+                '<?php $a = B"$a->b start";',
+            ],
+            [
+                '<?php $a = B"end {$a->b}";',
+                '<?php $a = B"end $a->b";',
+            ],
+            [
+                '<?php $a = B"{$a[1]} start";',
+                '<?php $a = B"$a[1] start";',
+            ],
+            [
+                '<?php $a = B"end {$a[1]}";',
+                '<?php $a = B"end $a[1]";',
+            ],
+            [
+                '<?php $a = "*{$a[0]}{$b[1]}X{$c[2]}{$d[3]}";',
+                '<?php $a = "*$a[0]$b[1]X$c[2]$d[3]";',
+            ],
+            [
+                '<?php $a = `echo $foo`;',
+            ],
+            [
+                '<?php $a = "My name is ${name}!"; $a = `echo $foo`; $a = "{$a->b} start";',
+                '<?php $a = "My name is $name!"; $a = `echo $foo`; $a = "$a->b start";',
+            ],
+            [
+                '<?php $mobileNumberVisible = "***-***-{$last4Digits[0]}{$last4Digits[1]}-{$last4Digits[2]}{$last4Digits[3]}";',
+                '<?php $mobileNumberVisible = "***-***-$last4Digits[0]$last4Digits[1]-$last4Digits[2]$last4Digits[3]";',
             ],
         ];
     }
@@ -174,6 +237,14 @@ EOF;
             [
                 '<?php $a = "end {$a[-1]}";',
                 '<?php $a = "end $a[-1]";',
+            ],
+            [
+                '<?php $a = b"end {$a[-1]}";',
+                '<?php $a = b"end $a[-1]";',
+            ],
+            [
+                '<?php $a = B"end {$a[-1]}";',
+                '<?php $a = B"end $a[-1]";',
             ],
         ];
     }

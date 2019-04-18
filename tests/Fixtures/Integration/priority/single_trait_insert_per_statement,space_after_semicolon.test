@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: single_trait_insert_per_statement,space_after_semicolon.
+--RULESET--
+{"single_trait_insert_per_statement": true, "space_after_semicolon": true}
+--EXPECT--
+<?php
+final class Example
+{
+    use Foo; use Bar;
+}
+
+--INPUT--
+<?php
+final class Example
+{
+    use Foo,Bar;
+}

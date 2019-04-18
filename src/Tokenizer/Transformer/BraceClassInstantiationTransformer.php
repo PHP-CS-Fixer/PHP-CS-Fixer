@@ -41,7 +41,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
     public function getPriority()
     {
         // must run after CurlyBraceTransformer and SquareBraceTransformer
-        return -1;
+        return -2;
     }
 
     /**

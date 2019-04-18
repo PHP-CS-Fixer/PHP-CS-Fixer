@@ -42,12 +42,16 @@ abstract class AbstractDifferTestCase extends TestCase
     {
         return <<<'PHP'
 <?php
-class Foo extends Bar {
-    function __construct($foo, $bar) {
-        $this->foo = $foo;
-        $this->bar = $bar;
+
+function baz($options)
+{
+    if (!array_key_exists("foo", $options)) {
+        throw new \InvalidArgumentException();
     }
+
+    return json_encode($options);
 }
+
 PHP;
     }
 
@@ -55,13 +59,16 @@ PHP;
     {
         return <<<'PHP'
 <?php
-class Foo extends Bar {
-    public function __construct($foo, $bar)
-    {
-        $this->foo = $foo;
-        $this->bar = $bar;
+
+function baz($options)
+{
+    if (!\array_key_exists("foo", $options)) {
+        throw new \InvalidArgumentException();
     }
+
+    return json_encode($options);
 }
+
 PHP;
     }
 }

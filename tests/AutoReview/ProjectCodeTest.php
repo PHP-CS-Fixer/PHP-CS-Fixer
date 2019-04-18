@@ -12,6 +12,10 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+if (!class_exists(\PHPUnit\Runner\Version::class)) {
+    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
+}
+
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -26,6 +30,7 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @coversNothing
  * @group auto-review
+ * @group covers-nothing
  */
 final class ProjectCodeTest extends TestCase
 {
@@ -38,19 +43,13 @@ final class ProjectCodeTest extends TestCase
      */
     private static $classesWithoutTests = [
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
-        \PhpCsFixer\Console\WarningsDetector::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
-        \PhpCsFixer\FileReader::class,
-        \PhpCsFixer\FileRemoval::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
-        \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
         \PhpCsFixer\Runner\FileLintingIterator::class,
-        \PhpCsFixer\StdinFileInfo::class,
         \PhpCsFixer\Test\AccessibleObject::class,
-        \PhpCsFixer\Tokenizer\Transformers::class,
     ];
 
     public function testThatClassesWithoutTestsVarIsProper()
@@ -72,7 +71,7 @@ final class ProjectCodeTest extends TestCase
     {
         $testClassName = str_replace('PhpCsFixer', 'PhpCsFixer\\Tests', $className).'Test';
 
-        if (in_array($className, self::$classesWithoutTests, true)) {
+        if (\in_array($className, self::$classesWithoutTests, true)) {
             $this->assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
             $this->markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
         }
@@ -97,7 +96,7 @@ final class ProjectCodeTest extends TestCase
             $rc->getInterfaces()
         );
 
-        if (count($allowedMethods)) {
+        if (\count($allowedMethods)) {
             $allowedMethods = array_unique(array_merge(...array_values($allowedMethods)));
         }
 
@@ -135,7 +134,7 @@ final class ProjectCodeTest extends TestCase
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
                 implode("\n", array_map(static function ($item) {
-                    return " * ${item}";
+                    return " * {$item}";
                 }, $extraMethods))
             )
         );
@@ -203,7 +202,7 @@ final class ProjectCodeTest extends TestCase
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
                 implode("\n", array_map(static function ($item) {
-                    return " * ${item}";
+                    return " * {$item}";
                 }, $extraProps))
             )
         );
@@ -241,18 +240,25 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideDataProviderMethodNameCases
+     * @dataProvider provideTestClassCases
      *
      * @param string $testClassName
-     * @param string $dataProviderMethodName
      */
-    public function testThatDataProvidersAreCorrectlyNamed($testClassName, $dataProviderMethodName)
+    public function testThatDataProvidersAreCorrectlyNamed($testClassName)
     {
-        $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
-            'Data provider in "%s" with name "%s" is not correctly named.',
-            $testClassName,
-            $dataProviderMethodName
-        ));
+        $dataProviderMethodNames = $this->getDataProviderMethodNames($testClassName);
+
+        if (empty($dataProviderMethodNames)) {
+            $this->addToAssertionCount(1); // no data providers to test, all good!
+        }
+
+        foreach ($dataProviderMethodNames as $dataProviderMethodName) {
+            $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+                'Data provider in "%s" with name "%s" is not correctly named.',
+                $testClassName,
+                $dataProviderMethodName
+            ));
+        }
     }
 
     /**
@@ -312,9 +318,9 @@ final class ProjectCodeTest extends TestCase
 
                 if (
                     $rc->isInterface()
-                    || ($doc && count($doc->getAnnotationsOfType('internal')))
-                    || 0 === count($rc->getInterfaces())
-                    || in_array($className, [
+                    || ($doc && \count($doc->getAnnotationsOfType('internal')))
+                    || 0 === \count($rc->getInterfaces())
+                    || \in_array($className, [
                         \PhpCsFixer\Finder::class,
                         \PhpCsFixer\Test\AbstractFixerTestCase::class,
                         \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
@@ -356,54 +362,8 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideDataProviderMethodNameCases()
-    {
-        if (extension_loaded('xdebug') && false === getenv('CI')) {
-            $this->markTestSkipped('Data provider too slow when Xdebug is loaded.');
-        }
-
-        $data = [];
-
-        $testClassNames = $this->getTestClasses();
-
-        foreach ($testClassNames as $testClassName) {
-            $dataProviderMethodNames = [];
-            $tokens = Tokens::fromCode(file_get_contents(
-                str_replace('\\', DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
-            ));
-
-            foreach ($tokens as $token) {
-                if ($token->isGivenKind(T_DOC_COMMENT)) {
-                    $docBlock = new DocBlock($token->getContent());
-                    $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
-
-                    foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
-                        if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
-                            $dataProviderMethodNames[] = $matches['methodName'];
-                        }
-                    }
-                }
-            }
-
-            $dataProviderMethodNames = array_unique($dataProviderMethodNames);
-
-            foreach ($dataProviderMethodNames as $dataProviderMethodName) {
-                $data[] = [
-                    $testClassName,
-                    $dataProviderMethodName,
-                ];
-            }
-        }
-
-        return $data;
-    }
-
     public function provideClassesWherePregFunctionsAreForbiddenCases()
     {
-        if (extension_loaded('xdebug') && false === getenv('CI')) {
-            $this->markTestSkipped('Test too slow when Xdebug is loaded.');
-        }
-
         return array_map(
             function ($item) {
                 return [$item];
@@ -415,6 +375,29 @@ final class ProjectCodeTest extends TestCase
                 }
             )
         );
+    }
+
+    private function getDataProviderMethodNames($testClassName)
+    {
+        $dataProviderMethodNames = [];
+        $tokens = Tokens::fromCode(file_get_contents(
+            str_replace('\\', \DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
+        ));
+
+        foreach ($tokens as $token) {
+            if ($token->isGivenKind(T_DOC_COMMENT)) {
+                $docBlock = new DocBlock($token->getContent());
+                $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
+
+                foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                    if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                        $dataProviderMethodNames[] = $matches['methodName'];
+                    }
+                }
+            }
+        }
+
+        return array_unique($dataProviderMethodNames);
     }
 
     private function getSrcClasses()
@@ -439,7 +422,7 @@ final class ProjectCodeTest extends TestCase
                 return sprintf(
                     '%s\\%s%s%s',
                     'PhpCsFixer',
-                    strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
+                    strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );
@@ -473,7 +456,7 @@ final class ProjectCodeTest extends TestCase
             static function (SplFileInfo $file) {
                 return sprintf(
                     'PhpCsFixer\\Tests\\%s%s%s',
-                    strtr($file->getRelativePath(), DIRECTORY_SEPARATOR, '\\'),
+                    strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                     $file->getRelativePath() ? '\\' : '',
                     $file->getBasename('.'.$file->getExtension())
                 );

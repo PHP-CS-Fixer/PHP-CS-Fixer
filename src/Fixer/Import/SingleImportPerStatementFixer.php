@@ -127,7 +127,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
 
         return [
-            $groupPrefix,
+            rtrim($groupPrefix),
             $groupOpenIndex,
             $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
             $comment,
@@ -201,7 +201,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         list($groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment) = $this->getGroupDeclaration($tokens, $index);
         $statements = $this->getGroupStatements($tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment);
 
-        if (count($statements) < 2) {
+        if (\count($statements) < 2) {
             return;
         }
 

@@ -33,7 +33,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdocs annotation descriptions should not be a sentence.',
+            'PHPDoc annotation descriptions should not be a sentence.',
             [new CodeSample('<?php
 /**
  * @param string $bar Some string.
@@ -70,22 +70,31 @@ function foo ($bar) {}
 
             foreach ($annotations as $annotation) {
                 if (
-                    !$annotation->getTag()->valid() || !in_array($annotation->getTag()->getName(), $this->tags, true)
+                    !$annotation->getTag()->valid() || !\in_array($annotation->getTag()->getName(), $this->tags, true)
                 ) {
                     continue;
+                }
+
+                $lineAfterAnnotation = $doc->getLine($annotation->getEnd() + 1);
+                if (null !== $lineAfterAnnotation) {
+                    $lineAfterAnnotationTrimmed = ltrim($lineAfterAnnotation->getContent());
+                    if ('' === $lineAfterAnnotationTrimmed || '*' !== $lineAfterAnnotationTrimmed[0]) {
+                        // malformed PHPDoc, missing asterisk !
+                        continue;
+                    }
                 }
 
                 $content = $annotation->getContent();
 
                 if (
-                    1 !== Preg::match('/[.。]$/u', $content)
-                    || 0 !== Preg::match('/[.。](?!$)/u', $content, $matches)
+                    1 !== Preg::match('/[.。]\h*$/u', $content)
+                    || 0 !== Preg::match('/[.。](?!\h*$)/u', $content, $matches)
                 ) {
                     continue;
                 }
 
                 $endLine = $doc->getLine($annotation->getEnd());
-                $endLine->setContent(Preg::replace('/(?<![.。])[.。](\s+)$/u', '\1', $endLine->getContent()));
+                $endLine->setContent(Preg::replace('/(?<![.。])[.。]\h*(\H+)$/u', '\1', $endLine->getContent()));
 
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()

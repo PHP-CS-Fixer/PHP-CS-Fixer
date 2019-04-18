@@ -19,10 +19,10 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Runner\Runner;
-use PhpCsFixer\Tests\Test\Constraint\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -30,6 +30,7 @@ use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Integration test base class.
@@ -47,8 +48,6 @@ use Symfony\Component\Finder\Finder;
  * {"indent": "    ", "lineEnding": "\n"}
  * --SETTINGS--*
  * {"key": "value"} # optional extension point for custom IntegrationTestCase class
- * --REQUIREMENTS--*
- * {"php": 50600**}
  * --EXPECT--
  * Expected code after fixing
  * --INPUT--*
@@ -82,7 +81,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         self::$fileRemoval->observe($tmpFile);
 
         if (!is_file($tmpFile)) {
-            $dir = dirname($tmpFile);
+            $dir = \dirname($tmpFile);
 
             if (!is_dir($dir)) {
                 $fs = new Filesystem();
@@ -98,6 +97,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
+        self::$fileRemoval = null;
     }
 
     protected function setUp()
@@ -115,6 +115,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
+
+        $this->linter = null;
 
         // @todo remove at 3.0
         Tokens::setLegacyMode(false);
@@ -147,12 +149,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $factory = static::createIntegrationCaseFactory();
         $tests = [];
 
+        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
             }
 
-            $tests[] = [
+            $tests[$file->getPathname()] = [
                 $factory->create($file),
             ];
         }
@@ -199,8 +202,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     protected function doTest(IntegrationCase $case)
     {
-        if (PHP_VERSION_ID < $case->getRequirement('php')) {
-            $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), PHP_VERSION_ID));
+        if (\PHP_VERSION_ID < $case->getRequirement('php')) {
+            $this->markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
         }
 
         $input = $case->getInputCode();
@@ -261,7 +264,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixedInputCode = file_get_contents($tmpFile);
         $this->assertThat(
             $fixedInputCode,
-            new SameStringsConstraint($expected),
+            self::createIsIdenticalStringConstraint($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
@@ -270,7 +273,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             )
         );
 
-        if (1 < count($fixers)) {
+        if (1 < \count($fixers)) {
             $tmpFile = static::getTempFile();
             if (false === @file_put_contents($tmpFile, $input)) {
                 throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
@@ -321,7 +324,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         if ($fixedInputCode !== $fixedInputCodeWithReversedFixers) {
             static::assertGreaterThan(
                 1,
-                count(array_unique(array_map(
+                \count(array_unique(array_map(
                     static function (FixerInterface $fixer) {
                         return $fixer->getPriority();
                     },
@@ -350,7 +353,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
             )
-            ->getFixers();
+            ->getFixers()
+        ;
     }
 
     /**
@@ -381,20 +385,47 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
                 $linterProphecy
                     ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+                ;
                 $linterProphecy
                     ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+                ;
                 $linterProphecy
                     ->isAsync()
-                    ->willReturn(false);
+                    ->willReturn(false)
+                ;
 
                 $linter = $linterProphecy->reveal();
             } else {
-                $linter = new Linter();
+                $linter = new CachingLinter(new Linter());
             }
         }
 
         return $linter;
+    }
+
+    /**
+     * @todo Remove me when this class will end up in dedicated package.
+     *
+     * @param string $expected
+     *
+     * @return PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString||PHPUnit\Framework\Constraint\IsIdentical|PHPUnit_Framework_Constraint_IsIdentical
+     */
+    private static function createIsIdenticalStringConstraint($expected)
+    {
+        $candidates = array_filter([
+            'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
+            'PHPUnit\Framework\Constraint\IsIdentical',
+            'PHPUnit_Framework_Constraint_IsIdentical',
+        ], function ($className) { return class_exists($className); });
+
+        if (empty($candidates)) {
+            throw new \RuntimeException('PHPUnit not installed?!');
+        }
+
+        $candidate = array_shift($candidates);
+
+        return new $candidate($expected);
     }
 }

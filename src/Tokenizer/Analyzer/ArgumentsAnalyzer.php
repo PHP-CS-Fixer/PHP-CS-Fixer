@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -33,7 +35,7 @@ final class ArgumentsAnalyzer
      */
     public function countArguments(Tokens $tokens, $openParenthesis, $closeParenthesis)
     {
-        return count($this->getArguments($tokens, $openParenthesis, $closeParenthesis));
+        return \count($this->getArguments($tokens, $openParenthesis, $closeParenthesis));
     }
 
     /**
@@ -74,6 +76,10 @@ final class ArgumentsAnalyzer
 
             // if comma matched, increase arguments counter
             if ($token->equals(',')) {
+                if ($tokens->getNextMeaningfulToken($paramContentIndex) === $closeParenthesis) {
+                    break; // trailing ',' in function call (PHP 7.3)
+                }
+
                 $arguments[$argumentsStart] = $paramContentIndex - 1;
                 $argumentsStart = $paramContentIndex + 1;
             }
@@ -82,5 +88,56 @@ final class ArgumentsAnalyzer
         $arguments[$argumentsStart] = $paramContentIndex - 1;
 
         return $arguments;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $argumentStart
+     * @param int    $argumentEnd
+     *
+     * @return ArgumentAnalysis
+     */
+    public function getArgumentInfo(Tokens $tokens, $argumentStart, $argumentEnd)
+    {
+        $info = [
+            'default' => null,
+            'name' => null,
+            'name_index' => null,
+            'type' => null,
+            'type_index_start' => null,
+            'type_index_end' => null,
+        ];
+
+        $sawName = false;
+        for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
+            $token = $tokens[$index];
+            if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS) || $token->equals('&')) {
+                continue;
+            }
+            if ($token->isGivenKind(T_VARIABLE)) {
+                $sawName = true;
+                $info['name_index'] = $index;
+                $info['name'] = $token->getContent();
+
+                continue;
+            }
+            if ($token->equals('=')) {
+                continue;
+            }
+            if ($sawName) {
+                $info['default'] .= $token->getContent();
+            } else {
+                $info['type_index_start'] = ($info['type_index_start'] > 0) ? $info['type_index_start'] : $index;
+                $info['type_index_end'] = $index;
+                $info['type'] .= $token->getContent();
+            }
+        }
+
+        return new ArgumentAnalysis(
+            $info['name'],
+            $info['name_index'],
+            $info['default'],
+            $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null
+        );
     }
 }

@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -60,7 +60,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if (in_array('inside', $this->configuration['positions'], true)) {
+            if (\in_array('inside', $this->configuration['positions'], true)) {
                 if ($token->equals('[')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
                 } else {
@@ -78,7 +78,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 }
             }
 
-            if (in_array('outside', $this->configuration['positions'], true)) {
+            if (\in_array('outside', $this->configuration['positions'], true)) {
                 $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($index);
                 if ($tokens[$prevNonWhitespaceIndex]->isComment()) {
                     continue;
@@ -99,11 +99,9 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
         return new FixerConfigurationResolverRootless('positions', [
             (new FixerOptionBuilder('positions', 'Whether spacing should be fixed inside and/or outside the offset braces.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf($values),
-                ])
+                ->setAllowedValues([new AllowedValueSubset($values)])
                 ->setDefault($values)
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

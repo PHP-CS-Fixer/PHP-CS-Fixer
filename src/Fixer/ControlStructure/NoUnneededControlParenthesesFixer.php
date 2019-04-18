@@ -47,7 +47,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         parent::__construct();
 
         // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
-        if (defined('T_COALESCE')) {
+        if (\defined('T_COALESCE')) {
             self::$loops['clone']['forbiddenContents'][] = [T_COALESCE, '??'];
         }
     }
@@ -146,7 +146,7 @@ yield(2);
                     continue;
                 }
 
-                if (array_key_exists('forbiddenContents', $loop)) {
+                if (\array_key_exists('forbiddenContents', $loop)) {
                     $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
                     // A forbidden token is found and is inside the parenthesis.
                     if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {
@@ -184,6 +184,6 @@ yield(2);
                     'yield',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

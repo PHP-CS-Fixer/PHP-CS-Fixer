@@ -24,6 +24,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
+ * @group covers-nothing
  */
 final class TextDiffTest extends TestCase
 {
@@ -69,6 +70,9 @@ final class TextDiffTest extends TestCase
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
 %A$output->writeln('<error>'.(int) $output.'</error>');%A
+%A$output->writeln('<error> TEST </error>');%A
+%A$output->writeln('<error>'.(int)$output.'</error>');%A
+%A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
         $cases = [];
         foreach (['txt', 'xml', 'junit'] as $format) {
@@ -93,7 +97,7 @@ TEST;
         sort($formats);
 
         $this->assertSame(
-            ['checkstyle', 'json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
             $formats
         );
     }

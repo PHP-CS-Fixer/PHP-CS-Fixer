@@ -17,17 +17,16 @@ declare(strict_types=1);
 use some\a\ClassA;
 use some\a\ClassB;
 use some\a\ClassC as C;
-use some\x\ClassB;
 use const some\a\ConstA;
 use const some\a\ConstB;
 use const some\a\ConstC;
-use const some\x\E;
 use function some\a\fn_a;
 use function some\a\fn_b;
 use function some\a\fn_c;
-use function some\x\A\B;
 use function some\x\CC as C;
+use some\x\ClassB;
 use function some\x\D;
+use const some\x\E;
 
 function dummyUsage()
 {
@@ -206,7 +205,7 @@ class Foo implements FooInterface
         yield 1;
 
         // generator delegation
-        yield from $this->gen2();
+        yield FROM $this->gen2();
     }
 
     public function gen2()

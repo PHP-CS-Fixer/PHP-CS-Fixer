@@ -40,13 +40,16 @@ final class RunnerTest extends TestCase
         $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $linterProphecy
             ->isAsync()
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
         $linterProphecy
             ->lintFile(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+        ;
         $linterProphecy
             ->lintSource(Argument::type('string'))
-            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+            ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+        ;
 
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
@@ -58,7 +61,7 @@ final class RunnerTest extends TestCase
             'diff' => '',
         ];
 
-        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
             Finder::create()->in($path),
             $fixers,
@@ -78,7 +81,7 @@ final class RunnerTest extends TestCase
         $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
         $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
 
-        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'fix';
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
             Finder::create()->in($path),
             $fixers,
@@ -106,7 +109,7 @@ final class RunnerTest extends TestCase
     {
         $errorsManager = new ErrorsManager();
 
-        $path = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'FixerTest'.DIRECTORY_SEPARATOR.'invalid';
+        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'invalid';
         $runner = new Runner(
             Finder::create()->in($path),
             [
@@ -121,7 +124,7 @@ final class RunnerTest extends TestCase
             new NullCacheManager()
         );
         $changed = $runner->fix();
-        $pathToInvalidFile = $path.DIRECTORY_SEPARATOR.'somefile.php';
+        $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
 
         $this->assertCount(0, $changed);
 

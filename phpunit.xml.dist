@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-    xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     backupGlobals="false"
     backupStaticAttributes="false"
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
-    beStrictAboutTestSize="true"
     beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true"
     bootstrap="./vendor/autoload.php"
@@ -16,13 +15,19 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
+    enforceTimeLimit="true"
     processIsolation="false"
     stopOnFailure="false"
     verbose="true"
 >
     <testsuites>
-        <testsuite>
+        <testsuite name="all">
             <directory>./tests</directory>
+        </testsuite>
+        <testsuite name="coverage">
+            <directory>./tests</directory>
+            <exclude>./tests/AutoReview</exclude>
+            <exclude>./tests/Smoke</exclude>
         </testsuite>
     </testsuites>
 
@@ -49,6 +54,7 @@
         <ini name="zend.enable_gc" value="0"/>
         <ini name="memory_limit" value="1G"/>
         <env name="SKIP_LINT_TEST_CASES" value="0"/>
+        <env name="PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS" value="1"/>
         <env name="PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER" value="0"/>
     </php>
 </phpunit>

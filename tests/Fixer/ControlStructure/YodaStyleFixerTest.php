@@ -30,9 +30,9 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $extraConfig = [])
     {
-        $this->fixer->configure(['equal' => true, 'identical' => true]);
+        $this->fixer->configure(['equal' => true, 'identical' => true] + $extraConfig);
         $this->doTest($expected, $input);
     }
 
@@ -44,9 +44,9 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFixInverse($expected, $input = null)
+    public function testFixInverse($expected, $input = null, array $extraConfig = [])
     {
-        $this->fixer->configure(['equal' => false, 'identical' => false]);
+        $this->fixer->configure(['equal' => false, 'identical' => false] + $extraConfig);
 
         if (null === $input) {
             $this->doTest($expected);
@@ -61,6 +61,10 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
+            [
+                '<?php return 1 !== $a [$b];',
+                '<?php return $a [$b] !== 1;',
+            ],
             [
                 '<?= 1 === $a ? 5 : 7;',
                 '<?= $a === 1 ? 5 : 7;',
@@ -213,6 +217,13 @@ if ($a = $obj instanceof A === true) {
             ['<?php $l = $c > 2;'],
             ['<?php return $this->myObject1->{$index}+$b === "";'],
             ['<?php return $m[2]+1 == 2;'],
+            ['<?php return $m{2}+1 == 2;'],
+            ['<?php return $m->a{2}+1 == 2;'],
+            ['<?php return $foo === $bar[$baz][1];'],
+            ['<?php return $foo === $bar[$baz]{1};'],
+            ['<?php $a = $b[$key]["1"] === $c["2"];'],
+            ['<?php return $foo->$a[1] === $bar[$baz]{1}->$a[1][2][3]->$d[$z]{1};'],
+            ['<?php return $foo->$a === $foo->$b->$c;'],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],
@@ -391,7 +402,7 @@ $a#4
                 ',
             ],
             [
-               '<?php
+                '<?php
                 function foo() {
                     foreach ($arr as $key => $value) {
                         false !== uniqid() ? 1 : 2;
@@ -408,6 +419,180 @@ $a#4
             ],
             [
                 '<?php false === $a = array();',
+            ],
+            [
+                '<?php $e = count($this->array[$var]) === $a;',
+                '<?php $e = $a === count($this->array[$var]);',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php $i = $this->getStuff() === $myVariable;',
+                '<?php $i = $myVariable === $this->getStuff();',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php $e = count($this->array[$var]) === $a;',
+                '<?php $e = $a === count($this->array[$var]);',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php $g = ($a & self::MY_BITMASK) === $a;',
+                '<?php $g = $a === ($a & self::MY_BITMASK);',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar + 2 === $k;',
+                '<?php return $k === $myVar + 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar . $b === $k;',
+                '<?php return $k === $myVar . $b;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar - 2 === $k;',
+                '<?php return $k === $myVar - 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar * 2 === $k;',
+                '<?php return $k === $myVar * 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar / 2 === $k;',
+                '<?php return $k === $myVar / 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar % 2 === $k;',
+                '<?php return $k === $myVar % 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar ** 2 === $k;',
+                '<?php return $k === $myVar ** 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar < 2 === $k;',
+                '<?php return $k === $myVar < 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar > 2 === $k;',
+                '<?php return $k === $myVar > 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar <= 2 === $k;',
+                '<?php return $k === $myVar <= 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar >= 2 === $k;',
+                '<?php return $k === $myVar >= 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar . 2 === $k;',
+                '<?php return $k === $myVar . 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar << 2 === $k;',
+                '<?php return $k === $myVar << 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar >> 2 === $k;',
+                '<?php return $k === $myVar >> 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return !$myVar === $k;',
+                '<?php return $k === !$myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return $myVar instanceof Foo === $k;',
+                '<?php return $k === $myVar instanceof Foo;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return (bool) $myVar === $k;',
+                '<?php return $k === (bool) $myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return (int) $myVar === $k;',
+                '<?php return $k === (int) $myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return (float) $myVar === $k;',
+                '<?php return $k === (float) $myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return (string) $myVar === $k;',
+                '<?php return $k === (string) $myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return (array) $myVar === $k;',
+                '<?php return $k === (array) $myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php return (object) $myVar === $k;',
+                '<?php return $k === (object) $myVar;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php $a = null === foo();',
+                '<?php $a = foo() === null;',
+            ],
+            [
+                '<?php $a = \'foo\' === foo();',
+                '<?php $a = foo() === \'foo\';',
+            ],
+            [
+                '<?php $a = "foo" === foo();',
+                '<?php $a = foo() === "foo";',
+            ],
+            [
+                '<?php $a = 1 === foo();',
+                '<?php $a = foo() === 1;',
+            ],
+            [
+                '<?php $a = 1.2 === foo();',
+                '<?php $a = foo() === 1.2;',
+            ],
+            [
+                '<?php $a = true === foo();',
+                '<?php $a = foo() === true;',
+            ],
+            [
+                '<?php $a = false === foo();',
+                '<?php $a = foo() === false;',
+            ],
+            [
+                '<?php $a = -1 === reset($foo);',
+                '<?php $a = reset($foo) === -1;',
+            ],
+            [
+                '<?php $a = - 1 === reset($foo);',
+                '<?php $a = reset($foo) === - 1;',
+            ],
+            [
+                '<?php $a = -/* bar */1 === reset($foo);',
+                '<?php $a = reset($foo) === -/* bar */1;',
+            ],
+            [
+                '<?php $a **= 4 === $b ? 2 : 3;',
+                '<?php $a **= $b === 4 ? 2 : 3;',
             ],
         ];
     }
@@ -506,54 +691,13 @@ $a#4
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "integer".'],
-            [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist. Defined options are: "equal", "identical", "less_and_greater".'],
+            [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater".'],
         ];
     }
 
     public function testDefinition()
     {
         $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP56Cases
-     * @requires PHP 5.6
-     */
-    public function testFixPHP56($expected, $input)
-    {
-        $this->fixer->configure(['equal' => true, 'identical' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * Test with the inverse config.
-     *
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP56Cases
-     * @requires PHP 5.6
-     */
-    public function testFixPHP56Inverse($expected, $input)
-    {
-        $this->fixer->configure(['equal' => false, 'identical' => false]);
-        $this->doTest($input, $expected);
-    }
-
-    /**
-     * @return array<string, string[]>
-     */
-    public function providePHP56Cases()
-    {
-        return [
-            '5.6 Simple non-Yoda conditions that need to be fixed' => [
-                '<?php $a **= 4 === $b ? 2 : 3;',
-                '<?php $a **= $b === 4 ? 2 : 3;',
-            ],
-        ];
     }
 
     /**
@@ -718,7 +862,7 @@ function a() {
                 [
                     'identical' => false,
                 ],
-            '<?php
+                '<?php
 $a = [1, 2, 3];
 while (2 !== $b = array_pop($c));
 ',

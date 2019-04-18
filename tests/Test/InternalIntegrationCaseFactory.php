@@ -28,7 +28,7 @@ final class InternalIntegrationCaseFactory extends AbstractIntegrationCaseFactor
     {
         $parsed = parent::determineSettings($file, $config);
 
-        $parsed['isExplicitPriorityCheck'] = in_array('priority', explode(DIRECTORY_SEPARATOR, $file->getRelativePathname()), true);
+        $parsed['isExplicitPriorityCheck'] = \in_array('priority', explode(\DIRECTORY_SEPARATOR, $file->getRelativePathname()), true);
 
         return $parsed;
     }

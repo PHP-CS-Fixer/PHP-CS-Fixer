@@ -15,9 +15,9 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -36,8 +36,10 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      */
     private static $tokenMap = [
         'break' => T_BREAK,
+        'case' => T_CASE,
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
+        'default' => T_DEFAULT,
         'die' => T_EXIT,
         'do' => T_DO,
         'exit' => T_EXIT,
@@ -207,7 +209,7 @@ switch ($a) {
                     ]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 if (null === $a) {
     $foo->bar();
     throw new \UnexpectedValueException("A cannot be null");
@@ -218,7 +220,7 @@ if (null === $a) {
                     ]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 $a = 9000;
 try {
     $foo->bar();
@@ -251,8 +253,8 @@ if (true) {
      */
     public function getPriority()
     {
-        // should be run after NoUselessReturnFixer
-        return -19;
+        // should be run after NoUselessReturnFixer and NoExtraBlankLinesFixer
+        return -21;
     }
 
     /**
@@ -313,9 +315,7 @@ if (true) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(self::$tokenMap)),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
                 ->setDefault([
                     'break',
                     'continue',

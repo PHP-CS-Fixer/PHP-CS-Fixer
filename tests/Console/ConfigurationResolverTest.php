@@ -199,9 +199,9 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dir.DIRECTORY_SEPARATOR.'foo.php']]);
+        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']]);
 
-        $this->assertSame($dir.DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
+        $this->assertSame($dir.\DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
         $this->assertInstanceOf('Test1Config', $resolver->getConfig());
     }
 
@@ -241,30 +241,30 @@ final class ConfigurationResolverTest extends TestCase
 
         return [
             [
-                $dirBase.'case_1'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
                 'Test1Config',
                 $dirBase.'case_1',
             ],
             [
-                $dirBase.'case_2'.DIRECTORY_SEPARATOR.'.php_cs',
+                $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php_cs',
                 'Test2Config',
                 $dirBase.'case_2',
             ],
             [
-                $dirBase.'case_3'.DIRECTORY_SEPARATOR.'.php_cs',
+                $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php_cs',
                 'Test3Config',
                 $dirBase.'case_3',
             ],
             [
-                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
                 'Test6Config',
-                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'subdir',
+                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
                 $dirBase.'case_6',
             ],
             [
-                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
                 'Test6Config',
-                $dirBase.'case_6'.DIRECTORY_SEPARATOR.'subdir/empty_file.php',
+                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
                 $dirBase.'case_6',
             ],
         ];
@@ -287,7 +287,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "json", "junit", "txt", "xml"\.$/');
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt", "xml"\.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -328,7 +328,7 @@ final class ConfigurationResolverTest extends TestCase
             __DIR__
         );
 
-        $this->assertSame([__DIR__.DIRECTORY_SEPARATOR.'Command'], $resolver->getPath());
+        $this->assertSame([__DIR__.\DIRECTORY_SEPARATOR.'Command'], $resolver->getPath());
     }
 
     public function testResolvePathRelativeB()
@@ -336,7 +336,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(
             ['path' => [basename(__DIR__)]],
             null,
-            dirname(__DIR__)
+            \dirname(__DIR__)
         );
 
         $this->assertSame([__DIR__], $resolver->getPath());
@@ -347,7 +347,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in(__DIR__)
-            ->notPath(basename(__FILE__));
+            ->notPath(basename(__FILE__))
+        ;
 
         $resolver = $this->createConfigurationResolver(
             ['path' => [__FILE__]],
@@ -362,7 +363,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in(__DIR__)
-            ->notPath(basename(__FILE__));
+            ->notPath(basename(__FILE__))
+        ;
 
         $resolver = $this->createConfigurationResolver([
             'path' => [__FILE__],
@@ -374,11 +376,12 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirOverridePathMode()
     {
-        $dir = dirname(__DIR__);
+        $dir = \dirname(__DIR__);
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__));
+            ->exclude(basename(__DIR__))
+        ;
 
         $resolver = $this->createConfigurationResolver(
             ['path' => [__FILE__]],
@@ -390,11 +393,12 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testResolvePathWithFileThatIsExcludedByDirIntersectionPathMode()
     {
-        $dir = dirname(__DIR__);
+        $dir = \dirname(__DIR__);
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->exclude(basename(__DIR__));
+            ->exclude(basename(__DIR__))
+        ;
 
         $resolver = $this->createConfigurationResolver([
             'path-mode' => 'intersection',
@@ -410,7 +414,8 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $config->getFinder()
             ->in($dir)
-            ->notPath('foo-'.basename(__FILE__));
+            ->notPath('foo-'.basename(__FILE__))
+        ;
 
         $resolver = $this->createConfigurationResolver(
             ['path' => [__FILE__]],
@@ -431,7 +436,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveIntersectionOfPaths($expected, $configFinder, array $path, $pathMode, $configOption = null)
     {
         if ($expected instanceof \Exception) {
-            $this->expectException(get_class($expected));
+            $this->expectException(\get_class($expected));
         }
 
         if (null !== $configFinder) {
@@ -969,16 +974,16 @@ final class ConfigurationResolverTest extends TestCase
         );
 
         $resolver = $this->createConfigurationResolver([
-                'path-mode' => 'intersection',
-                'allow-risky' => 'yes',
-                'config' => null,
-                'dry-run' => true,
-                'rules' => 'php_unit_construct',
-                'using-cache' => false,
-                'diff' => true,
-                'diff-format' => 'udiff',
-                'format' => 'json',
-                'stop-on-violation' => true,
+            'path-mode' => 'intersection',
+            'allow-risky' => 'yes',
+            'config' => null,
+            'dry-run' => true,
+            'rules' => 'php_unit_construct',
+            'using-cache' => false,
+            'diff' => true,
+            'diff-format' => 'udiff',
+            'format' => 'json',
+            'stop-on-violation' => true,
         ]);
 
         $this->assertTrue($resolver->shouldStopOnViolation());
@@ -1064,7 +1069,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_8';
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dir.DIRECTORY_SEPARATOR.'.php_cs']]);
+        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'.php_cs']]);
 
         $this->assertTrue($resolver->getRiskyAllowed());
         $this->assertSame(['php_unit_construct' => true], $resolver->getRules());
@@ -1111,21 +1116,31 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
+     * @param array|bool $ruleConfig
+     *
+     * @dataProvider provideDeprecatedFixerConfiguredCases
+     *
      * @group legacy
-     * @expectedDeprecation Fixer `Vendor4/foo` is deprecated, use `testA` and `testB` instead.
+     * @expectedDeprecation Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.
      */
-    public function testDeprecatedFixerConfigured()
+    public function testDeprecatedFixerConfigured($ruleConfig)
     {
         $fixer = new DeprecatedFixer();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
+        $config->setRules([$fixer->getName() => $ruleConfig]);
 
-        $resolver = $this->createConfigurationResolver(
-            ['rules' => $fixer->getName()],
-            $config
-        );
-
+        $resolver = $this->createConfigurationResolver([], $config);
         $resolver->getFixers();
+    }
+
+    public function provideDeprecatedFixerConfiguredCases()
+    {
+        return [
+            [true],
+            [['foo' => true]],
+            [false],
+        ];
     }
 
     private function assertSameRules(array $expected, array $actual, $message = '')
@@ -1138,7 +1153,7 @@ final class ConfigurationResolverTest extends TestCase
 
     private function getFixtureDir()
     {
-        return realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.DIRECTORY_SEPARATOR).'/';
+        return realpath(__DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.\DIRECTORY_SEPARATOR).'/';
     }
 
     private function createConfigurationResolver(array $options, Config $config = null, $cwdPath = '')

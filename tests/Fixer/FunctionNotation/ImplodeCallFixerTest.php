@@ -1,0 +1,187 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
+
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+
+/**
+ * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
+ */
+final class ImplodeCallFixerTest extends AbstractFixerTestCase
+{
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases()
+    {
+        yield ["<?php implode('', [1,2,3]);"];
+        yield ['<?php implode("", $foo);'];
+        yield ['<?php implode($foo, $bar);'];
+        yield ['<?php $arrayHelper->implode($foo);'];
+        yield ['<?php ArrayHelper::implode($foo);'];
+        yield ['<?php ArrayHelper\implode($foo);'];
+        yield ['<?php define("implode", "foo"); implode; bar($baz);'];
+
+        yield [
+            '<?php implode("", $foo);',
+            '<?php implode($foo, "");',
+        ];
+
+        yield [
+            '<?php \implode("", $foo);',
+            '<?php \implode($foo, "");',
+        ];
+
+        yield [
+            '<?php implode("Lorem ipsum dolor sit amet", $foo);',
+            '<?php implode($foo, "Lorem ipsum dolor sit amet");',
+        ];
+
+        yield [
+            '<?php implode(\'\', $foo);',
+            '<?php implode($foo);',
+        ];
+
+        yield [
+            '<?php IMPlode("", $foo);',
+            '<?php IMPlode($foo, "");',
+        ];
+
+        yield [
+            '<?php implode("",$foo);',
+            '<?php implode($foo,"");',
+        ];
+
+        yield [
+            '<?php implode("", $weirdStuff[mt_rand($min, getMax()) + 200]);',
+            '<?php implode($weirdStuff[mt_rand($min, getMax()) + 200], "");',
+        ];
+
+        yield [
+            '<?php
+                implode(
+                    "",
+                    $foo
+                );',
+            '<?php
+                implode(
+                    $foo,
+                    ""
+                );',
+        ];
+
+        yield [
+            '<?php
+                implode(
+                    \'\', $foo
+                );',
+            '<?php
+                implode(
+                    $foo
+                );',
+        ];
+
+        yield [
+            '<?php
+implode(# 1
+""/* 2.1 */,# 2.2
+$foo# 3
+);',
+            '<?php
+implode(# 1
+$foo/* 2.1 */,# 2.2
+""# 3
+);',
+        ];
+
+        yield [
+            '<?php
+implode(# 1
+# 2
+\'\', $foo# 3
+# 4
+)# 5
+;',
+            '<?php
+implode(# 1
+# 2
+$foo# 3
+# 4
+)# 5
+;',
+        ];
+
+        yield [
+            '<?php
+implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);
+// comment for testing
+implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);implode(\'\', $a);
+',
+            '<?php
+implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
+// comment for testing
+implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
+',
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        yield [
+            '<?php implode("", $foo, );',
+            '<?php implode($foo, "", );',
+        ];
+
+        yield [
+            '<?php implode(\'\', $foo, );',
+            '<?php implode($foo, );',
+        ];
+
+        yield [
+            '<?php
+                implode(
+                    "",
+                    $foo,
+                );',
+            '<?php
+                implode(
+                    $foo,
+                    "",
+                );',
+        ];
+    }
+}

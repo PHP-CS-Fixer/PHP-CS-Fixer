@@ -40,6 +40,16 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // Should run after BracesFixer
+        // Should run before ArrayIndentationFixer
+        return -29;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
@@ -52,7 +62,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        for ($index = 1, $count = count($tokens); $index < $count; ++$index) {
+        for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
                 continue;
             }
@@ -90,7 +100,11 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $index = $tokens->getPrevMeaningfulToken($index);
         $indent = $this->whitespacesConfig->getIndent();
 
-        for ($i = $index - 1; $i >= 0; --$i) {
+        for ($i = $index; $i >= 0; --$i) {
+            if ($tokens[$i]->equals(')')) {
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+            }
+
             $currentIndent = $this->getIndentAt($tokens, $i);
             if (null === $currentIndent) {
                 continue;
@@ -140,22 +154,32 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function getIndentAt(Tokens $tokens, $index)
     {
-        $content = '';
-
-        if ($tokens[$index]->isWhitespace()) {
-            $content = $tokens[$index]->getContent();
-            --$index;
-        }
-
-        if ($tokens[$index]->isGivenKind(T_OPEN_TAG)) {
-            $content = $tokens[$index]->getContent().$content;
-        }
-
-        if (1 === Preg::match('/\R{1}([ \t]*)$/', $content, $matches)) {
+        if (1 === Preg::match('/\R{1}([ \t]*)$/', $this->getIndentContentAt($tokens, $index), $matches)) {
             return $matches[1];
         }
 
         return null;
+    }
+
+    private function getIndentContentAt(Tokens $tokens, $index)
+    {
+        for ($i = $index; $i >= 0; --$i) {
+            if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+                continue;
+            }
+
+            $content = $tokens[$index]->getContent();
+
+            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+                $content = $tokens[$index - 1]->getContent().$content;
+            }
+
+            if (Preg::match('/\R/', $content)) {
+                return $content;
+            }
+        }
+
+        return '';
     }
 
     /**

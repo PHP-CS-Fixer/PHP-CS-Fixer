@@ -71,6 +71,12 @@ EOF;
             }
 
             $content = $token->getContent();
+            $prefix = '';
+
+            if ('b' === strtolower($content[0])) {
+                $prefix = $content[0];
+                $content = substr($content, 1);
+            }
 
             if (
                 '"' === $content[0] &&
@@ -80,7 +86,7 @@ EOF;
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace(['\\"', '\\$', '\''], ['"', '$', '\\\''], $content);
-                $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, '\''.$content.'\'']);
+                $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\'']);
             }
         }
     }

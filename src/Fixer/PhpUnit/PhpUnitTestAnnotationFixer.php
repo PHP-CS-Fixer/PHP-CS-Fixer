@@ -59,7 +59,7 @@ class Test extends \\PhpUnit\\FrameWork\\TestCase
 class Test extends \\PhpUnit\\FrameWork\\TestCase
 {
 public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEnding(), ['style' => 'annotation']),
-                ],
+            ],
             null,
             'This fixer may change the name of your tests, and could cause incompatibility with'.
             ' abstract classes or interfaces.'
@@ -85,7 +85,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        foreach (array_reverse($this->findPhpUnitClasses($tokens)) as $indexes) {
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
             if ('annotation' === $this->configuration['style']) {
                 $this->applyTestAnnotation($tokens, $indexes[0], $indexes[1]);
             } else {
@@ -107,30 +108,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             (new FixerOptionBuilder('case', 'Whether to camel or snake case when adding the test prefix'))
                 ->setAllowedValues(['camel', 'snake'])
                 ->setDefault('camel')
+                ->setDeprecationMessage('Use `php_unit_method_casing` fixer instead.')
                 ->getOption(),
         ]);
-    }
-
-    /**
-     * @param Tokens $tokens
-     *
-     * @return int[][] array of [start, end] indexes from sooner to later classes
-     */
-    private function findPhpUnitClasses(Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        $phpunitClasses = [];
-
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-                $phpunitClasses[] = [$index, $endIndex];
-                $index = $endIndex;
-            }
-        }
-
-        return $phpunitClasses;
     }
 
     /**
@@ -165,7 +145,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $lines = $this->addTestAnnotation($lines, $tokens, $docBlockIndex);
 
-            $lines = implode($lines);
+            $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
         }
     }
@@ -187,7 +167,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $lines = $this->updateDocBlock($tokens, $docBlockIndex);
 
-            $lines = implode($lines);
+            $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
 
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
@@ -257,7 +237,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function startsWith($needle, $haystack)
     {
-        $len = strlen($needle);
+        $len = \strlen($needle);
 
         return substr($haystack, 0, $len) === $needle;
     }
@@ -366,7 +346,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
-            new Token([T_DOC_COMMENT, '/**'.$lineEnd."${originalIndent} * @test".$lineEnd."${originalIndent} */"]),
+            new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @test".$lineEnd."{$originalIndent} */"]),
             new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
         ];
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);
@@ -411,9 +391,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             }
 
             if (!$needsAnnotation &&
-                false !== \strpos($lines[$i]->getContent(), ' @test') &&
-                false === \strpos($lines[$i]->getContent(), '@testWith') &&
-                false === \strpos($lines[$i]->getContent(), '@testdox')
+                false !== strpos($lines[$i]->getContent(), ' @test') &&
+                false === strpos($lines[$i]->getContent(), '@testWith') &&
+                false === strpos($lines[$i]->getContent(), '@testdox')
             ) {
                 // We remove @test from the doc block
                 $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
@@ -443,13 +423,12 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $lineContent = $this->getSingleLineDocBlockEntry($lines);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-        $lines = [
+
+        return [
             new Line('/**'.$lineEnd),
             new Line($originalIndent.' * '.$lineContent.$lineEnd),
             new Line($originalIndent.' */'),
         ];
-
-        return $lines;
     }
 
     /**
@@ -460,9 +439,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     private function getSingleLineDocBlockEntry($line)
     {
         $line = $line[0];
-        $line = \str_replace('*/', '', $line);
+        $line = str_replace('*/', '', $line);
         $line = trim($line);
-        $line = \str_split($line);
+        $line = str_split($line);
         $i = \count($line);
         do {
             --$i;
@@ -470,10 +449,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         if (' ' === $line[$i]) {
             ++$i;
         }
-        $line = array_slice($line, $i);
-        $line = implode($line);
+        $line = \array_slice($line, $i);
 
-        return $line;
+        return implode('', $line);
     }
 
     /**
@@ -499,17 +477,17 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function removeTestPrefixFromDependsAnnotation(Line $line)
     {
-        $line = \str_split($line->getContent());
+        $line = str_split($line->getContent());
 
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
-        $dependsFunctionName = implode(array_slice($line, $dependsIndex));
+        $dependsFunctionName = implode('', \array_slice($line, $dependsIndex));
 
         if ($this->startsWith('test', $dependsFunctionName)) {
             $dependsFunctionName = $this->removeTestPrefix($dependsFunctionName);
         }
         array_splice($line, $dependsIndex);
 
-        return new Line(implode($line).$dependsFunctionName);
+        return new Line(implode('', $line).$dependsFunctionName);
     }
 
     /**
@@ -519,9 +497,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function addTestPrefixToDependsAnnotation(Line $line)
     {
-        $line = \str_split($line->getContent());
+        $line = str_split($line->getContent());
         $dependsIndex = $this->findWhereDependsFunctionNameStarts($line);
-        $dependsFunctionName = implode(array_slice($line, $dependsIndex));
+        $dependsFunctionName = implode('', \array_slice($line, $dependsIndex));
 
         if (!$this->startsWith('test', $dependsFunctionName)) {
             $dependsFunctionName = $this->addTestPrefix($dependsFunctionName);
@@ -529,7 +507,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
         array_splice($line, $dependsIndex);
 
-        return new Line(implode($line).$dependsFunctionName);
+        return new Line(implode('', $line).$dependsFunctionName);
     }
 
     /**

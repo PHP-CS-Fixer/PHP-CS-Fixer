@@ -69,7 +69,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php interface Foo { const BAR = self::BAZ; function bar($a = self::BAR); }',
                 '<?php interface Foo { const BAR = Foo::BAZ; function bar($a = Foo::BAR); }',
             ],
-
             [
                 '<?php class Foo { const Foo = 1; }',
             ],
@@ -83,7 +82,10 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { function bar() { new Foo\Baz(); } }',
             ],
             [
-                // PHP < 5.4 compatibility: "self" is not available in closures
+                '<?php class Foo { function bar() { Baz\Foo::class; } }',
+            ],
+            [
+                '<?php class Foo { function bar() { function ($a = self::BAZ) { new self(); }; } }',
                 '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
             ],
             [
@@ -97,6 +99,49 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
             [
                 '<?php interface Foo { public function bar(self $foo, self $bar); }',
                 '<?php interface Foo { public function bar(Foo $foo, Foo $bar); }',
+            ],
+            [
+                '<?php interface Foo { public function bar(self $foo); }',
+                '<?php interface Foo { public function bar(\Foo $foo); }',
+            ],
+            [
+                '<?php namespace Foo; interface Bar { public function baz(\Bar $bar); }',
+            ],
+            [
+                '<?php namespace Foo; interface Bar { public function baz(self $bar); }',
+                '<?php namespace Foo; interface Bar { public function baz(Bar $bar); }',
+            ],
+            [
+                '<?php namespace Foo; interface Bar { public function baz(self $bar); }',
+                '<?php namespace Foo; interface Bar { public function baz(\Foo\Bar $bar); }',
+            ],
+            [
+                '<?php namespace Foo; interface Bar { public function baz(Foo\Bar $bar); }',
+            ],
+            [
+                '<?php namespace Foo; interface Bar { public function baz(Bar\Foo $bar); }',
+            ],
+            [
+                '<?php
+                namespace Foo\Foo2;
+                interface Bar {
+                    public function baz00(Foo2\Bar $bar);
+                    public function baz10(\Foo2\Bar $bar);
+                    public function baz20(Foo\Foo2\Bar $bar);
+                    public function baz21(self $bar);
+                    public function baz30(Test\Foo\Foo2\Bar $bar);
+                    public function baz31(\Test\Foo\Foo2\Bar $bar);
+                }',
+                '<?php
+                namespace Foo\Foo2;
+                interface Bar {
+                    public function baz00(Foo2\Bar $bar);
+                    public function baz10(\Foo2\Bar $bar);
+                    public function baz20(Foo\Foo2\Bar $bar);
+                    public function baz21(\Foo\Foo2\Bar $bar);
+                    public function baz30(Test\Foo\Foo2\Bar $bar);
+                    public function baz31(\Test\Foo\Foo2\Bar $bar);
+                }',
             ],
         ];
     }

@@ -13,32 +13,27 @@
 namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
- * @coversNothing
  * @requires OS Linux|Darwin
+ * @coversNothing
+ * @group covers-nothing
  */
-final class StdinTest extends TestCase
+final class StdinTest extends AbstractSmokeTest
 {
-    private static $cwd;
-
-    public static function setUpBeforeClass()
-    {
-        self::$cwd = __DIR__.'/../..';
-    }
-
     public function testFixingStdin()
     {
+        $cwd = __DIR__.'/../..';
+
         $command = 'php php-cs-fixer fix --rules=@PSR2 --dry-run --diff --using-cache=no';
         $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-in.php';
 
-        $fileResult = CommandExecutor::create("${command} ${inputFile}", self::$cwd)->getResult(false);
-        $stdinResult = CommandExecutor::create("${command} - < ${inputFile}", self::$cwd)->getResult(false);
+        $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);
+        $stdinResult = CommandExecutor::create("{$command} - < {$inputFile}", $cwd)->getResult(false);
 
         $this->assertSame(
             [
@@ -49,7 +44,7 @@ final class StdinTest extends TestCase
                     $fileResult->getError()
                 ),
                 'output' => str_ireplace(
-                    str_replace('/', DIRECTORY_SEPARATOR, 'PHP-CS-Fixer/tests/Fixtures/Integration/set/@PSR2.test-in.php'),
+                    str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile),
                     'php://stdin',
                     $this->unifyFooter($fileResult->getOutput())
                 ),

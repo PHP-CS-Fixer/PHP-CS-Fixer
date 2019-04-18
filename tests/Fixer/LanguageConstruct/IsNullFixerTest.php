@@ -35,28 +35,25 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      */
     public function testConfigurationWrongValue()
     {
-        $fixer = new IsNullFixer();
-
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".');
-        $fixer->configure(['use_yoda_style' => -1]);
+        $this->fixer->configure(['use_yoda_style' => -1]);
     }
 
     /**
      * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      */
     public function testCorrectConfiguration()
     {
-        $fixer = new IsNullFixer();
-        $fixer->configure(['use_yoda_style' => false]);
+        $this->fixer->configure(['use_yoda_style' => false]);
 
-        $configuration = static::getObjectAttribute($fixer, 'configuration');
-        static::assertFalse($configuration['use_yoda_style']);
+        $configuration = $this->getObjectAttribute($this->fixer, 'configuration');
+        $this->assertFalse($configuration['use_yoda_style']);
     }
 
     /**
@@ -110,6 +107,7 @@ FIXED;
 
             ['<?php is_nullSmth(json_decode($x));'],
             ['<?php smth_is_null(json_decode($x));'],
+            ['<?php namespace Foo; function &is_null($x) { return null === $x; }'],
 
             ['<?php "SELECT ... is_null(json_decode($x)) ...";'],
             ['<?php "SELECT ... is_null(json_decode($x)) ...";'],
@@ -225,12 +223,26 @@ FIXED;
                 '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
                 '<?php if ((is_null($u) or $v) and ($w || is_null($x)) xor (!is_null($y) and $z)) echo "foo"; ?>',
             ],
+
+            // edge cases: $isContainingDangerousConstructs, $wrapIntoParentheses
+            [
+                '<?php null === ($a ? $x : $y);',
+                '<?php is_null($a ? $x : $y);',
+            ],
+            [
+                '<?php $a === (null === $x);',
+                '<?php $a === is_null($x);',
+            ],
+            [
+                '<?php $a === (null === ($a ? $x : $y));',
+                '<?php $a === is_null($a ? $x : $y);',
+            ],
         ];
     }
 
     /**
      * @group legacy
-     * @expectedDeprecation Using "use_yoda_style" is deprecated and will be removed in 3.0. Use "yoda_style" fixer instead.
+     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      *
      * @dataProvider provideNonYodaFixCases
      *
@@ -264,6 +276,54 @@ FIXED;
             [
                 '<?php while (($nextMaxId = $myTimeline->getNextMaxId()) === null);',
                 '<?php while (is_null($nextMaxId = $myTimeline->getNextMaxId()));',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php null === $x;',
+                '<?php is_null($x, );',
+            ],
+            [
+                '<?php null === $x;',
+                '<?php is_null( $x , );',
+            ],
+            [
+                '<?php null === a(null === a(null === a(null === b(), ), ), );',
+                '<?php \is_null(a(\is_null(a(\is_null(a(\is_null(b(), ), ), ), ), ), ), );',
+            ],
+            [
+                '<?php if ((null === $u or $v) and ($w || null === $x) xor (null !== $y and $z)) echo "foo"; ?>',
+                '<?php if ((is_null($u, ) or $v) and ($w || is_null($x, )) xor (!is_null($y, ) and $z)) echo "foo"; ?>',
+            ],
+
+            // edge cases: $isContainingDangerousConstructs, $wrapIntoParentheses
+            [
+                '<?php null === ($a ? $x : $y );',
+                '<?php is_null($a ? $x : $y, );',
+            ],
+            [
+                '<?php $a === (null === $x);',
+                '<?php $a === is_null($x, );',
+            ],
+            [
+                '<?php $a === (null === ($a ? $x : $y ));',
+                '<?php $a === is_null($a ? $x : $y, );',
             ],
         ];
     }

@@ -16,7 +16,6 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -25,22 +24,23 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @coversNothing
+ * @group covers-nothing
  * @large
  */
-final class PharTest extends TestCase
+final class PharTest extends AbstractSmokeTest
 {
     private static $pharCwd;
     private static $pharName;
-    private static $pharPath;
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         self::$pharCwd = __DIR__.'/../..';
         self::$pharName = 'php-cs-fixer.phar';
-        self::$pharPath = self::$pharCwd.'/'.self::$pharName;
 
-        if (!file_exists(self::$pharPath)) {
-            static::markTestSkipped('No phar file available.');
+        if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
+            self::markTestSkippedOrFail('No phar file available.');
         }
     }
 
@@ -88,6 +88,14 @@ final class PharTest extends TestCase
         $this->assertSame(
             0,
             self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
+        );
+    }
+
+    public function testFixHelp()
+    {
+        $this->assertSame(
+            0,
+            self::executePharCommand('fix --help')->getCode()
         );
     }
 

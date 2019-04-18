@@ -88,7 +88,7 @@ switch ($b) {
 
     private function findCurlyBraceOpen(Tokens $tokens)
     {
-        for ($i = count($tokens) - 1; $i > 0; --$i) {
+        for ($i = \count($tokens) - 1; $i > 0; --$i) {
             if ($tokens[$i]->equals('{')) {
                 yield $i;
             }

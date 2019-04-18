@@ -18,6 +18,9 @@ use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
@@ -61,7 +64,7 @@ to merge paths from the config file and from the argument:
 
     <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle`` and ``junit``.
+The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit`` and ``gitlab``.
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 
@@ -255,22 +258,22 @@ Then, add the following command to your CI:
 
 %%%CI_INTEGRATION%%%
 
-Where ``$COMMIT_RANGE`` is your range of commits, eg ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
+Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
-Exit codes
-----------
+Exit code
+---------
 
 Exit code is built using following bit flags:
 
-*  0 OK.
-*  1 General error (or PHP minimal requirement not matched).
-*  4 Some files have invalid syntax (only in dry-run mode).
-*  8 Some files need fixing (only in dry-run mode).
-* 16 Configuration error of the application.
-* 32 Configuration error of a Fixer.
-* 64 Exception raised within the application.
+*  0 - OK.
+*  1 - General error (or PHP minimal requirement not matched).
+*  4 - Some files have invalid syntax (only in dry-run mode).
+*  8 - Some files need fixing (only in dry-run mode).
+* 16 - Configuration error of the application.
+* 32 - Configuration error of a Fixer.
+* 64 - Exception raised within the application.
 
-(applies to exit codes of the `fix` command only)
+(Applies to exit code of the `fix` command only)
 EOF
         ;
 
@@ -281,7 +284,7 @@ EOF
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
                 static function ($line) { return '    $ '.$line; },
-                array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
+                \array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
         ]);
@@ -294,7 +297,7 @@ EOF
      */
     public static function toString($value)
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             // Output modifications:
             // - remove new-lines
             // - combine multiple whitespaces
@@ -345,13 +348,21 @@ EOF
             });
 
             usort($allowed, static function ($valueA, $valueB) {
+                if ($valueA instanceof AllowedValueSubset) {
+                    return -1;
+                }
+
+                if ($valueB instanceof AllowedValueSubset) {
+                    return 1;
+                }
+
                 return strcasecmp(
                     self::toString($valueA),
                     self::toString($valueB)
                 );
             });
 
-            if (0 === count($allowed)) {
+            if (0 === \count($allowed)) {
                 $allowed = null;
             }
         }
@@ -457,7 +468,7 @@ EOF
             return $sets;
         };
 
-        $count = count($fixers) - 1;
+        $count = \count($fixers) - 1;
         foreach ($fixers as $i => $fixer) {
             $sets = $getSetsWithRule($fixer->getName());
 
@@ -500,7 +511,7 @@ EOF
             if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
                 $configurationDefinition = $fixer->getConfigurationDefinition();
                 $configurationDefinitionOptions = $configurationDefinition->getOptions();
-                if (count($configurationDefinitionOptions)) {
+                if (\count($configurationDefinitionOptions)) {
                     $help .= "   |\n   | Configuration options:\n";
 
                     usort(
@@ -516,14 +527,23 @@ EOF
                         $allowed = self::getDisplayableAllowedValues($option);
                         if (null !== $allowed) {
                             foreach ($allowed as &$value) {
-                                $value = self::toString($value);
+                                if ($value instanceof AllowedValueSubset) {
+                                    $value = 'a subset of <comment>'.self::toString($value->getAllowedValues()).'</comment>';
+                                } else {
+                                    $value = '<comment>'.self::toString($value).'</comment>';
+                                }
                             }
                         } else {
-                            $allowed = $option->getAllowedTypes();
+                            $allowed = array_map(
+                                function ($type) {
+                                    return '<comment>'.$type.'</comment>';
+                                },
+                                $option->getAllowedTypes()
+                            );
                         }
 
                         if (null !== $allowed) {
-                            $line .= ' (<comment>'.implode('</comment>, <comment>', $allowed).'</comment>)';
+                            $line .= ' ('.implode(', ', $allowed).')';
                         }
 
                         $line .= ': '.Preg::replace(
@@ -535,6 +555,18 @@ EOF
                             $line .= 'defaults to <comment>'.self::toString($option->getDefault()).'</comment>';
                         } else {
                             $line .= 'required';
+                        }
+
+                        if ($option instanceof DeprecatedFixerOption) {
+                            $line .= '. DEPRECATED: '.Preg::replace(
+                                '/(`.+?`)/',
+                                '<info>$1</info>',
+                                lcfirst(Preg::replace('/\.$/', '', OutputFormatter::escape($option->getDeprecationMessage())))
+                            );
+                        }
+
+                        if ($option instanceof AliasedFixerOption) {
+                            $line .= '; DEPRECATED alias: <comment>'.$option->getAlias().'</comment>';
                         }
 
                         foreach (self::wordwrap($line, 72) as $index => $line) {
@@ -569,7 +601,7 @@ EOF
         $currentLine = 0;
         $lineLength = 0;
         foreach (explode(' ', $string) as $word) {
-            $wordLength = strlen(Preg::replace('~</?(\w+)>~', '', $word));
+            $wordLength = \strlen(Preg::replace('~</?(\w+)>~', '', $word));
             if (0 !== $lineLength) {
                 ++$wordLength; // space before word
             }

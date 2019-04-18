@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: combine_nested_dirname,no_whitespace_in_blank_line.
+--RULESET--
+{"combine_nested_dirname": true, "no_whitespace_in_blank_line": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+dirname(
+        $path
+,2);
+
+--INPUT--
+<?php
+dirname(
+    dirname(
+        $path
+    )
+);

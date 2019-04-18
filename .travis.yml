@@ -1,17 +1,17 @@
 language: php
 
-sudo: false
-
 git:
     depth: 1
 
 cache:
     directories:
         - $HOME/.composer
+        - $HOME/bin
 
 env:
     global:
-        - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-progress"
+        - DEFAULT_COMPOSER_FLAGS="--optimize-autoloader --no-interaction --no-progress"
+        - COLLECT_COVERAGE=0
         - COMPOSER_FLAGS=""
 
 before_install:
@@ -33,6 +33,9 @@ jobs:
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
+
+                - wget --no-clobber --output-document=$HOME/bin/checkbashisms https://sourceforge.net/projects/checkbaskisms/files/2.0.0.2/checkbashisms/download || true
+                - chmod +x $HOME/bin/checkbashisms
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
                 - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
@@ -44,7 +47,6 @@ jobs:
                     | grep -v tests/Test/AbstractIntegrationCaseFactory.php \
                     | grep -v tests/Test/AbstractIntegrationTestCase.php \
                     | grep -v tests/Test/Assert/AssertTokensTrait.php \
-                    | grep -v tests/Test/Constraint/SameStringsConstraint.php \
                     | grep -v tests/Test/IntegrationCase.php \
                     | grep -v tests/Test/IntegrationCaseFactory.php \
                     | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
@@ -55,14 +57,15 @@ jobs:
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
+                - ./dev-tools/check-shell-scripts.sh
 
         - &STANDARD_TEST_JOB
             stage: Fast Test
             php: 7.0
             install:
                 # Composer: enforce given Symfony components version
-                - 'if [ "$SYMFONY_VERSION" != "" ]; then sed -i "s/\"symfony\/\([^\"]*\)\": \"^3[^\"]*\"/\"symfony\/\1\": \"$SYMFONY_VERSION\"/g" composer.json; fi'
-                - 'if [ "$MIN_STABILITY" != "" ]; then composer config minimum-stability $MIN_STABILITY; fi'
+                - if [ "$SYMFONY_VERSION" != "" ]; then composer global show symfony/flex -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS symfony/flex; fi
+                - if [ "$SYMFONY_VERSION" != "" ]; then composer config extra.symfony.require $SYMFONY_VERSION || true; fi
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
@@ -80,42 +83,77 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
-            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^4.0" MIN_STABILITY=dev
+            env: SYMFONY_DEPRECATIONS_HELPER=weak PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="~4.1.0"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
-            env: COLLECT_COVERAGE=1
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
+            php: 7.3
             before_script:
+                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
+            php: 7.3
+            env: COLLECT_COVERAGE=1
+            before_install:
                 # check phpdbg
                 - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
 
                 # for building a tag release we don't need to collect code coverage
                 - if [ $TRAVIS_TAG ]; then export COLLECT_COVERAGE=0; fi
+
+                # terminate job when no coverage collecting shall be performed
+                - if [ $COLLECT_COVERAGE == 0 ]; then travis_terminate 0; fi
+
+                ## regular `before_install`
+                # turn off XDebug
+                - phpenv config-rm xdebug.ini || return 0
+
+                # Composer: boost installation
+                - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+
+                # Require PHPUnit 8
+                - composer require --dev --no-update phpunit/phpunit:^8
+
+                # Install PCOV
+                - |
+                    git clone --single-branch --branch=v1.0.2 --depth=1 https://github.com/krakjoe/pcov
+                    cd pcov
+                    phpize
+                    ./configure
+                    make clean install
+                    echo "extension=pcov.so" > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/pcov.ini
+                    cd $TRAVIS_BUILD_DIR
+            before_script:
+                # Make code compatible with PHPUnit 8
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer fix --rules=void_return -q tests || return 0
             script:
-                - if [ $COLLECT_COVERAGE == 0 ]; then vendor/bin/phpunit || travis_terminate 1; fi
-                - if [ $COLLECT_COVERAGE == 1 ]; then phpdbg -qrr vendor/bin/phpunit --coverage-clover build/logs/clover.xml || travis_terminate 1; fi
-                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix || travis_terminate 1
-                - if [ $COLLECT_COVERAGE == 1 ]; then php vendor/bin/php-coveralls -v; fi
+                - vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
+                - php vendor/bin/php-coveralls -v
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: nightly
+            php: 7.4snapshot
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
-            script:
-                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,native_function_invocation -q || travis_terminate 1
-                - vendor/bin/phpunit || travis_terminate 1
-                - git checkout . -q
-                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
             stage: Deployment
             php: 7.1
             install: ./dev-tools/build.sh
             script:
-                - vendor/bin/phpunit tests/Smoke/PharTest.php
+                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+
+            before_deploy:
+                # ensure that deployment is happening only if tag matches version of PHP CS Fixer
+                - test $(php dev-tools/info-extractor.php | jq .version.vnumber) == "\"$TRAVIS_TAG\""
             deploy:
                 provider: releases
                 api_key:
@@ -129,4 +167,4 @@ jobs:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
 
     allow_failures:
-        - php: nightly
+        - php: 7.4snapshot

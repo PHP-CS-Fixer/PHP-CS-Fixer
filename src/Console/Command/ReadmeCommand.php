@@ -127,13 +127,18 @@ Then make sure you have the global Composer binaries directory in your ``PATH``.
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
-PHP-CS-Fixer is part of the homebrew-php project. Follow the installation
-instructions at https://github.com/homebrew/homebrew-php if you don't
-already have it.
+.. code-block:: bash
+
+    $ brew install php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~
+
+Install `PHIVE <https://phar.io>`_ and issue the following command:
 
 .. code-block:: bash
 
-    $ brew install homebrew/php/php-cs-fixer
+    $ phive install php-cs-fixer # use `--global` for global install
 
 Update
 ------
@@ -174,6 +179,13 @@ You can update ``php-cs-fixer`` through this command:
 
     $ brew upgrade php-cs-fixer
 
+Locally (PHIVE)
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ phive update php-cs-fixer
+
 Usage
 -----
 
@@ -191,6 +203,7 @@ Dedicated plugins exist for:
 * `PhpStorm`_
 * `Sublime Text`_
 * `Vim`_
+* `VS Code`_
 
 Contribute
 ----------
@@ -218,6 +231,7 @@ projects for instance).
 .. _PhpStorm:          https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f
 .. _Sublime Text:      https://github.com/benmatselby/sublime-phpcs
 .. _Vim:               https://github.com/stephpy/vim-php-cs-fixer
+.. _VS Code:           https://github.com/junstyle/vscode-php-cs-fixer
 .. _contribute:        https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md
 
 EOF;
@@ -245,9 +259,7 @@ EOF;
                     $result = Preg::replace("#<\\?{$matches[1]}\\s*#", '', $result);
                 }
 
-                $result = Preg::replace("#\n\n +\\?>#", '', $result);
-
-                return $result;
+                return Preg::replace("#\n\n +\\?>#", '', $result);
             },
             $help
         );
@@ -259,7 +271,7 @@ EOF;
         //      `description <http://...>`_
 
         $help = Preg::replaceCallback(
-           '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
+            '#`(.+)`\s?\(<url>(.+)<\/url>\)#',
             static function (array $matches) {
                 return sprintf('`%s <%s>`_', str_replace('\\', '\\\\', $matches[1]), $matches[2]);
             },
@@ -270,7 +282,7 @@ EOF;
         $help = Preg::replace('#\*\* +\[#', '** [', $help);
 
         $downloadLatestUrl = sprintf('https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v%s/php-cs-fixer.phar', HelpCommand::getLatestReleaseVersionFromChangeLog());
-        $downloadUrl = 'http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar';
+        $downloadUrl = 'https://cs.symfony.com/download/php-cs-fixer-v2.phar';
 
         $header = str_replace('%download.version_url%', $downloadLatestUrl, $header);
         $header = str_replace('%download.url%', $downloadUrl, $header);

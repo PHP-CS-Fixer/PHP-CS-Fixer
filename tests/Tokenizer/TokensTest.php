@@ -522,7 +522,7 @@ PHP;
     public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
     {
         $this->doTestClearTokens($source, $indexes, $expected);
-        if (count($indexes) > 1) {
+        if (\count($indexes) > 1) {
             $this->doTestClearTokens($source, array_reverse($indexes), $expected);
         }
     }
@@ -867,7 +867,7 @@ PHP;
         $this->assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
         $this->assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
 
-        $count = count($tokens);
+        $count = \count($tokens);
         $this->assertCount($count, $tokensClone);
 
         for ($i = 0; $i < $count; ++$i) {
@@ -1145,6 +1145,102 @@ echo $a;',
     }
 
     /**
+     * @dataProvider provideRemoveTrailingWhitespaceCases
+     *
+     * @param int         $index
+     * @param null|string $whitespaces
+     * @param string      $expected
+     * @param string      $input
+     */
+    public function testRemoveTrailingWhitespace($index, $whitespaces, $expected, $input = null)
+    {
+        Tokens::clearCache();
+
+        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens->removeTrailingWhitespace($index, $whitespaces);
+
+        $this->assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideRemoveTrailingWhitespaceCases()
+    {
+        $cases = [];
+        $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
+        foreach ($leadingCases as $leadingCase) {
+            $leadingCase[0] -= 2;
+            $cases[] = $leadingCase;
+        }
+
+        return $cases;
+    }
+
+    public function testRemovingLeadingWhitespaceWithEmptyTokenInCollection()
+    {
+        $code = "<?php\n    /* I will be removed */MY_INDEX_IS_THREE;foo();";
+        $tokens = Tokens::fromCode($code);
+        $tokens->clearAt(2);
+
+        $tokens->removeLeadingWhitespace(3);
+
+        $tokens->clearEmptyTokens();
+        $this->assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
+    }
+
+    public function testRemovingTrailingWhitespaceWithEmptyTokenInCollection()
+    {
+        $code = "<?php\nMY_INDEX_IS_ONE/* I will be removed */    ;foo();";
+        $tokens = Tokens::fromCode($code);
+        $tokens->clearAt(2);
+
+        $tokens->removeTrailingWhitespace(1);
+
+        $tokens->clearEmptyTokens();
+        $this->assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_ONE;foo();"), $tokens);
+    }
+
+    /**
+     * Action that begins with the word "remove" should not change the size of collection.
+     */
+    public function testRemovingLeadingWhitespaceWillNotIncreaseTokensCount()
+    {
+        $tokens = Tokens::fromCode('<?php
+                                    // Foo
+                                    $bar;');
+        $originalCount = $tokens->count();
+
+        $tokens->removeLeadingWhitespace(4);
+
+        $this->assertSame($originalCount, $tokens->count());
+        $this->assertSame(
+            '<?php
+                                    // Foo
+$bar;',
+            $tokens->generateCode()
+        );
+    }
+
+    /**
+     * Action that begins with the word "remove" should not change the size of collection.
+     */
+    public function testRemovingTrailingWhitespaceWillNotIncreaseTokensCount()
+    {
+        $tokens = Tokens::fromCode('<?php
+                                    // Foo
+                                    $bar;');
+        $originalCount = $tokens->count();
+
+        $tokens->removeTrailingWhitespace(2);
+
+        $this->assertSame($originalCount, $tokens->count());
+        $this->assertSame(
+            '<?php
+                                    // Foo
+$bar;',
+            $tokens->generateCode()
+        );
+    }
+
+    /**
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
@@ -1183,11 +1279,11 @@ echo $a;',
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         }
 
-        $this->assertSame(count($expected), $tokens->count());
+        $this->assertSame(\count($expected), $tokens->count());
         foreach ($expected as $index => $expectedToken) {
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
-            if (is_array($expectedPrototype)) {
+            if (\is_array($expectedPrototype)) {
                 unset($expectedPrototype[2]); // don't compare token lines as our token mutations don't deal with line numbers
             }
 

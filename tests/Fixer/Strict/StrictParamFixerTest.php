@@ -75,6 +75,12 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+    in_Array(1, $a, true);',
+                '<?php
+    in_Array(1, $a);',
+            ],
+            [
+                '<?php
     base64_decode($foo, true);
     base64_decode($foo, false);
     base64_decode($foo, $useStrict);',
@@ -122,6 +128,54 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
                 '<?php
     mb_detect_encoding($foo);',
             ],
+            [
+                '<?php
+    use function in_array;
+
+    class Foo
+    {
+        public function __construct($foo, $bar) {}
+    }',
+            ],
+            [
+                '<?php
+    namespace Foo {
+        array_keys($foo, $bar, true);
+    }
+    namespace Bar {
+        use function Foo\LoremIpsum;
+        array_keys($foo, $bar, true);
+    }',
+                '<?php
+    namespace Foo {
+        array_keys($foo, $bar);
+    }
+    namespace Bar {
+        use function Foo\LoremIpsum;
+        array_keys($foo, $bar);
+    }',
+            ],
+            [
+                '<?php
+    use function \base64_decode;
+    foo($bar);',
+            ],
+            [
+                '<?php
+    use function Baz\base64_decode;
+    foo($bar);',
+            ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php in_array($b, $c, true, );',
+            '<?php in_array($b, $c, );'
+         );
     }
 }

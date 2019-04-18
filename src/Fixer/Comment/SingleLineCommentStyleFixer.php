@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
@@ -45,8 +45,8 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
     {
         parent::configure($configuration);
 
-        $this->asteriskEnabled = in_array('asterisk', $this->configuration['comment_types'], true);
-        $this->hashEnabled = in_array('hash', $this->configuration['comment_types'], true);
+        $this->asteriskEnabled = \in_array('asterisk', $this->configuration['comment_types'], true);
+        $this->hashEnabled = \in_array('hash', $this->configuration['comment_types'], true);
     }
 
     /**
@@ -160,9 +160,7 @@ $c = 3;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('comment_types', 'List of comment types to fix'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(['asterisk', 'hash']),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(['asterisk', 'hash'])])
                 ->setDefault(['asterisk', 'hash'])
                 ->getOption(),
         ]);

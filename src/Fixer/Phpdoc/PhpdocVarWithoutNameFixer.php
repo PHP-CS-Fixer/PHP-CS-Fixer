@@ -32,7 +32,7 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            '@var and @type annotations should not contain the variable name.',
+            '`@var` and `@type` annotations should not contain the variable name.',
             [new CodeSample('<?php
 final class Foo
 {
@@ -42,10 +42,9 @@ final class Foo
     public $bar;
 
     /**
-     * @var $baz float
+     * @type $baz float
      */
     public $baz;
-
 }
 ')]
         );
@@ -72,14 +71,14 @@ final class Foo
             $doc = new DocBlock($token->getContent());
 
             // don't process single line docblocks
-            if (1 === count($doc->getLines())) {
+            if (1 === \count($doc->getLines())) {
                 continue;
             }
 
             $annotations = $doc->getAnnotationsOfType(['param', 'return', 'type', 'var']);
 
             // only process docblocks where the first meaningful annotation is @type or @var
-            if (!isset($annotations[0]) || !in_array($annotations[0]->getTag()->getName(), ['type', 'var'], true)) {
+            if (!isset($annotations[0]) || !\in_array($annotations[0]->getTag()->getName(), ['type', 'var'], true)) {
                 continue;
             }
 

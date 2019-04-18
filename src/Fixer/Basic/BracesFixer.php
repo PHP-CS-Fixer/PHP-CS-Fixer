@@ -51,7 +51,7 @@ final class BracesFixer extends AbstractFixer implements ConfigurationDefinition
             'The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 
 class Foo {
     public function bar($baz) {
@@ -79,7 +79,7 @@ class Foo {
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 $positive = function ($item) { return $item >= 0; };
 $negative = function ($item) {
                 return $item < 0; };
@@ -87,7 +87,7 @@ $negative = function ($item) {
                     ['allow_single_line_closure' => true]
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 
 class Foo
 {
@@ -126,7 +126,7 @@ class Foo
      */
     public function getPriority()
     {
-        // should be run after the ElseIfFixer, NoEmptyStatementFixer and NoUselessElseFixer
+        // should be run after the ElseIfFixer, LineEndingFixer, NoEmptyStatementFixer and NoUselessElseFixer
         return -25;
     }
 
@@ -235,7 +235,7 @@ class Foo
     {
         $controlContinuationTokens = $this->getControlContinuationTokens();
 
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind($controlContinuationTokens)) {
@@ -261,7 +261,7 @@ class Foo
 
     private function fixDoWhile(Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; 0 <= $index; --$index) {
+        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
             if (!$token->isGivenKind(T_DO)) {
@@ -295,7 +295,7 @@ class Foo
         );
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        for ($index = 0, $limit = count($tokens); $index < $limit; ++$index) {
+        for ($index = 0, $limit = \count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
             // if token is not a structure element - continue
@@ -339,6 +339,19 @@ class Foo
 
             // structure without braces block - nothing to do, e.g. do { } while (true);
             if (!$startBraceToken->equals('{')) {
+                continue;
+            }
+
+            $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($startBraceIndex, " \t");
+            $nextNonWhitespace = $tokens[$nextNonWhitespaceIndex];
+
+            /* if CLOSE_TAG is after { on the same line, do not indent. e.g. <?php if ($condition) { ?> */
+            if ($nextNonWhitespace->isGivenKind(T_CLOSE_TAG)) {
+                continue;
+            }
+
+            /* if CLOSE_TAG is after { on the next line and a comment on this line, do not indent. e.g. <?php if ($condition) { // \n?> */
+            if ($nextNonWhitespace->isComment() && $tokens[$tokens->getNextMeaningfulToken($nextNonWhitespaceIndex)]->isGivenKind(T_CLOSE_TAG)) {
                 continue;
             }
 
@@ -565,7 +578,7 @@ class Foo
                     if (
                         self::LINE_SAME === $this->configuration['position_after_functions_and_oop_constructs']
                         && (
-                            $token->isGivenKind([T_FUNCTION]) && !$tokensAnalyzer->isLambda($index)
+                            $token->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index)
                             || $token->isGivenKind($classyTokens) && !$tokensAnalyzer->isAnonymousClass($index)
                         )
                         && !$tokens[$tokens->getPrevNonWhitespace($startBraceIndex)]->isComment()
@@ -582,7 +595,7 @@ class Foo
             }
 
             // reset loop limit due to collection change
-            $limit = count($tokens);
+            $limit = \count($tokens);
         }
     }
 

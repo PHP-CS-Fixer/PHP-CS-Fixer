@@ -1,0 +1,39 @@
+--TEST--
+Integration of fixers: no_extra_blank_lines,blank_line_before_statement.
+--RULESET--
+{"no_extra_blank_lines": {"tokens": ["return"]}, "blank_line_before_statement": {"statements": ["case", "default"]}}
+--EXPECT--
+<?php
+function a($a) {
+    switch ($a) {
+        case 1:
+            return 'a';
+
+        case 2:
+            return 'b';
+
+        case 3:
+            return 'c';
+
+        default:
+            return "{$a}";
+    }
+}
+
+--INPUT--
+<?php
+function a($a) {
+    switch ($a) {
+        case 1:
+            return 'a';
+
+        case 2:
+            return 'b';
+        case 3:
+            return 'c';
+
+        default:
+            return "{$a}";
+
+    }
+}

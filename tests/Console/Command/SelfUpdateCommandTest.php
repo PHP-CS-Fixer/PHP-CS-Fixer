@@ -38,6 +38,8 @@ final class SelfUpdateCommandTest extends TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->root = vfsStream::setup();
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
@@ -48,7 +50,9 @@ final class SelfUpdateCommandTest extends TestCase
 
     protected function tearDown()
     {
-        unset($this->root);
+        parent::tearDown();
+
+        $this->root = null;
 
         try {
             vfsStreamWrapper::unregister();
@@ -73,7 +77,7 @@ final class SelfUpdateCommandTest extends TestCase
         $application = new Application();
         $application->add($command);
 
-        self::assertSame($command, $application->find($name));
+        $this->assertSame($command, $application->find($name));
     }
 
     public function provideCommandNameCases()
@@ -93,8 +97,6 @@ final class SelfUpdateCommandTest extends TestCase
      * @param string $expectedDisplay
      *
      * @dataProvider provideExecuteCases
-     *
-     * @requires PHP 5.4
      */
     public function testExecute(
         $latestVersion,
@@ -132,9 +134,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        self::assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
+        $this->assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
         $this->assertDisplay($expectedDisplay, $commandTester);
-        self::assertSame(0, $commandTester->getStatusCode());
+        $this->assertSame(0, $commandTester->getStatusCode());
     }
 
     public function provideExecuteCases()
@@ -276,7 +278,7 @@ OUTPUT;
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
             $commandTester
         );
-        self::assertSame(1, $commandTester->getStatusCode());
+        $this->assertSame(1, $commandTester->getStatusCode());
     }
 
     public function provideExecuteWhenNotAbleToGetLatestVersionsCases()
@@ -323,7 +325,7 @@ OUTPUT;
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
             $commandTester
         );
-        self::assertSame(1, $commandTester->getStatusCode());
+        $this->assertSame(1, $commandTester->getStatusCode());
     }
 
     public function provideExecuteWhenNotInstalledAsPharCases()
@@ -368,7 +370,7 @@ OUTPUT;
             return preg_replace("/\033\\[39(;49)?m/", "\033[0m", $display);
         };
 
-        self::assertSame(
+        $this->assertSame(
             $cleanDisplay($expectedDisplay),
             $cleanDisplay($commandTester->getDisplay(true))
         );

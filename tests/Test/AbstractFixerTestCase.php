@@ -14,16 +14,13 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\RuleSet;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
-use PhpCsFixer\Tests\Test\Constraint\SameStringsConstraint;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 use Prophecy\Argument;
 
 /**
@@ -45,11 +42,6 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     protected $fixer;
 
-    /**
-     * @var null|string
-     */
-    private $fixerClassName;
-
     protected function setUp()
     {
         parent::setUp();
@@ -67,6 +59,9 @@ abstract class AbstractFixerTestCase extends TestCase
     {
         parent::tearDown();
 
+        $this->linter = null;
+        $this->fixer = null;
+
         // @todo remove at 3.0
         Tokens::setLegacyMode(false);
     }
@@ -76,31 +71,9 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     protected function createFixer()
     {
-        $fixerClassName = $this->getFixerClassName();
+        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
 
         return new $fixerClassName();
-    }
-
-    /**
-     * Create fixer factory with all needed fixers registered.
-     *
-     * @return FixerFactory
-     */
-    protected function createFixerFactory()
-    {
-        return FixerFactory::create()->registerBuiltInFixers();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getFixerName()
-    {
-        $reflection = new \ReflectionClass($this);
-
-        $name = preg_replace('/FixerTest$/', '', $reflection->getShortName());
-
-        return Utils::camelCaseToUnderscore($name);
     }
 
     /**
@@ -157,7 +130,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             $this->assertThat(
                 $tokens->generateCode(),
-                new SameStringsConstraint($expected),
+                self::createIsIdenticalStringConstraint($expected),
                 'Code build on input code must match expected code.'
             );
             $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
@@ -165,8 +138,8 @@ abstract class AbstractFixerTestCase extends TestCase
             $tokens->clearEmptyTokens();
 
             $this->assertSame(
-                count($tokens),
-                count(array_unique(array_map(static function (Token $token) {
+                \count($tokens),
+                \count(array_unique(array_map(static function (Token $token) {
                     return spl_object_hash($token);
                 }, $tokens->toArray()))),
                 'Token items inside Tokens collection must be unique.'
@@ -189,7 +162,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $this->assertThat(
             $tokens->generateCode(),
-            new SameStringsConstraint($expected),
+            self::createIsIdenticalStringConstraint($expected),
             'Code build on expected code must not change.'
         );
         $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
@@ -205,29 +178,8 @@ abstract class AbstractFixerTestCase extends TestCase
         try {
             $this->linter->lintSource($source)->check();
         } catch (\Exception $e) {
-            return $e->getMessage()."\n\nSource:\n${source}";
+            return $e->getMessage()."\n\nSource:\n{$source}";
         }
-    }
-
-    private function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
-    {
-        foreach ($expectedTokens as $index => $expectedToken) {
-            $option = ['JSON_PRETTY_PRINT'];
-            $inputToken = $inputTokens[$index];
-
-            $this->assertTrue(
-                $expectedToken->equals($inputToken),
-                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson($option), $inputToken->toJson($option))
-            );
-
-            $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
-            $this->assertTrue(
-                $inputTokens->isTokenKindFound($expectedTokenKind),
-                sprintf('The token kind %s must be found in fixed tokens collection.', $expectedTokenKind)
-            );
-        }
-
-        $this->assertSame($expectedTokens->count(), $inputTokens->count(), 'Both collections must have the same length.');
     }
 
     /**
@@ -242,11 +194,12 @@ abstract class AbstractFixerTestCase extends TestCase
                 $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
                 $linterProphecy
                     ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal());
+                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
+                ;
 
                 $linter = $linterProphecy->reveal();
             } else {
-                $linter = new Linter();
+                $linter = new CachingLinter(new Linter());
             }
         }
 
@@ -254,29 +207,26 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @return string
+     * @todo Remove me when this class will end up in dedicated package.
+     *
+     * @param string $expected
+     *
+     * @return PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString|PHPUnit\Framework\Constraint\IsIdentical|PHPUnit_Framework_Constraint_IsIdentical
      */
-    private function getFixerClassName()
+    private static function createIsIdenticalStringConstraint($expected)
     {
-        if (null !== $this->fixerClassName) {
-            return $this->fixerClassName;
+        $candidates = array_filter([
+            'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
+            'PHPUnit\Framework\Constraint\IsIdentical',
+            'PHPUnit_Framework_Constraint_IsIdentical',
+        ], function ($className) { return class_exists($className); });
+
+        if (empty($candidates)) {
+            throw new \RuntimeException('PHPUnit not installed?!');
         }
 
-        try {
-            $fixers = $this->createFixerFactory()
-                ->useRuleSet(new RuleSet([$this->getFixerName() => true]))
-                ->getFixers()
-            ;
-        } catch (\UnexpectedValueException $e) {
-            throw new \UnexpectedValueException('Cannot determine fixer class, perhaps you forget to override `getFixerName` or `createFixerFactory` method?', 0, $e);
-        }
+        $candidate = array_shift($candidates);
 
-        if (1 !== count($fixers)) {
-            throw new \UnexpectedValueException(sprintf('Determine fixer class should result in one fixer, got "%d". Perhaps you configured the fixer to "false" ?', count($fixers)));
-        }
-
-        $this->fixerClassName = get_class($fixers[0]);
-
-        return $this->fixerClassName;
+        return new $candidate($expected);
     }
 }

@@ -93,7 +93,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
      */
     public function isCandidate(Tokens $tokens)
     {
-        return count($tokens) > 1 && $tokens->isAnyTokenKindsFound(self::$tokens);
+        return $tokens->isAnyTokenKindsFound(self::$tokens);
     }
 
     /**
@@ -106,7 +106,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false) // @TODO 3.0 change to true
                 ->setNormalizer(static function (Options $options, $value) {
-                    if (PHP_VERSION_ID < 70000 && $value) {
+                    if (\PHP_VERSION_ID < 70000 && $value) {
                         throw new InvalidOptionsForEnvException('Escape sequences require PHP 7.0+.');
                     }
 

@@ -29,16 +29,11 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
+     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_strict" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null)
     {
-        $this->fixer->configure([
-            'assertAttributeEquals',
-            'assertAttributeNotEquals',
-            'assertEquals',
-            'assertNotEquals',
-        ]);
+        $this->fixer->configure(array_keys($this->getMethodsMap()));
         $this->doTest($expected, $input);
     }
 
@@ -52,51 +47,83 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(['assertions' => [
-            'assertAttributeEquals',
-            'assertAttributeNotEquals',
-            'assertEquals',
-            'assertNotEquals',
-        ]]);
+        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
         $this->doTest($expected, $input);
     }
 
     public function provideTestFixCases()
     {
-        $methodsMap = [
-            'assertAttributeEquals' => 'assertAttributeSame',
-            'assertAttributeNotEquals' => 'assertAttributeNotSame',
-            'assertEquals' => 'assertSame',
-            'assertNotEquals' => 'assertNotSame',
-        ];
-
         $cases = [
             ['<?php $self->foo();'],
         ];
 
-        foreach ($methodsMap as $methodBefore => $methodAfter) {
-            $cases[] = ["<?php \$sth->${methodBefore}(1, 1);"];
-            $cases[] = ["<?php \$sth->${methodAfter}(1, 1);"];
+        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
+            $cases[] = ["<?php \$sth->{$methodBefore}(1, 1);"];
+            $cases[] = ["<?php \$sth->{$methodAfter}(1, 1);"];
+            $cases[] = ["<?php \$this->{$methodBefore}(1, 2, 'message', \$toMuch);"];
             $cases[] = [
-                "<?php \$this->${methodAfter}(1, 2);",
-                "<?php \$this->${methodBefore}(1, 2);",
+                "<?php \$this->{$methodAfter}(1, 2);",
+                "<?php \$this->{$methodBefore}(1, 2);",
             ];
             $cases[] = [
-                "<?php \$this->${methodAfter}(1, 2); \$this->${methodAfter}(1, 2);",
-                "<?php \$this->${methodBefore}(1, 2); \$this->${methodBefore}(1, 2);",
+                "<?php \$this->{$methodAfter}(1, 2); \$this->{$methodAfter}(1, 2);",
+                "<?php \$this->{$methodBefore}(1, 2); \$this->{$methodBefore}(1, 2);",
             ];
             $cases[] = [
-                "<?php \$this->${methodAfter}(1, 2, 'descr');",
-                "<?php \$this->${methodBefore}(1, 2, 'descr');",
+                "<?php \$this->{$methodAfter}(1, 2, 'descr');",
+                "<?php \$this->{$methodBefore}(1, 2, 'descr');",
             ];
             $cases[] = [
-                "<?php \$this->/*aaa*/${methodAfter} \t /**bbb*/  ( /*ccc*/1  , 2);",
-                "<?php \$this->/*aaa*/${methodBefore} \t /**bbb*/  ( /*ccc*/1  , 2);",
+                "<?php \$this->/*aaa*/{$methodAfter} \t /**bbb*/  ( /*ccc*/1  , 2);",
+                "<?php \$this->/*aaa*/{$methodBefore} \t /**bbb*/  ( /*ccc*/1  , 2);",
             ];
             $cases[] = [
-                "<?php \$this->${methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
-                "<?php \$this->${methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
+                "<?php \$this->{$methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
+                "<?php \$this->{$methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
             ];
+            $cases[] = [
+                "<?php self::{$methodAfter}(1, 2);",
+                "<?php self::{$methodBefore}(1, 2);",
+            ];
+            $cases[] = [
+                "<?php static::{$methodAfter}(1, 2);",
+                "<?php static::{$methodBefore}(1, 2);",
+            ];
+        }
+
+        return $cases;
+    }
+
+    /**
+     * Only method calls with 2 or 3 arguments should be fixed.
+     *
+     * @param string $expected
+     *
+     * @dataProvider provideTestNoFixWithWrongNumberOfArgumentsCases
+     */
+    public function testNoFixWithWrongNumberOfArguments($expected)
+    {
+        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->doTest($expected);
+    }
+
+    public function provideTestNoFixWithWrongNumberOfArgumentsCases()
+    {
+        $cases = [];
+        foreach ($this->getMethodsMap() as $candidate => $fix) {
+            $cases[sprintf('do not change call to "%s" without arguments.', $candidate)] = [
+                sprintf('<?php $this->%s();', $candidate),
+            ];
+
+            foreach ([1, 4, 5, 10] as $argumentCount) {
+                $cases[sprintf('do not change call to "%s" with #%d arguments.', $candidate, $argumentCount)] = [
+                    sprintf(
+                        '<?php $this->%s(%s);',
+                        $candidate,
+                        substr(str_repeat('$a, ', $argumentCount), 0, -2)
+                    ),
+                ];
+            }
         }
 
         return $cases;
@@ -108,5 +135,45 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->expectExceptionMessageRegExp('/^\[php_unit_strict\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
+            yield [
+                "<?php static::{$methodAfter}(1, 2,);",
+                "<?php static::{$methodBefore}(1, 2,);",
+            ];
+
+            yield [
+                "<?php self::{$methodAfter}(1, \$a, '', );",
+                "<?php self::{$methodBefore}(1, \$a, '', );",
+            ];
+        }
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getMethodsMap()
+    {
+        return [
+            'assertAttributeEquals' => 'assertAttributeSame',
+            'assertAttributeNotEquals' => 'assertAttributeNotSame',
+            'assertEquals' => 'assertSame',
+            'assertNotEquals' => 'assertNotSame',
+        ];
     }
 }

@@ -31,7 +31,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer
             'A final class must not have final methods.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 final class Foo {
     final public function foo() {}
     final protected function bar() {}
@@ -40,7 +40,7 @@ final class Foo {
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
 class Foo {
     final private function bar() {}
 }
@@ -63,7 +63,7 @@ class Foo {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokensCount = count($tokens);
+        $tokensCount = \count($tokens);
         for ($index = 0; $index < $tokensCount; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
@@ -84,7 +84,7 @@ class Foo {
      */
     private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
     {
-        $tokensCount = count($tokens);
+        $tokensCount = \count($tokens);
         for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
             // Class end
             if ($tokens[$index]->equals('}')) {

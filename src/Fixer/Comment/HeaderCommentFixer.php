@@ -13,8 +13,10 @@
 namespace PhpCsFixer\Fixer\Comment;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -77,7 +79,7 @@ echo 1;
 ',
                     [
                         'header' => 'Made with love.',
-                        'commentType' => 'PHPDoc',
+                        'comment_type' => 'PHPDoc',
                         'location' => 'after_open',
                         'separate' => 'bottom',
                     ]
@@ -92,7 +94,7 @@ echo 1;
 ',
                     [
                         'header' => 'Made with love.',
-                        'commentType' => 'comment',
+                        'comment_type' => 'comment',
                         'location' => 'after_declare_strict',
                     ]
                 ),
@@ -106,6 +108,19 @@ echo 1;
     public function isCandidate(Tokens $tokens)
     {
         return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // should be run after the NoBlankLinesAfterPhpdocFixer.
+        //
+        // When this fixer is configured with ["separate" => "bottom", "commentType" => "PHPDoc"]
+        // and the target file has no namespace or declare() construct,
+        // the fixed header comment gets trimmed by NoBlankLinesAfterPhpdocFixer if we run before it.
+        return -30;
     }
 
     /**
@@ -144,18 +159,27 @@ echo 1;
      */
     protected function createConfigurationDefinition()
     {
+        $fixerName = $this->getName();
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
-                ->setNormalizer(static function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) use ($fixerName) {
                     if ('' === trim($value)) {
                         return '';
+                    }
+
+                    if (false !== strpos($value, '*/')) {
+                        throw new InvalidFixerConfigurationException($fixerName, 'Cannot use \'*/\' in header.');
                     }
 
                     return $value;
                 })
                 ->getOption(),
-            (new FixerOptionBuilder('commentType', 'Comment syntax type.'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('comment_type', 'Comment syntax type.'),
+                'commentType'
+            ))
                 ->setAllowedValues([self::HEADER_PHPDOC, self::HEADER_COMMENT])
                 ->setDefault(self::HEADER_COMMENT)
                 ->getOption(),
@@ -179,7 +203,7 @@ echo 1;
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        $comment = (self::HEADER_COMMENT === $this->configuration['commentType'] ? '/*' : '/**').$lineEnding;
+        $comment = (self::HEADER_COMMENT === $this->configuration['comment_type'] ? '/*' : '/**').$lineEnding;
         $lines = explode("\n", str_replace("\r", '', $this->configuration['header']));
 
         foreach ($lines as $line) {
@@ -268,11 +292,11 @@ echo 1;
 
         // fix lines after header comment
         $expectedLineCount = 'both' === $this->configuration['separate'] || 'bottom' === $this->configuration['separate'] ? 2 : 1;
-        if ($headerIndex === count($tokens) - 1) {
+        if ($headerIndex === \count($tokens) - 1) {
             $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount)]));
         } else {
             $afterCommentIndex = $tokens->getNextNonWhitespace($headerIndex);
-            $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex + 1, null === $afterCommentIndex ? count($tokens) : $afterCommentIndex);
+            $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex + 1, null === $afterCommentIndex ? \count($tokens) : $afterCommentIndex);
             if ($lineBreakCount < $expectedLineCount) {
                 $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
@@ -327,6 +351,6 @@ echo 1;
      */
     private function insertHeader(Tokens $tokens, $index)
     {
-        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['commentType'] ? T_COMMENT : T_DOC_COMMENT, $this->getHeaderAsComment()]));
+        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? T_COMMENT : T_DOC_COMMENT, $this->getHeaderAsComment()]));
     }
 }

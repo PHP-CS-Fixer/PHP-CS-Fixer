@@ -41,7 +41,7 @@ final class Cache implements CacheInterface
 
     public function has($file)
     {
-        return array_key_exists($file, $this->hashes);
+        return \array_key_exists($file, $this->hashes);
     }
 
     public function get($file)
@@ -55,10 +55,10 @@ final class Cache implements CacheInterface
 
     public function set($file, $hash)
     {
-        if (!is_int($hash)) {
+        if (!\is_int($hash)) {
             throw new \InvalidArgumentException(sprintf(
                 'Value needs to be an integer, got "%s".',
-                is_object($hash) ? get_class($hash) : gettype($hash)
+                \is_object($hash) ? \get_class($hash) : \gettype($hash)
             ));
         }
 
@@ -75,11 +75,13 @@ final class Cache implements CacheInterface
         $json = json_encode([
             'php' => $this->getSignature()->getPhpVersion(),
             'version' => $this->getSignature()->getFixerVersion(),
+            'indent' => $this->getSignature()->getIndent(),
+            'lineEnding' => $this->getSignature()->getLineEnding(),
             'rules' => $this->getSignature()->getRules(),
             'hashes' => $this->hashes,
         ]);
 
-        if (false === $json) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \UnexpectedValueException(sprintf(
                 'Can not encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
                 json_last_error_msg()
@@ -103,7 +105,7 @@ final class Cache implements CacheInterface
         if (null === $data && JSON_ERROR_NONE !== json_last_error()) {
             throw new \InvalidArgumentException(sprintf(
                 'Value needs to be a valid JSON string, got "%s", error: "%s".',
-                is_object($json) ? get_class($json) : gettype($json),
+                \is_object($json) ? \get_class($json) : \gettype($json),
                 json_last_error_msg()
             ));
         }
@@ -111,13 +113,15 @@ final class Cache implements CacheInterface
         $requiredKeys = [
             'php',
             'version',
+            'indent',
+            'lineEnding',
             'rules',
             'hashes',
         ];
 
         $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
 
-        if (count($missingKeys)) {
+        if (\count($missingKeys)) {
             throw new \InvalidArgumentException(sprintf(
                 'JSON data is missing keys "%s"',
                 implode('", "', $missingKeys)
@@ -127,6 +131,8 @@ final class Cache implements CacheInterface
         $signature = new Signature(
             $data['php'],
             $data['version'],
+            $data['indent'],
+            $data['lineEnding'],
             $data['rules']
         );
 

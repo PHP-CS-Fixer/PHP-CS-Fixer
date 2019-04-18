@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Utils;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Collection of Transformer classes.
@@ -64,8 +65,8 @@ final class Transformers
      */
     public function transform(Tokens $tokens)
     {
-        foreach ($tokens as $index => $token) {
-            foreach ($this->items as $transformer) {
+        foreach ($this->items as $transformer) {
+            foreach ($tokens as $index => $token) {
                 $transformer->process($tokens, $token, $index);
             }
         }
@@ -76,7 +77,7 @@ final class Transformers
      */
     private function registerTransformer(TransformerInterface $transformer)
     {
-        if (PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
+        if (\PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
             $this->items[] = $transformer;
         }
     }
@@ -91,10 +92,22 @@ final class Transformers
 
         $registered = true;
 
+        foreach ($this->findBuiltInTransformers() as $transformer) {
+            $this->registerTransformer($transformer);
+        }
+    }
+
+    /**
+     * @return \Generator|TransformerInterface[]
+     */
+    private function findBuiltInTransformers()
+    {
+        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in(__DIR__.'/Transformer') as $file) {
             $relativeNamespace = $file->getRelativePath();
             $class = __NAMESPACE__.'\\Transformer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
-            $this->registerTransformer(new $class());
+
+            yield new $class();
         }
     }
 }

@@ -65,7 +65,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
         $versionSpecification
             ->isSatisfiedBy($version)
-            ->willReturn($isSatisfied);
+            ->willReturn($isSatisfied)
+        ;
 
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
@@ -81,8 +82,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
     public function provideIsSuitableForVersionUsesVersionSpecificationCases()
     {
         return [
-            'is-satisfied' => [PHP_VERSION_ID, true],
-            'is-not-satisfied' => [PHP_VERSION_ID, false],
+            'is-satisfied' => [\PHP_VERSION_ID, true],
+            'is-not-satisfied' => [\PHP_VERSION_ID, false],
         ];
     }
 

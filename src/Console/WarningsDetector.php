@@ -57,19 +57,12 @@ final class WarningsDetector
         }
     }
 
-    public function detectXdebug()
-    {
-        if (extension_loaded('xdebug')) {
-            $this->warnings[] = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.';
-        }
-    }
-
     /**
      * @return string[]
      */
     public function getWarnings()
     {
-        if (!count($this->warnings)) {
+        if (!\count($this->warnings)) {
             return [];
         }
 

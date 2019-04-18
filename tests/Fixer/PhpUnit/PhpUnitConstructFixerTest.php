@@ -29,7 +29,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
+     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_construct" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null)
     {
@@ -125,12 +125,26 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                 '<?php $this->assertSame(true || $a, $b); $this->assertTrue($c);',
                 '<?php $this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
             ],
+            [
+                '<?php $this->assertFalse($foo);',
+                '<?php $this->assertEquals(FALSE, $foo);',
+            ],
+            [
+                '<?php $this->assertTrue($foo);',
+                '<?php $this->assertEquals(TruE, $foo);',
+            ],
+            [
+                '<?php $this->assertNull($foo);',
+                '<?php $this->assertEquals(NULL, $foo);',
+            ],
         ];
 
         return array_merge(
             $cases,
             $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");')
+            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");'),
+            $this->generateCases('<?php static::assert%s%s($a); //%s %s', '<?php static::assert%s(%s, $a); //%s %s'),
+            $this->generateCases('<?php self::assert%s%s($a); //%s %s', '<?php self::assert%s(%s, $a); //%s %s')
         );
     }
 
@@ -140,6 +154,32 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->expectExceptionMessageRegExp('/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $this->assertTrue($a, );',
+                '<?php $this->assertSame(true, $a, );',
+            ],
+            [
+                '<?php $this->assertTrue($a, $message , );',
+                '<?php $this->assertSame(true, $a, $message , );',
+            ],
+        ];
     }
 
     private function generateCases($expectedTemplate, $inputTemplate)

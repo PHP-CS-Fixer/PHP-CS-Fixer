@@ -14,7 +14,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\DocBlock\ShortDescription;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -32,7 +32,7 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdocs summary should end in either a full stop, exclamation mark, or question mark.',
+            'PHPDoc summary should end in either a full stop, exclamation mark, or question mark.',
             [new CodeSample('<?php
 /**
  * Foo function is great
@@ -61,7 +61,7 @@ function foo () {}
             }
 
             $doc = new DocBlock($token->getContent());
-            $end = $this->findShortDescriptionEnd($doc->getLines());
+            $end = (new ShortDescription($doc))->getEnd();
 
             if (null !== $end) {
                 $line = $doc->getLine($end);
@@ -71,38 +71,6 @@ function foo () {}
                     $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
                     $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
                 }
-            }
-        }
-    }
-
-    /**
-     * Find the line number of the line containing the end of the short
-     * description, if present.
-     *
-     * @param Line[] $lines
-     *
-     * @return null|int
-     */
-    private function findShortDescriptionEnd(array $lines)
-    {
-        $reachedContent = false;
-
-        foreach ($lines as $index => $line) {
-            // we went past a description, then hit a tag or blank line, so
-            // the last line of the description must be the one before this one
-            if ($reachedContent && ($line->containsATag() || !$line->containsUsefulContent())) {
-                return $index - 1;
-            }
-
-            // no short description was found
-            if ($line->containsATag()) {
-                return null;
-            }
-
-            // we've reached content, but need to check the next lines too
-            // in case the short description is multi-line
-            if ($line->containsUsefulContent()) {
-                $reachedContent = true;
             }
         }
     }

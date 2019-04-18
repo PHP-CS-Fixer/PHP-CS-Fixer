@@ -89,11 +89,11 @@ comment
                                 /** buahaha */->bar7();',
             ],
             [
-            '<?php
+                '<?php
 $foo
     ->bar1()
     ->bar2();',
-            '<?php
+                '<?php
 $foo
 ->bar1()
 ->bar2();',
@@ -186,6 +186,56 @@ $foo
 ->bar()
 ;',
             ],
+            [
+                '<div>
+    <?php $object
+        ->method()
+        ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+    ->method();
+?>',
+                '<div>
+    <?php $object
+        ->method()
+    ->method();
+    ?>
+</div>
+
+<?= $object
+    ->method()
+        ->method();
+?>',
+            ],
+            [
+                '<?php
+
+    $user->setFoo(1)
+        ->setBar([
+                1 => 1,
+                ])
+        ->setBaz(true)
+        ->setX(array(
+    2 => 2,
+))
+        ->setY();
+',
+                '<?php
+
+    $user->setFoo(1)
+            ->setBar([
+                1 => 1,
+                ])
+  ->setBaz(true)
+->setX(array(
+    2 => 2,
+))
+                    ->setY();
+',
+            ],
         ];
     }
 
@@ -209,5 +259,29 @@ $foo
                 "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73()
+    {
+        $this->doTest(
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+        ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+        ->setEmailConfirmationCode("123456",    );
+',
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+
+     ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+->setEmailConfirmationCode("123456",    );
+'
+        );
     }
 }

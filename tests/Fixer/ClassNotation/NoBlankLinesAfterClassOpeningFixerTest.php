@@ -39,7 +39,6 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     *
      * @dataProvider provideTraitsCases
      */
     public function testFixTraits($expected, $input = null)
@@ -129,6 +128,40 @@ class Good
         //code here
     }
 }',
+        ];
+
+        // check if line with spaces is removed when next token is indented
+        $cases[] = [
+            '<?php
+class Foo
+{
+    function bar() {}
+}
+',
+            '<?php
+class Foo
+{
+    '.'
+    function bar() {}
+}
+',
+        ];
+
+        // check if line with spaces is removed when next token is not indented
+        $cases[] = [
+            '<?php
+class Foo
+{
+function bar() {}
+}
+',
+            '<?php
+class Foo
+{
+    '.'
+function bar() {}
+}
+',
         ];
 
         return $cases;

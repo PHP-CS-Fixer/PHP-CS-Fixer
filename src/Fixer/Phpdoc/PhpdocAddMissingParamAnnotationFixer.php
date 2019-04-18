@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\Phpdoc;
 
-use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFunctionReferen
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Phpdoc should contain @param for all params.',
+            'PHPDoc should contain `@param` for all params.',
             [
                 new CodeSample(
                     '<?php
@@ -80,8 +80,9 @@ function f9(string $foo, $bar, $baz) {}
      */
     public function getPriority()
     {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
-        return -1;
+        // must be run after PhpdocNoAliasTagFixer
+        // must be run before PhpdocAlignFixer and PhpdocNoEmptyReturnFixer
+        return 10;
     }
 
     /**
@@ -161,7 +162,7 @@ function f9(string $foo, $bar, $baz) {}
                 }
             }
 
-            if (!count($arguments)) {
+            if (!\count($arguments)) {
                 continue;
             }
 
@@ -178,12 +179,12 @@ function f9(string $foo, $bar, $baz) {}
                 $lastParamLine = max($lastParamLine, $annotation->getEnd());
             }
 
-            if (!count($arguments)) {
+            if (!\count($arguments)) {
                 continue;
             }
 
             $lines = $doc->getLines();
-            $linesCount = count($lines);
+            $linesCount = \count($lines);
 
             Preg::match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
             $indent = $matches[1];
@@ -267,8 +268,16 @@ function f9(string $foo, $bar, $baz) {}
 
             if ($sawName) {
                 $info['default'] .= $token->getContent();
-            } else {
-                $info['type'] .= $token->getContent();
+            } elseif ('&' !== $token->getContent()) {
+                if ($token->isGivenKind(T_ELLIPSIS)) {
+                    if ('' === $info['type']) {
+                        $info['type'] = 'array';
+                    } else {
+                        $info['type'] .= '[]';
+                    }
+                } else {
+                    $info['type'] .= $token->getContent();
+                }
             }
         }
 

@@ -465,7 +465,7 @@ EOF;
      * @group legacy
      * @requires PHP 7.1
      * @dataProvider provideFixClassConstCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
+     * @expectedDeprecation Passing "elements" at the root of the configuration for rule "visibility_required" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
      */
     public function testLegacyFixClassConst($expected, $input)
     {
@@ -510,7 +510,6 @@ const F=1; }',
                     class foo
                     {
                         public const A = 1, B =2, C =3;
-                        // As of PHP 5.6.0
                         public const TWO = ONE * 2;
                         public const THREE = ONE + self::TWO;
                         public const SENTENCE = "The value of THREE is ".self::THREE;
@@ -520,7 +519,6 @@ const F=1; }',
                     class foo
                     {
                         const A = 1, B =2, C =3;
-                        // As of PHP 5.6.0
                         const TWO = ONE * 2;
                         const THREE = ONE + self::TWO;
                         const SENTENCE = "The value of THREE is ".self::THREE;
@@ -534,9 +532,11 @@ const F=1; }',
     {
         $expected = '<?php
 class A
-{#
-public static function#
-AB#
+{# We will have a function below
+# It will be static
+# and awesome
+public static function# <- this is the function
+AB# <- this is the name
 (#
 )#
 {#
@@ -546,11 +546,11 @@ AB#
 
         $input = '<?php
 class A
-{#
-static#
-#
-function#
-AB#
+{# We will have a function below
+static# It will be static
+# and awesome
+function# <- this is the function
+AB# <- this is the name
 (#
 )#
 {#
@@ -593,6 +593,93 @@ AB#
                     {
                         $a = new class() {function a() {}};
                     }
+                }
+            '
+        );
+    }
+
+    public function testRemovingNewlinesBetweenKeywords()
+    {
+        $this->doTest(
+            '<?php
+                class Foo
+                {
+                    public $bar;
+
+                    final public static function bar() {}
+
+                    final public static function baz() {}
+                }',
+            '<?php
+                class Foo
+                {
+                    var
+                    $bar;
+
+                    final
+                    public
+                    static
+                    function bar() {}
+
+                    static
+                    final
+                    function baz() {}
+                }'
+        );
+    }
+
+    /**
+     * @requires PHP 7.1
+     */
+    public function testKeepingComment()
+    {
+        $this->fixer->configure(['elements' => ['property', 'method', 'const']]);
+
+        $this->doTest(
+            '<?php
+                class Foo
+                {
+                    /* constant */ private const BAR = 3;
+                    /* variable */ private $bar;
+                    /* function */ private function bar() {}
+                }',
+            '<?php
+                class Foo
+                {
+                    private /* constant */ const BAR = 3;
+                    private /* variable */ $bar;
+                    private /* function */ function bar() {}
+                }'
+        );
+    }
+
+    public function testFixingWithAllKeywords()
+    {
+        $this->doTest(
+            '<?php
+                abstract class Foo
+                {
+                    abstract protected static function fooA();
+                    abstract protected static function fooB();
+                    abstract protected static function fooC();
+                    abstract protected static function fooD();
+                    abstract protected static function fooE();
+                    abstract protected static function fooF();
+                    abstract public static function fooG();
+                    abstract public static function fooH();
+                }
+            ',
+            '<?php
+                abstract class Foo
+                {
+                    abstract protected static function fooA();
+                    abstract static protected function fooB();
+                    protected abstract static function fooC();
+                    protected static abstract function fooD();
+                    static abstract protected function fooE();
+                    static protected abstract function fooF();
+                    abstract static function fooG();
+                    static abstract function fooH();
                 }
             '
         );

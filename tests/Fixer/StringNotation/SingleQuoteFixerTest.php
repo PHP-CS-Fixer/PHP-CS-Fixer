@@ -46,6 +46,26 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 '<?php $a = "foo bar";',
             ],
             [
+                '<?php $a = b\'\';',
+                '<?php $a = b"";',
+            ],
+            [
+                '<?php $a = B\'\';',
+                '<?php $a = B"";',
+            ],
+            [
+                '<?php $a = \'foo bar\';',
+                '<?php $a = "foo bar";',
+            ],
+            [
+                '<?php $a = b\'foo bar\';',
+                '<?php $a = b"foo bar";',
+            ],
+            [
+                '<?php $a = B\'foo bar\';',
+                '<?php $a = B"foo bar";',
+            ],
+            [
                 '<?php $a = \'foo
                     bar\';',
                 '<?php $a = "foo
@@ -79,10 +99,20 @@ EOF
                 '<?php $a = "foo \\\\(\$bar8)";',
             ],
             ['<?php $a = "foo \\" \\$$bar";'],
+            ['<?php $a = b"foo \\" \\$$bar";'],
+            ['<?php $a = B"foo \\" \\$$bar";'],
             ['<?php $a = "foo \'bar\'";'],
+            ['<?php $a = b"foo \'bar\'";'],
+            ['<?php $a = B"foo \'bar\'";'],
             ['<?php $a = "foo $bar";'],
+            ['<?php $a = b"foo $bar";'],
+            ['<?php $a = B"foo $bar";'],
             ['<?php $a = "foo ${bar}";'],
+            ['<?php $a = b"foo ${bar}";'],
+            ['<?php $a = B"foo ${bar}";'],
             ['<?php $a = "foo\n bar";'],
+            ['<?php $a = b"foo\n bar";'],
+            ['<?php $a = B"foo\n bar";'],
             [<<<'EOF'
 <?php $a = "\\\n";
 EOF
@@ -113,7 +143,7 @@ EOF
                 '<?php $a = "foo \'bar\'";',
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 // none
 $a = 'start \' end';
@@ -122,8 +152,8 @@ $b = 'start \\\' end';
 // two escaped baskslash
 $c = 'start \\\\\' end';
 EOT
-,
-<<<'EOT'
+                ,
+                <<<'EOT'
 <?php
 // none
 $a = "start ' end";
@@ -132,17 +162,17 @@ $b = "start \\' end";
 // two escaped baskslash
 $c = "start \\\\' end";
 EOT
-,
+                ,
             ],
             [
-<<<'EOT'
+                <<<'EOT'
 <?php
 // one unescaped backslash
 $a = "start \' end";
 // one escaped + one unescaped baskslash
 $b = "start \\\' end";
 EOT
-,
+                ,
             ],
         ];
     }

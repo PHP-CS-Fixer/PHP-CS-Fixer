@@ -84,6 +84,15 @@ final class Example
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run before PhpdocAddMissingParamAnnotationFixer
+        return 11;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $searchFor = array_keys($this->configuration['replacements']);
@@ -120,11 +129,11 @@ final class Example
                     $normalizedValue = [];
 
                     foreach ($value as $from => $to) {
-                        if (!is_string($from)) {
+                        if (!\is_string($from)) {
                             throw new InvalidOptionsException('Tag to replace must be a string.');
                         }
 
-                        if (!is_string($to)) {
+                        if (!\is_string($to)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag to replace to from "%s" must be a string.',
                                 $from
@@ -162,6 +171,6 @@ final class Example
                     'link' => 'see',
                 ])
                 ->getOption(),
-        ]);
+        ], $this->getName());
     }
 }

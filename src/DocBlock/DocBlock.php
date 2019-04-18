@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\DocBlock;
 
-use PhpCsFixer\Utils;
+use PhpCsFixer\Preg;
 
 /**
  * This class represents a docblock.
@@ -44,7 +44,7 @@ class DocBlock
      */
     public function __construct($content)
     {
-        foreach (Utils::splitLines($content) as $line) {
+        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $line) {
             $this->lines[] = new Line($line);
         }
     }
@@ -92,12 +92,12 @@ class DocBlock
     {
         if (null === $this->annotations) {
             $this->annotations = [];
-            $total = count($this->lines);
+            $total = \count($this->lines);
 
             for ($index = 0; $index < $total; ++$index) {
                 if ($this->lines[$index]->containsATag()) {
                     // get all the lines that make up the annotation
-                    $lines = array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
+                    $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
                     $annotation = new Annotation($lines);
                     // move the index to the end of the annotation to avoid
                     // checking it again because we know the lines inside the
@@ -159,7 +159,7 @@ class DocBlock
      */
     public function getContent()
     {
-        return implode($this->lines);
+        return implode('', $this->lines);
     }
 
     private function findAnnotationLength($start)
@@ -173,7 +173,7 @@ class DocBlock
             }
 
             if (!$line->containsUsefulContent()) {
-                // if we next line is also non-useful, or contains a tag, then we're done here
+                // if next line is also non-useful, or contains a tag, then we're done here
                 $next = $this->getLine($index + 1);
                 if (null === $next || !$next->containsUsefulContent() || $next->containsATag()) {
                     break;

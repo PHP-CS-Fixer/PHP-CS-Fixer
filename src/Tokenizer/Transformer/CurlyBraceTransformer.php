@@ -72,7 +72,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $this->transformIntoDynamicVarBraces($tokens, $token, $index);
         $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
 
-        if (PHP_VERSION_ID >= 70000) {
+        if (\PHP_VERSION_ID >= 70000) {
             $this->transformIntoGroupUseBraces($tokens, $token, $index);
         }
     }
@@ -175,7 +175,6 @@ final class CurlyBraceTransformer extends AbstractTransformer
             [T_STRING],
             [T_VARIABLE],
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
             ']',
             ')',
         ])) {

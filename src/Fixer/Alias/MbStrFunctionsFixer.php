@@ -27,18 +27,19 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * @var array the list of the string-related function names and their mb_ equivalent
      */
-    private static $functions = [
+    private static $functionsMap = [
+        'str_split' => ['alternativeName' => 'mb_str_split', 'argumentCount' => [1, 2, 3]],
+        'stripos' => ['alternativeName' => 'mb_stripos', 'argumentCount' => [2, 3]],
+        'stristr' => ['alternativeName' => 'mb_stristr', 'argumentCount' => [2, 3]],
         'strlen' => ['alternativeName' => 'mb_strlen', 'argumentCount' => [1]],
         'strpos' => ['alternativeName' => 'mb_strpos', 'argumentCount' => [2, 3]],
+        'strrchr' => ['alternativeName' => 'mb_strrchr', 'argumentCount' => [2]],
+        'strripos' => ['alternativeName' => 'mb_strripos', 'argumentCount' => [2, 3]],
         'strrpos' => ['alternativeName' => 'mb_strrpos', 'argumentCount' => [2, 3]],
-        'substr' => ['alternativeName' => 'mb_substr', 'argumentCount' => [2, 3]],
+        'strstr' => ['alternativeName' => 'mb_strstr', 'argumentCount' => [2, 3]],
         'strtolower' => ['alternativeName' => 'mb_strtolower', 'argumentCount' => [1]],
         'strtoupper' => ['alternativeName' => 'mb_strtoupper', 'argumentCount' => [1]],
-        'stripos' => ['alternativeName' => 'mb_stripos', 'argumentCount' => [2, 3]],
-        'strripos' => ['alternativeName' => 'mb_strripos', 'argumentCount' => [2, 3]],
-        'strstr' => ['alternativeName' => 'mb_strstr', 'argumentCount' => [2, 3]],
-        'stristr' => ['alternativeName' => 'mb_stristr', 'argumentCount' => [2, 3]],
-        'strrchr' => ['alternativeName' => 'mb_strrchr', 'argumentCount' => [2]],
+        'substr' => ['alternativeName' => 'mb_substr', 'argumentCount' => [2, 3]],
         'substr_count' => ['alternativeName' => 'mb_substr_count', 'argumentCount' => [2, 3, 4]],
     ];
 
@@ -51,7 +52,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
             'Replace non multibyte-safe functions with corresponding mb function.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
 $a = strlen($a);
 $a = strpos($a, $b);
 $a = strrpos($a, $b);
@@ -85,8 +86,15 @@ $a = substr_count($a, $b);
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $functions = array_filter(
+            self::$functionsMap,
+            static function ($mapping) {
+                return \function_exists($mapping['alternativeName']);
+            }
+        );
+
         $argumentsAnalyzer = new ArgumentsAnalyzer();
-        foreach (self::$functions as $functionIdentity => $functionReplacement) {
+        foreach ($functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
@@ -98,7 +106,7 @@ $a = substr_count($a, $b);
 
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
-                if (!in_array($count, $functionReplacement['argumentCount'], true)) {
+                if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;
                 }
 

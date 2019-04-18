@@ -75,8 +75,14 @@ final class StrictParamFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_STRING) && isset($map[$token->getContent()])) {
-                $this->fixFunction($tokens, $index, $map[$token->getContent()]);
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (null !== $nextIndex && !$tokens[$nextIndex]->equals('(')) {
+                continue;
+            }
+
+            $lowercaseContent = strtolower($token->getContent());
+            if ($token->isGivenKind(T_STRING) && isset($map[$lowercaseContent])) {
+                $this->fixFunction($tokens, $index, $map[$lowercaseContent]);
             }
         }
     }
@@ -85,14 +91,15 @@ final class StrictParamFixer extends AbstractFixer
     {
         $startBraceIndex = $tokens->getNextTokenOfKind($functionIndex, ['(']);
         $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
-        $commaCounter = 0;
-        $sawParameter = false;
+        $paramsQuantity = 0;
+        $expectParam = true;
 
         for ($index = $startBraceIndex + 1; $index < $endBraceIndex; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isWhitespace() && !$token->isComment()) {
-                $sawParameter = true;
+            if ($expectParam && !$token->isWhitespace() && !$token->isComment()) {
+                ++$paramsQuantity;
+                $expectParam = false;
             }
 
             if ($token->equals('(')) {
@@ -108,14 +115,13 @@ final class StrictParamFixer extends AbstractFixer
             }
 
             if ($token->equals(',')) {
-                ++$commaCounter;
+                $expectParam = true;
 
                 continue;
             }
         }
 
-        $functionParamsQuantity = count($functionParams);
-        $paramsQuantity = ($sawParameter ? 1 : 0) + $commaCounter;
+        $functionParamsQuantity = \count($functionParams);
 
         if ($paramsQuantity === $functionParamsQuantity) {
             return;
@@ -131,7 +137,7 @@ final class StrictParamFixer extends AbstractFixer
             $tokensToInsert[] = new Token(',');
             $tokensToInsert[] = new Token([T_WHITESPACE, ' ']);
 
-            if (!is_array($functionParams[$i])) {
+            if (!\is_array($functionParams[$i])) {
                 $tokensToInsert[] = clone $functionParams[$i];
 
                 continue;
@@ -142,7 +148,7 @@ final class StrictParamFixer extends AbstractFixer
             }
         }
 
-        $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endBraceIndex);
+        $beforeEndBraceIndex = $tokens->getTokenNotOfKindSibling($endBraceIndex, -1, [[T_WHITESPACE], ',']);
         $tokens->insertAt($beforeEndBraceIndex + 1, $tokensToInsert);
     }
 }

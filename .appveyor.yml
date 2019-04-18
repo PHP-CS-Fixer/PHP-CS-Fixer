@@ -5,7 +5,8 @@ clone_folder: C:\projects\php-cs-fixer
 
 environment:
     matrix:
-        - php_ver: 5.6.30
+        - php_ver: 7.3.1
+        - php_ver: 5.6.40
           SKIP_LINT_TEST_CASES: 1
 
 cache:
@@ -28,13 +29,14 @@ install:
     - echo extension=php_curl.dll >> php.ini
     - echo extension=php_openssl.dll >> php.ini
     - echo extension=php_mbstring.dll >> php.ini
-    - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/download/1.4.1/composer.phar)
+    - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/composer.phar)
     - cd C:\projects\php-cs-fixer
     - php C:\tools\composer.phar global show hirak/prestissimo -q || php C:\tools\composer.phar global require hirak/prestissimo
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --no-interaction --no-progress --prefer-stable --no-ansi
+    - php C:\tools\composer.phar update --optimize-autoloader --no-interaction --no-progress --prefer-stable --no-ansi
+    - php C:\tools\composer.phar info -D | sort
 
 test_script:
     - cd C:\projects\php-cs-fixer

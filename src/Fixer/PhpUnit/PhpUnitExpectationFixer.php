@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitExpectationFixer extends AbstractFunctionReferenceFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpUnitExpectationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array<string, string>
@@ -131,10 +131,39 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $argumentsAnalyzer = new ArgumentsAnalyzer();
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
+            $this->fixExpectation($tokens, $indexes[0], $indexes[1]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
+                ->setAllowedTypes(['string'])
+                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_NEWEST])
+                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
+                ->getOption(),
+        ]);
+    }
+
+    private function fixExpectation(Tokens $tokens, $startIndex, $endIndex)
+    {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $oldMethodSequence = [
             new Token([T_VARIABLE, '$this']),
@@ -142,17 +171,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             [T_STRING],
         ];
 
-        $inPhpUnitClass = false;
-
-        for ($index = 0, $limit = $tokens->count() - 1; $index < $limit; ++$index) {
-            if (!$inPhpUnitClass && $tokens[$index]->isGivenKind(T_CLASS) && $phpUnitTestCaseIndicator->isPhpUnitClass($tokens, $index)) {
-                $inPhpUnitClass = true;
-            }
-
-            if (!$inPhpUnitClass) {
-                continue;
-            }
-
+        for ($index = $startIndex; $startIndex < $endIndex; ++$index) {
             $match = $tokens->findSequence($oldMethodSequence, $index);
 
             if (null === $match) {
@@ -167,9 +186,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $commaIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+            if ($tokens[$commaIndex]->equals(',')) {
+                $tokens->removeTrailingWhitespace($commaIndex);
+                $tokens->clearAt($commaIndex);
+            }
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
-            $argumentsCnt = count($arguments);
+            $argumentsCnt = \count($arguments);
 
             $argumentsReplacements = ['expectException', $this->methodMap[$tokens[$index]->getContent()], 'expectExceptionCode'];
 
@@ -224,26 +248,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
 
                 $tokens->overrideRange($argBefore, $argBefore, $tokensOverrideArgBefore);
-
-                $limit = $tokens->count();
             }
 
             $tokens[$index] = new Token([T_STRING, 'expectException']);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
-                ->setAllowedTypes(['string'])
-                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_NEWEST])
-                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
-                ->getOption(),
-        ]);
     }
 
     /**

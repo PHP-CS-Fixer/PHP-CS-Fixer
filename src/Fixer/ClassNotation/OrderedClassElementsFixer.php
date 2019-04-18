@@ -14,9 +14,9 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\FixerOptionValidatorGenerator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -28,6 +28,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /** @internal */
+    const SORT_ALPHA = 'alpha';
+    /** @internal */
+    const SORT_NONE = 'none';
+
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
      */
@@ -66,6 +71,16 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'destruct' => null,
         'magic' => null,
         'phpunit' => null,
+    ];
+
+    /**
+     * Array of supported sort algorithms in configuration.
+     *
+     * @var string[]
+     */
+    private $supportedSortAlgorithms = [
+        self::SORT_NONE,
+        self::SORT_ALPHA,
     ];
 
     /**
@@ -108,7 +123,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             $this->typePosition[$type] = null;
         }
 
-        $lastPosition = count($this->configuration['order']);
+        $lastPosition = \count($this->configuration['order']);
         foreach ($this->typePosition as &$pos) {
             if (null === $pos) {
                 $pos = $lastPosition;
@@ -177,6 +192,18 @@ class Example
 ',
                     ['order' => ['method_private', 'method_public']]
                 ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function D(){}
+    public function B(){}
+    public function A(){}
+    public function C(){}
+}
+',
+                    ['order' => ['method_public'], 'sortAlgorithm' => 'alpha']
+                ),
             ]
         );
     }
@@ -209,7 +236,7 @@ class Example
             }
 
             $sorted = $this->sortElements($elements);
-            $endIndex = $elements[count($elements) - 1]['end'];
+            $endIndex = $elements[\count($elements) - 1]['end'];
 
             if ($sorted !== $elements) {
                 $this->sortTokens($tokens, $i, $endIndex, $sorted);
@@ -227,9 +254,7 @@ class Example
         return new FixerConfigurationResolverRootless('order', [
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([
-                    (new FixerOptionValidatorGenerator())->allowedValueIsSubsetOf(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes))),
-                ])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
                 ->setDefault([
                     'use_trait',
                     'constant_public',
@@ -247,7 +272,11 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-        ]);
+            (new FixerOptionBuilder('sortAlgorithm', 'How multiple occurrences of same type statements should be sorted'))
+                ->setAllowedValues($this->supportedSortAlgorithms)
+                ->setDefault(self::SORT_NONE)
+                ->getOption(),
+        ], $this->getName());
     }
 
     /**
@@ -295,11 +324,17 @@ class Example
                 }
 
                 $type = $this->detectElementType($tokens, $i);
-                if (is_array($type)) {
+                if (\is_array($type)) {
                     $element['type'] = $type[0];
                     $element['name'] = $type[1];
                 } else {
                     $element['type'] = $type;
+                }
+
+                if ('property' === $element['type']) {
+                    $element['name'] = $tokens[$i]->getContent();
+                } elseif (\in_array($element['type'], ['use_trait', 'constant', 'method', 'magic'], true)) {
+                    $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
                 $element['end'] = $this->findElementEnd($tokens, $i);
@@ -400,7 +435,7 @@ class Example
         foreach ($elements as &$element) {
             $type = $element['type'];
 
-            if (array_key_exists($type, self::$specialTypes)) {
+            if (\array_key_exists($type, self::$specialTypes)) {
                 if (isset($this->typePosition[$type])) {
                     $element['position'] = $this->typePosition[$type];
                     if ('phpunit' === $type) {
@@ -413,7 +448,7 @@ class Example
                 $type = 'method';
             }
 
-            if (in_array($type, ['constant', 'property', 'method'], true)) {
+            if (\in_array($type, ['constant', 'property', 'method'], true)) {
                 $type .= '_'.$element['visibility'];
                 if ($element['static']) {
                     $type .= '_static';
@@ -424,16 +459,26 @@ class Example
         }
         unset($element);
 
-        usort($elements, static function (array $a, array $b) {
+        usort($elements, function (array $a, array $b) {
             if ($a['position'] === $b['position']) {
-                // same group, preserve current order
-                return $a['start'] > $b['start'] ? 1 : -1;
+                return $this->sortGroupElements($a, $b);
             }
 
             return $a['position'] > $b['position'] ? 1 : -1;
         });
 
         return $elements;
+    }
+
+    private function sortGroupElements(array $a, array $b)
+    {
+        $selectedSortAlgorithm = $this->configuration['sortAlgorithm'];
+
+        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+            return strcasecmp($a['name'], $b['name']);
+        }
+
+        return $a['start'] > $b['start'] ? 1 : -1;
     }
 
     /**

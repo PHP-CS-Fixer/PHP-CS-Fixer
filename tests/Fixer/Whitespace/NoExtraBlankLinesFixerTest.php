@@ -106,7 +106,7 @@ EOF;
      *
      * @group legacy
      * @dataProvider provideWithConfigCases
-     * @expectedDeprecation Passing "tokens" at the root of the configuration is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
+     * @expectedDeprecation Passing "tokens" at the root of the configuration for rule "no_extra_blank_lines" is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
      */
     public function testLegacyWithConfig(array $lineNumberRemoved, array $config)
     {
@@ -512,6 +512,8 @@ $b = 1;
             ['<?php use A\B;'],
             ['<?php use A\B?>'],
             ['<?php use A\B;use A\D; return 1;'],
+            ["<?php use A\\B?>\n\n<?php use D\\E\\F?>"],
+            ['<?php use Y\B;use A\D; return 1;'],
             [
                 '<?php
                     use A\B;
@@ -714,7 +716,7 @@ $a = new Qux();',
 
     /**
      * @group legacy
-     * @expectedDeprecation Token "useTrait" is deprecated and will be removed in 3.0, use "use_trait" instead.
+     * @expectedDeprecation Token "useTrait" in option "tokens" for rule "no_extra_blank_lines" is deprecated and will be removed in 3.0, use "use_trait" instead.
      */
     public function testRemoveBetweenUseTraitsDeprecatedToken()
     {
@@ -839,9 +841,9 @@ $a = new Qux();',
      *
      * @dataProvider provideBraceCases
      */
-    public function testBraces(array $config = null, $expected, $input = null)
+    public function testBraces(array $config, $expected, $input = null)
     {
-        $this->fixer->configure(['tokens' => $config]);
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -849,16 +851,16 @@ $a = new Qux();',
     {
         return [
             [
-                ['curly_brace_block'],
+                ['tokens' => ['curly_brace_block']],
                 "<?php function test()\n\n{}\n\necho 789;",
             ],
             [
-                ['curly_brace_block'],
+                ['tokens' => ['curly_brace_block']],
                 "<?php switch(\$a){\ncase 1:echo 789;}",
                 "<?php switch(\$a){\n   \ncase 1:echo 789;}",
             ],
             [
-                ['parenthesis_brace_block'],
+                ['tokens' => ['parenthesis_brace_block']],
                 '<?php
 is_int(
 1);
@@ -889,12 +891,12 @@ $c
 }',
             ],
             [
-                ['parenthesis_brace_block'],
+                ['tokens' => ['parenthesis_brace_block']],
                 "<?php array(\n1,\n2,\n3,\n);",
                 "<?php array(\n  \n1,\n2,\n3,\n\n\n);",
             ],
             [
-                ['parenthesis_brace_block'],
+                ['tokens' => ['parenthesis_brace_block']],
                 '<?php
     function a()
     {
@@ -906,7 +908,7 @@ $c
     }',
             ],
             [
-                ['return'],
+                ['tokens' => ['return']],
                 '<?php
 class Foo
 {
@@ -926,7 +928,7 @@ class Foo
 }',
             ],
             [
-                ['square_brace_block'],
+                ['tokens' => ['square_brace_block']],
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
                 "<?php \$c = \$b[0];\n\n\n\$a = [\n\n   1,\n2];\necho 1;\n\$b = [];\n\n\n//a\n",
             ],
@@ -1101,6 +1103,19 @@ class Foo
                     // above stays empty',
             ],
         ];
+    }
+
+    public function testRemovingEmptyLinesAfterOpenTag()
+    {
+        $this->doTest(
+            '<?php
+
+class Foo {}',
+            '<?php
+
+
+class Foo {}'
+        );
     }
 
     /**

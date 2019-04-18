@@ -75,7 +75,7 @@ switch ($foo) {
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([
                     function ($value) {
-                        if (is_string($value) && Preg::match('/\R/', $value)) {
+                        if (\is_string($value) && Preg::match('/\R/', $value)) {
                             throw new InvalidOptionsException('The comment text must not contain new lines.');
                         }
 
@@ -95,7 +95,7 @@ switch ($foo) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($position = count($tokens) - 1; $position >= 0; --$position) {
+        for ($position = \count($tokens) - 1; $position >= 0; --$position) {
             if ($tokens[$position]->isGivenKind([T_CASE, T_DEFAULT])) {
                 $this->fixCase($tokens, $position);
             }
@@ -111,7 +111,7 @@ switch ($foo) {
         $empty = true;
         $fallThrough = true;
         $commentPosition = null;
-        for ($i = $tokens->getNextTokenOfKind($casePosition, [':', ';']) + 1, $max = count($tokens); $i < $max; ++$i) {
+        for ($i = $tokens->getNextTokenOfKind($casePosition, [':', ';']) + 1, $max = \count($tokens); $i < $max; ++$i) {
             if ($tokens[$i]->isGivenKind([T_SWITCH, T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_DO, T_FUNCTION, T_CLASS])) {
                 $empty = false;
                 $i = $this->getStructureEnd($tokens, $i);
@@ -184,7 +184,7 @@ switch ($foo) {
 
         $text = preg_quote($this->configuration['comment_text'], '~');
 
-        return Preg::match("~^((//|#)\\s*${text}\\s*)|(/\\*\\*?\\s*${text}\\s*\\*/)$~i", $token->getContent());
+        return 1 === Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}\\s*\\*/)$~i", $token->getContent());
     }
 
     /**
@@ -335,7 +335,7 @@ switch ($foo) {
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])
             );
-        } elseif ($initialToken->isGivenKind([T_CLASS])) {
+        } elseif ($initialToken->isGivenKind(T_CLASS)) {
             $openParenthesisPosition = $tokens->getNextMeaningfulToken($position);
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
                 $position = $tokens->findBlockEnd(
@@ -352,7 +352,7 @@ switch ($foo) {
 
         $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $position);
 
-        if ($initialToken->isGivenKind([T_DO])) {
+        if ($initialToken->isGivenKind(T_DO)) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])

@@ -34,7 +34,7 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
             'Add curly braces to indirect variables to make them clear to understand. Requires PHP >= 7.0.',
             [
                 new VersionSpecificCodeSample(
-<<<'EOT'
+                    <<<'EOT'
 <?php
 echo $$foo;
 echo $$foo['bar'];
@@ -54,7 +54,7 @@ EOT
      */
     public function isCandidate(Tokens $tokens)
     {
-        return PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_VARIABLE);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_VARIABLE);
     }
 
     /**

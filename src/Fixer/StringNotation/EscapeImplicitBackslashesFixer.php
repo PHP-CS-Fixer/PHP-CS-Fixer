@@ -32,7 +32,7 @@ final class EscapeImplicitBackslashesFixer extends AbstractFixer implements Conf
      */
     public function getDefinition()
     {
-        $codeSamble = <<<'EOF'
+        $codeSample = <<<'EOF'
 <?php
 
 $singleQuoted = 'String with \" and My\Prefix\\';
@@ -48,17 +48,17 @@ EOF;
         return new FixerDefinition(
             'Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.',
             [
-                new CodeSample($codeSamble),
+                new CodeSample($codeSample),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['single_quoted' => true]
                 ),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['double_quoted' => false]
                 ),
                 new CodeSample(
-                    $codeSamble,
+                    $codeSample,
                     ['heredoc_syntax' => false]
                 ),
             ],
@@ -95,14 +95,14 @@ EOF;
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $singleQuotedRegex = '/(?<!\\\\)\\\\(?![\\\'\\\\])/';
-        static $doubleQuotedRegex = '/(?<!\\\\)\\\\(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
-        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        static $singleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![\\\'\\\\])/';
+        static $doubleQuotedRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$"\\\\0-7]|x[0-9A-Fa-f]|u{)/';
+        static $heredocSyntaxRegex = '/(?<!\\\\)\\\\((?:\\\\\\\\)*)(?![efnrtv$\\\\0-7]|x[0-9A-Fa-f]|u{)/';
 
         $doubleQuoteOpened = false;
         foreach ($tokens as $index => $token) {
             $content = $token->getContent();
-            if ($token->equals('"')) {
+            if ($token->equalsAny(['"', 'b"', 'B"'])) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
             if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
@@ -114,9 +114,10 @@ EOF;
                 continue;
             }
 
-            $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '\'' === $content[0];
+            $firstTwoCharacters = strtolower(substr($content, 0, 2));
+            $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
             $isDoubleQuotedString =
-                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && '"' === $content[0])
+                ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
                 || ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened)
             ;
             $isHeredocSyntax = !$isSingleQuotedString && !$isDoubleQuotedString;
@@ -135,7 +136,7 @@ EOF;
                 $regex = $doubleQuotedRegex;
             }
 
-            $newContent = Preg::replace($regex, '\\\\\\\\', $content);
+            $newContent = Preg::replace($regex, '\\\\\\\\$1', $content);
             if ($newContent !== $content) {
                 $tokens[$index] = new Token([$token->getId(), $newContent]);
             }

@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: array_indentation,align_multiline_comment.
+--RULESET--
+{"array_indentation": true, "align_multiline_comment": {"comment_type": "all_multiline"}}
+--EXPECT--
+<?php
+
+$array = [
+    /*
+     * Aligned with the values
+     */
+    'this' => 'is a bug',
+    'but'  => 'this is too',
+];
+
+--INPUT--
+<?php
+
+$array = [
+              /*
+               * Aligned with the values
+               */
+    'this' => 'is a bug',
+    'but'  => 'this is too',
+];

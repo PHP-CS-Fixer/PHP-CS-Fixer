@@ -136,6 +136,10 @@ OVERRIDDEN;
             [$overriddenFunctionFixed, $overriddenFunction],
 
             [
+                '<?php $a = (string) ($b . $c);',
+                '<?php $a = strval($b . $c);',
+            ],
+            [
                 '<?php $x = /**/(int) /**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
                 '<?php $x = /**/intval/**/ /** x*/(/**//** */mt_rand(0, 100)/***/)/*xx*/;',
             ],
@@ -174,6 +178,66 @@ intval#
  $b#
  )#
  ;#',
+            ],
+            [
+                '<?php $foo = ((int) $x)**2;',
+                '<?php $foo = intval($x)**2;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFix70Cases
+     */
+    public function testFix70($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php $foo = ((string) $x)[0];',
+                '<?php $foo = strval($x)[0];',
+            ],
+            [
+                '<?php $foo = ((string) ($x + $y))[0];',
+                '<?php $foo = strval($x + $y)[0];',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $a = (int) $b;',
+                '<?php $a = intval($b, );',
+            ],
+            [
+                '<?php $a = (int) $b;',
+                '<?php $a = intval($b , );',
+            ],
+            [
+                '<?php $a = (string) ($b . $c);',
+                '<?php $a = strval($b . $c, );',
             ],
         ];
     }

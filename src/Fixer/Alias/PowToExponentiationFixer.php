@@ -69,7 +69,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $numberOfTokensAdded = 0;
-        $previousCloseParenthesisIndex = count($tokens);
+        $previousCloseParenthesisIndex = \count($tokens);
         foreach (array_reverse($candidates) as $candidate) {
             // if in the previous iteration(s) tokens were added to the collection and this is done within the tokens
             // indexes of the current candidate than the index of the close ')' of the candidate has moved and so
@@ -83,7 +83,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
             }
 
             $arguments = $argumentsAnalyzer->getArguments($tokens, $candidate[1], $candidate[2]);
-            if (2 !== count($arguments)) {
+            if (2 !== \count($arguments)) {
                 continue;
             }
 
@@ -107,7 +107,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         $candidates = [];
 
         // Minimal candidate to fix is seven tokens: pow(x,x);
-        $end = count($tokens) - 6;
+        $end = \count($tokens) - 6;
 
         // First possible location is after the open token: 1
         for ($i = 1; $i < $end; ++$i) {
@@ -140,6 +140,10 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
         // clean up the function call tokens prt. I
         $tokens->clearAt($closeParenthesisIndex);
+        $previousIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
+        if ($tokens[$previousIndex]->equals(',')) {
+            $tokens->clearAt($previousIndex); // trailing ',' in function call (PHP 7.3)
+        }
 
         $added = 0;
         // check if the arguments need to be wrapped in parenthesis

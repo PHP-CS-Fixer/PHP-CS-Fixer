@@ -124,6 +124,81 @@ $this
 
     ;',
             ],
+            [
+                '<?php
+                    Foo::bar() // test
+;',
+                '<?php
+                    Foo::bar() // test
+                    ;',
+            ],
+            [
+                '<?php
+                    Foo::bar() # test
+;',
+                '<?php
+                    Foo::bar() # test
+
+
+                ;',
+            ],
+            [
+                '<?php
+self
+    ::setName(\'readme1\')
+    ->setDescription(\'Generates the README\');
+',
+                '<?php
+self
+    ::setName(\'readme1\')
+    ->setDescription(\'Generates the README\')
+;
+',
+            ],
+            [
+                '<?php
+self
+    ::setName(\'readme2\')
+    ->setDescription(\'Generates the README\');
+',
+                '<?php
+self
+    ::setName(\'readme2\')
+    ->setDescription(\'Generates the README\')
+    ;
+',
+            ],
+            [
+                '<?php echo "self::foo(\'with param containing ;\') ;" ;',
+            ],
+            [
+                '<?php self::foo();',
+            ],
+            [
+                '<?php self::foo() ;',
+            ],
+            [
+                '<?php self::foo(\'with param containing ;\') ;',
+            ],
+            [
+                '<?php self::foo(\'with param containing ) ; \') ;',
+            ],
+            [
+                '<?php self::foo("with param containing ) ; ")  ; ?>',
+            ],
+            [
+                '<?php self::foo("with semicolon in string) ; "); ?>',
+            ],
+            [
+                '<?php
+self
+    ::example();',
+                '<?php
+self
+    ::example()
+
+    ;',
+            ],
         ];
     }
 
@@ -424,6 +499,321 @@ $this
                         ->method2();
                 ?>',
             ],
+            [
+                '<?php
+
+                    self
+                        ::method1()
+                        ->method2()
+                    ;
+                ?>',
+                '<?php
+
+                    self
+                        ::method1()
+                        ->method2();
+                ?>',
+            ], [
+                '<?php
+
+                    self
+                        ::method1()
+                        ->method2() // comment
+                    ;
+
+
+',
+                '<?php
+
+                    self
+                        ::method1()
+                        ->method2(); // comment
+
+
+',
+            ], [
+                '<?php
+
+                    Service::method1()
+                        ->method2()
+                    ;
+
+                    Service::method3();
+                    $this
+                        ->method1()
+                        ->method2()
+                    ;',
+                '<?php
+
+                    Service::method1()
+                        ->method2()
+                    ;
+
+                    Service::method3();
+                    $this
+                        ->method1()
+                        ->method2();',
+            ], [
+                '<?php
+
+                    Service
+                        ::method2()
+                    ;
+                ?>',
+                '<?php
+
+                    Service
+                        ::method2();
+                ?>',
+            ], [
+                '<?php
+
+                    Service::method1()
+                        ->method2()
+                        ->method3()
+                        ->method4()
+                    ;
+                ?>',
+                '<?php
+
+                    Service::method1()
+                        ->method2()
+                        ->method3()
+                        ->method4();
+                ?>',
+            ], [
+                '<?php
+
+                    self::method1()
+                        ->method2([1, 2])
+                        ->method3(
+                            "2",
+                            2,
+                            [1, 2]
+                        )
+                        ->method4()
+                    ;
+                ?>',
+                '<?php
+
+                    self::method1()
+                        ->method2([1, 2])
+                        ->method3(
+                            "2",
+                            2,
+                            [1, 2]
+                        )
+                        ->method4();
+                ?>',
+            ], [
+                '<?php
+
+                    Service
+                        ::method1()
+                            ->method2()
+                        ->method3()
+                            ->method4()
+                    ;
+                ?>',
+                '<?php
+
+                    Service
+                        ::method1()
+                            ->method2()
+                        ->method3()
+                            ->method4();
+                ?>',
+            ], [
+                '<?php
+                    $f = "g";
+
+                    Service
+                        ::method1("a", true)
+                        ->method2(true, false)
+                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                        ->method4(1, "a", $f)
+                    ;
+                ?>',
+                '<?php
+                    $f = "g";
+
+                    Service
+                        ::method1("a", true)
+                        ->method2(true, false)
+                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                        ->method4(1, "a", $f);
+                ?>',
+            ], [
+                '<?php
+                    $f = "g";
+
+                    Service
+                        ::method1("a", true) // this is a comment
+                        /* ->method2(true, false) */
+                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                        ->method4(1, "a", $f) /* this is a comment */
+                    ;
+                ?>',
+                '<?php
+                    $f = "g";
+
+                    Service
+                        ::method1("a", true) // this is a comment
+                        /* ->method2(true, false) */
+                        ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
+                        ->method4(1, "a", $f); /* this is a comment */
+                ?>',
+            ], [
+                '<?php
+                    Service::method1();
+                    Service::method2()->method3();
+                ?>',
+            ], [
+                '<?php
+                    Service::method1() ;
+                    Service::method2()->method3() ;
+                ?>',
+            ], [
+                '<?php
+
+                    Service
+                        ::method2(function ($a) {
+                            $a->otherCall()
+                                ->a()
+                                ->b()
+                            ;
+                        })
+                    ;
+                ?>',
+                '<?php
+
+                    Service
+                        ::method2(function ($a) {
+                            $a->otherCall()
+                                ->a()
+                                ->b()
+                            ;
+                        });
+                ?>',
+            ], [
+                '<?php
+
+                    $data = Service
+                        ::method2(function () {
+                            Foo::otherCall()
+                                ->a()
+                                ->b(array_merge([
+                                        1 => 1,
+                                        2 => 2,
+                                    ], $this->getOtherArray()
+                                ))
+                            ;
+                        })
+                    ;
+                ?>',
+                '<?php
+
+                    $data = Service
+                        ::method2(function () {
+                            Foo::otherCall()
+                                ->a()
+                                ->b(array_merge([
+                                        1 => 1,
+                                        2 => 2,
+                                    ], $this->getOtherArray()
+                                ));
+                        });
+                ?>',
+            ], [
+                '<?php
+
+                    Service
+                        ::method1(null, null, [
+                            null => null,
+                            1 => $data->getId() > 0,
+                        ])
+                        ->method2(4, Type::class)
+                    ;
+',
+                '<?php
+
+                    Service
+                        ::method1(null, null, [
+                            null => null,
+                            1 => $data->getId() > 0,
+                        ])
+                        ->method2(4, Type::class);
+',
+            ],
+            [
+                '<?php
+Service
+                        ::method1()
+                        ->method2()
+;
+                ?>',
+                '<?php
+Service
+                        ::method1()
+                        ->method2();
+                ?>',
+            ],
+            [
+                '<?php
+
+                    function foo($bar)
+                    {
+                        if ($bar === 1) {
+                            $baz
+                                ->bar()
+                            ;
+                        }
+
+                        return (new Foo($bar))
+                            ->baz()
+                        ;
+                    }
+                ?>',
+                '<?php
+
+                    function foo($bar)
+                    {
+                        if ($bar === 1) {
+                            $baz
+                                ->bar();
+                        }
+
+                        return (new Foo($bar))
+                            ->baz();
+                    }
+                ?>',
+            ],
+            [
+                '<?php
+
+                    $foo = (new Foo($bar))
+                        ->baz()
+                    ;
+
+                    function foo($bar)
+                    {
+                        $foo = (new Foo($bar))
+                            ->baz()
+                        ;
+                    }
+                ?>',
+                '<?php
+
+                    $foo = (new Foo($bar))
+                        ->baz();
+
+                    function foo($bar)
+                    {
+                        $foo = (new Foo($bar))
+                            ->baz();
+                    }
+                ?>',
+            ],
         ];
     }
 
@@ -454,6 +844,33 @@ $this
             ], [
                 "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
                 "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
+                "<?php\n\$this\n    ->one()\n    ->two(2, );",
+            ],
+            [
+                "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
+                "<?php\n\$this\n    ->one(1, )\n    ->two();",
             ],
         ];
     }

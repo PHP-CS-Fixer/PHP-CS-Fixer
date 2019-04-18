@@ -83,8 +83,8 @@ function foo () {
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
-                    'strategy',
-                    'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
+                'strategy',
+                'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
             ))
                 ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)
@@ -134,7 +134,7 @@ function foo () {
 
     private function applyChainedCallsFix(Tokens $tokens)
     {
-        for ($index = count($tokens) - 1; $index >= 0; --$index) {
+        for ($index = \count($tokens) - 1; $index >= 0; --$index) {
             // continue if token is not a semicolon
             if (!$tokens[$index]->equals(';')) {
                 continue;
@@ -175,7 +175,7 @@ function foo () {
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        for ($index, $count = count($tokens); $index < $count; ++$index) {
+        for ($index, $count = \count($tokens); $index < $count; ++$index) {
             if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
                 return $index;
             }
@@ -226,8 +226,8 @@ function foo () {
             return null;
         }
 
-        // ->
-        if (!$tokens[--$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+        // -> or ::
+        if (!$tokens[--$index]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
             return null;
         }
 
@@ -247,7 +247,7 @@ function foo () {
             }
 
             // must be the variable of the first call in the chain
-            if ($tokens[$index]->isGivenKind(T_VARIABLE) && 0 === $closingBrackets) {
+            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN, T_STRING]) && 0 === $closingBrackets) {
                 if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
                     || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                     return $this->getIndentAt($tokens, $index);

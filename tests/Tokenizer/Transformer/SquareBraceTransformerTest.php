@@ -49,7 +49,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         }
 
         foreach ($tokens as $index => $token) {
-            if (in_array($index, $inspectIndexes, true)) {
+            if (\in_array($index, $inspectIndexes, true)) {
                 $this->assertSame('[', $tokens[$index]->getContent(), sprintf('Token @ index %d must have content \']\'', $index));
                 $exp = $expected;
             } elseif ('[' === $tokens[$index]->getContent()) {
@@ -77,6 +77,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             ['<?php [$foo, $bar] = [$baz, $bat] = [$a, $b];', [10], false],
             ['<?php [[$a, $b], [$c, $d]] = [[1, 2], [3, 4]];', [1], false],
             ['<?php ["a" => $a, "b" => $b, "c" => $c] = $array;', [1], false],
+            ['<?php [$a, $b,, [$c, $d]] = $a;', [1, 9], false],
         ];
     }
 
@@ -220,6 +221,17 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             [
                 '<?php "foo"[1];//[]',
             ],
+            [
+                '<?php
+
+class Test
+{
+    public function updateAttributeKey($key, $value)
+    {
+        $this->{camel_case($attributes)}[$key] = $value;
+    }
+}',
+            ],
         ];
     }
 
@@ -292,6 +304,53 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                     7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ],
             ],
+            [
+                '<?php [$a, $b,, [$c, $d]] = $a;',
+                [
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    9 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    14 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    15 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            'nested I' => [
+                '<?php [$a[]] = $b;',
+                [
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    5 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            'nested II (with array offset)' => [
+                '<?php [$a[1]] = $b;',
+                [
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    6 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            'nested III' => [
+                '<?php [$a[1], [$b], $c[2]] = $d;',
+                [
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    10 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php [[[$a]/**/], $b[1], [/**/[$c]] /** */ ] = $d[1][2][3];',
+                [
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    2 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    3 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    5 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    7 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    16 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    18 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    20 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    21 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    25 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
         ];
     }
 
@@ -308,8 +367,6 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                CT::T_ARRAY_SQUARE_BRACE_CLOSE,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
             ]
@@ -338,6 +395,21 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                 [
                     1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
                     8 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php [[ [&$a, &$b], [&$c] ], [&$d/* */]] = $e;',
+                [
+                    1 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    2 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    4 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    14 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    19 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    22 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    26 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    27 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ],
             ],
         ];

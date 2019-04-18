@@ -53,7 +53,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
             'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.',
             [
                 new CodeSample(
-'<?php
+                    '<?php
     /**
             * This is a DOC Comment
 with a line not prefixed with asterisk
@@ -62,7 +62,7 @@ with a line not prefixed with asterisk
 '
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
     /*
             * This is a doc-like multiline comment
 */
@@ -70,7 +70,7 @@ with a line not prefixed with asterisk
                     ['comment_type' => 'phpdocs_like']
                 ),
                 new CodeSample(
-'<?php
+                    '<?php
     /*
             * This is a doc-like multiline comment
 with a line not prefixed with asterisk
@@ -81,6 +81,15 @@ with a line not prefixed with asterisk
                 ),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        // Should run after ArrayIndentationFixer
+        return -40;
     }
 
     /**

@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use PhpCsFixer\Report\XmlReporter;
-use PhpCsFixer\Tests\Test\Constraint\XmlMatchesXsdConstraint;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -33,11 +33,15 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         self::$xsd = file_get_contents(__DIR__.'/../../doc/xml.xsd');
     }
 
     public static function tearDownAfterClass()
     {
+        parent::tearDownAfterClass();
+
         self::$xsd = null;
     }
 
@@ -153,7 +157,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        $this->assertThat($input, new XmlMatchesXsdConstraint(self::$xsd));
+        $this->assertThat($input, new XmlMatchesXsd(self::$xsd));
         $this->assertXmlStringEqualsXmlString($expected, $input);
     }
 }

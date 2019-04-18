@@ -326,6 +326,24 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  *     @Bar()}
  * )
  */'],
+            ['
+/**
+* @Foo(foo={
+*     "bar": 1,
+* }, baz={
+*     "qux": 2,
+* })
+*/
+'],
+            ['
+/**
+* @Foo(foo={
+*     "foo",
+* }, bar={ "bar" }, baz={
+*     "baz"
+* })
+*/
+'],
         ]);
 
         $cases[] = [

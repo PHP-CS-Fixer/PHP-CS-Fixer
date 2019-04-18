@@ -38,7 +38,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-<<<'EOF'
+                <<<'EOF'
                 <?php
     /**
      * @param EngineInterface $templating
@@ -101,6 +101,7 @@ EOF;
     *
      *
      *  @return bool
+     *
      *
      */
 
