@@ -241,7 +241,7 @@ final class ShowCommand extends Command
     private function processRuleSet($name, RuleSetInterface $set)
     {
         /**
-         * @var string
+         * @var string $rule
          * @var bool   $value
          */
         foreach ($set->getRules() as $rule => $value) {
