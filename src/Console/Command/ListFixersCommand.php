@@ -31,15 +31,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Adamo Aerendir Crespi <hello@aerendir.me>
  * @author Patrick Landolt <landolt@gmail.com>
  */
-final class ShowCommand extends Command
+final class ListFixersCommand extends Command
 {
-    /**
-     * @var string
-     *
-     * @internal
-     */
-    const COMMAND_NAME = 'show';
-
     /**
      * @var string
      *
@@ -60,6 +53,9 @@ final class ShowCommand extends Command
      * @internal
      */
     const PLUS = "\xe2\x9c\x9a";
+
+    /** @var string */
+    protected static $defaultName = 'list';
 
     /** @var ToolInfoInterface */
     private $toolInfo;
@@ -134,6 +130,7 @@ final class ShowCommand extends Command
     private $countCustomFixers = 0;
 
     /**
+     * @param ToolInfoInterface $toolInfo
      * @param null|FixerFactory $fixerFactory
      */
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
@@ -158,7 +155,6 @@ final class ShowCommand extends Command
     protected function configure()
     {
         $this
-            ->setName(self::COMMAND_NAME)
             ->setDefinition(
                 [
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
@@ -244,10 +240,7 @@ final class ShowCommand extends Command
      */
     private function processRuleSet($name, RuleSetInterface $set)
     {
-        /**
-         * @var string
-         * @var bool   $value
-         */
+        /** @var bool $value */
         foreach ($set->getRules() as $rule => $value) {
             $this->fixerList[$rule]['in_set'][] = $name;
             $this->fixerList[$rule]['is_inherited'] = true;
@@ -451,7 +444,7 @@ final class ShowCommand extends Command
         }
 
         $line = var_export(
-            array_map(function () {return false; }, $this->undefinedFixers),
+            array_map(static function () {return false; }, $this->undefinedFixers),
             true
         );
 
