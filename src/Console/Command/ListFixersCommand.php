@@ -33,6 +33,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ListFixersCommand extends Command
 {
+    /** @var string */
+    const COMMAND_NAME = 'list';
+
     /**
      * @var string
      *
@@ -53,9 +56,6 @@ final class ListFixersCommand extends Command
      * @internal
      */
     const PLUS = "\xe2\x9c\x9a";
-
-    /** @var string */
-    protected static $defaultName = 'list';
 
     /** @var ToolInfoInterface */
     private $toolInfo;
@@ -135,7 +135,7 @@ final class ListFixersCommand extends Command
      */
     public function __construct(ToolInfoInterface $toolInfo, FixerFactory $fixerFactory = null)
     {
-        parent::__construct();
+        parent::__construct(self::COMMAND_NAME);
 
         $this->toolInfo = $toolInfo;
 
@@ -213,7 +213,7 @@ final class ListFixersCommand extends Command
         }
 
         // Order fixers alphabetically
-        usort($this->availableFixers, function (FixerInterface $a, FixerInterface $b) {
+        usort($this->availableFixers, static function (FixerInterface $a, FixerInterface $b) {
             return strcmp($a->getName(), $b->getName());
         });
 
