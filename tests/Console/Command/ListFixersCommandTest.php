@@ -26,7 +26,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @covers \PhpCsFixer\Console\Command\ListFixersCommand
  */
-final class ListCommandTest extends TestCase
+final class ListFixersCommandTest extends TestCase
 {
     /**
      * @var Application
