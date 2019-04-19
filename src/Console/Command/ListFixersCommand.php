@@ -157,7 +157,7 @@ final class ListFixersCommand extends Command
         $this
             ->setDefinition(
                 [
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                     new InputOption('hide-configured', '', InputOption::VALUE_NONE, 'Hide fixers that are configured (in the config file or because of inheritance).'),
                     new InputOption('hide-enabled', '', InputOption::VALUE_NONE, 'Hide fixers that are currently enabled (the ones that are not disabled with [\'fixer_name\' => false]).'),
                     new InputOption('hide-risky', '', InputOption::VALUE_NONE, 'Hide fixers that are marked as risky.'),
