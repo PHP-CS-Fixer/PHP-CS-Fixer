@@ -26,11 +26,13 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     * @param array       $config
      *
      * @dataProvider provideTestCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -245,6 +247,70 @@ EOT
 $foo = 1;
 EOT
                 ,
+            ],
+            [
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+// @todo do something later
+$foo = 1;
+EOT
+                ,
+                null,
+                ['ignored_tags' => ['todo']],
+            ],
+            [
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+// @TODO do something later
+$foo = 1;
+EOT
+                ,
+                null,
+                ['ignored_tags' => ['todo']],
+            ],
+            [
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+/**
+ * @todo do something later
+ * @var int $foo
+ */
+$foo = 1;
+EOT
+                ,
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+// @todo do something later
+// @var int $foo
+$foo = 1;
+EOT
+                ,
+                ['ignored_tags' => ['todo']],
+            ],
+            [
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+/**
+ * @var int $foo
+ * @todo do something later
+ */
+$foo = 1;
+EOT
+                ,
+                <<<'EOT'
+<?php /* header comment */ $foo = true;
+
+// @var int $foo
+// @todo do something later
+$foo = 1;
+EOT
+                ,
+                ['ignored_tags' => ['todo']],
             ],
         ];
     }

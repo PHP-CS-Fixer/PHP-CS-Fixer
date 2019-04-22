@@ -404,6 +404,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of ignored tags; defaults to ``[]``
+
 * **compact_nullable_typehint** [@PhpCsFixer]
 
   Remove extra spaces in a nullable typehint.
