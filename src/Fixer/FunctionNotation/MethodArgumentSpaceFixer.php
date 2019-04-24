@@ -381,6 +381,11 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
             return;
         }
 
+        $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index);
+        if ($tokens[$nextMeaningfulTokenIndex]->equals(')')) {
+            return;
+        }
+
         $tokens->ensureWhitespaceAtIndex($index + 1, 0, $this->whitespacesConfig->getLineEnding().$indentation);
     }
 
