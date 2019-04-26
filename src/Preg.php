@@ -25,7 +25,7 @@ final class Preg
     /**
      * @param string        $pattern
      * @param string        $subject
-     * @param null|string[] &$matches
+     * @param null|string[] $matches
      * @param int           $flags
      * @param int           $offset
      *
@@ -51,7 +51,7 @@ final class Preg
     /**
      * @param string        $pattern
      * @param string        $subject
-     * @param null|string[] &$matches
+     * @param null|string[] $matches
      * @param int           $flags
      * @param int           $offset
      *
@@ -79,7 +79,7 @@ final class Preg
      * @param string|string[] $replacement
      * @param string|string[] $subject
      * @param int             $limit
-     * @param null|int        &$count
+     * @param null|int        $count
      *
      * @throws PregException
      *
@@ -105,7 +105,7 @@ final class Preg
      * @param callable        $callback
      * @param string|string[] $subject
      * @param int             $limit
-     * @param null|int        &$count
+     * @param null|int        $count
      *
      * @throws PregException
      *
