@@ -29,12 +29,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionToConstantFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * @var string[]
+     * @var array<string, array<int, Token>>
      */
     private static $availableFunctions;
 
     /**
-     * @var array<string, Token>
+     * @var array<string, array<int, Token>>
      */
     private $functionsFixMap;
 
