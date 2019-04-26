@@ -47,7 +47,7 @@ final class Cache implements CacheInterface
     public function get($file)
     {
         if (!$this->has($file)) {
-            return;
+            return null;
         }
 
         return $this->hashes[$file];
