@@ -1366,7 +1366,7 @@ Choose from the list of available rules:
   - ``target`` (``'5.4'``, ``'5.5'``, ``'newest'``): target version of PHPUnit; defaults to
     ``'newest'``
 
-* **php_unit_mock_short_will_return**
+* **php_unit_mock_short_will_return** [@Symfony:risky, @PhpCsFixer:risky]
 
   Usage of PHPUnit's mock e.g. ``->will($this->returnValue(..))`` must be
   replaced by its shorter equivalent such as ``->willReturn(...)``.
