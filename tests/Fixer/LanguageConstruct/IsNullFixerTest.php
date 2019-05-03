@@ -52,8 +52,8 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['use_yoda_style' => false]);
 
-        $configuration = $this->getObjectAttribute($this->fixer, 'configuration');
-        $this->assertFalse($configuration['use_yoda_style']);
+        $configuration = static::getObjectAttribute($this->fixer, 'configuration');
+        static::assertFalse($configuration['use_yoda_style']);
     }
 
     /**

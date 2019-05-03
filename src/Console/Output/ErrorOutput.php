@@ -65,7 +65,7 @@ final class ErrorOutput
             $message = $e->getMessage();
             $code = $e->getCode();
             if (0 !== $code) {
-                $message .= " (${code})";
+                $message .= " ({$code})";
             }
 
             $length = max(\strlen($class), \strlen($message));

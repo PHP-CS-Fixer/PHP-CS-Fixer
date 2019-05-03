@@ -94,8 +94,8 @@ final class AnnotationTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
 
-        $this->assertSame($content, $annotation->getContent());
-        $this->assertSame($content, (string) $annotation);
+        static::assertSame($content, $annotation->getContent());
+        static::assertSame($content, (string) $annotation);
     }
 
     public function provideGetContentCases()
@@ -120,7 +120,7 @@ final class AnnotationTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
 
-        $this->assertSame($start, $annotation->getStart());
+        static::assertSame($start, $annotation->getStart());
     }
 
     public function provideStartCases()
@@ -145,7 +145,7 @@ final class AnnotationTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
 
-        $this->assertSame($end, $annotation->getEnd());
+        static::assertSame($end, $annotation->getEnd());
     }
 
     public function provideEndCases()
@@ -170,7 +170,7 @@ final class AnnotationTest extends TestCase
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
 
-        $this->assertSame($tag, $annotation->getTag()->getName());
+        static::assertSame($tag, $annotation->getTag()->getName());
     }
 
     public function provideGetTagCases()
@@ -197,9 +197,9 @@ final class AnnotationTest extends TestCase
         $annotation = $doc->getAnnotation($index);
 
         $annotation->remove();
-        $this->assertSame('', $annotation->getContent());
-        $this->assertSame('', $doc->getLine($start)->getContent());
-        $this->assertSame('', $doc->getLine($end)->getContent());
+        static::assertSame('', $annotation->getContent());
+        static::assertSame('', $doc->getLine($start)->getContent());
+        static::assertSame('', $doc->getLine($end)->getContent());
     }
 
     public function provideRemoveCases()
@@ -223,7 +223,7 @@ final class AnnotationTest extends TestCase
     {
         $tag = new Annotation([new Line($input)]);
 
-        $this->assertSame($expected, $tag->getTypes());
+        static::assertSame($expected, $tag->getTypes());
     }
 
     public function provideTypeParsingCases()
@@ -321,13 +321,13 @@ final class AnnotationTest extends TestCase
         $line = new Line($input);
         $tag = new Annotation([$line]);
 
-        $this->assertSame($expected, $tag->getTypes());
+        static::assertSame($expected, $tag->getTypes());
 
         $tag->setTypes($new);
 
-        $this->assertSame($new, $tag->getTypes());
+        static::assertSame($new, $tag->getTypes());
 
-        $this->assertSame($output, $line->getContent());
+        static::assertSame($output, $line->getContent());
     }
 
     public function provideTypesCases()
@@ -353,7 +353,7 @@ final class AnnotationTest extends TestCase
         $line = new Line($input);
         $tag = new Annotation([$line]);
 
-        $this->assertSame($expected, $tag->getNormalizedTypes());
+        static::assertSame($expected, $tag->getNormalizedTypes());
     }
 
     public function provideNormalizedTypesCases()
@@ -388,10 +388,10 @@ final class AnnotationTest extends TestCase
     public function testGetTagsWithTypes()
     {
         $tags = Annotation::getTagsWithTypes();
-        $this->assertInternalType('array', $tags);
+        static::assertInternalType('array', $tags);
         foreach ($tags as $tag) {
-            $this->assertInternalType('string', $tag);
-            $this->assertNotEmpty($tag);
+            static::assertInternalType('string', $tag);
+            static::assertNotEmpty($tag);
         }
     }
 }

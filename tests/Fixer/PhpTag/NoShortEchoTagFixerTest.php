@@ -32,7 +32,7 @@ final class NoShortEchoTagFixerTest extends AbstractFixerTestCase
     public function testFix($expected, $input = null)
     {
         if (!ini_get('short_open_tag')) {
-            $this->markTestSkipped('The short_open_tag option is required to be enabled.');
+            static::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
         $this->doTest($expected, $input);

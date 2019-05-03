@@ -28,14 +28,14 @@ final class DirectoryTest extends TestCase
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Directory::class);
 
-        $this->assertTrue($reflection->isFinal());
+        static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsDirectoryInterface()
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Directory::class);
 
-        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\DirectoryInterface::class));
+        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\DirectoryInterface::class));
     }
 
     public function testGetRelativePathToReturnsFileIfAboveLevelOfDirectoryName()
@@ -45,7 +45,7 @@ final class DirectoryTest extends TestCase
 
         $directory = new Directory($directoryName);
 
-        $this->assertSame($file, $directory->getRelativePathTo($file));
+        static::assertSame($file, $directory->getRelativePathTo($file));
     }
 
     public function testGetRelativePathToReturnsRelativePathIfWithinDirectoryName()
@@ -55,6 +55,6 @@ final class DirectoryTest extends TestCase
 
         $directory = new Directory($directoryName);
 
-        $this->assertSame('bar'.\DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
+        static::assertSame('bar'.\DIRECTORY_SEPARATOR.'hello.php', $directory->getRelativePathTo($file));
     }
 }

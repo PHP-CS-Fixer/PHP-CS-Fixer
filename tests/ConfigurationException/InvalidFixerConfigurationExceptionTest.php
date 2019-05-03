@@ -29,7 +29,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
     {
         $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
 
-        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
+        static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
     }
 
     public function testDefaults()
@@ -42,10 +42,10 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        $this->assertSame($fixerName, $exception->getFixerName());
-        $this->assertNull($exception->getPrevious());
+        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        static::assertSame($fixerName, $exception->getFixerName());
+        static::assertNull($exception->getPrevious());
     }
 
     public function testConstructorSetsValues()
@@ -60,9 +60,9 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        $this->assertSame($fixerName, $exception->getFixerName());
-        $this->assertSame($previous, $exception->getPrevious());
+        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        static::assertSame($fixerName, $exception->getFixerName());
+        static::assertSame($previous, $exception->getPrevious());
     }
 }

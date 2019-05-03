@@ -36,10 +36,10 @@ final class UtilsTest extends TestCase
     public function testCamelCaseToUnderscore($expected, $input = null)
     {
         if (null !== $input) {
-            $this->assertSame($expected, Utils::camelCaseToUnderscore($input));
+            static::assertSame($expected, Utils::camelCaseToUnderscore($input));
         }
 
-        $this->assertSame($expected, Utils::camelCaseToUnderscore($expected));
+        static::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
     /**
@@ -75,7 +75,7 @@ final class UtilsTest extends TestCase
      */
     public function testCmpInt($expected, $left, $right)
     {
-        $this->assertSame($expected, Utils::cmpInt($left, $right));
+        static::assertSame($expected, Utils::cmpInt($left, $right));
     }
 
     public function provideCmpIntCases()
@@ -100,7 +100,7 @@ final class UtilsTest extends TestCase
     {
         $token = new Token($input);
 
-        $this->assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
+        static::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
     public function provideCalculateTrailingWhitespaceIndentCases()
@@ -134,7 +134,7 @@ final class UtilsTest extends TestCase
         callable $getComparableValueCallback,
         callable $compareValuesCallback
     ) {
-        $this->assertSame(
+        static::assertSame(
             $expected,
             Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
         );
@@ -179,7 +179,7 @@ final class UtilsTest extends TestCase
             $this->createFixerDouble('f4', -10),
         ];
 
-        $this->assertSame(
+        static::assertSame(
             [
                 $fixers[2],
                 $fixers[0],
@@ -205,7 +205,7 @@ final class UtilsTest extends TestCase
      */
     public function testNaturalLanguageJoinWithBackticks($joined, array $names)
     {
-        $this->assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+        static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
     public function provideNaturalLanguageJoinWithBackticksCases()
@@ -234,7 +234,7 @@ final class UtilsTest extends TestCase
      */
     public function testCalculateBitmask($expected, array $options)
     {
-        $this->assertSame($expected, Utils::calculateBitmask($options));
+        static::assertSame($expected, Utils::calculateBitmask($options));
     }
 
     public function provideCalculateBitmaskCases()

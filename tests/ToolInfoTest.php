@@ -26,19 +26,19 @@ final class ToolInfoTest extends TestCase
     public function testGetVersion()
     {
         $toolInfo = new ToolInfo();
-        $this->assertInternalType('string', $toolInfo->getVersion());
+        static::assertInternalType('string', $toolInfo->getVersion());
     }
 
     public function testIsInstallAsPhar()
     {
         $toolInfo = new ToolInfo();
-        $this->assertFalse($toolInfo->isInstalledAsPhar());
+        static::assertFalse($toolInfo->isInstalledAsPhar());
     }
 
     public function testIsInstalledByComposer()
     {
         $toolInfo = new ToolInfo();
-        $this->assertFalse($toolInfo->isInstalledByComposer());
+        static::assertFalse($toolInfo->isInstalledByComposer());
     }
 
     public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope()
@@ -53,7 +53,7 @@ final class ToolInfoTest extends TestCase
     public function testGetPharDownloadUri()
     {
         $toolInfo = new ToolInfo();
-        $this->assertSame(
+        static::assertSame(
             'https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/foo/php-cs-fixer.phar',
             $toolInfo->getPharDownloadUri('foo')
         );

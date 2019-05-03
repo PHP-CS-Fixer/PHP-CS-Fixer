@@ -58,36 +58,36 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         ];
 
         foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
-            $cases[] = ["<?php \$sth->${methodBefore}(1, 1);"];
-            $cases[] = ["<?php \$sth->${methodAfter}(1, 1);"];
-            $cases[] = ["<?php \$this->${methodBefore}(1, 2, 'message', \$toMuch);"];
+            $cases[] = ["<?php \$sth->{$methodBefore}(1, 1);"];
+            $cases[] = ["<?php \$sth->{$methodAfter}(1, 1);"];
+            $cases[] = ["<?php \$this->{$methodBefore}(1, 2, 'message', \$toMuch);"];
             $cases[] = [
-                "<?php \$this->${methodAfter}(1, 2);",
-                "<?php \$this->${methodBefore}(1, 2);",
+                "<?php \$this->{$methodAfter}(1, 2);",
+                "<?php \$this->{$methodBefore}(1, 2);",
             ];
             $cases[] = [
-                "<?php \$this->${methodAfter}(1, 2); \$this->${methodAfter}(1, 2);",
-                "<?php \$this->${methodBefore}(1, 2); \$this->${methodBefore}(1, 2);",
+                "<?php \$this->{$methodAfter}(1, 2); \$this->{$methodAfter}(1, 2);",
+                "<?php \$this->{$methodBefore}(1, 2); \$this->{$methodBefore}(1, 2);",
             ];
             $cases[] = [
-                "<?php \$this->${methodAfter}(1, 2, 'descr');",
-                "<?php \$this->${methodBefore}(1, 2, 'descr');",
+                "<?php \$this->{$methodAfter}(1, 2, 'descr');",
+                "<?php \$this->{$methodBefore}(1, 2, 'descr');",
             ];
             $cases[] = [
-                "<?php \$this->/*aaa*/${methodAfter} \t /**bbb*/  ( /*ccc*/1  , 2);",
-                "<?php \$this->/*aaa*/${methodBefore} \t /**bbb*/  ( /*ccc*/1  , 2);",
+                "<?php \$this->/*aaa*/{$methodAfter} \t /**bbb*/  ( /*ccc*/1  , 2);",
+                "<?php \$this->/*aaa*/{$methodBefore} \t /**bbb*/  ( /*ccc*/1  , 2);",
             ];
             $cases[] = [
-                "<?php \$this->${methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
-                "<?php \$this->${methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
+                "<?php \$this->{$methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
+                "<?php \$this->{$methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');",
             ];
             $cases[] = [
-                "<?php self::${methodAfter}(1, 2);",
-                "<?php self::${methodBefore}(1, 2);",
+                "<?php self::{$methodAfter}(1, 2);",
+                "<?php self::{$methodBefore}(1, 2);",
             ];
             $cases[] = [
-                "<?php static::${methodAfter}(1, 2);",
-                "<?php static::${methodBefore}(1, 2);",
+                "<?php static::{$methodAfter}(1, 2);",
+                "<?php static::{$methodBefore}(1, 2);",
             ];
         }
 
@@ -153,13 +153,13 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
             yield [
-                "<?php static::${methodAfter}(1, 2,);",
-                "<?php static::${methodBefore}(1, 2,);",
+                "<?php static::{$methodAfter}(1, 2,);",
+                "<?php static::{$methodBefore}(1, 2,);",
             ];
 
             yield [
-                "<?php self::${methodAfter}(1, \$a, '', );",
-                "<?php self::${methodBefore}(1, \$a, '', );",
+                "<?php self::{$methodAfter}(1, \$a, '', );",
+                "<?php self::{$methodBefore}(1, \$a, '', );",
             ];
         }
     }
