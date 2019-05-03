@@ -38,7 +38,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $index);
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $result,
             sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())

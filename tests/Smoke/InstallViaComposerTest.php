@@ -160,7 +160,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     private static function assertCommandsWork(array $commands, $cwd)
     {
         foreach ($commands as $command) {
-            self::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
+            static::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
         }
     }
 }

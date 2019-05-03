@@ -31,7 +31,7 @@ final class FileSpecificCodeSampleTest extends TestCase
             new \SplFileInfo(__FILE__)
         );
 
-        $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface::class, $sample);
+        static::assertInstanceOf(\PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface::class, $sample);
     }
 
     public function testDefaults()
@@ -44,9 +44,9 @@ final class FileSpecificCodeSampleTest extends TestCase
             $splFileInfo
         );
 
-        $this->assertSame($code, $sample->getCode());
-        $this->assertSame($splFileInfo, $sample->getSplFileInfo());
-        $this->assertNull($sample->getConfiguration());
+        static::assertSame($code, $sample->getCode());
+        static::assertSame($splFileInfo, $sample->getSplFileInfo());
+        static::assertNull($sample->getConfiguration());
     }
 
     public function testConstructorSetsValues()
@@ -64,8 +64,8 @@ final class FileSpecificCodeSampleTest extends TestCase
             $configuration
         );
 
-        $this->assertSame($code, $sample->getCode());
-        $this->assertSame($splFileInfo, $sample->getSplFileInfo());
-        $this->assertSame($configuration, $sample->getConfiguration());
+        static::assertSame($code, $sample->getCode());
+        static::assertSame($splFileInfo, $sample->getSplFileInfo());
+        static::assertSame($configuration, $sample->getConfiguration());
     }
 }

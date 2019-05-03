@@ -32,7 +32,7 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = RuleSet::create();
 
-        $this->assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
+        static::assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
     }
 
     /**
@@ -53,14 +53,14 @@ final class RuleSetTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        $this->assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
+        static::assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
 
         if (true === $ruleConfig) {
             return; // rule doesn't need configuration.
         }
 
         $fixer = $fixers[$ruleName];
-        $this->assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
+        static::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
         try {
             $fixer->configure($ruleConfig); // test fixer accepts the configuration
@@ -83,7 +83,7 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        $this->assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
+        static::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
     public function provideAllRulesFromSetsCases()
@@ -106,8 +106,8 @@ final class RuleSetTest extends TestCase
     {
         $setNames = RuleSet::create()->getSetDefinitionNames();
 
-        $this->assertInternalType('array', $setNames);
-        $this->assertNotEmpty($setNames);
+        static::assertInternalType('array', $setNames);
+        static::assertNotEmpty($setNames);
     }
 
     /**
@@ -117,8 +117,8 @@ final class RuleSetTest extends TestCase
      */
     public function testBuildInSetDefinitionNames($setName)
     {
-        $this->assertInternalType('string', $setName);
-        $this->assertSame('@', substr($setName, 0, 1));
+        static::assertInternalType('string', $setName);
+        static::assertSame('@', substr($setName, 0, 1));
     }
 
     public function testResolveRulesWithInvalidSet()
@@ -266,7 +266,7 @@ final class RuleSetTest extends TestCase
 
         $this->sort($sortedSetDefinition);
 
-        $this->assertSame($sortedSetDefinition, $setDefinition, sprintf(
+        static::assertSame($sortedSetDefinition, $setDefinition, sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key',
             $setDefinitionName
         ));
@@ -299,7 +299,7 @@ final class RuleSetTest extends TestCase
                 ->getFixers()
             ;
         } catch (InvalidForEnvFixerConfigurationException $exception) {
-            $this->markTestSkipped($exception->getMessage());
+            static::markTestSkipped($exception->getMessage());
         }
 
         $fixerNames = [];
@@ -309,7 +309,7 @@ final class RuleSetTest extends TestCase
             }
         }
 
-        $this->assertCount(
+        static::assertCount(
             0,
             $fixerNames,
             sprintf(
@@ -358,7 +358,7 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = $this->createRuleSetToTestWith([]);
 
-        $this->assertSame(
+        static::assertSame(
             array_keys(self::getRuleSetDefinitionsToTestWith()),
             $ruleSet->getSetDefinitionNames()
         );
@@ -521,7 +521,7 @@ final class RuleSetTest extends TestCase
         ksort($expected);
         ksort($actual);
 
-        $this->assertSame($expected, $actual, $message);
+        static::assertSame($expected, $actual, $message);
     }
 
     /**

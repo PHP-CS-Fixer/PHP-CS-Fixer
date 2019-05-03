@@ -38,7 +38,7 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
     {
         $calculator = new FixCommandExitStatusCalculator();
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $calculator->calculate($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors)
         );

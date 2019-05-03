@@ -38,7 +38,7 @@ final class PhpUnitTargetVersionTest extends TestCase
             $this->expectException($exception);
         }
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             PhpUnitTargetVersion::fulfills($candidate, $target)
         );

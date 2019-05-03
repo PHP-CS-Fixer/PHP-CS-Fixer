@@ -24,8 +24,8 @@ final class ErrorTest extends TestCase
 {
     public function testThatErrorTypeConstantValuesAreDifferent()
     {
-        $this->assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
-        $this->assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
+        static::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
+        static::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
     }
 
     public function testConstructorSetsValues()
@@ -38,7 +38,7 @@ final class ErrorTest extends TestCase
             $filePath
         );
 
-        $this->assertSame($type, $error->getType());
-        $this->assertSame($filePath, $error->getFilePath());
+        static::assertSame($type, $error->getType());
+        static::assertSame($filePath, $error->getFilePath());
     }
 }

@@ -32,7 +32,7 @@ final class WarningsDetectorTest extends TestCase
         $warningsDetector = new WarningsDetector($toolInfo->reveal());
         $warningsDetector->detectOldVendor();
 
-        $this->assertSame([], $warningsDetector->getWarnings());
+        static::assertSame([], $warningsDetector->getWarnings());
     }
 
     public function testDetectOldVendorNotLegacyPackage()
@@ -46,7 +46,7 @@ final class WarningsDetectorTest extends TestCase
         $warningsDetector = new WarningsDetector($toolInfo->reveal());
         $warningsDetector->detectOldVendor();
 
-        $this->assertSame([], $warningsDetector->getWarnings());
+        static::assertSame([], $warningsDetector->getWarnings());
     }
 
     public function testDetectOldVendorLegacyPackage()
@@ -60,7 +60,7 @@ final class WarningsDetectorTest extends TestCase
         $warningsDetector = new WarningsDetector($toolInfo->reveal());
         $warningsDetector->detectOldVendor();
 
-        $this->assertSame([
+        static::assertSame([
             'You are running PHP CS Fixer installed with old vendor `fabpot/php-cs-fixer`. Please update to `friendsofphp/php-cs-fixer`.',
             'If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!',
         ], $warningsDetector->getWarnings());

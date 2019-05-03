@@ -29,8 +29,8 @@ final class TokenTest extends TestCase
     {
         $token = new Token();
 
-        $this->assertSame(DocLexer::T_NONE, $token->getType());
-        $this->assertSame('', $token->getContent());
+        static::assertSame(DocLexer::T_NONE, $token->getType());
+        static::assertSame('', $token->getContent());
     }
 
     public function testConstructorSetsValues()
@@ -43,8 +43,8 @@ final class TokenTest extends TestCase
             $content
         );
 
-        $this->assertSame($type, $token->getType());
-        $this->assertSame($content, $token->getContent());
+        static::assertSame($type, $token->getType());
+        static::assertSame($content, $token->getContent());
     }
 
     public function testCanModifyType()
@@ -55,7 +55,7 @@ final class TokenTest extends TestCase
 
         $token->setType($type);
 
-        $this->assertSame($type, $token->getType());
+        static::assertSame($type, $token->getType());
     }
 
     /**
@@ -70,7 +70,7 @@ final class TokenTest extends TestCase
 
         $token->setType($type);
 
-        $this->assertTrue($token->isType($types));
+        static::assertTrue($token->isType($types));
     }
 
     /**
@@ -105,7 +105,7 @@ final class TokenTest extends TestCase
 
         $token->setType($type);
 
-        $this->assertFalse($token->isType($types));
+        static::assertFalse($token->isType($types));
     }
 
     /**
@@ -135,7 +135,7 @@ final class TokenTest extends TestCase
 
         $token->setContent($content);
 
-        $this->assertSame($content, $token->getContent());
+        static::assertSame($content, $token->getContent());
     }
 
     public function testCanClearContent()
@@ -147,6 +147,6 @@ final class TokenTest extends TestCase
         $token->setContent($content);
         $token->clear();
 
-        $this->assertSame('', $token->getContent());
+        static::assertSame('', $token->getContent());
     }
 }

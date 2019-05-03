@@ -29,6 +29,6 @@ final class NullDifferTest extends AbstractDifferTestCase
 
         $differ = new NullDiffer();
 
-        $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }

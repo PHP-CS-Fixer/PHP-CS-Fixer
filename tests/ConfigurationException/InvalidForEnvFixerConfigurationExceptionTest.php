@@ -35,10 +35,10 @@ final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
-        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        $this->assertSame($fixerName, $exception->getFixerName());
-        $this->assertNull($exception->getPrevious());
+        static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
+        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        static::assertSame($fixerName, $exception->getFixerName());
+        static::assertNull($exception->getPrevious());
     }
 }

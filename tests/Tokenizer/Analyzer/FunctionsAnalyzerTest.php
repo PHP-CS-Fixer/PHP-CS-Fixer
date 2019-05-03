@@ -39,7 +39,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        $this->assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
+        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
     }
 
     public function provideIsGlobalFunctionCallCases()
@@ -125,7 +125,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        $this->assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
     /**
@@ -140,7 +140,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        $this->assertSame(serialize($expected), serialize($analyzer->getFunctionReturnType($tokens, $methodIndex)));
+        static::assertSame(serialize($expected), serialize($analyzer->getFunctionReturnType($tokens, $methodIndex)));
     }
 
     public function provideFunctionsWithArgumentsCases()

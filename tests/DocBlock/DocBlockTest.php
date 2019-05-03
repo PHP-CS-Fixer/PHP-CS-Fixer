@@ -49,45 +49,45 @@ final class DocBlockTest extends TestCase
     {
         $doc = new DocBlock(self::$sample);
 
-        $this->assertSame(self::$sample, $doc->getContent());
-        $this->assertSame(self::$sample, (string) $doc);
+        static::assertSame(self::$sample, $doc->getContent());
+        static::assertSame(self::$sample, (string) $doc);
     }
 
     public function testEmptyContent()
     {
         $doc = new DocBlock('');
 
-        $this->assertSame('', $doc->getContent());
+        static::assertSame('', $doc->getContent());
     }
 
     public function testGetLines()
     {
         $doc = new DocBlock(self::$sample);
 
-        $this->assertInternalType('array', $doc->getLines());
-        $this->assertCount(15, $doc->getLines());
+        static::assertInternalType('array', $doc->getLines());
+        static::assertCount(15, $doc->getLines());
 
         foreach ($doc->getLines() as $index => $line) {
-            $this->assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
-            $this->assertSame($doc->getLine($index), $line);
+            static::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
+            static::assertSame($doc->getLine($index), $line);
         }
 
-        $this->assertEmpty($doc->getLine(15));
+        static::assertEmpty($doc->getLine(15));
     }
 
     public function testGetAnnotations()
     {
         $doc = new DocBlock(self::$sample);
 
-        $this->assertInternalType('array', $doc->getAnnotations());
-        $this->assertCount(5, $doc->getAnnotations());
+        static::assertInternalType('array', $doc->getAnnotations());
+        static::assertCount(5, $doc->getAnnotations());
 
         foreach ($doc->getAnnotations() as $index => $annotations) {
-            $this->assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotations);
-            $this->assertSame($doc->getAnnotation($index), $annotations);
+            static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotations);
+            static::assertSame($doc->getAnnotation($index), $annotations);
         }
 
-        $this->assertEmpty($doc->getAnnotation(5));
+        static::assertEmpty($doc->getAnnotation(5));
     }
 
     public function testGetAnnotationsOfTypeParam()
@@ -96,8 +96,8 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('param');
 
-        $this->assertInternalType('array', $annotations);
-        $this->assertCount(3, $annotations);
+        static::assertInternalType('array', $annotations);
+        static::assertCount(3, $annotations);
 
         $first = '     * @param string $hello
 ';
@@ -107,9 +107,9 @@ final class DocBlockTest extends TestCase
         $third = '     * @param adkjbadjasbdand $asdnjkasd
 ';
 
-        $this->assertSame($first, $annotations[0]->getContent());
-        $this->assertSame($second, $annotations[1]->getContent());
-        $this->assertSame($third, $annotations[2]->getContent());
+        static::assertSame($first, $annotations[0]->getContent());
+        static::assertSame($second, $annotations[1]->getContent());
+        static::assertSame($third, $annotations[2]->getContent());
     }
 
     public function testGetAnnotationsOfTypeThrows()
@@ -118,15 +118,15 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('throws');
 
-        $this->assertInternalType('array', $annotations);
-        $this->assertCount(1, $annotations);
+        static::assertInternalType('array', $annotations);
+        static::assertCount(1, $annotations);
 
         $content = '     * @throws \Exception asdnjkasd
      * asdasdasdasdasdasdasdasd
      * kasdkasdkbasdasdasdjhbasdhbasjdbjasbdjhb
 ';
 
-        $this->assertSame($content, $annotations[0]->getContent());
+        static::assertSame($content, $annotations[0]->getContent());
     }
 
     public function testGetAnnotationsOfTypeReturn()
@@ -135,13 +135,13 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('return');
 
-        $this->assertInternalType('array', $annotations);
-        $this->assertCount(1, $annotations);
+        static::assertInternalType('array', $annotations);
+        static::assertCount(1, $annotations);
 
         $content = '     * @return void
 ';
 
-        $this->assertSame($content, $annotations[0]->getContent());
+        static::assertSame($content, $annotations[0]->getContent());
     }
 
     public function testGetAnnotationsOfTypeFoo()
@@ -150,7 +150,7 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('foo');
 
-        $this->assertInternalType('array', $annotations);
-        $this->assertCount(0, $annotations);
+        static::assertInternalType('array', $annotations);
+        static::assertCount(0, $annotations);
     }
 }

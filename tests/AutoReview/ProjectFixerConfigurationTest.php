@@ -32,9 +32,9 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $config = $this->loadConfig();
 
-        $this->assertInstanceOf(\PhpCsFixer\Config::class, $config);
-        $this->assertEmpty($config->getCustomFixers());
-        $this->assertNotEmpty($config->getRules());
+        static::assertInstanceOf(\PhpCsFixer\Config::class, $config);
+        static::assertEmpty($config->getCustomFixers());
+        static::assertNotEmpty($config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)
         $resolver = new ConfigurationResolver(
@@ -51,7 +51,7 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
-        $this->assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
+        static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
     }
 
     /**

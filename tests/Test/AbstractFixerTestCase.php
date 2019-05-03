@@ -116,28 +116,28 @@ abstract class AbstractFixerTestCase extends TestCase
         $fileIsSupported = $this->fixer->supports($file);
 
         if (null !== $input) {
-            $this->assertNull($this->lintSource($input));
+            static::assertNull($this->lintSource($input));
 
             Tokens::clearCache();
             $tokens = Tokens::fromCode($input);
 
             if ($fileIsSupported) {
-                $this->assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
-                $this->assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
+                static::assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
+                static::assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
                 $fixResult = $this->fixer->fix($file, $tokens);
-                $this->assertNull($fixResult, '->fix method must return null.');
+                static::assertNull($fixResult, '->fix method must return null.');
             }
 
-            $this->assertThat(
+            static::assertThat(
                 $tokens->generateCode(),
                 self::createIsIdenticalStringConstraint($expected),
                 'Code build on input code must match expected code.'
             );
-            $this->assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
+            static::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
             $tokens->clearEmptyTokens();
 
-            $this->assertSame(
+            static::assertSame(
                 \count($tokens),
                 \count(array_unique(array_map(static function (Token $token) {
                     return spl_object_hash($token);
@@ -150,22 +150,22 @@ abstract class AbstractFixerTestCase extends TestCase
             $this->assertTokens($expectedTokens, $tokens);
         }
 
-        $this->assertNull($this->lintSource($expected));
+        static::assertNull($this->lintSource($expected));
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);
 
         if ($fileIsSupported) {
             $fixResult = $this->fixer->fix($file, $tokens);
-            $this->assertNull($fixResult, '->fix method must return null.');
+            static::assertNull($fixResult, '->fix method must return null.');
         }
 
-        $this->assertThat(
+        static::assertThat(
             $tokens->generateCode(),
             self::createIsIdenticalStringConstraint($expected),
             'Code build on expected code must not change.'
         );
-        $this->assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
+        static::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
     /**

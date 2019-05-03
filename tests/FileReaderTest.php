@@ -38,8 +38,8 @@ final class FileReaderTest extends TestCase
     {
         $instance = FileReader::createSingleton();
 
-        $this->assertInstanceOf(\PhpCsFixer\FileReader::class, $instance);
-        $this->assertSame($instance, FileReader::createSingleton());
+        static::assertInstanceOf(\PhpCsFixer\FileReader::class, $instance);
+        static::assertSame($instance, FileReader::createSingleton());
     }
 
     public function testRead()
@@ -50,7 +50,7 @@ final class FileReaderTest extends TestCase
 
         $reader = new FileReader();
 
-        $this->assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
+        static::assertSame('<?php echo "hi";', $reader->read($fs->url().'/foo.php'));
     }
 
     public function testReadStdinCaches()
@@ -60,8 +60,8 @@ final class FileReaderTest extends TestCase
         stream_wrapper_unregister('php');
         stream_wrapper_register('php', 'PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream');
 
-        $this->assertSame('<?php echo "foo";', $reader->read('php://stdin'));
-        $this->assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+        static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
+        static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
     }
 
     public function testThrowsExceptionOnFail()

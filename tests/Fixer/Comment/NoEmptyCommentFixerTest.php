@@ -227,16 +227,16 @@ echo 1;
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        $this->assertTrue($tokens[$startIndex]->isComment(), sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
+        static::assertTrue($tokens[$startIndex]->isComment(), sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
         $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);
 
         list($foundStart, $foundEnd, $foundIsEmpty) = $method->invoke($this->fixer, $tokens, $startIndex);
 
-        $this->assertSame($startIndex, $foundStart, 'Find start index of block failed.');
-        $this->assertSame($endIndex, $foundEnd, 'Find end index of block failed.');
-        $this->assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
+        static::assertSame($startIndex, $foundStart, 'Find start index of block failed.');
+        static::assertSame($endIndex, $foundEnd, 'Find end index of block failed.');
+        static::assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
     }
 
     public function provideCommentBlockCases()

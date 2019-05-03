@@ -84,7 +84,7 @@ Files that were not fixed due to errors reported during %s:
             );
         }
 
-        $this->assertStringStartsWith($startWith, $displayed);
+        static::assertStringStartsWith($startWith, $displayed);
     }
 
     public function provideTestCases()
@@ -135,13 +135,13 @@ EOT;
 
         $displayed = $this->readFullStreamOutput($output);
 
-        $this->assertContains($fixerName, $displayed);
-        $this->assertContains($diffSpecificContext, $displayed);
+        static::assertContains($fixerName, $displayed);
+        static::assertContains($diffSpecificContext, $displayed);
 
-        $this->assertContains($noDiffLintFixerName, $displayed);
+        static::assertContains($noDiffLintFixerName, $displayed);
 
-        $this->assertNotContains($invalidErrorFixerName, $displayed);
-        $this->assertNotContains($invalidDiff, $displayed);
+        static::assertNotContains($invalidErrorFixerName, $displayed);
+        static::assertNotContains($invalidDiff, $displayed);
     }
 
     /**

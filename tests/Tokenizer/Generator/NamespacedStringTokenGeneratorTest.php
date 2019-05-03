@@ -32,7 +32,7 @@ final class NamespacedStringTokenGeneratorTest extends TestCase
     public function testGenerator($input, array $expected)
     {
         $generator = new NamespacedStringTokenGenerator();
-        $this->assertSame(
+        static::assertSame(
             $expected,
             array_map(
                 function (Token $token) {
