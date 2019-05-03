@@ -36,7 +36,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     private $candidatesMap;
 
     /**
-     * @var array<string, null|bool>
+     * @var array<int|string, null|bool>
      */
     private $candidateTypesConfiguration;
 
