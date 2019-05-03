@@ -718,7 +718,7 @@ Choose from the list of available rules:
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
-* **heredoc_indentation**
+* **heredoc_indentation** [@PHP73Migration]
 
   Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
 
@@ -1761,7 +1761,7 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
-* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration]
+* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration]
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
@@ -1783,7 +1783,7 @@ Choose from the list of available rules:
 
   Unary operators should be placed adjacent to their operands.
 
-* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration]
+* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration]
 
   Visibility MUST be declared on all properties and methods; ``abstract``
   and ``final`` MUST be declared before the visibility; ``static`` MUST be

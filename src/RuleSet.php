@@ -307,6 +307,10 @@ final class RuleSet implements RuleSetInterface
             '@PHP70Migration:risky' => true,
             'void_return' => true,
         ],
+        '@PHP73Migration' => [
+            '@PHP71Migration' => true,
+            'heredoc_indentation' => true,
+        ],
         '@PHPUnit30Migration:risky' => [
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],
         ],
