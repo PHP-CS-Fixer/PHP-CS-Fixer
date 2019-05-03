@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-08-22T08:41:33Z
+
+I feel like it doesn't make much sense to make `@small` the default. Isn't it more logical to make `@medium` default, which can then be either increased or decreased when determined so? Could also be an option which one you'd want. But then the same comment applies to the default of that option 😉
+
+---------------------------------------------------------------------------
+
+by malukenho at 2018-09-19T14:21:18Z
+
+@dmvdbrugge I added a `group` option as you suggested, so we can configure it as we want. Thank you for that!
+
+As for the usage of `small` or `medium` as the default value, I think tests should be as fast as possible. Hence, using `small` as the default values makes sense IMHO
+
+---------------------------------------------------------------------------
+
+by malukenho at 2018-12-28T16:59:34Z
+
+@keradus @SpacePossum is there something else missing here?
+
+---------------------------------------------------------------------------
+
+by malukenho at 2019-02-28T12:27:08Z
+
+Any news on this one?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-03T11:09:44Z
+
+@malukenho
+Thanks for all the work, it looks good to me.
+Please squash my commit and rebase on top of 2.14.
+
+Kindly note that is just my opinion, we need some more support for merging I think :)
+
+---------------------------------------------------------------------------
+
+by malukenho at 2019-03-04T09:42:17Z
+
+@SpacePossum done!
