@@ -1400,6 +1400,16 @@ Choose from the list of available rules:
 
   *Risky rule: this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
 
+* **php_unit_size_class**
+
+  All PHPUnit test cases should have ``@small``, ``@medium`` or ``@large``
+  annotation to enable run time limits.
+
+  Configuration options:
+
+  - ``group`` (``'large'``, ``'medium'``, ``'small'``): define a specific group to be used
+    in case no group is already in use; defaults to ``'small'``
+
 * **php_unit_strict** [@PhpCsFixer:risky]
 
   PHPUnit methods like ``assertSame`` should be used instead of
