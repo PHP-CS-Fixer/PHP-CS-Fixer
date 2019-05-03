@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-31T22:00:03Z
+
+ping @FriendsOfPHP/php-cs-fixer
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-01T07:59:40Z
+
+:-1:  as most of the ((F)OSS) project I work on use `$this->`, I also like the current style better. All in all a matter of taste I think ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-06-01T09:54:03Z
+
+so, let me remind what I referenced into:
+1. we are already using self:: and static::, eg in our custom assertions, in which we can't use `$this->`, as our methods are static
+2. SCA tools got confused by calling static method on `$this`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-18T20:20:56Z
+
+@keradus you've the majority of the voted, congrats!  :D
+can you prepare this PR again so it can be merged? thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-03-19T08:09:30Z
+
+would you want it to target `master` or LTS branch ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-19T08:23:46Z
+
+I would vote LTS as to have least number of differences between the branches
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-05-03T15:59:16Z
+
+done
