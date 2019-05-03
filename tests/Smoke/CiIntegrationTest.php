@@ -98,14 +98,14 @@ final class CiIntegrationTest extends AbstractSmokeTest
     ) {
         self::executeScript(array_merge(
             [
-                "git checkout -b ${branchName} -q",
+                "git checkout -b {$branchName} -q",
             ],
             $caseCommands
         ));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
         $steps = [
-            "COMMIT_RANGE=\"master..${branchName}\"",
+            "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",
             $integrationScript[5],
             $integrationScript[6],
@@ -119,7 +119,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             'echo "$CHANGED_FILES"',
         ]);
 
-        $this->assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
+        static::assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
 
         $result2 = self::executeScript([
             $steps[0],
@@ -129,7 +129,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             'echo "${EXTRA_ARGS}"',
         ]);
 
-        $this->assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
+        static::assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
 
         $result3 = self::executeScript([
             $steps[0],
@@ -156,15 +156,15 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
             preg_quote('Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error', '/')
         );
 
-        $this->assertRegExp($pattern, $result3->getError());
+        static::assertRegExp($pattern, $result3->getError());
 
         preg_match($pattern, $result3->getError(), $matches);
 
-        $this->assertArrayHasKey(1, $matches);
-        $this->assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
-        $this->assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
+        static::assertArrayHasKey(1, $matches);
+        static::assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
+        static::assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
 
-        $this->assertRegExp(
+        static::assertRegExp(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );

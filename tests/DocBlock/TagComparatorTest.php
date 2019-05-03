@@ -38,7 +38,7 @@ final class TagComparatorTest extends TestCase
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
 
-        $this->assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
+        static::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
     public function provideComparatorCases()

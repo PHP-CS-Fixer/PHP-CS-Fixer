@@ -33,6 +33,6 @@ final class SebastianBergmannShortDifferTest extends AbstractDifferTestCase
 
         $differ = new SebastianBergmannShortDiffer();
 
-        $this->assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }

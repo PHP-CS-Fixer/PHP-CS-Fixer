@@ -32,14 +32,14 @@ final class CacheTest extends TestCase
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
-        $this->assertTrue($reflection->isFinal());
+        static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheInterface()
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
-        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
+        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
     }
 
     public function testConstructorSetsValues()
@@ -48,7 +48,7 @@ final class CacheTest extends TestCase
 
         $cache = new Cache($signature);
 
-        $this->assertSame($signature, $cache->getSignature());
+        static::assertSame($signature, $cache->getSignature());
     }
 
     public function testDefaults()
@@ -59,8 +59,8 @@ final class CacheTest extends TestCase
 
         $file = 'test.php';
 
-        $this->assertFalse($cache->has($file));
-        $this->assertNull($cache->get($file));
+        static::assertFalse($cache->has($file));
+        static::assertNull($cache->get($file));
     }
 
     public function testSetThrowsInvalidArgumentExceptionIfValueIsNotAnInteger()
@@ -87,8 +87,8 @@ final class CacheTest extends TestCase
 
         $cache->set($file, $hash);
 
-        $this->assertTrue($cache->has($file));
-        $this->assertSame($hash, $cache->get($file));
+        static::assertTrue($cache->has($file));
+        static::assertSame($hash, $cache->get($file));
     }
 
     public function testCanClearValue()
@@ -103,7 +103,7 @@ final class CacheTest extends TestCase
         $cache->set($file, $hash);
         $cache->clear($file);
 
-        $this->assertNull($cache->get($file));
+        static::assertNull($cache->get($file));
     }
 
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
@@ -166,9 +166,9 @@ final class CacheTest extends TestCase
         $cache->set($file, $hash);
         $cached = Cache::fromJson($cache->toJson());
 
-        $this->assertTrue($cached->getSignature()->equals($signature));
-        $this->assertTrue($cached->has($file));
-        $this->assertSame($hash, $cached->get($file));
+        static::assertTrue($cached->getSignature()->equals($signature));
+        static::assertTrue($cached->has($file));
+        static::assertSame($hash, $cached->get($file));
     }
 
     public function provideCanConvertToAndFromJsonCases()

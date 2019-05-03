@@ -32,8 +32,8 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertInstanceOf(FixerOptionInterface::class, $option);
-        $this->assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
+        static::assertInstanceOf(FixerOptionInterface::class, $option);
+        static::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
     }
 
     public function testGetName()
@@ -43,7 +43,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame('foo', $option->getName());
+        static::assertSame('foo', $option->getName());
     }
 
     public function testGetDescription()
@@ -53,7 +53,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame('Foo.', $option->getDescription());
+        static::assertSame('Foo.', $option->getDescription());
     }
 
     /**
@@ -68,7 +68,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame(!$isRequired, $option->hasDefault());
+        static::assertSame(!$isRequired, $option->hasDefault());
     }
 
     public function provideHasDefaultCases()
@@ -91,7 +91,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame($default, $option->getDefault());
+        static::assertSame($default, $option->getDefault());
     }
 
     public function provideGetDefaultCases()
@@ -111,7 +111,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame($allowedTypes, $option->getAllowedTypes());
+        static::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
     public function testGetAllowedValues()
@@ -123,7 +123,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame($allowedValues, $option->getAllowedValues());
+        static::assertSame($allowedValues, $option->getAllowedValues());
     }
 
     public function testGetNormalizer()
@@ -138,7 +138,7 @@ final class DeprecatedFixerOptionTest extends TestCase
             'deprecated'
         );
 
-        $this->assertSame($normalizer, $option->getNormalizer());
+        static::assertSame($normalizer, $option->getNormalizer());
     }
 
     public function testGetDeprecationMessage()
@@ -148,6 +148,6 @@ final class DeprecatedFixerOptionTest extends TestCase
             'Use option "bar" instead.'
         );
 
-        $this->assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
+        static::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
     }
 }

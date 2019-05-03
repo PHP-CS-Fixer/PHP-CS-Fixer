@@ -34,7 +34,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption($name, 'Bar.'), 'baz');
 
-        $this->assertSame($name, $option->getName());
+        static::assertSame($name, $option->getName());
     }
 
     public function provideGetNameCases()
@@ -54,7 +54,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', $description), 'baz');
 
-        $this->assertSame($description, $option->getDescription());
+        static::assertSame($description, $option->getDescription());
     }
 
     public function provideGetDescriptionCases()
@@ -73,7 +73,7 @@ final class AliasedFixerOptionTest extends TestCase
      */
     public function testHasDefault($hasDefault, AliasedFixerOption $input)
     {
-        $this->assertSame($hasDefault, $input->hasDefault());
+        static::assertSame($hasDefault, $input->hasDefault());
     }
 
     public function provideHasDefaultCases()
@@ -99,7 +99,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', false, $default), 'baz');
 
-        $this->assertSame($default, $option->getDefault());
+        static::assertSame($default, $option->getDefault());
     }
 
     public function provideGetDefaultCases()
@@ -128,7 +128,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, $allowedTypes), 'baz');
 
-        $this->assertSame($allowedTypes, $option->getAllowedTypes());
+        static::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
     public function provideGetAllowedTypesCases()
@@ -149,7 +149,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, $allowedValues), 'baz');
 
-        $this->assertSame($allowedValues, $option->getAllowedValues());
+        static::assertSame($allowedValues, $option->getAllowedValues());
     }
 
     public function provideGetAllowedValuesCases()
@@ -165,19 +165,19 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [function () {}]), 'baz');
         $allowedTypes = $option->getAllowedValues();
-        $this->assertInternalType('array', $allowedTypes);
-        $this->assertCount(1, $allowedTypes);
-        $this->assertArrayHasKey(0, $allowedTypes);
-        $this->assertInstanceOf(\Closure::class, $allowedTypes[0]);
+        static::assertInternalType('array', $allowedTypes);
+        static::assertCount(1, $allowedTypes);
+        static::assertArrayHasKey(0, $allowedTypes);
+        static::assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
     public function testGetNormalizers()
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz');
-        $this->assertNull($option->getNormalizer());
+        static::assertNull($option->getNormalizer());
 
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, function () {}), 'baz');
-        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
+        static::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
     /**
@@ -189,7 +189,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $options = new AliasedFixerOption(new FixerOption('foo', 'Bar', true, null, null, null, null), $alias);
 
-        $this->assertSame($alias, $options->getAlias());
+        static::assertSame($alias, $options->getAlias());
     }
 
     public function provideGetAliasCases()

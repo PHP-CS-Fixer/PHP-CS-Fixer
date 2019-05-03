@@ -28,37 +28,37 @@ final class ArgumentAnalysisTest extends TestCase
     public function testName()
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        $this->assertSame('$name', $analysis->getName());
-        $this->assertSame(1, $analysis->getNameIndex());
+        static::assertSame('$name', $analysis->getName());
+        static::assertSame(1, $analysis->getNameIndex());
     }
 
     public function testDefault()
     {
         $analysis = new ArgumentAnalysis('$name', 1, 'default', null);
-        $this->assertTrue($analysis->hasDefault());
-        $this->assertSame('default', $analysis->getDefault());
+        static::assertTrue($analysis->hasDefault());
+        static::assertSame('default', $analysis->getDefault());
     }
 
     public function testNoDefaultFound()
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        $this->assertFalse($analysis->hasDefault());
-        $this->assertNull($analysis->getDefault());
+        static::assertFalse($analysis->hasDefault());
+        static::assertNull($analysis->getDefault());
     }
 
     public function testType()
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, new TypeAnalysis('string', 1, 4));
-        $this->assertTrue($analysis->hasTypeAnalysis());
-        $this->assertSame('string', $analysis->getTypeAnalysis()->getName());
-        $this->assertSame(1, $analysis->getTypeAnalysis()->getStartIndex());
-        $this->assertSame(4, $analysis->getTypeAnalysis()->getEndIndex());
+        static::assertTrue($analysis->hasTypeAnalysis());
+        static::assertSame('string', $analysis->getTypeAnalysis()->getName());
+        static::assertSame(1, $analysis->getTypeAnalysis()->getStartIndex());
+        static::assertSame(4, $analysis->getTypeAnalysis()->getEndIndex());
     }
 
     public function testNoTypeFound()
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        $this->assertFalse($analysis->hasDefault());
-        $this->assertNull($analysis->getDefault());
+        static::assertFalse($analysis->hasDefault());
+        static::assertNull($analysis->getDefault());
     }
 }

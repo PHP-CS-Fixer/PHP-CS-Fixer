@@ -40,10 +40,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
 
         $fixer->configure(null);
-        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
     }
 
     public function testConfigureDefaultToNull()
@@ -56,10 +56,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
 
         $fixer->configure([]);
-        $this->assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
     }
 
     /**
@@ -417,7 +417,7 @@ TestInterface3, /**/     TestInterface4   ,
 
         $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
 
-        $this->assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideClassyDefinitionInfoCases()
@@ -518,13 +518,13 @@ TestInterface3, /**/     TestInterface4   ,
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        $this->assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 
         $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
 
-        $this->assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideClassyImplementsInfoCases()

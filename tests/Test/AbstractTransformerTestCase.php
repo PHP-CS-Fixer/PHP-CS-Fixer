@@ -45,7 +45,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     {
         $tokens = Tokens::fromCode($source);
 
-        $this->assertSame(
+        static::assertSame(
             \count($expectedTokens),
             $this->countTokenPrototypes(
                 $tokens,
@@ -61,18 +61,18 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                $this->assertTrue($tokens[$index]->equals($tokenIdOrContent));
+                static::assertTrue($tokens[$index]->equals($tokenIdOrContent));
 
                 continue;
             }
 
-            $this->assertSame(
+            static::assertSame(
                 CT::has($tokenIdOrContent) ? CT::getName($tokenIdOrContent) : token_name($tokenIdOrContent),
                 $tokens[$index]->getName(),
                 sprintf('Token name should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)
             );
 
-            $this->assertSame(
+            static::assertSame(
                 $tokenIdOrContent,
                 $tokens[$index]->getId(),
                 sprintf('Token id should be the same. Got token "%s" at index %d.', $tokens[$index]->toJson(), $index)

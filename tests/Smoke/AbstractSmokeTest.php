@@ -29,9 +29,9 @@ abstract class AbstractSmokeTest extends TestCase
     protected static function markTestSkippedOrFail($message)
     {
         if (getenv('PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS')) {
-            self::markTestSkipped($message);
+            static::markTestSkipped($message);
         }
 
-        self::fail($message.' Failing as test is obligatory because of `PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0`.');
+        static::fail($message.' Failing as test is obligatory because of `PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0`.');
     }
 }

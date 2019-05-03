@@ -34,7 +34,7 @@ final class CommandTest extends TestCase
      */
     public function testCommandHasNameConst(Command $command)
     {
-        $this->assertSame($command->getName(), \constant(\get_class($command).'::COMMAND_NAME'));
+        static::assertSame($command->getName(), \constant(\get_class($command).'::COMMAND_NAME'));
     }
 
     public function provideCommandHasNameConstCases()
