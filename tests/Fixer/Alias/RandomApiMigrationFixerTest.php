@@ -48,11 +48,11 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['rand' => 'random_int']);
 
-        $this->assertSame(
+        static::assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
-            $this->getObjectAttribute($this->fixer, 'configuration')
+            static::getObjectAttribute($this->fixer, 'configuration')
         );
     }
 
@@ -60,11 +60,11 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);
 
-        $this->assertSame(
+        static::assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
-            $this->getObjectAttribute($this->fixer, 'configuration')
+            static::getObjectAttribute($this->fixer, 'configuration')
         );
     }
 

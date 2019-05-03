@@ -52,7 +52,7 @@ abstract class AbstractLinterTestCase extends TestCase
 
         $linter = $this->createLinter();
 
-        $this->assertNull($linter->lintFile($file)->check());
+        static::assertNull($linter->lintFile($file)->check());
     }
 
     /**
@@ -86,7 +86,7 @@ abstract class AbstractLinterTestCase extends TestCase
 
         $linter = $this->createLinter();
 
-        $this->assertNull($linter->lintSource($source)->check());
+        static::assertNull($linter->lintSource($source)->check());
     }
 
     /**

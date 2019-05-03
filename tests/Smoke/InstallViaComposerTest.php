@@ -134,7 +134,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         $stepsToInitializeArtifact = [
             // Clone current version of project to new location, as we gonna modify it.
             // Warning! Only already committed changes will be cloned!
-            "git clone . ${tmpArtifactPath}",
+            "git clone . {$tmpArtifactPath}",
         ];
         $stepsToPrepareArtifact = [
             // Configure git user for new repo to not use global git user.
@@ -142,7 +142,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
             'git config user.name test && git config user.email test',
             // Adjust cloned project to expose version in `composer.json`.
             // Without that, it would not be possible to use it as Composer Artifact.
-            "composer config version ${fakeVersion} && git add . && git commit -m 'provide version'",
+            "composer config version {$fakeVersion} && git add . && git commit -m 'provide version'",
             // Create repo archive that will serve as Composer Artifact.
             'git archive HEAD --format=zip -o archive.zip',
             // Drop the repo, keep the archive
@@ -160,7 +160,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     private static function assertCommandsWork(array $commands, $cwd)
     {
         foreach ($commands as $command) {
-            self::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
+            static::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());
         }
     }
 }

@@ -26,7 +26,7 @@ final class CodeHasherTest extends TestCase
 {
     public function testCodeHasher()
     {
-        $this->assertSame('322920910', CodeHasher::calculateCodeHash('<?php echo 1;'));
-        $this->assertSame('322920910', CodeHasher::calculateCodeHash('<?php echo 1;')); // calling twice, hashes should always be the same when the input doesn't change.
+        static::assertSame('322920910', CodeHasher::calculateCodeHash('<?php echo 1;'));
+        static::assertSame('322920910', CodeHasher::calculateCodeHash('<?php echo 1;')); // calling twice, hashes should always be the same when the input doesn't change.
     }
 }

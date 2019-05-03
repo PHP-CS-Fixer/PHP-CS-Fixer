@@ -77,9 +77,9 @@ final class RunnerTest extends TestCase
 
         $changed = $runner->fix();
 
-        $this->assertCount(2, $changed);
-        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
-        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
+        static::assertCount(2, $changed);
+        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
+        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -97,8 +97,8 @@ final class RunnerTest extends TestCase
 
         $changed = $runner->fix();
 
-        $this->assertCount(1, $changed);
-        $this->assertArraySubset($expectedChangedInfo, array_pop($changed));
+        static::assertCount(1, $changed);
+        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
     }
 
     /**
@@ -126,17 +126,17 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
         $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
 
-        $this->assertCount(0, $changed);
+        static::assertCount(0, $changed);
 
         $errors = $errorsManager->getInvalidErrors();
 
-        $this->assertCount(1, $errors);
+        static::assertCount(1, $errors);
 
         $error = $errors[0];
 
-        $this->assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
+        static::assertInstanceOf(\PhpCsFixer\Error\Error::class, $error);
 
-        $this->assertSame(Error::TYPE_INVALID, $error->getType());
-        $this->assertSame($pathToInvalidFile, $error->getFilePath());
+        static::assertSame(Error::TYPE_INVALID, $error->getType());
+        static::assertSame($pathToInvalidFile, $error->getFilePath());
     }
 }

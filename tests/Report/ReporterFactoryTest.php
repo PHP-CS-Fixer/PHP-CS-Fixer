@@ -28,7 +28,7 @@ final class ReporterFactoryTest extends TestCase
     {
         $factory = ReporterFactory::create();
 
-        $this->assertInstanceOf(\PhpCsFixer\Report\ReporterFactory::class, $factory);
+        static::assertInstanceOf(\PhpCsFixer\Report\ReporterFactory::class, $factory);
     }
 
     public function testInterfaceIsFluent()
@@ -36,21 +36,21 @@ final class ReporterFactoryTest extends TestCase
         $builder = new ReporterFactory();
 
         $testInstance = $builder->registerBuiltInReporters();
-        $this->assertSame($builder, $testInstance);
+        static::assertSame($builder, $testInstance);
 
         $double = $this->createReporterDouble('r1');
         $testInstance = $builder->registerReporter($double);
-        $this->assertSame($builder, $testInstance);
+        static::assertSame($builder, $testInstance);
     }
 
     public function testRegisterBuiltInReports()
     {
         $builder = new ReporterFactory();
 
-        $this->assertCount(0, $builder->getFormats());
+        static::assertCount(0, $builder->getFormats());
 
         $builder->registerBuiltInReporters();
-        $this->assertSame(
+        static::assertSame(
             ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $builder->getFormats()
         );
@@ -68,9 +68,9 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        $this->assertSame($r1, $builder->getReporter('r1'));
-        $this->assertSame($r2, $builder->getReporter('r2'));
-        $this->assertSame($r3, $builder->getReporter('r3'));
+        static::assertSame($r1, $builder->getReporter('r1'));
+        static::assertSame($r2, $builder->getReporter('r2'));
+        static::assertSame($r3, $builder->getReporter('r3'));
     }
 
     public function testGetFormats()
@@ -85,7 +85,7 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerReporter($r2);
         $builder->registerReporter($r3);
 
-        $this->assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
+        static::assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
     }
 
     public function testRegisterReportWithOccupiedFormat()

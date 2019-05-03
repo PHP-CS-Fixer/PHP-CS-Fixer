@@ -28,14 +28,14 @@ final class SignatureTest extends TestCase
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
-        $this->assertTrue($reflection->isFinal());
+        static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface()
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
-        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
+        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
     }
 
     public function testConstructorSetsValues()
@@ -57,11 +57,11 @@ final class SignatureTest extends TestCase
             $rules
         );
 
-        $this->assertSame($php, $signature->getPhpVersion());
-        $this->assertSame($version, $signature->getFixerVersion());
-        $this->assertSame($indent, $signature->getIndent());
-        $this->assertSame($lineEnding, $signature->getLineEnding());
-        $this->assertSame($rules, $signature->getRules());
+        static::assertSame($php, $signature->getPhpVersion());
+        static::assertSame($version, $signature->getFixerVersion());
+        static::assertSame($indent, $signature->getIndent());
+        static::assertSame($lineEnding, $signature->getLineEnding());
+        static::assertSame($rules, $signature->getRules());
     }
 
     /**
@@ -72,7 +72,7 @@ final class SignatureTest extends TestCase
      */
     public function testEqualsReturnsFalseIfValuesAreNotIdentical($signature, $anotherSignature)
     {
-        $this->assertFalse($signature->equals($anotherSignature));
+        static::assertFalse($signature->equals($anotherSignature));
     }
 
     public function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases()
@@ -141,6 +141,6 @@ final class SignatureTest extends TestCase
             $rules
         );
 
-        $this->assertTrue($signature->equals($anotherSignature));
+        static::assertTrue($signature->equals($anotherSignature));
     }
 }

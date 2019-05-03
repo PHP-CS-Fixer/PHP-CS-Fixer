@@ -53,7 +53,7 @@ final class FixCommandTest extends TestCase
             ]
         );
 
-        $this->assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+        static::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
     }
 
     /**

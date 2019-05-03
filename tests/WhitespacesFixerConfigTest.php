@@ -39,8 +39,8 @@ final class WhitespacesFixerConfigTest extends TestCase
 
         $config = new WhitespacesFixerConfig($indent, $lineEnding);
 
-        $this->assertSame($indent, $config->getIndent());
-        $this->assertSame($lineEnding, $config->getLineEnding());
+        static::assertSame($indent, $config->getIndent());
+        static::assertSame($lineEnding, $config->getLineEnding());
     }
 
     public function provideTestCases()
