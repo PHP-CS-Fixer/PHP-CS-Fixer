@@ -89,6 +89,50 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      *  Foo '.'
      */',
             ],
+            [
+                str_replace(
+                    "\n",
+                    "\r\n",
+                    '<?php
+    /**
+     * Summary
+     *'.'
+     * Description
+    */'
+                ),
+                str_replace(
+                    "\n",
+                    "\r\n",
+                    '<?php
+    /**
+     * Summary
+     * '.'
+     * Description
+    */'
+                ),
+            ],
+            [
+                str_replace(
+                    "\n",
+                    "\r",
+                    '<?php
+    /**
+     * Summary
+     *'.'
+     * Description
+    */'
+                ),
+                str_replace(
+                    "\n",
+                    "\r",
+                    '<?php
+    /**
+     * Summary
+     * '.'
+     * Description
+    */'
+                ),
+            ],
         ];
     }
 }
