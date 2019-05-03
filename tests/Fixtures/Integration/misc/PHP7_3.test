@@ -2,11 +2,10 @@
 PHP 7.3 test.
 --RULESET--
 {
-    "@PHP71Migration": true,
     "@PHP71Migration:risky": true,
+    "@PHP73Migration": true,
     "@Symfony": true,
     "@Symfony:risky": true,
-    "heredoc_indentation": true,
     "list_syntax": {"syntax": "short"},
     "mb_str_functions": true,
     "method_argument_space": {"after_heredoc": true},
