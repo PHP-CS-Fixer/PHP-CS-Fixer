@@ -190,6 +190,7 @@ final class RuleSet implements RuleSetInterface
                 'use_escape_sequences_in_strings' => false,
             ],
             'php_unit_construct' => true,
+            'php_unit_mock_short_will_return' => true,
             'psr4' => true,
             'self_accessor' => true,
             'set_type_to_cast' => true,

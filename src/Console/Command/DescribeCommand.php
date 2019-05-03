@@ -104,7 +104,7 @@ final class DescribeCommand extends Command
             if ('@' === $name[0]) {
                 $this->describeSet($output, $name);
 
-                return;
+                return null;
             }
 
             $this->describeRule($output, $name);

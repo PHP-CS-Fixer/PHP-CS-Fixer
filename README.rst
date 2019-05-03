@@ -617,6 +617,12 @@ Choose from the list of available rules:
   Converts implicit variables into explicit ones in double-quoted strings
   or heredoc syntax.
 
+* **final_class**
+
+  All classes must be final, except abstract ones and Doctrine entities.
+
+  *Risky rule: risky when subclassing non-abstract classes.*
+
 * **final_internal_class** [@PhpCsFixer:risky]
 
   Internal classes should be ``final``.
@@ -627,10 +633,13 @@ Choose from the list of available rules:
 
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
-    as well. (case insensitive); defaults to ``['@final', '@Entity', '@ORM']``
+    as well. (case insensitive); defaults to ``['@final', '@Entity',
+    '@ORM\\Entity']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
+  - ``consider-absent-docblock-as-internal-class`` (``bool``): should classes
+    without any DocBlock be fixed to final?; defaults to ``false``
 
 * **fopen_flag_order** [@Symfony:risky, @PhpCsFixer:risky]
 
@@ -1298,7 +1307,7 @@ Choose from the list of available rules:
   - ``target`` (``'5.4'``, ``'5.5'``, ``'newest'``): target version of PHPUnit; defaults to
     ``'newest'``
 
-* **php_unit_mock_short_will_return**
+* **php_unit_mock_short_will_return** [@Symfony:risky, @PhpCsFixer:risky]
 
   Usage of PHPUnit's mock e.g. ``->will($this->returnValue(..))`` must be
   replaced by its shorter equivalent such as ``->willReturn(...)``.
@@ -1340,6 +1349,16 @@ Choose from the list of available rules:
   PHPUnit to ``protected``, to match the PHPUnit TestCase.
 
   *Risky rule: this fixer may change functions named ``setUp()`` or ``tearDown()`` outside of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.*
+
+* **php_unit_size_class**
+
+  All PHPUnit test cases should have ``@small``, ``@medium`` or ``@large``
+  annotation to enable run time limits.
+
+  Configuration options:
+
+  - ``group`` (``'large'``, ``'medium'``, ``'small'``): define a specific group to be used
+    in case no group is already in use; defaults to ``'small'``
 
 * **php_unit_strict** [@PhpCsFixer:risky]
 

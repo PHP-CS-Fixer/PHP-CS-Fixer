@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -73,7 +74,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_DOC_COMMENT]);
+        return $tokens->isTokenKindFound(T_CLASS);
     }
 
     /**
@@ -143,8 +144,12 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             (new FixerOptionBuilder('annotation-black-list', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
-                ->setDefault(['@final', '@Entity', '@ORM'])
+                ->setDefault(['@final', '@Entity', '@ORM\Entity'])
                 ->setNormalizer($annotationsNormalizer)
+                ->getOption(),
+            (new FixerOptionBuilder('consider-absent-docblock-as-internal-class', 'Should classes without any DocBlock be fixed to final?'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
@@ -157,23 +162,26 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     private function isClassCandidate(Tokens $tokens, $index)
     {
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL])) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL, T_NEW])) {
             return false; // ignore class; it is abstract or already final
         }
 
         $docToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
         if (!$docToken->isGivenKind(T_DOC_COMMENT)) {
-            return false; // ignore class; it has no class-level PHPDoc
+            return $this->configuration['consider-absent-docblock-as-internal-class'];
         }
 
         $doc = new DocBlock($docToken->getContent());
         $tags = [];
 
         foreach ($doc->getAnnotations() as $annotation) {
-            $tag = strtolower($annotation->getTag()->getName());
-            if (isset($this->configuration['annotation-black-list'][$tag])) {
-                return false; // ignore class: class-level PHPDoc contains tag that has been black listed through configuration
+            Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches);
+            $tag = strtolower(substr(array_shift($matches), 1));
+            foreach ($this->configuration['annotation-black-list'] as $tagStart => $true) {
+                if (0 === strpos($tag, $tagStart)) {
+                    return false; // ignore class: class-level PHPDoc contains tag that has been black listed through configuration
+                }
             }
 
             $tags[$tag] = true;
