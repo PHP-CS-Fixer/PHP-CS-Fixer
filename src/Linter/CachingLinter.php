@@ -25,7 +25,7 @@ final class CachingLinter implements LinterInterface
     private $sublinter;
 
     /**
-     * @var array<string, LintingResultInterface>
+     * @var array<int, LintingResultInterface>
      */
     private $cache = [];
 
