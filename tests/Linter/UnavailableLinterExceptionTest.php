@@ -28,7 +28,7 @@ final class UnavailableLinterExceptionTest extends TestCase
     {
         $exception = new UnavailableLinterException();
 
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        static::assertInstanceOf(\RuntimeException::class, $exception);
     }
 
     public function testConstructorSetsValues()
@@ -43,8 +43,8 @@ final class UnavailableLinterExceptionTest extends TestCase
             $previous
         );
 
-        $this->assertSame($message, $exception->getMessage());
-        $this->assertSame($code, $exception->getCode());
-        $this->assertSame($previous, $exception->getPrevious());
+        static::assertSame($message, $exception->getMessage());
+        static::assertSame($code, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
     }
 }

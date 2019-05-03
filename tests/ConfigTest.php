@@ -42,7 +42,7 @@ final class ConfigTest extends TestCase
             new ToolInfo()
         );
 
-        $this->assertArraySubset(
+        static::assertArraySubset(
             [
                 'cast_spaces' => true,
                 'braces' => true,
@@ -63,7 +63,7 @@ final class ConfigTest extends TestCase
             new ToolInfo()
         );
 
-        $this->assertArraySubset(
+        static::assertArraySubset(
             [
                 'array_syntax' => [
                     'syntax' => 'short',
@@ -110,7 +110,7 @@ final class ConfigTest extends TestCase
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
             ]
         );
-        $this->assertStringMatchesFormat(
+        static::assertStringMatchesFormat(
             sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
             $commandTester->getDisplay(true)
         );
@@ -125,8 +125,8 @@ final class ConfigTest extends TestCase
             false
         );
 
-        $this->assertCount(1, $items);
-        $this->assertSame('somefile.php', $items[0]->getFilename());
+        static::assertCount(1, $items);
+        static::assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCustomFinderWorks()
@@ -141,8 +141,8 @@ final class ConfigTest extends TestCase
             false
         );
 
-        $this->assertCount(1, $items);
-        $this->assertSame('somefile.php', $items[0]->getFilename());
+        static::assertCount(1, $items);
+        static::assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCustomSymfonyFinderWorks()
@@ -157,15 +157,15 @@ final class ConfigTest extends TestCase
             false
         );
 
-        $this->assertCount(1, $items);
-        $this->assertSame('somefile.php', $items[0]->getFilename());
+        static::assertCount(1, $items);
+        static::assertSame('somefile.php', $items[0]->getFilename());
     }
 
     public function testThatCacheFileHasDefaultValue()
     {
         $config = new Config();
 
-        $this->assertSame('.php_cs.cache', $config->getCacheFile());
+        static::assertSame('.php_cs.cache', $config->getCacheFile());
     }
 
     public function testThatCacheFileCanBeMutated()
@@ -175,14 +175,14 @@ final class ConfigTest extends TestCase
         $config = new Config();
         $config->setCacheFile($cacheFile);
 
-        $this->assertSame($cacheFile, $config->getCacheFile());
+        static::assertSame($cacheFile, $config->getCacheFile());
     }
 
     public function testThatMutatorHasFluentInterface()
     {
         $config = new Config();
 
-        $this->assertSame($config, $config->setCacheFile('some-directory/some.file'));
+        static::assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 
     public function testRegisterCustomFixersWithInvalidArgument()
@@ -205,7 +205,7 @@ final class ConfigTest extends TestCase
         $config = new Config();
         $config->registerCustomFixers($suite);
 
-        $this->assertSame($expected, $config->getCustomFixers());
+        static::assertSame($expected, $config->getCustomFixers());
     }
 
     /**

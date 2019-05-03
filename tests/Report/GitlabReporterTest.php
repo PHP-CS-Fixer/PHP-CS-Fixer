@@ -118,6 +118,6 @@ JSON;
 
     protected function assertFormat($expected, $input)
     {
-        $this->assertJsonStringEqualsJsonString($expected, $input);
+        static::assertJsonStringEqualsJsonString($expected, $input);
     }
 }

@@ -641,7 +641,7 @@ else?><?php echo 5;',
 
         $result = $method->invoke($this->fixer, $tokens, $index);
 
-        $this->assertSame($expected, $result);
+        static::assertSame($expected, $result);
     }
 
     public function provideBlockDetectionCases()
@@ -789,7 +789,7 @@ else?><?php echo 5;',
 
         $tokens = Tokens::fromCode($input);
         foreach ($indexes as $index => $expected) {
-            $this->assertSame(
+            static::assertSame(
                 $expected,
                 $method->invoke($this->fixer, $tokens, $index, 0),
                 sprintf('Failed in condition without braces check for index %d', $index)

@@ -27,6 +27,6 @@ final class ApplicationTest extends TestCase
     public function testApplication()
     {
         $app = new Application();
-        $this->assertStringMatchesFormat('%s by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>', $app->getLongVersion());
+        static::assertStringMatchesFormat('%s by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>', $app->getLongVersion());
     }
 }

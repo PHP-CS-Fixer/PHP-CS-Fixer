@@ -277,7 +277,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([]);
 
-        $this->assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
+        static::assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
     }
 
     /**

@@ -435,7 +435,7 @@ echo 1;'
 
         $method = new \ReflectionMethod($this->fixer, 'findHeaderCommentInsertionIndex');
         $method->setAccessible(true);
-        $this->assertSame($expected, $method->invoke($this->fixer, $tokens));
+        static::assertSame($expected, $method->invoke($this->fixer, $tokens));
     }
 
     public function provideFindHeaderCommentInsertionIndexCases()

@@ -260,7 +260,7 @@ final class RuleSet implements RuleSetInterface
             'php_unit_set_up_tear_down_visibility' => true,
             'php_unit_strict' => true,
             'php_unit_test_annotation' => true,
-            'php_unit_test_case_static_method_calls' => ['call_type' => 'this'],
+            'php_unit_test_case_static_method_calls' => true,
             'strict_comparison' => true,
             'strict_param' => true,
             'string_line_ending' => true,

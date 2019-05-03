@@ -26,35 +26,35 @@ final class FixerDefinitionTest extends TestCase
     {
         $definition = new FixerDefinition('Foo', []);
 
-        $this->assertSame('Foo', $definition->getSummary());
+        static::assertSame('Foo', $definition->getSummary());
     }
 
     public function testGetCodeSamples()
     {
         $definition = new FixerDefinition('', ['Bar', 'Baz']);
 
-        $this->assertSame(['Bar', 'Baz'], $definition->getCodeSamples());
+        static::assertSame(['Bar', 'Baz'], $definition->getCodeSamples());
     }
 
     public function testGetDescription()
     {
         $definition = new FixerDefinition('', []);
 
-        $this->assertNull($definition->getDescription());
+        static::assertNull($definition->getDescription());
 
         $definition = new FixerDefinition('', [], 'Foo');
 
-        $this->assertSame('Foo', $definition->getDescription());
+        static::assertSame('Foo', $definition->getDescription());
     }
 
     public function testGetRiskyDescription()
     {
         $definition = new FixerDefinition('', []);
 
-        $this->assertNull($definition->getRiskyDescription());
+        static::assertNull($definition->getRiskyDescription());
 
         $definition = new FixerDefinition('', [], null, 'Foo');
 
-        $this->assertSame('Foo', $definition->getRiskyDescription());
+        static::assertSame('Foo', $definition->getRiskyDescription());
     }
 }

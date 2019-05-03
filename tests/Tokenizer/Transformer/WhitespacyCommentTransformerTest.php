@@ -36,8 +36,8 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
         foreach ($expectedTokens as $index => $expectedToken) {
             $token = $tokens[$index];
 
-            $this->assertSame($expectedToken[1], $token->getContent());
-            $this->assertSame($expectedToken[0], $token->getId());
+            static::assertSame($expectedToken[1], $token->getContent());
+            static::assertSame($expectedToken[0], $token->getId());
         }
     }
 

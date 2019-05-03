@@ -28,30 +28,30 @@ final class TypeAnalysisTest extends TestCase
     public function testStartEndTokenAwareAnalysis()
     {
         $analysis = new TypeAnalysis('string', 1, 2);
-        $this->assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
+        static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
     }
 
     public function testName()
     {
         $analysis = new TypeAnalysis('string', 1, 2);
-        $this->assertSame('string', $analysis->getName());
-        $this->assertFalse($analysis->isNullable());
+        static::assertSame('string', $analysis->getName());
+        static::assertFalse($analysis->isNullable());
 
         $analysis = new TypeAnalysis('?\foo\bar', 1, 2);
-        $this->assertSame('\foo\bar', $analysis->getName());
-        $this->assertTrue($analysis->isNullable());
+        static::assertSame('\foo\bar', $analysis->getName());
+        static::assertTrue($analysis->isNullable());
     }
 
     public function testStartIndex()
     {
         $analysis = new TypeAnalysis('string', 1, 2);
-        $this->assertSame(1, $analysis->getStartIndex());
+        static::assertSame(1, $analysis->getStartIndex());
     }
 
     public function testEndIndex()
     {
         $analysis = new TypeAnalysis('string', 1, 2);
-        $this->assertSame(2, $analysis->getEndIndex());
+        static::assertSame(2, $analysis->getEndIndex());
     }
 
     /**
@@ -63,7 +63,7 @@ final class TypeAnalysisTest extends TestCase
     public function testReserved($type, $expected)
     {
         $analysis = new TypeAnalysis($type, 1, 2);
-        $this->assertSame($expected, $analysis->isReservedType());
+        static::assertSame($expected, $analysis->isReservedType());
     }
 
     public function provideReservedCases()

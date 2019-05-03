@@ -35,7 +35,7 @@ final class StdinTest extends AbstractSmokeTest
         $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);
         $stdinResult = CommandExecutor::create("{$command} - < {$inputFile}", $cwd)->getResult(false);
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'code' => $fileResult->getCode(),
                 'error' => str_replace(

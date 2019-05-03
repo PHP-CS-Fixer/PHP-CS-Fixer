@@ -43,7 +43,7 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
      */
     public function testIsPhpUnitClass($expected, Tokens $tokens, $index)
     {
-        $this->assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
+        static::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
 
     public function provideIsPhpUnitClassCases()
@@ -138,8 +138,8 @@ class Foo implements TestInterface, SomethingElse
         $classesFromBottom = $this->indicator->findPhpUnitClasses($tokens);
         $classesFromBottom = iterator_to_array($classesFromBottom);
 
-        $this->assertSame($expectedIndexes, $classesFromTop);
-        $this->assertSame(array_reverse($classesFromBottom), $classesFromTop);
+        static::assertSame($expectedIndexes, $classesFromTop);
+        static::assertSame(array_reverse($classesFromBottom), $classesFromTop);
     }
 
     public function provideFindPhpUnitClassesCases()

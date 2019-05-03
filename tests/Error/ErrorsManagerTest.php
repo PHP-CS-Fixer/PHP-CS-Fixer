@@ -27,10 +27,10 @@ final class ErrorsManagerTest extends TestCase
     {
         $errorsManager = new ErrorsManager();
 
-        $this->assertTrue($errorsManager->isEmpty());
-        $this->assertEmpty($errorsManager->getInvalidErrors());
-        $this->assertEmpty($errorsManager->getExceptionErrors());
-        $this->assertEmpty($errorsManager->getLintErrors());
+        static::assertTrue($errorsManager->isEmpty());
+        static::assertEmpty($errorsManager->getInvalidErrors());
+        static::assertEmpty($errorsManager->getExceptionErrors());
+        static::assertEmpty($errorsManager->getLintErrors());
     }
 
     public function testThatCanReportAndRetrieveInvalidErrors()
@@ -44,16 +44,16 @@ final class ErrorsManagerTest extends TestCase
 
         $errorsManager->report($error);
 
-        $this->assertFalse($errorsManager->isEmpty());
+        static::assertFalse($errorsManager->isEmpty());
 
         $errors = $errorsManager->getInvalidErrors();
 
-        $this->assertInternalType('array', $errors);
-        $this->assertCount(1, $errors);
-        $this->assertSame($error, array_shift($errors));
+        static::assertInternalType('array', $errors);
+        static::assertCount(1, $errors);
+        static::assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getExceptionErrors());
-        $this->assertCount(0, $errorsManager->getLintErrors());
+        static::assertCount(0, $errorsManager->getExceptionErrors());
+        static::assertCount(0, $errorsManager->getLintErrors());
     }
 
     public function testThatCanReportAndRetrieveExceptionErrors()
@@ -67,16 +67,16 @@ final class ErrorsManagerTest extends TestCase
 
         $errorsManager->report($error);
 
-        $this->assertFalse($errorsManager->isEmpty());
+        static::assertFalse($errorsManager->isEmpty());
 
         $errors = $errorsManager->getExceptionErrors();
 
-        $this->assertInternalType('array', $errors);
-        $this->assertCount(1, $errors);
-        $this->assertSame($error, array_shift($errors));
+        static::assertInternalType('array', $errors);
+        static::assertCount(1, $errors);
+        static::assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getInvalidErrors());
-        $this->assertCount(0, $errorsManager->getLintErrors());
+        static::assertCount(0, $errorsManager->getInvalidErrors());
+        static::assertCount(0, $errorsManager->getLintErrors());
     }
 
     public function testThatCanReportAndRetrieveInvalidFileErrors()
@@ -90,15 +90,15 @@ final class ErrorsManagerTest extends TestCase
 
         $errorsManager->report($error);
 
-        $this->assertFalse($errorsManager->isEmpty());
+        static::assertFalse($errorsManager->isEmpty());
 
         $errors = $errorsManager->getLintErrors();
 
-        $this->assertInternalType('array', $errors);
-        $this->assertCount(1, $errors);
-        $this->assertSame($error, array_shift($errors));
+        static::assertInternalType('array', $errors);
+        static::assertCount(1, $errors);
+        static::assertSame($error, array_shift($errors));
 
-        $this->assertCount(0, $errorsManager->getInvalidErrors());
-        $this->assertCount(0, $errorsManager->getExceptionErrors());
+        static::assertCount(0, $errorsManager->getInvalidErrors());
+        static::assertCount(0, $errorsManager->getExceptionErrors());
     }
 }

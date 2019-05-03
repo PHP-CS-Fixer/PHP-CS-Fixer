@@ -31,7 +31,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
             'weird'
         );
 
-        $this->assertInstanceOf(\InvalidArgumentException::class, $exception);
+        static::assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
     public function testConstructorSetsValues()
@@ -44,7 +44,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
             $type
         );
 
-        $this->assertSame($name, $exception->getName());
-        $this->assertSame($type, $exception->getType());
+        static::assertSame($name, $exception->getName());
+        static::assertSame($type, $exception->getType());
     }
 }

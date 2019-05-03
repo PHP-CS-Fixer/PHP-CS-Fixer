@@ -26,12 +26,12 @@ final class PharCheckerTest extends TestCase
     public function testPharChecker()
     {
         $checker = new PharChecker();
-        $this->assertNull($checker->checkFileValidity(__DIR__.'/Fixtures/empty.phar'));
+        static::assertNull($checker->checkFileValidity(__DIR__.'/Fixtures/empty.phar'));
     }
 
     public function testPharCheckerInvalidFile()
     {
         $checker = new PharChecker();
-        $this->assertStringStartsWith('Failed to create Phar instance.', $checker->checkFileValidity(__FILE__));
+        static::assertStringStartsWith('Failed to create Phar instance.', $checker->checkFileValidity(__FILE__));
     }
 }

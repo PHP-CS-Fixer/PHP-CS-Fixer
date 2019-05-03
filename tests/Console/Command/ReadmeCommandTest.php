@@ -30,11 +30,11 @@ final class ReadmeCommandTest extends TestCase
     public function testIfReadmeFileIsCorrect()
     {
         $readmeFile = __DIR__.'/../../../README.rst';
-        $this->assertFileExists($readmeFile, sprintf('README file "%s" not found.', $readmeFile)); // switch to `assertFileIsReadable` on PHPUnit6
-        $this->assertIsReadable($readmeFile, sprintf('Cannot read "%s".', $readmeFile));
-        $this->assertTrue(is_file($readmeFile), sprintf('Expected file "%s" to be a file.', $readmeFile));
+        static::assertFileExists($readmeFile, sprintf('README file "%s" not found.', $readmeFile)); // switch to `assertFileIsReadable` on PHPUnit6
+        static::assertIsReadable($readmeFile, sprintf('Cannot read "%s".', $readmeFile));
+        static::assertTrue(is_file($readmeFile), sprintf('Expected file "%s" to be a file.', $readmeFile));
         $fileContent = file_get_contents($readmeFile);
-        $this->assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
+        static::assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
 
         $app = new Application();
         $input = new ArrayInput(['readme']);
@@ -48,13 +48,13 @@ final class ReadmeCommandTest extends TestCase
         // normalize line breaks, these are not important for the tests
         $output = str_replace(PHP_EOL, "\n", $output);
 
-        $this->assertSame(
+        static::assertSame(
             0,
             $exitCode,
             sprintf("readme command did not exit successfully.\n%s", $output)
         );
 
-        $this->assertSame(
+        static::assertSame(
             $output,
             $fileContent,
             'README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.'

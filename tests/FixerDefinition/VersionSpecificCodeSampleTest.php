@@ -39,8 +39,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
             $configuration
         );
 
-        $this->assertSame($code, $codeSample->getCode());
-        $this->assertSame($configuration, $codeSample->getConfiguration());
+        static::assertSame($code, $codeSample->getCode());
+        static::assertSame($configuration, $codeSample->getConfiguration());
     }
 
     public function testConfigurationDefaultsToNull()
@@ -50,7 +50,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
             $this->createVersionSpecificationMock()->reveal()
         );
 
-        $this->assertNull($codeSample->getConfiguration());
+        static::assertNull($codeSample->getConfiguration());
     }
 
     /**
@@ -73,7 +73,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
             $versionSpecification->reveal()
         );
 
-        $this->assertSame($isSatisfied, $codeSample->isSuitableFor($version));
+        static::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
     }
 
     /**

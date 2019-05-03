@@ -697,7 +697,7 @@ $a#4
 
     public function testDefinition()
     {
-        $this->assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
+        static::assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
     }
 
     /**

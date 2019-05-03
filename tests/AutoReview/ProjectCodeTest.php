@@ -55,7 +55,7 @@ final class ProjectCodeTest extends TestCase
             static function ($class) { return !class_exists($class) && !trait_exists($class); }
         );
 
-        $this->assertSame([], $unknownClasses);
+        static::assertSame([], $unknownClasses);
     }
 
     /**
@@ -68,12 +68,12 @@ final class ProjectCodeTest extends TestCase
         $testClassName = str_replace('PhpCsFixer', 'PhpCsFixer\\Tests', $className).'Test';
 
         if (\in_array($className, self::$classesWithoutTests, true)) {
-            $this->assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
-            $this->markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
+            static::assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));
+            static::markTestIncomplete(sprintf('Class "%s" has no tests yet, please help and add it.', $className));
         }
 
-        $this->assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
-        $this->assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PhpCsFixer\Tests\TestCase".', $testClassName));
+        static::assertTrue(class_exists($testClassName), sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
+        static::assertTrue(is_subclass_of($testClassName, TestCase::class), sprintf('Expected test class "%s" to be a subclass of "\PhpCsFixer\Tests\TestCase".', $testClassName));
     }
 
     /**
@@ -123,7 +123,7 @@ final class ProjectCodeTest extends TestCase
 
         sort($extraMethods);
 
-        $this->assertEmpty(
+        static::assertEmpty(
             $extraMethods,
             sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
@@ -145,13 +145,13 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
 
         if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
-            $this->markTestIncomplete(sprintf(
+            static::markTestIncomplete(sprintf(
                 'Public properties of fixer `%s` will be removed on 3.0.',
                 \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class
             ));
         }
 
-        $this->assertEmpty(
+        static::assertEmpty(
             $rc->getProperties(\ReflectionProperty::IS_PUBLIC),
             sprintf('Class \'%s\' should not have public properties.', $className)
         );
@@ -190,7 +190,7 @@ final class ProjectCodeTest extends TestCase
 
         sort($extraProps);
 
-        $this->assertEmpty(
+        static::assertEmpty(
             $extraProps,
             sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
@@ -211,7 +211,7 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($className);
 
-        $this->assertTrue(
+        static::assertTrue(
             $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
             sprintf('Test class %s should be trait, abstract or final.', $className)
         );
@@ -227,7 +227,7 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
         $doc = new DocBlock($rc->getDocComment());
 
-        $this->assertNotEmpty(
+        static::assertNotEmpty(
             $doc->getAnnotationsOfType('internal'),
             sprintf('Test class %s should have internal annotation.', $className)
         );
@@ -247,7 +247,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         foreach ($dataProviderMethodNames as $dataProviderMethodName) {
-            $this->assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+            static::assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
                 'Data provider in "%s" with name "%s" is not correctly named.',
                 $testClassName,
                 $dataProviderMethodName
@@ -278,13 +278,13 @@ final class ProjectCodeTest extends TestCase
         );
         $strings = array_unique($strings);
         $message = sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
-        $this->assertNotContains('preg_filter', $strings, $message);
-        $this->assertNotContains('preg_grep', $strings, $message);
-        $this->assertNotContains('preg_match', $strings, $message);
-        $this->assertNotContains('preg_match_all', $strings, $message);
-        $this->assertNotContains('preg_replace', $strings, $message);
-        $this->assertNotContains('preg_replace_callback', $strings, $message);
-        $this->assertNotContains('preg_split', $strings, $message);
+        static::assertNotContains('preg_filter', $strings, $message);
+        static::assertNotContains('preg_grep', $strings, $message);
+        static::assertNotContains('preg_match', $strings, $message);
+        static::assertNotContains('preg_match_all', $strings, $message);
+        static::assertNotContains('preg_replace', $strings, $message);
+        static::assertNotContains('preg_replace_callback', $strings, $message);
+        static::assertNotContains('preg_split', $strings, $message);
     }
 
     public function provideSrcClassCases()

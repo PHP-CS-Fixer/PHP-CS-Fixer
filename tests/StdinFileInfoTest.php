@@ -27,42 +27,42 @@ final class StdinFileInfoTest extends TestCase
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('php://stdin', (string) $fileInfo);
+        static::assertSame('php://stdin', (string) $fileInfo);
     }
 
     public function testGetRealPath()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('php://stdin', $fileInfo->getRealPath());
+        static::assertSame('php://stdin', $fileInfo->getRealPath());
     }
 
     public function testGetATime()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getATime());
+        static::assertSame(0, $fileInfo->getATime());
     }
 
     public function testGetBasename()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('stdin.php', $fileInfo->getBasename());
+        static::assertSame('stdin.php', $fileInfo->getBasename());
     }
 
     public function testGetCTime()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getCTime());
+        static::assertSame(0, $fileInfo->getCTime());
     }
 
     public function testGetExtension()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('.php', $fileInfo->getExtension());
+        static::assertSame('.php', $fileInfo->getExtension());
     }
 
     public function testGetFileInfo()
@@ -79,49 +79,49 @@ final class StdinFileInfoTest extends TestCase
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('stdin.php', $fileInfo->getFilename());
+        static::assertSame('stdin.php', $fileInfo->getFilename());
     }
 
     public function testGetGroup()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getGroup());
+        static::assertSame(0, $fileInfo->getGroup());
     }
 
     public function testGetInode()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getInode());
+        static::assertSame(0, $fileInfo->getInode());
     }
 
     public function testGetLinkTarget()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('', $fileInfo->getLinkTarget());
+        static::assertSame('', $fileInfo->getLinkTarget());
     }
 
     public function testGetMTime()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getMTime());
+        static::assertSame(0, $fileInfo->getMTime());
     }
 
     public function testGetOwner()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getOwner());
+        static::assertSame(0, $fileInfo->getOwner());
     }
 
     public function testGetPath()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('', $fileInfo->getPath());
+        static::assertSame('', $fileInfo->getPath());
     }
 
     public function testGetPathInfo()
@@ -138,70 +138,70 @@ final class StdinFileInfoTest extends TestCase
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('stdin.php', $fileInfo->getPathname());
+        static::assertSame('stdin.php', $fileInfo->getPathname());
     }
 
     public function testGetPerms()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getPerms());
+        static::assertSame(0, $fileInfo->getPerms());
     }
 
     public function testGetSize()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame(0, $fileInfo->getSize());
+        static::assertSame(0, $fileInfo->getSize());
     }
 
     public function testGetType()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertSame('file', $fileInfo->getType());
+        static::assertSame('file', $fileInfo->getType());
     }
 
     public function testIsDir()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertFalse($fileInfo->isDir());
+        static::assertFalse($fileInfo->isDir());
     }
 
     public function testIsExecutable()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertFalse($fileInfo->isExecutable());
+        static::assertFalse($fileInfo->isExecutable());
     }
 
     public function testIsFile()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertTrue($fileInfo->isFile());
+        static::assertTrue($fileInfo->isFile());
     }
 
     public function testIsLink()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertFalse($fileInfo->isLink());
+        static::assertFalse($fileInfo->isLink());
     }
 
     public function testIsReadable()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertTrue($fileInfo->isReadable());
+        static::assertTrue($fileInfo->isReadable());
     }
 
     public function testIsWritable()
     {
         $fileInfo = new StdinFileInfo();
 
-        $this->assertFalse($fileInfo->isWritable());
+        static::assertFalse($fileInfo->isWritable());
     }
 
     public function testOpenFile()
