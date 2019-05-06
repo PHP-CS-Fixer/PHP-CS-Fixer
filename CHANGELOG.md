@@ -3,6 +3,27 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.15.0
+---------------------
+
+* feature #3927 Add FinalClassFixer (Slamdunk)
+* feature #3939 Add PhpUnitSizeClassFixer (Jefersson Nathan)
+* feature #3942 SimpleToComplexStringVariableFixer - Introduction (dmvdbrugge, SpacePossum)
+* feature #4113 OrderedInterfacesFixer - Introduction (dmvdbrugge)
+* feature #4121 SingleTraitInsertPerStatementFixer - Introduction (SpacePossum)
+* feature #4126 NativeFunctionTypeDeclarationCasingFixer - Introduction (SpacePossum)
+* feature #4167 PhpUnitMockShortWillReturnFixer - Introduction (michadam-pearson)
+* feature #4191 [7.3] NoWhitespaceBeforeCommaInArrayFixer - fix comma after heredoc-end (gharlan)
+* feature #4288 Add Gitlab Reporter (hco)
+* feature #4328 Add PhpUnitDedicateAssertInternalTypeFixer (Slamdunk)
+* feature #4341 [7.3] TrailingCommaInMultilineArrayFixer - fix comma after heredoc-end (gharlan)
+* feature #4342 [7.3] MethodArgumentSpaceFixer - fix comma after heredoc-end (gharlan)
+* minor #4112 NoSuperfluousPhpdocTagsFixer - Add missing code sample, groom tests (keradus, SpacePossum)
+* minor #4360 Add gitlab as output format in the README/help doc. (SpacePossum)
+* minor #4386 Add PhpUnitMockShortWillReturnFixer to @Symfony:risky rule set (kubawerlos)
+* minor #4398 New ruleset "@PHP73Migration" (gharlan)
+* minor #4399 Fix 2.15 line (keradus)
+
 Changelog for v2.14.3
 ---------------------
 
