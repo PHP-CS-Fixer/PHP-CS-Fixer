@@ -223,22 +223,24 @@ final class ConfigurationResolver
     public function getConfig()
     {
         if (null === $this->config) {
-            foreach ($this->computeConfigFiles() as $configFile) {
-                if (!file_exists($configFile)) {
-                    continue;
+            if (null === $this->options['rules']) {
+                foreach ($this->computeConfigFiles() as $configFile) {
+                    if (!file_exists($configFile)) {
+                        continue;
+                    }
+
+                    $config = self::separatedContextLessInclude($configFile);
+
+                    // verify that the config has an instance of Config
+                    if (!$config instanceof ConfigInterface) {
+                        throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "PhpCsFixer\ConfigInterface" instance. Got: "%s".', $configFile, \is_object($config) ? \get_class($config) : \gettype($config)));
+                    }
+
+                    $this->config = $config;
+                    $this->configFile = $configFile;
+
+                    break;
                 }
-
-                $config = self::separatedContextLessInclude($configFile);
-
-                // verify that the config has an instance of Config
-                if (!$config instanceof ConfigInterface) {
-                    throw new InvalidConfigurationException(sprintf('The config file: "%s" does not return a "PhpCsFixer\ConfigInterface" instance. Got: "%s".', $configFile, \is_object($config) ? \get_class($config) : \gettype($config)));
-                }
-
-                $this->config = $config;
-                $this->configFile = $configFile;
-
-                break;
             }
 
             if (null === $this->config) {

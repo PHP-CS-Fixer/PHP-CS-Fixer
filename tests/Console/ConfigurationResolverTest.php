@@ -308,6 +308,23 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getConfig();
     }
 
+    public function testResolveConfigFileChooseFileWithPathArrayWithRules()
+    {
+        $defaultConfig = new Config();
+
+        $dirBase = $this->getFixtureDir();
+
+        $resolver = $this->createConfigurationResolver(
+            [
+                'path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php'],
+                'rules' => 'blank_line_before_statement',
+            ],
+            $defaultConfig
+        );
+
+        static::assertSame($defaultConfig, $resolver->getConfig());
+    }
+
     public function testResolveConfigFileChooseFileWithPathArrayAndConfig()
     {
         $dirBase = $this->getFixtureDir();

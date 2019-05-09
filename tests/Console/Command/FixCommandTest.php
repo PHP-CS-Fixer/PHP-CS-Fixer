@@ -31,6 +31,7 @@ final class FixCommandTest extends TestCase
         $this->expectException(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
         );
+
         $this->expectExceptionMessageRegExp(
             '#^Empty rules value is not allowed\.$#'
         );
@@ -54,6 +55,25 @@ final class FixCommandTest extends TestCase
         );
 
         static::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+    }
+
+    public function testMultipleFilesWithoutConfigFile()
+    {
+        $cmdTester = $this->doTestExecute(
+            [
+                'path' => [
+                    __FILE__,
+                    __DIR__.'/DescribeCommandTest.php',
+                ],
+                '--rules' => 'switch_case_semicolon_to_colon',
+            ]
+        );
+
+        $output = $cmdTester->getDisplay(true);
+
+        static::assertNotFalse(strpos($output, 'Loaded config default.'));
+
+        static::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$output);
     }
 
     /**
