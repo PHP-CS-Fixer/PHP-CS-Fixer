@@ -577,8 +577,8 @@ final class ConfigurationResolver
 
         if ($this->isStdIn() || 0 === \count($path)) {
             $configDir = $this->cwd;
-        } elseif (1 < \count($path)) {
-            throw new InvalidConfigurationException('For multiple paths config parameter is required.');
+        } elseif (1 < \count($path) && null === $this->options['rules']) {
+            throw new InvalidConfigurationException('For multiple paths the config or rules parameter is required.');
         } elseif (is_file($path[0]) && $dirName = pathinfo($path[0], PATHINFO_DIRNAME)) {
             $configDir = $dirName;
         } else {

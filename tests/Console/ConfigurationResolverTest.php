@@ -296,16 +296,30 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getReporter();
     }
 
-    public function testResolveConfigFileChooseFileWithPathArrayWithoutConfig()
+    public function testResolveConfigFileChooseFileWithPathArrayWithoutConfigOrRules()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^For multiple paths config parameter is required\.$/');
+        $this->expectExceptionMessageRegExp('/^For multiple paths the config or rules parameter is required\.$/');
 
         $dirBase = $this->getFixtureDir();
 
         $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php']]);
 
         $resolver->getConfig();
+    }
+
+    public function testResolveConfigFileChooseFileWithPathArrayAndRules()
+    {
+        $dirBase = $this->getFixtureDir();
+
+        $resolver = $this->createConfigurationResolver([
+            'rules' => '@PSR2',
+            'path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php']
+        ]);
+
+        $resolver->getConfig();
+
+        static::assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
     }
 
     public function testResolveConfigFileChooseFileWithPathArrayAndConfig()
