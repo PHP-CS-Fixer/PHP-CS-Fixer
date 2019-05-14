@@ -383,6 +383,7 @@ final class ProjectCodeTest extends TestCase
                     || 0 === \count($rc->getInterfaces())
                     || \in_array($className, [
                         \PhpCsFixer\Finder::class,
+                        \PhpCsFixer\Test\AbstractConfigTestCase::class,
                         \PhpCsFixer\Test\AbstractFixerTestCase::class,
                         \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
                         \PhpCsFixer\Tests\Test\AbstractFixerTestCase::class,

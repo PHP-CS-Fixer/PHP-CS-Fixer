@@ -34,7 +34,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             $this->doTestAllDefaultRulesAreSpecified($config);
             static::fail('An empty config must raise an error reporting the missing fixers');
         } catch (ExpectationFailedException $expectationFailedException) {
-            static::assertStringContainsString('array_syntax', $expectationFailedException->getMessage());
+            static::assertContains('array_syntax', $expectationFailedException->getMessage());
         }
     }
 
@@ -49,8 +49,8 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             $this->doTestAllDefaultRulesAreSpecified($config);
             static::fail('A partial config must raise an error reporting the missing fixers');
         } catch (ExpectationFailedException $expectationFailedException) {
-            static::assertStringNotContainsString('encoding', $expectationFailedException->getMessage());
-            static::assertStringContainsString('array_syntax', $expectationFailedException->getMessage());
+            static::assertNotContains('encoding', $expectationFailedException->getMessage());
+            static::assertContains('array_syntax', $expectationFailedException->getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             $this->doTestAllDefaultRulesAreSpecified($config);
             static::fail('A non existing fixer must raise an error');
         } catch (ExpectationFailedException $expectationFailedException) {
-            static::assertStringContainsString($nonExistingRule, $expectationFailedException->getMessage());
+            static::assertContains($nonExistingRule, $expectationFailedException->getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             static::fail('Fixers randomly orderer must raise an error');
         } catch (ExpectationFailedException $expectationFailedException) {
             // Can't test $firstRule because the diff isn't in the Exception
-            static::assertStringContainsString('alphabetically', $expectationFailedException->getMessage());
+            static::assertContains('alphabetically', $expectationFailedException->getMessage());
         }
     }
 
