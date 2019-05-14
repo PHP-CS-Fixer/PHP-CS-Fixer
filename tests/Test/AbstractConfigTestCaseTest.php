@@ -38,6 +38,22 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
         }
     }
 
+    public function testDisabledFixersAreOk()
+    {
+        $config = new Config();
+        $config->setRules([
+            'encoding' => false,
+        ]);
+
+        try {
+            $this->doTestAllDefaultRulesAreSpecified($config);
+            static::fail('An empty config must raise an error reporting the missing fixers');
+        } catch (ExpectationFailedException $expectationFailedException) {
+            static::assertNotContains('encoding', $expectationFailedException->getMessage());
+            static::assertContains('array_syntax', $expectationFailedException->getMessage());
+        }
+    }
+
     public function testRuleSetsAreHandled()
     {
         $config = new Config();
