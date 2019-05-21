@@ -1040,6 +1040,32 @@ class UsesTraits
 
 EOF
             ],
+            'imported_name_is_part_of_namespace' => [
+                <<<'EOF'
+<?php
+
+namespace App\Foo;
+
+
+class Baz
+{
+}
+
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+namespace App\Foo;
+
+use Foo\Bar\App;
+
+class Baz
+{
+}
+
+EOF
+            ],
         ];
     }
 
