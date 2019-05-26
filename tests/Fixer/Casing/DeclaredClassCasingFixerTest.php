@@ -121,7 +121,7 @@ final class DeclaredClassCasingFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                use stdclass as exception;
+                use stdClass as exception;
                 ',
             ],
             [
