@@ -43,10 +43,10 @@ abstract class AbstractConfigTestCase extends TestCase
         $fixerFactory->registerCustomFixers($config->getCustomFixers());
         $fixers = $fixerFactory->getFixers();
 
-        $availableRules = array_filter($fixers, function (FixerInterface $fixer) {
+        $availableRules = array_filter($fixers, static function (FixerInterface $fixer) {
             return !$fixer instanceof DeprecatedFixerInterface;
         });
-        $availableRules = array_map(function (FixerInterface $fixer) {
+        $availableRules = array_map(static function (FixerInterface $fixer) {
             return $fixer->getName();
         }, $availableRules);
         sort($availableRules);
@@ -57,7 +57,16 @@ abstract class AbstractConfigTestCase extends TestCase
         $diff = array_diff($currentRules, $availableRules);
         static::assertEmpty($diff, sprintf("The following fixers are specified but non existing or deprecated:\n- %s", implode(\PHP_EOL.'- ', $diff)));
 
-        $currentRules = array_keys($configRules);
+        $currentSets = array_values(array_filter(array_keys($configRules), static function (string $fixerName): bool {
+            return isset($fixerName[0]) && '@' === $fixerName[0];
+        }));
+        $defaultSets = $ruleSet->getSetDefinitionNames();
+        $intersectSets = array_values(array_intersect($defaultSets, $currentSets));
+        static::assertSame($intersectSets, $currentSets, sprintf('Rule sets must be ordered as the appear in %s', RuleSet::class));
+
+        $currentRules = array_values(array_filter(array_keys($configRules), static function (string $fixerName): bool {
+            return isset($fixerName[0]) && '@' !== $fixerName[0];
+        }));
         $orderedCurrentRules = $currentRules;
         sort($orderedCurrentRules);
         static::assertSame($orderedCurrentRules, $currentRules, 'Fixers must be alphabetically ordered');

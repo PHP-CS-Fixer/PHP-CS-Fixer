@@ -16,6 +16,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet;
 use PhpCsFixer\Test\AbstractConfigTestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -67,6 +68,27 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
         } catch (ExpectationFailedException $expectationFailedException) {
             static::assertNotContains('encoding', $expectationFailedException->getMessage());
             static::assertContains('array_syntax', $expectationFailedException->getMessage());
+        }
+    }
+
+    public function testRuleSetsMustBeOrderedAsTheyAppearInRuleSetClass()
+    {
+        $config = $this->getFullConfig();
+        $rules = $config->getRules();
+
+        unset($rules['@PHPUnit35Migration:risky'], $rules['@PHPUnit30Migration:risky']);
+
+        $rules['@PHPUnit35Migration:risky'] = true;
+        $rules['@PHPUnit30Migration:risky'] = true;
+
+        $config->setRules($rules);
+
+        try {
+            $this->doTestAllDefaultRulesAreSpecified($config);
+            static::fail('Ruleset randomly ordered must raise an error reporting the expected order');
+        } catch (ExpectationFailedException $expectationFailedException) {
+            static::assertNotContains('php_unit_dedicate_assert', $expectationFailedException->getMessage());
+            static::assertContains(RuleSet::class, $expectationFailedException->getMessage());
         }
     }
 
