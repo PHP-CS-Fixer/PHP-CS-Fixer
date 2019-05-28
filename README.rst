@@ -679,7 +679,7 @@ Choose from the list of available rules:
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
 
-  Add missing space between function's argument and its typehint.
+  Ensure single space between function's argument and its typehint.
 
 * **general_phpdoc_annotation_remove**
 
