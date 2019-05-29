@@ -71,21 +71,36 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
         }
     }
 
-    public function testSetDefinitionsMustBeOrderedAsTheyAppearInRuleSetClass()
+    public function testSetDefinitionsMustAppearBeforeRules()
     {
         $config = $this->getFullConfig();
         $rules = $config->getRules();
-
-        unset($rules['@PHPUnit35Migration:risky'], $rules['@PHPUnit30Migration:risky']);
-
-        $rules['@PHPUnit35Migration:risky'] = true;
-        $rules['@PHPUnit30Migration:risky'] = true;
+        $rules['@PSR1'] = true;
 
         $config->setRules($rules);
 
         try {
             $this->doTestAllDefaultRulesAreSpecified($config);
-            static::fail('Ruleset randomly ordered must raise an error reporting the expected order');
+            static::fail('Set definitions not on the top of the rule list');
+        } catch (ExpectationFailedException $expectationFailedException) {
+            static::assertContains('@PSR1', $expectationFailedException->getMessage());
+            static::assertContains('overwrite', $expectationFailedException->getMessage());
+        }
+    }
+
+    public function testSetDefinitionsMustBeOrderedAsTheyAppearInRuleSetClass()
+    {
+        $config = $this->getFullConfig();
+        $rules = [
+            '@PHPUnit35Migration:risky' => true,
+            '@PHPUnit30Migration:risky' => true,
+        ];
+        $rules = array_merge($rules, $config->getRules());
+        $config->setRules($rules);
+
+        try {
+            $this->doTestAllDefaultRulesAreSpecified($config);
+            static::fail('Set definitions randomly ordered must raise an error reporting the expected order');
         } catch (ExpectationFailedException $expectationFailedException) {
             static::assertNotContains('php_unit_dedicate_assert', $expectationFailedException->getMessage());
             static::assertContains(RuleSet::class, $expectationFailedException->getMessage());

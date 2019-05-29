@@ -30,8 +30,9 @@ abstract class AbstractConfigTestCase extends TestCase
 
         $this->assertAllAvailbleRulesAreConfigured($configuredAndResolvedRules, $availableRules);
         $this->assertAllConfiguredRulesExist($configuredAndResolvedRules, $availableRules);
+        $this->assertSetDefinitionsAreConfiguredBeforeRules($configuredRules);
         $this->assertSetDefinitionsAreOrderedAsTheyAppearInRuleSetClass($configuredRules);
-        $this->assertConfiguredRulesAreInAlphabeticalOrder($configuredRules);
+        $this->assertConfiguredPlainRulesAreInAlphabeticalOrder($configuredRules);
     }
 
     private function resolveConfiguredRules(array $configuredRules)
@@ -83,23 +84,42 @@ abstract class AbstractConfigTestCase extends TestCase
         static::assertEmpty($diff, sprintf("The following fixers are specified but non existing or deprecated:\n- %s", implode(\PHP_EOL.'- ', $diff)));
     }
 
+    private function assertSetDefinitionsAreConfiguredBeforeRules(array $configuredRules)
+    {
+        $configuredSetDefinitions = $this->extractConfiguredSetDefinitionsAsValues($configuredRules);
+        $configuredPlainRules = $this->extractConfiguredPlainRulesAsValues($configuredRules);
+        $setDefinitionsBeforeRulesOrderedRules = array_merge($configuredSetDefinitions, $configuredPlainRules);
+
+        static::assertSame($setDefinitionsBeforeRulesOrderedRules, array_keys($configuredRules), 'Set definitions must appear before rules to allow rule overwrite');
+    }
+
     private function assertSetDefinitionsAreOrderedAsTheyAppearInRuleSetClass(array $configuredRules)
     {
-        $configuredSetDefinitions = array_values(array_filter(array_keys($configuredRules), static function ($fixerName) {
-            return isset($fixerName[0]) && '@' === $fixerName[0];
-        }));
+        $configuredSetDefinitions = $this->extractConfiguredSetDefinitionsAsValues($configuredRules);
         $defaultSetDefinitions = (new RuleSet())->getSetDefinitionNames();
         $intersectSets = array_values(array_intersect($defaultSetDefinitions, $configuredSetDefinitions));
         static::assertSame($intersectSets, $configuredSetDefinitions, sprintf('Set definitions must be ordered as they appear in %s to ensure rules are configured in progressive enhancement', RuleSet::class));
     }
 
-    private function assertConfiguredRulesAreInAlphabeticalOrder(array $configuredRules)
+    private function assertConfiguredPlainRulesAreInAlphabeticalOrder(array $configuredRules)
     {
-        $configuredRules = array_values(array_filter(array_keys($configuredRules), static function ($fixerName) {
+        $configuredPlainRules = $this->extractConfiguredPlainRulesAsValues($configuredRules);
+        $orderedRules = $configuredPlainRules;
+        sort($orderedRules);
+        static::assertSame($orderedRules, $configuredPlainRules, 'Fixers must appear in alphabetical order');
+    }
+
+    private function extractConfiguredSetDefinitionsAsValues(array $configuredRules)
+    {
+        return array_values(array_filter(array_keys($configuredRules), static function ($fixerName) {
+            return isset($fixerName[0]) && '@' === $fixerName[0];
+        }));
+    }
+
+    private function extractConfiguredPlainRulesAsValues(array $configuredRules)
+    {
+        return array_values(array_filter(array_keys($configuredRules), static function ($fixerName) {
             return isset($fixerName[0]) && '@' !== $fixerName[0];
         }));
-        $orderedRules = $configuredRules;
-        sort($orderedRules);
-        static::assertSame($orderedRules, $configuredRules, 'Fixers must appear in alphabetical order');
     }
 }
