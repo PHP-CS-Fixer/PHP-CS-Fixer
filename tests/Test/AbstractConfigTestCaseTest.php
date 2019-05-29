@@ -71,7 +71,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
         }
     }
 
-    public function testRuleSetsMustBeOrderedAsTheyAppearInRuleSetClass()
+    public function testSetDefinitionsMustBeOrderedAsTheyAppearInRuleSetClass()
     {
         $config = $this->getFullConfig();
         $rules = $config->getRules();
@@ -123,7 +123,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             static::fail('Fixers randomly orderer must raise an error');
         } catch (ExpectationFailedException $expectationFailedException) {
             // Can't test $firstRule because the diff isn't in the Exception
-            static::assertContains('alphabetically', $expectationFailedException->getMessage());
+            static::assertContains('alphabetical order', $expectationFailedException->getMessage());
         }
     }
 
