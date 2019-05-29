@@ -29,6 +29,10 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
 {
     public function testAllFixersMustBeConfigured()
     {
+        // Good run
+        $this->doTestAllDefaultRulesAreSpecified($this->getFullConfig());
+
+        // Bad run
         $config = new Config();
 
         try {
@@ -41,6 +45,14 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
 
     public function testDisabledFixersAreOk()
     {
+        // Good run
+        $fullConfig = $this->getFullConfig();
+        $fullConfigRules = $fullConfig->getRules();
+        $fullConfigRules['encoding'] = false;
+        $fullConfig->setRules($fullConfigRules);
+        $this->doTestAllDefaultRulesAreSpecified($fullConfig);
+
+        // Bad run
         $config = new Config();
         $config->setRules([
             'encoding' => false,
@@ -50,7 +62,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             $this->doTestAllDefaultRulesAreSpecified($config);
             static::fail('An empty config must raise an error reporting the missing fixers');
         } catch (ExpectationFailedException $expectationFailedException) {
-            static::assertNotContains('encoding', $expectationFailedException->getMessage());
+            static::assertNotContains('encoding', $expectationFailedException->getMessage(), 'Disabled fixers should not appear in the error message');
             static::assertContains('array_syntax', $expectationFailedException->getMessage());
         }
     }
@@ -66,21 +78,29 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
             $this->doTestAllDefaultRulesAreSpecified($config);
             static::fail('A partial config must raise an error reporting the missing fixers');
         } catch (ExpectationFailedException $expectationFailedException) {
-            static::assertNotContains('encoding', $expectationFailedException->getMessage());
+            static::assertNotContains('encoding', $expectationFailedException->getMessage(), 'Fixers inside set definitions should not appear in the error message');
             static::assertContains('array_syntax', $expectationFailedException->getMessage());
         }
     }
 
     public function testSetDefinitionsMustAppearBeforeRules()
     {
-        $config = $this->getFullConfig();
-        $rules = $config->getRules();
-        $rules['@PSR1'] = true;
+        // Good run
+        $fullConfig = $this->getFullConfig();
+        $rules = [
+            '@PSR1' => true,
+        ];
+        $fullConfig->setRules(array_merge($rules, $fullConfig->getRules()));
+        $this->doTestAllDefaultRulesAreSpecified($fullConfig);
 
-        $config->setRules($rules);
+        // Bad run
+        $fullConfig = $this->getFullConfig();
+        $fullConfigRules = $fullConfig->getRules();
+        $fullConfigRules['@PSR1'] = true;
+        $fullConfig->setRules($fullConfigRules);
 
         try {
-            $this->doTestAllDefaultRulesAreSpecified($config);
+            $this->doTestAllDefaultRulesAreSpecified($fullConfig);
             static::fail('Set definitions not on the top of the rule list');
         } catch (ExpectationFailedException $expectationFailedException) {
             static::assertContains('@PSR1', $expectationFailedException->getMessage());
@@ -90,16 +110,25 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
 
     public function testSetDefinitionsMustBeOrderedAsTheyAppearInRuleSetClass()
     {
-        $config = $this->getFullConfig();
+        // Good run
+        $fullConfig = $this->getFullConfig();
+        $rules = [
+            '@PHPUnit30Migration:risky' => true,
+            '@PHPUnit35Migration:risky' => true,
+        ];
+        $fullConfig->setRules(array_merge($rules, $fullConfig->getRules()));
+        $this->doTestAllDefaultRulesAreSpecified($fullConfig);
+
+        // Bad run
+        $fullConfig = $this->getFullConfig();
         $rules = [
             '@PHPUnit35Migration:risky' => true,
             '@PHPUnit30Migration:risky' => true,
         ];
-        $rules = array_merge($rules, $config->getRules());
-        $config->setRules($rules);
+        $fullConfig->setRules(array_merge($rules, $fullConfig->getRules()));
 
         try {
-            $this->doTestAllDefaultRulesAreSpecified($config);
+            $this->doTestAllDefaultRulesAreSpecified($fullConfig);
             static::fail('Set definitions randomly ordered must raise an error reporting the expected order');
         } catch (ExpectationFailedException $expectationFailedException) {
             static::assertNotContains('php_unit_dedicate_assert', $expectationFailedException->getMessage());
