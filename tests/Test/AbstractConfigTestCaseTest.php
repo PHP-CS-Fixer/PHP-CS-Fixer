@@ -27,7 +27,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
 {
-    public function testAllFixersMustBeSpecified()
+    public function testAllFixersMustBeConfigured()
     {
         $config = new Config();
 
@@ -55,7 +55,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
         }
     }
 
-    public function testRuleSetsAreHandled()
+    public function testSetDefinitionsAreHandled()
     {
         $config = new Config();
         $config->setRules([
@@ -109,7 +109,7 @@ final class AbstractConfigTestCaseTest extends AbstractConfigTestCase
         }
     }
 
-    public function testFixersMustBeOrdered()
+    public function testConfiguredRulesMustBeInAlphabeticalOrdered()
     {
         $config = $this->getFullConfig();
         $rules = $config->getRules();
