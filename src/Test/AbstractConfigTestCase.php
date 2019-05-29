@@ -57,14 +57,14 @@ abstract class AbstractConfigTestCase extends TestCase
         $diff = array_diff($currentRules, $availableRules);
         static::assertEmpty($diff, sprintf("The following fixers are specified but non existing or deprecated:\n- %s", implode(\PHP_EOL.'- ', $diff)));
 
-        $currentSets = array_values(array_filter(array_keys($configRules), static function (string $fixerName): bool {
+        $currentSets = array_values(array_filter(array_keys($configRules), static function ($fixerName) {
             return isset($fixerName[0]) && '@' === $fixerName[0];
         }));
         $defaultSets = $ruleSet->getSetDefinitionNames();
         $intersectSets = array_values(array_intersect($defaultSets, $currentSets));
         static::assertSame($intersectSets, $currentSets, sprintf('Rule sets must be ordered as the appear in %s', RuleSet::class));
 
-        $currentRules = array_values(array_filter(array_keys($configRules), static function (string $fixerName): bool {
+        $currentRules = array_values(array_filter(array_keys($configRules), static function ($fixerName) {
             return isset($fixerName[0]) && '@' !== $fixerName[0];
         }));
         $orderedCurrentRules = $currentRules;
