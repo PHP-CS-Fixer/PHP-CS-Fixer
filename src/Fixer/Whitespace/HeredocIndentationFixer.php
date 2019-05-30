@@ -65,6 +65,15 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // should be run before NoTrailingWhitespaceFixer
+        return 5;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return \PHP_VERSION_ID >= 70300 && $tokens->isTokenKindFound(T_START_HEREDOC);

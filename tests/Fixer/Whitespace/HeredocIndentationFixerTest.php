@@ -176,6 +176,26 @@ EOD;
 INPUT
                 ,
             ],
+            [
+                <<<'EXPECTED'
+<?php
+    $a = <<<'EOD'
+        first line
+        
+        ending line
+        EOD;
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+    $a = <<<'EOD'
+first line
+
+ending line
+EOD;
+INPUT
+                ,
+            ],
         ];
     }
 
