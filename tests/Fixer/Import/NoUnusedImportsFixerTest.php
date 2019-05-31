@@ -1063,6 +1063,7 @@ use Foo\Bar\App;
 class Baz
 {
 }
+
 EOF
             ],
             'imported_name_is_part_of_namespace with closing tag' => [
