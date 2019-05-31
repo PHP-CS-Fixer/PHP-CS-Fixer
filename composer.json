@@ -53,11 +53,6 @@
     "config": {
         "sort-packages": true
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.15-dev"
-        }
-    },
     "autoload": {
         "psr-4": {
             "PhpCsFixer\\": "src/"
