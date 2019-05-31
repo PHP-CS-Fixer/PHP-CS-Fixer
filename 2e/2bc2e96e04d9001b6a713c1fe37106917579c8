@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2019-05-21T14:24:51Z
+
+Another candidate that could benefit from the translation is:
+
+* `PHPUnit_Framework_Error` -> `PHPUnit\Framework\Error\Error`
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-05-22T09:55:53Z
+
+Added a full translation table, could only **not** find the following Phpunit 5 counterparts:
+
+* PHPUnit_Extensions_TicketListener (-> PHPUnit\Extensions\TicketListener)
+* PHPUnit_Extensions_PhptTestSuite (-> PHPUnit\Extensions\PhptTestSuite)
+* PHPUnit_Extensions_TestDecorator (-> PHPUnit\Extensions\TestDecorator)
+* PHPUnit_Extensions_RepeatedTest (-> PHPUnit\Extensions\RepeatedTest)
+* PHPUnit_Extensions_GroupTestSuite (-> PHPUnit\Extensions\GroupTestSuite)
+* PHPUnit_Util_Log_JSON (-> PHPUnit\Util\Log\JSON)
+* PHPUnit_Util_Log_TAP (-> PHPUnit\Util\Log\TAP)
+* PHPUnit_Util_String (-> PHPUnit\Util\String)
+* PHPUnit_Util_PHPTest (-> PHPUnit\Util\PHPTest)
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-05-22T10:12:13Z
+
+Nice PR @ktomk !
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-05-22T10:17:16Z
+
+please, change target branch to 2.12 LTS line
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-05-22T14:12:09Z
+
+@keradus I fully addressed your comments.
