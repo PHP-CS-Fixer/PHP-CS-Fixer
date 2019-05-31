@@ -40,6 +40,14 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
     public function provideTestFixCases()
     {
         return [
+            'class_mapping' => [
+                '<?php new PHPUnit\Framework\Error\Error();',
+                '<?php new PHPUnit_Framework_Error();',
+            ],
+            'class_mapping_bogus_fqcn' => [
+                '<?php new \PHPUnit\Framework\MockObject\Stub\ReturnStub();',
+                '<?php new \PHPUnit_Framework_MockObject_Stub_Return();',
+            ],
             [
                 '<?php
     final class MyTest extends \PHPUnit\Framework\TestCase

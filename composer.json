@@ -42,7 +42,7 @@
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.1",
         "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1",
         "phpunitgoodpractices/traits": "^1.8",
-        "symfony/phpunit-bridge": "^4.0"
+        "symfony/phpunit-bridge": "^4.3"
     },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
