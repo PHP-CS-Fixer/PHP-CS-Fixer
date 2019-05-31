@@ -3,6 +3,62 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.15.0
+---------------------
+
+* feature #3927 Add FinalClassFixer (Slamdunk)
+* feature #3939 Add PhpUnitSizeClassFixer (Jefersson Nathan)
+* feature #3942 SimpleToComplexStringVariableFixer - Introduction (dmvdbrugge, SpacePossum)
+* feature #4113 OrderedInterfacesFixer - Introduction (dmvdbrugge)
+* feature #4121 SingleTraitInsertPerStatementFixer - Introduction (SpacePossum)
+* feature #4126 NativeFunctionTypeDeclarationCasingFixer - Introduction (SpacePossum)
+* feature #4167 PhpUnitMockShortWillReturnFixer - Introduction (michadam-pearson)
+* feature #4191 [7.3] NoWhitespaceBeforeCommaInArrayFixer - fix comma after heredoc-end (gharlan)
+* feature #4288 Add Gitlab Reporter (hco)
+* feature #4328 Add PhpUnitDedicateAssertInternalTypeFixer (Slamdunk)
+* feature #4341 [7.3] TrailingCommaInMultilineArrayFixer - fix comma after heredoc-end (gharlan)
+* feature #4342 [7.3] MethodArgumentSpaceFixer - fix comma after heredoc-end (gharlan)
+* minor #4112 NoSuperfluousPhpdocTagsFixer - Add missing code sample, groom tests (keradus, SpacePossum)
+* minor #4360 Add gitlab as output format in the README/help doc. (SpacePossum)
+* minor #4386 Add PhpUnitMockShortWillReturnFixer to @Symfony:risky rule set (kubawerlos)
+* minor #4398 New ruleset "@PHP73Migration" (gharlan)
+* minor #4399 Fix 2.15 line (keradus)
+
+Changelog for v2.14.3
+---------------------
+
+* bug #4298 NoTrailingWhitespaceInCommentFixer - fix for non-Unix line separators (kubawerlos)
+* bug #4303 FullyQualifiedStrictTypesFixer - Fix the short type detection when a question mark (nullable) is prefixing it. (drupol)
+* bug #4313 SelfAccessorFixer - fix for part qualified class name (kubawerlos, SpacePossum)
+* bug #4314 PhpUnitTestCaseStaticMethodCallsFixer - fix for having property with name as method to update (kubawerlos, SpacePossum)
+* bug #4316 NoUnsetCastFixer - Test for higher-precedence operators (SpacePossum)
+* bug #4327 TokensAnalyzer - add concat operator to list of binary operators (SpacePossum)
+* bug #4335 Cache - add indent and line ending to cache signature (dmvdbrugge)
+* bug #4344 VoidReturnFixer - handle yield from (SpacePossum)
+* bug #4346 BracesFixer - Do not pull close tag onto same line as a comment (SpacePossum)
+* bug #4350 StrictParamFixer - Don't detect functions in use statements (bolmstedt)
+* bug #4357 Fix short list syntax detection. (SpacePossum)
+* bug #4365 Fix output escaping of diff for text format when line is not changed (SpacePossum)
+* bug #4370 PhpUnitConstructFixer - Fix handle different casing (SpacePossum)
+* bug #4379 ExplicitStringVariableFixer - add test case for variable as an array key (kubawerlos, Slamdunk)
+* feature #4337 PhpUnitTestCaseStaticMethodCallsFixer - prepare for PHPUnit 8 (kubawerlos)
+* minor #3799 DX: php_unit_test_case_static_method_calls - use default config (keradus)
+* minor #4103 NoExtraBlankLinesFixer - fix candidate detection (SpacePossum)
+* minor #4245 LineEndingFixer - BracesFixer - Priority (dmvdbrugge)
+* minor #4325 Use lowercase mikey179/vfsStream in composer.json (lolli42)
+* minor #4336 Collect coverage with PCOV (kubawerlos)
+* minor #4338 Fix wording (kmvan, kubawerlos)
+* minor #4339 Change BracesFixer to avoid indenting PHP inline braces (alecgeatches)
+* minor #4340 Travis: build against 7.4snapshot instead of nightly (Slamdunk)
+* minor #4351 code grooming (SpacePossum)
+* minor #4353 Add more priority tests (SpacePossum)
+* minor #4364 DX: MethodChainingIndentationFixer - remove unneccesary loop (Sijun Zhu)
+* minor #4366 Unset the auxillary variable $a (GrahamCampbell)
+* minor #4368 Fixed TypeShortNameResolverTest::testResolver (GrahamCampbell)
+* minor #4380 PHP7.4 - Add "str_split" => "mb_str_split" mapping. (SpacePossum)
+* minor #4381 PHP7.4 - Add support for magic methods (un)serialize. (SpacePossum)
+* minor #4393 DX: add missing explicit return types (kubawerlos)
+
 Changelog for v2.14.2
 ---------------------
 
@@ -179,6 +235,39 @@ Changelog for v2.13.0
 * minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
+
+Changelog for v2.12.9
+---------------------
+
+* bug #4298 NoTrailingWhitespaceInCommentFixer - fix for non-Unix line separators (kubawerlos)
+* bug #4303 FullyQualifiedStrictTypesFixer - Fix the short type detection when a question mark (nullable) is prefixing it. (drupol)
+* bug #4313 SelfAccessorFixer - fix for part qualified class name (kubawerlos, SpacePossum)
+* bug #4314 PhpUnitTestCaseStaticMethodCallsFixer - fix for having property with name as method to update (kubawerlos, SpacePossum)
+* bug #4327 TokensAnalyzer - add concat operator to list of binary operators (SpacePossum)
+* bug #4335 Cache - add indent and line ending to cache signature (dmvdbrugge)
+* bug #4344 VoidReturnFixer - handle yield from (SpacePossum)
+* bug #4346 BracesFixer - Do not pull close tag onto same line as a comment (SpacePossum)
+* bug #4350 StrictParamFixer - Don't detect functions in use statements (bolmstedt)
+* bug #4357 Fix short list syntax detection. (SpacePossum)
+* bug #4365 Fix output escaping of diff for text format when line is not changed (SpacePossum)
+* bug #4370 PhpUnitConstructFixer - Fix handle different casing (SpacePossum)
+* bug #4379 ExplicitStringVariableFixer - add test case for variable as an array key (kubawerlos, Slamdunk)
+* feature #4337 PhpUnitTestCaseStaticMethodCallsFixer - prepare for PHPUnit 8 (kubawerlos)
+* minor #3799 DX: php_unit_test_case_static_method_calls - use default config (keradus)
+* minor #4103 NoExtraBlankLinesFixer - fix candidate detection (SpacePossum)
+* minor #4245 LineEndingFixer - BracesFixer - Priority (dmvdbrugge)
+* minor #4325 Use lowercase mikey179/vfsStream in composer.json (lolli42)
+* minor #4336 Collect coverage with PCOV (kubawerlos)
+* minor #4338 Fix wording (kmvan, kubawerlos)
+* minor #4339 Change BracesFixer to avoid indenting PHP inline braces (alecgeatches)
+* minor #4340 Travis: build against 7.4snapshot instead of nightly (Slamdunk)
+* minor #4351 code grooming (SpacePossum)
+* minor #4353 Add more priority tests (SpacePossum)
+* minor #4364 DX: MethodChainingIndentationFixer - remove unneccesary loop (Sijun Zhu)
+* minor #4366 Unset the auxillary variable $a (GrahamCampbell)
+* minor #4368 Fixed TypeShortNameResolverTest::testResolver (GrahamCampbell)
+* minor #4380 PHP7.4 - Add "str_split" => "mb_str_split" mapping. (SpacePossum)
+* minor #4393 DX: add missing explicit return types (kubawerlos)
 
 Changelog for v2.12.8
 ---------------------
