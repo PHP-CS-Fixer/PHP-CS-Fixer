@@ -151,7 +151,7 @@ final class RuleSetTest extends TestCase
             'strict_comparison' => true,
         ]);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'braces' => true,
                 'full_opening_tag' => true,
@@ -169,7 +169,7 @@ final class RuleSetTest extends TestCase
             'strict_comparison' => true,
         ]);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'blank_line_after_namespace' => true,
                 'braces' => true,
@@ -212,7 +212,7 @@ final class RuleSetTest extends TestCase
             'encoding' => true,
         ]);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'blank_line_after_namespace' => true,
                 'braces' => true,
@@ -378,7 +378,7 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = $this->createRuleSetToTestWith($rules);
 
-        $this->assertSameRules($expected, $ruleSet->getRules());
+        static::assertSameRules($expected, $ruleSet->getRules());
     }
 
     public function provideResolveRulesCases()
@@ -520,7 +520,7 @@ final class RuleSetTest extends TestCase
         $ruleSet->getRuleConfiguration('_not_exists');
     }
 
-    private function assertSameRules(array $expected, array $actual, $message = '')
+    private static function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
         ksort($actual);

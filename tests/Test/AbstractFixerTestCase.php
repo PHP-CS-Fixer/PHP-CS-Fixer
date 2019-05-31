@@ -138,7 +138,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             Tokens::clearCache();
             $expectedTokens = Tokens::fromCode($expected);
-            $this->assertTokens($expectedTokens, $tokens);
+            static::assertTokens($expectedTokens, $tokens);
         }
 
         static::assertNull($this->lintSource($expected));
