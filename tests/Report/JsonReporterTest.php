@@ -144,14 +144,14 @@ JSON;
 
     protected function assertFormat($expected, $input)
     {
-        $this->assertJsonSchema($input);
+        static::assertJsonSchema($input);
         static::assertJsonStringEqualsJsonString($expected, $input);
     }
 
     /**
      * @param string $json
      */
-    private function assertJsonSchema($json)
+    private static function assertJsonSchema($json)
     {
         $jsonPath = __DIR__.'/../../doc/schema.json';
 

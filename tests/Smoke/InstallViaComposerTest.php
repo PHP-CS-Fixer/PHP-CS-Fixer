@@ -87,7 +87,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
             json_encode($initialComposerFileState, Utils::calculateBitmask(['JSON_PRETTY_PRINT']))
         );
 
-        self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
+        static::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
         $fs->remove($tmpPath);
     }
@@ -149,9 +149,9 @@ final class InstallViaComposerTest extends AbstractSmokeTest
             'git rm -r . && rm -rf .git',
         ];
 
-        self::assertCommandsWork($stepsToInitializeArtifact, $cwd);
-        self::assertCommandsWork($stepsToPrepareArtifact, $tmpArtifactPath);
-        self::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
+        static::assertCommandsWork($stepsToInitializeArtifact, $cwd);
+        static::assertCommandsWork($stepsToPrepareArtifact, $tmpArtifactPath);
+        static::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
 
         $fs->remove($tmpPath);
         $fs->remove($tmpArtifactPath);
