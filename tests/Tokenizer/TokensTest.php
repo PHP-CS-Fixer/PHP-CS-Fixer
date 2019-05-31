@@ -65,7 +65,7 @@ final class TokensTest extends TestCase
     ) {
         $tokens = Tokens::fromCode($source);
 
-        $this->assertEqualsTokensArray(
+        static::assertEqualsTokensArray(
             $expected,
             $tokens->findSequence(
                 $sequence,
@@ -691,7 +691,7 @@ PHP;
      */
     public function testFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
     {
-        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public function provideFindBlockEndCases()
@@ -720,7 +720,7 @@ PHP;
      */
     public function testFindBlockEnd70($expectedIndex, $source, $type, $searchIndex)
     {
-        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public function provideFindBlockEnd70Cases()
@@ -741,7 +741,7 @@ PHP;
      */
     public function testFindBlockEnd71($expectedIndex, $source, $type, $searchIndex)
     {
-        $this->assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
     public function provideFindBlockEnd71Cases()
@@ -882,7 +882,7 @@ PHP;
      * @param int    $type
      * @param int    $searchIndex
      */
-    public function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    public static function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -919,7 +919,7 @@ PHP;
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
         $tokens->clearEmptyTokens();
-        $this->assertTokens(Tokens::fromCode($expected), $tokens);
+        static::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public function provideEnsureWhitespaceAtIndexCases()
@@ -1070,7 +1070,7 @@ echo $a;',
         $expected = Tokens::fromCode(sprintf($template, 'private $name;'));
         static::assertFalse($expected->isChanged());
 
-        $this->assertTokens($expected, $tokens);
+        static::assertTokens($expected, $tokens);
     }
 
     /**
@@ -1183,7 +1183,7 @@ echo $a;',
         $tokens->removeLeadingWhitespace(3);
 
         $tokens->clearEmptyTokens();
-        $this->assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
+        static::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
     }
 
     public function testRemovingTrailingWhitespaceWithEmptyTokenInCollection()
@@ -1195,7 +1195,7 @@ echo $a;',
         $tokens->removeTrailingWhitespace(1);
 
         $tokens->clearEmptyTokens();
-        $this->assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_ONE;foo();"), $tokens);
+        static::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_ONE;foo();"), $tokens);
     }
 
     /**
@@ -1244,7 +1244,7 @@ $bar;',
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
-    private function assertEqualsTokensArray(array $expected = null, array $input = null)
+    private static function assertEqualsTokensArray(array $expected = null, array $input = null)
     {
         if (null === $expected) {
             static::assertNull($input);

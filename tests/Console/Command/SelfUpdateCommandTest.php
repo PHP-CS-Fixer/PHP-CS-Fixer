@@ -135,7 +135,7 @@ final class SelfUpdateCommandTest extends TestCase
         $commandTester = $this->execute($command, $input, $decorated);
 
         static::assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
-        $this->assertDisplay($expectedDisplay, $commandTester);
+        static::assertDisplay($expectedDisplay, $commandTester);
         static::assertSame(0, $commandTester->getStatusCode());
     }
 
@@ -274,7 +274,7 @@ OUTPUT;
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        $this->assertDisplay(
+        static::assertDisplay(
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
             $commandTester
         );
@@ -321,7 +321,7 @@ OUTPUT;
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        $this->assertDisplay(
+        static::assertDisplay(
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
             $commandTester
         );
