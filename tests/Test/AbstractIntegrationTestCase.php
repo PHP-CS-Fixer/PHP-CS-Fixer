@@ -294,7 +294,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner->fix();
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
 
-            $this->assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
+            static::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
 
         // run the test again with the `expected` part, this should always stay the same
