@@ -903,7 +903,7 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'braces' => true,
             ],
@@ -915,7 +915,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $resolver = $this->createConfigurationResolver(['rules' => 'braces,-strict_comparison']);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'braces' => true,
             ],
@@ -950,7 +950,7 @@ final class ConfigurationResolverTest extends TestCase
             $config
         );
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'blank_line_before_statement' => true,
             ],
@@ -1143,7 +1143,7 @@ final class ConfigurationResolverTest extends TestCase
         ];
     }
 
-    private function assertSameRules(array $expected, array $actual, $message = '')
+    private static function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
         ksort($actual);
