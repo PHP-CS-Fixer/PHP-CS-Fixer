@@ -359,7 +359,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
                 continue;
             }
 
-            if ($token->equals(',')) {
+            if ($token->equals(',') && !$tokens[$tokens->getNextMeaningfulToken($index)]->equals(')')) {
                 $this->fixNewline($tokens, $index, $indentation);
             }
         }
