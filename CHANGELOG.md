@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.15.1
+---------------------
+
+* bug #4418 PhpUnitNamespacedFixer - properly translate classes which do not follow translation pattern (ktomk)
+* bug #4419 PhpUnitTestCaseStaticMethodCallsFixer - skip anonymous classes and lambda (SpacePossum)
+* bug #4420 MethodArgumentSpaceFixer - PHP7.3 trailing commas in function calls (SpacePossum)
+* minor #4345 Travis: PHP 7.4 isn't allowed to fail anymore (Slamdunk)
+* minor #4403 LowercaseStaticReferenceFixer - Fix invalid PHP version in example (HypeMC)
+* minor #4424 DX: cleanup of composer.json - no need for branch-alias (keradus)
+* minor #4425 DX: assertions are static, adjust custom assertions (keradus)
+* minor #4426 DX: handle deprecations of symfony/event-dispatcher:4.3 (keradus)
+* minor #4427 DX: stop using reserved T_FN in code samples (keradus)
+* minor #4428 DX: update dev-tools (keradus)
+* minor #4429 DX: MethodArgumentSpaceFixerTest - fix hidden merge conflict (keradus)
+
 Changelog for v2.15.0
 ---------------------
 
