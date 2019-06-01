@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-04-09T14:45:54Z
+
+Currently it fails: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/517712897
+
+Thus I'm not sure about disallowing it to fail.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-05-30T06:00:43Z
+
+https://github.com/travis-ci/php-src-builder/pull/36 has been merged and in production, builds now already show errors that will need a fix for 7.4, like:
+```
+Failed asserting that 'PHP Parse error: syntax error, unexpected 'fn' (T_FN), expecting identifier (T_STRING) or '{' on line 3.\n
+\n
+Source:\n
+<?php\n
+use const A\ConstA;\n
+use function B\fn;\n
+use C\B;\n
+                ' is null.
+```
+:tada:
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-06-01T08:23:16Z
+
+ref https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4427
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-06-01T09:22:29Z
+
+after #4427 got merged, i let myself restart the build here - now all is green
+let's be brave and merge this
