@@ -796,12 +796,12 @@ use const some\a\{
             [
                 '<?php
 use C\B;
-use function B\fn;
+use function B\fn_a;
 use const A\ConstA;
                 ',
                 '<?php
 use const A\ConstA;
-use function B\fn;
+use function B\fn_a;
 use C\B;
                 ',
                 [
@@ -1884,7 +1884,7 @@ use const some\a\{ConstB, ConstC as CC};
 use const some\a\{ConstD};
 use const some\b\{ConstE};
 use function some\a\{fn_a, fn_b};
-use function some\a\{fn};
+use function some\a\{fn_bc};
 use function some\b\{fn_c, fn_d, fn_e};
 use function some\c\{fn_f};
 use function some\f\{fn_g, fn_h, fn_i};
@@ -1903,7 +1903,7 @@ use some\b\{
 };
 use const some\a\{ConstD};
 use Some\Cloz;
-use function some\a\{fn};
+use function some\a\{fn_bc};
 use const some\a\{ConstA};
 use function some\b\{fn_c, fn_d, fn_e};
 use const some\a\{ConstB, ConstC as CC};
@@ -1956,7 +1956,7 @@ use const some\a\{ConstB, ConstC as CC};
 use const some\b\{ConstE};
 use function some\f\{fn_g, fn_h, fn_i};
 use function some\c\{fn_f};
-use function some\a\{fn};
+use function some\a\{fn_x};
 use function some\b\{fn_c, fn_d, fn_e};
 use function some\a\{fn_a, fn_b};
 ',
@@ -1974,7 +1974,7 @@ use some\b\{
 };
 use const some\a\{ConstD};
 use Some\Cloz;
-use function some\a\{fn};
+use function some\a\{fn_x};
 use const some\a\{ConstA};
 use function some\b\{fn_c, fn_d, fn_e};
 use const some\a\{ConstB, ConstC as CC};
