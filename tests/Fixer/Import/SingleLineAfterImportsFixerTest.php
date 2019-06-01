@@ -428,12 +428,12 @@ use A\B\C;
             [
                 ' <?php
 use some\a\ClassA;
-use function some\a\fn;
+use function some\a\fn_a;
 use const some\c;
 
 ',
                 ' <?php
-use some\a\ClassA; use function some\a\fn; use const some\c;
+use some\a\ClassA; use function some\a\fn_a; use const some\c;
 ',
             ],
         ];
