@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.14.4';
+    const VERSION = '2.14.5-DEV';
     const VERSION_CODENAME = 'Sunrise';
 
     /**
