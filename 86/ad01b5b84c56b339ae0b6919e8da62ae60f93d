@@ -1,0 +1,8 @@
+---------------------------------------------------------------------------
+
+by jdreesen at 2019-05-23T12:55:40Z
+
+Thx for the quick fix! :)
+
+The PR looks good, although I'm not familiar with the internals of this project.
+But it fixes my issue described in #4415.
