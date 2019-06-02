@@ -30,7 +30,7 @@ final class RuleSetTest extends TestCase
 {
     public function testCreate()
     {
-        $ruleSet = RuleSet::create();
+        $ruleSet = new RuleSet();
 
         static::assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
     }
@@ -252,19 +252,9 @@ final class RuleSetTest extends TestCase
      */
     public function testSetDefinitionsAreSorted($setDefinitionName)
     {
-        $ruleSet = RuleSet::create();
+        $reflection = new AccessibleObject(new RuleSet());
 
-        $method = new \ReflectionMethod(
-            \PhpCsFixer\RuleSet::class,
-            'getSetDefinition'
-        );
-
-        $method->setAccessible(true);
-
-        $setDefinition = $method->invoke(
-            $ruleSet,
-            $setDefinitionName
-        );
+        $setDefinition = $reflection->getSetDefinition($setDefinitionName);
 
         $sortedSetDefinition = $setDefinition;
 
@@ -272,6 +262,21 @@ final class RuleSetTest extends TestCase
 
         static::assertSame($sortedSetDefinition, $setDefinition, sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key',
+            $setDefinitionName
+        ));
+    }
+
+    /**
+     * @dataProvider provideSetDefinitionNameCases
+     *
+     * @param string $setDefinitionName
+     */
+    public function testSetDefinitionIsNotEmpty($setDefinitionName)
+    {
+        $reflection = new AccessibleObject(new RuleSet());
+
+        static::assertNotEmpty($reflection->getSetDefinition($setDefinitionName), sprintf(
+            'Failed to assert that the set definition for "%s" is not empty',
             $setDefinitionName
         ));
     }

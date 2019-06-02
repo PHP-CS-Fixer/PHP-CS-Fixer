@@ -65,3 +65,9 @@ Rule | Option | Old value | New value
 `method_argument_space` | `on_multiline` | `'ignore'` | `'ensure_fully_multiline'`
 `php_unit_dedicate_assert` | `target` | `5.0` | `newest`
 `phpdoc_align` | `tags` | `['param', 'return', 'throws', 'type', 'var']` | `['method', 'param', 'property', 'return', 'throws', 'type', 'var']`
+
+### Removed rule sets
+
+Rule set | Note
+-------- | ----
+`@PHP56Migration` | was empty
