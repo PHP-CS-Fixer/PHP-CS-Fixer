@@ -68,7 +68,7 @@ final class RuleSet implements RuleSetInterface
             'cast_spaces' => true,
             'class_attributes_separation' => ['elements' => ['method']],
             'class_definition' => ['single_line' => true],
-            'concat_space' => ['spacing' => 'none'],
+            'concat_space' => true,
             'declare_equal_normalize' => true,
             'function_typehint_space' => true,
             'include' => true,
@@ -94,7 +94,7 @@ final class RuleSet implements RuleSetInterface
             ]],
             'no_leading_import_slash' => true,
             'no_leading_namespace_whitespace' => true,
-            'no_mixed_echo_print' => ['use' => 'echo'],
+            'no_mixed_echo_print' => true,
             'no_multiline_whitespace_around_double_arrow' => true,
             'no_short_bool_cast' => true,
             'no_singleline_whitespace_before_semicolons' => true,
@@ -178,9 +178,7 @@ final class RuleSet implements RuleSetInterface
             ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
-            'non_printable_character' => [
-                'use_escape_sequences_in_strings' => false,
-            ],
+            'non_printable_character' => true,
             'php_unit_construct' => true,
             'psr4' => true,
             'self_accessor' => true,
@@ -322,7 +320,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHPUnit50Migration:risky' => [
             '@PHPUnit48Migration:risky' => true,
-            'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_5_0],
+            'php_unit_dedicate_assert' => true,
         ],
         '@PHPUnit52Migration:risky' => [
             '@PHPUnit50Migration:risky' => true,
