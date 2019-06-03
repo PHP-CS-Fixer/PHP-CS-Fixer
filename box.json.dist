@@ -1,0 +1,35 @@
+{
+    "check-requirements": false,
+    "dump-autoload": false,
+    "stub": "php-cs-fixer",
+    "compactors": [
+        "Herrera\\Box\\Compactor\\Json",
+        "Herrera\\Box\\Compactor\\Php"
+    ],
+    "files": [
+        "dev-tools/ci-integration.sh",
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": [
+                "*.php",
+                "ci-integration.sh"
+            ],
+            "exclude": [
+                "Test",
+                "test",
+                "Tests",
+                "tests"
+            ],
+            "in": [
+                "src",
+                "vendor"
+            ]
+        }
+    ],
+    "blacklist": [
+        "psalm-autoload.php"
+    ],
+    "git-commit": "git-commit"
+}

@@ -11,11 +11,12 @@ composer require --no-update symfony/polyfill-mbstring
 composer update --no-interaction --no-progress --no-dev --prefer-stable
 composer info -D | sort
 
-# install box2 globally
-composer global show kherge/box -q || composer global require --no-interaction --no-progress kherge/box:^2.7
+if [ ! -f dev-tools/vendor ]; then
+    composer install --working-dir dev-tools
+fi
 
 # build phar file
-php -d phar.readonly=false "$(composer config home)/vendor/bin/box" build
+dev-tools/vendor/bin/box compile
 
 # revert changes to composer
 git checkout composer.json
