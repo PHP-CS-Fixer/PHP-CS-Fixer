@@ -3,8 +3,8 @@
     "dump-autoload": false,
     "stub": "php-cs-fixer",
     "compactors": [
-        "Herrera\\Box\\Compactor\\Json",
-        "Herrera\\Box\\Compactor\\Php"
+        "KevinGH\\Box\\Compactor\\Json",
+        "KevinGH\\Box\\Compactor\\Php"
     ],
     "files": [
         "dev-tools/ci-integration.sh",
@@ -13,8 +13,7 @@
     "finder": [
         {
             "name": [
-                "*.php",
-                "ci-integration.sh"
+                "*.php"
             ],
             "exclude": [
                 "Test",

@@ -8,12 +8,11 @@ composer config platform.php 2> /dev/null || composer config platform.php 5.6.0
 composer require --no-update symfony/polyfill-mbstring
 
 # install package deps without dev-deps / remove already installed dev-deps
+# box can ignore dev-deps, but dev-deps, when installed, may lower version of prod-deps
 composer update --no-interaction --no-progress --no-dev --prefer-stable
 composer info -D | sort
 
-if [ ! -f dev-tools/vendor ]; then
-    composer install --working-dir dev-tools
-fi
+composer show -d dev-tools humbug/box -q || composer update -d dev-tools --no-interaction --no-progress
 
 # build phar file
 dev-tools/vendor/bin/box compile
