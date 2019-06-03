@@ -1,0 +1,747 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-26T14:14:24Z
+
+first thing first. before even look at the diff already, please let me treat this PR not as `PR`, but as `issue`.
+
+> This PR is a suggestion to switch from the unmaintained Box 2 to the Humbug fork in which the version 3 is being developed.
+
+While I know "good old Box" is not maintained as I would like
+I do support your initiative! big :+1: for making that fork. If you would like any help, smaller or bigger, now or in future, don't hesitate to ping me.
+
+What i'm wondering about is fact that "3 is being developed"
+now, official version is v2. v3 can bring BC breaks.
+Could you please link me (Sorry, can't find on my own) a changelog for v3? what changed? what is still supposed to change, as it's not yet stable release?
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-04-26T14:27:51Z
+
+>please let me treat this PR not as PR, but as issue.
+
+Entirely fair :)
+
+>What i'm wondering about is fact that "3 is being developed"
+now, official version is v2. v3 can bring BC breaks.
+Could you please link me (Sorry, can't find on my own) a changelog for v3? what changed? what is still supposed to change, as it's not yet stable release?
+
+Fair question. Maybe I'll need to add a link in the readme about this... A non exhaustive list:
+
+- No longer require that annoying `phar.readonly=0` option and disable xdebug as well
+- The `build` and `info` commands have been greatly revamped for better logs
+- Try to infer as much information from the `composer.json` and `composer.lock` files to avoid the user to enter the files related config entries in the `box.json.dist` file
+- Make the whole configuration file optional
+- Remove the dev dependencies when possible which removes a lot of stuff from the PHAR
+- Add an integration for PHP-Scoper which provides a way to completely isolate the code shipped in the PHAR
+- Add a requirement checker:
+
+![image](https://user-images.githubusercontent.com/5175937/39311821-e23f5784-4965-11e8-8b69-8778456a3508.png)
+
+An in general make the tool a whole lot easier to use, less config required, smarter defaults...
+
+A more exhaustive (or at least I tried!) list is in the [releases notes](https://github.com/humbug/box/releases) (yes there is a lot...)
+
+There is definitely BC breaks, I try to keep them documented in [the upgrade guide](https://github.com/humbug/box/blob/master/UPGRADE.md). Most of it is I hope not a big deal and under-used features. There is certainly a few cool stuff that I removed, like adding a file to the PHAR via a command, the main reason being because it requires _a lot_ of work, was heavily under tested and I need to stay pragmatic and I think there was more important stuff to focus on
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-29T11:04:41Z
+
+Hi @theofidry ! Really thanks for detailed answer ;)
+
+> Add an integration for PHP-Scoper which provides a way to completely isolate the code shipped in the PHAR
+
+Please confirm, it is **NOT** enabled by default, right ?
+(or, you are speaking about box.phar, not about ppl projects like php-cs-fixer.phar?)
+
+> A more exhaustive (or at least I tried!) list is in the releases notes (yes there is a lot...)
+
+exactly, that's why I was looking for some changes from BC point of view. How can I missed UPGRADE guide.... :(
+
+While I see value of whole work put there, I don't agree with all things from it, eg
+> Remove support for PHAR used for web purposes
+
+I see value of having single-file distributed dev tools, like online db managers.
+And besides that, phar file was renamed to `index.phar` from `default.phar`. And for me, `index` is very web related name.
+
+Looking at the history of fork, there is super big amount of work put into it, while almost no discussion about direction, solution and so.
+
+I'm a bit afraid of switching from one single-men project (which become unmaintained over time) into another single-men project :(
+
+---------------
+
+For above and below, also cc @julienfalque , @SpacePossum , @localheinz
+
+---------------
+
+One silly question, why `KevinGH\Box` and not `Humbug\Box` ?
+
+General info - if it gonna be applied, it shall target 2.2 LTS, not any 2.x.
+
+Going back to initial post...
+
+> I used a Makefile instead of a bash file (...)
+
+We were recently discussing internally about some solution for us for tasks, basically walking around makefile, composer tasks and grumphp (https://github.com/keradus/PHP-CS-Fixer/commit/cc5df1fcc52d2d51a587da561010ec96d5246f9f). Basically, with makefile we stucked with cross-platform issues, like we would not be able to execute makefile on Windows env, either as dev, either as CI (vide AppVeyor), which would mean that depends on OS, we have different (or non) tasks runner. Would would be your solution of running makefile on Win? As we definitelly don't want to have multiple tasks runners, and dropping non-Linux OSes is not an option.
+Also, I got confused. On your branch there are both, makefile and bash file.
+
+> I used bamarni/composer-bin-plugin to install Box as a dependencies without polluting the library dependencies.
+
+Please don't introduce multiple, difference changes as single PR.
+For now, we have approach of using 2nd composer.json file - https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.11/dev-tools/composer.json .
+Ultimate solution is to switch to [phive](https://phar.io). Please remove `composer-bin-plugin` and if you want, open separated issue for proposing a switch in way of handling devs deps.
+
+> I also noticed the `composer.lock` is not committed. IMO it should: (...).
+
+It should not. I do agree that deps shall be locked for production applications, even maybe for some devs applications.
+But in this app, we had put big effort into our unit, integration and smoke tests (`Tests: 14204, Assertions: 353008, Skipped: 23, Incomplete: 43.`), and then another effort to ensure build artifact is working with newest deps we are using to build it.
+It's not that we are not aware what lock is and when to use it.
+It's that we put effort to not need it.
+
+> On the same token, I didn't find any e2e tests for the PHAR. I would _highly_ recommend to have one. (...) being a bit insouciant.
+
+Well, same thing here. Instead of assuming we do poorly, just ask.
+We do have such tests. And in fact, they are failing on your PR. (probably because you remove config of box2 and make separated config+makefile for box3, while our CI is still using bash file you didn't touched).
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-04-29T11:31:32Z
+
+>Please confirm, it is NOT enabled by default, right ?
+
+No it's a built-in integration but opt-out. You need to [register the PHP-Scoper compactor](https://github.com/humbug/box#isolating-the-phar) to enable it.
+
+>exactly, that's why I was looking for some changes from BC point of view. How can I missed UPGRADE guide.... :(
+
+Maybe I need to adjust the readme :)
+
+>While I see value of whole work put there, I don't agree with all things from it, eg
+>I see value of having single-file distributed dev tools, like online db managers.
+
+So regarding the web PHARs: entirely fair. The work however to support them is _enormous_. There is a lot more parameters to account for and the approach for a web PHAR is relatively different: you don't approach some things the same way: you shouldn't have the shebang, you should not compress the PHAR, there is a lot of parameters to account for... It's not the first thing I removed, but I removed it at the end because it's 1. not a so common use case anymore, 2. something I never ever use/used so hard for me to test and check that I'm doing correctly and 3. I have little time so if the need and help is not there, I prefer to not dig into it :)
+
+So if someone is willing to help out to add support for it, I'm fine, otherwise I just cannot afford to.
+
+>And besides that, phar file was renamed to index.phar from default.phar. And for me, index is very web related name.
+
+True. I renamed it actually before removing the web PHAR support, however note that:
+
+- It's the PHAR default name (from the core)
+- By default, if no config is provided regarding the output/input, it's going to take the `bin` file registered in the `composer.json` for the input and add the `.phar` extension (removing the `.php` extension if there is one) for the output. So if the input is `bin/php-cs-fixer` it's going to be `bin/php-cs-fixer.phar`. So with that I think it's fairly rare that you'll ever get `index.phar` or `default.phar`
+
+>One silly question, why KevinGH\Box and not Humbug\Box ?
+
+History: it's a real fork and I still have hopes to merge it back to the real box project. Kevin was not willing to give me write/admin access to the box orga when I started (which is fair) but I hope he is willing to change his mind now that some work has been done for Box 3.
+
+>Basically, with makefile we stucked with cross-platform issues
+
+Arg true. I admit for most of my work I don't have to worry about it since I don't have a windows machine and little people interested to help out with Windows support...
+
+Maybe [CMake](https://cmake.org/) would help? Otherwise I'm sure there is alternatives... I'm sorry I can't help out much there :/
+
+>For now, we have approach of using 2nd composer.json file
+
+Ah missed that one, will do
+
+>It's not that we are not aware what lock is and when to use it.
+It's that we put effort to not need it.
+>Well, same thing here. Instead of assuming we do poorly, just ask.
+We do have such tests. And in fact, they are failing on your PR. (probably because you remove config of box2 and make separated config+makefile for box3, while our CI is still using bash file you didn't touched).
+
+The phrasing is off my bad, I did not mean to offend. As long as you're aware of it and have enough e2e tests for it it's all good.
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-04-29T21:52:55Z
+
+>I'm a bit afraid of switching from one single-men project (which become unmaintained over time) into another single-men project :(
+
+Edit since I missed that bit. I'm afraid I can't do much to lessen your fears, I would just point that the risk is low. For the sake of transparency, if you look at alternatives (you have an exhaustive list [here](https://github.com/humbug/box/issues/45)), they are all abandoned or single-man project... So you either accept that, keep a locked version that work at a given time or roll your own. Also, I'm _trying_, only time will tell if I will succeed, to get other people in PHAR-related projects on board.
+
+But first thing first, a lot of changes in that PR are unnecessary and were here to also test the waters/get quick feedback. I'll finish that PR and make the tests pass (since you already have e2e tests that helps a lot). Then you'll be free to decide if you're willing to take the risk to merge it at this stage, wait a couple of month more for the project to stabilise or if you just prefer to stay on the locked unmaintained box2 version.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-30T06:12:12Z
+
+> Maybe CMake would help? Otherwise I'm sure there is alternatives... I'm sorry I can't help out much there :/
+
+Sadly, nope. too big incompatibilities. Even Symfony dropped idea to officially switch to makefile, exactly because of same reasons... :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-04-30T06:15:13Z
+
+> Also, I'm trying, only time will tell if I will succeed, to get other people in PHAR-related projects on board.
+
+That was exactly my suggestion behind the scene. If one maintainer is off for few months (like lottery won, new kid in family and so on, so on...) it's just safier to have other maintainer around ;)
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-01T17:59:32Z
+
+@keradus I think I got it ready. I however need to tag a new release on Box to benefit from a bugfix.
+
+I'm however a bit confused about one `PharTest` that seems to require `dev-tools/ci-integration.sh`. Is it just for the CI PHAR or it's intended to be included in the final version?
+
+Also I notice that the distributed PHAR is not compressed, is this done on purpose to avoid requiring the `zip` extension?
+
+<hr/>
+
+Now to go back to the original question of what changes Box 3 brings, here are some numbers when comparing the PHAR built with Box 2 and Box 3. Note that the numbers _may_ change with the official new Box release (although I doubt by much).
+
+Box 2 (2.7.5):
+
+```
+time php /path/to/box-2.7.5.phar build
+Building...
+php /path/to/box-2.7.5.phar build  2.48s user 2.92s system 87% cpu 6.137 total
+```
+
+Box 3:
+
+```
+time dev-tools/vendor/bin/box compile                                                                                                                                                                                   tfidry@Theos-MBP
+
+    ____
+   / __ )____  _  __
+  / __  / __ \| |/_/
+ / /_/ / /_/ />  <
+/_____/\____/_/|_|
+
+Box (repo)
+
+ // Loading the configuration file "/path/to/PHP-CS-Fixer/box.json.dist".
+
+? Removing the existing PHAR "/path/to/PHP-CS-Fixer/php-cs-fixer.phar"
+Building the PHAR "/path/to/PHP-CS-Fixer/php-cs-fixer.phar"
+? Setting replacement values
+  + @git-commit@: ad0c2d543cb73462b9165c20c2fa5efbf63c1723
+? Registering compactors
+  + KevinGH\Box\Compactor\Php
+? Adding main file: /path/to/PHP-CS-Fixer/php-cs-fixer
+? Adding requirements checker
+? Adding binary files
+    > No file found
+? Adding files
+    > 611 file(s)
+? Generating new stub
+  - Using shebang line: #!/usr/bin/env php
+  - Using banner:
+    > Generated by Humbug Box.
+    >
+    > @link https://github.com/humbug/box
+? No compression
+? Setting file permissions to 493
+* Done.
+
+ // PHAR size: 2.02MB
+ // Memory usage: 8.69MB (peak: 11.39MB), time: 1.59s
+
+dev-tools/vendor/bin/box compile  1.09s user 0.66s system 78% cpu 2.241 total
+```
+
+A non exhaustive list of differences of benefits brought by Box 3:
+
+- Faster (x3 times here, but Box2 is exponentially slow so the more files the bigger the difference is)
+- A readable logging (as per the output above)
+- Less config (as per the diff)
+- No need to worry about:
+  - The dev dependency i.e. no longer need a `--no-dev` install and another update to restore the dev dependencies. Note that the build for Box 3 was _with_ dev dependencies installed
+  - The `phar.readonly` setting
+  - xdebug performance impact anymore (xdebug has been disabled in both cases though since Box 2 would be unfairly impact by it whereas Box 3 has a ~100ms overhead to restart the process without xdebug)
+- The requirement checker
+
+You can see the exact diff [here](https://gist.github.com/theofidry/332fdb0366c8145bda55bbc729116f74/revisions) and notice that Box 3 actually manages to add _less_ files. If there is more files in the end this is due to the requirement checker feature (which can be disabled if you want to).
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-01T20:22:47Z
+
+> I think I got it ready.
+
+You forgot about requets of mine:
+
+> > General info - if it gonna be applied, it shall target 2.2 LTS, not any 2.x.
+
+> > We do have such tests. And in fact, they are failing on your PR.
+
+----------
+
+> I however need to tag a new release on Box to benefit from a bugfix.
+
+not sure what bugfix you refer to...
+
+----------
+
+> I'm however a bit confused about one PharTest that seems to require dev-tools/ci-integration.sh. Is it just for the CI PHAR or it's intended to be included in the final version?
+
+As explicitly stated in `box.json`, yes, it's part of build artifact. Without it you will see failing phar tests.
+
+----------
+
+> Also I notice that the distributed PHAR is not compressed, is this done on purpose to avoid requiring the `zip` extension?
+
+indeed.
+
+----------
+
+> `Using shebang line: #!/usr/bin/env php`
+
+we already have shebang in our entry file...
+
+> `Setting file permissions to 493`
+
+IMO, would be way more readable if written in clasic octal form of `0755`
+
+> `PHAR size: 2.02MB`
+
+Sth went wrong. Our current size using Box 2 is 1.61MB
+
+> The requirement checker
+
+That check is performed when one is running box3, or when one is running phar built by box3?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-01T20:32:01Z
+
+> You can see the exact diff here and notice that Box 3 actually manages to add less files.
+
+not sure do I read that diff correctly, but definitely we don't want to have those files in our phar release:
+- `composer.json`
+- `AbstractFixerTestCase.php` (yes, we do have different files exposed via composer and phar file. Those test helpers were never part of phar release as they are useless there)
+- `hiddeninput.exe` from vendor...
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-02T06:37:00Z
+
+Thanks for the quick answer!
+
+>not sure what bugfix you refer to...
+
+I found a bug that I patched locally. I need to submit a proper bug fix, tag it and use the tag release here for completing this PR.
+
+>we already have shebang in our entry file...
+
+There is a change there that I didn't notice. I didn't realise your main script would be used as the stub in Box 2 when no stub setting was configured and with `web: false`.
+
+In Box 3, unless using the PHAR default stub (`stub: false`), I opt to do something (by default) like done in Composer which is creating a custom stub:
+
+```php
+#!/usr/bin/env php
+<?php
+
+/*
+ * Generated by Humbug Box.
+ *
+ * @link https://github.com/humbug/box
+ */
+
+Phar::mapPhar('box-auto-generated-alias-5ae8a99539e74.phar');
+
+require 'phar://box-auto-generated-alias-5ae8a99539e74.phar/.box/check_requirements.php';
+
+require 'phar://box-auto-generated-alias-5ae8a99539e74.phar/php-cs-fixer';
+
+__HALT_COMPILER(); ?>
+
+```
+
+This is done to allow the PHAR to be renamed into something else more easily and integrate the requirement checker. You also can have a specific alias if you set the `alias` setting instead of having a random one.
+
+So the shebang line is added to that stub, and the one in your main script is removed. Note that Box2 was doing something similar if you were using the Box2 stub (`stub: true`).
+
+I think this choice is simpler down the line as it allows you to worry about less stuff which can lead to some simplifications in the main script (which I admit I didn't look at before so I can do so and see what can be removed/changed). If you do prefer to have complete control then we can keep things at it is, i.e. use the main script as a stub. In this case however we'll need to add a hardcoded box internal stuff to include the requirement checker unless you want to ditch that feature.
+
+>Sth went wrong. Our current size using Box 2 is 1.61MB
+>but definitely we don't want to have those files in our phar release
+
+Hm indeed looks like `hiddeninput.exe` was quite heavy. So I went through it again and here are the results.
+
+By removing all the extra files manually (17 of them) + the requirement checker file, I get `602 files (1.58MB)` so everything is back to normal here.
+
+The fresh build is gives `616 files (1.83MB)` i.e. a `+25MB` increase coming from the following files:
+- composer.json
+- composer.lock
+- tests/*: they are here because they are in the Composer classmap
+- vendor/composer/LICENSE
+- vendor/composer/installed.json
+
+Note that enabling the JSON compactor (also existing in Box2) shrinks it to `1.79MB`.
+
+Those files are here because they are required for Box to be able to dump the autoloader with the classmap authoritative mode. However this feature is originally there because required for PHP-Scoper and because most often than note the PHARs are compressed hence the small file diff is negligible. If however this is a deal breaker for you I'll complete https://github.com/humbug/box/issues/188.
+
+Some of the `tests/*` are here because they are in the (non-dev) classmap and with Box3 you have two choices:
+
+- Leave Box figure out which files to include (uses the require and autoload section) so those `tests ` files will appear there
+- Do as in Box2 and manually declare what should be included. Ultimately this provides a finer control on which files are included but requires more work and to run a `composer update --no-dev` before and restore those deps afterwards. Note that since you always do a `composer update`, it means you could suddenly have a big variation of files included/excluded to the PHAR and since the compression is disabled this can result in a big difference in the PHAR size. I didn't see any, but if there isn't maybe it would be good to have a test to check the PHAR weight doesn't suddenly increase.
+
+So again here: you're call. Note however that the second choice requires https://github.com/humbug/box/issues/188 since otherwise dumping the autoloader will fail.
+
+Last but not least the biggest change in the PHAR size here comes from the requirement checker which is of `280KB` uncompressed (40KB compressed). Maybe there is some optimisations that could be done, you can check for yourself what is actually chipped [here](https://github.com/humbug/box/tree/7a33f9def278603a316c4674a8b44392b00f88de/.requirement-checker) with the source code [there](https://github.com/humbug/box/tree/7a33f9def278603a316c4674a8b44392b00f88de/requirement-checker), but I doubt there is any done any time soon. So if you feel that this increase in weight doesn't justify the feature this can be disabled.
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-02T06:37:52Z
+
+Sorry that it's another super long answer...
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-02T20:11:47Z
+
+> Sorry that it's another super long answer...
+
+well, for that you also need to wait for my answer ;)
+
+> There is a change there that I didn't notice. I didn't realise your main script would be used as the stub in Box 2 when no stub setting was configured and with `web: false`.
+
+We **DO** have have `stub` configured currently: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.2/box.json#L19
+
+> In Box 3, unless using the PHAR default stub (...)
+> I think this choice is simpler down the line as it allows you to worry about less stuff which can lead to some simplifications in the main script (...)
+
+So, I believe we shall stack into original stub file of ours.
+I do agree that for most of the projects - approach proposed with Box3 would save some time spent on configuring the phar release.
+
+> If you do prefer to have complete control then we can keep things at it is, i.e. use the main script as a stub. In this case however we'll need to add a hardcoded box internal stuff to include the requirement checker unless you want to ditch that feature.
+
+Please, I would like to have our stab with our logic.
+And actually, yes, please drop `requirement checker` of box. When it's there, it's killing our `PHP_CS_FIXER_IGNORE_ENV` feature we have in our own (small and silly, yet there...) requirements checker (inside php-cs-fixer file).
+If you want to, maybe think about extracting requirements checker out of box repo, so one can use it as standalone package?
+
+Then... I took a deeper look into requirements checker of Box3.
+https://github.com/humbug/box/tree/master/.requirement-checker/src
+and
+https://github.com/symfony/requirements-checker/tree/master/src
+`Requirement.php` and `RequirementCollection.php` looks damn familiar. Not 1 to 1 as whole classes, but naming and implementation of concrete, common methods are the same.
+Yet, no relation to copyrights or authorship. Not sure what's going on here, but not sure do I like what I see... :(
+
+> tests/*: they are here because they are in the Composer classmap
+
+once more, they **ARE** part of composer classmap and they are available for end user if he install PHP CS Fixer as his dependency for legacy reasons,
+yet they **ARE NOT** part of phar release, shall not be there
+
+> Those files are here because they are required for Box to be able to dump the autoloader with the classmap authoritative mode. However this feature is originally there because required for PHP-Scoper and because most often than note the PHARs are compressed hence the small file diff is negligible. If however this is a deal breaker for you I'll complete humbug/box#188.
+
+Or, maybe simplest solution would be to not follow classmap authoritative mode for PHP CS Fixer Box3's config, but hardcoded finder, like we had for Box2?
+Oh, in next paragraph you just proposed so, great !
+In general, using the `classmap-authoritative` mode would be the ultimate goal, yet PHP CS Fixer is not ready there, eg because of that `/tests` legacy.
+Question here: how would `classmap-authoritative` behave with our `ci-integration.sh` we need to keep in `phar` release? it's not php file, it's not pointed via composer file as well.
+
+> Last but not least the biggest change in the PHAR size here comes from the requirement checker which is of 28MB uncompressed (40KB compressed).
+
+as already stated, box3-built-in requirement checker shall not be part of `php-cs-fixer.phar`.
+As a side note - why it's 28MB uncompressed? MB? for sure? :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-02T20:16:25Z
+
+well, I believe that you were not expecting to have such troubles with this PR ;)
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-02T23:06:37Z
+
+>We DO have have stub configured currently: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.2/box.json#L19
+
+I wonder how I missed that... ok should solve the issue to keep the PR minimal
+
+>If you want to, maybe think about extracting requirements checker out of box repo, so one can use it as standalone package?
+
+I'll think about it if there is enough demand for it. For now since Box3 may be merged back to the original box project and since I already got ~20 packages to manage, if I can avoid one more package to manage I'll do so :P
+
+>Yet, no relation to copyrights or authorship.
+
+Hmm you're right. Originally those classes were genuinely from Symfony Requirements, I removed the dependency later on since the implementation required was simpler and slightly different. I completely missed that in the process for some classes. I opened [#192](https://github.com/humbug/box/issues/192) to not forget to add it back.
+
+>Oh, in next paragraph you just proposed so, great !
+
+Let's keep it at that then. At least now you know once this legacy part can be dropped the config can be simplified :)
+
+>Question here: how would classmap-authoritative behave with our ci-integration.sh we need to keep in phar release? it's not php file, it's not pointed via composer file as well.
+
+It actually doesn't care: Composer just require the existence of certain files for the dump autoload (`composer.json`, `composer.lock`, `LICENSE`) and then as soon as the required files exists it works out. Since `ci-integration.sh` is out of this it can be added, dumping the autoloader or not makes no difference from Composer PoV.
+
+>as already stated, box3-built-in requirement checker shall not be part of php-cs-fixer.phar.
+As a side note - why it's 28MB uncompressed? MB? for sure? :(
+
+I missed that somehow, but fair enough it can easily be disabled so I'll do so. As to the size: yes. The reality is I broke my teeth on it for a good 3 weeks or so before coming with an acceptable implementation. It's a bit tricky since it requires:
+
+- 5.3+ compatibility
+- Some Symfony console related features (ANSCII support, `--no-interactive` mode, verbosity modes...)
+- No conflict whatsover (achived by PHP-Scoper)
+- Originally no autoloading: I cheated there since it proved to be simpler to create an isolated requirement checker PHAR and use the extracted code of the PHAR.
+
+You can however see that the source code is relatively simple so what is expensive here is the pure no compression + Composer autoloading. So to answer your question: there may be some optimisations that can be done, notably by being able to ditch the Composer for the autoloading and instead concatenate several classes into one file. Right now however for the sake of simplicity, I leveraged the PHAR feature and PHP-Scoper instead which I hope is "good enough" for most situations as a first iteration although I do agree the price in size might be off-putting when no compression is used.
+
+>well, I believe that you were not expecting to have such troubles with this PR ;)
+
+I was expecting some resistance & finding some bugs, although certainly not that much :) I admit I'm a bit surprised by how energy draining the process is, but well, that's how it's bound to be I guess so no blaming here since I would probably behave the same in your stead.
+
+For the sake of transparency, I'll probably have a 1-2 weeks off since I have some personal stuff to attend to and a few newly risen issues to fix in Box. So don't be worried if you don't get notified on something before then on this PR!
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-03T07:31:26Z
+
+> 28MB
+
+still not sure where 28 MB are. I saw only 280 KB
+
+> I was expecting some resistance & finding some bugs, although certainly not that much :)
+
+well, at least there are tests for things that got broken and failing Travis :D
+
+> I'll probably have a 1-2 weeks
+
+men wanted to be nice, discussed everything in detail, explain, not just refuse the idea. and... boom ;P
+just joking here, no worry.
+most focus for next step: change target 2.11 -> 2.2 and fix Travis.
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-03T23:24:57Z
+
+>still not sure where 28 MB are. I saw only 280 KB
+
+280KB yes... sorry too tired
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-05-11T06:06:58Z
+
+Hi @theofidry ,
+this PR, TBH, is all a bit out of my league, so while I find it very interesting I cannot provide any good feedback on this. Therefore I just wanted to thank you for all the work done, hope your project and the PR land well!  :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-11T12:57:10Z
+
+@theofidry , Sorry for not being as easy going as SpacePossum ;)
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-12T14:03:28Z
+
+Rebased against 2.2. Looks like I messed it up a bit but the diff should be ok.
+
+So for now:
+
+- No change is made about the stub
+- The requirement checker is disabled
+
+A few tests files are still included because they are required to dump the autoloader. Maybe an option could be added to Box to not require it. It may however not be a big deal since in the current case those test files should go away and are not heavy.
+
+The current PHAR looks like to be `1.50MB` so no real variation here.
+
+Anyway, ready for another review :)
+
+>Sorry for not being as easy going as SpacePossum ;)
+
+No hard feelings, you're doing what you haver to :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-16T07:39:49Z
+
+> The current PHAR looks like to be 1.50MB so no real variation here.
+
+v2.2.19 is 1.28MB. what's the difference in files ? (like once you provided a gist with diff of included files)
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-16T08:12:03Z
+
+@keradus could you send me the PHAR you get for 2.2? I'm getting very different results locally for some reasons
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-16T18:30:33Z
+
+Sure !
+For last stable 2.2: https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/tag/v2.2.19
+
+for current 2.2 branch HEAD ( 59893db6 ) :
+https://uploadfiles.io/qca9f (sorry for weird upload place, github doesn't allow for that file as comment attachement)
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-16T23:17:25Z
+
+Pushed the changes. So the difference is:
+
+- +composer.json
+- +composer.lock
+- +php-cs-fixer
+
+With a difference of size of 0.13MB. Those extra files could be removed and I opened the following issues for it:
+
+- https://github.com/humbug/box/issues/220
+- https://github.com/humbug/box/issues/206
+
+Note that reverted to your finder config.
+
+If however we decide to simplify things a bit by completely removing it (which means including some test files because they are in the autoload, unless explicitly blacklisted - which won't simply the config in the end) resulting in a `1.31MB` PHAR file.
+
+If you don't remove the dev dependencies and let Box exclude them (which involves dumping the autoload), this results in a `1.46MB` PHAR file. The increase here is I believe the `installed.json` which is big and not compressed.
+
+Also note that currently `php-cs-fixer` is the stub. You may change that and use Box default stub at some point, but that's as you wish
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-17T00:04:00Z
+
+> Pushed the changes. So the difference is:
+> +composer.json
+> +composer.lock
+
+by that you meant with Box3 `composer.lock` is included in phar? what for?
+
+> The increase here is I believe the installed.json which is big and not compressed.
+
+why box3 needs `installed.json` file after autoloader is already dumped?
+
+> Also note that currently `php-cs-fixer` is the stub. You may change that and use Box default stub at some point, but that's as you wish
+
+how would users which doesn't use phar release but installation via composer execute tool without stub file ?
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-05-17T08:22:04Z
+
+>by that you meant with Box3 composer.lock is included in phar? what for?
+
+There is several reasons, but the first one would be because it's not a dev file, so considering it as useless (by Box) would be making assumption on what the application is doing. For example you can have an application that inspects its `composer.lock` (e.g. https://github.com/MacFJA/PharBuilder/issues/50).
+
+>why box3 needs installed.json file after autoloader is already dumped?
+
+It doesn't. I'm still not clear on when the `installed.json` file is installed, but it is necessary with the `composer.json` and `composer.lock` to be able to dump the autoload (by Box). It is however likely to be useless after.
+
+So an optimization that can be done mentioned in the issue above is, when you opt in to not include the Composer files, the files `composer.json`, `composer.lock` and `installed.json` could be removed (regardless of if Box dumps the autoload or not).
+
+>how would users which doesn't use phar release but installation via composer execute tool without stub file ?
+
+Sorry I might not have been clear enough here. So whilst I'm not sure the "stub" terminology is appropriate in this case, it makes perfect sense to have an entry file which has a shebang line and is executable to execute the application when installed as a Composer package.
+In a PHAR however, the entry point is no longer the main script (by default — Box or not) but a stub which adds some configuration for the PHAR before calling the main script.
+
+The approach of Box (2 like 3) is to allow to use:
+
+- The PHAR default stub
+- Box custom stub: it can take care of some elements of the config like `fileIntercept`, the PHAR alias, requirement checker... It differs a bit here between Box2 and Box3 but the idea is the same.
+- Your own stub: whatever you want. A dedicated stub file or your entry file which can act as a stub
+
+The Composer approach for example is to have its [Composer main file](https://github.com/composer/composer/blob/master/bin/composer) as usual and a [stub file](https://github.com/composer/composer/blob/master/src/Composer/Compiler.php#L242-L282) for some PHAR-only stuff
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-17T08:55:27Z
+
+> There is several reasons, but the first one would be because it's not a dev file, so considering it as useless (by Box) would be making assumption on what the application is doing.
+
+:+1: nice reasoning
+
+> So an optimization that can be done mentioned in the issue above is, when you opt in to not include the Composer files, the files composer.json, composer.lock and installed.json could be removed
+
+yep, in our project, we don't need to ship phar release with it :+1:
+
+> The approach of Box (2 like 3) is to allow to use:
+
+that's the thing, we want to have same behaviour (like basics PHP version check, hhvm check, registering error handler, xdebug handler and so and so) regardless it's run via phar or not. For that, we have stub === entry file. vide https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3088 for details
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-10-08T07:55:35Z
+
+Bump to Box 3.1.0.
+
+You can retry it, from what I see the PHAR size is `1.52MB` which is sensibly closer to what you had with Box2.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-08T13:55:46Z
+
+> theofidry changed the base branch from 2.12  to 2.13  6 hours ago
+
+please revert that, @theofidry , target shall be 2.12 still
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-10-08T14:29:15Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-08T14:58:47Z
+
+@theofidry just changing merge target isn't enough, you need to actually rebase, because now the PR includes all the 2.13 commits
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-10-08T15:15:39Z
+
+@dmvdbrugge yes this is what I've done, the PR no longer include the 2.13 changes. It does includes the commit so but that shouldn't be an issue if the PR is squashed; @keradus is that alright or I should squash it myself?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-08T15:23:55Z
+
+Huh, your changes reflect that indeed, however the commits still show up. Must be some github weirdness, sorry for the noise.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-11T11:39:08Z
+
+I care that diff is valid, I squash during merging.
+Will you squash it on your own @theofidry or not, doesn't make a difference for me
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-10-11T11:42:26Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-10-17T11:49:22Z
+
+@keradus are you waiting on anything from my side or you just need more time to review it? Just to know if there is anything I can do to push it forward or if I should just patiently wait :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-17T14:16:28Z
+
+just to be sure: it doesn't need to be me to review it ;)
+
+answering your question - sorry, lately i was totally out of dev due to some things in private life, I need to catch up with github now, this PR is one of 240 on my list :(
+
+---------------------------------------------------------------------------
+
+by theofidry at 2018-10-17T14:41:14Z
+
+np, just wanted to double check :)
+
+---------------------------------------------------------------------------
+
+by theofidry at 2019-05-05T10:22:20Z
+
+Wether it's lack of time or lack of interest, it's been 8 months since the last update. I just have no interest to invest more energy in this so I'll be closing this.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-06-03T12:37:43Z
+
+Hi @theofidry .
+
+First of all, big sorry for not having time to deal with this PR. I feel ashamed because of that.
+Regardless of that, i do find your work on this PR very valid and I'm grateful for that.
+
+Unfortunately, each of us have plenty of things to do and not enough time to do them all.
+Having the phar building topic complex (not enough ppl are aware how they work, phar generated by us has our custom logic, we had issues with phars back in old days) lead to only me doing the review or checks on this PR, which is never good option to have sth done quickly or in reasonable time. And I was simply not willing to switch to new phar builder without being sure it won't break anything for us.
+
+Here, I finally manage to done with my checks and it looks all nice now indeed! I also played with few updates on box side, but i'm afraid we can't benefit from it until 3.0, where we done some cleanup of project (eg fuckup we have on v2 about autoloading and crazy workaround what we expose in git-export or phar).
+To not ask for your time on this PR anymore, I let myself rebase the PR to solve the conflcit and push some minor updates to PR directly.
