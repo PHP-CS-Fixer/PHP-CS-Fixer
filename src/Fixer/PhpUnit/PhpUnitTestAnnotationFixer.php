@@ -305,7 +305,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             return 'test_'.$functionName;
         }
 
-        return'test'.ucfirst($functionName);
+        return 'test'.ucfirst($functionName);
     }
 
     /**

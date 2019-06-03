@@ -2053,6 +2053,31 @@ Choose from the list of available rules:
   - ``strings_containing_single_quote_chars`` (``bool``): whether to fix
     double-quoted strings that contains single-quotes; defaults to ``false``
 
+* **single_space_after_construct** [@PhpCsFixer]
+
+  Ensures a single space after language constructs.
+
+  Configuration options:
+
+  - ``constructs`` (a subset of ``['abstract', 'as', 'break', 'case', 'catch',
+    'class', 'clone', 'const', 'const_import', 'continue', 'do', 'echo',
+    'else', 'elseif', 'extends', 'final', 'finally', 'for', 'foreach',
+    'function', 'function_import', 'global', 'goto', 'if', 'implements',
+    'include', 'include_once', 'instanceof', 'insteadof', 'interface',
+    'new', 'open_tag_with_echo', 'php_open', 'print', 'private',
+    'protected', 'public', 'require', 'require_once', 'return', 'static',
+    'throw', 'trait', 'try', 'use', 'use_lambda', 'use_trait', 'var',
+    'while', 'yield', 'yield_from']``): list of constructs which must be
+    followed by a single space; defaults to ``['abstract', 'as', 'break',
+    'case', 'catch', 'class', 'clone', 'const', 'const_import', 'continue',
+    'do', 'echo', 'else', 'elseif', 'extends', 'final', 'finally', 'for',
+    'foreach', 'function', 'function_import', 'global', 'goto', 'if',
+    'implements', 'include', 'include_once', 'instanceof', 'insteadof',
+    'interface', 'new', 'open_tag_with_echo', 'php_open', 'print',
+    'private', 'protected', 'public', 'require', 'require_once', 'return',
+    'static', 'throw', 'trait', 'try', 'use', 'use_lambda', 'use_trait',
+    'var', 'while', 'yield', 'yield_from']``
+
 * **single_trait_insert_per_statement** [@Symfony, @PhpCsFixer]
 
   Each trait ``use`` must be done as single statement.

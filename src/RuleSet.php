@@ -333,6 +333,7 @@ final class RuleSet implements RuleSetInterface
             'simple_to_complex_string_variable' => true,
             'single_line_comment_style' => true,
             'single_line_throw' => false,
+            'single_space_after_construct' => true,
         ],
         '@PhpCsFixer:risky' => [
             '@Symfony:risky' => true,
