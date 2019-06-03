@@ -878,6 +878,25 @@ INPUT
                     'keep_multiple_spaces_after_comma' => true,
                 ],
             ],
+            'fix closing parenthesis (without trailing comma)' => [
+                '<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+    );
+}',
+                '<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+        );
+}',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
         ];
     }
 
