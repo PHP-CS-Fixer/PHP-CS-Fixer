@@ -77,7 +77,7 @@ final class SelfUpdateCommandTest extends TestCase
         $application = new Application();
         $application->add($command);
 
-        $this->assertSame($command, $application->find($name));
+        static::assertSame($command, $application->find($name));
     }
 
     public function provideCommandNameCases()
@@ -134,9 +134,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        $this->assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
-        $this->assertDisplay($expectedDisplay, $commandTester);
-        $this->assertSame(0, $commandTester->getStatusCode());
+        static::assertSame($expectedFileContents, file_get_contents($this->getToolPath()));
+        static::assertDisplay($expectedDisplay, $commandTester);
+        static::assertSame(0, $commandTester->getStatusCode());
     }
 
     public function provideExecuteCases()
@@ -274,11 +274,11 @@ OUTPUT;
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        $this->assertDisplay(
+        static::assertDisplay(
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
             $commandTester
         );
-        $this->assertSame(1, $commandTester->getStatusCode());
+        static::assertSame(1, $commandTester->getStatusCode());
     }
 
     public function provideExecuteWhenNotAbleToGetLatestVersionsCases()
@@ -321,11 +321,11 @@ OUTPUT;
 
         $commandTester = $this->execute($command, $input, $decorated);
 
-        $this->assertDisplay(
+        static::assertDisplay(
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
             $commandTester
         );
-        $this->assertSame(1, $commandTester->getStatusCode());
+        static::assertSame(1, $commandTester->getStatusCode());
     }
 
     public function provideExecuteWhenNotInstalledAsPharCases()
@@ -370,7 +370,7 @@ OUTPUT;
             return preg_replace("/\033\\[39(;49)?m/", "\033[0m", $display);
         };
 
-        $this->assertSame(
+        static::assertSame(
             $cleanDisplay($expectedDisplay),
             $cleanDisplay($commandTester->getDisplay(true))
         );

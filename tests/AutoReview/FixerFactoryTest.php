@@ -33,9 +33,9 @@ final class FixerFactoryTest extends TestCase
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
 
-        $this->assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
-        $this->assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
-        $this->assertSame('single_blank_line_at_eof', $fixers[\count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
+        static::assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
+        static::assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
+        static::assertSame('single_blank_line_at_eof', $fixers[\count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
     }
 
     /**
@@ -44,7 +44,7 @@ final class FixerFactoryTest extends TestCase
      */
     public function testFixersPriority(FixerInterface $first, FixerInterface $second)
     {
-        $this->assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
+        static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
     }
 
     public function provideFixersPriorityCases()
@@ -96,6 +96,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['no_empty_phpdoc']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],
+            [$fixers['line_ending'], $fixers['braces']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
@@ -183,8 +184,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_order'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_return_self_reference'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_scalar'], $fixers['phpdoc_to_return_type']],
-            [$fixers['phpdoc_separation'], $fixers['phpdoc_trim']],
-            [$fixers['phpdoc_summary'], $fixers['phpdoc_trim']],
             [$fixers['phpdoc_to_comment'], $fixers['no_empty_comment']],
             [$fixers['phpdoc_to_comment'], $fixers['phpdoc_no_useless_inheritdoc']],
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
@@ -274,28 +273,24 @@ final class FixerFactoryTest extends TestCase
         // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
-            'class_attributes_separation,indentation_type.test',
             'indentation_type,phpdoc_indent.test',
             'method_separation,braces.test',
-            'method_separation,indentation_type.test',
-            'no_empty_statement,no_multiline_whitespace_before_semicolons.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
             'phpdoc_order,phpdoc_separation.test',
             'phpdoc_order,phpdoc_trim.test',
-            'phpdoc_separation,phpdoc_trim.test',
-            'phpdoc_summary,phpdoc_trim.test',
         ];
 
         $integrationTestExists = $this->doesIntegrationTestExist($first, $second);
+        $integrationTestName = $this->generateIntegrationTestName($first, $second);
 
-        if (\in_array($this->generateIntegrationTestName($first, $second), $casesWithoutTests, true)) {
-            $this->assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $this->generateIntegrationTestName($first, $second)));
-            $this->markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $this->generateIntegrationTestName($first, $second)));
+        if (\in_array($integrationTestName, $casesWithoutTests, true)) {
+            static::assertFalse($integrationTestExists, sprintf('Case "%s" already has an integration test, so it should be removed from "$casesWithoutTests".', $integrationTestName));
+            static::markTestIncomplete(sprintf('Case "%s" has no integration test yet, please help and add it.', $integrationTestName));
         }
 
-        $this->assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $this->generateIntegrationTestName($first, $second)));
+        static::assertTrue($integrationTestExists, sprintf('There shall be an integration test "%s". How do you know that priority set up is good, if there is no integration test to check it?', $integrationTestName));
     }
 
     public function provideFixersPriorityPairsHaveIntegrationTestCases()
@@ -328,8 +323,8 @@ final class FixerFactoryTest extends TestCase
             }
 
             $fileName = $candidate->getFilename();
-            $this->assertTrue($candidate->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
-            $this->assertFalse($candidate->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
+            static::assertTrue($candidate->isFile(), sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
+            static::assertFalse($candidate->isLink(), sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
         }
     }
 
@@ -360,25 +355,25 @@ final class FixerFactoryTest extends TestCase
         if (\in_array($fileName, [
             'braces,indentation_type,no_break_comment.test',
         ], true)) {
-            $this->markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
+            static::markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
         }
 
         if (\in_array($fileName, [
             'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
         ], true)) {
-            $this->markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
+            static::markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
         }
 
-        $this->assertSame(
+        static::assertSame(
             1,
-            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test$#', $fileName, $matches),
+            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
             sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 
         $fixerName1 = $matches[1];
         $fixerName2 = $matches[2];
 
-        $this->assertTrue(
+        static::assertTrue(
             isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
             sprintf('Missing priority test entry for file "%s".', $fileName)
         );

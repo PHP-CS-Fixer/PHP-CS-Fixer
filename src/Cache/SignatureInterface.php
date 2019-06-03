@@ -47,7 +47,7 @@ interface SignatureInterface
     /**
      * @param SignatureInterface $signature
      *
-     * @return mixed
+     * @return bool
      */
     public function equals(self $signature);
 }

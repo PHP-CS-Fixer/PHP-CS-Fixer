@@ -1,0 +1,6 @@
+--TEST--
+Integration of fixers: line_ending,braces.
+--RULESET--
+{"line_ending": true, "braces": true}
+--CONFIG--
+{"indent": "\t", "lineEnding": "\r\n"}

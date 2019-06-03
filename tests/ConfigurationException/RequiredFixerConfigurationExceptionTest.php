@@ -32,7 +32,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
             'I cannot do that, Dave.'
         );
 
-        $this->assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
+        static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
     }
 
     public function testDefaults()
@@ -45,9 +45,9 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        $this->assertNull($exception->getPrevious());
+        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        static::assertNull($exception->getPrevious());
     }
 
     public function testConstructorSetsValues()
@@ -62,8 +62,8 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
             $previous
         );
 
-        $this->assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
-        $this->assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
-        $this->assertSame($previous, $exception->getPrevious());
+        static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
+        static::assertSame($previous, $exception->getPrevious());
     }
 }

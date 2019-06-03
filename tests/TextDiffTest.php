@@ -55,19 +55,22 @@ final class TextDiffTest extends TestCase
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
-            $this->markTestSkipped(sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
+            static::markTestSkipped(sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
         if ($isDecorated !== $commandTester->getOutput()->getFormatter()->isDecorated()) {
-            $this->markTestSkipped(sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
+            static::markTestSkipped(sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
-        $this->assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
+        static::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
     public function provideDiffReportingCases()
     {
         $expected = <<<'TEST'
+%A$output->writeln('<error>'.(int)$output.'</error>');%A
+%A$output->writeln('<error>'.(int) $output.'</error>');%A
+%A$output->writeln('<error> TEST </error>');%A
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
 %A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
@@ -93,7 +96,7 @@ TEST;
         $formats = $factory->registerBuiltInReporters()->getFormats();
         sort($formats);
 
-        $this->assertSame(
+        static::assertSame(
             ['checkstyle', 'json', 'junit', 'txt', 'xml'],
             $formats
         );

@@ -28,20 +28,20 @@ final class NullCacheManagerTest extends TestCase
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
 
-        $this->assertTrue($reflection->isFinal());
+        static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface()
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
 
-        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
+        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
 
     public function testNeedFixingReturnsTrue()
     {
         $manager = new NullCacheManager();
 
-        $this->assertTrue($manager->needFixing('foo.php', 'bar'));
+        static::assertTrue($manager->needFixing('foo.php', 'bar'));
     }
 }

@@ -33,7 +33,7 @@ final class WordMatcherTest extends TestCase
     public function testMatch($expected, $needle, array $candidates)
     {
         $matcher = new WordMatcher($candidates);
-        $this->assertSame($expected, $matcher->match($needle));
+        static::assertSame($expected, $matcher->match($needle));
     }
 
     /**

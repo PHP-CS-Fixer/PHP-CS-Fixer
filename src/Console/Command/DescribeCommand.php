@@ -107,7 +107,7 @@ final class DescribeCommand extends Command
             if ('@' === $name[0]) {
                 $this->describeSet($output, $name);
 
-                return;
+                return null;
             }
 
             $this->describeRule($output, $name);
@@ -251,6 +251,7 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
+        /** @var CodeSampleInterface[] $codeSamples */
         $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample) {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(\PHP_VERSION_ID);

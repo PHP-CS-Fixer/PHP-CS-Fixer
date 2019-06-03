@@ -82,6 +82,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractFixer implemen
         'assertClassNotHasAttribute' => true,
         'assertClassNotHasStaticAttribute' => true,
         'assertContains' => true,
+        'assertContainsEquals' => true,
         'assertContainsOnly' => true,
         'assertContainsOnlyInstancesOf' => true,
         'assertCount' => true,
@@ -147,6 +148,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractFixer implemen
         'assertLessThanOrEqual' => true,
         'assertNan' => true,
         'assertNotContains' => true,
+        'assertNotContainsEquals' => true,
         'assertNotContainsOnly' => true,
         'assertNotCount' => true,
         'assertNotEmpty' => true,
@@ -315,7 +317,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        foreach (array_reverse(iterator_to_array($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens))) as $indexes) {
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
             $this->fixPhpUnitClass($tokens, $indexes[0], $indexes[1]);
         }
     }
@@ -375,18 +377,48 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $analyzer = new TokensAnalyzer($tokens);
 
-        for ($index = $endIndex - 1; $index > $startIndex; --$index) {
+        for ($index = $startIndex; $index < $endIndex; ++$index) {
+            // skip anonymous classes
+            if ($tokens[$index]->isGivenKind(T_CLASS)) {
+                $index = $this->findEndOfNextBlock($tokens, $index);
+
+                continue;
+            }
+
+            $callType = $this->configuration['call_type'];
+
+            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                // skip lambda
+                if ($analyzer->isLambda($index)) {
+                    $index = $this->findEndOfNextBlock($tokens, $index);
+
+                    continue;
+                }
+
+                // do not change `self` to `this` in static methods
+                if ('this' === $callType) {
+                    $attributes = $analyzer->getMethodAttributes($index);
+                    if (false !== $attributes['static']) {
+                        $index = $this->findEndOfNextBlock($tokens, $index);
+
+                        continue;
+                    }
+                }
+            }
+
             if (!$tokens[$index]->isGivenKind(T_STRING) || !isset($this->staticMethods[$tokens[$index]->getContent()])) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             if (!$tokens[$nextIndex]->equals('(')) {
+                $index = $nextIndex;
+
                 continue;
             }
 
             $methodName = $tokens[$index]->getContent();
-            $callType = $this->configuration['call_type'];
+
             if (isset($this->configuration['methods'][$methodName])) {
                 $callType = $this->configuration['methods'][$methodName];
             }
@@ -394,10 +426,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $operatorIndex = $tokens->getPrevMeaningfulToken($index);
             $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
             if (!$this->needsConversion($tokens, $operatorIndex, $referenceIndex, $callType)) {
-                continue;
-            }
-
-            if (self::CALL_TYPE_THIS === $callType && $this->isInsideStaticFunction($tokens, $analyzer, $index)) {
                 continue;
             }
 
@@ -432,34 +460,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param Tokens         $tokens
-     * @param TokensAnalyzer $analyzer
-     * @param int            $index
+     * @param Tokens $tokens
+     * @param int    $index
      *
-     * @return bool
+     * @return int
      */
-    private function isInsideStaticFunction(Tokens $tokens, TokensAnalyzer $analyzer, $index)
+    private function findEndOfNextBlock(Tokens $tokens, $index)
     {
-        $functionIndex = $tokens->getPrevTokenOfKind($index, [[T_FUNCTION]]);
-        while ($analyzer->isLambda($functionIndex)) {
-            $openingCurlyBraceIndex = $tokens->getNextTokenOfKind($functionIndex, ['{']);
-            $closingCurlyBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingCurlyBraceIndex);
+        $index = $tokens->getNextTokenOfKind($index, ['{']);
 
-            if ($closingCurlyBraceIndex > $index) {
-                $prev = $tokens->getPrevMeaningfulToken($functionIndex);
-                if ($tokens[$prev]->isGivenKind(T_STATIC)) {
-                    return true;
-                }
-            }
-
-            $functionIndex = $tokens->getPrevTokenOfKind($functionIndex, [[T_FUNCTION]]);
-        }
-
-        $prev = $functionIndex;
-        do {
-            $prev = $tokens->getPrevMeaningfulToken($prev);
-        } while ($tokens[$prev]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL]));
-
-        return $tokens[$prev]->isGivenKind(T_STATIC);
+        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
     }
 }

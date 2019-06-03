@@ -35,19 +35,19 @@ final class TypeShortNameResolverTest extends TestCase
         $resolver = new TypeShortNameResolver();
         $tokens = Tokens::fromCode($code);
 
-        $this->assertSame($expected, $resolver->resolve($tokens, $type));
+        static::assertSame($expected, $resolver->resolve($tokens, $type));
     }
 
     public function provideResolverCases()
     {
         return [
             [
-                '<?php',
+                '<?php ',
                 'SomeType',
                 'SomeType',
             ],
             [
-                '<?php',
+                '<?php ',
                 'string',
                 'string',
             ],

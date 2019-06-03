@@ -56,7 +56,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
     ) {
         $tokens = Tokens::fromCode($source);
 
-        $this->assertSame(
+        static::assertSame(
             $expected,
             $this->fixer->findTest(
                 $functionNameToSearch,
@@ -66,7 +66,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
             )
         );
 
-        $this->assertFalse($tokens->isChanged());
+        static::assertFalse($tokens->isChanged());
     }
 
     public function provideAbstractFunctionReferenceFixerCases()

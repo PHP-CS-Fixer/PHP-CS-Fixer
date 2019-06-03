@@ -70,7 +70,7 @@ Fixing examples:
    ----------- end diff -----------
 
 ';
-        $this->assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
+        static::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
     public function testExecuteOutputWithDecoration()
@@ -111,12 +111,12 @@ Fixing examples:
 ";
         $actual = $this->execute('Foo/bar', true)->getDisplay(true);
 
-        $this->assertSame($expected, $actual);
+        static::assertSame($expected, $actual);
     }
 
     public function testExecuteStatusCode()
     {
-        $this->assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
+        static::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
     public function testExecuteWithUnknownRuleName()
@@ -205,7 +205,7 @@ Fixing examples:
             ]
         );
 
-        $this->assertContains(\get_class($mock), $commandTester->getDisplay(true));
+        static::assertContains(\get_class($mock), $commandTester->getDisplay(true));
     }
 
     /**

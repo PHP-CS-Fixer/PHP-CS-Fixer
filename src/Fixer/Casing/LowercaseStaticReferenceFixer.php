@@ -62,7 +62,7 @@ class Foo extends Bar
     }
 }
 ',
-                    new VersionSpecification(71000)
+                    new VersionSpecification(70100)
                 ),
             ]
         );

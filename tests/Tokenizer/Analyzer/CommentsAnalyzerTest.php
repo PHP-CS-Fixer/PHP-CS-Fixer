@@ -49,7 +49,7 @@ final class CommentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertSame($borders, $analyzer->getCommentBlockIndices($tokens, $index));
+        static::assertSame($borders, $analyzer->getCommentBlockIndices($tokens, $index));
     }
 
     public function provideCommentsCases()
@@ -162,7 +162,7 @@ $bar;',
         $tokens = Tokens::fromCode('<?php /* This is header */ namespace Foo;');
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertTrue($analyzer->isHeaderComment($tokens, 1));
+        static::assertTrue($analyzer->isHeaderComment($tokens, 1));
     }
 
     public function testNotHeaderComment()
@@ -170,7 +170,7 @@ $bar;',
         $tokens = Tokens::fromCode('<?php /* This is not header */');
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertFalse($analyzer->isHeaderComment($tokens, 1));
+        static::assertFalse($analyzer->isHeaderComment($tokens, 1));
     }
 
     public function testPhpdocCandidateAcceptsOnlyComments()
@@ -194,7 +194,7 @@ $bar;',
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public function providePhpdocCandidateCases()
@@ -245,7 +245,7 @@ $bar;',
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
+        static::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     public function provideNotPhpdocCandidateCases()
@@ -266,7 +266,7 @@ $bar;',
         $tokens = Tokens::fromCode('<?php /* @var int $x */ [$x] = [2];');
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertTrue($analyzer->isHeaderComment($tokens, 1));
+        static::assertTrue($analyzer->isHeaderComment($tokens, 1));
     }
 
     /**
@@ -277,6 +277,6 @@ $bar;',
         $tokens = Tokens::fromCode('<?php /* @var int $a */ [$b] = [2];');
         $analyzer = new CommentsAnalyzer();
 
-        $this->assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
+        static::assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
     }
 }

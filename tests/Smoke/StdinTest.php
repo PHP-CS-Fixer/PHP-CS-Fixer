@@ -32,10 +32,10 @@ final class StdinTest extends AbstractSmokeTest
         $command = 'php php-cs-fixer fix --rules=@PSR2 --dry-run --diff --using-cache=no';
         $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-in.php';
 
-        $fileResult = CommandExecutor::create("${command} ${inputFile}", $cwd)->getResult(false);
-        $stdinResult = CommandExecutor::create("${command} - < ${inputFile}", $cwd)->getResult(false);
+        $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);
+        $stdinResult = CommandExecutor::create("{$command} - < {$inputFile}", $cwd)->getResult(false);
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'code' => $fileResult->getCode(),
                 'error' => str_replace(

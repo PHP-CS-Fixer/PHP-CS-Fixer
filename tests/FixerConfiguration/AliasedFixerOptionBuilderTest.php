@@ -28,25 +28,25 @@ final class AliasedFixerOptionBuilderTest extends TestCase
     public function testSetDefault()
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        $this->assertSame($builder, $builder->setDefault('baz'));
+        static::assertSame($builder, $builder->setDefault('baz'));
     }
 
     public function testSetAllowedTypes()
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        $this->assertSame($builder, $builder->setAllowedTypes(['bool']));
+        static::assertSame($builder, $builder->setAllowedTypes(['bool']));
     }
 
     public function testSetAllowedValues()
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        $this->assertSame($builder, $builder->setAllowedValues(['baz']));
+        static::assertSame($builder, $builder->setAllowedValues(['baz']));
     }
 
     public function testSetNormalizer()
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        $this->assertSame($builder, $builder->setNormalizer(function () {}));
+        static::assertSame($builder, $builder->setNormalizer(function () {}));
     }
 
     public function testGetOption()
@@ -59,14 +59,14 @@ final class AliasedFixerOptionBuilderTest extends TestCase
             ->setNormalizer(function () {})
             ->getOption()
         ;
-        $this->assertInstanceOf('PhpCsFixer\FixerConfiguration\AliasedFixerOption', $option);
-        $this->assertSame('foo', $option->getName());
-        $this->assertSame('Bar.', $option->getDescription());
-        $this->assertTrue($option->hasDefault());
-        $this->assertSame('baz', $option->getDefault());
-        $this->assertSame(['bool'], $option->getAllowedTypes());
-        $this->assertSame([true, false], $option->getAllowedValues());
-        $this->assertInstanceOf(\Closure::class, $option->getNormalizer());
-        $this->assertSame('baz', $option->getAlias());
+        static::assertInstanceOf('PhpCsFixer\FixerConfiguration\AliasedFixerOption', $option);
+        static::assertSame('foo', $option->getName());
+        static::assertSame('Bar.', $option->getDescription());
+        static::assertTrue($option->hasDefault());
+        static::assertSame('baz', $option->getDefault());
+        static::assertSame(['bool'], $option->getAllowedTypes());
+        static::assertSame([true, false], $option->getAllowedValues());
+        static::assertInstanceOf(\Closure::class, $option->getNormalizer());
+        static::assertSame('baz', $option->getAlias());
     }
 }

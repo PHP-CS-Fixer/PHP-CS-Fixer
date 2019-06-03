@@ -114,7 +114,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
     {
         $fixer = $this->createFixer();
 
-        $this->assertTrue($fixer->isRisky());
+        static::assertTrue($fixer->isRisky());
     }
 
     /**
@@ -435,8 +435,8 @@ EOT;
 <?php
 var_dump(
     \\null,
-    ${dontFixMe},
-    \\${fixMe}
+    {$dontFixMe},
+    \\{$fixMe}
 );
 EOT;
 
@@ -444,8 +444,8 @@ EOT;
 <?php
 var_dump(
     null,
-    ${dontFixMe},
-    ${fixMe}
+    {$dontFixMe},
+    {$fixMe}
 );
 EOT;
 

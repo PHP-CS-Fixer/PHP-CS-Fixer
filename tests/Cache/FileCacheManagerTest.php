@@ -30,14 +30,14 @@ final class FileCacheManagerTest extends TestCase
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\FileCacheManager::class);
 
-        $this->assertTrue($reflection->isFinal());
+        static::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface()
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\FileCacheManager::class);
 
-        $this->assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
+        static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
 
     public function testCreatesCacheIfHandlerReturnedNoCache()
@@ -138,7 +138,7 @@ final class FileCacheManagerTest extends TestCase
             $signature
         );
 
-        $this->assertTrue($manager->needFixing($file, $fileContent));
+        static::assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testNeedFixingReturnsTrueIfCachedHashIsDifferent()
@@ -170,7 +170,7 @@ final class FileCacheManagerTest extends TestCase
             $signature
         );
 
-        $this->assertTrue($manager->needFixing($file, $fileContent));
+        static::assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testNeedFixingReturnsFalseIfCachedHashIsIdentical()
@@ -201,7 +201,7 @@ final class FileCacheManagerTest extends TestCase
             $signature
         );
 
-        $this->assertFalse($manager->needFixing($file, $fileContent));
+        static::assertFalse($manager->needFixing($file, $fileContent));
     }
 
     public function testNeedFixingUsesRelativePathToFile()
@@ -239,7 +239,7 @@ final class FileCacheManagerTest extends TestCase
             $directoryProphecy->reveal()
         );
 
-        $this->assertTrue($manager->needFixing($file, $fileContent));
+        static::assertTrue($manager->needFixing($file, $fileContent));
     }
 
     public function testSetFileSetsHashOfFileContent()
