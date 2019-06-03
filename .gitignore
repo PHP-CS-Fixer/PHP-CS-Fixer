@@ -1,4 +1,6 @@
 /.php_cs
+/box.json
 /composer.lock
+/php-cs-fixer.phar
 /phpunit.xml
 /vendor/

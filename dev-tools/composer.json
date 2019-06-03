@@ -3,6 +3,7 @@
         "php": "^7.1"
     },
     "require-dev": {
+        "humbug/box": "~3.7.0",
         "localheinz/composer-normalize": "^1.1",
         "maglnet/composer-require-checker": "^2.0",
         "mi-schi/phpmd-extension": "^4.3",
