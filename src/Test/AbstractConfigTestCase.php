@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractConfigTestCase extends TestCase
 {
-    final protected function doTestAllDefaultRulesAreSpecified(ConfigInterface $config)
+    final protected function doTestAllBuiltInRulesAreConfigured(ConfigInterface $config)
     {
         $configuredRules = $config->getRules();
 
