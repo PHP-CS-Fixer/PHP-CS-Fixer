@@ -290,7 +290,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             [
                 '<?php
     /**
-     * 
+     *
      */
     function hello($mixed = null)
     {
@@ -300,7 +300,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param mixed|null $mixed
      *
-     * @return mixed|null 
+     * @return mixed|null
      */
     function hello($mixed = null)
     {
