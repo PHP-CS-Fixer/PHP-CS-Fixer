@@ -1841,6 +1841,10 @@ Choose from the list of available rules:
   - ``comment_types`` (a subset of ``['asterisk', 'hash']``): list of comment types
     to fix; defaults to ``['asterisk', 'hash']``
 
+* **single_line_throw**
+
+  Throwing exception must be done in single line.
+
 * **single_quote** [@Symfony, @PhpCsFixer]
 
   Convert double quotes to single quotes for simple strings.
