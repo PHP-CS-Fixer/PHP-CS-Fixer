@@ -281,6 +281,17 @@ FIXED;
     }
 
     /**
+     * @requires PHP 7.0
+     */
+    public function testFix70()
+    {
+        $this->doTest(
+            '<?php null !== ($a ?? null);',
+            '<?php !is_null($a ?? null);'
+        );
+    }
+
+    /**
      * @param string $expected
      * @param string $input
      *
