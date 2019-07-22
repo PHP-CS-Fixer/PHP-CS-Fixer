@@ -153,7 +153,7 @@ interface Bar extends
      */
     private function fixClassyDefinition(Tokens $tokens, $classyIndex)
     {
-        $classDefInfo = (new ClassAnalyzer())->getClassDefinition($tokens, $classyIndex);
+        $classDefInfo = $this->getClassyDefinitionInfo($tokens, $classyIndex);
 
         // PSR2 4.1 Lists of implements MAY be split across multiple lines, where each subsequent line is indented once.
         // When doing so, the first item in the list MUST be on the next line, and there MUST be only one interface per line.
@@ -273,6 +273,17 @@ interface Bar extends
         $tokens->insertAt($openIndex, new Token([T_WHITESPACE, $spacing]));
 
         return $openIndex + 1;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $classyIndex
+     *
+     * @return array
+     */
+    private function getClassyDefinitionInfo(Tokens $tokens, $classyIndex)
+    {
+        return (new ClassAnalyzer())->getClassDefinition($tokens, $classyIndex);
     }
 
     /**

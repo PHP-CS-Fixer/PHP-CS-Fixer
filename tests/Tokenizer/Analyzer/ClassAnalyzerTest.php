@@ -39,7 +39,7 @@ final class ClassAnalyzerTest extends TestCase
 
         $extends = null !== $analyzer->getClassExtends($tokens, $classIndex);
 
-        $this->assertSame($hasExtends, $extends);
+        static::assertSame($hasExtends, $extends);
     }
 
     public function provideClassHasExtendsCases()
@@ -81,7 +81,7 @@ class Izumi {
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ClassAnalyzer();
-        $this->assertSame(serialize($expected), serialize($analyzer->getClassDefinition($tokens, $classIndex)));
+        static::assertSame(serialize($expected), serialize($analyzer->getClassDefinition($tokens, $classIndex)));
     }
 
     public function provideClassDefinitionInfoCases()
