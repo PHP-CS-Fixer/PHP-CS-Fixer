@@ -153,4 +153,123 @@ new class {};',
             ],
         ];
     }
+
+    /**
+     * @param string $source   PHP source code
+     * @param string $label
+     * @param array  $expected
+     *
+     * @dataProvider provideClassyImplementsInfoCases
+     */
+    public function testClassyInheritanceInfo($source, $label, array $expected)
+    {
+        $this->doTestClassyInheritanceInfo($source, $label, $expected);
+    }
+
+    /**
+     * @param string $source   PHP source code
+     * @param string $label
+     * @param array  $expected
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideClassyInheritanceInfo7Cases
+     */
+    public function testClassyInheritanceInfo7($source, $label, array $expected)
+    {
+        $this->doTestClassyInheritanceInfo($source, $label, $expected);
+    }
+
+    public function doTestClassyInheritanceInfo($source, $label, array $expected)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+
+        $analyzer = new ClassAnalyzer();
+        $result = $analyzer->getClassInheritanceInfo($tokens, $expected['start'], $label);
+
+        static::assertSame($expected, $result);
+    }
+
+    public function provideClassyImplementsInfoCases()
+    {
+        return [
+            [
+                '<?php
+class X11 implements    Z   , T,R
+{
+}',
+                'numberOfImplements',
+                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+            ],
+            [
+                '<?php
+class X10 implements    Z   , T,R    //
+{
+}',
+                'numberOfImplements',
+                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+            ],
+            [
+                '<?php class A implements B {}',
+                'numberOfImplements',
+                ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
+            ],
+            [
+                "<?php class A implements B,\n C{}",
+                'numberOfImplements',
+                ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
+            ],
+            [
+                "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
+                'numberOfImplements',
+                ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
+            ],
+            [
+                '<?php
+namespace A {
+    interface C {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A
+        \C, Z{
+        public function test()
+        {
+            echo 1;
+        }
+    }
+
+    $a = new A();
+    $a->test();
+}',
+                'numberOfImplements',
+                ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
+            ],
+        ];
+    }
+
+    public function provideClassyInheritanceInfo7Cases()
+    {
+        return [
+            [
+                "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
+                'numberOfExtends',
+                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+            ],
+            [
+                "<?php \$a = new class(4) extends\nSomeClass\timplements SomeInterface, D\n\n{};",
+                'numberOfImplements',
+                ['start' => 16, 'numberOfImplements' => 2, 'multiLine' => false],
+            ],
+            [
+                "<?php \$a = new class(5) extends SomeClass\nimplements    SomeInterface, D {};",
+                'numberOfExtends',
+                ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
+            ],
+        ];
+    }
 }
