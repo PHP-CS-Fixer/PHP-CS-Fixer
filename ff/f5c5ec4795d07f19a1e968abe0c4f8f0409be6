@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-05-28T12:08:25Z
+
+I would consider that the new behavior was the intended one but this case was overlooked, so it's a bugfix to me.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-05-31T21:54:47Z
+
+@kubawerlos
+
+Sounds good, I’ll take a look tomorrow!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-06-03T05:40:10Z
+
+@kubawerlos
+
+Adjusted to use the `FunctionsAnalyzer`!
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-06-03T11:05:02Z
+
+@kubawerlos , can you review this PR after last change?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-06-03T14:02:32Z
+
+@localheinz looks awesome, you managed to extend functionality and keep the fixer size (number of lines) :+1:
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-06-03T14:12:31Z
+
+Thank you, @kubawerlos, especially for the suggestion to use the `FunctionsAnalyzer`!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-07-19T13:29:12Z
+
+@julienfalque @keradus @kubawerlos @SpacePossum
+
+Is there anything missing here?
