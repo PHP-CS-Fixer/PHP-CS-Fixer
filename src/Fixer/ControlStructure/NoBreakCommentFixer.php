@@ -74,7 +74,7 @@ switch ($foo) {
             (new FixerOptionBuilder('comment_text', 'The text to use in the added comment and to detect it.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([
-                    function ($value) {
+                    static function ($value) {
                         if (\is_string($value) && Preg::match('/\R/', $value)) {
                             throw new InvalidOptionsException('The comment text must not contain new lines.');
                         }
@@ -82,7 +82,7 @@ switch ($foo) {
                         return true;
                     },
                 ])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value) {
                     return rtrim($value);
                 })
                 ->setDefault('no break')

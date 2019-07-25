@@ -46,19 +46,19 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         try {
             CommandExecutor::create('php --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `php` env script. Details:'."\n".$e->getMessage());
+            static::markTestSkippedOrFail('Missing `php` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            static::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            static::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     {
         // Composer Artifact Repository requires `zip` extension
         if (!\extension_loaded('zip')) {
-            $this->markTestSkippedOrFail('No zip extension available.');
+            static::markTestSkippedOrFail('No zip extension available.');
         }
 
         $fs = new Filesystem();

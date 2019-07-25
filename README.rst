@@ -390,6 +390,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.*
 
+  Configuration options:
+
+  - ``ignored_tags`` (``array``): list of ignored tags; defaults to ``[]``
+
 * **compact_nullable_typehint** [@PhpCsFixer]
 
   Remove extra spaces in a nullable typehint.
@@ -693,7 +697,7 @@ Choose from the list of available rules:
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
 
-  Add missing space between function's argument and its typehint.
+  Ensure single space between function's argument and its typehint.
 
 * **general_phpdoc_annotation_remove**
 
