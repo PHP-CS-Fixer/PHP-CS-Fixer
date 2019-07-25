@@ -878,6 +878,25 @@ INPUT
                     'keep_multiple_spaces_after_comma' => true,
                 ],
             ],
+            'fix closing parenthesis (without trailing comma)' => [
+                '<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+    );
+}',
+                '<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+        );
+}',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
         ];
     }
 
@@ -898,6 +917,57 @@ INPUT
             [
                 '<?php function A($c, ...$a){}',
                 '<?php function A($c ,...$a){}',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                <<<'EXPECTED'
+<?php
+foo(
+    $bar,
+    $baz,
+);
+EXPECTED
+                ,
+                null,
+                ['on_multiline' => 'ensure_fully_multiline'],
+            ],
+            [
+                '<?php
+functionCall(
+    1,
+    2,
+    3,
+);',
+                '<?php
+functionCall(
+    1, 2,
+    3,
+);',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
+            [
+                '<?php foo(1, 2, 3, );',
+                '<?php foo(1,2,3,);',
             ],
         ];
     }
@@ -939,48 +1009,5 @@ functionCall(
 INPUT;
 
         $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|array  $config
-     *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73($expected, $input = null, array $config = null)
-    {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases()
-    {
-        return [
-            [
-                '<?php
-functionCall(
-    1,
-    2,
-    3,
-);',
-                '<?php
-functionCall(
-    1, 2,
-    3,
-);',
-                [
-                    'on_multiline' => 'ensure_fully_multiline',
-                ],
-            ],
-            [
-                '<?php foo(1, 2, 3, );',
-                '<?php foo(1,2,3,);',
-            ],
-        ];
     }
 }

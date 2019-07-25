@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -29,8 +31,11 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Add missing space between function\'s argument and its typehint.',
-            [new CodeSample("<?php\nfunction sample(array\$a)\n{}\n")]
+            'Ensure single space between function\'s argument and its typehint.',
+            [
+                new CodeSample("<?php\nfunction sample(array\$a)\n{}\n"),
+                new CodeSample("<?php\nfunction sample(array  \$a)\n{}\n"),
+            ]
         );
     }
 
@@ -47,6 +52,8 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
@@ -54,33 +61,26 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
-            if (!$tokens[$startParenthesisIndex]->equals('(')) {
-                continue;
-            }
+            $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $index);
 
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+            foreach (array_reverse($arguments) as $argument) {
+                $type = $argument->getTypeAnalysis();
 
-            for ($iter = $endParenthesisIndex - 1; $iter > $startParenthesisIndex; --$iter) {
-                if (!$tokens[$iter]->isGivenKind(T_VARIABLE)) {
+                if (!$type instanceof TypeAnalysis) {
                     continue;
                 }
 
-                // skip ... before $variable for variadic parameter
-                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
-                if ($tokens[$prevNonWhitespaceIndex]->isGivenKind(T_ELLIPSIS)) {
-                    $iter = $prevNonWhitespaceIndex;
+                $whitespaceTokenIndex = $type->getEndIndex() + 1;
+
+                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE])) {
+                    if (' ' === $tokens[$whitespaceTokenIndex]->getContent()) {
+                        continue;
+                    }
+
+                    $tokens->clearAt($whitespaceTokenIndex);
                 }
 
-                // skip & before $variable for parameter passed by reference
-                $prevNonWhitespaceIndex = $tokens->getPrevNonWhitespace($iter);
-                if ($tokens[$prevNonWhitespaceIndex]->equals('&')) {
-                    $iter = $prevNonWhitespaceIndex;
-                }
-
-                if (!$tokens[$iter - 1]->equalsAny([[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], '(', ','])) {
-                    $tokens->insertAt($iter, new Token([T_WHITESPACE, ' ']));
-                }
+                $tokens->insertAt($whitespaceTokenIndex, new Token([T_WHITESPACE, ' ']));
             }
         }
     }
