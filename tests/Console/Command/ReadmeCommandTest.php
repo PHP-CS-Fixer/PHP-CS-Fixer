@@ -14,9 +14,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Tests\TestCase;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -36,15 +34,12 @@ final class ReadmeCommandTest extends TestCase
         $fileContent = file_get_contents($readmeFile);
         static::assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
 
-        $app = new Application();
-        $input = new ArrayInput(['readme']);
+        $application = new Application();
 
-        $output = new BufferedOutput();
-        $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
-        $output->setDecorated(false);
+        $commandTester = new CommandTester($application->get('readme'));
 
-        $exitCode = $app->get('readme')->run($input, $output);
-        $output = $output->fetch();
+        $exitCode = $commandTester->execute([]);
+        $output = $commandTester->getDisplay();
         // normalize line breaks, these are not important for the tests
         $output = str_replace(PHP_EOL, "\n", $output);
 

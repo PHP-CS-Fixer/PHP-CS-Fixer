@@ -28,7 +28,7 @@ final class FileLintingIterator extends \IteratorIterator
     private $currentResult;
 
     /**
-     * @var LinterInterface
+     * @var null|LinterInterface
      */
     private $linter;
 
@@ -39,6 +39,9 @@ final class FileLintingIterator extends \IteratorIterator
         $this->linter = $linter;
     }
 
+    /**
+     * @return null|LinterInterface
+     */
     public function currentLintingResult()
     {
         return $this->currentResult;
@@ -48,18 +51,14 @@ final class FileLintingIterator extends \IteratorIterator
     {
         parent::next();
 
-        if ($this->valid()) {
-            $this->currentResult = $this->handleItem($this->current());
-        }
+        $this->currentResult = $this->valid() ? $this->handleItem($this->current()) : null;
     }
 
     public function rewind()
     {
         parent::rewind();
 
-        if ($this->valid()) {
-            $this->currentResult = $this->handleItem($this->current());
-        }
+        $this->currentResult = $this->valid() ? $this->handleItem($this->current()) : null;
     }
 
     private function handleItem(\SplFileInfo $file)

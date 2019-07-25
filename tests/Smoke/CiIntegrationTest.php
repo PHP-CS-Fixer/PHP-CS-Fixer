@@ -38,13 +38,13 @@ final class CiIntegrationTest extends AbstractSmokeTest
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            static::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            static::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
         }
 
         try {
@@ -57,7 +57,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
                 'git commit -m "init" -q',
             ]);
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail($e->getMessage());
+            static::markTestSkippedOrFail($e->getMessage());
         }
     }
 
