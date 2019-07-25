@@ -16,6 +16,8 @@ use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -516,6 +518,38 @@ final class RuleSetTest extends TestCase
         $ruleSet->getRuleConfiguration('_not_exists');
     }
 
+    /**
+     * @dataProvider providePHPUnitMigrationSetDefinitionNameCases
+     *
+     * @param string $setName
+     */
+    public function testPHPUnitMigrationTargetVersions($setName)
+    {
+        $ruleSet = new RuleSet([$setName => true]);
+
+        foreach ($ruleSet->getRules() as $ruleName => $ruleConfig) {
+            $targetVersion = true === $ruleConfig ? $this->getDefaultPHPUnitTargetOfRule($ruleName) : $ruleConfig['target'];
+
+            static::assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $targetVersion);
+        }
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function providePHPUnitMigrationSetDefinitionNameCases()
+    {
+        $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
+
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, function ($setDefinitionName) {
+            return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
+        });
+
+        return array_map(static function ($setDefinitionName) {
+            return [$setDefinitionName];
+        }, $setDefinitionPHPUnitMigrationNames);
+    }
+
     private static function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
@@ -606,5 +640,93 @@ final class RuleSetTest extends TestCase
         ];
 
         return $testSet;
+    }
+
+    /**
+     * @param string $ruleName
+     *
+     * @return string
+     */
+    private function getDefaultPHPUnitTargetOfRule($ruleName)
+    {
+        $fixer = self::getFixerByName($ruleName);
+
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ('target' === $option->getName()) {
+                $targetVersion = $option->getDefault();
+
+                break;
+            }
+        }
+
+        if (!isset($targetVersion)) {
+            static::markTestSkipped(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+        }
+
+        return $targetVersion;
+    }
+
+    /**
+     * @param string $setName
+     * @param string $ruleName
+     * @param string $actualTargetVersion
+     */
+    private static function assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $actualTargetVersion)
+    {
+        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d)(\d)Migration:risky$/', '$1.$2', $setName);
+
+        $fixer = self::getFixerByName($ruleName);
+
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ('target' === $option->getName()) {
+                $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
+
+                break;
+            }
+        }
+
+        if (!isset($allowedVersionsForFixer)) {
+            static::markTestSkipped(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+        }
+
+        $allowedVersionsForRuleset = array_filter(
+            $allowedVersionsForFixer,
+            function ($version) use ($maximumVersionForRuleset) {
+                return strcmp($maximumVersionForRuleset, $version) >= 0;
+            }
+        );
+
+        static::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), sprintf(
+            'Rule "%s" (in rule set "%s") has target "%s", but the rule set is not allowing it (allowed are only "%s")',
+            $fixer->getName(),
+            $setName,
+            $actualTargetVersion,
+            implode('", "', $allowedVersionsForRuleset)
+        ));
+
+        rsort($allowedVersionsForRuleset);
+        $maximimAllowedVersionForRuleset = reset($allowedVersionsForRuleset);
+
+        static::assertSame($maximimAllowedVersionForRuleset, $actualTargetVersion, sprintf(
+            'Rule "%s" (in rule set "%s") has target "%s", but there is higher available target "%s"',
+            $fixer->getName(),
+            $setName,
+            $actualTargetVersion,
+            $maximimAllowedVersionForRuleset
+        ));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return FixerInterface
+     */
+    private static function getFixerByName($name)
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $factory->useRuleSet(new RuleSet([$name => true]));
+
+        return current($factory->getFixers());
     }
 }
