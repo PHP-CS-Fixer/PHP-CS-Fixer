@@ -930,6 +930,26 @@ EXPECTED
                 null,
                 ['on_multiline' => 'ensure_fully_multiline'],
             ],
+            [
+                '<?php
+functionCall(
+    1,
+    2,
+    3,
+);',
+                '<?php
+functionCall(
+    1, 2,
+    3,
+);',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
+            [
+                '<?php foo(1, 2, 3, );',
+                '<?php foo(1,2,3,);',
+            ],
         ];
     }
 
@@ -970,48 +990,5 @@ functionCall(
 INPUT;
 
         $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|array  $config
-     *
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73($expected, $input = null, array $config = null)
-    {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases()
-    {
-        return [
-            [
-                '<?php
-functionCall(
-    1,
-    2,
-    3,
-);',
-                '<?php
-functionCall(
-    1, 2,
-    3,
-);',
-                [
-                    'on_multiline' => 'ensure_fully_multiline',
-                ],
-            ],
-            [
-                '<?php foo(1, 2, 3, );',
-                '<?php foo(1,2,3,);',
-            ],
-        ];
     }
 }
