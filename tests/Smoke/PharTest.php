@@ -40,7 +40,7 @@ final class PharTest extends AbstractSmokeTest
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            self::markTestSkippedOrFail('No phar file available.');
+            static::markTestSkippedOrFail('No phar file available.');
         }
     }
 
