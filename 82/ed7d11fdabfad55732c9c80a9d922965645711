@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-06-03T10:34:11Z
+
+ping @SpacePossum , @brendt can you take a look?
+
+@brendt, can you also test it manually before we would merge it?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-06-04T06:33:20Z
+
+Looking good. I was wondering, can this fixing been done when not using the configuration option `ensure_fully_multiline` ?
+This way it would always fix;
+```php
+<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+        );
+}
+```
+
+---------------------------------------------------------------------------
+
+by brendt at 2019-06-12T07:58:22Z
+
+I tested this PR, and it seems to work as intended. Any idea when this will be merged and tagged?
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-07-22T19:45:16Z
+
+Seems to be working fine on my side as weel, however, this needs a rebase.
