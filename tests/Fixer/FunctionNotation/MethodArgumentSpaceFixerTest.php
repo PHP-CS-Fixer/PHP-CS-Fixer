@@ -903,6 +903,37 @@ INPUT
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                <<<'EXPECTED'
+<?php
+foo(
+    $bar,
+    $baz,
+);
+EXPECTED
+                ,
+                null,
+                ['on_multiline' => 'ensure_fully_multiline'],
+            ],
+        ];
+    }
+
+    /**
      * @group legacy
      * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
      */
