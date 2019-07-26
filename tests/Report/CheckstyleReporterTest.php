@@ -42,7 +42,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
         self::$xsd = null;
     }
 
-    public function createNoErrorReport()
+    protected function createNoErrorReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -50,7 +50,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 XML;
     }
 
-    public function createSimpleReport()
+    protected function createSimpleReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -62,7 +62,7 @@ XML;
 XML;
     }
 
-    public function createWithDiffReport()
+    protected function createWithDiffReport()
     {
         // NOTE: checkstyle format does NOT include diffs
         return <<<'XML'
@@ -75,7 +75,7 @@ XML;
 XML;
     }
 
-    public function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -88,7 +88,7 @@ XML;
 XML;
     }
 
-    public function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport()
     {
         // NOTE: checkstyle format does NOT include time or memory
         return <<<'XML'
@@ -101,7 +101,7 @@ XML;
 XML;
     }
 
-    public function createComplexReport()
+    protected function createComplexReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
