@@ -55,15 +55,12 @@ if (class_exists('Phar')) {
 }
 if ($require) {
     // OK, it's not, let give Composer autoloader a try!
-    if (file_exists($a = __DIR__.'/../../autoload.php')) {
-        require_once $a;
-    } elseif (file_exists($b = __DIR__.'/../autoload.php')) {
-        require_once $b;
-    } else {
-        require_once __DIR__.'/vendor/autoload.php';
+    foreach ([__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__.'/vendor/autoload.php'] as $file) {
+        if (file_exists($file))
+        {
+            require_once $file;
+        }
     }
-
-    unset($a, $b);
 }
 unset($require);
 
