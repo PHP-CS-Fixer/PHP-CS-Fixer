@@ -22,6 +22,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\ClassAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -282,34 +283,7 @@ interface Bar extends
      */
     private function getClassyDefinitionInfo(Tokens $tokens, $classyIndex)
     {
-        $openIndex = $tokens->getNextTokenOfKind($classyIndex, ['{']);
-        $prev = $tokens->getPrevMeaningfulToken($classyIndex);
-        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classyIndex;
-
-        $extends = false;
-        $implements = false;
-        $anonymousClass = false;
-
-        if (!$tokens[$classyIndex]->isGivenKind(T_TRAIT)) {
-            $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
-            $extends = \count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
-
-            if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
-                $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
-                $implements = \count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
-                $tokensAnalyzer = new TokensAnalyzer($tokens);
-                $anonymousClass = $tokensAnalyzer->isAnonymousClass($classyIndex);
-            }
-        }
-
-        return [
-            'start' => $startIndex,
-            'classy' => $classyIndex,
-            'open' => $openIndex,
-            'extends' => $extends,
-            'implements' => $implements,
-            'anonymousClass' => $anonymousClass,
-        ];
+        return (new ClassAnalyzer())->getClassDefinition($tokens, $classyIndex);
     }
 
     /**
@@ -320,23 +294,7 @@ interface Bar extends
      */
     private function getClassyInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
-        $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
-        ++$startIndex;
-        $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
-        $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
-        for ($i = $startIndex; $i < $endIndex; ++$i) {
-            if ($tokens[$i]->equals(',')) {
-                ++$implementsInfo[$label];
-
-                continue;
-            }
-
-            if (!$implementsInfo['multiLine'] && false !== strpos($tokens[$i]->getContent(), "\n")) {
-                $implementsInfo['multiLine'] = true;
-            }
-        }
-
-        return $implementsInfo;
+        return (new ClassAnalyzer())->getClassInheritanceInfo($tokens, $startIndex, $label);
     }
 
     /**
