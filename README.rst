@@ -4,7 +4,7 @@ PHP Coding Standards Fixer
 The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards;
 whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, etc.,
 or other community driven ones like the Symfony one.
-You can **also** define your (teams) style through configuration.
+You can **also** define your (team's) style through configuration.
 
 It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
@@ -679,7 +679,7 @@ Choose from the list of available rules:
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
 
-  Add missing space between function's argument and its typehint.
+  Ensure single space between function's argument and its typehint.
 
 * **general_phpdoc_annotation_remove**
 
