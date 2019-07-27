@@ -25,14 +25,13 @@ final class ClassAnalyzer
      * @param Tokens $tokens
      * @param int    $classIndex
      *
-     * @return array
-     *               Contains information about the class being analyzed
+     * @return array Contains information about the class being analyzed
      */
     public function getClassDefinition(Tokens $tokens, $classIndex)
     {
         $openIndex = $tokens->getNextTokenOfKind($classIndex, ['{']);
-        $prev = $tokens->getPrevMeaningfulToken($classIndex);
-        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classIndex;
+        $prevIndex = $tokens->getPrevMeaningfulToken($classIndex);
+        $startIndex = $tokens[$prevIndex]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prevIndex : $classIndex;
 
         $extends = false;
         $implements = false;

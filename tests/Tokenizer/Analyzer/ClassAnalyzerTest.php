@@ -26,9 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ClassAnalyzerTest extends TestCase
 {
     /**
+     * @param int    $classIndex
      * @param string $code
      * @param bool   $hasExtends
-     * @param mixed  $classIndex
      *
      * @dataProvider provideClassHasExtendsCases
      */
