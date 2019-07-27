@@ -64,7 +64,7 @@ final class ToolInfo implements ToolInfoInterface
 
         $versionSuffix = '';
 
-        if (isset($package['dist'])) {
+        if (isset($package['dist']['reference'])) {
             $versionSuffix = '#'.$package['dist']['reference'];
         }
 
