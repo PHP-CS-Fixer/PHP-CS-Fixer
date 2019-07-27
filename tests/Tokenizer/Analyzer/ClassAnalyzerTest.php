@@ -26,23 +26,31 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ClassAnalyzerTest extends TestCase
 {
     /**
-     * @param int    $classIndex
-     * @param string $code
-     * @param bool   $hasExtends
+     * @param int         $classIndex
+     * @param string      $code
+     * @param null|string $name
+     * @param null|string $startIndex
+     * @param null|string $endIndex
      *
-     * @dataProvider provideClassHasExtendsCases
+     * @dataProvider provideGetExtendsClassCases
      */
-    public function testClassHasExtends($classIndex, $code, $hasExtends)
+    public function testGetClassExtends($classIndex, $code, $name = null, $startIndex = null, $endIndex = null)
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ClassAnalyzer();
 
-        $extends = null !== $analyzer->getClassExtends($tokens, $classIndex);
+        $extend = $analyzer->getClassExtends($tokens, $classIndex);
 
-        static::assertSame($hasExtends, $extends);
+        if (null !== $extend) {
+            static::assertSame($name, $extend->getName());
+            static::assertSame($startIndex, $extend->getStartIndex());
+            static::assertSame($endIndex, $extend->getEndIndex());
+        } else {
+            static::assertNull($extend);
+        }
     }
 
-    public function provideClassHasExtendsCases()
+    public function provideGetExtendsClassCases()
     {
         return [
             [
@@ -54,7 +62,9 @@ namespace Foo\Bar;
 class Nakano extends Izumi {
 
 }',
-                true,
+                'Izumi',
+                15,
+                15,
             ],
             [
                 9,
@@ -65,7 +75,6 @@ namespace Foo\Bar;
 class Izumi {
 
 }',
-                false,
             ],
         ];
     }
