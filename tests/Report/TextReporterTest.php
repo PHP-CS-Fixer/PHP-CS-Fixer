@@ -119,6 +119,6 @@ TEXT
 
     protected function assertFormat($expected, $input)
     {
-        $this->assertSame($expected, $input);
+        static::assertSame($expected, $input);
     }
 }

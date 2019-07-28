@@ -52,8 +52,8 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['use_yoda_style' => false]);
 
-        $configuration = $this->getObjectAttribute($this->fixer, 'configuration');
-        $this->assertFalse($configuration['use_yoda_style']);
+        $configuration = static::getObjectAttribute($this->fixer, 'configuration');
+        static::assertFalse($configuration['use_yoda_style']);
     }
 
     /**
@@ -278,6 +278,17 @@ FIXED;
                 '<?php while (is_null($nextMaxId = $myTimeline->getNextMaxId()));',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testFix70()
+    {
+        $this->doTest(
+            '<?php null !== ($a ?? null);',
+            '<?php !is_null($a ?? null);'
+        );
     }
 
     /**

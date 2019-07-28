@@ -40,8 +40,8 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        static::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
     /**
@@ -57,7 +57,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(
+        static::assertSame(
             serialize($expected),
             serialize($analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex))
         );
@@ -177,8 +177,8 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        $this->assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        $this->assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+        static::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
     public function provideArguments73Cases()

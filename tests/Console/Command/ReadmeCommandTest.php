@@ -14,9 +14,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Tests\TestCase;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,31 +28,28 @@ final class ReadmeCommandTest extends TestCase
     public function testIfReadmeFileIsCorrect()
     {
         $readmeFile = __DIR__.'/../../../README.rst';
-        $this->assertFileExists($readmeFile, sprintf('README file "%s" not found.', $readmeFile)); // switch to `assertFileIsReadable` on PHPUnit6
-        $this->assertIsReadable($readmeFile, sprintf('Cannot read "%s".', $readmeFile));
-        $this->assertTrue(is_file($readmeFile), sprintf('Expected file "%s" to be a file.', $readmeFile));
+        static::assertFileExists($readmeFile, sprintf('README file "%s" not found.', $readmeFile)); // switch to `assertFileIsReadable` on PHPUnit6
+        static::assertIsReadable($readmeFile, sprintf('Cannot read "%s".', $readmeFile));
+        static::assertTrue(is_file($readmeFile), sprintf('Expected file "%s" to be a file.', $readmeFile));
         $fileContent = file_get_contents($readmeFile);
-        $this->assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
+        static::assertInternalType('string', $fileContent, sprintf('Failed to get content of "%s"', $readmeFile));
 
-        $app = new Application();
-        $input = new ArrayInput(['readme']);
+        $application = new Application();
 
-        $output = new BufferedOutput();
-        $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
-        $output->setDecorated(false);
+        $commandTester = new CommandTester($application->get('readme'));
 
-        $exitCode = $app->get('readme')->run($input, $output);
-        $output = $output->fetch();
+        $exitCode = $commandTester->execute([]);
+        $output = $commandTester->getDisplay();
         // normalize line breaks, these are not important for the tests
         $output = str_replace(PHP_EOL, "\n", $output);
 
-        $this->assertSame(
+        static::assertSame(
             0,
             $exitCode,
             sprintf("readme command did not exit successfully.\n%s", $output)
         );
 
-        $this->assertSame(
+        static::assertSame(
             $output,
             $fileContent,
             'README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.'

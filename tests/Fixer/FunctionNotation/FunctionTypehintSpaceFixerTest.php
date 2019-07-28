@@ -53,56 +53,122 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
                 '<?php function foo(/**int*/$param) {}',
             ],
             [
+                '<?php function foo(bool /**bla bla*/ $param) {}',
+            ],
+            [
+                '<?php function foo(bool /**bla bla*/$param) {}',
+                '<?php function foo(bool/**bla bla*/$param) {}',
+            ],
+            [
+                '<?php function foo(bool /**bla bla*/$param) {}',
+                '<?php function foo(bool  /**bla bla*/$param) {}',
+            ],
+            [
                 '<?php function foo(callable $param) {}',
                 '<?php function foo(callable$param) {}',
+            ],
+            [
+                '<?php function foo(callable $param) {}',
+                '<?php function foo(callable  $param) {}',
             ],
             [
                 '<?php function foo(array &$param) {}',
                 '<?php function foo(array&$param) {}',
             ],
             [
+                '<?php function foo(array &$param) {}',
+                '<?php function foo(array  &$param) {}',
+            ],
+            [
                 '<?php function foo(array & $param) {}',
                 '<?php function foo(array& $param) {}',
+            ],
+            [
+                '<?php function foo(array & $param) {}',
+                '<?php function foo(array  & $param) {}',
             ],
             [
                 '<?php function foo(Bar $param) {}',
                 '<?php function foo(Bar$param) {}',
             ],
             [
+                '<?php function foo(Bar $param) {}',
+                '<?php function foo(Bar  $param) {}',
+            ],
+            [
                 '<?php function foo(Bar\Baz $param) {}',
                 '<?php function foo(Bar\Baz$param) {}',
+            ],
+            [
+                '<?php function foo(Bar\Baz $param) {}',
+                '<?php function foo(Bar\Baz  $param) {}',
             ],
             [
                 '<?php function foo(Bar\Baz &$param) {}',
                 '<?php function foo(Bar\Baz&$param) {}',
             ],
             [
+                '<?php function foo(Bar\Baz &$param) {}',
+                '<?php function foo(Bar\Baz  &$param) {}',
+            ],
+            [
                 '<?php function foo(Bar\Baz & $param) {}',
                 '<?php function foo(Bar\Baz& $param) {}',
+            ],
+            [
+                '<?php function foo(Bar\Baz & $param) {}',
+                '<?php function foo(Bar\Baz  & $param) {}',
             ],
             [
                 '<?php $foo = function(Bar\Baz $param) {};',
                 '<?php $foo = function(Bar\Baz$param) {};',
             ],
             [
+                '<?php $foo = function(Bar\Baz $param) {};',
+                '<?php $foo = function(Bar\Baz  $param) {};',
+            ],
+            [
                 '<?php $foo = function(Bar\Baz &$param) {};',
                 '<?php $foo = function(Bar\Baz&$param) {};',
+            ],
+            [
+                '<?php $foo = function(Bar\Baz &$param) {};',
+                '<?php $foo = function(Bar\Baz  &$param) {};',
             ],
             [
                 '<?php $foo = function(Bar\Baz & $param) {};',
                 '<?php $foo = function(Bar\Baz& $param) {};',
             ],
             [
+                '<?php $foo = function(Bar\Baz & $param) {};',
+                '<?php $foo = function(Bar\Baz  & $param) {};',
+            ],
+            [
                 '<?php class Test { public function foo(Bar\Baz $param) {} }',
                 '<?php class Test { public function foo(Bar\Baz$param) {} }',
             ],
             [
+                '<?php class Test { public function foo(Bar\Baz $param) {} }',
+                '<?php class Test { public function foo(Bar\Baz  $param) {} }',
+            ],
+            [
                 '<?php $foo = function(array $a,
-                    array $b, array     $c, array
-                    $d) {};',
+                    array $b, array $c, array $d) {};',
                 '<?php $foo = function(array $a,
                     array$b, array     $c, array
                     $d) {};',
+            ],
+            [
+                '<?php $foo = function(
+                    array $a,
+                    $b
+                ) {};',
+            ],
+            [
+                '<?php $foo = function(
+                    $a,
+                    array $b
+                ) {};',
             ],
             [
                 '<?php function foo(...$param) {}',

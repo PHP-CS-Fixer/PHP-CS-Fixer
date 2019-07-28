@@ -40,13 +40,13 @@ final class PharTest extends AbstractSmokeTest
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            self::markTestSkippedOrFail('No phar file available.');
+            static::markTestSkippedOrFail('No phar file available.');
         }
     }
 
     public function testVersion()
     {
-        $this->assertRegExp(
+        static::assertRegExp(
             '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
             self::executePharCommand('--version')->getOutput()
         );
@@ -54,7 +54,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testReadme()
     {
-        $this->assertSame(
+        static::assertSame(
             str_replace(
                 HelpCOmmand::getLatestReleaseVersionFromChangeLog(),
                 Application::VERSION,
@@ -77,7 +77,7 @@ final class PharTest extends AbstractSmokeTest
             'name' => 'header_comment',
         ]);
 
-        $this->assertSame(
+        static::assertSame(
             $commandTester->getDisplay(),
             self::executePharCommand('describe header_comment')->getOutput()
         );
@@ -85,7 +85,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testFix()
     {
-        $this->assertSame(
+        static::assertSame(
             0,
             self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
         );
@@ -93,7 +93,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testFixHelp()
     {
-        $this->assertSame(
+        static::assertSame(
             0,
             self::executePharCommand('fix --help')->getCode()
         );

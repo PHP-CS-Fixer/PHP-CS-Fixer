@@ -25,7 +25,7 @@ interface FileHandlerInterface
     public function getFile();
 
     /**
-     * @return CacheInterface
+     * @return null|CacheInterface
      */
     public function read();
 

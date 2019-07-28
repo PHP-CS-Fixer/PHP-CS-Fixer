@@ -69,7 +69,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        $this->assertSame(
+        static::assertSame(
             [
                 9 => [
                     'token' => $tokens[9],
@@ -148,7 +148,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        $this->assertSame(
+        static::assertSame(
             [
                 9 => [
                     'token' => $tokens[9],
@@ -261,7 +261,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        $this->assertSame(
+        static::assertSame(
             [
                 9 => [
                     'token' => $tokens[9],
@@ -338,7 +338,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            $this->assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
+            static::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
         }
     }
 
@@ -378,7 +378,7 @@ PHP;
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isLambda) {
-            $this->assertSame($isLambda, $tokensAnalyzer->isLambda($index));
+            static::assertSame($isLambda, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -430,7 +430,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            $this->assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -465,7 +465,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            $this->assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
         }
     }
 
@@ -513,7 +513,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isLambda) {
-            $this->assertSame($isLambda, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+            static::assertSame($isLambda, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
         }
     }
 
@@ -678,7 +678,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            $this->assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
         }
     }
 
@@ -707,7 +707,7 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $expectedValue) {
-            $this->assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
         }
     }
 
@@ -739,10 +739,10 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isUnary) {
-            $this->assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
+            static::assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
             if ($isUnary) {
-                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
         }
     }
@@ -795,10 +795,10 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isUnary) {
-            $this->assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+            static::assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
             if ($isUnary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isBinaryOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isBinaryOperator($index));
             }
         }
     }
@@ -879,10 +879,10 @@ preg_replace_callback(
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
             if ($isBinary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1028,10 +1028,10 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
             if ($isBinary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1061,8 +1061,8 @@ $b;',
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $this->assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        $this->assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
+        static::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
+        static::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
     public function provideIsArrayCases()
@@ -1141,7 +1141,7 @@ $b;',
 
         foreach ($tokens as $index => $token) {
             $expect = \in_array($index, $tokenIndexes, true);
-            $this->assertSame(
+            static::assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),
                 sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
@@ -1176,10 +1176,10 @@ $b;',
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
-            $this->assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
             if ($isBinary) {
-                $this->assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                $this->assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
             }
         }
     }
@@ -1204,7 +1204,7 @@ $b;',
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $this->assertFalse($tokensAnalyzer->isArray($tokenIndex));
+        static::assertFalse($tokensAnalyzer->isArray($tokenIndex));
     }
 
     /**
@@ -1244,7 +1244,7 @@ $b;',
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $attributes = $tokensAnalyzer->getMethodAttributes($index);
-        $this->assertSame($expected, $attributes);
+        static::assertSame($expected, $attributes);
     }
 
     public function provideGetFunctionPropertiesCases()
@@ -1372,7 +1372,7 @@ SRC;
                 continue;
             }
 
-            $this->assertSame(
+            static::assertSame(
                 $expected[$index],
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
                 sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $expected[$index] ? '' : 'not ')
@@ -1390,7 +1390,7 @@ SRC;
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
     public function provideGetImportUseIndexesCases()
@@ -1466,7 +1466,7 @@ EOF
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
     public function provideGetImportUseIndexesPHP70Cases()
@@ -1503,7 +1503,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $this->assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
+        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
     public function provideGetImportUseIndexesPHP72Cases()

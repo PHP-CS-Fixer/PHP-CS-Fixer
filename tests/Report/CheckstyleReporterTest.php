@@ -132,7 +132,7 @@ XML;
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
 
-        $this->assertThat($input, new XmlMatchesXsd(self::$xsd));
-        $this->assertXmlStringEqualsXmlString($expected, $input);
+        static::assertThat($input, new XmlMatchesXsd(self::$xsd));
+        static::assertXmlStringEqualsXmlString($expected, $input);
     }
 }

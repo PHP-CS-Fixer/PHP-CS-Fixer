@@ -26,25 +26,25 @@ final class FixerDefinitionTest extends TestCase
     {
         $definition = new FixerDefinition('Foo', []);
 
-        $this->assertSame('Foo', $definition->getSummary());
+        static::assertSame('Foo', $definition->getSummary());
     }
 
     public function testGetCodeSamples()
     {
         $definition = new FixerDefinition('', ['Bar', 'Baz']);
 
-        $this->assertSame(['Bar', 'Baz'], $definition->getCodeSamples());
+        static::assertSame(['Bar', 'Baz'], $definition->getCodeSamples());
     }
 
     public function testGetDescription()
     {
         $definition = new FixerDefinition('', []);
 
-        $this->assertNull($definition->getDescription());
+        static::assertNull($definition->getDescription());
 
         $definition = new FixerDefinition('', [], 'Foo');
 
-        $this->assertSame('Foo', $definition->getDescription());
+        static::assertSame('Foo', $definition->getDescription());
     }
 
     /**
@@ -55,15 +55,15 @@ final class FixerDefinitionTest extends TestCase
     {
         $definition = new FixerDefinition('', []);
 
-        $this->assertNull($definition->getConfigurationDescription());
+        static::assertNull($definition->getConfigurationDescription());
 
         $definition = new FixerDefinition('', [], null, 'Foo');
 
-        $this->assertNull($definition->getConfigurationDescription());
+        static::assertNull($definition->getConfigurationDescription());
 
         $definition = new FixerDefinition('', [], null, 'Foo', []);
 
-        $this->assertSame('Foo', $definition->getConfigurationDescription());
+        static::assertSame('Foo', $definition->getConfigurationDescription());
     }
 
     /**
@@ -75,22 +75,22 @@ final class FixerDefinitionTest extends TestCase
     {
         $definition = new FixerDefinition('', []);
 
-        $this->assertNull($definition->getDefaultConfiguration());
+        static::assertNull($definition->getDefaultConfiguration());
 
         $definition = new FixerDefinition('', [], null, null, ['Foo', 'Bar']);
 
-        $this->assertSame(['Foo', 'Bar'], $definition->getDefaultConfiguration());
+        static::assertSame(['Foo', 'Bar'], $definition->getDefaultConfiguration());
     }
 
     public function testGetRiskyDescription()
     {
         $definition = new FixerDefinition('', []);
 
-        $this->assertNull($definition->getRiskyDescription());
+        static::assertNull($definition->getRiskyDescription());
 
         $definition = new FixerDefinition('', [], null, 'Foo');
 
-        $this->assertSame('Foo', $definition->getRiskyDescription());
+        static::assertSame('Foo', $definition->getRiskyDescription());
     }
 
     /**
@@ -101,6 +101,6 @@ final class FixerDefinitionTest extends TestCase
     {
         $definition = new FixerDefinition('', [], null, null, null, 'Foo');
 
-        $this->assertSame('Foo', $definition->getRiskyDescription());
+        static::assertSame('Foo', $definition->getRiskyDescription());
     }
 }

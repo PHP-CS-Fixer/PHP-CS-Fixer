@@ -53,14 +53,14 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace('/[ \t]+$/m', '', $token->getContent())]);
+                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace('/(*ANY)[ \t]+$/m', '', $token->getContent())]);
 
                 continue;
             }
 
             if ($token->isGivenKind(T_COMMENT)) {
                 if ('/*' === substr($token->getContent(), 0, 2)) {
-                    $tokens[$index] = new Token([T_COMMENT, Preg::replace('/[ \t]+$/m', '', $token->getContent())]);
+                    $tokens[$index] = new Token([T_COMMENT, Preg::replace('/(*ANY)[ \t]+$/m', '', $token->getContent())]);
                 } elseif (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
                     $trimmedContent = ltrim($tokens[$index + 1]->getContent(), " \t");
                     if ('' !== $trimmedContent) {

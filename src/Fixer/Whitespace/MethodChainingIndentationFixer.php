@@ -163,20 +163,18 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
     private function getIndentContentAt(Tokens $tokens, $index)
     {
-        for ($i = $index; $i >= 0; --$i) {
-            if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
-                continue;
-            }
+        if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+            return '';
+        }
 
-            $content = $tokens[$index]->getContent();
+        $content = $tokens[$index]->getContent();
 
-            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
-                $content = $tokens[$index - 1]->getContent().$content;
-            }
+        if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+            $content = $tokens[$index - 1]->getContent().$content;
+        }
 
-            if (Preg::match('/\R/', $content)) {
-                return $content;
-            }
+        if (Preg::match('/\R/', $content)) {
+            return $content;
         }
 
         return '';

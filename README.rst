@@ -4,7 +4,7 @@ PHP Coding Standards Fixer
 The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards;
 whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, etc.,
 or other community driven ones like the Symfony one.
-You can **also** define your (teams) style through configuration.
+You can **also** define your (team's) style through configuration.
 
 It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
 and (micro) optimize it.
@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.8/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.12.10/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -679,7 +679,7 @@ Choose from the list of available rules:
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
 
-  Add missing space between function's argument and its typehint.
+  Ensure single space between function's argument and its typehint.
 
 * **general_phpdoc_annotation_remove**
 
@@ -1750,7 +1750,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.8/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.12.10/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

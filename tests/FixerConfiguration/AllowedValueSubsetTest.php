@@ -24,7 +24,7 @@ final class AllowedValueSubsetTest extends TestCase
 {
     public function testConstructor()
     {
-        $this->assertInternalType('callable', new AllowedValueSubset(['foo', 'bar']));
+        static::assertInternalType('callable', new AllowedValueSubset(['foo', 'bar']));
     }
 
     /**
@@ -37,7 +37,7 @@ final class AllowedValueSubsetTest extends TestCase
     {
         $subset = new AllowedValueSubset(['foo', 'bar']);
 
-        $this->assertSame($expectedResult, $subset($inputValue));
+        static::assertSame($expectedResult, $subset($inputValue));
     }
 
     public function provideInvokeCases()
@@ -104,6 +104,6 @@ final class AllowedValueSubsetTest extends TestCase
 
         $subset = new AllowedValueSubset($values);
 
-        $this->assertSame($values, $subset->getAllowedValues());
+        static::assertSame($values, $subset->getAllowedValues());
     }
 }

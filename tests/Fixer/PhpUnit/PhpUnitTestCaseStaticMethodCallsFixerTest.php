@@ -41,7 +41,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             }
         }
 
-        $this->assertSame([], $missingMethods, sprintf('The following static methods from "%s" are missing from "%s::$staticMethods"', TestCase::class, PhpUnitTestCaseStaticMethodCallsFixer::class));
+        static::assertSame([], $missingMethods, sprintf('The following static methods from "%s" are missing from "%s::$staticMethods"', TestCase::class, PhpUnitTestCaseStaticMethodCallsFixer::class));
     }
 
     public function testWrongConfigTypeForMethodsKey()
@@ -204,9 +204,9 @@ class MyTest extends \PHPUnit_Framework_TestCase
         $this->fail('foo');
 
         $lambda = function () {
-            $this->assertSame(1, 2);
-            $this->assertSame(1, 2);
-            $this->assertSame(1, 2);
+            $this->assertSame(1, 23);
+            self::assertSame(1, 23);
+            static::assertSame(1, 23);
         };
     }
 }
@@ -223,9 +223,9 @@ class MyTest extends \PHPUnit_Framework_TestCase
         static::fail('foo');
 
         $lambda = function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
+            $this->assertSame(1, 23);
+            self::assertSame(1, 23);
+            static::assertSame(1, 23);
         };
     }
 }
@@ -329,6 +329,10 @@ class MyTest extends \PHPUnit_Framework_TestCase
             self::assertSame(1, 2);
             static::assertSame(1, 2);
         };
+
+        $myProphecy->setCount(0)->will(function () {
+            $this->getCount()->willReturn(0);
+        });
     }
 
     static public function baz()
@@ -371,23 +375,23 @@ class MyTest extends \PHPUnit_Framework_TestCase
     public function bar()
     {
         $lambdaOne = static function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
+            $this->assertSame(1, 21);
+            self::assertSame(1, 21);
+            static::assertSame(1, 21);
         };
 
         $lambdaTwo = function () {
-            $this->assertSame(1, 2);
-            $this->assertSame(1, 2);
-            $this->assertSame(1, 2);
+            $this->assertSame(1, 21);
+            self::assertSame(1, 21);
+            static::assertSame(1, 21);
         };
     }
 
-    public function baz()
+    public function baz2()
     {
-        $this->assertSame(1, 2);
-        $this->assertSame(1, 2);
-        $this->assertSame(1, 2);
+        $this->assertSame(1, 22);
+        $this->assertSame(1, 22);
+        $this->assertSame(1, 22);
     }
 
 }
@@ -407,23 +411,23 @@ class MyTest extends \PHPUnit_Framework_TestCase
     public function bar()
     {
         $lambdaOne = static function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
+            $this->assertSame(1, 21);
+            self::assertSame(1, 21);
+            static::assertSame(1, 21);
         };
 
         $lambdaTwo = function () {
-            $this->assertSame(1, 2);
-            self::assertSame(1, 2);
-            static::assertSame(1, 2);
+            $this->assertSame(1, 21);
+            self::assertSame(1, 21);
+            static::assertSame(1, 21);
         };
     }
 
-    public function baz()
+    public function baz2()
     {
-        $this->assertSame(1, 2);
-        self::assertSame(1, 2);
-        static::assertSame(1, 2);
+        $this->assertSame(1, 22);
+        self::assertSame(1, 22);
+        static::assertSame(1, 22);
     }
 
 }
@@ -433,7 +437,7 @@ EOF
                     'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
                 ],
             ],
-            [
+            'do not change class property and method signature' => [
                 <<<'EOF'
 <?php
 class HavingPropertyWithNameAsMethodToUpdateTest extends PHPUnit
@@ -442,10 +446,51 @@ class HavingPropertyWithNameAsMethodToUpdateTest extends PHPUnit
     {
         $this->assertSame = 42;
     }
+
+    public function assertSame($foo, $bar){}
 }
 EOF
                 ,
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 7.0
+     */
+    public function testAnonymousClassFixing()
+    {
+        $this->doTest(
+            '<?php
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testBaseCase()
+    {
+        static::assertSame(1, 2);
+
+        $foo = new class() {
+            public function assertSame($a, $b)
+            {
+                $this->assertSame(1, 2);
+            }
+        };
+    }
+}',
+            '<?php
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testBaseCase()
+    {
+        $this->assertSame(1, 2);
+
+        $foo = new class() {
+            public function assertSame($a, $b)
+            {
+                $this->assertSame(1, 2);
+            }
+        };
+    }
+}'
+        );
     }
 }

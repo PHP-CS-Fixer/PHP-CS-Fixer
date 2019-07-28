@@ -16,6 +16,8 @@ use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -32,7 +34,7 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = RuleSet::create();
 
-        $this->assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
+        static::assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
     }
 
     /**
@@ -53,14 +55,14 @@ final class RuleSetTest extends TestCase
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        $this->assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
+        static::assertArrayHasKey($ruleName, $fixers, sprintf('RuleSet "%s" contains unknown rule.', $setName));
 
         if (true === $ruleConfig) {
             return; // rule doesn't need configuration.
         }
 
         $fixer = $fixers[$ruleName];
-        $this->assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
+        static::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
         try {
             $fixer->configure($ruleConfig); // test fixer accepts the configuration
@@ -83,7 +85,7 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        $this->assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
+        static::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
     public function provideAllRulesFromSetsCases()
@@ -106,8 +108,8 @@ final class RuleSetTest extends TestCase
     {
         $setNames = RuleSet::create()->getSetDefinitionNames();
 
-        $this->assertInternalType('array', $setNames);
-        $this->assertNotEmpty($setNames);
+        static::assertInternalType('array', $setNames);
+        static::assertNotEmpty($setNames);
     }
 
     /**
@@ -117,8 +119,8 @@ final class RuleSetTest extends TestCase
      */
     public function testBuildInSetDefinitionNames($setName)
     {
-        $this->assertInternalType('string', $setName);
-        $this->assertSame('@', substr($setName, 0, 1));
+        static::assertInternalType('string', $setName);
+        static::assertSame('@', substr($setName, 0, 1));
     }
 
     public function testResolveRulesWithInvalidSet()
@@ -151,7 +153,7 @@ final class RuleSetTest extends TestCase
             'strict_comparison' => true,
         ]);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'braces' => true,
                 'full_opening_tag' => true,
@@ -169,7 +171,7 @@ final class RuleSetTest extends TestCase
             'strict_comparison' => true,
         ]);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'blank_line_after_namespace' => true,
                 'braces' => true,
@@ -210,7 +212,7 @@ final class RuleSetTest extends TestCase
             'encoding' => true,
         ]);
 
-        $this->assertSameRules(
+        static::assertSameRules(
             [
                 'blank_line_after_namespace' => true,
                 'braces' => true,
@@ -266,7 +268,7 @@ final class RuleSetTest extends TestCase
 
         $this->sort($sortedSetDefinition);
 
-        $this->assertSame($sortedSetDefinition, $setDefinition, sprintf(
+        static::assertSame($sortedSetDefinition, $setDefinition, sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key',
             $setDefinitionName
         ));
@@ -299,7 +301,7 @@ final class RuleSetTest extends TestCase
                 ->getFixers()
             ;
         } catch (InvalidForEnvFixerConfigurationException $exception) {
-            $this->markTestSkipped($exception->getMessage());
+            static::markTestSkipped($exception->getMessage());
         }
 
         $fixerNames = [];
@@ -309,7 +311,7 @@ final class RuleSetTest extends TestCase
             }
         }
 
-        $this->assertCount(
+        static::assertCount(
             0,
             $fixerNames,
             sprintf(
@@ -358,7 +360,7 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = $this->createRuleSetToTestWith([]);
 
-        $this->assertSame(
+        static::assertSame(
             array_keys(self::getRuleSetDefinitionsToTestWith()),
             $ruleSet->getSetDefinitionNames()
         );
@@ -374,7 +376,7 @@ final class RuleSetTest extends TestCase
     {
         $ruleSet = $this->createRuleSetToTestWith($rules);
 
-        $this->assertSameRules($expected, $ruleSet->getRules());
+        static::assertSameRules($expected, $ruleSet->getRules());
     }
 
     public function provideResolveRulesCases()
@@ -516,12 +518,44 @@ final class RuleSetTest extends TestCase
         $ruleSet->getRuleConfiguration('_not_exists');
     }
 
-    private function assertSameRules(array $expected, array $actual, $message = '')
+    /**
+     * @dataProvider providePHPUnitMigrationSetDefinitionNameCases
+     *
+     * @param string $setName
+     */
+    public function testPHPUnitMigrationTargetVersions($setName)
+    {
+        $ruleSet = new RuleSet([$setName => true]);
+
+        foreach ($ruleSet->getRules() as $ruleName => $ruleConfig) {
+            $targetVersion = true === $ruleConfig ? $this->getDefaultPHPUnitTargetOfRule($ruleName) : $ruleConfig['target'];
+
+            static::assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $targetVersion);
+        }
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function providePHPUnitMigrationSetDefinitionNameCases()
+    {
+        $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
+
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, function ($setDefinitionName) {
+            return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
+        });
+
+        return array_map(static function ($setDefinitionName) {
+            return [$setDefinitionName];
+        }, $setDefinitionPHPUnitMigrationNames);
+    }
+
+    private static function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
         ksort($actual);
 
-        $this->assertSame($expected, $actual, $message);
+        static::assertSame($expected, $actual, $message);
     }
 
     /**
@@ -606,5 +640,93 @@ final class RuleSetTest extends TestCase
         ];
 
         return $testSet;
+    }
+
+    /**
+     * @param string $ruleName
+     *
+     * @return string
+     */
+    private function getDefaultPHPUnitTargetOfRule($ruleName)
+    {
+        $fixer = self::getFixerByName($ruleName);
+
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ('target' === $option->getName()) {
+                $targetVersion = $option->getDefault();
+
+                break;
+            }
+        }
+
+        if (!isset($targetVersion)) {
+            static::markTestSkipped(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+        }
+
+        return $targetVersion;
+    }
+
+    /**
+     * @param string $setName
+     * @param string $ruleName
+     * @param string $actualTargetVersion
+     */
+    private static function assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $actualTargetVersion)
+    {
+        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d)(\d)Migration:risky$/', '$1.$2', $setName);
+
+        $fixer = self::getFixerByName($ruleName);
+
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ('target' === $option->getName()) {
+                $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
+
+                break;
+            }
+        }
+
+        if (!isset($allowedVersionsForFixer)) {
+            static::markTestSkipped(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+        }
+
+        $allowedVersionsForRuleset = array_filter(
+            $allowedVersionsForFixer,
+            function ($version) use ($maximumVersionForRuleset) {
+                return strcmp($maximumVersionForRuleset, $version) >= 0;
+            }
+        );
+
+        static::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), sprintf(
+            'Rule "%s" (in rule set "%s") has target "%s", but the rule set is not allowing it (allowed are only "%s")',
+            $fixer->getName(),
+            $setName,
+            $actualTargetVersion,
+            implode('", "', $allowedVersionsForRuleset)
+        ));
+
+        rsort($allowedVersionsForRuleset);
+        $maximimAllowedVersionForRuleset = reset($allowedVersionsForRuleset);
+
+        static::assertSame($maximimAllowedVersionForRuleset, $actualTargetVersion, sprintf(
+            'Rule "%s" (in rule set "%s") has target "%s", but there is higher available target "%s"',
+            $fixer->getName(),
+            $setName,
+            $actualTargetVersion,
+            $maximimAllowedVersionForRuleset
+        ));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return FixerInterface
+     */
+    private static function getFixerByName($name)
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $factory->useRuleSet(new RuleSet([$name => true]));
+
+        return current($factory->getFixers());
     }
 }

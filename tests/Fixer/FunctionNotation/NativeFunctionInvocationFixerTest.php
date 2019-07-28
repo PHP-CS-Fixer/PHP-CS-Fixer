@@ -171,7 +171,7 @@ PHP;
     {
         $fixer = $this->createFixer();
 
-        $this->assertTrue($fixer->isRisky());
+        static::assertTrue($fixer->isRisky());
     }
 
     /**
@@ -572,6 +572,6 @@ namespace {
         $this->doTest(
             '<?php $name = \get_class($foo, );',
             '<?php $name = get_class($foo, );'
-         );
+        );
     }
 }

@@ -98,7 +98,7 @@ final class VersionSpecificationTest extends TestCase
             $maximum
         );
 
-        $this->assertTrue($versionSpecification->isSatisfiedBy($actual));
+        static::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
     /**
@@ -128,7 +128,7 @@ final class VersionSpecificationTest extends TestCase
             $maximum
         );
 
-        $this->assertFalse($versionSpecification->isSatisfiedBy($actual));
+        static::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
     /**

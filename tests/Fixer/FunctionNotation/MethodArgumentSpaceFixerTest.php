@@ -192,11 +192,25 @@ $var2 = some_function(
                 ['keep_multiple_spaces_after_comma' => true],
             ],
             'skip array' => [
-                '<?php array(10 , 20 ,30);',
+                '<?php array(10 , 20 ,30); $foo = [ 10,50 , 60 ] ?>',
             ],
             'list call with trailing comma' => [
                 '<?php list($path, $mode, ) = foo();',
                 '<?php list($path, $mode,) = foo();',
+            ],
+            'list call with trailing comma multi line' => [
+                '<?php
+list(
+    $a,
+    $b,
+) = foo();
+',
+                '<?php
+list(
+    $a   ,
+    $b  ,
+) = foo();
+',
             ],
             'inline comments with spaces' => [
                 '<?php xyz($a=10, /*comment1*/ $b=2000, /*comment2*/ $c=30);',
@@ -864,6 +878,25 @@ INPUT
                     'keep_multiple_spaces_after_comma' => true,
                 ],
             ],
+            'fix closing parenthesis (without trailing comma)' => [
+                '<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+    );
+}',
+                '<?php
+if (true) {
+    execute(
+        $foo,
+        $bar
+        );
+}',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
         ];
     }
 
@@ -884,6 +917,57 @@ INPUT
             [
                 '<?php function A($c, ...$a){}',
                 '<?php function A($c ,...$a){}',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                <<<'EXPECTED'
+<?php
+foo(
+    $bar,
+    $baz,
+);
+EXPECTED
+                ,
+                null,
+                ['on_multiline' => 'ensure_fully_multiline'],
+            ],
+            [
+                '<?php
+functionCall(
+    1,
+    2,
+    3,
+);',
+                '<?php
+functionCall(
+    1, 2,
+    3,
+);',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
+            [
+                '<?php foo(1, 2, 3, );',
+                '<?php foo(1,2,3,);',
             ],
         ];
     }

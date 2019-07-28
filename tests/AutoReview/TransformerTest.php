@@ -37,7 +37,7 @@ final class TransformerTest extends TestCase
     {
         $transformerRef = new \ReflectionClass($transformer);
 
-        $this->assertTrue(
+        static::assertTrue(
             $transformerRef->isFinal(),
             sprintf('Transformer "%s" must be declared "final."', $transformer->getName())
         );
@@ -69,7 +69,7 @@ final class TransformerTest extends TestCase
      */
     public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second)
     {
-        $this->assertLessThan(
+        static::assertLessThan(
             $first->getPriority(),
             $second->getPriority(),
             sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))

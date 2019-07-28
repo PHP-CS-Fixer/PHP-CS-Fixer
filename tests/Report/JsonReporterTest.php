@@ -144,14 +144,14 @@ JSON;
 
     protected function assertFormat($expected, $input)
     {
-        $this->assertJsonSchema($input);
-        $this->assertJsonStringEqualsJsonString($expected, $input);
+        static::assertJsonSchema($input);
+        static::assertJsonStringEqualsJsonString($expected, $input);
     }
 
     /**
      * @param string $json
      */
-    private function assertJsonSchema($json)
+    private static function assertJsonSchema($json)
     {
         $jsonPath = __DIR__.'/../../doc/schema.json';
 
@@ -163,7 +163,7 @@ JSON;
             (object) ['$ref' => 'file://'.realpath($jsonPath)]
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             $validator->isValid(),
             implode(
                 "\n",
