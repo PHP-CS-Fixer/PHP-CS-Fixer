@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\ClassAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\ClassesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Analyzer\ClassAnalyzer
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ClassesAnalyzer
  */
-final class ClassAnalyzerTest extends TestCase
+final class ClassesAnalyzerTest extends TestCase
 {
     /**
      * @param int         $classIndex
@@ -37,7 +37,7 @@ final class ClassAnalyzerTest extends TestCase
     public function testGetClassExtends($classIndex, $code, $name = null, $startIndex = null, $endIndex = null)
     {
         $tokens = Tokens::fromCode($code);
-        $analyzer = new ClassAnalyzer();
+        $analyzer = new ClassesAnalyzer();
 
         $extend = $analyzer->getClassExtends($tokens, $classIndex);
 
@@ -89,7 +89,7 @@ class Izumi {
     public function testClassDefinitionInfo($code, $classIndex, $expected)
     {
         $tokens = Tokens::fromCode($code);
-        $analyzer = new ClassAnalyzer();
+        $analyzer = new ClassesAnalyzer();
         static::assertSame(serialize($expected), serialize($analyzer->getClassDefinition($tokens, $classIndex)));
     }
 
@@ -194,7 +194,7 @@ new class {};',
         $tokens = Tokens::fromCode($source);
         static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
 
-        $analyzer = new ClassAnalyzer();
+        $analyzer = new ClassesAnalyzer();
         $result = $analyzer->getClassInheritanceInfo($tokens, $expected['start'], $label);
 
         static::assertSame($expected, $result);

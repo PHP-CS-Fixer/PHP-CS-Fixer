@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @internal
  */
-final class ClassAnalyzer
+final class ClassesAnalyzer
 {
     /**
      * @param Tokens $tokens

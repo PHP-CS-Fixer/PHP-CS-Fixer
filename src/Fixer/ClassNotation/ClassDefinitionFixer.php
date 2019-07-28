@@ -22,7 +22,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
-use PhpCsFixer\Tokenizer\Analyzer\ClassAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\ClassesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -282,7 +282,7 @@ interface Bar extends
      */
     private function getClassyDefinitionInfo(Tokens $tokens, $classyIndex)
     {
-        return (new ClassAnalyzer())->getClassDefinition($tokens, $classyIndex);
+        return (new ClassesAnalyzer())->getClassDefinition($tokens, $classyIndex);
     }
 
     /**
@@ -293,7 +293,7 @@ interface Bar extends
      */
     private function getClassyInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
-        return (new ClassAnalyzer())->getClassInheritanceInfo($tokens, $startIndex, $label);
+        return (new ClassesAnalyzer())->getClassInheritanceInfo($tokens, $startIndex, $label);
     }
 
     /**
