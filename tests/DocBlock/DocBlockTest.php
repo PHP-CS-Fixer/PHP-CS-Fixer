@@ -166,7 +166,7 @@ final class DocBlockTest extends TestCase
         $doc = new DocBlock($input);
         $doc->getLine($line)->remove();
 
-        $this->assertSame($expected, $doc->getContent());
+        static::assertSame($expected, $doc->getContent());
     }
 
     public function provideRemovingLineCases()
