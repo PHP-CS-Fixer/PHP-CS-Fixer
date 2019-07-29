@@ -60,6 +60,7 @@ if ($require) {
     foreach ($possibleFiles as $possibleFile) {
         if (file_exists($possibleFile)) {
             $file = $possibleFile;
+
             break;
         }
     }
@@ -67,7 +68,7 @@ if ($require) {
     if ($file) {
         require_once $file;
     } else {
-        throw new Exception("Unable to locate autoload.php file");
+        throw new Exception('Unable to locate autoload.php file');
     }
 
     unset($possibleFiles, $possibleFile, $file);
