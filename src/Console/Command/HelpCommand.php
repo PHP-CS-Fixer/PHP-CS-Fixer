@@ -72,9 +72,9 @@ NOTE: the output for the following formats are generated in accordance with XML 
 * ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
 
 
-The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also displays progress notifications.
+The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also display progress notifications.
 
-The <comment>--rules</comment> option limits the rules to apply on the
+The <comment>--rules</comment> option limits the rules to apply to the
 project:
 
     <info>$ php %command.full_name% /path/to/project --rules=@PSR2</info>
@@ -109,7 +109,7 @@ The <comment>--diff-format</comment> option allows to specify in which format th
 * <comment>sbd</comment>: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
 The <comment>--allow-risky</comment> option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
-Risky rule is a rule, which could change code behaviour. By default no risky rules are run.
+A rule is considered risky if it could change code behaviour. By default no risky rules are run.
 
 The <comment>--stop-on-violation</comment> flag stops the execution upon first file that needs to be fixed.
 
