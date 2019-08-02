@@ -341,6 +341,16 @@ EOTXTb
 $a#
 );',
             ],
+            'with_random_comments and config' => [
+                '<?php xyz#
+ (#
+""#
+,#
+$a#
+);',
+                null,
+                ['on_multiline' => 'ensure_fully_multiline'],
+            ],
             'keep_multiple_spaces_after_comma_with_newlines' => [
                 "<?php xyz(\$a=10,\n\$b=20);",
                 "<?php xyz(\$a=10,   \n\$b=20);",
