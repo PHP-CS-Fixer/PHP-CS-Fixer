@@ -546,18 +546,4 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
 
         return $cases;
     }
-
-    /**
-     * @return array
-     */
-    public function getInvalidConfigurationCases()
-    {
-        return array_merge(parent::getInvalidConfigurationCases(), [
-            [['syntax' => 'foo']],
-            [[
-                'syntax' => 'foo',
-                'ignored_tags' => [],
-            ]],
-        ]);
-    }
 }

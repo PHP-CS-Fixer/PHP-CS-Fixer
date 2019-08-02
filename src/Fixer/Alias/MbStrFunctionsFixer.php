@@ -44,6 +44,23 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     ];
 
     /**
+     * @var array<string, array>
+     */
+    private $functions;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->functions = array_filter(
+            self::$functionsMap,
+            static function (array $mapping) {
+                return \function_exists($mapping['alternativeName']);
+            }
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -86,15 +103,8 @@ $a = substr_count($a, $b);
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $functions = array_filter(
-            self::$functionsMap,
-            static function ($mapping) {
-                return \function_exists($mapping['alternativeName']);
-            }
-        );
-
         $argumentsAnalyzer = new ArgumentsAnalyzer();
-        foreach ($functions as $functionIdentity => $functionReplacement) {
+        foreach ($this->functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans

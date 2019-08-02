@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -65,13 +66,33 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
             $nextToken = $tokens[$nextTokenIdx];
 
             if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
-                $tokens->clearAt($nextTokenIdx);
+                $this->removeLeadingImportSlash($tokens, $nextTokenIdx);
             } elseif ($nextToken->isGivenKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
                 $nextTokenIdx = $tokens->getNextMeaningfulToken($nextTokenIdx);
                 if ($tokens[$nextTokenIdx]->isGivenKind(T_NS_SEPARATOR)) {
-                    $tokens->clearAt($nextTokenIdx);
+                    $this->removeLeadingImportSlash($tokens, $nextTokenIdx);
                 }
             }
         }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function removeLeadingImportSlash(Tokens $tokens, $index)
+    {
+        $previousIndex = $tokens->getPrevNonWhitespace($index);
+
+        if (
+            $previousIndex < $index - 1
+            || $tokens[$previousIndex]->isComment()
+        ) {
+            $tokens->clearAt($index);
+
+            return;
+        }
+
+        $tokens[$index] = new Token([T_WHITESPACE, ' ']);
     }
 }
