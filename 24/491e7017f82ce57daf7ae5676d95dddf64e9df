@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-15T07:01:57Z
+
+>new static();
+
+done
+
+>$foo instanceof static
+
+~TODO~, done! thanks for the review!  :)
