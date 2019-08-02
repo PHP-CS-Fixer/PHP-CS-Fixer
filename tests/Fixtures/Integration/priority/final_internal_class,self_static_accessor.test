@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: final_internal_class,self_static_accessor.
+--RULESET--
+{"final_internal_class": true, "self_static_accessor": true}
+--EXPECT--
+<?php
+/** @internal */
+final class Sample
+{
+    public function Foo()
+    {
+        echo self::class;
+    }
+}
+
+--INPUT--
+<?php
+/** @internal */
+class Sample
+{
+    public function Foo()
+    {
+        echo static::class;
+    }
+}

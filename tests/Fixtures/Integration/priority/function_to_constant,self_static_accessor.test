@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: function_to_constant,self_static_accessor.
+--RULESET--
+{"function_to_constant": {"functions": ["get_called_class"]}, "self_static_accessor": true}
+--EXPECT--
+<?php
+
+final class Foo
+{
+    public function Bas()
+    {
+        echo self::class;
+    }
+}
+
+--INPUT--
+<?php
+
+final class Foo
+{
+    public function Bas()
+    {
+        echo get_called_class();
+    }
+}
