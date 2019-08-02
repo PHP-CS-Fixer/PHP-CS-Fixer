@@ -329,6 +329,47 @@ PHP;
     }
 
     /**
+     * @requires PHP 7.4
+     */
+    public function testGetClassyElements74()
+    {
+        $source = <<<'PHP'
+<?php
+class Foo
+{
+    public int $bar = 3;
+
+    protected ?string $baz;
+
+    private ?string $bazNull = null;
+
+    public static iterable $staticProp;
+
+    public float $x, $y;
+
+    var bool $flag1;
+
+    var ?bool $flag2;
+}
+
+PHP;
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        $expected = [];
+        foreach ([11, 23, 31, 44, 51, 54, 61, 69] as $index) {
+            $expected[$index] = [
+                'token' => $tokens[$index],
+                'type' => 'property',
+                'classIndex' => 1,
+            ];
+        }
+
+        static::assertSame($expected, $elements);
+    }
+
+    /**
      * @param string $source
      *
      * @dataProvider provideIsAnonymousClassCases
