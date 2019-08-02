@@ -93,7 +93,16 @@ EOT
                 continue;
             }
 
-            $tokens->overrideRange($index, $index + 2, [
+            $tokenOfStringBeforeToken = $tokens[$index - 1];
+            $stringContent = $tokenOfStringBeforeToken->getContent();
+
+            if ('$' === substr($stringContent, -1) && '\\$' !== substr($stringContent, -2)) {
+                $newContent = substr($stringContent, 0, -1).'\\$';
+                $tokenOfStringBeforeToken = new Token([T_ENCAPSED_AND_WHITESPACE, $newContent]);
+            }
+
+            $tokens->overrideRange($index - 1, $index + 2, [
+                $tokenOfStringBeforeToken,
                 new Token([T_CURLY_OPEN, '{']),
                 new Token([T_VARIABLE, '$'.$varnameToken->getContent()]),
                 new Token([CT::T_CURLY_CLOSE, '}']),
