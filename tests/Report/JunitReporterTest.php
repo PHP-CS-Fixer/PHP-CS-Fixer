@@ -49,12 +49,12 @@ final class JunitReporterTest extends AbstractReporterTestCase
         self::$xsd = null;
     }
 
-    public function getFormat()
+    protected function getFormat()
     {
         return 'junit';
     }
 
-    public function createNoErrorReport()
+    protected function createNoErrorReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -66,7 +66,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 XML;
     }
 
-    public function createSimpleReport()
+    protected function createSimpleReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -80,7 +80,7 @@ XML;
 XML;
     }
 
-    public function createWithDiffReport()
+    protected function createWithDiffReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -99,7 +99,7 @@ this text is a diff ;)]]></failure>
 XML;
     }
 
-    public function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -116,7 +116,7 @@ XML;
 XML;
     }
 
-    public function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport()
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -130,7 +130,7 @@ XML;
 XML;
     }
 
-    public function createComplexReport()
+    protected function createComplexReport()
     {
         return <<<'XML'
 <?xml version="1.0"?>
