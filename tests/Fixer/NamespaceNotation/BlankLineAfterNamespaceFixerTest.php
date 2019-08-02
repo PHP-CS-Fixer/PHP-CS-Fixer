@@ -129,6 +129,13 @@ namespace Foo;
             [
                 '<?php
 namespace Foo;
+',
+                '<?php
+namespace Foo;',
+            ],
+            [
+                '<?php
+namespace Foo;
 
 ?>',
                 '<?php
@@ -137,6 +144,75 @@ namespace Foo;
 
 
 ?>',
+            ],
+            [
+                '<?php
+    namespace Foo;
+
+    class Bar {}',
+            ],
+            [
+                '<?php
+  namespace Foo;
+
+      class Bar {}',
+                '<?php
+  namespace Foo;
+      class Bar {}',
+            ],
+            [
+                '<?php
+    namespace My\NS;
+
+    class X extends Y {}',
+            ],
+            [
+                '<?php
+namespace My\NS; // comment
+
+class X extends Y {}',
+            ],
+            [
+                '<?php
+namespace My\NS; /* comment */
+
+class X extends Y {}',
+            ],
+            [
+                '<?php
+namespace My\NS; /*
+comment 1
+comment 2
+*/
+
+class X extends Y {}',
+                '<?php
+namespace My\NS; /*
+comment 1
+comment 2
+*/
+class X extends Y {}',
+            ],
+            [
+                '<?php
+namespace My\NS; /** comment */
+
+class X extends Y {}',
+            ],
+            [
+                '<?php
+namespace My\NS; /**
+comment 1
+comment 2
+*/
+
+class X extends Y {}',
+                '<?php
+namespace My\NS; /**
+comment 1
+comment 2
+*/
+class X extends Y {}',
             ],
         ];
     }
