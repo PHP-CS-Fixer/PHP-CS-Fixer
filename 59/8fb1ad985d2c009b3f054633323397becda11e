@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-03T20:47:15Z
+
+What about:
+```php
+<?php
+namespace Foo; /** comment 1 */              /**
+ * comment 2
+ */
+    use Bar;
+```
+Should we add new line before `use` or before `comment 2` (as it has break line itself)?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-12-04T06:09:46Z
+
+I think it would be fine to not fix in that case, sometimes people write stuff we cannot make look better :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-12-30T15:15:16Z
+
+(dropping milestone as this is WIP)
