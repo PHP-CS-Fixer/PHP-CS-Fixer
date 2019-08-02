@@ -98,6 +98,48 @@ echo "Hello \${name}";
 EXPECTED
                 ,
             ],
+            'double dollar' => [
+                <<<'EXPECTED'
+<?php
+$name = 'World';
+echo "Hello \${$name}";
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$name = 'World';
+echo "Hello $${name}";
+INPUT
+                ,
+            ],
+            'double dollar heredoc' => [
+                <<<'EXPECTED'
+<?php
+$name = 'World';
+echo <<<TEST
+Hello \${$name}!
+TEST;
+
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$name = 'World';
+echo <<<TEST
+Hello $${name}!
+TEST;
+
+INPUT
+                ,
+            ],
+            'double dollar single quote' => [
+                <<<'EXPECTED'
+<?php
+$name = 'World';
+echo 'Hello $${name}';
+EXPECTED
+                ,
+            ],
         ];
     }
 }

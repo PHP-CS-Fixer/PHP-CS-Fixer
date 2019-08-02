@@ -42,6 +42,29 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
             [
                 '<?php
 
+    $a = 0;
+    echo 1;',
+                '<?php
+    $a = 0;
+    echo 1;',
+            ],
+            [
+                '<?php
+
+    $b = 2;
+    echo 3;',
+                '<?php     $b = 2;
+    echo 3;',
+            ],
+            [
+                '<?php
+    '.'
+    $c = 4;
+    echo 5;',
+            ],
+            [
+                '<?php
+
 $a = function(){
                     echo 1;
                 };',

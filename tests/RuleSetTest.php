@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -69,6 +70,38 @@ final class RuleSetTest extends TestCase
         } catch (InvalidForEnvFixerConfigurationException $exception) {
             // ignore
         }
+    }
+
+    /**
+     * @param string     $setName
+     * @param string     $ruleName
+     * @param array|bool $ruleConfig
+     *
+     * @dataProvider provideAllRulesFromSetsCases
+     */
+    public function testThatDefaultConfigIsNotPassed($setName, $ruleName, $ruleConfig)
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $factory->useRuleSet(new RuleSet([$ruleName => true]));
+
+        $fixer = current($factory->getFixers());
+
+        if (!$fixer instanceof ConfigurableFixerInterface) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        $defaultConfig = [];
+        foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ($option instanceof DeprecatedFixerOptionInterface) {
+                continue;
+            }
+            $defaultConfig[$option->getName()] = $option->getDefault();
+        }
+
+        static::assertNotSame($defaultConfig, $ruleConfig, sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName));
     }
 
     /**

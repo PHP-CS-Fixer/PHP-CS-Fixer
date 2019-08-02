@@ -25,28 +25,6 @@ use PhpCsFixer\Tokenizer\Token;
  */
 final class TokenTest extends TestCase
 {
-    public function getBraceToken()
-    {
-        return new Token($this->getBraceTokenPrototype());
-    }
-
-    public function getBraceTokenPrototype()
-    {
-        return '(';
-    }
-
-    public function getForeachToken()
-    {
-        return new Token($this->getForeachTokenPrototype());
-    }
-
-    public function getForeachTokenPrototype()
-    {
-        static $prototype = [T_FOREACH, 'foreach'];
-
-        return $prototype;
-    }
-
     /**
      * @param mixed $input
      *
@@ -463,5 +441,27 @@ final class TokenTest extends TestCase
                 CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
             ],
         ];
+    }
+
+    private function getBraceToken()
+    {
+        return new Token($this->getBraceTokenPrototype());
+    }
+
+    private function getBraceTokenPrototype()
+    {
+        return '(';
+    }
+
+    private function getForeachToken()
+    {
+        return new Token($this->getForeachTokenPrototype());
+    }
+
+    private function getForeachTokenPrototype()
+    {
+        static $prototype = [T_FOREACH, 'foreach'];
+
+        return $prototype;
     }
 }

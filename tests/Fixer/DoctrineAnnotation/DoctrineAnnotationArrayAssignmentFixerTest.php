@@ -189,18 +189,4 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
  */'],
         ]);
     }
-
-    /**
-     * @return array
-     */
-    public function getInvalidConfigurationCases()
-    {
-        return array_merge(parent::getInvalidConfigurationCases(), [
-            [['operator' => 'foo']],
-            [[
-                'operator' => 'foo',
-                'ignored_tags' => [],
-            ]],
-        ]);
-    }
 }
