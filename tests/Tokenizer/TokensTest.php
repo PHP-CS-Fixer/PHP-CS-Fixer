@@ -877,35 +877,6 @@ PHP;
     }
 
     /**
-     * @param int    $expectedIndex
-     * @param string $source
-     * @param int    $type
-     * @param int    $searchIndex
-     */
-    public static function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
-
-        static::assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
-        static::assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
-
-        $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
-        static::assertInternalType('array', $detectedType);
-        static::assertArrayHasKey('type', $detectedType);
-        static::assertArrayHasKey('isStart', $detectedType);
-        static::assertSame($type, $detectedType['type']);
-        static::assertTrue($detectedType['isStart']);
-
-        $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
-        static::assertInternalType('array', $detectedType);
-        static::assertArrayHasKey('type', $detectedType);
-        static::assertArrayHasKey('isStart', $detectedType);
-        static::assertSame($type, $detectedType['type']);
-        static::assertFalse($detectedType['isStart']);
-    }
-
-    /**
      * @param string $expected   valid PHP code
      * @param string $input      valid PHP code
      * @param int    $index      token index
@@ -1238,6 +1209,35 @@ $bar;',
 $bar;',
             $tokens->generateCode()
         );
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     */
+    private static function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        static::assertSame($expectedIndex, $tokens->findBlockEnd($type, $searchIndex));
+        static::assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
+
+        $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
+        static::assertInternalType('array', $detectedType);
+        static::assertArrayHasKey('type', $detectedType);
+        static::assertArrayHasKey('isStart', $detectedType);
+        static::assertSame($type, $detectedType['type']);
+        static::assertTrue($detectedType['isStart']);
+
+        $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
+        static::assertInternalType('array', $detectedType);
+        static::assertArrayHasKey('type', $detectedType);
+        static::assertArrayHasKey('isStart', $detectedType);
+        static::assertSame($type, $detectedType['type']);
+        static::assertFalse($detectedType['isStart']);
     }
 
     /**

@@ -514,19 +514,6 @@ TestInterface3, /**/     TestInterface4   ,
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    public function doTestClassyInheritanceInfo($source, $label, array $expected)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
-        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
-        $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
-        $method->setAccessible(true);
-
-        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
-
-        static::assertSame($expected, $result);
-    }
-
     public function provideClassyImplementsInfoCases()
     {
         return [
@@ -681,6 +668,19 @@ $a = new class implements
                 "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
             ],
         ];
+    }
+
+    private function doTestClassyInheritanceInfo($source, $label, array $expected)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
+
+        static::assertSame($expected, $result);
     }
 
     private function provideClassyCases($classy)

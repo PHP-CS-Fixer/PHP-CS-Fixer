@@ -75,6 +75,12 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                 '<?php $foo = new $foo;',
             ],
             [
+                '<?php
+                    $bar1 = new $foo[0]->bar();
+                    $bar2 = new $foo[0][1]->bar();
+                ',
+            ],
+            [
                 '<?php $xyz = new X(new Y(new Z()));',
                 '<?php $xyz = new X(new Y(new Z));',
             ],
@@ -105,6 +111,22 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
             [
                 '<?php $a = new $b[$c]();',
                 '<?php $a = new $b[$c];',
+            ],
+            [
+                '<?php $a = new $b[$c][0]();',
+                '<?php $a = new $b[$c][0];',
+            ],
+            [
+                '<?php $a = new $b{$c}();',
+                '<?php $a = new $b{$c};',
+            ],
+            [
+                '<?php $a = new $b{$c}{0}{1}() ?>',
+                '<?php $a = new $b{$c}{0}{1} ?>',
+            ],
+            [
+                '<?php $a = new $b{$c}[1]{0}[2]();',
+                '<?php $a = new $b{$c}[1]{0}[2];',
             ],
             [
                 '<?php $a = new $b[$c[$d ? foo() : bar("bar[...]") - 1]]();',
