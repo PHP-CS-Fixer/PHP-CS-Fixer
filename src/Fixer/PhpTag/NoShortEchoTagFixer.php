@@ -12,16 +12,17 @@
 
 namespace PhpCsFixer\Fixer\PhpTag;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
+ *
+ * @deprecated proxy to ShortEchoTagFixer
  */
-final class NoShortEchoTagFixer extends AbstractFixer
+final class NoShortEchoTagFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -37,34 +38,16 @@ final class NoShortEchoTagFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function getSuccessorsNames()
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
+        return array_keys($this->proxyFixers);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function createProxyFixers()
     {
-        $i = \count($tokens);
-
-        while ($i--) {
-            $token = $tokens[$i];
-
-            if (!$token->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
-                continue;
-            }
-
-            $nextIndex = $i + 1;
-
-            $tokens[$i] = new Token([T_OPEN_TAG, '<?php ']);
-
-            if (!$tokens[$nextIndex]->isWhitespace()) {
-                $tokens->insertAt($nextIndex, new Token([T_WHITESPACE, ' ']));
-            }
-
-            $tokens->insertAt($nextIndex, new Token([T_ECHO, 'echo']));
-        }
+        return [new ShortEchoTagFixer()];
     }
 }

@@ -1117,9 +1117,10 @@ Choose from the list of available rules:
 
   Short cast ``bool`` using double exclamation mark should not be used.
 
-* **no_short_echo_tag** [@PhpCsFixer]
+* **no_short_echo_tag**
 
   Replace short-echo ``<?=`` with long format ``<?php echo`` syntax.
+  DEPRECATED: use ``short_echo_tag`` instead.
 
 * **no_singleline_whitespace_before_semicolons** [@Symfony, @PhpCsFixer]
 
@@ -1800,6 +1801,20 @@ Choose from the list of available rules:
   Cast shall be used, not ``settype``.
 
   *Risky rule: risky when the ``settype`` function is overridden or when used as the 2nd or 3rd expression in a ``for`` loop .*
+
+* **short_echo_tag** [@PhpCsFixer]
+
+  Replace short-echo ``<?=`` with long format ``<?php echo``/``<?php print``
+  syntax, or vice-versa.
+
+  Configuration options:
+
+  - ``format`` (``'long'``, ``'short'``): the desired language construct; defaults to
+    ``'long'``
+  - ``long_function`` (``'echo'``, ``'print'``): the function to be used to expand the
+    short echo tags; defaults to ``'echo'``
+  - ``short_always`` (``bool``): always render short-echo tags even in case of
+    complex code; defaults to ``false``
 
 * **short_scalar_cast** [@Symfony, @PhpCsFixer]
 
