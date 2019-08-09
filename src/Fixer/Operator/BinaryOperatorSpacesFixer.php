@@ -41,6 +41,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @internal
      */
+    const SINGLE_SPACE_MINIMUM = 'single_space_minimum';
+
+    /**
+     * @internal
+     */
     const NO_SPACE = 'no_space';
 
     /**
@@ -87,6 +92,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         self::ALIGN_SINGLE_SPACE,
         self::ALIGN_SINGLE_SPACE_MINIMAL,
         self::SINGLE_SPACE,
+        self::SINGLE_SPACE_MINIMUM,
         self::NO_SPACE,
         null,
     ];
@@ -341,6 +347,12 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             return;
         }
 
+        if (self::SINGLE_SPACE_MINIMUM === $this->operators[$tokenContent]) {
+            $this->fixWhiteSpaceAroundOperatorToAtLeastOneSingleSpace($tokens, $index);
+
+            return;
+        }
+
         if (self::NO_SPACE === $this->operators[$tokenContent]) {
             $this->fixWhiteSpaceAroundOperatorToNoSpace($tokens, $index);
 
@@ -386,6 +398,33 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
+            }
+        } else {
+            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $index
+     */
+    private function fixWhiteSpaceAroundOperatorToAtLeastOneSingleSpace(Tokens $tokens, $index)
+    {
+        // fix white space after operator
+        if ($tokens[$index + 1]->isWhitespace()) {
+            $content = $tokens[$index + 1]->getContent();
+            if (!preg_match('/^\s+$/', $content) && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+            }
+        } else {
+            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+        }
+
+        // fix white space before operator
+        if ($tokens[$index - 1]->isWhitespace()) {
+            $content = $tokens[$index - 1]->getContent();
+            if (!preg_match('/^\s+$/', $content) && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
