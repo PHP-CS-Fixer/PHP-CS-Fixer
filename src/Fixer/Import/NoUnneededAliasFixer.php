@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
-class NoUnneededAliasFixer extends AbstractFixer
+final class NoUnneededAliasFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
