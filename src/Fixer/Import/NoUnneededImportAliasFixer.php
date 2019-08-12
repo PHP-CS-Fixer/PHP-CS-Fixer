@@ -54,7 +54,7 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
+        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens, false);
 
         foreach ($useDeclarations as $declaration) {
             if (!$declaration->isAliased()) {

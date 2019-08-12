@@ -24,32 +24,34 @@ final class NamespaceUsesAnalyzer
 {
     /**
      * @param Tokens $tokens
+     * @param bool   $skipMultipleUseStatement
      *
      * @return NamespaceUseAnalysis[]
      */
-    public function getDeclarationsFromTokens(Tokens $tokens)
+    public function getDeclarationsFromTokens(Tokens $tokens, $skipMultipleUseStatement = true)
     {
         $tokenAnalyzer = new TokensAnalyzer($tokens);
         $useIndexes = $tokenAnalyzer->getImportUseIndexes();
 
-        return $this->getDeclarations($tokens, $useIndexes);
+        return $this->getDeclarations($tokens, $useIndexes, $skipMultipleUseStatement);
     }
 
     /**
      * @param Tokens $tokens
      * @param array  $useIndexes
+     * @param bool   $skipMultipleUseStatement
      *
      * @return NamespaceUseAnalysis[]
      */
-    private function getDeclarations(Tokens $tokens, array $useIndexes)
+    private function getDeclarations(Tokens $tokens, array $useIndexes, $skipMultipleUseStatement = true)
     {
         $uses = [];
 
         foreach ($useIndexes as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
-            $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
-            if ($analysis) {
-                $uses[] = $analysis;
+            $analyses = $this->parseDeclaration($tokens, $index, $endIndex, $skipMultipleUseStatement);
+            if ($analyses) {
+                $uses = array_merge($uses, $analyses);
             }
         }
 
@@ -60,20 +62,36 @@ final class NamespaceUsesAnalyzer
      * @param Tokens $tokens
      * @param int    $startIndex
      * @param int    $endIndex
+     * @param bool   $skipMultipleUseStatement
      *
-     * @return null|NamespaceUseAnalysis
+     * @return null|NamespaceUseAnalysis[]
      */
-    private function parseDeclaration(Tokens $tokens, $startIndex, $endIndex)
+    private function parseDeclaration(Tokens $tokens, $startIndex, $endIndex, $skipMultipleUseStatement = true)
     {
+        $namespaceUseAnalyses = [];
         $fullName = $shortName = '';
         $aliased = false;
 
         $type = NamespaceUseAnalysis::TYPE_CLASS;
         for ($i = $startIndex; $i <= $endIndex; ++$i) {
             $token = $tokens[$i];
-            if ($token->equals(',') || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+            if ($token->equals(',')) {
+                if ($skipMultipleUseStatement) {
+                    return null;
+                }
+                $namespaceUseAnalyses[] = new NamespaceUseAnalysis(
+                    trim($fullName),
+                    $shortName,
+                    $aliased,
+                    $startIndex,
+                    $i,
+                    $type
+                );
+                $fullName = $shortName = '';
+                $aliased = false;
+                $startIndex = $i + 1;
+            } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 // do not touch group use declarations until the logic of this is added (for example: `use some\a\{ClassD};`)
-                // ignore multiple use statements that should be split into few separate statements (for example: `use BarB, BarC as C;`)
                 return null;
             }
 
@@ -99,7 +117,7 @@ final class NamespaceUsesAnalyzer
             }
         }
 
-        return new NamespaceUseAnalysis(
+        $namespaceUseAnalyses[] = new NamespaceUseAnalysis(
             trim($fullName),
             $shortName,
             $aliased,
@@ -107,5 +125,7 @@ final class NamespaceUsesAnalyzer
             $endIndex,
             $type
         );
+
+        return $namespaceUseAnalyses;
     }
 }
