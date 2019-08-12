@@ -1151,10 +1151,6 @@ Choose from the list of available rules:
 
   There MUST be no trailing spaces inside comment or PHPDoc.
 
-* **no_unneeded_alias**
-
-  Remove unneeded alias in ``use`` clauses.
-
 * **no_unneeded_control_parentheses** [@Symfony, @PhpCsFixer]
 
   Removes unneeded parentheses around control statements.
@@ -1173,6 +1169,10 @@ Choose from the list of available rules:
 * **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
 
   A final class must not have final methods.
+
+* **no_unneeded_import_alias**
+
+  Remove unneeded alias in ``use`` clauses.
 
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
