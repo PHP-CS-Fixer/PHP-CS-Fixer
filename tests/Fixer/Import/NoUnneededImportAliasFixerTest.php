@@ -54,39 +54,58 @@ use const some\a\ConstA as ConstA;
 use function some\a\fn_b as fn_b;
 EOF
             ],
-            'comments' => [
+            'multiple use' => [
                 <<<'EOF'
 <?php
 
-use Foo\Bar\BazEnd/* comment */;
-use Foo\Bar\BazEndWithSpace  /* comment */ ;
-use Foo\Bar\BazAfterAs/* comment */;
-use Foo\Bar\BazAfterAsWithSpace  /* comment */ ;
-use Foo\Bar\BazBeforeAs/* comment */;
-use Foo\Bar\BazBeforeAsWithSpace  /* comment */  ;
-use/* comment */Foo\Bar\BazAfterUse;
-use  /* comment */  Foo\Bar\BazAfterUseWithSpace;
-use Foo\Bar\BazAfterTricky  // comment
-  ;
-use const some\a\ConstA/* comment */;
-use function some\a\fn_b /* comment */ ;
+use Foo\Bar\FooBar, Foo\Bar\Baz as Alias;
+use const some\a\ConstB as Alias, some\a\ConstA;
+use function some\a\fn_b, some\a\fn_c;
 EOF
                 ,
                 <<<'EOF'
 <?php
 
-use Foo\Bar\BazEnd as BazEnd/* comment */;
-use Foo\Bar\BazEndWithSpace as BazEndWithSpace  /* comment */ ;
-use Foo\Bar\BazAfterAs as/* comment */BazAfterAs;
-use Foo\Bar\BazAfterAsWithSpace as  /* comment */ BazAfterAsWithSpace;
-use Foo\Bar\BazBeforeAs/* comment */as BazBeforeAs;
-use Foo\Bar\BazBeforeAsWithSpace  /* comment */  as BazBeforeAsWithSpace;
-use/* comment */Foo\Bar\BazAfterUse as BazAfterUse;
-use  /* comment */  Foo\Bar\BazAfterUseWithSpace as BazAfterUseWithSpace;
+use Foo\Bar\FooBar as FooBar, Foo\Bar\Baz as Alias;
+use const some\a\ConstB as Alias, some\a\ConstA as ConstA;
+use function some\a\fn_b as fn_b, some\a\fn_c as fn_c;
+EOF
+            ],
+            'comments' => [
+                <<<'EOF'
+<?php
+
+use Foo\Bar\BazEnd/**/;
+use Foo\Bar\BazEndWithSpace  /**/ ;
+use Foo\Bar\BazAfterAs/**/;
+use Foo\Bar\BazAfterAsWithSpace  /**/ ;
+use Foo\Bar\BazBeforeAs/**/;
+use Foo\Bar\BazBeforeAsWithSpace  /**/  ;
+use/**/Foo\Bar\BazAfterUse;
+use  /**/  Foo\Bar\BazAfterUseWithSpace;
+use Foo\Bar\Multiple  /**/ /**/,/**/Foo\Bar\Second;
+use Foo\Bar\BazAfterTricky  // comment
+  ;
+use const some\a\ConstA/**/;
+use function some\a\fn_b /**/ ;
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+use Foo\Bar\BazEnd as BazEnd/**/;
+use Foo\Bar\BazEndWithSpace as BazEndWithSpace  /**/ ;
+use Foo\Bar\BazAfterAs as/**/BazAfterAs;
+use Foo\Bar\BazAfterAsWithSpace as  /**/ BazAfterAsWithSpace;
+use Foo\Bar\BazBeforeAs/**/as BazBeforeAs;
+use Foo\Bar\BazBeforeAsWithSpace  /**/  as BazBeforeAsWithSpace;
+use/**/Foo\Bar\BazAfterUse as BazAfterUse;
+use  /**/  Foo\Bar\BazAfterUseWithSpace as BazAfterUseWithSpace;
+use Foo\Bar\Multiple as  /**/ Multiple/**/,/**/Foo\Bar\Second as Second;
 use Foo\Bar\BazAfterTricky as  // comment
   BazAfterTricky ;
-use const some\a\ConstA as ConstA/* comment */;
-use function some\a\fn_b /* comment */ as fn_b;
+use const some\a\ConstA as ConstA/**/;
+use function some\a\fn_b /**/ as fn_b;
 EOF
             ],
             'case sensitive' => [
