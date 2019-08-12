@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class NoUnneededAliasFixer extends AbstractFixer
+final class NoUnneededImportAliasFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -37,8 +37,8 @@ final class NoUnneededAliasFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the SingleImportPerStatementFixer (for fix separated use statements as well) and NoUnusedImportsFixer (just for save performance) and NoLeadingImportSlashFixer
-        return -25;
+        // should be run after the NoUnusedImportsFixer (just for save performance)
+        return -15;
     }
 
     /**
@@ -55,10 +55,6 @@ final class NoUnneededAliasFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
-
-        if (0 === \count($useDeclarations)) {
-            return;
-        }
 
         foreach ($useDeclarations as $declaration) {
             if (!$declaration->isAliased()) {
@@ -77,17 +73,17 @@ final class NoUnneededAliasFixer extends AbstractFixer
 
     private function removeAlias(Tokens $tokens, NamespaceUseAnalysis $declaration)
     {
-        // no fix if any comment found.
-        $commentIndex = $tokens->getNextTokenOfKind($declaration->getStartIndex(), [[T_COMMENT], [T_DOC_COMMENT]]);
-        if (null !== $commentIndex && $commentIndex <= $declaration->getEndIndex()) {
-            return;
-        }
-
         $asIndex = $tokens->getNextTokenOfKind($declaration->getStartIndex(), [[T_AS]]);
         if (null === $asIndex || $asIndex > $declaration->getEndIndex()) {
             return;
         }
 
-        $tokens->clearRange($tokens->getPrevMeaningfulToken($asIndex) + 1, $declaration->getEndIndex() - 1);
+        for ($i = $tokens->getPrevMeaningfulToken($asIndex) + 1; $i <= $declaration->getEndIndex() - 1; ++$i) {
+            if ($tokens[$i]->isWhitespace() && !($tokens[$i - 1]->isComment() || $tokens[$i + 1]->isComment())) {
+                $tokens->clearAt($i);
+            } elseif ($tokens[$i]->isGivenKind([T_AS, T_STRING])) {
+                $tokens->clearAt($i);
+            }
+        }
     }
 }
