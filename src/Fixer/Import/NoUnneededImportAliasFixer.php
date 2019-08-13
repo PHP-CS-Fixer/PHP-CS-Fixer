@@ -46,7 +46,7 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isAllTokenKindsFound([T_USE, T_AS]);
     }
 
     /**
