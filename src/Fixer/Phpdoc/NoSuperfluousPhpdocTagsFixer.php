@@ -75,6 +75,16 @@ class Foo {
     public function doFoo(Bar $bar, $baz) {}
 }
 ', ['remove_inheritdoc' => true]),
+                new CodeSample('<?php
+class Foo {
+    /**
+     * @param Bar $bar
+     * @param mixed $baz
+     * @param string|int|null $qux
+     */
+    public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
+}
+', ['allow_unused_params' => true]),
             ]
         );
     }
@@ -151,6 +161,10 @@ class Foo {
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annontation without actual signature is allowed (`true`) or considered superfluous (`false`)'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
@@ -219,10 +233,11 @@ class Foo {
 
             $argumentName = $matches[1];
 
-            if (
-                !isset($argumentsInfo[$argumentName])
-                || $this->annotationIsSuperfluous($annotation, $argumentsInfo[$argumentName], $shortNames)
-            ) {
+            if (!isset($argumentsInfo[$argumentName]) && $this->configuration['allow_unused_params']) {
+                continue;
+            }
+
+            if (!isset($argumentsInfo[$argumentName]) || $this->annotationIsSuperfluous($annotation, $argumentsInfo[$argumentName], $shortNames)) {
                 $annotation->remove();
             }
         }
@@ -375,7 +390,7 @@ class Foo {
     private function toComparableNames(array $types, array $symbolShortNames)
     {
         $normalized = array_map(
-            function ($type) use ($symbolShortNames) {
+            static function ($type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
                 if (isset($symbolShortNames[$type])) {
