@@ -54,6 +54,10 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 ',
             ],
             [
+                '<?php use /*1*/A\B;',
+                '<?php use\/*1*/A\B;',
+            ],
+            [
                 '<?php
                 $a = function(\B\C $a) use ($b){
 
@@ -185,6 +189,16 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 '<?php
                     use function \a\b;
                     use const \d\e;
+                ',
+            ],
+            'no space case' => [
+                '<?php
+                    use Events\Payment\Base as PaymentEvent;
+                    use const d\e;
+                ',
+                '<?php
+                    use\Events\Payment\Base as PaymentEvent;
+                    use const\d\e;
                 ',
             ],
         ];

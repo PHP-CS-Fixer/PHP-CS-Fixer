@@ -48,7 +48,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
-        \PhpCsFixer\Runner\FileLintingIterator::class,
         \PhpCsFixer\Test\AccessibleObject::class,
     ];
 
@@ -209,34 +208,63 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider provideTestClassCases
+     *
+     * @param string $testClassName
      */
-    public function testThatTestClassesAreTraitOrAbstractOrFinal($className)
+    public function testThatTestClassesAreTraitOrAbstractOrFinal($testClassName)
     {
-        $rc = new \ReflectionClass($className);
+        $rc = new \ReflectionClass($testClassName);
 
         static::assertTrue(
             $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
-            sprintf('Test class %s should be trait, abstract or final.', $className)
+            sprintf('Test class %s should be trait, abstract or final.', $testClassName)
         );
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider provideTestClassCases
+     *
+     * @param string $testClassName
      */
-    public function testThatTestClassesAreInternal($className)
+    public function testThatTestClassesAreInternal($testClassName)
     {
-        $rc = new \ReflectionClass($className);
+        $rc = new \ReflectionClass($testClassName);
         $doc = new DocBlock($rc->getDocComment());
 
         static::assertNotEmpty(
             $doc->getAnnotationsOfType('internal'),
-            sprintf('Test class %s should have internal annotation.', $className)
+            sprintf('Test class %s should have internal annotation.', $testClassName)
         );
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     *
+     * @param string $testClassName
+     */
+    public function testThatPublicMethodsAreCorrectlyNamed($testClassName)
+    {
+        $reflectionClass = new \ReflectionClass($testClassName);
+
+        $publicMethods = array_filter(
+            $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+            static function (\ReflectionMethod $reflectionMethod) use ($reflectionClass) {
+                return $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName();
+            }
+        );
+
+        if ($publicMethods === []) {
+            $this->addToAssertionCount(1); // no methods to test, all good!
+        }
+
+        foreach ($publicMethods as $method) {
+            static::assertRegExp(
+                '/^(test|provide|setUpBeforeClass$|tearDownAfterClass$)/',
+                $method->getName(),
+                sprintf('Public method "%s::%s" is not properly named.', $reflectionClass->getName(), $method->getName())
+            );
+        }
     }
 
     /**
@@ -272,12 +300,12 @@ final class ProjectCodeTest extends TestCase
         $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
         $stringTokens = array_filter(
             $tokens->toArray(),
-            function (Token $token) {
+            static function (Token $token) {
                 return $token->isGivenKind(T_STRING);
             }
         );
         $strings = array_map(
-            function (Token $token) {
+            static function (Token $token) {
                 return $token->getContent();
             },
             $stringTokens
@@ -365,12 +393,12 @@ final class ProjectCodeTest extends TestCase
     public function provideClassesWherePregFunctionsAreForbiddenCases()
     {
         return array_map(
-            function ($item) {
+            static function ($item) {
                 return [$item];
             },
             array_filter(
                 $this->getSrcClasses(),
-                function ($className) {
+                static function ($className) {
                     return 'PhpCsFixer\\Preg' !== $className;
                 }
             )
@@ -463,6 +491,10 @@ final class ProjectCodeTest extends TestCase
             },
             iterator_to_array($finder, false)
         );
+
+        $classes = array_filter($classes, static function ($class) {
+            return is_subclass_of($class, TestCase::class);
+        });
 
         sort($classes);
 

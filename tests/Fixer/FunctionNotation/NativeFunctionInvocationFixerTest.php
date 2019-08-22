@@ -608,6 +608,6 @@ json_decode($foo);
         $this->doTest(
             '<?php $name = \get_class($foo, );',
             '<?php $name = get_class($foo, );'
-         );
+        );
     }
 }
