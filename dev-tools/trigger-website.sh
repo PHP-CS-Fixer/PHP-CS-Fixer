@@ -4,7 +4,7 @@ set -eu
 TOKEN=$1
 MSG_SUFFIX=${2:-''}
 
-if [ ! -z "$MSG_SUFFIX" ]
+if [ -n "$MSG_SUFFIX" ]
 then
     MSG_SUFFIX=" for ${MSG_SUFFIX}"
 fi
