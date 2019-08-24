@@ -5,6 +5,7 @@ files_with_trailing_spaces=$(
     find . \
         -type f \
         -not -path "./.git/*" \
+        -not -path "./dev-tools/bin/*" \
         -not -path "./dev-tools/vendor/*" \
         -not -path "./vendor/*" \
         -not -path "./tests/Fixtures/*" \
