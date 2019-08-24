@@ -34,8 +34,7 @@ jobs:
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
 
-                - wget --no-clobber --output-document=$HOME/bin/checkbashisms https://sourceforge.net/projects/checkbaskisms/files/2.0.0.2/checkbashisms/download || true
-                - chmod +x $HOME/bin/checkbashisms
+                - ./dev-tools/bin-download.sh
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
                 - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
