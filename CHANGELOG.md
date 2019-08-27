@@ -228,6 +228,32 @@ Changelog for v2.13.0
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
 
+Changelog for v2.12.11
+----------------------
+
+* bug #4132 BlankLineAfterNamespaceFixer - do not remove indent, handle comments (kubawerlos)
+* bug #4384 MethodArgumentSpaceFixer - fix for on_multiline:ensure_fully_multiline with trailing comma in function call (kubawerlos)
+* bug #4404 FileLintingIterator - fix current value on end/invalid (SpacePossum)
+* bug #4421 FunctionTypehintSpaceFixer - Ensure single space between type declaration and parameter (localheinz)
+* bug #4436 MethodArgumentSpaceFixer - handle misplaced ) (keradus)
+* bug #4439 NoLeadingImportSlashFixer - Add space if needed (SpacePossum)
+* bug #4453 Fix preg_match error on 7.4snapshot (kubawerlos)
+* bug #4461 IsNullFixer - fix null coalescing operator handling (linniksa)
+* bug #4467 ToolInfo - fix access to reference without checking existence (black-silence)
+* bug #4472 Fix non-static closure unbinding this on PHP 7.4 (kelunik)
+* minor #3726 Use Box 3 to build the PHAR (theofidry, keradus)
+* minor #4412 PHP 7.4 - Tests for support (SpacePossum)
+* minor #4431 DX: test that default config is not passed in RuleSet (kubawerlos)
+* minor #4433 DX: test to ensure @PHPUnitMigration rule sets are correctly defined (kubawerlos)
+* minor #4445 DX: static call of markTestSkippedOrFail (kubawerlos)
+* minor #4463 Add apostrophe to possessive "team's" (ChandlerSwift)
+* minor #4471 ReadmeCommandTest - use CommandTester (kubawerlos)
+* minor #4477 DX: control names of public methods in test's classes (kubawerlos)
+* minor #4483 NewWithBracesFixer - Fix object operator and curly brace open cases (SpacePossum)
+* minor #4484 fix typos in README (Sven Ludwig)
+* minor #4494 DX: Fix shell script syntax in order to fix Travis builds (drupol)
+* minor #4516 DX: Lock binary SCA tools versions (keradus)
+
 Changelog for v2.12.10
 ----------------------
 
