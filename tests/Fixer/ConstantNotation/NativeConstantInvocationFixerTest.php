@@ -222,7 +222,7 @@ echo M_PI;
     }
 
     /**
-     * @dataProvider provideFix70WithDefaultConfigurationCases
+     * @dataProvider provideFix71WithDefaultConfigurationCases
      *
      * @param string      $expected
      * @param null|string $input
