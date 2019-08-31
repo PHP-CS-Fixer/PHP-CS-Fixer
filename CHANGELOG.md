@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.15.3
+---------------------
+
+* bug #4533 Revert PHP7.4 - Add "str_split" => "mb_str_split" mapping (keradus)
+* minor #4264 DX: AutoReview - ensure Travis handle all needed PHP versions (keradus)
+* minor #4524 MethodArgumentSpaceFixerTest - make explicit configuration to prevent fail on configuration change (keradus)
+
 Changelog for v2.15.2
 ---------------------
 
@@ -65,6 +72,13 @@ Changelog for v2.15.0
 * minor #4386 Add PhpUnitMockShortWillReturnFixer to @Symfony:risky rule set (kubawerlos)
 * minor #4398 New ruleset "@PHP73Migration" (gharlan)
 * minor #4399 Fix 2.15 line (keradus)
+
+Changelog for v2.14.6
+---------------------
+
+* bug #4533 Revert PHP7.4 - Add "str_split" => "mb_str_split" mapping (keradus)
+* minor #4264 DX: AutoReview - ensure Travis handle all needed PHP versions (keradus)
+* minor #4524 MethodArgumentSpaceFixerTest - make explicit configuration to prevent fail on configuration change (keradus)
 
 Changelog for v2.14.5
 ---------------------
@@ -316,6 +330,13 @@ Changelog for v2.13.0
 * minor #3813 PhpUnitDedicateAssertFixer - fix "sizeOf" same as "count". (SpacePossum)
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
+
+Changelog for v2.12.12
+----------------------
+
+* bug #4533 Revert PHP7.4 - Add "str_split" => "mb_str_split" mapping (keradus)
+* minor #4264 DX: AutoReview - ensure Travis handle all needed PHP versions (keradus)
+* minor #4524 MethodArgumentSpaceFixerTest - make explicit configuration to prevent fail on configuration change (keradus)
 
 Changelog for v2.12.11
 ----------------------
