@@ -271,13 +271,40 @@ EOTXTb
     );
 }",
             ],
-            'with_random_comments' => [
+            'with_random_comments on_multiline:ignore' => [
                 '<?php xyz#
  (#
 ""#
 ,#
 $a#
 );',
+                null,
+                ['on_multiline' => 'ignore'],
+            ],
+            'with_random_comments on_multiline:ensure_single_line' => [
+                '<?php xyz#
+ (#
+""#
+,#
+$a#
+);',
+                null,
+                ['on_multiline' => 'ensure_single_line'],
+            ],
+            'with_random_comments on_multiline:ensure_fully_multiline' => [
+                '<?php xyz#
+ (#
+""#
+,#
+$a#
+ );',
+                '<?php xyz#
+ (#
+""#
+,#
+$a#
+);',
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test half-multiline function becomes fully-multiline' => [
                 <<<'EXPECTED'
