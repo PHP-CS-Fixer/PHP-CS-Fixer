@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phive xmlns="https://phar.io/phive">
+  <phar name="composer-require-checker" version="^2.0" installed="2.0.0" location="./tools/composer-require-checker" copy="false"/>
+  <phar name="phpstan" version="^0.11.15" installed="0.11.15" location="./tools/phpstan" copy="false"/>
+</phive>
