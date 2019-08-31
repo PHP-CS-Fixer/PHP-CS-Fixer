@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.12.12
+----------------------
+
+* bug #4533 Revert PHP7.4 - Add "str_split" => "mb_str_split" mapping (keradus)
+* minor #4264 DX: AutoReview - ensure Travis handle all needed PHP versions (keradus)
+* minor #4524 MethodArgumentSpaceFixerTest - make explicit configuration to prevent fail on configuration change (keradus)
+
 Changelog for v2.12.11
 ----------------------
 
