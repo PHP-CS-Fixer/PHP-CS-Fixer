@@ -145,7 +145,7 @@ jobs:
 
         -
             stage: Deployment
-            php: 7.1
+            php: 7.3
             install: ./dev-tools/build.sh
             script:
                 - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
