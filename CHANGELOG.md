@@ -254,6 +254,13 @@ Changelog for v2.13.0
 * minor #3873 Add the native_function_invocation fixer in the Symfony:risky ruleset (stof)
 * minor #3979 DX: enable php_unit_method_casing (keradus)
 
+Changelog for v2.12.12
+----------------------
+
+* bug #4533 Revert PHP7.4 - Add "str_split" => "mb_str_split" mapping (keradus)
+* minor #4264 DX: AutoReview - ensure Travis handle all needed PHP versions (keradus)
+* minor #4524 MethodArgumentSpaceFixerTest - make explicit configuration to prevent fail on configuration change (keradus)
+
 Changelog for v2.12.11
 ----------------------
 
