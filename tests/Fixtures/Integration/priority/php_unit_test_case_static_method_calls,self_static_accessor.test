@@ -1,0 +1,39 @@
+--TEST--
+Integration of fixers: php_unit_test_case_static_method_calls,self_static_accessor.
+--RULESET--
+{"php_unit_test_case_static_method_calls": {"call_type": "static"}, "self_static_accessor": true}
+--EXPECT--
+<?php
+class FooTest extends TestCase
+{
+    public function testFoo()
+    {
+        static::assertTrue(true);
+    }
+}
+
+final class BarTest extends TestCase
+{
+    public function testBar()
+    {
+        self::assertTrue(true);
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase
+{
+    public function testFoo()
+    {
+        $this->assertTrue(true);
+    }
+}
+
+final class BarTest extends TestCase
+{
+    public function testBar()
+    {
+        $this->assertTrue(true);
+    }
+}

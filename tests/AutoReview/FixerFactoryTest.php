@@ -223,6 +223,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_test_annotation'], $fixers['php_unit_method_casing']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
+            [$fixers['php_unit_test_case_static_method_calls'], $fixers['self_static_accessor']],
             [$fixers['no_alternative_syntax'], $fixers['braces']],
             [$fixers['no_alternative_syntax'], $fixers['elseif']],
         ];
