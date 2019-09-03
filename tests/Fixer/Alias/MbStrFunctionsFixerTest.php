@@ -63,7 +63,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        if (\function_exists('mb_str_split')) {
+        if (\PHP_VERSION_ID >= 70400) {
             $cases[] = [
                 '<?php $a = mb_str_split($a);',
                 '<?php $a = str_split($a);',
