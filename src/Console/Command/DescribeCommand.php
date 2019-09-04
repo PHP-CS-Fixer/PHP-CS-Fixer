@@ -48,7 +48,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class DescribeCommand extends Command
 {
-    const COMMAND_NAME = 'describe';
+    protected static $defaultName = 'describe';
 
     /**
      * @var string[]
@@ -86,7 +86,6 @@ final class DescribeCommand extends Command
     protected function configure()
     {
         $this
-            ->setName(self::COMMAND_NAME)
             ->setDefinition(
                 [
                     new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
