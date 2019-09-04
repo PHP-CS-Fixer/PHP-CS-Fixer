@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-08-31T20:25:46Z
+
+no, eg `localheinz/composer-normalize` has no phive support and `phpmd`, while having the support, supports installing extensions only via composer
