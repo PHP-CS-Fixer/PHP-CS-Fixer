@@ -79,6 +79,15 @@ final class RemoveCommentsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function isCandidate(Tokens $tokens)
+    {
+        // Check whether the collection is a candidate for fixing.
+        // Has to be ultra cheap to execute.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // Add the fixing logic of the fixer here.

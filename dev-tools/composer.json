@@ -5,7 +5,6 @@
     "require-dev": {
         "humbug/box": "~3.7.0",
         "localheinz/composer-normalize": "^1.1",
-        "maglnet/composer-require-checker": "^2.0",
         "mi-schi/phpmd-extension": "^4.3",
         "phpmd/phpmd": "^2.6"
     },
