@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
+use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tests\TestCase;
@@ -59,7 +60,7 @@ final class AliasedFixerOptionBuilderTest extends TestCase
             ->setNormalizer(function () {})
             ->getOption()
         ;
-        static::assertInstanceOf('PhpCsFixer\FixerConfiguration\AliasedFixerOption', $option);
+        static::assertInstanceOf(AliasedFixerOption::class, $option);
         static::assertSame('foo', $option->getName());
         static::assertSame('Bar.', $option->getDescription());
         static::assertTrue($option->hasDefault());

@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\PregException;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -26,7 +27,7 @@ final class PregTest extends TestCase
     public function testMatchFailing()
     {
         $this->expectException(
-            'PhpCsFixer\\PregException'
+            PregException::class
         );
         $this->expectExceptionMessage(
             'Error occurred when calling preg_match.'
@@ -53,7 +54,7 @@ final class PregTest extends TestCase
     public function testMatchAllFailing()
     {
         $this->expectException(
-            'PhpCsFixer\\PregException'
+            PregException::class
         );
         $this->expectExceptionMessage(
             'Error occurred when calling preg_match_all.'
@@ -80,7 +81,7 @@ final class PregTest extends TestCase
     public function testReplaceFailing()
     {
         $this->expectException(
-            'PhpCsFixer\\PregException'
+            PregException::class
         );
         $this->expectExceptionMessage(
             'Error occurred when calling preg_replace.'
@@ -107,7 +108,7 @@ final class PregTest extends TestCase
     public function testReplaceCallbackFailing()
     {
         $this->expectException(
-            'PhpCsFixer\\PregException'
+            PregException::class
         );
         $this->expectExceptionMessage(
             'Error occurred when calling preg_replace_callback.'
@@ -155,7 +156,7 @@ final class PregTest extends TestCase
     public function testSplitFailing()
     {
         $this->expectException(
-            'PhpCsFixer\\PregException'
+            PregException::class
         );
         $this->expectExceptionMessage(
             'Error occurred when calling preg_split.'

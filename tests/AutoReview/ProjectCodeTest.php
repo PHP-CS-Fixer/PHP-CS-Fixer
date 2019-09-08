@@ -17,6 +17,7 @@ if (!class_exists(\PHPUnit\Runner\Version::class)) {
 }
 
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -399,7 +400,7 @@ final class ProjectCodeTest extends TestCase
             array_filter(
                 $this->getSrcClasses(),
                 static function ($className) {
-                    return 'PhpCsFixer\\Preg' !== $className;
+                    return Preg::class !== $className;
                 }
             )
         );
