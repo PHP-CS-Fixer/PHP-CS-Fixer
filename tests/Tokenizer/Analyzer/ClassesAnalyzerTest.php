@@ -188,18 +188,6 @@ new class {};',
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    public function doTestClassyInheritanceInfo($source, $label, array $expected)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
-        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
-
-        $analyzer = new ClassesAnalyzer();
-        $result = $analyzer->getClassInheritanceInfo($tokens, $expected['start'], $label);
-
-        static::assertSame($expected, $result);
-    }
-
     public function provideClassyImplementsInfoCases()
     {
         return [
@@ -280,5 +268,17 @@ namespace {
                 ['start' => 12, 'numberOfExtends' => 1, 'multiLine' => true],
             ],
         ];
+    }
+
+    private function doTestClassyInheritanceInfo($source, $label, array $expected)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+
+        $analyzer = new ClassesAnalyzer();
+        $result = $analyzer->getClassInheritanceInfo($tokens, $expected['start'], $label);
+
+        static::assertSame($expected, $result);
     }
 }
