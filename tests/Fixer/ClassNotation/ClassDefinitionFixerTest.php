@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tokenizer\Analyzer\ClassAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -672,10 +673,9 @@ $a = new class implements
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
         static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
-        $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
-        $method->setAccessible(true);
 
-        $result = $method->invoke($this->fixer, $tokens, $expected['start'], $label);
+        $analyzer = new ClassAnalyzer();
+        $result = $analyzer->getClassInheritanceInfo($tokens, $expected['start'], $label);
 
         static::assertSame($expected, $result);
     }
