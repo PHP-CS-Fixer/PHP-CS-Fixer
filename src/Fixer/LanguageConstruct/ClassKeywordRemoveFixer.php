@@ -161,9 +161,8 @@ $className = Baz::class;
     private function replaceClassKeywordsSection(Tokens $tokens, $startIndex, $endIndex)
     {
         $ctClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
-        if (!empty($ctClassTokens)) {
-            $this->replaceClassKeyword($tokens, current(array_keys($ctClassTokens)));
-            $this->replaceClassKeywordsSection($tokens, $startIndex, $endIndex);
+        foreach (array_reverse(array_keys($ctClassTokens)) as $classIndex) {
+            $this->replaceClassKeyword($tokens, $classIndex);
         }
     }
 
@@ -175,6 +174,10 @@ $className = Baz::class;
     {
         $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
+
+        if ($tokens[$classEndIndex]->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
+            return;
+        }
 
         $classBeginIndex = $classEndIndex;
         while (true) {
