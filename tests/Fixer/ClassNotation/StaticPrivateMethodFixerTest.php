@@ -279,6 +279,50 @@ class Foo
                 self::generate50Samples(true),
                 self::generate50Samples(false),
             ],
+            'fix-self' => [
+                '<?php
+class Foo
+{
+    private static function baz()
+    {
+        return self::baz();
+    }
+}
+',
+                '<?php
+class Foo
+{
+    private function baz()
+    {
+        return $this->baz();
+    }
+}
+',
+            ],
+            'bug-trait' => [
+                '<?php
+
+class Foo
+{
+    use A, B, C {
+        asd as lol;
+    }
+
+    private static function bar() {}
+}
+',
+                '<?php
+
+class Foo
+{
+    use A, B, C {
+        asd as lol;
+    }
+
+    private function bar() {}
+}
+',
+            ],
         ];
     }
 
