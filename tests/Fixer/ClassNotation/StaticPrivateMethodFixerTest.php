@@ -235,6 +235,30 @@ class Foo
 }
 ',
             ],
+            'skip-magic-methods' => [
+                '<?php
+class Foo
+{
+    private function __call() {}
+    private function __callstatic() {}
+    private function __clone() {}
+    private function __construct() {}
+    private function __debuginfo() {}
+    private function __destruct() {}
+    private function __get() {}
+    private function __invoke() {}
+    private function __isset() {}
+    private function __serialize() {}
+    private function __set() {}
+    private function __set_state() {}
+    private function __sleep() {}
+    private function __tostring() {}
+    private function __unserialize() {}
+    private function __unset() {}
+    private function __wakeup() {}
+}
+',
+            ],
         ];
     }
 }
