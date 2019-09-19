@@ -47,6 +47,9 @@ class Foo
     {
         $var = $this->baz;
         $var = self::baz();
+        if (true) {
+            $var = self::baz();
+        }
     }
 
     private static function baz()
@@ -64,6 +67,9 @@ class Foo
     {
         $var = $this->baz;
         $var = $this->baz();
+        if (true) {
+            $var = $this->baz();
+        }
     }
 
     private function baz()
