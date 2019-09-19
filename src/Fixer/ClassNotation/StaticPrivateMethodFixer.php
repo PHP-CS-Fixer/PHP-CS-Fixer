@@ -99,8 +99,9 @@ class Foo
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
         $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
-        for ($index = 0; $index < $end; ++$index) {
+        for ($index = $end; $index > 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS)) {
                 continue;
             }
@@ -108,61 +109,65 @@ class Foo
             $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
 
-            $this->fixClass($tokens, $classOpen, $classClose);
-
-            $index = $classClose;
+            $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
         }
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classOpen
-     * @param int    $classClose
+     * @param Tokens         $tokens
+     * @param TokensAnalyzer $tokensAnalyzer
+     * @param int            $classOpen
+     * @param int            $classClose
      */
-    private function fixClass(Tokens $tokens, $classOpen, $classClose)
+    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $classOpen, $classClose)
     {
-        $methodsFound = [];
         $fixedMethods = [];
-        for ($index = $classOpen + 1; $index < $classClose - 1; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+        for ($index = $classClose - 1; $index > $classOpen + 1; --$index) {
+            if (!$tokens[$index]->equals('}')) {
                 continue;
             }
 
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            $methodClose = $index;
+            $methodOpen = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodClose);
+            $functionKeywordIndex = $tokens->getPrevTokenOfKind($methodOpen, [[T_FUNCTION]]);
+            $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
+            $methodName = $tokens[$methodNameIndex]->getContent();
+
+            $index = $methodOpen;
+
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
             $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
             if ($tokens[$prevTokenIndex]->isGivenKind(T_ABSTRACT) || $tokens[$prevPrevTokenIndex]->isGivenKind(T_ABSTRACT)) {
                 continue;
             }
 
-            $methodNameIndex = $tokens->getNextMeaningfulToken($index);
-            $methodName = $tokens[$methodNameIndex]->getContent();
-            $methodOpen = $tokens->getNextTokenOfKind($index, ['{']);
-            $methodClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodOpen);
-            $methodsFound[] = [
-                'name' => $methodName,
-                'curly_open' => $methodOpen,
-                'curly_close' => $methodClose,
-            ];
-
-            $currentMethodIndex = $index;
-            $index = $methodClose;
-
-            if ($this->skipMethod($tokens, $currentMethodIndex, $methodOpen, $methodClose)) {
+            if ($this->skipMethod($tokens, $functionKeywordIndex, $methodOpen, $methodClose)) {
                 continue;
             }
 
             $fixedMethods[$methodName] = true;
 
-            $tokens->insertAt($currentMethodIndex, [new Token([T_STATIC, 'static']), new Token([T_WHITESPACE, ' '])]);
+            $tokens->insertAt($functionKeywordIndex, [new Token([T_STATIC, 'static']), new Token([T_WHITESPACE, ' '])]);
         }
 
         if (0 === \count($fixedMethods)) {
             return;
         }
 
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        foreach ($methodsFound as $methodData) {
-            $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodData['name'], $methodData['curly_open'], $methodData['curly_close'], $fixedMethods);
+        $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+        for ($index = $classClose - 1; $index > $classOpen + 1; --$index) {
+            if (!$tokens[$index]->equals('}')) {
+                continue;
+            }
+
+            $methodOpen = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            $functionKeywordIndex = $tokens->getPrevTokenOfKind($methodOpen, [[T_FUNCTION]]);
+            $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
+            $methodName = $tokens[$methodNameIndex]->getContent();
+
+            $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodName, $methodOpen, $index, $fixedMethods);
+
+            $index = $methodOpen;
         }
     }
 

@@ -259,6 +259,37 @@ class Foo
 }
 ',
             ],
+            'bug-multiple-methods' => [
+                self::generate50Samples(true),
+                self::generate50Samples(false),
+            ],
         ];
+    }
+
+    /**
+     * @param bool $fixed
+     *
+     * @return string
+     */
+    private static function generate50Samples($fixed)
+    {
+        $template = '<?php
+class Foo
+{
+    public function userMethodStart()
+    {
+%s
+    }
+%s
+}
+';
+        $usage = '';
+        $signature = '';
+        for ($inc = 0; $inc < 50; ++$inc) {
+            $usage .= sprintf('$var = %sbar%02s();%s', $fixed ? 'self::' : '$this->', $inc, PHP_EOL);
+            $signature .= sprintf('private %sfunction bar%02s() {}%s', $fixed ? 'static ' : '', $inc, PHP_EOL);
+        }
+
+        return sprintf($template, $usage, $signature);
     }
 }
