@@ -104,6 +104,12 @@ class Foo
                 continue;
             }
 
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+            if ($tokens[$prevTokenIndex]->isGivenKind(T_ABSTRACT) || $tokens[$prevPrevTokenIndex]->isGivenKind(T_ABSTRACT)) {
+                continue;
+            }
+
             $methodNameIndex = $tokens->getNextMeaningfulToken($index);
             $methodName = $tokens[$methodNameIndex]->getContent();
             $methodOpen = $tokens->getNextTokenOfKind($index, ['{']);

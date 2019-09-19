@@ -92,6 +92,10 @@ class Foo
 class Bar
 {
     public function baz() { return 1; }
+
+    abstract protected function xyz1();
+    protected abstract function xyz2();
+    abstract function xyz3();
 }
 ',
                 '<?php
@@ -112,6 +116,10 @@ class Foo
 class Bar
 {
     public function baz() { return 1; }
+
+    abstract protected function xyz1();
+    protected abstract function xyz2();
+    abstract function xyz3();
 }
 ',
             ],
