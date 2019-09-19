@@ -233,7 +233,7 @@ Class Notation
 - `single_trait_insert_per_statement <./class_notation/single_trait_insert_per_statement.rst>`_
 
   Each trait ``use`` must be done as single statement.
-- `static_private_method <./class_notation/static_private_method.rst>`_
+- `static_private_method <./class_notation/static_private_method.rst>`_ *(risky)*
 
   Converts private methods to ``static`` where possible.
 - `visibility_required <./class_notation/visibility_required.rst>`_

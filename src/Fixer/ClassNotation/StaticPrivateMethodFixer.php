@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -37,17 +38,19 @@ class Foo
 {
     public function bar()
     {
-        return self::baz();
+        return $this->baz();
     }
 
-    private static function baz()
+    private function baz()
     {
         return 1;
     }
 }
 '
                 ),
-            ]
+            ],
+            null,
+            'Risky when method contains dynamic generated calls to the instance, or the method is dynamically referenced.'
         );
     }
 
@@ -62,10 +65,161 @@ class Foo
         return $tokens->isAllTokenKindsFound([T_CLASS, T_PRIVATE]);
     }
 
+    public function isRisky(): bool
+    {
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+        for ($index = 0; $index < $end; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+                continue;
+            }
+
+            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
+            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+
+            $this->fixClass($tokens, $classOpen, $classClose);
+
+            $index = $classClose;
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $classOpen
+     * @param int    $classClose
+     */
+    private function fixClass(Tokens $tokens, $classOpen, $classClose)
+    {
+        $methodsFound = [];
+        $fixedMethods = [];
+        for ($index = $classOpen + 1; $index < $classClose - 1; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
+            $methodNameIndex = $tokens->getNextMeaningfulToken($index);
+            $methodName = $tokens[$methodNameIndex]->getContent();
+            $methodOpen = $tokens->getNextTokenOfKind($index, ['{']);
+            $methodClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodOpen);
+            $methodsFound[] = [
+                'name' => $methodName,
+                'curly_open' => $methodOpen,
+                'curly_close' => $methodClose,
+            ];
+
+            $currentMethodIndex = $index;
+            $index = $methodClose;
+
+            if ($this->skipMethod($tokens, $currentMethodIndex, $methodOpen, $methodClose)) {
+                continue;
+            }
+
+            $fixedMethods[$methodName] = true;
+
+            $tokens->insertAt($currentMethodIndex, [new Token([T_STATIC, 'static']), new Token([T_WHITESPACE, ' '])]);
+        }
+
+        if (0 === \count($fixedMethods)) {
+            return;
+        }
+
+        foreach ($methodsFound as $methodData) {
+            $this->fixReferencesInMethod($tokens, $methodData['name'], $methodData['curly_open'], $methodData['curly_close'], $fixedMethods);
+        }
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param int    $functionKeywordIndex
+     * @param int    $methodOpen
+     * @param int    $methodClose
+     *
+     * @return bool
+     */
+    private function skipMethod(Tokens $tokens, $functionKeywordIndex, $methodOpen, $methodClose)
+    {
+        $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
+        if (!$tokens[$prevTokenIndex]->isGivenKind(T_PRIVATE)) {
+            return true;
+        }
+
+        $prePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+        if ($tokens[$prePrevTokenIndex]->isGivenKind(T_STATIC)) {
+            return true;
+        }
+
+        for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                return true;
+            }
+
+            if ($tokens[$index]->equals([T_VARIABLE, '$this'])) {
+                return true;
+            }
+
+            if ($tokens[$index]->equals([T_STRING, 'debug_backtrace'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Tokens $tokens
+     * @param string $name
+     * @param int    $methodOpen
+     * @param int    $methodClose
+     * @param array  $fixedMethods
+     */
+    private function fixReferencesInMethod(Tokens $tokens, $name, $methodOpen, $methodClose, array $fixedMethods)
+    {
+        for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
+            if (!$tokens[$index]->equals([T_VARIABLE, '$this'])) {
+                continue;
+            }
+
+            $objectOperatorIndex = $tokens->getNextMeaningfulToken($index);
+            if (!$tokens[$objectOperatorIndex]->isGivenKind(T_OBJECT_OPERATOR)) {
+                continue;
+            }
+
+            $methodNameIndex = $tokens->getNextMeaningfulToken($objectOperatorIndex);
+            $argumentsBraceIndex = $tokens->getNextMeaningfulToken($methodNameIndex);
+            if (!$tokens[$argumentsBraceIndex]->equals('(')) {
+                continue;
+            }
+
+            $currentMethodName = $tokens[$methodNameIndex]->getContent();
+            if ($name === $currentMethodName) {
+                continue;
+            }
+
+            if (!isset($fixedMethods[$currentMethodName])) {
+                continue;
+            }
+
+            $tokens[$index] = new Token([T_STRING, 'self']);
+            $tokens[$objectOperatorIndex] = new Token([T_DOUBLE_COLON, '::']);
+        }
     }
 }
