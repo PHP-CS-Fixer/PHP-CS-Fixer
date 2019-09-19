@@ -41,11 +41,14 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                 '<?php
 class Foo
 {
+    public $baz;
+
     public function bar()
     {
-        return self::baz();
+        $var = $this->baz;
+        $var = self::baz();
     }
-    
+
     private static function baz()
     {
         return 1;
@@ -55,15 +58,68 @@ class Foo
                 '<?php
 class Foo
 {
+    public $baz;
+
     public function bar()
     {
-        return $this->baz();
+        $var = $this->baz;
+        $var = $this->baz();
     }
-    
+
     private function baz()
     {
         return 1;
     }
+}
+',
+            ],
+            'handle-multiple-classes' => [
+                '<?php
+class Foo
+{
+    private static function baz() { return 1; }
+
+    public function xyz()
+    {
+        return new class() extends Wut {
+            public function anonym_xyz()
+            {
+                return $this->baz();
+            }
+        };
+    }
+}
+class Bar
+{
+    public function baz() { return 1; }
+}
+',
+                '<?php
+class Foo
+{
+    private function baz() { return 1; }
+
+    public function xyz()
+    {
+        return new class() extends Wut {
+            public function anonym_xyz()
+            {
+                return $this->baz();
+            }
+        };
+    }
+}
+class Bar
+{
+    public function baz() { return 1; }
+}
+',
+            ],
+            'inverse-order-keywords-already-ok' => [
+                '<?php
+class Foo
+{
+    static private function inverseOrder() { return 1; }
 }
 ',
             ],
