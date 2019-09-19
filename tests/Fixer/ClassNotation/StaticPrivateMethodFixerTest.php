@@ -54,7 +54,14 @@ class Foo
 
     private static function baz()
     {
-        return 1;
+        if (true) {
+            return new class() {
+                public function baz()
+                {
+                    return $this;
+                }
+            };
+        }
     }
 }
 ',
@@ -74,7 +81,14 @@ class Foo
 
     private function baz()
     {
-        return 1;
+        if (true) {
+            return new class() {
+                public function baz()
+                {
+                    return $this;
+                }
+            };
+        }
     }
 }
 ',
@@ -159,7 +173,9 @@ class Foo
 {
     private function bar()
     {
-        return $this;
+        if (true) {
+            return $this;
+        }
     }
 }
 ',
