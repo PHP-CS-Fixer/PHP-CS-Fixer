@@ -131,7 +131,7 @@ class Foo
         }
 
         foreach ($methodsFound as $methodData) {
-            $this->fixReferencesInMethod($tokens, $methodData['name'], $methodData['curly_open'], $methodData['curly_close'], $fixedMethods);
+            $this->fixReferencesInFunction($tokens, $methodData['name'], $methodData['curly_open'], $methodData['curly_close'], $fixedMethods);
         }
     }
 
@@ -179,15 +179,27 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param string $name
-     * @param int    $methodOpen
-     * @param int    $methodClose
-     * @param array  $fixedMethods
+     * @param Tokens      $tokens
+     * @param null|string $name         Method name or null for Closures
+     * @param int         $methodOpen
+     * @param int         $methodClose
+     * @param array       $fixedMethods
      */
-    private function fixReferencesInMethod(Tokens $tokens, $name, $methodOpen, $methodClose, array $fixedMethods)
+    private function fixReferencesInFunction(Tokens $tokens, $name, $methodOpen, $methodClose, array $fixedMethods)
     {
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
+            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                $closureStart = $tokens->getNextTokenOfKind($index, ['{']);
+                $closureEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $closureStart);
+                if (!$tokens[$prevIndex]->isGivenKind(T_STATIC)) {
+                    $this->fixReferencesInFunction($tokens, null, $closureStart, $closureEnd, $fixedMethods);
+                }
+
+                $index = $closureEnd;
+
+                continue;
+            }
             if ($tokens[$index]->equals('{')) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 

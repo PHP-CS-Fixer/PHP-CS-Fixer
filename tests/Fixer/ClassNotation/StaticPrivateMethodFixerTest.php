@@ -161,6 +161,66 @@ class Foo
 }
 ',
             ],
+            'fix-references-inside-non-static-closures' => [
+                '<?php
+class Foo
+{
+    public $baz;
+
+    public function bar()
+    {
+        $var = function() {
+            $var = $this->baz;
+            $var = self::baz();
+            $var = new class() {
+                public function foo()
+                {
+                    return $this->baz();
+                }
+            };
+        };
+        // Non valid in runtime, but valid syntax
+        $var = static function() {
+            $var = $this->baz();
+        };
+    }
+
+    private static function baz()
+    {
+        return 1;
+    }
+}
+',
+                '<?php
+class Foo
+{
+    public $baz;
+
+    public function bar()
+    {
+        $var = function() {
+            $var = $this->baz;
+            $var = $this->baz();
+            $var = new class() {
+                public function foo()
+                {
+                    return $this->baz();
+                }
+            };
+        };
+        // Non valid in runtime, but valid syntax
+        $var = static function() {
+            $var = $this->baz();
+        };
+    }
+
+    private function baz()
+    {
+        return 1;
+    }
+}
+',
+            ],
         ];
     }
 }
