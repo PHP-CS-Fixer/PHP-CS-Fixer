@@ -160,12 +160,13 @@ class Foo
                 continue;
             }
 
-            $methodOpen = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            $methodClose = $index;
+            $methodOpen = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodClose);
             $functionKeywordIndex = $tokens->getPrevTokenOfKind($methodOpen, [[T_FUNCTION]]);
             $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
             $methodName = $tokens[$methodNameIndex]->getContent();
 
-            $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodName, $methodOpen, $index, $fixedMethods);
+            $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodName, $methodOpen, $methodClose, $fixedMethods);
 
             $index = $methodOpen;
         }
