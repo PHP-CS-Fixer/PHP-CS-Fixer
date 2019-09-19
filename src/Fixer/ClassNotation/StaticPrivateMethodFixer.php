@@ -53,6 +53,7 @@ class Foo
 
     public function getPriority(): int
     {
+        // Must run after ProtectedToPrivateFixer, before StaticLambdaFixer
         return 1;
     }
 

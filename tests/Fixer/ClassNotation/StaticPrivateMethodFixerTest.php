@@ -67,6 +67,44 @@ class Foo
 }
 ',
             ],
+            'skip-methods-containing-closures' => [
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        return function() {};
+    }
+
+    private function baz()
+    {
+        return static function() {};
+    }
+}
+',
+            ],
+            'skip-instance-references' => [
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        return $this;
+    }
+}
+',
+            ],
+            'skip-debug_backtrace' => [
+                '<?php
+class Foo
+{
+    private function bar()
+    {
+        return debug_backtrace()[1][\'object\'];
+    }
+}
+',
+            ],
         ];
     }
 }
