@@ -141,7 +141,7 @@ class Foo
                 continue;
             }
 
-            if ($this->skipMethod($tokens, $functionKeywordIndex, $methodOpen, $methodClose)) {
+            if ($this->skipMethod($tokens, $tokensAnalyzer, $functionKeywordIndex, $methodOpen, $methodClose)) {
                 continue;
             }
 
@@ -173,14 +173,15 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $functionKeywordIndex
-     * @param int    $methodOpen
-     * @param int    $methodClose
+     * @param Tokens         $tokens
+     * @param TokensAnalyzer $tokensAnalyzer
+     * @param int            $functionKeywordIndex
+     * @param int            $methodOpen
+     * @param int            $methodClose
      *
      * @return bool
      */
-    private function skipMethod(Tokens $tokens, $functionKeywordIndex, $methodOpen, $methodClose)
+    private function skipMethod(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $functionKeywordIndex, $methodOpen, $methodClose)
     {
         $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
         $methodName = strtolower($tokens[$methodNameIndex]->getContent());
@@ -199,8 +200,9 @@ class Foo
         }
 
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
-            if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            if ($tokens[$index]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
+                $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $anonymousClassOpen);
 
                 continue;
             }
