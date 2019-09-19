@@ -26,6 +26,29 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class StaticPrivateMethodFixer extends AbstractFixer
 {
     /**
+     * @var array
+     */
+    private $magicNames = [
+        '__call' => true,
+        '__callstatic' => true,
+        '__clone' => true,
+        '__construct' => true,
+        '__debuginfo' => true,
+        '__destruct' => true,
+        '__get' => true,
+        '__invoke' => true,
+        '__isset' => true,
+        '__serialize' => true,
+        '__set' => true,
+        '__set_state' => true,
+        '__sleep' => true,
+        '__tostring' => true,
+        '__unserialize' => true,
+        '__unset' => true,
+        '__wakeup' => true,
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
@@ -153,6 +176,12 @@ class Foo
      */
     private function skipMethod(Tokens $tokens, $functionKeywordIndex, $methodOpen, $methodClose)
     {
+        $methodNameIndex = $tokens->getNextMeaningfulToken($functionKeywordIndex);
+        $methodName = strtolower($tokens[$methodNameIndex]->getContent());
+        if (isset($this->magicNames[$methodName])) {
+            return true;
+        }
+
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
         if (!$tokens[$prevTokenIndex]->isGivenKind(T_PRIVATE)) {
             return true;
