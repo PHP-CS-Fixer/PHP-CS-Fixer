@@ -201,11 +201,11 @@ class Foo
     }
 
     /**
-     * @param Tokens         $tokens
-     * @param TokensAnalyzer $tokensAnalyzer
-     * @param int            $methodOpen
-     * @param int            $methodClose
-     * @param array          $fixedMethods
+     * @param Tokens              $tokens
+     * @param TokensAnalyzer      $tokensAnalyzer
+     * @param int                 $methodOpen
+     * @param int                 $methodClose
+     * @param array<string, bool> $fixedMethods
      */
     private function fixReferencesInFunction(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, $methodOpen, $methodClose, array $fixedMethods)
     {
