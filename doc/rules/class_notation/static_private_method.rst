@@ -10,8 +10,8 @@ Warning
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Risky when method contains dynamic generated calls to the instance, or the
-method is dynamically referenced.
+Risky when the method: contains dynamic generated calls to the instance, is
+dynamically referenced, is referenced inside a Trait the class uses
 
 Examples
 --------
