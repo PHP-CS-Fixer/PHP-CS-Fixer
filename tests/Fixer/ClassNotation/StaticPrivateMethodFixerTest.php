@@ -85,7 +85,7 @@ class Foo
             ],
             'handle-multiple-classes' => [
                 '<?php
-class Foo
+abstract class Foo
 {
     private static function baz() { return 1; }
 
@@ -94,7 +94,7 @@ class Foo
         return 1;
     }
 }
-class Bar
+abstract class Bar
 {
     public function baz() { return 1; }
 
@@ -104,7 +104,7 @@ class Bar
 }
 ',
                 '<?php
-class Foo
+abstract class Foo
 {
     private function baz() { return 1; }
 
@@ -113,7 +113,7 @@ class Foo
         return 1;
     }
 }
-class Bar
+abstract class Bar
 {
     public function baz() { return 1; }
 
@@ -358,7 +358,7 @@ class Foo
             ],
             'handle-multiple-classes' => [
                 '<?php
-class Foo
+abstract class Foo
 {
     private static function baz() { return 1; }
 
@@ -372,7 +372,7 @@ class Foo
         };
     }
 }
-class Bar
+abstract class Bar
 {
     public function baz() { return 1; }
 
@@ -382,7 +382,7 @@ class Bar
 }
 ',
                 '<?php
-class Foo
+abstract class Foo
 {
     private function baz() { return 1; }
 
@@ -396,7 +396,7 @@ class Foo
         };
     }
 }
-class Bar
+abstract class Bar
 {
     public function baz() { return 1; }
 
