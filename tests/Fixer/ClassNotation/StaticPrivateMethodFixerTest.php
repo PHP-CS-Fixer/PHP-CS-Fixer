@@ -282,6 +282,22 @@ class Foo
 }
 ',
             ],
+            'fix-final-as-well' => [
+                '<?php
+class Foo
+{
+    final private static function baz1() { return 1; }
+    private final static function baz2() { return 1; }
+}
+',
+                '<?php
+class Foo
+{
+    final private function baz1() { return 1; }
+    private final function baz2() { return 1; }
+}
+',
+            ],
         ];
     }
 
