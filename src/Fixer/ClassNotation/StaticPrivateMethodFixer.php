@@ -160,6 +160,9 @@ class Foo
         }
 
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
+        if ($tokens[$prevTokenIndex]->isGivenKind(T_FINAL)) {
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
+        }
         if (!$tokens[$prevTokenIndex]->isGivenKind(T_PRIVATE)) {
             return true;
         }
