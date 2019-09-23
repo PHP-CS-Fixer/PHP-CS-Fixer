@@ -94,15 +94,6 @@ Install `PHIVE <https://phar.io>`_ and issue the following command:
 
     $ phive install php-cs-fixer # use `--global` for global install
 
-Locally (Composer)
-~~~~~~~~~~~~~~~
-
-Install `Composer <https://getcomposer.org/download/>`_ and issue the following command:
-
-.. code-block:: bash
-
-    $ ./composer.phar require --dev friendsofphp/php-cs-fixer
-
 Update
 ------
 
@@ -148,13 +139,6 @@ Locally (PHIVE)
 .. code-block:: bash
 
     $ phive update php-cs-fixer
-
-Locally (Composer)
-~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-    $ ./composer.phar update friendsofphp/php-cs-fixer
 
 Usage
 -----
