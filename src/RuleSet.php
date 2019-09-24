@@ -238,6 +238,7 @@ final class RuleSet implements RuleSetInterface
             'no_superfluous_elseif' => true,
             'no_unneeded_curly_braces' => true,
             'no_unneeded_final_method' => true,
+            'no_unneeded_import_alias' => true,
             'no_unset_cast' => true,
             'no_useless_else' => true,
             'no_useless_return' => true,

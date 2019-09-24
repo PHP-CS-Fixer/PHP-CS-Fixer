@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,7 +30,13 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove unneeded alias in `use` clauses.',
-            [new CodeSample("<?php\nnamespace Foo;\nuse Bar\\Baz as Baz;\n")]
+            [
+                new CodeSample("<?php\nnamespace Foo;\nuse Bar\\Baz as Baz;\n"),
+                new VersionSpecificCodeSample(
+                    "<?php\nuse const some\\a\\ConstA as ConstA;\nuse function some\\a\\fn_b as fn_b;\n",
+                    new VersionSpecification(70000)
+                ),
+            ]
         );
     }
 
