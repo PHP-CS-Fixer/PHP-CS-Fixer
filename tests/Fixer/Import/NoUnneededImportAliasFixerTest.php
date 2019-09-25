@@ -170,17 +170,31 @@ EOF
             ],
             'close_tag_1' => [
                 '<?php
+     use B\C?>inline content<?php use A\D; use E\F?>',
+                '<?php
+     use B\C as C?>inline content<?php use A\D; use E\F as F?>',
+            ],
+            'close_tag_2' => [
+                '<?php
      use B\C ?>inline content<?php use A\D; use E\F ?>',
                 '<?php
      use B\C as C ?>inline content<?php use A\D; use E\F as F ?>',
             ],
-            'close_tag_2' => [
+            'close_tag_3' => [
                 '<?php use A\B;?>',
                 '<?php use A\B as B;?>',
             ],
-            'close_tag_3' => [
+            'close_tag_4' => [
                 '<?php use A\B?>',
                 '<?php use A\B as B?>',
+            ],
+            'close_tag_5' => [
+                '<?php use A\B; ?>',
+                '<?php use A\B as B; ?>',
+            ],
+            'close_tag_6' => [
+                '<?php use A\B ?>',
+                '<?php use A\B as B ?>',
             ],
         ];
     }

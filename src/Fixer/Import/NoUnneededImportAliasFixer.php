@@ -90,7 +90,7 @@ use function some\a\fn_b as fn_b;
         }
 
         for ($i = $tokens->getPrevMeaningfulToken($asIndex) + 1; $i <= $declaration->getEndIndex() - 1; ++$i) {
-            if ($tokens[$i]->isWhitespace() && !($tokens[$i - 1]->isComment() || $tokens[$i + 1]->isComment())) {
+            if ($tokens[$i]->isWhitespace() && !($tokens[$i - 1]->isComment() || $tokens[$i + 1]->isComment() || $tokens[$i + 1]->isGivenKind([T_CLOSE_TAG]))) {
                 $tokens->clearAt($i);
             } elseif ($tokens[$i]->isGivenKind([T_AS, T_STRING])) {
                 $tokens->clearAt($i);
