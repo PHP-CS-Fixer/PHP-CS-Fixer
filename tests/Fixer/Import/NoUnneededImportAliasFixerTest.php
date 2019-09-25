@@ -168,6 +168,20 @@ use const \some\a\ConstA as ConstA;
 use function \some\a\fn_b as fn_b;
 EOF
             ],
+            'close_tag_1' => [
+                '<?php
+     use B\C ?>inline content<?php use A\D; use E\F ?>',
+                '<?php
+     use B\C as C ?>inline content<?php use A\D; use E\F as F ?>',
+            ],
+            'close_tag_2' => [
+                '<?php use A\B;?>',
+                '<?php use A\B as B;?>',
+            ],
+            'close_tag_3' => [
+                '<?php use A\B?>',
+                '<?php use A\B as B?>',
+            ],
         ];
     }
 }
