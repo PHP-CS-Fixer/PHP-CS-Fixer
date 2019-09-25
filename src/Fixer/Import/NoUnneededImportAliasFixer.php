@@ -31,11 +31,15 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
         return new FixerDefinition(
             'Remove unneeded alias in `use` clauses.',
             [
-                new CodeSample("<?php\nnamespace Foo;\nuse Bar\\Baz as Baz;\n"),
-                new VersionSpecificCodeSample(
-                    "<?php\nuse const some\\a\\ConstA as ConstA;\nuse function some\\a\\fn_b as fn_b;\n",
-                    new VersionSpecification(70000)
-                ),
+                new CodeSample(
+                    '<?php
+namespace Foo;
+
+use Bar\Baz as Baz;
+
+use const some\a\ConstA as ConstA;
+use function some\a\fn_b as fn_b;
+'),
             ]
         );
     }
