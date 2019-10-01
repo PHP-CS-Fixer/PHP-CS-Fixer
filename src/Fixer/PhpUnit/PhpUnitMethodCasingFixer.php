@@ -43,12 +43,17 @@ final class PhpUnitMethodCasingFixer extends AbstractFixer implements Configurat
     const SNAKE_CASE = 'snake_case';
 
     /**
+     * @internal
+     */
+    const NON_BREAKING_SPACES = 'non_breaking_spaces';
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Enforce camel (or snake) case for PHPUnit test methods, following configuration.',
+            'Enforce casing for PHPUnit test methods, following configuration.',
             [
                 new CodeSample(
                     '<?php
@@ -96,8 +101,8 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('case', 'Apply camel or snake case to test methods'))
-                ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE])
+            (new FixerOptionBuilder('case', 'The casing style to apply'))
+                ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE, self::NON_BREAKING_SPACES])
                 ->setDefault(self::CAMEL_CASE)
                 ->getOption(),
         ]);
@@ -136,13 +141,20 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
      */
     private function updateMethodCasing($functionName)
     {
+        $nbsp = pack('H*', 'c2a0');
+        $newFunctionName = str_replace($nbsp, '_', $functionName);
+
         if (self::CAMEL_CASE === $this->configuration['case']) {
-            $newFunctionName = $functionName;
             $newFunctionName = ucwords($newFunctionName, '_');
             $newFunctionName = str_replace('_', '', $newFunctionName);
-            $newFunctionName = lcfirst($newFunctionName);
-        } else {
-            $newFunctionName = Utils::camelCaseToUnderscore($functionName);
+
+            return lcfirst($newFunctionName);
+        }
+
+        $newFunctionName = Utils::camelCaseToUnderscore($newFunctionName);
+
+        if (self::NON_BREAKING_SPACES === $this->configuration['case']) {
+            $newFunctionName = str_replace('_', $nbsp, $newFunctionName);
         }
 
         return $newFunctionName;

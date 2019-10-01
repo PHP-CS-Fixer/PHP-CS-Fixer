@@ -1399,13 +1399,12 @@ Choose from the list of available rules:
 
 * **php_unit_method_casing** [@PhpCsFixer]
 
-  Enforce camel (or snake) case for PHPUnit test methods, following
-  configuration.
+  Enforce casing for PHPUnit test methods, following configuration.
 
   Configuration options:
 
-  - ``case`` (``'camel_case'``, ``'snake_case'``): apply camel or snake case to test
-    methods; defaults to ``'camel_case'``
+  - ``case`` (``'camel_case'``, ``'non_breaking_spaces'``, ``'snake_case'``): the casing
+    style to apply; defaults to ``'camel_case'``
 
 * **php_unit_mock** [@PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky, @PHPUnit75Migration:risky]
 

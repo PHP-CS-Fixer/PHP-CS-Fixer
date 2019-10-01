@@ -25,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideCamelCaseSnakeCaseFixCases
      *
      * @param string      $expected
      * @param null|string $input
@@ -36,30 +36,125 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixCases
+     * @dataProvider provideCamelCaseSnakeCaseFixCases
      *
-     * @param mixed      $camelExpected
-     * @param null|mixed $camelInput
+     * @param string      $expected
+     * @param null|string $input
      */
-    public function testFixToSnakeCase($camelExpected, $camelInput = null)
+    public function testFixToSnakeCase($expected, $input = null)
     {
-        if (null === $camelInput) {
-            $expected = $camelExpected;
-            $input = $camelInput;
-        } else {
-            $expected = $camelInput;
-            $input = $camelExpected;
-        }
+        $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::SNAKE_CASE]);
 
+        if (null === $input) {
+            $this->doTest($expected, $input);
+        } else {
+            $this->doTest($input, $expected);
+        }
+    }
+
+    public function provideCamelCaseSnakeCaseFixCases()
+    {
+        foreach ($this->getCases() as $name => $case) {
+            if (!isset($case[1])) {
+                yield $name => $case;
+
+                continue;
+            }
+
+            yield $name => [$case[0], $case[1]];
+        }
+    }
+
+    /**
+     * @dataProvider provideCamelCaseNonBreakingSpacesFixCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixFromNonBreakingSpacesToCamelCase($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideCamelCaseNonBreakingSpacesFixCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixFromCamelCaseToNonBreakingSpaces($expected, $input = null)
+    {
+        $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::NON_BREAKING_SPACES]);
+
+        if (null === $input) {
+            $this->doTest($expected, $input);
+        } else {
+            $this->doTest($input, $expected);
+        }
+    }
+
+    public function provideCamelCaseNonBreakingSpacesFixCases()
+    {
+        foreach ($this->getCases() as $name => $case) {
+            if (!isset($case[1])) {
+                yield $name => $case;
+
+                continue;
+            }
+
+            yield $name => [$case[0], $case[2]];
+        }
+    }
+
+    /**
+     * @dataProvider provideSnakeCaseNonBreakingSpacesFixCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixFromNonBreakingSpacesToSnakeCase($expected, $input = null)
+    {
         $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::SNAKE_CASE]);
         $this->doTest($expected, $input);
     }
 
     /**
+     * @dataProvider provideSnakeCaseNonBreakingSpacesFixCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixFromSnakeCaseToNonBreakingSpaces($expected, $input = null)
+    {
+        $this->fixer->configure(['case' => PhpUnitMethodCasingFixer::NON_BREAKING_SPACES]);
+
+        if (null === $input) {
+            $this->doTest($expected, $input);
+        } else {
+            $this->doTest($input, $expected);
+        }
+    }
+
+    public function provideSnakeCaseNonBreakingSpacesFixCases()
+    {
+        foreach ($this->getCases() as $name => $case) {
+            if (!isset($case[1])) {
+                yield $name => $case;
+
+                continue;
+            }
+
+            yield $name => [$case[1], $case[2]];
+        }
+    }
+
+    /**
      * @return array
      */
-    public function provideFixCases()
+    private function getCases()
     {
+        $nbsp = pack('H*', 'c2a0');
+
         return [
             'skip non phpunit methods' => [
                 '<?php class MyClass {
@@ -76,10 +171,12 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
             'default sample' => [
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function testMyApp() {} }',
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { public function test_my_app() {} }',
+                "<?php class MyTest extends \\PhpUnit\\FrameWork\\TestCase { public function test{$nbsp}my{$nbsp}app() {} }",
             ],
             'annotation' => [
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { /** @test */ public function myApp() {} }',
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase { /** @test */ public function my_app() {} }',
+                "<?php class MyTest extends \\PhpUnit\\FrameWork\\TestCase { /** @test */ public function my{$nbsp}app() {} }",
             ],
             '@depends annotation' => [
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
@@ -98,6 +195,14 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                      */
                     public function test_my_app_too() {}
                 }',
+                "<?php class MyTest extends \\PhpUnit\\FrameWork\\TestCase {
+                    public function test{$nbsp}my{$nbsp}app () {}
+
+                    /**
+                     * @depends test{$nbsp}my{$nbsp}app
+                     */
+                    public function test{$nbsp}my{$nbsp}app{$nbsp}too() {}
+                }",
             ],
             '@depends and @test annotation' => [
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
@@ -124,6 +229,18 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                      */
                     public function my_app_too() {}
                 }',
+                "<?php class MyTest extends \\PhpUnit\\FrameWork\\TestCase {
+                    /**
+                     * @test
+                     */
+                    public function my{$nbsp}app () {}
+
+                    /**
+                     * @test
+                     * @depends my{$nbsp}app
+                     */
+                    public function my{$nbsp}app{$nbsp}too() {}
+                }",
             ],
         ];
     }
