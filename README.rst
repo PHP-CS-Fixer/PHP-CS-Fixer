@@ -264,7 +264,7 @@ Choose from the list of available rules:
 
   Each element of an array must be indented exactly once.
 
-* **array_syntax** [@PhpCsFixer]
+* **array_syntax** [@Symfony, @PhpCsFixer]
 
   PHP arrays should be declared using the configured syntax.
 
@@ -1249,7 +1249,7 @@ Choose from the list of available rules:
   - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
     statements should be sorted; defaults to ``'none'``
 
-* **ordered_imports** [@PhpCsFixer]
+* **ordered_imports** [@Symfony, @PhpCsFixer]
 
   Ordering ``use`` statements.
 
@@ -1513,7 +1513,7 @@ Choose from the list of available rules:
     ones; defaults to ``['property-read' => 'property', 'property-write' =>
     'property', 'type' => 'var', 'link' => 'see']``
 
-* **phpdoc_no_empty_return** [@Symfony, @PhpCsFixer]
+* **phpdoc_no_empty_return** [@PhpCsFixer]
 
   ``@return void`` and ``@return null`` annotations should be omitted from
   PHPDoc.
@@ -1590,7 +1590,7 @@ Choose from the list of available rules:
   PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
-* **phpdoc_trim_consecutive_blank_line_separation** [@PhpCsFixer]
+* **phpdoc_trim_consecutive_blank_line_separation** [@Symfony, @PhpCsFixer]
 
   Removes extra blank lines after summary and after description in PHPDoc.
 
@@ -1635,7 +1635,7 @@ Choose from the list of available rules:
   Pre incrementation/decrementation should be used if possible.
   DEPRECATED: use ``increment_style`` instead.
 
-* **protected_to_private** [@Symfony, @PhpCsFixer]
+* **protected_to_private** [@PhpCsFixer]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
 
