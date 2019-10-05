@@ -1452,9 +1452,10 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
-* **php_unit_ordered_covers** [@PhpCsFixer]
+* **php_unit_ordered_covers**
 
-  Order ``@covers`` annotation of PHPUnit tests.
+  Order ``@covers`` annotation of PHPUnit tests. DEPRECATED: use
+  ``phpdoc_order_by_value`` instead.
 
 * **php_unit_set_up_tear_down_visibility** [@PhpCsFixer:risky]
 
@@ -1599,6 +1600,16 @@ Choose from the list of available rules:
 
   Annotations in PHPDoc should be ordered so that ``@param`` annotations
   come first, then ``@throws`` annotations, then ``@return`` annotations.
+
+* **phpdoc_order_by_value** [@PhpCsFixer]
+
+  Order phpdoc tags by value.
+
+  Configuration options:
+
+  - ``annotations`` (a subset of ``['author', 'covers', 'coversNothing',
+    'dataProvider', 'depends', 'group', 'internal', 'requires', 'uses']``):
+    list of annotations to order, e.g. ``["covers"]``; defaults to ``['covers']``
 
 * **phpdoc_return_self_reference** [@Symfony, @PhpCsFixer]
 
