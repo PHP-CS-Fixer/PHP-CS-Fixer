@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\FileReader;
+use PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream;
 
 /**
  * @author ntzm
@@ -58,7 +59,7 @@ final class FileReaderTest extends TestCase
         $reader = new FileReader();
 
         stream_wrapper_unregister('php');
-        stream_wrapper_register('php', 'PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream');
+        stream_wrapper_register('php', StdinFakeStream::class);
 
         static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));
         static::assertSame('<?php echo "foo";', $reader->read('php://stdin'));

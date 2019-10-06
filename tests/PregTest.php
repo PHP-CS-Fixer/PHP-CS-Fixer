@@ -26,12 +26,8 @@ final class PregTest extends TestCase
 {
     public function testMatchFailing()
     {
-        $this->expectException(
-            PregException::class
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_match.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_match.');
 
         Preg::match('', 'foo', $matches);
     }
@@ -53,12 +49,8 @@ final class PregTest extends TestCase
 
     public function testMatchAllFailing()
     {
-        $this->expectException(
-            PregException::class
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_match_all.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_match_all.');
 
         Preg::matchAll('', 'foo', $matches);
     }
@@ -80,12 +72,8 @@ final class PregTest extends TestCase
 
     public function testReplaceFailing()
     {
-        $this->expectException(
-            PregException::class
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_replace.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_replace.');
 
         Preg::replace('', 'foo', 'bar');
     }
@@ -107,12 +95,8 @@ final class PregTest extends TestCase
 
     public function testReplaceCallbackFailing()
     {
-        $this->expectException(
-            PregException::class
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_replace_callback.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_replace_callback.');
 
         Preg::replaceCallback('', 'sort', 'foo');
     }
@@ -155,12 +139,8 @@ final class PregTest extends TestCase
 
     public function testSplitFailing()
     {
-        $this->expectException(
-            PregException::class
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_split.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_split.');
 
         Preg::split('', 'foo');
     }
