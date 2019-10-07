@@ -106,7 +106,7 @@ final class DescribeCommand extends Command
             if ('@' === $name[0]) {
                 $this->describeSet($output, $name);
 
-                return null;
+                return 0;
             }
 
             $this->describeRule($output, $name);
@@ -126,6 +126,8 @@ final class DescribeCommand extends Command
                 null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
             ));
         }
+
+        return 0;
     }
 
     /**
