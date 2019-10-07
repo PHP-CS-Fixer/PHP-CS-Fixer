@@ -105,7 +105,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
 
             foreach ($currentNamespaceUseDeclarations as $useDeclaration) {
-                if (!$this->importIsUsed($tokens, $namespace, $usagesSearchIgnoredIndexes, $useDeclaration->getShortName())) {
+                if (!$this->isImportUsed($tokens, $namespace, $usagesSearchIgnoredIndexes, $useDeclaration->getShortName())) {
                     $this->removeUseDeclaration($tokens, $useDeclaration);
                 }
             }
@@ -122,7 +122,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
      *
      * @return bool
      */
-    private function importIsUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, $shortName)
+    private function isImportUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, $shortName)
     {
         $namespaceEndIndex = $namespace->getScopeEndIndex();
         for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
