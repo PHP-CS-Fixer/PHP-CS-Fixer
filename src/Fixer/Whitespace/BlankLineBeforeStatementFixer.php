@@ -43,6 +43,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
         'default' => T_DEFAULT,
+        'phpdoc' => T_DOC_COMMENT,
         'do' => T_DO,
         'exit' => T_EXIT,
         'for' => T_FOR,

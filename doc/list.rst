@@ -106,7 +106,7 @@ List of Available Rules
 
    - | ``statements``
      | List of statements which must be preceded by an empty line.
-     | Allowed values: a subset of ``['break', 'case', 'continue', 'declare', 'default', 'do', 'exit', 'for', 'foreach', 'goto', 'if', 'include', 'include_once', 'require', 'require_once', 'return', 'switch', 'throw', 'try', 'while', 'yield', 'yield_from']``
+     | Allowed values: a subset of ``['break', 'case', 'continue', 'declare', 'default', 'phpdoc', 'do', 'exit', 'for', 'foreach', 'goto', 'if', 'include', 'include_once', 'require', 'require_once', 'return', 'switch', 'throw', 'try', 'while', 'yield', 'yield_from']``
      | Default value: ``['break', 'continue', 'declare', 'return', 'throw', 'try']``
 
 
