@@ -209,7 +209,7 @@ $bar) {}',
     /**
      * @return array
      */
-    public function provideFix71cases()
+    public function provideFix71Cases()
     {
         return [
             [
