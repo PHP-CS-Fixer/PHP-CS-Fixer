@@ -270,11 +270,14 @@ final class DescribeCommand extends Command
             $output->writeln('Fixing examples:');
 
             $differ = new FullDiffer();
-            $diffFormatter = new DiffConsoleFormatter($output->isDecorated(), sprintf(
-                '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
-                PHP_EOL,
-                PHP_EOL
-            ));
+            $diffFormatter = new DiffConsoleFormatter(
+                $output->isDecorated(),
+                sprintf(
+                    '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
+                    PHP_EOL,
+                    PHP_EOL
+                )
+            );
 
             foreach ($codeSamples as $index => $codeSample) {
                 $old = $codeSample->getCode();

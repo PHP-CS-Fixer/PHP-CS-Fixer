@@ -70,12 +70,16 @@ final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
                 '<?php $a = isset ( $a /*1*/ )    &&    isset ( $c   ) && isset( $d );',
             ],
             'minimal fix case' => [
-                '<?php isset($a, $b);',
-                '<?php isset($a)&&isset($b);',
+                '<?php {{isset($a, $b);}}',
+                '<?php {{isset($a)&&isset($b);}}',
             ],
             [
-                '<?php isset($a, $b, $c)    ;',
-                '<?php isset($a) && isset($b) && isset($c);',
+                '<?php foo(isset($a, $b, $c)    );',
+                '<?php foo(isset($a) && isset($b) && isset($c));',
+            ],
+            [
+                '<?php isset($a, $b)   && !isset($c) ?>',
+                '<?php isset($a) && isset($b) && !isset($c) ?>',
             ],
             [
                 '<?php $a = isset($a,$c, $b,$c, $b,$c,$d,$f, $b)      ;',
@@ -135,15 +139,40 @@ isset
                     $a = isset($a) && isset($b);
                 ',
             ],
+            [
+                '<?php $d = isset($z[1], $z[2], $z[3])     || false;',
+                '<?php $d = isset($z[1]) && isset($z[2]) && isset($z[3]) || false;',
+            ],
+            [
+                '<?php
+                    $a = isset($a, $b)   && isset($c) === false;
+                    $a = isset($a, $b)   && isset($c) | false;
+                    $a = isset($a, $b)   && isset($c) ^ false;
+                ',
+                '<?php
+                    $a = isset($a) && isset($b) && isset($c) === false;
+                    $a = isset($a) && isset($b) && isset($c) | false;
+                    $a = isset($a) && isset($b) && isset($c) ^ false;
+                ',
+            ],
             // don't fix cases
             [
                 '<?php $a = isset($a) && $a->isset(); $b=isset($d);',
             ],
             [
-                '<?php $a = isset($a) && !isset($b);',
-            ],
-            [
-                '<?php $a = !isset($a) && isset($b);',
+                '<?php
+                    $a = !isset($a) && isset($b);
+                    $a = !isset($a) && !isset($b);
+                    $a = isset($a) && !isset($b);
+                    //
+                    $a = isset($b) && isset($c) === false;
+                    $a = isset($b) && isset($c) | false;
+                    $a = isset($b) && isset($c) ^ false;
+                    //
+                    $a = false === isset($b) && isset($c);
+                    $a = false | isset($b) && isset($c);
+                    $a = false ^ isset($b) && isset($c);
+                ',
             ],
             [
                 '<?php $a = !isset($container[$a]) && isset($container[$b]) && !isset($container[$c]) && isset($container[$d]);',
