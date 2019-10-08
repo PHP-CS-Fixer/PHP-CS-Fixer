@@ -171,5 +171,7 @@ EOT
         rename($tempFilename, $localFilename);
 
         $output->writeln(sprintf('<info>php-cs-fixer updated</info> (<comment>%s</comment>)', $remoteTag));
+
+        return 0;
     }
 }
