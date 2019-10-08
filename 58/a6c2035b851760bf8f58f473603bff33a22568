@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-05-31T07:59:20Z
+
+looking good, please check https://github.com/julienfalque/PHP-CS-Fixer/pull/8 for one edge case
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-05-31T11:33:42Z
+
+Thank you @SpacePossum :)
+
+---------------------------------------------------------------------------
+
+by erickskrauch at 2019-09-09T16:25:01Z
+
+Got the same bug. Is it possible to merge this fix?
