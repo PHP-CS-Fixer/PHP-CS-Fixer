@@ -275,18 +275,50 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatDataProvidersAreCorrectlyNamed($testClassName)
     {
-        $dataProviderMethodNames = $this->getDataProviderMethodNames($testClassName);
+        $usedDataProviderMethodNames = $this->getUsedDataProviderMethodNames($testClassName);
 
         if (empty($dataProviderMethodNames)) {
             $this->addToAssertionCount(1); // no data providers to test, all good!
         }
 
-        foreach ($dataProviderMethodNames as $dataProviderMethodName) {
+        foreach ($usedDataProviderMethodNames as $dataProviderMethodName) {
             static::assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
                 'Data provider in "%s" with name "%s" is not correctly named.',
                 $testClassName,
                 $dataProviderMethodName
             ));
+        }
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     *
+     * @param string $testClassName
+     */
+    public function testThatDataProvidersAreUsed($testClassName)
+    {
+        $reflectionClass = new \ReflectionClass($testClassName);
+
+        $definedDataProviders = array_filter(
+            $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+            static function (\ReflectionMethod $reflectionMethod) use ($reflectionClass) {
+                return $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
+                    && 'provide' === substr($reflectionMethod->getName(), 0, 7);
+            }
+        );
+
+        if ($definedDataProviders === []) {
+            $this->addToAssertionCount(1); // no methods to test, all good!
+        }
+
+        $usedDataProviderMethodNames = $this->getUsedDataProviderMethodNames($testClassName);
+
+        foreach ($definedDataProviders as $definedDataProvider) {
+            static::assertContains(
+                $definedDataProvider->getName(),
+                $usedDataProviderMethodNames,
+                sprintf('Data provider in "%s" with name "%s" is not used.', $definedDataProvider->getDeclaringClass()->getName(), $definedDataProvider->getName())
+            );
         }
     }
 
@@ -406,7 +438,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    private function getDataProviderMethodNames($testClassName)
+    private function getUsedDataProviderMethodNames($testClassName)
     {
         $dataProviderMethodNames = [];
         $tokens = Tokens::fromCode(file_get_contents(
