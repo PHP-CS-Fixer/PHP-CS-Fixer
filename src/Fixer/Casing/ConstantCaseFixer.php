@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\Casing;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Pol Dellaiera <pol.dellaiera@protonmail.com>
  */
-final class ConstantCaseFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * Hold the function that will be used to convert the constants.

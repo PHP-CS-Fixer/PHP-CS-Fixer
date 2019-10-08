@@ -224,11 +224,6 @@ $a#
         return $cases;
     }
 
-    public function provideTestFixLegacyCases()
-    {
-        return array_filter($this->provideTestFixCases(), function (array $case) { return !isset($case[2]); });
-    }
-
     /**
      * @param string $expected
      *
