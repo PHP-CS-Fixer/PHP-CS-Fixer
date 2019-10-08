@@ -31,6 +31,7 @@ use Prophecy\Argument;
 abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
+    use IsIdenticalConstraint;
 
     /**
      * @var LinterInterface
@@ -204,29 +205,5 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         return $linter;
-    }
-
-    /**
-     * @todo Remove me when this class will end up in dedicated package.
-     *
-     * @param string $expected
-     *
-     * @return PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString|PHPUnit\Framework\Constraint\IsIdentical|PHPUnit_Framework_Constraint_IsIdentical
-     */
-    private static function createIsIdenticalStringConstraint($expected)
-    {
-        $candidates = array_filter([
-            'PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString',
-            'PHPUnit\Framework\Constraint\IsIdentical',
-            'PHPUnit_Framework_Constraint_IsIdentical',
-        ], function ($className) { return class_exists($className); });
-
-        if (empty($candidates)) {
-            throw new \RuntimeException('PHPUnit not installed?!');
-        }
-
-        $candidate = array_shift($candidates);
-
-        return new $candidate($expected);
     }
 }
