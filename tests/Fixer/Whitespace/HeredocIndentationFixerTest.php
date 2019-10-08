@@ -76,7 +76,26 @@ INPUT
                 <<<'EXPECTED'
 <?php
     foo(<<<EOD
+
+        EOD
+    );
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+    foo(<<<EOD
+
+EOD
+    );
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+    foo(<<<EOD
         abc
+
             def
         EOD
     );
@@ -86,6 +105,7 @@ EXPECTED
 <?php
     foo(<<<EOD
 abc
+
     def
 EOD
     );
@@ -96,8 +116,10 @@ INPUT
                 <<<'EXPECTED'
 <?php
     foo(<<<'EOD'
+
         abc
             def
+
         EOD
     );
 EXPECTED
@@ -105,8 +127,10 @@ EXPECTED
                 <<<'INPUT'
 <?php
     foo(<<<'EOD'
+
 abc
     def
+
 EOD
     );
 INPUT
@@ -175,6 +199,50 @@ FOO;
 EOD;
 INPUT
                 ,
+            ],
+            [
+                /* EXPECTED */ '
+<?php
+    foo(<<<EOD
+          '.'
+        abc
+          '.'
+        def
+          '.'
+        EOD
+    );',
+                /* INPUT */ '
+<?php
+    foo(<<<EOD
+        '.'
+      abc
+        '.'
+      def
+        '.'
+      EOD
+    );',
+            ],
+            [
+                /* EXPECTED */ '
+<?php
+    foo(<<<EOD
+
+        abc
+
+        def
+
+        EOD
+    );',
+                /* INPUT */ '
+<?php
+    foo(<<<EOD
+  '.'
+      abc
+  '.'
+      def
+  '.'
+      EOD
+    );',
             ],
         ];
     }
