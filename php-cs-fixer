@@ -53,15 +53,26 @@ if (class_exists('Phar')) {
     } catch (PharException $e) {
     }
 }
+
 if ($require) {
     // OK, it's not, let give Composer autoloader a try!
-    if (file_exists($a = __DIR__.'/../../autoload.php')) {
-        require_once $a;
-    } else {
-        require_once __DIR__.'/vendor/autoload.php';
+    $possibleFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__.'/vendor/autoload.php'];
+    $file = null;
+    foreach ($possibleFiles as $possibleFile) {
+        if (file_exists($possibleFile)) {
+            $file = $possibleFile;
+
+            break;
+        }
     }
 
-    unset($a);
+    if (null === $file) {
+        throw new RuntimeException('Unable to locate autoload.php file.');
+    }
+
+    require_once $file;
+
+    unset($possibleFiles, $possibleFile, $file);
 }
 unset($require);
 
