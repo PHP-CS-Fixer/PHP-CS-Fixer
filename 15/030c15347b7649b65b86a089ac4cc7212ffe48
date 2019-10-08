@@ -1,0 +1,89 @@
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-07-24T21:44:39Z
+
+@julienfalque All the requested changes have been made (except the one with the tests being run on older php versions) & can be viewed in this commit https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4401/commits/7143e6d009e2c316e0d376a017269eef15401dbe.
+
+Since the fixer's `isCandidate` method has the following condition, `\PHP_VERSION_ID >= 70100`, running the tests on older php versions results in the test failing with the messegae `Fixer must be a candidate for input code.`, eg https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/563275126. I don't see how the test can be run on older php versions, any help would be appreciated.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-07-25T06:23:46Z
+
+For test cases that expect no change, the arguments passed to `doTest()` method change: parameter 1 is the input _and_ output code, and parameter 2 is null.
+
+The error you get means parameter 2 is not null and thus treated as input code to be fixed, which requires the `isCandidate()` method to return `true`.
+
+I would either:
+- remove the `@requires` annotation on the test method and conditionally pass `null` as parameter 2 to `doTest()` (when PHP version is lower than 7.1)
+- add a specific test that runs on PHP lower than 7.1 and always pass `null` as parameter 2 to `doTest()`.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-07-25T10:12:57Z
+
+@HypeMC looking good :+1:
+
+As this is a new feature, could you please edit the PR to target branch `master` and rebase your work on it?
+
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-07-25T10:50:34Z
+
+@julienfalque Done.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-08-04T13:14:37Z
+
+Nice MR, great idea :)
+
+The analyzing of the arguments in the fixer is very close to what the [ArgumentsAnalyzer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.15.1/src/Tokenizer/Analyzer/ArgumentsAnalyzer.php) does, could we utilize that one (maybe together with the FunctionAnalyzer if that helps)?
+
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-08-25T18:22:07Z
+
+@SpacePossum Done, I've used the `FunctionAnalyzer`.
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-08-25T18:22:56Z
+
+@HypeMC Rebase against latest master ?
+
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-08-25T18:26:36Z
+
+@drupol Done.
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-08-25T18:34:02Z
+
+Good, nice feature :-)
+
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-08-26T22:29:11Z
+
+@kubawerlos Tnx for the test, however, there seem to be some problems with the priority. The `NoUnreachableDefaultArgumentValueFixer` has a higher priority the `NullableTypeDeclarationForDefaultNullValueFixer`, but that priority is needed cause of the `CompactNullableTypehintFixer`. Not sure how to go about this one.
+
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-08-26T22:47:23Z
+
+@kubawerlos The only way I was able to make this work was by removing the dependency to the `CompactNullableTypehintFixer` and adding the white space removal to this fixer instead (as you suggested) https://github.com/HypeMC/PHP-CS-Fixer/pull/2
+
+---------------------------------------------------------------------------
+
+by HypeMC at 2019-09-27T09:56:10Z
+
+@kubawerlos Any news on this one, are you ok with the changes suggested in https://github.com/HypeMC/PHP-CS-Fixer/pull/2 ? :smile:
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-10-03T15:53:04Z
+
+@HypeMC please do not `push --force` as it hides what is new and what changes since one gave approve. The person who will do the merge will squash commits anyway.
