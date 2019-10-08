@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-09-09T07:42:34Z
+
+shell may have a lot of false positives tbh
+please extract the shell script part and let's review/discuss it separately
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-10-06T17:14:04Z
+
+@keradus let have [this](https://github.com/keradus/PHP-CS-Fixer/pull/32/files) and go with the changes - I don't thinks we have to make automated check for this right now.
