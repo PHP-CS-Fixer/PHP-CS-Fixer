@@ -73,7 +73,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
             'array' => [[]],
             'float' => [0.1],
             'object' => [new \stdClass()],
-            'not-trimmed' => ['  json_encode  '],
+            'not-trimmed' => ['  is_string  '],
         ];
     }
 
@@ -124,7 +124,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([
             'exclude' => [
-                'json_encode',
+                'is_string',
             ],
         ]);
 
@@ -138,7 +138,7 @@ class Bar
     public function baz($foo)
     {
         if (isset($foo)) {
-            json_encode($foo);
+            is_string($foo);
         }
     }
 }
@@ -154,7 +154,7 @@ class Bar
     public function baz($foo)
     {
         if (isset($foo)) {
-            \json_encode($foo);
+            \is_string($foo);
         }
     }
 }
@@ -194,17 +194,17 @@ PHP;
             [
                 '<?php
 
-\json_encode($foo);
+\is_string($foo);
 ',
             ],
             [
                 '<?php
 
-\json_encode($foo);
+\is_string($foo);
 ',
                 '<?php
 
-json_encode($foo);
+is_string($foo);
 ',
             ],
             [
@@ -214,7 +214,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return \json_encode($foo);
+        return \is_string($foo);
     }
 }
 ',
@@ -226,7 +226,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return \JSON_ENCODE($foo);
+        return \IS_STRING($foo);
     }
 }
 ',
@@ -236,7 +236,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return JSON_ENCODE($foo);
+        return IS_STRING($foo);
     }
 }
 ',
@@ -272,7 +272,7 @@ echo strlen($a);
     {
         $this->fixer->configure([
             'exclude' => [
-                'json_encode',
+                'is_string',
             ],
         ]);
 
@@ -288,7 +288,7 @@ echo strlen($a);
             [
                 '<?php
 
-json_encode($foo);
+is_string($foo);
 ',
             ],
             [
@@ -298,7 +298,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return json_encode($foo);
+        return is_string($foo);
     }
 }
 ',
@@ -340,44 +340,44 @@ namespace space1 { ?>
             [
                 '<?php
 namespace Bar {
-    echo \strtoLOWER("in 1");
+    echo \strLEN("in 1");
 }
 
 namespace {
-    echo strtolower("out 1");
+    echo strlen("out 1");
 }
 
 namespace {
-    echo strtolower("out 2");
+    echo strlen("out 2");
 }
 
 namespace Bar{
-    echo \strtolower("in 2");
+    echo \strlen("in 2");
 }
 
 namespace {
-    echo strtolower("out 3");
+    echo strlen("out 3");
 }
 ',
                 '<?php
 namespace Bar {
-    echo strtoLOWER("in 1");
+    echo strLEN("in 1");
 }
 
 namespace {
-    echo strtolower("out 1");
+    echo strlen("out 1");
 }
 
 namespace {
-    echo strtolower("out 2");
+    echo strlen("out 2");
 }
 
 namespace Bar{
-    echo strtolower("in 2");
+    echo strlen("in 2");
 }
 
 namespace {
-    echo strtolower("out 3");
+    echo strlen("out 3");
 }
 ',
             ],
@@ -386,17 +386,17 @@ namespace {
 namespace space11 ?>
 
     <?php
-echo \strtolower(__NAMESPACE__);
+echo \strlen(__NAMESPACE__);
 namespace space2;
-echo \strtolower(__NAMESPACE__);
+echo \strlen(__NAMESPACE__);
 ',
                 '<?php
 namespace space11 ?>
 
     <?php
-echo strtolower(__NAMESPACE__);
+echo strlen(__NAMESPACE__);
 namespace space2;
-echo strtolower(__NAMESPACE__);
+echo strlen(__NAMESPACE__);
 ',
             ],
             [
@@ -426,33 +426,33 @@ echo count([1]);
 ',
             ],
             [
-                '<?php namespace {echo strtolower("out 2");}',
+                '<?php namespace {echo strlen("out 2");}',
             ],
             [
                 '<?php
 namespace space13 {
-    echo \strtolower("in 1");
+    echo \strlen("in 1");
 }
 
 namespace space2 {
-    echo \strtolower("in 2");
+    echo \strlen("in 2");
 }
 
 namespace { // global
-    echo strtolower("global 1");
+    echo strlen("global 1");
 }
 ',
                 '<?php
 namespace space13 {
-    echo strtolower("in 1");
+    echo strlen("in 1");
 }
 
 namespace space2 {
-    echo strtolower("in 2");
+    echo strlen("in 2");
 }
 
 namespace { // global
-    echo strtolower("global 1");
+    echo strlen("global 1");
 }
 ',
             ],

@@ -913,7 +913,7 @@ Choose from the list of available rules:
   - ``include`` (``array``): list of function names or sets to fix. Defined sets are
     ``@internal`` (all native functions), ``@all`` (all global functions) and
     ``@compiler_optimized`` (functions that are specially optimized by Zend);
-    defaults to ``['@internal']``
+    defaults to ``['@compiler_optimized']``
   - ``scope`` (``'all'``, ``'namespaced'``): only fix function calls that are made
     within a namespace or fix all; defaults to ``'all'``
   - ``strict`` (``bool``): whether leading ``\`` of function call not meant to have it

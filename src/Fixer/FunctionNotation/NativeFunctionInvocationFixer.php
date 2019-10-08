@@ -242,7 +242,7 @@ $c = get_class($d);
 
                     return true;
                 }])
-                ->setDefault([self::SET_INTERNAL])
+                ->setDefault([self::SET_COMPILER_OPTIMIZED])
                 ->getOption(),
             (new FixerOptionBuilder('scope', 'Only fix function calls that are made within a namespace or fix all.'))
                 ->setAllowedValues(['all', 'namespaced'])
