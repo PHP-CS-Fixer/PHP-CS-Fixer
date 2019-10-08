@@ -230,6 +230,8 @@ class Sample
     {
         static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC];
 
+        $nonWhiteAbove = null;
+
         // find out where the element definition starts
         $firstElementAttributeIndex = $elementIndex;
         for ($i = $elementIndex; $i > $classStartIndex; --$i) {
