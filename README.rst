@@ -421,6 +421,16 @@ Choose from the list of available rules:
   - ``spacing`` (``'none'``, ``'one'``): spacing to apply around concatenation operator;
     defaults to ``'none'``
 
+* **constant_case** [@PSR2, @Symfony, @PhpCsFixer]
+
+  The PHP constants ``true``, ``false``, and ``null`` MUST be written using the
+  correct casing.
+
+  Configuration options:
+
+  - ``case`` (``'lower'``, ``'upper'``): whether to use the ``upper`` or ``lower`` case
+    syntax; defaults to ``'lower'``
+
 * **date_time_immutable**
 
   Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
@@ -821,9 +831,10 @@ Choose from the list of available rules:
 
   Cast should be written in lower case.
 
-* **lowercase_constants** [@PSR2, @Symfony, @PhpCsFixer]
+* **lowercase_constants**
 
   The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
+  DEPRECATED: use ``constant_case`` instead.
 
 * **lowercase_keywords** [@PSR2, @Symfony, @PhpCsFixer]
 
