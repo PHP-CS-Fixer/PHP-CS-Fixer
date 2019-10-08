@@ -1,0 +1,82 @@
+---------------------------------------------------------------------------
+
+by drupol at 2019-01-21T11:31:08Z
+
+Branch has been rebased against master, as requested by @dmvdbrugge in first review comment.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-01-21T12:28:22Z
+
+The reason why your builds keep failing by the way is laid out in the [CONTRIBUTING.md](/FriendsOfPHP/PHP-CS-Fixer/blob/master/CONTRIBUTING.md)
+> Regenerate README: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-02-17T22:11:40Z
+
+Hi and thanks for opening this PR.
+
+Before I review the PR in detail, I'm wondering. The suggestion to uppercase the keywords is not in line with [PSR2](https://www.php-fig.org/psr/psr-2/#25-keywords-and-truefalsenull) , however this is part of the Drupal standard? Do you know why Drupal prefers this style or if this is legacy they might want to move away from?
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-02-17T22:18:01Z
+
+Hello,
+
+No I don't know why using uppercase for keywords was chosen in Drupal.
+I'm pretty sure that it won't change in Drupal 7 and 9 and I don't know either if they are going to move away from it in Drupal 9.
+However, I really wish they do.
+
+That said, having this configurable in PHP-CS-Fixer shouldn't be a bad thing, I think.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-02-20T14:59:18Z
+
+I'm +1 as this is a standard of a bigger community (Drupal) even if against PSR, however I know of and respect the opinions of people who feel different about this change.
+
+(but the PR itself needs some tweaking still)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-02-20T15:40:51Z
+
+Final nitpicking remark from me: I find "syntax" a strange choice for configuration option, "case" or "casing" would be more clear and intuitive.
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-02-20T15:48:02Z
+
+Ok guys, I will fix this, it will be ready for tomorrow.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-02-20T15:58:56Z
+
+(maybe `case` would be best, as we already used that as config option else where, but `casing` we did not)
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-02-20T16:27:13Z
+
+@dmvdbrugge @SpacePossum Ready for review again.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-02-20T18:21:43Z
+
+please regenerate the `readme` with `php php-cs-fixer readme > README.rst` :)
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-02-20T20:33:36Z
+
+All good @SpacePossum
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-07-23T12:35:10Z
+
+@keradus @dmvdbrugge @SpacePossum Any of you guys to do a new review ?
