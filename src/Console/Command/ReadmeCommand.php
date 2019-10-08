@@ -287,5 +287,7 @@ EOF;
         $footer = str_replace('%download.url%', $downloadUrl, $footer);
 
         $output->write($header."\n".$help."\n".$footer);
+
+        return 0;
     }
 }
