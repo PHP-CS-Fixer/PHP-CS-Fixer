@@ -105,7 +105,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
 
             foreach ($currentNamespaceUseDeclarations as $useDeclaration) {
-                if (!$this->importIsUsed($tokens, $namespace, $usagesSearchIgnoredIndexes, $useDeclaration->getShortName())) {
+                if (!$this->isImportUsed($tokens, $namespace, $usagesSearchIgnoredIndexes, $useDeclaration->getShortName())) {
                     $this->removeUseDeclaration($tokens, $useDeclaration);
                 }
             }
@@ -114,9 +114,18 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
     }
 
-    private function importIsUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, $shortName)
+    /**
+     * @param Tokens            $tokens
+     * @param NamespaceAnalysis $namespace
+     * @param array<int, int>   $ignoredIndexes
+     * @param string            $shortName
+     *
+     * @return bool
+     */
+    private function isImportUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, $shortName)
     {
-        for ($index = $namespace->getScopeStartIndex(); $index <= $namespace->getScopeEndIndex(); ++$index) {
+        $namespaceEndIndex = $namespace->getScopeEndIndex();
+        for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
             if (isset($ignoredIndexes[$index])) {
                 $index = $ignoredIndexes[$index];
 
@@ -125,12 +134,23 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             $token = $tokens[$index];
 
-            if (
-                $token->isGivenKind(T_STRING)
-                && 0 === strcasecmp($shortName, $token->getContent())
-                && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR])
-            ) {
-                return true;
+            if ($token->isGivenKind(T_STRING)) {
+                $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+                if ($prevMeaningfulToken->isGivenKind(T_NAMESPACE)) {
+                    $index = $tokens->getNextTokenOfKind($index, [';', '{', [T_CLOSE_TAG]]);
+
+                    continue;
+                }
+
+                if (
+                    0 === strcasecmp($shortName, $token->getContent())
+                    && !$prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR])
+                ) {
+                    return true;
+                }
+
+                continue;
             }
 
             if ($token->isComment() && Preg::match(
