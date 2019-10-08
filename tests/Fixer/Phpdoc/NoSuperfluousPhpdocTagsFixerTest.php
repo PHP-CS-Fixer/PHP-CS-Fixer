@@ -303,6 +303,701 @@ class Foo {
     public function doFoo($foo) {}
 }',
             ],
+            'inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     */
+    public function doFoo($foo) {}
+}',
+            ],
+            'inline_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdoc}
+     */
+    public function doFoo($foo) {}
+}',
+            ],
+            'dont_remove_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'dont_remove_inline_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdoc}
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'remove_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inline_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * {@inheritdoc}
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdoc_when_surrounded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDoc
+     *
+     * Bar.
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdoc_when_preceded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDoc
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdoc_when_followed_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     *
+     * Bar.
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inline_inheritdoc_inside_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo {@inheritDoc} Bar.
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     */
+    public function doFoo($foo) {}
+}',
+            ],
+            'inline_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdocs}
+     */
+    public function doFoo($foo) {}
+}',
+            ],
+            'dont_remove_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'dont_remove_inline_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdocs}
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'remove_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inline_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * {@inheritdocs}
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdocs_when_surrounded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDocs
+     *
+     * Bar.
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdocs_when_preceded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDocs
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdocs_when_followed_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     *
+     * Bar.
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inline_inheritdocs_inside_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo {@inheritDocs} Bar.
+     */
+    public function doFoo($foo) {}
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'property_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     */
+    private $foo;
+}',
+            ],
+            'inline_property_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdoc}
+     */
+    private $foo;
+}',
+            ],
+            'dont_remove_property_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'dont_remove_property_inline_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdoc}
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'remove_property_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    private $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     */
+    private $foo;
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inline_property_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    private $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * {@inheritdoc}
+     */
+    private $foo;
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inheritdoc_when_surrounded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDoc
+     *
+     * Bar.
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inheritdoc_when_preceded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDoc
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inheritdoc_when_followed_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc
+     *
+     * Bar.
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inline_inheritdoc_inside_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo {@inheritDoc} Bar.
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'property_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     */
+    private $foo;
+}',
+            ],
+            'inline_property_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdocs}
+     */
+    private $foo;
+}',
+            ],
+            'dont_remove_property_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'dont_remove_inline_property_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     * {@inheritdocs}
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'remove_property_property_inheritdoc' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    private $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     */
+    private $foo;
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inline_property_inheritdocs' => [
+                '<?php
+class Foo {
+    /**
+     *
+     */
+    private $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * {@inheritdocs}
+     */
+    private $foo;
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inheritdocs_when_surrounded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDocs
+     *
+     * Bar.
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inheritdocs_when_preceded_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo.
+     *
+     * @inheritDocs
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_property_inheritdocs_when_followed_by_text' => [
+                '<?php
+class Foo {
+    /**
+     * @inheritDocs
+     *
+     * Bar.
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inline_property_inheritdocs_inside_text' => [
+                '<?php
+class Foo {
+    /**
+     * Foo {@inheritDocs} Bar.
+     */
+    private $foo;
+}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'class_inheritdoc' => [
+                '<?php
+/**
+ * @inheritDoc
+ */
+class Foo {}',
+            ],
+            'dont_remove_class_inheritdoc' => [
+                '<?php
+/**
+ * @inheritDoc
+ */
+class Foo {}',
+                null,
+                ['remove_inheritdoc' => false],
+            ],
+            'remove_class_inheritdoc' => [
+                '<?php
+/**
+ *
+ */
+class Foo {}',
+                '<?php
+/**
+ * @inheritDoc
+ */
+class Foo {}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_interface_inheritdoc' => [
+                '<?php
+/**
+ *
+ */
+interface Foo {}',
+                '<?php
+/**
+ * @inheritDoc
+ */
+interface Foo {}',
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_class_inheritdoc_when_surrounded_by_text' => [
+                '<?php
+/**
+ * Foo.
+ *
+ * @inheritDoc
+ *
+ * Bar.
+ */
+class Foo {}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_class_inheritdoc_when_preceded_by_text' => [
+                '<?php
+/**
+ * Foo.
+ *
+ * @inheritDoc
+ */
+class Foo {}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_class_inheritdoc_when_followed_by_text' => [
+                '<?php
+/**
+ * @inheritDoc
+ *
+ * Bar.
+ */
+class Foo {}',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inheritdoc_after_other_tag' => [
+                '<?php
+class Foo {
+    /**
+     * @param int $foo an integer
+     *
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param int $foo an integer
+     *
+     * @inheritDoc
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_only_inheritdoc_line' => [
+                '<?php
+class Foo {
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     * @inheritDoc
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_single_line_inheritdoc' => [
+                '<?php
+class Foo {
+    /** */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /** @inheritDoc */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inheritdoc_on_first_line' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /** @inheritDoc
+     */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_inheritdoc_on_last_line' => [
+                '<?php
+class Foo {
+    /**
+     * */
+    public function doFoo($foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @inheritDoc */
+    public function doFoo($foo) {}
+}',
+                ['remove_inheritdoc' => true],
+            ],
+            'dont_remove_inheritdoc_non_structural_element' => [
+                '<?php
+/**
+ * @inheritDoc
+ */
+$foo = 1;',
+                null,
+                ['remove_inheritdoc' => true],
+            ],
         ];
     }
 

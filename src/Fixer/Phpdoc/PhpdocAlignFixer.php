@@ -62,6 +62,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     private static $alignableTags = [
         'param',
         'property',
+        'property-read',
+        'property-write',
         'return',
         'throws',
         'type',

@@ -48,9 +48,13 @@ final class GitlabReporterTest extends AbstractReporterTestCase
         return <<<'JSON'
             [{
                 "description": "some_fixer_name_here",
-                "location.path": "someFile.php",
-                "location.lines.begin": 0,
-                "fingerprint": "ad098ea6ea7a28dd85dfcdfc9e2bded0"
+                "fingerprint": "ad098ea6ea7a28dd85dfcdfc9e2bded0",
+                "location": {
+                    "path": "someFile.php",
+                    "lines": {
+                        "begin": 0
+                    }
+                }
             }]
 JSON;
     }
@@ -71,14 +75,22 @@ JSON;
         return <<<'JSON'
             [{
                 "description": "some_fixer_name_here_1",
-                "location.path": "someFile.php",
-                "location.lines.begin": 0,
-                "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff"
+                "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
+                "location": {
+                    "path": "someFile.php",
+                    "lines": {
+                        "begin": 0
+                    }
+                }
             },{
                 "description": "some_fixer_name_here_2",
-                "location.path": "someFile.php",
-                "location.lines.begin": 0,
-                "fingerprint": "acad4672140c737a83c18d1474d84074"
+                "fingerprint": "acad4672140c737a83c18d1474d84074",
+                "location": {
+                    "path": "someFile.php",
+                    "lines": {
+                        "begin": 0
+                    }
+                }
             }]
 JSON;
     }
@@ -99,19 +111,31 @@ JSON;
         return <<<'JSON'
             [{
                 "description": "some_fixer_name_here_1",
-                "location.path": "someFile.php",
-                "location.lines.begin": 0,
-                "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff"
+                "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
+                "location": {
+                    "path": "someFile.php",
+                    "lines": {
+                        "begin": 0
+                    }
+                }
             },{
                 "description": "some_fixer_name_here_2",
-                "location.path": "someFile.php",
-                "location.lines.begin": 0,
-                "fingerprint": "acad4672140c737a83c18d1474d84074"
+                "fingerprint": "acad4672140c737a83c18d1474d84074",
+                "location": {
+                    "path": "someFile.php",
+                    "lines": {
+                        "begin": 0
+                    }
+                }
             },{
                 "description": "another_fixer_name_here",
-                "location.path": "anotherFile.php",
-                "location.lines.begin": 0,
-                "fingerprint": "30e86e533dac0f1b93bbc3a55c6908f8"
+                "fingerprint": "30e86e533dac0f1b93bbc3a55c6908f8",
+                "location": {
+                    "path": "anotherFile.php",
+                    "lines": {
+                        "begin": 0
+                    }
+                }
             }]
 JSON;
     }

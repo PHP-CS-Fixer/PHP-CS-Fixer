@@ -1080,6 +1080,7 @@ Choose from the list of available rules:
 
   - ``allow_mixed`` (``bool``): whether type ``mixed`` without description is allowed
     (``true``) or considered superfluous (``false``); defaults to ``false``
+  - ``remove_inheritdoc`` (``bool``): remove ``@inheritDoc`` tags; defaults to ``false``
 
 * **no_trailing_comma_in_list_call** [@Symfony, @PhpCsFixer]
 
@@ -1447,9 +1448,10 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``align`` (``'left'``, ``'vertical'``): align comments; defaults to ``'vertical'``
-  - ``tags`` (a subset of ``['param', 'property', 'return', 'throws', 'type',
-    'var', 'method']``): the tags that should be aligned; defaults to
-    ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
+  - ``tags`` (a subset of ``['param', 'property', 'property-read',
+    'property-write', 'return', 'throws', 'type', 'var', 'method']``): the
+    tags that should be aligned; defaults to ``['method', 'param',
+    'property', 'return', 'throws', 'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony, @PhpCsFixer]
 
