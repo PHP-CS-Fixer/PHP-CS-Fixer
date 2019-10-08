@@ -27,7 +27,7 @@ jobs:
         -
             stage: Static Code Analysis
             php: 7.2
-            env: COMPOSER_FLAGS="--no-dev --prefer-stable"
+            env: COMPOSER_FLAGS="--prefer-stable"
             install:
                 - ./dev-tools/install.sh
 
@@ -51,6 +51,7 @@ jobs:
                     | grep -v tests/TestCase.php \
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
+                - ./dev-tools/tools/phpstan analyse
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/tools/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
@@ -162,3 +163,6 @@ jobs:
                     tags: true
             after_deploy:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
+
+    allow_failures:
+        - php: 7.4snapshot

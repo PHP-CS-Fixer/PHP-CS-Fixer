@@ -91,6 +91,14 @@ require_once #1
 #6
 ;',
             ],
+            [
+                '<?php foo(require "foo.php");',
+                '<?php foo(require("foo.php"));',
+            ],
+            [
+                '<?php $foo[include "foo.php"];',
+                '<?php $foo[include("foo.php")];',
+            ],
         ];
 
         foreach (['require', 'require_once', 'include', 'include_once'] as $statement) {

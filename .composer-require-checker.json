@@ -2,6 +2,7 @@
     "symbol-whitelist" : [
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
         "PhpCsFixer\\Tests\\Test\\Constraint\\SameStringsConstraint",
+        "PhpCsFixer\\Tests\\Test\\IsIdenticalConstraint",
         "PHPUnit\\Framework\\Constraint\\IsIdentical",
         "PHPUnit\\Framework\\TestCase",
         "PHPUnit\\Runner\\Version",

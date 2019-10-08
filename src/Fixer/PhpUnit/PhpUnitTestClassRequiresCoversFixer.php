@@ -88,8 +88,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             : '';
 
         $prevIndex = $tokens->getPrevNonWhitespace($index);
-        $doc = null;
-        $docIndex = null;
 
         if ($tokens[$prevIndex]->isGivenKind(T_DOC_COMMENT)) {
             $docIndex = $prevIndex;

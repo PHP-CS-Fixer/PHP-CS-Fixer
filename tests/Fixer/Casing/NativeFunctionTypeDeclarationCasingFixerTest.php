@@ -147,7 +147,7 @@ function Foo(INTEGER $a) {}
      * @param string $expected
      * @param string $input
      *
-     * @dataProvider provideFix70Cases
+     * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
     public function testFix71($expected, $input)
@@ -173,7 +173,7 @@ function Foo(INTEGER $a) {}
      * @param string $expected
      * @param string $input
      *
-     * @dataProvider provideFix70Cases
+     * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
     public function testFix72($expected, $input)

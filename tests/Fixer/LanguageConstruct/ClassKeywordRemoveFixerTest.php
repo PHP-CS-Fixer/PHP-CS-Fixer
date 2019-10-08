@@ -199,6 +199,22 @@ DateTime:: # a
                 }
                 ',
             ],
+            [
+                '<?php
+                namespace Foo;
+                class Bar extends Baz {
+                    public function a() {
+                        return self::class;
+                    }
+                    public function b() {
+                        return static::class;
+                    }
+                    public function c() {
+                        return parent::class;
+                    }
+                }
+                ',
+            ],
         ];
     }
 

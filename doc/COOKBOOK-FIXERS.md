@@ -146,13 +146,6 @@ final class RemoveCommentsFixerTest extends AbstractFixerTestCase
     }
 }
 ```
-
-The files are created, one thing is still missing though: we need to
-update the README.md. Fortunately, PHP CS Fixer can help you here.
-Execute the following command in your command shell:
-
-`$ php php-cs-fixer readme > README.rst`
-
 ### Step 2 - Using tests to define fixers behavior
 
 Now that the files are created, you can start writing test to define the
@@ -247,7 +240,7 @@ final class RemoveCommentsFixerTest extends AbstractFixerTestBase
 You have defined the behavior of your fixer in tests. Now it is time to
 implement it.
 
-We need first to create one method to describe what this fixer does:
+First, we need to create one method to describe what this fixer does:
 `src/Fixer/Comment/RemoveCommentsFixer.php`:
 ```php
 final class RemoveCommentsFixer extends AbstractFixer
@@ -268,6 +261,11 @@ final class RemoveCommentsFixer extends AbstractFixer
     }
 }
 ```
+Next, we need to update the `README.rst`.
+Fortunately, PHP CS Fixer can help you here.
+Execute the following command in your command shell:
+
+`$ php php-cs-fixer readme > README.rst`
 
 Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains `T_COMMENT` tokens:
 `src/Fixer/Comment/RemoveCommentsFixer.php`:
