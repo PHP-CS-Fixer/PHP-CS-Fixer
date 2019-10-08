@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-09-18T11:50:02Z
+
+Not sure if I personally agree to this, but if this is what's wanted, it's a bc-break so it has to target `3.0` not `master`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-09-18T11:56:43Z
+
+Changing default configuration of rule is BC breaker indeed, @dmvdbrugge , good spot :+1:
+
+Sadly, I see sth wrong happen with this branch - I see lot of not related changes in diff.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-09-18T12:07:24Z
+
+Probably because he just targeted the other branch, instead of rebasing first
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-09-18T12:08:46Z
+
+It also shows @keradus that you have not yet merged the 2.13 release into 3.0
+
+---------------------------------------------------------------------------
+
+by dunglas at 2018-09-18T12:38:47Z
+
+> Sadly, I see sth wrong happen with this branch - I see lot of not related changes in diff.
+
+I tried the "change base" button provided by GitHub, but it doesn't rebase automatically. This is fixed now.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-09-18T17:20:13Z
+
+Please update https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/3.0/UPGRADE-v3.md#changed-default-values-of-options as well, thanks !
+
+---------------------------------------------------------------------------
+
+by dunglas at 2018-09-18T20:53:25Z
+
+@keradus done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-05T14:02:53Z
+
+sadly the tests are failure stopping this PR from being merged
