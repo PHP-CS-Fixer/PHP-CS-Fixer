@@ -12,19 +12,19 @@
 
 namespace PhpCsFixer\Fixer\Casing;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.5.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @deprecated proxy to ConstantCaseFixer
  */
-final class LowercaseConstantsFixer extends AbstractFixer
+final class LowercaseConstantsFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -38,65 +38,23 @@ final class LowercaseConstantsFixer extends AbstractFixer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isNativeConstant()) {
-                continue;
-            }
-
-            if (
-                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index)) &&
-                $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
-            ) {
-                $tokens[$index] = new Token([$token->getId(), strtolower($token->getContent())]);
-            }
-        }
-    }
-
-    /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * Returns names of fixers to use instead, if any.
      *
-     * @return bool
+     * @return string[]
      */
-    private function isNeighbourAccepted(Tokens $tokens, $index)
+    public function getSuccessorsNames()
     {
-        static $forbiddenTokens = [
-            T_AS,
-            T_CLASS,
-            T_CONST,
-            T_EXTENDS,
-            T_IMPLEMENTS,
-            T_INSTANCEOF,
-            T_INSTEADOF,
-            T_INTERFACE,
-            T_NEW,
-            T_NS_SEPARATOR,
-            T_OBJECT_OPERATOR,
-            T_PAAMAYIM_NEKUDOTAYIM,
-            T_TRAIT,
-            T_USE,
-            CT::T_USE_TRAIT,
-            CT::T_USE_LAMBDA,
-        ];
+        return array_keys($this->proxyFixers);
+    }
 
-        $token = $tokens[$index];
+    /**
+     * {@inheritdoc}
+     */
+    protected function createProxyFixers()
+    {
+        $fixer = new ConstantCaseFixer();
+        $fixer->configure(['case' => 'lower']);
 
-        if ($token->equalsAny(['{', '}'])) {
-            return false;
-        }
-
-        return !$token->isGivenKind($forbiddenTokens);
+        return [$fixer];
     }
 }

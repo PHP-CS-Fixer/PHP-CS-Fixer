@@ -143,6 +143,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']],
+            [$fixers['nullable_type_declaration_for_default_null_value'], $fixers['no_unreachable_default_argument_value']],
             [$fixers['no_unset_on_property'], $fixers['combine_consecutive_unsets']],
             [$fixers['no_unused_imports'], $fixers['blank_line_after_namespace']],
             [$fixers['no_unused_imports'], $fixers['no_extra_blank_lines']],
@@ -219,6 +220,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_test_annotation'], $fixers['php_unit_method_casing']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
+            [$fixers['php_unit_test_case_static_method_calls'], $fixers['self_static_accessor']],
             [$fixers['no_alternative_syntax'], $fixers['braces']],
             [$fixers['no_alternative_syntax'], $fixers['elseif']],
         ];

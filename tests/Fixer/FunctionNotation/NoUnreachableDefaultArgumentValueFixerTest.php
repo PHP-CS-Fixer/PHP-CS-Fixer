@@ -181,7 +181,7 @@ $bar) {}',
     /**
      * @return array
      */
-    public function provideFix56cases()
+    public function provideFix56Cases()
     {
         return [
             [
@@ -209,7 +209,7 @@ $bar) {}',
     /**
      * @return array
      */
-    public function provideFix71cases()
+    public function provideFix71Cases()
     {
         return [
             [

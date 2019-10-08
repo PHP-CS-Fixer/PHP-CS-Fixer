@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\PregException;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -25,12 +26,8 @@ final class PregTest extends TestCase
 {
     public function testMatchFailing()
     {
-        $this->expectException(
-            'PhpCsFixer\\PregException'
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_match.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_match.');
 
         Preg::match('', 'foo', $matches);
     }
@@ -52,12 +49,8 @@ final class PregTest extends TestCase
 
     public function testMatchAllFailing()
     {
-        $this->expectException(
-            'PhpCsFixer\\PregException'
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_match_all.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_match_all.');
 
         Preg::matchAll('', 'foo', $matches);
     }
@@ -79,12 +72,8 @@ final class PregTest extends TestCase
 
     public function testReplaceFailing()
     {
-        $this->expectException(
-            'PhpCsFixer\\PregException'
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_replace.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_replace.');
 
         Preg::replace('', 'foo', 'bar');
     }
@@ -106,12 +95,8 @@ final class PregTest extends TestCase
 
     public function testReplaceCallbackFailing()
     {
-        $this->expectException(
-            'PhpCsFixer\\PregException'
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_replace_callback.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_replace_callback.');
 
         Preg::replaceCallback('', 'sort', 'foo');
     }
@@ -154,12 +139,8 @@ final class PregTest extends TestCase
 
     public function testSplitFailing()
     {
-        $this->expectException(
-            'PhpCsFixer\\PregException'
-        );
-        $this->expectExceptionMessage(
-            'Error occurred when calling preg_split.'
-        );
+        $this->expectException(PregException::class);
+        $this->expectExceptionMessage('Error occurred when calling preg_split.');
 
         Preg::split('', 'foo');
     }

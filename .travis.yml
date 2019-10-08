@@ -6,6 +6,7 @@ git:
 cache:
     directories:
         - $HOME/.composer
+        - $HOME/.phive
         - $HOME/bin
 
 env:
@@ -26,15 +27,12 @@ jobs:
         -
             stage: Static Code Analysis
             php: 7.2
-            env: COMPOSER_FLAGS="--no-dev --prefer-stable"
+            env: COMPOSER_FLAGS="--prefer-stable"
             install:
-                - travis_retry composer update -d dev-tools $DEFAULT_COMPOSER_FLAGS
-                - composer info -d dev-tools -D | sort
+                - ./dev-tools/install.sh
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
-
-                - ./dev-tools/bin-download.sh
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
                 - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
@@ -53,8 +51,9 @@ jobs:
                     | grep -v tests/TestCase.php \
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
+                - ./dev-tools/tools/phpstan analyse
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
-                - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json || travis_terminate 1
+                - ./dev-tools/tools/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
                 - ./dev-tools/check-shell-scripts.sh
 
@@ -164,3 +163,6 @@ jobs:
                     tags: true
             after_deploy:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
+
+    allow_failures:
+        - php: 7.4snapshot
