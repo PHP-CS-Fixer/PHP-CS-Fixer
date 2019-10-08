@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-07T15:27:36Z
+
+Hi and thanks for the PR!
+
+Could you add `@see https://github.com/codeclimate/spec/blob/master/SPEC.md#data-types` to the header so it becomes:
+
+```
+/**
+ * Generates a report according to gitlabs subset of codeclimate json files.
+ *
+ * @see https://github.com/codeclimate/spec/blob/master/SPEC.md#data-types
+ *
+ * @author Hans-Christian Otto <c.otto@suora.com>
+ *
+ * @internal
+ */
+```
+
+after that I'm :+1:  for merging in this
+
+---------------------------------------------------------------------------
+
+by mjanser at 2019-10-07T18:40:45Z
+
+Sure, I added the reference to the documentation.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-10-07T19:33:01Z
+
+please, can you solve https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4430 inside this PR?
+
+---------------------------------------------------------------------------
+
+by mjanser at 2019-10-08T11:33:14Z
+
+What should I do to solve #4430 inside this PR?
