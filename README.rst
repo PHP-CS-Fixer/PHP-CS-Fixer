@@ -1510,9 +1510,10 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``align`` (``'left'``, ``'vertical'``): align comments; defaults to ``'vertical'``
-  - ``tags`` (a subset of ``['param', 'property', 'return', 'throws', 'type',
-    'var', 'method']``): the tags that should be aligned; defaults to
-    ``['param', 'return', 'throws', 'type', 'var']``
+  - ``tags`` (a subset of ``['param', 'property', 'property-read',
+    'property-write', 'return', 'throws', 'type', 'var', 'method']``): the
+    tags that should be aligned; defaults to ``['param', 'return', 'throws',
+    'type', 'var']``
 
 * **phpdoc_annotation_without_dot** [@Symfony, @PhpCsFixer]
 
