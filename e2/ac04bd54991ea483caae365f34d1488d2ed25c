@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-07-05T10:03:10Z
+
+Question: we currencly have most PHP tools installed in `dev-tools` directory via a dedicated `composer.json` to avoid conflicts with PHP CS Fixer own dependencies. But we are starting to have a lot of tools and some might conflict with others. What do you think about splitting this `composer.json` by tool, i.e.:
+* dev-tools/phpmd
+* dev-tools/phpstan
+* ...
+?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-07-15T07:44:06Z
+
+Finally green (the remaining Travis failure does not seem to be related to the changes in this PR).
+
+I moved PHPStan installation to its own directory like I suggested in [my previous comment](#issuecomment-508706376).
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-07-23T19:00:33Z
+
+Hi,
+
+Maybe we should evaluate [Grumphp](https://github.com/phpro/grumphp) ?
+One single configuration file that would do all the checks.
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-07-25T06:25:39Z
+
+we evaluated it quite a lot time ago (over a year, i guess).
+it was not mature enough and we faced few issues (same time, we helped to solve some of them)
+
+maybe it's mature now for us, maybe not. we would need to reevaluate. lets not mix multiple topics in single pr.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-08-21T13:09:47Z
+
+> I moved PHPStan installation to its own directory like I suggested in [my previous comment](#issuecomment-508706376).
+
+There is also the shim version of PHPStan for this exact reason: https://github.com/phpstan/phpstan-shim
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-08-23T06:38:27Z
+
+> There is also the shim version of PHPStan for this exact reason: https://github.com/phpstan/phpstan-shim
+
+I didn't know about it. I have no preference for one over the other so I would keep `phpstan/phpstan`.
