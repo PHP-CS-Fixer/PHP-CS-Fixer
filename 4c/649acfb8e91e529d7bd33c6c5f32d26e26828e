@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-09-23T12:54:32Z
+
+to be honest, looks like hacky workaround nobody will understand in half year.
+please, report the issue to php-src.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-09-29T08:41:58Z
+
+@keradus bug is already reported at https://bugs.php.net/bug.php?id=78575 - let's give it some votes.
+
+We can allow PHP 7.4 to tail on Travis until it is fixed.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-01T06:51:27Z
+
+I think I would still keep the build failing. It's easier to forget to check whether PHP 7.4 failed for a good reason when everything is green that to ignore failures due to this bug when only PHP 7.4 is red.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-10-02T09:22:53Z
+
+This is not PHP 7.4,  it's the snapshot. Would be same as with master. They normally fail in the build (speaking of my own projects), so I allow snapshots / nightlies / masters to fail. I only need to check them when I want to learn how it is going on and for upstream reporting (e.g. PHP bugs etc.).
+
+Not allowing failure for unstable run-times in the build must ask for something very specific to  argue for the burden this creates (e.g. my PRs fail here b/c of that, see #4550). I would love to learn about the specifics that weight the burden.
+
+Here per reference how I got the PHP-CS-Fixer build green again:
+
+* https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/4354a5ecb2f3b63207784b72830b7f445e463a02
+* Green Build Example: https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/592276115 (green builds are currently easy to find on Travis though)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-10-02T20:57:06Z
+
+@julienfalque I like to rely on CI checks and here we have clear situation that unstable PHP version fails CI due to its bug, We are far from supporting PHP 7.4, so why do we require it to pass tests? It's not like we would have dozens of failing tests when we allow it to fail.
+
+I bet there would be people (including myself) checking the reason of PHP 7.4 failure even if failure would be allowed.
+
+Especially I'm not updating my PRs recently as the would fail CI anyway (like [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4556) one, which passes all but PHP 7.4) - it simply feels like I know I will get ~finger~ "rejected" by CI, so why to bother?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-07T14:23:00Z
+
+Im fine for allowing the snapshot to fail
