@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-07-29T06:51:45Z
+
+@kubawerlos why target master and not 2.12 here?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-07-29T16:14:59Z
+
+@SpacePossum after all it's a new feature, right? Also I've separated the changes into few commits, so in case of bugfix for the fixer on `2.12` we can cherry-pick the first one.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-07-29T16:23:57Z
+
+The changes to the rule/fixer are a nice improvement on the existing logic which would be great to have on 2.12. For that I'm happy to see this in 2.12, but if others think it cannot than fine as well :+1:
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-07-30T15:08:46Z
+
+I don't see new options, it's not an entire new fixer, I could see this as a "bugfix" (of a "forgotten" edge case) and thus targeting 2.12
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-07-31T15:38:30Z
+
+@kubawerlos would you mind to retarget to 2.12?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-08-02T18:00:06Z
+
+@SpacePossum done
