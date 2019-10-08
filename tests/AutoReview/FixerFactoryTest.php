@@ -145,6 +145,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']],
+            [$fixers['nullable_type_declaration_for_default_null_value'], $fixers['no_unreachable_default_argument_value']],
             [$fixers['no_unset_on_property'], $fixers['combine_consecutive_unsets']],
             [$fixers['no_unused_imports'], $fixers['blank_line_after_namespace']],
             [$fixers['no_unused_imports'], $fixers['no_extra_blank_lines']],

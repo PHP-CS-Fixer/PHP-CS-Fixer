@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: nullable_type_declaration_for_default_null_value,no_unreachable_default_argument_value.
+--RULESET--
+{"nullable_type_declaration_for_default_null_value": true, "no_unreachable_default_argument_value": true}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+function foo(?int $a, int $b) {}
+
+--INPUT--
+<?php
+function foo(int $a = null, int $b) {}

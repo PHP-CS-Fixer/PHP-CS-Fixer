@@ -1226,6 +1226,17 @@ Choose from the list of available rules:
 
   Logical NOT operators (``!``) should have one trailing whitespace.
 
+* **nullable_type_declaration_for_default_null_value**
+
+  Adds or removes ``?`` before type declarations for parameters with a
+  default ``null`` value.
+
+  Configuration options:
+
+  - ``use_nullable_type_declaration`` (``bool``): whether to add or remove ``?``
+    before type declarations for parameters with a default ``null`` value;
+    defaults to ``true``
+
 * **object_operator_without_whitespace** [@Symfony, @PhpCsFixer]
 
   There should not be space before or after object ``T_OBJECT_OPERATOR``
