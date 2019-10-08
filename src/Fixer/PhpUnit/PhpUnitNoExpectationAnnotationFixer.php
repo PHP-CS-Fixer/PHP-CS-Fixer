@@ -245,9 +245,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
             $tokens->insertAt($braceIndex + 1, $newMethods);
 
-            $tokens[$braceIndex + $newMethods->getSize() + 1] = new Token([
+            $whitespaceIndex = $braceIndex + $newMethods->getSize() + 1;
+            $tokens[$whitespaceIndex] = new Token([
                 T_WHITESPACE,
-                $this->whitespacesConfig->getLineEnding().$tokens[$braceIndex + $newMethods->getSize() + 1]->getContent(),
+                $this->whitespacesConfig->getLineEnding().$tokens[$whitespaceIndex]->getContent(),
             ]);
 
             $i = $docBlockIndex;
@@ -275,10 +276,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     private function annotationsToParamList(array $annotations)
     {
         $params = [];
-        $exceptionClass = '\\'.ltrim($annotations['expectedException'], '\\');
+        $exceptionClass = ltrim($annotations['expectedException'], '\\');
 
         if ($this->configuration['use_class_const']) {
-            $params[] = $exceptionClass.'::class';
+            $params[] = "\\{$exceptionClass}::class";
         } else {
             $params[] = "'{$exceptionClass}'";
         }
