@@ -101,7 +101,7 @@ $a = new class() {
 
     public function getPriority()
     {
-        // must be run after FinalInternalClassFixer and FunctionToConstantFixer
+        // must be run after FinalInternalClassFixer, FunctionToConstantFixer and PhpUnitTestCaseStaticMethodCallsFixer
         return -10;
     }
 
