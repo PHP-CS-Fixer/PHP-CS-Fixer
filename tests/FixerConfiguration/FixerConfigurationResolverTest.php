@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @internal
  *
- * @group legacy see testResolveWithDeprecatedAlias
+ * @group legacy
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
  */
