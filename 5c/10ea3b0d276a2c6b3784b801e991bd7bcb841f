@@ -1,0 +1,26 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-15T14:50:30Z
+
+no idea how to nicely test those cases :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-10-15T15:52:48Z
+
+@julienfalque can correct me if I', wrong, but deprecations shall be released under MINOR, not PATCH release,
+thus, please change the target branch to `master`
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-07T21:02:24Z
+
+> no idea how to nicely test those cases :(
+
+@SpacePossum is there still something left to do here in your opinion?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-09T07:30:59Z
+
+note; rebased and squashed @ntzm
