@@ -1816,10 +1816,6 @@ Choose from the list of available rules:
 
   *Risky rule: changing the line endings of multi-line strings might affect string comparisons and outputs.*
 
-* **switch_break_to_continue**
-
-  FIXME.
-
 * **switch_case_semicolon_to_colon** [@PSR2, @Symfony, @PhpCsFixer]
 
   A case should be followed by a colon and not a semicolon.
