@@ -19,7 +19,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class BlankLineBeforeElseBlockFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class BlankLineBeforeCatchBlockFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -27,17 +27,17 @@ final class BlankLineBeforeElseBlockFixer extends AbstractFixer implements White
     public function getDefinition()
     {
         return new FixerDefinition(
-            'An empty line feed must precede any else or elseif codeblock.',
+            'An empty line feed must precede any catch or finally codeblock.',
             [
                 new CodeSample(
                     '<?php
-if ($a) {
+try {
     foo();
 
-} elseif ($b) {
+} catch (\Exception $b) {
     bar();
 
-} else {
+} finally {
     baz();
 }
 '
@@ -60,7 +60,7 @@ if ($a) {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_ELSEIF) || $tokens->isTokenKindFound(T_ELSE);
+        return $tokens->isTokenKindFound(T_CATCH) || $tokens->isTokenKindFound(T_FINALLY);
     }
 
     /**
@@ -73,7 +73,7 @@ if ($a) {
 
         foreach ($tokens as $index => $token) {
             /** @var Token $token */
-            if ($token->isGivenKind([T_ELSE, T_ELSEIF])) {
+            if ($token->isGivenKind([T_CATCH, T_FINALLY])) {
                 $index = $tokens->getPrevMeaningfulToken($index);
 
                 if ($tokens[$index]->equals('}')) {
