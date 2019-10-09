@@ -304,6 +304,10 @@ Choose from the list of available rules:
   Ensure there is no code on the same line as the PHP open tag and it is
   followed by a blank line.
 
+* **blank_line_before_else_block**
+
+  An empty line feed must precede any else or elseif codeblock.
+
 * **blank_line_before_return**
 
   An empty line feed should precede a return statement. DEPRECATED: use
