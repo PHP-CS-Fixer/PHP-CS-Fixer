@@ -131,6 +131,9 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
                             }
                             '.'
                             continue;
+
+
+
                         }
                         if (6) {
                             return null;
@@ -160,6 +163,9 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
                             }
                             '.'
                             continue;
+
+
+
                         } else if (6) {
                             return null;
                         } else {

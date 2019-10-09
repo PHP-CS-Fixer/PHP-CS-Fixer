@@ -252,7 +252,8 @@ final class FixCommand extends Command
             $resolver->isDryRun(),
             \count($changed) > 0,
             \count($invalidErrors) > 0,
-            \count($exceptionErrors) > 0
+            \count($exceptionErrors) > 0,
+            \count($lintErrors) > 0
         );
     }
 }

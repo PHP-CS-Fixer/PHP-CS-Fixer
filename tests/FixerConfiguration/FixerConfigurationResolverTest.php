@@ -23,6 +23,8 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @internal
  *
+ * @group legacy
+ *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
  */
 final class FixerConfigurationResolverTest extends TestCase
@@ -198,6 +200,20 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration->resolve([
             'bar' => '1',
             'baz' => '2',
+        ]);
+    }
+
+    /**
+     * @expectedDeprecation Option "baz" is deprecated, use "bar" instead.
+     */
+    public function testResolveWithDeprecatedAlias()
+    {
+        $configuration = new FixerConfigurationResolver([
+            new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
+        ]);
+
+        $configuration->resolve([
+            'baz' => '1',
         ]);
     }
 }

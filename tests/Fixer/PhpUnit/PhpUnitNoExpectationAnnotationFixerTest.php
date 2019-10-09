@@ -41,6 +41,32 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     public function provideTestFixCases()
     {
         return [
+            'empty exception message' => [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         */
+        public function testFnc()
+        {
+            $this->setExpectedException(\FooException::class, \'\');
+
+            aaa();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        /**
+         * @expectedException FooException
+         * @expectedExceptionMessage
+         */
+        public function testFnc()
+        {
+            aaa();
+        }
+    }',
+            ],
             'expecting exception' => [
                 '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase

@@ -1830,7 +1830,7 @@ Choose from the list of available rules:
 
 * **void_return** [@PHP71Migration:risky]
 
-  Add void return type to functions with missing or empty return
+  Add ``void`` return type to functions with missing or empty return
   statements, but priority is given to ``@return`` annotations. Requires
   PHP >= 7.1.
 
