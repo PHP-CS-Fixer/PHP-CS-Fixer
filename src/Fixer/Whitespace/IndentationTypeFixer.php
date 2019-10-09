@@ -101,8 +101,8 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $indent = $this->indent;
 
         // change indent to expected one
-        $content = Preg::replaceCallback('/^(?:    )+/m', static function ($matches) use ($indent) {
-            return str_replace('    ', $indent, $matches[0]);
+        $content = Preg::replaceCallback('/^(?:    )+/m', function ($matches) use ($indent) {
+            return $this->getExpectedIndent($matches[0], $indent);
         }, $content);
 
         return new Token([$tokens[$index]->getId(), $content]);
@@ -128,12 +128,12 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $indent = $this->indent;
         $newContent = Preg::replaceCallback(
             '/(\R)(\h+)/', // find indent
-            static function (array $matches) use ($indent) {
+            function (array $matches) use ($indent) {
                 // normalize mixed indent
                 $content = Preg::replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
 
                 // change indent to expected one
-                return $matches[1].str_replace('    ', $indent, $content);
+                return $matches[1].$this->getExpectedIndent($content, $indent);
             },
             $content
         );
@@ -143,5 +143,20 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         }
 
         return new Token([T_WHITESPACE, $newContent]);
+    }
+
+    /**
+     * @param string $content
+     * @param string $indent
+     *
+     * @return string mixed
+     */
+    private function getExpectedIndent($content, $indent)
+    {
+        if ("\t" === $indent) {
+            $content = str_replace('    ', $indent, $content);
+        }
+
+        return $content;
     }
 }

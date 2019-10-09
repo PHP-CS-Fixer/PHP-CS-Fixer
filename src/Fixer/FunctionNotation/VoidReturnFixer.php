@@ -34,7 +34,7 @@ final class VoidReturnFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Add void return type to functions with missing or empty return statements, but priority is given to `@return` annotations. Requires PHP >= 7.1.',
+            'Add `void` return type to functions with missing or empty return statements, but priority is given to `@return` annotations. Requires PHP >= 7.1.',
             [
                 new VersionSpecificCodeSample(
                     "<?php\nfunction foo(\$a) {};\n",
