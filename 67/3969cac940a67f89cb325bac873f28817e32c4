@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-08-26T14:59:17Z
+
+Actually, `@expectedExceptionMessage` will do nothing, since it only checks if the message is a prefix of the actual message, so the correct implementation should just not check the message at all in the conversion...
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-09-16T21:31:18Z
+
+Just for the record: If the exception message is set empty to assert for / an empty message is set as expectation Phpunit (in practise at least in one version) is looking for an empty message:
+
+~~~
+2) Ktomk\Pipelines\Runner\DirectoriesTest::testGetBaseDirectoryThrows
+Failed asserting that exception message is empty but is 'Not a base directory: 'XDG_FOO42_HOME'. Known base directories are: "XDG_DATA_HOME", "XDG_CACHE_HOME"'.
+~~~
+
+Details about the Phpunit version:
+
+~~~
+PHPUnit 6.5.7 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.2.22-1+ubuntu18.04.1+deb.sury.org+1 with Xdebug 2.7.2
+~~~
+
+This is for base-test-case-class signature of
+
+~~~
+public function setExpectedException($class, $message = '', $code = null)
+~~~
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-09T09:06:36Z
+
+The discussion between;
+
+>$this->setExpectedException(\FooException::class, '');
+
+and
+
+>$this->setExpectedException(\FooException::class);
+
+seems semantic to me. This is because `''` is the default value for the message (and not `null` as the PHPDoc incorrectly states).
+
+Changing to:
+
+>$this->setExpectedException(\FooException::class, null);
+
+seems more correct as when the annotation `@expectedExceptionMessage` has no value than the message itself is not checked, like with passing `null`. However, passing `null` can be valid, I can't see why someone would omit the value for the annotation.
+
+So fixing to `''` seems fine to me, people can update their code to use `null` if needed or revert the change and remove useless annotation and fix the project again.
+
+Besides all this, it seems `setExpectedException` is removed from [PHPUnit](https://github.com/sebastianbergmann/phpunit/commit/9b3f36158ce4bb00425b0d30e8b99cd3c18cd2db)  ....
+
+rebased and forced pushed in preparation of merging
