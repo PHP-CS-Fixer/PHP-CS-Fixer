@@ -1,0 +1,172 @@
+---------------------------------------------------------------------------
+
+by remicollet at 2019-05-06T09:49:52Z
+
+Reading `/(\R[^\R]*)$/` we may understand last CRLF following by non-CRLF characters.
+
+But this doesn't seems to work
+running `preg_match('/(\R[^\R]*)$/", "foo\nbar\nbaz')) `return` \nbar\nbaz` which doesn't seems correct (2 CRLF)
+
+---------------------------------------------------------------------------
+
+by remicollet at 2019-05-06T09:54:42Z
+
+See explanation on https://bugzilla.redhat.com/show_bug.cgi?id=1706742
+
+---------------------------------------------------------------------------
+
+by ppisar at 2019-05-06T10:09:32Z
+
+Maybe you want <code>/(\R\N*)$/</code>.
+
+---------------------------------------------------------------------------
+
+by remicollet at 2019-05-06T10:20:30Z
+
+@ppisar thanks, indeed, better
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-05-06T10:37:17Z
+
+Thanks for reporting and opening this PR!
+
+Kindly note, this bug also exists on the lowest supported branch [2.12](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.12/src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php#L87) IIUC.
+
+Would be nice to prove this issue in the unit test of the rule, please let me know if you plan on giving that a shot.
+
+---------------------------------------------------------------------------
+
+by remicollet at 2019-05-06T10:40:42Z
+
+> Would be nice to prove this issue in the unit test of the rule,
+
+This is already covered, test suite fails without the patch
+```
+
+There were 6 errors:
+
+1) PhpCsFixer\Tests\AutoReview\DescribeCommandTest::testDescribeCommand with data set #12 (PhpCsFixer\FixerFactory Object (...), 'no_superfluous_elseif')
+PhpCsFixer\PregException: Error occurred when calling preg_match.
+
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Preg.php:48
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:87
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:52
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/AbstractFixer.php:75
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Console/Command/DescribeCommand.php:291
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Console/Command/DescribeCommand.php:113
+/usr/share/php/Symfony3/Component/Console/Command/Command.php:255
+/usr/share/php/Symfony3/Component/Console/Tester/CommandTester.php:78
+/builddir/build/BUILD/PHP-CS-Fixer-adfab51ae979ee8b0fcbc55aa231ec2786cb1f91/tests/AutoReview/DescribeCommandTest.php:46
+/usr/share/php/PHPUnitGoodPractices/Traits/ExpectationViaCodeOverAnnotationTrait7.php:39
+
+2) PhpCsFixer\Tests\AutoReview\FixerTest::testFixerDefinitions with data set #12 (PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer Object (...))
+PhpCsFixer\PregException: Error occurred when calling preg_match.
+
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Preg.php:48
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:87
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:52
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/AbstractFixer.php:75
+/builddir/build/BUILD/PHP-CS-Fixer-adfab51ae979ee8b0fcbc55aa231ec2786cb1f91/tests/AutoReview/FixerTest.php:109
+/usr/share/php/PHPUnitGoodPractices/Traits/ExpectationViaCodeOverAnnotationTrait7.php:39
+
+3) PhpCsFixer\Tests\Fixer\ControlStructure\NoSuperfluousElseifFixerTest::testFix with data set #0 ('<?php\n\n                if (...     }', '<?php\n\n                if (...     }')
+PhpCsFixer\PregException: Error occurred when calling preg_match.
+
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Preg.php:48
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:87
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:52
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/AbstractFixer.php:75
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/tests/Test/AbstractFixerTestCase.php:127
+/builddir/build/BUILD/PHP-CS-Fixer-adfab51ae979ee8b0fcbc55aa231ec2786cb1f91/tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php:32
+/usr/share/php/PHPUnitGoodPractices/Traits/ExpectationViaCodeOverAnnotationTrait7.php:39
+
+4) PhpCsFixer\Tests\Fixer\ControlStructure\NoSuperfluousElseifFixerTest::testFix with data set #1 ('<?php\n\n                if (...     }', '<?php\n\n                if (...     }')
+PhpCsFixer\PregException: Error occurred when calling preg_match.
+
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Preg.php:48
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:87
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:52
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/AbstractFixer.php:75
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/tests/Test/AbstractFixerTestCase.php:127
+/builddir/build/BUILD/PHP-CS-Fixer-adfab51ae979ee8b0fcbc55aa231ec2786cb1f91/tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php:32
+/usr/share/php/PHPUnitGoodPractices/Traits/ExpectationViaCodeOverAnnotationTrait7.php:39
+
+5) PhpCsFixer\Tests\Fixer\ControlStructure\NoSuperfluousElseifFixerTest::testFix with data set #3 ('<?php\n\n                if (...     }', '<?php\n\n                if (...     }')
+PhpCsFixer\PregException: Error occurred when calling preg_match.
+
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Preg.php:48
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:87
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:52
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/AbstractFixer.php:75
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/tests/Test/AbstractFixerTestCase.php:127
+/builddir/build/BUILD/PHP-CS-Fixer-adfab51ae979ee8b0fcbc55aa231ec2786cb1f91/tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php:32
+/usr/share/php/PHPUnitGoodPractices/Traits/ExpectationViaCodeOverAnnotationTrait7.php:39
+
+6) PhpCsFixer\Tests\Fixer\ControlStructure\NoSuperfluousElseifFixerTest::testFix with data set #4 ('<?php\n\n                whil...     }', '<?php\n\n                whil...     }')
+PhpCsFixer\PregException: Error occurred when calling preg_match.
+
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Preg.php:48
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:87
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/Fixer/ControlStructure/NoSuperfluousElseifFixer.php:52
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/AbstractFixer.php:75
+/builddir/build/BUILDROOT/php-cs-fixer-2.15.0-1.fc30.remi.x86_64/usr/share/php/PhpCsFixer/tests/Test/AbstractFixerTestCase.php:127
+/builddir/build/BUILD/PHP-CS-Fixer-adfab51ae979ee8b0fcbc55aa231ec2786cb1f91/tests/Fixer/ControlStructure/NoSuperfluousElseifFixerTest.php:32
+/usr/share/php/PHPUnitGoodPractices/Traits/ExpectationViaCodeOverAnnotationTrait7.php:39
+
+```
+
+---------------------------------------------------------------------------
+
+by remicollet at 2019-05-06T10:47:11Z
+
+FYI, also discovered in Fedora CI
+
+https://apps.fedoraproject.org/koschei/package/php-cs-fixer?last_seen_ts=1553280564&collection=f31
+
+2.15.0 is OK, as this patch is applied,
+
+First failed build (2019-03-09 08:17:47) appears when php update from 7.3.3RC1 to 7.3.3 and **pcre2 from 10.32 to 10.33**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-05-07T07:18:33Z
+
+Thanks for all the details and reporting.
+Please see https://github.com/remicollet/PHP-CS-Fixer/pull/1 as well :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-05-07T12:03:46Z
+
+@remicollet let me know if you can rebase and retarget the PR on 2.12, otherwise I can do it later on
+
+LGTM
+
+---------------------------------------------------------------------------
+
+by remicollet at 2019-05-07T13:58:30Z
+
+> @remicollet let me know if you can rebase and retarget the PR on 2.12,
+
+Sorry, lack of time, btw  a simple git am should work, use the git tools (not the fucking github damned features)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-07-30T06:37:51Z
+
+@remicollet I allowed myself to rebase your work onto branch `2.12`.
+
+The regular expression was already updated there but I kept your changes because I think `\N` is more suitable than `\V`.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-08-24T20:36:28Z
+
+I added pattern verification, I used it while I was running into this, so created a PR. I guess devs can benefit from it. It gives more concrete messages what was wrong with a pattern. Just FYI and thanks for the fix.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-08T13:19:53Z
+
+thanks all, I think the is RTM, what do you think @julienfalque ?
