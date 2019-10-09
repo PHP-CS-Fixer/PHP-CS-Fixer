@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-09-03T06:04:53Z
+
+Fix proposed to @SpacePossum : https://github.com/SpacePossum/PHP-CS-Fixer/pull/24
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-09-03T08:08:31Z
+
+TBH I didn't see the need for the revert as now we still have the same issue with all other function calls, just not the new one added.
+
+The additional guard for the internal check sounds good to me, not sure if it out performs using a look up in the [`internal` functions array](https://www.php.net/manual/en/function.get-defined-functions.php) (if we start using this check for all fixers, it might be worth casing this kind of meta data about the functions somewhere?)
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-09-04T08:21:21Z
+
+> TBH I didn't see the need for the revert
+
+well, not that much users of PHP CS Fixer already using PHP 7.4, and for all of them that are not using it nor the polyfill, we were breaking the result file.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-08T20:26:50Z
+
+@keradus anything else you want here?
