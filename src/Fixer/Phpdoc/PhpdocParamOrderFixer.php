@@ -149,7 +149,8 @@ function m($a, array $b, Foo $c) {}
             $annotation->remove();
             $doc
                 ->getLine($annotation->getStart())
-                ->setContent(current($orderedAnnotations));
+                ->setContent(current($orderedAnnotations))
+            ;
 
             next($orderedAnnotations);
         }
