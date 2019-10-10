@@ -202,6 +202,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_to_return_type'], $fixers['fully_qualified_strict_types']],
             [$fixers['phpdoc_to_return_type'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_to_return_type'], $fixers['return_type_declaration']],
+            [$fixers['phpdoc_types'], $fixers['phpdoc_to_return_type']],
             [$fixers['pow_to_exponentiation'], $fixers['binary_operator_spaces']],
             [$fixers['pow_to_exponentiation'], $fixers['method_argument_space']],
             [$fixers['pow_to_exponentiation'], $fixers['native_function_casing']],

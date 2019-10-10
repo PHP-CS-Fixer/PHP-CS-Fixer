@@ -32,7 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpdocToReturnTypeFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
-     * @var array
+     * @var array<array<int, string>>
      */
     private $blacklistFuncNames = [
         [T_STRING, '__construct'],
@@ -41,7 +41,7 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
     ];
 
     /**
-     * @var array
+     * @var array<string, int>
      */
     private $versionSpecificTypes = [
         'void' => 70100,
@@ -50,17 +50,19 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $scalarTypes = [
-        'bool' => true,
-        'float' => true,
-        'int' => true,
-        'string' => true,
+        'bool' => 'bool',
+        'true' => 'bool',
+        'false' => 'bool',
+        'float' => 'float',
+        'int' => 'int',
+        'string' => 'string',
     ];
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $skippedTypes = [
         'mixed' => true,
@@ -127,9 +129,9 @@ function my_foo()
      */
     public function getPriority()
     {
-        // should be run after PhpdocScalarFixer.
+        // should be run after PhpdocScalarFixer and PhpdocTypes.
         // should be run before ReturnTypeDeclarationFixer, FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer.
-        return 8;
+        return 13;
     }
 
     /**
@@ -172,15 +174,18 @@ function my_foo()
             if (1 !== \count($returnTypeAnnotation)) {
                 continue;
             }
+
             $returnTypeAnnotation = current($returnTypeAnnotation);
             $types = array_values($returnTypeAnnotation->getTypes());
             $typesCount = \count($types);
+
             if (1 > $typesCount || 2 < $typesCount) {
                 continue;
             }
 
             $isNullable = false;
             $returnType = current($types);
+
             if (2 === $typesCount) {
                 $null = $types[0];
                 $returnType = $types[1];
@@ -216,16 +221,20 @@ function my_foo()
                 continue;
             }
 
-            if (isset($this->scalarTypes[$returnType]) && false === $this->configuration['scalar_types']) {
-                continue;
-            }
+            if (isset($this->scalarTypes[$returnType])) {
+                if (false === $this->configuration['scalar_types']) {
+                    continue;
+                }
 
-            if (1 !== Preg::match($this->classRegex, $returnType, $matches)) {
-                continue;
-            }
+                $returnType = $this->scalarTypes[$returnType];
+            } else {
+                if (1 !== Preg::match($this->classRegex, $returnType, $matches)) {
+                    continue;
+                }
 
-            if (isset($matches['array'])) {
-                $returnType = 'array';
+                if (isset($matches['array'])) {
+                    $returnType = 'array';
+                }
             }
 
             $startIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
