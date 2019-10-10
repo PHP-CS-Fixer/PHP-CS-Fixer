@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2019-08-24T20:58:20Z
+
+There is an issue w/ the check by fabbot.io, I've seen changes in the file that were explicitly made to \array_map (with leading slash) so I did it the same and the cs-fixer in the project itself did not suggest any changes either. So I'm a little bit puzzled what is wanted here.
+
+I must admit, I was even before filing the PR b/c other global function in the file like preg_match or preg_last_error etc. aren't prefixed w/ a slash.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-08-25T19:16:35Z
+
+Isn't this going to add too much overhead (verifying each pattern _every_ time it is used)? IMO, covering code with tests should be enough to prevent wrong pattern usages.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-08-26T17:27:52Z
+
+> Isn't this going to add too much overhead (verifying each pattern _every_ time it is used)? IMO, covering code with tests should be enough to prevent wrong pattern usages.
+
+For the overhead: I've not measured. In the past this never has been an issue for me, but I'm eager to learn.
+
+About tests: The pattern was wrong in a specific PHP version. It was not wrong earlier. Unit tests aren't effective at run-time (when testing I normally favor a better message as well).
+
+/e: and after a further insight: `Preg::removeUtf8Modifier` will not work as expected if an invalid pattern is being provided. It already has problems with a valid one - in case of using pairing characters for pattern delimiters like (), [] or {} - but has even many more issues with an invalid pattern that is missing the ending delimiter in any other case. No stress.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-08-28T16:55:09Z
+
+@ktomk , please, for a while, during the review, avoid doing the squashing.
+it's really hard to see the changes you applied between my previous review and now, as everything is a single commit now :(
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-08-28T23:09:10Z
+
+@keradus: If I only had read that earlier. I always rebase / amend locally after the build is fine and then push for the remote build resetting anything previous. I can leave fixup! etc. commits if that helps but was not aware earlier this was inconvenient. I'll do for future pushes.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-09-07T17:05:15Z
+
+I have added some changes to this PR. The verification of the patterns is now only done if any of the preg_* operations failed regardless in which unicode/non-unicode mode.
+
+In case verification fails, the **PregException** message has details of the error. Otherwise the **PregException** message now contains the method name of the **Preg** class method which caused the error (it had the name of the preg_* method previously) and the behavior is otherwise unchanged.
+
+Then I added another change-set on top as the Travis build was giving me a hard time due to installation failures of the dev-tools (for example see [build #18669](https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/builds/581634045). This change is marked with three dots at the beginning as I needed a couple of retries to compile it. Let me know what to do with it, e.g. if it should be kept in this PR or moved into a PR of it's own or what else.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-09-08T10:51:53Z
+
+@ktomk,
+
+As discussed on https://gitter.im/PHP-CS-Fixer/Lobby:
+> https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4517/commits/012026115ea4e5ab13f8f16fe537e7d432bc12d1 looks like great improvement !
+please, extract it to separated PR (and drop it from current PR, perhaps), so we can have proper review etc. I must admit, i'm not so experienced with shell scripts, so probably i will have few questions about the changes.
+also, consider adding the great description from commit message into the shell script file itself, so one can always come back to it easily
+
+also, don't worry about earlier squashes, but now you see, while having atomic commits, it's also easier to extract sth to dedicated PR by simply cherry-picking
+
+----
+
+your description of changes for Preg error handling itself sounds good. I will take a look at code diff hopefully tomorrow
