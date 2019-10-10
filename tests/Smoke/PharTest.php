@@ -57,7 +57,7 @@ final class PharTest extends AbstractSmokeTest
     {
         static::assertSame(
             str_replace(
-                HelpCOmmand::getLatestReleaseVersionFromChangeLog(),
+                HelpCommand::getLatestReleaseVersionFromChangeLog(),
                 Application::VERSION,
                 file_get_contents(__DIR__.'/../../README.rst')
             ),
