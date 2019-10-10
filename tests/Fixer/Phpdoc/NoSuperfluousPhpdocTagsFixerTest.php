@@ -117,6 +117,17 @@ class Foo {
                 null,
                 ['allow_mixed' => true],
             ],
+            'allow_unused_params=>true' => [
+                '<?php
+class Foo {
+    /**
+     * @param string|int $c
+     */
+    public function doFoo($bar /*, $c = 0 */) {}
+}',
+                null,
+                ['allow_unused_params' => true],
+            ],
             'multiple different types' => [
                 '<?php
 class Foo {
