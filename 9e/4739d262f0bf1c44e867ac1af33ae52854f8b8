@@ -1,0 +1,65 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-16T08:46:54Z
+
+Please add the following tests.
+
+to `public function provideFixCases()` (think will pass)
+
+```php
+            'in multiple methods and classes' => [
+                '<?php
+                    final class X {
+                        public function b() { echo self::class; }
+                        public function c() { echo self::class; }
+                    }
+                    final class Y {
+                        public static $var = 2;
+                        public function b() { echo self::class; }
+                        public function c() { static $a = 0; echo self::class.$a; }
+                    }
+                    class Foo {
+                        public function b() { echo static::class; }
+                        public function c() { echo static::class; }
+                    }
+                    final class Z {
+                        public function b() { echo self::class; }
+                        public function c() { return static function(){}; }
+                    }
+                ',
+                '<?php
+                    final class X {
+                        public function b() { echo static::class; }
+                        public function c() { echo static::class; }
+                    }
+                    final class Y {
+                        public static $var = 2;
+                        public function b() { echo static::class; }
+                        public function c() { static $a = 0; echo static::class.$a; }
+                    }
+                    class Foo {
+                        public function b() { echo static::class; }
+                        public function c() { echo static::class; }
+                    }
+                    final class Z {
+                        public function b() { echo static::class; }
+                        public function c() { return static function(){}; }
+                    }
+                ',
+            ],
+```
+
+to `public function provideFix70Cases()` (think will fail)
+
+```php
+'property and nested anonymous class' => [
+                '<?php final class A { public $b = self::class; public function foo(){ return new class { public $b = static::class; }; }}',
+                '<?php final class A { public $b = static::class; public function foo(){ return new class { public $b = static::class; }; }}',
+            ],
+```
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-10-18T12:17:58Z
+
+Thanks for your review @SpacePossum, good spot! Nested anonymous classes should be ignored now.
