@@ -119,11 +119,31 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return object */ function my_foo() {}',
                 70200,
             ],
-            'fix scalar types by default' => [
+            'fix scalar types by default, int' => [
                 '<?php /** @return int */ function my_foo(): int {}',
                 '<?php /** @return int */ function my_foo() {}',
             ],
-            'fix scalar types when configured' => [
+            'fix scalar types by default, float' => [
+                '<?php /** @return float */ function my_foo(): float {}',
+                '<?php /** @return float */ function my_foo() {}',
+            ],
+            'fix scalar types by default, string' => [
+                '<?php /** @return string */ function my_foo(): string {}',
+                '<?php /** @return string */ function my_foo() {}',
+            ],
+            'fix scalar types by default, bool' => [
+                '<?php /** @return bool */ function my_foo(): bool {}',
+                '<?php /** @return bool */ function my_foo() {}',
+            ],
+            'fix scalar types by default, false' => [
+                '<?php /** @return false */ function my_foo(): bool {}',
+                '<?php /** @return false */ function my_foo() {}',
+            ],
+            'fix scalar types by default, true' => [
+                '<?php /** @return true */ function my_foo(): bool {}',
+                '<?php /** @return true */ function my_foo() {}',
+            ],
+            'do not fix scalar types when configured as such' => [
                 '<?php /** @return int */ function my_foo() {}',
                 null,
                 null,
