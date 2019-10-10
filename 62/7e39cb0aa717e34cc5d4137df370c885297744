@@ -1,0 +1,105 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-06-04T08:10:42Z
+
+Nice work and :+1:  for concept.
+About priorities there is some stuff to check out I think, like when rules remove lines (`phpdoc_no_useless_inheritdoc` and others) or add lines (`phpdoc_add_missing_param_annotation` and possibly others), together with locking down the priority with `phpdoc_to_comment`
+
+---------------------------------------------------------------------------
+
+by hkdobrev at 2018-08-23T09:25:57Z
+
+@BackEndTea Do you think that could be finalised for 2.14?
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2018-08-23T10:30:07Z
+
+I won't have time until somewhere next week to work on this.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2018-08-31T21:43:44Z
+
+@BackEndTea Thanks for your work, this is awesome feature :+1:
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-01T18:51:22Z
+
+> I won't have time until somewhere next week to work on this.
+
+@BackEndTea , feel free to ping us when you consider this ready.
+in the meantime, i'm changing the milestone for this PR
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2019-01-05T12:30:31Z
+
+@keradus Sorry for the long delay on this, I kinda forgot about it.
+
+Currently this only works for class methods, properties and constants, and i'm not 100% sure how to expand it to also work with functions, classes and other doc blocks.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-01-05T13:26:08Z
+
+I think that is a great set to start with (if that is somewhere in the description of the fixer :+1: ) as it would cover most common cases.
+
+---------------------------------------------------------------------------
+
+by jaikdean at 2019-01-18T09:19:12Z
+
+I agree with SpacePossum, it would be great to see this released as it stands.
+
+---------------------------------------------------------------------------
+
+by BackEndTea at 2019-02-09T15:51:38Z
+
+@SpacePossum & @keradus  Sorry for the long wait on this, but I have updated it, and it is ready for review.
+
+I have rebased this and fixed a few remarks people had.
+Current concerns are:
+* The fact that its 'incomplete' e.g. only class properties, constants and methods. But this should work as is.
+* Priorities with other fixes
+* The fact that this includes updates to the `DocBlock` class. This isn't a final class and could be extended by others.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-05-03T15:46:45Z
+
+@BackEndTea ,
+the CI is failing, this is a blocker to proceed with the PR :(
+can you fix it, please ?
+
+---------------------------------------------------------------------------
+
+by staabm at 2019-07-19T11:29:37Z
+
+@BackEndTea do you have time to work on this?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-07-19T13:07:55Z
+
+I think we should find a better name for this one, because it can be used for both directions.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-07-19T13:15:21Z
+
+> I think we should find a better name for this one, because it can be used for both directions.
+
+I think replacing `to` with `or` makes clear that it's purpose is to make sure it's always either single or multi, so `SingleOrMultiLinePhpdocFixer`. In fact, I see now that the branch is already called that 😆
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-07-19T13:21:23Z
+
+Perhaps `PhpdocLineSpanFixer`?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-10T08:26:36Z
+
+rebased, conflicts resolved, fixed unit tests, fixed code style to new standard, rename the fixer, forced pushed, in preparation of merging
