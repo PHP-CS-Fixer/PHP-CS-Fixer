@@ -49,7 +49,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
         return new FixerDefinition(
             'Add leading `\` before constant invocation of internal constant to speed up resolving. Constant name match is case-sensitive, except for `null`, `false` and `true`.',
             [
-                new CodeSample('<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);'.PHP_EOL),
+                new CodeSample("<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n"),
                 new CodeSample(
                     '<?php
 namespace space1 {
@@ -62,7 +62,7 @@ namespace {
                     ['scope' => 'namespaced']
                 ),
                 new CodeSample(
-                    '<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);'.PHP_EOL,
+                    "<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n",
                     [
                         'include' => [
                             'MY_CUSTOM_PI',
@@ -70,7 +70,7 @@ namespace {
                     ]
                 ),
                 new CodeSample(
-                    '<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);'.PHP_EOL,
+                    "<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n",
                     [
                         'fix_built_in' => false,
                         'include' => [
@@ -79,7 +79,7 @@ namespace {
                     ]
                 ),
                 new CodeSample(
-                    '<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);'.PHP_EOL,
+                    "<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n",
                     [
                         'exclude' => [
                             'M_PI',

@@ -59,7 +59,8 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
         $tokenCount = $tokens->count();
 
         for ($index = 1; $index < $tokenCount; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_ISSET) || $tokens[$tokens->getPrevMeaningfulToken($index)]->equals('!')) {
+            if (!$tokens[$index]->isGivenKind(T_ISSET)
+                || !$tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['(', '{', ';', '=', [T_OPEN_TAG], [T_BOOLEAN_AND], [T_BOOLEAN_OR]])) {
                 continue;
             }
 
@@ -79,6 +80,15 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
                 // fetch info about the 'isset' statement that we're merging
                 $nextIssetInfo = $this->getIssetInfo($tokens, $issetIndex);
+
+                $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken(end($nextIssetInfo));
+                $nextMeaningfulToken = $tokens[$nextMeaningfulTokenIndex];
+
+                if (!$nextMeaningfulToken->equalsAny([')', '}', ';', [T_CLOSE_TAG], [T_BOOLEAN_AND], [T_BOOLEAN_OR]])) {
+                    $index = $nextMeaningfulTokenIndex;
+
+                    break;
+                }
 
                 // clone what we want to move, do not clone '(' and ')' of the 'isset' statement we're merging
                 $clones = $this->getTokenClones($tokens, \array_slice($nextIssetInfo, 1, -1));

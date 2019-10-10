@@ -655,6 +655,10 @@ Choose from the list of available rules:
   - ``consider-absent-docblock-as-internal-class`` (``bool``): should classes
     without any DocBlock be fixed to final?; defaults to ``false``
 
+* **final_static_access**
+
+  Converts ``static`` access to ``self`` access in final classes.
+
 * **fopen_flag_order** [@Symfony:risky, @PhpCsFixer:risky]
 
   Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
@@ -1080,6 +1084,9 @@ Choose from the list of available rules:
 
   - ``allow_mixed`` (``bool``): whether type ``mixed`` without description is allowed
     (``true``) or considered superfluous (``false``); defaults to ``false``
+  - ``allow_unused_params`` (``bool``): whether ``param`` annontation without actual
+    signature is allowed (``true``) or considered superfluous (``false``);
+    defaults to ``false``
   - ``remove_inheritdoc`` (``bool``): remove ``@inheritDoc`` tags; defaults to ``false``
 
 * **no_trailing_comma_in_list_call** [@Symfony, @PhpCsFixer]
@@ -1464,6 +1471,20 @@ Choose from the list of available rules:
 * **phpdoc_inline_tag** [@Symfony, @PhpCsFixer]
 
   Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
+
+* **phpdoc_line_span**
+
+  Changes doc blocks from single to multi line, or reversed. Works for
+  class constants, properties and methods only.
+
+  Configuration options:
+
+  - ``const`` (``'multi'``, ``'single'``): whether const blocks should be single or
+    multi line; defaults to ``'multi'``
+  - ``method`` (``'multi'``, ``'single'``): whether method doc blocks should be single
+    or multi line; defaults to ``'multi'``
+  - ``property`` (``'multi'``, ``'single'``): whether property doc blocks should be
+    single or multi line; defaults to ``'multi'``
 
 * **phpdoc_no_access** [@Symfony, @PhpCsFixer]
 
@@ -2001,7 +2022,7 @@ Exit code is built using following bit flags:
 * 32 - Configuration error of a Fixer.
 * 64 - Exception raised within the application.
 
-(Applies to exit code of the `fix` command only)
+(Applies to exit code of the ``fix`` command only)
 
 Helpers
 -------

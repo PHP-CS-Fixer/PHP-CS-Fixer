@@ -90,26 +90,86 @@ final class DocBlock
      */
     public function getAnnotations()
     {
-        if (null === $this->annotations) {
-            $this->annotations = [];
-            $total = \count($this->lines);
+        if (null !== $this->annotations) {
+            return $this->annotations;
+        }
 
-            for ($index = 0; $index < $total; ++$index) {
-                if ($this->lines[$index]->containsATag()) {
-                    // get all the lines that make up the annotation
-                    $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
-                    $annotation = new Annotation($lines);
-                    // move the index to the end of the annotation to avoid
-                    // checking it again because we know the lines inside the
-                    // current annotation cannot be part of another annotation
-                    $index = $annotation->getEnd();
-                    // add the current annotation to the list of annotations
-                    $this->annotations[] = $annotation;
-                }
+        $this->annotations = [];
+        $total = \count($this->lines);
+
+        for ($index = 0; $index < $total; ++$index) {
+            if ($this->lines[$index]->containsATag()) {
+                // get all the lines that make up the annotation
+                $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
+                $annotation = new Annotation($lines);
+                // move the index to the end of the annotation to avoid
+                // checking it again because we know the lines inside the
+                // current annotation cannot be part of another annotation
+                $index = $annotation->getEnd();
+                // add the current annotation to the list of annotations
+                $this->annotations[] = $annotation;
             }
         }
 
         return $this->annotations;
+    }
+
+    public function isMultiLine()
+    {
+        return 1 !== \count($this->lines);
+    }
+
+    /**
+     * Take a one line doc block, and turn it into a multi line doc block.
+     *
+     * @param string $indent
+     * @param string $lineEnd
+     */
+    public function makeMultiLine($indent, $lineEnd)
+    {
+        if ($this->isMultiLine()) {
+            return;
+        }
+
+        $lineContent = $this->getSingleLineDocBlockEntry($this->lines[0]);
+
+        if ('*' === $lineContent) {
+            $this->lines = [
+                new Line('/**'.$lineEnd),
+                new Line($indent.' *'.$lineEnd),
+                new Line($indent.' */'),
+            ];
+
+            return;
+        }
+
+        $this->lines = [
+            new Line('/**'.$lineEnd),
+            new Line($indent.' * '.$lineContent.$lineEnd),
+            new Line($indent.' */'),
+        ];
+    }
+
+    public function makeSingleLine()
+    {
+        if (!$this->isMultiLine()) {
+            return;
+        }
+
+        $usefulLines = array_filter(
+            $this->lines,
+            static function (Line $line) {
+                return $line->containsUsefulContent();
+            }
+        );
+
+        if (1 < \count($usefulLines)) {
+            return;
+        }
+
+        $lineContent = $this->getSingleLineDocBlockEntry(array_shift($usefulLines));
+
+        $this->lines = [new Line('/** '.$lineContent.' */')];
     }
 
     /**
@@ -183,5 +243,34 @@ final class DocBlock
         }
 
         return $index - $start;
+    }
+
+    /**
+     * @param string $lineString
+     *
+     * @return string
+     */
+    private function getSingleLineDocBlockEntry($lineString)
+    {
+        if (0 === \strlen($lineString)) {
+            return $lineString;
+        }
+
+        $lineString = str_replace('*/', '', $lineString);
+        $lineString = trim($lineString);
+        $lineArray = str_split($lineString);
+        $i = \count($lineArray);
+
+        do {
+            --$i;
+        } while ('*' !== $lineString[$i] && '*' !== $lineString[$i - 1] && '/' !== $lineString[$i - 2]);
+
+        if (' ' === $lineString[$i]) {
+            ++$i;
+        }
+
+        $lineArray = \array_slice($lineArray, $i);
+
+        return implode('', $lineArray);
     }
 }
