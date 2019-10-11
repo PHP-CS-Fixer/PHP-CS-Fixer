@@ -113,10 +113,6 @@ if (count($x)) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if ($tokens->isTokenKindFound(T_NAMESPACE) && \count((new NamespacesAnalyzer())->getDeclarations($tokens)) > 1) {
-            return;
-        }
-
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
 
         $newImports = [];
