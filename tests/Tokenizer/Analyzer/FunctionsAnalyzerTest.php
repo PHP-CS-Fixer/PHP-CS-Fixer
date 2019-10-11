@@ -213,6 +213,30 @@ final class FunctionsAnalyzerTest extends TestCase
                     )
                 ),
             ]],
+            ['<?php function(\Foo\Bar $a){};', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    8,
+                    null,
+                    new TypeAnalysis(
+                        '\Foo\Bar',
+                        3,
+                        6
+                    )
+                ),
+            ]],
+            ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    9,
+                    null,
+                    new TypeAnalysis(
+                        '\Foo\Bar',
+                        3,
+                        7
+                    )
+                ),
+            ]],
         ];
     }
 
@@ -222,6 +246,8 @@ final class FunctionsAnalyzerTest extends TestCase
             ['<?php function(){};', 1, null],
             ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)],
             ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)],
+            ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)],
+            ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)],
         ];
     }
 }
