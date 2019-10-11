@@ -234,6 +234,10 @@ final class AnnotationTest extends TestCase
                 ['int'],
             ],
             [
+                ' * @method Foo[][] method()',
+                ['Foo[][]'],
+            ],
+            [
                 ' * @method int[] method()',
                 ['int[]'],
             ],
