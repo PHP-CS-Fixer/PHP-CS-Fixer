@@ -15,7 +15,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -35,7 +35,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class GlobalNamespaceImportFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class GlobalNamespaceImportFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -103,8 +103,9 @@ if (count($x)) {
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound([T_USE, T_NS_SEPARATOR])
-            && (Tokens::isLegacyMode() || $tokens->countTokenKind(T_NAMESPACE) < 2)
-            && $tokens->isMonolithicPhp();
+            && $tokens->countTokenKind(T_NAMESPACE) < 2
+            && $tokens->isMonolithicPhp()
+        ;
     }
 
     /**
@@ -112,7 +113,7 @@ if (count($x)) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (Tokens::isLegacyMode() && $tokens->isTokenKindFound(T_NAMESPACE) && \count((new NamespacesAnalyzer())->getDeclarations($tokens)) > 1) {
+        if ($tokens->isTokenKindFound(T_NAMESPACE) && \count((new NamespacesAnalyzer())->getDeclarations($tokens)) > 1) {
             return;
         }
 
