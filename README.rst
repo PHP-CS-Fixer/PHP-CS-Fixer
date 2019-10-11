@@ -261,7 +261,7 @@ Choose from the list of available rules:
 
   Each element of an array must be indented exactly once.
 
-* **array_syntax** [@PhpCsFixer]
+* **array_syntax** [@Symfony, @PhpCsFixer]
 
   PHP arrays should be declared using the configured syntax.
 
@@ -721,6 +721,19 @@ Choose from the list of available rules:
 
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
+
+* **global_namespace_import**
+
+  Imports or fully qualifies global classes/functions/constants.
+
+  Configuration options:
+
+  - ``import_classes`` (``false``, ``null``, ``true``): whether to import, not import or
+    ignore global classes; defaults to ``true``
+  - ``import_constants`` (``false``, ``null``, ``true``): whether to import, not import or
+    ignore global constants; defaults to ``null``
+  - ``import_functions`` (``false``, ``null``, ``true``): whether to import, not import or
+    ignore global functions; defaults to ``null``
 
 * **header_comment**
 
@@ -1230,7 +1243,7 @@ Choose from the list of available rules:
   - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
     statements should be sorted; defaults to ``'none'``
 
-* **ordered_imports** [@PhpCsFixer]
+* **ordered_imports** [@Symfony, @PhpCsFixer]
 
   Ordering ``use`` statements.
 
@@ -1500,7 +1513,7 @@ Choose from the list of available rules:
     ones; defaults to ``['property-read' => 'property', 'property-write' =>
     'property', 'type' => 'var', 'link' => 'see']``
 
-* **phpdoc_no_empty_return** [@Symfony, @PhpCsFixer]
+* **phpdoc_no_empty_return** [@PhpCsFixer]
 
   ``@return void`` and ``@return null`` annotations should be omitted from
   PHPDoc.
@@ -1560,6 +1573,18 @@ Choose from the list of available rules:
 
   Docblocks should only be used on structural elements.
 
+* **phpdoc_to_param_type**
+
+  EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts
+  accordingly the function signature. Requires PHP >= 7.0.
+
+  *Risky rule: [1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] ``@param`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented.*
+
+  Configuration options:
+
+  - ``scalar_types`` (``bool``): fix also scalar types; may have unexpected
+    behaviour due to PHP bad type coercion system; defaults to ``true``
+
 * **phpdoc_to_return_type**
 
   EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts
@@ -1577,7 +1602,7 @@ Choose from the list of available rules:
   PHPDoc should start and end with content, excluding the very first and
   last line of the docblocks.
 
-* **phpdoc_trim_consecutive_blank_line_separation** [@PhpCsFixer]
+* **phpdoc_trim_consecutive_blank_line_separation** [@Symfony, @PhpCsFixer]
 
   Removes extra blank lines after summary and after description in PHPDoc.
 
@@ -1617,7 +1642,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``pow`` is overridden.*
 
-* **protected_to_private** [@Symfony, @PhpCsFixer]
+* **protected_to_private** [@PhpCsFixer]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
 

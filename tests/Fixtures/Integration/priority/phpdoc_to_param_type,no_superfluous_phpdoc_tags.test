@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: phpdoc_to_param_type,no_superfluous_phpdoc_tags.
+--RULESET--
+{"phpdoc_to_param_type": true, "no_superfluous_phpdoc_tags": true}
+--REQUIREMENTS--
+{"php": 70000}
+--EXPECT--
+<?php
+
+class Test {
+    /**
+     */
+    public function foo(int $foo) {
+    }
+}
+
+--INPUT--
+<?php
+
+class Test {
+    /**
+     * @param int $foo
+     */
+    public function foo($foo) {
+    }
+}

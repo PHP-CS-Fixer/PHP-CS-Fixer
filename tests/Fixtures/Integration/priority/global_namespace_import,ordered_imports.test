@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: global_namespace_import,ordered_imports.
+--RULESET--
+{"global_namespace_import": {"import_classes": true}, "ordered_imports": true}
+--EXPECT--
+<?php
+
+namespace Test;
+
+use Foo;
+use Z;
+
+new Foo();
+
+--INPUT--
+<?php
+
+namespace Test;
+
+use Z;
+
+new \Foo();

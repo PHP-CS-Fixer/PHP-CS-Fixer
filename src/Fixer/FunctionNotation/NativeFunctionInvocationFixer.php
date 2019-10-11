@@ -163,6 +163,15 @@ $c = get_class($d);
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run before GlobalNamespaceImportFixer
+        return 10;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_STRING);

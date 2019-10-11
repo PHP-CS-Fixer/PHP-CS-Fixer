@@ -36,7 +36,7 @@ final class Annotation
     (?<types>
         (?<type>
             (?<array>
-                (?&simple)\[\]
+                (?&simple)(\[\])*
             )
             |
             (?<simple>
