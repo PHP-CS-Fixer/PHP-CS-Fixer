@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-02T06:10:49Z
+
+Should this be merged in 2.15 rather than master?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-07T15:10:53Z
+
+I'm :+1:  for 2.15 without `no_superfluous_phpdoc_tags`,
++0 with it on `master`, I like all the other changes :)
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-10-10T17:20:50Z
+
+Ok, for a first step I changed target to 2.15 and removed `no_superfluous_phpdoc_tags`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-10T18:58:55Z
+
+Thanks looking good!
+
+~Maybe we could add `no_superfluous_phpdoc_tags` to the SF set with `['allow_mixed' => true, 'allow_unused_params' => true]` (through https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4505)
+ as well now we added the config?~ not yet available
