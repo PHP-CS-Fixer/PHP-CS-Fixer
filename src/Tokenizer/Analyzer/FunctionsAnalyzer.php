@@ -82,11 +82,11 @@ final class FunctionsAnalyzer
         }
 
         $type = '';
-        $typeStartIndex = $tokens->getNextNonWhitespace($typeColonIndex);
+        $typeStartIndex = $tokens->getNextMeaningfulToken($typeColonIndex);
         $typeEndIndex = $typeStartIndex;
         $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';']);
         for ($i = $typeStartIndex; $i < $functionBodyStart; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
+            if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
                 continue;
             }
 
