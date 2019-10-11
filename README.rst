@@ -743,6 +743,19 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
+* **global_namespace_import**
+
+  Imports or fully qualifies global classes/functions/constants.
+
+  Configuration options:
+
+  - ``import_classes`` (``false``, ``null``, ``true``): whether to import, not import or
+    ignore global classes; defaults to ``true``
+  - ``import_constants`` (``false``, ``null``, ``true``): whether to import, not import or
+    ignore global constants; defaults to ``null``
+  - ``import_functions`` (``false``, ``null``, ``true``): whether to import, not import or
+    ignore global functions; defaults to ``null``
+
 * **hash_to_slash_comment**
 
   Single line comments should use double slashes ``//`` and not hash ``#``.
