@@ -68,4 +68,24 @@ final class NamespacesAnalyzer
 
         return $namespaces;
     }
+
+    /**
+     * @param int $index
+     *
+     * @return NamespaceAnalysis
+     */
+    public function getNamespaceAt(Tokens $tokens, $index)
+    {
+        if (!$tokens->offsetExists($index)) {
+            throw new \InvalidArgumentException("Token index {$index} does not exist.");
+        }
+
+        foreach ($this->getDeclarations($tokens) as $namespace) {
+            if ($namespace->getScopeStartIndex() <= $index && $namespace->getScopeEndIndex() >= $index) {
+                return $namespace;
+            }
+        }
+
+        throw new \LogicException("Unable to get the namespace at index {$index}.");
+    }
 }

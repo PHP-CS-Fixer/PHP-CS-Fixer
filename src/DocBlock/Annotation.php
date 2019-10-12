@@ -13,6 +13,8 @@
 namespace PhpCsFixer\DocBlock;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
  * This represents an entire annotation from a docblock.
@@ -24,41 +26,6 @@ use PhpCsFixer\Preg;
  */
 class Annotation
 {
-    /**
-     * Regex to match any types, shall be used with `x` modifier.
-     *
-     * @internal
-     */
-    const REGEX_TYPES = '
-    # <simple> is any non-array, non-generic, non-alternated type, eg `int` or `\Foo`
-    # <array> is array of <simple>, eg `int[]` or `\Foo[]`
-    # <generic> is generic collection type, like `array<string, int>`, `Collection<Item>` and more complex like `Collection<int, \null|SubCollection<string>>`
-    # <type> is <simple>, <array> or <generic> type, like `int`, `bool[]` or `Collection<ItemKey, ItemVal>`
-    # <types> is one or more types alternated via `|`, like `int|bool[]|Collection<ItemKey, ItemVal>`
-    (?<types>
-        (?<type>
-            (?<array>
-                (?&simple)(\[\])*
-            )
-            |
-            (?<simple>
-                [@$?]?[\\\\\w]+
-            )
-            |
-            (?<generic>
-                (?&simple)
-                <
-                    (?:(?&types),\s*)?(?:(?&types)|(?&generic))
-                >
-            )
-        )
-        (?:
-            \|
-            (?:(?&simple)|(?&array)|(?&generic))
-        )*
-    )
-    ';
-
     /**
      * All the annotation tag names with types.
      *
@@ -119,13 +86,27 @@ class Annotation
     private $types;
 
     /**
+     * @var null|NamespaceAnalysis
+     */
+    private $namespace;
+
+    /**
+     * @var NamespaceUseAnalysis[]
+     */
+    private $namespaceUses;
+
+    /**
      * Create a new line instance.
      *
-     * @param Line[] $lines
+     * @param Line[]                 $lines
+     * @param null|NamespaceAnalysis $namespace
+     * @param NamespaceUseAnalysis[] $namespaceUses
      */
-    public function __construct(array $lines)
+    public function __construct(array $lines, $namespace = null, array $namespaceUses = [])
     {
         $this->lines = array_values($lines);
+        $this->namespace = $namespace;
+        $this->namespaceUses = $namespaceUses;
 
         $keys = array_keys($lines);
 
@@ -188,6 +169,33 @@ class Annotation
     }
 
     /**
+     * @return TypeExpression
+     *
+     * @internal
+     */
+    public function getTypeExpression()
+    {
+        return new TypeExpression($this->getTypesContent(), $this->namespace, $this->namespaceUses);
+    }
+
+    /**
+     * @return null|string
+     *
+     * @internal
+     */
+    public function getVariableName()
+    {
+        $type = preg_quote($this->getTypesContent(), '/');
+        $regex = "/@{$this->tag->getName()}\\s+{$type}\\s+(?<variable>\\$.+?)(?:[\\s*]|$)/";
+
+        if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
+            return $matches['variable'];
+        }
+
+        return null;
+    }
+
+    /**
      * Get the types associated with this annotation.
      *
      * @return string[]
@@ -195,20 +203,7 @@ class Annotation
     public function getTypes()
     {
         if (null === $this->types) {
-            $this->types = [];
-
-            $content = $this->getTypesContent();
-
-            while ('' !== $content && false !== $content) {
-                Preg::match(
-                    '{^'.self::REGEX_TYPES.'$}x',
-                    $content,
-                    $matches
-                );
-
-                $this->types[] = $matches['type'];
-                $content = substr($content, \strlen($matches['type']) + 1);
-            }
+            $this->types = $this->getTypeExpression()->getTypes();
         }
 
         return $this->types;
@@ -304,7 +299,7 @@ class Annotation
             }
 
             $matchingResult = Preg::match(
-                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.self::REGEX_TYPES.'(?:[*\h\v].*)?\r?$}sx',
+                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.TypeExpression::REGEX_TYPES.'(?:[*\h\v].*)?\r?$}sx',
                 $this->lines[0]->getContent(),
                 $matches
             );
