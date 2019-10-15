@@ -506,12 +506,15 @@ $bar = null;
 EOF
                 ,
             ],
-            'property_name' => [
+            'property name, method name, static method call, static property' => [
                 <<<'EOF'
 <?php
 
 
 $foo->bar = null;
+$foo->bar();
+$foo::bar();
+$foo::bar;
 EOF
                 ,
                 <<<'EOF'
@@ -520,6 +523,9 @@ EOF
 use Foo\Bar;
 
 $foo->bar = null;
+$foo->bar();
+$foo::bar();
+$foo::bar;
 EOF
                 ,
             ],
