@@ -885,4 +885,24 @@ while (2 !== $b = array_pop($c));
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        yield [
+            '<?php if (1_000 === $b);',
+            '<?php if ($b === 1_000);',
+        ];
+    }
 }
