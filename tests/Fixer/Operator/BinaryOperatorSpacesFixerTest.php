@@ -2136,10 +2136,10 @@ $a = $ae?? $b;
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input = null, array $configration = null)
+    public function testFixPhp74($expected, $input = null, array $configuration = null)
     {
-        if (null !== $configration) {
-            $this->fixer->configure($configration);
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
         }
 
         $this->doTest($expected, $input);
@@ -2148,6 +2148,18 @@ $a = $ae?? $b;
     public function provideFixPhp74Cases()
     {
         return [
+            [
+                '<?php
+                    $a = fn() => null;
+                    $b = fn() => null;
+                ',
+                '<?php
+                    $a = fn()    =>      null;
+                    $b = fn()      =>  null;
+                ',
+                null,
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
             [
                 '<?php $a ??= 1;',
                 '<?php $a??=1;',

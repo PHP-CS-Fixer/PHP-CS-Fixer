@@ -57,4 +57,39 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideProcessPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testProcessPhp74($source, array $expectedTokens = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_RETURN_REF,
+            ]
+        );
+    }
+
+    public function provideProcessPhp74Cases()
+    {
+        return [
+            [
+                '<?php fn &(): array => [];',
+                [
+                    3 => CT::T_RETURN_REF,
+                ],
+            ],
+            [
+                '<?php $a = 1 & 2;',
+            ],
+            [
+                '<?php fn (array & $arr) => null;',
+            ],
+        ];
+    }
 }

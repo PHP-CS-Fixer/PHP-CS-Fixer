@@ -18,6 +18,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -48,6 +50,10 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
      */
     public function isCandidate(Tokens $tokens)
     {
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+            return true;
+        }
+
         return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
@@ -82,6 +88,13 @@ $f = function () {};
 ',
                     ['closure_function_spacing' => self::SPACING_NONE]
                 ),
+                new VersionSpecificCodeSample(
+                    '<?php
+$f = fn () => null;
+',
+                    new VersionSpecification(70400),
+                    ['closure_function_spacing' => self::SPACING_NONE]
+                ),
             ]
         );
     }
@@ -96,7 +109,10 @@ $f = function () {};
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_FUNCTION)) {
+            if (
+                !$token->isGivenKind(T_FUNCTION)
+                && (\PHP_VERSION_ID < 70400 || !$token->isGivenKind(T_FN))
+            ) {
                 continue;
             }
 
@@ -106,13 +122,14 @@ $f = function () {};
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{']);
+            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{', [T_DOUBLE_ARROW]]);
 
-            // fix single-line whitespace before {
+            // fix single-line whitespace before { or =>
             // eg: `function foo(){}` => `function foo() {}`
             // eg: `function foo()   {}` => `function foo() {}`
+            // eg: `fn()   =>` => `fn() =>`
             if (
-                $tokens[$startBraceIndex]->equals('{') &&
+                $tokens[$startBraceIndex]->equalsAny(['{', [T_DOUBLE_ARROW]]) &&
                 (
                     !$tokens[$startBraceIndex - 1]->isWhitespace() ||
                     $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)

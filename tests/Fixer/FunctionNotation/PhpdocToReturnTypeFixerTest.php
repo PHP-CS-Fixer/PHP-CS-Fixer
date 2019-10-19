@@ -249,4 +249,27 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            'arrow function' => [
+                '<?php /** @return int */ fn(): int => 1;',
+                '<?php /** @return int */ fn() => 1;',
+                70400,
+            ],
+        ];
+    }
 }

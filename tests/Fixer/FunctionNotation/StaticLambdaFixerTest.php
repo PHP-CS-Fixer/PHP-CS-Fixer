@@ -229,4 +229,54 @@ $b->abc();
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            [
+                '<?php $a=static fn() => null;$b=static fn() => null;',
+                '<?php $a=fn() => null;$b=fn() => null;',
+            ],
+            [
+                '<?php $a  /**/  =   /**/     static fn() => null;',
+                '<?php $a  /**/  =   /**/     fn() => null;',
+            ],
+            [
+                '<?php $a  /**/  =   /**/ static fn() => null;',
+                '<?php $a  /**/  =   /**/ fn() => null;',
+            ],
+            [
+                '<?php $a  /**/  =   /**/static fn() => null;',
+                '<?php $a  /**/  =   /**/fn() => null;',
+            ],
+            [
+                '<?php
+                    class B
+                    {
+                        public function C()
+                        {
+                            $a = fn () => var_dump($this);
+                            $a();
+                        }
+                    }
+                ',
+            ],
+            [
+                '<?php static fn($a = ["foo" => $this]) => [];',
+                '<?php fn($a = ["foo" => $this]) => [];',
+            ],
+        ];
+    }
 }

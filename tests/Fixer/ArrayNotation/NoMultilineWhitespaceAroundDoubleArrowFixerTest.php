@@ -95,4 +95,30 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            [
+                '<?php
+                    $fn = fn() => null;',
+                '<?php
+                    $fn = fn()
+                        =>
+                            null;',
+            ],
+        ];
+    }
 }

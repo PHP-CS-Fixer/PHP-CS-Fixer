@@ -206,4 +206,65 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>'],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php $foo = fn(Bar\Baz $param) => null;',
+                '<?php $foo = fn(Bar\Baz$param) => null;',
+            ],
+            [
+                '<?php $foo = fn(Bar\Baz $param) => null;',
+                '<?php $foo = fn(Bar\Baz  $param) => null;',
+            ],
+            [
+                '<?php $foo = fn(Bar\Baz &$param) => null;',
+                '<?php $foo = fn(Bar\Baz&$param) => null;',
+            ],
+            [
+                '<?php $foo = fn(Bar\Baz &$param) => null;',
+                '<?php $foo = fn(Bar\Baz  &$param) => null;',
+            ],
+            [
+                '<?php $foo = fn(Bar\Baz & $param) => null;',
+                '<?php $foo = fn(Bar\Baz& $param) => null;',
+            ],
+            [
+                '<?php $foo = fn(Bar\Baz & $param) => null;',
+                '<?php $foo = fn(Bar\Baz  & $param) => null;',
+            ],
+            [
+                '<?php $foo = fn(array $a,
+                    array $b, array $c, array $d) => null;',
+                '<?php $foo = fn(array $a,
+                    array$b, array     $c, array
+                    $d) => null;',
+            ],
+            [
+                '<?php $foo = fn(
+                    array $a,
+                    $b
+                ) => null;',
+            ],
+            [
+                '<?php $foo = fn(
+                    $a,
+                    array $b
+                ) => null;',
+            ],
+        ];
+    }
 }

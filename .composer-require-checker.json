@@ -16,7 +16,7 @@
         "null", "true", "false",
         "static", "self", "parent",
         "array", "string", "int", "float", "bool", "iterable", "callable", "void",
-        "T_COALESCE_EQUAL"
+        "T_COALESCE_EQUAL", "T_FN"
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",

@@ -207,6 +207,7 @@ $bar;',
             ['<?php /* Before class */ final class Foo {}'],
             ['<?php /* Before trait */ trait Foo {}'],
             ['<?php /* Before interface */ interface Foo {}'],
+            ['<?php /* Before anonymous function */ function () {};'],
             ['<?php class Foo { /* Before property */ private $bar; }'],
             ['<?php class Foo { /* Before property */ protected $bar; }'],
             ['<?php class Foo { /* Before property */ public $bar; }'],
@@ -278,5 +279,27 @@ $bar;',
         $analyzer = new CommentsAnalyzer();
 
         static::assertFalse($analyzer->isBeforeStructuralElement($tokens, 1));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @dataProvider providePhpdocCandidatePhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testPhpdocCandidatePhp74($code)
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+    }
+
+    public function providePhpdocCandidatePhp74Cases()
+    {
+        return [
+            ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
+        ];
     }
 }
