@@ -1237,6 +1237,35 @@ $b;',
 
     /**
      * @param string $source
+     *
+     * @dataProvider provideIsBinaryOperator74Cases
+     * @requires PHP 7.4
+     */
+    public function testIsBinaryOperator74($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public function provideIsBinaryOperator74Cases()
+    {
+        return [
+            [
+                '<?php $a ??= $b;',
+                [3 => true],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
      * @param int    $tokenIndex
      *
      * @dataProvider provideArrayExceptionsCases

@@ -553,6 +553,10 @@ final class TokensAnalyzer
             if (\defined('T_COALESCE')) {
                 $arrayOperators[T_COALESCE] = true;  // ??
             }
+
+            if (\defined('T_COALESCE_EQUAL')) {
+                $arrayOperators[T_COALESCE_EQUAL] = true;  // ??=
+            }
         }
 
         $tokens = $this->tokens;
