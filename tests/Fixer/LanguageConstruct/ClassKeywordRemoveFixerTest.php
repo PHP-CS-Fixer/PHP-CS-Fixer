@@ -218,11 +218,31 @@ DateTime:: # a
             [
                 '<?php
                 namespace Foo\\Bar;
-                var_dump(Foo\\Bar\\Baz);
+                var_dump(\'Foo\\Bar\\Baz\');
                 ',
                 '<?php
                 namespace Foo\Bar;
                 var_dump(Baz::class);
+                '
+            ],
+            [
+                '<?php
+                namespace Space1 {
+                    var_dump(\'Space1\\Baz\');
+                }
+                
+                namespace Space2 {
+                    var_dump(\'Space2\\Baz\');
+                }
+                ',
+                '<?php
+                namespace Space1 {
+                    var_dump(Baz::class);
+                }
+                
+                namespace Space2 {
+                    var_dump(Baz::class);
+                }
                 '
             ]
         ];

@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\LanguageConstruct;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -211,6 +212,21 @@ $className = Baz::class;
                 $classImport = $import;
 
                 break;
+            }
+        }
+
+        if ($classImport === false) {
+            $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
+            foreach ($namespaces as $namespace) {
+                if ('' === $namespace->getFullName()) {
+                    continue;
+                }
+
+                if ($classIndex < $namespace->getScopeStartIndex() || $classIndex > $namespace->getScopeEndIndex()) {
+                    continue;
+                }
+
+                $classImport = $namespace->getFullName() . "\\" . $classString;
             }
         }
 
