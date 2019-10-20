@@ -215,7 +215,7 @@ $className = Baz::class;
             }
         }
 
-        if ($classImport === false) {
+        if (false === $classImport) {
             $namespaces = (new NamespacesAnalyzer())->getDeclarations($tokens);
             foreach ($namespaces as $namespace) {
                 if ('' === $namespace->getFullName()) {
@@ -226,7 +226,7 @@ $className = Baz::class;
                     continue;
                 }
 
-                $classImport = $namespace->getFullName() . "\\" . $classString;
+                $classImport = $namespace->getFullName()."\\".$classString;
             }
         }
 

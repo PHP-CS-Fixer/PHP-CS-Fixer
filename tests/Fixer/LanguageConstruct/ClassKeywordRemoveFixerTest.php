@@ -223,7 +223,7 @@ DateTime:: # a
                 '<?php
                 namespace Foo\Bar;
                 var_dump(Baz::class);
-                '
+                ',
             ],
             [
                 '<?php
@@ -243,8 +243,8 @@ DateTime:: # a
                 namespace Space2 {
                     var_dump(Baz::class);
                 }
-                '
-            ]
+                ',
+            ],
         ];
     }
 
