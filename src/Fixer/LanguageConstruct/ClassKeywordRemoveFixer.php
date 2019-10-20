@@ -226,7 +226,7 @@ $className = Baz::class;
                     continue;
                 }
 
-                $classImport = $namespace->getFullName()."\\".$classString;
+                $classImport = $namespace->getFullName().'\\'.$classString;
             }
         }
 
