@@ -302,11 +302,15 @@ final class ConfigurationResolver
     {
         if (null === $this->directory) {
             $path = $this->getCacheFile();
-            $filesystem = new Filesystem();
+            if (null === $path) {
+                $absolutePath = $this->cwd;
+            } else {
+                $filesystem = new Filesystem();
 
-            $absolutePath = $filesystem->isAbsolutePath($path)
-                ? $path
-                : $this->cwd.\DIRECTORY_SEPARATOR.$path;
+                $absolutePath = $filesystem->isAbsolutePath($path)
+                    ? $path
+                    : $this->cwd.\DIRECTORY_SEPARATOR.$path;
+            }
 
             $this->directory = new Directory(\dirname($absolutePath));
         }
