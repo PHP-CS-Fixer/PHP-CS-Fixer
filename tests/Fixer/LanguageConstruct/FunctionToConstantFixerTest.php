@@ -26,7 +26,6 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideTestCases
      */
@@ -231,8 +230,6 @@ get_called_class#1
     }
 
     /**
-     * @param array $config
-     *
      * @dataProvider provideInvalidConfigurationKeysCases
      */
     public function testInvalidConfigurationKeys(array $config)

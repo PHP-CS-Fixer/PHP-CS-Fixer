@@ -158,7 +158,6 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     }
 
     /**
-     * @param Tokens  $tokens
      * @param int     $index
      * @param int     $braceOpenIndex
      * @param int     $braceCloseIndex
@@ -182,8 +181,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return null|array
      */

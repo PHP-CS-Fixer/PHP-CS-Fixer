@@ -127,8 +127,7 @@ final class ImplodeCallFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $functionNameIndex
+     * @param int $functionNameIndex
      *
      * @return array<int, int> In the format: startIndex => endIndex
      */

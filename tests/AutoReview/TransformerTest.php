@@ -29,8 +29,6 @@ use PhpCsFixer\Tokenizer\Transformers;
 final class TransformerTest extends TestCase
 {
     /**
-     * @param TransformerInterface $transformer
-     *
      * @dataProvider provideTransformerCases
      */
     public function testTransformersAreFinal(TransformerInterface $transformer)

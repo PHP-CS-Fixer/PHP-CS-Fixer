@@ -334,8 +334,6 @@ EOF
     /**
      * Returns the allowed values of the given option that can be converted to a string.
      *
-     * @param FixerOptionInterface $option
-     *
      * @return null|array
      */
     public static function getDisplayableAllowedValues(FixerOptionInterface $option)

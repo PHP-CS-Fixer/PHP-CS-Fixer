@@ -29,8 +29,5 @@ interface FileHandlerInterface
      */
     public function read();
 
-    /**
-     * @param CacheInterface $cache
-     */
     public function write(CacheInterface $cache);
 }

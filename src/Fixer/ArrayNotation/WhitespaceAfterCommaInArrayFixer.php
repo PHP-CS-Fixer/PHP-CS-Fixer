@@ -58,8 +58,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     /**
      * Method to fix spacing in array declaration.
      *
-     * @param int    $index
-     * @param Tokens $tokens
+     * @param int $index
      */
     private function fixSpacing($index, Tokens $tokens)
     {
@@ -82,8 +81,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     /**
      * Method to move index over the non-array elements like function calls or function declarations.
      *
-     * @param int    $index
-     * @param Tokens $tokens
+     * @param int $index
      *
      * @return int New index
      */

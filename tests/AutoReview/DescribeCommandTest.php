@@ -30,8 +30,7 @@ final class DescribeCommandTest extends TestCase
     /**
      * @dataProvider provideDescribeCommandCases
      *
-     * @param FixerFactory $factory
-     * @param string       $fixerName
+     * @param string $fixerName
      */
     public function testDescribeCommand(FixerFactory $factory, $fixerName)
     {

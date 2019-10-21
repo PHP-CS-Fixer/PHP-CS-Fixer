@@ -117,8 +117,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixEchoToPrint(Tokens $tokens, $index)
     {
@@ -147,8 +146,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixPrintToEcho(Tokens $tokens, $index)
     {

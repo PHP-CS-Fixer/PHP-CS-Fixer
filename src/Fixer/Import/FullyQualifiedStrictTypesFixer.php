@@ -111,8 +111,7 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixFunctionArguments(Tokens $tokens, $index)
     {
@@ -128,8 +127,7 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixFunctionReturnType(Tokens $tokens, $index)
     {
@@ -145,10 +143,6 @@ class SomeClass
         $this->detectAndReplaceTypeWithShortType($tokens, $returnType);
     }
 
-    /**
-     * @param Tokens       $tokens
-     * @param TypeAnalysis $type
-     */
     private function detectAndReplaceTypeWithShortType(
         Tokens $tokens,
         TypeAnalysis $type

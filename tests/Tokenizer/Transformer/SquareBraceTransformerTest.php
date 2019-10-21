@@ -83,7 +83,6 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
     /**
      * @param string $source
-     * @param array  $expectedTokens
      *
      * @dataProvider provideProcessCases
      */

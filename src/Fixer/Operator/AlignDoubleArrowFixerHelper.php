@@ -135,9 +135,8 @@ final class AlignDoubleArrowFixerHelper extends AbstractAlignFixerHelper
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $from
-     * @param int    $until
+     * @param int $from
+     * @param int $until
      */
     private function injectArrayAlignmentPlaceholders(Tokens $tokens, $from, $until)
     {

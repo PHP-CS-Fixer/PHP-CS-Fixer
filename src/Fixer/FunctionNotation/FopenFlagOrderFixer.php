@@ -38,9 +38,8 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $argumentStartIndex
-     * @param int    $argumentEndIndex
+     * @param int $argumentStartIndex
+     * @param int $argumentEndIndex
      */
     protected function fixFopenFlagToken(Tokens $tokens, $argumentStartIndex, $argumentEndIndex)
     {

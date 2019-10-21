@@ -121,7 +121,6 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens   $tokens
      * @param int      $index                 Index of `dirname`
      * @param null|int $firstArgumentEndIndex Index of last token of first argument of `dirname` call
      *

@@ -667,7 +667,6 @@ $a#4
     }
 
     /**
-     * @param array  $config
      * @param string $expectedMessage
      *
      * @dataProvider provideInvalidConfigurationCases
@@ -844,7 +843,6 @@ function a() {
     }
 
     /**
-     * @param array  $config
      * @param string $expected
      *
      * @dataProvider provideFixWithConfigCases

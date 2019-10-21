@@ -367,7 +367,6 @@ EOT
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
@@ -662,7 +661,6 @@ EOT
     }
 
     /**
-     * @param array  $configuration
      * @param string $input
      * @param string $expected
      *

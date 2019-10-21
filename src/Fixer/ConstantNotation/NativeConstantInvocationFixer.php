@@ -220,9 +220,8 @@ namespace {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start
-     * @param int    $end
+     * @param int $start
+     * @param int $end
      */
     private function fixConstantInvocations(Tokens $tokens, $start, $end)
     {

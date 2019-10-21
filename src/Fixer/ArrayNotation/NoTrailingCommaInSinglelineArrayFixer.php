@@ -59,8 +59,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixArray(Tokens $tokens, $index)
     {

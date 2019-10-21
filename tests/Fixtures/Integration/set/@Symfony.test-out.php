@@ -33,9 +33,8 @@ class FooBar
     /**
      * Foo.
      *
-     * @param string      $dummy   Some argument description
-     * @param array       $options
-     * @param string|null $data    Foo
+     * @param string      $dummy Some argument description
+     * @param string|null $data  Foo
      *
      * @return string|null Transformed input
      *

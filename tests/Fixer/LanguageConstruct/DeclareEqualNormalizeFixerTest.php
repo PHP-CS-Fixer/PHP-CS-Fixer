@@ -40,7 +40,6 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     /**
      * @param string $expected
      * @param string $input
-     * @param array  $config
      *
      * @dataProvider provideFixCases
      */
@@ -106,7 +105,6 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param array  $config
      * @param string $expectedMessage
      *
      * @dataProvider provideInvalidConfigCases

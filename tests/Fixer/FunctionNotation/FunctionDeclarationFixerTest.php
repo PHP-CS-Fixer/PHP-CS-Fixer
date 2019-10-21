@@ -39,7 +39,6 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
@@ -336,7 +335,6 @@ foo#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFix54Cases
      */
@@ -381,7 +379,6 @@ foo#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0

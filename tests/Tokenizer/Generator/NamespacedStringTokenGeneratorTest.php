@@ -25,7 +25,6 @@ final class NamespacedStringTokenGeneratorTest extends TestCase
 {
     /**
      * @param string $input
-     * @param array  $expected
      *
      * @dataProvider provideGeneratorCases
      */

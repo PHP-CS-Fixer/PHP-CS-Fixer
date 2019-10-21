@@ -26,7 +26,6 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideTestFixCases
      */
