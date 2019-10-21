@@ -245,6 +245,16 @@ DateTime:: # a
                 }
                 ',
             ],
+            [
+                '<?php
+                namespace Foo;
+                var_dump(\'Foo\\Bar\\Baz\');
+                ',
+                '<?php
+                namespace Foo;
+                var_dump(Bar\Baz::class);
+                ',
+            ],
         ];
     }
 
