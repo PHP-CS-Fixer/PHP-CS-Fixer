@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2019-09-13T09:47:30Z
+
+Just a bit more context here. When filing #4517 I experienced Travis build errors on the new 2.15 base branch (was previously filing against 2.12 w/o this problem).
+
+This is what fixed the build problems for me. After a [short exchange on gitter](https://gitter.im/PHP-CS-Fixer/Lobby?at=5d74dcb6b9abfa4bd36f50b9) w/ @keradus I extracted the fix and made it a PR of it's own.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-10-13T02:56:13Z
+
+Even this build goes towards green again, this is not yet ready.
+
+We stumbled over an issue with `phive` and the build box: https://github.com/phar-io/phive/issues/208
+
+For now on the PHP-CS-Fixer travis build we have a work-around, but I would like to use this PR to continue helping finding a solution for the underlying issue so that `phive` can improve and at best the workaround is not needed at all.
+
+ :rotating_light: The commits are not ready to merge as they contain test binaries (phars) from `phive` in it's history that should not be pulled in as no-one want's them in the long-time project history.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-13T08:26:51Z
+
+:+1: for waiting a proper fix rather than a workaround. Thank you for the time you spend on this.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-10-19T08:40:47Z
+
+:checkered_flag: Yesterday I cleaned the debug / workaround commits up a bit and removed the intermediate binaries from the history as the workaround is only needed until the upstream fix and it's only some lines at the beginning of the file.
+
+Now as reading your comment I also inlined the fixup! commits so for it to become merge ready, and resolved all conversations, hopefully in your interest. If not let me know.
