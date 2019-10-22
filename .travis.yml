@@ -29,7 +29,7 @@ jobs:
             php: 7.2
             env: COMPOSER_FLAGS="--prefer-stable"
             install:
-                - ./dev-tools/install.sh
+                - travis_retry ./dev-tools/install.sh
 
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
