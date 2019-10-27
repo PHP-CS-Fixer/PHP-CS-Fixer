@@ -992,8 +992,8 @@ use A\A1;
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => ['class', 'const'],
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => ['class', 'const'],
         ]);
     }
 
@@ -1003,8 +1003,8 @@ use A\A1;
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => ['const', 'function', 'bar'],
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => ['const', 'function', 'bar'],
         ]);
     }
 
@@ -1030,22 +1030,22 @@ use A\A1;
         return [
             [
                 [
-                    'sortAlgorithm' => 'dope',
-                    'importsOrder' => null,
+                    'sort_algorithm' => 'dope',
+                    'imports_order' => null,
                 ],
                 '"dope"',
             ],
             [
                 [
-                    'sortAlgorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
-                    'importsOrder' => null,
+                    'sort_algorithm' => [OrderedImportsFixer::SORT_ALPHA, OrderedImportsFixer::SORT_LENGTH],
+                    'imports_order' => null,
                 ],
                 'array',
             ],
             [
                 [
-                    'sortAlgorithm' => new \stdClass(),
-                    'importsOrder' => null,
+                    'sort_algorithm' => new \stdClass(),
+                    'imports_order' => null,
                 ],
                 \stdClass::class,
             ],
@@ -1055,8 +1055,8 @@ use A\A1;
     public function testFixByLength()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1145,8 +1145,8 @@ EOF;
     public function testByLengthFixWithSameLength()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1203,8 +1203,8 @@ EOF;
     public function testByLengthFixWithMultipleNamespace()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1331,8 +1331,8 @@ EOF;
     public function testByLengthFixWithComment()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1421,8 +1421,8 @@ EOF;
     public function testByLength()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1501,8 +1501,8 @@ EOF;
     public function testByLengthFixWithTraitImports()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1597,8 +1597,8 @@ EOF;
     public function testByLengthFixWithDifferentCases()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1641,8 +1641,8 @@ EOF;
     public function testByLengthOrderWithTrailingDigit()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1681,8 +1681,8 @@ EOF;
     public function testByLengthCodeWithImportsOnly()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1705,8 +1705,8 @@ EOF;
     public function testByLengthWithoutUses()
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
@@ -1729,8 +1729,8 @@ EOF
     public function testFix70ByLength($expected, $input = null)
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => null,
         ]);
 
         $this->doTest($expected, $input);
@@ -1796,8 +1796,8 @@ use const ZZZ;
     public function testFix70TypesOrderAndLength($expected, $input = null)
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+            'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ]);
 
         $this->doTest($expected, $input);
@@ -1856,8 +1856,8 @@ use function some\f\{fn_c, fn_d, fn_e};
     public function testFix70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
     {
         $this->configureFixerWithAliasedOptions([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-            'importsOrder' => $importOrder,
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => $importOrder,
         ]);
 
         $this->doTest($expected, $input);
@@ -1927,8 +1927,8 @@ use function some\a\{fn_a, fn_b};
     public function testFix70TypesOrderAndNone($expected, $input = null, array $importOrder = null)
     {
         $this->fixer->configure([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_NONE,
-            'importsOrder' => $importOrder,
+            'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+            'imports_order' => $importOrder,
         ]);
 
         $this->doTest($expected, $input);
@@ -2034,8 +2034,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 ',
                 $input,
                 [
-                    'sortAlgorithm' => OrderedImportsFixer::SORT_ALPHA,
-                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                    'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+                    'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
                 ],
             ],
             [
@@ -2048,8 +2048,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 ',
                 $input,
                 [
-                    'sortAlgorithm' => OrderedImportsFixer::SORT_LENGTH,
-                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                    'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
+                    'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
                 ],
             ],
             [
@@ -2062,8 +2062,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
 ',
                 $input,
                 [
-                    'sortAlgorithm' => OrderedImportsFixer::SORT_NONE,
-                    'importsOrder' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
+                    'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+                    'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
                 ],
             ],
         ];
@@ -2072,8 +2072,8 @@ use function some\a\{fn_a, fn_b, fn_c,};
     public function testFixByNone()
     {
         $this->fixer->configure([
-            'sortAlgorithm' => OrderedImportsFixer::SORT_NONE,
-            'importsOrder' => null,
+            'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
+            'imports_order' => null,
         ]);
 
         $expected = <<<'EOF'
