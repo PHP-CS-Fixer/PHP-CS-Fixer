@@ -27,13 +27,13 @@ final class RawFileOutputReporterTest extends TestCase
      */
     private $reporter;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         parent::setUp();
         $this->reporter = new RawFileOutputReporter();
     }
 
-    final public function testGetFormat(): void
+    public function testGetFormat()
     {
         static::assertSame(
             RawFileOutputReporter::NAME,
@@ -42,14 +42,19 @@ final class RawFileOutputReporterTest extends TestCase
     }
 
     /**
+     * @param ReportSummary $reportSummary
+     * @param null|string   $expectedReport
+     * @param null|string   $expectedException
+     * @param null|string   $expectedExceptionMessage
+     *
      * @dataProvider provideGenerateCases
      */
-    final public function testGenerate(
+    public function testGenerate(
         ReportSummary $reportSummary,
         ?string $expectedReport,
         ?string $expectedException = null,
         ?string $expectedExceptionMessage = null
-    ): void {
+    ) {
         if (null !== $expectedException) {
             $this->expectException($expectedException);
             if ($expectedExceptionMessage) {
@@ -59,36 +64,36 @@ final class RawFileOutputReporterTest extends TestCase
 
         $actualReport = $this->reporter->generate($reportSummary);
         if (null !== $expectedReport) {
-            $this->assertSame($expectedReport, $actualReport);
+            static::assertSame($expectedReport, $actualReport);
         }
     }
 
-    final public function provideGenerateCases(): array
+    public function provideGenerateCases()
     {
         return [
             [
                 new ReportSummary([], 0, 0, false, false, false),
-                ''
+                '',
             ],
             [
                 new ReportSummary(['/some/file' => []], 0, 0, false, false, false),
                 null,
                 \RuntimeException::class,
-                'The raw format is allowed only while using with stdin.'
+                'The raw format is allowed only while using with stdin.',
             ],
             [
                 new ReportSummary(['php://stdin' => []], 0, 0, false, false, false),
                 null,
                 \RuntimeException::class,
-                'The raw format can be used only with --diff option.'
+                'The raw format can be used only with --diff option.',
             ],
             [
                 new ReportSummary(['php://stdin' => ['diff' => 'some diff']], 0, 0, false, false, false),
-                'some diff'
+                'some diff',
             ],
             [
                 new ReportSummary(['php://stdin' => ['diff' => '<some-tag>...</some-tag>']], 0, 0, false, false, true),
-                '\<some-tag>...\</some-tag>'
+                '\<some-tag>...\</some-tag>',
             ],
         ];
     }

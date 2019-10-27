@@ -16,7 +16,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 class RawFileOutputReporter implements ReporterInterface
 {
-    public const NAME = 'raw';
+    const NAME = 'raw';
 
     /**
      * {@inheritdoc}
@@ -36,7 +36,7 @@ class RawFileOutputReporter implements ReporterInterface
             return '';
         }
 
-        if ('php://stdin' !== array_key_first($changedFiles)) {
+        if (!isset($changedFiles['php://stdin'])) {
             throw new \RuntimeException('The raw format is allowed only while using with stdin.');
         }
 

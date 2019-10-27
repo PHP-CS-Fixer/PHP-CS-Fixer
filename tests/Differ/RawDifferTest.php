@@ -20,7 +20,7 @@ use PhpCsFixer\Differ\RawDiffer;
  */
 final class RawDifferTest extends AbstractDifferTestCase
 {
-    public function testDiffReturnsDiff(): void
+    public function testDiffReturnsDiff()
     {
         $differ = new RawDiffer();
         $oldCode = $this->oldCode();

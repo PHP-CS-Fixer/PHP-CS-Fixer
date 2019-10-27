@@ -282,7 +282,7 @@ final class ConfigurationResolver
                         $option
                     ));
                 }
-            } elseif ($this->options['format'] === RawFileOutputReporter::NAME) {
+            } elseif (RawFileOutputReporter::NAME === $this->options['format']) {
                 $option = 'raw';
             } else {
                 $default = 'sbd'; // @TODO: 3.0 change to udiff as default
