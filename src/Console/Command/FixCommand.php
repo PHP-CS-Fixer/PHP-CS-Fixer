@@ -19,6 +19,7 @@ use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Report\RawFileOutputReporter;
 use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
@@ -264,7 +265,8 @@ final class FixCommand extends Command
             \count($changed) > 0,
             \count($invalidErrors) > 0,
             \count($exceptionErrors) > 0,
-            \count($lintErrors) > 0
+            \count($lintErrors) > 0,
+            $reporter instanceof RawFileOutputReporter
         );
     }
 }

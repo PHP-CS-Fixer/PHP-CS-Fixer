@@ -23,6 +23,7 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
+use PhpCsFixer\Differ\RawDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
@@ -31,6 +32,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Report\RawFileOutputReporter;
 use PhpCsFixer\Report\ReporterFactory;
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet;
@@ -268,6 +270,7 @@ final class ConfigurationResolver
                 'null' => static function () { return new NullDiffer(); },
                 'sbd' => static function () { return new SebastianBergmannDiffer(); },
                 'udiff' => static function () { return new UnifiedDiffer(); },
+                'raw' => static function () { return new RawDiffer(); },
             ];
 
             if ($this->options['diff-format']) {
@@ -279,6 +282,8 @@ final class ConfigurationResolver
                         $option
                     ));
                 }
+            } elseif ($this->options['format'] === RawFileOutputReporter::NAME) {
+                $option = 'raw';
             } else {
                 $default = 'sbd'; // @TODO: 3.0 change to udiff as default
 

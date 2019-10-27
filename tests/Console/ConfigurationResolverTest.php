@@ -287,7 +287,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat()
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt", "xml"\.$/');
+        $this->expectExceptionMessageRegExp('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "raw", "txt", "xml"\.$/');
 
         $dirBase = $this->getFixtureDir();
 
@@ -1060,6 +1060,21 @@ final class ConfigurationResolverTest extends TestCase
                 \PhpCsFixer\Differ\UnifiedDiffer::class,
                 null,
                 'udiff',
+            ],
+            [
+                \PhpCsFixer\Differ\RawDiffer::class,
+                true,
+                'raw',
+            ],
+            [
+                \PhpCsFixer\Differ\RawDiffer::class,
+                false,
+                'raw',
+            ],
+            [
+                \PhpCsFixer\Differ\RawDiffer::class,
+                null,
+                'raw',
             ],
         ];
     }

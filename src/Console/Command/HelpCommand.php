@@ -64,7 +64,13 @@ to merge paths from the config file and from the argument:
 
     <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit`` and ``gitlab``.
+The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit``, ``raw`` and ``gitlab``.
+
+NOTE: the raw format can be used only with pipelining.
+
+* If there are any errors, then command will fails with error code, otherwise writes raw result to stdout (even if there are no changes).
+
+    <info>$ cat path/to/php/file.php | php %command.full_name% --format raw</info>
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 
@@ -107,6 +113,7 @@ The <comment>--diff-format</comment> option allows to specify in which format th
 
 * <comment>udiff</comment>: unified diff format;
 * <comment>sbd</comment>: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
+* <comment>raw</comment>: raw format (default when using `--format raw` without specifying `diff-format`)
 
 The <comment>--allow-risky</comment> option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 A rule is considered risky if it could change code behaviour. By default no risky rules are run.

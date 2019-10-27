@@ -97,7 +97,7 @@ TEST;
         sort($formats);
 
         static::assertSame(
-            ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
+            ['checkstyle', 'gitlab', 'json', 'junit', 'raw', 'txt', 'xml'],
             $formats
         );
     }

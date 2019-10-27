@@ -32,15 +32,16 @@ final class FixCommandExitStatusCalculator
      * @param bool $hasInvalidErrors
      * @param bool $hasExceptionErrors
      * @param bool $hasLintErrorsAfterFixing
+     * @param bool $isRawFormat
      *
      * @return int
      */
-    public function calculate($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors, $hasLintErrorsAfterFixing)
+    public function calculate($isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors, $hasLintErrorsAfterFixing, $isRawFormat)
     {
         $exitStatus = 0;
 
         if ($isDryRun) {
-            if ($hasChangedFiles) {
+            if ($hasChangedFiles && !$isRawFormat) {
                 $exitStatus |= self::EXIT_STATUS_FLAG_HAS_CHANGED_FILES;
             }
 
