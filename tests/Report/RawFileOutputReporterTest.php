@@ -51,9 +51,9 @@ final class RawFileOutputReporterTest extends TestCase
      */
     public function testGenerate(
         ReportSummary $reportSummary,
-        ?string $expectedReport,
-        ?string $expectedException = null,
-        ?string $expectedExceptionMessage = null
+        $expectedReport,
+        $expectedException = null,
+        $expectedExceptionMessage = null
     ) {
         if (null !== $expectedException) {
             $this->expectException($expectedException);
