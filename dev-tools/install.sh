@@ -21,15 +21,6 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-###
-# temporary work-around: phive expects gpg2 as gpg, build box has gpg1 as gpg
-#   phive/phive:208 <https://github.com/phar-io/phive/issues/208>
-if [ "${TRAVIS-}" = true ]; then
-  sudo apt-get install dirmngr --install-recommends
-  [ ! -f "/usr/bin/gpg1"  ] && sudo mv -- "/usr/bin/gpg" "/usr/bin/gpg1"
-  sudo ln -sfT "/usr/bin/gpg2" "/usr/bin/gpg"
-fi
-
 VERSION_CB="2.0.0.2"
 VERSION_SC="stable"
 
@@ -65,6 +56,4 @@ composer info -D | sort
 
 echo λλλ phive packages
 
-# echo "debug: #phive/phive:208"
-# see above
 ./bin/phive install --trust-gpg-keys D2CCAC42F6295E7D,8E730BA25823D8B5
