@@ -167,7 +167,10 @@ class DocBlock
             return;
         }
 
-        $lineContent = $this->getSingleLineDocBlockEntry(array_shift($usefulLines));
+        $lineContent = '';
+        if (\count($usefulLines)) {
+            $lineContent = $this->getSingleLineDocBlockEntry(array_shift($usefulLines));
+        }
 
         $this->lines = [new Line('/** '.$lineContent.' */')];
     }
@@ -246,12 +249,14 @@ class DocBlock
     }
 
     /**
-     * @param string $lineString
+     * @param Line $lineString
      *
      * @return string
      */
-    private function getSingleLineDocBlockEntry($lineString)
+    private function getSingleLineDocBlockEntry(Line $line)
     {
+        $lineString = $line->getContent();
+
         if (0 === \strlen($lineString)) {
             return $lineString;
         }
