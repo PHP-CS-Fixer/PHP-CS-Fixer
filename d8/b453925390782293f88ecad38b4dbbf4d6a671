@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2019-10-28T18:02:03Z
+
+Just in case anyone wonders: This is not to be merged, just gathering data as upstream progresses. Build failures are expected.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-10-31T00:29:50Z
+
+@julienfalque Phive has been patched upstream, I cleaned up the PR here after I can confirm the fix working. CR pls.
+
+For reference, PR which introduced the workaround was #4550 .
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-10-31T00:48:20Z
+
+Just for the record as I experienced the same already yesterday when refreshing: When the keyserver times out to import the key to verify the phar package, with the current travis_retry  of three times it looks likely to fail three times in  a row. When I tried later on, all was good.
+
+Maybe trying with more keyservers at the point of failure heps ([ref](https://github.com/tianon/gosu/issues/39)). Phive also internally does rotate keyservers ([ref](https://github.com/phar-io/phive/commit/fda19494898977600a1d0045af7c9bc683d21606#diff-5e5b2bcab99b42b28d693831aa29d429R3)).
+
+---------------------------------------------------------------------------
+
+by ktomk at 2019-11-01T12:16:33Z
+
+@julienfalque and others: I think (not in this PR) the point break of the whole Travis build as when the task w/ the dev-tools fails, the whole Travis build is marked a failure and exited early, should be addressed.
+
+When it turns out that this breaks often in practice (due to remote service availability kind of reasons), it's a bummer as with current configuration. Travis will skip many other build steps and next to having the build red, it's also not clear for the state of the "rest" of the build:
+
+* The step that easily breaks runs first, which is also the reason to push for the workaround in the first place
+* On that step failure, other steps are stopped / not even executed (grey) and the build gathers no more data
+
+The only way then to re-trigger a Travis build is to fake-edit the PR changes and force push. Also for devs from inside/outside the project it might not always clear why the build fails but if every other step is green it's still good to know for them. Also could be less cumbersome for PR reviewers.
+
+(force pushing right now to update on top of 2.15)
