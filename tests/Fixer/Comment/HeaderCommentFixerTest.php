@@ -78,7 +78,7 @@ echo 1;',
                     'header' => 'tmp',
                     'location' => 'after_declare_strict',
                     'separate' => 'bottom',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 '<?php
 declare(strict_types=1);
@@ -122,7 +122,7 @@ echo 1;',
             [
                 [
                     'header' => 'new',
-                    'commentType' => 'comment',
+                    'comment_type' => 'comment',
                 ],
                 '<?php
 
@@ -138,7 +138,7 @@ echo 1;',
             [
                 [
                     'header' => 'new',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 '<?php
 
@@ -154,7 +154,7 @@ echo 1;',
             [
                 [
                     'header' => 'def',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 '<?php
 
@@ -194,7 +194,7 @@ echo 1;',
             [
                 [
                     'header' => 'abc',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 '<?php
 
@@ -348,14 +348,14 @@ echo 1;'
             [
                 [
                     'header' => '',
-                    'commentType' => 'foo',
+                    'comment_type' => 'foo',
                 ],
                 'Invalid configuration: The option "comment_type" with value "foo" is invalid. Accepted values are: "PHPDoc", "comment".',
             ],
             [
                 [
                     'header' => '',
-                    'commentType' => new \stdClass(),
+                    'comment_type' => new \stdClass(),
                 ],
                 'Invalid configuration: The option "comment_type" with value stdClass is invalid. Accepted values are: "PHPDoc", "comment".',
             ],
@@ -387,7 +387,7 @@ echo 1;'
     {
         $this->configureFixerWithAliasedOptions([
             'header' => $header,
-            'commentType' => $type,
+            'comment_type' => $type,
         ]);
         $this->doTest(
             '<?php
@@ -535,7 +535,7 @@ declare(strict_types=1)?>',
                     'header' => 'whitemess',
                     'location' => 'after_declare_strict',
                     'separate' => 'bottom',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
                 "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
