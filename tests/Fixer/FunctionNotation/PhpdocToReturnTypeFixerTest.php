@@ -217,8 +217,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return Foo[] */ function my_foo(): array {}',
                 '<?php /** @return Foo[] */ function my_foo() {}',
             ],
-            'skip array of array of types' => [
+            'array of array of types' => [
+                '<?php /** @return Foo[][] */ function my_foo(): array {}',
                 '<?php /** @return Foo[][] */ function my_foo() {}',
+                70000,
             ],
             'nullable array of types' => [
                 '<?php /** @return null|Foo[] */ function my_foo(): ?array {}',
