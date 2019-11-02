@@ -17,7 +17,7 @@ echo -n "<?php \$test = [];" | php ./php-cs-fixer fix --rules='{"array_syntax": 
 
 The source content will be printed if there are no changes.
 
-### example 3:
+##### example 3:
 ```
 echo -n "<?php \$test = array(;" | php ./php-cs-fixer fix --rules='{"array_syntax": {"syntax": "short"}}' --format raw -
 # Files that were not fixed due to errors reported during linting before fixing:
@@ -28,7 +28,7 @@ echo $?
 
 When errors has occurred, the command will fail with non-zero error code.
 
-### example 4:
+##### example 4:
 ```
 php ./php-cs-fixer fix --format raw .
 # In ConfigurationResolver.php line 292:
