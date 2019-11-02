@@ -129,7 +129,7 @@ $this->assertNotSame(null, $d);
                     'assertNotSame',
                 ])
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
     /**

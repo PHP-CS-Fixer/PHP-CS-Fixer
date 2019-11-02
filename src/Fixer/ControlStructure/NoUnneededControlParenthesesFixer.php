@@ -184,6 +184,6 @@ yield(2);
                     'yield',
                 ])
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 }
