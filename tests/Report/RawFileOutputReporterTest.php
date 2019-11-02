@@ -59,11 +59,9 @@ final class RawFileOutputReporterTest extends TestCase
     ) {
         if (null !== $stdinContent) {
             $fileReader = FileReader::createSingleton();
-            (function () use ($stdinContent) {
-                $this->stdinContent = $stdinContent;
-            })
-                ->call($fileReader)
-            ;
+            $stdinContentPropRef = new \ReflectionProperty(FileReader::class, 'stdinContent');
+            $stdinContentPropRef->setAccessible(true);
+            $stdinContentPropRef->setValue($fileReader, $stdinContent);
         }
 
         if (null !== $expectedException) {
