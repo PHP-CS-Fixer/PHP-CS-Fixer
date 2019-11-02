@@ -87,7 +87,7 @@ final class Example
                 continue; // not in configuration
             }
 
-            $this->fixElement($tokens, $index);
+            $this->fixElement($tokens, $element['type'], $index);
         }
     }
 
@@ -108,9 +108,10 @@ final class Example
     }
 
     /**
-     * @param int $index
+     * @param string $type
+     * @param int    $index
      */
-    private function fixElement(Tokens $tokens, $index)
+    private function fixElement(Tokens $tokens, $type, $index)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $repeatIndex = $index;
@@ -142,16 +143,18 @@ final class Example
         $start = $tokens->getPrevTokenOfKind($index, [';', '{', '}']);
         $this->expandElement(
             $tokens,
+            $type,
             $tokens->getNextMeaningfulToken($start),
             $tokens->getNextTokenOfKind($index, [';'])
         );
     }
 
     /**
-     * @param int $startIndex
-     * @param int $endIndex
+     * @param string $type
+     * @param int    $startIndex
+     * @param int    $endIndex
      */
-    private function expandElement(Tokens $tokens, $startIndex, $endIndex)
+    private function expandElement(Tokens $tokens, $type, $startIndex, $endIndex)
     {
         $divisionContent = null;
         if ($tokens[$startIndex - 1]->isWhitespace()) {
@@ -191,31 +194,37 @@ final class Example
             }
 
             // collect modifiers
-            $sequence = $this->getModifiersSequences($tokens, $startIndex, $endIndex);
+            $sequence = $this->getModifiersSequences($tokens, $type, $startIndex, $endIndex);
             $tokens->insertAt($i + 2, $sequence);
         }
     }
 
     /**
-     * @param int $startIndex
-     * @param int $endIndex
+     * @param string $type
+     * @param int    $startIndex
+     * @param int    $endIndex
      *
      * @return Token[]
      */
-    private function getModifiersSequences(Tokens $tokens, $startIndex, $endIndex)
+    private function getModifiersSequences(Tokens $tokens, $type, $startIndex, $endIndex)
     {
+        if ('property' === $type) {
+            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE];
+        } else {
+            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
+        }
+
         $sequence = [];
         for ($i = $startIndex; $i < $endIndex - 1; ++$i) {
-            if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
+            if ($tokens[$i]->isComment()) {
                 continue;
             }
 
-            if (!$tokens[$i]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_CONST, T_VAR])) {
+            if (!$tokens[$i]->isWhitespace() && !$tokens[$i]->isGivenKind($tokenKinds)) {
                 break;
             }
 
             $sequence[] = clone $tokens[$i];
-            $sequence[] = new Token([T_WHITESPACE, ' ']);
         }
 
         return $sequence;

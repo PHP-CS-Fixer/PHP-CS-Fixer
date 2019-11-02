@@ -121,6 +121,54 @@ PHP;
         );
     }
 
+    /**
+     * @requires PHP 7.4
+     */
+    public function testGetClassyElementsWithNullableProperties()
+    {
+        $source = <<<'PHP'
+<?php
+class Foo
+{
+    public int $prop0;
+    protected ?int $prop1;
+    private string $prop2 = 1;
+    var ? Foo\Bar $prop3 = array(1,2,3);
+}
+
+PHP;
+
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        static::assertSame(
+            [
+                11 => [
+                    'token' => $tokens[11],
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                19 => [
+                    'token' => $tokens[19],
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                26 => [
+                    'token' => $tokens[26],
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                41 => [
+                    'token' => $tokens[41],
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+            ],
+            $elements
+        );
+    }
+
     public function testGetClassyElementsWithAnonymousClass()
     {
         $source = <<<'PHP'
@@ -1231,6 +1279,35 @@ $b;',
             [
                 '<?php try {} catch (A | B $e) {}',
                 [11 => true],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideIsBinaryOperator74Cases
+     * @requires PHP 7.4
+     */
+    public function testIsBinaryOperator74($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public function provideIsBinaryOperator74Cases()
+    {
+        return [
+            [
+                '<?php $a ??= $b;',
+                [3 => true],
             ],
         ];
     }

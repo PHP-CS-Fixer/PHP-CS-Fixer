@@ -136,6 +136,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         '**=',
         '<=>',
         '??',
+        '??=',
     ];
 
     /**
@@ -461,6 +462,10 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 
         if (!\defined('T_COALESCE')) {
             unset($operators['??']);
+        }
+
+        if (!\defined('T_COALESCE_EQUAL')) {
+            unset($operators['??=']);
         }
 
         return $operators;

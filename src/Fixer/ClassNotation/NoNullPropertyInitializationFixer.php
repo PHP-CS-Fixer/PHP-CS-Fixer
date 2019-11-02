@@ -28,7 +28,7 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Properties MUST not be explicitly initialized with `null`.',
+            'Properties MUST not be explicitly initialized with `null` except when they have a type declaration (PHP 7.4).',
             [
                 new CodeSample(
                     '<?php

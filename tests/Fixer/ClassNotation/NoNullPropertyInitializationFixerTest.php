@@ -199,4 +199,26 @@ null;#13
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield [
+            '<?php class Foo { protected ?int $bar = null; }',
+        ];
+        yield [
+            '<?php class Foo { protected ? string $bar = null; }',
+        ];
+    }
 }

@@ -34,7 +34,8 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
             [new CodeSample("<?php\nunset(\$this->a);\n")],
             null,
             'Changing variables to `null` instead of unsetting them will mean they still show up '.
-            'when looping over class variables.'
+            'when looping over class variables. With PHP 7.4, this rule might introduce `null` assignments to '.
+            'property whose type declaration does not allow it.'
         );
     }
 

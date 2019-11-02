@@ -650,4 +650,58 @@ $first = true;// needed because by default first docblock is never fixed.
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    private int $foo;
+                }',
+            ],
+            [
+                '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    protected ?string $foo;
+                }',
+            ],
+            [
+                '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    public ? float $foo;
+                }',
+            ],
+            [
+                '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    var ? Foo\Bar $foo;
+                }',
+            ],
+        ];
+    }
 }
