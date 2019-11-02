@@ -762,30 +762,6 @@ function foo()
             ],
             [
                 '<?php
-function test()
-{
-//    $closure = function ($callback) use ($query) {
-//        doSomething();
-//
-//        return true;
-//    };
-    $a = 3;
-}',
-            ],
-            [
-                '<?php
-function test()
-{
-//    $closure = function ($callback) use ($query) {
-//        doSomething();
-//        '.'
-//        return true;
-//    };
-    $a = 3;
-}',
-            ],
-            [
-                '<?php
 class Foo
 {
     public function bar()
@@ -2588,159 +2564,6 @@ function D() /**
 {
 }',
                 self::$configurationOopPositionSameLine,
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-
-//    if ($bar === \'bar\') {
-//        return [];
-//    }
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-
-//    if ($bar === \'bar\') {
-    //        return [];
-//    }
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-
-//    if ($bar === \'bar\') {
-//        return [];
-//    }
-    '.'
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-
-//    bar();
-    '.'
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-//    bar();
-    '.'
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-    '.'
-//    bar();
-    $bar = \'bar\';
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-if ($foo) {
-    foo();
-    '.'
-//    bar();
-} else {
-    bar();
-}
-',
-            ],
-            [
-                '<?php
-function foo()
-{
-    $a = 1;
-    // we will return sth
-    return $a;
-}
-',
-                '<?php
-function foo()
-{
-    $a = 1;
-// we will return sth
-    return $a;
-}
-',
-            ],
-            [
-                '<?php
-function foo()
-{
-    $a = 1;
-    '.'
-//    bar();
-    // we will return sth
-    return $a;
-}
-',
-                '<?php
-function foo()
-{
-    $a = 1;
-    '.'
-//    bar();
-// we will return sth
-    return $a;
-}
-',
-            ],
-            [
-                '<?php
-function foo()
-{
-    $a = 1;
-//    if ($a === \'bar\') {
-//        return [];
-//    }
-    // we will return sth
-    return $a;
-}
-',
-                '<?php
-function foo()
-{
-    $a = 1;
-//    if ($a === \'bar\') {
-//        return [];
-//    }
-// we will return sth
-    return $a;
-}
-',
             ],
         ];
     }
@@ -5227,6 +5050,201 @@ HEREDOC;
 
 EOT
                 ,
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCommentsCases
+     */
+    public function testFixComments($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+        $this->doTest(str_replace('//', '#', $expected), null === $input ? null : str_replace('//', '#', $input));
+    }
+
+    public function provideFixCommentsCases()
+    {
+        return [
+            [
+                '<?php
+function test()
+{
+//    $closure = function ($callback) use ($query) {
+//        doSomething();
+//
+//        return true;
+//    };
+    $a = 3;
+}',
+            ],
+            [
+                '<?php
+function test()
+{
+//    $closure = function ($callback) use ($query) {
+//        doSomething();
+//        '.'
+//        return true;
+//    };
+    $a = 3;
+}',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+    //        return [];
+//    }
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    if ($bar === \'bar\') {
+//        return [];
+//    }
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+//    bar();
+    '.'
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+    $bar = \'bar\';
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+if ($foo) {
+    foo();
+    '.'
+//    bar();
+} else {
+    bar();
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+// we will return sth
+    return $a;
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+    '.'
+//    bar();
+// we will return sth
+    return $a;
+}
+',
+            ],
+            [
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+    // we will return sth
+    return $a;
+}
+',
+                '<?php
+function foo()
+{
+    $a = 1;
+//    if ($a === \'bar\') {
+//        return [];
+//    }
+// we will return sth
+    return $a;
+}
+',
             ],
         ];
     }
