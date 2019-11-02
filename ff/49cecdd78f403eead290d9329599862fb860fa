@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by roukmoute at 2019-10-31T11:34:29Z
+
+I think you could add a new test:
+
+```php
+'in_same_namespace_3' => [
+            <<<'EOF'
+<?php
+
+namespace Foo\Baz;
+
+// My bar task.
+
+EOF
+            ,
+            <<<'EOF'
+<?php
+
+namespace Foo\Baz;
+
+use Foo\Bar;
+
+// My bar task.
+
+EOF
+            ,
+        ]
+```
