@@ -112,6 +112,6 @@ function foo() {}
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 }

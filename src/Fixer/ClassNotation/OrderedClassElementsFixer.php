@@ -276,7 +276,7 @@ class Example
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
     /**

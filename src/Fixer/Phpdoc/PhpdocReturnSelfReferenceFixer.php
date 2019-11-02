@@ -170,7 +170,7 @@ class Sample
                 })
                 ->setDefault($default)
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
     /**

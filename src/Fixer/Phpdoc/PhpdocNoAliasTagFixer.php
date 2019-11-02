@@ -171,6 +171,6 @@ final class Example
                     'link' => 'see',
                 ])
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 }

@@ -208,7 +208,7 @@ $this->assertTrue(is_readable($a));
                 ])
                 ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
     /**
