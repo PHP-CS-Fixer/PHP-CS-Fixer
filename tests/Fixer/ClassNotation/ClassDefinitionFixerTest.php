@@ -150,7 +150,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
         );
 
         $fixer = new ClassDefinitionFixer();
-        $fixer->configure(['singleLine' => 'z']);
+        $fixer->configure(['single_line' => 'z']);
     }
 
     public function provideAnonymousClassesCases()
@@ -163,7 +163,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
             [
                 '<?php $a = new class(1) extends SomeClass implements SomeInterface, D {};',
                 "<?php \$a = new    class(1)     extends\nSomeClass\timplements    SomeInterface, D {};",
-                ['singleLine' => true],
+                ['single_line' => true],
             ],
             [
                 "<?php \$a = new class('1a') implements\nA\n{};",
@@ -172,7 +172,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
             [
                 "<?php \$a = new class('1a') implements A {};",
                 "<?php \$a = new class('1a')   implements\nA{};",
-                ['singleItemSingleLine' => true],
+                ['single_item_single_line' => true],
             ],
             [
                 '<?php $a = new class {};',
@@ -289,7 +289,7 @@ A#
 #
 }#
 ;",
-                ['singleItemSingleLine' => true],
+                ['single_item_single_line' => true],
             ],
             [
                 '<?php $a = new class() #
@@ -315,45 +315,45 @@ A#
             [
                 "<?php class configA implements B, C\n{}",
                 "<?php class configA implements\nB, C{}",
-                ['singleLine' => true],
+                ['single_line' => true],
             ],
             [
                 "<?php class configA1 extends B\n{}",
                 "<?php class configA1\n extends\nB{}",
-                ['singleLine' => true],
+                ['single_line' => true],
             ],
             [
                 "<?php class configA1a extends B\n{}",
                 "<?php class configA1a\n extends\nB{}",
-                ['singleLine' => false, 'singleItemSingleLine' => true],
+                ['single_line' => false, 'single_item_single_line' => true],
             ],
             [
                 "<?php class configA2 extends D implements B, C\n{}",
                 "<?php class configA2 extends D implements\nB,\nC{}",
-                ['singleLine' => true],
+                ['single_line' => true],
             ],
             [
                 "<?php class configA3 extends D implements B, C\n{}",
                 "<?php class configA3\n extends\nD\n\t implements\nB,\nC{}",
-                ['singleLine' => true],
+                ['single_line' => true],
             ],
             [
                 "<?php class configA4 extends D implements B, #\nC\n{}",
                 "<?php class configA4\n extends\nD\n\t implements\nB,#\nC{}",
-                ['singleLine' => true],
+                ['single_line' => true],
             ],
             [
                 "<?php class configA5 implements A\n{}",
                 "<?php class configA5 implements\nA{}",
-                ['singleLine' => false, 'singleItemSingleLine' => true],
+                ['single_line' => false, 'single_item_single_line' => true],
             ],
             [
                 "<?php interface TestWithMultiExtendsMultiLine extends\n    A,\nAb,\n    C,\n    D\n{}",
                 "<?php interface TestWithMultiExtendsMultiLine extends A,\nAb,C,D\n{}",
                 [
-                    'singleLine' => false,
-                    'singleItemSingleLine' => false,
-                    'multiLineExtendsEachSingleLine' => true,
+                    'single_line' => false,
+                    'single_item_single_line' => false,
+                    'multi_line_extends_each_single_line' => true,
                 ],
             ],
         ];
