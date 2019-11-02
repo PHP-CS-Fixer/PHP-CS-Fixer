@@ -157,6 +157,7 @@ final class RuleSet implements RuleSetInterface
             'single_line_comment_style' => [
                 'comment_types' => ['hash'],
             ],
+            'single_line_throw' => true,
             'single_quote' => true,
             'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => [
@@ -256,6 +257,7 @@ final class RuleSet implements RuleSetInterface
             'return_assignment' => true,
             'simple_to_complex_string_variable' => true,
             'single_line_comment_style' => true,
+            'single_line_throw' => false,
         ],
         '@PhpCsFixer:risky' => [
             '@Symfony:risky' => true,
