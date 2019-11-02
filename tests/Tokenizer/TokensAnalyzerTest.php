@@ -132,7 +132,7 @@ class A {
     {
         return new class(){
             protected $level1;
-            private function A() {
+            private function XYZ() {
                 return new class(){private $level2 = 1;};
             }
         };
@@ -152,32 +152,32 @@ PHP;
             [
                 9 => [
                     'token' => $tokens[9],
-                    'type' => 'property',
+                    'type' => 'property', // $A
                     'classIndex' => 1,
                 ],
                 14 => [
                     'token' => $tokens[14],
-                    'type' => 'method',
+                    'type' => 'method', // B
                     'classIndex' => 1,
                 ],
                 33 => [
                     'token' => $tokens[33],
-                    'type' => 'property',
+                    'type' => 'property', // $level1
                     'classIndex' => 26,
                 ],
                 38 => [
                     'token' => $tokens[38],
-                    'type' => 'method',
+                    'type' => 'method', // XYZ
                     'classIndex' => 26,
                 ],
                 56 => [
                     'token' => $tokens[56],
-                    'type' => 'property',
+                    'type' => 'property', // $level2
                     'classIndex' => 50,
                 ],
                 74 => [
                     'token' => $tokens[74],
-                    'type' => 'method',
+                    'type' => 'method', // C
                     'classIndex' => 1,
                 ],
             ],
@@ -1567,5 +1567,82 @@ use const some\a\{ConstA, ConstB, ConstC,};
                 true,
             ],
         ];
+    }
+
+    public function testGetClassyElementsWithMultipleNestedAnonymousClass()
+    {
+        $source = '<?php
+class MyTestWithAnonymousClass extends TestCase
+{
+    public function setUp()
+    {
+        $provider = new class(function () {}) {};
+    }
+
+    public function testSomethingWithMoney(
+        Money $amount
+    ) {
+        $a = new class(function () {
+    new class(function () {
+        new class(function () {})
+        {
+            const A=1;
+        };
+    })
+    {
+        const B=1;
+
+        public function foo() {
+            $c = new class() {const AA=3;};
+            $d = new class {const AB=3;};
+        }
+    };
+})
+{
+    const C=1;
+};
+    }
+}';
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        static::assertSame([
+            13 => [
+                'token' => $tokens[13],
+                'type' => 'method', // setUp
+                'classIndex' => 1,
+            ],
+            46 => [
+                'token' => $tokens[46],
+                'type' => 'method', // testSomethingWithMoney
+                'classIndex' => 1,
+            ],
+            100 => [
+                'token' => $tokens[100], // const A
+                'type' => 'const',
+                'classIndex' => 87,
+            ],
+            115 => [
+                'token' => $tokens[115], // const B
+                'type' => 'const',
+                'classIndex' => 65,
+            ],
+            124 => [
+                'token' => $tokens[124],
+                'type' => 'method', // foo
+                'classIndex' => 65, // $a
+            ],
+            143 => [
+                'token' => $tokens[143], // const AA
+                'type' => 'const',
+                'classIndex' => 138,
+            ],
+            161 => [
+                'token' => $tokens[161], // const AB
+                'type' => 'const',
+                'classIndex' => 158,
+            ],
+        ], $elements);
     }
 }
