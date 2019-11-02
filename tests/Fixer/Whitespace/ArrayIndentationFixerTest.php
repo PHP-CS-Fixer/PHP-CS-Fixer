@@ -789,6 +789,42 @@ INPUT
         ]);
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    ...$foo,
+    ...$bar,
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  ...$foo,
+        ...$bar,
+ ];
+INPUT
+                ,
+            ],
+        ];
+    }
+
     private function withLongArraySyntaxCases(array $cases)
     {
         $longSyntaxCases = [];

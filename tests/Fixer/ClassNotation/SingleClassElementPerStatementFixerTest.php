@@ -800,4 +800,56 @@ EOT
             '
         );
     }
+
+    /**
+     * @dataProvider provideTestFix74Cases
+     * @requires PHP 7.4
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestFix74Cases()
+    {
+        yield [
+            '<?php class Foo {
+                private int $foo;
+                private int $bar;
+            }',
+            '<?php class Foo {
+                private int $foo, $bar;
+            }',
+        ];
+        yield [
+            '<?php class Foo {
+                protected ?string $foo;
+                protected ?string $bar;
+            }',
+            '<?php class Foo {
+                protected ?string $foo, $bar;
+            }',
+        ];
+        yield [
+            '<?php class Foo {
+                public ? string $foo;
+                public ? string $bar;
+            }',
+            '<?php class Foo {
+                public ? string $foo, $bar;
+            }',
+        ];
+        yield [
+            '<?php class Foo {
+                var ? Foo\Bar $foo;
+                var ? Foo\Bar $bar;
+            }',
+            '<?php class Foo {
+                var ? Foo\Bar $foo, $bar;
+            }',
+        ];
+    }
 }

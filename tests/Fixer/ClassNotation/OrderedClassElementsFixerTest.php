@@ -777,6 +777,61 @@ EOT
         ];
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield [
+            '<?php
+            class Foo {
+                public iterable $baz;
+                var ? Foo\Bar $qux;
+                protected string $bar;
+                private ?int $foo;
+            }',
+            '<?php
+            class Foo {
+                private ?int $foo;
+                protected string $bar;
+                public iterable $baz;
+                var ? Foo\Bar $qux;
+            }',
+        ];
+        yield [
+            '<?php
+            class Foo {
+                public string $bar;
+                public iterable $baz;
+                public ?int $foo;
+                public ? Foo\Bar $qux;
+            }',
+            '<?php
+            class Foo {
+                public iterable $baz;
+                public ? Foo\Bar $qux;
+                public string $bar;
+                public ?int $foo;
+            }',
+            [
+                'sortAlgorithm' => 'alpha',
+            ],
+        ];
+    }
+
     public function testWrongConfig()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);

@@ -2025,4 +2025,31 @@ $a = $ae?? $b;
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null, array $configration = null)
+    {
+        if (null !== $configration) {
+            $this->fixer->configure($configration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            [
+                '<?php $a ??= 1;',
+                '<?php $a??=1;',
+                ['operators' => ['??=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+            ],
+        ];
+    }
 }

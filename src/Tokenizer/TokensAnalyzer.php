@@ -49,7 +49,7 @@ final class TokensAnalyzer
 
         for ($index = 1, $count = \count($this->tokens) - 2; $index < $count; ++$index) {
             if ($this->tokens[$index]->isClassy()) {
-                list($index, $newElements) = $this->findClassyElements($index);
+                list($index, $newElements) = $this->findClassyElements($index, $index);
                 $elements += $newElements;
             }
         }
@@ -553,6 +553,10 @@ final class TokensAnalyzer
             if (\defined('T_COALESCE')) {
                 $arrayOperators[T_COALESCE] = true;  // ??
             }
+
+            if (\defined('T_COALESCE_EQUAL')) {
+                $arrayOperators[T_COALESCE_EQUAL] = true;  // ??=
+            }
         }
 
         $tokens = $this->tokens;
@@ -607,16 +611,16 @@ final class TokensAnalyzer
      * Searches in tokens from the classy (start) index till the end (index) of the classy.
      * Returns an array; first value is the index until the method has analysed (int), second the found classy elements (array).
      *
-     * @param int $index classy index
+     * @param int $classIndex classy index
+     * @param int $index
      *
      * @return array
      */
-    private function findClassyElements($index)
+    private function findClassyElements($classIndex, $index)
     {
         $elements = [];
         $curlyBracesLevel = 0;
         $bracesLevel = 0;
-        $classIndex = $index;
         ++$index; // skip the classy index itself
 
         for ($count = \count($this->tokens); $index < $count; ++$index) {
@@ -627,8 +631,47 @@ final class TokensAnalyzer
             }
 
             if ($token->isClassy()) { // anonymous class in class
-                list($index, $newElements) = $this->findClassyElements($index);
-                $elements += $newElements;
+                // check for nested anonymous classes inside the new call of an anonymous class,
+                // for example `new class(function (){new class(function (){new class(function (){}){};}){};}){};` etc.
+                // if class(XYZ) {} skip till `(` as XYZ might contain functions etc.
+
+                $nestedClassIndex = $index;
+                $index = $this->tokens->getNextMeaningfulToken($index);
+
+                if ($this->tokens[$index]->equals('(')) {
+                    ++$index; // move after `(`
+
+                    for ($nestedBracesLevel = 1; $index < $count; ++$index) {
+                        $token = $this->tokens[$index];
+
+                        if ($token->equals('(')) {
+                            ++$nestedBracesLevel;
+
+                            continue;
+                        }
+
+                        if ($token->equals(')')) {
+                            --$nestedBracesLevel;
+
+                            if (0 === $nestedBracesLevel) {
+                                list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $index);
+                                $elements += $newElements;
+
+                                break;
+                            }
+
+                            continue;
+                        }
+
+                        if ($token->isClassy()) { // anonymous class in class
+                            list($index, $newElements) = $this->findClassyElements($index, $index);
+                            $elements += $newElements;
+                        }
+                    }
+                } else {
+                    list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $nestedClassIndex);
+                    $elements += $newElements;
+                }
 
                 continue;
             }
