@@ -164,7 +164,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
      *
      * @return array
@@ -239,7 +238,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
      *
      * @return array
@@ -293,7 +291,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
      *
      * @return array
@@ -405,11 +402,8 @@ if (count($x)) {
     /**
      * Removes the leading slash at the given indexes (when the name is not already used).
      *
-     * @param Tokens $tokens
-     * @param int[]  $indexes
-     * @param array  $global
-     * @param array  $other
-     * @param bool   $caseSensitive
+     * @param int[] $indexes
+     * @param bool  $caseSensitive
      *
      * @return array array keys contain the names that must be imported
      */
@@ -438,8 +432,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
-     * @param array                  $imports
      * @param NamespaceUseAnalysis[] $useDeclarations
      */
     private function insertImports(Tokens $tokens, array $imports, array $useDeclarations)
@@ -483,7 +475,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
      */
     private function fullyQualifyConstants(Tokens $tokens, array $useDeclarations)
@@ -526,7 +517,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
      */
     private function fullyQualifyFunctions(Tokens $tokens, array $useDeclarations)
@@ -569,7 +559,6 @@ if (count($x)) {
     }
 
     /**
-     * @param Tokens                 $tokens
      * @param NamespaceUseAnalysis[] $useDeclarations
      */
     private function fullyQualifyClasses(Tokens $tokens, array $useDeclarations)
@@ -631,7 +620,6 @@ if (count($x)) {
 
     /**
      * @param NamespaceUseAnalysis[] $declarations
-     * @param callable               $callback
      * @param bool                   $caseSensitive
      *
      * @return array

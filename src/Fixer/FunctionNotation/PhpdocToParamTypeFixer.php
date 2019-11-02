@@ -278,8 +278,7 @@ function my_foo($bar)
     /**
      * Find all the param annotations in the function's PHPDoc comment.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
+     * @param int $index The index of the function token
      *
      * @return Annotation[]
      */
@@ -307,7 +306,6 @@ function my_foo($bar)
     }
 
     /**
-     * @param Tokens     $tokens
      * @param int        $index
      * @param Annotation $paramTypeAnnotation
      *
@@ -338,8 +336,7 @@ function my_foo($bar)
     /**
      * Determine whether the function already has a param type hint.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the end of the function definition line, EG at { or ;
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      *
      * @return bool
      */
@@ -350,7 +347,6 @@ function my_foo($bar)
 
     /**
      * @param string $paramType
-     * @param Tokens $tokens
      * @param int    $index       The index of the end of the function definition line, EG at { or ;
      * @param bool   $hasNull
      * @param bool   $hasArray

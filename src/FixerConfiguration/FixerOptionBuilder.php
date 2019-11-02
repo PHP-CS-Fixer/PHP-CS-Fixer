@@ -90,8 +90,6 @@ final class FixerOptionBuilder
     }
 
     /**
-     * @param array $allowedValues
-     *
      * @return $this
      */
     public function setAllowedValues(array $allowedValues)
@@ -102,8 +100,6 @@ final class FixerOptionBuilder
     }
 
     /**
-     * @param \Closure $normalizer
-     *
      * @return $this
      */
     public function setNormalizer(\Closure $normalizer)

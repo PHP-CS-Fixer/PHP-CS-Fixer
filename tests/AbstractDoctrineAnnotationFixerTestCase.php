@@ -20,8 +20,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
     /**
-     * @param array $configuration
-     *
      * @dataProvider provideInvalidConfigurationCases
      */
     public function testConfigureWithInvalidConfiguration(array $configuration)

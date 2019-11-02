@@ -127,8 +127,7 @@ $a = new class() {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int
      */

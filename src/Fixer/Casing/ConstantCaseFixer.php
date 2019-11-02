@@ -110,8 +110,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurationDefi
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */

@@ -91,7 +91,6 @@ final class SelfUpdateCommandTest extends TestCase
     /**
      * @param string $latestVersion
      * @param string $latestMinorVersion
-     * @param array  $input
      * @param bool   $decorated
      * @param string $expectedFileContents
      * @param string $expectedDisplay
@@ -232,7 +231,6 @@ OUTPUT;
     /**
      * @param string $latestVersionSuccess
      * @param string $latestMinorVersionSuccess
-     * @param array  $input
      * @param bool   $decorated
      *
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
@@ -306,8 +304,7 @@ OUTPUT;
     }
 
     /**
-     * @param array $input
-     * @param bool  $decorated
+     * @param bool $decorated
      *
      * @dataProvider provideExecuteWhenNotInstalledAsPharCases
      */

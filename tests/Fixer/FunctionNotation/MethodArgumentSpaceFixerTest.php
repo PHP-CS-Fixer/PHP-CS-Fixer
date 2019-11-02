@@ -28,7 +28,6 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
@@ -61,7 +60,6 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */

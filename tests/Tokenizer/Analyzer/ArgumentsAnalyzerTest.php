@@ -31,7 +31,6 @@ final class ArgumentsAnalyzerTest extends TestCase
      * @param string $code
      * @param int    $openIndex
      * @param int    $closeIndex
-     * @param array  $arguments
      *
      * @dataProvider provideArgumentsCases
      */
@@ -167,7 +166,6 @@ final class ArgumentsAnalyzerTest extends TestCase
      * @param string $code
      * @param int    $openIndex
      * @param int    $closeIndex
-     * @param array  $arguments
      *
      * @requires PHP 7.3
      * @dataProvider provideArguments73Cases

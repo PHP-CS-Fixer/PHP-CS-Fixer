@@ -324,8 +324,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixWhiteSpaceAroundOperator(Tokens $tokens, $index)
     {
@@ -367,8 +366,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixWhiteSpaceAroundOperatorToSingleSpace(Tokens $tokens, $index)
     {
@@ -394,8 +392,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixWhiteSpaceAroundOperatorToNoSpace(Tokens $tokens, $index)
     {
@@ -417,8 +414,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return false|int index of T_DECLARE where the `=` belongs to or `false`
      */
@@ -471,8 +467,6 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param array $configuration
-     *
      * @return array
      */
     private function resolveOldConfig(array $configuration)
@@ -533,7 +527,6 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     // Alignment logic related methods
 
     /**
-     * @param Tokens                $tokens
      * @param array<string, string> $toAlign
      */
     private function fixAlignment(Tokens $tokens, array $toAlign)
@@ -585,7 +578,6 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $startAt
      * @param int    $endAt
      * @param string $tokenContent
@@ -633,9 +625,8 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startAt
-     * @param int    $endAt
+     * @param int $startAt
+     * @param int $endAt
      */
     private function injectAlignmentPlaceholdersForArrow(Tokens $tokens, $startAt, $endAt)
     {
@@ -717,9 +708,8 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $from
-     * @param int    $until
+     * @param int $from
+     * @param int $until
      */
     private function injectArrayAlignmentPlaceholders(Tokens $tokens, $from, $until)
     {
@@ -733,7 +723,6 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index
      * @param string $alignStrategy
      */
@@ -759,7 +748,6 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     /**
      * Look for group of placeholders and provide vertical alignment.
      *
-     * @param Tokens $tokens
      * @param string $alignStrategy
      *
      * @return string

@@ -28,9 +28,7 @@ final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterf
     private $versionSpecification;
 
     /**
-     * @param string                        $code
-     * @param VersionSpecificationInterface $versionSpecification
-     * @param null|array                    $configuration
+     * @param string $code
      */
     public function __construct(
         $code,

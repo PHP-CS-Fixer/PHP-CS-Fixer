@@ -169,8 +169,7 @@ class Foo {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $docCommentIndex
+     * @param int $docCommentIndex
      *
      * @return null|int
      */
@@ -207,9 +206,7 @@ class Foo {
 
     /**
      * @param string $content
-     * @param Tokens $tokens
      * @param int    $functionIndex
-     * @param array  $shortNames
      *
      * @return string
      */
@@ -254,9 +251,8 @@ class Foo {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start
-     * @param int    $end
+     * @param int $start
+     * @param int $end
      *
      * @return array<string, array>
      */
@@ -313,8 +309,7 @@ class Foo {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  The index of the first token of the type hint
+     * @param int $index The index of the first token of the type hint
      *
      * @return array
      */
@@ -340,8 +335,6 @@ class Foo {
     }
 
     /**
-     * @param Annotation            $annotation
-     * @param array                 $info
      * @param array<string, string> $symbolShortNames
      *
      * @return bool

@@ -249,8 +249,6 @@ class DocBlock
     }
 
     /**
-     * @param Line $lineString
-     *
      * @return string
      */
     private function getSingleLineDocBlockEntry(Line $line)

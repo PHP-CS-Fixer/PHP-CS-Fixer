@@ -25,8 +25,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     private $deprecationMessage;
 
     /**
-     * @param FixerOptionInterface $option
-     * @param string               $deprecationMessage
+     * @param string $deprecationMessage
      */
     public function __construct(FixerOptionInterface $option, $deprecationMessage)
     {

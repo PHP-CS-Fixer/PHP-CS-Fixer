@@ -1276,7 +1276,6 @@ $b;',
     /**
      * @param string $source
      * @param int    $index
-     * @param array  $expected
      *
      * @dataProvider provideGetFunctionPropertiesCases
      */

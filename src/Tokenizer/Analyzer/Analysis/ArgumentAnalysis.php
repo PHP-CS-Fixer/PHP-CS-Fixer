@@ -46,10 +46,9 @@ final class ArgumentAnalysis
     private $typeAnalysis;
 
     /**
-     * @param string            $name
-     * @param int               $nameIndex
-     * @param null|string       $default
-     * @param null|TypeAnalysis $typeAnalysis
+     * @param string      $name
+     * @param int         $nameIndex
+     * @param null|string $default
      */
     public function __construct($name, $nameIndex, $default, TypeAnalysis $typeAnalysis = null)
     {

@@ -79,9 +79,8 @@ function example($b) {
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start  Token index of the opening brace token of the function
-     * @param int    $end    Token index of the closing brace token of the function
+     * @param int $start Token index of the opening brace token of the function
+     * @param int $end   Token index of the closing brace token of the function
      */
     private function fixFunction(Tokens $tokens, $start, $end)
     {

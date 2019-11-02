@@ -108,8 +108,6 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     }
 
     /**
-     * @param FixerOptionInterface $option
-     *
      * @throws \LogicException when the option is already defined
      *
      * @return $this

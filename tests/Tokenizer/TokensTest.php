@@ -47,7 +47,6 @@ final class TokensTest extends TestCase
 
     /**
      * @param string     $source
-     * @param null|array $expected
      * @param Token[]    $sequence
      * @param int        $start
      * @param null|int   $end
@@ -281,7 +280,6 @@ final class TokensTest extends TestCase
 
     /**
      * @param string $message
-     * @param array  $sequence
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -616,11 +614,10 @@ PHP;
     }
 
     /**
-     * @param int   $expectedIndex
-     * @param int   $direction
-     * @param int   $index
-     * @param array $findTokens
-     * @param bool  $caseSensitive
+     * @param int  $expectedIndex
+     * @param int  $direction
+     * @param int  $index
+     * @param bool $caseSensitive
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
@@ -836,8 +833,7 @@ PHP;
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isEmpty
+     * @param bool $isEmpty
      *
      * @dataProvider provideIsEmptyCases
      */

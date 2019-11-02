@@ -74,7 +74,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFixCases
      */
@@ -293,7 +292,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
@@ -334,7 +332,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
@@ -368,7 +365,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideMessyWhitespacesCases
      */

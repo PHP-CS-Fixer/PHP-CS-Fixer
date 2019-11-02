@@ -21,8 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ClassyAnalyzer
 {
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */

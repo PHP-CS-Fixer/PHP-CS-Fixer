@@ -642,7 +642,6 @@ B#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
@@ -1011,7 +1010,6 @@ use A\A1;
     /**
      * @dataProvider provideInvalidSortAlgorithmCases
      *
-     * @param array  $configuration
      * @param string $expectedValue
      */
     public function testInvalidSortAlgorithm(array $configuration, $expectedValue)
@@ -1990,7 +1988,6 @@ use function some\a\{fn_a, fn_b};
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2

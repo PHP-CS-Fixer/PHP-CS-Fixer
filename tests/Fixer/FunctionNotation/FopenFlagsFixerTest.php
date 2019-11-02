@@ -26,7 +26,6 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
     /**
      * @param string $expected
      * @param string $input
-     * @param array  $config
      *
      * @dataProvider provideFixCases
      */

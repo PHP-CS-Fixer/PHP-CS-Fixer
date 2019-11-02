@@ -103,7 +103,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     }
 
     /**
-     * @param Tokens             $tokens
      * @param ArgumentAnalysis[] $arguments
      */
     private function fixFunctionParameters(Tokens $tokens, array $arguments)

@@ -373,7 +373,6 @@ EOT
     }
 
     /**
-     * @param array  $configuration
      * @param string $expected
      * @param string $input
      *

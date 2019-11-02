@@ -1141,7 +1141,7 @@ Choose from the list of available rules:
 
   Replaces superfluous ``elseif`` with ``if``.
 
-* **no_superfluous_phpdoc_tags**
+* **no_superfluous_phpdoc_tags** [@Symfony, @PhpCsFixer]
 
   Removes ``@param`` and ``@return`` tags that don't provide any useful
   information.

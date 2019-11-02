@@ -280,8 +280,7 @@ class Example
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
+     * @param int $startIndex
      *
      * @return array[]
      */
@@ -348,8 +347,7 @@ class Example
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return array|string type or array of type and name
      */
@@ -398,8 +396,7 @@ class Example
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int
      */
@@ -482,7 +479,6 @@ class Example
     }
 
     /**
-     * @param Tokens  $tokens
      * @param int     $startIndex
      * @param int     $endIndex
      * @param array[] $elements
