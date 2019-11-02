@@ -655,6 +655,12 @@ Choose from the list of available rules:
   - ``consider-absent-docblock-as-internal-class`` (``bool``): should classes
     without any DocBlock be fixed to final?; defaults to ``false``
 
+* **final_public_method_for_abstract_class**
+
+  All public methods of abstract classes should be final.
+
+  *Risky rule: risky when overriding public methods of abstract classes.*
+
 * **final_static_access**
 
   Converts ``static`` access to ``self`` access in final classes.
@@ -1773,6 +1779,10 @@ Choose from the list of available rules:
 
   - ``comment_types`` (a subset of ``['asterisk', 'hash']``): list of comment types
     to fix; defaults to ``['asterisk', 'hash']``
+
+* **single_line_throw**
+
+  Throwing exception must be done in single line.
 
 * **single_quote** [@Symfony, @PhpCsFixer]
 
