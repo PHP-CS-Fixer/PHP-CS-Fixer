@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2019-06-23T13:07:17Z
+
+It don't the rules of the project regarding updating existing rulesets, but we would definitely enable this one on the Symfony repo. Thanks for working on it!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-08-20T06:34:36Z
+
+:+1: for adding the rule to the `@Symfony` ruleset.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-10T13:56:17Z
+
+can you add these test cases:
+
+```php
+<?php throw new Exception( // 0
+                "Foo", // 1
+                0 // 2
+            ); //3
+```
+
+```php
+<?php throw new Exception(  0 /*
+1
+2
+3
+*/
+  /*4*/              "Foo", /*5*/
+/*6*/0 /*7*/);
+```
+
+```php
+<?php throw new Exception( // 0
+    ${"Foo"
+    # a
+    }, #b
+    fnx#c
+    (#d
+    0#e
+    )#f
+);
+```
+
+```php
+<?php throw new Exception('a'.
+1
+);
+```
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-02T13:23:30Z
+
+(rebased + fix small issues causing CI to fail)
