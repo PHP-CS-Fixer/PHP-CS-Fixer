@@ -278,4 +278,26 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.4
+     * @dataProvider provideFix74Cases
+     */
+    public function testFix74($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php echo 10_0** 2;',
+                '<?php echo pow(10_0, 2);',
+            ],
+        ];
+    }
 }
