@@ -1,0 +1,57 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-11T21:52:27Z
+
+I think a file can also be skipped when it's empty, regardless of the cache.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-11T22:01:02Z
+
+that is definitely true, but I decided to leave it out of the explanation because it is such a very rare case (who has empty `.php` files in their projects? ;) )
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-11T22:10:41Z
+
+Well... it happens :p
+
+Seing an "S" for an empty file can be confusing, especially when cache is enabled. It will be worse if the output says that "S" is only for files skipped because of the cache.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-12T06:42:01Z
+
+@juliendufresne I will update :+1:
+
+@teohhanhui dont know why you throw that smiley at me, at least I tried and actually put time in your complaining, if you cannot be bothered to state what the issue is here now than maybe open a PR yourself? thanks
+
+---------------------------------------------------------------------------
+
+by teohhanhui at 2019-10-12T06:45:45Z
+
+Sorry. I just find it confusing. Your work is definitely appreciated.
+
+See https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4383#issuecomment-541212621
+
+> As a matter of fact, PHPUnit does have a result cache now, and it didn't change the progress output (still just a dot), as far as I could tell.
+
+---------------------------------------------------------------------------
+
+by teohhanhui at 2019-10-12T06:48:01Z
+
+My suggestion:
+
+ We should only use `S` for empty files and such. Use `.` as usual for successful files that are "skipped" because of the cache.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-10-26T15:53:05Z
+
+This should probably target 2.16 or 3.x?
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-02T11:42:43Z
+
+docs improvement can go to lowest supported branch.
