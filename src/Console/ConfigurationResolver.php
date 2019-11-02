@@ -283,6 +283,12 @@ final class ConfigurationResolver
                     ));
                 }
             } elseif (RawFileOutputReporter::NAME === $this->options['format']) {
+                $path = $this->getPath();
+                if (1 !== \count($path) || '-' !== $path[0]) {
+                    throw new InvalidConfigurationException(
+                        '"format"="raw" cannot be used with regular files, it can be used only combining with stdin.'
+                    );
+                }
                 $option = 'raw';
             } else {
                 $default = 'sbd'; // @TODO: 3.0 change to udiff as default

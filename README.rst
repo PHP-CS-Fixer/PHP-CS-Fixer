@@ -161,13 +161,7 @@ to merge paths from the config file and from the argument:
 
 The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit``, ``raw`` and ``gitlab``.
 
-NOTE: the raw format can be used only with pipelining.
-
-* If there are any errors, then command will fails with error code, otherwise writes raw result to stdout (even if there are no changes).
-
-.. code-block:: bash
-
-    $ cat path/to/php/file.php | php php-cs-fixer.phar fix --format raw
+NOTE: the raw format can be used only with pipelining, see </doc/raw.md> for details
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 

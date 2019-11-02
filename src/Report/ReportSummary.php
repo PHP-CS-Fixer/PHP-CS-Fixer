@@ -50,11 +50,17 @@ final class ReportSummary
     private $time;
 
     /**
+     * @var bool
+     */
+    private $isFailed;
+
+    /**
      * @param int  $time              duration in milliseconds
      * @param int  $memory            memory usage in bytes
      * @param bool $addAppliedFixers
      * @param bool $isDryRun
      * @param bool $isDecoratedOutput
+     * @param bool $isFailed
      */
     public function __construct(
         array $changed,
@@ -62,7 +68,8 @@ final class ReportSummary
         $memory,
         $addAppliedFixers,
         $isDryRun,
-        $isDecoratedOutput
+        $isDecoratedOutput,
+        $isFailed
     ) {
         $this->changed = $changed;
         $this->time = $time;
@@ -70,6 +77,7 @@ final class ReportSummary
         $this->addAppliedFixers = $addAppliedFixers;
         $this->isDryRun = $isDryRun;
         $this->isDecoratedOutput = $isDecoratedOutput;
+        $this->isFailed = $isFailed;
     }
 
     /**
@@ -118,5 +126,13 @@ final class ReportSummary
     public function shouldAddAppliedFixers()
     {
         return $this->addAppliedFixers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFailed()
+    {
+        return $this->isFailed;
     }
 }

@@ -66,11 +66,7 @@ to merge paths from the config file and from the argument:
 
 The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit``, ``raw`` and ``gitlab``.
 
-NOTE: the raw format can be used only with pipelining.
-
-* If there are any errors, then command will fails with error code, otherwise writes raw result to stdout (even if there are no changes).
-
-    <info>$ cat path/to/php/file.php | php %command.full_name% --format raw</info>
+NOTE: the raw format can be used only with pipelining, see </doc/raw.md> for details
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 

@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Report;
 
+use PhpCsFixer\FileReader;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 class RawFileOutputReporter implements ReporterInterface
@@ -33,7 +34,13 @@ class RawFileOutputReporter implements ReporterInterface
     {
         $changedFiles = $reportSummary->getChanged();
         if (1 !== \count($changedFiles)) {
-            return '';
+            if ($reportSummary->isFailed()) {
+                return '';
+            }
+
+            $stdinContent = FileReader::createSingleton()->read('php://stdin');
+
+            return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($stdinContent) : $stdinContent;
         }
 
         if (!isset($changedFiles['php://stdin'])) {

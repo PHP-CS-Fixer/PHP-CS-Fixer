@@ -224,23 +224,24 @@ final class FixCommand extends Command
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
+        $invalidErrors = $this->errorsManager->getInvalidErrors();
+        $exceptionErrors = $this->errorsManager->getExceptionErrors();
+        $lintErrors = $this->errorsManager->getLintErrors();
+
         $reportSummary = new ReportSummary(
             $changed,
             $fixEvent->getDuration(),
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity(),
             $resolver->isDryRun(),
-            $output->isDecorated()
+            $output->isDecorated(),
+            \count($invalidErrors) > 0 || \count($exceptionErrors) || \count($lintErrors)
         );
 
         $output->isDecorated()
             ? $output->write($reporter->generate($reportSummary))
             : $output->write($reporter->generate($reportSummary), false, OutputInterface::OUTPUT_RAW)
         ;
-
-        $invalidErrors = $this->errorsManager->getInvalidErrors();
-        $exceptionErrors = $this->errorsManager->getExceptionErrors();
-        $lintErrors = $this->errorsManager->getLintErrors();
 
         if (null !== $stdErr) {
             $errorOutput = new ErrorOutput($stdErr);

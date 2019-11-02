@@ -76,6 +76,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     0,
                     false,
                     false,
+                    false,
                     false
                 ),
             ],
@@ -89,6 +90,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     ],
                     0,
                     0,
+                    false,
                     false,
                     false,
                     false
@@ -107,6 +109,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     0,
                     false,
                     false,
+                    false,
                     false
                 ),
             ],
@@ -122,6 +125,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     0,
                     true,
                     false,
+                    false,
                     false
                 ),
             ],
@@ -135,6 +139,7 @@ abstract class AbstractReporterTestCase extends TestCase
                     ],
                     1234,
                     2.5 * 1024 * 1024,
+                    false,
                     false,
                     false,
                     false
@@ -157,7 +162,8 @@ abstract class AbstractReporterTestCase extends TestCase
                     2.5 * 1024 * 1024,
                     true,
                     true,
-                    true
+                    true,
+                    false
                 ),
             ],
         ];

@@ -16,6 +16,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Differ\RawDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\Tests\TestCase;
@@ -1075,6 +1076,44 @@ final class ConfigurationResolverTest extends TestCase
                 \PhpCsFixer\Differ\RawDiffer::class,
                 null,
                 'raw',
+            ],
+        ];
+    }
+
+    /**
+     * @param string[]    $path
+     * @param null|string $expectedException
+     * @param null|string $expectedExceptionMessage
+     * @dataProvider provideResolveRawDifferCases
+     */
+    public function testResolveRawDiffer($path, $expectedException, $expectedExceptionMessage)
+    {
+        $resolver = $this->createConfigurationResolver([
+            'format' => 'raw',
+            'path' => $path,
+        ]);
+
+        if (null !== $expectedException) {
+            $this->expectException($expectedException);
+            if (null !== $expectedExceptionMessage) {
+                $this->expectExceptionMessage($expectedExceptionMessage);
+            }
+        }
+
+        $actualDiffer = $resolver->getDiffer();
+        if (null === $expectedException) {
+            static::assertInstanceOf(RawDiffer::class, $actualDiffer);
+        }
+    }
+
+    public function provideResolveRawDifferCases()
+    {
+        return [
+            [['-'], null, null],
+            [
+                [],
+                InvalidConfigurationException::class,
+                '"format"="raw" cannot be used with regular files, it can be used only combining with stdin.',
             ],
         ];
     }

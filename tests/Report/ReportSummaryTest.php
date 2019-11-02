@@ -32,6 +32,7 @@ final class ReportSummaryTest extends TestCase
         $addAppliedFixers = true;
         $isDryRun = true;
         $isDecoratedOutput = false;
+        $isFailed = false;
 
         $reportSummary = new ReportSummary(
             $changed,
@@ -39,7 +40,8 @@ final class ReportSummaryTest extends TestCase
             $memory,
             $addAppliedFixers,
             $isDryRun,
-            $isDecoratedOutput
+            $isDecoratedOutput,
+            $isFailed
         );
 
         static::assertSame($changed, $reportSummary->getChanged());
@@ -48,5 +50,6 @@ final class ReportSummaryTest extends TestCase
         static::assertSame($addAppliedFixers, $reportSummary->shouldAddAppliedFixers());
         static::assertSame($isDryRun, $reportSummary->isDryRun());
         static::assertSame($isDecoratedOutput, $reportSummary->isDecoratedOutput());
+        static::assertSame($isFailed, $reportSummary->isFailed());
     }
 }
