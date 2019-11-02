@@ -235,7 +235,7 @@ final class FixCommand extends Command
             OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity(),
             $resolver->isDryRun(),
             $output->isDecorated(),
-            \count($invalidErrors) > 0 || \count($exceptionErrors) || \count($lintErrors)
+            \count($invalidErrors) > 0 || \count($exceptionErrors) > 0 || \count($lintErrors) > 0
         );
 
         $output->isDecorated()
