@@ -165,9 +165,8 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $keywordIndex
-     * @param int    $comparedIndex
+     * @param int $keywordIndex
+     * @param int $comparedIndex
      *
      * @return bool
      */
@@ -177,9 +176,8 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $fromIndex
-     * @param int    $toIndex
+     * @param int $fromIndex
+     * @param int $toIndex
      */
     private function moveTokenAndEnsureSingleSpaceFollows(Tokens $tokens, $fromIndex, $toIndex)
     {

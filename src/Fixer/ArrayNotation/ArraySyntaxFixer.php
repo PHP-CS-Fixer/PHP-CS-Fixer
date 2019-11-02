@@ -110,8 +110,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixToLongArraySyntax(Tokens $tokens, $index)
     {
@@ -124,8 +123,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixToShortArraySyntax(Tokens $tokens, $index)
     {

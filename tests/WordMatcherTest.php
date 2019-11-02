@@ -26,7 +26,6 @@ final class WordMatcherTest extends TestCase
     /**
      * @param null|string $expected
      * @param string      $needle
-     * @param array       $candidates
      *
      * @dataProvider provideMatchCases
      */

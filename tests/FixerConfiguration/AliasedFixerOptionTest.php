@@ -66,8 +66,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param bool               $hasDefault
-     * @param AliasedFixerOption $input
+     * @param bool $hasDefault
      *
      * @dataProvider provideHasDefaultCases
      */

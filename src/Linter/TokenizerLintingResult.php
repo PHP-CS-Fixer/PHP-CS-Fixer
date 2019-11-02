@@ -24,9 +24,6 @@ final class TokenizerLintingResult implements LintingResultInterface
      */
     private $error;
 
-    /**
-     * @param null|\ParseError $error
-     */
     public function __construct(\ParseError $error = null)
     {
         $this->error = $error;

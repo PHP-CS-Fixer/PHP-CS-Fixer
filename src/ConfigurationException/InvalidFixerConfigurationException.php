@@ -30,9 +30,8 @@ class InvalidFixerConfigurationException extends InvalidConfigurationException
     private $fixerName;
 
     /**
-     * @param string          $fixerName
-     * @param string          $message
-     * @param null|\Exception $previous
+     * @param string $fixerName
+     * @param string $message
      */
     public function __construct($fixerName, $message, \Exception $previous = null)
     {

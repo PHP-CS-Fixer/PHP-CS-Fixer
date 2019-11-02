@@ -101,8 +101,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -114,8 +113,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int
      */
@@ -138,8 +136,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      */

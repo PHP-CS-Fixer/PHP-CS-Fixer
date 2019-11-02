@@ -95,10 +95,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens            $tokens
-     * @param NamespaceAnalysis $namespace
-     * @param array<int, int>   $ignoredIndexes
-     * @param string            $shortName
+     * @param array<int, int> $ignoredIndexes
+     * @param string          $shortName
      *
      * @return bool
      */

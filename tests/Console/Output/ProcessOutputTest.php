@@ -25,7 +25,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 final class ProcessOutputTest extends TestCase
 {
     /**
-     * @param array  $statuses
      * @param string $expectedOutput
      * @param int    $width
      *

@@ -119,8 +119,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * @dataProvider provideIntegrationCases
      *
      * @see doTest()
-     *
-     * @param IntegrationCase $case
      */
     public function testIntegration(IntegrationCase $case)
     {
@@ -190,8 +188,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * It will write the input to a temp file. The file will be fixed by a Fixer instance
      * configured with the given fixers. The result is compared with the expected output.
      * It checks if no errors were reported during the fixing.
-     *
-     * @param IntegrationCase $case
      */
     protected function doTest(IntegrationCase $case)
     {
@@ -306,9 +302,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
-     * @param IntegrationCase $case
-     * @param string          $fixedInputCode
-     * @param string          $fixedInputCodeWithReversedFixers
+     * @param string $fixedInputCode
+     * @param string $fixedInputCodeWithReversedFixers
      */
     protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
     {
@@ -332,8 +327,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
-     * @param IntegrationCase $case
-     *
      * @return FixerInterface[]
      */
     private static function createFixers(IntegrationCase $case)

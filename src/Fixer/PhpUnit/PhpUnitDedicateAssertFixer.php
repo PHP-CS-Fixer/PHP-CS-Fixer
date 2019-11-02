@@ -211,10 +211,6 @@ $this->assertTrue(is_readable($a));
         ], $this->getName());
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param array  $assertCall
-     */
     private function fixAssertTrueFalse(Tokens $tokens, array $assertCall)
     {
         $testDefaultNamespaceTokenIndex = false;
@@ -279,10 +275,6 @@ $this->assertTrue(is_readable($a));
         }
     }
 
-    /**
-     * @param Tokens $tokens
-     * @param array  $assertCall
-     */
     private function fixAssertSameEquals(Tokens $tokens, array $assertCall)
     {
         // @ $this->/self::assertEquals/Same([$nextIndex])
@@ -388,7 +380,6 @@ $this->assertTrue(is_readable($a));
     }
 
     /**
-     * @param Tokens    $tokens
      * @param false|int $callNSIndex
      * @param int       $callIndex
      * @param int       $openIndex

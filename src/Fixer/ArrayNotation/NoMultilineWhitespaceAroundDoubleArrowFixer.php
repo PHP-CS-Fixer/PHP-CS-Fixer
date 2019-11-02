@@ -72,8 +72,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixWhitespace(Tokens $tokens, $index)
     {

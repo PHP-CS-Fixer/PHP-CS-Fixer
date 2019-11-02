@@ -134,8 +134,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int[]  $indices
+     * @param int[] $indices
      *
      * @return bool
      */
@@ -158,8 +157,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int[]  $indices
+     * @param int[] $indices
      */
     private function fixComment(Tokens $tokens, $indices)
     {
@@ -171,8 +169,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixCommentSingleLine(Tokens $tokens, $index)
     {
@@ -190,8 +187,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int[]  $indices
+     * @param int[] $indices
      */
     private function fixCommentMultiLine(Tokens $tokens, array $indices)
     {

@@ -860,7 +860,6 @@ class Foo
     }
 
     /**
-     * @param array       $config
      * @param string      $expected
      * @param null|string $input
      *
@@ -901,7 +900,6 @@ class Foo
     }
 
     /**
-     * @param array       $config
      * @param string      $expected
      * @param null|string $input
      *

@@ -676,8 +676,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      */
@@ -711,8 +710,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $structureTokenIndex
+     * @param int $structureTokenIndex
      *
      * @return int
      */
@@ -730,8 +728,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $parenthesisEndIndex
+     * @param int $parenthesisEndIndex
      *
      * @return int
      */
@@ -869,8 +866,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixDeclareStatement(Tokens $tokens, $index)
     {
@@ -891,8 +887,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startBraceIndex
+     * @param int $startBraceIndex
      */
     private function fixSingleLineWhitespaceForDeclare(Tokens $tokens, $startBraceIndex)
     {
@@ -908,7 +903,6 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index
      * @param string $whitespace
      */
@@ -946,9 +940,8 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startParenthesisIndex
-     * @param int    $endParenthesisIndex
+     * @param int $startParenthesisIndex
+     * @param int $endParenthesisIndex
      *
      * @return bool
      */
@@ -971,8 +964,7 @@ class Foo
      * multi-line message whose lines are all single-line comments and at least
      * one line has meaningful content.
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -1020,9 +1012,8 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param bool   $after
+     * @param int  $index
+     * @param bool $after
      *
      * @return null|int
      */

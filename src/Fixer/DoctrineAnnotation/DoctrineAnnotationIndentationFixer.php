@@ -112,8 +112,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int[]
      */
@@ -149,8 +148,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -173,7 +171,6 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param Tokens            $tokens
      * @param int               $newLineTokenIndex
      * @param array<array<int>> $annotationPositions Pairs of begin and end indexes of main annotations
      *

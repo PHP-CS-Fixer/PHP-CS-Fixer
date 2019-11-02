@@ -97,9 +97,8 @@ final class StaticLambdaFixer extends AbstractFixer
     /**
      * Returns 'true' if there is a possible reference to '$this' within the given tokens index range.
      *
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      *
      * @return bool
      */

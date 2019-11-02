@@ -57,8 +57,6 @@ final class FixCommandTest extends TestCase
     }
 
     /**
-     * @param array $arguments
-     *
      * @return CommandTester
      */
     private function doTestExecute(array $arguments)

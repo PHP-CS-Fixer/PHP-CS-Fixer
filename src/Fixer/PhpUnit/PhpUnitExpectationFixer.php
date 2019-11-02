@@ -255,8 +255,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      */

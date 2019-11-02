@@ -46,8 +46,6 @@ final class FixerTest extends TestCase
     ];
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @dataProvider provideFixerDefinitionsCases
      */
     public function testFixerDefinitions(FixerInterface $fixer)
@@ -196,8 +194,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * @param ConfigurableFixerInterface $fixer
-     *
      * @dataProvider provideFixerConfigurationDefinitionsCases
      */
     public function testFixerConfigurationDefinitions(ConfigurableFixerInterface $fixer)

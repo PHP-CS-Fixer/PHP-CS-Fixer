@@ -382,8 +382,7 @@ TestInterface3, /**/     TestInterface4   ,
     }
 
     /**
-     * @param string $source   PHP source code
-     * @param array  $expected
+     * @param string $source PHP source code
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
@@ -470,9 +469,8 @@ TestInterface3, /**/     TestInterface4   ,
     }
 
     /**
-     * @param string $source   PHP source code
+     * @param string $source PHP source code
      * @param string $label
-     * @param array  $expected
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
@@ -482,9 +480,8 @@ TestInterface3, /**/     TestInterface4   ,
     }
 
     /**
-     * @param string $source   PHP source code
+     * @param string $source PHP source code
      * @param string $label
-     * @param array  $expected
      *
      * @requires PHP 7.0
      * @dataProvider provideClassyInheritanceInfo7Cases

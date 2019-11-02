@@ -95,8 +95,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  of `=` token
+     * @param int $index of `=` token
      */
     private function ensureWhitespaceAroundToken(Tokens $tokens, $index)
     {
@@ -118,8 +117,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index  of `=` token
+     * @param int $index of `=` token
      */
     private function removeWhitespaceAroundToken(Tokens $tokens, $index)
     {

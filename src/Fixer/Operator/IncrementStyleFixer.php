@@ -121,8 +121,7 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurableFix
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int
      */
@@ -162,8 +161,7 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurableFix
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int
      */

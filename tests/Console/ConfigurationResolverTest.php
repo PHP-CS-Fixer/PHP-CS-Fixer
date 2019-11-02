@@ -582,8 +582,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param array $options
-     * @param bool  $expectedResult
+     * @param bool $expectedResult
      *
      * @dataProvider provideConfigFinderIsOverriddenCases
      */

@@ -30,8 +30,6 @@ interface FixerInterface
      * need a fixing, but when this method returns false then the Tokens collection
      * need no fixing for sure.
      *
-     * @param Tokens $tokens
-     *
      * @return bool
      */
     public function isCandidate(Tokens $tokens);
@@ -80,8 +78,6 @@ interface FixerInterface
 
     /**
      * Returns true if the file is supported by this fixer.
-     *
-     * @param \SplFileInfo $file
      *
      * @return bool true if the file is supported by this fixer, false otherwise
      */

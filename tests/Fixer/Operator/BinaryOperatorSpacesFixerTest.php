@@ -30,7 +30,6 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideWithTabsCases
      */
@@ -79,7 +78,6 @@ public function myFunction() {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideTestCases
      */
@@ -1974,7 +1972,6 @@ $a = $ae?? $b;
      *
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider providePHP71Cases
      */

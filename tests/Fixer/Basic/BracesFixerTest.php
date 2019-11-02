@@ -39,7 +39,6 @@ final class BracesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixControlContinuationBracesCases
      */
@@ -820,7 +819,6 @@ echo 2;
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
@@ -2750,7 +2748,6 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixClassyBracesCases
      */
@@ -2935,7 +2932,6 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixAnonFunctionInShortArraySyntaxCases
      */
@@ -3053,7 +3049,6 @@ function foo()
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixCommentBeforeBraceCases
      */
@@ -3160,7 +3155,6 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixCommentBeforeBrace70Cases
      * @requires PHP 7.0
@@ -3204,7 +3198,6 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
@@ -3423,7 +3416,6 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixFunctionsCases
      */
@@ -3785,7 +3777,6 @@ class Foo
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixMultiLineStructuresCases
      */
@@ -3907,7 +3898,6 @@ class Foo
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixSpaceAroundTokenCases
      */
@@ -4106,7 +4096,6 @@ declare   (   ticks   =   1   )   {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFinallyCases
      */
@@ -4207,7 +4196,6 @@ declare   (   ticks   =   1   )   {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFunctionImportCases
      */
@@ -4259,7 +4247,6 @@ declare   (   ticks   =   1   )   {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
@@ -4914,7 +4901,6 @@ use const some\a\{ConstA, ConstB, ConstC};
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider providePreserveLineAfterControlBraceCases
      */
@@ -5034,7 +5020,6 @@ if (true) {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixWithAllowOnelineLambdaCases
      */
@@ -5114,7 +5099,6 @@ if (true)
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideMessyWhitespacesCases
      */

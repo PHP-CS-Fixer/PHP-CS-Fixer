@@ -86,8 +86,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return array<array<string, bool|int>>
      */
@@ -116,9 +115,8 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param int    $endIndex
+     * @param int $index
+     * @param int $endIndex
      *
      * @return bool
      */
@@ -168,7 +166,6 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens                  $tokens
      * @param array<string, bool|int> $unsetInfo
      * @param bool                    $isLastUnset
      */

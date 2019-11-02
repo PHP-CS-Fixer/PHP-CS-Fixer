@@ -55,7 +55,6 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFixCases
      */
@@ -170,7 +169,6 @@ class srand extends SrandClass{
     /**
      * @param string $expected
      * @param string $input
-     * @param array  $config
      *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases

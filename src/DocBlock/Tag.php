@@ -49,8 +49,6 @@ final class Tag
 
     /**
      * Create a new tag instance.
-     *
-     * @param Line $line
      */
     public function __construct(Line $line)
     {

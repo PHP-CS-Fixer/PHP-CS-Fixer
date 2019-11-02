@@ -98,9 +98,8 @@ final class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function replaceStaticAccessWithSelfAccessBetween(
         Tokens $tokens,
@@ -129,8 +128,7 @@ final class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return int
      */

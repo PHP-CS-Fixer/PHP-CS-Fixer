@@ -153,8 +153,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */

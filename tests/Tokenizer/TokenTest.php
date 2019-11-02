@@ -66,8 +66,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isCast
+     * @param bool $isCast
      *
      * @dataProvider provideIsCastCases
      */
@@ -92,8 +91,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isClassy
+     * @param bool $isClassy
      *
      * @dataProvider provideIsClassyCases
      */
@@ -114,8 +112,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isComment
+     * @param bool $isComment
      *
      * @dataProvider provideIsCommentCases
      */
@@ -200,8 +197,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token $token
-     * @param bool  $isNativeConstant
+     * @param bool $isNativeConstant
      *
      * @dataProvider provideIsNativeConstantCases
      */
@@ -224,7 +220,6 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token       $token
      * @param bool        $isWhitespace
      * @param null|string $whitespaces
      *
@@ -296,7 +291,6 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param Token              $token
      * @param string             $equals
      * @param array|string|Token $other
      * @param bool               $caseSensitive
@@ -353,9 +347,8 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool  $equalsAny
-     * @param array $other
-     * @param bool  $caseSensitive
+     * @param bool $equalsAny
+     * @param bool $caseSensitive
      *
      * @dataProvider provideEqualsAnyCases
      */

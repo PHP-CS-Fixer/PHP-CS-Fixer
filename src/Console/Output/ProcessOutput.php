@@ -64,10 +64,8 @@ final class ProcessOutput implements ProcessOutputInterface
     private $symbolsPerLine;
 
     /**
-     * @param OutputInterface          $output
-     * @param EventDispatcherInterface $dispatcher
-     * @param int                      $width
-     * @param int                      $nbFiles
+     * @param int $width
+     * @param int $nbFiles
      */
     public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, $width, $nbFiles)
     {

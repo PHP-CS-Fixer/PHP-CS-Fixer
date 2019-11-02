@@ -29,8 +29,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -91,8 +90,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      * [0] First is either T_IF, T_ELSE or T_ELSEIF
      * [1] Last is either '}' or ';' / T_CLOSE_TAG for short notation blocks
      *
-     * @param Tokens $tokens
-     * @param int    $index  T_IF, T_ELSE, T_ELSEIF
+     * @param int $index T_IF, T_ELSE, T_ELSEIF
      *
      * @return int[]
      */
@@ -116,9 +114,8 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index           Index of the token to check
-     * @param int    $lowerLimitIndex Lower limit index. Since the token to check will always be in a conditional we must stop checking at this index
+     * @param int $index           Index of the token to check
+     * @param int $lowerLimitIndex Lower limit index. Since the token to check will always be in a conditional we must stop checking at this index
      *
      * @return bool
      */
@@ -148,9 +145,8 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      * without {}. Assumes not passing the last `;`/close tag of the statement, not
      * out of range index, etc.
      *
-     * @param Tokens $tokens
-     * @param int    $index           Index of the token to check
-     * @param int    $lowerLimitIndex
+     * @param int $index           Index of the token to check
+     * @param int $lowerLimitIndex
      *
      * @return bool
      */

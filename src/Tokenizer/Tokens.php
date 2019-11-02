@@ -1008,8 +1008,6 @@ final class Tokens extends \SplFixedArray
     /**
      * Check if all token kinds given as argument are found.
      *
-     * @param array $tokenKinds
-     *
      * @return bool
      */
     public function isAllTokenKindsFound(array $tokenKinds)
@@ -1025,8 +1023,6 @@ final class Tokens extends \SplFixedArray
 
     /**
      * Check if any token kind given as argument is found.
-     *
-     * @param array $tokenKinds
      *
      * @return bool
      */

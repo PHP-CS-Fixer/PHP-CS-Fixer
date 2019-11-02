@@ -139,8 +139,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixFunctionArgumentTypes(Tokens $tokens, $index)
     {
@@ -150,8 +149,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixFunctionReturnType(Tokens $tokens, $index)
     {

@@ -97,7 +97,6 @@ final class FileFilterIterator extends \FilterIterator
 
     /**
      * @param string $name
-     * @param Event  $event
      */
     private function dispatchEvent($name, Event $event)
     {

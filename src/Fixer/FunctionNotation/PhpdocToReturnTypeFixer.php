@@ -250,8 +250,7 @@ function my_foo()
     /**
      * Determine whether the function already has a return type hint.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the end of the function definition line, EG at { or ;
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      *
      * @return bool
      */
@@ -264,7 +263,6 @@ function my_foo()
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index      The index of the end of the function definition line, EG at { or ;
      * @param bool   $isNullable
      * @param string $returnType
@@ -305,8 +303,7 @@ function my_foo()
     /**
      * Find all the return annotations in the function's PHPDoc comment.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
+     * @param int $index The index of the function token
      *
      * @return Annotation[]
      */

@@ -329,8 +329,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array $set
-     * @param bool  $safe
+     * @param bool $safe
      *
      * @dataProvider provideSafeSetCases
      */
@@ -409,9 +408,6 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array $expected
-     * @param array $rules
-     *
      * @dataProvider provideResolveRulesCases
      */
     public function testResolveRules(array $expected, array $rules)
@@ -604,8 +600,6 @@ final class RuleSetTest extends TestCase
      * Sorts an array of rule set definitions recursively.
      *
      * Sometimes keys are all string, sometimes they are integers - we need to account for that.
-     *
-     * @param array $data
      */
     private function sort(array &$data)
     {
@@ -625,8 +619,6 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array $values
-     *
      * @return bool
      */
     private function allInteger(array $values)

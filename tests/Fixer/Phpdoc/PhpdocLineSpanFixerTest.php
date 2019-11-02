@@ -26,7 +26,6 @@ final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideFixCases
      */
@@ -396,7 +395,6 @@ class Bar
      *
      * @param string $expected
      * @param string $input
-     * @param array  $config
      */
     public function testFix71($expected, $input = null, array $config = [])
     {

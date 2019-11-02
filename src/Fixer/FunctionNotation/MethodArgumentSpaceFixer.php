@@ -265,9 +265,8 @@ SAMPLE
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startParenthesisIndex
-     * @param int    $endParenthesisIndex
+     * @param int $startParenthesisIndex
+     * @param int $endParenthesisIndex
      *
      * @return null|int
      */
@@ -293,8 +292,7 @@ SAMPLE
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool Whether newlines were removed from the whitespace token
      */
@@ -316,8 +314,7 @@ SAMPLE
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startFunctionIndex
+     * @param int $startFunctionIndex
      */
     private function ensureFunctionFullyMultiline(Tokens $tokens, $startFunctionIndex)
     {
@@ -391,7 +388,6 @@ SAMPLE
     /**
      * Method to insert newline after comma or opening parenthesis.
      *
-     * @param Tokens $tokens
      * @param int    $index       index of a comma
      * @param string $indentation the indentation that should be used
      * @param bool   $override    whether to override the existing character or not
@@ -422,8 +418,7 @@ SAMPLE
     /**
      * Method to insert space after comma and remove space before comma.
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixSpace(Tokens $tokens, $index)
     {
@@ -490,8 +485,6 @@ SAMPLE
 
     /**
      * Checks if token is new line.
-     *
-     * @param Token $token
      *
      * @return bool
      */

@@ -63,9 +63,6 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param Tokens $tokens
-     * @param array  $prototypes
-     *
      * @return int
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes)
