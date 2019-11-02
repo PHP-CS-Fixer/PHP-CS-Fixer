@@ -566,11 +566,11 @@ class Foo
                     continue;
                 }
 
-                if (!$isAnonymousClass) {
-                    $prevToken = $tokens[$closingParenthesisIndex - 1];
-                }
-
-                if (!$isAnonymousClass && $prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
+                if (
+                    !$isAnonymousClass
+                    && $tokens[$closingParenthesisIndex - 1]->isWhitespace()
+                    && false !== strpos($tokens[$closingParenthesisIndex - 1]->getContent(), "\n")
+                ) {
                     if (!$tokens[$startBraceIndex - 2]->isComment()) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }

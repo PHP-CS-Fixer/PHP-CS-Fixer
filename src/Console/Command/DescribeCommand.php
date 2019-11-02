@@ -263,8 +263,9 @@ final class DescribeCommand extends Command
                 $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
 
+                $configuration = $codeSample->getConfiguration();
+
                 if ($fixer instanceof ConfigurableFixerInterface) {
-                    $configuration = $codeSample->getConfiguration();
                     $fixer->configure(null === $configuration ? [] : $configuration);
                 }
 
