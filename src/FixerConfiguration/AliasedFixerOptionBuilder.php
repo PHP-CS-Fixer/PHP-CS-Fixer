@@ -62,8 +62,6 @@ final class AliasedFixerOptionBuilder
     }
 
     /**
-     * @param array $allowedValues
-     *
      * @return $this
      */
     public function setAllowedValues(array $allowedValues)
@@ -74,8 +72,6 @@ final class AliasedFixerOptionBuilder
     }
 
     /**
-     * @param \Closure $normalizer
-     *
      * @return $this
      */
     public function setNormalizer(\Closure $normalizer)

@@ -27,7 +27,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      * @param null|int    $versionSpecificFix
-     * @param array       $config
      *
      * @dataProvider provideFixCases
      */

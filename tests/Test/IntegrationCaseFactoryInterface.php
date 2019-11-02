@@ -22,8 +22,6 @@ use Symfony\Component\Finder\SplFileInfo;
 interface IntegrationCaseFactoryInterface
 {
     /**
-     * @param SplFileInfo $file
-     *
      * @return IntegrationCase
      */
     public function create(SplFileInfo $file);

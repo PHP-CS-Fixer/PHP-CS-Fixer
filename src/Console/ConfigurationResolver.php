@@ -150,10 +150,7 @@ final class ConfigurationResolver
     private $fixerFactory;
 
     /**
-     * @param ConfigInterface   $config
-     * @param array             $options
-     * @param string            $cwd
-     * @param ToolInfoInterface $toolInfo
+     * @param string $cwd
      */
     public function __construct(
         ConfigInterface $config,
@@ -706,8 +703,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * @param array $rules
-     *
      * @throws InvalidConfigurationException
      */
     private function validateRules(array $rules)

@@ -33,8 +33,6 @@ final class GitlabReporter implements ReporterInterface
     /**
      * Process changed files array. Returns generated report.
      *
-     * @param ReportSummary $reportSummary
-     *
      * @return string
      */
     public function generate(ReportSummary $reportSummary)

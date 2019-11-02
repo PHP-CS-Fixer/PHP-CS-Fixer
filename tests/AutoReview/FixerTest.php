@@ -47,8 +47,6 @@ final class FixerTest extends TestCase
     ];
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @dataProvider provideFixerDefinitionsCases
      */
     public function testFixerDefinitions(FixerInterface $fixer)
@@ -158,8 +156,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * @param FixerInterface $fixer
-     *
      * @group legacy
      * @dataProvider provideFixerDefinitionsCases
      * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
@@ -223,8 +219,6 @@ final class FixerTest extends TestCase
     }
 
     /**
-     * @param ConfigurationDefinitionFixerInterface $fixer
-     *
      * @dataProvider provideFixerConfigurationDefinitionsCases
      */
     public function testFixerConfigurationDefinitions(ConfigurationDefinitionFixerInterface $fixer)

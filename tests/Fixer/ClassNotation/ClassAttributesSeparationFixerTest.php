@@ -893,7 +893,6 @@ class ezcReflectionMethod extends ReflectionMethod {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideConfigCases
      */

@@ -28,7 +28,6 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideTestFixCases
      */

@@ -77,8 +77,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function removeLeadingImportSlash(Tokens $tokens, $index)
     {
