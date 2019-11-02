@@ -917,11 +917,16 @@ class Foo
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
             $previousToken = $tokens[$nextTokenIndex - 1];
+            $nextTokenContent = $nextToken->getContent();
 
             // do not indent inline comments used to comment out unused code
             if (
-                (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextToken->getContent())
-                && $previousToken->isWhitespace() && 1 === Preg::match('/\R$/', $previousToken->getContent())
+                $previousToken->isWhitespace()
+                && 1 === Preg::match('/\R$/', $previousToken->getContent())
+                && (
+                    (0 === strpos($nextTokenContent, '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextTokenContent)
+                    || (0 === strpos($nextTokenContent, '#'.$this->whitespacesConfig->getIndent()) || '#' === $nextTokenContent)
+                )
             ) {
                 return;
             }
