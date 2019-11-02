@@ -37,6 +37,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
     {
         // Let's determine the total numbers of new lines before the namespace
         // and the opening token
+        $openingTokenIndex = null;
         $precedingNewlines = 0;
         $newlineInOpening = false;
         $openingToken = null;
