@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-21T06:17:42Z
+
+I would override the configuration in the `@PhpCsFixer` rule set: `'allow_mixed' => false`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-02T10:32:19Z
+
+I decided to allow mixed so i can still grep for them `git grep "@param mixed"`
+then, one day, we should stop using `mixed` at all.
