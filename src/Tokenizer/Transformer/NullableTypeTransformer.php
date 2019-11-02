@@ -63,7 +63,7 @@ final class NullableTypeTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
 
-        if ($prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON]])) {
+        if ($prevToken->equalsAny(['(', ',', [CT::T_TYPE_COLON], [T_PRIVATE], [T_PROTECTED], [T_PUBLIC], [T_VAR]])) {
             $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }
     }

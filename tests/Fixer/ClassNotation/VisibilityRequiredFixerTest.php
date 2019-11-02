@@ -779,4 +779,37 @@ AB# <- this is the name
             '
         );
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.4
+     * @dataProvider provideFix74Cases
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield [
+            '<?php class Foo { private int $foo; }',
+        ];
+        yield [
+            '<?php class Foo { protected ?string $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public ? string $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public ? string $foo; }',
+            '<?php class Foo { var ? string $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public static Foo\Bar $foo; }',
+            '<?php class Foo { static public Foo\Bar $foo; }',
+        ];
+    }
 }
