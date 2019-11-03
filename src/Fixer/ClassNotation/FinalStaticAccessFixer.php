@@ -29,7 +29,7 @@ final class FinalStaticAccessFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Converts `static` access to `self` access in final classes.',
+            'Converts `static` access to `self` access in `final` classes.',
             [
                 new CodeSample(
                     '<?php
