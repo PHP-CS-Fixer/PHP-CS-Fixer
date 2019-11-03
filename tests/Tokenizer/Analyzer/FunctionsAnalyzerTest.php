@@ -114,6 +114,33 @@ final class FunctionsAnalyzerTest extends TestCase
     }
 
     /**
+     * @param bool   $isFunctionIndex
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testIsGlobalFunctionCallPhp74($isFunctionIndex, $code, $index)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
+    }
+
+    public function provideIsGlobalFunctionCallPhp74Cases()
+    {
+        return [
+            [
+                false,
+                '<?php $foo = fn() => false;',
+                5,
+            ],
+        ];
+    }
+
+    /**
      * @param string $code
      * @param int    $methodIndex
      * @param array  $expected
@@ -248,6 +275,147 @@ final class FunctionsAnalyzerTest extends TestCase
             ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)],
             ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)],
             ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)],
+        ];
+    }
+
+    /**
+     * @param string $code
+     * @param int    $methodIndex
+     * @param array  $expected
+     *
+     * @dataProvider provideFunctionsWithArgumentsPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFunctionArgumentInfoPhp74($code, $methodIndex, $expected)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+    }
+
+    public function provideFunctionsWithArgumentsPhp74Cases()
+    {
+        return [
+            ['<?php fn() => null;', 1, []],
+            ['<?php fn($a) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    3,
+                    null,
+                    null
+                ),
+            ]],
+            ['<?php fn($a, $b) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    3,
+                    null,
+                    null
+                ),
+                '$b' => new ArgumentAnalysis(
+                    '$b',
+                    6,
+                    null,
+                    null
+                ),
+            ]],
+            ['<?php fn($a, $b = array(1,2), $c = 3) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    3,
+                    null,
+                    null
+                ),
+                '$b' => new ArgumentAnalysis(
+                    '$b',
+                    6,
+                    'array(1,2)',
+                    null
+                ),
+                '$c' => new ArgumentAnalysis(
+                    '$c',
+                    18,
+                    '3',
+                    null
+                ),
+            ]],
+            ['<?php fn(array $a = array()) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    5,
+                    'array()',
+                    new TypeAnalysis(
+                        'array',
+                        3,
+                        3
+                    )
+                ),
+            ]],
+            ['<?php fn(array ... $a) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    7,
+                    null,
+                    new TypeAnalysis(
+                        'array',
+                        3,
+                        3
+                    )
+                ),
+            ]],
+            ['<?php fn(\Foo\Bar $a) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    8,
+                    null,
+                    new TypeAnalysis(
+                        '\Foo\Bar',
+                        3,
+                        6
+                    )
+                ),
+            ]],
+            ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    9,
+                    null,
+                    new TypeAnalysis(
+                        '\Foo\Bar',
+                        3,
+                        7
+                    )
+                ),
+            ]],
+        ];
+    }
+
+    /**
+     * @param string $code
+     * @param int    $methodIndex
+     * @param array  $expected
+     *
+     * @dataProvider provideFunctionsWithReturnTypePhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFunctionReturnTypeInfoPhp74($code, $methodIndex, $expected)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+        static::assertSame(serialize($expected), serialize($actual));
+    }
+
+    public function provideFunctionsWithReturnTypePhp74Cases()
+    {
+        return [
+            ['<?php fn() => null;', 1, null],
+            ['<?php fn($a): array => null;', 1, new TypeAnalysis('array', 7, 7)],
+            ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)],
+            ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)],
+            ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)],
         ];
     }
 }

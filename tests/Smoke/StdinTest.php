@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
+use PhpCsFixer\Preg;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -35,25 +36,23 @@ final class StdinTest extends AbstractSmokeTest
         $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);
         $stdinResult = CommandExecutor::create("{$command} - < {$inputFile}", $cwd)->getResult(false);
 
+        static::assertSame($fileResult->getCode(), $stdinResult->getCode());
+
+        $expectedError = str_replace(
+            'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
+            '',
+            $fileResult->getError()
+        );
+        static::assertSame($expectedError, $stdinResult->getError());
+
+        $path = str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile);
         static::assertSame(
-            [
-                'code' => $fileResult->getCode(),
-                'error' => str_replace(
-                    'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
-                    '',
-                    $fileResult->getError()
-                ),
-                'output' => str_ireplace(
-                    str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile),
-                    'php://stdin',
-                    $this->unifyFooter($fileResult->getOutput())
-                ),
-            ],
-            [
-                'code' => $stdinResult->getCode(),
-                'error' => $stdinResult->getError(),
-                'output' => $this->unifyFooter($stdinResult->getOutput()),
-            ]
+            Preg::replace(
+                '#/?'.preg_quote($path, '#').'#',
+                'php://stdin',
+                $this->unifyFooter($fileResult->getOutput())
+            ),
+            $this->unifyFooter($stdinResult->getOutput())
         );
     }
 

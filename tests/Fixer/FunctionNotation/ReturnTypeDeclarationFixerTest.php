@@ -154,4 +154,26 @@ string {}',
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithSpaceBeforeNonePhp74Cases
+     * @requires PHP 7.4
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithDefaultConfigurationPhp74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithSpaceBeforeNonePhp74Cases()
+    {
+        return [
+            [
+                '<?php fn(): int => 1;',
+                '<?php fn():int => 1;',
+            ],
+        ];
+    }
 }

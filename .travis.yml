@@ -26,7 +26,7 @@ jobs:
     include:
         -
             stage: Static Code Analysis
-            php: 7.2
+            php: 7.3
             env: COMPOSER_FLAGS="--prefer-stable"
             install:
                 - travis_retry ./dev-tools/install.sh

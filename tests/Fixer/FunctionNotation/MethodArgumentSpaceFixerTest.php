@@ -927,13 +927,45 @@ functionCall(
     }
 
     /**
-     * @dataProvider provideFixDeprecatedCases
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php
+$fn = fn(
+    $test1,
+    $test2
+) => null;',
+                '<?php
+$fn = fn(
+    $test1, $test2
+) => null;',
+                [
+                    'on_multiline' => 'ensure_fully_multiline',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      *
      * @group legacy
      * @expectedDeprecation Option "ensure_fully_multiline" for rule "method_argument_space" is deprecated and will be removed in version 4.0. Use option "on_multiline" instead.
-     *
-     * @param string      $expected
-     * @param null|string $input
+     * @dataProvider provideFixDeprecatedCases
      */
     public function testFixDeprecated($expected, $input = null, array $configuration = null)
     {

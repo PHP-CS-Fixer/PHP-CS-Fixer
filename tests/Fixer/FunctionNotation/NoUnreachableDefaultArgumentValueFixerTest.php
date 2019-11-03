@@ -221,4 +221,29 @@ $bar) {}',
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php $fn = fn ($a, $b) => null;',
+                '<?php $fn = fn ($a = 1, $b) => null;',
+            ],
+        ];
+    }
 }

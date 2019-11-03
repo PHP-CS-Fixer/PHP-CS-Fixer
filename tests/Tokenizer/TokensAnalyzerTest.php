@@ -546,6 +546,35 @@ preg_replace_callback(
     /**
      * @param string $source
      *
+     * @dataProvider provideIsLambda74Cases
+     * @requires PHP 7.4
+     */
+    public function testIsLambda74($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+        }
+    }
+
+    public function provideIsLambda74Cases()
+    {
+        return [
+            [
+                '<?php $fn = fn() => [];',
+                [5 => true],
+            ],
+            [
+                '<?php $fn = fn () => [];',
+                [5 => true],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
      * @dataProvider provideIsLambda71Cases
      * @requires PHP 7.1
      */

@@ -113,10 +113,6 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 '<?php echo (object) $a === 1 ? 8 : 7;',
             ],
             [
-                '<?php 1===(real)$a?1:2;',
-                '<?php (real)$a===1?1:2;',
-            ],
-            [
                 '<?php echo 1 === (unset) $a ? 8 : 7;',
                 '<?php echo (unset) $a === 1 ? 8 : 7;',
             ],
@@ -901,6 +897,37 @@ while (2 !== $b = array_pop($c));
         yield [
             '<?php if (1_000 === $b);',
             '<?php if ($b === 1_000);',
+        ];
+    }
+
+    /**
+     * Test with the inverse config.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider providePHP74Cases
+     * @requires PHP 7.4
+     */
+    public function testPHP74CasesInverse($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP74Cases()
+    {
+        return [
+            [
+                '<?php fn() => $c === array(1) ? $b : $d;',
+                null,
+                [
+                    'less_and_greater' => false,
+                ],
+            ],
         ];
     }
 }
