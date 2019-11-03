@@ -903,4 +903,35 @@ while (2 !== $b = array_pop($c));
             '<?php if ($b === 1_000);',
         ];
     }
+
+    /**
+     * Test with the inverse config.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider providePHP74Cases
+     * @requires PHP 7.4
+     */
+    public function testPHP74CasesInverse($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP74Cases()
+    {
+        return [
+            [
+                '<?php fn() => $c === array(1) ? $b : $d;',
+                null,
+                [
+                    'less_and_greater' => false,
+                ],
+            ],
+        ];
+    }
 }

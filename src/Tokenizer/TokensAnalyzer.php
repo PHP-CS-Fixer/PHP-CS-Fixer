@@ -280,8 +280,11 @@ final class TokensAnalyzer
      */
     public function isLambda($index)
     {
-        if (!$this->tokens[$index]->isGivenKind(T_FUNCTION)) {
-            throw new \LogicException(sprintf('No T_FUNCTION at given index %d, got %s.', $index, $this->tokens[$index]->getName()));
+        if (
+            !$this->tokens[$index]->isGivenKind(T_FUNCTION)
+            && (\PHP_VERSION_ID < 70400 || !$this->tokens[$index]->isGivenKind(T_FN))
+        ) {
+            throw new \LogicException(sprintf('No T_FUNCTION or T_FN at given index %d, got %s.', $index, $this->tokens[$index]->getName()));
         }
 
         $startParenthesisIndex = $this->tokens->getNextMeaningfulToken($index);

@@ -350,4 +350,40 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             ],
         ];
     }
+
+    /**
+     * @param string             $source
+     * @param array<int, string> $expectedTokens
+     * @param string[]           $observedKinds
+     *
+     * @dataProvider provideProcessPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testProcessPhp74($source, array $expectedTokens, array $observedKinds = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    public function provideProcessPhp74Cases()
+    {
+        return [
+            [
+                '<?php $fn = fn() => null;',
+                [
+                    6 => '(',
+                    7 => ')',
+                ],
+                [
+                    '(',
+                    ')',
+                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                ],
+            ],
+        ];
+    }
 }

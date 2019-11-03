@@ -139,6 +139,11 @@ SAMPLE
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $expectedTokens = [T_LIST, T_FUNCTION];
+        if (\PHP_VERSION_ID >= 70400) {
+            $expectedTokens[] = T_FN;
+        }
+
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             $token = $tokens[$index];
 
@@ -149,7 +154,7 @@ SAMPLE
             $meaningfulTokenBeforeParenthesis = $tokens[$tokens->getPrevMeaningfulToken($index)];
             if (
                 $meaningfulTokenBeforeParenthesis->isKeyword()
-                && !$meaningfulTokenBeforeParenthesis->isGivenKind([T_LIST, T_FUNCTION])
+                && !$meaningfulTokenBeforeParenthesis->isGivenKind($expectedTokens)
             ) {
                 continue;
             }
