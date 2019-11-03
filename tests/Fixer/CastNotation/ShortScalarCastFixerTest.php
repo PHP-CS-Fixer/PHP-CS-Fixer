@@ -28,44 +28,52 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provideFixCases
+     * @dataProvider provideFixDeprecatedCases
+     * @requires PHP < 7.4
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixDeprecatedCases
+     * @requires PHP 7.4
+     * @group legacy
+     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
+     */
+    public function testFix74Deprecated($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
     public function provideFixCases()
     {
-        $cases = [];
-        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'real' => 'float', 'binary' => 'string'] as $from => $to) {
-            $cases[] =
-                [
-                    sprintf('<?php echo ( %s  )$a;', $to),
-                    sprintf('<?php echo ( %s  )$a;', $from),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(%s) $d;', $to),
-                    sprintf('<?php $b=(%s) $d;', $from),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b= (%s)$d;', $to),
-                    sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=( %s) $d;', $to),
-                    sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(%s ) $d;', $to),
-                    sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
-                ];
+        foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
+            foreach ($this->createCasesFor($from, $to) as $case) {
+                yield $case;
+            }
         }
+    }
 
-        return $cases;
+    public function provideFixDeprecatedCases()
+    {
+        return $this->createCasesFor('real', 'float');
     }
 
     /**
@@ -89,5 +97,29 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         }
 
         return $cases;
+    }
+
+    private function createCasesFor($from, $to)
+    {
+        yield [
+            sprintf('<?php echo ( %s  )$a;', $to),
+            sprintf('<?php echo ( %s  )$a;', $from),
+        ];
+        yield [
+            sprintf('<?php $b=(%s) $d;', $to),
+            sprintf('<?php $b=(%s) $d;', $from),
+        ];
+        yield [
+            sprintf('<?php $b= (%s)$d;', $to),
+            sprintf('<?php $b= (%s)$d;', strtoupper($from)),
+        ];
+        yield [
+            sprintf('<?php $b=( %s) $d;', $to),
+            sprintf('<?php $b=( %s) $d;', ucfirst($from)),
+        ];
+        yield [
+            sprintf('<?php $b=(%s ) $d;', $to),
+            sprintf('<?php $b=(%s ) $d;', ucfirst($from)),
+        ];
     }
 }

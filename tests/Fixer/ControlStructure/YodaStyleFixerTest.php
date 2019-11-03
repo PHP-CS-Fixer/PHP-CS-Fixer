@@ -113,10 +113,6 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 '<?php echo (object) $a === 1 ? 8 : 7;',
             ],
             [
-                '<?php 1===(real)$a?1:2;',
-                '<?php (real)$a===1?1:2;',
-            ],
-            [
                 '<?php echo 1 === (unset) $a ? 8 : 7;',
                 '<?php echo (unset) $a === 1 ? 8 : 7;',
             ],
