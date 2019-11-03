@@ -143,6 +143,22 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { var ?Foo\Bar $foo; }',
                 '<?php class Foo { var ? Foo\Bar $foo; }',
             ],
+            [
+                '<?php $foo = fn(?Bar\Baz $param): ?Bar\Baz => null;',
+                '<?php $foo = fn(? Bar\Baz $param): ? Bar\Baz => null;',
+            ],
+            [
+                '<?php $foo = fn(?Bar\Baz &$param): ?Bar\Baz => null;',
+                '<?php $foo = fn(? Bar\Baz &$param): ? Bar\Baz => null;',
+            ],
+            [
+                '<?php $foo = fn(?array $a,
+                    ?array $b): ?Bar\Baz => null;',
+                '<?php $foo = fn(?
+                    array $a,
+                    ? array $b): ?
+                    Bar\Baz => null;',
+            ],
         ];
     }
 }

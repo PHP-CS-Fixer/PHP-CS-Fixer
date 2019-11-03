@@ -28,38 +28,75 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      * @param null|string $input
      *
      * @dataProvider provideFixCases
+     * @dataProvider provideFixDeprecatedCases
+     * @requires PHP < 7.4
      */
     public function testFix($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixDeprecatedCases
+     * @requires PHP 7.4
+     * @group legacy
+     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
+     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
+     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
+     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
+     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
+     */
+    public function testFix74Deprecated($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
     public function provideFixCases()
     {
-        $cases = [];
-        foreach (['boolean', 'bool', 'integer', 'int', 'double', 'float', 'real', 'float', 'string', 'array', 'object', 'unset', 'binary'] as $from) {
-            $cases[] =
-                [
-                    sprintf('<?php $b= (%s)$d;', $from),
-                    sprintf('<?php $b= (%s)$d;', strtoupper($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=( %s) $d;', $from),
-                    sprintf('<?php $b=( %s) $d;', ucfirst($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(%s ) $d;', $from),
-                    sprintf('<?php $b=(%s ) $d;', strtoupper($from)),
-                ];
-            $cases[] =
-                [
-                    sprintf('<?php $b=(  %s  ) $d;', $from),
-                    sprintf('<?php $b=(  %s  ) $d;', ucfirst($from)),
-                ];
+        foreach (['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'unset', 'binary'] as $from) {
+            foreach ($this->createCasesFor($from) as $case) {
+                yield $case;
+            }
         }
+    }
 
-        return $cases;
+    public function provideFixDeprecatedCases()
+    {
+        return $this->createCasesFor('real');
+    }
+
+    private function createCasesFor($type)
+    {
+        yield [
+            sprintf('<?php $b= (%s)$d;', $type),
+            sprintf('<?php $b= (%s)$d;', strtoupper($type)),
+        ];
+        yield [
+            sprintf('<?php $b=( %s) $d;', $type),
+            sprintf('<?php $b=( %s) $d;', ucfirst($type)),
+        ];
+        yield [
+            sprintf('<?php $b=(%s ) $d;', $type),
+            sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
+        ];
+        yield [
+            sprintf('<?php $b=(  %s  ) $d;', $type),
+            sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
+        ];
     }
 }
