@@ -3,6 +3,30 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.16.0
+---------------------
+
+* feature #3810 PhpdocLineSpanFixer - Introduction (BackEndTea)
+* feature #3928 Add FinalPublicMethodForAbstractClassFixer (Slamdunk)
+* feature #4000 FinalStaticAccessFixer - Introduction (ntzm)
+* feature #4275 Issue #4274: Let lowercase_constants directive to be configurable. (drupol)
+* feature #4355 GlobalNamespaceImportFixer - Introduction (gharlan)
+* feature #4358 SelfStaticAccessorFixer - Introduction (SpacePossum)
+* feature #4385 CommentToPhpdocFixer - allow to ignore tags (kubawerlos)
+* feature #4401 Add NullableTypeDeclarationForDefaultNullValueFixer (HypeMC)
+* feature #4452 Add SingleLineThrowFixer (kubawerlos)
+* feature #4500 NoSuperfluousPhpdocTags - Add remove_inheritdoc option (julienfalque)
+* feature #4505 NoSuperfluousPhpdocTagsFixer - allow params that aren't on the signature (azjezz)
+* feature #4531 PhpdocAlignFixer - add "property-read" and "property-write" to allowed tags (kubawerlos)
+* feature #4583 Phpdoc to param type fixer rebase (jg-development)
+* minor #4033 Raise deprecation warnings on usage of deprecated aliases (ntzm)
+* minor #4423 DX: update branch alias (keradus)
+* minor #4537 SelfStaticAccessor - extend itests (keradus)
+* minor #4607 Configure no_superfluous_phpdoc_tags for Symfony (keradus)
+* minor #4618 DX: fix usage of deprecated options (0x450x6c)
+* minor #4619 Fix PHP 7.3 strict mode warnings (keradus)
+* minor #4621 Add single_line_throw to Symfony ruleset (keradus)
+
 Changelog for v2.15.4
 ---------------------
 
