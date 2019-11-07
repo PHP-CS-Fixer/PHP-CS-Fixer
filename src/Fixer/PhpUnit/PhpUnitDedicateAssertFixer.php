@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -382,6 +383,8 @@ $this->assertTrue(is_readable($a));
 
     private function getPreviousAssertCall(Tokens $tokens)
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
         for ($index = $tokens->count(); $index > 0; --$index) {
             $index = $tokens->getPrevTokenOfKind($index, [[T_STRING]]);
             if (null === $index) {
@@ -400,14 +403,7 @@ $this->assertTrue(is_readable($a));
                 continue;
             }
 
-            $operatorIndex = $tokens->getPrevMeaningfulToken($index);
-            $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
-
-            if (
-                !($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this']))
-                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self']))
-                && !($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static']))
-            ) {
+            if (!$functionsAnalyzer->isTheSameClassCall($tokens, $index)) {
                 continue;
             }
 
