@@ -266,6 +266,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                     ?array $b = null, ?array     $c = null, ?array
                     $d = null) {};',
         ];
+        yield [
+            '<?php function foo(string $param = NULL) {}',
+            '<?php function foo(?string $param = NULL) {}',
+        ];
     }
 
     public function provideNonInverseOnlyFixCases()
