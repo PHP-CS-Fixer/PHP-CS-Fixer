@@ -152,7 +152,7 @@ abstract class class4 {}
                 "<?php\n/** @CUSTOM */final class A{}",
                 "<?php\n/** @CUSTOM */class A{}",
                 [
-                    'annotation-white-list' => ['@Custom'],
+                    'annotation_white_list' => ['@Custom'],
                 ],
             ],
             [
@@ -181,7 +181,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation-white-list' => ['@Custom', '@abc'],
+                    'annotation_white_list' => ['@Custom', '@abc'],
                 ],
             ],
             [
@@ -228,8 +228,8 @@ class B{}
  class C{}
 ',
                 [
-                    'annotation-white-list' => ['@Custom', '@internal'],
-                    'annotation-black-list' => ['@not-fix'],
+                    'annotation_white_list' => ['@Custom', '@internal'],
+                    'annotation_black_list' => ['@not-fix'],
                 ],
             ],
             [
@@ -256,7 +256,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation-black-list' => ['abc'],
+                    'annotation_black_list' => ['abc'],
                 ],
             ],
         ];
@@ -293,8 +293,8 @@ $a = new class (){};',
         );
 
         $this->fixer->configure([
-            'annotation-white-list' => ['@internal123', 'a'],
-            'annotation-black-list' => ['@internal123', 'b'],
+            'annotation_white_list' => ['@internal123', 'a'],
+            'annotation_black_list' => ['@internal123', 'b'],
         ]);
     }
 }
