@@ -12,11 +12,12 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
@@ -87,7 +88,7 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        if (!$fixer instanceof ConfigurableFixerInterface) {
+        if (!$fixer instanceof ConfigurationDefinitionFixerInterface) {
             $this->addToAssertionCount(1);
 
             return;
@@ -891,7 +892,7 @@ Integration of %s.
     /**
      * @param string $name
      *
-     * @return FixerInterface
+     * @return AbstractFixer
      */
     private static function getFixerByName($name)
     {

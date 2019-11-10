@@ -12,8 +12,7 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
@@ -34,12 +33,12 @@ abstract class AbstractFixerTestCase extends TestCase
     use IsIdenticalConstraint;
 
     /**
-     * @var LinterInterface
+     * @var null|LinterInterface
      */
     protected $linter;
 
     /**
-     * @var null|ConfigurableFixerInterface|FixerInterface
+     * @var null|AbstractFixer
      */
     protected $fixer;
 
@@ -68,7 +67,7 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @return FixerInterface
+     * @return AbstractFixer
      */
     protected function createFixer()
     {
@@ -178,6 +177,8 @@ abstract class AbstractFixerTestCase extends TestCase
     {
         try {
             $this->linter->lintSource($source)->check();
+
+            return null;
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n{$source}";
         }

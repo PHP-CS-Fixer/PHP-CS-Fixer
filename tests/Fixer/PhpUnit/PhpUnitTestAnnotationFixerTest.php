@@ -962,7 +962,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
      *
      * @param string      $expected
      * @param null|string $input
-     * @param null|array  $config
      */
     public function testFixLegacyCaseOption($expected, $input = null, array $config = [])
     {

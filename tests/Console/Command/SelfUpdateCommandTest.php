@@ -32,7 +32,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class SelfUpdateCommandTest extends TestCase
 {
     /**
-     * @var vfsStreamDirectory
+     * @var null|vfsStreamDirectory
      */
     private $root;
 
