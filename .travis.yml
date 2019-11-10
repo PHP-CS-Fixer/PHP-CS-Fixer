@@ -85,7 +85,7 @@ jobs:
                 - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
 
                 # Require ParaTest
-                - composer require --dev --no-update brianium/paratest:"*"
+                - composer require --dev --no-update brianium/paratest:"0.15.0"
             script:
                 - vendor/bin/paratest || travis_terminate 1
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
