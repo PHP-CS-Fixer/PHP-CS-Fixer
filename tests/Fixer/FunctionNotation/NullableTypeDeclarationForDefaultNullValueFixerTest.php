@@ -299,4 +299,62 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(? /*comment*/ string $param = null) {}',
         ];
     }
+
+    /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($input, $expected)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixInversePhp74($expected, $input)
+    {
+        $this->fixer->configure(['use_nullable_type_declaration' => false]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        yield [
+            '<?php $foo = fn (string $param = null) => null;',
+            '<?php $foo = fn (?string $param = null) => null;',
+        ];
+        yield [
+            '<?php $foo = fn (string &$param = null) => null;',
+            '<?php $foo = fn (?string &$param = null) => null;',
+        ];
+        yield [
+            '<?php $foo = fn (Baz $param = null) => null;',
+            '<?php $foo = fn (?Baz $param = null) => null;',
+        ];
+        yield [
+            '<?php $foo = fn (Baz &$param = null) => null;',
+            '<?php $foo = fn (?Baz &$param = null) => null;',
+        ];
+        yield [
+            '<?php $foo = fn (Baz & $param = null) => null;',
+            '<?php $foo = fn (?Baz & $param = null) => null;',
+        ];
+        yield [
+            '<?php $foo = fn(array $a = null,
+                    array $b = null, array     $c = null, array
+                    $d = null) => null;',
+            '<?php $foo = fn(?array $a = null,
+                    ?array $b = null, ?array     $c = null, ?array
+                    $d = null) => null;',
+        ];
+    }
 }
