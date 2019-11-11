@@ -69,7 +69,7 @@ jobs:
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
             script:
-                - vendor/bin/phpunit || travis_terminate 1
+                - ./dev-tools/vendor/bin/phpunit || travis_terminate 1
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
@@ -134,8 +134,8 @@ jobs:
                 # Make code compatible with PHPUnit 8
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer fix --rules=void_return -q tests || return 0
             script:
-                - vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
-                - php vendor/bin/php-coveralls -v
+                - ./dev-tools/vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
+                - ./dev-tools/vendor/bin/php-coveralls -v
 
         -
             <<: *STANDARD_TEST_JOB
@@ -148,7 +148,7 @@ jobs:
             php: 7.3
             install: ./dev-tools/build.sh
             script:
-                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+                - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 ./dev-tools/vendor/bin/phpunit tests/Smoke/
 
             before_deploy:
                 # ensure that deployment is happening only if tag matches version of PHP CS Fixer

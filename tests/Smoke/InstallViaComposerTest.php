@@ -75,6 +75,9 @@ final class InstallViaComposerTest extends AbstractSmokeTest
                 [
                     'type' => 'path',
                     'url' => __DIR__.'/../..',
+                    'options' => [
+                        'symlink' => false,
+                    ],
                 ],
             ],
             'require' => [

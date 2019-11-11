@@ -56,7 +56,7 @@ if (class_exists('Phar')) {
 
 if ($require) {
     // OK, it's not, let give Composer autoloader a try!
-    $possibleFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__.'/vendor/autoload.php'];
+    $possibleFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__.'/vendor/autoload.php', __DIR__.'/dev-tools/vendor/autoload.php'];
     $file = null;
     foreach ($possibleFiles as $possibleFile) {
         if (file_exists($possibleFile)) {

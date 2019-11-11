@@ -35,11 +35,11 @@ install:
 
 before_test:
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar update --optimize-autoloader --no-interaction --no-progress --prefer-stable --no-ansi
-    - php C:\tools\composer.phar info -D | sort
+    - php C:\tools\composer.phar update --no-ansi --no-interaction --no-progress --optimize-autoloader --prefer-stable --working-dir=dev-tools
+    - php C:\tools\composer.phar info --direct --working-dir=dev-tools | sort
 
 test_script:
     - cd C:\projects\php-cs-fixer
-    - vendor\bin\phpunit
+    - dev-tools\vendor\bin\phpunit
     - set PHP_CS_FIXER_FUTURE_MODE=1
     - php php-cs-fixer --diff --dry-run -v fix

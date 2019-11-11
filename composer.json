@@ -31,20 +31,6 @@
         "symfony/process": "^3.0 || ^4.0",
         "symfony/stopwatch": "^3.0 || ^4.0"
     },
-    "require-dev": {
-        "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
-        "justinrainbow/json-schema": "^5.0",
-        "keradus/cli-executor": "^1.2",
-        "mikey179/vfsstream": "^1.6",
-        "php-coveralls/php-coveralls": "^2.1",
-        "php-cs-fixer/accessible-object": "^1.0",
-        "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.1",
-        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.1",
-        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.1",
-        "phpunitgoodpractices/traits": "^1.8",
-        "symfony/phpunit-bridge": "^4.3",
-        "symfony/yaml": "^3.0 || ^4.0"
-    },
     "suggest": {
         "ext-mbstring": "For handling non-UTF8 characters in cache signature.",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "For IsIdenticalString constraint.",
@@ -69,11 +55,6 @@
             "tests/Test/InternalIntegrationCaseFactory.php",
             "tests/TestCase.php"
         ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "PhpCsFixer\\Tests\\": "tests/"
-        }
     },
     "bin": [
         "php-cs-fixer"

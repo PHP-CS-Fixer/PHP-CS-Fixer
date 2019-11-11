@@ -18,8 +18,8 @@ jobs:
             - run: echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.2/conf.d/memory.ini
             - run: curl -sS https://getcomposer.org/installer | php
             - run: php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
-            - run: php composer.phar install --optimize-autoloader --no-interaction --no-progress --no-suggest
-            - run: php composer.phar info -D | sort
+            - run: php composer.phar update --no-interaction --no-progress --no-suggest --optimize-autoloader --working-dir=./dev-tools
+            - run: php composer.phar info --direct --working-dir=./dev-tools | sort
 
             - save_cache:
                 key: cache-{{ checksum "composer.json" }}
@@ -27,5 +27,5 @@ jobs:
                     - ~/.composer
                     - ~/Library/Caches/Homebrew
 
-            - run: vendor/bin/phpunit
+            - run: ./dev-tools/vendor/bin/phpunit
             - run: PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
