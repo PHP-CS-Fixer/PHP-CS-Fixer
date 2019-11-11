@@ -35,6 +35,7 @@ install:
 
 before_test:
     - cd C:\projects\php-cs-fixer
+    - php C:\tools\composer.phar remove --dev --no-update --working-dir=./dev-tools humbug/box localheinz/composer-normalize phpstan/phpstan-phpunit
     - php C:\tools\composer.phar update --no-ansi --no-interaction --no-progress --optimize-autoloader --prefer-stable --working-dir=dev-tools
     - php C:\tools\composer.phar info --direct --working-dir=dev-tools | sort
 
