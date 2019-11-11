@@ -60,7 +60,7 @@ jobs:
 
         - &STANDARD_TEST_JOB
             stage: Fast Test
-            php: 7.0
+            php: 7.3
             install:
                 # Composer: enforce given Symfony components version
                 - if [ "$SYMFONY_VERSION" != "" ]; then composer global show symfony/flex -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS symfony/flex; fi
