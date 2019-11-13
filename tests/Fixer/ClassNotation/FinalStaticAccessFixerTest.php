@@ -137,7 +137,8 @@ final class FinalStaticAccessFixerTest extends AbstractFixerTestCase
             'does not change non-final classes' => [
                 '<?php class A { public $b = static::class; }',
             ],
-            'does not change anonymous classes' => [
+            'changes anonymous classes' => [
+                '<?php $a = new class { public $b = self::class; };',
                 '<?php $a = new class { public $b = static::class; };',
             ],
             'handles comments' => [
@@ -145,23 +146,23 @@ final class FinalStaticAccessFixerTest extends AbstractFixerTestCase
                 '<?php /*a*/final/*b*/class/*c*/A { public $b = /*1*/static/*2*/::/*3*/class; }',
             ],
             'property and nested anonymous class' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class { public $b = static::class; }; }}',
+                '<?php final class A { public $b = self::class; public function foo(){ return new class { public $b = self::class; }; }}',
                 '<?php final class A { public $b = static::class; public function foo(){ return new class { public $b = static::class; }; }}',
             ],
             'property and nested anonymous class with set function' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class ($a = function () {}) { public $b = static::class; }; }}',
+                '<?php final class A { public $b = self::class; public function foo(){ return new class ($a = function () {}) { public $b = self::class; }; }}',
                 '<?php final class A { public $b = static::class; public function foo(){ return new class ($a = function () {}) { public $b = static::class; }; }}',
             ],
             'property and nested anonymous class with set anonymous class' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class ($a = new class {}) { public $b = static::class; }; }}',
+                '<?php final class A { public $b = self::class; public function foo(){ return new class ($a = new class {}) { public $b = self::class; }; }}',
                 '<?php final class A { public $b = static::class; public function foo(){ return new class ($a = new class {}) { public $b = static::class; }; }}',
             ],
             'property and nested anonymous class with change after' => [
-                '<?php final class A { public function foo(){ return new class { public $b = static::class; }; } public $b = self::class; }',
+                '<?php final class A { public function foo(){ return new class { public $b = self::class; }; } public $b = self::class; }',
                 '<?php final class A { public function foo(){ return new class { public $b = static::class; }; } public $b = static::class; }',
             ],
             'property and nested anonymous class with extends' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class extends X implements Y { public $b = static::class; }; }}',
+                '<?php final class A { public $b = self::class; public function foo(){ return new class extends X implements Y { public $b = self::class; }; }}',
                 '<?php final class A { public $b = static::class; public function foo(){ return new class extends X implements Y { public $b = static::class; }; }}',
             ],
         ];
