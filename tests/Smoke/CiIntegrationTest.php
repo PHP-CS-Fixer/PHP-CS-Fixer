@@ -103,7 +103,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             $caseCommands
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../ci-integration.sh')));
         $steps = [
             "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",

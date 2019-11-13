@@ -7,7 +7,7 @@
         "KevinGH\\Box\\Compactor\\Php"
     ],
     "files": [
-        "dev-tools/ci-integration.sh",
+        "ci-integration.sh",
         "LICENSE"
     ],
     "finder": [
