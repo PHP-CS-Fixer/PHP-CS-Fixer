@@ -16,7 +16,7 @@ env:
         - COMPOSER_FLAGS=""
 
 before_install:
-    # turn off XDebug
+    # turn off Xdebug
     - phpenv config-rm xdebug.ini || return 0
 
     # Composer: boost installation
@@ -78,7 +78,7 @@ jobs:
             php: '5.6'
             env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest"
             before_install:
-                # turn off XDebug
+                # turn off Xdebug
                 - phpenv config-rm xdebug.ini || return 0
 
                 # Composer: boost installation
@@ -93,7 +93,7 @@ jobs:
             php: '7.0'
             env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="~4.1.0"
             before_install:
-                # turn off XDebug
+                # turn off Xdebug
                 - phpenv config-rm xdebug.ini || return 0
 
                 # Composer: boost installation
@@ -107,7 +107,7 @@ jobs:
             stage: Test
             php: '7.1'
             before_install:
-                # turn off XDebug
+                # turn off Xdebug
                 - phpenv config-rm xdebug.ini || return 0
 
                 # Composer: boost installation
@@ -139,7 +139,7 @@ jobs:
                 - if [ $COLLECT_COVERAGE == 0 ]; then travis_terminate 0; fi
 
                 ## regular `before_install`
-                # turn off XDebug
+                # turn off Xdebug
                 - phpenv config-rm xdebug.ini || return 0
 
                 # Composer: boost installation
