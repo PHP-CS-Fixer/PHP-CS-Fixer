@@ -26,7 +26,7 @@ jobs:
     include:
         -
             stage: Static Code Analysis
-            php: 7.2
+            php: 7.3
             env: COMPOSER_FLAGS="--prefer-stable"
             install:
                 - travis_retry ./dev-tools/install.sh
@@ -48,10 +48,11 @@ jobs:
                     | grep -v tests/Test/IntegrationCaseFactory.php \
                     | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
                     | grep -v tests/Test/InternalIntegrationCaseFactory.php \
+                    | grep -v tests/Test/IsIdenticalConstraint.php \
                     | grep -v tests/TestCase.php \
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
-                - ./dev-tools/tools/phpstan analyse
+                - php -d auto_prepend_file=dev-tools/vendor/autoload.php ./dev-tools/tools/phpstan analyse
                 - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/tools/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run

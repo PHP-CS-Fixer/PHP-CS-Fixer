@@ -256,11 +256,9 @@ $c = get_class($d);
     }
 
     /**
-     * @param Tokens   $tokens
-     * @param callable $functionFilter
-     * @param int      $start
-     * @param int      $end
-     * @param bool     $tryToRemove
+     * @param int  $start
+     * @param int  $end
+     * @param bool $tryToRemove
      */
     private function fixFunctionCalls(Tokens $tokens, callable $functionFilter, $start, $end, $tryToRemove)
     {

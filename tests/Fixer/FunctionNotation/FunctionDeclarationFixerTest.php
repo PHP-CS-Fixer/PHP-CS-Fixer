@@ -39,7 +39,6 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFixCases
      */
@@ -330,26 +329,6 @@ foo#
 {#
 }#',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param array       $configuration
-     *
-     * @dataProvider provideFix54Cases
-     */
-    public function test54($expected, $input = null, array $configuration = [])
-    {
-        $this->fixer->configure($configuration);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix54Cases()
-    {
-        return [
             [
                 '<?php
                     $b = static function ($a) {
@@ -381,7 +360,6 @@ foo#
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
@@ -402,6 +380,76 @@ foo#
             ['<?php use function Foo\bar; bar ( 1 );', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::$configurationClosureSpacingNone],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function test74($expected, $input = null, array $configuration = [])
+    {
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php fn ($i) => null;',
+                '<?php fn($i) => null;',
+            ],
+            [
+                '<?php fn ($a) => null;',
+                '<?php fn ($a)     => null;',
+            ],
+            [
+                '<?php $fn = fn () => null;',
+                '<?php $fn = fn()=> null;',
+            ],
+            [
+                '<?php fn &($a) => null;',
+                '<?php fn &(  $a   ) => null;',
+            ],
+            [
+                '<?php fn($i) => null;',
+                null,
+                self::$configurationClosureSpacingNone,
+            ],
+            [
+                '<?php fn($a) => null;',
+                '<?php fn ($a)      => null;',
+                self::$configurationClosureSpacingNone,
+            ],
+            [
+                '<?php $fn = fn() => null;',
+                '<?php $fn = fn ()=> null;',
+                self::$configurationClosureSpacingNone,
+            ],
+            [
+                '<?php $fn("");',
+                null,
+                self::$configurationClosureSpacingNone,
+            ],
+            [
+                '<?php fn&($a) => null;',
+                '<?php fn &(  $a   ) => null;',
+                self::$configurationClosureSpacingNone,
+            ],
+            [
+                '<?php $b = static fn ($a) => $a;',
+                '<?php $b = static     fn( $a )   => $a;',
+            ],
+            [
+                '<?php $b = static fn($a) => $a;',
+                '<?php $b = static     fn ( $a )   => $a;',
+                self::$configurationClosureSpacingNone,
+            ],
         ];
     }
 }

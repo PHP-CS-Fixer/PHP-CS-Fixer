@@ -121,9 +121,6 @@ final class ErrorOutput
         }
     }
 
-    /**
-     * @param array $trace
-     */
     private function outputTrace(array $trace)
     {
         if (isset($trace['class'], $trace['type'], $trace['function'])) {

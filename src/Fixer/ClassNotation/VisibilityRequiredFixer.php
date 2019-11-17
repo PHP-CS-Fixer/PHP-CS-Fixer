@@ -22,6 +22,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -115,16 +116,29 @@ class Sample
             $abstractFinalIndex = null;
             $visibilityIndex = null;
             $staticIndex = null;
+            $typeIndex = null;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            while ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR])) {
+
+            $expectedKinds = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
+            if ('property' === $element['type']) {
+                $expectedKinds = array_merge($expectedKinds, [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE]);
+            }
+
+            while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {
                 if ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL])) {
                     $abstractFinalIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind(T_STATIC)) {
                     $staticIndex = $prevIndex;
+                } elseif ($tokens[$prevIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE])) {
+                    $typeIndex = $prevIndex;
                 } else {
                     $visibilityIndex = $prevIndex;
                 }
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+            }
+
+            if (null !== $typeIndex) {
+                $index = $typeIndex;
             }
 
             if ($tokens[$prevIndex]->equals(',')) {
@@ -165,9 +179,8 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $keywordIndex
-     * @param int    $comparedIndex
+     * @param int $keywordIndex
+     * @param int $comparedIndex
      *
      * @return bool
      */
@@ -177,9 +190,8 @@ class Sample
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $fromIndex
-     * @param int    $toIndex
+     * @param int $fromIndex
+     * @param int $toIndex
      */
     private function moveTokenAndEnsureSingleSpaceFollows(Tokens $tokens, $fromIndex, $toIndex)
     {

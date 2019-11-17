@@ -101,4 +101,30 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     *
+     * @param mixed      $expected
+     * @param null|mixed $input
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php class A { private string $name; }',
+                '<?php class A { private string $nаmе; }',
+            ],
+            [
+                '<?php class A { private ? Foo\Bar $name; }',
+                '<?php class A { private ? Foo\Bar $nаmе; }',
+            ],
+        ];
+    }
 }

@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.15.3/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.15.4/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -1065,7 +1065,8 @@ Choose from the list of available rules:
 
 * **no_null_property_initialization** [@PhpCsFixer]
 
-  Properties MUST not be explicitly initialized with ``null``.
+  Properties MUST not be explicitly initialized with ``null`` except when
+  they have a type declaration (PHP 7.4).
 
 * **no_php4_constructor**
 
@@ -1109,7 +1110,7 @@ Choose from the list of available rules:
 
   Replaces superfluous ``elseif`` with ``if``.
 
-* **no_superfluous_phpdoc_tags**
+* **no_superfluous_phpdoc_tags** [@Symfony, @PhpCsFixer]
 
   Removes ``@param`` and ``@return`` tags that don't provide any useful
   information.
@@ -1169,7 +1170,7 @@ Choose from the list of available rules:
 
   Properties should be set to ``null`` instead of using ``unset``.
 
-  *Risky rule: changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables.*
+  *Risky rule: changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables. With PHP 7.4, this rule might introduce ``null`` assignments to property whose type declaration does not allow it.*
 
 * **no_unused_imports** [@Symfony, @PhpCsFixer]
 
@@ -1903,7 +1904,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.15.3/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.15.4/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

@@ -75,8 +75,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      */
@@ -92,8 +91,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return array
      */
@@ -101,6 +99,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     {
         $groupPrefix = '';
         $comment = '';
+        $groupOpenIndex = null;
         for ($i = $index + 1;; ++$i) {
             if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
@@ -135,7 +134,6 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     }
 
     /**
-     * @param Tokens $tokens
      * @param string $groupPrefix
      * @param int    $groupOpenIndex
      * @param int    $groupCloseIndex
@@ -192,9 +190,8 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param int    $endIndex
+     * @param int $index
+     * @param int $endIndex
      */
     private function fixGroupUse(Tokens $tokens, $index, $endIndex)
     {
@@ -219,9 +216,8 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param int    $endIndex
+     * @param int $index
+     * @param int $endIndex
      */
     private function fixMultipleUse(Tokens $tokens, $index, $endIndex)
     {

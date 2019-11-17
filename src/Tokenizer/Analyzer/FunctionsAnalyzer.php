@@ -23,8 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzer
 {
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -46,8 +45,7 @@ final class FunctionsAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $methodIndex
+     * @param int $methodIndex
      *
      * @return ArgumentAnalysis[]
      */
@@ -67,8 +65,7 @@ final class FunctionsAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $methodIndex
+     * @param int $methodIndex
      *
      * @return null|TypeAnalysis
      */
@@ -84,7 +81,7 @@ final class FunctionsAnalyzer
         $type = '';
         $typeStartIndex = $tokens->getNextMeaningfulToken($typeColonIndex);
         $typeEndIndex = $typeStartIndex;
-        $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';']);
+        $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';', [T_DOUBLE_ARROW]]);
         for ($i = $typeStartIndex; $i < $functionBodyStart; ++$i) {
             if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
                 continue;

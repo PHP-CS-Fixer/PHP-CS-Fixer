@@ -57,4 +57,37 @@ function foo (array /** @type array */ $bar)
             ],
         ];
     }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideProcessPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testProcessPhp74($source, array $expectedTokens = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_ARRAY,
+                CT::T_ARRAY_TYPEHINT,
+            ]
+        );
+    }
+
+    public function provideProcessPhp74Cases()
+    {
+        return [
+            [
+                '<?php
+$a = array(1, 2, 3);
+$fn = fn(array /** @type array */ $bar) => null;',
+                [
+                    5 => T_ARRAY,
+                    23 => CT::T_ARRAY_TYPEHINT,
+                ],
+            ],
+        ];
+    }
 }

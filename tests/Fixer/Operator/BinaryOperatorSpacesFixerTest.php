@@ -30,7 +30,6 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideWithTabsCases
      */
@@ -79,7 +78,6 @@ public function myFunction() {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider provideTestCases
      */
@@ -2077,7 +2075,6 @@ $a = $ae?? $b;
      *
      * @param string      $expected
      * @param null|string $input
-     * @param array       $configuration
      *
      * @dataProvider providePHP71Cases
      */
@@ -2128,6 +2125,45 @@ $a = $ae?? $b;
                 '<?php try {} catch (A|B $e) {}',
                 '<?php try {} catch (A   |     B $e) {}',
                 ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            [
+                '<?php
+                    $a = fn() => null;
+                    $b = fn() => null;
+                ',
+                '<?php
+                    $a = fn()    =>      null;
+                    $b = fn()      =>  null;
+                ',
+                null,
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php $a ??= 1;',
+                '<?php $a??=1;',
+                ['operators' => ['??=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
             ],
         ];
     }

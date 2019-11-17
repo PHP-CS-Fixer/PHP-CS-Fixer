@@ -140,6 +140,30 @@ final class Foo
         ];
     }
 
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function test74Fix($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield [
+            '<?php final class Foo { private int $foo; }',
+            '<?php final class Foo { protected int $foo; }',
+        ];
+        yield [
+            '<?php final class Foo { private ?string $foo; }',
+            '<?php final class Foo { protected ?string $foo; }',
+        ];
+    }
+
     private function getAttributesAndMethods($original)
     {
         $attributesAndMethodsOriginal = '

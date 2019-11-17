@@ -772,10 +772,8 @@ EOF;
     }
 
     /**
-     * @param array                  $config
-     * @param string                 $expected
-     * @param string                 $input
-     * @param WhitespacesFixerConfig $whitespacesFixerConfig
+     * @param string $expected
+     * @param string $input
      *
      * @dataProvider provideMessyWhitespacesCases
      */
@@ -1126,7 +1124,6 @@ EOF;
     }
 
     /**
-     * @param array  $config
      * @param string $expected
      * @param string $input
      *
@@ -1233,7 +1230,6 @@ final class Sample
     }
 
     /**
-     * @param array  $config
      * @param string $input
      *
      * @dataProvider provideInvalidPhpdocCases

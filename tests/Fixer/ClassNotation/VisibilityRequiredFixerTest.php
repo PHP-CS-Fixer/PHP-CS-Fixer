@@ -66,6 +66,13 @@ EOF;
 
     public function testFixPropertiesAfterMethod()
     {
+        $input = <<<'EOF'
+<?php
+class Foo {
+    public function aaa() {}
+    var $bbb;
+}
+EOF;
         $expected = <<<'EOF'
 <?php
 class Foo {
@@ -74,18 +81,89 @@ class Foo {
 }
 EOF;
 
-        $this->doTest($expected);
+        $this->doTest($expected, $input);
     }
 
-    public function testFixMethods()
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFixMethodsCases
+     */
+    public function testFixMethods($expected, $input = null)
     {
-        $expected = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.0
+     * @dataProvider provideFixMethods70Cases
+     */
+    public function testFixMethods70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixMethods70Cases()
+    {
+        return [
+            [
+                <<<'EOF'
+<?php
+class MyTestWithAnonymousClass extends TestCase
+{
+    public function setUp()
+    {
+        $provider = new class(function () {}) {};
+    }
+
+    public function testSomethingWithMoney(
+        Money $amount
+    ) {
+    }
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+class MyTestWithAnonymousClass extends TestCase
+{
+    function setUp()
+    {
+        $provider = new class(function () {}) {};
+    }
+
+    public function testSomethingWithMoney(
+        Money $amount
+    ) {
+    }
+}
+EOF
+                ,
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function provideFixMethodsCases()
+    {
+        return [
+            [
+                <<<'EOF'
 <?php
 abstract class Foo {
     public function& foo0() {}
     public function & foo1() {}
     public function &foo2() {}
-    protected function foo3() {}
+    protected function foo3($b) {}
     abstract protected function foo4();
     private function foo5() {}
     final public function foo6() {}
@@ -102,15 +180,15 @@ abstract class Foo {
             $bar = function($baz) {};
         }
 }
-EOF;
-
-        $input = <<<'EOF'
+EOF
+                ,
+                <<<'EOF'
 <?php
 abstract class Foo {
     public function& foo0() {}
     public function & foo1() {}
     function &foo2() {}
-    protected function foo3() {}
+    protected function foo3($b) {}
     protected
     abstract function foo4();
     private function foo5() {}
@@ -129,9 +207,26 @@ abstract class Foo {
             $bar = function($baz) {};
         }
 }
-EOF;
-
-        $this->doTest($expected, $input);
+EOF
+                ,
+            ],
+            [
+                <<<'EOF'
+<?php
+abstract class Foo1 {
+    public function& foo0($a) {}
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+abstract class Foo1 {
+    function& foo0($a) {}
+}
+EOF
+                ,
+            ],
+        ];
     }
 
     public function testLeaveFunctionsAlone()
@@ -683,5 +778,38 @@ AB# <- this is the name
                 }
             '
         );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 7.4
+     * @dataProvider provideFix74Cases
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield [
+            '<?php class Foo { private int $foo; }',
+        ];
+        yield [
+            '<?php class Foo { protected ?string $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public ? string $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public ? string $foo; }',
+            '<?php class Foo { var ? string $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public static Foo\Bar $foo; }',
+            '<?php class Foo { static public Foo\Bar $foo; }',
+        ];
     }
 }

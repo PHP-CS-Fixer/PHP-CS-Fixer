@@ -111,4 +111,54 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        return [
+            [
+                '<?php class Foo { private ?string $foo; }',
+                '<?php class Foo { private ? string $foo; }',
+            ],
+            [
+                '<?php class Foo { protected ?string $foo; }',
+                '<?php class Foo { protected ? string $foo; }',
+            ],
+            [
+                '<?php class Foo { public ?string $foo; }',
+                '<?php class Foo { public ? string $foo; }',
+            ],
+            [
+                '<?php class Foo { var ?Foo\Bar $foo; }',
+                '<?php class Foo { var ? Foo\Bar $foo; }',
+            ],
+            [
+                '<?php $foo = fn(?Bar\Baz $param): ?Bar\Baz => null;',
+                '<?php $foo = fn(? Bar\Baz $param): ? Bar\Baz => null;',
+            ],
+            [
+                '<?php $foo = fn(?Bar\Baz &$param): ?Bar\Baz => null;',
+                '<?php $foo = fn(? Bar\Baz &$param): ? Bar\Baz => null;',
+            ],
+            [
+                '<?php $foo = fn(?array $a,
+                    ?array $b): ?Bar\Baz => null;',
+                '<?php $foo = fn(?
+                    array $a,
+                    ? array $b): ?
+                    Bar\Baz => null;',
+            ],
+        ];
+    }
 }

@@ -87,4 +87,27 @@ final class BlocksAnalyzerTest extends TestCase
             ['<?php foo((1));', 3, 6],
         ];
     }
+
+    /**
+     * @param string $code
+     * @param int    $openIndex
+     * @param int    $closeIndex
+     *
+     * @dataProvider provideBlocksPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testBlocksPhp74($code, $openIndex, $closeIndex)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new BlocksAnalyzer();
+
+        static::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
+    }
+
+    public function provideBlocksPhp74Cases()
+    {
+        return [
+            ['<?php $fn = fn($x) => $x + 10;', 6, 8],
+        ];
+    }
 }

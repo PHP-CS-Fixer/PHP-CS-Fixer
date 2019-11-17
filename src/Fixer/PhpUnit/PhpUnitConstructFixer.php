@@ -133,7 +133,6 @@ $this->assertNotSame(null, $d);
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index
      * @param string $method
      *
@@ -151,7 +150,6 @@ $this->assertNotSame(null, $d);
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index
      * @param string $method
      *
@@ -170,7 +168,6 @@ $this->assertNotSame(null, $d);
 
     /**
      * @param array<string, string> $map
-     * @param Tokens                $tokens
      * @param int                   $index
      * @param string                $method
      *

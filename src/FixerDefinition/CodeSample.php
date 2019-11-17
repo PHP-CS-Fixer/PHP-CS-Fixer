@@ -28,8 +28,7 @@ final class CodeSample implements CodeSampleInterface
     private $configuration;
 
     /**
-     * @param string     $code
-     * @param null|array $configuration
+     * @param string $code
      */
     public function __construct($code, array $configuration = null)
     {

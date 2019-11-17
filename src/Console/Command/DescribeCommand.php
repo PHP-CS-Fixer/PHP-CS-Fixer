@@ -65,9 +65,6 @@ final class DescribeCommand extends Command
      */
     private $fixers;
 
-    /**
-     * @param null|FixerFactory $fixerFactory
-     */
     public function __construct(FixerFactory $fixerFactory = null)
     {
         parent::__construct();
@@ -131,8 +128,7 @@ final class DescribeCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $name
+     * @param string $name
      */
     private function describeRule(OutputInterface $output, $name)
     {
@@ -283,8 +279,9 @@ final class DescribeCommand extends Command
                 $old = $codeSample->getCode();
                 $tokens = Tokens::fromCode($old);
 
+                $configuration = $codeSample->getConfiguration();
+
                 if ($fixer instanceof ConfigurableFixerInterface) {
-                    $configuration = $codeSample->getConfiguration();
                     $fixer->configure(null === $configuration ? [] : $configuration);
                 }
 
@@ -313,8 +310,7 @@ final class DescribeCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $name
+     * @param string $name
      */
     private function describeSet(OutputInterface $output, $name)
     {
@@ -385,8 +381,7 @@ final class DescribeCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $type   'rule'|'set'
+     * @param string $type 'rule'|'set'
      */
     private function describeList(OutputInterface $output, $type)
     {

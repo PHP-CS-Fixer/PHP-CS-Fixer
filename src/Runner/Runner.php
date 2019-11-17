@@ -286,7 +286,6 @@ final class Runner
 
     /**
      * @param string $name
-     * @param Event  $event
      */
     private function dispatchEvent($name, Event $event)
     {

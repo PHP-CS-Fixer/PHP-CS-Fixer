@@ -90,7 +90,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         foreach ((new NamespacesAnalyzer())->getDeclarations($tokens) as $namespace) {
             $currentNamespaceUseDeclarations = array_filter(
                 $useDeclarations,
-                function (NamespaceUseAnalysis $useDeclaration) use ($namespace) {
+                static function (NamespaceUseAnalysis $useDeclaration) use ($namespace) {
                     return
                         $useDeclaration->getStartIndex() >= $namespace->getScopeStartIndex()
                         && $useDeclaration->getEndIndex() <= $namespace->getScopeEndIndex()
@@ -115,10 +115,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
-     * @param Tokens            $tokens
-     * @param NamespaceAnalysis $namespace
-     * @param array<int, int>   $ignoredIndexes
-     * @param string            $shortName
+     * @param array<int, int> $ignoredIndexes
+     * @param string          $shortName
      *
      * @return bool
      */
@@ -145,7 +143,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
                 if (
                     0 === strcasecmp($shortName, $token->getContent())
-                    && !$prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR])
+                    && !$prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR, T_DOUBLE_COLON])
                 ) {
                     return true;
                 }
@@ -153,10 +151,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isComment() && Preg::match(
-                '/(?<![[:alnum:]])(?<!\\\\)'.$shortName.'(?![[:alnum:]])/i',
-                $token->getContent()
-            )) {
+            if ($token->isComment()
+                && Preg::match(
+                    '/(?<![[:alnum:]])(?<!\\\\)'.$shortName.'(?![[:alnum:]])/i',
+                    $token->getContent()
+                )
+            ) {
                 return true;
             }
         }

@@ -1,5 +1,8 @@
+includes:
+    - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
+
 parameters:
-    level: 0
+    level: 1
     paths:
         - src
         - tests
@@ -8,3 +11,5 @@ parameters:
     ignoreErrors:
         - '/^.+::__construct\(\) does not call parent constructor from SplFileInfo\.$/'
         - '/^Return typehint of method PhpCsFixer\\Tests\\Test\\.+::createIsIdenticalStringConstraint\(\) has invalid type PHPUnit_Framework_Constraint_IsIdentical\.$/'
+        ## cannot analyse out of PHP 7.4
+        - '/^Constant T_FN not found\.$/'

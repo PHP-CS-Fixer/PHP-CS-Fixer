@@ -424,7 +424,7 @@ class Foo
                         // and it is not a `Foo::{bar}()` situation
                         !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
-                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING]])) &&
+                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING], [T_VARIABLE]])) &&
                         // and next token is not a closing tag that would break heredoc/nowdoc syntax
                         !($tokens[$nestIndex - 1]->isGivenKind(T_END_HEREDOC) && $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG))
                     ) {
@@ -566,11 +566,11 @@ class Foo
                     continue;
                 }
 
-                if (!$isAnonymousClass) {
-                    $prevToken = $tokens[$closingParenthesisIndex - 1];
-                }
-
-                if (!$isAnonymousClass && $prevToken->isWhitespace() && false !== strpos($prevToken->getContent(), "\n")) {
+                if (
+                    !$isAnonymousClass
+                    && $tokens[$closingParenthesisIndex - 1]->isWhitespace()
+                    && false !== strpos($tokens[$closingParenthesisIndex - 1]->getContent(), "\n")
+                ) {
                     if (!$tokens[$startBraceIndex - 2]->isComment()) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
                     }
@@ -676,8 +676,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return string
      */
@@ -711,8 +710,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $structureTokenIndex
+     * @param int $structureTokenIndex
      *
      * @return int
      */
@@ -730,8 +728,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $parenthesisEndIndex
+     * @param int $parenthesisEndIndex
      *
      * @return int
      */
@@ -869,8 +866,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixDeclareStatement(Tokens $tokens, $index)
     {
@@ -891,8 +887,7 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startBraceIndex
+     * @param int $startBraceIndex
      */
     private function fixSingleLineWhitespaceForDeclare(Tokens $tokens, $startBraceIndex)
     {
@@ -908,7 +903,6 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index
      * @param string $whitespace
      */
@@ -923,11 +917,16 @@ class Foo
         $nextToken = $tokens[$nextTokenIndex];
         if ($nextToken->isComment()) {
             $previousToken = $tokens[$nextTokenIndex - 1];
+            $nextTokenContent = $nextToken->getContent();
 
             // do not indent inline comments used to comment out unused code
             if (
-                (0 === strpos($nextToken->getContent(), '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextToken->getContent())
-                && $previousToken->isWhitespace() && 1 === Preg::match('/\R$/', $previousToken->getContent())
+                $previousToken->isWhitespace()
+                && 1 === Preg::match('/\R$/', $previousToken->getContent())
+                && (
+                    (0 === strpos($nextTokenContent, '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextTokenContent)
+                    || (0 === strpos($nextTokenContent, '#'.$this->whitespacesConfig->getIndent()) || '#' === $nextTokenContent)
+                )
             ) {
                 return;
             }
@@ -946,9 +945,8 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startParenthesisIndex
-     * @param int    $endParenthesisIndex
+     * @param int $startParenthesisIndex
+     * @param int $endParenthesisIndex
      *
      * @return bool
      */
@@ -971,8 +969,7 @@ class Foo
      * multi-line message whose lines are all single-line comments and at least
      * one line has meaningful content.
      *
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      *
      * @return bool
      */
@@ -1020,9 +1017,8 @@ class Foo
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
-     * @param bool   $after
+     * @param int  $index
+     * @param bool $after
      *
      * @return null|int
      */

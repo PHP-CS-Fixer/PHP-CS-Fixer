@@ -676,6 +676,17 @@ public function B(); // allowed comment
                 public function C(); // allowed comment
             }',
         ];
+        $cases[] = [
+            '<?php class Foo {
+                var $a;
+
+                var $b;
+            }',
+            '<?php class Foo {
+                var $a;
+                var $b;
+            }',
+        ];
 
         return $cases;
     }
@@ -893,7 +904,6 @@ class ezcReflectionMethod extends ReflectionMethod {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param array       $config
      *
      * @dataProvider provideConfigCases
      */
@@ -1069,6 +1079,41 @@ private $d = 123;
 
                 }',
             ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield [
+            '<?php
+            class Foo {
+                private ?int $foo;
+
+                protected string $bar;
+
+                public iterable $baz;
+
+                var ? Foo\Bar $qux;
+            }',
+            '<?php
+            class Foo {
+                private ?int $foo;
+                protected string $bar;
+                public iterable $baz;
+                var ? Foo\Bar $qux;
+            }',
         ];
     }
 }

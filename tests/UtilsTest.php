@@ -201,7 +201,6 @@ final class UtilsTest extends TestCase
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      *
      * @param string $joined
-     * @param array  $names
      */
     public function testNaturalLanguageJoinWithBackticks($joined, array $names)
     {
@@ -227,8 +226,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param int   $expected
-     * @param array $options
+     * @param int $expected
      *
      * @dataProvider provideCalculateBitmaskCases
      */

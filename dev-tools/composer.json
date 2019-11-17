@@ -6,7 +6,8 @@
         "humbug/box": "~3.7.0",
         "localheinz/composer-normalize": "^1.1",
         "mi-schi/phpmd-extension": "^4.3",
-        "phpmd/phpmd": "^2.6"
+        "phpmd/phpmd": "^2.6",
+        "phpstan/phpstan-phpunit": "^0.11.2"
     },
     "conflict": {
         "hhvm": "*"

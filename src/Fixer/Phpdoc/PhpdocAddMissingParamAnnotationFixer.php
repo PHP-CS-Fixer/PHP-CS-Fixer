@@ -232,9 +232,8 @@ function f9(string $foo, $bar, $baz) {}
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $start
-     * @param int    $end
+     * @param int $start
+     * @param int $end
      *
      * @return array
      */

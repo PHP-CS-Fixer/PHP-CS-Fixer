@@ -121,6 +121,10 @@ function my_foo()
      */
     public function isCandidate(Tokens $tokens)
     {
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+            return true;
+        }
+
         return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
     }
 
@@ -161,7 +165,10 @@ function my_foo()
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (
+                !$tokens[$index]->isGivenKind(T_FUNCTION)
+                && (\PHP_VERSION_ID < 70400 || !$tokens[$index]->isGivenKind(T_FN))
+            ) {
                 continue;
             }
 
@@ -250,8 +257,7 @@ function my_foo()
     /**
      * Determine whether the function already has a return type hint.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the end of the function definition line, EG at { or ;
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      *
      * @return bool
      */
@@ -264,7 +270,6 @@ function my_foo()
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $index      The index of the end of the function definition line, EG at { or ;
      * @param bool   $isNullable
      * @param string $returnType
@@ -305,8 +310,7 @@ function my_foo()
     /**
      * Find all the return annotations in the function's PHPDoc comment.
      *
-     * @param Tokens $tokens
-     * @param int    $index  The index of the function token
+     * @param int $index The index of the function token
      *
      * @return Annotation[]
      */

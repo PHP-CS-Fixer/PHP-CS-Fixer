@@ -23,7 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class BlocksAnalyzer
 {
     /**
-     * @param Tokens   $tokens
      * @param null|int $openIndex
      * @param null|int $closeIndex
      *
@@ -53,8 +52,6 @@ final class BlocksAnalyzer
     }
 
     /**
-     * @param Token $token
-     *
      * @return null|int
      */
     private function getBlockType(Token $token)
