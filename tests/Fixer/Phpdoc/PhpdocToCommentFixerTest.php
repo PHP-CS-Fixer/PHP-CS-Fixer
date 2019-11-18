@@ -552,6 +552,17 @@ $loader = require __DIR__.\'/../vendor/autoload.php\';
 ',
         ];
 
+        $cases[] = [
+            '<?php
+
+foreach ($this->subscribers[$eventClassName] as $subscriber) {
+    /** @noinspection PhpParamsInspection */
+    /** @psalm-suppress UndefinedInterfaceMethod */
+    $subscriber->notify($event);
+}
+',
+        ];
+
         return $cases;
     }
 
