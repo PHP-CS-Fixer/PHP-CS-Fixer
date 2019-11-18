@@ -92,6 +92,11 @@ final class CommentsAnalyzer
         return false;
     }
 
+    public function isAnnotation(Token $token)
+    {
+        return 1 === Preg::match('#\/\*{2}\s+.*@\w+#m', $token->getContent());
+    }
+
     /**
      * Return array of indices that are part of a comment started at given index.
      *

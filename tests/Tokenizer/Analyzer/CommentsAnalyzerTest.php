@@ -302,4 +302,121 @@ $bar;',
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
         ];
     }
+
+    /**
+     * @dataProvider provideAnnotationCases
+     *
+     * @param string $code
+     */
+    public function testIsAnnotation($code)
+    {
+        $tokens = Tokens::fromCode($code);
+
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+
+        $token = $tokens[$index];
+
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertTrue($analyzer->isAnnotation($token));
+    }
+
+    public function provideAnnotationCases()
+    {
+        return [
+            [
+                '<?php
+
+/**
+ * @var int $foo
+ */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/** @var int $foo */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/**
+ * @noinspection PhpParamsInspection
+ */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/** @noinspection PhpParamsInspection */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/** @psalm-suppress hmmm */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/**
+ * @psalm-suppress hmmm
+ */
+$foo = 900;
+',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideNotAnnotationCases
+     *
+     * @param string $code
+     */
+    public function testIsNotAnnotation($code)
+    {
+        $tokens = Tokens::fromCode($code);
+
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+
+        $token = $tokens[$index];
+
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertFalse($analyzer->isAnnotation($token));
+    }
+
+    public function provideNotAnnotationCases()
+    {
+        return [
+            [
+                '<?php
+
+/* @var int $foo */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/* @noinspection PhpParamsInspection */
+$foo = 900;
+',
+            ],
+            [
+                '<?php
+
+/* @psalm-suppress hmmm */
+#foo = 900;
+',
+            ],
+        ];
+    }
 }
