@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-11-07T19:02:40Z
+
+Shouldn't we update `composer.json` with:
+
+```diff
+         "justinrainbow/json-schema": "^5.0",
+         "keradus/cli-executor": "^1.2",
+-        "mikey179/vfsstream": "^1.6",
++        "mikey179/vfsstream": "^1.6.8",
+         "php-coveralls/php-coveralls": "^2.1",
+         "php-cs-fixer/accessible-object": "^1.0",
+```
+
+or is it overkill?
+
+If we had Travis job with PHP 7.4 and `COMPOSER_FLAGS="--prefer-lowest"` it would fail.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-07T19:43:08Z
+
+For now it doesn't fail so I'd say it's fine.
