@@ -93,6 +93,12 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                 "<?php abstract class MyClass { {$fixed} }",
                 "<?php abstract class MyClass { {$original} }",
             ],
+            'abstract-class-with-abstract-public-methods' => [
+                '<?php abstract class MyClass {
+                    abstract public function foo();
+                    abstract public static function bar();
+                }',
+            ],
         ];
     }
 

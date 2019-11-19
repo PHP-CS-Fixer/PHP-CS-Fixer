@@ -149,8 +149,8 @@ abstract class AbstractMachine
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $prevToken = $tokens[$prevIndex];
             }
-            // skip already final methods
-            if ($prevToken->isGivenKind([T_FINAL])) {
+            // skip abstract or already final methods
+            if ($prevToken->isGivenKind([T_ABSTRACT, T_FINAL])) {
                 $index = $prevIndex;
 
                 continue;
