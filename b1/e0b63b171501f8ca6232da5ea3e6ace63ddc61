@@ -1,0 +1,77 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-09T12:13:54Z
+
+I would like to merge this one, so if anyone has more this please let me know otherwise I resolve the minors and continue :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-10-11T20:01:05Z
+
+@julienfalque @SpacePossum
+
+Perhaps it makes sense to adjust the `PhpdocOrderFixer` to also take into account a range of other annotations?
+
+I like
+
+- having annotations in a specific order
+- having annotations grouped (separated by an empty line)
+
+In other words, make the `PhpdocOrderFixer` configurable!
+
+What do you think?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-11T20:14:26Z
+
+I think that would be great :)
+Do you want to incorporate the work done here in the new fixer into that one or keep those separated? It might be easier to have one to prevent conflicts and make the configuration for the end user more easy... hmm... I might need to give it some more thought though, but it does sound good
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-10-13T14:01:02Z
+
+Maybe there’s room for more fixers?
+
+- group annotations
+- sort annotations within a group
+- sort annotation groups
+
+Personally, I would use all of them!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-10-13T21:19:59Z
+
+Build failures are currently related to failing to download static analysis tools.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-03T12:27:12Z
+
+@localheinz , can you please rebase and handle newest code review ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-11-03T13:32:21Z
+
+@keradus
+
+Apologies for the delay - will do!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-11-03T14:03:11Z
+
+@julienfalque @keradus @kubawerlos @SpacePossum
+
+I have
+
+- rebased on top of `master`
+- added handling of `@coversNothing`
+- added handling of `@internal`
+
+and I apologize for the delay.
+
+If you find something else that needs to be addressed, I promise to sort it out quickly!
