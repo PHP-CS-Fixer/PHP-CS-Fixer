@@ -679,13 +679,13 @@ Choose from the list of available rules:
 
 * **final_public_method_for_abstract_class**
 
-  All public methods of abstract classes should be final.
+  All ``public`` methods of ``abstract`` classes should be ``final``.
 
-  *Risky rule: risky when overriding public methods of abstract classes.*
+  *Risky rule: risky when overriding ``public`` methods of ``abstract`` classes.*
 
 * **final_static_access**
 
-  Converts ``static`` access to ``self`` access in final classes.
+  Converts ``static`` access to ``self`` access in ``final`` classes.
 
 * **fopen_flag_order** [@Symfony:risky, @PhpCsFixer:risky]
 
@@ -1786,7 +1786,7 @@ Choose from the list of available rules:
 
 * **self_static_accessor**
 
-  Inside a final class or anonymous class ``self`` should be preferred to
+  Inside a ``final`` class or anonymous class ``self`` should be preferred to
   ``static``.
 
 * **semicolon_after_instruction** [@Symfony, @PhpCsFixer]
