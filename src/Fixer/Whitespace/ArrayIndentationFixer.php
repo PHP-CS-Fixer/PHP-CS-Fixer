@@ -147,11 +147,50 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
     {
         $arrayTokenRanges = [];
         $currentArray = null;
+        $valueSinceIndex = null;
 
         for ($index = $from; $index <= $to; ++$index) {
             $token = $tokens[$index];
 
-            if (null !== $currentArray && $currentArray['end'] === $index) {
+            if ($token->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                $arrayStartIndex = $index;
+
+                if ($token->isGivenKind(T_ARRAY)) {
+                    $index = $tokens->getNextTokenOfKind($index, ['(']);
+                }
+
+                $endIndex = $tokens->findBlockEnd(
+                    $tokens[$index]->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
+                    $index
+                );
+
+                if (null === $currentArray) {
+                    $currentArray = [
+                        'start' => $index,
+                        'end' => $endIndex,
+                        'ignored_tokens_ranges' => [],
+                    ];
+                } else {
+                    if (null === $valueSinceIndex) {
+                        $valueSinceIndex = $arrayStartIndex;
+                    }
+
+                    $index = $endIndex;
+                }
+
+                continue;
+            }
+
+            if (null === $currentArray || $token->isWhitespace() || $token->isComment()) {
+                continue;
+            }
+
+            if ($currentArray['end'] === $index) {
+                if (null !== $valueSinceIndex) {
+                    $currentArray['ignored_tokens_ranges'][] = [$valueSinceIndex, $tokens->getPrevMeaningfulToken($index)];
+                    $valueSinceIndex = null;
+                }
+
                 $rangeIndexes = [$currentArray['start']];
                 foreach ($currentArray['ignored_tokens_ranges'] as list($start, $end)) {
                     $rangeIndexes[] = $start - 1;
@@ -172,39 +211,23 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                 continue;
             }
 
-            if (null === $currentArray && $token->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
-                if ($token->isGivenKind(T_ARRAY)) {
-                    $index = $tokens->getNextTokenOfKind($index, ['(']);
-                }
-
-                $currentArray = [
-                    'start' => $index,
-                    'end' => $tokens->findBlockEnd(
-                        $tokens[$index]->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
-                        $index
-                    ),
-                    'ignored_tokens_ranges' => [],
-                ];
-
-                continue;
+            if (null === $valueSinceIndex) {
+                $valueSinceIndex = $index;
             }
 
             if (
-                null !== $currentArray && (
-                    ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
-                    || $token->equals('{')
-                )
+                ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
+                || $token->equals('{')
             ) {
-                $endIndex = $tokens->findBlockEnd(
+                $index = $tokens->findBlockEnd(
                     $token->equals('{') ? Tokens::BLOCK_TYPE_CURLY_BRACE : Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                     $index
                 );
+            }
 
-                $currentArray['ignored_tokens_ranges'][] = [$index, $endIndex];
-
-                $index = $endIndex;
-
-                continue;
+            if ($token->equals(',')) {
+                $currentArray['ignored_tokens_ranges'][] = [$valueSinceIndex, $tokens->getPrevMeaningfulToken($index)];
+                $valueSinceIndex = null;
             }
         }
 
