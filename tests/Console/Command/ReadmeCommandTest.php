@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Console\Command\ReadmeCommand;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -53,6 +54,15 @@ final class ReadmeCommandTest extends TestCase
             $output,
             $fileContent,
             'README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.'
+        );
+    }
+
+    public function testCodeNotHaveUnderlinishStyleOfHeaders()
+    {
+        static::assertNotRegExp(
+            '/([^\s])\1{4,}/',
+            file_get_contents((new \ReflectionClass(ReadmeCommand::class))->getFileName()),
+            'Five same characters in row found'
         );
     }
 }
