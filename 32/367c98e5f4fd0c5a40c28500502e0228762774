@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by mvorisek at 2019-11-23T15:36:02Z
+
+>
+>
+> Also tests are failing - see the README information at https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.0/CONTRIBUTING.md
+
+What should I do? This is only improval of README, not code, I do not except any CI tests on this.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-11-23T15:59:02Z
+
+@mvorisek check the message from the failing test ;)
+
+>  I do not except any CI tests on this
+
+How do you think README is up to date with all the fixers in code?
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2019-11-23T21:47:08Z
+
+>
+>
+> @mvorisek check the message from the failing test ;)
+>
+> > I do not except any CI tests on this
+>
+> How do you think README is up to date with all the fixers in code?
+
+Fixed.
