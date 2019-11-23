@@ -13,9 +13,9 @@
 namespace PhpCsFixer\Runner;
 
 use PhpCsFixer\Cache\CacheManagerInterface;
+use PhpCsFixer\Event\Event;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\FixerFileProcessedEvent;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

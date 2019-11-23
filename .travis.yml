@@ -88,6 +88,7 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
+            env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^5.0"
 
         -
             <<: *STANDARD_TEST_JOB
@@ -164,6 +165,3 @@ jobs:
                     tags: true
             after_deploy:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
-
-    allow_failures:
-        - php: 7.4snapshot

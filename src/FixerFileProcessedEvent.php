@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer;
 
-use Symfony\Component\EventDispatcher\Event;
+use PhpCsFixer\Event\Event;
 
 /**
  * Event that is fired when file was processed by Fixer.

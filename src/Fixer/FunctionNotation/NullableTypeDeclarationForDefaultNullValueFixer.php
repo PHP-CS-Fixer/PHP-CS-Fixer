@@ -111,8 +111,8 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             // If the parameter doesn't have a type declaration or a default value null we can continue
             if (
                 !$argumentInfo->hasTypeAnalysis()
-                ||
-                'null' !== $argumentInfo->getDefault()
+                || !$argumentInfo->hasDefault()
+                || 'null' !== strtolower($argumentInfo->getDefault())
             ) {
                 continue;
             }
