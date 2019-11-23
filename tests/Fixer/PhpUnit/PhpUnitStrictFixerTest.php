@@ -89,6 +89,10 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
                 "<?php static::{$methodAfter}(1, 2);",
                 "<?php static::{$methodBefore}(1, 2);",
             ];
+            $cases[] = [
+                "<?php STATIC::{$methodAfter}(1, 2);",
+                "<?php STATIC::{$methodBefore}(1, 2);",
+            ];
         }
 
         return $cases;
