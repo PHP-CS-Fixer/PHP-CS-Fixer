@@ -1142,6 +1142,47 @@ final class ConfigurationResolverTest extends TestCase
         ];
     }
 
+    public function provideGetDirectoryCases()
+    {
+        return [
+            [null, '/my/path/my/file', 'path/my/file'],
+            ['/my/path2/dir/.php_cs.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
+            ['dir/.php_cs.cache', '/my/path/dir/dir3/file', 'dir3/file'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetDirectoryCases
+     *
+     * @param null|string $cacheFile
+     * @param string      $file
+     * @param string      $expectedPathRelativeToFile
+     */
+    public function testGetDirectory($cacheFile, $file, $expectedPathRelativeToFile)
+    {
+        if (null !== $cacheFile) {
+            $cacheFile = $this->normalizePath($cacheFile);
+        }
+        $file = $this->normalizePath($file);
+        $expectedPathRelativeToFile = $this->normalizePath($expectedPathRelativeToFile);
+
+        $config = new Config();
+        if (null === $cacheFile) {
+            $config->setUsingCache(false);
+        } else {
+            $config->setCacheFile($cacheFile);
+        }
+
+        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), new ToolInfo());
+        $directory = $resolver->getDirectory();
+        static::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
+    }
+
+    private function normalizePath($path)
+    {
+        return str_replace('/', \DIRECTORY_SEPARATOR, $path);
+    }
+
     private static function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
