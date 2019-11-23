@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-10-28T07:51:03Z
+
+@l-vo , please ping us when 2nd point of https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4608#pullrequestreview-307590178 is ready
+
+---------------------------------------------------------------------------
+
+by l-vo at 2019-11-02T15:18:54Z
+
+@keradus CI steps to test against Symfony 4 and Symfony 5 components added
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-02T18:24:34Z
+
+@l-vo , can we reuse some of existing jobs?
+i would really like to avoid extra 2 jobs
+
+---------------------------------------------------------------------------
+
+by l-vo at 2019-11-03T19:23:43Z
+
+@keradus PR modified to reuse existing jobs
+
+---------------------------------------------------------------------------
+
+by alexander-schranz at 2019-11-19T08:52:58Z
+
+@julienfalque another way would be use the `.phar` for php-coveralls as it is just a dev dependency. Example: https://github.com/sulu/SuluContentBundle/blob/756944dbb17a27ed840fc12d0d13203ccb4e7aed/.circleci/config.yml#L135-L138
+
+---------------------------------------------------------------------------
+
+by andreybolonin at 2019-11-21T11:10:07Z
+
+<img width="1327" alt="Screen Shot 2019-11-21 at 1 09 53 PM" src="https://user-images.githubusercontent.com/2576509/69332853-398a9a80-0c60-11ea-9cf7-b987ec67cad5.png">
+
+With Symfony 5
+
+---------------------------------------------------------------------------
+
+by l-vo at 2019-11-21T17:14:58Z
+
+@julienfalque rebased on 2.15
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-21T19:43:36Z
+
+@julienfalque , php-coveralls issue solved. can you review once more?
+@l-vo , why changing the baseline to 2.15? if sth would not be compatible, we would need to fix it then on both, 2.15 and 2.16, instead of only 2.16
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-21T20:06:53Z
+
+@keradus [I did ask to rebase onto 2.15](4608#pullrequestreview-318660553). Travis build was green on 2.16 so merging 2.15 into 2.16 should be fine anyway.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2019-11-22T07:30:55Z
+
+:+1: Looks great! That's the only missing piece to allow me to upgrade fabbot.io to Symfony 5.0 :)
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2019-11-23T10:36:41Z
+
+Bloker for https://github.com/getsentry/sentry-php/pull/925
