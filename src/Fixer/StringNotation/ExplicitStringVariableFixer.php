@@ -92,7 +92,9 @@ EOT
             $nextIndex = $index + 1;
             $squareBracketCount = 0;
             while (!$this->isStringPartToken($tokens[$nextIndex])) {
-                if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE) && 1 !== $squareBracketCount) {
+                if ($tokens[$nextIndex]->isGivenKind(T_CURLY_OPEN)) {
+                    $nextIndex = $tokens->getNextTokenOfKind($nextIndex, [[CT::T_CURLY_CLOSE]]);
+                } elseif ($tokens[$nextIndex]->isGivenKind(T_VARIABLE) && 1 !== $squareBracketCount) {
                     $distinctVariableIndex = $nextIndex;
                     $variableTokens[$distinctVariableIndex] = [
                         'tokens' => [$nextIndex => $tokens[$nextIndex]],
