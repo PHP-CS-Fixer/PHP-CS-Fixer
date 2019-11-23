@@ -140,22 +140,19 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 }
 
                 $previousToken = $tokens[$index - 1];
-                $stringTypeChanged = false;
 
                 if ($previousToken->isGivenKind(T_START_HEREDOC)) {
                     $previousTokenContent = $previousToken->getContent();
 
                     if (false !== strpos($previousTokenContent, '\'')) {
                         $tokens[$index - 1] = new Token([T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
-                        $stringTypeChanged = true;
+                        $content = Preg::replace('/([\\\\$])/', '\\\\$1', $content);
                     }
-                } elseif ("'" === $content[0]) {
-                    $content = Preg::replace('/^\'(.*)\'$/', '"$1"', $content);
-                    $stringTypeChanged = true;
-                }
-
-                if ($stringTypeChanged) {
+                } elseif ("'" === substr($content, 0, 1) && "'" === substr($content, -1)) {
+                    $content = substr($content, 1, -1);
                     $content = Preg::replace('/([\\\\$])/', '\\\\$1', $content);
+                    $content = Preg::replace('/(?<!\\\\)(?:\\\\{2})*\K"/', '\\\\"', $content);
+                    $content = '"'.$content.'"';
                 }
 
                 $tokens[$index] = new Token([$token->getId(), strtr($content, $escapeSequences)]);
