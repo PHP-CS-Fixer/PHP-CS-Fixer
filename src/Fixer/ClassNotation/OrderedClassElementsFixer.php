@@ -14,6 +14,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -202,7 +203,7 @@ class Example
     public function C(){}
 }
 ',
-                    ['order' => ['method_public'], 'sortAlgorithm' => 'alpha']
+                    ['order' => ['method_public'], 'sort_algorithm' => 'alpha']
                 ),
             ]
         );
@@ -272,7 +273,10 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-            (new FixerOptionBuilder('sortAlgorithm', 'How multiple occurrences of same type statements should be sorted'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
+                'sortAlgorithm'
+            ))
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
@@ -469,7 +473,7 @@ class Example
 
     private function sortGroupElements(array $a, array $b)
     {
-        $selectedSortAlgorithm = $this->configuration['sortAlgorithm'];
+        $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
         if (self::SORT_ALPHA === $selectedSortAlgorithm) {
             return strcasecmp($a['name'], $b['name']);

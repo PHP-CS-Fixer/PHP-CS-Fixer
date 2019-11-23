@@ -408,7 +408,7 @@ class Foo
 EOT
             ],
             [
-                ['sortAlgorithm' => 'alpha'],
+                ['sort_algorithm' => 'alpha'],
                 <<<'EOT'
 <?php
 
@@ -635,7 +635,7 @@ EOT
                         'method_public',
                         'method_private',
                     ],
-                    'sortAlgorithm' => 'alpha',
+                    'sort_algorithm' => 'alpha',
                 ],
                 <<<'EOT'
 <?php
@@ -690,7 +690,7 @@ EOT
                         'method_protected',
                         'method_private',
                     ],
-                    'sortAlgorithm' => 'alpha',
+                    'sort_algorithm' => 'alpha',
                 ],
                 <<<'EOT'
 <?php
@@ -827,7 +827,7 @@ EOT
                 public ?int $foo;
             }',
             [
-                'sortAlgorithm' => 'alpha',
+                'sort_algorithm' => 'alpha',
             ],
         ];
     }

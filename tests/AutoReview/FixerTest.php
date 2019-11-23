@@ -130,14 +130,6 @@ final class FixerTest extends TestCase
             $options = $fixer->getConfigurationDefinition()->getOptions();
 
             foreach ($options as $option) {
-                // @TODO 2.12 adjust fixers to use new casing and deprecate old one
-                if (\in_array($fixerName, [
-                    'final_internal_class',
-                    'ordered_class_elements',
-                ], true)) {
-                    static::markTestIncomplete(sprintf('Rule "%s" is not following new option casing yet, please help.', $fixerName));
-                }
-
                 static::assertRegExp('/^[a-z_]*$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
             }
         }

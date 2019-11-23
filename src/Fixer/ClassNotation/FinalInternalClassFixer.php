@@ -16,6 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -39,8 +40,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         parent::configure($configuration);
 
         $intersect = array_intersect_assoc(
-            $this->configuration['annotation-white-list'],
-            $this->configuration['annotation-black-list']
+            $this->configuration['annotation_white_list'],
+            $this->configuration['annotation_black_list']
         );
 
         if (\count($intersect)) {
@@ -60,7 +61,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 new CodeSample(
                     "<?php\n/** @CUSTOM */class A{}\n",
                     [
-                        'annotation-white-list' => ['@Custom'],
+                        'annotation_white_list' => ['@Custom'],
                     ]
                 ),
             ],
@@ -135,19 +136,28 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         };
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('annotation-white-list', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('annotation_white_list', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'),
+                'annotation-white-list'
+            ))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('annotation-black-list', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('annotation_black_list', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'),
+                'annotation-black-list'
+            ))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@final', '@Entity', '@ORM\Entity'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('consider-absent-docblock-as-internal-class', 'Should classes without any DocBlock be fixed to final?'))
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'),
+                'consider-absent-docblock-as-internal-class'
+            ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
@@ -168,7 +178,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $docToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
         if (!$docToken->isGivenKind(T_DOC_COMMENT)) {
-            return $this->configuration['consider-absent-docblock-as-internal-class'];
+            return $this->configuration['consider_absent_docblock_as_internal_class'];
         }
 
         $doc = new DocBlock($docToken->getContent());
@@ -177,7 +187,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         foreach ($doc->getAnnotations() as $annotation) {
             Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches);
             $tag = strtolower(substr(array_shift($matches), 1));
-            foreach ($this->configuration['annotation-black-list'] as $tagStart => $true) {
+            foreach ($this->configuration['annotation_black_list'] as $tagStart => $true) {
                 if (0 === strpos($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been black listed through configuration
                 }
@@ -186,7 +196,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $tags[$tag] = true;
         }
 
-        foreach ($this->configuration['annotation-white-list'] as $tag => $true) {
+        foreach ($this->configuration['annotation_white_list'] as $tag => $true) {
             if (!isset($tags[$tag])) {
                 return false; // ignore class: class-level PHPDoc does not contain all tags that has been white listed through configuration
             }

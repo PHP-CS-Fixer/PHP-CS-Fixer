@@ -645,15 +645,16 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``annotation-black-list`` (``array``): class level annotations tags that must be
+  - ``annotation_black_list`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
     as well. (case insensitive); defaults to ``['@final', '@Entity',
-    '@ORM\\Entity']``
-  - ``annotation-white-list`` (``array``): class level annotations tags that must be
+    '@ORM\\Entity']``; DEPRECATED alias: ``annotation-black-list``
+  - ``annotation_white_list`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case insensitive); defaults to
-    ``['@internal']``
-  - ``consider-absent-docblock-as-internal-class`` (``bool``): should classes
-    without any DocBlock be fixed to final?; defaults to ``false``
+    ``['@internal']``; DEPRECATED alias: ``annotation-white-list``
+  - ``consider_absent_docblock_as_internal_class`` (``bool``): should classes
+    without any DocBlock be fixed to final?; defaults to ``false``; DEPRECATED
+    alias: ``consider-absent-docblock-as-internal-class``
 
 * **final_public_method_for_abstract_class**
 
@@ -1247,8 +1248,9 @@ Choose from the list of available rules:
     'property_public', 'property_protected', 'property_private',
     'construct', 'destruct', 'magic', 'phpunit', 'method_public',
     'method_protected', 'method_private']``
-  - ``sortAlgorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
-    statements should be sorted; defaults to ``'none'``
+  - ``sort_algorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
+    statements should be sorted; defaults to ``'none'``; DEPRECATED alias:
+    ``sortAlgorithm``
 
 * **ordered_imports** [@Symfony, @PhpCsFixer]
 
