@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -424,7 +425,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $operatorIndex = $tokens->getPrevMeaningfulToken($index);
             $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
-            if (!$this->needsConversion($tokens, $operatorIndex, $referenceIndex, $callType)) {
+            if (!$this->needsConversion($tokens, $index, $referenceIndex, $callType)) {
                 continue;
             }
 
@@ -434,27 +435,18 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param int    $operatorIndex
+     * @param int    $index
      * @param int    $referenceIndex
      * @param string $callType
      *
      * @return bool
      */
-    private function needsConversion(Tokens $tokens, $operatorIndex, $referenceIndex, $callType)
+    private function needsConversion(Tokens $tokens, $index, $referenceIndex, $callType)
     {
-        if ($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STATIC, 'static'])) {
-            return self::CALL_TYPE_STATIC !== $callType;
-        }
+        $functionsAnalyzer = new FunctionsAnalyzer();
 
-        if ($tokens[$operatorIndex]->equals([T_OBJECT_OPERATOR, '->']) && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this'])) {
-            return self::CALL_TYPE_THIS !== $callType;
-        }
-
-        if ($tokens[$operatorIndex]->equals([T_DOUBLE_COLON, '::']) && $tokens[$referenceIndex]->equals([T_STRING, 'self'])) {
-            return self::CALL_TYPE_SELF !== $callType;
-        }
-
-        return false;
+        return $functionsAnalyzer->isTheSameClassCall($tokens, $index)
+            && !$tokens[$referenceIndex]->equals($this->conversionMap[$callType][1], false);
     }
 
     /**

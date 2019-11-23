@@ -219,6 +219,10 @@ $a#
             '<?php self::assertNull($a);',
             '<?php self::assertTrue(is_null($a));',
         ];
+        $cases[] = [
+            '<?php SELF::assertNull($a);',
+            '<?php SELF::assertTrue(is_null($a));',
+        ];
 
         return $cases;
     }

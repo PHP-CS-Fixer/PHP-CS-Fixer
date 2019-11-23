@@ -391,6 +391,7 @@ class MyTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, 22);
         $this->assertSame(1, 22);
         $this->assertSame(1, 22);
+        $this->assertSame(1, 23);
     }
 
 }
@@ -427,6 +428,7 @@ class MyTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, 22);
         self::assertSame(1, 22);
         static::assertSame(1, 22);
+        STATIC::assertSame(1, 23);
     }
 
 }
@@ -439,7 +441,7 @@ EOF
             'do not change class property and method signature' => [
                 <<<'EOF'
 <?php
-class HavingPropertyWithNameAsMethodToUpdateTest extends PHPUnit
+class FooTest extends TestCase
 {
     public function foo()
     {
@@ -447,6 +449,19 @@ class HavingPropertyWithNameAsMethodToUpdateTest extends PHPUnit
     }
 
     public function assertSame($foo, $bar){}
+}
+EOF
+                ,
+            ],
+            'do not change when only case is different' => [
+                <<<'EOF'
+<?php
+class FooTest extends TestCase
+{
+    public function foo()
+    {
+        STATIC::assertSame(1, 1);
+    }
 }
 EOF
                 ,
