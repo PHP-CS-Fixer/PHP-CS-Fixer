@@ -8,19 +8,19 @@
 /tests/Test/AbstractFixerWithAliasedOptionsTestCase.php export-ignore
 /tests/Test/AbstractTransformerTestCase.php export-ignore
 
-/dev-tools export-ignore
 /.* export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
 /check_trailing_spaces.sh export-ignore
+/dev-tools/ export-ignore
 /phpmd.xml export-ignore
 /phpstan.neon export-ignore
 /phpunit.xml.dist export-ignore
 
 *       text=auto eol=lf
-*.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
 *.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
-*.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
 *.md    text whitespace=blank-at-eol,blank-at-eof
+*.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
 *.rst   text whitespace=blank-at-eol,blank-at-eof
+*.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
 /tests/Fixtures/**/* -text
