@@ -285,7 +285,7 @@ EOF
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
                 static function ($line) { return '    $ '.$line; },
-                \array_slice(file(__DIR__.'/../../../dev-tools/ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
+                \array_slice(file(__DIR__.'/../../../ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
         ]);
