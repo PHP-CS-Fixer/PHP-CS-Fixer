@@ -23,9 +23,12 @@ Old name | New name | Note
 -------- | -------- | ----
 `blank_line_before_return`                      | `blank_line_before_statement`                 | use configuration `['statements' => ['return']]`
 `hash_to_slash_comment`                         | `single_line_comment_style`                   | use configuration `['comment_types' => ['hash']]`
+`lowercase_constants`                           | `constant_case`                               | use configuration `['case' => 'lower']`
 `method_separation`                             | `class_attributes_separation`                 | use configuration `['elements' => ['method']]`
 `no_extra_consecutive_blank_lines`              | `no_extra_blank_lines`                        |
+`php_unit_ordered_covers`                       | `phpdoc_order_by_value`                       | use configuration `['annotations' => [ 'covers' ]]`
 `pre_increment`                                 | `increment_style`                             | use configuration `['style' => 'pre']`
+`silenced_deprecation_error`                    | `error_suppression`                           |
 
 ### Removed rootless configuration
 
