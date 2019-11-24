@@ -346,14 +346,14 @@ final class TokensAnalyzer
             }
         }
 
-        // check for `implements`/`use` list
+        // check for `extends`/`implements`/`use` list
         if ($this->tokens[$prevIndex]->equals(',')) {
             $checkIndex = $prevIndex;
             while ($this->tokens[$checkIndex]->equalsAny([',', [T_AS], [CT::T_NAMESPACE_OPERATOR], [T_NS_SEPARATOR], [T_STRING]])) {
                 $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
             }
 
-            if ($this->tokens[$checkIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, CT::T_USE_TRAIT])) {
+            if ($this->tokens[$checkIndex]->isGivenKind([T_EXTENDS, CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, CT::T_USE_TRAIT])) {
                 return false;
             }
         }

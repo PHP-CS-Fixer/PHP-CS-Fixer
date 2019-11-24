@@ -57,7 +57,19 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isAllTokenKindsFound([T_FUNCTION, T_VARIABLE]);
+        if (\PHP_VERSION_ID < 70100) {
+            return false;
+        }
+
+        if (!$tokens->isTokenKindFound(T_VARIABLE)) {
+            return false;
+        }
+
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+            return true;
+        }
+
+        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**
@@ -89,10 +101,15 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
+        $tokenKinds = [T_FUNCTION];
+        if (\PHP_VERSION_ID >= 70400) {
+            $tokenKinds[] = T_FN;
+        }
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_FUNCTION)) {
+            if (!$token->isGivenKind($tokenKinds)) {
                 continue;
             }
 
