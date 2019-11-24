@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-12T13:17:51Z
+
+Nice catch! There already is a method for PHP 7.4 tests, could you add this new case to `provideFix74Cases()`?
+
+---------------------------------------------------------------------------
+
+by GawainLynch at 2019-11-12T13:31:47Z
+
+Done. I can't see for looking today :rofl:
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-24T00:34:25Z
+
+7.4 is no longer allowed to fail
+
+@GawainLynch , @julienfalque , can you please work on proposing the fix to this issue ?
+
+---------------------------------------------------------------------------
+
+by GawainLynch at 2019-11-24T11:00:51Z
+
+Good stuff, @julienfalque, thank you. I was just about to sit down and try to figure this out myself :smile_cat: :+1:
