@@ -320,13 +320,13 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { /** @param Bar $bar */ public function foo($tab) { } }',
             ],
             'param by reference' => [
-                '<?php /** @param array $data */ function sort(array &$data) {}',
-                '<?php /** @param array $data */ function sort(&$data) {}',
+                '<?php /** @param array $data */ function foo(array &$data) {}',
+                '<?php /** @param array $data */ function foo(&$data) {}',
             ],
             'optional param by reference' => [
                 '<?php /** @param null|string[] $matches */ function matchAll(?array &$matches) {}',
                 '<?php /** @param null|string[] $matches */ function matchAll(&$matches) {}',
-                70200,
+                70100,
             ],
         ];
     }
