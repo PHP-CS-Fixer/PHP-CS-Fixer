@@ -630,8 +630,8 @@ preg_replace_callback(
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $isLambda) {
-            static::assertSame($isLambda, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
         }
     }
 
@@ -781,6 +781,10 @@ preg_replace_callback(
             [
                 '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
                 [3 => true, 7 => true],
+            ],
+            [
+                '<?php interface Foo extends Bar, Baz, Qux {}',
+                [7 => false, 10 => false, 13 => false],
             ],
         ];
     }

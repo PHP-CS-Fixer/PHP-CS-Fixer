@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -130,6 +131,9 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             T_COMMENT,
             T_VAR,
             T_STATIC,
+            T_STRING,
+            T_NS_SEPARATOR,
+            CT::T_NULLABLE_TYPE,
         ]));
 
         return $index;

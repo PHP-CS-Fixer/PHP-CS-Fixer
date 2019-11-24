@@ -35,6 +35,19 @@ if (defined('HHVM_VERSION_ID')) {
     }
 }
 
+foreach (['json', 'tokenizer'] as $extension) {
+    if (!extension_loaded($extension)) {
+        fwrite(STDERR, sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
+
+        if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
+        } else {
+            exit(1);
+        }
+    }
+}
+unset($extension);
+
 set_error_handler(function ($severity, $message, $file, $line) {
     if ($severity & error_reporting()) {
         throw new ErrorException($message, 0, $severity, $file, $line);

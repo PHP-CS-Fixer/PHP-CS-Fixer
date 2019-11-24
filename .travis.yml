@@ -35,7 +35,7 @@ jobs:
                 - composer info -D | sort
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
-                - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
+                - export CHANGED_PHP_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE | grep -E "\.php$"`
             script:
                 # @TODO remove at 3.0
                 - |
@@ -53,7 +53,7 @@ jobs:
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
                 - php -d auto_prepend_file=dev-tools/vendor/autoload.php ./dev-tools/tools/phpstan analyse
-                - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
+                - if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/tools/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
                 - ./dev-tools/check-shell-scripts.sh
