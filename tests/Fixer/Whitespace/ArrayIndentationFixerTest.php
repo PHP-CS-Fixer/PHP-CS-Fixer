@@ -629,8 +629,8 @@ $foo = [[
                 'bar',
             ],[[],[]]]
             ]],[
-            'baz',
-        ]]
+                'baz',
+            ]]
         ],[]],[]]
 ]
 ];
@@ -731,6 +731,84 @@ $foo = [
     "foo",
     "bar",
 ];',
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    'foo' =>
+          'Some'
+           .' long'
+            .' string',
+    'bar' =>
+        'Another'
+         .' long'
+          .' string'
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  'foo' =>
+        'Some'
+         .' long'
+          .' string',
+        'bar' =>
+            'Another'
+             .' long'
+              .' string'
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    $test
+          ? [
+              123,
+          ]
+          : [
+              321,
+          ],
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+    $test
+          ? [
+                 123,
+          ]
+          : [
+                   321,
+          ],
+];
+INPUT
+                ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [[
+    new Foo(
+        'foo'
+    ),
+]];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [[
+      new Foo(
+          'foo'
+      ),
+]];
+INPUT
+                ,
             ],
         ]);
     }
