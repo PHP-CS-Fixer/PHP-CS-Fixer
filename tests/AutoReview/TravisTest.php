@@ -31,58 +31,106 @@ final class TravisTest extends TestCase
 {
     public function testTestJobsRunOnEachPhp()
     {
-        $expectedVersions = [];
-        $expectedMinPhp = (float) $this->getMinPhpVersionFromEntryFile();
-        $expectedMaxPhp = (float) $this->getMaxPhpVersionFromEntryFile();
+        $supportedVersions = [];
+        $supportedMinPhp = (float) $this->getMinPhpVersionFromEntryFile();
+        $supportedMaxPhp = (float) $this->getMaxPhpVersionFromEntryFile();
 
-        if ($expectedMinPhp < 7) {
-            $expectedMinPhp = 7;
-            $expectedVersions[] = '5.6';
+        if ($supportedMinPhp < 7) {
+            $supportedMinPhp = 7;
+            $supportedVersions[] = '5.6';
         }
 
-        for ($version = $expectedMinPhp; $version <= $expectedMaxPhp; $version += 0.1) {
-            $expectedVersions[] = sprintf('%.1f', $version);
+        for ($version = $supportedMinPhp; $version <= $supportedMaxPhp; $version += 0.1) {
+            $supportedVersions[] = sprintf('%.1f', $version);
         }
 
-        $jobs = array_filter($this->getTravisJobs(), function ($job) {
-            return false !== strpos($job['stage'], 'Test');
-        });
-        static::assertGreaterThanOrEqual(1, \count($jobs));
+        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
 
-        $versions = array_map(function ($job) {
-            return $job['php'];
-        }, $jobs);
+        static::assertGreaterThanOrEqual(1, \count($ciVersions));
 
-        foreach ($expectedVersions as $expectedVersion) {
-            static::assertContains($expectedVersion, $versions);
+        self::assertSupportedPhpVersionsAreCoveredByCiJobs($supportedVersions, $ciVersions);
+        self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
+    }
+
+    public function testDeploymentJobsRunOnLatestStablePhpThatIsSupportedByTool()
+    {
+        $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
+        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
+
+        if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
+            // last version of used PHP is snapshot. we should test against previous one, that is stable
+            $expectedPhp = (string) ((float) $expectedPhp - 0.1);
+        }
+
+        static::assertGreaterThanOrEqual(1, \count($ciVersionsForDeployments));
+        static::assertGreaterThanOrEqual(1, \count($ciVersions));
+
+        foreach ($ciVersionsForDeployments as $ciVersionsForDeployment) {
+            static::assertTrue(
+                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+                sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+            );
+        }
+    }
+
+    private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
+    {
+        if (!class_exists(TraversableContains::class)) {
+            static::markTestSkipped('TraversableContains not available.');
+        }
+
+        static::assertThat($ciVersions, static::logicalOr(
+            // if `$lastsupportedVersion` is already a snapshot version
+            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion)),
+            // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
+            new TraversableContains('nightly'),
+            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1))
+        ));
+    }
+
+    private static function assertSupportedPhpVersionsAreCoveredByCiJobs(array $supportedVersions, array $ciVersions)
+    {
+        $lastSupportedVersion = array_pop($supportedVersions);
+
+        foreach ($supportedVersions as $expectedVersion) {
+            static::assertContains($expectedVersion, $ciVersions);
         }
 
         if (!class_exists(TraversableContains::class)) {
             static::markTestSkipped('TraversableContains not available.');
         }
 
-        static::assertThat($versions, static::logicalOr(
-            new TraversableContains('nightly'),
-            new TraversableContains(sprintf('%.1fsnapshot', end($expectedVersions) + 0.1))
+        static::assertThat($ciVersions, static::logicalOr(
+            new TraversableContains($lastSupportedVersion),
+            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion))
         ));
     }
 
-    public function testDeploymentJobsRunOnLatestPhp()
+    private function getAllPhpVersionsUsedByCiForDeployments()
     {
         $jobs = array_filter($this->getTravisJobs(), function ($job) {
             return 'Deployment' === $job['stage'];
         });
-        static::assertGreaterThanOrEqual(1, \count($jobs));
 
-        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
+        $versions = array_map(function ($job) {
+            return (string) $job['php'];
+        }, $jobs);
 
-        foreach ($jobs as $job) {
-            $jobPhp = (string) $job['php'];
-            static::assertTrue(
-                version_compare($expectedPhp, $jobPhp, 'eq'),
-                sprintf('Expects %s to be %s', $jobPhp, $expectedPhp)
-            );
-        }
+        return $versions;
+    }
+
+    private function getAllPhpVersionsUsedByCiForTests()
+    {
+        $jobs = array_filter($this->getTravisJobs(), function ($job) {
+            return false !== strpos($job['stage'], 'Test');
+        });
+
+        $versions = array_map(function ($job) {
+            return (string) $job['php'];
+        }, $jobs);
+
+        return $versions;
     }
 
     private function convertPhpVerIdToNiceVer($verId)
