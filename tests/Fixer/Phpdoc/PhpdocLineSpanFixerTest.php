@@ -436,4 +436,44 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @requires PHP 7.4
+     * @dataProvider provideFixPhp74Cases
+     *
+     * @param string $expected
+     * @param string $input
+     */
+    public function testFixPhp74($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            'It can handle properties with type declaration' => [
+                '<?php
+
+class Foo
+{
+    /**  */
+    private ?string $foo;
+}',
+                '<?php
+
+class Foo
+{
+    /**
+     *
+     */
+    private ?string $foo;
+}',
+                [
+                    'property' => 'single',
+                ],
+            ],
+        ];
+    }
 }
