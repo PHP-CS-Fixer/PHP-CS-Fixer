@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-10T15:00:05Z
+
+Thanks @GawainLynch for adding this test. I pushed a small fix regarding an unrelated Travis failure.
+
+As the test should be added to version 2.15 as well, could you please rebase your branch onto `2.15` and update this PR to target that branch?
+
+---------------------------------------------------------------------------
+
+by GawainLynch at 2019-11-10T19:13:57Z
+
+Thanks for the feedback @julienfalque ... I have rebased onto `2.15` and was super excited about your commit!
+
+Please let me know if you want anything changed/removed/etc, and I'll happily help :smile_cat:
