@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: php_unit_fqcn_annotation,phpdoc_order_by_value.
 --RULESET--
-{"php_unit_fqcn_annotation": true, "phpdoc_order_by_value": ['annotations' => [ 'covers' ]]}
+{"php_unit_fqcn_annotation": true, "phpdoc_order_by_value": ['annotations': ['covers']]}
 --EXPECT--
 <?php
 /**
