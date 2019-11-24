@@ -108,6 +108,8 @@ class Sample
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
+        $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
+
         foreach (array_reverse($elements, true) as $index => $element) {
             if (!\in_array($element['type'], $this->configuration['elements'], true)) {
                 continue;
@@ -121,7 +123,7 @@ class Sample
 
             $expectedKinds = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
             if ('property' === $element['type']) {
-                $expectedKinds = array_merge($expectedKinds, [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE]);
+                $expectedKinds = array_merge($expectedKinds, $propertyTypeDeclarationKinds);
             }
 
             while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {
@@ -129,7 +131,7 @@ class Sample
                     $abstractFinalIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind(T_STATIC)) {
                     $staticIndex = $prevIndex;
-                } elseif ($tokens[$prevIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE])) {
+                } elseif ($tokens[$prevIndex]->isGivenKind($propertyTypeDeclarationKinds)) {
                     $typeIndex = $prevIndex;
                 } else {
                     $visibilityIndex = $prevIndex;

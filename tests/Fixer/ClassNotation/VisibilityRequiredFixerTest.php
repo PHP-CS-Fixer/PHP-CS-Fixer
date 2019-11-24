@@ -796,5 +796,15 @@ AB# <- this is the name
             '<?php class Foo { public static Foo\Bar $foo; }',
             '<?php class Foo { static public Foo\Bar $foo; }',
         ];
+        yield [
+            '<?php class Foo { public array $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public ?array $foo; }',
+        ];
+        yield [
+            '<?php class Foo { public static ?array $foo; }',
+            '<?php class Foo { static public ?array $foo; }',
+        ];
     }
 }
