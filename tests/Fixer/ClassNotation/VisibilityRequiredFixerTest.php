@@ -819,6 +819,7 @@ AB# <- this is the name
         ];
         yield [
             '<?php class Foo { public static ?array $foo; }',
+            '<?php class Foo { static public ?array $foo; }',
         ];
     }
 }
