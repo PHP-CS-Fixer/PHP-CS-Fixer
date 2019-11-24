@@ -169,7 +169,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']],
             [$fixers['php_unit_internal_class'], $fixers['final_internal_class']],
-            [$fixers['php_unit_fqcn_annotation'], $fixers['php_unit_ordered_covers']],
+            [$fixers['php_unit_fqcn_annotation'], $fixers['phpdoc_order_by_value']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_no_expectation_annotation'], $fixers['php_unit_expectation']],
             [$fixers['php_unit_dedicate_assert'], $fixers['php_unit_dedicate_assert_internal_type']],
