@@ -238,6 +238,18 @@ class Example
     }
 
     /**
+     * @param string $algorithm
+     *
+     * @return bool
+     */
+    public function hasSortAlgorithm($algorithm)
+    {
+        $selectedSortAlgorithm = (array) $this->configuration['sort_algorithm'];
+
+        return \in_array($algorithm, $selectedSortAlgorithm, true);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
@@ -294,10 +306,10 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-                (new AliasedFixerOptionBuilder(
-                    new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
-                    'sortAlgorithm'
-                ))->setAllowedTypes(['array', 'string'])
+            (new AliasedFixerOptionBuilder(
+                new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
+                'sortAlgorithm'
+            ))->setAllowedTypes(['array', 'string'])
                 ->setAllowedValues($supportedSortAlgorithms)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
@@ -367,7 +379,7 @@ class Example
 
                 $element['end'] = $this->findElementEnd($tokens, $i);
 
-                if ($element['type'] === 'method') {
+                if ('method' === $element['type']) {
                     $element['calls'] = $this->getMethodCalls($tokens, $i, $element['end']);
                 }
 
@@ -431,7 +443,7 @@ class Example
     }
 
     /**
-     * @param int|null $index
+     * @param null|int $index
      *
      * @return int
      */
@@ -444,7 +456,7 @@ class Example
         }
 
         while ($tokens[$index + 1]->isWhitespace(" \t") || $tokens[$index + 1]->isComment()) {
-            $index++;
+            ++$index;
         }
 
         return $tokens[$index]->isWhitespace() ? $index - 1 : $index;
@@ -507,6 +519,7 @@ class Example
                     if (isset($a['name'], $b['name'], $methodsOrder[$a['name']], $methodsOrder[$b['name']])) {
                         return $methodsOrder[$a['name']] > $methodsOrder[$b['name']] ? 1 : -1;
                     }
+
                     return 0;
                 }
             );
@@ -552,7 +565,7 @@ class Example
     {
         $calls = [];
         $bodyStart = $tokens->getNextTokenOfKind($start, ['{']);
-        for ($j = $bodyStart; $bodyStart && $j < $end; $j++) {
+        for ($j = $bodyStart; $bodyStart && $j < $end; ++$j) {
             if ($tokens[$j]->isGivenKind(T_STRING) && $tokens[$j + 1]->equals('(')) {
                 $calls[] = $tokens[$j]->getContent();
             }
@@ -584,9 +597,6 @@ class Example
         return $elements;
     }
 
-    /**
-     * @return void
-     */
     private function fetchCalls(array &$functions, array &$function, array $cycle = [])
     {
         $cycle[$function['name']] = true;
@@ -594,7 +604,7 @@ class Example
             return;
         }
         foreach ($function['calls'] as $call) {
-            $methodHash = 'method_' . $call;
+            $methodHash = 'method_'.$call;
             if (isset($cycle[$call])) {
                 continue;
             }
@@ -625,9 +635,6 @@ class Example
         return $flat;
     }
 
-    /**
-     * @return void
-     */
     private function fetchChildren(array $item, array &$list)
     {
         if (!empty($item['calls_elements'])) {
@@ -638,28 +645,16 @@ class Example
         }
     }
 
-    /***
+    /**
      * @return array
      */
     private function hashElementsIndexes(array $elements)
     {
         $result = [];
         foreach ($elements as $element) {
-            $result[$element['type'] . '_' . $element['name']] = $element;
+            $result[$element['type'].'_'.$element['name']] = $element;
         }
 
         return $result;
-    }
-
-    /**
-     * @param string $algorithm
-     *
-     * @return bool
-     */
-    public function hasSortAlgorithm($algorithm)
-    {
-        $selectedSortAlgorithm = (array) $this->configuration['sort_algorithm'];
-
-        return in_array($algorithm, $selectedSortAlgorithm, true);
     }
 }
