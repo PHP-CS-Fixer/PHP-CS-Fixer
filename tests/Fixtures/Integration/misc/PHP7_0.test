@@ -1,5 +1,5 @@
 --TEST--
-PHP 7 test.
+PHP 7.0 test.
 --RULESET--
 {
     "@Symfony": true,
