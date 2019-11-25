@@ -3,6 +3,24 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.15.5
+---------------------
+
+* bug #4476 FunctionsAnalyzer - add "isTheSameClassCall" for correct verifying of function calls (kubawerlos)
+* bug #4641 Add typed properties test to VisibilityRequiredFixerTest (GawainLynch, julienfalque)
+* bug #4654 ArrayIndentationFixer - Fix array indentation for multiline values (julienfalque)
+* bug #4660 TokensAnalyzer::isConstantInvocation - fix for extending multiple interfaces (kubawerlos)
+* bug #4668 TokensAnalyzer::isConstantInvocation - fix for interface method return type (kubawerlos)
+* minor #4608 Allow Symfony 5 components (l-vo)
+* minor #4622 Disallow PHP 7.4 failures on Travis CI (julienfalque)
+* minor #4637 PHP 7.4 integration test (GawainLynch, julienfalque)
+* minor #4643 DX: Update .gitattributes and move ci-integration.sh to root of the project (kubawerlos, keradus)
+* minor #4645 Check PHP extensions on runtime (kubawerlos)
+* minor #4655 Improve docs - README (mvorisek)
+* minor #4662 DX: generate headers in README.rst (kubawerlos)
+* minor #4669 Enable execution under PHP 7.4 (keradus)
+* minor #4671 TravisTest - rewrite tests to allow last supported by tool PHP version to be snapshot (keradus)
+
 Changelog for v2.15.4
 ---------------------
 
