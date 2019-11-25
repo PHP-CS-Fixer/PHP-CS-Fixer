@@ -238,18 +238,6 @@ class Example
     }
 
     /**
-     * @param string $algorithm
-     *
-     * @return bool
-     */
-    public function hasSortAlgorithm($algorithm)
-    {
-        $selectedSortAlgorithm = (array) $this->configuration['sort_algorithm'];
-
-        return \in_array($algorithm, $selectedSortAlgorithm, true);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
@@ -314,6 +302,18 @@ class Example
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
         ], $this->getName());
+    }
+
+    /**
+     * @param string $algorithm
+     *
+     * @return bool
+     */
+    private function hasSortAlgorithm($algorithm)
+    {
+        $selectedSortAlgorithm = (array) $this->configuration['sort_algorithm'];
+
+        return \in_array($algorithm, $selectedSortAlgorithm, true);
     }
 
     /**

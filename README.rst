@@ -1301,9 +1301,9 @@ Choose from the list of available rules:
     'property_public', 'property_protected', 'property_private',
     'construct', 'destruct', 'magic', 'phpunit', 'method_public',
     'method_protected', 'method_private']``
-  - ``sort_algorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
-    statements should be sorted; defaults to ``'none'``; DEPRECATED alias:
-    ``sortAlgorithm``
+  - ``sort_algorithm`` (a subset of ``['none', 'alpha', 'depth']``, ``'alpha'``,
+    ``'depth'``, ``'none'``): how multiple occurrences of same type statements
+    should be sorted; defaults to ``'none'``; DEPRECATED alias: ``sortAlgorithm``
 
 * **ordered_imports** [@Symfony, @PhpCsFixer]
 
