@@ -323,7 +323,7 @@ final class TokensAnalyzer
 
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_OBJECT_OPERATOR, T_TRAIT])) {
+        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_OBJECT_OPERATOR, T_TRAIT, CT::T_TYPE_COLON])) {
             return false;
         }
 
@@ -331,7 +331,7 @@ final class TokensAnalyzer
             $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        if ($this->tokens[$prevIndex]->isGivenKind([CT::T_CONST_IMPORT, T_EXTENDS, CT::T_FUNCTION_IMPORT, T_IMPLEMENTS, T_INSTANCEOF, T_INSTEADOF, T_NAMESPACE, T_NEW, T_USE, CT::T_USE_TRAIT])) {
+        if ($this->tokens[$prevIndex]->isGivenKind([CT::T_CONST_IMPORT, T_EXTENDS, CT::T_FUNCTION_IMPORT, T_IMPLEMENTS, T_INSTANCEOF, T_INSTEADOF, T_NAMESPACE, T_NEW, CT::T_NULLABLE_TYPE, T_USE, CT::T_USE_TRAIT])) {
             return false;
         }
 
