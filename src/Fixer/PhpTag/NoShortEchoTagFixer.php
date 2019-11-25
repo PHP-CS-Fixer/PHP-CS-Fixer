@@ -20,7 +20,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 /**
  * @author Vincent Klaiber <hello@vinkla.com>
  *
- * @deprecated proxy to ShortEchoTagFixer
+ * @deprecated proxy to EchoTagSyntaxFixer
  */
 final class NoShortEchoTagFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
@@ -30,7 +30,7 @@ final class NoShortEchoTagFixer extends AbstractProxyFixer implements Deprecated
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Replace short-echo `<?=` with long format `<?php echo` syntax.',
+            'Replaces short-echo `<?=` with long format `<?php echo` syntax.',
             [new CodeSample("<?= \"foo\";\n")]
         );
     }
@@ -48,6 +48,6 @@ final class NoShortEchoTagFixer extends AbstractProxyFixer implements Deprecated
      */
     protected function createProxyFixers()
     {
-        return [new ShortEchoTagFixer()];
+        return [new EchoTagSyntaxFixer()];
     }
 }

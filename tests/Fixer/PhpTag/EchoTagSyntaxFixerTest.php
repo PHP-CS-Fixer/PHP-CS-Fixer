@@ -19,20 +19,20 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpTag\ShortEchoTagFixer
+ * @covers \PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer
  */
-final class ShortEchoTagFixerTest extends AbstractFixerTestCase
+final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
      * @param null|string $input
-     * @param bool        $shortAlways
+     * @param bool        $shortenSimpleStatementsOnly
      *
      * @dataProvider provideLongToShortFormatCases
      */
-    public function testLongToShortFormat($expected, $input = null, $shortAlways = false)
+    public function testLongToShortFormat($expected, $input = null, $shortenSimpleStatementsOnly = true)
     {
-        $this->fixer->configure(['format' => 'short', 'short_always' => $shortAlways]);
+        $this->fixer->configure(['format' => 'short', 'shorten_simple_statements_only' => $shortenSimpleStatementsOnly]);
         $this->doTest($expected, $input);
     }
 
@@ -48,8 +48,48 @@ final class ShortEchoTagFixerTest extends AbstractFixerTestCase
             ['<?= \'Foo\'; ?> <?= \'Bar\'; ?>', '<?php echo \'Foo\'; ?> <?php echo \'Bar\'; ?>'],
             ['<?= \'Foo\'; ?> <?= \'Bar\'; ?>', '<?php print \'Foo\'; ?> <?php echo \'Bar\'; ?>'],
             ['<?php echo \'Foo\'; someThingElse();'],
-            ['<?= \'Foo\'; someThingElse();', '<?php echo \'Foo\'; someThingElse();', true],
+            ['<?= \'Foo\'; someThingElse();', '<?php echo \'Foo\'; someThingElse();', false],
             ['<?=/*this */ /** should be in the result*/ \'Foo\';', '<?php /*this */ /** should be in the result*/ echo \'Foo\';'],
+            [
+                <<<'EOT'
+<?=/*comment*/
+  1
+?>
+EOT
+                ,
+                <<<'EOT'
+<?php /*comment*/ echo
+  1
+?>
+EOT
+            ],
+            [
+                <<<'EOT'
+<?=/*comment*/ 1
+?>
+EOT
+                ,
+                <<<'EOT'
+<?php
+  /*comment*/ echo 1
+?>
+EOT
+            ],
+            [
+                <<<'EOT'
+<?=/*comment*/
+  1
+?>
+EOT
+                ,
+                <<<'EOT'
+<?php
+  /*comment*/
+  echo
+  1
+?>
+EOT
+            ],
         ];
     }
 

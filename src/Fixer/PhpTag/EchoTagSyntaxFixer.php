@@ -25,13 +25,13 @@ use SplFileInfo;
 /**
  * @author Michele Locati <michele@locati.it>
  */
-final class ShortEchoTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /** @internal */
     const OPTION_FORMAT = 'format';
 
     /** @internal */
-    const OPTION_SHORT_ALWAYS = 'short_always';
+    const OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY = 'shorten_simple_statements_only';
 
     /** @internal */
     const OPTION_LONG_FUNCTION = 'long_function';
@@ -48,12 +48,14 @@ final class ShortEchoTagFixer extends AbstractFixer implements ConfigurationDefi
     /** @internal */
     const LONG_FUNCTION_PRINT = 'print';
 
-    private $supportedFormatOptions = [
+    /** @internal */
+    const SUPPORTED_FORMAT_OPTIONS = [
         self::FORMAT_LONG,
         self::FORMAT_SHORT,
     ];
 
-    private $supportedLongFunctionOptions = [
+    /** @internal */
+    const SUPPORTED_LONGFUNCTION_OPTIONS = [
         self::LONG_FUNCTION_ECHO,
         self::LONG_FUNCTION_PRINT,
     ];
@@ -73,13 +75,13 @@ EOT
         ;
 
         return new FixerDefinition(
-            'Replace short-echo `<?=` with long format `<?php echo`/`<?php print` syntax, or vice-versa.',
+            'Replaces short-echo `<?=` with long format `<?php echo`/`<?php print` syntax, or vice-versa.',
             [
                 new CodeSample($sample),
                 new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_LONG]),
                 new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_LONG, self::OPTION_LONG_FUNCTION => self::LONG_FUNCTION_PRINT]),
                 new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_SHORT]),
-                new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_SHORT, self::OPTION_SHORT_ALWAYS => true]),
+                new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_SHORT, self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY => false]),
             ],
             null
         );
@@ -91,14 +93,7 @@ EOT
     public function isCandidate(Tokens $tokens)
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
-            if (null !== $tokens->findSequence([[\T_OPEN_TAG], [\T_ECHO]])) {
-                return true;
-            }
-            if (null !== $tokens->findSequence([[\T_OPEN_TAG], [\T_PRINT]])) {
-                return true;
-            }
-
-            return false;
+            return $tokens->isAnyTokenKindsFound([\T_ECHO, \T_PRINT]);
         }
 
         return $tokens->isTokenKindFound(\T_OPEN_TAG_WITH_ECHO);
@@ -111,16 +106,16 @@ EOT
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(self::OPTION_FORMAT, 'The desired language construct.'))
-                ->setAllowedValues($this->supportedFormatOptions)
+                ->setAllowedValues(self::SUPPORTED_FORMAT_OPTIONS)
                 ->setDefault(self::FORMAT_LONG)
                 ->getOption(),
             (new FixerOptionBuilder(self::OPTION_LONG_FUNCTION, 'The function to be used to expand the short echo tags'))
-                ->setAllowedValues($this->supportedLongFunctionOptions)
+                ->setAllowedValues(self::SUPPORTED_LONGFUNCTION_OPTIONS)
                 ->setDefault(self::LONG_FUNCTION_ECHO)
                 ->getOption(),
-            (new FixerOptionBuilder(self::OPTION_SHORT_ALWAYS, 'Always render short-echo tags even in case of complex code'))
+            (new FixerOptionBuilder(self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY, 'Render short-echo tags only in case of simple code'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }
@@ -139,7 +134,7 @@ EOT
 
     private function longToShort(Tokens $tokens)
     {
-        $skipWhenComplexCode = !$this->configuration[self::OPTION_SHORT_ALWAYS];
+        $skipWhenComplexCode = $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY];
         $count = $tokens->count();
         for ($index = 0; $index < $count; ++$index) {
             if (!$tokens[$index]->isGivenKind(\T_OPEN_TAG)) {
@@ -234,7 +229,7 @@ EOT
 
         $start = $tokens->getNextNonWhitespace($openTagIndex);
 
-        if ($start >= $echoTagIndex) {
+        if ($start === $echoTagIndex) {
             // No non-whitespace tokens between $openTagIndex and $echoTagIndex
             return $result;
         }
