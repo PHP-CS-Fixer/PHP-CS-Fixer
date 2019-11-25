@@ -848,6 +848,18 @@ preg_replace_callback(
                 '<?php try {} catch (FOO|BAR|BAZ $e) {}',
                 [9 => false, 11 => false, 13 => false],
             ],
+            [
+                '<?php interface Foo { public function bar(): Baz; }',
+                [16 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): ?Baz; }',
+                [17 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): ?\Baz; }',
+                [18 => false],
+            ],
         ];
     }
 
