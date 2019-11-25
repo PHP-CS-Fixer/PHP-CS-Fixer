@@ -252,6 +252,11 @@ function my_foo($bar)
                     continue;
                 }
 
+                $byRefIndex = $tokens->getPrevMeaningfulToken($variableIndex);
+                if ($tokens[$byRefIndex]->equals('&')) {
+                    $variableIndex = $byRefIndex;
+                }
+
                 if (!('(' === $tokens[$variableIndex - 1]->getContent()) && $this->hasParamTypeHint($tokens, $variableIndex - 2)) {
                     continue;
                 }
@@ -374,44 +379,32 @@ function my_foo($bar)
         $hasCallable,
         $hasObject
     ) {
-        if (true === $hasNull) {
-            $newTokens[] = new Token([CT::T_NULLABLE_TYPE, '?']);
-        }
+        $newTokens = [];
 
         if (true === $hasVoid) {
             $newTokens[] = new Token('void');
-        }
-
-        if (true === $hasIterable && true === $hasArray) {
+        } elseif (true === $hasIterable && true === $hasArray) {
             $newTokens[] = new Token([CT::T_ARRAY_TYPEHINT, 'array']);
         } elseif (true === $hasIterable) {
             $newTokens[] = new Token([T_STRING, 'iterable']);
         } elseif (true === $hasArray) {
             $newTokens[] = new Token([CT::T_ARRAY_TYPEHINT, 'array']);
-        }
-
-        if (true === $hasString) {
+        } elseif (true === $hasString) {
             $newTokens[] = new Token([T_STRING, 'string']);
-        }
-
-        if (true === $hasInt) {
+        } elseif (true === $hasInt) {
             $newTokens[] = new Token([T_STRING, 'int']);
-        }
-
-        if (true === $hasFloat) {
+        } elseif (true === $hasFloat) {
             $newTokens[] = new Token([T_STRING, 'float']);
-        }
-
-        if (true === $hasBool) {
+        } elseif (true === $hasBool) {
             $newTokens[] = new Token([T_STRING, 'bool']);
-        }
-
-        if (true === $hasCallable) {
+        } elseif (true === $hasCallable) {
             $newTokens[] = new Token([T_CALLABLE, 'callable']);
+        } elseif (true === $hasObject) {
+            $newTokens[] = new Token([T_STRING, 'object']);
         }
 
-        if (true === $hasObject) {
-            $newTokens[] = new Token([T_STRING, 'object']);
+        if ('' !== $paramType && [] !== $newTokens) {
+            return;
         }
 
         foreach (explode('\\', $paramType) as $nsIndex => $value) {
@@ -423,6 +416,10 @@ function my_foo($bar)
                 $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
             }
             $newTokens[] = new Token([T_STRING, $value]);
+        }
+
+        if (true === $hasNull) {
+            array_unshift($newTokens, new Token([CT::T_NULLABLE_TYPE, '?']));
         }
 
         $newTokens[] = new Token([T_WHITESPACE, ' ']);

@@ -233,6 +233,9 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'skip mixed types' => [
                 '<?php /** @param Foo|Bar $bar */ function my_foo($bar) {}',
             ],
+            'skip mixed types including array' => [
+                '<?php /** @param array|Foo $expected */ function testResolveIntersectionOfPaths($expected) {}',
+            ],
             'array of types' => [
                 '<?php /** @param Foo[] $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param Foo[] $foo */ function my_foo($foo) {}',
@@ -315,6 +318,15 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             ],
             'stop searching last token' => [
                 '<?php class Foo { /** @param Bar $bar */ public function foo($tab) { } }',
+            ],
+            'param by reference' => [
+                '<?php /** @param array $data */ function foo(array &$data) {}',
+                '<?php /** @param array $data */ function foo(&$data) {}',
+            ],
+            'optional param by reference' => [
+                '<?php /** @param null|string[] $matches */ function matchAll(?array &$matches) {}',
+                '<?php /** @param null|string[] $matches */ function matchAll(&$matches) {}',
+                70100,
             ],
         ];
     }
