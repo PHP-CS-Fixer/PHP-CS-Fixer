@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-21T06:29:40Z
+
+If you don't mind, I'd like to add those to #4591.
+
+Edit: done.
+
+---------------------------------------------------------------------------
+
+by jg-development at 2019-10-21T07:47:46Z
+
+What about the string[]|int[] case?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-21T08:07:32Z
+
+It should already be covered by #4591.
+
+---------------------------------------------------------------------------
+
+by jg-development at 2019-10-21T09:01:40Z
+
+I am trying to look into that today
