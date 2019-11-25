@@ -232,11 +232,8 @@ EOT
     {
         $result = [new Token([\T_OPEN_TAG_WITH_ECHO, '<?='])];
 
-        // Skip to the first non-whitespace token between $openTagIndex and $echoTagIndex
-        $start = $openTagIndex + 1;
-        while ($start < $echoTagIndex && $tokens[$start]->isWhitespace()) {
-            ++$start;
-        }
+        $start = $tokens->getNextNonWhitespace($openTagIndex);
+
         if ($start >= $echoTagIndex) {
             // No non-whitespace tokens between $openTagIndex and $echoTagIndex
             return $result;
