@@ -903,7 +903,7 @@ EOT
                 ],
                 <<<'EOT'
 <?php
-class Foo
+abstract class Foo
 {
     public function deep7() {
         $this->deep1();
@@ -932,6 +932,7 @@ class Foo
     }
     public function pubFunc3(int $b, int $c) {
         $a = $b * $c;
+
         return $a % 4;
     }
     public function deep2() {
@@ -970,7 +971,7 @@ EOT
                 ,
                 <<<'EOT'
 <?php
-class Foo
+abstract class Foo
 {
     use BarTrait;
     use BazTrait;
@@ -1028,6 +1029,7 @@ class Foo
     function pubFunc2() {}
     public function pubFunc3(int $b, int $c) {
         $a = $b * $c;
+
         return $a % 4;
     }
     protected function protFunc() {}
