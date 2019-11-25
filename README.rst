@@ -824,11 +824,6 @@ Choose from the list of available rules:
 
   Cast should be written in lower case.
 
-* **lowercase_constants**
-
-  The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
-  DEPRECATED: use ``constant_case`` instead.
-
 * **lowercase_keywords** [@PSR2, @Symfony, @PhpCsFixer]
 
   PHP keywords MUST be in lower case.
@@ -1395,11 +1390,6 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
-* **php_unit_ordered_covers**
-
-  Order ``@covers`` annotation of PHPUnit tests. DEPRECATED: use
-  ``phpdoc_order_by_value`` instead.
-
 * **php_unit_set_up_tear_down_visibility** [@PhpCsFixer:risky]
 
   Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
@@ -1739,13 +1729,6 @@ Choose from the list of available rules:
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
   ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as
   ``(string)``.
-
-* **silenced_deprecation_error**
-
-  Ensures deprecation notices are silenced. DEPRECATED: use
-  ``error_suppression`` instead.
-
-  *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 
 * **simple_to_complex_string_variable** [@PhpCsFixer]
 
