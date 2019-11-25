@@ -217,7 +217,7 @@ class Example
     public function C(){}
     public function B(){}
     public function A() {
-        $this->C()
+        $this->C();
     }
 }
 ',
