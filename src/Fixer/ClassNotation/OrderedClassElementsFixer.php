@@ -31,6 +31,10 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
 {
     /** @internal */
     const SORT_ALPHA = 'alpha';
+
+    /** @internal */
+    const SORT_DEPTH = 'depth';
+
     /** @internal */
     const SORT_NONE = 'none';
 
@@ -82,6 +86,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     private $supportedSortAlgorithms = [
         self::SORT_NONE,
         self::SORT_ALPHA,
+        self::SORT_DEPTH,
     ];
 
     /**
@@ -205,6 +210,19 @@ class Example
 ',
                     ['order' => ['method_public'], 'sort_algorithm' => 'alpha']
                 ),
+                new CodeSample(
+                    '<?php
+class Example
+{
+    public function C(){}
+    public function B(){}
+    public function A() {
+        $this->C()
+    }
+}
+',
+                    ['order' => ['method_public'], 'sort_algorithm' => ['alpha', 'depth']]
+                ),
             ]
         );
     }
@@ -252,6 +270,9 @@ class Example
      */
     protected function createConfigurationDefinition()
     {
+        $supportedSortAlgorithms = $this->supportedSortAlgorithms;
+        $supportedSortAlgorithms[] = new AllowedValueSubset($this->supportedSortAlgorithms);
+
         return new FixerConfigurationResolverRootless('order', [
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
@@ -273,11 +294,11 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
-                'sortAlgorithm'
-            ))
-                ->setAllowedValues($this->supportedSortAlgorithms)
+                (new AliasedFixerOptionBuilder(
+                    new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
+                    'sortAlgorithm'
+                ))->setAllowedTypes(['array', 'string'])
+                ->setAllowedValues($supportedSortAlgorithms)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
         ], $this->getName());
@@ -336,11 +357,19 @@ class Example
 
                 if ('property' === $element['type']) {
                     $element['name'] = $tokens[$i]->getContent();
-                } elseif (\in_array($element['type'], ['use_trait', 'constant', 'method', 'magic'], true)) {
+                } elseif (\in_array(
+                    $element['type'],
+                    ['use_trait', 'constant', 'method', 'magic', 'construct', 'destruct'],
+                    true
+                )) {
                     $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
                 $element['end'] = $this->findElementEnd($tokens, $i);
+
+                if ($element['type'] === 'method') {
+                    $element['calls'] = $this->getMethodCalls($tokens, $i, $element['end']);
+                }
 
                 break;
             }
@@ -348,6 +377,8 @@ class Example
             $elements[] = $element;
             $startIndex = $element['end'] + 1;
         }
+
+        return $elements;
     }
 
     /**
@@ -392,7 +423,7 @@ class Example
             return ['phpunit', strtolower($nameToken->getContent())];
         }
 
-        if ('__' === substr($nameToken->getContent(), 0, 2)) {
+        if (0 === strpos($nameToken->getContent(), '__')) {
             return 'magic';
         }
 
@@ -400,7 +431,7 @@ class Example
     }
 
     /**
-     * @param int $index
+     * @param int|null $index
      *
      * @return int
      */
@@ -412,9 +443,9 @@ class Example
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         }
 
-        for (++$index; $tokens[$index]->isWhitespace(" \t") || $tokens[$index]->isComment(); ++$index);
-
-        --$index;
+        while ($tokens[$index + 1]->isWhitespace(" \t") || $tokens[$index + 1]->isComment()) {
+            $index++;
+        }
 
         return $tokens[$index]->isWhitespace() ? $index - 1 : $index;
     }
@@ -468,14 +499,25 @@ class Example
             return $a['position'] > $b['position'] ? 1 : -1;
         });
 
+        if ($this->hasSortAlgorithm(self::SORT_DEPTH)) {
+            $methodsOrder = $this->getMethodsOrder($elements);
+            usort(
+                $elements,
+                static function (array $a, array $b) use ($methodsOrder) {
+                    if (isset($a['name'], $b['name'], $methodsOrder[$a['name']], $methodsOrder[$b['name']])) {
+                        return $methodsOrder[$a['name']] > $methodsOrder[$b['name']] ? 1 : -1;
+                    }
+                    return 0;
+                }
+            );
+        }
+
         return $elements;
     }
 
     private function sortGroupElements(array $a, array $b)
     {
-        $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
-
-        if (self::SORT_ALPHA === $selectedSortAlgorithm) {
+        if ($this->hasSortAlgorithm(self::SORT_ALPHA)) {
             return strcasecmp($a['name'], $b['name']);
         }
 
@@ -498,5 +540,126 @@ class Example
         }
 
         $tokens->overrideRange($startIndex + 1, $endIndex, $replaceTokens);
+    }
+
+    /**
+     * @param int $start
+     * @param int $end
+     *
+     * @return array
+     */
+    private function getMethodCalls(Tokens $tokens, $start, $end)
+    {
+        $calls = [];
+        $bodyStart = $tokens->getNextTokenOfKind($start, ['{']);
+        for ($j = $bodyStart; $bodyStart && $j < $end; $j++) {
+            if ($tokens[$j]->isGivenKind(T_STRING) && $tokens[$j + 1]->equals('(')) {
+                $calls[] = $tokens[$j]->getContent();
+            }
+        }
+
+        return $calls;
+    }
+
+    /**
+     * @return array
+     */
+    private function getMethodsOrder(array $elements)
+    {
+        $tree = $this->createCallTree($elements);
+
+        return array_flip($this->flatten($tree));
+    }
+
+    /**
+     * @return array
+     */
+    private function createCallTree(array $elements)
+    {
+        $elements = $this->hashElementsIndexes($elements);
+        foreach ($elements as &$element) {
+            $this->fetchCalls($elements, $element);
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @return void
+     */
+    private function fetchCalls(array &$functions, array &$function, array $cycle = [])
+    {
+        $cycle[$function['name']] = true;
+        if (!isset($function['calls'])) {
+            return;
+        }
+        foreach ($function['calls'] as $call) {
+            $methodHash = 'method_' . $call;
+            if (isset($cycle[$call])) {
+                continue;
+            }
+            if (!empty($functions[$methodHash])) {
+                $this->fetchCalls($functions, $functions[$methodHash], $cycle);
+                $function['calls_elements'][] = $functions[$methodHash];
+                unset($functions[$methodHash]);
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    private function flatten(array $tree)
+    {
+        $list = [];
+        foreach ($tree as $item) {
+            $list[] = $item;
+            $this->fetchChildren($item, $list);
+        }
+
+        $flat = [];
+        foreach ($list as &$item) {
+            $flat[] = $item['name'];
+        }
+
+        return $flat;
+    }
+
+    /**
+     * @return void
+     */
+    private function fetchChildren(array $item, array &$list)
+    {
+        if (!empty($item['calls_elements'])) {
+            foreach ($item['calls_elements'] as $subItem) {
+                $list[] = $subItem;
+                $this->fetchChildren($subItem, $list);
+            }
+        }
+    }
+
+    /***
+     * @return array
+     */
+    private function hashElementsIndexes(array $elements)
+    {
+        $result = [];
+        foreach ($elements as $element) {
+            $result[$element['type'] . '_' . $element['name']] = $element;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param string $algorithm
+     *
+     * @return bool
+     */
+    public function hasSortAlgorithm($algorithm)
+    {
+        $selectedSortAlgorithm = (array) $this->configuration['sort_algorithm'];
+
+        return in_array($algorithm, $selectedSortAlgorithm, true);
     }
 }

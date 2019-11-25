@@ -821,6 +821,220 @@ class Foo
 }
 EOT
             ],
+            [
+                [
+                    'order' => [
+                        'use_trait',
+                        'constant',
+                        'property_public_static',
+                        'property_protected_static',
+                        'property_private_static',
+                        'property_public',
+                        'property_protected',
+                        'property_private',
+                        'construct',
+                        'destruct',
+                        'magic',
+                        'method_public_static',
+                        'method_protected_static',
+                        'method_private_static',
+                        'method_public',
+                        'method_protected',
+                        'method_private',
+                    ],
+                    'sort_algorithm' => ['alpha', 'depth'],
+                ],
+                <<<'EOT'
+<?php
+class Foo
+{
+    public function deep2() {
+        $this->deep1();
+    }
+    public $prop;
+    public function deep3() {
+        $this->deep2();
+    }
+    public function deep1() {
+        $this->deep3();
+    }
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Foo
+{
+    public $prop;
+    public function deep1() {
+        $this->deep3();
+    }
+    public function deep3() {
+        $this->deep2();
+    }
+    public function deep2() {
+        $this->deep1();
+    }
+}
+EOT
+            ],
+            [
+                [
+                    'order' => [
+                        'use_trait',
+                        'constant',
+                        'property_public_static',
+                        'property_protected_static',
+                        'property_private_static',
+                        'property_public',
+                        'property_protected',
+                        'property_private',
+                        'construct',
+                        'destruct',
+                        'magic',
+                        'method_public_static',
+                        'method_protected_static',
+                        'method_private_static',
+                        'method_public',
+                        'method_protected',
+                        'method_private',
+                    ],
+                    'sort_algorithm' => ['alpha', 'depth'],
+                ],
+                <<<'EOT'
+<?php
+class Foo
+{
+    public function deep7() {
+        $this->deep1();
+    }
+    private static function privStatFunc() {}
+    protected static $protStatProp;
+    use BazTrait;
+    public static $pubStatProp2;
+    public $pubProp3;
+    use BarTrait;
+    public function __toString() {}
+    protected function protFunc() {}
+    protected $protProp;
+    function pubFunc2() {}
+    public $pubProp1;
+    public function __destruct() {}
+    var $pubProp2;
+    public function __magicB() {}
+    const C2 = 2;
+    public static $pubStatProp1;
+    public function __magicA() {}
+    private static $privStatProp;
+    static function pubStatFunc2() {}
+    public function deep6() {
+        $this->deep7();
+    }
+    public function pubFunc3(int $b, int $c) {
+        $a = $b * $c;
+        return $a % 4;
+    }
+    public function deep2() {
+        $this->deep6();
+    }
+    private $privProp;
+    const C1 = 1;
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
+    public function deep4() {
+        //$this->deep9();
+        $this->deep5();
+    }
+    public function pubFunc1() {}
+    public static function pubStatFunc1() {}
+    private function privFunc() {}
+    protected function __construct() {}
+    protected static function protStatFunc() {}
+    public function deep1() {
+        $this->deep1();
+        $this->deep2();
+        self::deep3();
+    }
+    public function deep3() {
+        $this->deep8();
+        $this->deep2();
+    }
+    public function deep5() {
+        $this->deep4();
+    }
+    abstract public function deep8();
+    private function deep9() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Foo
+{
+    use BarTrait;
+    use BazTrait;
+    const C1 = 1;
+    const C2 = 2;
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    protected static $protStatProp;
+    private static $privStatProp;
+    public $pubProp1;
+    var $pubProp2;
+    public $pubProp3;
+    protected $protProp;
+    private $privProp;
+    protected function __construct() {}
+    public function __destruct() {}
+    public function __magicA() {}
+    public function __magicB() {}
+    public function __toString() {}
+    public static function pubStatFunc1() {}
+    static function pubStatFunc2() {}
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
+    private function privFunc() {}
+    protected static function protStatFunc() {}
+    private static function privStatFunc() {}
+    public function deep1() {
+        $this->deep1();
+        $this->deep2();
+        self::deep3();
+    }
+    public function deep2() {
+        $this->deep6();
+    }
+    public function deep6() {
+        $this->deep7();
+    }
+    public function deep7() {
+        $this->deep1();
+    }
+    public function deep3() {
+        $this->deep8();
+        $this->deep2();
+    }
+    abstract public function deep8();
+    public function deep4() {
+        //$this->deep9();
+        $this->deep5();
+    }
+    public function deep5() {
+        $this->deep4();
+    }
+    public function pubFunc1() {}
+    function pubFunc2() {}
+    public function pubFunc3(int $b, int $c) {
+        $a = $b * $c;
+        return $a % 4;
+    }
+    protected function protFunc() {}
+    private function deep9() {}
+}
+EOT
+            ],
         ];
     }
 
