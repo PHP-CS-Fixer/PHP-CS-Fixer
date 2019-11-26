@@ -23,6 +23,18 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
+    private $positiveSequence = [
+        ')',
+        '{', [T_RETURN], [T_STRING, 'true'], ';', '}',
+        [T_RETURN], [T_STRING, 'false'], ';',
+    ];
+
+    private $negativeSequence = [
+        ')',
+        '{', [T_RETURN], [T_STRING, 'false'], ';', '}',
+        [T_RETURN], [T_STRING, 'true'], ';',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -56,20 +68,20 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $sequence = [
-            ')',
-            '{', [T_RETURN], [T_STRING, 'true'], ';', '}',
-            [T_RETURN], [T_STRING, 'false'], ';',
-        ];
-
         $foundIndexes = $tokens->findGivenKind([T_IF, T_ELSEIF]);
         $foundIndexes = array_reverse($foundIndexes[T_IF] + $foundIndexes[T_ELSEIF], true);
         foreach ($foundIndexes as $ifIndex => $ifToken) {
             $startParenthesisIndex = $tokens->getNextTokenOfKind($ifIndex, ['(']);
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-            $sequenceFound = $tokens->findSequence($sequence, $endParenthesisIndex - 1);
+
+            $isNegativeSequence = false;
+            $sequenceFound = $tokens->findSequence($this->positiveSequence, $endParenthesisIndex - 1);
             if (null === $sequenceFound) {
-                continue;
+                $isNegativeSequence = true;
+                $sequenceFound = $tokens->findSequence($this->negativeSequence, $endParenthesisIndex - 1);
+                if (null === $sequenceFound) {
+                    continue;
+                }
             }
 
             $firstSequenceIndex = key($sequenceFound);
@@ -86,11 +98,15 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
 
-            $tokens->overrideRange($ifIndex, $ifIndex, [
-                new Token([T_RETURN, 'return']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_BOOL_CAST, '(bool)']),
-            ]);
+            $newTokens = [new Token([T_RETURN, 'return'])];
+            if ($isNegativeSequence) {
+                $newTokens[] = new Token([T_WHITESPACE, ' ']);
+                $newTokens[] = new Token('!');
+            }
+            $newTokens[] = new Token([T_WHITESPACE, ' ']);
+            $newTokens[] = new Token([T_BOOL_CAST, '(bool)']);
+
+            $tokens->overrideRange($ifIndex, $ifIndex, $newTokens);
         }
     }
 }
