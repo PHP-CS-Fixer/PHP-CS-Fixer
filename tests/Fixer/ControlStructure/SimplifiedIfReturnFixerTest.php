@@ -61,6 +61,14 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 '<?php if ($bar) { return 1; } return ! (bool) $foo      ;',
                 '<?php if ($bar) { return 1; } if ($foo) { return false; } return true;',
             ],
+            'bug1-braceless' => [
+                '<?php if ($bar) return 1; return (bool) $foo    ;',
+                '<?php if ($bar) return 1; if ($foo) return true; return false;',
+            ],
+            'bug1-braceless-negative' => [
+                '<?php if ($bar) return 1; return ! (bool) $foo    ;',
+                '<?php if ($bar) return 1; if ($foo) return false; return true;',
+            ],
             [
                 <<<'EOT'
 <?php
@@ -89,7 +97,7 @@ function f9() { if ($f9) { return false; } return true; }
 EOT
                 ,
             ],
-            [
+            'preserve-comments' => [
                 <<<'EOT'
 <?php
 // C1
@@ -149,6 +157,62 @@ false
 EOT
                 ,
             ],
+            'preserve-comments-braceless' => [
+                <<<'EOT'
+<?php
+// C1
+return (bool)
+# C2
+
+/* C3 */
+$foo
+/** C4 */
+
+// C5
+# C6
+
+// C7
+
+# C8
+
+/* C9 */
+/** C10 */
+
+// C11
+
+# C12
+;
+/* C13 */
+EOT
+                ,
+                <<<'EOT'
+<?php
+// C1
+if
+# C2
+(
+/* C3 */
+$foo
+/** C4 */
+)
+// C5
+# C6
+return
+// C7
+true
+# C8
+;
+/* C9 */
+/** C10 */
+return
+// C11
+false
+# C12
+;
+/* C13 */
+EOT
+                ,
+            ],
             'else-if' => [
                 '<?php if ($bar) { return $bar; } else return (bool) $foo      ;',
                 '<?php if ($bar) { return $bar; } else if ($foo) { return true; } return false;',
@@ -157,6 +221,14 @@ EOT
                 '<?php if ($bar) { return $bar; } else return ! (bool) $foo      ;',
                 '<?php if ($bar) { return $bar; } else if ($foo) { return false; } return true;',
             ],
+            'else-if-braceless' => [
+                '<?php if ($bar) return $bar; else return (bool) $foo    ;',
+                '<?php if ($bar) return $bar; else if ($foo) return true; return false;',
+            ],
+            'else-if-braceless-negative' => [
+                '<?php if ($bar) return $bar; else return ! (bool) $foo    ;',
+                '<?php if ($bar) return $bar; else if ($foo) return false; return true;',
+            ],
             'elseif' => [
                 '<?php if ($bar) { return $bar; } return (bool) $foo      ;',
                 '<?php if ($bar) { return $bar; } elseif ($foo) { return true; } return false;',
@@ -164,6 +236,14 @@ EOT
             'elseif-negative' => [
                 '<?php if ($bar) { return $bar; } return ! (bool) $foo      ;',
                 '<?php if ($bar) { return $bar; } elseif ($foo) { return false; } return true;',
+            ],
+            'elseif-braceless' => [
+                '<?php if ($bar) return $bar; return (bool) $foo    ;',
+                '<?php if ($bar) return $bar; elseif ($foo) return true; return false;',
+            ],
+            'elseif-braceless-negative' => [
+                '<?php if ($bar) return $bar; return ! (bool) $foo    ;',
+                '<?php if ($bar) return $bar; elseif ($foo) return false; return true;',
             ],
         ];
     }
