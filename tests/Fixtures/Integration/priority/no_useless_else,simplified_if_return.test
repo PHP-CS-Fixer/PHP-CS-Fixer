@@ -4,7 +4,7 @@ Integration of fixers: no_useless_else,simplified_if_return.
 {"no_useless_else": true, "simplified_if_return": true}
 --EXPECT--
 <?php
-return (bool) $a 
+return (bool) ($a) 
      
   
      ;

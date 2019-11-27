@@ -4,7 +4,7 @@ Integration of fixers: simplified_if_return,no_singleline_whitespace_before_semi
 {"simplified_if_return": true, "no_singleline_whitespace_before_semicolons": true}
 --EXPECT--
 <?php
-return (bool) $b;
+return (bool) ($b);
 
 --INPUT--
 <?php

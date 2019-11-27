@@ -7,7 +7,7 @@ Integration of fixers: no_superfluous_elseif,simplified_if_return.
 if ($a) {
     return 1;
 }
-return (bool) $b 
+return (bool) ($b) 
      
 
  ;
