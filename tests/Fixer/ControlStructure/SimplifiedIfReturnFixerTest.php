@@ -38,49 +38,49 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
     {
         return [
             'simple' => [
-                '<?php return (bool) $foo      ;',
+                '<?php return (bool) ($foo)      ;',
                 '<?php if ($foo) { return true; } return false;',
             ],
             'simple-negative' => [
-                '<?php return ! (bool) $foo      ;',
+                '<?php return ! ($foo)      ;',
                 '<?php if ($foo) { return false; } return true;',
             ],
             'simple-braceless' => [
-                '<?php return (bool) $foo    ;',
+                '<?php return (bool) ($foo)    ;',
                 '<?php if ($foo) return true; return false;',
             ],
             'simple-braceless-negative' => [
-                '<?php return ! (bool) $foo    ;',
+                '<?php return ! ($foo)    ;',
                 '<?php if ($foo) return false; return true;',
             ],
             'bug1' => [
-                '<?php if ($bar) { return 1; } return (bool) $foo      ;',
+                '<?php if ($bar) { return 1; } return (bool) ($foo)      ;',
                 '<?php if ($bar) { return 1; } if ($foo) { return true; } return false;',
             ],
             'bug1-negative' => [
-                '<?php if ($bar) { return 1; } return ! (bool) $foo      ;',
+                '<?php if ($bar) { return 1; } return ! ($foo)      ;',
                 '<?php if ($bar) { return 1; } if ($foo) { return false; } return true;',
             ],
             'bug1-braceless' => [
-                '<?php if ($bar) return 1; return (bool) $foo    ;',
+                '<?php if ($bar) return 1; return (bool) ($foo)    ;',
                 '<?php if ($bar) return 1; if ($foo) return true; return false;',
             ],
             'bug1-braceless-negative' => [
-                '<?php if ($bar) return 1; return ! (bool) $foo    ;',
+                '<?php if ($bar) return 1; return ! ($foo)    ;',
                 '<?php if ($bar) return 1; if ($foo) return false; return true;',
             ],
             [
                 <<<'EOT'
 <?php
-function f1() { return (bool) $f1      ; }
+function f1() { return (bool) ($f1)      ; }
 function f2() { return true; } return false;
-function f3() { return (bool) $f3      ; }
+function f3() { return (bool) ($f3)      ; }
 function f4() { return true; } return false;
-function f5() { return (bool) $f5      ; }
+function f5() { return (bool) ($f5)      ; }
 function f6() { return false; } return true;
-function f7() { return ! (bool) $f7      ; }
+function f7() { return ! ($f7)      ; }
 function f8() { return false; } return true;
-function f9() { return ! (bool) $f9      ; }
+function f9() { return ! ($f9)      ; }
 EOT
                 ,
                 <<<'EOT'
@@ -103,11 +103,11 @@ EOT
 // C1
 return (bool)
 # C2
-
+(
 /* C3 */
 $foo
 /** C4 */
-
+)
 // C5
 
 # C6
@@ -163,11 +163,11 @@ EOT
 // C1
 return (bool)
 # C2
-
+(
 /* C3 */
 $foo
 /** C4 */
-
+)
 // C5
 # C6
 
@@ -214,35 +214,35 @@ EOT
                 ,
             ],
             'else-if' => [
-                '<?php if ($bar) { return $bar; } else return (bool) $foo      ;',
+                '<?php if ($bar) { return $bar; } else return (bool) ($foo)      ;',
                 '<?php if ($bar) { return $bar; } else if ($foo) { return true; } return false;',
             ],
             'else-if-negative' => [
-                '<?php if ($bar) { return $bar; } else return ! (bool) $foo      ;',
+                '<?php if ($bar) { return $bar; } else return ! ($foo)      ;',
                 '<?php if ($bar) { return $bar; } else if ($foo) { return false; } return true;',
             ],
             'else-if-braceless' => [
-                '<?php if ($bar) return $bar; else return (bool) $foo    ;',
+                '<?php if ($bar) return $bar; else return (bool) ($foo)    ;',
                 '<?php if ($bar) return $bar; else if ($foo) return true; return false;',
             ],
             'else-if-braceless-negative' => [
-                '<?php if ($bar) return $bar; else return ! (bool) $foo    ;',
+                '<?php if ($bar) return $bar; else return ! ($foo)    ;',
                 '<?php if ($bar) return $bar; else if ($foo) return false; return true;',
             ],
             'elseif' => [
-                '<?php if ($bar) { return $bar; } return (bool) $foo      ;',
+                '<?php if ($bar) { return $bar; } return (bool) ($foo)      ;',
                 '<?php if ($bar) { return $bar; } elseif ($foo) { return true; } return false;',
             ],
             'elseif-negative' => [
-                '<?php if ($bar) { return $bar; } return ! (bool) $foo      ;',
+                '<?php if ($bar) { return $bar; } return ! ($foo)      ;',
                 '<?php if ($bar) { return $bar; } elseif ($foo) { return false; } return true;',
             ],
             'elseif-braceless' => [
-                '<?php if ($bar) return $bar; return (bool) $foo    ;',
+                '<?php if ($bar) return $bar; return (bool) ($foo)    ;',
                 '<?php if ($bar) return $bar; elseif ($foo) return true; return false;',
             ],
             'elseif-braceless-negative' => [
-                '<?php if ($bar) return $bar; return ! (bool) $foo    ;',
+                '<?php if ($bar) return $bar; return ! ($foo)    ;',
                 '<?php if ($bar) return $bar; elseif ($foo) return false; return true;',
             ],
         ];

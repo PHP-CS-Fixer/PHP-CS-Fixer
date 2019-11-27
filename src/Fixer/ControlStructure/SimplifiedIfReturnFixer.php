@@ -109,21 +109,23 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                 }
 
                 $indexesToClear = array_keys($sequenceFound);
+                array_shift($indexesToClear); // Preserve closing parenthesis
                 array_pop($indexesToClear); // Preserve last semicolon
-                $indexesToClear[] = $startParenthesisIndex;
                 rsort($indexesToClear);
 
                 foreach ($indexesToClear as $index) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($index);
                 }
 
-                $newTokens = [new Token([T_RETURN, 'return'])];
+                $newTokens = [
+                    new Token([T_RETURN, 'return']),
+                    new Token([T_WHITESPACE, ' ']),
+                ];
                 if ($sequenceSpec['isNegative']) {
-                    $newTokens[] = new Token([T_WHITESPACE, ' ']);
                     $newTokens[] = new Token('!');
+                } else {
+                    $newTokens[] = new Token([T_BOOL_CAST, '(bool)']);
                 }
-                $newTokens[] = new Token([T_WHITESPACE, ' ']);
-                $newTokens[] = new Token([T_BOOL_CAST, '(bool)']);
 
                 $tokens->overrideRange($ifIndex, $ifIndex, $newTokens);
             }
