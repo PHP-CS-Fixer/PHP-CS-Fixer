@@ -12,7 +12,6 @@ cache:
 env:
     global:
         - DEFAULT_COMPOSER_FLAGS="--optimize-autoloader --no-interaction --no-progress"
-        - COLLECT_COVERAGE=0
         - COMPOSER_FLAGS=""
 
 before_install:
@@ -94,6 +93,7 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.3
+            name: 7.3 | With migration rules
             before_script:
                 - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
 
@@ -101,16 +101,10 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.3
-            env: COLLECT_COVERAGE=1
+            name: 7.3 | Collect coverage
             before_install:
-                # check phpdbg
-                - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
-
                 # for building a tag release we don't need to collect code coverage
-                - if [ $TRAVIS_TAG ]; then export COLLECT_COVERAGE=0; fi
-
-                # terminate job when no coverage collecting shall be performed
-                - if [ $COLLECT_COVERAGE == 0 ]; then travis_terminate 0; fi
+                - if [ $TRAVIS_TAG ]; then travis_terminate 0; fi
 
                 ## regular `before_install`
                 # turn off XDebug
