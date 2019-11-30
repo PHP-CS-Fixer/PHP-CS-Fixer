@@ -353,7 +353,7 @@ final class TokensAnalyzer
                 $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
             }
 
-            if ($this->tokens[$checkIndex]->isGivenKind([T_EXTENDS, CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, CT::T_USE_TRAIT])) {
+            if ($this->tokens[$checkIndex]->isGivenKind([T_EXTENDS, CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, T_USE, CT::T_USE_TRAIT])) {
                 return false;
             }
         }
