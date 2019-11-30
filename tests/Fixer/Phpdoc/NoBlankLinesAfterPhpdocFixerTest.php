@@ -144,6 +144,34 @@ EOF;
         $this->doTest($expected);
     }
 
+    public function testLineBeforeNamespaceDeclarationIsNotRemoved()
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * This is some license header.
+ */
+
+namespace Foo\Bar;
+EOF;
+
+        $this->doTest($expected);
+    }
+
+    public function testLineBeforeUseStatementIsNotRemoved()
+    {
+        $expected = <<<'EOF'
+<?php
+/**
+ * This is some license header.
+ */
+
+use Foo\Bar;
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented()
     {
         $this->doTest(
