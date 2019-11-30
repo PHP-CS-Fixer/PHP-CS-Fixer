@@ -5,7 +5,6 @@ clone_folder: C:\projects\php-cs-fixer
 
 environment:
     matrix:
-        - php_ver: 7.3.12
         - php_ver: 5.6.40
           SKIP_LINT_TEST_CASES: 1
 
@@ -20,7 +19,7 @@ init:
 
 install:
     - ps: Set-Service wuauserv -StartupType Manual
-    - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --version %php_ver% --params '/InstallDir:C:\tools\php')
+    - IF NOT EXIST C:\tools\php (choco install --yes --allow-empty-checksums php --params '/InstallDir:C:\tools\php')
     - cd C:\tools\php
     - copy php.ini-production php.ini
     - echo date.timezone="UTC" >> php.ini
