@@ -93,10 +93,10 @@ EOT
     public function isCandidate(Tokens $tokens)
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
-            return $tokens->isAnyTokenKindsFound([\T_ECHO, \T_PRINT]);
+            return $tokens->isAnyTokenKindsFound([T_ECHO, T_PRINT]);
         }
 
-        return $tokens->isTokenKindFound(\T_OPEN_TAG_WITH_ECHO);
+        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
     }
 
     /**
@@ -137,14 +137,14 @@ EOT
         $skipWhenComplexCode = $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY];
         $count = $tokens->count();
         for ($index = 0; $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_OPEN_TAG)) {
+            if (!$tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                 continue;
             }
             $nextMeaningful = $tokens->getNextMeaningfulToken($index);
             if (null === $nextMeaningful) {
                 return;
             }
-            if (!$tokens[$nextMeaningful]->isGivenKind([\T_ECHO, \T_PRINT])) {
+            if (!$tokens[$nextMeaningful]->isGivenKind([T_ECHO, T_PRINT])) {
                 $index = $nextMeaningful;
 
                 continue;
@@ -163,19 +163,19 @@ EOT
     private function shortToLong(Tokens $tokens)
     {
         if (self::LONG_FUNCTION_PRINT === $this->configuration[self::OPTION_LONG_FUNCTION]) {
-            $echoToken = [\T_PRINT, 'print'];
+            $echoToken = [T_PRINT, 'print'];
         } else {
-            $echoToken = [\T_ECHO, 'echo'];
+            $echoToken = [T_ECHO, 'echo'];
         }
         $index = -1;
         for (;;) {
-            $index = $tokens->getNextTokenOfKind($index, [[\T_OPEN_TAG_WITH_ECHO]]);
+            $index = $tokens->getNextTokenOfKind($index, [[T_OPEN_TAG_WITH_ECHO]]);
             if (null === $index) {
                 return;
             }
-            $replace = [new Token([\T_OPEN_TAG, '<?php ']), new Token($echoToken)];
+            $replace = [new Token([T_OPEN_TAG, '<?php ']), new Token($echoToken)];
             if (!$tokens[$index + 1]->isWhitespace()) {
-                $replace[] = new Token([\T_WHITESPACE, ' ']);
+                $replace[] = new Token([T_WHITESPACE, ' ']);
             }
             $tokens->overrideRange($index, $index, $replace);
             ++$index;
@@ -202,7 +202,7 @@ EOT
         $semicolonFound = false;
         for ($count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
-            if ($token->isGivenKind(\T_CLOSE_TAG)) {
+            if ($token->isGivenKind(T_CLOSE_TAG)) {
                 return false;
             }
             if (';' === $token->getContent()) {
@@ -225,7 +225,7 @@ EOT
      */
     private function buildLongToShortTokens(Tokens $tokens, $openTagIndex, $echoTagIndex)
     {
-        $result = [new Token([\T_OPEN_TAG_WITH_ECHO, '<?='])];
+        $result = [new Token([T_OPEN_TAG_WITH_ECHO, '<?='])];
 
         $start = $tokens->getNextNonWhitespace($openTagIndex);
 
