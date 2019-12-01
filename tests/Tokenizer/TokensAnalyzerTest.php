@@ -131,7 +131,7 @@ PHP;
 class Foo
 {
     public int $prop0;
-    protected ?int $prop1;
+    protected ?array $prop1;
     private string $prop2 = 1;
     var ? Foo\Bar $prop3 = array(1,2,3);
 }

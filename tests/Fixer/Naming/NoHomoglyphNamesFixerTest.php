@@ -125,6 +125,10 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
                 '<?php class A { private ? Foo\Bar $name; }',
                 '<?php class A { private ? Foo\Bar $nаmе; }',
             ],
+            [
+                '<?php class A { private array $name; }',
+                '<?php class A { private array $nаmе; }',
+            ],
         ];
     }
 }
