@@ -32,6 +32,13 @@ Locally
 
 Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
 
+Globally (homebrew)
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ brew install php-cs-fixer
+
 Globally (manual)
 ~~~~~~~~~~~~~~~~~
 
@@ -77,13 +84,6 @@ Then make sure you have the global Composer binaries directory in your ``PATH``.
 .. code-block:: bash
 
     $ export PATH="$PATH:$HOME/.composer/vendor/bin"
-
-Globally (homebrew)
-~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-    $ brew install php-cs-fixer
 
 Locally (PHIVE)
 ~~~~~~~~~~~~~~~
