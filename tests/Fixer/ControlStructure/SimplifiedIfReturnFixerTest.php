@@ -53,19 +53,19 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 '<?php return ! ($foo)    ;',
                 '<?php if ($foo) return false; return true;',
             ],
-            'bug1' => [
+            'bug-consecutive-ifs' => [
                 '<?php if ($bar) { return 1; } return (bool) ($foo)      ;',
                 '<?php if ($bar) { return 1; } if ($foo) { return true; } return false;',
             ],
-            'bug1-negative' => [
+            'bug-consecutive-ifs-negative' => [
                 '<?php if ($bar) { return 1; } return ! ($foo)      ;',
                 '<?php if ($bar) { return 1; } if ($foo) { return false; } return true;',
             ],
-            'bug1-braceless' => [
+            'bug-consecutive-ifs-braceless' => [
                 '<?php if ($bar) return 1; return (bool) ($foo)    ;',
                 '<?php if ($bar) return 1; if ($foo) return true; return false;',
             ],
-            'bug1-braceless-negative' => [
+            'bug-consecutive-ifs-braceless-negative' => [
                 '<?php if ($bar) return 1; return ! ($foo)    ;',
                 '<?php if ($bar) return 1; if ($foo) return false; return true;',
             ],
