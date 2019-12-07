@@ -1367,6 +1367,18 @@ Choose from the list of available rules:
   There should not be space before or after object ``T_OBJECT_OPERATOR``
   ``->``.
 
+* **operator_linebreak**
+
+  Operators - when multiline - must always be at the beginning or at the
+  end of the line.
+
+  Configuration options:
+
+  - ``only_booleans`` (``bool``): whether to limit operators to only boolean ones;
+    defaults to ``false``
+  - ``position`` (``'beginning'``, ``'end'``): whether to place operators at the
+    beginning or at the end of the line; defaults to ``'beginning'``
+
 * **ordered_class_elements** [@PhpCsFixer]
 
   Orders the elements of classes/interfaces/traits.
