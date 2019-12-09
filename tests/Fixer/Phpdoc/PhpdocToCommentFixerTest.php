@@ -702,6 +702,15 @@ $first = true;// needed because by default first docblock is never fixed.
                     var ? Foo\Bar $foo;
                 }',
             ],
+            [
+                '<?php
+                class Foo {
+                    /**
+                     * Do not convert this
+                     */
+                    var ? array $foo;
+                }',
+            ],
         ];
     }
 }
