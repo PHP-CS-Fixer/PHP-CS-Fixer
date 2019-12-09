@@ -162,6 +162,10 @@ final class Foo
             '<?php final class Foo { private ?string $foo; }',
             '<?php final class Foo { protected ?string $foo; }',
         ];
+        yield [
+            '<?php final class Foo { private array $foo; }',
+            '<?php final class Foo { protected array $foo; }',
+        ];
     }
 
     private function getAttributesAndMethods($original)
