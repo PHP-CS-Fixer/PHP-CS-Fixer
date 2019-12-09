@@ -161,5 +161,17 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
 /** @var $foo Foo|array<int, int>|null */
 ',
         ];
+
+        yield [
+            '<?php
+                class Foo
+                {
+                    /**
+                     * @var $bar
+                     */
+                    private $bar;
+                }
+            ',
+        ];
     }
 }
