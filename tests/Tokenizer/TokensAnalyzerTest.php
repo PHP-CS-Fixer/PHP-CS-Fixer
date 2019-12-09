@@ -786,6 +786,10 @@ preg_replace_callback(
                 '<?php interface Foo extends Bar, Baz, Qux {}',
                 [7 => false, 10 => false, 13 => false],
             ],
+            [
+                '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
+                [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
+            ],
         ];
     }
 
