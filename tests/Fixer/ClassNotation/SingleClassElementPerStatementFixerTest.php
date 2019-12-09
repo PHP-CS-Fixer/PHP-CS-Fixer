@@ -851,5 +851,14 @@ EOT
                 var ? Foo\Bar $foo, $bar;
             }',
         ];
+        yield [
+            '<?php class Foo {
+                var array $foo;
+                var array $bar;
+            }',
+            '<?php class Foo {
+                var array $foo, $bar;
+            }',
+        ];
     }
 }

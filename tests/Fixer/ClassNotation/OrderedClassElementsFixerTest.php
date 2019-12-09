@@ -815,13 +815,13 @@ EOT
             '<?php
             class Foo {
                 public string $bar;
-                public iterable $baz;
+                public array $baz;
                 public ?int $foo;
                 public ? Foo\Bar $qux;
             }',
             '<?php
             class Foo {
-                public iterable $baz;
+                public array $baz;
                 public ? Foo\Bar $qux;
                 public string $bar;
                 public ?int $foo;

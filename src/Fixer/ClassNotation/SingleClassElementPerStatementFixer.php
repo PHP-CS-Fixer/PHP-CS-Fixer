@@ -209,7 +209,7 @@ final class Example
     private function getModifiersSequences(Tokens $tokens, $type, $startIndex, $endIndex)
     {
         if ('property' === $type) {
-            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE];
+            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
         } else {
             $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
         }
