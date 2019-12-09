@@ -131,7 +131,7 @@ PHP;
 class Foo
 {
     public int $prop0;
-    protected ?int $prop1;
+    protected ?array $prop1;
     private string $prop2 = 1;
     var ? Foo\Bar $prop3 = array(1,2,3);
 }
@@ -786,6 +786,10 @@ preg_replace_callback(
                 '<?php interface Foo extends Bar, Baz, Qux {}',
                 [7 => false, 10 => false, 13 => false],
             ],
+            [
+                '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
+                [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
+            ],
         ];
     }
 
@@ -851,6 +855,10 @@ preg_replace_callback(
             [
                 '<?php interface Foo { public function bar(): Baz; }',
                 [16 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): \Baz; }',
+                [17 => false],
             ],
             [
                 '<?php interface Foo { public function bar(): ?Baz; }',

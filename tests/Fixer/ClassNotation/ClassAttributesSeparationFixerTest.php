@@ -1115,5 +1115,19 @@ private $d = 123;
                 var ? Foo\Bar $qux;
             }',
         ];
+
+        yield [
+            '<?php
+            class Foo {
+                private array $foo;
+
+                private array $bar;
+            }',
+            '<?php
+            class Foo {
+                private array $foo;
+                private array $bar;
+            }',
+        ];
     }
 }

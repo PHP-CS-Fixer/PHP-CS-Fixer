@@ -208,6 +208,14 @@ EOF;
                 '<?php $mobileNumberVisible = "***-***-{$last4Digits[0]}{$last4Digits[1]}-{$last4Digits[2]}{$last4Digits[3]}";',
                 '<?php $mobileNumberVisible = "***-***-$last4Digits[0]$last4Digits[1]-$last4Digits[2]$last4Digits[3]";',
             ],
+            [
+                '<?php $pair = "${foo} {$bar[0]}";',
+                '<?php $pair = "$foo {$bar[0]}";',
+            ],
+            [
+                '<?php $pair = "${foo}{$bar[0]}";',
+                '<?php $pair = "$foo{$bar[0]}";',
+            ],
         ];
     }
 
