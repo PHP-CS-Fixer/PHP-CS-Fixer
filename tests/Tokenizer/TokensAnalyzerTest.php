@@ -853,6 +853,10 @@ preg_replace_callback(
                 [16 => false],
             ],
             [
+                '<?php interface Foo { public function bar(): \Baz; }',
+                [17 => false],
+            ],
+            [
                 '<?php interface Foo { public function bar(): ?Baz; }',
                 [17 => false],
             ],
