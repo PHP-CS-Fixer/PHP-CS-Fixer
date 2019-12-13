@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -25,7 +25,7 @@ use SplFileInfo;
 /**
  * @author Michele Locati <michele@locati.it>
  */
-final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @internal */
     const OPTION_FORMAT = 'format';
