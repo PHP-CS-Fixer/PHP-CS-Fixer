@@ -73,7 +73,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
      */
     public function getPriority()
     {
-        // should run after NoShortEchoTagFixer.
+        // should run after NoShortEchoTagFixer / EchoTagSyntaxFixer.
         return -10;
     }
 
