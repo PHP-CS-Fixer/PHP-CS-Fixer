@@ -108,6 +108,7 @@ multiple_use                                   | single_import_per_statement
 namespace_no_leading_whitespace                | no_leading_namespace_whitespace
 newline_after_open_tag                         | linebreak_after_opening_tag
 no_empty_lines_after_phpdocs                   | no_blank_lines_after_phpdoc
+no_short_echo_tag                              | echo_tag_syntax
 object_operator                                | object_operator_without_whitespace
 operators_spaces                               | binary_operator_spaces
 ordered_use                                    | ordered_imports

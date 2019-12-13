@@ -598,6 +598,20 @@ Choose from the list of available rules:
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
 
+* **echo_tag_syntax** [@PhpCsFixer]
+
+  Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print``
+  syntax, or vice-versa.
+
+  Configuration options:
+
+  - ``format`` (``'long'``, ``'short'``): the desired language construct; defaults to
+    ``'long'``
+  - ``long_function`` (``'echo'``, ``'print'``): the function to be used to expand the
+    short echo tags; defaults to ``'echo'``
+  - ``shorten_simple_statements_only`` (``bool``): render short-echo tags only in
+    case of simple code; defaults to ``true``
+
 * **elseif** [@PSR2, @Symfony, @PhpCsFixer]
 
   The keyword ``elseif`` should be used instead of ``else if`` so that all
@@ -1117,9 +1131,10 @@ Choose from the list of available rules:
 
   Short cast ``bool`` using double exclamation mark should not be used.
 
-* **no_short_echo_tag** [@PhpCsFixer]
+* **no_short_echo_tag**
 
-  Replace short-echo ``<?=`` with long format ``<?php echo`` syntax.
+  Replaces short-echo ``<?=`` with long format ``<?php echo`` syntax.
+  DEPRECATED: use ``echo_tag_syntax`` instead.
 
 * **no_singleline_whitespace_before_semicolons** [@Symfony, @PhpCsFixer]
 
