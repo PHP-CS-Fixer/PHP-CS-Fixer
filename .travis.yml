@@ -1,7 +1,7 @@
 language: php
 
 git:
-    depth: 1
+    depth: 10
 
 cache:
     directories:
