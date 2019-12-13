@@ -1,0 +1,106 @@
+---------------------------------------------------------------------------
+
+by Big-Shark at 2019-11-19T13:53:23Z
+
+@kubawerlos Any update about this?
+
+---------------------------------------------------------------------------
+
+by mlocati at 2019-12-02T11:10:23Z
+
+There's still [this issue](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4493#discussion_r350040138) to be fixed.
+
+How should these cases be translated from long-echo to short-echo tags?
+
+1.
+    ```php
+    <?php /*comment*/ echo
+      1
+    ?>
+    ```
+2.
+    ```php
+    <?php
+      /*comment*/ echo 1
+    ?>
+    ```
+3.
+    ```php
+    <?php
+      /*comment*/
+      echo
+      1
+    ?>
+    ```
+
+Right now, they are fixed as:
+
+1.
+    ```php
+    <?=/*comment*/
+      1
+    ?>
+    ```
+2.
+    ```php
+    <?=/*comment*/ 1
+    ?>
+    ```
+3.
+    ```php
+    <?=/*comment*/
+      1
+    ?>
+    ```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-12-02T13:15:39Z
+
+IMO keeping current behavior is fine.
+
+---------------------------------------------------------------------------
+
+by mlocati at 2019-12-02T13:17:24Z
+
+> IMO keeping current behavior is fine.
+
+Ok, so I'll update the code as per @kubawerlos [suggestion](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4493#discussion_r348714652).
+
+---------------------------------------------------------------------------
+
+by mlocati at 2019-12-02T13:58:53Z
+
+> Ok, so I'll update the code as per @kubawerlos [suggestion](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4493#discussion_r348714652).
+
+Nope, I can't find a way to implement https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4493#discussion_r348714652 in a faster/simpler way.
+
+So, unless @kubawerlos sees a way to implement it, IMHO this PR is ready to be merged...
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-12-02T14:59:07Z
+
+Could you please rebase onto latest master to get your branch up-to-date?
+
+---------------------------------------------------------------------------
+
+by mlocati at 2019-12-02T15:41:38Z
+
+> Could you please rebase onto latest master to get your branch up-to-date?
+
+Done.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-12-13T18:35:19Z
+
+@mlocati Before merging this PR we should squash commits. As there is a commit from @kubawerlos, could you please squash all consecutive commits from same author?
+
+---------------------------------------------------------------------------
+
+by mlocati at 2019-12-13T19:32:52Z
+
+> Before merging this PR we should squash commits. As there is a commit from @kubawerlos, could you please squash all consecutive commits from same author?
+
+Done.
