@@ -143,7 +143,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['native_function_invocation'], $fixers['global_namespace_import']],
             [$fixers['no_php4_constructor'], $fixers['ordered_class_elements']],
             [$fixers['no_short_bool_cast'], $fixers['cast_spaces']],
-            [$fixers['no_short_echo_tag'], $fixers['no_mixed_echo_print']],
             [$fixers['no_spaces_after_function_name'], $fixers['function_to_constant']],
             [$fixers['no_spaces_inside_parenthesis'], $fixers['function_to_constant']],
             [$fixers['no_superfluous_phpdoc_tags'], $fixers['no_empty_phpdoc']],
