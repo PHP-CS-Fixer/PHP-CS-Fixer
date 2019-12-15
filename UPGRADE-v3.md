@@ -26,6 +26,7 @@ Old name | New name | Note
 `lowercase_constants`                           | `constant_case`                               | use configuration `['case' => 'lower']`
 `method_separation`                             | `class_attributes_separation`                 | use configuration `['elements' => ['method']]`
 `no_extra_consecutive_blank_lines`              | `no_extra_blank_lines`                        |
+`no_short_echo_tag`                             | `echo_tag_syntax`                             | use configuration `['format' => 'long']`
 `php_unit_ordered_covers`                       | `phpdoc_order_by_value`                       | use configuration `['annotations' => [ 'covers' ]]`
 `pre_increment`                                 | `increment_style`                             | use configuration `['style' => 'pre']`
 `silenced_deprecation_error`                    | `error_suppression`                           |

@@ -1073,11 +1073,6 @@ Choose from the list of available rules:
 
   Short cast ``bool`` using double exclamation mark should not be used.
 
-* **no_short_echo_tag**
-
-  Replaces short-echo ``<?=`` with long format ``<?php echo`` syntax.
-  DEPRECATED: use ``echo_tag_syntax`` instead.
-
 * **no_singleline_whitespace_before_semicolons** [@Symfony, @PhpCsFixer]
 
   Single-line whitespace before closing semicolon are prohibited.
