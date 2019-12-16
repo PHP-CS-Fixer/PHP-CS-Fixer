@@ -67,7 +67,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                     $tokens[$index] = new Token([
                         $token->getId(),
                         Preg::replace(
-                            "#\r\n|\n#",
+                            '#\R#',
                             $ending,
                             $token->getContent()
                         ),
@@ -81,7 +81,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                 $tokens[$index] = new Token([
                     $token->getId(),
                     Preg::replace(
-                        "#\r\n|\n#",
+                        '#\R#',
                         $ending,
                         $token->getContent()
                     ),
