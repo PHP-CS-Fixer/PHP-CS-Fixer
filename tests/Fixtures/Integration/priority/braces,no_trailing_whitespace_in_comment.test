@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: braces,no_trailing_whitespace_in_comment.
+--RULESET--
+{"braces": true, "no_trailing_whitespace_in_comment": true}
+--EXPECT--
+<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+    /*
+    $i += 3;
+
+    return foo($i);
+     */
+}
+
+--INPUT--
+<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+/*
+$i += 3;
+
+return foo($i);
+ */
+}

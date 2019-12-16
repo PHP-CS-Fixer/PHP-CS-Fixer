@@ -49,6 +49,15 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must be run after BracesFixer and PhpdocNoUselessInheritdocFixer
+        return -26;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
