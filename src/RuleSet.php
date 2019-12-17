@@ -247,6 +247,7 @@ final class RuleSet implements RuleSetInterface
             'no_useless_else' => true,
             'no_useless_return' => true,
             'ordered_class_elements' => true,
+            'ordered_traits' => true,
             'php_unit_internal_class' => true,
             'php_unit_method_casing' => true,
             'php_unit_test_class_requires_covers' => true,
