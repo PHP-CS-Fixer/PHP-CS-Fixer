@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: elseif, braces
+Integration of fixers: elseif,braces.
 --RULESET--
 {"elseif": true, "braces": true}
 --EXPECT--
