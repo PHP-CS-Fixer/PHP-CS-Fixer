@@ -91,9 +91,12 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $foundIndexes = $tokens->findGivenKind([T_IF, T_ELSEIF]);
-        $foundIndexes = array_reverse($foundIndexes[T_IF] + $foundIndexes[T_ELSEIF], true);
-        foreach ($foundIndexes as $ifIndex => $ifToken) {
+        for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
+            $ifToken = $tokens[$ifIndex];
+            if (!$ifToken->isGivenKind([T_IF, T_ELSEIF])) {
+                continue;
+            }
+
             $startParenthesisIndex = $tokens->getNextTokenOfKind($ifIndex, ['(']);
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
 
