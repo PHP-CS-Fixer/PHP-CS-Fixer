@@ -1874,6 +1874,11 @@ Choose from the list of available rules:
   - ``remove_in_empty_for_expressions`` (``bool``): whether spaces should be removed
     for empty ``for`` expressions; defaults to ``false``
 
+* **space_inside_parenthesis**
+
+  There MUST be a space after the opening parenthesis and a space before
+  the closing parenthesis.
+
 * **standardize_increment** [@Symfony, @PhpCsFixer]
 
   Increment and decrement operators should be used if possible.
