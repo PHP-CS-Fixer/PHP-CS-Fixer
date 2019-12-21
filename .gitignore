@@ -2,5 +2,6 @@
 /box.json
 /composer.lock
 /php-cs-fixer.phar
+/phpstan.neon
 /phpunit.xml
 /vendor/
