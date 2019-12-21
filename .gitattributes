@@ -14,7 +14,7 @@
 /check_trailing_spaces.sh export-ignore
 /dev-tools/ export-ignore
 /phpmd.xml export-ignore
-/phpstan.neon export-ignore
+/phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
 
 *       text=auto eol=lf
