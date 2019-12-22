@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Fixer for rules defined in PSR2 generally (¶1 and ¶6).
+ * There must be a space inside the parenthesis
  *
  * @author Tareq Hasan <tareq@wedevs.com>
  */
