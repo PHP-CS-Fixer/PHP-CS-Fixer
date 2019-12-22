@@ -164,9 +164,8 @@ new class {};',
     }
 
     /**
-     * @param string $source   PHP source code
+     * @param string $source PHP source code
      * @param string $label
-     * @param array  $expected
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
@@ -176,9 +175,8 @@ new class {};',
     }
 
     /**
-     * @param string $source   PHP source code
+     * @param string $source PHP source code
      * @param string $label
-     * @param array  $expected
      *
      * @requires PHP 7.0
      * @dataProvider provideClassyInheritanceInfo7Cases

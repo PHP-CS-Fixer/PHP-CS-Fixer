@@ -22,8 +22,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class ClassesAnalyzer
 {
     /**
-     * @param Tokens $tokens
-     * @param int    $classIndex
+     * @param int $classIndex
      *
      * @return array Contains information about the class being analyzed
      */
@@ -60,8 +59,7 @@ final class ClassesAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classIndex
+     * @param int $classIndex
      *
      * @return null|TypeAnalysis
      *                           Get the class extends if any, null otherwise
@@ -93,7 +91,6 @@ final class ClassesAnalyzer
     }
 
     /**
-     * @param Tokens $tokens
      * @param int    $startIndex
      * @param string $label
      *
