@@ -109,6 +109,26 @@ explode( $a, $b );
 explode($a, $b);
 ',
             ],
+            [
+                '<?php
+if ( $something ) {
+    // code
+}
+',
+                '<?php
+if ($something) {
+    // code
+}
+',
+            ],
+            [
+                '<?php
+multiply( ( 2 + 3 ) * 4 );
+',
+                '<?php
+multiply((2 + 3 ) * 4);
+',
+            ]
         ];
     }
 }
