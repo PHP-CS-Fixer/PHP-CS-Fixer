@@ -22,7 +22,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class ClassAnalyzer
 {
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens $tokens
      * @param $classIndex
      *
      * @return array
@@ -33,7 +32,6 @@ final class ClassAnalyzer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens $tokens
      * @param $classIndex
      *
      * @return null|\PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis
@@ -65,7 +63,6 @@ final class ClassAnalyzer
     }
 
     /**
-     * @param \PhpCsFixer\Tokenizer\Tokens $tokens
      * @param $startIndex
      * @param $label
      *

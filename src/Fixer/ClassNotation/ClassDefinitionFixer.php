@@ -276,8 +276,7 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $classyIndex
+     * @param int $classyIndex
      *
      * @return array
      */
@@ -287,9 +286,8 @@ interface Bar extends
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $startIndex
-     * @param int    $endIndex
+     * @param int $startIndex
+     * @param int $endIndex
      */
     private function makeClassyDefinitionSingleLine(Tokens $tokens, $startIndex, $endIndex)
     {

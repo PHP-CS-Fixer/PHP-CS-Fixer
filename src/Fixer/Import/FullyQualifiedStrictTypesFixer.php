@@ -131,8 +131,7 @@ class SomeClass
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function fixFunctionArguments(Tokens $tokens, $index)
     {
