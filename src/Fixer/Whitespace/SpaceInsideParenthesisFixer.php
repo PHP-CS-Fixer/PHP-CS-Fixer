@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * There must be a space inside the parenthesis
+ * There must be a space inside the parenthesis.
  *
  * @author Tareq Hasan <tareq@wedevs.com>
  */
