@@ -27,7 +27,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         [
             'isNegative' => false,
             'sequence' => [
-                ')',
                 '{', [T_RETURN], [T_STRING, 'true'], ';', '}',
                 [T_RETURN], [T_STRING, 'false'], ';',
             ],
@@ -35,7 +34,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         [
             'isNegative' => true,
             'sequence' => [
-                ')',
                 '{', [T_RETURN], [T_STRING, 'false'], ';', '}',
                 [T_RETURN], [T_STRING, 'true'], ';',
             ],
@@ -43,7 +41,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         [
             'isNegative' => false,
             'sequence' => [
-                ')',
                 [T_RETURN], [T_STRING, 'true'], ';',
                 [T_RETURN], [T_STRING, 'false'], ';',
             ],
@@ -51,7 +48,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         [
             'isNegative' => true,
             'sequence' => [
-                ')',
                 [T_RETURN], [T_STRING, 'false'], ';',
                 [T_RETURN], [T_STRING, 'true'], ';',
             ],
@@ -74,7 +70,8 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run before NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
+        // must run before NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
+        // must run after SemicolonAfterInstructionFixer, NoUnneededCurlyBracesFixer.
         return 1;
     }
 
@@ -93,26 +90,29 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     {
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
             $ifToken = $tokens[$ifIndex];
+
             if (!$ifToken->isGivenKind([T_IF, T_ELSEIF])) {
                 continue;
             }
 
             $startParenthesisIndex = $tokens->getNextTokenOfKind($ifIndex, ['(']);
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+            $firstCandidateIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
 
             foreach ($this->sequences as $sequenceSpec) {
-                $sequenceFound = $tokens->findSequence($sequenceSpec['sequence'], $endParenthesisIndex - 1);
+                $sequenceFound = $tokens->findSequence($sequenceSpec['sequence'], $firstCandidateIndex);
+
                 if (null === $sequenceFound) {
                     continue;
                 }
 
                 $firstSequenceIndex = key($sequenceFound);
-                if ($firstSequenceIndex !== $endParenthesisIndex) {
+
+                if ($firstSequenceIndex !== $firstCandidateIndex) {
                     continue;
                 }
 
                 $indexesToClear = array_keys($sequenceFound);
-                array_shift($indexesToClear); // Preserve closing parenthesis
                 array_pop($indexesToClear); // Preserve last semicolon
                 rsort($indexesToClear);
 
@@ -124,6 +124,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                     new Token([T_RETURN, 'return']),
                     new Token([T_WHITESPACE, ' ']),
                 ];
+
                 if ($sequenceSpec['isNegative']) {
                     $newTokens[] = new Token('!');
                 } else {

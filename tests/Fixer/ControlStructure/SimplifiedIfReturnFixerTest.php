@@ -45,6 +45,10 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 '<?php return ! ($foo)      ;',
                 '<?php if ($foo) { return false; } return true;',
             ],
+            'simple-negative II' => [
+                '<?php return ! (!$foo && $a())      ;',
+                '<?php if (!$foo && $a()) { return false; } return true;',
+            ],
             'simple-braceless' => [
                 '<?php return (bool) ($foo)    ;',
                 '<?php if ($foo) return true; return false;',
