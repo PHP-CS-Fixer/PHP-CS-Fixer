@@ -36,7 +36,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Removes `@param` and `@return` tags that don\'t provide any useful information.',
+            'Removes `@param`, `@return` and `@var` tags that don\'t provide any useful information.',
             [
                 new CodeSample('<?php
 class Foo {
@@ -136,6 +136,8 @@ class Foo {
 
             if ($token->isGivenKind(T_FUNCTION)) {
                 $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
+            } elseif ($token->isGivenKind(T_VARIABLE)) {
+                $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
             }
 
             if ($this->configuration['remove_inheritdoc']) {
@@ -188,7 +190,7 @@ class Foo {
 
         $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
-        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
+        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STRING, T_NS_SEPARATOR];
 
         if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
             return null;
@@ -247,6 +249,38 @@ class Foo {
                 $annotation->remove();
             }
         }
+
+        return $docBlock->getContent();
+    }
+
+    /**
+     * @param string $content
+     * @param int    $docCommentIndex
+     *
+     * @return string
+     */
+    private function fixPropertyDocComment($content, Tokens $tokens, $docCommentIndex, array $shortNames)
+    {
+        $docBlock = new DocBlock($content);
+
+        $index = $tokens->getNextMeaningfulToken($docCommentIndex);
+
+        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
+
+        if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
+            return $content;
+        }
+
+        do {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            $propertyTypeInfo = $this->parseTypeHint($tokens, $index);
+            foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
+                if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $shortNames)) {
+                    $annotation->remove();
+                }
+            }
+        } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
 
         return $docBlock->getContent();
     }
@@ -330,7 +364,7 @@ class Foo {
         }
 
         return [
-            'type' => $type,
+            'type' => '' === $type ? null : $type,
             'allows_null' => $allowsNull,
         ];
     }
@@ -344,6 +378,8 @@ class Foo {
     {
         if ('param' === $annotation->getTag()->getName()) {
             $regex = '/@param\s+(?:\S|\s(?!\$))+\s\$\S+\s+\S/';
+        } elseif ('var' === $annotation->getTag()->getName()) {
+            $regex = '/@var\s+\S+(\s+\$\S+)?(\s+)([^$\s]+)/';
         } else {
             $regex = '/@return\s+\S+\s+\S/';
         }
