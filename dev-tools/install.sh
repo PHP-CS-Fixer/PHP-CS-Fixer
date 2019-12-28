@@ -39,7 +39,7 @@ fi
 bin/phive --version
 
 echo λλλ phive packages
-./bin/phive install --trust-gpg-keys D2CCAC42F6295E7D,8E730BA25823D8B5,CF1A108D0E7AE720
+./bin/phive install --trust-gpg-keys D2CCAC42F6295E7D,8E730BA25823D8B5,C00543248C87FB13,CF1A108D0E7AE720
 
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
