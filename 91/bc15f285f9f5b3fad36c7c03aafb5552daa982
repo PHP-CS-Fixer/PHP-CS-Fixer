@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by kbond at 2019-12-02T17:51:18Z
+
+I can confirm this fixes the issue. Here is my reproducer: https://github.com/kbond/php-cs-fixer-2.16.1-reproducer
+
+---------------------------------------------------------------------------
+
+by X-Coder264 at 2019-12-25T15:18:03Z
+
+Any chance of merging and tagging a new version with this soon? The PR is opened for almost a month already and it is blocking us from properly testing our package in CI (with different Symfony and PHP versions) -> https://github.com/trikoder/oauth2-bundle/pull/141
+
+---------------------------------------------------------------------------
+
+by jvocampings at 2019-12-27T13:55:14Z
+
+Hello
+
+do you know when this fix will be released ?
