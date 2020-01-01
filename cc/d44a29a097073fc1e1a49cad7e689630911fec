@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by mvorisek at 2019-11-29T23:42:17Z
+
+For me it seems like it does not handle backslashes correctly:
+```
+$content = "'\\\\\\\\'";
+var_dump($content);
+
+$content = str_replace("\\'", "'", $content);
+$content = preg_replace('/([\\\\$])/', '\\\\$1', $content);
+var_dump($content);
+```
+
+To replace escaped quotes (and not preceded by double/escaped backslash) you needs something like this: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4664/files#diff-778a67f6227ed439e1490963b2f0f94dR154
+
+---------------------------------------------------------------------------
+
+by ivan1986 at 2019-11-30T08:46:32Z
+
+Yes, need add tests
+```
+            [
+                <<<'EXPECTED'
+<?php echo "\\\u{200b}\"";
+EXPECTED
+                ,
+                sprintf(<<<'INPUT'
+<?php echo '\\%s"';
+INPUT
+                 , pack('H*', 'e2808b')),
+            ],
+            [
+                <<<'EXPECTED'
+<?php echo "\\\u{200b}'";
+EXPECTED
+                ,
+                sprintf(<<<'INPUT'
+<?php echo '\\%s\'';
+INPUT
+                 , pack('H*', 'e2808b')),
+            ],
+
+```
+for check double slashes, it's fail now, or add slashes into exist tests
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-11-30T13:35:29Z
+
+> For me it seems
+
+@mvorisek take an example from @ivan1986 - presenting test case is much more valuable.
+
+@ivan1986 added yours 2 - thanks - and few more for backslashes.
