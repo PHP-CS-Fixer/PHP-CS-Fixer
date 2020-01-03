@@ -32,5 +32,9 @@ class Finder extends BaseFinder
             ->ignoreVCS(true)
             ->exclude('vendor')
         ;
+
+        if (method_exists($this, 'ignoreVCSIgnored')) {
+            $this->ignoreVCSIgnored(true);
+        }
     }
 }
