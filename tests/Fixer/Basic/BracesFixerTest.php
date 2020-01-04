@@ -5246,6 +5246,18 @@ function foo()
 }
 ',
             ],
+            [
+                '<?php
+
+function f()
+{
+    do {
+        foo();
+    } //
+    while (false);
+}
+',
+            ]
         ];
     }
 
