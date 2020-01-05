@@ -3,6 +3,7 @@
         "Symfony\\Contracts\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
         "Symfony\\Component\\EventDispatcher\\Event",
+        "PhpCsFixer\\PhpunitConstraintIsIdenticalString\\Constraint\\IsIdenticalString",
         "PhpCsFixer\\Tests\\Test\\Constraint\\SameStringsConstraint",
         "PhpCsFixer\\Tests\\Test\\IsIdenticalConstraint",
         "PHPUnit\\Framework\\Constraint\\IsIdentical",
