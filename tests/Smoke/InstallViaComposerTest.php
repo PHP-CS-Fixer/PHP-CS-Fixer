@@ -16,6 +16,7 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Utils;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -152,6 +153,24 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         static::assertCommandsWork($stepsToInitializeArtifact, $cwd);
         static::assertCommandsWork($stepsToPrepareArtifact, $tmpArtifactPath);
         static::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
+
+        // ensure that files from "tests" directory in release are autoloaded
+        $finder = Finder::create()
+            ->files()
+            ->in($tmpPath.'/vendor/friendsofphp/php-cs-fixer')
+            ->path('/tests/')
+            ->sortByName()
+        ;
+
+        $filesInRelease = [];
+        foreach ($finder as $file) {
+            $filesInRelease[] = $file->getRelativePathname();
+        }
+
+        $composer = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
+        $autoloadedFiles = $composer['autoload']['classmap'];
+
+        static::assertSame($filesInRelease, $autoloadedFiles);
 
         $fs->remove($tmpPath);
         $fs->remove($tmpArtifactPath);
