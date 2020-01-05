@@ -215,6 +215,26 @@ DateTime:: # a
                 }
                 ',
             ],
+            [
+                "<?php
+                namespace Foo;
+                var_dump('Foo\\Bar\\Baz');
+                ",
+                '<?php
+                namespace Foo;
+                var_dump(Bar\\Baz::class);
+                ',
+            ],
+            [
+                "<?php
+                namespace Foo\\Bar;
+                var_dump('Foo\\Bar\\Baz');
+                ",
+                '<?php
+                namespace Foo\\Bar;
+                var_dump(Baz::class);
+                ',
+            ],
         ];
     }
 
@@ -249,6 +269,34 @@ DateTime:: # a
 
                 echo ClassB::class;
                 echo C::class;
+                ',
+            ],
+            [
+                "<?php
+                var_dump('Foo');
+                namespace A {
+                    use B\\C;
+                    var_dump('B\\C');
+                }
+                var_dump('Bar\\Baz');
+                namespace B {
+                    use A\\C\\D;
+                    var_dump('A\\C\\D');
+                }
+                var_dump('Qux\\Quux');
+                ",
+                '<?php
+                var_dump(Foo::class);
+                namespace A {
+                    use B\\C;
+                    var_dump(C::class);
+                }
+                var_dump(Bar\\Baz::class);
+                namespace B {
+                    use A\\C\\D;
+                    var_dump(D::class);
+                }
+                var_dump(Qux\\Quux::class);
                 ',
             ],
         ];
