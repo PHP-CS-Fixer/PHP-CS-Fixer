@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-06T13:21:38Z
+
+Can we bump PHP version?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-01-06T13:51:26Z
+
+Sure thing :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-06T13:56:36Z
+
+One more thing: can we bump [xcode](https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions), so maybe Python 3 will be installed with it, so we don't have to remove Python 2 and have Python 3 installed with PHP?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-01-06T14:17:36Z
+
+Done. Version `11.3.0` still includes Python 2. It also includes PHP 7.2 and 7.3 but not PHP 7.4 so we still need to install it manually.
