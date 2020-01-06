@@ -25,7 +25,7 @@ jobs:
     include:
         -
             stage: Static Code Analysis
-            php: 7.3
+            php: 7.4
             env: COMPOSER_FLAGS="--prefer-stable"
             install:
                 - travis_retry ./dev-tools/install.sh
@@ -81,12 +81,14 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
+            name: 7.1 | Symfony 4.1
             env: SYMFONY_DEPRECATIONS_HELPER=disabled SYMFONY_VERSION="~4.1.0"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
+            name: 7.2 | Symfony 5.0
             env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^5.0"
 
         -
@@ -95,13 +97,13 @@ jobs:
             php: 7.3
             name: 7.3 | With migration rules
             before_script:
-                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
+                - php php-cs-fixer fix --rules @PHP73Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: 7.3
-            name: 7.3 | Collect coverage
+            php: 7.4
+            name: 7.4 | Collect coverage
             before_install:
                 # for building a tag release we don't need to collect code coverage
                 - if [ $TRAVIS_TAG ]; then travis_terminate 0; fi
@@ -118,7 +120,7 @@ jobs:
 
                 # Install PCOV
                 - |
-                    git clone --single-branch --branch=v1.0.2 --depth=1 https://github.com/krakjoe/pcov
+                    git clone --single-branch --branch=v1.0.6 --depth=1 https://github.com/krakjoe/pcov
                     cd pcov
                     phpize
                     ./configure
@@ -135,12 +137,12 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: 7.4snapshot
+            php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
 
         -
             stage: Deployment
-            php: 7.3
+            php: 7.4
             install: ./dev-tools/build.sh
             script:
                 - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
@@ -159,3 +161,6 @@ jobs:
                     tags: true
             after_deploy:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
+
+    allow_failures:
+        - php: nightly

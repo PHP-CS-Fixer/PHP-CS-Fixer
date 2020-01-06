@@ -11,6 +11,4 @@ parameters:
     ignoreErrors:
         - '/^.+::__construct\(\) does not call parent constructor from SplFileInfo\.$/'
         - '/^Return typehint of method PhpCsFixer\\Tests\\Test\\.+::createIsIdenticalStringConstraint\(\) has invalid type PHPUnit_Framework_Constraint_IsIdentical\.$/'
-        ## cannot analyse out of PHP 7.4
-        - '/^Constant T_FN not found\.$/'
         - '/^Class (Symfony\\Contracts\\EventDispatcher\\Event|Symfony\\Component\\EventDispatcher\\Event) not found.$/'
