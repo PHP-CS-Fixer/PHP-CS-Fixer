@@ -3,7 +3,7 @@ version: 2
 jobs:
     build:
         macos:
-            xcode: '10.1.0'
+            xcode: '11.3.0'
         steps:
             - checkout
 
@@ -12,10 +12,9 @@ jobs:
                     - cache-{{ checksum "composer.json" }}
 
             - run: brew update
-            - run: brew install php@7.2
-            - run: brew link --force --overwrite php@7.2
-            - run: php --version
-            - run: echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.2/conf.d/memory.ini
+            - run: brew remove python@2
+            - run: brew install php@7.4
+            - run: echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.4/conf.d/memory.ini
             - run: curl -sS https://getcomposer.org/installer | php
             - run: php composer.phar global show hirak/prestissimo -q || php composer.phar global require --no-interaction --no-progress --optimize-autoloader hirak/prestissimo
             - run: php composer.phar install --optimize-autoloader --no-interaction --no-progress --no-suggest
