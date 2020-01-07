@@ -181,6 +181,7 @@ final class RuleSet implements RuleSetInterface
                     'PHP_VERSION_ID',
                 ],
                 'scope' => 'namespaced',
+                'strict' => true,
             ],
             'native_function_invocation' => [
                 'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],

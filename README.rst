@@ -929,6 +929,8 @@ Choose from the list of available rules:
   - ``include`` (``array``): list of additional constants to fix; defaults to ``[]``
   - ``scope`` (``'all'``, ``'namespaced'``): only fix constant invocations that are made
     within a namespace or fix all; defaults to ``'all'``
+  - ``strict`` (``bool``): whether leading ``\`` of constant invocation not meant to
+    have it should be removed; defaults to ``false``
 
 * **native_function_casing** [@Symfony, @PhpCsFixer]
 

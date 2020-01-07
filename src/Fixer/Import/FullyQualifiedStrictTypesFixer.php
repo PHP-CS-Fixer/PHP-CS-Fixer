@@ -152,6 +152,11 @@ class SomeClass
         }
 
         $typeName = $type->getName();
+
+        if (0 !== strpos($typeName, '\\')) {
+            return;
+        }
+
         $shortType = (new TypeShortNameResolver())->resolve($tokens, $typeName);
         if ($shortType === $typeName) {
             return;

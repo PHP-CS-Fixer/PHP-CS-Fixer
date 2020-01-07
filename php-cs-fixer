@@ -11,10 +11,6 @@
  * with this source code in the file LICENSE.
  */
 
-/**
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- */
 error_reporting(-1);
 
 if (defined('HHVM_VERSION_ID')) {
