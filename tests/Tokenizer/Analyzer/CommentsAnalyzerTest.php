@@ -157,20 +157,54 @@ $bar;',
         $analyzer->isHeaderComment($tokens, 2);
     }
 
-    public function testHeaderComment()
+    /**
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideHeaderCommentCases
+     */
+    public function testHeaderComment($code, $index)
     {
-        $tokens = Tokens::fromCode('<?php /* This is header */ namespace Foo;');
+        $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertTrue($analyzer->isHeaderComment($tokens, 1));
+        static::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function testNotHeaderComment()
+    public function provideHeaderCommentCases()
     {
-        $tokens = Tokens::fromCode('<?php /* This is not header */');
+        return [
+            ['<?php /* Comment */ namespace Foo;', 1],
+            ['<?php /** Comment */ namespace Foo;', 1],
+            ['<?php declare(strict_types=1); /* Comment */ namespace Foo;', 9],
+            ['<?php /* We test this one */ /* Foo */ namespace Bar;', 1],
+        ];
+    }
+
+    /**
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideNotHeaderCommentCases
+     */
+    public function testNotHeaderComment($code, $index)
+    {
+        $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
 
-        static::assertFalse($analyzer->isHeaderComment($tokens, 1));
+        static::assertFalse($analyzer->isHeaderComment($tokens, $index));
+    }
+
+    public function provideNotHeaderCommentCases()
+    {
+        return [
+            ['<?php $foo; /* Comment */ $bar;', 4],
+            ['<?php foo(); /* Comment */ $bar;', 6],
+            ['<?php namespace Foo; /* Comment */ class Bar {};', 6],
+            ['<?php /* It is not header when no content after */', 1],
+            ['<?php /* Foo */ /* We test this one */ namespace Bar;', 3],
+            ['<?php /* Foo */ declare(strict_types=1); /* We test this one */ namespace Bar;', 11],
+        ];
     }
 
     public function testPhpdocCandidateAcceptsOnlyComments()

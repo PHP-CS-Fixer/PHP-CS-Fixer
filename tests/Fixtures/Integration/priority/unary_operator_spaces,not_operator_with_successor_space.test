@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: unary_operator_spaces,not_operator_with_successor_space.test.
+Integration of fixers: unary_operator_spaces,not_operator_with_successor_space.
 --RULESET--
 {"unary_operator_spaces": true, "not_operator_with_successor_space": true}
 --EXPECT--
