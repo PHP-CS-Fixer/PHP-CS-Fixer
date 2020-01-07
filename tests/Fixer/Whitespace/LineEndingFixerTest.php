@@ -60,6 +60,11 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
             "<?php \$a=\"a\r\n\";",
         ];
 
+        $cases[] = [
+            "<?php echo 'foo',\n\n'bar';",
+            "<?php echo 'foo',\r\r\n'bar';",
+        ];
+
         return $cases;
     }
 
