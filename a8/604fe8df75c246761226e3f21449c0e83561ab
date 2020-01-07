@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-11-28T22:53:48Z
+
+Is this ready to be merged?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-12-18T12:47:47Z
+
+This looks like a solid fix to me :+1:
+
+Just wondering, maybe we could apply it to the `TypeShortNameResolver::resolve` itself?
+So `->resolve($tokens, "\Foo")` just returns `"\Foo"` ?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-12-31T14:22:17Z
+
+@SpacePossum
+
+Can you explain what you mean?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-06T15:05:06Z
+
+checking the code again Im not sure what I was thinking :sweat_smile:
