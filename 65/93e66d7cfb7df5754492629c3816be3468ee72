@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-12-16T19:56:59Z
+
+What about `#\R#`?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-12-16T20:24:27Z
+
+Even better :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-12-17T11:26:49Z
+
+I'm not against changes proposed here but, if I remember correcly, the current behavior (not supporting `\r`) is on purpose because the syntax is only used on old systems.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-12-17T16:42:44Z
+
+The problem is that the current behavior is wrong - fixer cannot leave the code that requires fixing by itself.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-12-18T10:04:39Z
+
+Not sure if we left `\r` support in/out by design, or didn't bother trying to fix it because it is only used on older setups as we are talking about before macOS X which was released in 2002.
+
+With the proposed changes in this PR, which users might be effected in a way that we might not want?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-06T15:33:35Z
+
+@SpacePossum not sure, some that have really old piece of code I guess, I doubt anyone is using `\r` in new code.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-06T19:30:52Z
+
+Can you propose the fix in the PR in a new commit? I think it will be fine TBH
