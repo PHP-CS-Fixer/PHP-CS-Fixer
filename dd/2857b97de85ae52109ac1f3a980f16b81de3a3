@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-15T09:19:06Z
+
+can you add a test for:
+
+```php
+<?php
+
+/**
+ * 1
+ */
+
+declare(strict_types=1);
+
+/**
+ * 2
+ */
+
+namespace App\Controller\CMS\Capsule;
+
+/**
+ * 3
+ */
+
+final class Foo{}
+```
+
+so it show _only_ the first PHPDoc is considered a header?
