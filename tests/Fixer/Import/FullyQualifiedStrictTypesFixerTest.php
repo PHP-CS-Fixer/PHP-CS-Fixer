@@ -113,6 +113,27 @@ class SomeClass
     }
 }',
             ],
+            'Partial class name looks like FQCN' => [
+                '<?php
+
+namespace One;
+
+use Two\Three;
+
+class Two
+{
+    /**
+     * Note that for this example, the following classes exist:
+     *
+     * - One\Two
+     * - One\Two\Three
+     * - Two\Three\Four
+     */
+    public function three(Three\Four $four): Two\Three
+    {
+    }
+}',
+            ],
             'Test multi namespace fixes' => [
                 '<?php
 namespace Foo\Other {
@@ -247,6 +268,28 @@ class SomeClass
     }
 }',
             ],
+            'Partial class name looks like FQCN' => [
+                '<?php
+
+namespace One;
+
+use Two\Three;
+
+class Two
+{
+    /**
+     * Note that for this example, the following classes exist:
+     *
+     * - One\Two
+     * - One\Two\Three
+     * - Two\Three
+     */
+    public function three(Two\Three $three, Three $other)
+    {
+    }
+}',
+            ],
+
             'Test multi namespace fixes' => [
                 '<?php
 namespace Foo\Other {
@@ -405,6 +448,27 @@ use Foo\Bar\Baz;
 class SomeClass
 {
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, ?\Foo\Bar\Zoof\Buz $barbuz): ?\Foo\Bar\Baz
+    {
+    }
+}',
+            ],
+            'Partial class name looks like FQCN' => [
+                '<?php
+
+namespace One;
+
+use Two\Three;
+
+class Two
+{
+    /**
+     * Note that for this example, the following classes exist:
+     *
+     * - One\Two
+     * - One\Two\Three
+     * - Two\Three\Four
+     */
+    public function three(Three\Four $four): ?Two\Three
     {
     }
 }',
