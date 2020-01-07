@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: method_separation, indentation_type
+Integration of fixers: method_separation,indentation_type.
 --RULESET--
 {"method_separation": true, "indentation_type": true}
 --EXPECT--

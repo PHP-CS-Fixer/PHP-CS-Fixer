@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: php_unit_test_annotation,php_unit_method_casing
+Integration of fixers: php_unit_test_annotation,php_unit_method_casing.
 --RULESET--
 {"php_unit_test_annotation": true, "php_unit_method_casing" :  {"case": "snake_case"}}
 --EXPECT--

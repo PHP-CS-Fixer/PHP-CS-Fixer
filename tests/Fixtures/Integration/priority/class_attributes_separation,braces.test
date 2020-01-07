@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: class_attributes_separation, braces
+Integration of fixers: class_attributes_separation,braces.
 --RULESET--
 {"class_attributes_separation": true, "braces": true}
 --EXPECT--
