@@ -349,6 +349,7 @@ PHP;
      */
     public function testMonolithicPhpDetection($source, $isMonolithic)
     {
+        Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
         static::assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
@@ -611,6 +612,15 @@ PHP;
                 ],
             ],
         ];
+    }
+
+    public function testClearTokenAndMergeSurroundingWhitespaceEdgeCase()
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php   ');
+        $tokens->clearTokenAndMergeSurroundingWhitespace(0);
+
+        static::assertSame('  ', $tokens->generateCode());
     }
 
     /**

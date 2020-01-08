@@ -1228,13 +1228,21 @@ class Tokens extends \SplFixedArray
 
         $prevIndex = $this->getNonEmptySibling($index, -1);
 
-        if ($this[$prevIndex]->isWhitespace()) {
-            $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
-        } elseif ($this->isEmptyAt($prevIndex + 1)) {
-            $this[$prevIndex + 1] = new Token([T_WHITESPACE, $this[$nextIndex]->getContent()]);
+        if (null === $prevIndex) {
+            return;
         }
 
-        $this->clearAt($nextIndex);
+        if ($this[$prevIndex]->isWhitespace()) { // merge space tokens
+            $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
+            $this->clearAt($nextIndex);
+
+            return;
+        }
+
+        if ($this->isEmptyAt($prevIndex + 1)) { // move space token to before cleaned tokens
+            $this[$prevIndex + 1] = new Token([T_WHITESPACE, $this[$nextIndex]->getContent()]);
+            $this->clearAt($nextIndex);
+        }
     }
 
     private function removeWhitespaceSafely($index, $direction, $whitespaces = null)
