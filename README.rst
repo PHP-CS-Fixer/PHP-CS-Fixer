@@ -1217,11 +1217,12 @@ Choose from the list of available rules:
 * **not_operator_with_space**
 
   Logical NOT operators (``!``) should have leading and trailing
-  whitespaces.
+  whitespaces. DEPRECATED: use ``unary_operator_spaces`` instead.
 
 * **not_operator_with_successor_space**
 
   Logical NOT operators (``!``) should have one trailing whitespace.
+  DEPRECATED: use ``unary_operator_spaces`` instead.
 
 * **object_operator_without_whitespace** [@Symfony, @PhpCsFixer]
 
@@ -1850,6 +1851,12 @@ Choose from the list of available rules:
 * **unary_operator_spaces** [@Symfony, @PhpCsFixer]
 
   Unary operators should be placed adjacent to their operands.
+
+  Configuration options:
+
+  - ``not_operator_space`` (``'leading_and_trailing'``, ``'no_trailing'``,
+    ``'one_trailing'``): space around logical ``!`` (``not``) operators; defaults
+    to ``'no_trailing'``
 
 * **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration]
 

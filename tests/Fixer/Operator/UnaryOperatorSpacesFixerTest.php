@@ -86,6 +86,14 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
                 '<?php $a *- $b;',
             ],
             [
+                '<?php $a /-$b;',
+                '<?php $a /- $b;',
+            ],
+            [
+                '<?php $a ^-$b;',
+                '<?php $a ^- $b;',
+            ],
+            [
                 '<?php $a*-$b;',
             ],
             [
@@ -118,6 +126,97 @@ final class UnaryOperatorSpacesFixerTest extends AbstractFixerTestCase
             [
                 '<?php foo($a, ...$b);',
                 '<?php foo($a, ... $b);',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithSuccessorSpaceCases
+     */
+    public function testFixWithSuccessorSpace($expected, $input = null)
+    {
+        $this->fixer->configure(['not_operator_space' => 'one_trailing']);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithSuccessorSpaceCases()
+    {
+        return [
+            [
+                '<?php $i = 0; $i++; $foo = ! false || (! true || ! ! false && (2 === (7 -5)));',
+                '<?php $i = 0; $i++; $foo = !false || (!true || !!false && (2 === (7 -5)));',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i && !true);',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */ true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i && !  /* some comment */ true);',
+            ],
+            'comment case' => [
+                '<?php
+                $a=#
+! #
+$b;
+                ',
+                '<?php
+                $a=#
+!
+#
+$b;
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixNotOperatorWithSpaceCases
+     */
+    public function testFixNotOperatorWithSpace($expected, $input = null)
+    {
+        $this->fixer->configure(['not_operator_space' => 'leading_and_trailing']);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixNotOperatorWithSpaceCases()
+    {
+        return [
+            [
+                '<?php $i = 0; $i++; ++$i; $foo = ! false || ( ! true);',
+                '<?php $i = 0; $i++; ++$i; $foo = !false || (!true);',
+            ],
+            [
+                '<?php $i = 0; $i--; --$i; $foo = ! false || ($i && ! true);',
+                '<?php $i = 0; $i--; --$i; $foo = !false || ($i && !true);',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i && ! /* some comment */true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i && !/* some comment */true);',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i && !    true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i && !    true);',
+            ],
+            [
+                '<?php $i = 0; $i--; $foo = ! false || ($i &&    !    true);',
+                '<?php $i = 0; $i--; $foo = !false || ($i &&    !    true);',
             ],
         ];
     }
