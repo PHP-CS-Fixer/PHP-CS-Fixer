@@ -83,6 +83,7 @@ final class RuleSet implements RuleSetInterface
             'native_function_casing' => true,
             'native_function_type_declaration_casing' => true,
             'new_with_braces' => true,
+            'no_alias_language_construct_call' => true,
             'no_blank_lines_after_class_opening' => true,
             'no_blank_lines_after_phpdoc' => true,
             'no_empty_comment' => true,
