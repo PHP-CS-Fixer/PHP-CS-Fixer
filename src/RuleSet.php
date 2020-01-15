@@ -208,6 +208,7 @@ final class RuleSet implements RuleSetInterface
             'psr4' => true,
             'self_accessor' => true,
             'set_type_to_cast' => true,
+            'ternary_to_elvis_operator' => true,
         ],
         '@PhpCsFixer' => [
             '@Symfony' => true,

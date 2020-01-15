@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: ternary_to_elvis_operator,no_trailing_whitespace.
+--RULESET--
+{"ternary_to_elvis_operator": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+$foo = $bar
+    ?
+    : $foo;
+
+--INPUT--
+<?php
+$foo = $bar
+    ? $bar
+    : $foo;

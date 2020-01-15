@@ -246,6 +246,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['standardize_increment'], $fixers['increment_style']],
             [$fixers['standardize_not_equals'], $fixers['binary_operator_spaces']],
             [$fixers['strict_comparison'], $fixers['binary_operator_spaces']],
+            [$fixers['ternary_to_elvis_operator'], $fixers['no_trailing_whitespace']],
+            [$fixers['ternary_to_elvis_operator'], $fixers['ternary_operator_spaces']],
             [$fixers['unary_operator_spaces'], $fixers['not_operator_with_space']],
             [$fixers['unary_operator_spaces'], $fixers['not_operator_with_successor_space']],
             [$fixers['void_return'], $fixers['phpdoc_no_empty_return']],
