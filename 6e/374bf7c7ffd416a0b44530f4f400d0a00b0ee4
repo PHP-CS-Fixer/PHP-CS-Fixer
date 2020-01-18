@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-09-03T15:55:13Z
+
+I wonder if this fixer should have a risky option that forces unpacking of arrays where we can't be sure they are not associative?
+
+https://3v4l.org/KYknb
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-09-03T17:50:40Z
+
+I love assoc arrays... good point :+1:
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-09-10T12:13:17Z
+
+> I love assoc arrays... good point +1
+
+Maybe prepend a `...array_values()` ?
+
+https://3v4l.org/WUcFR
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-09-10T12:25:51Z
+
+Another case to be careful converting:
+
+```php
+call_user_func($foo, $foo = 'bar');
+```
+
+If you expand this, the order of evaluation changes...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-09-10T12:26:11Z
+
+I note this example because it occurs in a real codebase: laravel/framework!
+
+---------------------------------------------------------------------------
+
+by drupol at 2019-09-10T12:29:38Z
+
+Ha, nicely spotted !
