@@ -1832,6 +1832,10 @@ Choose from the list of available rules:
 
   *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
 
+* **simple_lambda_call**
+
+  Calling lambdas without using ``call_user_func*``, when possible.
+
 * **simple_to_complex_string_variable** [@PhpCsFixer]
 
   Converts explicit variables in double-quoted strings and heredoc syntax
