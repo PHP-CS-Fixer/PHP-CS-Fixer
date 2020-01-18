@@ -36,7 +36,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Removes `@param` and `@return` tags that don\'t provide any useful information.',
+            'Removes `@param`, `@return` and `@var` tags that don\'t provide any useful information.',
             [
                 new CodeSample('<?php
 class Foo {
@@ -67,6 +67,14 @@ class Foo {
     public function doFoo(Bar $bar, $baz): Baz {}
 }
 ', new VersionSpecification(70000)),
+                new VersionSpecificCodeSample('<?php
+class Foo {
+    /**
+     * @var Bar
+     */
+    private Bar $bar;
+}
+', new VersionSpecification(70400)),
             ]
         );
     }
@@ -106,46 +114,25 @@ class Foo {
                 continue;
             }
 
-            $functionIndex = $this->findDocumentedFunction($tokens, $index);
-            if (null === $functionIndex) {
+            $content = $initialContent = $token->getContent();
+
+            $documentedElementIndex = $this->findDocumentedElement($tokens, $index);
+
+            if (null === $documentedElementIndex) {
                 continue;
             }
 
-            $docBlock = new DocBlock($token->getContent());
+            $token = $tokens[$documentedElementIndex];
 
-            $openingParenthesisIndex = $tokens->getNextTokenOfKind($functionIndex, ['(']);
-            $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
-
-            $argumentsInfo = $this->getArgumentsInfo(
-                $tokens,
-                $openingParenthesisIndex + 1,
-                $closingParenthesisIndex - 1
-            );
-
-            foreach ($docBlock->getAnnotationsOfType('param') as $annotation) {
-                if (0 === Preg::match('/@param(?:\s+[^\$]\S+)?\s+(\$\S+)/', $annotation->getContent(), $matches)) {
-                    continue;
-                }
-
-                $argumentName = $matches[1];
-
-                if (
-                    !isset($argumentsInfo[$argumentName])
-                    || $this->annotationIsSuperfluous($annotation, $argumentsInfo[$argumentName], $shortNames)
-                ) {
-                    $annotation->remove();
-                }
+            if ($token->isGivenKind(T_FUNCTION)) {
+                $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
+            } elseif ($token->isGivenKind(T_VARIABLE)) {
+                $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
             }
 
-            $returnTypeInfo = $this->getReturnTypeInfo($tokens, $closingParenthesisIndex);
-
-            foreach ($docBlock->getAnnotationsOfType('return') as $annotation) {
-                if ($this->annotationIsSuperfluous($annotation, $returnTypeInfo, $shortNames)) {
-                    $annotation->remove();
-                }
+            if ($content !== $initialContent) {
+                $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
             }
-
-            $tokens[$index] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
         }
     }
 
@@ -162,17 +149,114 @@ class Foo {
         ]);
     }
 
-    private function findDocumentedFunction(Tokens $tokens, $index)
+    /**
+     * @param int $docCommentIndex
+     *
+     * @return null|int
+     */
+    private function findDocumentedElement(Tokens $tokens, $docCommentIndex)
     {
+        $index = $docCommentIndex;
+
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $index || $tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE])) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
 
+        $index = $tokens->getNextMeaningfulToken($docCommentIndex);
+
+        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STRING, T_NS_SEPARATOR];
+
+        if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
+            return null;
+        }
+
+        do {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+                return $index;
+            }
+        } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
+
         return null;
+    }
+
+    /**
+     * @param string $content
+     * @param int    $functionIndex
+     *
+     * @return string
+     */
+    private function fixFunctionDocComment($content, Tokens $tokens, $functionIndex, array $shortNames)
+    {
+        $docBlock = new DocBlock($content);
+
+        $openingParenthesisIndex = $tokens->getNextTokenOfKind($functionIndex, ['(']);
+        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
+
+        $argumentsInfo = $this->getArgumentsInfo(
+            $tokens,
+            $openingParenthesisIndex + 1,
+            $closingParenthesisIndex - 1
+        );
+
+        foreach ($docBlock->getAnnotationsOfType('param') as $annotation) {
+            if (0 === Preg::match('/@param(?:\s+[^\$]\S+)?\s+(\$\S+)/', $annotation->getContent(), $matches)) {
+                continue;
+            }
+
+            $argumentName = $matches[1];
+
+            if (!isset($argumentsInfo[$argumentName]) || $this->annotationIsSuperfluous($annotation, $argumentsInfo[$argumentName], $shortNames)) {
+                $annotation->remove();
+            }
+        }
+
+        $returnTypeInfo = $this->getReturnTypeInfo($tokens, $closingParenthesisIndex);
+
+        foreach ($docBlock->getAnnotationsOfType('return') as $annotation) {
+            if ($this->annotationIsSuperfluous($annotation, $returnTypeInfo, $shortNames)) {
+                $annotation->remove();
+            }
+        }
+
+        return $docBlock->getContent();
+    }
+
+    /**
+     * @param string $content
+     * @param int    $docCommentIndex
+     *
+     * @return string
+     */
+    private function fixPropertyDocComment($content, Tokens $tokens, $docCommentIndex, array $shortNames)
+    {
+        $docBlock = new DocBlock($content);
+
+        $index = $tokens->getNextMeaningfulToken($docCommentIndex);
+
+        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
+
+        if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
+            return $content;
+        }
+
+        do {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            $propertyTypeInfo = $this->parseTypeHint($tokens, $index);
+            foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
+                if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $shortNames)) {
+                    $annotation->remove();
+                }
+            }
+        } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
+
+        return $docBlock->getContent();
     }
 
     /**
@@ -254,7 +338,7 @@ class Foo {
         }
 
         return [
-            'type' => $type,
+            'type' => '' === $type ? null : $type,
             'allows_null' => $allowsNull,
         ];
     }
@@ -268,6 +352,8 @@ class Foo {
     {
         if ('param' === $annotation->getTag()->getName()) {
             $regex = '/@param\s+(?:\S|\s(?!\$))+\s\$\S+\s+\S/';
+        } elseif ('var' === $annotation->getTag()->getName()) {
+            $regex = '/@var\s+\S+(\s+\$\S+)?(\s+)([^$\s]+)/';
         } else {
             $regex = '/@return\s+\S+\s+\S/';
         }
