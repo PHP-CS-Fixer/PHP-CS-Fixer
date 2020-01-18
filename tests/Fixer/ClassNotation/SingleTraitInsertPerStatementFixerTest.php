@@ -83,6 +83,24 @@ final class Example
 }
 ',
             ],
+            'simple III' => [
+                '<?php
+class Example
+{
+    use Foo;use Bar;
+
+    public function baz() {}
+}
+',
+                '<?php
+class Example
+{
+    use Foo, Bar;
+
+    public function baz() {}
+}
+',
+            ],
             'multiple' => [
                 '<?php
 final class Example
@@ -100,6 +118,44 @@ final class Example
     use Foo00, Bar01;
     use Foo10, Bar11, Bar110;
     use Foo20, Bar20, Bar200, Bar201;
+}
+',
+            ],
+            'multiple_multiline' => [
+                '<?php
+final class Example
+{
+    use Foo;
+    use Bar;
+    use Baz;
+}
+',
+                '<?php
+final class Example
+{
+    use Foo,
+        Bar,
+        Baz;
+}
+',
+            ],
+            'multiple_multiline_with_comment' => [
+                '<?php
+final class Example
+{
+    use Foo;
+    use Bar;
+//        Bazz,
+    use Baz;
+}
+',
+                '<?php
+final class Example
+{
+    use Foo,
+        Bar,
+//        Bazz,
+        Baz;
 }
 ',
             ],
@@ -126,9 +182,9 @@ class ZZ
 use#2
 Z/* 2 */ #3
 #4
-;use #5
+;#5
 #6
-T#7
+use T#7
 #8
 ;#9
 #10

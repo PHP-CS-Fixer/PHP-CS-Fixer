@@ -153,7 +153,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             if ($token->isComment()
                 && Preg::match(
-                    '/(?<![[:alnum:]])(?<!\\\\)'.$shortName.'(?![[:alnum:]])/i',
+                    '/(?<![[:alnum:]\$])(?<!\\\\)'.$shortName.'(?![[:alnum:]])/i',
                     $token->getContent()
                 )
             ) {

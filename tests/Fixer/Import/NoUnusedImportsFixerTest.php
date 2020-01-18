@@ -1087,6 +1087,31 @@ EOF
     var_dump($y);}
 EOF
             ],
+            [
+                '<?php
+use App\Http\Requests\StoreRequest;
+
+class StoreController
+{
+    /**
+     * @param \App\Http\Requests\StoreRequest $request
+     */
+    public function __invoke(StoreRequest $request)
+    {}
+}',
+                '<?php
+use App\Http\Requests\StoreRequest;
+use Illuminate\Http\Request;
+
+class StoreController
+{
+    /**
+     * @param \App\Http\Requests\StoreRequest $request
+     */
+    public function __invoke(StoreRequest $request)
+    {}
+}',
+            ],
         ];
     }
 

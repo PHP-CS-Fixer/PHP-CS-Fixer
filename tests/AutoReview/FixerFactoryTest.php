@@ -491,6 +491,8 @@ final class FixerFactoryTest extends TestCase
             }
 
             static::assertSame($sortedDescription, $casesDescription);
+        } else {
+            $this->addToAssertionCount(1);
         }
     }
 
