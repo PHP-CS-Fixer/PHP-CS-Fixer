@@ -78,8 +78,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $index
+     * @param int $index
      */
     private function processCall(Tokens $tokens, $index)
     {
@@ -139,11 +138,9 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     }
 
     /**
-     * @param Tokens $tokens
-     * @param int    $callIndex
-     * @param Tokens $newCallTokens
-     * @param int    $firstArgStartIndex
-     * @param int    $firstArgEndIndex
+     * @param int $callIndex
+     * @param int $firstArgStartIndex
+     * @param int $firstArgEndIndex
      */
     private function replaceCallUserFuncWithCallback(Tokens $tokens, $callIndex, Tokens $newCallTokens, $firstArgStartIndex, $firstArgEndIndex)
     {
