@@ -701,6 +701,7 @@ Choose from the list of available rules:
 * **final_static_access**
 
   Converts ``static`` access to ``self`` access in ``final`` classes.
+  DEPRECATED: use ``self_static_accessor`` instead.
 
 * **fopen_flag_order** [@Symfony:risky, @PhpCsFixer:risky]
 
