@@ -679,6 +679,7 @@ Choose from the list of available rules:
 * **final_static_access**
 
   Converts ``static`` access to ``self`` access in ``final`` classes.
+  DEPRECATED: use ``self_static_accessor`` instead.
 
 * **fopen_flag_order** [@Symfony:risky, @PhpCsFixer:risky]
 
@@ -1105,8 +1106,8 @@ Choose from the list of available rules:
 
 * **no_superfluous_phpdoc_tags** [@Symfony, @PhpCsFixer]
 
-  Removes ``@param`` and ``@return`` tags that don't provide any useful
-  information.
+  Removes ``@param``, ``@return`` and ``@var`` tags that don't provide any
+  useful information.
 
   Configuration options:
 
@@ -1741,6 +1742,10 @@ Choose from the list of available rules:
   Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
   ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as
   ``(string)``.
+
+* **simple_lambda_call**
+
+  Calling lambdas without using ``call_user_func*``, when possible.
 
 * **simple_to_complex_string_variable** [@PhpCsFixer]
 
