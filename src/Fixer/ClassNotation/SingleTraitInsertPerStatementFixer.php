@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -58,24 +59,35 @@ final class Example
             if ($tokens[$index]->isGivenKind(CT::T_USE_TRAIT)) {
                 $candidates = $this->getCandidates($tokens, $index);
                 if (\count($candidates) > 0) {
-                    $this->fixTraitUse($tokens, array_reverse($candidates));
+                    $this->fixTraitUse($tokens, $index, $candidates);
                 }
             }
         }
     }
 
     /**
-     * @param int[] $candidates ',' indexes to fix
+     * @param int   $useTraitIndex
+     * @param int[] $candidates    ',' indexes to fix
      */
-    private function fixTraitUse(Tokens $tokens, array $candidates)
+    private function fixTraitUse(Tokens $tokens, $useTraitIndex, array $candidates)
     {
-        foreach ($candidates as $nextInsertIndex) {
-            $tokens[$nextInsertIndex] = new Token(';');
-            $tokens->insertAt($nextInsertIndex + 1, new Token([CT::T_USE_TRAIT, 'use']));
+        foreach ($candidates as $commaIndex) {
+            $inserts = [
+                new Token([CT::T_USE_TRAIT, 'use']),
+                new Token([T_WHITESPACE, ' ']),
+            ];
 
-            if (!$tokens[$nextInsertIndex + 2]->isWhitespace()) {
-                $tokens->insertAt($nextInsertIndex + 2, new Token([T_WHITESPACE, ' ']));
+            $nextImportStartIndex = $tokens->getNextMeaningfulToken($commaIndex);
+
+            if ($tokens[$nextImportStartIndex - 1]->isWhitespace()) {
+                if (1 === Preg::match('/\R/', $tokens[$nextImportStartIndex - 1]->getContent())) {
+                    array_unshift($inserts, clone $tokens[$useTraitIndex - 1]);
+                }
+                $tokens->clearAt($nextImportStartIndex - 1);
             }
+
+            $tokens[$commaIndex] = new Token(';');
+            $tokens->insertAt($nextImportStartIndex, $inserts);
         }
     }
 
@@ -98,6 +110,6 @@ final class Example
             $index = $tokens->getNextTokenOfKind($index, [',', ';', '{']);
         }
 
-        return $indexes;
+        return array_reverse($indexes);
     }
 }
