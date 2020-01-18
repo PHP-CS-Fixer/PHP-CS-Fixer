@@ -110,6 +110,10 @@ final class SimpleLambdaCallFixerTest extends AbstractFixerTestCase
                 call_user_func("Bar\Baz::d", 1, 2);
                 call_user_func("\Bar\Baz::d", 1, 2);',
         ];
+        yield 'unsafe repeated variable' => [
+            '<?php
+                call_user_func($foo, $foo = \'bar\');',
+        ];
     }
 
     /**
