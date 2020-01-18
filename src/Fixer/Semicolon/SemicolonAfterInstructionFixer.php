@@ -34,6 +34,12 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
         );
     }
 
+    public function getPriority()
+    {
+        // must run before SimplifiedIfReturnFixer.
+        return 2;
+    }
+
     /**
      * {@inheritdoc}
      */
