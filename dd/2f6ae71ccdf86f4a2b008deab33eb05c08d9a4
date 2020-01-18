@@ -1,0 +1,162 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-09T13:01:27Z
+
+What does it do with the following example:
+
+```php
+<?php
+final class Example
+{
+    use Foo,
+        Bar,
+//         Bazz,
+        Baz;
+}
+```
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-10T18:50:59Z
+
+@GrahamCampbell now it does well
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T18:52:50Z
+
+There seems to still be an issue:
+
+<img width="412" alt="image" src="https://user-images.githubusercontent.com/2829600/72209178-82faa780-34a3-11ea-9874-8a99540a75ea.png">
+
+The newline in between the `use` and `public function` is getting deleted.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-11T19:42:41Z
+
+@GrahamCampbell where is this happening? Because definitely not in `SingleTraitInsertPerStatementFixer` in this PR.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T20:05:12Z
+
+Could you add the following test case:
+
+```php
+<?php
+
+class Example
+{
+    use Foo, Bar;
+
+    public function baz() {}
+}
+```
+
+it should be fixed to:
+
+```php
+<?php
+
+class Example
+{
+    use Foo;
+    use Bar;
+
+    public function baz() {}
+}
+```
+
+I think your code will actually fix it to:
+
+```php
+<?php
+
+class Example
+{
+    use Foo;
+    use Bar;
+    public function baz() {}
+}
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-11T20:23:17Z
+
+Added, through the expected result is different from each of your examples - we are not adding any new line if none between imports (as in very first test case), so this what would be:
+```php
+<?php
+class Example
+{
+    use Foo;use Bar;
+
+    public function baz() {}
+}
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T20:24:07Z
+
+Right, so your fixer is fixing to the wrong thing, and then another fixer is breaking up the statements?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T20:25:35Z
+
+// cc @SpacePossum. This fixer is meant to fix to the Symfony and PSR-12 style, but seems to not do that?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-11T20:34:29Z
+
+> Right, so your fixer is fixing to the wrong thing
+
+WHAAAT? Are you kidding? See the issue it's fixing - there is a test case that covers this issue...
+
+See the original tests - they are not meant to break the lines, only to do what the fixer describes to do, which is 'Each trait `use` must be done as single statement.' - STATEMENT, not a line.
+
+> This fixer is meant to fix to the Symfony and PSR-12 style
+
+Since when? It seems like overthinking. We have a fixer to split the imports into separate lines since a long time ago, this fixer is meant to be run before it and @SpacePossum thought about it as he wrote this integration test: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.1/tests/Fixtures/Integration/priority/single_trait_insert_per_statement,braces.test
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T22:26:28Z
+
+> See the original tests - they are not meant to break the lines,
+
+Yes, I know. I am saying I think the common sense thing to do is to have the fixer split onto new lines, even though the original implementation didn't do this. This is why I have cced in the original fixer author.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T22:27:42Z
+
+Because of exactly the problem I am describing, with the example I provided. Trying to have separation of responsibilities just leads to it being harder to use, and producing output that is not desirable.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T22:28:53Z
+
+Though, maybe this is something we should discuss for **after** this PR. ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-11T22:29:15Z
+
+This PR itself looks fine.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-13T07:21:58Z
+
+> This fixer is meant to fix to the Symfony and PSR-12 style,
+
+No, it is meant/designed to make multiple use statements
+
+> Trying to have separation of responsibilities just leads to it being harder to use, and producing output that is not desirable.
+
+I disagree, please provide more than an opinion and I might change my mind.
+
+For now, lets leave this out of the PR, the only issue I've seen so far is that there is no priority test between this fixer and `class_attributes_separation`.
