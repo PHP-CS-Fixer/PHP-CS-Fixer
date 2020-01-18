@@ -1,0 +1,127 @@
+---------------------------------------------------------------------------
+
+by soullivaneuh at 2017-11-14T12:14:17Z
+
+What if my PHP code looks like this?
+
+```php
+$foo = 'This is it.';
+
+if ($foo) {
+    return true;
+}
+
+return false;
+```
+
+The bool return type will be a string with this fixer.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-14T13:11:02Z
+
+I'm intended to fix it like:
+```php
+return !!($foo);
+```
+
+---------------------------------------------------------------------------
+
+by ntzm at 2017-11-16T20:00:19Z
+
+I think most would prefer `return (bool) $foo`?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-16T20:16:26Z
+
+I tought some type couldn't be explicitly converted to boolean, but after research it seems all can, I'll go with the `(bool)`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-11-17T09:50:27Z
+
+> BracesFixer has the lowest priority, can't do this. **The user must run PHP-CS-Fixer twice**
+
+wow wow wow, what's going on here? it's not an option!
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2017-11-17T14:09:24Z
+
+@keradus consider this code:
+```php
+if ($foo)
+   return true;
+return false;
+```
+To be fixed in:
+```php
+return (bool) $foo;
+```
+And the following fixers enabled:
+
+* BracesFixer (priority: -25)
+* SimplifiedIfReturnFixer (current priority: 1)
+* NoMultilineWhitespaceBeforeSemicolonsFixer (priority: 0)
+
+Since `NoMultilineWhitespaceBeforeSemicolonsFixer` runs before `BracesFixer`, and since `SimplifiedIfReturnFixer` must run `NoMultilineWhitespaceBeforeSemicolonsFixer`, how can you fix the code in one step only?
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-03-20T16:22:27Z
+
+just a note:
+> The user must run PHP-CS-Fixer twice
+
+for me, this is a blocker for this PR.
+we need to figure out how to deal with it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-05-08T21:02:04Z
+
+> how can you fix the code in one step only?
+
+please, start with putting the issue down to integration test, we would know what is expected output (regardless of amount of executions), and then we can adjust the code to pass in single execution
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-20T18:27:21Z
+
+@Slamdunk this PR stalled, any chance you can work on it? Do you need/want some help?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-11-21T08:18:50Z
+
+Actually only the integration tests against `BraceFixer` are missing: re-reading this PR now I would go for fixing cases without braces too, so we don't have to integrate with `BraceFixer` at all.
+
+I would love to finish the work, but due to family commitments I cannot guarantee any date soon.
+
+Btw I'll rebase this branch now so if you want you can push a PR against my fork without opening a new PR :+1:
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-11-21T08:29:43Z
+
+@julienfalque PR rebased, first-post task list updated: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/3253#issue-152441735
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2019-11-27T09:18:45Z
+
+Ok, everything done.
+
+The fixer now is independent from `BraceFixer` and one run is enough for the final form.
+
+A side note: the parenthesis of the `if` statement are preserved because:
+
+1. `if ($foo && $bar) return true; return false;` fixed without parenthesis would result in `return (bool) $foo && $bar;` and so the `(bool)` typecast would be applied to the first argument instead the whole sentence; it would be harmless but not very clear
+1. It allows us to fix the negative sentences with the `!` exclamation mark and without the `(bool)` typecast
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-01-17T03:10:37Z
+
+Thank you @SpacePossum
