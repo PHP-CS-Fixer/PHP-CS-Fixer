@@ -1033,6 +1033,14 @@ preg_replace_callback(
     {
         $cases = [
             [
+                '<?php echo $a[1] + 1;',
+                [8 => true],
+            ],
+            [
+                '<?php echo $a{1} + 1;',
+                [8 => true],
+            ],
+            [
                 '<?php $a .= $b; ?>',
                 [3 => true],
             ],
