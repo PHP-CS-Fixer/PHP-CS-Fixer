@@ -1836,6 +1836,8 @@ Choose from the list of available rules:
 
   Calling lambdas without using ``call_user_func*``, when possible.
 
+  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden.*
+
 * **simple_to_complex_string_variable** [@PhpCsFixer]
 
   Converts explicit variables in double-quoted strings and heredoc syntax
