@@ -431,6 +431,7 @@ final class TokensAnalyzer
                 '"',
                 '`',
                 [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+                [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
                 [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
                 [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
                 [T_CLASS_C],
