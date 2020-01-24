@@ -89,6 +89,10 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
             }
         }
 
+        if ('' === $whitespace) {
+            return;
+        }
+
         $previousToken = $tokens[$index - 1];
         if (!$previousToken->isWhitespace()) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, $whitespace]));
