@@ -58,7 +58,6 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
                 '<?php while (true) { echo "c";}',
                 '<?php while (true):echo "c";endwhile;',
             ],
-
             [
                 '<?php foreach (array("d") as $item) { while ($item) { echo "dd";}}',
                 '<?php foreach (array("d") as $item):while ($item):echo "dd";endwhile;endforeach;',

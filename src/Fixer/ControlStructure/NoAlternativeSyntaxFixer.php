@@ -68,7 +68,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     public function getPriority()
     {
         // Should run before BracesFixer and ElseifFixer
-        return 1;
+        return 26;
     }
 
     /**
