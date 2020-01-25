@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class SimpleLambdaCallFixer extends AbstractFixer
+final class RegularCallableCallFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ final class SimpleLambdaCallFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Calling lambdas without using `call_user_func*`, when possible.',
+            'Callables must be called without using `call_user_func*` when possible.',
             [
                 new CodeSample(
                     '<?php
