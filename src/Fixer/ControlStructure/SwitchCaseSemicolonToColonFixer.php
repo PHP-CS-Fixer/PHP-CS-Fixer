@@ -49,6 +49,16 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoEmptyStatementFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

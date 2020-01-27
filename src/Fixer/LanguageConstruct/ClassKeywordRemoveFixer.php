@@ -53,6 +53,16 @@ $className = Baz::class;
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUnusedImportsFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

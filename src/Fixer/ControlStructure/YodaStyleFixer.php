@@ -96,6 +96,16 @@ return $foo === count($bar);
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after IsNullFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

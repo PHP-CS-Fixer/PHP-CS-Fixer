@@ -49,10 +49,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after PhpUnitFqcnAnnotationFixer.
      */
     public function getPriority()
     {
-        // should be run after PhpUnitFqcnAnnotationFixer
         return -10;
     }
 

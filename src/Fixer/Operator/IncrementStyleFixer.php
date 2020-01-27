@@ -57,6 +57,16 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDe
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after StandardizeIncrementFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

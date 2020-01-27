@@ -42,9 +42,13 @@ final class Example
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before BracesFixer, SpaceAfterSemicolonFixer.
+     */
     public function getPriority()
     {
-        // must be run before Braces and SpaceAfterSemicolonFixer
         return 1;
     }
 

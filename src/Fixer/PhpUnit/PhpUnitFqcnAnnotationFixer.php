@@ -53,10 +53,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUnusedImportsFixer, PhpUnitOrderedCoversFixer.
      */
     public function getPriority()
     {
-        // should be run before NoUnusedImportsFixer
         return -9;
     }
 

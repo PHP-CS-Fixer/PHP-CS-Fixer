@@ -48,10 +48,11 @@ final class VoidReturnFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocNoEmptyReturnFixer, ReturnTypeDeclarationFixer.
      */
     public function getPriority()
     {
-        // must run before ReturnTypeDeclarationFixer and PhpdocNoEmptyReturnFixer
         return 15;
     }
 

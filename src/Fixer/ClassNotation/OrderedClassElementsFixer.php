@@ -210,11 +210,12 @@ class Example
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ClassAttributesSeparationFixer, MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer, SpaceAfterSemicolonFixer.
+     * Must run after NoPhp4ConstructorFixer, ProtectedToPrivateFixer.
      */
     public function getPriority()
     {
-        // must run before MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer and SpaceAfterSemicolonFixer.
-        // must run after ProtectedToPrivateFixer.
         return 65;
     }
 

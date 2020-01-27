@@ -166,10 +166,12 @@ $this->assertTrue(is_readable($a));
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpUnitDedicateAssertInternalTypeFixer.
+     * Must run after NoAliasFunctionsFixer, PhpUnitConstructFixer.
      */
     public function getPriority()
     {
-        // should be run after the PhpUnitConstructFixer.
         return -15;
     }
 
