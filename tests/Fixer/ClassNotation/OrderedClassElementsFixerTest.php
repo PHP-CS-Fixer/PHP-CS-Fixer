@@ -666,7 +666,7 @@ EOT
      *
      * @dataProvider provideSortingConfigurationCases
      */
-    public function testFixWithSortingAlgorithm(array $configuration, $input, $expected)
+    public function testFixWithSortingAlgorithm(array $configuration, $expected, $input)
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -688,6 +688,22 @@ EOT
 <?php
 class Example
 {
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    public function A(){}
+    public function B1(){}
+    public function B2(){}
+    public function C(){}
+    public function C1(){}
+    public function D(){}
+    private function E(){}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Example
+{
     public function D(){}
     public static $pubStatProp2;
     public function B1(){}
@@ -700,21 +716,6 @@ class Example
 }
 EOT
                 ,
-                <<<'EOT'
-<?php
-class Example
-{
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    public function A(){}
-    public function B1(){}
-    public function B2(){}
-    public function C(){}
-    public function C1(){}
-    public function D(){}
-    private function E(){}
-}
-EOT
             ],
             [
                 [
@@ -743,6 +744,47 @@ EOT
 <?php
 class Foo
 {
+    use BarTrait;
+    use BazTrait;
+    const C1 = 1;
+    const C2 = 2;
+    public static $pubStatProp1;
+    public static $pubStatProp2;
+    protected static $protStatProp;
+    private static $privStatProp;
+    public $pubProp1;
+    var $pubProp2;
+    public $pubProp3;
+    protected $protProp;
+    private $privProp;
+    protected function __construct() {}
+    public function __destruct() {}
+    public function __magicA() {}
+    public function __magicB() {}
+    public function __toString() {}
+    public static function pubStatFunc1() {}
+    static function pubStatFunc2() {}
+    public static function pubStatFunc3() {
+        return $this->privFunc();
+    }
+    protected static function protStatFunc() {}
+    private static function privStatFunc() {}
+    public function pubFunc1() {}
+    function pubFunc2() {}
+    public function pubFunc3(int $b, int $c) {
+        $a = $b*$c;
+
+        return $a % 4;
+    }
+    protected function protFunc() {}
+    private function privFunc() {}
+}
+EOT
+                ,
+                <<<'EOT'
+<?php
+class Foo
+{
     private static function privStatFunc() {}
     protected static $protStatProp;
     use BazTrait;
@@ -780,46 +822,6 @@ class Foo
 }
 EOT
                 ,
-                <<<'EOT'
-<?php
-class Foo
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    public static $pubStatProp1;
-    public static $pubStatProp2;
-    protected static $protStatProp;
-    private static $privStatProp;
-    public $pubProp1;
-    var $pubProp2;
-    public $pubProp3;
-    protected $protProp;
-    private $privProp;
-    protected function __construct() {}
-    public function __destruct() {}
-    public function __magicA() {}
-    public function __magicB() {}
-    public function __toString() {}
-    public static function pubStatFunc1() {}
-    static function pubStatFunc2() {}
-    public static function pubStatFunc3() {
-        return $this->privFunc();
-    }
-    protected static function protStatFunc() {}
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    function pubFunc2() {}
-    public function pubFunc3(int $b, int $c) {
-        $a = $b*$c;
-
-        return $a % 4;
-    }
-    protected function protFunc() {}
-    private function privFunc() {}
-}
-EOT
             ],
         ];
     }
