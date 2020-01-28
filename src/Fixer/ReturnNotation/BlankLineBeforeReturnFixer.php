@@ -42,6 +42,16 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Dep
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoUselessReturnFixer.
+     */
+    public function getPriority()
+    {
+        return parent::getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getSuccessorsNames()
     {

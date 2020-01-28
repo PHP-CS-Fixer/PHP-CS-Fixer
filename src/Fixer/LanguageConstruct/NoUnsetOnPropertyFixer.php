@@ -58,10 +58,11 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before CombineConsecutiveUnsetsFixer.
      */
     public function getPriority()
     {
-        // should be run before CombineConsecutiveUnsetsFixer
         return 25;
     }
 

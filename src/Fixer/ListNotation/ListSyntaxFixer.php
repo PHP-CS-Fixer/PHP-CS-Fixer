@@ -68,10 +68,11 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BinaryOperatorSpacesFixer, TernaryOperatorSpacesFixer.
      */
     public function getPriority()
     {
-        // should be run before the BinaryOperatorSpacesFixer and TernaryOperatorSpacesFixer.
         return 1;
     }
 

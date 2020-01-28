@@ -75,10 +75,11 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after EchoTagSyntaxFixer, NoShortEchoTagFixer.
      */
     public function getPriority()
     {
-        // should run after NoShortEchoTagFixer / EchoTagSyntaxFixer.
         return -10;
     }
 

@@ -48,10 +48,11 @@ switch ($b) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUselessElseFixer, NoUselessReturnFixer, SimplifiedIfReturnFixer.
      */
     public function getPriority()
     {
-        // must be run before NoUselessElseFixer and NoUselessReturnFixer.
         return 26;
     }
 

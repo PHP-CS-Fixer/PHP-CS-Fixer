@@ -49,6 +49,16 @@ final class Sample
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after FinalInternalClassFixer, PhpUnitTestCaseStaticMethodCallsFixer.
+     */
+    public function getPriority()
+    {
+        return parent::getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getSuccessorsNames()
     {

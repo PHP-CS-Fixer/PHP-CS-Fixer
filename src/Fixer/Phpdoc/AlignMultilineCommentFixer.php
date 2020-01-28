@@ -85,10 +85,11 @@ with a line not prefixed with asterisk
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after ArrayIndentationFixer.
      */
     public function getPriority()
     {
-        // Should run after ArrayIndentationFixer
         return -40;
     }
 

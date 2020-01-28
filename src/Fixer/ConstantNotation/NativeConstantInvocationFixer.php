@@ -94,10 +94,11 @@ namespace {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before GlobalNamespaceImportFixer.
      */
     public function getPriority()
     {
-        // must be run before GlobalNamespaceImportFixer
         return 10;
     }
 

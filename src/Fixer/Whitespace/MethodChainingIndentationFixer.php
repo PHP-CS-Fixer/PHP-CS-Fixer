@@ -39,11 +39,12 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ArrayIndentationFixer.
+     * Must run after BracesFixer.
      */
     public function getPriority()
     {
-        // Should run after BracesFixer
-        // Should run before ArrayIndentationFixer
         return -29;
     }
 

@@ -276,10 +276,12 @@ switch($a) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BlankLineBeforeStatementFixer.
+     * Must run after CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer.
      */
     public function getPriority()
     {
-        // should be run after the NoUnusedImportsFixer, NoEmptyPhpdocFixer, CombineConsecutiveUnsetsFixer and NoUselessElseFixer
         return -20;
     }
 

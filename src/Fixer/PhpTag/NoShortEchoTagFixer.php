@@ -37,6 +37,16 @@ final class NoShortEchoTagFixer extends AbstractProxyFixer implements Deprecated
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoMixedEchoPrintFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getSuccessorsNames()
     {

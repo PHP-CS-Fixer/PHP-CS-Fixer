@@ -39,10 +39,12 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before FunctionToConstantFixer.
+     * Must run after PowToExponentiationFixer.
      */
     public function getPriority()
     {
-        // must run before FunctionToConstantFixer
         return 2;
     }
 

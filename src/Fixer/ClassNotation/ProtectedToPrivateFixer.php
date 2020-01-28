@@ -49,9 +49,13 @@ final class Sample
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before OrderedClassElementsFixer.
+     */
     public function getPriority()
     {
-        // must run before OrderedClassElementsFixer.
         return 66;
     }
 
