@@ -49,7 +49,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
      */
     public function getPriority()
     {
-        parent::getPriority();
+        return parent::getPriority();
     }
 
     /**
