@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\SimpleLambdaCallFixer
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
  */
-final class SimpleLambdaCallFixerTest extends AbstractFixerTestCase
+final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
