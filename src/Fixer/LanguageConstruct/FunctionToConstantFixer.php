@@ -88,13 +88,12 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NativeFunctionCasingFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, SelfStaticAccessorFixer.
+     * Must run after NoSpacesAfterFunctionNameFixer, NoSpacesInsideParenthesisFixer.
      */
     public function getPriority()
     {
-        // should run before NativeFunctionCasingFixer
-        // must run before NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer
-        // must run after NoSpacesAfterFunctionNameFixer and NoSpacesInsideParenthesisFixer
-
         return 1;
     }
 

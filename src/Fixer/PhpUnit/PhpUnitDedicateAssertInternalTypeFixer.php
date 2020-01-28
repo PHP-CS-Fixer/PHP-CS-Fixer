@@ -94,10 +94,11 @@ final class MyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after PhpUnitDedicateAssertFixer.
      */
     public function getPriority()
     {
-        // should be run after the PhpUnitDedicateAssertFixer
         return -16;
     }
 

@@ -46,11 +46,12 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before AlignMultilineCommentFixer, BinaryOperatorSpacesFixer.
+     * Must run after BracesFixer, MethodChainingIndentationFixer.
      */
     public function getPriority()
     {
-        // should run after BracesFixer, MethodChainingIndentationFixer
-        // should run before AlignMultilineCommentFixer and BinaryOperatorSpacesFixer
         return -30;
     }
 

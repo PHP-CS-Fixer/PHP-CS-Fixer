@@ -44,6 +44,16 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoAlternativeSyntaxFixer.
+     */
+    public function getPriority()
+    {
+        parent::getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {

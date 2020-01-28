@@ -63,11 +63,12 @@ function foo() {}
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer, PhpdocOrderFixer, PhpdocSeparationFixer, PhpdocTrimFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer, VoidReturnFixer.
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer
-        // must be run after the PhpdocAddMissingParamAnnotationFixer
         return 10;
     }
 

@@ -45,6 +45,17 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BracesFixer, CombineConsecutiveUnsetsFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer.
+     * Must run after NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUnneededCurlyBracesFixer.
+     */
+    public function getPriority()
+    {
+        return parent::getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {

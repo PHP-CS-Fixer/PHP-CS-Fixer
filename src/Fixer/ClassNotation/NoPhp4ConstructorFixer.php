@@ -48,10 +48,11 @@ class Foo
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before OrderedClassElementsFixer.
      */
     public function getPriority()
     {
-        // must run before OrderedClassElementsFixer
         return 75;
     }
 
