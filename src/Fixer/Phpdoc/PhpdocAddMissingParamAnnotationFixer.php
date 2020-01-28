@@ -77,11 +77,12 @@ function f9(string $foo, $bar, $baz) {}
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer, PhpdocAlignFixer, PhpdocOrderFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocNoAliasTagFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
-        // must be run after PhpdocNoAliasTagFixer
-        // must be run before PhpdocAlignFixer, NoSuperfluousPhpdocTagsFixer and PhpdocNoEmptyReturnFixer
         return 10;
     }
 

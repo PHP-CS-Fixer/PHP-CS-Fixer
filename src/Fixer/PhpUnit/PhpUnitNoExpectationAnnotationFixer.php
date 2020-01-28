@@ -104,10 +104,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoEmptyPhpdocFixer, PhpUnitExpectationFixer.
      */
     public function getPriority()
     {
-        // should be run before the PhpUnitExpectationFixer, NoEmptyPhpdocFixer
         return 10;
     }
 

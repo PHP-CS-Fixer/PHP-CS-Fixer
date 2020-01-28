@@ -10,7 +10,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Fixer\Semicolon;
+namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author SpacePossum
  */
-final class SemicolonAfterInstructionFixer extends AbstractFixer
+final class NoAliasLanguageConstructCallFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
@@ -29,19 +29,15 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Instructions must be terminated with a semicolon.',
-            [new CodeSample("<?php echo 1 ?>\n")]
+            'Master language constructs shall be used instead of aliases.',
+            [
+                new CodeSample(
+                    '<?php
+die;
+'
+                ),
+            ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Must run before SimplifiedIfReturnFixer.
-     */
-    public function getPriority()
-    {
-        return 2;
     }
 
     /**
@@ -49,7 +45,7 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+        return $tokens->isTokenKindFound(T_EXIT);
     }
 
     /**
@@ -57,17 +53,16 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        for ($index = \count($tokens) - 1; $index > 1; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLOSE_TAG)) {
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_EXIT)) {
                 continue;
             }
 
-            $prev = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prev]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+            if ('exit' === strtolower($token->getContent())) {
                 continue;
             }
 
-            $tokens->insertAt($prev + 1, new Token(';'));
+            $tokens[$index] = new Token([T_EXIT, 'exit']);
         }
     }
 }

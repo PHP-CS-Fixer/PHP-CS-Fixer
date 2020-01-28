@@ -349,6 +349,67 @@ final class ProjectCodeTest extends TestCase
         static::assertNotContains('preg_split', $strings, $message);
     }
 
+    /**
+     * @dataProvider provideTestClassCases
+     *
+     * @param string $testClassName
+     */
+    public function testExpectedInputOrder($testClassName)
+    {
+        $reflectionClass = new \ReflectionClass($testClassName);
+
+        $publicMethods = array_filter(
+            $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+            static function (\ReflectionMethod $reflectionMethod) use ($reflectionClass) {
+                return $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName();
+            }
+        );
+
+        if ($publicMethods === []) {
+            $this->addToAssertionCount(1); // no methods to test, all good!
+
+            return;
+        }
+
+        /** @var \ReflectionMethod $method */
+        foreach ($publicMethods as $method) {
+            $parameters = $method->getParameters();
+
+            if (\count($parameters) < 2) {
+                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+
+                continue;
+            }
+
+            $expected = [
+                'expected' => false,
+                'input' => false,
+            ];
+
+            for ($i = \count($parameters) - 1; $i >= 0; --$i) {
+                $name = $parameters[$i]->getName();
+
+                if (isset($expected[$name])) {
+                    $expected[$name] = $i;
+                }
+            }
+
+            $expected = array_filter($expected);
+
+            if (\count($expected) < 2) {
+                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+
+                continue;
+            }
+
+            static::assertLessThan(
+                $expected['input'],
+                $expected['expected'],
+                sprintf('Public method "%s::%s" has parameter \'input\' before \'expected\'.', $reflectionClass->getName(), $method->getName())
+            );
+        }
+    }
+
     public function provideSrcClassCases()
     {
         return array_map(

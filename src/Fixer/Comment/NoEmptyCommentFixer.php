@@ -40,10 +40,12 @@ final class NoEmptyCommentFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer.
+     * Must run after PhpdocToCommentFixer.
      */
     public function getPriority()
     {
-        // should be run after PhpdocToCommentFixer and before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer and NoWhitespaceInBlankLineFixer.
         return 2;
     }
 

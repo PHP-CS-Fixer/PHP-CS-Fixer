@@ -59,6 +59,16 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after PhpdocToReturnTypeFixer, VoidReturnFixer.
+     */
+    public function getPriority()
+    {
+        return -17;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

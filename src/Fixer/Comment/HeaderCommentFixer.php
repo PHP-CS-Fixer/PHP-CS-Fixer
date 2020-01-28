@@ -105,11 +105,11 @@ echo 1;
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoBlankLinesAfterPhpdocFixer.
      */
     public function getPriority()
     {
-        // should be run after the NoBlankLinesAfterPhpdocFixer.
-        //
         // When this fixer is configured with ["separate" => "bottom", "commentType" => "PHPDoc"]
         // and the target file has no namespace or declare() construct,
         // the fixed header comment gets trimmed by NoBlankLinesAfterPhpdocFixer if we run before it.

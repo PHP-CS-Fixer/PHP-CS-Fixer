@@ -121,6 +121,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
             [$fixers['no_alternative_syntax'], $fixers['braces']],
             [$fixers['no_alternative_syntax'], $fixers['elseif']],
+            [$fixers['no_alternative_syntax'], $fixers['no_superfluous_elseif']],
+            [$fixers['no_alternative_syntax'], $fixers['no_useless_else']],
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['header_comment']],
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']],
             [$fixers['no_empty_comment'], $fixers['no_extra_blank_lines']],
@@ -494,6 +496,93 @@ final class FixerFactoryTest extends TestCase
             static::assertSame($sortedDescription, $casesDescription);
         } else {
             $this->addToAssertionCount(1);
+        }
+    }
+
+    public function testFixerPriorityComment()
+    {
+        $cases = array_merge(
+            $this->provideFixersPriorityCases(),
+            $this->provideFixersPrioritySpecialPhpdocCases()
+        );
+
+        $map = [];
+
+        foreach ($cases as $beforeAfter) {
+            list($before, $after) = $beforeAfter;
+
+            $beforeClass = \get_class($before);
+            $afterClass = \get_class($after);
+
+            $beforeName = substr($beforeClass, strrpos($beforeClass, '\\') + 1);
+            $afterName = substr($afterClass, strrpos($afterClass, '\\') + 1);
+
+            if (!isset($map[$beforeName])) {
+                $map[$beforeName] = [
+                    'before' => [],
+                    'after' => [],
+                    'class' => $beforeClass,
+                ];
+            }
+
+            $map[$beforeName]['before'][] = $afterName;
+
+            if (!isset($map[$afterName])) {
+                $map[$afterName] = [
+                    'before' => [],
+                    'after' => [],
+                    'class' => $afterClass,
+                ];
+            }
+
+            $map[$afterName]['after'][] = $beforeName;
+        }
+
+        $fixersPhpDocIssues = [];
+
+        foreach ($map as $fixerName => $priorityMap) {
+            $expectedMessage = "/**\n     * {@inheritdoc}\n     *";
+
+            if (\count($priorityMap['before']) > 0) {
+                sort($priorityMap['before']);
+                $expectedMessage .= sprintf("\n     * Must run before %s.", implode(', ', $priorityMap['before']));
+            }
+
+            if (\count($priorityMap['after']) > 0) {
+                sort($priorityMap['after']);
+                $expectedMessage .= sprintf("\n     * Must run after %s.", implode(', ', $priorityMap['after']));
+            }
+
+            $expectedMessage .= "\n     */";
+
+            $reflection = new \ReflectionClass($priorityMap['class']);
+            $method = $reflection->getMethod('getPriority');
+            $phpDoc = $method->getDocComment();
+
+            if (false === $phpDoc) {
+                $fixersPhpDocIssues[$fixerName] = sprintf("PHPDoc for %s::getPriority is missing.\nExpected:\n%s", $fixerName, $expectedMessage);
+
+                continue;
+            }
+
+            if ($expectedMessage !== $phpDoc) {
+                $fixersPhpDocIssues[$fixerName] = sprintf("PHPDoc for %s::getPriority is not as expected.\nExpected:\n%s", $fixerName, $expectedMessage);
+
+                continue;
+            }
+        }
+
+        if (0 === \count($fixersPhpDocIssues)) {
+            $this->addToAssertionCount(1);
+        } else {
+            $message = sprintf("There are %d priority PHPDoc issues found.\n", \count($fixersPhpDocIssues));
+
+            ksort($fixersPhpDocIssues);
+            foreach ($fixersPhpDocIssues as $fixerName => $issue) {
+                $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixerName, $issue);
+            }
+
+            static::fail($message);
         }
     }
 

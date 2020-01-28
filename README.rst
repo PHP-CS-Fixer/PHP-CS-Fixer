@@ -976,6 +976,10 @@ Choose from the list of available rules:
     (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
     sets); defaults to ``['@internal', '@IMAP']``
 
+* **no_alias_language_construct_call** [@Symfony, @PhpCsFixer]
+
+  Master language constructs shall be used instead of aliases.
+
 * **no_alternative_syntax** [@PhpCsFixer]
 
   Replace control structure alternative syntax to use braces.
@@ -1747,6 +1751,8 @@ Choose from the list of available rules:
 
   Calling lambdas without using ``call_user_func*``, when possible.
 
+  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden.*
+
 * **simple_to_complex_string_variable** [@PhpCsFixer]
 
   Converts explicit variables in double-quoted strings and heredoc syntax
@@ -1864,6 +1870,10 @@ Choose from the list of available rules:
 * **switch_case_space** [@PSR2, @Symfony, @PhpCsFixer]
 
   Removes extra spaces between colon and case value.
+
+* **switch_continue_to_break** [@Symfony, @PhpCsFixer, @PHP73Migration]
+
+  Switch case must not be ended with ``continue`` but with ``break``.
 
 * **ternary_operator_spaces** [@Symfony, @PhpCsFixer]
 

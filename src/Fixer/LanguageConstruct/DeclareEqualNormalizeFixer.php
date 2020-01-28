@@ -58,6 +58,16 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after DeclareStrictTypesFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

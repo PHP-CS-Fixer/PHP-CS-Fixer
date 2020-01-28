@@ -44,10 +44,11 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before FinalInternalClassFixer.
      */
     public function getPriority()
     {
-        // should be run before FinalInternalClassFixer
         return 1;
     }
 

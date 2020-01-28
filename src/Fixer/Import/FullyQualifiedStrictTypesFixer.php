@@ -74,11 +74,12 @@ class SomeClass
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoSuperfluousPhpdocTagsFixer.
+     * Must run after PhpdocToReturnTypeFixer.
      */
     public function getPriority()
     {
-        // should run after PhpdocToReturnTypeFixer
-        // should run before NoSuperfluousPhpdocTagsFixer
         return 7;
     }
 

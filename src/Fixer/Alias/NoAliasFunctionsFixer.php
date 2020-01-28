@@ -156,6 +156,16 @@ mbereg_search_getregs();
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ImplodeCallFixer, PhpUnitDedicateAssertFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

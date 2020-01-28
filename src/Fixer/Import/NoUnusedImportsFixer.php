@@ -41,10 +41,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BlankLineAfterNamespaceFixer, NoExtraBlankLinesFixer, NoLeadingImportSlashFixer.
+     * Must run after ClassKeywordRemoveFixer, GlobalNamespaceImportFixer, PhpUnitFqcnAnnotationFixer, SingleImportPerStatementFixer.
      */
     public function getPriority()
     {
-        // should be run after the SingleImportPerStatementFixer
         return -10;
     }
 

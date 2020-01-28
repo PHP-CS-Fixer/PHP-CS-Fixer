@@ -162,10 +162,11 @@ $c = get_class($d);
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before GlobalNamespaceImportFixer.
      */
     public function getPriority()
     {
-        // must be run before GlobalNamespaceImportFixer
         return 10;
     }
 

@@ -105,9 +105,9 @@ yield(2);
     }
 
     /**
-     * Should be run before no_trailing_whitespace.
-     *
      * {@inheritdoc}
+     *
+     * Must run before NoTrailingWhitespaceFixer.
      */
     public function getPriority()
     {

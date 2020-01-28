@@ -44,6 +44,17 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before SimplifiedIfReturnFixer.
+     * Must run after NoAlternativeSyntaxFixer.
+     */
+    public function getPriority()
+    {
+        return parent::getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
@@ -87,6 +98,10 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
 
                 break;
             }
+        }
+
+        if ('' === $whitespace) {
+            return;
         }
 
         $previousToken = $tokens[$index - 1];

@@ -74,10 +74,11 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUnreachableDefaultArgumentValueFixer.
      */
     public function getPriority()
     {
-        // Should run before NoUnreachableDefaultArgumentValueFixer
         return 1;
     }
 

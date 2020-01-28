@@ -89,11 +89,12 @@ if (count($x)) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoUnusedImportsFixer, OrderedImportsFixer.
+     * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer.
      */
     public function getPriority()
     {
-        // must be run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer
-        // must be run before NoUnusedImportsFixer, OrderedImportsFixer
         return 0;
     }
 

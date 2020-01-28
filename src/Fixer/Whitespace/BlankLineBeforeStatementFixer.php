@@ -250,10 +250,11 @@ if (true) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoExtraBlankLinesFixer, NoUselessReturnFixer, ReturnAssignmentFixer.
      */
     public function getPriority()
     {
-        // should be run after NoUselessReturnFixer and NoExtraBlankLinesFixer
         return -21;
     }
 

@@ -66,9 +66,13 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before NoEmptyPhpdocFixer, PhpUnitMethodCasingFixer, PhpdocTrimFixer.
+     */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
         return 10;
     }
 

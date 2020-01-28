@@ -110,6 +110,13 @@ final class SimpleLambdaCallFixerTest extends AbstractFixerTestCase
                 call_user_func("Bar\Baz::d", 1, 2);
                 call_user_func("\Bar\Baz::d", 1, 2);',
         ];
+        yield 'single var' => [
+            '<?php $foo() ?>',
+            '<?php \call_user_func($foo) ?>',
+        ];
+        yield 'unsafe repeated variable' => [
+            '<?php call_user_func($foo, $foo = "bar");',
+        ];
     }
 
     /**
@@ -149,6 +156,31 @@ final class SimpleLambdaCallFixerTest extends AbstractFixerTestCase
                 call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
                 call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             ',
+        ];
+        yield 'complex cases' => [
+            '<?php
+                call_user_func(\'a\'.$a.$b, 1, 2);
+                ($a/**/.$b)(1, 2);
+                (function (){})();
+                ($a["b"]{"c"}->a)(1, 2, 3, 4);
+                ($a::$b)(1, 2);
+                ($a[1]::$b[2]{3})([&$c], array(&$d));
+            ',
+            '<?php
+                call_user_func(\'a\'.$a.$b, 1, 2);
+                call_user_func($a/**/.$b, 1, 2);
+                \call_user_func(function (){});
+                call_user_func($a["b"]{"c"}->a, 1, 2, 3, 4);
+                call_user_func($a::$b, 1, 2);
+                call_user_func($a[1]::$b[2]{3}, [&$c], array(&$d));
+            ',
+        ];
+        yield [
+            '<?php ($a(1, 2))([&$x], array(&$z));',
+            '<?php call_user_func($a(1, 2), [&$x], array(&$z));',
+        ];
+        yield 'redeclare/override' => [
+            '<?php function call_user_func($foo){}',
         ];
     }
 }
