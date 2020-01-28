@@ -43,11 +43,12 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoEmptyPhpdocFixer, NoTrailingWhitespaceInCommentFixer, PhpdocAlignFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
-        // Should run before NoEmptyPhpdocFixer, NoTrailingWhitespaceInCommentFixer
-        // and after PhpdocToCommentFixer.
         return 6;
     }
 

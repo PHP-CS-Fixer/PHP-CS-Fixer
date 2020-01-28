@@ -158,10 +158,11 @@ use Bar;
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoLeadingImportSlashFixer.
      */
     public function getPriority()
     {
-        // should be run after the NoLeadingImportSlashFixer
         return -30;
     }
 

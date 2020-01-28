@@ -104,11 +104,12 @@ class Sample
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BracesFixer, IndentationTypeFixer.
+     * Must run after OrderedClassElementsFixer.
      */
     public function getPriority()
     {
-        // Must run before BracesFixer and IndentationTypeFixer fixers because this fixer
-        // might add line breaks to the code without indenting.
         return 55;
     }
 

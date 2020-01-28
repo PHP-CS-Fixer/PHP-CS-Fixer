@@ -38,6 +38,9 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before OrderedImportsFixer.
+     * Must run after NoUnusedImportsFixer, SingleImportPerStatementFixer.
      */
     public function getPriority()
     {
