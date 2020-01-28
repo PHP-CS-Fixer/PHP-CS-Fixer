@@ -37,6 +37,12 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
         return [
             [
                 '<?php
+if ($some) { return 1; } if ($a == 6){ $test = false; } //',
+                '<?php
+if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
+            ],
+            [
+                '<?php
 
                 if ($foo) {
                     return 1;
