@@ -1786,6 +1786,12 @@ Choose from the list of available rules:
     ones; defaults to ``['getrandmax' => 'mt_getrandmax', 'rand' =>
     'mt_rand', 'srand' => 'mt_srand']``
 
+* **regular_callable_call**
+
+  Callables must be called without using ``call_user_func*`` when possible.
+
+  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden.*
+
 * **return_assignment** [@PhpCsFixer]
 
   Local, dynamic and directly referenced variables should not be assigned
@@ -1835,12 +1841,6 @@ Choose from the list of available rules:
   ``error_suppression`` instead.
 
   *Risky rule: silencing of deprecation errors might cause changes to code behaviour.*
-
-* **simple_lambda_call**
-
-  Calling lambdas without using ``call_user_func*``, when possible.
-
-  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden.*
 
 * **simple_to_complex_string_variable** [@PhpCsFixer]
 
