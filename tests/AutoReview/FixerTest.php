@@ -262,6 +262,17 @@ final class FixerTest extends TestCase
         }, $fixers);
     }
 
+    /**
+     * @dataProvider provideFixerDefinitionsCases
+     */
+    public function testFixersReturnTypes(FixerInterface $fixer)
+    {
+        static::assertInternalType('int', $fixer->getPriority(), sprintf('Return type for ::getPriority of "%s" is invalid.', $fixer->getName()));
+        static::assertInternalType('bool', $fixer->isCandidate(Tokens::fromCode('<?php ')), sprintf('Return type for ::isCandidate of "%s" is invalid.', $fixer->getName()));
+        static::assertInternalType('bool', $fixer->isRisky(), sprintf('Return type for ::isRisky of "%s" is invalid.', $fixer->getName()));
+        static::assertInternalType('bool', $fixer->supports(new \SplFileInfo(__FILE__)), sprintf('Return type for ::supports of "%s" is invalid.', $fixer->getName()));
+    }
+
     private function getAllFixers()
     {
         $factory = new FixerFactory();
