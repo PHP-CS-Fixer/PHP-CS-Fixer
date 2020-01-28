@@ -1956,6 +1956,10 @@ Choose from the list of available rules:
 
   Removes extra spaces between colon and case value.
 
+* **switch_continue_to_break** [@Symfony, @PhpCsFixer, @PHP73Migration]
+
+  Switch case must not be ended with ``continue`` but with ``break``.
+
 * **ternary_operator_spaces** [@Symfony, @PhpCsFixer]
 
   Standardize spaces around ternary operator.
