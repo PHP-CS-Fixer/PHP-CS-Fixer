@@ -1017,6 +1017,10 @@ Choose from the list of available rules:
     (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
     sets); defaults to ``['@internal', '@IMAP']``
 
+* **no_alias_language_construct_call** [@Symfony, @PhpCsFixer]
+
+  Master language constructs shall be used instead of aliases.
+
 * **no_alternative_syntax** [@PhpCsFixer]
 
   Replace control structure alternative syntax to use braces.
