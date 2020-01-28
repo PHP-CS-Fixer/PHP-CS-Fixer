@@ -72,7 +72,7 @@ function foo () {
      * {@inheritdoc}
      *
      * Must run before SpaceAfterSemicolonFixer.
-     * Must run after CombineConsecutiveIssetsFixer, NoEmptyStatementFixer, SingleImportPerStatementFixer.
+     * Must run after CombineConsecutiveIssetsFixer, NoEmptyStatementFixer, SimplifiedIfReturnFixer, SingleImportPerStatementFixer.
      */
     public function getPriority()
     {

@@ -45,6 +45,16 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after DoctrineAnnotationArrayAssignmentFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function createConfigurationDefinition()
     {
