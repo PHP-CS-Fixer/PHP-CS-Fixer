@@ -290,12 +290,8 @@ final class FixerFactoryTest extends TestCase
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
             'indentation_type,phpdoc_indent.test',
-            'method_separation,braces.test',
             'phpdoc_no_access,phpdoc_order.test',
-            'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
-            'phpdoc_order,phpdoc_separation.test',
-            'phpdoc_order,phpdoc_trim.test',
         ];
 
         $integrationTestName = $this->generateIntegrationTestName($first, $second);
