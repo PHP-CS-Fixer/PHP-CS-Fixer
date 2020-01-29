@@ -205,6 +205,32 @@ function withReference(\Exception &$e) {}',
  */
 function withReference(\Exception &$e) {}',
             ],
+            'Skip reserved types' => [
+                '<?php
+/**
+ * @param array $a
+ * @param int $b
+ *
+ * @return object
+ */
+function foo($a, $b) {}',
+            ],
+            'Handle union types' => [
+                '<?php
+use Foo\Bar;
+
+/**
+ * @return null|int|Bar
+ */
+function foo() {}',
+                '<?php
+use Foo\Bar;
+
+/**
+ * @return null|int|\Foo\Bar
+ */
+function foo() {}',
+            ],
         ];
     }
 }
