@@ -4718,6 +4718,47 @@ use const some\a\{ConstA, ConstB, ConstC};
                 null,
                 self::$configurationOopPositionSameLine + self::$configurationAnonymousPositionNextLine,
             ],
+            [
+                '<?php
+$foo = new class () extends \Exception {
+};
+',
+                '<?php
+$foo = new class () extends \Exception {};
+',
+            ],
+            [
+                '<?php
+$foo = new class () extends \Exception {};
+',
+                null,
+                ['allow_single_line_anonymous_class_with_empty_body' => true],
+            ],
+            [
+                '<?php
+$foo = new class() {}; // comment
+',
+                null,
+                ['allow_single_line_anonymous_class_with_empty_body' => true],
+            ],
+            [
+                '<?php
+$foo = new class() { /* comment */ }; // another comment
+',
+                null,
+                ['allow_single_line_anonymous_class_with_empty_body' => true],
+            ],
+            [
+                '<?php
+$foo = new class () extends \Exception {
+    protected $message = "Surprise";
+};
+',
+                '<?php
+$foo = new class () extends \Exception { protected $message = "Surprise"; };
+',
+                ['allow_single_line_anonymous_class_with_empty_body' => true],
+            ],
         ];
     }
 
