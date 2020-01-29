@@ -56,6 +56,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $tokensForAnalysis = clone $tokens;
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -69,7 +70,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixTypes($tokens, $annotation);
+                $this->fixTypes($tokensForAnalysis, $annotation);
             }
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);

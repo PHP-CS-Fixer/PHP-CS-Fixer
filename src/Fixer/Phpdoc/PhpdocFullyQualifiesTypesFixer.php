@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Resolver\TypeShortNameResolver;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -51,8 +52,10 @@ function foo($foo) {}
             return $type;
         }
 
-        $shortType = (new TypeShortNameResolver())->resolve($tokens, $type);
+        if ((new TypeAnalysis(substr($type, 1), 1, 2))->isReservedType()) {
+            return $type;
+        }
 
-        return $shortType;
+        return (new TypeShortNameResolver())->resolve($tokens, $type);
     }
 }

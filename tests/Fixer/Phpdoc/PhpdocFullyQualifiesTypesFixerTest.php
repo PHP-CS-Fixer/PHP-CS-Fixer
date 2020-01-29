@@ -116,25 +116,25 @@ class Two
     }
 }',
             ],
-//            'Test multi namespace fixes' => [
-//                '<?php
-//namespace Foo\Other {
-//}
-//
-//namespace Foo\Bar {
-//    class SomeClass
-//    {
-//        /**
-//         * @param \Foo\Bar\SomeClass $foo
-//         * @param \Foo\Bar\Buz $buz
-//         * @param \Foo\Bar\Zoof\Buz $barbuz
-//         */
-//        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
-//        {
-//        }
-//    }
-//}',
-//            ],
+            'Test multi namespace fixes' => [
+                '<?php
+namespace Foo\Other {
+}
+
+namespace Foo\Bar {
+    class SomeClass
+    {
+        /**
+         * @param \Foo\Bar\SomeClass $foo
+         * @param \Foo\Bar\Buz $buz
+         * @param \Foo\Bar\Zoof\Buz $barbuz
+         */
+        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+        {
+        }
+    }
+}',
+            ],
             'Test partial namespace and use imports' => [
                 '<?php
 
@@ -209,7 +209,7 @@ function withReference(\Exception &$e) {}',
                 '<?php
 /**
  * @param array $a
- * @param int $b
+ * @param \int $b
  *
  * @return object
  */
