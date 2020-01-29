@@ -473,24 +473,6 @@ class Two
     }
 }',
             ],
-            'Docblock' => [
-                '<?php
-
-use Foo\Bar;
-
-/**
- * @param Bar $foo
- */
-function foo($foo) {}',
-                '<?php
-
-use Foo\Bar;
-
-/**
- * @param \Foo\Bar $foo
- */
-function foo($foo) {}',
-            ],
         ];
     }
 }
