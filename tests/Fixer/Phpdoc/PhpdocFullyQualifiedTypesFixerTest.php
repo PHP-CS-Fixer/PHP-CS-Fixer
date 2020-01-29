@@ -17,22 +17,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocFullyQualifiesTypesFixer
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocFullyQualifiedTypesFixer
  */
-final class PhpdocFullyQualifiesTypesFixerTest extends AbstractFixerTestCase
+final class PhpdocFullyQualifiedTypesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider provideTestFixMethods
+     * @dataProvider provideTestFixDocBlockCases
      */
-    public function testFixMethods($expected, $input = null)
+    public function testFixDocBlock($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixMethods()
+    public function provideTestFixDocBlockCases()
     {
         return [
             'Import common strict types' => [

@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpdocFullyQualifiesTypesFixer extends AbstractPhpdocTypesFixer
+final class PhpdocFullyQualifiedTypesFixer extends AbstractPhpdocTypesFixer
 {
     /**
      * {@inheritdoc}
@@ -41,6 +41,24 @@ use Foo\Bar;
 function foo($foo) {}
 ')]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     */
+    public function getPriority()
+    {
+        /*
+         * Should be run before all other docblock fixers apart from the
+         * phpdoc_to_comment and phpdoc_indent fixer to make sure all fixers
+         * apply correct indentation to new code they add. This should run
+         * before alignment of params is done since this fixer might change
+         * the type and thereby un-aligning the params.
+         */
+        return 14;
     }
 
     /**
