@@ -1355,6 +1355,10 @@ Choose from the list of available rules:
   - ``order`` (``'alpha'``, ``'length'``): how the interfaces should be ordered;
     defaults to ``'alpha'``
 
+* **ordered_traits** [@PhpCsFixer]
+
+  Trait ``use`` statements must be sorted alphabetically.
+
 * **php_unit_construct** [@Symfony:risky, @PhpCsFixer:risky]
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
