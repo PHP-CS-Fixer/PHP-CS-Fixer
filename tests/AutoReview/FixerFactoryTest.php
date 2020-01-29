@@ -74,6 +74,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['class_attributes_separation'], $fixers['indentation_type']],
             [$fixers['class_keyword_remove'], $fixers['no_unused_imports']],
             [$fixers['combine_consecutive_issets'], $fixers['multiline_whitespace_before_semicolons']],
+            [$fixers['combine_consecutive_issets'], $fixers['no_singleline_whitespace_before_semicolons']],
             [$fixers['combine_consecutive_issets'], $fixers['no_spaces_inside_parenthesis']],
             [$fixers['combine_consecutive_issets'], $fixers['no_trailing_whitespace']],
             [$fixers['combine_consecutive_issets'], $fixers['no_whitespace_in_blank_line']],
@@ -303,12 +304,8 @@ final class FixerFactoryTest extends TestCase
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
             'indentation_type,phpdoc_indent.test',
-            'method_separation,braces.test',
             'phpdoc_no_access,phpdoc_order.test',
-            'phpdoc_no_access,phpdoc_separation.test',
             'phpdoc_no_package,phpdoc_order.test',
-            'phpdoc_order,phpdoc_separation.test',
-            'phpdoc_order,phpdoc_trim.test',
         ];
 
         $integrationTestName = $this->generateIntegrationTestName($first, $second);
@@ -414,12 +411,6 @@ final class FixerFactoryTest extends TestCase
             'braces,indentation_type,no_break_comment.test',
         ], true)) {
             static::markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
-        }
-
-        if (\in_array($fileName, [
-            'combine_consecutive_issets,no_singleline_whitespace_before_semicolons.test',
-        ], true)) {
-            static::markTestIncomplete(sprintf('Case "%s" is not fully handled, please help fixing it.', $fileName));
         }
 
         static::assertSame(

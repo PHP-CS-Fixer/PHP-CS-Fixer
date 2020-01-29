@@ -44,7 +44,6 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // should be run after the SingleImportPerStatementFixer (for fix separated use statements as well) and NoUnusedImportsFixer (just for save performance)
         return -20;
     }
 
