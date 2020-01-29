@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2018-10-04T17:14:42Z
+
+Thanks for picking this up!
+Wondering, would a more generic `allow_single_line_empty_body` make sense at some point?
+Like `while(++$a <1){}` , `$a = function(){};` and `$a = new class () implements C {};` ?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-04T18:19:56Z
+
+Don't forget the `class CustomException extends \Exception {}` 😜
+
+In other words, I agree with
+> Wondering, would a more generic `allow_single_line_empty_body` make sense at some point?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-10-06T12:59:56Z
+
+@SpacePossum @dmvdbrugge I'm not sure about the change - take a look at failing tests. Making this option more generic (e.g. allowing `class Foo {}`) might not be what @nicolas-grekas meant when requesting https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3989.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-10-26T14:22:03Z
+
+So you now do
+```
+if ($this->configuration['allow_single_line_empty_body'] && $startBraceIndex + 1 === $endBraceIndex) {
+```
+
+What if you add a `$tokens->getNextNonWhitespace($endBraceIndex)`, which would result in either a token that should be a `;` or non-existing (aka it's end of file)?
+
+That would allow for single-line anonymous classes and functions, and my "This exception class exists only for catching more specific exceptions"-case without making everything possible to be single-lined.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-13T06:55:43Z
+
+@dmvdbrugge also could be comma with `getNextNonWhitespace`, possibly something else as well.
+
+The question here is should we have generic option to allow all empty bodies, one to allow only anonymous classes or maybe both? @nicolas-grekas?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-04T15:16:43Z
+
+@kubawerlos can you update the PR to allow only single line anonymous classes? But still allow for something like;
+`new class() {} // test`  and `new class() { /* comment */ } // test`
+
+I think that is the initial request and we can always allow other constructs later as well
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-01-28T22:51:51Z
+
+@kubawerlos Please see https://groups.google.com/forum/?fromgroups#!topic/php-fig/VWcw3NnNHnM
+
+The `BracesFixer` class is already huge and as few as possible options should exist.
+
+In the discussion above I proposed: Add a blank line before the closing bracket if and only if a new line is before the opening bracket, there is no content inside the block (code nor comment) and the closing bracket is the last part of that expression (except semicolon).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-29T16:06:40Z
+
+@kubawerlos please rebase to get the conflict out and this is good to go, thanks for the work! :+1:
