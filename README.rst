@@ -315,6 +315,9 @@ Choose from the list of available rules:
 
   Configuration options:
 
+  - ``allow_single_line_anonymous_class_with_empty_body`` (``bool``): whether single
+    line anonymous class with empty body notation should be allowed;
+    defaults to ``false``
   - ``allow_single_line_closure`` (``bool``): whether single line lambda notation
     should be allowed; defaults to ``false``
   - ``position_after_anonymous_constructs`` (``'next'``, ``'same'``): whether the
@@ -1288,6 +1291,10 @@ Choose from the list of available rules:
     be ordered; defaults to ``'ascend'``
   - ``order`` (``'alpha'``, ``'length'``): how the interfaces should be ordered;
     defaults to ``'alpha'``
+
+* **ordered_traits** [@PhpCsFixer]
+
+  Trait ``use`` statements must be sorted alphabetically.
 
 * **php_unit_construct** [@Symfony:risky, @PhpCsFixer:risky]
 

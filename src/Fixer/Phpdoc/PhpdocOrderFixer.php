@@ -65,11 +65,6 @@ final class PhpdocOrderFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        /*
-         * Should be run before the php_doc_separation fixer so that if we
-         * create incorrect annotation grouping while moving the annotations
-         * about, we're still ok.
-         */
         return -2;
     }
 

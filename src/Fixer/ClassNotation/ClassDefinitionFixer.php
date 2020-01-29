@@ -99,6 +99,16 @@ interface Bar extends
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BracesFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

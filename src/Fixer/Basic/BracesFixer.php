@@ -159,6 +159,10 @@ class Foo
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('allow_single_line_anonymous_class_with_empty_body', 'Whether single line anonymous class with empty body notation should be allowed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
             (new FixerOptionBuilder('allow_single_line_closure', 'Whether single line lambda notation should be allowed.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -311,6 +315,23 @@ class Foo
                 && $tokensAnalyzer->isWhilePartOfDoWhile($index)
             ) {
                 continue;
+            }
+
+            if (
+                $this->configuration['allow_single_line_anonymous_class_with_empty_body']
+                && $token->isGivenKind(T_CLASS)
+            ) {
+                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                if ($tokens[$prevIndex]->isGivenKind(T_NEW)) {
+                    $braceStartIndex = $tokens->getNextTokenOfKind($index, ['{']);
+                    $braceEndIndex = $tokens->getNextMeaningfulToken($braceStartIndex);
+
+                    if ('}' === $tokens[$braceEndIndex]->getContent() && !$this->isMultilined($tokens, $index, $braceEndIndex)) {
+                        $index = $braceEndIndex;
+
+                        continue;
+                    }
+                }
             }
 
             if (

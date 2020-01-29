@@ -110,10 +110,8 @@ class Foo implements FooInterface
 }
 
 // anonymous class
-$message = (new class() {
-});
-$message = (new class() implements FooInterface {
-});
+$message = (new class() {});
+$message = (new class() implements FooInterface {});
 if (1) {
     $message = (new class() extends Foo {
         public function bar()
