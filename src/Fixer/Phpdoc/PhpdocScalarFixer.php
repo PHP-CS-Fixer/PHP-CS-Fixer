@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -98,7 +99,7 @@ function sample($a, $b, $c)
     /**
      * {@inheritdoc}
      */
-    protected function normalize($type)
+    protected function normalize(Tokens $tokens, $type)
     {
         if (\in_array($type, $this->configuration['types'], true)) {
             return self::$types[$type];

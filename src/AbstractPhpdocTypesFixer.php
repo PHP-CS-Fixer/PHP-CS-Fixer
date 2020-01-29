@@ -69,7 +69,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixTypes($annotation);
+                $this->fixTypes($tokens, $annotation);
             }
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
@@ -83,7 +83,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @return string
      */
-    abstract protected function normalize($type);
+    abstract protected function normalize(Tokens $tokens, $type);
 
     /**
      * Fix the types at the given line.
@@ -92,11 +92,11 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * This will be nicely handled behind the scenes for us by the annotation class.
      */
-    private function fixTypes(Annotation $annotation)
+    private function fixTypes(Tokens $tokens, Annotation $annotation)
     {
         $types = $annotation->getTypes();
 
-        $new = $this->normalizeTypes($types);
+        $new = $this->normalizeTypes($tokens, $types);
 
         if ($types !== $new) {
             $annotation->setTypes($new);
@@ -108,10 +108,10 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @return string[]
      */
-    private function normalizeTypes(array $types)
+    private function normalizeTypes(Tokens $tokens, array $types)
     {
         foreach ($types as $index => $type) {
-            $types[$index] = $this->normalizeType($type);
+            $types[$index] = $this->normalizeType($tokens, $type);
         }
 
         return $types;
@@ -124,12 +124,12 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @return string
      */
-    private function normalizeType($type)
+    private function normalizeType(Tokens $tokens, $type)
     {
         if ('[]' === substr($type, -2)) {
-            return $this->normalize(substr($type, 0, -2)).'[]';
+            return $this->normalize($tokens, substr($type, 0, -2)).'[]';
         }
 
-        return $this->normalize($type);
+        return $this->normalize($tokens, $type);
     }
 }

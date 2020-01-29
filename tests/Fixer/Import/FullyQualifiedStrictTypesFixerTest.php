@@ -472,6 +472,7 @@ class Two
     {
     }
 }',
+            ],
             'Docblock' => [
                 '<?php
 
