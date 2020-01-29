@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-09T12:59:12Z
+
+Surely this should be a risky fixer?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-09T13:05:03Z
+
+can you provide an example of such risky fix, conflict resolution for traits has to be done explicit already and that order does not matter
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-01-09T13:13:46Z
+
+Ah, right. I see.
