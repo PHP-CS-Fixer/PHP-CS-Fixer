@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: phpdoc_order,phpdoc_separation.
+--RULESET--
+{"phpdoc_order": true, "phpdoc_separation": true}
+--EXPECT--
+<?php
+/**
+ * Hello World!
+ *
+ * @param $foo
+ * @param $bar
+ *
+ * @return bool
+ */
+
+--INPUT--
+<?php
+/**
+ * Hello World!
+ *
+ * @return bool
+ * @param $foo
+ * @param $bar
+ */

@@ -51,11 +51,6 @@ final class Foo {}
      */
     public function getPriority()
     {
-        /*
-         * Should be run after all phpdoc fixers that add or remove tags, or
-         * alter descriptions. This is so that they don't leave behind blank
-         * lines this fixer would have otherwise cleaned up.
-         */
         return -5;
     }
 
