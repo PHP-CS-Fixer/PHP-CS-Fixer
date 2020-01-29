@@ -109,7 +109,6 @@ class Sample
      */
     public function getPriority()
     {
-        // must run before NoSuperfluousPhpdocTagsFixer
         return 10;
     }
 

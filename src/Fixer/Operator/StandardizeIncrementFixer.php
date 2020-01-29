@@ -59,8 +59,6 @@ final class StandardizeIncrementFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // Must be run before IncrementStyleFixer in case user wants to
-        // post-increment instead
         return 1;
     }
 
