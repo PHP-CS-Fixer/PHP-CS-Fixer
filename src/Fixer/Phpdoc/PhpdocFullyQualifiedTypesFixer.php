@@ -70,6 +70,7 @@ function foo($foo) {}
             return $type;
         }
 
+        // Dummy start and end indexes, we only need isReservedType result
         if ((new TypeAnalysis(substr($type, 1), 1, 2))->isReservedType()) {
             return $type;
         }
