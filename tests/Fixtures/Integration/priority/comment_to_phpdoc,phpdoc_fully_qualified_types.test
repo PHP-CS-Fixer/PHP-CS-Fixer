@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: comment_to_phpdoc,phpdoc_fully_qualified_types.
+--RULESET--
+{"comment_to_phpdoc": true, "phpdoc_fully_qualified_types": true}
+--EXPECT--
+<?php
+use Foo\Bar;
+/** @var Bar $x */
+$x = getX();
+
+--INPUT--
+<?php
+use Foo\Bar;
+/* @var \Foo\Bar $x */
+$x = getX();

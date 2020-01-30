@@ -58,7 +58,7 @@ class Bar {}
      * {@inheritdoc}
      *
      * Must run before HeaderCommentFixer, PhpdocAlignFixer, SingleBlankLineBeforeNamespaceFixer.
-     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocFullyQualifiedTypesFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {

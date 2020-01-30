@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: phpdoc_fully_qualified_types,phpdoc_align.
+--RULESET--
+{"phpdoc_fully_qualified_types": true, "phpdoc_align": true}
+--EXPECT--
+<?php
+use Foo\Bar;
+/**
+ * @param int $a
+ * @param Bar $b
+ */
+function foo() {}
+
+--INPUT--
+<?php
+use Foo\Bar;
+/**
+ * @param  int $a
+ * @param \Foo\Bar      $b
+ */
+function foo() {}

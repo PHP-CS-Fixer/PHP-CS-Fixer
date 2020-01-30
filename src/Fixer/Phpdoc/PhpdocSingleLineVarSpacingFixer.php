@@ -41,7 +41,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocNoAliasTagFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocFullyQualifiedTypesFixer, PhpdocIndentFixer, PhpdocNoAliasTagFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
