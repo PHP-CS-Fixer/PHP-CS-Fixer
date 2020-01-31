@@ -1153,7 +1153,8 @@ Choose from the list of available rules:
 
 * **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
 
-  A final class must not have final methods.
+  A ``final`` class must not have ``final`` methods and ``private`` method must
+  not be ``final``.
 
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
