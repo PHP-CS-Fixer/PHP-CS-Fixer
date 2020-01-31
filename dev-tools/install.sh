@@ -28,7 +28,7 @@ echo λλλ phive
 if [ ! -x bin/phive ]; then
     wget -Obin/phive https://phar.io/releases/phive.phar
     wget -Obin/phive.asc https://phar.io/releases/phive.phar.asc
-    gpg --keyserver pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
+    gpg --import phario.key
     gpg --verify bin/phive.asc bin/phive
     chmod u+x bin/phive
 fi
