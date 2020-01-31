@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: ordered_class_elements,method_separation.
+Integration of fixers: ordered_class_elements,class_attributes_separation.
 --RULESET--
-{"ordered_class_elements": true, "method_separation": true}
+{"ordered_class_elements": true, "class_attributes_separation": {"elements": ["method"]}}
 --EXPECT--
 <?php
 

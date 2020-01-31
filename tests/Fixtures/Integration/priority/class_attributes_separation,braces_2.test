@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: method_separation,braces.
+Integration of fixers: class_attributes_separation,braces.
 --RULESET--
-{"method_separation": true, "braces": true}
+{"class_attributes_separation": {"elements": ["method"]}, "braces": true}
 --EXPECT--
 <?php
 

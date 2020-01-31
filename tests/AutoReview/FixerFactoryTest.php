@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\Test\IntegrationCaseFactory;
@@ -47,6 +48,16 @@ final class FixerFactoryTest extends TestCase
     public function testFixersPriority(FixerInterface $first, FixerInterface $second)
     {
         static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
+    }
+
+    /**
+     * @dataProvider provideFixersPriorityCases
+     * @dataProvider provideFixersPrioritySpecialPhpdocCases
+     */
+    public function testFixersAreNotDeprecated(FixerInterface $first, FixerInterface $second)
+    {
+        static::assertNotInstanceOf(DeprecatedFixerInterface::class, $first);
+        static::assertNotInstanceOf(DeprecatedFixerInterface::class, $second);
     }
 
     public function provideFixersPriorityCases()
@@ -108,8 +119,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
-            [$fixers['method_separation'], $fixers['braces']],
-            [$fixers['method_separation'], $fixers['indentation_type']],
             [$fixers['multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']],
             [$fixers['no_alias_functions'], $fixers['implode_call']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
@@ -160,12 +169,10 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_else'], $fixers['no_trailing_whitespace']],
             [$fixers['no_useless_else'], $fixers['no_useless_return']],
             [$fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']],
-            [$fixers['no_useless_return'], $fixers['blank_line_before_return']],
             [$fixers['no_useless_return'], $fixers['blank_line_before_statement']],
             [$fixers['no_useless_return'], $fixers['no_extra_blank_lines']],
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['ordered_class_elements'], $fixers['class_attributes_separation']],
-            [$fixers['ordered_class_elements'], $fixers['method_separation']],
             [$fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']],
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']],
             [$fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']],

@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: method_separation,indentation_type.
+Integration of fixers: class_attributes_separation,indentation_type.
 --RULESET--
-{"method_separation": true, "indentation_type": true}
+{"class_attributes_separation": {"elements": ["method"]}, "indentation_type": true}
 --EXPECT--
 <?php
 

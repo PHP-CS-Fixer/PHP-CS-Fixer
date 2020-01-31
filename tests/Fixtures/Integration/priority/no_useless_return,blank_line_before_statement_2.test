@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: no_useless_return,blank_line_before_return.
+Integration of fixers: no_useless_return,blank_line_before_statement.
 --RULESET--
-{"no_useless_return": true, "blank_line_before_return": true}
+{"no_useless_return": true, "blank_line_before_statement": {"statements": ["return"]}}
 --EXPECT--
 <?php
 class Test {
