@@ -72,9 +72,14 @@ class Foo
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before StaticLambdaFixer.
+     * Must run after ProtectedToPrivateFixer.
+     */
     public function getPriority(): int
     {
-        // Must run after ProtectedToPrivateFixer, before StaticLambdaFixer
         return 1;
     }
 
