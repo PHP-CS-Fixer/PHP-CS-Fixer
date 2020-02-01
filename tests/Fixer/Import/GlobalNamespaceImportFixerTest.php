@@ -270,12 +270,10 @@ function foo() {}
 \Foo();
 EXPECTED
             ],
-            'without namespace / only import once' => [
+            'without namespace / do not import, but remove leading slash' => [
                 <<<'EXPECTED'
 <?php
 
-use function bar;
-use function foo;
 foo();
 bar();
 Foo();
