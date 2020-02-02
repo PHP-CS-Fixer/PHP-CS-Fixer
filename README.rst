@@ -845,6 +845,10 @@ Choose from the list of available rules:
   - ``use_yoda_style`` (``bool``): whether Yoda style conditions should be used;
     defaults to ``true``. DEPRECATED: use ``yoda_style`` fixer instead
 
+* **lambda_not_used_import**
+
+  Lambda must not import variables it doesn't use.
+
 * **line_ending** [@PSR2, @Symfony, @PhpCsFixer]
 
   All PHP files must use same line ending.

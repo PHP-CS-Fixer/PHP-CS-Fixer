@@ -48,7 +48,7 @@ function foo( \$bar, \$baz )
      * {@inheritdoc}
      *
      * Must run before FunctionToConstantFixer.
-     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, PowToExponentiationFixer.
+     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, LambdaNotUsedImportFixer, PowToExponentiationFixer.
      */
     public function getPriority()
     {

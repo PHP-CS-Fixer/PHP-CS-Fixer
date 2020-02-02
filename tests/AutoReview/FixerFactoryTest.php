@@ -111,6 +111,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['implode_call'], $fixers['method_argument_space']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],
+            [$fixers['lambda_not_used_import'], $fixers['no_spaces_inside_parenthesis']],
             [$fixers['line_ending'], $fixers['braces']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],

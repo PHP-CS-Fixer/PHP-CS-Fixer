@@ -610,6 +610,34 @@ final class TokensAnalyzer
     }
 
     /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isSuperGlobal($index)
+    {
+        static $superNames = [
+            '$_COOKIE' => true,
+            '$_ENV' => true,
+            '$_FILES' => true,
+            '$_GET' => true,
+            '$_POST' => true,
+            '$_REQUEST' => true,
+            '$_SERVER' => true,
+            '$_SESSION' => true,
+            '$GLOBALS' => true,
+        ];
+
+        $token = $this->tokens[$index];
+
+        if (!$token->isGivenKind(T_VARIABLE)) {
+            return false;
+        }
+
+        return isset($superNames[strtoupper($token->getContent())]);
+    }
+
+    /**
      * Find classy elements.
      *
      * Searches in tokens from the classy (start) index till the end (index) of the classy.
