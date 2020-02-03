@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-16T07:50:38Z
+
+thanks for the check @gharlan , these cases are not supported indeed... I'll start adding support for these
+
+update;
+I think only these cases are left now (i.e. these do not get fixed/touched in any way);
+
+```
+foo() ? foo() : bar();
+$a + 1 ? $a + 1 : $b;
+```
+
+update 2:
+all cases are now supported
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-21T10:01:42Z
+
+@gharlan I basically rewrote the fixer and added a bunch of more tests. Could you review again? I would like to rule out the fixer is "fixing" to much now
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-31T09:44:04Z
+
+I think it's a shame that this has to be made risky only because of `foo() ? foo() : bar();`
+
+Can we re-evaluate this choice? Perhaps put it behind an option? I'd love to use this fixer, but I cannot guarantee this case will work 😞
+
+_**edit for clarity:** I propose only fixing mentioned case when explicitly enabled via option, so that in the risky message we can mention that it's actually only risky when the option is enabled._
+
+_This way I think a lot more people will be able to use yet another nice fixer!_
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-01-31T12:35:44Z
+
+@dmvdbrugge related to your reasoning: #4653.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-31T13:36:02Z
+
+@julienfalque that would be nice to have as well (I 👍'd it), but (for this fixer) that's a step that can happen _after_ the risky behaviour has been placed behind an option.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-31T15:09:54Z
+
+won't be that easy, as it is not limited to direct function calls only, for example;
+
+```php
+$a= new Foo(); // implements \ArrayAccess
+
+$b = $a['one'] ? $a['one'] : 2; // Foo::offsetGet is called 2x
+$b = $a['one'] ?  : 2;  // Foo::offsetGet is called 1x
+```
+
+I don't think it is worth leaving the risky cases out because it is complex and I don't think a lot of code bases are depended on the "called 2x"-behavior in a ternary statement (I think most people don't even know this happens and when and why)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-31T15:33:22Z
+
+Oof, that's true. And it doesn't stop there, `__call` and `__callStatic` could also trigger.
+
+Never mind my initial comment then, it's fully risky all right.
