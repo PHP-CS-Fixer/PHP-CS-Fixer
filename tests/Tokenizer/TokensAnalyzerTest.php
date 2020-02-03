@@ -1783,4 +1783,63 @@ class MyTestWithAnonymousClass extends TestCase
             ],
         ], $elements);
     }
+
+    /**
+     * @param bool   $expected
+     * @param string $source
+     * @param int    $index
+     *
+     * @dataProvider provideIsSuperGlobalCases
+     */
+    public function testIsSuperGlobal($expected, $source, $index)
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        static::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
+    }
+
+    public function provideIsSuperGlobalCases()
+    {
+        $superNames = [
+            '$_COOKIE',
+            '$_ENV',
+            '$_FILES',
+            '$_GET',
+            '$_POST',
+            '$_REQUEST',
+            '$_SERVER',
+            '$_SESSION',
+            '$GLOBALS',
+        ];
+
+        $cases = [];
+
+        foreach ($superNames as $superName) {
+            $cases[] = [
+                true,
+                sprintf('<?php echo %s[0];', $superName),
+                3,
+            ];
+        }
+
+        $notGlobalCodeCases = [
+            '<?php echo 1; $a = static function($b) use ($a) { $a->$b(); }; // $_SERVER',
+            '<?php class Foo{}?> <?php $_A = 1; /* $_SESSION */',
+        ];
+
+        foreach ($notGlobalCodeCases as $notGlobalCodeCase) {
+            $tokensCount = \count(Tokens::fromCode($notGlobalCodeCase));
+
+            for ($i = 0; $i < $tokensCount; ++$i) {
+                $cases[] = [
+                    false,
+                    $notGlobalCodeCase,
+                    $i,
+                ];
+            }
+        }
+
+        return $cases;
+    }
 }

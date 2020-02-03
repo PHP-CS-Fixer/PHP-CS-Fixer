@@ -18,12 +18,18 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author SpacePossum
  */
 final class ReturnAssignmentFixer extends AbstractFixer
 {
+    /**
+     * @var TokensAnalyzer
+     */
+    private $tokensAnalyzer;
+
     /**
      * {@inheritdoc}
      */
@@ -60,6 +66,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokenCount = \count($tokens);
+        $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = 1; $index < $tokenCount; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
@@ -183,7 +190,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 }
             }
 
-            if ($this->isSuperGlobal($tokens[$index])) {
+            if ($this->tokensAnalyzer->isSuperGlobal($index)) {
                 $isRisky = true;
 
                 continue;
@@ -331,29 +338,5 @@ final class ReturnAssignmentFixer extends AbstractFixer
         }
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-    }
-
-    /**
-     * @return bool
-     */
-    private function isSuperGlobal(Token $token)
-    {
-        static $superNames = [
-            '$_COOKIE' => true,
-            '$_ENV' => true,
-            '$_FILES' => true,
-            '$_GET' => true,
-            '$_POST' => true,
-            '$_REQUEST' => true,
-            '$_SERVER' => true,
-            '$_SESSION' => true,
-            '$GLOBALS' => true,
-        ];
-
-        if (!$token->isGivenKind(T_VARIABLE)) {
-            return false;
-        }
-
-        return isset($superNames[strtoupper($token->getContent())]);
     }
 }
