@@ -28,7 +28,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'A final class must not have final methods.',
+            'A `final` class must not have `final` methods and `private` method must not be `final`.',
             [
                 new CodeSample(
                     '<?php
