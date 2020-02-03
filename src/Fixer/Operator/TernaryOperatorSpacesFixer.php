@@ -37,7 +37,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after ArraySyntaxFixer, ListSyntaxFixer.
+     * Must run after ArraySyntaxFixer, ListSyntaxFixer, TernaryToElvisOperatorFixer.
      */
     public function getPriority()
     {

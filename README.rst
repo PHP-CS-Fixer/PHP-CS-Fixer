@@ -1977,6 +1977,12 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
+* **ternary_to_elvis_operator** [@Symfony:risky, @PhpCsFixer:risky]
+
+  Use the Elvis operator ``?:`` where possible.
+
+  *Risky rule: risky when relying on functions called on both sides of the ``?`` operator.*
+
 * **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration]
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
