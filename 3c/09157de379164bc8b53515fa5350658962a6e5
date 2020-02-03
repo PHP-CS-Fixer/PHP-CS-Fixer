@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-22T13:26:51Z
+
+hi,
+
+Are you sure these fixtures do not have different line endings to test fixing those endings to other endings work?
+
+I'm not sure about updating these fixtures for the given reason as I don't think a lot of people save these files and if so most editors will respect the `.editorconfig` that is in the fixtures directory.
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-01-22T13:33:49Z
+
+> Are you sure these fixtures do not have different line endings to test fixing those endings to other endings work?
+
+It would be great if these files will be saved in normalized form (as a lot of people are using EOL normalization on .git checkout) and the EOL abnormalities will be created in some .git excluded folder right before the specific tests and removed afterwards, wdyt?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-22T13:37:02Z
+
+these files are already in the [.gitattributes](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.16/.gitattributes#L5) `export-ignore`, I'm not sure I understand what the issue is with these for you?
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-01-22T13:49:21Z
+
+>
+>
+> these files are already in the [.gitattributes](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/2.16/.gitattributes#L5) `export-ignore`, I'm not sure I understand what the issue is with these for you?
+
+You are right, these files should be excluded by text filters by this line:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4753/files#diff-fc723d30b02a4cca7a534518111c1a66L31
+but when customs/global .git filters are set, the files are still transformed.
+
+Is the updated PR ok?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-22T13:53:45Z
+
+@mvorisek
+
+> Is the updated PR ok?
+
+There is conflict in `.gitattributes`
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-01-22T13:55:39Z
+
+> There is conflict in `.gitattributes`
+
+Rebased onto the latest `2.15` commit.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-22T14:01:32Z
+
+thanks @mvorisek  :+1:  , I've to leave the review to someone with more knowledge on this subject.
