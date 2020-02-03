@@ -119,14 +119,7 @@ jobs:
                 - composer require --dev --no-update phpunit/phpunit:^8
 
                 # Install PCOV
-                - |
-                    git clone --single-branch --branch=v1.0.6 --depth=1 https://github.com/krakjoe/pcov
-                    cd pcov
-                    phpize
-                    ./configure
-                    make clean install
-                    echo "extension=pcov.so" > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/pcov.ini
-                    cd $TRAVIS_BUILD_DIR
+                - pecl install pcov
             before_script:
                 # Make code compatible with PHPUnit 8
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer fix --rules=void_return -q tests || return 0

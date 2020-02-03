@@ -730,9 +730,9 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``functions`` (a subset of ``['get_called_class', 'get_class',
-    'php_sapi_name', 'phpversion', 'pi']``): list of function names to fix;
-    defaults to ``['get_called_class', 'get_class', 'php_sapi_name',
-    'phpversion', 'pi']``
+    'php_sapi_name', 'phpversion', 'pi', 'get_class_this']``): list of
+    function names to fix; defaults to ``['get_called_class', 'get_class',
+    'php_sapi_name', 'phpversion', 'pi']``
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
 
@@ -813,6 +813,10 @@ Choose from the list of available rules:
   Replaces ``is_null($var)`` expression with ``null === $var``.
 
   *Risky rule: risky when the function ``is_null`` is overridden.*
+
+* **lambda_not_used_import**
+
+  Lambda must not import variables it doesn't use.
 
 * **line_ending** [@PSR2, @Symfony, @PhpCsFixer]
 
@@ -1158,7 +1162,8 @@ Choose from the list of available rules:
 
 * **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
 
-  A final class must not have final methods.
+  A ``final`` class must not have ``final`` methods and ``private`` method must
+  not be ``final``.
 
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
@@ -1885,6 +1890,12 @@ Choose from the list of available rules:
 * **ternary_operator_spaces** [@Symfony, @PhpCsFixer]
 
   Standardize spaces around ternary operator.
+
+* **ternary_to_elvis_operator** [@Symfony:risky, @PhpCsFixer:risky]
+
+  Use the Elvis operator ``?:`` where possible.
+
+  *Risky rule: risky when relying on functions called on both sides of the ``?`` operator.*
 
 * **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration]
 

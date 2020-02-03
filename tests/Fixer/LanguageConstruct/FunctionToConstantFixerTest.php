@@ -210,6 +210,34 @@ get_called_class#1
                 null,
                 ['functions' => ['get_called_class']],
             ],
+            [
+                '<?php class Foo{ public function Bar(){ echo static::class  ; }}',
+                '<?php class Foo{ public function Bar(){ echo get_class( $This ); }}',
+                ['functions' => ['get_class_this']],
+            ],
+            [
+                '<?php class Foo{ public function Bar(){ echo static::class; get_class(1, 2); get_class($a); get_class($a, $b);}}',
+                '<?php class Foo{ public function Bar(){ echo get_class($this); get_class(1, 2); get_class($a); get_class($a, $b);}}',
+                ['functions' => ['get_class_this']],
+            ],
+            [
+                '<?php class Foo{ public function Bar(){ echo static::class /* 0 */  /* 1 */ ;}}',
+                '<?php class Foo{ public function Bar(){ echo \get_class( /* 0 */ $this /* 1 */ );}}',
+                ['functions' => ['get_class_this']],
+            ],
+            [
+                '<?php class Foo{ public function Bar(){ echo static::class; echo __CLASS__; }}',
+                '<?php class Foo{ public function Bar(){ echo \get_class((($this))); echo get_class(); }}',
+                ['functions' => ['get_class_this', 'get_class']],
+            ],
+            [
+                '<?php
+                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this->extension)); }}
+                    class Foo{ public function Bar(){ echo $reflection = new \ReflectionClass(get_class($this() )); }}
+                ',
+                null,
+                ['functions' => ['get_class_this']],
+            ],
         ];
     }
 
