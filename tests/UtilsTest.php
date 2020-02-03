@@ -63,6 +63,34 @@ final class UtilsTest extends TestCase
             [
                 'utf8_encoder_fixer',
             ],
+            [
+                'a',
+                'A',
+            ],
+            [
+                'aa',
+                'AA',
+            ],
+            [
+                'foo',
+                'FOO',
+            ],
+            [
+                'foo_bar_baz',
+                'FooBarBAZ',
+            ],
+            [
+                'foo_bar_baz',
+                'FooBARBaz',
+            ],
+            [
+                'foo_bar_baz',
+                'FOOBarBaz',
+            ],
+            [
+                'mr_t',
+                'MrT',
+            ],
         ];
     }
 
