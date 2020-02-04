@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: method_separation,braces.
+--RULESET--
+{"method_separation": true, "braces": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    /** bar */
+    public function bar()
+    {
+    }
+
+    /** baz */
+    public function baz()
+    {
+    }
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    /** bar */public function bar() {}/** baz */public function baz() {}
+}

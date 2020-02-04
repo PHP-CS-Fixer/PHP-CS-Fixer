@@ -36,6 +36,16 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NotOperatorWithSpaceFixer, NotOperatorWithSuccessorSpaceFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

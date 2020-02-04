@@ -62,6 +62,8 @@ final class SingleLineThrowFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ConcatSpaceFixer.
      */
     public function getPriority()
     {

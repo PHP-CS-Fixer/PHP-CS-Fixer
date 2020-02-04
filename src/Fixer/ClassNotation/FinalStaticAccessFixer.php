@@ -48,10 +48,11 @@ final class Sample
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after FinalInternalClassFixer, PhpUnitTestCaseStaticMethodCallsFixer.
      */
     public function getPriority()
     {
-        // Should be run after FinalInternalClass and PhpUnitTestCaseStaticMethodCalls
         return -1;
     }
 

@@ -46,10 +46,12 @@ function foo( \$bar, \$baz )
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before FunctionToConstantFixer.
+     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, PowToExponentiationFixer.
      */
     public function getPriority()
     {
-        // must run before FunctionToConstantFixer
         return 2;
     }
 

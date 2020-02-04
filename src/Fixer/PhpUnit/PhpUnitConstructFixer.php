@@ -84,10 +84,11 @@ $this->assertNotSame(null, $d);
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpUnitDedicateAssertFixer.
      */
     public function getPriority()
     {
-        // should be run after the PhpUnitStrictFixer and before PhpUnitDedicateAssertFixer.
         return -10;
     }
 

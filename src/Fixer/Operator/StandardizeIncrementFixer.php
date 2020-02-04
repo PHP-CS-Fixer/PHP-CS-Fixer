@@ -54,11 +54,11 @@ final class StandardizeIncrementFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before IncrementStyleFixer.
      */
     public function getPriority()
     {
-        // Must be run before IncrementStyleFixer in case user wants to
-        // post-increment instead
         return 1;
     }
 

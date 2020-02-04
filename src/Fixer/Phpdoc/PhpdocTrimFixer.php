@@ -45,14 +45,12 @@ final class Foo {}
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer.
+     * Must run after CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpUnitTestAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocOrderFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
-        /*
-         * Should be run after all phpdoc fixers that add or remove tags, or
-         * alter descriptions. This is so that they don't leave behind blank
-         * lines this fixer would have otherwise cleaned up.
-         */
         return -5;
     }
 

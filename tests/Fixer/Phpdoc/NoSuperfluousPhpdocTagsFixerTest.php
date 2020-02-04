@@ -116,6 +116,49 @@ class Foo {
                 null,
                 ['allow_mixed' => true],
             ],
+            'allow_mixed=>false on property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var mixed
+     */
+    private $bar;
+}',
+                ['allow_mixed' => false],
+            ],
+            'allow_mixed=>false on property with var' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var mixed $bar
+     */
+    private $bar;
+}',
+                ['allow_mixed' => false],
+            ],
+            'allow_mixed=>false on property but with comment' => [
+                '<?php
+class Foo {
+    /**
+     * @var mixed comment
+     */
+    private $bar;
+}',
+                null,
+                ['allow_mixed' => false],
+            ],
             'allow_unused_params=>true' => [
                 '<?php
 class Foo {
@@ -1327,6 +1370,251 @@ class Foo {
      * @return array|null
      */
     public function doFoo(iterable $bar, ?int $baz): ?array {}
+}',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases()
+    {
+        return [
+            'some typed static public property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    static public Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var Bar
+     */
+    static public Bar $bar;
+}',
+            ],
+            'some typed public static property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public static Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var Bar
+     */
+    public static Bar $bar;
+}',
+            ],
+            'some typed public property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var Bar
+     */
+    public Bar $bar;
+}',
+            ],
+            'some typed protected property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    protected Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var Bar
+     */
+    protected Bar $bar;
+}',
+            ],
+            'some typed private property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var Bar
+     */
+    private Bar $bar;
+}',
+            ],
+            'some typed nullable private property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private ?Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var null|Bar
+     */
+    private ?Bar $bar;
+}',
+            ],
+            'some typed nullable property with name declared in phpdoc' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private ?Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var null|Bar $bar
+     */
+    private ?Bar $bar;
+}',
+            ],
+            'some array property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private array $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var array
+     */
+    private array $bar;
+}',
+            ],
+            'some nullable array property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private ?array $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var array|null
+     */
+    private ?array $bar;
+}',
+            ],
+            'some object property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private object $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var object
+     */
+    private object $bar;
+}',
+            ],
+            'phpdoc does not match property typehint' => [
+                '<?php
+class Foo {
+    /**
+     * @var FooImplementation1|FooImplementation2
+     */
+    private FooInterface $bar;
+}',
+            ],
+            'allow_mixed=>false but with description' => [
+                '<?php
+class Foo {
+    /**
+     * @var mixed description
+     */
+    private $bar;
+}',
+                null,
+                ['allow_mixed' => false],
+            ],
+            'allow_mixed=>false but with description and var name' => [
+                '<?php
+class Foo {
+    /**
+     * @var mixed $bar description
+     */
+    private $bar;
+}',
+                null,
+                ['allow_mixed' => false],
+            ],
+            'allow_mixed=>true' => [
+                '<?php
+class Foo {
+    /**
+     * @var mixed
+     */
+    private $bar;
+}',
+                null,
+                ['allow_mixed' => true],
+            ],
+            'some fully qualified typed property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    protected \Foo\Bar $bar;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var \Foo\Bar
+     */
+    protected \Foo\Bar $bar;
+}',
+            ],
+            'some fully qualified imported typed property' => [
+                '<?php
+namespace App;
+use Foo\Bar;
+class Foo {
+    /**
+     */
+    protected Bar $bar;
+}',
+                '<?php
+namespace App;
+use Foo\Bar;
+class Foo {
+    /**
+     * @var \Foo\Bar
+     */
+    protected Bar $bar;
 }',
             ],
         ];

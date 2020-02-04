@@ -51,6 +51,17 @@ EOT
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before SimpleToComplexStringVariableFixer.
+     * Must run after BacktickToShellExecFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

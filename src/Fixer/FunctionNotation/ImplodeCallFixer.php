@@ -59,11 +59,12 @@ final class ImplodeCallFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before MethodArgumentSpaceFixer.
+     * Must run after NoAliasFunctionsFixer.
      */
     public function getPriority()
     {
-        // must be run after NoAliasFunctionsFixer
-        // must be run before MethodArgumentSpaceFixer
         return -1;
     }
 

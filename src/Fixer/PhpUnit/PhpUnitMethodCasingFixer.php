@@ -73,6 +73,16 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after PhpUnitTestAnnotationFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

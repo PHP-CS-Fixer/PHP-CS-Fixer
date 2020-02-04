@@ -44,10 +44,11 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before YodaStyleFixer.
      */
     public function getPriority()
     {
-        // must be run before YodaStyleFixer
         return 1;
     }
 

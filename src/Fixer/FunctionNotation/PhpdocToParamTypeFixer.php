@@ -96,10 +96,12 @@ function my_foo($bar)
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
-        // should be run before NoSuperfluousPhpdocTagsFixer
         return 8;
     }
 

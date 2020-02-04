@@ -733,8 +733,9 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``functions`` (a subset of ``['get_called_class', 'get_class',
-    'php_sapi_name', 'phpversion', 'pi']``): list of function names to fix;
-    defaults to ``['get_class', 'php_sapi_name', 'phpversion', 'pi']``
+    'php_sapi_name', 'phpversion', 'pi', 'get_class_this']``): list of
+    function names to fix; defaults to ``['get_class', 'php_sapi_name',
+    'phpversion', 'pi']``
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
 
@@ -1150,8 +1151,8 @@ Choose from the list of available rules:
 
 * **no_superfluous_phpdoc_tags** [@Symfony, @PhpCsFixer]
 
-  Removes ``@param`` and ``@return`` tags that don't provide any useful
-  information.
+  Removes ``@param``, ``@return`` and ``@var`` tags that don't provide any
+  useful information.
 
   Configuration options:
 
@@ -1195,7 +1196,8 @@ Choose from the list of available rules:
 
 * **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
 
-  A final class must not have final methods.
+  A ``final`` class must not have ``final`` methods and ``private`` method must
+  not be ``final``.
 
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
