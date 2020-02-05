@@ -1,7 +1,7 @@
 language: php
 
 git:
-    depth: 1
+    depth: 10
 
 cache:
     directories:
@@ -12,7 +12,6 @@ cache:
 env:
     global:
         - DEFAULT_COMPOSER_FLAGS="--optimize-autoloader --no-interaction --no-progress"
-        - COLLECT_COVERAGE=0
         - COMPOSER_FLAGS=""
 
 before_install:
@@ -26,7 +25,7 @@ jobs:
     include:
         -
             stage: Static Code Analysis
-            php: 7.3
+            php: 7.4
             env: COMPOSER_FLAGS="--prefer-stable"
             install:
                 - travis_retry ./dev-tools/install.sh
@@ -35,7 +34,7 @@ jobs:
                 - composer info -D | sort
             before_script:
                 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
-                - export COMMIT_SCA_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE`
+                - export CHANGED_PHP_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE | grep -E "\.php$"`
             script:
                 # @TODO remove at 3.0
                 - |
@@ -53,7 +52,7 @@ jobs:
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
                 - ./check_trailing_spaces.sh || travis_terminate 1
                 - php -d auto_prepend_file=dev-tools/vendor/autoload.php ./dev-tools/tools/phpstan analyse
-                - if [ -n "$COMMIT_SCA_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$COMMIT_SCA_FILES" | grep -Ev "^tests/Fixtures" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
+                - if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/tools/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize -d ./dev-tools ./../composer.json --dry-run
                 - ./dev-tools/check-shell-scripts.sh
@@ -82,34 +81,32 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
+            name: 7.1 | Symfony 4.1
             env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="~4.1.0"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
+            name: 7.2 | Symfony 5.0
+            env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^5.0"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.3
+            name: 7.3 | With migration rules
             before_script:
-                - php php-cs-fixer fix --rules @PHP71Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
+                - php php-cs-fixer fix --rules @PHP73Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q || travis_terminate 1
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: 7.3
-            env: COLLECT_COVERAGE=1
+            php: 7.4
+            name: 7.4 | Collect coverage
             before_install:
-                # check phpdbg
-                - phpdbg --version 2> /dev/null || { echo 'No phpdbg'; export COLLECT_COVERAGE=0; }
-
                 # for building a tag release we don't need to collect code coverage
-                - if [ $TRAVIS_TAG ]; then export COLLECT_COVERAGE=0; fi
-
-                # terminate job when no coverage collecting shall be performed
-                - if [ $COLLECT_COVERAGE == 0 ]; then travis_terminate 0; fi
+                - if [ $TRAVIS_TAG ]; then travis_terminate 0; fi
 
                 ## regular `before_install`
                 # turn off XDebug
@@ -122,14 +119,7 @@ jobs:
                 - composer require --dev --no-update phpunit/phpunit:^8
 
                 # Install PCOV
-                - |
-                    git clone --single-branch --branch=v1.0.2 --depth=1 https://github.com/krakjoe/pcov
-                    cd pcov
-                    phpize
-                    ./configure
-                    make clean install
-                    echo "extension=pcov.so" > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/pcov.ini
-                    cd $TRAVIS_BUILD_DIR
+                - pecl install pcov
             before_script:
                 # Make code compatible with PHPUnit 8
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer fix --rules=void_return -q tests || return 0
@@ -140,12 +130,12 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
-            php: 7.4snapshot
+            php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
 
         -
             stage: Deployment
-            php: 7.3
+            php: 7.4
             install: ./dev-tools/build.sh
             script:
                 - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
@@ -164,3 +154,6 @@ jobs:
                     tags: true
             after_deploy:
                 - ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${TRAVIS_TAG}
+
+    allow_failures:
+        - php: nightly

@@ -73,6 +73,16 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after PhpUnitTestAnnotationFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {
@@ -238,7 +248,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         $lines = $doc->getLines();
 
-        $docBlockNeesUpdate = false;
+        $docBlockNeedsUpdate = false;
         for ($inc = 0; $inc < \count($lines); ++$inc) {
             $lineContent = $lines[$inc]->getContent();
             if (false === strpos($lineContent, '@depends')) {
@@ -256,11 +266,11 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
 
             if ($newLineContent !== $lineContent) {
                 $lines[$inc] = new Line($newLineContent);
-                $docBlockNeesUpdate = true;
+                $docBlockNeedsUpdate = true;
             }
         }
 
-        if ($docBlockNeesUpdate) {
+        if ($docBlockNeedsUpdate) {
             $lines = implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
         }

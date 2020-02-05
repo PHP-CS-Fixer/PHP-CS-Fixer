@@ -103,7 +103,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             $caseCommands
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../dev-tools/ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../ci-integration.sh')));
         $steps = [
             "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",
@@ -139,7 +139,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             $steps[4],
         ]);
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.3.*.
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.4.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 

@@ -131,7 +131,7 @@ PHP;
 class Foo
 {
     public int $prop0;
-    protected ?int $prop1;
+    protected ?array $prop1;
     private string $prop2 = 1;
     var ? Foo\Bar $prop3 = array(1,2,3);
 }
@@ -630,8 +630,8 @@ preg_replace_callback(
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-        foreach ($expected as $index => $isLambda) {
-            static::assertSame($isLambda, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
         }
     }
 
@@ -782,6 +782,14 @@ preg_replace_callback(
                 '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
                 [3 => true, 7 => true],
             ],
+            [
+                '<?php interface Foo extends Bar, Baz, Qux {}',
+                [7 => false, 10 => false, 13 => false],
+            ],
+            [
+                '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
+                [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
+            ],
         ];
     }
 
@@ -843,6 +851,22 @@ preg_replace_callback(
             [
                 '<?php try {} catch (FOO|BAR|BAZ $e) {}',
                 [9 => false, 11 => false, 13 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): Baz; }',
+                [16 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): \Baz; }',
+                [17 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): ?Baz; }',
+                [17 => false],
+            ],
+            [
+                '<?php interface Foo { public function bar(): ?\Baz; }',
+                [18 => false],
             ],
         ];
     }
@@ -1008,6 +1032,14 @@ preg_replace_callback(
     public function provideIsBinaryOperatorCases()
     {
         $cases = [
+            [
+                '<?php echo $a[1] + 1;',
+                [8 => true],
+            ],
+            [
+                '<?php echo $a{1} + 1;',
+                [8 => true],
+            ],
             [
                 '<?php $a .= $b; ?>',
                 [3 => true],

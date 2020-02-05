@@ -38,6 +38,17 @@ final class ElseifFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BracesFixer.
+     * Must run after NoAlternativeSyntaxFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {

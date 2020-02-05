@@ -47,6 +47,9 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocIndentFixer.
+     * Must run after ClassAttributesSeparationFixer, MethodSeparationFixer.
      */
     public function getPriority()
     {

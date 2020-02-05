@@ -123,10 +123,12 @@ class Foo
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ArrayIndentationFixer, MethodChainingIndentationFixer.
+     * Must run after ClassAttributesSeparationFixer, ElseifFixer, LineEndingFixer, MethodSeparationFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority()
     {
-        // should be run after the ElseIfFixer, LineEndingFixer, NoEmptyStatementFixer and NoUselessElseFixer
         return -25;
     }
 

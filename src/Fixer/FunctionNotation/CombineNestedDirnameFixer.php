@@ -61,11 +61,12 @@ final class CombineNestedDirnameFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before MethodArgumentSpaceFixer, NoSpacesInsideParenthesisFixer.
+     * Must run after DirConstantFixer.
      */
     public function getPriority()
     {
-        // should run after DirConstantFixer
-        // should run before MethodArgumentSpaceFixer, NoSpacesInsideParenthesisFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer
         return 3;
     }
 

@@ -418,4 +418,74 @@ final class FunctionsAnalyzerTest extends TestCase
             ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)],
         ];
     }
+
+    /**
+     * @param bool   $isTheSameClassCall
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideIsTheSameClassCallCases
+     */
+    public function testIsTheSameClassCall($isTheSameClassCall, $code, $index)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        static::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
+    }
+
+    public function provideIsTheSameClassCallCases()
+    {
+        $template = '<?php
+            class Foo {
+                public function methodOne() {
+                    $x = %sotherMethod(1, 2, 3);
+                }
+            }
+        ';
+
+        yield [
+            false,
+            sprintf($template, '$this->'),
+            -1,
+        ];
+
+        // 24 is index of "otherMethod" token
+
+        for ($i = 0; $i < 40; ++$i) {
+            yield [
+                24 === $i,
+                sprintf($template, '$this->'),
+                $i,
+            ];
+            yield [
+                24 === $i,
+                sprintf($template, 'self::'),
+                $i,
+            ];
+            yield [
+                24 === $i,
+                sprintf($template, 'static::'),
+                $i,
+            ];
+        }
+
+        yield [
+            true,
+            sprintf($template, '$THIS->'),
+            24,
+        ];
+
+        yield [
+            false,
+            sprintf($template, '$notThis->'),
+            24,
+        ];
+
+        yield [
+            false,
+            sprintf($template, 'Bar::'),
+            24,
+        ];
+    }
 }

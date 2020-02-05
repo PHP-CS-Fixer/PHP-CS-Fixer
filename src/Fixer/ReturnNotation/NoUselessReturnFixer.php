@@ -54,10 +54,12 @@ function example($b) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BlankLineBeforeReturnFixer, BlankLineBeforeStatementFixer, NoExtraBlankLinesFixer, NoWhitespaceInBlankLineFixer.
+     * Must run after NoEmptyStatementFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SimplifiedNullReturnFixer.
      */
     public function getPriority()
     {
-        // should be run before BlankLineBeforeReturnFixer, NoExtraBlankLinesFixer, NoWhitespaceInBlankLineFixer and after SimplifiedNullReturnFixer and NoEmptyStatementFixer.
         return -18;
     }
 

@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_alternative_syntax,no_superfluous_elseif.
+--RULESET--
+{"no_alternative_syntax": true, "no_superfluous_elseif": true}
+
+--EXPECT--
+<?php
+if ($some) {
+    return 1;
+}
+if ($b){
+    echo 1;
+}
+
+--INPUT--
+<?php
+if ($some) :
+    return 1;
+elseif ($b):
+    echo 1;
+endif;

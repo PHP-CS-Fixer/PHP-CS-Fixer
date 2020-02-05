@@ -149,6 +149,13 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     16 => CT::T_NULLABLE_TYPE,
                 ],
             ],
+            [
+                '<?php class Foo { public ?array $foo; public static ?array $bar; }',
+                [
+                    9 => CT::T_NULLABLE_TYPE,
+                    19 => CT::T_NULLABLE_TYPE,
+                ],
+            ],
         ];
     }
 }

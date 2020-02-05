@@ -59,16 +59,12 @@ final class PhpdocOrderFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before PhpdocAlignFixer, PhpdocSeparationFixer, PhpdocTrimFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer
-
-        /*
-         * Should be run before the php_doc_separation fixer so that if we
-         * create incorrect annotation grouping while moving the annotations
-         * about, we're still ok.
-         */
         return -2;
     }
 

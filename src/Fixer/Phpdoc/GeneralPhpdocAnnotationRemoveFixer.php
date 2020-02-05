@@ -52,11 +52,12 @@ function foo() {}
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer, PhpdocSeparationFixer, PhpdocTrimFixer.
+     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer,
-        // PhpdocTrimFixer and PhpdocNoEmptyReturnFixer.
         return 10;
     }
 

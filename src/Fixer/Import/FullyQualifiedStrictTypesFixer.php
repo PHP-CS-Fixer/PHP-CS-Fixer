@@ -74,11 +74,12 @@ class SomeClass
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NoSuperfluousPhpdocTagsFixer.
+     * Must run after PhpdocToReturnTypeFixer.
      */
     public function getPriority()
     {
-        // should run after PhpdocToReturnTypeFixer
-        // should run before NoSuperfluousPhpdocTagsFixer
         return 7;
     }
 
@@ -152,6 +153,11 @@ class SomeClass
         }
 
         $typeName = $type->getName();
+
+        if (0 !== strpos($typeName, '\\')) {
+            return;
+        }
+
         $shortType = (new TypeShortNameResolver())->resolve($tokens, $typeName);
         if ($shortType === $typeName) {
             return;

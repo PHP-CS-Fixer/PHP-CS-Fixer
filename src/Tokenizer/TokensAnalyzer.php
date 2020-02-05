@@ -323,7 +323,7 @@ final class TokensAnalyzer
 
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_OBJECT_OPERATOR, T_TRAIT])) {
+        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_OBJECT_OPERATOR, T_TRAIT, CT::T_TYPE_COLON])) {
             return false;
         }
 
@@ -331,7 +331,7 @@ final class TokensAnalyzer
             $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        if ($this->tokens[$prevIndex]->isGivenKind([CT::T_CONST_IMPORT, T_EXTENDS, CT::T_FUNCTION_IMPORT, T_IMPLEMENTS, T_INSTANCEOF, T_INSTEADOF, T_NAMESPACE, T_NEW, T_USE, CT::T_USE_TRAIT])) {
+        if ($this->tokens[$prevIndex]->isGivenKind([CT::T_CONST_IMPORT, T_EXTENDS, CT::T_FUNCTION_IMPORT, T_IMPLEMENTS, T_INSTANCEOF, T_INSTEADOF, T_NAMESPACE, T_NEW, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, T_USE, CT::T_USE_TRAIT])) {
             return false;
         }
 
@@ -346,14 +346,14 @@ final class TokensAnalyzer
             }
         }
 
-        // check for `implements`/`use` list
+        // check for `extends`/`implements`/`use` list
         if ($this->tokens[$prevIndex]->equals(',')) {
             $checkIndex = $prevIndex;
             while ($this->tokens[$checkIndex]->equalsAny([',', [T_AS], [CT::T_NAMESPACE_OPERATOR], [T_NS_SEPARATOR], [T_STRING]])) {
                 $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
             }
 
-            if ($this->tokens[$checkIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, CT::T_USE_TRAIT])) {
+            if ($this->tokens[$checkIndex]->isGivenKind([T_EXTENDS, CT::T_GROUP_IMPORT_BRACE_OPEN, T_IMPLEMENTS, T_USE, CT::T_USE_TRAIT])) {
                 return false;
             }
         }
@@ -431,6 +431,7 @@ final class TokensAnalyzer
                 '"',
                 '`',
                 [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+                [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
                 [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
                 [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
                 [T_CLASS_C],

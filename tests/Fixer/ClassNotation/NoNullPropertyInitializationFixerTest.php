@@ -220,5 +220,8 @@ null;#13
         yield [
             '<?php class Foo { protected ? string $bar = null; }',
         ];
+        yield [
+            '<?php class Foo { protected ? array $bar = null; }',
+        ];
     }
 }

@@ -53,10 +53,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BinaryOperatorSpacesFixer, MethodArgumentSpaceFixer, NativeFunctionCasingFixer, NoSpacesAfterFunctionNameFixer, NoSpacesInsideParenthesisFixer.
      */
     public function getPriority()
     {
-        // must be run before BinaryOperatorSpacesFixer
         return 3;
     }
 

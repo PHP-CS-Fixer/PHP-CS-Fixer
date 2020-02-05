@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: no_empty_phpdoc, phpdoc_add_missing_param_annotation
+Integration of fixers: no_empty_phpdoc,phpdoc_add_missing_param_annotation.
 --RULESET--
 {"no_empty_phpdoc": true, "phpdoc_add_missing_param_annotation": true}
 --EXPECT--

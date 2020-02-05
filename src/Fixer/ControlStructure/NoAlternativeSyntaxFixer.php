@@ -64,11 +64,12 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before BracesFixer, ElseifFixer, NoSuperfluousElseifFixer, NoUselessElseFixer.
      */
     public function getPriority()
     {
-        // Should run before BracesFixer and ElseifFixer
-        return 1;
+        return 26;
     }
 
     /**
