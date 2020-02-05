@@ -28,7 +28,11 @@ echo λλλ phive
 if [ ! -x bin/phive ]; then
     wget -Obin/phive https://phar.io/releases/phive.phar
     wget -Obin/phive.asc https://phar.io/releases/phive.phar.asc
-    gpg --keyserver pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
+    gpg --list-keys 0x9D8A98B29B2D5D79 \
+        || gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79 \
+        || gpg --keyserver keys.fedoraproject.org --recv-keys 0x9D8A98B29B2D5D79 \
+        || gpg --keyserver keyserver.ubuntu.com --recv-keys 0x9D8A98B29B2D5D79 \
+        || gpg --keyserver pgp.mit.edu --recv-keys 0x9D8A98B29B2D5D79
     gpg --verify bin/phive.asc bin/phive
     chmod u+x bin/phive
 fi
@@ -55,5 +59,4 @@ composer update
 composer info -D | sort
 
 echo λλλ phive packages
-
 ./bin/phive install --trust-gpg-keys D2CCAC42F6295E7D,8E730BA25823D8B5
