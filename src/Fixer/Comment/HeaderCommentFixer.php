@@ -107,7 +107,7 @@ echo 1;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
+        return isset($tokens[0]) && $tokens[0]->isGivenKind(T_OPEN_TAG) && $tokens->isMonolithicPhp();
     }
 
     /**

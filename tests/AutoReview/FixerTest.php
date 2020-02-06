@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
@@ -267,10 +268,27 @@ final class FixerTest extends TestCase
      */
     public function testFixersReturnTypes(FixerInterface $fixer)
     {
+        $tokens = Tokens::fromCode('<?php ');
+        $emptyTokens = new Tokens();
+
         static::assertInternalType('int', $fixer->getPriority(), sprintf('Return type for ::getPriority of "%s" is invalid.', $fixer->getName()));
-        static::assertInternalType('bool', $fixer->isCandidate(Tokens::fromCode('<?php ')), sprintf('Return type for ::isCandidate of "%s" is invalid.', $fixer->getName()));
         static::assertInternalType('bool', $fixer->isRisky(), sprintf('Return type for ::isRisky of "%s" is invalid.', $fixer->getName()));
         static::assertInternalType('bool', $fixer->supports(new \SplFileInfo(__FILE__)), sprintf('Return type for ::supports of "%s" is invalid.', $fixer->getName()));
+
+        static::assertInternalType('bool', $fixer->isCandidate($emptyTokens), sprintf('Return type for ::isCandidate with empty tokens of "%s" is invalid.', $fixer->getName()));
+        static::assertFalse($emptyTokens->isChanged());
+
+        static::assertInternalType('bool', $fixer->isCandidate($tokens), sprintf('Return type for ::isCandidate of "%s" is invalid.', $fixer->getName()));
+        static::assertFalse($tokens->isChanged());
+
+        if ($fixer instanceof HeaderCommentFixer) {
+            $fixer->configure(['header' => 'a']);
+        }
+
+        static::assertNull($fixer->fix(new \SplFileInfo(__FILE__), $emptyTokens), sprintf('Return type for ::fix with empty tokens of "%s" is invalid.', $fixer->getName()));
+        static::assertFalse($emptyTokens->isChanged());
+
+        static::assertNull($fixer->fix(new \SplFileInfo(__FILE__), $tokens), sprintf('Return type for ::fix of "%s" is invalid.', $fixer->getName()));
     }
 
     private function getAllFixers()
