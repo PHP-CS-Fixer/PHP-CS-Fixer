@@ -588,6 +588,105 @@ final class RuleSetTest extends TestCase
         }, $setDefinitionPHPUnitMigrationNames);
     }
 
+    public function testDuplicateRuleConfigurationInSetDefinitions()
+    {
+        $ruleSet = RuleSet::create();
+        $ruleSetReflection = new \ReflectionObject($ruleSet);
+        $setDefinitions = $ruleSetReflection->getProperty('setDefinitions');
+        $setDefinitions->setAccessible(true);
+        $setDefinitions = $setDefinitions->getValue($ruleSet);
+        $resolvedSets = [];
+
+        foreach ($setDefinitions as $setName => $setDefinition) {
+            $resolvedSets[$setName] = ['rules' => [], 'sets' => []];
+
+            foreach ($setDefinition as $name => $value) {
+                if ('@' === $name[0]) {
+                    $resolvedSets[$setName]['sets'][$name] = $this->expendSet($setDefinitions, $resolvedSets, $name, $value);
+                } else {
+                    $resolvedSets[$setName]['rules'][$name] = $value;
+                }
+            }
+        }
+
+        $duplicates = [];
+
+        foreach ($resolvedSets as $name => $resolvedSet) {
+            foreach ($resolvedSet['rules'] as $ruleName => $config) {
+                if (\count($resolvedSet['sets']) < 1) {
+                    continue;
+                }
+
+                $setDuplicates = $this->findInSets($resolvedSet['sets'], $ruleName, $config);
+
+                if (\count($setDuplicates) > 0) {
+                    if (!isset($duplicates[$name])) {
+                        $duplicates[$name] = [];
+                    }
+
+                    $duplicates[$name][$ruleName] = $setDuplicates;
+                }
+            }
+        }
+
+        if (\count($duplicates) > 0) {
+            $message = '';
+
+            foreach ($duplicates as $setName => $r) {
+                $message .= sprintf("\n%s defines rules the same as it extends from:", $setName);
+
+                foreach ($duplicates[$setName] as $ruleName => $otherSets) {
+                    $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, implode(', ', $otherSets));
+                }
+            }
+
+            static::fail($message);
+        } else {
+            $this->addToAssertionCount(1);
+        }
+    }
+
+    private function findInSets(array $sets, $ruleName, $config)
+    {
+        $duplicates = [];
+
+        foreach ($sets as $setName => $setRules) {
+            if (\array_key_exists($ruleName, $setRules['rules'])) {
+                if ($config === $setRules['rules'][$ruleName]) {
+                    $duplicates[] = $setName;
+                }
+
+                break; // do not check below, config for the rule has been changed
+            }
+
+            if (\count($setRules['sets']) > 0) {
+                $subSetDuplicates = $this->findInSets($setRules['sets'], $ruleName, $config);
+
+                if (\count($subSetDuplicates) > 0) {
+                    $duplicates = array_merge($duplicates, $subSetDuplicates);
+                }
+            }
+        }
+
+        return $duplicates;
+    }
+
+    private function expendSet($setDefinitions, $resolvedSets, $setName, $setValue)
+    {
+        $rules = $setDefinitions[$setName];
+        foreach ($rules as $name => $value) {
+            if ('@' === $name[0]) {
+                $resolvedSets[$setName]['sets'][$name] = $this->expendSet($setDefinitions, $resolvedSets, $name, $setValue);
+            } elseif (!$setValue) {
+                $resolvedSets[$setName]['rules'][$name] = false;
+            } else {
+                $resolvedSets[$setName]['rules'][$name] = $value;
+            }
+        }
+
+        return $resolvedSets[$setName];
+    }
+
     private static function assertSameRules(array $expected, array $actual, $message = '')
     {
         ksort($expected);
