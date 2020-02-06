@@ -1194,6 +1194,11 @@ Choose from the list of available rules:
   Removes unneeded curly braces that are superfluous and aren't part of a
   control structure's body.
 
+  Configuration options:
+
+  - ``namespaces`` (``bool``): remove unneeded curly braces from bracketed
+    namespaces; defaults to ``false``
+
 * **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
 
   A ``final`` class must not have ``final`` methods and ``private`` method must
