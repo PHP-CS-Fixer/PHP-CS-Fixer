@@ -149,4 +149,64 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixNamespaceCases
+     */
+    public function testFixNamespace($expected, $input = null)
+    {
+        $this->fixer->configure(['namespaces' => true]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixNamespaceCases()
+    {
+        yield [
+            '<?php
+namespace Foo;
+    function Bar(){}
+
+',
+            '<?php
+namespace Foo {
+    function Bar(){}
+}
+',
+        ];
+
+        yield [
+            '<?php
+            namespace A5 {
+                function AA(){}
+            }
+            namespace B6 {
+                function BB(){}
+            }',
+        ];
+
+        yield [
+            '<?php
+            namespace Foo7;
+                function Bar(){}
+            ',
+            '<?php
+            namespace Foo7 {
+                function Bar(){}
+            }',
+        ];
+
+        yield [
+            '<?php
+            namespace Foo8\\A;
+                function Bar(){}
+             ?>',
+            "<?php
+            namespace Foo8\\A\t \t {
+                function Bar(){}
+            } ?>",
+        ];
+    }
 }
