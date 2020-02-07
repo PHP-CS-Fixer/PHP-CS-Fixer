@@ -76,3 +76,10 @@ Rule | Option | Old value | New value
 Rule set | Note
 -------- | ----
 `@PHP56Migration` | was empty
+
+Changes to FixerFactory
+-----------------------
+
+The FixerFactory will now configure configurable fixers with the default config value (`[]`) when the rule
+set configuration for such fixer is set to `null`. Previously the fixers method `::configure` would not be called
+in this case.

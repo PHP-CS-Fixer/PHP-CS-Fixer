@@ -179,6 +179,8 @@ final class FixerFactory
                 } else {
                     throw new InvalidFixerConfigurationException($fixer->getName(), 'Is not configurable.');
                 }
+            } elseif ($fixer instanceof ConfigurableFixerInterface) {
+                $fixer->configure([]);
             }
 
             $fixers[] = $fixer;
