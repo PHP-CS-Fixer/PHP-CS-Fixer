@@ -1236,6 +1236,11 @@ Choose from the list of available rules:
 
   *Risky rule: risky when child class overrides a ``private`` method.*
 
+  Configuration options:
+
+  - ``private_methods`` (``bool``): private methods of non-``final`` classes must not
+    be declared ``final``; defaults to ``true``
+
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
   In function arguments there must not be arguments with default values
