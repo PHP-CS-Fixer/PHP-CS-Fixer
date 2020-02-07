@@ -201,6 +201,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@Symfony:risky' => [
             '@PHP56Migration:risky' => true,
+            'array_push' => true,
             'combine_nested_dirname' => true,
             'dir_constant' => true,
             'ereg_to_preg' => true,
