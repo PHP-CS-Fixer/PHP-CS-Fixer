@@ -624,7 +624,7 @@ final class RuleSetTest extends TestCase
             $message = '';
 
             foreach ($duplicates as $setName => $r) {
-                $message .= sprintf("\n%s defines rules the same as it extends from:", $setName);
+                $message .= sprintf("\n\"%s\" defines rules the same as it extends from:", $setName);
 
                 foreach ($duplicates[$setName] as $ruleName => $otherSets) {
                     $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, implode(', ', $otherSets));
@@ -650,7 +650,7 @@ final class RuleSetTest extends TestCase
                 break; // do not check below, config for the rule has been changed
             }
 
-            if (\count($setRules['sets']) > 0) {
+            if (isset($setRules['sets']) && \count($setRules['sets']) > 0) {
                 $subSetDuplicates = $this->findInSets($setRules['sets'], $ruleName, $config);
 
                 if (\count($subSetDuplicates) > 0) {

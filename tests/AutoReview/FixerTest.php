@@ -131,6 +131,29 @@ final class FixerTest extends TestCase
                 static::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
 
+            $fixerNamesWithKnownMissingSamplesWithConfig = [
+                'doctrine_annotation_spaces',
+                'general_phpdoc_annotation_remove',
+                'is_null',
+                'php_unit_dedicate_assert_internal_type',
+                'php_unit_internal_class',
+                'php_unit_namespaced',
+                'php_unit_test_case_static_method_calls',
+                'phpdoc_scalar',
+                'phpdoc_to_return_type',
+                'phpdoc_types',
+            ];
+
+            if (\count($configSamplesProvided) < 2) {
+                if (\in_array($fixerName, $fixerNamesWithKnownMissingSamplesWithConfig, true)) {
+                    static::markTestIncomplete(sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options, please help and add it.', $fixerName));
+                }
+
+                static::fail(sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options.', $fixerName));
+            } elseif (\in_array($fixerName, $fixerNamesWithKnownMissingSamplesWithConfig, true)) {
+                static::fail(sprintf('[%s] Invalid listed as missing code samples, please update the list.', $fixerName));
+            }
+
             $options = $fixer->getConfigurationDefinition()->getOptions();
 
             foreach ($options as $option) {
