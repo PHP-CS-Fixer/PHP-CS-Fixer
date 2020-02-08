@@ -817,7 +817,8 @@ if (true) {
     <?php
     if (true) {
         echo \'x\';
-    } ?>
+    }
+    ?>
 <hr />
     <?php
 }',
@@ -1146,10 +1147,6 @@ if (1) {
                 '<?php
     class ClassName
     {
-
-
-
-
         /**
          * comment
          */
@@ -1867,10 +1864,6 @@ if (1) {
             [
                 '<?php
     class ClassName {
-
-
-
-
         /**
          * comment
          */
@@ -1895,10 +1888,6 @@ if (1) {
             [
                 '<?php
     class ClassName {
-
-
-
-
         /**
          * comment
          */
@@ -2200,9 +2189,9 @@ function mixedComplex()
             [
                 '<?php
     if (true)
+    // foo
+    // bar
     {
-        // foo
-        // bar
         if (true)
         {
             print("foo");
@@ -4851,13 +4840,12 @@ if (true) {
 }',
             ],
             [
-                "<?php if (true) {\r\n\r\n    // CRLF newline\n}",
+                "<?php if (true) {\n    // CRLF newline\n}",
                 "<?php if (true) {\r\n\r\n// CRLF newline\n}",
             ],
             [
                 '<?php
 if (true) {
-
     //  The blank line helps with legibility in nested control structures
     if (true) {
         // if body
@@ -4870,9 +4858,30 @@ if (true) {
             ],
             [
                 '<?php
+if (true) {
+    //  The blank line helps with legibility in nested control structures
+    if (true) {
+        // if body
+    }
+
+    // if body
+}',
+                '<?php
+if (true) {
+
+    //  The blank line helps with legibility in nested control structures
+    if (true) {
+        // if body
+    }
+
+    // if body
+}',
+                self::CONFIGURATION_OOP_POSITION_SAME_LINE,
+            ],
+            [
+                '<?php
 if (true)
 {
-
     //  The blank line helps with legibility in nested control structures
     if (true)
     {
@@ -4894,13 +4903,13 @@ if (true) {
                 self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],
             [
+                "<?php if (true) {\n    // CRLF newline\n}",
                 "<?php if (true) {\r\n\r\n    // CRLF newline\n}",
-                null,
                 self::CONFIGURATION_OOP_POSITION_SAME_LINE,
             ],
             [
                 "<?php if (true)
-{\r\n\r\n    // CRLF newline\n}",
+{\n    // CRLF newline\n}",
                 "<?php if (true){\r\n\r\n// CRLF newline\n}",
                 self::CONFIGURATION_OOP_POSITION_SAME_LINE + self::CONFIGURATION_CTRL_STRUCT_POSITION_NEXT_LINE,
             ],

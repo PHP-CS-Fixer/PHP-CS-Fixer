@@ -46,7 +46,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before ControlStructureContinuationPositionFixer, CurlyBracesPositionFixer.
+     * Must run before ControlStructureContinuationPositionFixer, CurlyBracesPositionFixer, NoMultipleStatementsPerLineFixer.
      */
     public function getPriority(): int
     {

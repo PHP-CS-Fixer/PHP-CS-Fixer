@@ -214,12 +214,12 @@ $foo
 
     $user->setFoo(1)
         ->setBar([
-                1 => 1,
-                ])
+            1 => 1,
+            ])
         ->setBaz(true)
         ->setX(array(
-    2 => 2,
-))
+            2 => 2,
+        ))
         ->setY();
 ',
                 '<?php

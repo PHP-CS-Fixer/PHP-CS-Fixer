@@ -358,7 +358,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'braces' => [
                 'heredoc_indentation',
-                'method_chaining_indentation',
             ],
             'class_attributes_separation' => [
                 'braces',
@@ -392,6 +391,7 @@ final class FixerFactoryTest extends TestCase
             'control_structure_braces' => [
                 'control_structure_continuation_position',
                 'curly_braces_position',
+                'no_multiple_statements_per_line',
             ],
             'declare_strict_types' => [
                 'blank_line_after_opening_tag',
@@ -473,19 +473,12 @@ final class FixerFactoryTest extends TestCase
                 'method_argument_space',
                 'no_spaces_inside_parenthesis',
             ],
-            'line_ending' => [
-                'braces',
-            ],
             'list_syntax' => [
                 'binary_operator_spaces',
                 'ternary_operator_spaces',
             ],
             'method_argument_space' => [
                 'array_indentation',
-            ],
-            'method_chaining_indentation' => [
-                'array_indentation',
-                'method_argument_space',
             ],
             'modernize_strpos' => [
                 'binary_operator_spaces',
