@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer;
 use PhpCsFixer\Fixer\ControlStructure\ControlStructureContinuationPositionFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
@@ -36,8 +37,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶4.1, ¶4.4, ¶5.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @deprecated
  */
-final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface, DeprecatedFixerInterface
 {
     /**
      * @internal
@@ -149,6 +152,14 @@ class Foo
         return 35;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessorsNames(): array
+    {
+        return array_keys($this->proxyFixers);
+    }
+
     public function configure(array $configuration = null): void
     {
         parent::configure($configuration);
@@ -168,8 +179,6 @@ class Foo
                 ? ControlStructureContinuationPositionFixer::NEXT_LINE
                 : ControlStructureContinuationPositionFixer::SAME_LINE,
         ]);
-
-        $this->configuration = $configuration;
     }
 
     /**

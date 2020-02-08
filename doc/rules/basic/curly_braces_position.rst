@@ -228,3 +228,31 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
    +$result = true;
    +    return $result;
    +};
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@PER
+  Using the `@PER <./../../ruleSets/PER.rst>`_ rule set will enable the ``curly_braces_position`` rule with the config below:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+@PSR2
+  Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``curly_braces_position`` rule with the default config.
+
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``curly_braces_position`` rule with the config below:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+@PhpCsFixer
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``curly_braces_position`` rule with the config below:
+
+  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``curly_braces_position`` rule with the config below:
+
+  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``

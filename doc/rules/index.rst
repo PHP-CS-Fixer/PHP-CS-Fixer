@@ -67,7 +67,7 @@ Array Notation
 Basic
 -----
 
-- `braces <./basic/braces.rst>`_
+- `braces <./basic/braces.rst>`_ *(deprecated)*
 
   The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
 - `curly_braces_position <./basic/curly_braces_position.rst>`_

@@ -33,10 +33,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'return',
                 ],
             ],
-            'braces' => [
-                'allow_single_line_anonymous_class_with_empty_body' => true,
-                'allow_single_line_closure' => true,
-            ],
             'cast_spaces' => true,
             'class_attributes_separation' => [
                 'elements' => [
@@ -49,6 +45,11 @@ final class SymfonySet extends AbstractRuleSetDescription
             'class_reference_name_casing' => true,
             'clean_namespace' => true,
             'concat_space' => true,
+            'curly_braces_position' => [
+                'allow_single_line_anonymous_functions' => true,
+                'allow_single_line_empty_anonymous_classes' => true,
+            ],
+            'declare_parentheses' => true,
             'echo_tag_syntax' => true,
             'empty_loop_body' => ['style' => 'braces'],
             'empty_loop_condition' => true,
