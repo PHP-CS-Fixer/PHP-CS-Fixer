@@ -81,5 +81,4 @@ Changes to FixerFactory
 -----------------------
 
 The FixerFactory will now configure configurable fixers with the default config value (`[]`) when the rule
-set configuration for such fixer is set to `null`. Previously the fixers method `::configure` would not be called
-in this case.
+set configuration for such fixer is set to `null`. Previously in this case the fixers method `::configure` would not be called by the FixerFactory.
