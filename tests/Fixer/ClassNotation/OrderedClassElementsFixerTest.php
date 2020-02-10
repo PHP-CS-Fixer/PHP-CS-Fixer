@@ -903,7 +903,7 @@ class TestClass
     public function %s(){}
     public function %s(){}
 }';
-        $this->fixer->configure(['order' => ['use_trait'], 'sortAlgorithm' => 'alpha']);
+        $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => 'alpha']);
 
         $this->doTest(
             sprintf($template, $methodName2, $methodName1),
