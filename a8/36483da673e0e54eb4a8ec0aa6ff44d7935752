@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-08T13:17:15Z
+
+is there any technical or BC concern for not sending this to 2.15 though?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-08T13:36:15Z
+
+No, this is a SemVer requirement: backward compatible new features should be added in minor releases, not patch ones.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-10T06:09:55Z
+
+marked the fixer as risky, see https://3v4l.org/feUVd
+I prefer to merge all in one go on 2.15 and be practical. This saves the maintainers/members time when merging, both for the upcoming releases and in the future as the differences between the branches stays smaller.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-11T12:33:32Z
+
+👍 but I still believe adding a new option should only happen on master though.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-11T13:54:28Z
+
+done
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-11T14:50:11Z
+
+`phpmd` in analyzing the fixtures;
+
+```
+The command "php -d auto_prepend_file=dev-tools/vendor/autoload.php ./dev-tools/tools/phpstan analyse" exited with 0.
+$ if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/Fixtures/Integration/set/@Symfony_whitespaces.test-out.php:110	The class finalClass is not named in CamelCase.
+```
+
+this is not what we want I hope?
