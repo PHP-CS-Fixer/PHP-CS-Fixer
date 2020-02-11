@@ -637,6 +637,54 @@ final class RuleSetTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider provideSetDefinitionNameCases
+     *
+     * @param string $setDefinitionName
+     */
+    public function testHasIntegrationTest($setDefinitionName)
+    {
+        $setsWithoutTests = [
+            '@PHP56Migration',
+            '@PHP56Migration:risky',
+            '@PHP70Migration',
+            '@PHP70Migration:risky',
+            '@PHP71Migration',
+            '@PHP71Migration:risky',
+            '@PHP73Migration',
+            '@PhpCsFixer',
+            '@PhpCsFixer:risky',
+            '@PHPUnit48Migration',
+            '@PHPUnit55Migration:risky',
+            '@PHPUnit75Migration:risky',
+            '@PSR1',
+        ];
+
+        if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
+            static::markTestIncomplete(sprintf('Set "%s" has no integration test.', $setDefinitionName));
+
+            return;
+        }
+
+        $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
+        $dir = __DIR__.'/../tests/Fixtures/Integration/set';
+        $file = sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
+
+        static::assertFileExists($file);
+        static::assertFileExists(sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
+        static::assertFileExists(sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
+
+        $template = '--TEST--
+Integration of %s.
+--RULESET--
+{"%s": true}
+';
+        static::assertSame(
+            sprintf($template, $setDefinitionName, $setDefinitionName),
+            file_get_contents($file)
+        );
+    }
+
     private function findInSets(array $sets, $ruleName, $config)
     {
         $duplicates = [];
