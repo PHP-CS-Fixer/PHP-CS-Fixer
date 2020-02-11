@@ -105,7 +105,7 @@ switch ($foo) {
             return $this->fixInLoop($tokens, $index, $depth + 1);
         }
 
-        if ($token->isGivenKind([T_DO])) {
+        if ($token->isGivenKind(T_DO)) {
             return $this->fixInLoop($tokens, $tokens->getNextTokenOfKind($index, ['{']), $depth + 1);
         }
 

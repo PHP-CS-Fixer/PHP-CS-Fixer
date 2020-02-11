@@ -217,7 +217,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
         $prevIndex = $tokens->getPrevMeaningfulToken($callIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind([T_NS_SEPARATOR])) {
+        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
         }
     }
