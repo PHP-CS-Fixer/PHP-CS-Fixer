@@ -888,4 +888,34 @@ EOT
 
         $this->fixer->configure(['order' => ['foo']]);
     }
+
+    /**
+     * @param string $methodName1
+     * @param string $methodName2
+     *
+     * @dataProvider provideWithConfigWithNoCandidateCases
+     */
+    public function testWithConfigWithNoCandidate($methodName1, $methodName2)
+    {
+        $template = '<?php
+class TestClass
+{
+    public function %s(){}
+    public function %s(){}
+}';
+        $this->fixer->configure(['order' => ['use_trait'], 'sortAlgorithm' => 'alpha']);
+
+        $this->doTest(
+            sprintf($template, $methodName2, $methodName1),
+            sprintf($template, $methodName1, $methodName2)
+        );
+    }
+
+    public function provideWithConfigWithNoCandidateCases()
+    {
+        yield ['z', '__construct'];
+        yield ['z', '__destruct'];
+        yield ['z', '__sleep'];
+        yield ['z', 'abc'];
+    }
 }

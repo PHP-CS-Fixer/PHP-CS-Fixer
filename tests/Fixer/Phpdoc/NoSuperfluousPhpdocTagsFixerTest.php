@@ -1195,6 +1195,17 @@ class Foo {
     public function doFoo(int $bar, string $baz): bool {}
 }',
             ],
+            'really long one' => [
+                '<?php
+                    /**
+                     * "Sponsored" by https://github.com/PrestaShop/PrestaShop/blob/1.6.1.24/tools/tcpdf/tcpdf.php (search for "Get page dimensions from format name")
+                     * @see
+                     * @param $number - it can be:
+                     * '.implode("\n                     * ", range(1, 1000)).'
+                     */
+                     function display($number) {}
+                ',
+            ],
         ];
     }
 

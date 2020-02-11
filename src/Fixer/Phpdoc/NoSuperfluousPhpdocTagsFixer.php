@@ -378,7 +378,7 @@ class Foo {
     private function annotationIsSuperfluous(Annotation $annotation, array $info, array $symbolShortNames)
     {
         if ('param' === $annotation->getTag()->getName()) {
-            $regex = '/@param\s+(?:\S|\s(?!\$))+\s\$\S+\s+\S/';
+            $regex = '/@param\s+(?:\S|\s(?!\$))++\s\$\S+\s+\S/';
         } elseif ('var' === $annotation->getTag()->getName()) {
             $regex = '/@var\s+\S+(\s+\$\S+)?(\s+)([^$\s]+)/';
         } else {

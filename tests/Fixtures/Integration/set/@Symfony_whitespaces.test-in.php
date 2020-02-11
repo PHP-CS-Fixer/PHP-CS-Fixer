@@ -112,7 +112,7 @@ implements
     }
 }
 
-final class finalClass
+final class FinalClass
 {
     final function finalMethod(){}
 }
