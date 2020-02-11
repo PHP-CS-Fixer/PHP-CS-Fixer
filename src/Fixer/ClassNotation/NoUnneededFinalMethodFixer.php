@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -20,7 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class NoUnneededFinalMethodFixer extends AbstractFixer
+final class NoUnneededFinalMethodFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -44,6 +47,20 @@ class Bar
     final private function bar1() {}
 }
 '
+                ),
+                new CodeSample(
+                    '<?php
+final class Foo
+{
+    final private function baz() {}
+}
+
+class Bar
+{
+    final private function bar1() {}
+}
+',
+                    ['private_methods' => false]
                 ),
             ],
             null,
@@ -84,6 +101,19 @@ class Bar
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('private_methods', 'Private methods of non-`final` classes must not be declared `final`.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
+    }
+
+    /**
      * @param int  $classOpenIndex
      * @param bool $classIsFinal
      */
@@ -107,7 +137,7 @@ class Bar
                 continue;
             }
 
-            if (!$classIsFinal && !$this->isPrivateMethod($tokens, $index, $classOpenIndex)) {
+            if (!$classIsFinal && (!$this->isPrivateMethod($tokens, $index, $classOpenIndex) || !$this->configuration['private_methods'])) {
                 continue;
             }
 

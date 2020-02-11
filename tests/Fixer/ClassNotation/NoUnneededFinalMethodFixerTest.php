@@ -301,4 +301,45 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFixConfigCases
+     */
+    public function testFixConfig($expected, $input, array $config)
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixConfigCases()
+    {
+        yield [
+            '<?php
+final class Foo
+{
+    private function baz() {}
+}
+
+class Bar
+{
+    final private function bar1() {}
+}
+',
+            '<?php
+final class Foo
+{
+    final private function baz() {}
+}
+
+class Bar
+{
+    final private function bar1() {}
+}
+',
+            ['private_methods' => false],
+        ];
+    }
 }
