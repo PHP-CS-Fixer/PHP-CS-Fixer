@@ -108,7 +108,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
 
-        return $tokens[$typeIndex]->isGivenKind([T_ABSTRACT]);
+        return $tokens[$typeIndex]->isGivenKind(T_ABSTRACT);
     }
 
     private function createDocBlock(Tokens $tokens, $docBlockIndex)
