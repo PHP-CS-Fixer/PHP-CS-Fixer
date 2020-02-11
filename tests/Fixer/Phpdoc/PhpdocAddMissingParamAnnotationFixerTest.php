@@ -336,9 +336,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null, array $config = [])
+    public function testFix71($expected, $input, array $config)
     {
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -358,6 +358,31 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      * @param int $bar
      */
     function p1(?array $foo = null, $bar) {}',
+                ['only_untyped' => false],
+            ],
+            [
+                '<?php
+    /**
+     * Foo
+     * @param mixed $bar
+     */
+    function p1(?int $foo = 0, $bar) {}',
+                '<?php
+    /**
+     * Foo
+     */
+    function p1(?int $foo = 0, $bar) {}',
+                ['only_untyped' => true],
+            ],
+            [
+                '<?php
+    /**
+     * Foo
+     * @return int
+     */
+    function p1(?int $foo = 0) {}',
+                null,
+                ['only_untyped' => true],
             ],
         ];
     }
