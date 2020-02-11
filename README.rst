@@ -1157,10 +1157,12 @@ Choose from the list of available rules:
   - ``namespaces`` (``bool``): remove unneeded curly braces from bracketed
     namespaces; defaults to ``false``
 
-* **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
+* **no_unneeded_final_method** [@Symfony:risky, @PhpCsFixer:risky]
 
-  A ``final`` class must not have ``final`` methods and ``private`` method must
+  A ``final`` class must not have ``final`` methods and ``private`` methods must
   not be ``final``.
+
+  *Risky rule: risky when child class overrides a ``private`` method.*
 
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 

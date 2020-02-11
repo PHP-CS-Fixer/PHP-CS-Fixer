@@ -28,25 +28,26 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'A `final` class must not have `final` methods and `private` method must not be `final`.',
+            'A `final` class must not have `final` methods and `private` methods must not be `final`.',
             [
                 new CodeSample(
                     '<?php
-final class Foo {
-    final public function foo() {}
+final class Foo
+{
+    final public function foo1() {}
     final protected function bar() {}
     final private function baz() {}
 }
-'
-                ),
-                new CodeSample(
-                    '<?php
-class Foo {
-    final private function bar() {}
+
+class Bar
+{
+    final private function bar1() {}
 }
 '
                 ),
-            ]
+            ],
+            null,
+            'Risky when child class overrides a `private` method.'
         );
     }
 
@@ -56,6 +57,11 @@ class Foo {
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL]);
+    }
+
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
