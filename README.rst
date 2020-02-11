@@ -270,7 +270,7 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` array
     syntax; defaults to ``'long'``
 
-* **backtick_to_shell_exec**
+* **backtick_to_shell_exec** [@Symfony, @PhpCsFixer]
 
   Converts backtick operators to ``shell_exec`` calls.
 
@@ -379,7 +379,7 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
-* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky]
+* **combine_nested_dirname** [@Symfony:risky, @PhpCsFixer:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
   Replace multiple nested calls of ``dirname`` by only one call with second
   ``$level`` parameter. Requires PHP >= 7.0.
@@ -579,7 +579,7 @@ Choose from the list of available rules:
     'SuppressWarnings', 'noinspection', 'package_version', 'enduml',
     'startuml', 'fix', 'FIXME', 'fixme', 'override']``
 
-* **echo_tag_syntax** [@PhpCsFixer]
+* **echo_tag_syntax** [@Symfony, @PhpCsFixer]
 
   Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print``
   syntax, or vice-versa.
@@ -707,7 +707,7 @@ Choose from the list of available rules:
   PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
   other tag variations.
 
-* **fully_qualified_strict_types** [@PhpCsFixer]
+* **fully_qualified_strict_types** [@Symfony, @PhpCsFixer]
 
   Transforms imported FQCN parameters and return types in function
   arguments to short version.
@@ -814,7 +814,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the function ``is_null`` is overridden.*
 
-* **lambda_not_used_import**
+* **lambda_not_used_import** [@Symfony, @PhpCsFixer]
 
   Lambda must not import variables it doesn't use.
 
@@ -822,7 +822,7 @@ Choose from the list of available rules:
 
   All PHP files must use same line ending.
 
-* **linebreak_after_opening_tag**
+* **linebreak_after_opening_tag** [@Symfony, @PhpCsFixer]
 
   Ensure there is no code on the same line as the PHP open tag.
 
@@ -836,7 +836,7 @@ Choose from the list of available rules:
   - ``syntax`` (``'long'``, ``'short'``): whether to use the ``long`` or ``short`` ``list``
     syntax; defaults to ``'long'``
 
-* **logical_operators** [@PhpCsFixer:risky]
+* **logical_operators** [@Symfony:risky, @PhpCsFixer:risky]
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 
@@ -987,11 +987,11 @@ Choose from the list of available rules:
 
   Master language constructs shall be used instead of aliases.
 
-* **no_alternative_syntax** [@PhpCsFixer]
+* **no_alternative_syntax** [@Symfony, @PhpCsFixer]
 
   Replace control structure alternative syntax to use braces.
 
-* **no_binary_string** [@PhpCsFixer]
+* **no_binary_string** [@Symfony, @PhpCsFixer]
 
   There should not be a binary flag before strings.
 
@@ -1077,7 +1077,7 @@ Choose from the list of available rules:
   Properties MUST not be explicitly initialized with ``null`` except when
   they have a type declaration (PHP 7.4).
 
-* **no_php4_constructor**
+* **no_php4_constructor** [@Symfony:risky, @PhpCsFixer:risky]
 
   Convert PHP4-style constructors to ``__construct``.
 
@@ -1165,10 +1165,12 @@ Choose from the list of available rules:
   - ``namespaces`` (``bool``): remove unneeded curly braces from bracketed
     namespaces; defaults to ``false``
 
-* **no_unneeded_final_method** [@Symfony, @PhpCsFixer]
+* **no_unneeded_final_method** [@Symfony:risky, @PhpCsFixer:risky]
 
-  A ``final`` class must not have ``final`` methods and ``private`` method must
+  A ``final`` class must not have ``final`` methods and ``private`` methods must
   not be ``final``.
+
+  *Risky rule: risky when child class overrides a ``private`` method.*
 
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
@@ -1177,7 +1179,7 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
-* **no_unset_cast** [@PhpCsFixer]
+* **no_unset_cast** [@Symfony, @PhpCsFixer]
 
   Variables must be set ``null`` instead of using ``(unset)`` casting.
 
@@ -1302,7 +1304,7 @@ Choose from the list of available rules:
   - ``order`` (``'alpha'``, ``'length'``): how the interfaces should be ordered;
     defaults to ``'alpha'``
 
-* **ordered_traits** [@PhpCsFixer]
+* **ordered_traits** [@Symfony, @PhpCsFixer]
 
   Trait ``use`` statements must be sorted alphabetically.
 
@@ -1369,7 +1371,7 @@ Choose from the list of available rules:
   - ``types`` (a subset of ``['normal', 'final', 'abstract']``): what types of
     classes to mark as internal; defaults to ``['normal', 'final']``
 
-* **php_unit_method_casing** [@PhpCsFixer]
+* **php_unit_method_casing** [@Symfony, @PhpCsFixer]
 
   Enforce camel (or snake) case for PHPUnit test methods, following
   configuration.
@@ -1424,7 +1426,7 @@ Choose from the list of available rules:
     ``'newest'``
   - ``use_class_const`` (``bool``): use ::class notation; defaults to ``true``
 
-* **php_unit_set_up_tear_down_visibility** [@PhpCsFixer:risky]
+* **php_unit_set_up_tear_down_visibility** [@Symfony:risky, @PhpCsFixer:risky]
 
   Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
   PHPUnit to ``protected``, to match the PHPUnit TestCase.
@@ -1455,7 +1457,7 @@ Choose from the list of available rules:
     of assertion methods to fix; defaults to ``['assertAttributeEquals',
     'assertAttributeNotEquals', 'assertEquals', 'assertNotEquals']``
 
-* **php_unit_test_annotation** [@PhpCsFixer:risky]
+* **php_unit_test_annotation** [@Symfony:risky, @PhpCsFixer:risky]
 
   Adds or removes @test annotations from tests, following configuration.
 
@@ -1680,13 +1682,13 @@ Choose from the list of available rules:
 
   ``@var`` and ``@type`` annotations should not contain the variable name.
 
-* **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
+* **pow_to_exponentiation** [@Symfony:risky, @PhpCsFixer:risky, @PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
   Converts ``pow`` to the ``**`` operator.
 
   *Risky rule: risky when the function ``pow`` is overridden.*
 
-* **protected_to_private** [@PhpCsFixer]
+* **protected_to_private** [@Symfony, @PhpCsFixer]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
 
@@ -1874,7 +1876,7 @@ Choose from the list of available rules:
 
   *Risky rule: risky when the fixed function is overridden or if the code relies on non-strict usage.*
 
-* **string_line_ending** [@PhpCsFixer:risky]
+* **string_line_ending** [@Symfony:risky, @PhpCsFixer:risky]
 
   All multi-line strings must use correct line ending.
 

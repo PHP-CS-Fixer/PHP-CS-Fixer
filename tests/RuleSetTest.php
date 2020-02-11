@@ -633,7 +633,7 @@ final class RuleSetTest extends TestCase
             $message = '';
 
             foreach ($duplicates as $setName => $r) {
-                $message .= sprintf("\n%s defines rules the same as it extends from:", $setName);
+                $message .= sprintf("\n\"%s\" defines rules the same as it extends from:", $setName);
 
                 foreach ($duplicates[$setName] as $ruleName => $otherSets) {
                     $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, implode(', ', $otherSets));
@@ -644,6 +644,54 @@ final class RuleSetTest extends TestCase
         } else {
             $this->addToAssertionCount(1);
         }
+    }
+
+    /**
+     * @dataProvider provideSetDefinitionNameCases
+     *
+     * @param string $setDefinitionName
+     */
+    public function testHasIntegrationTest($setDefinitionName)
+    {
+        $setsWithoutTests = [
+            '@PHP56Migration',
+            '@PHP56Migration:risky',
+            '@PHP70Migration',
+            '@PHP70Migration:risky',
+            '@PHP71Migration',
+            '@PHP71Migration:risky',
+            '@PHP73Migration',
+            '@PhpCsFixer',
+            '@PhpCsFixer:risky',
+            '@PHPUnit48Migration',
+            '@PHPUnit55Migration:risky',
+            '@PHPUnit75Migration:risky',
+            '@PSR1',
+        ];
+
+        if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
+            static::markTestIncomplete(sprintf('Set "%s" has no integration test.', $setDefinitionName));
+
+            return;
+        }
+
+        $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
+        $dir = __DIR__.'/../tests/Fixtures/Integration/set';
+        $file = sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
+
+        static::assertFileExists($file);
+        static::assertFileExists(sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
+        static::assertFileExists(sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
+
+        $template = '--TEST--
+Integration of %s.
+--RULESET--
+{"%s": true}
+';
+        static::assertSame(
+            sprintf($template, $setDefinitionName, $setDefinitionName),
+            file_get_contents($file)
+        );
     }
 
     private function findInSets(array $sets, $ruleName, $config)
@@ -659,7 +707,7 @@ final class RuleSetTest extends TestCase
                 break; // do not check below, config for the rule has been changed
             }
 
-            if (\count($setRules['sets']) > 0) {
+            if (isset($setRules['sets']) && \count($setRules['sets']) > 0) {
                 $subSetDuplicates = $this->findInSets($setRules['sets'], $ruleName, $config);
 
                 if (\count($subSetDuplicates) > 0) {

@@ -33,7 +33,10 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurab
     {
         return new FixerDefinition(
             'The flags in `fopen` calls must omit `t`, and `b` must be omitted or included consistently.',
-            [new CodeSample("<?php\n\$a = fopen(\$foo, 'rwt');\n")],
+            [
+                new CodeSample("<?php\n\$a = fopen(\$foo, 'rwt');\n"),
+                new CodeSample("<?php\n\$a = fopen(\$foo, 'rwt');\n", ['b_mode' => false]),
+            ],
             null,
             'Risky when the function `fopen` is overridden.'
         );

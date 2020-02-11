@@ -39,7 +39,10 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     {
         return new FixerDefinition(
             'All PHPUnit test cases should have `@small`, `@medium` or `@large` annotation to enable run time limits.',
-            [new CodeSample("<?php\nclass MyTest extends TestCase {}\n")],
+            [
+                new CodeSample("<?php\nclass MyTest extends TestCase {}\n"),
+                new CodeSample("<?php\nclass MyTest extends TestCase {}\n", ['group' => 'medium']),
+            ],
             'The special groups [small, medium, large] provides a way to identify tests that are taking long to be executed.'
         );
     }
@@ -105,7 +108,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
 
-        return $tokens[$typeIndex]->isGivenKind([T_ABSTRACT]);
+        return $tokens[$typeIndex]->isGivenKind(T_ABSTRACT);
     }
 
     private function createDocBlock(Tokens $tokens, $docBlockIndex)

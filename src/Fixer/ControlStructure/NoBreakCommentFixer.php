@@ -52,6 +52,17 @@ switch ($foo) {
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+switch ($foo) {
+    case 1:
+        foo();
+    case 2:
+        foo();
+}
+',
+                    ['comment_text' => 'some comment']
+                ),
             ],
             'Adds a "no break" comment before fall-through cases, and removes it if there is no fall-through.'
         );
