@@ -654,7 +654,6 @@ final class RuleSetTest extends TestCase
     public function testHasIntegrationTest($setDefinitionName)
     {
         $setsWithoutTests = [
-            '@PHP56Migration',
             '@PHP56Migration:risky',
             '@PHP70Migration',
             '@PHP70Migration:risky',

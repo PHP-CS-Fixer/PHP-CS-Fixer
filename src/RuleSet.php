@@ -295,12 +295,10 @@ final class RuleSet implements RuleSetInterface
                 'before_array_assignments_colon' => false,
             ],
         ],
-        '@PHP56Migration' => [],
         '@PHP56Migration:risky' => [
             'pow_to_exponentiation' => true,
         ],
         '@PHP70Migration' => [
-            '@PHP56Migration' => true,
             'ternary_to_null_coalescing' => true,
         ],
         '@PHP70Migration:risky' => [
