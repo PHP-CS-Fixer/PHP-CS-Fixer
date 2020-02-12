@@ -109,13 +109,13 @@ final class IncrementStyleFixer extends AbstractFixer implements ConfigurationDe
                 $startIndex = $this->findStart($tokens, $index);
 
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($startIndex)];
-                if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+                if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG], ')'])) {
                     $tokens->clearAt($index);
                     $tokens->insertAt($startIndex, clone $token);
                 }
             } elseif (self::STYLE_POST === $this->configuration['style'] && $tokensAnalyzer->isUnaryPredecessorOperator($index)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-                if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+                if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG], ')'])) {
                     continue;
                 }
 
