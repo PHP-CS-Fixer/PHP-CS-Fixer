@@ -103,7 +103,7 @@ if (count($x)) {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_USE, T_NS_SEPARATOR])
+        return $tokens->isAnyTokenKindsFound([T_DOC_COMMENT, T_NS_SEPARATOR, T_USE])
             && (Tokens::isLegacyMode() || $tokens->countTokenKind(T_NAMESPACE) < 2)
             && $tokens->isMonolithicPhp();
     }
@@ -313,9 +313,15 @@ if (count($x)) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
                 $docBlocks[$index] = new DocBlock($token->getContent());
 
-                $this->traverseDocBlockTypes($docBlocks[$index], static function ($type) use (&$other) {
-                    if (false === strpos($type, '\\')) {
-                        $other[strtolower($type)] = true;
+                $this->traverseDocBlockTypes($docBlocks[$index], static function ($type) use ($global, &$other) {
+                    if (false !== strpos($type, '\\')) {
+                        return;
+                    }
+
+                    $name = strtolower($type);
+
+                    if (!isset($global[$name])) {
+                        $other[$name] = true;
                     }
                 });
             }

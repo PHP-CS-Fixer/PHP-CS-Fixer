@@ -592,6 +592,24 @@ namespace Test {
 }
 INPUT
             ],
+            'phpdoc only' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Throwable;
+
+/** @throws Throwable */
+function x() {}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+
+/** @throws \Throwable */
+function x() {}
+INPUT
+            ],
             'ignore other imported types' => [
                 <<<'EXPECTED'
 <?php
@@ -647,6 +665,31 @@ use \Bar;
 new \Foo();
 new \bar();
 new Bar();
+INPUT
+            ],
+            'respect already imported names [3]' => [
+                <<<'EXPECTED'
+<?php
+namespace Test;
+use Throwable;
+
+/** @throws Throwable */
+function x() {}
+
+/** @throws Throwable */
+function y() {}
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+namespace Test;
+use Throwable;
+
+/** @throws Throwable */
+function x() {}
+
+/** @throws \Throwable */
+function y() {}
 INPUT
             ],
             'handle aliased imports' => [
