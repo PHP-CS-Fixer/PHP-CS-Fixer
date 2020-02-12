@@ -708,6 +708,11 @@ else?><?php echo 5;',
             'foreach($a as $b){throw new Exception($i);}',
         ];
 
+        if (\PHP_VERSION_ID >= 70000) {
+            $statements[] = 'throw new class extends Exception{};';
+            $statements[] = 'throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };';
+        }
+
         $ifTemplate = '<?php
             if ($a === false)
             {
