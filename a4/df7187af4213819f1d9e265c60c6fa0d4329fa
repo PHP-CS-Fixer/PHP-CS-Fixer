@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-12T09:54:12Z
+
+Fixes #4657?
+
+*Side note: please avoid mixing unrelated changes in a single PR, it tends to make review harder (more changes to read, and need to understand how some changes are (not) related to what the PR claims to do).*
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-12T11:49:46Z
+
+I cannot reproduce that issue so cannot say if this fixes it, but it is likely.
+
+For now I keep adding small stuff to any PR when I think is not worth the trouble doing all the paper work for. Yes, I know the processes and conventions etc., but I'm trading all that theory for practical velocity as I think that is what this project needs way more than having a very clean history on the smallest changes, like here additional test cases.
+If someone requests me to split up a PR I will always consider it, but I'm not going to do it upfront as most of the time it just creates more work without any real benefit or appreciation.
