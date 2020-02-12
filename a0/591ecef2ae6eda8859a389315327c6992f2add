@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-06T08:32:33Z
+
+I'm :+1: with this change but IMO this should be done globally on the project so we need to update PHPStan setup (upgrade version and increase analyze level).
+
+---------------------------------------------------------------------------
+
+by enumag at 2020-02-06T09:01:33Z
+
+Agreed but unfortunately I don't have time to do it myself. Already spent a lot of time on debugging and improving phpstan itself over the last week.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-06T16:06:51Z
+
+Why would need to add this tag while this class property can be read directly from the definition?
+
+---------------------------------------------------------------------------
+
+by enumag at 2020-02-06T20:59:17Z
+
+@SpacePossum Normally `SplFixedArray` can contain anything. But the `Tokens` class is a special case and can only hold `Token` instances. PHPStan needs to be aware of that, otherwise it reports the error from my first post.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-06T21:24:37Z
+
+I see now :+1:
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-02-07T08:25:51Z
+
+I got the same issue with latest PHPStan and the change here solved it.
+
+But I wonder if it wouldn't be better to solve this on PHPStan side - we have here in PHPDoc:
+```
+ * @method Token current()
+```
+so we have an information what type of element is in the `SplFixedArray`, right @ondrejmirtes?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-07T17:39:00Z
+
+Inferring internal collection type from the return type declaration of some methods would be less reliable that defining it explicitly as done here IMO. Actually, having PHPStan check this on the project would even allow us to drop those `@method` tags safely I guess.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-11T18:50:14Z
+
+@enumag can you please rebase this PR?
+
+---------------------------------------------------------------------------
+
+by enumag at 2020-02-11T21:54:53Z
+
+@SpacePossum Done.
