@@ -235,4 +235,48 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php
+
+                if ($foo) {
+                    return 1;
+                }
+                if ($bar) {
+                    return 2;
+                }
+                if ($baz) {
+                    throw new class extends Exception{};
+                } else {
+                    return 4;
+                }',
+                '<?php
+
+                if ($foo) {
+                    return 1;
+                } elseif ($bar) {
+                    return 2;
+                } else if ($baz) {
+                    throw new class extends Exception{};
+                } else {
+                    return 4;
+                }',
+            ],
+        ];
+    }
 }

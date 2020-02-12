@@ -920,8 +920,12 @@ preg_replace_callback(
                 '<?php $foo->{"bar"}++;',
                 [6 => true],
             ],
-            [
+            'array access' => [
                 '<?php $a["foo"]++;',
+                [5 => true],
+            ],
+            'array curly access' => [
+                '<?php $a{"foo"}++;',
                 [5 => true],
             ],
         ];

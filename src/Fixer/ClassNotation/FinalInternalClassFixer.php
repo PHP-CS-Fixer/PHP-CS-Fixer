@@ -162,7 +162,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             ))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
-                ->setDefault(['@final', '@Entity', '@ORM\Entity'])
+                ->setDefault([
+                    '@final',
+                    '@Entity',
+                    '@ORM\Entity',
+                    '@ORM\Mapping\Entity',
+                    '@Mapping\Entity',
+                ])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
             (new AliasedFixerOptionBuilder(
