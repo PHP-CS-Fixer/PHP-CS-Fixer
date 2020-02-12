@@ -388,6 +388,7 @@ final class TokensAnalyzer
             ']',
             [T_STRING],
             [T_VARIABLE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
         ];

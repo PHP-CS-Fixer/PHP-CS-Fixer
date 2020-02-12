@@ -670,7 +670,7 @@ Choose from the list of available rules:
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
     as well. (case insensitive); defaults to ``['@final', '@Entity',
-    '@ORM\\Entity']``
+    '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``
