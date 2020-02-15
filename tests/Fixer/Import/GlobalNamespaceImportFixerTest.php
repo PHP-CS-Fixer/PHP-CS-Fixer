@@ -68,15 +68,7 @@ const FOO = 1;
 echo \FOO;
 EXPECTED
             ],
-            'without namespace / only import once' => [
-                <<<'EXPECTED'
-<?php
-
-use const BAR;
-use const FOO;
-echo FOO, BAR, FOO;
-EXPECTED
-                ,
+            'without namespace / do not import' => [
                 <<<'INPUT'
 <?php
 echo \FOO, \BAR, \FOO;
@@ -218,6 +210,20 @@ class Bar {
 echo \FOO;
 INPUT
             ],
+            'global namespace' => [
+                <<<'INPUT'
+<?php
+echo \FOO, \BAR;
+INPUT
+            ],
+            [
+                <<<'INPUT'
+<?php
+namespace {
+    echo \FOO, \BAR;
+}
+INPUT
+            ],
         ];
     }
 
@@ -270,17 +276,7 @@ function foo() {}
 \Foo();
 EXPECTED
             ],
-            'without namespace / only import once' => [
-                <<<'EXPECTED'
-<?php
-
-use function bar;
-use function foo;
-foo();
-bar();
-Foo();
-EXPECTED
-                ,
+            'without namespace / do not import' => [
                 <<<'INPUT'
 <?php
 \foo();
@@ -527,18 +523,7 @@ function x() {}
 $foo = new \Foo();
 EXPECTED
             ],
-            'without namespace / only import once' => [
-                <<<'EXPECTED'
-<?php
-
-use Bar;
-use Foo;
-/** @var Foo $foo */
-$foo = new foo();
-new Bar();
-FOO::baz();
-EXPECTED
-                ,
+            'without namespace / do not import' => [
                 <<<'INPUT'
 <?php
 /** @var \Foo $foo */
@@ -803,6 +788,7 @@ EXPECTED
             'handle all occurrences' => [
                 <<<'EXPECTED'
 <?php
+namespace X;
 use const FOO;
 use const BAR;
 echo \FOO, \BAR, \FOO;
@@ -810,6 +796,7 @@ EXPECTED
                 ,
                 <<<'INPUT'
 <?php
+namespace X;
 use const FOO;
 use const BAR;
 echo FOO, BAR, FOO;
@@ -864,6 +851,7 @@ EXPECTED
             'handle all occurrences' => [
                 <<<'EXPECTED'
 <?php
+namespace X;
 use function foo;
 use function bar;
 \foo();
@@ -873,6 +861,7 @@ EXPECTED
                 ,
                 <<<'INPUT'
 <?php
+namespace X;
 use function foo;
 use function bar;
 foo();
@@ -938,6 +927,7 @@ EXPECTED
             'handle all occurrences' => [
                 <<<'EXPECTED'
 <?php
+namespace X;
 use Foo;
 use Bar;
 
@@ -955,6 +945,7 @@ EXPECTED
                 ,
                 <<<'INPUT'
 <?php
+namespace X;
 use Foo;
 use Bar;
 
@@ -991,6 +982,73 @@ new Bar();
 new Baz();
 INPUT
             ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     *
+     * @dataProvider provideMultipleNamespacesCases
+     */
+    public function testMultipleNamespaces($expected)
+    {
+        $this->fixer->configure(['import_constants' => true]);
+        $this->doTest($expected);
+    }
+
+    public function provideMultipleNamespacesCases()
+    {
+        yield [
+            <<<'INPUT'
+<?php
+namespace Test;
+echo \FOO, \BAR;
+
+namespace OtherTest;
+echo \FOO, \BAR;
+INPUT
+        ];
+
+        yield [
+            <<<'INPUT'
+<?php
+namespace Test {
+    echo \FOO, \BAR;
+
+}
+
+namespace OtherTest {
+    echo \FOO, \BAR;
+}
+INPUT
+        ];
+
+        yield [
+            <<<'INPUT'
+<?php
+namespace {
+    echo \FOO, \BAR;
+
+}
+
+namespace OtherTest {
+    echo \FOO, \BAR;
+}
+INPUT
+        ];
+
+        yield [
+            <<<'INPUT'
+<?php
+namespace Test {
+    echo \FOO, \BAR;
+
+}
+
+namespace {
+    echo \FOO, \BAR;
+}
+INPUT
         ];
     }
 }
