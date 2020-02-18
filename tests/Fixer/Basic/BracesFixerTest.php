@@ -5356,4 +5356,82 @@ return foo($i);
 }',
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAlternativeSyntaxCases
+     */
+    public function testFixAlternativeSyntax($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixAlternativeSyntaxCases()
+    {
+        yield [
+            '<?php if (foo()) {
+    while (bar()) {
+    }
+}',
+            '<?php if (foo()) while (bar()) {}',
+        ];
+
+        yield [
+            '<?php if ($a) {
+    foreach ($b as $c) {
+    }
+}',
+            '<?php if ($a) foreach ($b as $c) {}',
+        ];
+
+        yield [
+            '<?php if ($a) foreach ($b as $c): ?> X <?php endforeach; ?>',
+        ];
+
+        yield [
+            '<?php if ($a) while ($b): ?> X <?php endwhile; ?>',
+        ];
+
+        yield [
+            '<?php if ($a) for (;;): ?> X <?php endfor; ?>',
+        ];
+
+        yield [
+            '<?php if ($a) switch ($a): case 1: ?> X <?php endswitch; ?>',
+        ];
+
+        yield [
+            '<?php if ($a): elseif ($b): for (;;): ?> X <?php endfor; endif; ?>',
+        ];
+
+        yield [
+            '<?php switch ($a): case 1: for (;;): ?> X <?php endfor; endswitch; ?>,',
+        ];
+
+        yield [
+            '<?php
+if ($a) foreach ($b as $c): ?>
+    <?php if ($a) for (;;): ?>
+        <?php if ($a) foreach ($b as $c): ?>
+            <?php if ($a) for (;;): ?>
+                <?php if ($a) while ($b): ?>
+                    <?php if ($a) while ($b): ?>
+                        <?php if ($a) foreach ($b as $c): ?>
+                            <?php if ($a) for (;;): ?>
+                                <?php if ($a) while ($b): ?>
+                                    <?php if ($a) while ($b): ?>
+                                    <?php endwhile; ?>
+                                <?php endwhile; ?>
+                            <?php endfor; ?>
+                        <?php endforeach; ?>
+                    <?php endwhile; ?>
+                <?php endwhile; ?>
+            <?php endfor; ?>
+        <?php endforeach; ?>
+    <?php endfor; ?>
+<?php endforeach; ?>',
+        ];
+    }
 }
