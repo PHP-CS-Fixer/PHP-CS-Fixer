@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-12-21T17:59:43Z
+
+What's the status here?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-12-21T18:03:32Z
+
+1,5 year old... I can't say anymore...  I really hope someone can have a look...
+
+also the issue itself doesn't sound that hard;
+when the `braces` fixer (re)indents a multi line comment it should not add indentation to empty lines in that comment
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-15T06:09:23Z
+
+this is good for review
+
+(ping @kubawerlos and @julienfalque )
