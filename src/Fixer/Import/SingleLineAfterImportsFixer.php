@@ -75,6 +75,16 @@ final class Example
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoUnusedImportsFixer.
+     */
+    public function getPriority()
+    {
+        return -11;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
