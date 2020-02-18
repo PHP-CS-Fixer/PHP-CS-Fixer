@@ -41,9 +41,13 @@ class Config implements ConfigInterface
 
     /**
      * @return static
+     *
+     * @deprecated since 2.17
      */
     public static function create()
     {
+        @trigger_error(__METHOD__.' is deprecated since 2.17 and will be removed in 3.0.', E_USER_DEPRECATED);
+
         return new static();
     }
 
