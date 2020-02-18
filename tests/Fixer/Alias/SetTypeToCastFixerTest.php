@@ -190,6 +190,9 @@ $foo#5
             'return value used IV' => [
                 '<?php $a = "123"; $b = [3 => settype($a, "integer")];',
             ],
+            'return value used V' => [
+                '<?= settype($foo, "object");',
+            ],
             'wrapped statements, fixable after removing the useless parenthesis brace' => [
                 '<?php
                     settype(/*1*//*2*/($a), \'int\');

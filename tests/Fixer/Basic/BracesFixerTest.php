@@ -5263,4 +5263,175 @@ function example()
 }'
         );
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideIndentCommentCases
+     */
+    public function testIndentComment($expected, $input, WhitespacesFixerConfig $config = null)
+    {
+        if (null !== $config) {
+            $this->fixer->setWhitespacesConfig($config);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideIndentCommentCases()
+    {
+        yield [
+            "<?php
+if (true) {
+\t\$i += 2;
+\treturn foo(\$i);
+\t/*
+\t \$i += 3;
+
+\t // 1
+  "."
+\t   return foo(\$i);
+\t */
+}",
+            '<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+/*
+ $i += 3;
+
+ // 1
+  '.'
+   return foo($i);
+ */
+}',
+            new WhitespacesFixerConfig("\t", "\n"),
+        ];
+
+        yield [
+            '<?php
+class MyClass extends SomeClass
+{
+    /*	public function myFunction() {
+
+    		$MyItems = [];
+
+    		return $MyItems;
+    	}
+    */
+}',
+            '<?php
+class MyClass extends SomeClass {
+/*	public function myFunction() {
+
+		$MyItems = [];
+
+		return $MyItems;
+	}
+*/
+}',
+        ];
+
+        yield [
+            '<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+    /*
+    $i += 3;
+
+    return foo($i);
+     */
+}',
+            '<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+/*
+$i += 3;
+
+return foo($i);
+ */
+}',
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixAlternativeSyntaxCases
+     */
+    public function testFixAlternativeSyntax($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixAlternativeSyntaxCases()
+    {
+        yield [
+            '<?php if (foo()) {
+    while (bar()) {
+    }
+}',
+            '<?php if (foo()) while (bar()) {}',
+        ];
+
+        yield [
+            '<?php if ($a) {
+    foreach ($b as $c) {
+    }
+}',
+            '<?php if ($a) foreach ($b as $c) {}',
+        ];
+
+        yield [
+            '<?php if ($a) foreach ($b as $c): ?> X <?php endforeach; ?>',
+        ];
+
+        yield [
+            '<?php if ($a) while ($b): ?> X <?php endwhile; ?>',
+        ];
+
+        yield [
+            '<?php if ($a) for (;;): ?> X <?php endfor; ?>',
+        ];
+
+        yield [
+            '<?php if ($a) switch ($a): case 1: ?> X <?php endswitch; ?>',
+        ];
+
+        yield [
+            '<?php if ($a): elseif ($b): for (;;): ?> X <?php endfor; endif; ?>',
+        ];
+
+        yield [
+            '<?php switch ($a): case 1: for (;;): ?> X <?php endfor; endswitch; ?>,',
+        ];
+
+        yield [
+            '<?php
+if ($a) foreach ($b as $c): ?>
+    <?php if ($a) for (;;): ?>
+        <?php if ($a) foreach ($b as $c): ?>
+            <?php if ($a) for (;;): ?>
+                <?php if ($a) while ($b): ?>
+                    <?php if ($a) while ($b): ?>
+                        <?php if ($a) foreach ($b as $c): ?>
+                            <?php if ($a) for (;;): ?>
+                                <?php if ($a) while ($b): ?>
+                                    <?php if ($a) while ($b): ?>
+                                    <?php endwhile; ?>
+                                <?php endwhile; ?>
+                            <?php endfor; ?>
+                        <?php endforeach; ?>
+                    <?php endwhile; ?>
+                <?php endwhile; ?>
+            <?php endfor; ?>
+        <?php endforeach; ?>
+    <?php endfor; ?>
+<?php endforeach; ?>',
+        ];
+    }
 }

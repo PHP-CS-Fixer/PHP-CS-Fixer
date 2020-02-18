@@ -736,4 +736,61 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideRepetitiveFixCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testRepetitiveFix($expected, $input = null)
+    {
+        $this->doTest(
+            $expected,
+            $input
+        );
+    }
+
+    public function provideRepetitiveFixCases()
+    {
+        yield [
+            '<?php
+
+function foo() {
+    return bar();
+}
+',
+            '<?php
+
+function foo() {
+    $a = bar();
+    $b = $a;
+
+    return $b;
+}
+',
+        ];
+
+        yield [
+            '<?php
+
+function foo(&$c) {
+    $a = $c;
+    $b = $a;
+
+    return $b;
+}
+',
+        ];
+
+        $expected = "<?php\n";
+        $input = "<?php\n";
+
+        for ($i = 0; $i < 10; ++$i) {
+            $expected .= sprintf("\nfunction foo%d() {\n\treturn bar();\n}", $i);
+            $input .= sprintf("\nfunction foo%d() {\n\t\$a = bar();\n\t\$b = \$a;\n\nreturn \$b;\n}", $i);
+        }
+
+        yield [$expected, $input];
+    }
 }
