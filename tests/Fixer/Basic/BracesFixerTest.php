@@ -5263,4 +5263,97 @@ function example()
 }'
         );
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideIndentCommentCases
+     */
+    public function testIndentComment($expected, $input, WhitespacesFixerConfig $config = null)
+    {
+        if (null !== $config) {
+            $this->fixer->setWhitespacesConfig($config);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideIndentCommentCases()
+    {
+        yield [
+            "<?php
+if (true) {
+\t\$i += 2;
+\treturn foo(\$i);
+\t/*
+\t \$i += 3;
+
+\t // 1
+  "."
+\t   return foo(\$i);
+\t */
+}",
+            '<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+/*
+ $i += 3;
+
+ // 1
+  '.'
+   return foo($i);
+ */
+}',
+            new WhitespacesFixerConfig("\t", "\n"),
+        ];
+
+        yield [
+            '<?php
+class MyClass extends SomeClass
+{
+    /*	public function myFunction() {
+
+    		$MyItems = [];
+
+    		return $MyItems;
+    	}
+    */
+}',
+            '<?php
+class MyClass extends SomeClass {
+/*	public function myFunction() {
+
+		$MyItems = [];
+
+		return $MyItems;
+	}
+*/
+}',
+        ];
+
+        yield [
+            '<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+    /*
+    $i += 3;
+
+    return foo($i);
+     */
+}',
+            '<?php
+if (true) {
+    $i += 2;
+    return foo($i);
+/*
+$i += 3;
+
+return foo($i);
+ */
+}',
+        ];
+    }
 }
