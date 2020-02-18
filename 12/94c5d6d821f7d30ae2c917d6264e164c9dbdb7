@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-02-15T07:53:10Z
+
+What about `switch`? It also can use [alternative syntax](https://www.php.net/manual/en/control-structures.alternative-syntax.php).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-15T07:57:47Z
+
+it is here; https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4813/files#diff-6ee2b7ebb0faee78657d4e8d3fb3e10dR5313 but happy to add more tests!
+
+good find, thanks! code and tests updated
