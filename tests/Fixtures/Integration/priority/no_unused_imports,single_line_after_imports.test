@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: no_unused_imports,single_line_after_imports.
+--RULESET--
+{"no_unused_imports": true, "single_line_after_imports": true}
+--EXPECT--
+<?php
+
+use Foo\Bar;
+
+#
+
+Bar::Foo();
+
+--INPUT--
+<?php
+
+use Foo\Bar;
+#
+use \Not\Used;
+
+Bar::Foo();

@@ -209,6 +209,10 @@ intval#
                 '<?php $foo = ((string) ($x + $y))[0];',
                 '<?php $foo = strval($x + $y)[0];',
             ],
+            [
+                '<?php $foo = ((string) ($x + $y)){0};',
+                '<?php $foo = strval($x + $y){0};',
+            ],
         ];
     }
 

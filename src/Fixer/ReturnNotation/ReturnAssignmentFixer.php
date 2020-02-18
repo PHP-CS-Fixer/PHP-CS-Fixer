@@ -81,16 +81,21 @@ final class ReturnAssignmentFixer extends AbstractFixer
             }
 
             $functionCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $functionOpenIndex);
+            $totalTokensAdded = 0;
 
-            $tokensAdded = $this->fixFunction(
-                $tokens,
-                $index,
-                $functionOpenIndex,
-                $functionCloseIndex
-            );
+            do {
+                $tokensAdded = $this->fixFunction(
+                    $tokens,
+                    $index,
+                    $functionOpenIndex,
+                    $functionCloseIndex
+                );
 
-            $index = $functionCloseIndex + $tokensAdded;
-            $tokenCount += $tokensAdded;
+                $totalTokensAdded += $tokensAdded;
+            } while ($tokensAdded > 0);
+
+            $index = $functionCloseIndex + $totalTokensAdded;
+            $tokenCount += $totalTokensAdded;
         }
     }
 

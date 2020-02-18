@@ -133,7 +133,7 @@ final class DocBlock
 
         $lineContent = $this->getSingleLineDocBlockEntry($this->lines[0]);
 
-        if ('*' === $lineContent) {
+        if ('' === $lineContent) {
             $this->lines = [
                 new Line('/**'.$lineEnd),
                 new Line($indent.' *'.$lineEnd),
@@ -261,19 +261,13 @@ final class DocBlock
 
         $lineString = str_replace('*/', '', $lineString);
         $lineString = trim($lineString);
-        $lineArray = str_split($lineString);
-        $i = \count($lineArray);
 
-        do {
-            --$i;
-        } while ('*' !== $lineString[$i] && '*' !== $lineString[$i - 1] && '/' !== $lineString[$i - 2]);
-
-        if (' ' === $lineString[$i]) {
-            ++$i;
+        if ('/**' === substr($lineString, 0, 3)) {
+            $lineString = substr($lineString, 3);
+        } elseif ('*' === substr($lineString, 0, 1)) {
+            $lineString = substr($lineString, 1);
         }
 
-        $lineArray = \array_slice($lineArray, $i);
-
-        return implode('', $lineArray);
+        return trim($lineString);
     }
 }

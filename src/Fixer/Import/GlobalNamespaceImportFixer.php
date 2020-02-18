@@ -104,9 +104,9 @@ if (count($x)) {
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isAnyTokenKindsFound([T_DOC_COMMENT, T_NS_SEPARATOR, T_USE])
-            && $tokens->countTokenKind(T_NAMESPACE) < 2
-            && $tokens->isMonolithicPhp()
-        ;
+            && $tokens->isTokenKindFound(T_NAMESPACE)
+            && 1 === $tokens->countTokenKind(T_NAMESPACE)
+            && $tokens->isMonolithicPhp();
     }
 
     /**
@@ -114,6 +114,12 @@ if (count($x)) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $namespaceAnalyses = (new NamespacesAnalyzer())->getDeclarations($tokens);
+
+        if (1 !== \count($namespaceAnalyses) || '' === $namespaceAnalyses[0]->getFullName()) {
+            return;
+        }
+
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
 
         $newImports = [];
