@@ -41,13 +41,17 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
                 '<?php $a = [1,2,3]; echo $a{1}; ?>',
                 '<?php $a = [1,2,3]; echo $a{1} ?>',
             ],
-            [
+            'comment' => [
                 '<?php $a++;//a ?>',
                 '<?php $a++//a ?>',
             ],
-            [
+            'comment II' => [
                 '<?php $b++; /**/ ?>',
                 '<?php $b++ /**/ ?>',
+            ],
+            'no space' => [
+                '<?php $b++;?>',
+                '<?php $b++?>',
             ],
             [
                 '<?php echo 123; ?>',
@@ -58,6 +62,7 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
                 "<?php echo 123\n\t?>",
             ],
             ['<?php ?>'],
+            ['<?php ; ?>'],
             ['<?php if($a){}'],
             ['<?php while($a > $b){}'],
             [
@@ -90,6 +95,9 @@ A is equal to 5
             static::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
-        $this->doTest("<?= '1_'; ?>", "<?= '1_' ?>");
+        $this->doTest(
+            "<?= '1_'; ?> <?php ?><?= 1; ?>",
+            "<?= '1_' ?> <?php ?><?= 1; ?>"
+        );
     }
 }
