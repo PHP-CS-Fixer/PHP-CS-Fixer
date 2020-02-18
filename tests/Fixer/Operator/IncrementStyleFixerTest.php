@@ -173,6 +173,10 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
     }
 }',
             ],
+            [
+                '<?php if ($foo) ++$a;',
+                '<?php if ($foo) $a++;',
+            ],
         ];
     }
 }

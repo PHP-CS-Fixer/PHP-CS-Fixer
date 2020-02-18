@@ -124,7 +124,7 @@ class Foo
     /**
      * {@inheritdoc}
      *
-     * Must run before ArrayIndentationFixer, MethodChainingIndentationFixer.
+     * Must run before ArrayIndentationFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
      * Must run after ClassAttributesSeparationFixer, ElseifFixer, LineEndingFixer, MethodSeparationFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority()
@@ -634,7 +634,8 @@ class Foo
             }
 
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
-            $tokenAfterParenthesis = $tokens[$tokens->getNextMeaningfulToken($parenthesisEndIndex)];
+            $nextAfterParenthesisEndIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
+            $tokenAfterParenthesis = $tokens[$nextAfterParenthesisEndIndex];
 
             // if Token after parenthesis is { then we do not need to insert brace, but to fix whitespace before it
             if ($tokenAfterParenthesis->equals('{') && self::LINE_SAME === $this->configuration['position_after_control_structures']) {
@@ -648,6 +649,19 @@ class Foo
             // - structure with block, e.g. while ($i) {...}, while ($i) : {...} endwhile;
             if ($tokenAfterParenthesis->equalsAny([';', '{', ':'])) {
                 continue;
+            }
+
+            // do not add for short 'if' followed by alternative loop,
+            // for example: if ($a) while ($b): ? > X < ?php endwhile; ? >
+            if ($tokenAfterParenthesis->isGivenKind([T_FOR, T_FOREACH, T_SWITCH, T_WHILE])) {
+                $tokenAfterParenthesisBlockEnd = $tokens->findBlockEnd( // go to ')'
+                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    $tokens->getNextMeaningfulToken($nextAfterParenthesisEndIndex)
+                );
+
+                if ($tokens[$tokens->getNextMeaningfulToken($tokenAfterParenthesisBlockEnd)]->equals(':')) {
+                    continue;
+                }
             }
 
             $statementEndIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
@@ -957,8 +971,8 @@ class Foo
             $tokens[$nextTokenIndex] = new Token([
                 $nextToken->getId(),
                 Preg::replace(
-                    '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'/',
-                    '$1'.Preg::replace('/^.*\R([ \t]*)$/s', '$1', $whitespace),
+                    '/(\R)'.$this->detectIndent($tokens, $nextTokenIndex).'(\h*\S+.*)/',
+                    '$1'.Preg::replace('/^.*\R(\h*)$/s', '$1', $whitespace).'$2',
                     $nextToken->getContent()
                 ),
             ]);

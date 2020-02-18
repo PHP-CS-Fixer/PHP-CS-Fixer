@@ -140,6 +140,10 @@ inline 1
                 "<?php return true;\n/*\nA comment\n*/\n",
                 "<?php return true;\n/*\nA comment\n*/\n\n",
             ],
+            [
+                "<?= 1;\n",
+                '<?= 1;',
+            ],
         ];
     }
 

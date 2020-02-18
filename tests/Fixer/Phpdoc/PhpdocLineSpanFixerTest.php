@@ -166,6 +166,43 @@ class Foo
                     'method' => 'single',
                 ],
             ],
+            'It does change complicated doc blocks to single if configured to do so' => [
+                '<?php
+
+class Foo
+{
+    /** @var bool */
+    public $variable1 = true;
+
+    /** @var bool */
+    public $variable2 = true;
+
+    /** @Assert\File(mimeTypes={ "image/jpeg", "image/png" }) */
+    public $imageFileObject;
+}
+',
+                '<?php
+
+class Foo
+{
+    /**
+     * @var bool */
+    public $variable1 = true;
+
+    /** @var bool
+     */
+    public $variable2 = true;
+
+    /**
+     * @Assert\File(mimeTypes={ "image/jpeg", "image/png" })
+     */
+    public $imageFileObject;
+}
+',
+                [
+                    'property' => 'single',
+                ],
+            ],
             'It does not changes doc blocks from single if configured to do so' => [
                 '<?php
 
