@@ -318,9 +318,9 @@ Choose from the list of available rules:
   - ``statements`` (a subset of ``['break', 'case', 'continue', 'declare',
     'default', 'die', 'do', 'exit', 'for', 'foreach', 'goto', 'if',
     'include', 'include_once', 'require', 'require_once', 'return',
-    'switch', 'throw', 'try', 'while', 'yield']``): list of statements which
-    must be preceded by an empty line; defaults to ``['break', 'continue',
-    'declare', 'return', 'throw', 'try']``
+    'switch', 'throw', 'try', 'while', 'yield', 'yield_from']``): list of
+    statements which must be preceded by an empty line; defaults to
+    ``['break', 'continue', 'declare', 'return', 'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony, @PhpCsFixer]
 
