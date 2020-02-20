@@ -459,31 +459,33 @@ return $foo === count($bar);
                 T_CONCAT_EQUAL, // .=
                 T_DIV_EQUAL,    // /=
                 T_DOUBLE_ARROW, // =>
+                T_ECHO,         // echo
                 T_GOTO,         // goto
                 T_LOGICAL_AND,  // and
                 T_LOGICAL_OR,   // or
                 T_LOGICAL_XOR,  // xor
                 T_MINUS_EQUAL,  // -=
+                T_MOD_EQUAL,    // %=
                 T_MUL_EQUAL,    // *=
+                T_OPEN_TAG,     // <?php
+                T_OPEN_TAG_WITH_ECHO,
                 T_OR_EQUAL,     // |=
                 T_PLUS_EQUAL,   // +=
+                T_POW_EQUAL,    // **=
+                T_PRINT,        // print
                 T_RETURN,       // return
-                T_SL_EQUAL,     // <<
+                T_SL_EQUAL,     // <<=
                 T_SR_EQUAL,     // >>=
                 T_THROW,        // throw
                 T_XOR_EQUAL,    // ^=
-                T_ECHO,
-                T_PRINT,
-                T_OPEN_TAG,
-                T_OPEN_TAG_WITH_ECHO,
             ];
-
-            if (\defined('T_POW_EQUAL')) {
-                $tokens[] = T_POW_EQUAL; // **=
-            }
 
             if (\defined('T_COALESCE')) {
                 $tokens[] = T_COALESCE; // ??
+            }
+
+            if (\defined('T_COALESCE_EQUAL')) {
+                $tokens[] = T_COALESCE_EQUAL; // ??=
             }
         }
 
