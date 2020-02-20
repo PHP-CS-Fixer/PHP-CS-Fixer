@@ -62,6 +62,7 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
             ['<?php $x = isset($a[foo()]) ? $a[foo()] : null;'],
             ['<?php $x = isset($a[$callback()]) ? $a[$callback()] : null;'],
             ['<?php $y = isset($a) ? 2**3 : 3**2;'],
+            ['<?php $x = function(){isset($a[yield from $a]) ? $a[yield from $a] : null;};'],
             // Fix cases.
             'Common fix case (I).' => [
                 '<?php $x = $a ?? null;',
