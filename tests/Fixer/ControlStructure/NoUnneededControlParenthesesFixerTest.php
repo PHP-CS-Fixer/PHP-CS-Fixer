@@ -481,6 +481,71 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     /**
      * @param string      $expected
      * @param null|string $input
+     *
+     * @dataProvider provideFixYieldFromCases
+     * @requires PHP 7.0
+     */
+    public function testFixYieldFrom($expected, $input = null)
+    {
+        $this->fixer->configure(['statements' => ['yield_from']]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixYieldFromCases()
+    {
+        return [
+            [
+                '<?php
+                function foo() { yield from "prod"; }
+                ',
+            ],
+            [
+                '<?php
+                function foo() { yield from (1 + 2) * 10; }
+
+                function foo() { $a = (yield($x)); }
+                ',
+            ],
+            [
+                '<?php
+                function foo() { yield from (1 + 2) * 10; }
+                ',
+                '<?php
+                function foo() { yield from ((1 + 2) * 10); }
+                ',
+            ],
+            [
+                '<?php
+                function foo() { yield from "prod"; }
+                function foo() { $a = (yield($x)); }
+                ',
+                '<?php
+                function foo() { yield from ("prod"); }
+                function foo() { $a = (yield($x)); }
+                ',
+            ],
+            [
+                '<?php
+                function foo() { yield from 2; }
+                ',
+                '<?php
+                function foo() { yield from(2); }
+                ',
+            ],
+            [
+                '<?php
+                function foo() { $a = (yield from $x); }
+                ',
+                '<?php
+                function foo() { $a = (yield from($x)); }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
      * @param null|string $fixStatement
      * @param bool        $legacy
      */
