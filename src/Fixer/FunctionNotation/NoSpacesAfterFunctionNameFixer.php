@@ -62,7 +62,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $functionyTokens = $this->getFunctionyTokenKinds();
-        $languageConstructionTokens = $this->getLanguageConstructionTokenKinds();
         $braceTypes = $this->getBraceAfterVariableKinds();
 
         foreach ($tokens as $index => $token) {
@@ -73,17 +72,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 
             // last non-whitespace token, can never be `null` always at least PHP open tag before it
             $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
-
-            // check for ternary operator
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-            $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
-            if (
-                null !== $nextNonWhiteSpace
-                && $tokens[$nextNonWhiteSpace]->equals('?')
-                && $tokens[$lastTokenIndex]->isGivenKind($languageConstructionTokens)
-            ) {
-                continue;
-            }
 
             // check if it is a function call
             if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
@@ -145,40 +133,21 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         static $tokens = [
             T_ARRAY,
-            T_ECHO,
+            //T_ECHO,
             T_EMPTY,
             T_EVAL,
             T_EXIT,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
+            //T_INCLUDE,
+            //T_INCLUDE_ONCE,
             T_ISSET,
             T_LIST,
-            T_PRINT,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
+            //T_PRINT,
+            //T_REQUIRE,
+            //T_REQUIRE_ONCE,
             T_UNSET,
             T_VARIABLE,
         ];
 
         return $tokens;
-    }
-
-    /**
-     * Gets the token kinds of actually language construction.
-     *
-     * @return int[]
-     */
-    private function getLanguageConstructionTokenKinds()
-    {
-        static $languageConstructionTokens = [
-            T_ECHO,
-            T_PRINT,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-        ];
-
-        return $languageConstructionTokens;
     }
 }

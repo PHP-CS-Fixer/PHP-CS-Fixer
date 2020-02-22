@@ -47,16 +47,10 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
             ],
             'test function-like constructs' => [
                 '<?php
-    include("something.php");
-    include_once("something.php");
-    require("something.php");
-    require_once("something.php");
-    print("hello");
     unset($hello);
     isset($hello);
     empty($hello);
     die($hello);
-    echo("hello");
     array("hello");
     list($a, $b) = $c;
     eval("a");
@@ -64,21 +58,25 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     $foo = &ref();
     ',
                 '<?php
-    include ("something.php");
-    include_once ("something.php");
-    require ("something.php");
-    require_once ("something.php");
-    print ("hello");
     unset ($hello);
     isset ($hello);
     empty ($hello);
     die ($hello);
-    echo ("hello");
     array ("hello");
     list ($a, $b) = $c;
     eval ("a");
     foo ();
     $foo = &ref ();
+    ',
+            ],
+            'don\'t touch non-function-like constructs' => [
+                '<?php
+    include ("something.php");
+    include_once ("something.php");
+    require ("something.php");
+    require_once ("something.php");
+    print ("hello");
+    echo ("hello");
     ',
             ],
             [
@@ -105,6 +103,12 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php include ($html)? "custom.html": "custom.php";',
+            ],
+            'don\'t touch echo expressions' => [
+                '<?php
+    echo ($a ?: $b) . $c;
+    echo (2 + 3) * 4, "\n";
+    ',
             ],
             'don\'t touch function declarations' => [
                 '<?php
