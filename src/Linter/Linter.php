@@ -32,10 +32,11 @@ final class Linter implements LinterInterface
     public function __construct($executable = null)
     {
         try {
-            $this->sublinter = new TokenizerLinter();
+            $this->sublinter = new PooledLinter();
         } catch (UnavailableLinterException $e) {
             $this->sublinter = new ProcessLinter($executable);
         }
+        var_dump(get_class($this->sublinter));
     }
 
     /**
