@@ -55,40 +55,11 @@ class PooledLinter implements  LinterInterface
     }
 
     private function createTaskForFile($path) {
-        return new class($path) implements Task {
-            private $path;
-
-            public function __construct($path)
-            {
-                $this->path = $path;
-            }
-
-            /**
-             * @inheritDoc
-             */
-            public function run(Environment $environment) {
-                $linter = new TokenizerLinter();
-                return $linter->lintFile($this->path);
-            }
-        };
+        return new PooledLintFileTask($path);
     }
 
     private function createTaskForSource($source) {
-        return new class($source) implements Task {
-            private $source;
-
-            public function __construct($source)
-            {
-                $this->source = $source;
-            }
-
-            /**
-             * @inheritDoc
-             */
-            public function run(Environment $environment) {
-                $linter = new TokenizerLinter();
-                return $linter->lintSource($this->source);
-            }
-        };
+        return new PooledLintSourceTask($source);
     }
 }
+

@@ -42,12 +42,11 @@ final class PooledLintingResult implements LintingResultInterface
     public function check()
     {
         if (null === $this->isSuccessful) {
-            try {
-                $this->isSuccessful = \Amp\Promise\wait($this->promise);
-            } catch (\Exception $e) {
-                $this->isSuccessful = false;
-                throw new LintingException($e->getMessage());
-            }
+                /**
+                 * @var TokenizerLintingResult
+                 */
+                $result = \Amp\Promise\wait($this->promise);
+                $this->isSuccessful = $result->check();
         }
 
         return $this->isSuccessful;
