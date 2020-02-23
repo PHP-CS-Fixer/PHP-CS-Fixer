@@ -67,7 +67,6 @@ class PooledLinter implements  LinterInterface
              * @inheritDoc
              */
             public function run(Environment $environment) {
-                echo "linting ". $this->path;
                 $linter = new TokenizerLinter();
                 return $linter->lintFile($this->path);
             }

@@ -26,6 +26,9 @@ final class PooledLintingResult implements LintingResultInterface
      */
     private $isSuccessful;
 
+    /**
+     * @var Promise
+     */
     private $promise;
 
     public function __construct(Promise $promise)
