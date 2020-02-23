@@ -27,7 +27,7 @@ class PooledLinter implements  LinterInterface
 
     public function __destruct()
     {
-        yield $this->processPool->shutdown();
+        \Amp\Promise\wait($this->processPool->shutdown());
     }
 
     /**
