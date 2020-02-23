@@ -41,18 +41,13 @@ final class PooledLintingResult implements LintingResultInterface
      */
     public function check()
     {
-        if (!$this->isSuccessful()) {
-            // on some systems stderr is used, but on others, it's not
-            throw new LintingException('error 213', 890);
-            //throw new LintingException($this->process->getErrorOutput() ?: $this->process->getOutput(), $this->process->getExitCode());
-        }
-    }
-
-
-    private function isSuccessful()
-    {
         if (null === $this->isSuccessful) {
-            $this->isSuccessful = yield $this->promise;
+            try {
+                $this->isSuccessful = \Amp\Promise\wait($this->promise);
+            } catch (\Exception $e) {
+                $this->isSuccessful = false;
+                throw new LintingException($e->getMessage());
+            }
         }
 
         return $this->isSuccessful;
