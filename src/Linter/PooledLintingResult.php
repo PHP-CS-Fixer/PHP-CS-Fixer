@@ -31,6 +31,9 @@ final class PooledLintingResult implements LintingResultInterface
      */
     private $promise;
 
+    /**
+     * @param Promise<TokenizerLintingResult> $promise
+     */
     public function __construct(Promise $promise)
     {
         $this->promise = $promise;
