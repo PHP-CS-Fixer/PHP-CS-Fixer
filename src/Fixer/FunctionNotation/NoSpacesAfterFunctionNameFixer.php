@@ -133,17 +133,11 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         static $tokens = [
             T_ARRAY,
-            //T_ECHO,
             T_EMPTY,
             T_EVAL,
             T_EXIT,
-            //T_INCLUDE,
-            //T_INCLUDE_ONCE,
             T_ISSET,
             T_LIST,
-            //T_PRINT,
-            //T_REQUIRE,
-            //T_REQUIRE_ONCE,
             T_UNSET,
             T_VARIABLE,
         ];
