@@ -54,6 +54,8 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
         $start = 0,
         $end = null
     ) {
+        static::assertTrue($this->fixer->isRisky());
+
         $tokens = Tokens::fromCode($source);
 
         static::assertSame(

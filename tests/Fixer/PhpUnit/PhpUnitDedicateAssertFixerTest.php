@@ -265,7 +265,7 @@ $a#
 
     public function provideTestFixLegacyCases()
     {
-        return array_filter($this->provideTestFixCases(), function (array $case) { return !isset($case[2]); });
+        return array_filter($this->provideTestFixCases(), static function (array $case) { return !isset($case[2]); });
     }
 
     /**

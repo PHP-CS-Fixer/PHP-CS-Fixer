@@ -218,6 +218,30 @@ function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\B
 {
 }',
             ],
+            'Import common strict types with reserved' => [
+                '<?php
+
+use Foo\Bar;
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(Bar $foo, array $bar): Baz
+    {
+    }
+}',
+                '<?php
+
+use Foo\Bar;
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo, array $bar): \Foo\Bar\Baz
+    {
+    }
+}',
+            ],
         ];
     }
 

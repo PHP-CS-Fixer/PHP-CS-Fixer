@@ -362,6 +362,8 @@ EOF;
 
             return $matches;
         }
+
+        return null;
     }
 
     /**

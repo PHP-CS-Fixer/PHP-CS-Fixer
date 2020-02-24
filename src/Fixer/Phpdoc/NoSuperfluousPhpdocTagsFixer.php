@@ -395,7 +395,7 @@ class Foo {
     private function toComparableNames(array $types, array $symbolShortNames)
     {
         $normalized = array_map(
-            function ($type) use ($symbolShortNames) {
+            static function ($type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
                 if (isset($symbolShortNames[$type])) {

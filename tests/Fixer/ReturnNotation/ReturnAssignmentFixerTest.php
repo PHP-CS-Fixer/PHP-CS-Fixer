@@ -407,6 +407,21 @@ var names are case insensitive */ }
 var names are case insensitive */ return $a   ;}
                 ',
             ],
+            [
+                '<?php
+                    function A()
+                    {
+                        return $f[1]->a();
+                    }
+                ',
+                '<?php
+                    function A()
+                    {
+                        $a = $f[1]->a();
+                        return $a;
+                    }
+                ',
+            ],
         ];
     }
 
@@ -745,10 +760,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
      */
     public function testRepetitiveFix($expected, $input = null)
     {
-        $this->doTest(
-            $expected,
-            $input
-        );
+        $this->doTest($expected, $input);
     }
 
     public function provideRepetitiveFixCases()

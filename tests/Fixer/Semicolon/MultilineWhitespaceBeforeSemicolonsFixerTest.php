@@ -254,7 +254,8 @@ self
                         ->method1()
                         ->method2();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $this
@@ -272,7 +273,8 @@ self
 
 
 ',
-            ], [
+            ],
+            [
                 '<?php
 
                     $service->method1()
@@ -294,7 +296,8 @@ self
                     $this
                         ->method1()
                         ->method2();',
-            ], [
+            ],
+            [
                 '<?php
 
                     $service
@@ -306,7 +309,8 @@ self
                     $service
                         ->method2();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $service->method1()
@@ -322,7 +326,8 @@ self
                         ->method3()
                         ->method4();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $this->service->method1()
@@ -346,7 +351,8 @@ self
                         )
                         ->method4();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $service
@@ -364,7 +370,8 @@ self
                         ->method3()
                             ->method4();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     $f = "g";
 
@@ -384,7 +391,8 @@ self
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f);
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     $f = "g";
 
@@ -404,17 +412,20 @@ self
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f); /* this is a comment */
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     $service->method1();
                     $service->method2()->method3();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     $service->method1() ;
                     $service->method2()->method3() ;
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $service
@@ -436,7 +447,8 @@ self
                             ;
                         });
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $data = $service
@@ -465,7 +477,8 @@ self
                                 ));
                         });
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $service
@@ -513,7 +526,8 @@ $this
                         ::method1()
                         ->method2();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     self
@@ -531,7 +545,8 @@ $this
 
 
 ',
-            ], [
+            ],
+            [
                 '<?php
 
                     Service::method1()
@@ -553,7 +568,8 @@ $this
                     $this
                         ->method1()
                         ->method2();',
-            ], [
+            ],
+            [
                 '<?php
 
                     Service
@@ -565,7 +581,8 @@ $this
                     Service
                         ::method2();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     Service::method1()
@@ -581,7 +598,8 @@ $this
                         ->method3()
                         ->method4();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     self::method1()
@@ -605,7 +623,8 @@ $this
                         )
                         ->method4();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     Service
@@ -623,7 +642,8 @@ $this
                         ->method3()
                             ->method4();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     $f = "g";
 
@@ -643,7 +663,8 @@ $this
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f);
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     $f = "g";
 
@@ -663,17 +684,20 @@ $this
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f); /* this is a comment */
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     Service::method1();
                     Service::method2()->method3();
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
                     Service::method1() ;
                     Service::method2()->method3() ;
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     Service
@@ -695,7 +719,8 @@ $this
                             ;
                         });
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     $data = Service
@@ -724,7 +749,8 @@ $this
                                 ));
                         });
                 ?>',
-            ], [
+            ],
+            [
                 '<?php
 
                     Service
@@ -814,6 +840,11 @@ Service
                     }
                 ?>',
             ],
+            [
+                '<?php $this
+        ->methodA()
+        ->methodB();',
+            ],
         ];
     }
 
@@ -841,7 +872,8 @@ Service
             [
                 "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3)\r\n\t;",
                 "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3);",
-            ], [
+            ],
+            [
                 "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
                 "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
             ],

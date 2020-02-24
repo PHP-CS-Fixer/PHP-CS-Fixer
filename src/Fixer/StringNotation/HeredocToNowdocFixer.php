@@ -109,7 +109,7 @@ EOF
     {
         return new Token([
             $token->getId(),
-            Preg::replace('/^([Bb]?<<<)([ \t]*)"?([^\s"]+)"?/', '$1$2\'$3\'', $token->getContent()),
+            Preg::replace('/^([Bb]?<<<)(\h*)"?([^\s"]+)"?/', '$1$2\'$3\'', $token->getContent()),
         ]);
     }
 }

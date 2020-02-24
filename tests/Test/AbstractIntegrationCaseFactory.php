@@ -217,6 +217,8 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if ($candidateFile->isFile()) {
             return $candidateFile->getContents();
         }
+
+        return null;
     }
 
     /**
