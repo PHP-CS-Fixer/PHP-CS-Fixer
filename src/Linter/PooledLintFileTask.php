@@ -9,6 +9,9 @@ use PhpCsFixer\Linter\TokenizerLinter;
 class PooledLintFileTask implements Task {
     private $path;
 
+    /**
+     * @param string $path
+     */
     public function __construct($path)
     {
         $this->path = $path;
