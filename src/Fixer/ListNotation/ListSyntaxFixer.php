@@ -120,7 +120,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     {
         static $typesOfInterest = [
             [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE],
-            [CT::T_ARRAY_SQUARE_BRACE_OPEN],
+            '[', // [CT::T_ARRAY_SQUARE_BRACE_OPEN],
         ];
 
         $closeIndex = $tokens->getNextTokenOfKind($index, $typesOfInterest);

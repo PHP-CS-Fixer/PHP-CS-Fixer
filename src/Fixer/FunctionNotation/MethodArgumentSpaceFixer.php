@@ -309,7 +309,7 @@ SAMPLE
             return false;
         }
 
-        $content = Preg::replace('/\R[ \t]*/', '', $tokens[$index]->getContent());
+        $content = Preg::replace('/\R\h*/', '', $tokens[$index]->getContent());
         if ('' !== $content) {
             $tokens[$index] = new Token([T_WHITESPACE, $content]);
         } else {

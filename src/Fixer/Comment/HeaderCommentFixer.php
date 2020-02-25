@@ -305,7 +305,7 @@ echo 1;
         $expectedLineCount = 'both' === $this->configuration['separate'] || 'top' === $this->configuration['separate'] ? 2 : 1;
         $prev = $tokens->getPrevNonWhitespace($headerIndex);
 
-        $regex = '/[\t ]$/';
+        $regex = '/\h$/';
         if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
             $tokens[$prev] = new Token([T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }

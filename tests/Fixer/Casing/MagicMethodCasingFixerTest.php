@@ -238,6 +238,9 @@ function __Tostring() {}',
                     $a->a();
                 ',
             ],
+            [
+                '<?php A\B\__callstatic(); echo $a->b;',
+            ],
         ];
     }
 

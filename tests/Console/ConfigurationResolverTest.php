@@ -12,11 +12,13 @@
 
 namespace PhpCsFixer\Tests\Console;
 
+use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -749,6 +751,14 @@ final class ConfigurationResolverTest extends TestCase
         );
 
         static::assertSame($cacheFile, $resolver->getCacheFile());
+
+        $cacheManager = $resolver->getCacheManager();
+
+        static::assertInstanceOf(NullCacheManager::class, $cacheManager);
+
+        $linter = $resolver->getLinter();
+
+        static::assertInstanceOf(LinterInterface::class, $linter);
     }
 
     public function testResolveCacheFileWithOption()
@@ -1008,6 +1018,18 @@ final class ConfigurationResolverTest extends TestCase
                 'udiff',
             ],
         ];
+    }
+
+    public function testResolveUnknownDiffer()
+    {
+        $resolver = $this->createConfigurationResolver([
+            'diff-format' => 'XXX',
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('#^"diff\-format" must be any of "null", "udiff", got "XXX"\.$#');
+
+        $resolver->getDiffer();
     }
 
     public function testResolveConfigFileOverridesDefault()

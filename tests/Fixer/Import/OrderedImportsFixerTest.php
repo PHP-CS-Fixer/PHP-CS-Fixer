@@ -979,6 +979,17 @@ use A\A1;
         ];
     }
 
+    public function testUnknownOrderTypes()
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo", "bar".');
+
+        $this->configureFixerWithAliasedOptions([
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'imports_order' => ['class', 'const', 'function', 'foo', 'bar'],
+        ]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Test sorting by length

@@ -127,6 +127,7 @@ final class LineTest extends TestCase
         $line = $doc->getLine($pos);
 
         static::assertSame($content, $line->getContent());
+        static::assertSame($content, (string) $line);
     }
 
     /**

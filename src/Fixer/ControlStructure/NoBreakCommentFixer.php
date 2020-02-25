@@ -218,7 +218,7 @@ switch ($foo) {
         }
 
         if ($nbNewlines > 1) {
-            Preg::match('/^(.*?)(\R[ \t]*)$/s', $newlineToken->getContent(), $matches);
+            Preg::match('/^(.*?)(\R\h*)$/s', $newlineToken->getContent(), $matches);
 
             $indent = $this->getIndentAt($tokens, $newlinePosition - 1);
             $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $matches[1].$lineEnding.$indent]);
@@ -276,10 +276,10 @@ switch ($foo) {
     {
         if ($tokens[$tokens->getPrevNonWhitespace($commentPosition)]->isGivenKind(T_OPEN_TAG)) {
             $whitespacePosition = $commentPosition + 1;
-            $regex = '/^\R[ \t]*/';
+            $regex = '/^\R\h*/';
         } else {
             $whitespacePosition = $commentPosition - 1;
-            $regex = '/\R[ \t]*$/';
+            $regex = '/\R\h*$/';
         }
 
         $whitespaceToken = $tokens[$whitespacePosition];
@@ -316,7 +316,7 @@ switch ($foo) {
                 $content = $this->whitespacesConfig->getLineEnding().$content;
             }
 
-            if (Preg::match('/\R([ \t]*)$/', $content, $matches)) {
+            if (Preg::match('/\R(\h*)$/', $content, $matches)) {
                 return $matches[1];
             }
         }

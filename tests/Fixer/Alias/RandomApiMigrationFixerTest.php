@@ -163,6 +163,11 @@ class srand extends SrandClass{
                 null,
                 ['replacements' => ['rand' => 'random_int']],
             ],
+            [
+                '<?php rand($d, rand($a,$b));',
+                null,
+                ['replacements' => ['rand' => 'rand']],
+            ],
         ];
     }
 

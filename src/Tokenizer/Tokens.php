@@ -129,6 +129,8 @@ final class Tokens extends \SplFixedArray
                 return ['type' => $type, 'isStart' => false];
             }
         }
+
+        return null;
     }
 
     /**
@@ -814,6 +816,8 @@ final class Tokens extends \SplFixedArray
                 return $result;
             }
         }
+
+        return null;
     }
 
     /**

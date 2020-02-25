@@ -43,5 +43,7 @@ final class NullCacheManagerTest extends TestCase
         $manager = new NullCacheManager();
 
         static::assertTrue($manager->needFixing('foo.php', 'bar'));
+
+        $manager->setFile(__FILE__, 'XXX'); // no-op, should not raise an exception
     }
 }

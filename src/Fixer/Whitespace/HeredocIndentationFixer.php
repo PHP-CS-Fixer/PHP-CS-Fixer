@@ -92,7 +92,7 @@ SAMPLE
     {
         $indent = $this->getIndentAt($tokens, $start).$this->whitespacesConfig->getIndent();
 
-        Preg::match('/^[ \t]*/', $tokens[$end]->getContent(), $matches);
+        Preg::match('/^\h*/', $tokens[$end]->getContent(), $matches);
         $currentIndent = $matches[0];
         $currentIndentLength = \strlen($currentIndent);
 
@@ -111,7 +111,7 @@ SAMPLE
             $content = $tokens[$index]->getContent();
 
             if ('' !== $currentIndent) {
-                $content = Preg::replace('/(?<=\v)(?!'.$currentIndent.')[ \t]+/', '', $content);
+                $content = Preg::replace('/(?<=\v)(?!'.$currentIndent.')\h+/', '', $content);
             }
 
             $regexEnd = $last && !$currentIndent ? '(?!\v|$)' : '(?!\v)';
@@ -133,7 +133,7 @@ SAMPLE
         if (!\in_array($content[0], ["\r", "\n"], true) && (!$currentIndent || $currentIndent === substr($content, 0, $currentIndentLength))) {
             $content = $indent.substr($content, $currentIndentLength);
         } elseif ($currentIndent) {
-            $content = Preg::replace('/^(?!'.$currentIndent.')[ \t]+/', '', $content);
+            $content = Preg::replace('/^(?!'.$currentIndent.')\h+/', '', $content);
         }
 
         $tokens[$index] = new Token([T_ENCAPSED_AND_WHITESPACE, $content]);
@@ -157,7 +157,7 @@ SAMPLE
                 $content = $tokens[$index - 1]->getContent().$content;
             }
 
-            if (1 === Preg::match('/\R([ \t]*)$/', $content, $matches)) {
+            if (1 === Preg::match('/\R(\h*)$/', $content, $matches)) {
                 return $matches[1];
             }
         }

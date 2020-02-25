@@ -180,6 +180,8 @@ function fnc($foo) {}
                 return $index;
             }
         }
+
+        return null;
     }
 
     /**

@@ -166,6 +166,14 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
                 $a = \fopen($foo, \'w+ロ\');
                 ',
             ],
+            [
+                '<?php
+                    echo "abc"; // to pass the candidate check
+                    $a = fopen($foo, 1);
+                    $a = fopen($foo, $a);
+                    $a = fopen($foo, null);
+                ',
+            ],
         ];
     }
 }

@@ -35,7 +35,10 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     {
         return new FixerDefinition(
             'A PHP file without end tag must always end with a single empty line feed.',
-            [new CodeSample("<?php\n\$a = 1;")]
+            [
+                new CodeSample("<?php\n\$a = 1;"),
+                new CodeSample("<?php\n\$a = 1;\n\n"),
+            ]
         );
     }
 
