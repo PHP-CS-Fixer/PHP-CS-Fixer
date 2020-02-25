@@ -91,7 +91,7 @@ FIXED;
             ],
             [
                 '<?php $x = __DIR__;',
-                '<?php $x = \\dirname(__FILE__);',
+                '<?php $x = \dirname(__FILE__);',
             ],
             [
                 '<?php $x = __DIR__.".dist";',
@@ -99,7 +99,7 @@ FIXED;
             ],
             [
                 '<?php $x = __DIR__.".dist";',
-                '<?php $x = \\dirname(__FILE__).".dist";',
+                '<?php $x = \dirname(__FILE__).".dist";',
             ],
             [
                 '<?php $x = /* 0 *//* 1 */ /** x2*//*3*//** 4*/__DIR__/**5*//*xx*/;',
@@ -155,6 +155,13 @@ __FILE__# D
                 '<?php $x = \dirname(
                     __FILE__                     '.'
                 );',
+            ],
+            [
+                '<?php
+                    $x = dirname(dirname("a".__FILE__));
+                    $x = dirname(dirname(__FILE__."a"));
+                    $x = dirname(dirname("a".__FILE__."a"));
+                ',
             ],
         ];
     }

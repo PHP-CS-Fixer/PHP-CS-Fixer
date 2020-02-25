@@ -570,7 +570,7 @@ final class RuleSetTest extends TestCase
     {
         $setDefinitionNames = RuleSet::create()->getSetDefinitionNames();
 
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, function ($setDefinitionName) {
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function ($setDefinitionName) {
             return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
         });
 
@@ -863,7 +863,7 @@ Integration of %s.
 
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            function ($version) use ($maximumVersionForRuleset) {
+            static function ($version) use ($maximumVersionForRuleset) {
                 return strcmp($maximumVersionForRuleset, $version) >= 0;
             }
         );

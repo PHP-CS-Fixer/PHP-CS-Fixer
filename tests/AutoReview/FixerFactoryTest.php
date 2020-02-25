@@ -162,6 +162,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']],
+            [$fixers['no_unneeded_curly_braces'], $fixers['return_assignment']],
             [$fixers['no_unneeded_curly_braces'], $fixers['simplified_if_return']],
             [$fixers['no_unset_on_property'], $fixers['combine_consecutive_unsets']],
             [$fixers['no_unused_imports'], $fixers['blank_line_after_namespace']],
@@ -471,10 +472,7 @@ final class FixerFactoryTest extends TestCase
                 $fixer2 = $priorityPair2[0];
 
                 if ($fixer1->getName() === $fixer2->getName()) {
-                    /** @var FixerInterface $fixer */
                     $fixer1 = $priorityPair1[1];
-
-                    /** @var FixerInterface $fixer */
                     $fixer2 = $priorityPair2[1];
                 }
 

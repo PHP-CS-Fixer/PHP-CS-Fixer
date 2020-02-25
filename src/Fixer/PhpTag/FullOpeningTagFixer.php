@@ -82,7 +82,6 @@ echo "Hello!";
          */
         $tokens = Tokens::fromCode($newContent);
 
-        $tokensOldContent = '';
         $tokensOldContentLength = 0;
 
         foreach ($tokens as $index => $token) {
@@ -93,7 +92,6 @@ echo "Hello!";
                     $tokenContent = '<? ';
                 }
 
-                $tokensOldContent .= $tokenContent;
                 $tokensOldContentLength += \strlen($tokenContent);
 
                 continue;
@@ -125,7 +123,6 @@ echo "Hello!";
                 $token = $tokens[$index];
             }
 
-            $tokensOldContent .= $token->getContent();
             $tokensOldContentLength += \strlen($token->getContent());
         }
 

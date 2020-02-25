@@ -113,11 +113,9 @@ final class TravisTest extends TestCase
             return 'Deployment' === $job['stage'];
         });
 
-        $versions = array_map(function ($job) {
+        return array_map(function ($job) {
             return (string) $job['php'];
         }, $jobs);
-
-        return $versions;
     }
 
     private function getAllPhpVersionsUsedByCiForTests()
@@ -126,11 +124,9 @@ final class TravisTest extends TestCase
             return false !== strpos($job['stage'], 'Test');
         });
 
-        $versions = array_map(function ($job) {
+        return array_map(function ($job) {
             return (string) $job['php'];
         }, $jobs);
-
-        return $versions;
     }
 
     private function convertPhpVerIdToNiceVer($verId)

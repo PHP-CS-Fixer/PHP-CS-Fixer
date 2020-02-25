@@ -295,7 +295,7 @@ function foo () {
             $content = $tokens[$index]->getContent().$content;
         }
 
-        if (1 === Preg::match('/\R{1}([ \t]*)$/', $content, $matches)) {
+        if (1 === Preg::match('/\R{1}(\h*)$/', $content, $matches)) {
             return $matches[1];
         }
 

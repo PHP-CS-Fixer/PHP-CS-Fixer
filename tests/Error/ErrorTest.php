@@ -40,5 +40,31 @@ final class ErrorTest extends TestCase
 
         static::assertSame($type, $error->getType());
         static::assertSame($filePath, $error->getFilePath());
+        static::assertNull($error->getSource());
+        static::assertSame([], $error->getAppliedFixers());
+        static::assertNull($error->getDiff());
+    }
+
+    public function testConstructorSetsValues2()
+    {
+        $type = 456;
+        $filePath = __FILE__;
+        $source = __METHOD__;
+        $appliedFixers = ['some_rule'];
+        $diff = '__diff__';
+
+        $error = new Error(
+            $type,
+            $filePath,
+            $source,
+            $appliedFixers,
+            $diff
+        );
+
+        static::assertSame($type, $error->getType());
+        static::assertSame($filePath, $error->getFilePath());
+        static::assertSame($source, $error->getSource());
+        static::assertSame($appliedFixers, $error->getAppliedFixers());
+        static::assertSame($diff, $error->getDiff());
     }
 }

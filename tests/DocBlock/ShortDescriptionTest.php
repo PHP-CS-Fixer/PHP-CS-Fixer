@@ -40,7 +40,6 @@ final class ShortDescriptionTest extends TestCase
     public function provideGetEndCases()
     {
         return [
-            [null, '/** */'],
             [1, '/**
      * Test docblock.
      *
@@ -68,6 +67,8 @@ final class ShortDescriptionTest extends TestCase
                   *
                   * And here is description...
                   */'],
+            [null, '/** */'],
+            [null, "/**\n * @test\n*/"],
         ];
     }
 }
