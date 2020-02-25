@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Linter;
 
 use Amp\Parallel\Worker\Task;
+use Amp\Parallel\Worker\TaskFailureException;
 use Amp\Promise;
 use Symfony\Component\Process\Process;
 
@@ -22,9 +23,9 @@ use Symfony\Component\Process\Process;
 final class PooledLintingResult implements LintingResultInterface
 {
     /**
-     * @var bool
+     * @var string|bool|null
      */
-    private $isSuccessful;
+    private $result;
 
     /**
      * @var Promise
@@ -44,14 +45,12 @@ final class PooledLintingResult implements LintingResultInterface
      */
     public function check()
     {
-        if (null === $this->isSuccessful) {
-                /**
-                 * @var TokenizerLintingResult
-                 */
-                $result = \Amp\Promise\wait($this->promise);
-                $this->isSuccessful = $result->check();
+        if (null === $this->result) {
+            $this->result = \Amp\Promise\wait($this->promise);
         }
 
-        return $this->isSuccessful;
+        if (is_string($this->result)) {
+            throw new LintingException($this->result);
+        }
     }
 }

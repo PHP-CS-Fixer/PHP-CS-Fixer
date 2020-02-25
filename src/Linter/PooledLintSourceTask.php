@@ -22,7 +22,15 @@ class PooledLintSourceTask implements Task {
      */
     public function run(Environment $environment) {
         $linter = new TokenizerLinter();
-        return $linter->lintSource($this->source);
+
+        try {
+            $linter->lintSource($this->source)->check();
+            return true;
+        } catch( LintingException $e) {
+            // its not easy to handle a exception thrown within a task on the caller site.
+            // therefore we transform it to a string a re-create the exception later on.
+            return $e->getMessage();
+        }
     }
 };
 
