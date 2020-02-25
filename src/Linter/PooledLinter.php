@@ -15,14 +15,18 @@ namespace PhpCsFixer\Linter;
 use Amp\Parallel\Worker\DefaultPool;
 use Amp\Parallel\Worker\Environment;
 use Amp\Parallel\Worker\Task;
+use Amp\Parallel\Worker\Pool;
 
 class PooledLinter implements  LinterInterface
 {
+    /**
+     * @var Pool
+     */
     private $processPool;
 
-    public function __construct()
+    public function __construct(Pool $pool = null)
     {
-        $this->processPool = new DefaultPool();
+        $this->processPool = $pool ?? \Amp\Parallel\Worker\pool();
     }
 
     public function __destruct()
