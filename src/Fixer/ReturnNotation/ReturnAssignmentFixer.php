@@ -39,7 +39,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer.
-     * Must run after NoEmptyStatementFixer.
+     * Must run after NoEmptyStatementFixer, NoUnneededCurlyBracesFixer.
      */
     public function getPriority()
     {

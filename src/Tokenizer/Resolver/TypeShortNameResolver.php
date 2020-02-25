@@ -73,7 +73,7 @@ final class TypeShortNameResolver
      */
     private function getNamespacesFromTokens(Tokens $tokens)
     {
-        return array_map(function (NamespaceAnalysis $info) {
+        return array_map(static function (NamespaceAnalysis $info) {
             return $info->getFullName();
         }, (new NamespacesAnalyzer())->getDeclarations($tokens));
     }

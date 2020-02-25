@@ -39,9 +39,11 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
      */
     public function testResolveWithMappedRoot()
     {
-        $configuration = new FixerConfigurationResolverRootless('foo', [
-            new FixerOption('foo', 'Bar.'),
-        ], 'bar');
+        $options = [new FixerOption('foo', 'Bar.')];
+        $configuration = new FixerConfigurationResolverRootless('foo', $options, 'bar');
+
+        static::assertSame($options, $configuration->getOptions());
+
         $configuration->resolve(['baz', 'qux']);
     }
 }

@@ -24,23 +24,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string       $expected
-     * @param string       $input
-     * @param \SplFileInfo $file
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input, $file)
+    public function testFix($expected, $input = null, \SplFileInfo $file = null)
     {
         $this->doTest($expected, $input, $file);
     }
 
     public function provideFixCases()
     {
-        return [
-            $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php'),
-            $this->prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php'),
-        ];
+        yield $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php');
+
+        yield $this->prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php');
+
+        yield ['<?php'];
     }
 
     private function prepareTestCase($expectedFilename, $inputFilename = null)

@@ -152,7 +152,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function getIndentAt(Tokens $tokens, $index)
     {
-        if (1 === Preg::match('/\R{1}([ \t]*)$/', $this->getIndentContentAt($tokens, $index), $matches)) {
+        if (1 === Preg::match('/\R{1}(\h*)$/', $this->getIndentContentAt($tokens, $index), $matches)) {
             return $matches[1];
         }
 

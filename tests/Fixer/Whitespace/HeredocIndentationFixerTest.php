@@ -244,6 +244,20 @@ INPUT
       EOD
     );',
             ],
+            [
+                <<<'EXPECTED'
+<?php foo(<<<EOD
+    EOD
+);
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php foo(<<<EOD
+EOD
+);
+INPUT
+                ,
+            ],
         ];
     }
 

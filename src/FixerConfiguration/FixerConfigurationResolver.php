@@ -83,7 +83,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             if (null !== $allowedValues) {
                 foreach ($allowedValues as &$allowedValue) {
                     if (\is_object($allowedValue) && \is_callable($allowedValue)) {
-                        $allowedValue = function ($values) use ($allowedValue) {
+                        $allowedValue = static function ($values) use ($allowedValue) {
                             return $allowedValue($values);
                         };
                     }

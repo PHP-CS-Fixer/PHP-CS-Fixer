@@ -89,7 +89,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     private function fixTokenContent($content)
     {
         return Preg::replaceCallback(
-            '#^/\*\*[ \t]*@var[ \t]+(\S+)[ \t]*(\$\S+)?[ \t]*([^\n]*)\*/$#',
+            '#^/\*\*\h*@var\h+(\S+)\h*(\$\S+)?\h*([^\n]*)\*/$#',
             static function (array $matches) {
                 $content = '/** @var';
                 for ($i = 1, $m = \count($matches); $i < $m; ++$i) {

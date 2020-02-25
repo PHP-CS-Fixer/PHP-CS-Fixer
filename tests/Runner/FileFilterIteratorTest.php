@@ -42,7 +42,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            function ($event) use (&$events) {
+            static function ($event) use (&$events) {
                 $events[] = $event;
             }
         );
@@ -75,7 +75,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            function ($event) use (&$events) {
+            static function ($event) use (&$events) {
                 $events[] = $event;
             }
         );
@@ -108,7 +108,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            function ($event) use (&$events) {
+            static function ($event) use (&$events) {
                 $events[] = $event;
             }
         );
@@ -137,7 +137,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            function () {
+            static function () {
                 throw new \Exception('No event expected.');
             }
         );

@@ -187,7 +187,7 @@ mbereg_search_getregs();
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        /** @var \PhpCsFixer\Tokenizer\Token $token */
+        /** @var Token $token */
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             // check mapping hit
             $tokenContent = strtolower($token->getContent());
