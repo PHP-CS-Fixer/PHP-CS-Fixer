@@ -268,13 +268,6 @@ final class RuleSet implements RuleSetInterface
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
-            'function_to_constant' => ['functions' => [
-                'get_called_class',
-                'get_class',
-                'php_sapi_name',
-                'phpversion',
-                'pi',
-            ]],
             'logical_operators' => true,
             'no_unreachable_default_argument_value' => true,
             'no_unset_on_property' => true,
