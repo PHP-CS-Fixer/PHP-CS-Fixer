@@ -421,6 +421,68 @@ var names are case insensitive */ return $a   ;}
                         return $a;
                     }
                 ',
+                [
+                    '<?php
+                    function a($foos) {
+                        return array_map(function ($foo) {
+                            return (string) $foo;
+                        }, $foos);
+                    }',
+                    '<?php
+                    function a($foos) {
+                        $bars = array_map(function ($foo) {
+                            return (string) $foo;
+                        }, $foos);
+
+                        return $bars;
+                    }',
+                ],
+                [
+                    '<?php
+                    function a($foos) {
+                        return ($foos = [\'bar\']);
+                    }',
+                    '<?php
+                    function a($foos) {
+                        $bars = ($foos = [\'bar\']);
+
+                        return $bars;
+                    }',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     *
+     * @param string $expected
+     * @param string $input
+     */
+    public function testFix70($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix70Cases()
+    {
+        return [
+            [
+                '<?php
+                    function a($foos) {
+                        return (function ($foos) {
+                            return $foos;
+                        })($foos);
+                    }',
+                '<?php
+                    function a($foos) {
+                        $bars = (function ($foos) {
+                            return $foos;
+                        })($foos);
+
+                        return $bars;
+                    }',
             ],
         ];
     }
