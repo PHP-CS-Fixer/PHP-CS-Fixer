@@ -40,7 +40,7 @@ final class FileLintingIterator extends \IteratorIterator
     }
 
     /**
-     * @return null|LinterInterface
+     * @return null|LintingResultInterface
      */
     public function currentLintingResult()
     {

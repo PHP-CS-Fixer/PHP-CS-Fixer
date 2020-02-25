@@ -128,7 +128,7 @@ final class DeprecatedFixerOptionTest extends TestCase
 
     public function testGetNormalizer()
     {
-        $normalizer = function () {};
+        $normalizer = static function () {};
 
         $decoratedOption = $this->prophesize(FixerOptionInterface::class);
         $decoratedOption->getNormalizer()->willReturn($normalizer);

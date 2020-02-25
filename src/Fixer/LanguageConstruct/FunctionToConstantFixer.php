@@ -49,14 +49,14 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
                     new Token([CT::T_CLASS_CONSTANT, 'class']),
                 ],
                 'get_class' => [new Token([T_CLASS_C, '__CLASS__'])],
-                'php_sapi_name' => [new Token([T_STRING, 'PHP_SAPI'])],
-                'phpversion' => [new Token([T_STRING, 'PHP_VERSION'])],
-                'pi' => [new Token([T_STRING, 'M_PI'])],
                 'get_class_this' => [
                     new Token([T_STATIC, 'static']),
                     new Token([T_DOUBLE_COLON, '::']),
                     new Token([CT::T_CLASS_CONSTANT, 'class']),
                 ],
+                'php_sapi_name' => [new Token([T_STRING, 'PHP_SAPI'])],
+                'phpversion' => [new Token([T_STRING, 'PHP_VERSION'])],
+                'pi' => [new Token([T_STRING, 'M_PI'])],
             ];
         }
 
@@ -89,7 +89,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
                 ),
                 new CodeSample(
                     "<?php\necho phpversion();\necho pi();\nclass Foo\n{\n    public function Bar()\n    {\n        echo get_class();\n        get_class(\$this);\n        echo get_called_class();\n    }\n}\n",
-                    ['functions' => ['phpversion', 'get_called_class', 'get_class_this']]
+                    ['functions' => ['get_called_class', 'get_class_this', 'phpversion']]
                 ),
             ],
             null,
@@ -163,7 +163,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
                     'php_sapi_name',
                     'phpversion',
                     'pi',
-                    // TODO on v3.0 add 'get_called_class' here
+                    // TODO on v3.0 add 'get_called_class' and `get_class_this` here
                 ])
                 ->getOption(),
         ]);

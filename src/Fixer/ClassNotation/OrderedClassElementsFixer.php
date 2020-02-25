@@ -232,7 +232,7 @@ class Example
             $i = $tokens->getNextTokenOfKind($i, ['{']);
             $elements = $this->getElements($tokens, $i);
 
-            if (!$elements) {
+            if (0 === \count($elements)) {
                 continue;
             }
 
@@ -345,6 +345,8 @@ class Example
             $elements[] = $element;
             $startIndex = $element['end'] + 1;
         }
+
+        return [];
     }
 
     /**

@@ -733,7 +733,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``functions`` (a subset of ``['get_called_class', 'get_class',
-    'php_sapi_name', 'phpversion', 'pi', 'get_class_this']``): list of
+    'get_class_this', 'php_sapi_name', 'phpversion', 'pi']``): list of
     function names to fix; defaults to ``['get_class', 'php_sapi_name',
     'phpversion', 'pi']``
 

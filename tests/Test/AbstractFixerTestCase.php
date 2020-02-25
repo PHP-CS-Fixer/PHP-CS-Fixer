@@ -181,6 +181,8 @@ abstract class AbstractFixerTestCase extends TestCase
         } catch (\Exception $e) {
             return $e->getMessage()."\n\nSource:\n{$source}";
         }
+
+        return null;
     }
 
     /**

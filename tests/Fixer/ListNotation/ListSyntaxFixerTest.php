@@ -99,6 +99,8 @@ class Test
 }',
         ];
 
+        $cases[] = ['<?php [$b[$a]] = $foo();'];
+
         return $cases;
     }
 
@@ -168,6 +170,10 @@ $a;#
             [
                 '<?php [[$a, [$b]], [[$c, [$d]]]] = $a;',
                 '<?php list(list($a, list($b)), list(list($c, list($d)))) = $a;',
+            ],
+            [
+                '<?php [[$a]] = $foo();',
+                '<?php list(list($a)) = $foo();',
             ],
         ];
     }

@@ -46,7 +46,7 @@ foreach (['json', 'tokenizer'] as $extension) {
 }
 unset($extension);
 
-set_error_handler(function ($severity, $message, $file, $line) {
+set_error_handler(static function ($severity, $message, $file, $line) {
     if ($severity & error_reporting()) {
         throw new ErrorException($message, 0, $severity, $file, $line);
     }

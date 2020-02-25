@@ -118,13 +118,13 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @param string $expected
-     * @param string $input
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input)
+    public function testFix70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -139,6 +139,9 @@ function Foo(INTEGER $a) {}
             [
                 '<?php function Foo(bool $A, float $B, int $C, string $D): int {}',
                 '<?php function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {}',
+            ],
+            [
+                '<?php function Foo(): Foo\A { return new Foo(); }',
             ],
         ];
     }

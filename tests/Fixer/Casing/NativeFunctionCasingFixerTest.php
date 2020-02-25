@@ -135,6 +135,9 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                 ',
             ],
             [
+                '<?php fOoO();',
+            ],
+            [
                 '<?php
                     namespace Foo {
                         function &Next() {

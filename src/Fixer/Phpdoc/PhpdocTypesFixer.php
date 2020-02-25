@@ -76,7 +76,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     {
         parent::configure($configuration);
 
-        $this->typesToFix = array_merge(...array_map(function ($group) {
+        $this->typesToFix = array_merge(...array_map(static function ($group) {
             return self::$possibleTypes[$group];
         }, $this->configuration['groups']));
     }

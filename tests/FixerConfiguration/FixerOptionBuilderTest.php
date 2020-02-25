@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tests\TestCase;
 
@@ -49,20 +51,35 @@ final class FixerOptionBuilderTest extends TestCase
     public function testGetOption()
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
-        $option = $builder
+        $regularOption = $builder
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
             ->setNormalizer(static function () {})
             ->getOption()
         ;
-        static::assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOption::class, $option);
-        static::assertSame('foo', $option->getName());
-        static::assertSame('Bar.', $option->getDescription());
-        static::assertTrue($option->hasDefault());
-        static::assertSame('baz', $option->getDefault());
-        static::assertSame(['bool'], $option->getAllowedTypes());
-        static::assertSame([true, false], $option->getAllowedValues());
-        static::assertInstanceOf(\Closure::class, $option->getNormalizer());
+
+        static::assertInstanceOf(FixerOption::class, $regularOption);
+
+        $deprecationOption = $builder
+            ->setDefault('baz')
+            ->setAllowedTypes(['bool'])
+            ->setAllowedValues([true, false])
+            ->setNormalizer(static function () {})
+            ->setDeprecationMessage('Deprecation message')
+            ->getOption()
+        ;
+
+        static::assertInstanceOf(DeprecatedFixerOption::class, $deprecationOption);
+
+        foreach ([$regularOption, $deprecationOption] as $option) {
+            static::assertSame('foo', $option->getName());
+            static::assertSame('Bar.', $option->getDescription());
+            static::assertTrue($option->hasDefault());
+            static::assertSame('baz', $option->getDefault());
+            static::assertSame(['bool'], $option->getAllowedTypes());
+            static::assertSame([true, false], $option->getAllowedValues());
+            static::assertInstanceOf(\Closure::class, $option->getNormalizer());
+        }
     }
 }
