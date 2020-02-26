@@ -105,6 +105,7 @@ class InvalidName {}
             $dir = \dirname($path);
 
             if ('' !== $this->configuration['dir']) {
+                /** @var false|string $dir until support for PHP 5.6 is dropped */
                 $dir = substr($dir, \strlen(realpath($this->configuration['dir'])) + 1);
 
                 if (false === $dir) {
@@ -120,6 +121,7 @@ class InvalidName {}
                 }
             }
 
+            /** @var false|string $dir until support for PHP 5.6 is dropped */
             $dir = substr($dir, -\strlen($normNamespace));
             if (false === $dir) {
                 $dir = '';
