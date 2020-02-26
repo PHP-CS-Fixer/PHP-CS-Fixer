@@ -22,7 +22,6 @@ use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
@@ -314,12 +313,14 @@ final class DescribeCommand extends Command
         $help = '';
 
         foreach ($rules as $rule => $config) {
-            /** @var FixerDefinitionInterface $definition */
-            $definition = $fixers[$rule]->getDefinition();
+            /** @var FixerInterface $fixer */
+            $fixer = $fixers[$rule];
+
+            $definition = $fixer->getDefinition();
             $help .= sprintf(
                 " * <info>%s</info>%s\n   | %s\n%s\n",
                 $rule,
-                $fixers[$rule]->isRisky() ? ' <error>risky</error>' : '',
+                $fixer->isRisky() ? ' <error>risky</error>' : '',
                 $definition->getSummary(),
                 true !== $config ? sprintf("   <comment>| Configuration: %s</comment>\n", HelpCommand::toString($config)) : ''
             );

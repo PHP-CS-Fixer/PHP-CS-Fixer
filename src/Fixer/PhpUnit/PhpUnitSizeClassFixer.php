@@ -257,7 +257,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     }
 
     /**
-     * @return Annotation[]
+     * @return Annotation[][]
      */
     private function filterDocBlock(DocBlock $doc)
     {

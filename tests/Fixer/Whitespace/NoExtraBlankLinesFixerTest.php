@@ -90,8 +90,7 @@ class Test {
 EOF;
 
     /**
-     * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
-     * @param null|string[] $config
+     * @param int[] $lineNumberRemoved Line numbers expected to be removed after fixing
      *
      * @dataProvider provideWithConfigCases
      */

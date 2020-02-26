@@ -56,4 +56,4 @@ composer info -D | sort
 
 echo λλλ phive packages
 
-./bin/phive install --trust-gpg-keys D2CCAC42F6295E7D,8E730BA25823D8B5
+./bin/phive install --trust-gpg-keys D2CCAC42F6295E7D,8E730BA25823D8B5,CF1A108D0E7AE720

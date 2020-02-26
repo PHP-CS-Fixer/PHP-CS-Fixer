@@ -1,14 +1,18 @@
 includes:
+    - dev-tools/vendor/jangregor/phpstan-prophecy/src/extension.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
-    level: 1
+    level: 3
     paths:
         - src
         - tests
     excludes_analyse:
         - tests/Fixtures
     ignoreErrors:
-        - '/^.+::__construct\(\) does not call parent constructor from SplFileInfo\.$/'
         - '/^Return typehint of method PhpCsFixer\\Tests\\Test\\.+::createIsIdenticalStringConstraint\(\) has invalid type PHPUnit_Framework_Constraint_IsIdentical\.$/'
         - '/^Class (Symfony\\Contracts\\EventDispatcher\\Event|Symfony\\Component\\EventDispatcher\\Event) not found.$/'
+        - '/^(Access|Call) to an undefined (property|method) PhpCsFixer\\AccessibleObject\\AccessibleObject::.+$/'
+        -
+            message: '/^Unsafe usage of new static\(\)\.$/'
+            path: src/Config.php

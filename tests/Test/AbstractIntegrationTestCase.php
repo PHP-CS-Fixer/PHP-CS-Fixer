@@ -64,12 +64,12 @@ abstract class AbstractIntegrationTestCase extends TestCase
     use IsIdenticalConstraint;
 
     /**
-     * @var LinterInterface
+     * @var null|LinterInterface
      */
     protected $linter;
 
     /**
-     * @var FileRemoval
+     * @var null|FileRemoval
      */
     private static $fileRemoval;
 

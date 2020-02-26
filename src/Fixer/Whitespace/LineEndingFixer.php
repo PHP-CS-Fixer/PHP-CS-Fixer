@@ -87,7 +87,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                 continue;
             }
 
-            if ($token->isGivenKind([T_OPEN_TAG, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_START_HEREDOC])) {
+            if ($token->isGivenKind([T_CLOSE_TAG, T_COMMENT, T_DOC_COMMENT, T_OPEN_TAG, T_START_HEREDOC, T_WHITESPACE])) {
                 $tokens[$index] = new Token([
                     $token->getId(),
                     Preg::replace(

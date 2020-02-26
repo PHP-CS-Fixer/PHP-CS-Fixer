@@ -165,7 +165,7 @@ class Foo {
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annontation without actual signature is allowed (`true`) or considered superfluous (`false`)'))
+            (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`)'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),

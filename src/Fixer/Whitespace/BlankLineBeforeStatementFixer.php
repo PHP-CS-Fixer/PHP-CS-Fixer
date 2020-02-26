@@ -40,7 +40,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
         'default' => T_DEFAULT,
-        'die' => T_EXIT,
+        'die' => T_EXIT, // TODO remove this alias 3.0, use `exit`
         'do' => T_DO,
         'exit' => T_EXIT,
         'for' => T_FOR,
@@ -65,6 +65,19 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     private $fixTokenMap = [];
 
     /**
+     * Dynamic yield from option set on constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
+        if (\defined('T_YIELD_FROM')) {
+            self::$tokenMap['yield_from'] = T_YIELD_FROM;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration)
@@ -74,6 +87,10 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         $this->fixTokenMap = [];
 
         foreach ($this->configuration['statements'] as $key) {
+            if ('die' === $key) {
+                @trigger_error('Option "die" is deprecated, use "exit" instead.', E_USER_DEPRECATED);
+            }
+
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
     }
@@ -119,19 +136,6 @@ foreach ($foo as $bar) {
 ',
                     [
                         'statements' => ['continue'],
-                    ]
-                ),
-                new CodeSample(
-                    '<?php
-if ($foo === false) {
-    die(0);
-} else {
-    $bar = 9000;
-    die(1);
-}
-',
-                    [
-                        'statements' => ['die'],
                     ]
                 ),
                 new CodeSample(
@@ -313,10 +317,16 @@ if (true) {
      */
     protected function createConfigurationDefinition()
     {
+        $allowed = self::$tokenMap;
+        $allowed['yield_from'] = true; // TODO remove this when update to PHP7.0
+        ksort($allowed);
+
+        $allowed = array_keys($allowed);
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
+                ->setAllowedValues([new AllowedValueSubset($allowed)])
                 ->setDefault([
                     'break',
                     'continue',

@@ -123,8 +123,8 @@ class Foo implements TestInterface, SomethingElse
     }
 
     /**
-     * @param array<[int, int]> $expectedIndexes
-     * @param string            $code
+     * @param array<int,int> $expectedIndexes
+     * @param string         $code
      *
      * @dataProvider provideFindPhpUnitClassesCases
      */

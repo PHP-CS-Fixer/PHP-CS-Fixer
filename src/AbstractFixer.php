@@ -126,7 +126,7 @@ abstract class AbstractFixer implements FixerInterface
                     'Option "%s" for rule "%s" is deprecated and will be removed in version %d.0. %s',
                     $name,
                     $this->getName(),
-                    (int) Application::VERSION + 1,
+                    Application::getMajorVersion() + 1,
                     str_replace('`', '"', $option->getDeprecationMessage())
                 );
 

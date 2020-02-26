@@ -459,11 +459,12 @@ final class FixerFactoryTest extends TestCase
 
         usort(
             $sorted,
+            /**
+             * @param array<FixerInterface> $priorityPair1
+             * @param array<FixerInterface> $priorityPair2
+             */
             static function (array $priorityPair1, array $priorityPair2) {
-                /** @var FixerInterface $fixer */
                 $fixer1 = $priorityPair1[0];
-
-                /** @var FixerInterface $fixer */
                 $fixer2 = $priorityPair2[0];
 
                 if ($fixer1->getName() === $fixer2->getName()) {

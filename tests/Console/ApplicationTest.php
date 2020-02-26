@@ -29,4 +29,9 @@ final class ApplicationTest extends TestCase
         $app = new Application();
         static::assertStringMatchesFormat('%s by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>', $app->getLongVersion());
     }
+
+    public function testGetMajorVersion()
+    {
+        static::assertSame(3, Application::getMajorVersion());
+    }
 }

@@ -27,7 +27,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 final class XmlReporterTest extends AbstractReporterTestCase
 {
     /**
-     * @var string
+     * @var null|string
      */
     private static $xsd;
 

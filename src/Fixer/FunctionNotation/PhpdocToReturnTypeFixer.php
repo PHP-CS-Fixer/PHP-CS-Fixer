@@ -32,7 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpdocToReturnTypeFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<array<int, string>>
+     * @var array<int, array<int, int|string>>
      */
     private $blacklistFuncNames = [
         [T_STRING, '__construct'],

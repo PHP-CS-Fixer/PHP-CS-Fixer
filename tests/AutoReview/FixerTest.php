@@ -12,11 +12,14 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -49,17 +52,13 @@ final class FixerTest extends TestCase
     /**
      * @dataProvider provideFixerDefinitionsCases
      */
-    public function testFixerDefinitions(FixerInterface $fixer)
+    public function testFixerDefinitions(AbstractFixer $fixer)
     {
-        /** @var FixerInterface $fixer */
         $fixerName = $fixer->getName();
         $definition = $fixer->getDefinition();
         $fixerIsConfigurable = $fixer instanceof ConfigurableFixerInterface;
 
-        static::assertRegExp('/^[A-Z`].*\.$/', $definition->getSummary(), sprintf('[%s] Description must start with capital letter or a ` and end with dot.', $fixerName));
-        static::assertNotContains('phpdocs', $definition->getSummary(), sprintf('[%s] `PHPDoc` must not be in the plural in description.', $fixerName), true);
-        static::assertCorrectCasing($definition->getSummary(), 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in description.', $fixerName));
-        static::assertCorrectCasing($definition->getSummary(), 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in description.', $fixerName));
+        self::assertValidDescription($fixerName, 'summary', $definition->getSummary());
 
         $samples = $definition->getCodeSamples();
         static::assertNotEmpty($samples, sprintf('[%s] Code samples are required.', $fixerName));
@@ -162,10 +161,7 @@ final class FixerTest extends TestCase
         }
 
         if ($fixer->isRisky()) {
-            static::assertStringIsNotEmpty($definition->getRiskyDescription(), sprintf('[%s] Risky reasoning is required.', $fixerName));
-            static::assertNotContains('phpdocs', $definition->getRiskyDescription(), sprintf('[%s] `PHPDoc` must not be in the plural in risky reasoning.', $fixerName), true);
-            static::assertCorrectCasing($definition->getRiskyDescription(), 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in risky reasoning.', $fixerName));
-            static::assertCorrectCasing($definition->getRiskyDescription(), 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in risky reasoning.', $fixerName));
+            self::assertValidDescription($fixerName, 'risky description', $definition->getRiskyDescription());
         } else {
             static::assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixerName));
         }
@@ -187,7 +183,7 @@ final class FixerTest extends TestCase
     /**
      * @dataProvider provideFixerDefinitionsCases
      */
-    public function testDeprecatedFixersHaveCorrectSummary(FixerInterface $fixer)
+    public function testDeprecatedFixersHaveCorrectSummary(AbstractFixer $fixer)
     {
         $reflection = new \ReflectionClass($fixer);
         $comment = $reflection->getDocComment();
@@ -219,10 +215,10 @@ final class FixerTest extends TestCase
     {
         $configurationDefinition = $fixer->getConfigurationDefinition();
 
-        static::assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface::class, $configurationDefinition);
+        static::assertInstanceOf(FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
-            static::assertInstanceOf(\PhpCsFixer\FixerConfiguration\FixerOptionInterface::class, $option);
+            static::assertInstanceOf(FixerOptionInterface::class, $option);
             static::assertNotEmpty($option->getDescription());
 
             static::assertSame(
@@ -309,5 +305,20 @@ final class FixerTest extends TestCase
     private static function assertCorrectCasing($needle, $haystack, $message)
     {
         static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
+    }
+
+    /**
+     * @param string $fixerName
+     * @param string $descriptionType
+     * @param mixed  $description
+     */
+    private static function assertValidDescription($fixerName, $descriptionType, $description)
+    {
+        static::assertInternalType('string', $description);
+        static::assertRegExp('/^[A-Z`][^"]+\.$/', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
+        static::assertNotContains('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType), true);
+        static::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
+        static::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));
+        static::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 }

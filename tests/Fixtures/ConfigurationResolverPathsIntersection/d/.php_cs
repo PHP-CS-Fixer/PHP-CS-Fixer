@@ -16,7 +16,7 @@ if (!class_exists('ConfigurationResolverPathsIntersection_d_Config')) {
     }
 }
 
-return ConfigurationResolverPathsIntersection_d_Config::create()
+return (new ConfigurationResolverPathsIntersection_d_Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__.'/..')

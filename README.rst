@@ -304,9 +304,9 @@ Choose from the list of available rules:
   - ``statements`` (a subset of ``['break', 'case', 'continue', 'declare',
     'default', 'die', 'do', 'exit', 'for', 'foreach', 'goto', 'if',
     'include', 'include_once', 'require', 'require_once', 'return',
-    'switch', 'throw', 'try', 'while', 'yield']``): list of statements which
-    must be preceded by an empty line; defaults to ``['break', 'continue',
-    'declare', 'return', 'throw', 'try']``
+    'switch', 'throw', 'try', 'while', 'yield', 'yield_from']``): list of
+    statements which must be preceded by an empty line; defaults to
+    ``['break', 'continue', 'declare', 'return', 'throw', 'try']``
 
 * **braces** [@PSR2, @Symfony, @PhpCsFixer]
 
@@ -1125,7 +1125,7 @@ Choose from the list of available rules:
 
   - ``allow_mixed`` (``bool``): whether type ``mixed`` without description is allowed
     (``true``) or considered superfluous (``false``); defaults to ``false``
-  - ``allow_unused_params`` (``bool``): whether ``param`` annontation without actual
+  - ``allow_unused_params`` (``bool``): whether ``param`` annotation without actual
     signature is allowed (``true``) or considered superfluous (``false``);
     defaults to ``false``
   - ``remove_inheritdoc`` (``bool``): remove ``@inheritDoc`` tags; defaults to ``false``
@@ -1868,7 +1868,7 @@ Choose from the list of available rules:
 
   Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 
-  *Risky rule: risky when using "->bindTo" on lambdas without referencing to ``$this``.*
+  *Risky rule: risky when using ``->bindTo`` on lambdas without referencing to ``$this``.*
 
 * **strict_comparison** [@PhpCsFixer:risky]
 
@@ -2005,7 +2005,7 @@ The example below will add two rules to the default list of PSR2 set rules:
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
@@ -2032,7 +2032,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
@@ -2047,7 +2047,7 @@ configure them in your config file.
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
@@ -2070,7 +2070,7 @@ Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setUsingCache(false)
     ;
 
@@ -2080,7 +2080,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setCacheFile(__DIR__.'/.php_cs.cache')
     ;
 

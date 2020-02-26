@@ -742,7 +742,7 @@ final class ConfigurationResolver
             if (isset($rules[$fixerName]) && $fixer instanceof DeprecatedFixerInterface) {
                 $successors = $fixer->getSuccessorsNames();
                 $messageEnd = [] === $successors
-                    ? sprintf(' and will be removed in version %d.0.', (int) Application::VERSION + 1)
+                    ? sprintf(' and will be removed in version %d.0.', Application::getMajorVersion())
                     : sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
 
                 $message = "Rule \"{$fixerName}\" is deprecated{$messageEnd}";
