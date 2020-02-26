@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-11T11:27:22Z
+
+Removing the RTM label as we do need to resolve the issue with Travis CI first.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-11T11:31:23Z
+
+isn't that the key issue and not related to this PR?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-11T11:39:56Z
+
+I don't think it's a consequence of changes in this PR but it prevents us to make sure the one thing we want to see working actually works :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-26T07:44:49Z
+
+@julienfalque can you rebase this PR? thanks!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-26T08:23:38Z
+
+Done.
