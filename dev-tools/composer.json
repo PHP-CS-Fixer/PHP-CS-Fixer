@@ -5,7 +5,7 @@
     "require-dev": {
         "humbug/box": "^3.8",
         "jangregor/phpstan-prophecy": "^0.6",
-        "localheinz/composer-normalize": "^1.1",
+        "ergebnis/composer-normalize": "^2.2",
         "mi-schi/phpmd-extension": "^4.3",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan-phpunit": "^0.12"
