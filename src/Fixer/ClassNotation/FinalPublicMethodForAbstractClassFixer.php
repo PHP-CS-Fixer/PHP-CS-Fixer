@@ -65,7 +65,7 @@ abstract class AbstractMachine
             ],
             'Enforce API encapsulation in an inheritance architecture. '
             .'If you want to override a method, use the Template method pattern.',
-            'Risky when overriding `public` methods of `abstract` classes'
+            'Risky when overriding `public` methods of `abstract` classes.'
         );
     }
 

@@ -50,19 +50,27 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
             "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \n |\r\nTEST;\r\n", // both cases
         ];
 
-        // !T_INLINE_HTML
-        $cases[] = [
-            "<?php ?>\r\n<?php ?>\r\n",
+        $cases['T_INLINE_HTML'] = [
+            "<?php ?>\nZ\r\n<?php ?>\nZ\r\n",
         ];
 
-        // !T_CONSTANT_ENCAPSED_STRING
-        $cases[] = [
+        $cases['!T_CONSTANT_ENCAPSED_STRING'] = [
             "<?php \$a=\"a\r\n\";",
         ];
 
         $cases[] = [
             "<?php echo 'foo',\n\n'bar';",
             "<?php echo 'foo',\r\r\n'bar';",
+        ];
+
+        $cases['T_CLOSE_TAG'] = [
+            "<?php\n?>\n<?php\n",
+            "<?php\n?>\r\n<?php\n",
+        ];
+
+        $cases['T_CLOSE_TAG II'] = [
+            "<?php\n?>\n<?php\n?>\n<?php\n",
+            "<?php\n?>\r\n<?php\n?>\r\n<?php\n",
         ];
 
         return $cases;
@@ -103,28 +111,23 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
     private function provideCommonCases()
     {
         return [
-            // T_OPEN_TAG
-            [
+            'T_OPEN_TAG' => [
                 "<?php\n \$a = 1;",
                 "<?php\r\n \$a = 1;",
             ],
-            // T_WHITESPACE
-            [
+            'T_WHITESPACE' => [
                 "<?php \n \$a\n= 1;\n",
                 "<?php \r\n \$a\r\n= 1;\r\n",
             ],
-            // T_COMMENT
-            [
+            'T_COMMENT' => [
                 "<?php /*\n*/",
                 "<?php /*\r\n*/",
             ],
-            // T_DOC_COMMENT
-            [
+            'T_DOC_COMMENT' => [
                 "<?php /**\n*/",
                 "<?php /**\r\n*/",
             ],
-            // T_START_HEREDOC
-            [
+            'T_START_HEREDOC' => [
                 "<?php \$a = <<<'TEST'\nAA\nTEST;\n",
                 "<?php \$a = <<<'TEST'\r\nAA\r\nTEST;\r\n",
             ],
@@ -132,8 +135,7 @@ final class LineEndingFixerTest extends AbstractFixerTestCase
                 "<?php \$a = <<<TEST\nAAA\nTEST;\n",
                 "<?php \$a = <<<TEST\r\nAAA\r\nTEST;\r\n",
             ],
-            // T_ENCAPSED_AND_WHITESPACE
-            [
+            'T_ENCAPSED_AND_WHITESPACE' => [
                 "<?php \$a = <<<'TEST'\nAAAA 1\n \$b\nTEST;\n",
                 "<?php \$a = <<<'TEST'\r\nAAAA 1\r\n \$b\r\nTEST;\r\n",
             ],

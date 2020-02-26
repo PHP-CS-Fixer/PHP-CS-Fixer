@@ -28,7 +28,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
     /**
      * "checkstyle" XML schema.
      *
-     * @var string
+     * @var null|string
      */
     private static $xsd;
 

@@ -24,7 +24,7 @@ use PhpCsFixer\Tests\TestCase;
 abstract class AbstractReporterTestCase extends TestCase
 {
     /**
-     * @var ReporterInterface
+     * @var null|ReporterInterface
      */
     protected $reporter;
 
