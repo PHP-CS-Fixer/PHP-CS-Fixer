@@ -389,6 +389,9 @@ switch ($a) {
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Option "die" is deprecated, use "exit" instead.
+     *
      * @dataProvider provideFixWithDieCases
      *
      * @param string      $expected
@@ -1273,6 +1276,19 @@ function foo() {
             [
                 '<?php
 function foo() {
+    yield \'b\' => $a;
+
+    yield "a" => $b;
+}',
+                '<?php
+function foo() {
+    yield \'b\' => $a;
+    yield "a" => $b;
+}',
+            ],
+            [
+                '<?php
+function foo() {
     $a = $a;
 
     yield $a;
@@ -1289,6 +1305,74 @@ function foo() {
 function foo() {
     $a = $a;
     yield $a;
+}',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixWithYieldFromCases
+     * @requires PHP 7.0
+     */
+    public function testFixWithYieldFrom($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['yield_from'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @yield array
+     */
+    public function provideFixWithYieldFromCases()
+    {
+        return [
+            [
+                '<?php
+function foo() {
+    yield from $a;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    yield from $a;
+
+    yield from $b;
+}',
+                '<?php
+function foo() {
+    yield from $a;
+    yield from $b;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $a;
+
+    yield from $a;
+
+    yield $a;
+    yield $b;
+}',
+            ],
+            [
+                '<?php
+function foo() {
+    $a = $a;
+
+    yield from $a;
+}',
+                '<?php
+function foo() {
+    $a = $a;
+    yield from $a;
 }',
             ],
         ];
