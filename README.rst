@@ -2095,7 +2095,7 @@ The example below will add two rules to the default list of PSR2 set rules:
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
@@ -2122,7 +2122,7 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
@@ -2137,7 +2137,7 @@ configure them in your config file.
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
@@ -2160,7 +2160,7 @@ Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setUsingCache(false)
     ;
 
@@ -2170,7 +2170,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    return (new PhpCsFixer\Config())
         ->setCacheFile(__DIR__.'/.php_cs.cache')
     ;
 

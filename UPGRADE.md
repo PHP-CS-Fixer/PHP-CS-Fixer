@@ -170,7 +170,7 @@ $config = Symfony\CS\Config\Config::create()
 ```
 <?php
 // phpcs-fixer v2.*
-$config = PhpCsFixer\Config::create()
+$config = (new PhpCsFixer\Config())
     ->registerCustomFixers([
         new ShopSys\CodingStandards\CsFixer\MissingButtonTypeFixer(),
         new ShopSys\CodingStandards\CsFixer\OrmJoinColumnRequireNullableFixer(),

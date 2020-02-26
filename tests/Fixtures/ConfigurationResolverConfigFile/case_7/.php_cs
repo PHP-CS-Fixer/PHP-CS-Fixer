@@ -1,3 +1,3 @@
 <?php
 
-return PhpCsFixer\Config::create()->setFormat('xls');
+return (new PhpCsFixer\Config())->setFormat('xls');
