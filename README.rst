@@ -1806,7 +1806,7 @@ Choose from the list of available rules:
 
   Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 
-  *Risky rule: risky when using "->bindTo" on lambdas without referencing to ``$this``.*
+  *Risky rule: risky when using ``->bindTo`` on lambdas without referencing to ``$this``.*
 
 * **strict_comparison** [@PhpCsFixer:risky]
 
