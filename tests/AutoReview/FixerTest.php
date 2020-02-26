@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
@@ -50,11 +50,10 @@ final class FixerTest extends TestCase
     /**
      * @dataProvider provideFixerDefinitionsCases
      */
-    public function testFixerDefinitions(FixerInterface $fixer)
+    public function testFixerDefinitions(AbstractFixer $fixer)
     {
         static::assertInstanceOf(\PhpCsFixer\Fixer\DefinedFixerInterface::class, $fixer);
 
-        /** @var DefinedFixerInterface $fixer */
         $fixerName = $fixer->getName();
         $definition = $fixer->getDefinition();
         $fixerIsConfigurable = $fixer instanceof ConfigurationDefinitionFixerInterface;
@@ -185,7 +184,7 @@ final class FixerTest extends TestCase
      * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
      * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
      */
-    public function testLegacyFixerDefinitions(FixerInterface $fixer)
+    public function testLegacyFixerDefinitions(AbstractFixer $fixer)
     {
         $definition = $fixer->getDefinition();
 
@@ -217,7 +216,7 @@ final class FixerTest extends TestCase
     /**
      * @dataProvider provideFixerDefinitionsCases
      */
-    public function testDeprecatedFixersHaveCorrectSummary(FixerInterface $fixer)
+    public function testDeprecatedFixersHaveCorrectSummary(AbstractFixer $fixer)
     {
         $reflection = new \ReflectionClass($fixer);
         $comment = $reflection->getDocComment();

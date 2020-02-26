@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Console\Command;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
@@ -400,7 +401,7 @@ EOF
             ));
         }
 
-        for ($i = (int) Application::VERSION; $i > 0; --$i) {
+        for ($i = Application::getMajorVersion(); $i > 0; --$i) {
             if (1 === Preg::match('/Changelog for v('.$i.'.\d+.\d+)/', $changelog, $matches)) {
                 $version = $matches[1];
 
@@ -440,6 +441,7 @@ EOF
     {
         $help = '';
         $fixerFactory = new FixerFactory();
+        /** @var AbstractFixer[] $fixers */
         $fixers = $fixerFactory->registerBuiltInFixers()->getFixers();
 
         // sort fixers by name

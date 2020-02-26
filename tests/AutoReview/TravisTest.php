@@ -152,7 +152,7 @@ final class TravisTest extends TestCase
             throw new \LogicException("Can't find version - perhaps entry file was modified?");
         }
 
-        $phpVerId = end($sequence)->getContent();
+        $phpVerId = (int) end($sequence)->getContent();
 
         return $this->convertPhpVerIdToNiceVer((string) ($phpVerId - 100));
     }

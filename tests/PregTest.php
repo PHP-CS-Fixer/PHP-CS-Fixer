@@ -66,7 +66,7 @@ final class PregTest extends TestCase
     /**
      * @dataProvider providePatternValidationCases
      *
-     * @param $pattern
+     * @param string      $pattern
      * @param null|int    $expected
      * @param null|string $expectedException
      * @param null|string $expectedMessage
