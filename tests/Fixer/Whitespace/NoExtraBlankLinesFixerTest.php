@@ -101,8 +101,7 @@ EOF;
     }
 
     /**
-     * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
-     * @param null|string[] $config
+     * @param int[] $lineNumberRemoved Line numbers expected to be removed after fixing
      *
      * @group legacy
      * @dataProvider provideWithConfigCases
@@ -116,8 +115,7 @@ EOF;
     }
 
     /**
-     * @param int[]         $lineNumberRemoved Line numbers expected to be removed after fixing
-     * @param null|string[] $config
+     * @param int[] $lineNumberRemoved Line numbers expected to be removed after fixing
      *
      * @dataProvider provideWithConfigCases
      */

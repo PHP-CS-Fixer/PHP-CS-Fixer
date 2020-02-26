@@ -34,7 +34,7 @@ final class StaticLambdaFixer extends AbstractFixer
             'Lambdas not (indirect) referencing `$this` must be declared `static`.',
             [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")],
             null,
-            'Risky when using "->bindTo" on lambdas without referencing to `$this`.'
+            'Risky when using `->bindTo` on lambdas without referencing to `$this`.'
         );
     }
 

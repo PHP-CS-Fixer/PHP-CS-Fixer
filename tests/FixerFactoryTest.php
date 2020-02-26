@@ -12,7 +12,6 @@
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -343,7 +342,6 @@ final class FixerFactoryTest extends TestCase
 
     private function createFixerDouble($name, $priority = 0)
     {
-        /** @var FixerInterface $fixer */
         $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
         $fixer->getName()->willReturn($name);
         $fixer->getPriority()->willReturn($priority);

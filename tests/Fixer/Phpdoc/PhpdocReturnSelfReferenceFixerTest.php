@@ -156,11 +156,6 @@ class F
         $this->doTest($expected, $input);
     }
 
-    /**
-     * Expected after fixing, return type to fix.
-     *
-     * @return array<array<string, string>
-     */
     public function provideGeneratedFixCases()
     {
         return [

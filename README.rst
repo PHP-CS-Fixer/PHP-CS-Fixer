@@ -1189,7 +1189,7 @@ Choose from the list of available rules:
 
   - ``allow_mixed`` (``bool``): whether type ``mixed`` without description is allowed
     (``true``) or considered superfluous (``false``); defaults to ``false``
-  - ``allow_unused_params`` (``bool``): whether ``param`` annontation without actual
+  - ``allow_unused_params`` (``bool``): whether ``param`` annotation without actual
     signature is allowed (``true``) or considered superfluous (``false``);
     defaults to ``false``
   - ``remove_inheritdoc`` (``bool``): remove ``@inheritDoc`` tags; defaults to ``false``
@@ -1958,7 +1958,7 @@ Choose from the list of available rules:
 
   Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 
-  *Risky rule: risky when using "->bindTo" on lambdas without referencing to ``$this``.*
+  *Risky rule: risky when using ``->bindTo`` on lambdas without referencing to ``$this``.*
 
 * **strict_comparison** [@PhpCsFixer:risky]
 

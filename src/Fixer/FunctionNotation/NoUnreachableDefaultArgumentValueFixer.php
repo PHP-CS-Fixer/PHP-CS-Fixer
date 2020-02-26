@@ -146,6 +146,8 @@ function example($foo = "two words", $bar) {}
                 return $i;
             }
         }
+
+        return null;
     }
 
     /**

@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -25,6 +26,11 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @var MethodArgumentSpaceFixer
+     */
+    protected $fixer;
+
     /**
      * @param string      $expected
      * @param null|string $input

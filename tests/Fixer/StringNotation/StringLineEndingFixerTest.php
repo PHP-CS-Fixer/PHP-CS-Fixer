@@ -93,6 +93,10 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
                 sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
                 sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
             ],
+            'not T_CLOSE_TAG, do T_INLINE_HTML' => [
+                "<?php foo(); ?>\r\nA\n\n",
+                "<?php foo(); ?>\r\nA\r\n\r\n",
+            ],
         ];
     }
 
