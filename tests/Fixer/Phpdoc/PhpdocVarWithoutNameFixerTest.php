@@ -372,40 +372,6 @@ EOF
             ],
             [
                 '<?php
-/**
- * Header
- */
-
-class A {} // for the candidate check
-
-/**
- * @var ClassLoader $loader
- */
-$loader = require __DIR__.\'/../vendor/autoload.php\';
-
-/**
- * @var \Foo\Bar $bar
- */
-$bar->doSomething(1);
-
-/**
- * @var $bar \Foo\Bar
- */
-$bar->doSomething(2);
-
-/**
- * @var User $bar
- */
-($bar = tmp())->doSomething(3);
-
-/**
- * @var User $bar
- */
-list($bar) = a();
-                ',
-            ],
-            [
-                '<?php
 class Foo
 {
     /**
@@ -427,10 +393,10 @@ class Foo{}
      * @requires PHP 7.0
      * @dataProvider provideFixVar70Cases
      *
-     * @param string $expected
-     * @param string $input
+     * @param string      $expected
+     * @param null|string $input
      */
-    public function testFixVar70($expected, $input)
+    public function testFixVar70($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -497,6 +463,40 @@ class Anon
 }
 EOF
                 ,
+            ],
+            [
+                '<?php
+/**
+ * Header
+ */
+
+class A {} // for the candidate check
+
+/**
+ * @var ClassLoader $loader
+ */
+$loader = require __DIR__.\'/../vendor/autoload.php\';
+
+/**
+ * @var \Foo\Bar $bar
+ */
+$bar->doSomething(1);
+
+/**
+ * @var $bar \Foo\Bar
+ */
+$bar->doSomething(2);
+
+/**
+ * @var User $bar
+ */
+($bar = tmp())->doSomething(3);
+
+/**
+ * @var User $bar
+ */
+list($bar) = a();
+                ',
             ],
         ];
     }
