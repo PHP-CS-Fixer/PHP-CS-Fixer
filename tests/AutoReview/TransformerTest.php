@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
 
@@ -39,6 +40,37 @@ final class TransformerTest extends TestCase
             $transformerRef->isFinal(),
             sprintf('Transformer "%s" must be declared "final."', $transformer->getName())
         );
+    }
+
+    /**
+     * @dataProvider provideTransformerCases
+     */
+    public function testTransformer(TransformerInterface $transformer)
+    {
+        $name = $transformer->getName();
+        $priority = $transformer->getPriority();
+        $customTokens = $transformer->getCustomTokens();
+        $requiredPhpVersionId = $transformer->getRequiredPhpVersionId();
+
+        static::assertInternalType('string', $name, $name);
+        static::assertRegExp('/^[a-z]+[a-z_]*[a-z]$/', $name, $name);
+
+        static::assertInternalType('int', $priority, $name);
+        static::assertInternalType('array', $customTokens, $name);
+
+        foreach ($customTokens as $customToken) {
+            static::assertInternalType('int', $customToken, $name);
+        }
+
+        static::assertInternalType('int', $requiredPhpVersionId, $name);
+        static::assertGreaterThanOrEqual(50000, $requiredPhpVersionId, $name);
+
+        $tokens = Tokens::fromCode('<?php ');
+
+        foreach ($tokens as $index => $token) {
+            $transformer->process($tokens, $token, $index);
+            static::assertFalse($tokens->isChanged());
+        }
     }
 
     /**

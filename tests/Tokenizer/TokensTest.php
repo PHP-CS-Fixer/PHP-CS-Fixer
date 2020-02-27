@@ -1208,6 +1208,37 @@ $bar;',
     }
 
     /**
+     * @param null|int $expected
+     * @param string   $code
+     * @param int      $index
+     *
+     * @dataProvider provideDetectBlockTypeCases
+     */
+    public function testDetectBlockType($expected, $code, $index)
+    {
+        $tokens = Tokens::fromCode($code);
+        static::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
+    }
+
+    public function provideDetectBlockTypeCases()
+    {
+        yield [
+            [
+                'type' => Tokens::BLOCK_TYPE_CURLY_BRACE,
+                'isStart' => true,
+            ],
+            '<?php { echo 1; }',
+            1,
+        ];
+
+        yield [
+            null,
+            '<?php { echo 1;}',
+            0,
+        ];
+    }
+
+    /**
      * @param int    $expectedIndex
      * @param string $source
      * @param int    $type

@@ -65,6 +65,13 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
                     2 => [T_WHITESPACE, " \r\n "],
                 ],
             ],
+            [
+                '<?php /* foo1 */// foo2         ',
+                [
+                    1 => [T_COMMENT, '/* foo1 */'],
+                    2 => [T_COMMENT, '// foo2'],
+                ],
+            ],
         ];
     }
 }

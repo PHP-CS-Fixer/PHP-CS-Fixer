@@ -111,6 +111,11 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                      * @depends myApp
                      */
                     public function myAppToo() {}
+
+                    /** not a test method */
+                    public function my_app_not() {}
+
+                    public function my_app_not_2() {}
                 }',
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
                     /**
@@ -123,6 +128,11 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                      * @depends my_app
                      */
                     public function my_app_too() {}
+
+                    /** not a test method */
+                    public function my_app_not() {}
+
+                    public function my_app_not_2() {}
                 }',
             ],
         ];
