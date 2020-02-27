@@ -104,10 +104,11 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
             [
                 '<?php include ($html)? "custom.html": "custom.php";',
             ],
-            'don\'t touch echo expressions' => [
+            'don\'t touch echo/include expressions' => [
                 '<?php
     echo ($a ?: $b) . $c;
     echo (2 + 3) * 4, "\n";
+    $r = include ($dir ?: __DIR__) . "/file.php";
     ',
             ],
             'don\'t touch function declarations' => [
