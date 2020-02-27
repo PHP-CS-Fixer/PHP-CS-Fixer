@@ -38,7 +38,7 @@ final class PhpdocToParamTypeFixer extends AbstractFixer implements Configuratio
     const MINIMUM_PHP_VERSION = 70000;
 
     /**
-     * @var array<int, string>
+     * @var array
      */
     private $blacklistFuncNames = [
         [T_STRING, '__clone'],
