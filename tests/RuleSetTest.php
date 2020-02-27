@@ -16,10 +16,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -88,7 +86,7 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        if (!$fixer instanceof ConfigurationDefinitionFixerInterface) {
+        if (!$fixer instanceof ConfigurableFixerInterface) {
             $this->addToAssertionCount(1);
 
             return;
@@ -96,9 +94,6 @@ final class RuleSetTest extends TestCase
 
         $defaultConfig = [];
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
-            if ($option instanceof DeprecatedFixerOptionInterface) {
-                continue;
-            }
             $defaultConfig[$option->getName()] = $option->getDefault();
         }
 

@@ -34,7 +34,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * Use 'syntax' => 'long'|'short'.
      *
-     * @param null|array<string, string> $configuration
+     * @param array<string, string> $configuration
      *
      * @throws InvalidFixerConfigurationException
      */
