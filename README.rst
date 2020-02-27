@@ -1686,7 +1686,8 @@ Choose from the list of available rules:
 
 * **phpdoc_var_without_name** [@Symfony, @PhpCsFixer]
 
-  ``@var`` and ``@type`` annotations should not contain the variable name.
+  ``@var`` and ``@type`` annotations of classy properties should not contain
+  the name.
 
 * **pow_to_exponentiation** [@Symfony:risky, @PhpCsFixer:risky, @PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
 
