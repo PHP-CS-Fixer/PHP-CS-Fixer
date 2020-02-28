@@ -148,8 +148,6 @@ final class FileHandlerTest extends TestCase
         $file = __DIR__.'/../Fixtures/cache-file-handler/cache-file';
         if (is_writable($file)) {
             static::markTestSkipped(sprintf('File "%s" must be not writeable for this tests.', realpath($file)));
-
-            return;
         }
 
         $handler = new FileHandler($file);

@@ -75,7 +75,7 @@ final class ImplodeCallFixer extends AbstractFixer
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach ($tokens as $index => $token) {
+        for ($index = \count($tokens) - 1; $index > 0; --$index) {
             if (!$tokens[$index]->equals([T_STRING, 'implode'], false)) {
                 continue;
             }
