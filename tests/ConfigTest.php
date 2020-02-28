@@ -17,6 +17,8 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
+use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -208,14 +210,66 @@ final class ConfigTest extends TestCase
         static::assertSame($expected, $config->getCustomFixers());
     }
 
+    public function testConfigDefault()
+    {
+        $config = new Config();
+
+        static::assertSame('.php_cs.cache', $config->getCacheFile());
+        static::assertSame([], $config->getCustomFixers());
+        static::assertSame('txt', $config->getFormat());
+        static::assertFalse($config->getHideProgress());
+        static::assertSame('    ', $config->getIndent());
+        static::assertSame("\n", $config->getLineEnding());
+        static::assertSame('default', $config->getName());
+        static::assertNull($config->getPhpExecutable());
+        static::assertFalse($config->getRiskyAllowed());
+        static::assertSame(['@PSR2' => true], $config->getRules());
+        static::assertTrue($config->getUsingCache());
+
+        $finder = $config->getFinder();
+        static::assertInstanceOf(Finder::class, $finder);
+
+        $config->setFormat('xml');
+        static::assertSame('xml', $config->getFormat());
+
+        $config->setHideProgress(true);
+        static::assertTrue($config->getHideProgress());
+
+        $config->setIndent("\t");
+        static::assertSame("\t", $config->getIndent());
+
+        $finder = new Finder();
+        $config->setFinder($finder);
+        static::assertSame($finder, $config->getFinder());
+
+        $config->setLineEnding("\r\n");
+        static::assertSame("\r\n", $config->getLineEnding());
+
+        $config->setPhpExecutable(null);
+        static::assertNull($config->getPhpExecutable());
+
+        $config->setUsingCache(false);
+        static::assertFalse($config->getUsingCache());
+    }
+
+    public function testSetInvalidFinder()
+    {
+        $config = new Config();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Argument must be an array or a Traversable, got "integer"\.$/');
+
+        $config->setFinder(123);
+    }
+
     /**
      * @return array
      */
     public function provideRegisterCustomFixersCases()
     {
         $fixers = [
-            new \PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer(),
-            new \PhpCsFixer\Fixer\ControlStructure\IncludeFixer(),
+            new NoWhitespaceBeforeCommaInArrayFixer(),
+            new IncludeFixer(),
         ];
 
         return [

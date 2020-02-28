@@ -183,6 +183,12 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         ];
     }
 
+    public function testEmptyAssertions()
+    {
+        $this->fixer->configure(['assertions' => []]);
+        $this->doTest('<?php $this->assertSame($b, null);');
+    }
+
     private function generateCases($expectedTemplate, $inputTemplate)
     {
         $cases = [];

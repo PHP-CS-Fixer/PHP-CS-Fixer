@@ -76,12 +76,6 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->equals([T_STRING, 'dirname'], false)) {
-                continue;
-            }
-
             $dirnameInfo = $this->getDirnameInfo($tokens, $index);
 
             if (!$dirnameInfo) {

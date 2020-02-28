@@ -88,6 +88,12 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                     30 => T_USE,
                 ],
             ],
+            [
+                '<?php use Foo; $a = Bar::class;',
+                [
+                    1 => T_USE,
+                ],
+            ],
         ];
     }
 

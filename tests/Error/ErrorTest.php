@@ -49,7 +49,7 @@ final class ErrorTest extends TestCase
     {
         $type = 456;
         $filePath = __FILE__;
-        $source = __METHOD__;
+        $source = new \Exception();
         $appliedFixers = ['some_rule'];
         $diff = '__diff__';
 

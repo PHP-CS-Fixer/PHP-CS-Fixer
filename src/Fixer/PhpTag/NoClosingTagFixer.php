@@ -49,11 +49,7 @@ final class NoClosingTagFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (\count($tokens) < 2 || !$tokens->isMonolithicPhp()) {
-            return;
-        }
-
-        if (!$tokens->isTokenKindFound(T_CLOSE_TAG)) {
+        if (\count($tokens) < 2 || !$tokens->isMonolithicPhp() || !$tokens->isTokenKindFound(T_CLOSE_TAG)) {
             return;
         }
 
