@@ -350,6 +350,8 @@ class Example
             $elements[] = $element;
             $startIndex = $element['end'] + 1;
         }
+
+        return [];
     }
 
     /**
