@@ -44,72 +44,278 @@ final class FunctionsAnalyzerTest extends TestCase
 
     public function provideIsGlobalFunctionCallCases()
     {
-        return [
-            [
-                false,
-                '<?php CONSTANT;',
-                1,
-            ],
-            [
+        yield [
+            false,
+            '<?php CONSTANT;',
+            1,
+        ];
+
+        yield [
+            true,
+            '<?php foo("bar");',
+            1,
+        ];
+
+        yield [
+            false,
+            '<?php \foo("bar");',
+            1,
+        ];
+
+        yield [
+            true,
+            '<?php \foo("bar");',
+            2,
+        ];
+
+        yield [
+            false,
+            '<?php foo\bar("baz");',
+            1,
+        ];
+
+        yield [
+            false,
+            '<?php foo\bar("baz");',
+            3,
+        ];
+
+        yield [
+            false,
+            '<?php foo::bar("baz");',
+            1,
+        ];
+
+        yield [
+            false,
+            '<?php foo::bar("baz");',
+            3,
+        ];
+
+        yield [
+            false,
+            '<?php $foo->bar("baz");',
+            3,
+        ];
+
+        yield [
+            false,
+            '<?php new bar("baz");',
+            3,
+        ];
+        yield [
+            false,
+            '<?php function foo() {}',
+            3,
+        ];
+
+        yield [
+            false,
+            '<?php function & foo() {}',
+            5,
+        ];
+
+        yield [
+            false,
+            '<?php namespace\foo("bar");',
+            3,
+        ];
+
+        yield [
+            true,
+            '<?php
+                use function \  str_repeat;
+                str_repeat($a, $b);
+            ',
+            11,
+        ];
+
+        yield [
+            true,
+            '<?php
+                namespace A {
+                    use function A;
+                }
+                namespace B {
+                    use function D;
+                    A();
+                }
+            ',
+            30,
+        ];
+
+        yield [
+            true,
+            '<?php
+                function A(){}
+                A();
+            ',
+            10,
+        ];
+
+        yield [
+            true,
+            '<?php
+                function A(){}
+                a();
+            ',
+            10,
+        ];
+
+        yield [
+            true,
+            '<?php
+                namespace {
+                    function A(){}
+                    A();
+                }
+            ',
+            14,
+        ];
+
+        yield [
+            false,
+            '<?php
+                namespace Z {
+                    function A(){}
+                    A();
+                }
+            ',
+            16,
+        ];
+
+        yield [
+            false,
+            '<?php
+            namespace Z;
+
+            function A(){}
+            A();
+            ',
+            15,
+        ];
+
+        yield [
+            true,
+            '<?php
+                function & A(){}
+                A();
+            ',
+            12,
+        ];
+
+        yield [
+            true,
+            '<?php
+                class Foo
+                {
+                    public function A(){}
+                }
+                A();
+            ',
+            20,
+        ];
+
+        yield [
+            true,
+            '<?php
+                namespace A {
+                    function A(){}
+                }
+                namespace B {
+                    A();
+                }
+            ',
+            24,
+        ];
+
+        yield [
+            false,
+            '<?php
+                use function X\a;
+                A();
+            ',
+            11,
+        ];
+
+        yield [
+            true,
+            '<?php
+                use A;
+                A();
+            ',
+            7,
+        ];
+
+        yield [
+            true,
+            '<?php
+                use const A;
+                A();
+            ',
+            9,
+        ];
+
+        yield [
+            true,
+            '<?php
+                use function A;
+                str_repeat($a, $b);
+            ',
+            9,
+        ];
+
+        yield [
+            true,
+            '<?php
+                namespace {
+                    function A(){}
+                    A();
+                    $b = function(){};
+                }
+            ',
+            14,
+        ];
+
+        foreach ([1, 6, 11, 16, 21, 26] as $index) {
+            yield [
                 true,
-                '<?php foo("bar");',
-                1,
-            ],
-            [
-                false,
-                '<?php \foo("bar");',
-                1,
-            ],
-            [
-                true,
-                '<?php \foo("bar");',
-                2,
-            ],
-            [
-                false,
-                '<?php foo\bar("baz");',
-                1,
-            ],
-            [
-                false,
-                '<?php foo\bar("baz");',
-                3,
-            ],
-            [
-                false,
-                '<?php foo::bar("baz");',
-                1,
-            ],
-            [
-                false,
-                '<?php foo::bar("baz");',
-                3,
-            ],
-            [
-                false,
-                '<?php $foo->bar("baz");',
-                3,
-            ],
-            [
-                false,
-                '<?php new bar("baz");',
-                3,
-            ],
-            [
-                false,
-                '<?php function foo() {}',
-                3,
-            ],
-            [
-                false,
-                '<?php function & foo() {}',
-                5,
-            ],
-            [
-                false,
-                '<?php namespace\foo("bar");',
-                3,
-            ],
+                '<?php implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);',
+                $index,
+            ];
+        }
+    }
+
+    /**
+     * @param bool   $isFunctionIndex
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp70Cases
+     * @requires PHP 7.0
+     */
+    public function testIsGlobalFunctionCallPhp70($isFunctionIndex, $code, $index)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
+    }
+
+    public function provideIsGlobalFunctionCallPhp70Cases()
+    {
+        yield [
+            true,
+            '<?php
+$z = new class(
+    new class(){ private function A(){} }
+){
+    public function A() {}
+};
+
+A();
+                ',
+            46,
         ];
     }
 
