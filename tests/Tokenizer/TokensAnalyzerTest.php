@@ -454,6 +454,10 @@ PHP;
                 '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
                 [7 => true, 11 => true],
             ],
+            [
+                '<?php interface foo {}',
+                [1 => false],
+            ],
         ];
     }
 

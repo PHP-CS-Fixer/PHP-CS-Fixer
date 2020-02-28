@@ -201,6 +201,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_align']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']],
+            [$fixers['phpdoc_annotation_without_dot'], $fixers['phpdoc_types']],
+            [$fixers['phpdoc_annotation_without_dot'], $fixers['phpdoc_types_order']],
             [$fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']],
             [$fixers['phpdoc_no_access'], $fixers['phpdoc_order']],
             [$fixers['phpdoc_no_access'], $fixers['phpdoc_separation']],
@@ -295,9 +297,12 @@ final class FixerFactoryTest extends TestCase
             if (!\in_array($docFixerName, ['comment_to_phpdoc', 'phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
                 $cases[] = [$fixers['comment_to_phpdoc'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_indent'], $fixers[$docFixerName]];
-                $cases[] = [$fixers['phpdoc_scalar'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_to_comment'], $fixers[$docFixerName]];
-                $cases[] = [$fixers['phpdoc_types'], $fixers[$docFixerName]];
+
+                if ('phpdoc_annotation_without_dot' !== $docFixerName) {
+                    $cases[] = [$fixers['phpdoc_scalar'], $fixers[$docFixerName]];
+                    $cases[] = [$fixers['phpdoc_types'], $fixers[$docFixerName]];
+                }
             }
 
             if ('phpdoc_align' !== $docFixerName) {

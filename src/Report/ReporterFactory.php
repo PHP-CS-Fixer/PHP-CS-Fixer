@@ -32,7 +32,7 @@ final class ReporterFactory
 
     public function registerBuiltInReporters()
     {
-        /** @var string[] $builtInReporters */
+        /** @var null|string[] $builtInReporters */
         static $builtInReporters;
 
         if (null === $builtInReporters) {
