@@ -266,6 +266,8 @@ $bar;',
             ['<?php /* @var int $i @var int $j */ list($i, $j) = getValues();'],
             ['<?php /* @var string $s */ print($s);'],
             ['<?php /* @var string $s */ echo($s);'],
+            ['<?php /* @var User $bar */ ($baz = tmp())->doSomething();'],
+            ['<?php /* @var User $bar */ list($bar) = a();'],
         ];
     }
 

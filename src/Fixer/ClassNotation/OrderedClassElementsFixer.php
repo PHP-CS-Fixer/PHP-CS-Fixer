@@ -30,6 +30,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
 {
     /** @internal */
     const SORT_ALPHA = 'alpha';
+
     /** @internal */
     const SORT_NONE = 'none';
 
@@ -345,8 +346,6 @@ class Example
             $elements[] = $element;
             $startIndex = $element['end'] + 1;
         }
-
-        return [];
     }
 
     /**

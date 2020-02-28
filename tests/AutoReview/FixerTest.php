@@ -73,7 +73,10 @@ final class FixerTest extends TestCase
             static::assertInternalType('int', $sampleCounter);
 
             $code = $sample->getCode();
-            static::assertStringIsNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+
+            static::assertInternalType('string', $code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+            static::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
+
             if (!($fixer instanceof SingleBlankLineAtEofFixer)) {
                 static::assertSame("\n", substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
             }
@@ -167,7 +170,7 @@ final class FixerTest extends TestCase
                     static::markTestIncomplete(sprintf('Rule "%s" is not following new option casing yet, please help.', $fixerName));
                 }
 
-                static::assertRegExp('/^[a-z_]*$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
+                static::assertRegExp('/^[a-z_]+[a-z]$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
             }
         }
 
@@ -318,16 +321,6 @@ final class FixerTest extends TestCase
         $factory = new FixerFactory();
 
         return $factory->registerBuiltInFixers()->getFixers();
-    }
-
-    /**
-     * @param mixed  $actual
-     * @param string $message
-     */
-    private static function assertStringIsNotEmpty($actual, $message = '')
-    {
-        static::assertInternalType('string', $actual, $message);
-        static::assertNotEmpty($actual, $message);
     }
 
     /**

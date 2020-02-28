@@ -592,6 +592,16 @@ namespace {
                     'strict' => true,
                 ],
             ],
+            [
+                '<?php
+                    use function foo\json_decode;
+                    json_decode($base);
+                ',
+                null,
+                [
+                    'include' => ['@all'],
+                ],
+            ],
         ];
     }
 

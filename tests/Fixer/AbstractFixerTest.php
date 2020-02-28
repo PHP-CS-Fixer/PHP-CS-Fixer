@@ -27,6 +27,9 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = new UnconfigurableFixer();
 
+        static::assertSame(0, $fixer->getPriority());
+        static::assertSame('unconfigurable', $fixer->getName());
+
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
 
