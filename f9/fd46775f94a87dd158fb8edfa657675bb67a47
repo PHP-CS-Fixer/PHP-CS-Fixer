@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-11-14T20:30:37Z
+
+Content is looking good, only checks to fix.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-14T21:24:53Z
+
+I'm wondering if the current changes are really helpful. I mean those options are standard Symfony options and quite common amongst CLI tools in general. Also one can already find this information with `php-cs-fixer fix --help`.
+
+Maybe something more helpful would be to actually add details about what each verbosity level shows/hides?
+
+---------------------------------------------------------------------------
+
+by voku at 2019-11-15T02:10:58Z
+
+Just because these are default options, does not mean that the docs should not contain it.
+
+And yes, some extra information are maybe helpful. I think this is the relevant part?: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/src/Console/Output/ErrorOutput.php#L55
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-24T00:54:57Z
+
+please, check the contributing guidelines.
+as you can see, all CIs are failing.
+
+---------------------------------------------------------------------------
+
+by voku at 2019-11-25T21:50:40Z
+
+@keradus CIs fixed. I did not change any source code, so I thought that the failing tests are not related to these changes.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-11-26T13:59:41Z
+
+:+1:
+maybe best to target lowest stable so we've less differences over the branches?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-26T15:03:09Z
+
+I still think it would be nice to not only list the different options and their verbosity level but also say what each level of verbosity will output, i.e. *if verbosity is at least [level], it will show [info]*.
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-03-02T21:20:53Z
+
+I agree with you, @julienfalque
+
+unfortunately, nobody is working on it and I believe it's better to merge small improvement than not merge any improvement (while awaiting for big improvement to be proposed).
