@@ -7,6 +7,9 @@ parameters:
     paths:
         - src
         - tests
+    autoload_files:
+        - vendor/autoload.php
+        - dev-tools/vendor/autoload.php
     excludes_analyse:
         - tests/Fixtures
     ignoreErrors:
