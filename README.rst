@@ -166,8 +166,16 @@ NOTE: the output for the following formats are generated in accordance with XML 
 * ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
 * ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
 
+The ``--quiet`` Do not output any message.
 
 The ``--verbose`` option will show the applied rules. When using the ``txt`` format it will also display progress notifications.
+
+NOTE: if there is an error like "errors reported during linting after fixing", you can use this to be even more verbose for debugging purpose
+
+* ``--verbose=0`` or no option: normal
+* ``--verbose``, ``--verbose=1``, ``-v``: verbose
+* ``--verbose=2``, ``-vv``: very verbose
+* ``--verbose=3``, ``-vvv``: debug
 
 The ``--rules`` option limits the rules to apply to the
 project:
