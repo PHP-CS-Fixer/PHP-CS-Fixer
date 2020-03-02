@@ -613,7 +613,7 @@ EOT
             ],
             [
                 '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
+    abstract class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
          * @expectedException FooException
