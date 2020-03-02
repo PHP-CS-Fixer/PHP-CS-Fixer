@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-01-05T22:15:28Z
+
+So each time a new version - even patch one - is released, `phive.xml` must be updated, right?
+
+How is that better than having `"ergebnis/composer-normalize":"^2.1"` in `dev-tools/composer.json`?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-03-02T21:06:00Z
+
+@kubawerlos , it's a valid concern, but it affects other tools installed via phive already
