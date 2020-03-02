@@ -54,7 +54,7 @@ jobs:
                 - php -d auto_prepend_file=dev-tools/vendor/autoload.php ./dev-tools/tools/phpstan analyse
                 - if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/tools/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
-                - composer normalize -d ./dev-tools ./../composer.json --dry-run
+                - ./dev-tools/tools/composer-normalize composer.json --dry-run
                 - ./dev-tools/check-shell-scripts.sh
 
         - &STANDARD_TEST_JOB
