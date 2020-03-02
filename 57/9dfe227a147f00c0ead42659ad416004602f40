@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2020-02-06T22:20:40Z
+
+*[Just updated the wording of the commit message and extended it with a bit more information (and typos, it's always a bit late) + refreshed on top of 2.15 HEAD]*
+
+So what is better? has been asked.
+
+Honestly, I find this hard to say. I could just speak for "my" suggestion here (yeah easy, right?) but does this help to open-up the discussion?
+
+Let's just consider a third suggestion: If you like to hotfix the reported problem dead-simple, drop the wget of the .asc file, drop the import of gpg key and just use phive as downloaded via HTTPS. No need to take care of manually providing and maintaining the key file in the repository. It will not fail due to key-servers any longer. It will only fail due to HTTP servers then.
+
+Yes I know it's just the diametral opposite, so most of all for the theory.
+
+What I just suggest here with this PR is to align this with Phive. I do see that `phive` runs okay by making use of multiple key-servers, so this PR suggests to also run the installation of Phive with multiple key-servers.
+
+It certainly is better as it is right now with only one key-server.
+
+But is it better than running with no keyserver? I hope not, but I wish I could say.
+
+In case it continues to be a pita, I would consider @Slamdunk suggestion in that form a good hotfix to continue with it and then try along aligning with Phive (we will make the experience and can report issues upstream, the Phive project also has quite some ideas in their issue store on Github). But _for the moment_ I would consider that less clean/lean for the Phive installation procedure.
+
+(Many other projects' issues I've read and then even scanned a couple more on Github, are leaning towards using multiple key-servers. They only differ how they do it: a loop over a list of key-servers, contacting all servers in parallel, even have a proxy server for that and what not. In the end it's always multiple key-servers. In CI build scripts, Docker build scripts, ...)
