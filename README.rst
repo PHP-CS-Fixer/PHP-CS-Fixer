@@ -1218,6 +1218,12 @@ Choose from the list of available rules:
 
   There MUST be no trailing spaces inside comment or PHPDoc.
 
+* **no_trailing_whitespace_in_string** [@PhpCsFixer:risky]
+
+  There must be no trailing whitespace in strings.
+
+  *Risky rule: changing the whitespaces in strings might affect string comparisons and outputs.*
+
 * **no_unneeded_control_parentheses** [@Symfony, @PhpCsFixer]
 
   Removes unneeded parentheses around control statements.
