@@ -477,6 +477,10 @@ class Foo
     public static function pubStatFunc3() {}
     public $pubProp3;
     protected static function protStatFunc() {}
+    abstract public function pubAbstractFunc();
+    abstract static public function pubAbstractStatFunc();
+    abstract protected function protAbstractFunc();
+    abstract static protected function protAbstractStatFunc();
 }
 EOT;
 
@@ -522,6 +526,10 @@ class Foo
     public static function pubStatFunc3() {}
     public $pubProp3;
     protected static function protStatFunc() {}
+    abstract public function pubAbstractFunc();
+    abstract static public function pubAbstractStatFunc();
+    abstract protected function protAbstractFunc();
+    abstract static protected function protAbstractStatFunc();
 }
 EOT;
         $this->fixer->configure(['order' => $configuration]);
@@ -563,6 +571,10 @@ class Foo
     private function privFunc() {}
     public static function pubStatFunc3() {}
     protected static function protStatFunc() {}
+    abstract public function pubAbstractFunc();
+    abstract static public function pubAbstractStatFunc();
+    abstract protected function protAbstractFunc();
+    abstract static protected function protAbstractStatFunc();
     public function __destruct() {}
 }
 EOT
@@ -589,11 +601,15 @@ class Foo
     const C2 = 2;
     public static function pubStatFunc3() {}
     public $pubProp3;
+    abstract public function pubAbstractFunc();
+    abstract static public function pubAbstractStatFunc();
     protected static $protStatProp;
     protected function protFunc() {}
     protected $protProp;
     protected function __construct() {}
     protected static function protStatFunc() {}
+    abstract protected function protAbstractFunc();
+    abstract static protected function protAbstractStatFunc();
     private static function privStatFunc() {}
     private static $privStatProp;
     private $privProp;
@@ -622,6 +638,10 @@ EOT
                     'method_public',
                     'method_protected',
                     'method_private',
+                    'method_public_abstract_static',
+                    'method_public_abstract',
+                    'method_protected_abstract_static',
+                    'method_protected_abstract',
                 ],
                 <<<'EOT'
 <?php
@@ -654,6 +674,10 @@ class Foo
     public function pubFunc3() {}
     protected function protFunc() {}
     private function privFunc() {}
+    abstract static public function pubAbstractStatFunc();
+    abstract public function pubAbstractFunc();
+    abstract static protected function protAbstractStatFunc();
+    abstract protected function protAbstractFunc();
 }
 EOT
             ],
