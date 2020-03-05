@@ -63,6 +63,10 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'method_public_static' => ['method_static', 'method_public'],
         'method_protected_static' => ['method_static', 'method_protected'],
         'method_private_static' => ['method_static', 'method_private'],
+        'method_public_abstract' => ['method_abstract', 'method_public'],
+        'method_protected_abstract' => ['method_abstract', 'method_protected'],
+        'method_public_abstract_static' => ['method_abstract_static', 'method_abstract', 'method_public'],
+        'method_protected_abstract_static' => ['method_abstract_static', 'method_abstract', 'method_protected'],
     ];
 
     /**
@@ -170,8 +174,12 @@ final class Example
     public $pubProp3;
     protected function __construct() {}
     private static function privStatFunc() {}
+    abstract public function pubAbstractFunc();
+    abstract static public function pubAbstractStatFunc();
     public function pubFunc1() {}
     public function __toString() {}
+    abstract protected function protAbstractFunc();
+    abstract static protected function protAbstractStatFunc();
     protected function protFunc() {}
     function pubFunc2() {}
     public static function pubStatFunc1() {}
@@ -302,6 +310,7 @@ class Example
                 'start' => $startIndex,
                 'visibility' => 'public',
                 'static' => false,
+                'abstract' => false,
             ];
 
             for ($i = $startIndex;; ++$i) {
@@ -314,6 +323,12 @@ class Example
 
                 if ($token->isGivenKind(T_STATIC)) {
                     $element['static'] = true;
+
+                    continue;
+                }
+
+                if ($token->isGivenKind(T_ABSTRACT)) {
+                    $element['abstract'] = true;
 
                     continue;
                 }
@@ -453,6 +468,11 @@ class Example
 
             if (\in_array($type, ['constant', 'property', 'method'], true)) {
                 $type .= '_'.$element['visibility'];
+
+                if ($element['abstract']) {
+                    $type .= '_abstract';
+                }
+
                 if ($element['static']) {
                     $type .= '_static';
                 }

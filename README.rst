@@ -1365,12 +1365,13 @@ Choose from the list of available rules:
     'property_protected_static', 'property_private_static', 'method',
     'method_static', 'method_public', 'method_protected', 'method_private',
     'method_public_static', 'method_protected_static',
-    'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``):
-    list of strings defining order of elements; defaults to ``['use_trait',
-    'constant_public', 'constant_protected', 'constant_private',
-    'property_public', 'property_protected', 'property_private',
-    'construct', 'destruct', 'magic', 'phpunit', 'method_public',
-    'method_protected', 'method_private']``
+    'method_private_static', 'method_public_abstract',
+    'method_protected_abstract', 'construct', 'destruct', 'magic',
+    'phpunit']``): list of strings defining order of elements; defaults to
+    ``['use_trait', 'constant_public', 'constant_protected',
+    'constant_private', 'property_public', 'property_protected',
+    'property_private', 'construct', 'destruct', 'magic', 'phpunit',
+    'method_public', 'method_protected', 'method_private']``
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
     statements should be sorted; defaults to ``'none'``; DEPRECATED alias:
     ``sortAlgorithm``
