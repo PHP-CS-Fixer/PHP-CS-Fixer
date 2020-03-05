@@ -384,6 +384,99 @@ class Bar
 {
 }',
             ],
+            [
+                ['header' => 'tmp'],
+                '<?php
+
+/*
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+                '<?php
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
+            [
+                ['header' => 'tmp'],
+                '<?php
+
+/*
+ * tmp
+ */
+
+class Foo {}',
+                '<?php
+
+/*
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'comment_type' => 'PHPDoc',
+                ],
+                '<?php
+
+/**
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+                '<?php
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'comment_type' => 'PHPDoc',
+                ],
+                '<?php
+
+/**
+ * tmp
+ */
+
+class Foo {}',
+                '<?php
+
+/**
+ * tmp
+ */
+class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'separate' => 'top',
+                ],
+                '<?php
+
+/*
+ * tmp
+ */
+class Foo {}',
+                '<?php
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
         ];
     }
 

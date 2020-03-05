@@ -238,7 +238,29 @@ echo 1;
     {
         $index = $tokens->getNextNonWhitespace($headerNewIndex);
 
-        return null === $index || !$tokens[$index]->isComment() ? null : $index;
+        if (null === $index || !$tokens[$index]->isComment()) {
+            return null;
+        }
+
+        $next = $index + 1;
+
+        if (!isset($tokens[$next]) || \in_array($this->configuration['separate'], ['top', 'none'], true) || !$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+            return $index;
+        }
+
+        if ($tokens[$next]->isWhitespace()) {
+            if (!Preg::match('/^\h*\R\h*$/D', $tokens[$next]->getContent())) {
+                return $index;
+            }
+
+            ++$next;
+        }
+
+        if (!isset($tokens[$next]) || !$tokens[$next]->isClassy() && !$tokens[$next]->isGivenKind(T_FUNCTION)) {
+            return $index;
+        }
+
+        return $this->getHeaderAsComment() === $tokens[$index]->getContent() ? $index : null;
     }
 
     /**
