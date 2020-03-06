@@ -827,6 +827,134 @@ EOT
     }
 
     /**
+     * @param array $configuration
+     * @param string $expected
+     *
+     * @dataProvider provideAbstractMethodsOrderCases
+     */
+    public function testFixAbstractMethodsOrder(array $configuration, $expected)
+    {
+        static $input = <<<'EOT'
+<?php
+abstract class Foo
+{
+    abstract static public function pubAbstractStatFunc();
+    abstract static protected function protAbstractStatFunc();
+    abstract public function pubAbstractFunc();
+    abstract protected function protAbstractFunc();
+    private static function privStatFunc() {}
+    protected static function protStatFunc() {}
+    public static function pubStatFunc() {}
+    protected function protFunc() {}
+    public function pubFunc() {}
+    private function privFunc() {}
+}
+EOT;
+        if(!empty($configuration)) {
+            $this->fixer->configure(['order' => $configuration]);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideAbstractMethodsOrderCases()
+    {
+        return [
+            // Default configuration
+            [
+                [],
+                <<<'EOT'
+<?php
+abstract class Foo
+{
+    abstract static public function pubAbstractStatFunc();
+    abstract public function pubAbstractFunc();
+    public static function pubStatFunc() {}
+    public function pubFunc() {}
+    abstract static protected function protAbstractStatFunc();
+    abstract protected function protAbstractFunc();
+    protected static function protStatFunc() {}
+    protected function protFunc() {}
+    private static function privStatFunc() {}
+    private function privFunc() {}
+}
+EOT
+                ,
+            ],
+
+            // Abstract method at the bottom
+            [
+                [
+                    'method_public_static',
+                    'method_protected_static',
+                    'method_private_static',
+                    'method_public',
+                    'method_protected',
+                    'method_private',
+                    'method_protected_static',
+                    'method_private_static',
+                    'method_public_abstract',
+                    'method_protected_abstract',
+                    'method_public_abstract_static',
+                    'method_protected_abstract_static',
+                ],
+                <<<'EOT'
+<?php
+abstract class Foo
+{
+    public static function pubStatFunc() {}
+    public function pubFunc() {}
+    protected function protFunc() {}
+    private function privFunc() {}
+    protected static function protStatFunc() {}
+    private static function privStatFunc() {}
+    abstract public function pubAbstractFunc();
+    abstract protected function protAbstractFunc();
+    abstract static public function pubAbstractStatFunc();
+    abstract static protected function protAbstractStatFunc();
+}
+EOT
+                ,
+            ],
+
+            // Abstract method as first by visibility
+            [
+                [
+                    'method_public_abstract_static',
+                    'method_public_static',
+                    'method_protected_abstract_static',
+                    'method_protected_static',
+                    'method_private_static',
+                    'method_public_abstract',
+                    'method_public',
+                    'method_protected_abstract',
+                    'method_protected_static',
+                    'method_protected',
+                    'method_private',
+                    'method_private_static',
+                ],
+                <<<'EOT'
+<?php
+abstract class Foo
+{
+    abstract static public function pubAbstractStatFunc();
+    public static function pubStatFunc() {}
+    abstract static protected function protAbstractStatFunc();
+    abstract public function pubAbstractFunc();
+    public function pubFunc() {}
+    abstract protected function protAbstractFunc();
+    protected static function protStatFunc() {}
+    protected function protFunc() {}
+    private function privFunc() {}
+    private static function privStatFunc() {}
+}
+EOT
+                ,
+            ],
+        ];
+    }
+
+    /**
      * @param string      $expected
      * @param null|string $input
      *
