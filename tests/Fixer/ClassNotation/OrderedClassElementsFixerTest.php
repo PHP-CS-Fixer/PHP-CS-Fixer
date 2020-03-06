@@ -827,7 +827,6 @@ EOT
     }
 
     /**
-     * @param array $configuration
      * @param string $expected
      *
      * @dataProvider provideAbstractMethodsOrderCases
@@ -850,7 +849,7 @@ abstract class Foo
     private function privFunc() {}
 }
 EOT;
-        if(!empty($configuration)) {
+        if (!empty($configuration)) {
             $this->fixer->configure(['order' => $configuration]);
         }
 
