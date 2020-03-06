@@ -618,6 +618,11 @@ EOF;
         $this->doTest("<?php\n    /**\n     * Foo\n     */");
     }
 
+    public function testWithSingleLineDescription()
+    {
+        $this->doTest("<?php\n    /** Foo */");
+    }
+
     public function testWithEmptyDoc()
     {
         $this->doTest("<?php\n    /**\n     */");
