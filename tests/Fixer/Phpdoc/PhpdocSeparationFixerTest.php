@@ -612,4 +612,14 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    public function testWithOnlyDescription()
+    {
+        $this->doTest("<?php\n    /**\n     * Foo\n     */");
+    }
+
+    public function testWithEmptyDoc()
+    {
+        $this->doTest("<?php\n    /**\n     */");
+    }
 }
