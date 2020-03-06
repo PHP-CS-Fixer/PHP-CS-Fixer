@@ -666,10 +666,74 @@ $a = new Qux();',
         ];
     }
 
-    public function testRemoveBetweenUseTraits()
+    /**
+     * @dataProvider provideRemoveBetweenUseTraitsCases
+     *
+     * @param string $expected
+     * @param string $input
+     */
+    public function testRemoveBetweenUseTraits($expected, $input)
     {
         $this->fixer->configure(['tokens' => ['use_trait']]);
-        $this->doTest(
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideRemoveBetweenUseTraitsCases()
+    {
+        yield [
+            '<?php
+class Foo
+{
+    use Z; // 123
+    use Bar;/* */use Baz;
+
+    public function baz() {}
+
+    use Bar1; use Baz1;
+
+    public function baz1() {}
+}
+',
+            '<?php
+class Foo
+{
+    use Z; // 123
+
+    use Bar;/* */use Baz;
+
+    public function baz() {}
+
+    use Bar1; use Baz1;
+
+    public function baz1() {}
+}
+',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    use Bar;use Baz;
+    use Bar1;use Baz1;
+
+    public function baz() {}
+}
+',
+            '<?php
+class Foo
+{
+    use Bar;use Baz;
+
+    use Bar1;use Baz1;
+
+    public function baz() {}
+}
+',
+        ];
+
+        yield [
             '<?php
             namespace T\A;
             use V;
@@ -708,8 +772,8 @@ $a = new Qux();',
                     $b = function() use ($b) { echo $b;};
 
                 }
-            }'
-        );
+            }',
+        ];
     }
 
     /**
@@ -1115,13 +1179,13 @@ class Foo {}'
     }
 
     /**
-     * @param string $expected
-     * @param string $input
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input)
+    public function testFix72($expected, $input = null)
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected, $input);
@@ -1129,9 +1193,15 @@ class Foo {}'
 
     public function provideFix72Cases()
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
+use function A; use function B;
+
+echo 1;',
+        ];
+
+        yield [
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA,ConstB,ConstC
@@ -1139,7 +1209,7 @@ use const some\a\{ConstA,ConstB,ConstC
 };
 use const some\Z\{ConstA,ConstB,ConstC,};
 ',
-                '<?php
+            '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
 
 
@@ -1151,7 +1221,6 @@ use const some\a\{ConstA,ConstB,ConstC
   '.'
 use const some\Z\{ConstA,ConstB,ConstC,};
 ',
-            ],
         ];
     }
 
