@@ -15,7 +15,6 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -26,6 +25,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use SplFileInfo;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * Make sure there is one blank line above and below class elements.
@@ -36,10 +36,15 @@ use SplFileInfo;
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    const SPACING_ONE = 'one';
+    const SPACING_NONE = 'none';
+
     /**
      * @var array<string, true>
      */
     private $classElementTypes = [];
+    private static $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
+    private static $supportedTypes = ['const', 'property', 'method'];
 
     /**
      * {@inheritdoc}
@@ -49,8 +54,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         parent::configure($configuration);
 
         $this->classElementTypes = []; // reset previous configuration
-        foreach ($this->configuration['elements'] as $element) {
-            $this->classElementTypes[$element] = true;
+        foreach ($this->configuration['elements'] as $elementType => $spacing) {
+            $this->classElementTypes[$elementType] = $spacing;
         }
     }
 
@@ -60,7 +65,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Class, trait and interface elements must be separated with one blank line.',
+            'Class, trait and interface elements must be separated with one or no blank line.',
             [
                 new CodeSample(
                     '<?php
@@ -85,7 +90,7 @@ class Sample
     private $b;
 }
 ',
-                    ['elements' => ['property']]
+                    ['elements' => ['property' => self::SPACING_ONE]]
                 ),
                 new CodeSample(
                     '<?php
@@ -96,7 +101,7 @@ class Sample
     const B = 3600;
 }
 ',
-                    ['elements' => ['const']]
+                    ['elements' => ['const' => self::SPACING_ONE]]
                 ),
             ]
         );
@@ -134,6 +139,8 @@ class Sample
                 continue; // not configured to be fixed
             }
 
+            $spacing = $this->classElementTypes[$element['type']];
+
             if ($element['classIndex'] !== $class) {
                 $class = $element['classIndex'];
                 $classStart = $tokens->getNextTokenOfKind($class, ['{']);
@@ -156,7 +163,7 @@ class Sample
             }
 
             // `const`, `property` or `method` of an `interface`
-            $this->fixSpaceBelowClassElement($tokens, $classEnd, $tokens->getNextTokenOfKind($index, [';']));
+            $this->fixSpaceBelowClassElement($tokens, $classEnd, $tokens->getNextTokenOfKind($index, [';']), $spacing);
             $this->fixSpaceAboveClassElement($tokens, $classStart, $index);
         }
     }
@@ -166,13 +173,40 @@ class Sample
      */
     protected function createConfigurationDefinition()
     {
-        $types = ['const', 'method', 'property'];
-
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', sprintf('List of classy elements; \'%s\'.', implode("', '", $types))))
+            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `one|none` values.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($types)])
-                ->setDefault(['const', 'method', 'property'])
+                ->setAllowedValues([static function ($option) {
+                    foreach ($option as $type => $spacing) {
+                        if (!\in_array($type, self::$supportedTypes, true)) {
+                            throw new InvalidOptionsException(
+                                sprintf(
+                                    'Unexpected element type, expected any of "%s", got "%s".',
+                                    implode('", "', self::$supportedTypes),
+                                    \is_object($type) ? \get_class($type) : \gettype($type).'#'.$type
+                                )
+                            );
+                        }
+
+                        if (!\in_array($spacing, self::$supportedSpacings, true)) {
+                            throw new InvalidOptionsException(
+                                sprintf(
+                                    'Unexpected spacing for element type "%s", expected any of "%s", got "%s".',
+                                    $spacing,
+                                    implode('", "', self::$supportedSpacings),
+                                    \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing)
+                                )
+                            );
+                        }
+                    }
+
+                    return true;
+                }])
+                ->setDefault([
+                    'const' => self::SPACING_ONE,
+                    'property' => self::SPACING_ONE,
+                    'method' => self::SPACING_ONE,
+                ])
                 ->getOption(),
         ]);
     }
@@ -183,10 +217,11 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      *
-     * @param int $classEndIndex
-     * @param int $elementEndIndex
+     * @param int   $classEndIndex
+     * @param int   $elementEndIndex
+     * @param mixed $spacing
      */
-    private function fixSpaceBelowClassElement(Tokens $tokens, $classEndIndex, $elementEndIndex)
+    private function fixSpaceBelowClassElement(Tokens $tokens, $classEndIndex, $elementEndIndex, $spacing)
     {
         for ($nextNotWhite = $elementEndIndex + 1;; ++$nextNotWhite) {
             if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
@@ -200,7 +235,13 @@ class Sample
             $nextNotWhite = $tokens->getNextNonWhitespace($nextNotWhite);
         }
 
-        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex ? 1 : 2);
+        if ($tokens[$nextNotWhite]->isGivenKind(T_FUNCTION)) {
+            $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, 2);
+
+            return;
+        }
+
+        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2);
     }
 
     /**

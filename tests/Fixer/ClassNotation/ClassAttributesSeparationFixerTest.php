@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -936,7 +937,29 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                     function A(){}}
                 ',
-                ['elements' => ['property']],
+                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+                        public $b = 1;
+
+                    function A(){}}
+                ',
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+
+                        public $b = 1;
+
+
+
+                    function A(){}}
+                ',
+                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE]],
             ],
             [
                 '<?php
@@ -957,7 +980,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const THREE = ONE + self::TWO; /* test */ # test
                         const B = 2;}
                 ',
-                ['elements' => ['const']],
+                ['elements' => ['const' => 'one']],
             ],
         ];
     }
@@ -1044,7 +1067,7 @@ private $d = 123;
     public function testFix71($expected, $input = null)
     {
         $this->fixer->configure([
-            'elements' => ['method', 'const'],
+            'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],
         ]);
         $this->doTest($expected, $input);
     }

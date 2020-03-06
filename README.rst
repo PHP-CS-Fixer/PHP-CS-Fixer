@@ -364,14 +364,14 @@ Choose from the list of available rules:
 
 * **class_attributes_separation** [@Symfony, @PhpCsFixer]
 
-  Class, trait and interface elements must be separated with one blank
-  line.
+  Class, trait and interface elements must be separated with one or no
+  blank line.
 
   Configuration options:
 
-  - ``elements`` (a subset of ``['const', 'method', 'property']``): list of classy
-    elements; 'const', 'method', 'property'; defaults to ``['const',
-    'method', 'property']``
+  - ``elements`` (``array``): dictionary of ``const|method|property`` => ``one|none``
+    values; defaults to ``['const' => 'one', 'property' => 'one', 'method' =>
+    'one']``
 
 * **class_definition** [@PSR2, @Symfony, @PhpCsFixer]
 
