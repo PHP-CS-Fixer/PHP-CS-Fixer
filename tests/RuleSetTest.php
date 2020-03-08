@@ -672,18 +672,27 @@ final class RuleSetTest extends TestCase
         $file = sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
 
         static::assertFileExists($file);
-        static::assertFileExists(sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
-        static::assertFileExists(sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
+
+        $fileIn = sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix);
+        static::assertFileExists($fileIn);
+
+        $fileOut = sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix);
+        static::assertFileExists($fileOut);
 
         $template = '--TEST--
 Integration of %s.
 --RULESET--
 {"%s": true}
 ';
-        static::assertSame(
-            sprintf($template, $setDefinitionName, $setDefinitionName),
-            file_get_contents($file)
-        );
+        $integrationTestFile = file_get_contents($file);
+        static::assertStringStartsWith(sprintf($template, $setDefinitionName, $setDefinitionName), $integrationTestFile, $setDefinitionName.':'.$integrationTestFile);
+        static::assertStringEndsWith("\n", $integrationTestFile, $setDefinitionName.':'.$integrationTestFile);
+
+        static::assertStringEndsWith("\n", file_get_contents($fileOut), $setDefinitionName.':'.$fileOut);
+
+        if ('@Symfony' !== $setDefinitionName) {
+            static::assertStringEndsWith("\n", file_get_contents($fileIn), $setDefinitionName.':'.$fileIn);
+        }
     }
 
     private function findInSets(array $sets, $ruleName, $config)

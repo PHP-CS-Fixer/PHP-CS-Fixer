@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP74Migration.
+--RULESET--
+{"@PHP74Migration": true}
+--REQUIREMENTS--
+{"php": 70400}
