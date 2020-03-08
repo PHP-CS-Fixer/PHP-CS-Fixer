@@ -43,6 +43,16 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before AssignNullCoalescingToCoalesceEqualFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
