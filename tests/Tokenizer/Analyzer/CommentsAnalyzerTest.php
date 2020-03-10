@@ -50,6 +50,7 @@ final class CommentsAnalyzerTest extends TestCase
         $analyzer = new CommentsAnalyzer();
 
         static::assertSame($borders, $analyzer->getCommentBlockIndices($tokens, $index));
+        static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
     public function provideCommentsCases()
@@ -178,6 +179,7 @@ $bar;',
             ['<?php /** Comment */ namespace Foo;', 1],
             ['<?php declare(strict_types=1); /* Comment */ namespace Foo;', 9],
             ['<?php /* We test this one */ /* Foo */ namespace Bar;', 1],
+            ['<?php /** Comment */ namespace Foo; declare(strict_types=1); /* Comment */ namespace Foo;', 1],
         ];
     }
 
