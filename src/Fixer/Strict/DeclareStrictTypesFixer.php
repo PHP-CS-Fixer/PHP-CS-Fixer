@@ -60,18 +60,6 @@ namespace A\B;
             'Forcing strict types will stop non strict code from working.'
         );
     }
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('after_header', 'Turn this on if you are using the header_comment fix.'))
-                ->setAllowedValues([true, false])
-                ->setDefault(false)
-                ->getOption(),
-        ]);
-    }
 
     /**
      * {@inheritdoc}
@@ -97,6 +85,19 @@ namespace A\B;
     public function isRisky()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('after_header', 'Turn this on if you are using the header_comment fix.'))
+                ->setAllowedValues([true, false])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -169,6 +170,7 @@ namespace A\B;
 
                 // Then declare_strict
                 $tokens->insertAt($headerIndex + 2, $sequence);
+
                 return;
             }
         }
