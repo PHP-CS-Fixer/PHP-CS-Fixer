@@ -13,10 +13,14 @@
 namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -24,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author SpacePossum
  */
-final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class DeclareStrictTypesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -38,10 +42,35 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
                     "<?php\n",
                     new VersionSpecification(70000)
                 ),
+                new VersionSpecificCodeSample(
+                    '<?php
+/**
+ * header
+ */
+
+namespace A\B;
+',
+                    new VersionSpecification(70000),
+                    [
+                        'after_header' => true,
+                    ]
+                ),
             ],
             null,
             'Forcing strict types will stop non strict code from working.'
         );
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('after_header', 'Turn this on if you are using the header_comment fix.'))
+                ->setAllowedValues([true, false])
+                ->setDefault(false)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -126,6 +155,23 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             new Token(';'),
         ];
         $endIndex = \count($sequence);
+
+        $afterHeader = $this->configuration['after_header'];
+
+        if ($afterHeader) {
+            $analyzer = new CommentsAnalyzer();
+            $headerIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+
+            if ($headerIndex && $analyzer->isHeaderComment($tokens, $headerIndex)) {
+                // Insert newline after header doc
+                $lineEnding = $this->whitespacesConfig->getLineEnding();
+                $tokens->insertAt($headerIndex + 1, [new Token([T_WHITESPACE, $lineEnding])]);
+
+                // Then declare_strict
+                $tokens->insertAt($headerIndex + 2, $sequence);
+                return;
+            }
+        }
 
         $tokens->insertAt(1, $sequence);
 

@@ -170,4 +170,80 @@ $a = 456;
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideDeclareStrictWithHeaderCases
+     * @requires PHP 7.0
+     */
+    public function testDeclareStrictWithHeader(array $configuration, $expected, $input = null)
+    {
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDeclareStrictWithHeaderCases()
+    {
+        return [
+            [
+                ['after_header' => true],
+                '<?php
+
+/*
+ * tmp
+ */
+declare(strict_types=1);
+
+namespace A\B;
+
+echo 1;',
+                '<?php
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+            ],
+            [
+                ['after_header' => false],
+                '<?php declare(strict_types=1);
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+                '<?php
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+            ],
+            [
+                ['after_header' => true],
+                '<?php
+
+/*
+ * tmp
+ */
+declare(strict_types=1);
+
+namespace A\B;
+
+echo 1;',
+            ],
+        ];
+    }
 }

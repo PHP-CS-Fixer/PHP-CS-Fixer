@@ -461,6 +461,11 @@ Choose from the list of available rules:
 
   *Risky rule: forcing strict types will stop non strict code from working.*
 
+  Configuration options:
+
+  - ``after_header`` (``false``, ``true``): turn this on if you are using the
+    header_comment fix; defaults to ``false``
+
 * **dir_constant** [@Symfony:risky, @PhpCsFixer:risky]
 
   Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__``
