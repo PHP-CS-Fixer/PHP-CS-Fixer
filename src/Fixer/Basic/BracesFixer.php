@@ -163,6 +163,10 @@ class Foo
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('allow_single_line_functions', 'Whether single line functions should be allowed.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
             (new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_NEXT)
@@ -314,9 +318,9 @@ class Foo
             }
 
             if (
-                $this->configuration['allow_single_line_closure']
-                && $token->isGivenKind(T_FUNCTION)
-                && $tokensAnalyzer->isLambda($index)
+                $token->isGivenKind(T_FUNCTION)
+                && (($this->configuration['allow_single_line_closure'] && $tokensAnalyzer->isLambda($index))
+                    || $this->configuration['allow_single_line_functions'])
             ) {
                 $braceEndIndex = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_CURLY_BRACE,
