@@ -191,11 +191,6 @@ Dedicated plugins exist for:
 The tool comes with quite a few built-in fixers, but everyone is more than
 welcome to `contribute`_ more of them.
 
-{$this->header('Fixers', '~')}
-
-A *fixer* is a class that tries to fix one CS issue (a ``Fixer`` class must
-implement ``FixerInterface``).
-
 {$this->header('Configs', '~')}
 
 A *config* knows about the CS rules and the files and directories that must be

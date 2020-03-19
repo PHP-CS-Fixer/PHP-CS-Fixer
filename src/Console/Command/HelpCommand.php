@@ -157,7 +157,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a <comment>.php_cs.dist</comment> file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\ConfigInterface` (<url>%%%CONFIG_INTERFACE_URL%%%</url>)
+The file must return an instance of `PhpCsFixer\ConfigInterface` (<url>%%%SRC_URL%%%/ConfigInterface.php</url>)
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create <comment>.php_cs</comment> file, which is
 the local configuration that will be used instead of the project configuration. It
@@ -227,6 +227,44 @@ configure them in your config file.
 By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
 
+Custom rules
+------------
+
+If you need to enforce some specific code style rules, you can implement your
+own fixers.
+
+For each rule you want to add, create a class that implements
+`PhpCsFixer\Fixer\FixerInterface` (<url>%%%SRC_URL%%%/Fixer/FixerInterface.php</url>).
+Note that there is a specific constraint
+regarding custom rules names: they must match the pattern
+``/^[A-Z][a-zA-Z0-9]*\/[a-z][a-z0-9_]*$/``.
+
+Then register your custom fixers and enable them in the config file:
+
+    <?php
+
+    // ...
+
+    return (new PhpCsFixer\Config())
+        // ...
+        ->registerCustomFixers([
+            new CustomerFixer1(),
+            new CustomerFixer2(),
+        ])
+        ->setRules([
+            // ...
+            'YourVendorName/custome_rule' => true,
+            'YourVendorName/custome_rule_2' => true,
+        ])
+    ;
+
+There are several interfaces that your fixers can also implement if needed:
+
+* `PhpCsFixer\Fixer\DefinedFixerInterface` (<url>%%%SRC_URL%%%/Fixer/DefinedFixerInterface.php</url>): allows to describe what the fixer does in details;
+* `PhpCsFixer\Fixer\WhitespacesAwareFixerInterface` (<url>%%%SRC_URL%%%/Fixer/WhitespacesAwareFixerInterface.php</url>): for fixers that need to know the configured indentation and line endings;
+* `PhpCsFixer\Fixer\ConfigurableFixerInterface` (<url>%%%SRC_URL%%%/Fixer/ConfigurableFixerInterface.php</url>): to create a configurable fixer;
+* `PhpCsFixer\Fixer\DeprecatedFixerInterface` (<url>%%%SRC_URL%%%/Fixer/DeprecatedFixerInterface.php</url>): to deprecate a fixer.
+
 Caching
 -------
 
@@ -287,8 +325,8 @@ EOF
         ;
 
         return strtr($template, [
-            '%%%CONFIG_INTERFACE_URL%%%' => sprintf(
-                'https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php',
+            '%%%SRC_URL%%%' => sprintf(
+                'https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src',
                 self::getLatestReleaseVersionFromChangeLog()
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
