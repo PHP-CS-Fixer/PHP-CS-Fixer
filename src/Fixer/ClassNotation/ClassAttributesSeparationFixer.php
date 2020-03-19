@@ -157,14 +157,14 @@ class Sample
                 ;
 
                 $this->fixSpaceBelowClassMethod($tokens, $classEnd, $methodEnd);
-                $this->fixSpaceAboveClassElement($tokens, $classStart, $index);
+                $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
 
                 continue;
             }
 
             // `const`, `property` or `method` of an `interface`
             $this->fixSpaceBelowClassElement($tokens, $classEnd, $tokens->getNextTokenOfKind($index, [';']), $spacing);
-            $this->fixSpaceAboveClassElement($tokens, $classStart, $index);
+            $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
         }
     }
 
@@ -266,10 +266,11 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      *
-     * @param int $classStartIndex index of the class Token the element is in
-     * @param int $elementIndex    index of the element to fix
+     * @param int    $classStartIndex index of the class Token the element is in
+     * @param int    $elementIndex    index of the element to fix
+     * @param string $spacing
      */
-    private function fixSpaceAboveClassElement(Tokens $tokens, $classStartIndex, $elementIndex)
+    private function fixSpaceAboveClassElement(Tokens $tokens, $classStartIndex, $elementIndex, $spacing)
     {
         static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
 
@@ -324,7 +325,7 @@ class Sample
 
         // deal with element without a PHPDoc above it
         if (false === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
-            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex ? 1 : 2);
+            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2);
 
             return;
         }

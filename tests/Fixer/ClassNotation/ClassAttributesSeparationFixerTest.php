@@ -925,7 +925,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         public $b = 1;
 
-                    function A(){}}
+                        function A() {}
+                     }
                 ',
                 '<?php
                     class A
@@ -935,7 +936,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 
 
-                    function A(){}}
+                        function A() {}
+                     }
                 ',
                 ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_ONE]],
             ],
@@ -946,7 +948,8 @@ class ezcReflectionMethod extends ReflectionMethod {
                         private $a = null;
                         public $b = 1;
 
-                    function A(){}}
+                        function A() {}
+                    }
                 ',
                 '<?php
                     class A
@@ -955,9 +958,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         public $b = 1;
 
-
-
-                    function A(){}}
+                        function A() {}
+                    }
                 ',
                 ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE]],
             ],
@@ -970,7 +972,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const THREE = ONE + self::TWO; /* test */ # test
 
                         const B = 2;
-}
+                    }
                 ',
                 '<?php
                     class A
@@ -978,7 +980,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         const A = 1;
                         const THREE = ONE + self::TWO; /* test */ # test
-                        const B = 2;}
+                        const B = 2;
+                    }
                 ',
                 ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_ONE]],
             ],
