@@ -980,7 +980,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const THREE = ONE + self::TWO; /* test */ # test
                         const B = 2;}
                 ',
-                ['elements' => ['const' => 'one']],
+                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_ONE]],
             ],
         ];
     }

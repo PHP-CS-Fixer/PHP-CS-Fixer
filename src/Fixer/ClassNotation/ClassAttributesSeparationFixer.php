@@ -36,15 +36,15 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
-    const SPACING_ONE = 'one';
     const SPACING_NONE = 'none';
+    const SPACING_ONE = 'one';
 
     /**
      * @var array<string, true>
      */
     private $classElementTypes = [];
     private static $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
-    private static $supportedTypes = ['const', 'property', 'method'];
+    private static $supportedTypes = ['const', 'method', 'property'];
 
     /**
      * {@inheritdoc}
@@ -65,7 +65,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Class, trait and interface elements must be separated with one or no blank line.',
+            'Class, trait and interface elements must be separated with one or none blank line.',
             [
                 new CodeSample(
                     '<?php
@@ -204,8 +204,8 @@ class Sample
                 }])
                 ->setDefault([
                     'const' => self::SPACING_ONE,
-                    'property' => self::SPACING_ONE,
                     'method' => self::SPACING_ONE,
+                    'property' => self::SPACING_ONE,
                 ])
                 ->getOption(),
         ]);
@@ -217,9 +217,9 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      *
-     * @param int   $classEndIndex
-     * @param int   $elementEndIndex
-     * @param mixed $spacing
+     * @param int    $classEndIndex
+     * @param int    $elementEndIndex
+     * @param string $spacing
      */
     private function fixSpaceBelowClassElement(Tokens $tokens, $classEndIndex, $elementEndIndex, $spacing)
     {
