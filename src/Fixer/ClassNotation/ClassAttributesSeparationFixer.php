@@ -36,15 +36,30 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
     const SPACING_NONE = 'none';
+
+    /**
+     * @internal
+     */
     const SPACING_ONE = 'one';
+
+    /**
+     * @internal
+     */
+    const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
+
+    /**
+     * @internal
+     */
+    const SUPPORTED_TYPES = ['const', 'method', 'property'];
 
     /**
      * @var array<string, true>
      */
     private $classElementTypes = [];
-    private static $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
-    private static $supportedTypes = ['const', 'method', 'property'];
 
     /**
      * {@inheritdoc}
@@ -174,26 +189,26 @@ class Sample
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `one|none` values.'))
+            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `none|one` values.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function ($option) {
                     foreach ($option as $type => $spacing) {
-                        if (!\in_array($type, self::$supportedTypes, true)) {
+                        if (!\in_array($type, self::SUPPORTED_TYPES, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected element type, expected any of "%s", got "%s".',
-                                    implode('", "', self::$supportedTypes),
+                                    implode('", "', self::SUPPORTED_TYPES),
                                     \is_object($type) ? \get_class($type) : \gettype($type).'#'.$type
                                 )
                             );
                         }
 
-                        if (!\in_array($spacing, self::$supportedSpacings, true)) {
+                        if (!\in_array($spacing, self::SUPPORTED_SPACINGS, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected spacing for element type "%s", expected any of "%s", got "%s".',
                                     $spacing,
-                                    implode('", "', self::$supportedSpacings),
+                                    implode('", "', self::SUPPORTED_SPACINGS),
                                     \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing)
                                 )
                             );

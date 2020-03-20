@@ -369,7 +369,7 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``elements`` (``array``): dictionary of ``const|method|property`` => ``one|none``
+  - ``elements`` (``array``): dictionary of ``const|method|property`` => ``none|one``
     values; defaults to ``['const' => 'one', 'method' => 'one', 'property' =>
     'one']``
 
