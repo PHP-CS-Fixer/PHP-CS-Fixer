@@ -50,7 +50,7 @@ final class ExplicitlyLoadClassTest extends AbstractFixerTestCase
             $inputFinder = new Finder();
             $inputFinder->in($testDir)->name($inputFilePattern);
 
-            /** @var SplFileInfo $file */
+            /** @var SplFileInfo $input */
             foreach ($inputFinder as $input) {
                 yield sprintf('%s => %s', $input->getFilename(), $file->getFilename()) => [$output, file_get_contents($input->getRealPath())];
             }

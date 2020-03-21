@@ -14,15 +14,27 @@ namespace PhpCsFixer\Fixer\Preload;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class ExplicitlyLoadClass extends AbstractFixer
 {
+    private $functionsAnalyzer;
+    private $tokenAnalyzer;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->functionsAnalyzer = new FunctionsAnalyzer();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,7 +60,9 @@ class ExplicitlyLoadClass extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $this->tokenAnalyzer = new TokensAnalyzer($tokens);
         $candidates = $this->parse($tokens, '__construct');
+        $candidates = array_unique($candidates);
         $classesNotToLoad = $this->getPreloadedClasses($file, $tokens);
 
         $classesToLoad = array_diff($candidates, $classesNotToLoad);
@@ -63,38 +77,38 @@ class ExplicitlyLoadClass extends AbstractFixer
     private function parse(Tokens $tokens, $functionName)
     {
         $classes = [];
-        $index = $this->findFunction($tokens, $functionName);
-        // if not public, get the types.
-        // TODO there may be other keyword but public/private/protected, eg "static"
-        if ('public' !== $tokens[$tokens->getPrevMeaningfulToken($index)]->getContent()) {
+        $functionIndex = $this->findFunction($tokens, $functionName);
+        $methodAttributes = $this->tokenAnalyzer->getMethodAttributes($functionIndex);
+
+        // If not public
+        if ($methodAttributes['visibility'] === T_PRIVATE || $methodAttributes['visibility'] === T_PROTECTED) {
             // Get argument types
-            $startedParsingArguments = false;
-            for ($i = $index; $i < \count($tokens); ++$i) {
-                $token = $tokens[$i];
-                // Look for when the arguments begin
-                if ('(' === $token->getContent()) {
-                    $startedParsingArguments = true;
-
-                    continue;
-                }
-
-                // If we have not reached the arguments yet
-                if (!$startedParsingArguments) {
-                    continue;
-                }
-
-                // Are all arguments parsed?
-                if (')' === $token->getContent()) {
-                    break;
-                }
-
-                if ($token->isGivenKind(T_STRING) && !$token->isKeyword() && !\in_array($token->getContent(), ['string', 'bool', 'array', 'float', 'int'], true)) {
-                    $classes[] = $token->getContent();
+            $arguments = $this->functionsAnalyzer->getFunctionArguments($tokens, $functionIndex);
+            foreach ($arguments as $argument) {
+                if ($argument->hasTypeAnalysis() && !$argument->getTypeAnalysis()->isReservedType()) {
+                    $classes[] = $argument->getTypeAnalysis()->getName();
                 }
             }
+
+            // Get return type
+            $returnType = $this->functionsAnalyzer->getFunctionReturnType($tokens, $functionIndex);
+            if (null !== $returnType && !$returnType->isReservedType()) {
+                $classes[] = $returnType->getName();
+            }
+
         }
 
-        // TODO parse body.
+        // Parse the body of the method
+        $blockStart = $tokens->getNextTokenOfKind($functionIndex, ['{']);
+        $blockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStart);
+
+        for ($i = $blockStart; $i < $blockEnd; $i++ ) {
+            $token = $tokens[$i];
+            // TODO find Foo::class, new Foo() and function calls.
+
+            // If function call
+            // $this->parse($tokens, $name);
+        }
 
         return $classes;
     }
@@ -106,21 +120,11 @@ class ExplicitlyLoadClass extends AbstractFixer
      */
     private function getPreloadedClasses(\SplFileInfo $file, Tokens $tokens)
     {
-        $classes = [];
+        $classes = $this->getExistingClassExists($tokens);
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_STRING)) {
-                continue;
-            }
+        // TODO parse the class' public methods
 
-            // TODO rework so it is way better
-            if ('class_exists' === $token->getContent()) {
-                $nextToken = $tokens[$index + 2];
-                $classes[] = $nextToken->getContent();
-            }
-        }
-
-        return $classes;
+        return array_unique($classes);
     }
 
     /**
@@ -150,6 +154,9 @@ class ExplicitlyLoadClass extends AbstractFixer
         return null;
     }
 
+    /**
+     * Inject "class_exists" at the top of the file.
+     */
     private function injectClasses(Tokens $tokens, array $classes)
     {
         $insertAfter = null;
@@ -181,5 +188,47 @@ class ExplicitlyLoadClass extends AbstractFixer
         }
 
         $tokens->insertAt($insertAfter + 2, $newTokens);
+    }
+
+    /**
+     * Get all class_exists in the beginning of the file
+     *
+     * @return array
+     */
+    private function getExistingClassExists(Tokens $tokens)
+    {
+        $classes = [];
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_CLASS)) {
+                // Stop when a class is found
+                break;
+            }
+
+            if (!$this->functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+                continue;
+            }
+
+            if ('class_exists' === $token->getContent()) {
+                $argumentsStart = $tokens->getNextTokenOfKind($index, ['(']);
+                $argumentsEnd = $tokens->getNextTokenOfKind($index, [')']);
+                $argumentAnalyzer = new ArgumentsAnalyzer();
+
+                foreach ($argumentAnalyzer->getArguments($tokens, $argumentsStart, $argumentsEnd) as $start => $end) {
+                    $argumentInfo = $argumentAnalyzer->getArgumentInfo($tokens, $start, $end);
+                    $class = $argumentInfo->getTypeAnalysis()->getName();
+                    if (substr($class, -7) === '::class') {
+                        $classes[] = substr($class, 0, -7);
+                    } else {
+                        // FIXME Do we care?
+                        // $classes[] = $class;
+                    }
+
+                    // We are only interested in first argument
+                    break;
+                }
+            }
+        }
+
+        return $classes;
     }
 }
