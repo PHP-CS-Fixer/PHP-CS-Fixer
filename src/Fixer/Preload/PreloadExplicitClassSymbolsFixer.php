@@ -77,6 +77,10 @@ class MyClass
     {
         $this->tokenAnalyzer = new TokensAnalyzer($tokens);
         $candidates = $this->parse($tokens, '__construct');
+        if (empty($candidates)) {
+            return;
+        }
+
         $candidates = array_unique($candidates);
         $classesNotToLoad = $this->getPreloadedClasses($tokens);
 
