@@ -89,6 +89,7 @@ class MyClass
     }
 
     /**
+     * Parse functions for used classes. Make a recursive call to other function.
      * @param string $functionName
      *
      * @return string[] classes
@@ -125,7 +126,7 @@ class MyClass
 
         for ($i = $blockStart; $i < $blockEnd; ++$i) {
             $token = $tokens[$i];
-            // TODO find Foo::class, new Foo() and function calls.
+            // Find Foo::class, new Foo() and function calls.
             if ($token->isGivenKind(T_NEW)) {
                 // FIXME We need to support classes like \Biz\BazClass
                 $class = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
