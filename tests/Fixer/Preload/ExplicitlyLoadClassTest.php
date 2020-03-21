@@ -58,4 +58,11 @@ final class ExplicitlyLoadClassTest extends AbstractFixerTestCase
             yield $file->getFilename() => [$output, null];
         }
     }
+
+    public function testSpecific()
+    {
+        $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
+        $this->doTest(file_get_contents($testDir.'/Case013_Out.php'), file_get_contents($testDir.'/Case013_In.php'));
+
+    }
 }

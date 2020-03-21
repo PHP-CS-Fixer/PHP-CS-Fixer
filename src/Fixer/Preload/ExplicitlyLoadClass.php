@@ -76,8 +76,11 @@ class ExplicitlyLoadClass extends AbstractFixer
      */
     private function parse(Tokens $tokens, $functionName)
     {
+        if (null === $functionIndex = $this->findFunction($tokens, $functionName)) {
+            return [];
+        }
+
         $classes = [];
-        $functionIndex = $this->findFunction($tokens, $functionName);
         $methodAttributes = $this->tokenAnalyzer->getMethodAttributes($functionIndex);
 
         // If not public
@@ -105,9 +108,16 @@ class ExplicitlyLoadClass extends AbstractFixer
         for ($i = $blockStart; $i < $blockEnd; $i++ ) {
             $token = $tokens[$i];
             // TODO find Foo::class, new Foo() and function calls.
-
-            // If function call
-            // $this->parse($tokens, $name);
+            if ($token->isGivenKind(T_NEW)) {
+                $class = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
+                $classes[] = $class;
+            } elseif ($token->isGivenKind(T_DOUBLE_COLON)) {
+                $class = $tokens[$tokens->getPrevMeaningfulToken($i)]->getContent();
+                $classes[] = $class;
+            } elseif ($token->isGivenKind(T_OBJECT_OPERATOR)) {
+                // FIXME Better check if function call to avoid false positive like "$this->bar = 2;"
+                $classes = array_merge($classes, $this->parse($tokens, $tokens[$tokens->getNextMeaningfulToken($i)]->getContent()));
+            }
         }
 
         return $classes;
@@ -176,7 +186,6 @@ class ExplicitlyLoadClass extends AbstractFixer
 
         $newTokens = [];
         foreach ($classes as $class) {
-            //$newTokens[] = new Token([T_STRING, 'class_exists('.$class.'::class);'."\n"]);
             $newTokens[] = new Token([T_STRING, 'class_exists']);
             $newTokens[] = new Token('(');
             $newTokens[] = new Token([T_STRING, $class]);
