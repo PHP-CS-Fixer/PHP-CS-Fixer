@@ -3,7 +3,6 @@
 use App\Foo;
 
 class_exists('App\Foo');
-class_exists(Foo::class);
 /**
  * Detect class_exists with strings
  */

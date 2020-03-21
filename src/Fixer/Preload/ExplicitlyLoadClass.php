@@ -63,7 +63,7 @@ class ExplicitlyLoadClass extends AbstractFixer
         $this->tokenAnalyzer = new TokensAnalyzer($tokens);
         $candidates = $this->parse($tokens, '__construct');
         $candidates = array_unique($candidates);
-        $classesNotToLoad = $this->getPreloadedClasses($file, $tokens);
+        $classesNotToLoad = $this->getPreloadedClasses($tokens);
 
         $classesToLoad = array_diff($candidates, $classesNotToLoad);
         $this->injectClasses($tokens, $classesToLoad);
@@ -84,7 +84,7 @@ class ExplicitlyLoadClass extends AbstractFixer
         $methodAttributes = $this->tokenAnalyzer->getMethodAttributes($functionIndex);
 
         // If not public
-        if ($methodAttributes['visibility'] === T_PRIVATE || $methodAttributes['visibility'] === T_PROTECTED) {
+        if (T_PRIVATE === $methodAttributes['visibility'] || T_PROTECTED === $methodAttributes['visibility']) {
             // Get argument types
             $arguments = $this->functionsAnalyzer->getFunctionArguments($tokens, $functionIndex);
             foreach ($arguments as $argument) {
@@ -98,20 +98,21 @@ class ExplicitlyLoadClass extends AbstractFixer
             if (null !== $returnType && !$returnType->isReservedType()) {
                 $classes[] = $returnType->getName();
             }
-
         }
 
         // Parse the body of the method
         $blockStart = $tokens->getNextTokenOfKind($functionIndex, ['{']);
         $blockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStart);
 
-        for ($i = $blockStart; $i < $blockEnd; $i++ ) {
+        for ($i = $blockStart; $i < $blockEnd; ++$i) {
             $token = $tokens[$i];
             // TODO find Foo::class, new Foo() and function calls.
             if ($token->isGivenKind(T_NEW)) {
+                // FIXME We need to support classes like \Biz\BazClass
                 $class = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 $classes[] = $class;
             } elseif ($token->isGivenKind(T_DOUBLE_COLON)) {
+                // FIXME We need to support classes like \Biz\BazClass
                 $class = $tokens[$tokens->getPrevMeaningfulToken($i)]->getContent();
                 $classes[] = $class;
             } elseif ($token->isGivenKind(T_OBJECT_OPERATOR)) {
@@ -128,11 +129,32 @@ class ExplicitlyLoadClass extends AbstractFixer
      *
      * @return string[]
      */
-    private function getPreloadedClasses(\SplFileInfo $file, Tokens $tokens)
+    private function getPreloadedClasses(Tokens $tokens)
     {
         $classes = $this->getExistingClassExists($tokens);
 
-        // TODO parse the class' public methods
+        // Parse public methods
+        foreach ($tokens as $functionIndex => $token) {
+            if (!$token->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+            $methodAttributes = $this->tokenAnalyzer->getMethodAttributes($functionIndex);
+            if (T_PUBLIC === $methodAttributes['visibility']) {
+                // Get argument types
+                $arguments = $this->functionsAnalyzer->getFunctionArguments($tokens, $functionIndex);
+                foreach ($arguments as $argument) {
+                    if ($argument->hasTypeAnalysis() && !$argument->getTypeAnalysis()->isReservedType()) {
+                        $classes[] = $argument->getTypeAnalysis()->getName();
+                    }
+                }
+
+                // Get return type
+                $returnType = $this->functionsAnalyzer->getFunctionReturnType($tokens, $functionIndex);
+                if (null !== $returnType && !$returnType->isReservedType()) {
+                    $classes[] = $returnType->getName();
+                }
+            }
+        }
 
         return array_unique($classes);
     }
@@ -200,7 +222,7 @@ class ExplicitlyLoadClass extends AbstractFixer
     }
 
     /**
-     * Get all class_exists in the beginning of the file
+     * Get all class_exists in the beginning of the file.
      *
      * @return array
      */
@@ -225,12 +247,11 @@ class ExplicitlyLoadClass extends AbstractFixer
                 foreach ($argumentAnalyzer->getArguments($tokens, $argumentsStart, $argumentsEnd) as $start => $end) {
                     $argumentInfo = $argumentAnalyzer->getArgumentInfo($tokens, $start, $end);
                     $class = $argumentInfo->getTypeAnalysis()->getName();
-                    if (substr($class, -7) === '::class') {
+                    if ('::class' === substr($class, -7)) {
                         $classes[] = substr($class, 0, -7);
-                    } else {
-                        // FIXME Do we care?
-                        // $classes[] = $class;
                     }
+                    // FIXME Do we care?
+                    // $classes[] = $class;
 
                     // We are only interested in first argument
                     break;

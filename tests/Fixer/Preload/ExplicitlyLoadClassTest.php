@@ -59,10 +59,21 @@ final class ExplicitlyLoadClassTest extends AbstractFixerTestCase
         }
     }
 
+    /**
+     * This test is helpful when debugging.
+     * Feel free to change $output and $input variables.
+     */
     public function testSpecific()
     {
-        $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
-        $this->doTest(file_get_contents($testDir.'/Case013_Out.php'), file_get_contents($testDir.'/Case013_In.php'));
+        $outfile = 'Case010_Out.php';
+        $infile = null;
 
+        $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
+        $input = null;
+        if (null !== $infile) {
+            $input = file_get_contents($testDir.'/'.$infile);
+        }
+
+        $this->doTest(file_get_contents($testDir.'/'.$outfile), $input);
     }
 }
