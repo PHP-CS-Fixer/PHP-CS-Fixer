@@ -21,9 +21,9 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Preload\ExplicitlyLoadClass
+ * @covers \PhpCsFixer\Fixer\Preload\PreloadExplicitClassSymbolsFixer
  */
-final class ExplicitlyLoadClassTest extends AbstractFixerTestCase
+final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string      $expected

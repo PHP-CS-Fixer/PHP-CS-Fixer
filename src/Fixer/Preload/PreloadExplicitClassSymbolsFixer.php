@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Fixer\Preload;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
@@ -24,7 +25,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class ExplicitlyLoadClass extends AbstractFixer
+class PreloadExplicitClassSymbolsFixer extends AbstractFixer
 {
     private $functionsAnalyzer;
     private $tokenAnalyzer;
@@ -41,8 +42,22 @@ class ExplicitlyLoadClass extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Adds extra `class_exists` to help PHP 7.4 preloading.',
+            'Adds extra `class_exists` before a class to help opcache.preload to discover always-needed symbols.',
             [
+                new CodeSample(
+                    '<?php
+use App\Foo;
+
+class MyClass
+{
+    private $foo;
+    public function __construct()
+    {
+        $this->foo = new Foo();
+    }
+}
+'
+                ),
             ]
         );
     }
@@ -250,8 +265,6 @@ class ExplicitlyLoadClass extends AbstractFixer
                     if ('::class' === substr($class, -7)) {
                         $classes[] = substr($class, 0, -7);
                     }
-                    // FIXME Do we care?
-                    // $classes[] = $class;
 
                     // We are only interested in first argument
                     break;

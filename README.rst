@@ -1798,6 +1798,11 @@ Choose from the list of available rules:
   Pre incrementation/decrementation should be used if possible.
   DEPRECATED: use ``increment_style`` instead.
 
+* **preload_explicit_class_symbols**
+
+  Adds extra ``class_exists`` before a class to help opcache.preload to
+  discover always-needed symbols.
+
 * **protected_to_private** [@Symfony, @PhpCsFixer]
 
   Converts ``protected`` variables and methods to ``private`` where possible.
