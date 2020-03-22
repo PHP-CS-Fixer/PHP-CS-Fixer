@@ -61,40 +61,40 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $functionyTokens = $this->getFunctionyTokenKinds();
-        $languageConstructionTokens = $this->getLanguageConstructionTokenKinds();
-        $braceTypes = $this->getBraceAfterVariableKinds();
+        $functionyTokenKinds = $this->getFunctionyTokenKinds();
+        $specialConstructTokenKinds = $this->getSpecialConstructTokenKinds();
+        $braceTokens = $this->getBraceAfterVariableTokens();
 
         foreach ($tokens as $index => $token) {
-            // looking for start brace
+            // looking for start parenthesis
             if (!$token->equals('(')) {
                 continue;
             }
 
-            // last non-whitespace token, can never be `null` always at least PHP open tag before it
-            $lastTokenIndex = $tokens->getPrevNonWhitespace($index);
+            // previous non-whitespace token, can never be `null` always at least PHP open tag before it
+            $prevNonWhitespace = $tokens->getPrevNonWhitespace($index);
 
-            // check for ternary operator
+            // check for special construct with ternary operator
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-            $nextNonWhiteSpace = $tokens->getNextMeaningfulToken($endParenthesisIndex);
+            $nextMeaningful = $tokens->getNextMeaningfulToken($endParenthesisIndex);
             if (
-                null !== $nextNonWhiteSpace
-                && $tokens[$nextNonWhiteSpace]->equals('?')
-                && $tokens[$lastTokenIndex]->isGivenKind($languageConstructionTokens)
+                null !== $nextMeaningful
+                && $tokens[$nextMeaningful]->equals('?')
+                && $tokens[$prevNonWhitespace]->isGivenKind($specialConstructTokenKinds)
             ) {
                 continue;
             }
 
             // check if it is a function call
-            if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
+            if ($tokens[$prevNonWhitespace]->isGivenKind($functionyTokenKinds)) {
                 $this->fixFunctionCall($tokens, $index);
-            } elseif ($tokens[$lastTokenIndex]->isGivenKind(T_STRING)) { // for real function calls or definitions
-                $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($lastTokenIndex);
+            } elseif ($tokens[$prevNonWhitespace]->isGivenKind(T_STRING)) { // for real function calls or definitions
+                $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($prevNonWhitespace);
                 if (!$tokens[$possibleDefinitionIndex]->isGivenKind(T_FUNCTION)) {
                     $this->fixFunctionCall($tokens, $index);
                 }
-            } elseif ($tokens[$lastTokenIndex]->equalsAny($braceTypes)) {
-                $block = Tokens::detectBlockType($tokens[$lastTokenIndex]);
+            } elseif ($tokens[$prevNonWhitespace]->equalsAny($braceTokens)) {
+                $block = Tokens::detectBlockType($tokens[$prevNonWhitespace]);
                 if (
                     Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE === $block['type']
@@ -108,14 +108,14 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     }
 
     /**
-     * Fixes whitespaces around braces of a function(y) call.
+     * Fixes whitespaces before parentheses of a function(y) call.
      *
      * @param Tokens $tokens tokens to handle
      * @param int    $index  index of token
      */
     private function fixFunctionCall(Tokens $tokens, $index)
     {
-        // remove space before opening brace
+        // remove space before opening parenthesis
         if ($tokens[$index - 1]->isWhitespace()) {
             $tokens->clearAt($index - 1);
         }
@@ -124,7 +124,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * @return array<array|string>
      */
-    private function getBraceAfterVariableKinds()
+    private function getBraceAfterVariableTokens()
     {
         static $tokens = [
             ')',
@@ -139,11 +139,11 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     /**
      * Gets the token kinds which can work as function calls.
      *
-     * @return int[] Token names
+     * @return int[]
      */
     private function getFunctionyTokenKinds()
     {
-        static $tokens = [
+        static $tokenKinds = [
             T_ARRAY,
             T_ECHO,
             T_EMPTY,
@@ -160,17 +160,17 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_VARIABLE,
         ];
 
-        return $tokens;
+        return $tokenKinds;
     }
 
     /**
-     * Gets the token kinds of actually language construction.
+     * Gets the functiony token kinds which work without parentheses around their argument(s).
      *
      * @return int[]
      */
-    private function getLanguageConstructionTokenKinds()
+    private function getSpecialConstructTokenKinds()
     {
-        static $languageConstructionTokens = [
+        static $tokenKinds = [
             T_ECHO,
             T_PRINT,
             T_INCLUDE,
@@ -179,6 +179,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_REQUIRE_ONCE,
         ];
 
-        return $languageConstructionTokens;
+        return $tokenKinds;
     }
 }
