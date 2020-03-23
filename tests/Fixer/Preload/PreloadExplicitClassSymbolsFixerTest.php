@@ -40,13 +40,12 @@ final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
     {
         $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
         $finder = new Finder();
-        $finder->in($testDir)->name('*_Out.php');
+        $finder->in($testDir)->name('*.test-out.php');
 
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $output = file_get_contents($file->getRealPath());
-
-            $inputFilePattern = substr($file->getFilename(), 0, -7).'In*.php';
+            $inputFilePattern = substr($file->getFilename(), 0, -7).'in.php';
             $inputFinder = new Finder();
             $inputFinder->in($testDir)->name($inputFilePattern);
 
@@ -65,7 +64,7 @@ final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
      */
     public function testSpecific()
     {
-        $outfile = 'Case010_Out.php';
+        $outfile = 'Case010.test-out.php';
         $infile = null;
 
         $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
