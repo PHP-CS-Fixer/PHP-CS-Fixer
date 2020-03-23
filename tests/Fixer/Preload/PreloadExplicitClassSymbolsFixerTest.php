@@ -38,7 +38,8 @@ final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
+        $fixerFixturesFolder = str_replace(['PhpCsFixer\\', '\\'], ['', '/'], get_class($this->createFixer()));
+        $testDir = \dirname(__DIR__, 2).'/Fixtures/'.$fixerFixturesFolder;
         $finder = new Finder();
         $finder->in($testDir)->name('*.test-out.php');
 
