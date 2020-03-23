@@ -992,6 +992,90 @@ class ezcReflectionMethod extends ReflectionMethod {
      * @param string      $expected
      * @param null|string $input
      *
+     * @dataProvider provideDeprecatedConfigCases
+     * @group legacy
+     * @expectedDeprecation A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.
+     */
+    public function testWithDeprecatedConfig($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDeprecatedConfigCases()
+    {
+        return [
+            [
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+
+                        public $b = 1;
+
+                        function A() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+                        public $b = 1;
+
+
+
+                        function A() {}
+                     }
+                ',
+                ['elements' => ['property']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function A() {}
+
+                        function B() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function A() {}
+                        function B() {}
+                    }
+                ',
+                ['elements' => ['method']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+
+                        const THREE = ONE + self::TWO; /* test */ # test
+
+                        const B = 2;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+
+                        const A = 1;
+                        const THREE = ONE + self::TWO; /* test */ # test
+                        const B = 2;
+                    }
+                ',
+                ['elements' => ['const']],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
