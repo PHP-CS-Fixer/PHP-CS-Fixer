@@ -17,9 +17,6 @@ Integration of fixers: header_comment, declare_strict_types
  */
 
 declare(strict_types=1);
-/**
- * Header Comment
- */
 
 namespace A\B\C;
 

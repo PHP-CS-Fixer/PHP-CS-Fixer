@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: header_comment, declare_strict_types
+Integration of fixers: declare_strict_types,header_comment.
 --RULESET--
 {
     "header_comment" :
@@ -17,6 +17,7 @@ Integration of fixers: header_comment, declare_strict_types
  */
 
 declare(strict_types=1);
+
 namespace A\B\C;
 
 class A {
