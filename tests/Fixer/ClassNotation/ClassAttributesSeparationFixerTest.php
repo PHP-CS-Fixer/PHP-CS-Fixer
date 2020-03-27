@@ -985,6 +985,63 @@ class ezcReflectionMethod extends ReflectionMethod {
                 ',
                 ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_ONE]],
             ],
+            [
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+                        const THREE = ONE + self::TWO;
+                        const B = 2;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+
+                        const THREE = ONE + self::TWO;
+
+                        const B = 2;
+                    }
+                ',
+                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function A() {}
+
+                        function B() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function A() {}
+                        function B() {}
+                    }
+                ',
+                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function A() {}
+                        function B() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function A() {}
+
+                        function B() {}
+                    }
+                ',
+                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_NONE]],
+            ],
         ];
     }
 

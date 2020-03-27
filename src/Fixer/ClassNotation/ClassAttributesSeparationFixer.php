@@ -172,7 +172,7 @@ class Sample
                     : $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($index, ['{']))
                 ;
 
-                $this->fixSpaceBelowClassMethod($tokens, $classEnd, $methodEnd);
+                $this->fixSpaceBelowClassMethod($tokens, $classEnd, $methodEnd, $spacing);
                 $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
 
                 continue;
@@ -282,14 +282,15 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the method with respect to the position of the
      * method within the class or trait.
      *
-     * @param int $classEndIndex
-     * @param int $elementEndIndex
+     * @param int    $classEndIndex
+     * @param int    $elementEndIndex
+     * @param string $spacing
      */
-    private function fixSpaceBelowClassMethod(Tokens $tokens, $classEndIndex, $elementEndIndex)
+    private function fixSpaceBelowClassMethod(Tokens $tokens, $classEndIndex, $elementEndIndex, $spacing)
     {
         $nextNotWhite = $tokens->getNextNonWhitespace($elementEndIndex);
 
-        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex ? 1 : 2);
+        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2);
     }
 
     /**
