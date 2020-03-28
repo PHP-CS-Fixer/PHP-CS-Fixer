@@ -75,14 +75,15 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             $prevNonWhitespace = $tokens->getPrevNonWhitespace($index);
 
             // check for special construct with ternary operator
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-            $nextMeaningful = $tokens->getNextMeaningfulToken($endParenthesisIndex);
-            if (
-                null !== $nextMeaningful
-                && $tokens[$nextMeaningful]->equals('?')
-                && $tokens[$prevNonWhitespace]->isGivenKind($specialConstructTokenKinds)
-            ) {
-                continue;
+            if ($tokens[$prevNonWhitespace]->isGivenKind($specialConstructTokenKinds)) {
+                $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $nextMeaningful = $tokens->getNextMeaningfulToken($endParenthesisIndex);
+                if (
+                    null !== $nextMeaningful
+                    && $tokens[$nextMeaningful]->equals('?')
+                ) {
+                    continue;
+                }
             }
 
             // check if it is a function call
