@@ -13,8 +13,9 @@
 namespace PhpCsFixer\Fixer\Preload;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -25,7 +26,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class PreloadExplicitClassSymbolsFixer extends AbstractFixer
+final class PreloadExplicitClassSymbolsFixer extends AbstractFixer
 {
     private $functionsAnalyzer;
     private $tokenAnalyzer;
@@ -44,7 +45,7 @@ class PreloadExplicitClassSymbolsFixer extends AbstractFixer
         return new FixerDefinition(
             'Adds extra `class_exists` before a class to help opcache.preload to discover always-needed symbols.',
             [
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     '<?php
 use App\Foo;
 
@@ -56,9 +57,17 @@ class MyClass
         $this->foo = new Foo();
     }
 }
-'
+',
+                    new VersionSpecification(70300)
                 ),
-            ]
+            ],
+            'A script for opcache.preload should classes that are used by the average '
+            .'HTTP request. A good preloading script uses reflection to load the '
+            .'hot class and all classes it depends on. Reflection cannot always find '
+            .'all dependencies. Example: Classes used in the constructor or dependent '
+            .'classes of the constructor. This fixer will make sure we load classes '
+            .'that are always used and that cannot be found by reflection. This will '
+            .'improve the preload performance.'
         );
     }
 
@@ -67,7 +76,7 @@ class MyClass
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLASS) || $tokens->isTokenKindFound(T_TRAIT);
+        return \PHP_VERSION_ID >= 70300 && ($tokens->isTokenKindFound(T_CLASS) || $tokens->isTokenKindFound(T_TRAIT));
     }
 
     /**
@@ -77,6 +86,12 @@ class MyClass
     {
         $this->tokenAnalyzer = new TokensAnalyzer($tokens);
         $candidates = $this->parse($tokens, '__construct');
+
+        // Remove false positives
+        $candidates = array_filter($candidates, function ($candidate) {
+            return !\in_array($candidate, ['parent', 'self'], true);
+        });
+
         if (empty($candidates)) {
             return;
         }
@@ -90,6 +105,7 @@ class MyClass
 
     /**
      * Parse functions for used classes. Make a recursive call to other function.
+     *
      * @param string $functionName
      *
      * @return string[] classes
@@ -128,12 +144,10 @@ class MyClass
             $token = $tokens[$i];
             // Find Foo::class, new Foo() and function calls.
             if ($token->isGivenKind(T_NEW)) {
-                // FIXME We need to support classes like \Biz\BazClass
-                $class = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
+                $class = $this->getFullClassReference($tokens, $tokens->getNextMeaningfulToken($i));
                 $classes[] = $class;
             } elseif ($token->isGivenKind(T_DOUBLE_COLON)) {
-                // FIXME We need to support classes like \Biz\BazClass
-                $class = $tokens[$tokens->getPrevMeaningfulToken($i)]->getContent();
+                $class = $this->getFullClassReference($tokens, $tokens->getPrevMeaningfulToken($i));
                 $classes[] = $class;
             } elseif ($token->isGivenKind(T_OBJECT_OPERATOR)) {
                 // FIXME Better check if function call to avoid false positive like "$this->bar = 2;"
@@ -142,6 +156,60 @@ class MyClass
         }
 
         return $classes;
+    }
+
+    /**
+     * Get a class name by searching for tokens near the index given. Ie, the line might be:
+     * $this->bar = new \Foo\Bar().
+     *
+     * If $index is representing `Bar`, then this method returns string "\Foo\Bar".
+     *
+     * @param null|int $index
+     *
+     * @return null|string
+     */
+    private function getFullClassReference(Tokens $tokens, $index)
+    {
+        if (null === $index) {
+            return null;
+        }
+
+        // Find tokens that can be included in classes
+        $allowed = [[T_STRING], [T_NS_SEPARATOR]];
+
+        $first = $index - 1;
+        while (isset($tokens[$first])) {
+            if ($tokens[$first]->equalsAny($allowed)) {
+                --$first;
+            } else {
+                ++$first;
+
+                break;
+            }
+        }
+
+        $last = $index + 1;
+        while (isset($tokens[$last])) {
+            if ($tokens[$last]->equalsAny($allowed)) {
+                ++$last;
+            } else {
+                --$last;
+
+                break;
+            }
+        }
+
+        // Print the result
+        $class = '';
+        for ($i = $first; $i <= $last; ++$i) {
+            $class .= $tokens[$i]->getContent();
+        }
+
+        if (empty($class)) {
+            return null;
+        }
+
+        return $class;
     }
 
     /**
@@ -159,22 +227,27 @@ class MyClass
                 continue;
             }
             $methodAttributes = $this->tokenAnalyzer->getMethodAttributes($functionIndex);
-            if (T_PUBLIC === $methodAttributes['visibility']) {
-                // Get argument types
-                $arguments = $this->functionsAnalyzer->getFunctionArguments($tokens, $functionIndex);
-                foreach ($arguments as $argument) {
-                    if ($argument->hasTypeAnalysis() && !$argument->getTypeAnalysis()->isReservedType()) {
-                        $classes[] = $argument->getTypeAnalysis()->getName();
-                    }
-                }
+            if (T_PUBLIC !== $methodAttributes['visibility']) {
+                continue;
+            }
 
-                // Get return type
-                $returnType = $this->functionsAnalyzer->getFunctionReturnType($tokens, $functionIndex);
-                if (null !== $returnType && !$returnType->isReservedType()) {
-                    $classes[] = $returnType->getName();
+            // Get argument types
+            $arguments = $this->functionsAnalyzer->getFunctionArguments($tokens, $functionIndex);
+            foreach ($arguments as $argument) {
+                if ($argument->hasTypeAnalysis() && !$argument->getTypeAnalysis()->isReservedType()) {
+                    $classes[] = $argument->getTypeAnalysis()->getName();
                 }
             }
+
+            // Get return type
+            $returnType = $this->functionsAnalyzer->getFunctionReturnType($tokens, $functionIndex);
+            if (null !== $returnType && !$returnType->isReservedType()) {
+                $classes[] = $returnType->getName();
+            }
         }
+
+        // TODO parse public properties
+        // TODO Get the class' interfaces and parent
 
         return array_unique($classes);
     }
@@ -230,7 +303,17 @@ class MyClass
         foreach ($classes as $class) {
             $newTokens[] = new Token([T_STRING, 'class_exists']);
             $newTokens[] = new Token('(');
-            $newTokens[] = new Token([T_STRING, $class]);
+
+            $parts = explode('\\', $class);
+            $lastPart = array_pop($parts);
+            foreach ($parts as $part) {
+                if (!empty($part)) {
+                    $newTokens[] = new Token([T_STRING, $part]);
+                }
+                $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            }
+            $newTokens[] = new Token([T_STRING, $lastPart]);
+
             $newTokens[] = new Token([T_DOUBLE_COLON, '::']);
             $newTokens[] = new Token([CT::T_CLASS_CONSTANT, 'class']);
             $newTokens[] = new Token(')');

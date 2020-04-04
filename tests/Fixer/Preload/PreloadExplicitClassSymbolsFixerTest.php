@@ -20,7 +20,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  *
  * @internal
- *
+ * @requires PHP 7.3
  * @covers \PhpCsFixer\Fixer\Preload\PreloadExplicitClassSymbolsFixer
  */
 final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
@@ -38,7 +38,7 @@ final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $fixerFixturesFolder = str_replace(['PhpCsFixer\\', '\\'], ['', '/'], get_class($this->createFixer()));
+        $fixerFixturesFolder = str_replace(['PhpCsFixer\\', '\\'], ['', '/'], \get_class($this->createFixer()));
         $testDir = \dirname(__DIR__, 2).'/Fixtures/'.$fixerFixturesFolder;
         $finder = new Finder();
         $finder->in($testDir)->name('*.test-out.php');
@@ -57,23 +57,5 @@ final class PreloadExplicitClassSymbolsFixerTest extends AbstractFixerTestCase
 
             yield $file->getFilename() => [$output, null];
         }
-    }
-
-    /**
-     * This test is helpful when debugging.
-     * Feel free to change $output and $input variables.
-     */
-    public function testSpecific()
-    {
-        $outfile = 'Case010.test-out.php';
-        $infile = null;
-
-        $testDir = \dirname(__DIR__, 2).'/Fixtures/Preload';
-        $input = null;
-        if (null !== $infile) {
-            $input = file_get_contents($testDir.'/'.$infile);
-        }
-
-        $this->doTest(file_get_contents($testDir.'/'.$outfile), $input);
     }
 }
