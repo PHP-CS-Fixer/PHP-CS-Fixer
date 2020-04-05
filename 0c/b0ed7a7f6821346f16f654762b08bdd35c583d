@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-03-24T13:50:26Z
+
+should we drop the priority relation and move `tests/Fixtures/Integration/priority/combine_nested_dirname,method_argument_space.test` test from `priority` to `misc` , @julienfalque ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-03-24T18:34:01Z
+
+No, the priority test still fails if `combine_nested_dirname` runs after `method_argument_space`.
