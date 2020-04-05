@@ -48,19 +48,19 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
                 '<?php dirname($path, 3);',
             ],
             [
-                '<?php dirname($path,2);',
+                '<?php dirname($path, 2);',
                 '<?php dirname(dirname($path));',
             ],
             [
-                '<?php dirname /* a */ ( /* b */ /* c */ $path /* d */,2);',
+                '<?php dirname /* a */ ( /* b */ /* c */ $path /* d */, 2);',
                 '<?php dirname /* a */ ( /* b */ dirname( /* c */ $path) /* d */);',
             ],
             [
-                '<?php dirname($path,3);',
+                '<?php dirname($path, 3);',
                 '<?php dirname(\dirname(dirname($path)));',
             ],
             [
-                '<?php dirname($path,4);',
+                '<?php dirname($path, 4);',
                 '<?php dirname(dirname($path, 3));',
             ],
             [
@@ -72,7 +72,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
                 '<?php dirname(dirname($path, 2), 3);',
             ],
             [
-                '<?php dirname($path,5);',
+                '<?php dirname($path, 5);',
                 '<?php dirname(dirname(dirname($path), 3));',
             ],
             [
@@ -88,11 +88,11 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
                 '<?php foo\dirname(dirname($path));',
             ],
             [
-                '<?php dirname(foo(dirname($path,2)),2);',
+                '<?php dirname(foo(dirname($path, 2)), 2);',
                 '<?php dirname(dirname(foo(dirname(dirname($path)))));',
             ],
             [
-                '<?php new dirname(dirname($path,2));',
+                '<?php new dirname(dirname($path, 2));',
                 '<?php new dirname(dirname(dirname($path)));',
             ],
         ];
@@ -122,7 +122,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-                '<?php dirname($path,3);',
+                '<?php dirname($path, 3);',
                 '<?php dirname(dirname(dirname($path, ), ));',
             ],
             [
