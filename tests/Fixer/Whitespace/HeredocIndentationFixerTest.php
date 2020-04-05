@@ -48,8 +48,9 @@ TEST
      * @dataProvider provideFixCases
      * @requires PHP 7.3
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -257,6 +258,52 @@ EOD
 );
 INPUT
                 ,
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+    foo(<<<EOD
+    abc
+
+        def
+    EOD
+    );
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+    foo(<<<EOD
+abc
+
+    def
+EOD
+    );
+INPUT
+                ,
+                ['indentation' => 'same_as_start'],
+            ],
+            [
+                <<<'EXPECTED'
+<?php
+    foo(<<<EOD
+    abc
+
+        def
+    EOD
+    );
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+    foo(<<<EOD
+        abc
+
+            def
+        EOD
+    );
+INPUT
+                ,
+                ['indentation' => 'same_as_start'],
             ],
         ];
     }

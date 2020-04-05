@@ -814,6 +814,12 @@ Choose from the list of available rules:
 
   Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
 
+  Configuration options:
+
+  - ``indentation`` (``'same_as_start'``, ``'start_plus_one'``): whether the indentation
+    should be the same as in the start token line or one level more;
+    defaults to ``'start_plus_one'``
+
 * **heredoc_to_nowdoc** [@PhpCsFixer]
 
   Convert ``heredoc`` to ``nowdoc`` where possible.

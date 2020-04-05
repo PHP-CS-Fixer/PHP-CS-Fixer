@@ -13,7 +13,10 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
@@ -24,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan
  */
-final class HeredocIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class HeredocIndentationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -58,6 +61,19 @@ SAMPLE
                     ,
                     new VersionSpecification(70300)
                 ),
+                new VersionSpecificCodeSample(
+                    <<<'SAMPLE'
+<?php
+    $a = <<<'EOD'
+abc
+    def
+EOD;
+
+SAMPLE
+                    ,
+                    new VersionSpecification(70300),
+                    ['indentation' => 'same_as_start']
+                ),
             ]
         );
     }
@@ -68,6 +84,19 @@ SAMPLE
     public function isCandidate(Tokens $tokens)
     {
         return \PHP_VERSION_ID >= 70300 && $tokens->isTokenKindFound(T_START_HEREDOC);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('indentation', 'Whether the indentation should be the same as in the start token line or one level more.'))
+                ->setAllowedValues(['start_plus_one', 'same_as_start'])
+                ->setDefault('start_plus_one')
+                ->getOption(),
+        ]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
@@ -90,7 +119,11 @@ SAMPLE
      */
     private function fixIndentation(Tokens $tokens, $start, $end)
     {
-        $indent = $this->getIndentAt($tokens, $start).$this->whitespacesConfig->getIndent();
+        $indent = $this->getIndentAt($tokens, $start);
+
+        if ('start_plus_one' === $this->configuration['indentation']) {
+            $indent .= $this->whitespacesConfig->getIndent();
+        }
 
         Preg::match('/^\h*/', $tokens[$end]->getContent(), $matches);
         $currentIndent = $matches[0];
