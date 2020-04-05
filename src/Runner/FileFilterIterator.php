@@ -41,10 +41,14 @@ final class FileFilterIterator extends \FilterIterator
     private $visitedElements = [];
 
     public function __construct(
-        \Iterator $iterator,
+        \Traversable $iterator,
         EventDispatcherInterface $eventDispatcher = null,
         CacheManagerInterface $cacheManager
     ) {
+        if (!$iterator instanceof \Iterator) {
+            $iterator = new \IteratorIterator($iterator);
+        }
+
         parent::__construct($iterator);
 
         $this->eventDispatcher = $eventDispatcher;

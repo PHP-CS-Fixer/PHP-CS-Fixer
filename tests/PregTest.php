@@ -103,7 +103,9 @@ final class PregTest extends TestCase
             return;
         }
 
-        $setup() || $this->addToAssertionCount(1);
+        if (!$setup()) {
+            $this->addToAssertionCount(1);
+        }
     }
 
     /**
@@ -147,7 +149,9 @@ final class PregTest extends TestCase
             return;
         }
 
-        $setup() || $this->addToAssertionCount(1);
+        if (!$setup()) {
+            $this->addToAssertionCount(1);
+        }
     }
 
     public function testMatchAllFailing()

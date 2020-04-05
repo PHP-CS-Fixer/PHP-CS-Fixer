@@ -350,14 +350,14 @@ Choose from the list of available rules:
 
 * **class_attributes_separation** [@Symfony, @PhpCsFixer]
 
-  Class, trait and interface elements must be separated with one blank
-  line.
+  Class, trait and interface elements must be separated with one or none
+  blank line.
 
   Configuration options:
 
-  - ``elements`` (a subset of ``['const', 'method', 'property']``): list of classy
-    elements; 'const', 'method', 'property'; defaults to ``['const',
-    'method', 'property']``
+  - ``elements`` (``array``): dictionary of ``const|method|property`` => ``none|one``
+    values; defaults to ``['const' => 'one', 'method' => 'one', 'property' =>
+    'one']``
 
 * **class_definition** [@PSR2, @Symfony, @PhpCsFixer]
 
@@ -787,6 +787,12 @@ Choose from the list of available rules:
 
   Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
 
+  Configuration options:
+
+  - ``indentation`` (``'same_as_start'``, ``'start_plus_one'``): whether the indentation
+    should be the same as in the start token line or one level more;
+    defaults to ``'start_plus_one'``
+
 * **heredoc_to_nowdoc** [@PhpCsFixer]
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
@@ -1153,6 +1159,12 @@ Choose from the list of available rules:
 * **no_trailing_whitespace_in_comment** [@PSR2, @Symfony, @PhpCsFixer]
 
   There MUST be no trailing spaces inside comment or PHPDoc.
+
+* **no_trailing_whitespace_in_string** [@PhpCsFixer:risky]
+
+  There must be no trailing whitespace in strings.
+
+  *Risky rule: changing the whitespaces in strings might affect string comparisons and outputs.*
 
 * **no_unneeded_control_parentheses** [@Symfony, @PhpCsFixer]
 

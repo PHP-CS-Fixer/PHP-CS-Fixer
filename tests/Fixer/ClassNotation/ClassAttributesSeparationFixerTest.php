@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -924,7 +925,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         public $b = 1;
 
-                    function A(){}}
+                        function A() {}
+                     }
                 ',
                 '<?php
                     class A
@@ -934,9 +936,32 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 
 
-                    function A(){}}
+                        function A() {}
+                     }
                 ',
-                ['elements' => ['property']],
+                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+                        public $b = 1;
+
+                        function A() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+
+                        public $b = 1;
+
+                        function A() {}
+                    }
+                ',
+                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE]],
             ],
             [
                 '<?php
@@ -947,7 +972,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const THREE = ONE + self::TWO; /* test */ # test
 
                         const B = 2;
-}
+                    }
                 ',
                 '<?php
                     class A
@@ -955,7 +980,149 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         const A = 1;
                         const THREE = ONE + self::TWO; /* test */ # test
-                        const B = 2;}
+                        const B = 2;
+                    }
+                ',
+                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+                        const THREE = ONE + self::TWO;
+                        const B = 2;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+
+                        const THREE = ONE + self::TWO;
+
+                        const B = 2;
+                    }
+                ',
+                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function A() {}
+
+                        function B() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function A() {}
+                        function B() {}
+                    }
+                ',
+                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function A() {}
+                        function B() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function A() {}
+
+                        function B() {}
+                    }
+                ',
+                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_NONE]],
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDeprecatedConfigCases
+     * @group legacy
+     * @expectedDeprecation A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.
+     */
+    public function testWithDeprecatedConfig($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDeprecatedConfigCases()
+    {
+        return [
+            [
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+
+                        public $b = 1;
+
+                        function A() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        private $a = null;
+                        public $b = 1;
+
+
+
+                        function A() {}
+                     }
+                ',
+                ['elements' => ['property']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function A() {}
+
+                        function B() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function A() {}
+                        function B() {}
+                    }
+                ',
+                ['elements' => ['method']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const A = 1;
+
+                        const THREE = ONE + self::TWO; /* test */ # test
+
+                        const B = 2;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+
+                        const A = 1;
+                        const THREE = ONE + self::TWO; /* test */ # test
+                        const B = 2;
+                    }
                 ',
                 ['elements' => ['const']],
             ],
@@ -1044,7 +1211,7 @@ private $d = 123;
     public function testFix71($expected, $input = null)
     {
         $this->fixer->configure([
-            'elements' => ['method', 'const'],
+            'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],
         ]);
         $this->doTest($expected, $input);
     }

@@ -1,9 +1,10 @@
 includes:
     - dev-tools/vendor/jangregor/phpstan-prophecy/src/extension.neon
+    - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
-    level: 3
+    level: 5
     paths:
         - src
         - tests
@@ -16,3 +17,33 @@ parameters:
         -
             message: '/^Unsafe usage of new static\(\)\.$/'
             path: src/Config.php
+        -
+            message: '/^Else branch is unreachable because previous condition is always true\.$/'
+            path: src/Event/Event.php
+        -
+            message: '/^Strict comparison using !== between ''@git-commit@'' and ''@git-commit@'' will always evaluate to false\.$/'
+            path: src/Console/Application.php
+        -
+            message: '/^Result of && is always false\.$/'
+            path: src/Config.php
+        -
+            message: '/^Strict comparison using === between false and true will always evaluate to false\.$/'
+            path: src/Config.php
+        -
+            message: '/^Else branch is unreachable because ternary operator condition is always true\.$/'
+            paths:
+                - src/Config.php
+                - src/Tokenizer/Token.php
+        -
+            message: '/^Parameter #1 \$fixers of method PhpCsFixer\\Config::registerCustomFixers\(\) expects iterable<PhpCsFixer\\Fixer\\FixerInterface>, string given\.$/'
+            path: tests/ConfigTest.php
+        -
+            message: '/^Parameter #1 \$options of method PhpCsFixer\\FixerConfiguration\\FixerConfigurationResolverRootless::resolve\(\) expects array<string, mixed>, array<int, string> given\.$/'
+            path: tests/FixerConfiguration/FixerConfigurationResolverRootlessTest.php
+        -
+            message: '/^Parameter #1 \$function of function register_shutdown_function expects callable\(\): void, array\(\$this\(PhpCsFixer\\FileRemoval\), ''clean''\) given\.$/'
+            path: src/FileRemoval.php
+        -
+            message: '/^Parameter #1 \$finder of method PhpCsFixer\\Config::setFinder\(\) expects iterable<string>, int given\.$/'
+            path: tests/ConfigTest.php
+    tipsOfTheDay: false
