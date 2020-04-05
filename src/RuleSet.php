@@ -322,6 +322,7 @@ final class RuleSet implements RuleSetInterface
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
+            'no_trailing_whitespace_in_string' => true,
             'no_unreachable_default_argument_value' => true,
             'no_unset_on_property' => true,
             'php_unit_strict' => true,
