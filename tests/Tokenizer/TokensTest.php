@@ -298,13 +298,13 @@ final class TokensTest extends TestCase
 
         return [
             ['Invalid sequence.', []],
-            ['Non-meaningful token at position: 0.', [
+            ['Non-meaningful token at position: "0".', [
                 [T_WHITESPACE, '   '],
             ]],
-            ['Non-meaningful token at position: 1.', [
+            ['Non-meaningful token at position: "1".', [
                 '{', [T_COMMENT, '// Foo'], '}',
             ]],
-            ['Non-meaningful token at position: 2.', [
+            ['Non-meaningful token at position: "2".', [
                 '{', '!', $emptyToken, '}',
             ]],
         ];
@@ -752,7 +752,7 @@ PHP;
     public function testFindBlockEndInvalidType()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Invalid param type: -1\.$/');
+        $this->expectExceptionMessageRegExp('/^Invalid param type: "-1"\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -762,7 +762,7 @@ PHP;
     public function testFindBlockEndInvalidStart()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block start\.$/');
+        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block "start"\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
