@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-03-06T17:32:02Z
+
+> I get this error when running the new test I added. What does it mean?
+
+This is because the unit tests for fixers first check that the input code is changed to the expected code then it checks that the expected code is **not** changed again when used as input. It means the fixer changes code that is not expected to change.
+
+---------------------------------------------------------------------------
+
+by adri at 2020-03-20T08:14:42Z
+
+@juliendufresne  @kubawerlos Thanks for checking this PR, with the help of @ruudk this PR is now ready for review.
+
+---------------------------------------------------------------------------
+
+by adri at 2020-03-20T17:12:38Z
+
+@kubawerlos Thanks! Fixed
+
+---------------------------------------------------------------------------
+
+by ruudk at 2020-04-01T14:50:59Z
+
+@keradus @GrahamCampbell What do you think of this? Would love to be able to remove all those empty newlines from our project 🙏
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-05T09:41:52Z
+
+@adri Before we merge this PR, could you please rebase and squash commits to keep one commit per authorship?
