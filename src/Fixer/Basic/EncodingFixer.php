@@ -77,6 +77,7 @@ echo "Hello!";
         $content = $tokens[0]->getContent();
 
         if (0 === strncmp($content, $this->BOM, 3)) {
+            /** @var false|string $newContent until support for PHP 5.6 is dropped */
             $newContent = substr($content, 3);
 
             if (false === $newContent) {

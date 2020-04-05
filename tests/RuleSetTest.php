@@ -663,8 +663,6 @@ final class RuleSetTest extends TestCase
 
         if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
             static::markTestIncomplete(sprintf('Set "%s" has no integration test.', $setDefinitionName));
-
-            return;
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);

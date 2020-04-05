@@ -847,7 +847,7 @@ final class ConfigurationResolver
             }
 
             return new \CallbackFilterIterator(
-                $nestedFinder,
+                new \IteratorIterator($nestedFinder),
                 static function (\SplFileInfo $current) use ($pathsByType) {
                     $currentRealPath = $current->getRealPath();
 

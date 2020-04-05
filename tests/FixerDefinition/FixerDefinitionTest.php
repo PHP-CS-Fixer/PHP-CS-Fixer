@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\FixerDefinition;
 
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tests\TestCase;
 
@@ -31,9 +32,14 @@ final class FixerDefinitionTest extends TestCase
 
     public function testGetCodeSamples()
     {
-        $definition = new FixerDefinition('', ['Bar', 'Baz']);
+        $samples = [
+            $this->prophesize(CodeSampleInterface::class)->reveal(),
+            $this->prophesize(CodeSampleInterface::class)->reveal(),
+        ];
 
-        static::assertSame(['Bar', 'Baz'], $definition->getCodeSamples());
+        $definition = new FixerDefinition('', $samples);
+
+        static::assertSame($samples, $definition->getCodeSamples());
     }
 
     public function testGetDescription()

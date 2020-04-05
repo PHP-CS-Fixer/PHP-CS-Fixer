@@ -6,7 +6,7 @@ Integration of fixers: combine_nested_dirname,no_spaces_inside_parenthesis.
 {"php": 70000}
 --EXPECT--
 <?php
-dirname ($path ,2);
+dirname ($path , 2);
 
 --INPUT--
 <?php

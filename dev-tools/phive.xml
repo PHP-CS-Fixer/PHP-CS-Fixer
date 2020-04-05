@@ -2,5 +2,4 @@
 <phive xmlns="https://phar.io/phive">
   <phar name="composer-normalize" version="^2.1.2" installed="2.1.2" location="./tools/composer-normalize" copy="false"/>
   <phar name="composer-require-checker" version="^2.0" installed="2.0.0" location="./tools/composer-require-checker" copy="false"/>
-  <phar name="phpstan" version="^0.12" installed="0.12.9" location="./tools/phpstan" copy="true"/>
 </phive>

@@ -333,7 +333,7 @@ EOF;
      * @param string $line
      * @param bool   $matchCommentOnly
      *
-     * @return null|string[]
+     * @return null|array<string, null|string>
      */
     private function getMatches($line, $matchCommentOnly = false)
     {

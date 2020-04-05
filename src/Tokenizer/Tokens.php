@@ -25,9 +25,6 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @extends \SplFixedArray<Token>
- *
- * @method Token current()
- * @method Token offsetGet($index)
  */
 class Tokens extends \SplFixedArray
 {
@@ -315,7 +312,7 @@ class Tokens extends \SplFixedArray
     {
         $this->blockEndCache = [];
 
-        if (!$this[$index] || !$this[$index]->equals($newval)) {
+        if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             $this->changed = true;
 
             if (isset($this[$index])) {
@@ -365,7 +362,9 @@ class Tokens extends \SplFixedArray
 
         for ($count = $index; $index < $limit; ++$index) {
             if (!$this->isEmptyAt($index)) {
-                $this[$count++] = $this[$index];
+                /** @var Token $token */
+                $token = $this[$index];
+                $this[$count++] = $token;
             }
         }
 
@@ -870,8 +869,8 @@ class Tokens extends \SplFixedArray
     /**
      * Insert instances of Token inside collection.
      *
-     * @param int                  $index start inserting index
-     * @param Token|Token[]|Tokens $items instances of Token to insert
+     * @param int                       $index start inserting index
+     * @param array<Token>|Token|Tokens $items instances of Token to insert
      */
     public function insertAt($index, $items)
     {
@@ -963,9 +962,9 @@ class Tokens extends \SplFixedArray
     /**
      * Override tokens at given range.
      *
-     * @param int            $indexStart start overriding index
-     * @param int            $indexEnd   end overriding index
-     * @param Token[]|Tokens $items      tokens to insert
+     * @param int                 $indexStart start overriding index
+     * @param int                 $indexEnd   end overriding index
+     * @param array<Token>|Tokens $items      tokens to insert
      */
     public function overrideRange($indexStart, $indexEnd, $items)
     {

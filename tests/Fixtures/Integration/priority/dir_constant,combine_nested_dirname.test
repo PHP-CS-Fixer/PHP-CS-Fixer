@@ -6,7 +6,7 @@ Integration of fixers: dir_constant,combine_nested_dirname.
 {"php": 70000}
 --EXPECT--
 <?php
-dirname(__DIR__,2);
+dirname(__DIR__, 2);
 
 --INPUT--
 <?php
