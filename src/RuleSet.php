@@ -70,7 +70,7 @@ final class RuleSet implements RuleSetInterface
                 'allow_single_line_closure' => true,
             ],
             'cast_spaces' => true,
-            'class_attributes_separation' => ['elements' => ['method']],
+            'class_attributes_separation' => ['elements' => ['method' => 'one']],
             'class_definition' => ['single_line' => true],
             'concat_space' => true,
             'declare_equal_normalize' => true,

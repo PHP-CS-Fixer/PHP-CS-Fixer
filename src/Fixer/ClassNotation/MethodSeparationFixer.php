@@ -77,7 +77,7 @@ final class Sample
     protected function createProxyFixers()
     {
         $fixer = new ClassAttributesSeparationFixer();
-        $fixer->configure(['elements' => ['method']]);
+        $fixer->configure(['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE]]);
 
         return [$fixer];
     }
