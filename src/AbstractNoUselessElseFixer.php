@@ -162,7 +162,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 return true;
             }
 
-            if ($token->equals(';', '}')) {
+            if ($token->equals(';')) {
                 return false;
             }
             if ($token->equals('{')) {
