@@ -228,7 +228,9 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $subcollection = new Tokens($size);
 
         for ($i = 0; $i < $size; ++$i) {
-            $subcollection[$i] = clone $tokens[$i + $indexStart];
+            /** @var Token $toClone */
+            $toClone = $tokens[$i + $indexStart];
+            $subcollection[$i] = clone $toClone;
         }
 
         return $subcollection;

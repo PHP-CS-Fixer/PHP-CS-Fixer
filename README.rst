@@ -1224,7 +1224,7 @@ Choose from the list of available rules:
 
   There MUST be no trailing spaces inside comment or PHPDoc.
 
-* **no_trailing_whitespace_in_string** [@PhpCsFixer:risky]
+* **no_trailing_whitespace_in_string** [@Symfony:risky, @PhpCsFixer:risky]
 
   There must be no trailing whitespace in strings.
 
