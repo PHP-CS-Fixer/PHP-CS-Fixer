@@ -225,7 +225,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $prev = $tokens->getPrevMeaningfulToken($outerDirnameInfo['end']);
             $items = [];
             if (!$tokens[$prev]->equals(',')) {
-                $items[] = new Token(',');
+                $items = [new Token(','), new Token([T_WHITESPACE, ' '])];
             }
             $items[] = $levelsToken;
             $tokens->insertAt($outerDirnameInfo['end'], $items);

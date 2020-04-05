@@ -8,7 +8,7 @@ Integration of fixers: combine_nested_dirname,no_whitespace_in_blank_line.
 <?php
 dirname(
         $path
-,2);
+, 2);
 
 --INPUT--
 <?php

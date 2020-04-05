@@ -97,11 +97,11 @@ final class Application extends BaseApplication
      */
     public function getLongVersion()
     {
-        $version = parent::getLongVersion();
-        if (self::VERSION_CODENAME) {
-            $version .= ' <info>'.self::VERSION_CODENAME.'</info>';
-        }
-        $version .= ' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>';
+        $version = sprintf(
+            '%s <info>%s</info> by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>',
+            parent::getLongVersion(),
+            self::VERSION_CODENAME
+        );
 
         $commit = '@git-commit@';
 
