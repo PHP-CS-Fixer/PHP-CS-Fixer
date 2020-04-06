@@ -226,9 +226,6 @@ final class DescribeCommand extends Command
             }
 
             $output->writeln('');
-        } elseif ($fixer instanceof ConfigurableFixerInterface) {
-            $output->writeln('<comment>Fixer is configurable.</comment>');
-            $output->writeln('');
         }
 
         /** @var CodeSampleInterface[] $codeSamples */
