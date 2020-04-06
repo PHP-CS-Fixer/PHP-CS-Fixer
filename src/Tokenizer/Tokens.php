@@ -803,7 +803,7 @@ class Tokens extends \SplFixedArray
             }
 
             if ($token->isWhitespace() || $token->isComment() || '' === $token->getContent()) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
+                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: "%s".', $key));
             }
         }
 
@@ -1134,7 +1134,7 @@ class Tokens extends \SplFixedArray
     public function countTokenKind($tokenKind)
     {
         if (self::isLegacyMode()) {
-            throw new \RuntimeException(sprintf('%s is not available in legacy mode.', __METHOD__));
+            throw new \RuntimeException(sprintf('"%s" is not available in legacy mode.', __METHOD__));
         }
 
         return isset($this->foundTokenKinds[$tokenKind]) ? $this->foundTokenKinds[$tokenKind] : 0;
@@ -1277,7 +1277,7 @@ class Tokens extends \SplFixedArray
         $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
 
         if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
+            throw new \InvalidArgumentException(sprintf('Invalid param type: "%s".', $type));
         }
 
         if (!self::isLegacyMode() && isset($this->blockEndCache[$searchIndex])) {
@@ -1297,7 +1297,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
+            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block "%s".', $findEnd ? 'start' : 'end'));
         }
 
         $blockLevel = 0;
@@ -1323,7 +1323,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
+            throw new \UnexpectedValueException(sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
         }
 
         $this->blockEndCache[$startIndex] = $index;
