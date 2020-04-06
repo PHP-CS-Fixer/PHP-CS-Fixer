@@ -758,7 +758,7 @@ final class Tokens extends \SplFixedArray
             }
 
             if ($token->isWhitespace() || $token->isComment() || '' === $token->getContent()) {
-                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: %s.', $key));
+                throw new \InvalidArgumentException(sprintf('Non-meaningful token at position: "%s".', $key));
             }
         }
 
@@ -1186,7 +1186,7 @@ final class Tokens extends \SplFixedArray
         $blockEdgeDefinitions = self::getBlockEdgeDefinitions();
 
         if (!isset($blockEdgeDefinitions[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid param type: %s.', $type));
+            throw new \InvalidArgumentException(sprintf('Invalid param type: "%s".', $type));
         }
 
         if (isset($this->blockEndCache[$searchIndex])) {
@@ -1206,7 +1206,7 @@ final class Tokens extends \SplFixedArray
         }
 
         if (!$this[$startIndex]->equals($startEdge)) {
-            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block %s.', $findEnd ? 'start' : 'end'));
+            throw new \InvalidArgumentException(sprintf('Invalid param $startIndex - not a proper block "%s".', $findEnd ? 'start' : 'end'));
         }
 
         $blockLevel = 0;
@@ -1232,7 +1232,7 @@ final class Tokens extends \SplFixedArray
         }
 
         if (!$this[$index]->equals($endEdge)) {
-            throw new \UnexpectedValueException(sprintf('Missing block %s.', $findEnd ? 'end' : 'start'));
+            throw new \UnexpectedValueException(sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
         }
 
         $this->blockEndCache[$startIndex] = $index;

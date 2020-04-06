@@ -269,6 +269,12 @@ Choose from the list of available rules:
 
   Each element of an array must be indented exactly once.
 
+* **array_push** [@Symfony:risky, @PhpCsFixer:risky]
+
+  Converts simple usages of ``array_push($x, $y);`` to ``$x[] = $y;``.
+
+  *Risky rule: risky when the function ``array_push`` is overridden.*
+
 * **array_syntax** [@Symfony, @PhpCsFixer]
 
   PHP arrays should be declared using the configured syntax.
@@ -1160,7 +1166,7 @@ Choose from the list of available rules:
 
   There MUST be no trailing spaces inside comment or PHPDoc.
 
-* **no_trailing_whitespace_in_string** [@PhpCsFixer:risky]
+* **no_trailing_whitespace_in_string** [@Symfony:risky, @PhpCsFixer:risky]
 
   There must be no trailing whitespace in strings.
 

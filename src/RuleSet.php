@@ -192,6 +192,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@Symfony:risky' => [
             '@PHP56Migration:risky' => true,
+            'array_push' => true,
             'combine_nested_dirname' => true,
             'dir_constant' => true,
             'ereg_to_preg' => true,
@@ -221,6 +222,7 @@ final class RuleSet implements RuleSetInterface
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'no_php4_constructor' => true,
+            'no_trailing_whitespace_in_string' => true,
             'no_unneeded_final_method' => true,
             'non_printable_character' => true,
             'php_unit_construct' => true,
@@ -304,7 +306,6 @@ final class RuleSet implements RuleSetInterface
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
-            'no_trailing_whitespace_in_string' => true,
             'no_unreachable_default_argument_value' => true,
             'no_unset_on_property' => true,
             'php_unit_strict' => true,

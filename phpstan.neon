@@ -46,4 +46,9 @@ parameters:
         -
             message: '/^Parameter #1 \$finder of method PhpCsFixer\\Config::setFinder\(\) expects iterable<string>, int given\.$/'
             path: tests/ConfigTest.php
+
+        - # https://github.com/phpstan/phpstan/issues/1215
+            message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
+            path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
+
     tipsOfTheDay: false
