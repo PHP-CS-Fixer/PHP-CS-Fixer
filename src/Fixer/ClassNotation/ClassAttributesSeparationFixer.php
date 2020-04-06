@@ -58,7 +58,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     const SUPPORTED_TYPES = ['const', 'method', 'property'];
 
     /**
-     * @var array<string, true>
+     * @var array<string, string>
      */
     private $classElementTypes = [];
 

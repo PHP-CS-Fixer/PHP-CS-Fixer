@@ -63,6 +63,7 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1, $last = true; $index >= 0; --$index, $last = false) {
+            /** @var Token $token */
             $token = $tokens[$index];
 
             if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML])) {
