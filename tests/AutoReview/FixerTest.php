@@ -239,9 +239,9 @@ final class FixerTest extends TestCase
 
     public function provideFixerDefinitionsCases()
     {
-        return array_map(static function (FixerInterface $fixer) {
-            return [$fixer];
-        }, $this->getAllFixers());
+        foreach ($this->getAllFixers() as $fixer) {
+            yield $fixer->getName() => [$fixer];
+        }
     }
 
     /**
@@ -283,9 +283,9 @@ final class FixerTest extends TestCase
             return $fixer instanceof ConfigurationDefinitionFixerInterface;
         });
 
-        return array_map(static function (FixerInterface $fixer) {
-            return [$fixer];
-        }, $fixers);
+        foreach ($fixers as $fixer) {
+            yield $fixer->getName() => [$fixer];
+        }
     }
 
     /**
