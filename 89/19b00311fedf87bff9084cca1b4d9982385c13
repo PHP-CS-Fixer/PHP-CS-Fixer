@@ -1,0 +1,70 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-07T17:54:59Z
+
+Tagged WIP because I'm not 100% sure I covered all the operator-precedence cases. Also I wonder if there are more complex cases than the unit test cover.
+Please let me know!
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-02-09T23:59:50Z
+
+Please check the PR description, the code-example it gives is wrong (the result, at the very beginning, the diff looks legit).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-10T08:02:14Z
+
+thanks, corrected!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-11T07:52:12Z
+
+@ntzm can you've a look?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2020-02-12T17:05:56Z
+
+What about these cases? Are they handled? Do we want to handle them?
+
+```php
+array_push(\A\B::$foo, 1);
+array_push(static::$foo, 1);
+array_push(namespace\A::$foo, 1);
+array_push(foo()->bar, 1);
+array_push(foo(), 1);
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-13T12:56:28Z
+
+I think this is going to be a PHP7 only fixer, dealing with 5.6 is just a pain
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-13T12:57:00Z
+
+>What about these cases? Are they handled? Do we want to handle them?
+
+not handled, we could, should we?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2020-02-13T12:58:25Z
+
+I think yes. We should accept anything for the first argument.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-14T07:21:29Z
+
+:+1:  done, however I'm not 100% sure on precedence and such
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-04-05T10:59:03Z
+
+Anyone who can take a final look at this? I think this is RTM?
