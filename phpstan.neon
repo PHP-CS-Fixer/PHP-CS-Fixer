@@ -38,9 +38,6 @@ parameters:
             message: '/^Parameter #1 \$fixers of method PhpCsFixer\\Config::registerCustomFixers\(\) expects iterable<PhpCsFixer\\Fixer\\FixerInterface>, string given\.$/'
             path: tests/ConfigTest.php
         -
-            message: '/^Parameter #1 \$options of method PhpCsFixer\\FixerConfiguration\\FixerConfigurationResolverRootless::resolve\(\) expects array<string, mixed>, array<int, string> given\.$/'
-            path: tests/FixerConfiguration/FixerConfigurationResolverRootlessTest.php
-        -
             message: '/^Parameter #1 \$function of function register_shutdown_function expects callable\(\): void, array\(\$this\(PhpCsFixer\\FileRemoval\), ''clean''\) given\.$/'
             path: src/FileRemoval.php
         -
