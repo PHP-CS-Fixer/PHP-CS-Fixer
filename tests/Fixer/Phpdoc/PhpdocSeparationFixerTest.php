@@ -578,6 +578,18 @@ EOF;
         $this->doTest($expected);
     }
 
+    public function testOneLineDocBlock()
+    {
+        $expected = <<<'EOF'
+<?php
+    /** Foo */
+    const Foo = 1;
+
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testMessyWhitespaces()
     {
         $expected = "<?php\t/**\r\n\t * @param string \$text\r\n\t *\r\n\t * @return string\r\n\t */";
