@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-09T16:02:55Z
+
+@keradus @SpacePossum @julienfalque should we use Composer stable version and go with this PR or wait for Composer snapshot to be fixed?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-10T08:14:03Z
+
+I see no reason to prefer snapshot release over stable, let's keep stable.
