@@ -304,7 +304,7 @@ echo \'x\';',
                     'header' => 'foo',
                     'location' => 'after_open',
                     'separate' => 'bottom',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 '<?php
 /**
@@ -332,7 +332,7 @@ echo 1;',
                     'header' => 'foo',
                     'location' => 'after_open',
                     'separate' => 'bottom',
-                    'commentType' => 'PHPDoc',
+                    'comment_type' => 'PHPDoc',
                 ],
                 '<?php
 /**

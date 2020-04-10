@@ -117,7 +117,7 @@ echo 1;
      */
     public function getPriority()
     {
-        // When this fixer is configured with ["separate" => "bottom", "commentType" => "PHPDoc"]
+        // When this fixer is configured with ["separate" => "bottom", "comment_type" => "PHPDoc"]
         // and the target file has no namespace or declare() construct,
         // the fixed header comment gets trimmed by NoBlankLinesAfterPhpdocFixer if we run before it.
         return -30;
