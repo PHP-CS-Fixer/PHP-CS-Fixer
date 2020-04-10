@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-04-10T15:41:02Z
+
+Meh. If you want to add a test, that's fine. Otherwise, this should be regarded as an important fix, since composer 2 might be released in a matter of hours, and all composer 1 installs will upgrade to it just like any other release.
