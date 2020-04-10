@@ -4,7 +4,7 @@ Integration of fixers: declare_strict_types,header_comment.
 {
     "header_comment" :
     {
-        "commentType": "PHPDoc", "header": "Header Comment", "location": "after_open", "separate": "bottom"
+        "comment_type": "PHPDoc", "header": "Header Comment", "location": "after_open", "separate": "bottom"
     },
     "declare_strict_types": true
 }
