@@ -2049,6 +2049,13 @@ Choose from the list of available rules:
 
   Unary operators should be placed adjacent to their operands.
 
+* **use_arrow_functions**
+
+  Anonymous functions with one-liner return statement must use arrow
+  functions.
+
+  *Risky rule: risky when using ``isset()`` on outside variables that are not imported with ``use ()``.*
+
 * **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration, @PHP74Migration]
 
   Visibility MUST be declared on all properties and methods; ``abstract``
