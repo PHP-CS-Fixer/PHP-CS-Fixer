@@ -2049,7 +2049,7 @@ Choose from the list of available rules:
 
   Unary operators should be placed adjacent to their operands.
 
-* **use_arrow_functions**
+* **use_arrow_functions** [@PHP74Migration:risky]
 
   Anonymous functions with one-liner return statement must use arrow
   functions.
