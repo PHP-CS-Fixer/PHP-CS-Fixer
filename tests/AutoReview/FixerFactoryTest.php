@@ -87,6 +87,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['combine_nested_dirname'], $fixers['no_spaces_inside_parenthesis']],
             [$fixers['declare_strict_types'], $fixers['blank_line_after_opening_tag']],
             [$fixers['declare_strict_types'], $fixers['declare_equal_normalize']],
+            [$fixers['declare_strict_types'], $fixers['header_comment']],
             [$fixers['dir_constant'], $fixers['combine_nested_dirname']],
             [$fixers['doctrine_annotation_array_assignment'], $fixers['doctrine_annotation_spaces']],
             [$fixers['elseif'], $fixers['braces']],
