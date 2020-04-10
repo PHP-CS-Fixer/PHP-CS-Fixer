@@ -1,0 +1,96 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-03T08:42:54Z
+
+> if the return statement uses more lines, there is no point in using an arrow function
+
+Can you elaborate please? I think it would be nice to cover those as well but maybe I'm missing something.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2020-02-03T09:26:40Z
+
+Maybe it is a matter of taste, but in my opinion the arrow functions without the braces are less readable for multiline return statements.
+So for my part, I would like the fixer more, if it does not fix multiline return statements. But if you disagree, I'm open to change the behavior and fix them, too.
+
+But would it be the responsibility of this fixer to change indentation?
+When enabling fixing for multiline return statement, at the moment the fixer would fix this input:
+
+```php
+foo($x, function () {
+    return bar(
+       $a,
+       $b
+    );
+}, $y);
+```
+
+to:
+
+```php
+foo($x, fn () => bar(
+       $a,
+       $b
+    ), $y);
+```
+
+And this input:
+
+```php
+foo($x, function ($a, $b) {
+    return $a
+        ->aMethodCall()
+        ->otherMethodCall($b)
+        ->thirdMethod();
+}, $y);
+```
+
+to:
+
+```php
+foo($x, fn ($a, $b) => $a
+        ->aMethodCall()
+        ->otherMethodCall($b)
+        ->thirdMethod(), $y);
+```
+
+---
+
+I think we should avoid these problems and the fixer should not touch these cases with multiline return statements.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-03T13:25:39Z
+
+I do prefer to fix multiline return statements as well, @SpacePossum @keradus @kubawerlos WDYT? Maybe this can be an option?
+
+> But would it be the responsibility of this fixer to change indentation?
+
+No, that would be another fixer.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2020-02-23T14:04:59Z
+
+> do prefer to fix multiline return statements as well, @SpacePossum @keradus @kubawerlos WDYT?
+
+Ping :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-24T08:05:56Z
+
+I don't think I would use the multi line version. Therefore I'm fine if this is not part of the first version of the fixer. I think it can be added as an option later.
+Thanks for all the work so far!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-24T08:17:42Z
+
+:+1: for implementing multiline support later, but without option. It's part of the intended scope of the rule, but it's not fully implemented yet (like we do with rulesets).
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-10T09:39:00Z
+
+@gharlan Could you please rebase to fix the conflict?
