@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -43,7 +42,6 @@ final class HeaderCommentFixerTest extends AbstractFixerWithAliasedOptionsTestCa
             [
                 ['header' => ''],
                 '<?php
-
 
 $a;',
                 '<?php
@@ -129,7 +127,6 @@ echo 1;',
 /*
  * new
  */
-                    '.'
                 ',
                 '<?php
                     /** test */
@@ -145,7 +142,6 @@ echo 1;',
 /**
  * new
  */
-                    '.'
                 ',
                 '<?php
                     /* test */
@@ -161,7 +157,6 @@ echo 1;',
 /**
  * def
  */
-
 ',
                 '<?php
 ',
@@ -304,6 +299,184 @@ echo \'x\';',
 
 echo \'x\';',
             ],
+            [
+                [
+                    'header' => 'foo',
+                    'location' => 'after_open',
+                    'separate' => 'bottom',
+                    'comment_type' => 'PHPDoc',
+                ],
+                '<?php
+/**
+ * foo
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+                '<?php
+
+declare(strict_types=1);
+/**
+ * foo
+ */
+
+namespace A;
+
+echo 1;',
+            ],
+            [
+                [
+                    'header' => 'foo',
+                    'location' => 'after_open',
+                    'separate' => 'bottom',
+                    'comment_type' => 'PHPDoc',
+                ],
+                '<?php
+/**
+ * foo
+ */
+
+declare(strict_types=1);
+
+namespace A;
+
+echo 1;',
+                '<?php
+
+declare(strict_types=1);
+/**
+ * bar
+ */
+
+namespace A;
+
+echo 1;',
+            ],
+            [
+                [
+                    'header' => 'Foo',
+                    'separate' => 'none',
+                ],
+                '<?php
+
+declare(strict_types=1);
+/*
+ * Foo
+ */
+namespace SebastianBergmann\Foo;
+
+class Bar
+{
+}',
+                '<?php
+/*
+ * Foo
+ */
+
+declare(strict_types=1);
+
+namespace SebastianBergmann\Foo;
+
+class Bar
+{
+}',
+            ],
+            [
+                ['header' => 'tmp'],
+                '<?php
+
+/*
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+                '<?php
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
+            [
+                ['header' => 'tmp'],
+                '<?php
+
+/*
+ * tmp
+ */
+
+class Foo {}',
+                '<?php
+
+/*
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'comment_type' => 'PHPDoc',
+                ],
+                '<?php
+
+/**
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+                '<?php
+
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'comment_type' => 'PHPDoc',
+                ],
+                '<?php
+
+/**
+ * tmp
+ */
+
+class Foo {}',
+                '<?php
+
+/**
+ * tmp
+ */
+class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'separate' => 'top',
+                ],
+                '<?php
+
+/*
+ * tmp
+ */
+class Foo {}',
+                '<?php
+/**
+ * Foo class doc.
+ */
+class Foo {}',
+            ],
         ];
     }
 
@@ -430,65 +603,6 @@ echo 1;'
                 'PHPDoc',
             ],
         ];
-    }
-
-    /**
-     * @param int    $expected
-     * @param string $code
-     *
-     * @dataProvider provideFindHeaderCommentInsertionIndexCases
-     */
-    public function testFindHeaderCommentInsertionIndex($expected, $code, array $config)
-    {
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode($code);
-
-        $this->fixer->configure($config);
-
-        $method = new \ReflectionMethod($this->fixer, 'findHeaderCommentInsertionIndex');
-        $method->setAccessible(true);
-        static::assertSame($expected, $method->invoke($this->fixer, $tokens));
-    }
-
-    public function provideFindHeaderCommentInsertionIndexCases()
-    {
-        $config = ['header' => ''];
-        $cases = [
-            [1, '<?php #', $config],
-            [1, '<?php /**/ $bc;', $config],
-            [1, '<?php $bc;', $config],
-            [1, "<?php\n\n", $config],
-            [1, '<?php ', $config],
-        ];
-
-        $config['location'] = 'after_declare_strict';
-        $cases[] = [
-            8,
-            '<?php
-declare(strict_types=1);
-
-namespace A\B;
-
-echo 1;',
-            $config,
-        ];
-
-        $cases[] = [
-            8,
-            '<?php
-declare(strict_types=0);
-echo 1;',
-            $config,
-        ];
-
-        $cases[] = [
-            1,
-            '<?php
-declare(strict_types=1)?>',
-            $config,
-        ];
-
-        return $cases;
     }
 
     /**
