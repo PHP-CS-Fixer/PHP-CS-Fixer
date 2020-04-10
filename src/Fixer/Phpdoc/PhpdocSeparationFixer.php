@@ -102,7 +102,7 @@ function fnc($foo, $bar) {}
             if ($line->containsUsefulContent()) {
                 $next = $doc->getLine($index + 1);
 
-                if ($next->containsATag()) {
+                if (null !== $next && $next->containsATag()) {
                     $line->addBlank();
 
                     break;
