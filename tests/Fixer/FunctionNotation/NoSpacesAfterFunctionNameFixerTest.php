@@ -93,6 +93,34 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
                 '<?php include (isHtml())? "1.html": "1.php";',
                 '<?php include (isHtml ())? "1.html": "1.php";',
             ],
+            [
+                '<?php
+$r = include($a . $b);
+$r = include($a . $b) ?><?php
+$r = foo(include($a . $b), $c);
+$r = $x ? include($a . $b) : $c;
+$r = array(include($a . $b) => $c);
+$r = $x(include($a . $b));
+$r = $x[include($a . $b)];
+$r = $x{include($a . $b)};
+$r = $x->{include($a . $b)};
+$r = ${include($a . $b)};
+$r = print($a . $b) and foo();
+',
+                '<?php
+$r = include ($a . $b);
+$r = include ($a . $b) ?><?php
+$r = foo(include ($a . $b), $c);
+$r = $x ? include ($a . $b) : $c;
+$r = array(include ($a . $b) => $c);
+$r = $x(include ($a . $b));
+$r = $x[include ($a . $b)];
+$r = $x{include ($a . $b)};
+$r = $x->{include ($a . $b)};
+$r = ${include ($a . $b)};
+$r = print ($a . $b) and foo();
+',
+            ],
             // skip other language constructs
             [
                 '<?php $a = 2 * (1 + 1);',
@@ -105,6 +133,16 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php include ($html)? "custom.html": "custom.php";',
+            ],
+            [
+                '<?php
+$r = require ($dir ?: __DIR__) . "/file.php";
+$one = print (2 + 3) / 4;
+echo ($a ?: $b) instanceof Foo;
+echo ($a === $b), "\n";
+$wrong = include ($a . $b) and foo();
+$wrong = print ($a . $b) && foo();
+',
             ],
             'don\'t touch function declarations' => [
                 '<?php
@@ -165,6 +203,10 @@ $$e(2);
                 '<?php echo (new Process())->getOutput();',
                 '<?php echo (new Process())->getOutput ();',
             ],
+            [
+                '<?php $r = [include($a . $b)];',
+                '<?php $r = [include ($a . $b)];',
+            ],
         ];
     }
 
@@ -186,6 +228,15 @@ $$e(2);
             [
                 '<?php $a()(1);',
                 '<?php $a () (1);',
+            ],
+            [
+                '<?php
+echo ($a ?? $b)->$c;
+echo ($a ?? $b)::$c;
+echo ($a ?? $b)($c);
+echo ($a ?? $b)[$c];
+echo ($a ?? $b){$c};
+',
             ],
         ];
     }

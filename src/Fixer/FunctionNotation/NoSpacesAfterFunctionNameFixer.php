@@ -74,13 +74,23 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             // previous non-whitespace token, can never be `null` always at least PHP open tag before it
             $prevNonWhitespace = $tokens->getPrevNonWhitespace($index);
 
-            // check for special construct with ternary operator
+            // check for special construct with sub-expression
             if ($tokens[$prevNonWhitespace]->isGivenKind($specialConstructTokenKinds)) {
                 $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 $nextMeaningful = $tokens->getNextMeaningfulToken($endParenthesisIndex);
                 if (
-                    null !== $nextMeaningful
-                    && $tokens[$nextMeaningful]->equals('?')
+                    null !== $nextMeaningful &&
+                    !(
+                        $tokens[$nextMeaningful]->equalsAny([';', [T_CLOSE_TAG]])
+                        || (
+                            !$tokens[$prevNonWhitespace]->isGivenKind(T_ECHO) &&
+                            (
+                                $tokens[$nextMeaningful]->equalsAny([',', ':', [T_DOUBLE_ARROW]])
+                                || ($tokens[$prevNonWhitespace]->isGivenKind(T_PRINT) && $tokens[$nextMeaningful]->isGivenKind([T_LOGICAL_AND, T_LOGICAL_XOR, T_LOGICAL_OR]))
+                                || (null !== ($blockType = Tokens::detectBlockType($tokens[$nextMeaningful])) && !$blockType['isStart'])
+                            )
+                        )
+                    )
                 ) {
                     continue;
                 }
