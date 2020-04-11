@@ -58,6 +58,31 @@ final class TypeExpressionTest extends TestCase
         yield ['@this', ['@this']];
         yield ['$SELF|int', ['$SELF', 'int']];
         yield ['array<string|int, string>', ['array<string|int, string>']];
+        yield ['Collection<Foo<Bar>, Foo<Baz>>', ['Collection<Foo<Bar>, Foo<Baz>>']];
+        yield ['int | string', ['int', 'string']];
+        yield ['Foo::*', ['Foo::*']];
+        yield ['Foo::A', ['Foo::A']];
+        yield ['Foo::A|Foo::B', ['Foo::A', 'Foo::B']];
+        yield ['Foo::A*', ['Foo::A*']];
+        yield ['array<Foo::A*>|null', ['array<Foo::A*>', 'null']];
+        yield ['null|true|false|1|1.5|\'a\'|"b"', ['null', 'true', 'false', '1', '1.5', "'a'", '"b"']];
+        yield ['int | "a" | A<B<C, D>, E<F::*|G[]>>', ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>']];
+        yield ['class-string<Foo>', ['class-string<Foo>']];
+        yield ['A&B', ['A&B']];
+        yield ['A & B', ['A & B']];
+        yield ['array{1: bool, 2: bool}', ['array{1: bool, 2: bool}']];
+        yield ['array{a: int|string, b?: bool}', ['array{a: int|string, b?: bool}']];
+        yield ['array{\'a\': "a", "b"?: \'b\'}', ['array{\'a\': "a", "b"?: \'b\'}']];
+        yield ['array { a : int | string , b ? : A<B, C> }', ['array { a : int | string , b ? : A<B, C> }']];
+        yield ['callable(string)', ['callable(string)']];
+        yield ['callable(string): bool', ['callable(string): bool']];
+        yield ['callable(array<int, string>, array<int, Foo>): bool', ['callable(array<int, string>, array<int, Foo>): bool']];
+        yield ['array<int, callable(string): bool>', ['array<int, callable(string): bool>']];
+        yield ['callable(string): callable(int)', ['callable(string): callable(int)']];
+        yield ['callable(string) : callable(int) : bool', ['callable(string) : callable(int) : bool']];
+        yield ['TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null', ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null']];
+        yield ['Closure(string)', ['Closure(string)']];
+        yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
     }
 
     /**
