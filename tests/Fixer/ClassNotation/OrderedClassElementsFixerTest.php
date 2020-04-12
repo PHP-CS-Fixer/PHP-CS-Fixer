@@ -953,6 +953,46 @@ EOT
         ];
     }
 
+    public function testFixAbstractMethodsWithMixedVisibilityAndSortAlpha()
+    {
+        static $input = <<<'EOT'
+<?php
+abstract class Foo
+{
+    abstract static protected function f2();
+    abstract protected static function f1();
+    protected static abstract function f4();
+    protected abstract static function f3();
+    static protected abstract function f6();
+    static abstract protected function f5();
+}
+EOT;
+
+        static $expected = <<<'EOT'
+<?php
+abstract class Foo
+{
+    abstract protected static function f1();
+    abstract static protected function f2();
+    protected abstract static function f3();
+    protected static abstract function f4();
+    static abstract protected function f5();
+    static protected abstract function f6();
+}
+EOT;
+        $this->fixer->configure([
+            'sort_algorithm' => 'alpha',
+            'order' => [
+                'method_abstract_public_static',
+                'method_abstract_public',
+                'method_abstract_protected_static',
+                'method_abstract_protected',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
     /**
      * @param string      $expected
      * @param null|string $input
