@@ -63,10 +63,10 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'method_public_static' => ['method_static', 'method_public'],
         'method_protected_static' => ['method_static', 'method_protected'],
         'method_private_static' => ['method_static', 'method_private'],
-        'method_public_abstract' => ['method_abstract', 'method_public'],
-        'method_protected_abstract' => ['method_abstract', 'method_protected'],
-        'method_public_abstract_static' => ['method_abstract_static', 'method_abstract', 'method_public'],
-        'method_protected_abstract_static' => ['method_abstract_static', 'method_abstract', 'method_protected'],
+        'method_abstract_public' => ['method_abstract', 'method_public'],
+        'method_abstract_protected' => ['method_abstract', 'method_protected'],
+        'method_abstract_public_static' => ['method_abstract_static', 'method_abstract', 'method_public'],
+        'method_abstract_protected_static' => ['method_abstract_static', 'method_abstract', 'method_protected'],
     ];
 
     /**
@@ -469,11 +469,11 @@ class Example
             }
 
             if (\in_array($type, ['constant', 'property', 'method'], true)) {
-                $type .= '_'.$element['visibility'];
-
                 if ($element['abstract']) {
                     $type .= '_abstract';
                 }
+
+                $type .= '_'.$element['visibility'];
 
                 if ($element['static']) {
                     $type .= '_static';
