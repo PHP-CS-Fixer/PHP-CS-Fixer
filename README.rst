@@ -1365,9 +1365,9 @@ Choose from the list of available rules:
     'property_protected_static', 'property_private_static', 'method',
     'method_static', 'method_public', 'method_protected', 'method_private',
     'method_public_static', 'method_protected_static',
-    'method_private_static', 'method_public_abstract',
-    'method_protected_abstract', 'method_public_abstract_static',
-    'method_protected_abstract_static', 'construct', 'destruct', 'magic',
+    'method_private_static', 'method_abstract_public',
+    'method_abstract_protected', 'method_abstract_public_static',
+    'method_abstract_protected_static', 'construct', 'destruct', 'magic',
     'phpunit']``): list of strings defining order of elements; defaults to
     ``['use_trait', 'constant_public', 'constant_protected',
     'constant_private', 'property_public', 'property_protected',

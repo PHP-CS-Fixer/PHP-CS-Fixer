@@ -892,10 +892,10 @@ EOT
                     'method_private',
                     'method_protected_static',
                     'method_private_static',
-                    'method_public_abstract',
-                    'method_protected_abstract',
-                    'method_public_abstract_static',
-                    'method_protected_abstract_static',
+                    'method_abstract_public',
+                    'method_abstract_protected',
+                    'method_abstract_public_static',
+                    'method_abstract_protected_static',
                 ],
                 <<<'EOT'
 <?php
@@ -919,14 +919,14 @@ EOT
             // Abstract method as first by visibility
             [
                 [
-                    'method_public_abstract_static',
+                    'method_abstract_public_static',
                     'method_public_static',
-                    'method_protected_abstract_static',
+                    'method_abstract_protected_static',
                     'method_protected_static',
                     'method_private_static',
-                    'method_public_abstract',
+                    'method_abstract_public',
                     'method_public',
-                    'method_protected_abstract',
+                    'method_abstract_protected',
                     'method_protected_static',
                     'method_protected',
                     'method_private',
