@@ -91,9 +91,11 @@ final class ClassesAnalyzer
 
     /**
      * @param int    $startIndex
-     * @param string $label
+     * @param string $label      an arbitrary name that will be used as key property
+     *                           in the return array
      *
-     * @return array Contains information about the class inheritance
+     * @return array contains information about the class inheritance, keyed by
+     *               the $label parameter
      */
     public function getClassInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
