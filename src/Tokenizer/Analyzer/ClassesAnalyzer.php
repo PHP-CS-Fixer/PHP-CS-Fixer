@@ -61,8 +61,7 @@ final class ClassesAnalyzer
     /**
      * @param int $classIndex
      *
-     * @return null|TypeAnalysis
-     *                           Get the class extends if any, null otherwise
+     * @return null|TypeAnalysis Get the class extends if any, null otherwise
      */
     public function getClassExtends(Tokens $tokens, $classIndex)
     {
@@ -94,8 +93,7 @@ final class ClassesAnalyzer
      * @param int    $startIndex
      * @param string $label
      *
-     * @return array
-     *               Contains information about the class inheritance
+     * @return array Contains information about the class inheritance
      */
     public function getClassInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
