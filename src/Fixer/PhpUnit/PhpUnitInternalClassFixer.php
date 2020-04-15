@@ -217,55 +217,12 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     {
         $lines = $doc->getLines();
         if (1 === \count($lines) && empty($doc->getAnnotationsOfType('internal'))) {
-            $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
+            $indent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+            $doc->makeMultiLine($indent, $this->whitespacesConfig->getLineEnding());
 
-            return new DocBlock(implode('', $lines));
+            return $doc;
         }
 
         return $doc;
-    }
-
-    /**
-     * Take a one line doc block, and turn it into a multi line doc block.
-     *
-     * @param Line[] $lines
-     * @param int    $docBlockIndex
-     *
-     * @return Line[]
-     */
-    private function splitUpDocBlock($lines, Tokens $tokens, $docBlockIndex)
-    {
-        $lineContent = $this->getSingleLineDocBlockEntry($lines);
-        $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-
-        return [
-            new Line('/**'.$lineEnd),
-            new Line($originalIndent.' * '.$lineContent.$lineEnd),
-            new Line($originalIndent.' */'),
-        ];
-    }
-
-    /**
-     * @param Line[] $line
-     *
-     * @return string
-     */
-    private function getSingleLineDocBlockEntry($line)
-    {
-        $line = $line[0];
-        $line = str_replace('*/', '', $line);
-        $line = trim($line);
-        $line = str_split($line);
-        $i = \count($line);
-        do {
-            --$i;
-        } while ('*' !== $line[$i] && '*' !== $line[$i - 1] && '/' !== $line[$i - 2]);
-        if (' ' === $line[$i]) {
-            ++$i;
-        }
-        $line = \array_slice($line, $i);
-
-        return implode('', $line);
     }
 }
