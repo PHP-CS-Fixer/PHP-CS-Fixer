@@ -29,12 +29,12 @@ final class ClassesAnalyzerTest extends TestCase
      * @param int         $classIndex
      * @param string      $code
      * @param null|string $name
-     * @param null|string $startIndex
-     * @param null|string $endIndex
+     * @param int         $startIndex
+     * @param int         $endIndex
      *
      * @dataProvider provideGetExtendsClassCases
      */
-    public function testGetClassExtends($classIndex, $code, $name = null, $startIndex = null, $endIndex = null)
+    public function testGetClassExtends($classIndex, $code, $name = null, $startIndex = 0, $endIndex = 0)
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ClassesAnalyzer();
