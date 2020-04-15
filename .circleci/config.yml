@@ -3,7 +3,7 @@ version: 2
 jobs:
     build:
         macos:
-            xcode: '11.3.1'
+            xcode: '11.4.0'
         steps:
             - checkout
 
@@ -12,7 +12,6 @@ jobs:
                     - cache-{{ checksum "composer.json" }}
 
             - run: brew update
-            - run: brew remove python@2
             - run: brew install php@7.4
             - run: echo "memory_limit = 512M" > $(brew --prefix)/etc/php/7.4/conf.d/memory.ini
             - run: curl -sS https://getcomposer.org/installer | php
