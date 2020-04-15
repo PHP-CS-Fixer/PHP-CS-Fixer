@@ -76,6 +76,20 @@ class Izumi {
 
 }',
             ],
+            [
+                28,
+                '<?php
+
+namespace Foo\Bar;
+
+foreach (["izumi", "nakano"] as $cat) {
+
+}
+
+class Cats {
+
+}',
+            ],
         ];
     }
 
