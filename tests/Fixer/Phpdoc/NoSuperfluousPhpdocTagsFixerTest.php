@@ -1051,6 +1051,25 @@ $foo = 1;',
                 null,
                 ['remove_inheritdoc' => true],
             ],
+            'property with unsupported type' => [
+                '<?php
+class Foo {
+    /**
+     * @var foo:bar
+     */
+    private $foo;
+}',
+            ],
+            'method with unsupported types' => [
+                '<?php
+class Foo {
+    /**
+     * @param foo:bar $foo
+     * @return foo:bar
+     */
+    public function foo($foo) {}
+}',
+            ],
         ];
     }
 

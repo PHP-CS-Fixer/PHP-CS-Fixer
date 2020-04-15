@@ -256,32 +256,25 @@ class Foo {
 
     /**
      * @param string $content
-     * @param int    $docCommentIndex
+     * @param int    $index   Index of the DocComment token
      *
      * @return string
      */
-    private function fixPropertyDocComment($content, Tokens $tokens, $docCommentIndex, array $shortNames)
+    private function fixPropertyDocComment($content, Tokens $tokens, $index, array $shortNames)
     {
         $docBlock = new DocBlock($content);
 
-        $index = $tokens->getNextMeaningfulToken($docCommentIndex);
-
-        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
-
-        if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
-            return $content;
-        }
-
         do {
             $index = $tokens->getNextMeaningfulToken($index);
+        } while ($tokens[$index]->isGivenKind([T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
 
-            $propertyTypeInfo = $this->parseTypeHint($tokens, $index);
-            foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
-                if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $shortNames)) {
-                    $annotation->remove();
-                }
+        $propertyTypeInfo = $this->getPropertyTypeInfo($tokens, $index);
+
+        foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
+            if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $shortNames)) {
+                $annotation->remove();
             }
-        } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
+        }
 
         return $docBlock->getContent();
     }
@@ -342,6 +335,23 @@ class Foo {
             'type' => null,
             'allows_null' => true,
         ];
+    }
+
+    /**
+     * @param int $index The index of the first token of the type hint
+     *
+     * @return array
+     */
+    private function getPropertyTypeInfo(Tokens $tokens, $index)
+    {
+        if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            return [
+                'type' => null,
+                'allows_null' => true,
+            ];
+        }
+
+        return $this->parseTypeHint($tokens, $index);
     }
 
     /**

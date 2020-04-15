@@ -367,6 +367,7 @@ final class RuleSet implements RuleSetInterface
             '@PHP71Migration:risky' => true,
             'implode_call' => true,
             'no_alias_functions' => true,
+            'use_arrow_functions' => true,
         ],
         '@PHPUnit30Migration:risky' => [
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],

@@ -9,3 +9,8 @@ $x = implode($foo, '');
 // https://www.php.net/manual/en/migration74.deprecated.php#migration74.deprecated.core.real
 // 'no_alias_functions'
 $z2 = is_real($v);
+
+// 'use_arrow_functions'
+$ids = array_map(function ($item) {
+    return $item->id;
+}, $items);
