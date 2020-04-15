@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.15.7
+---------------------
+
+* bug #4915 Fix handling property PHPDocs with unsupported type (julienfalque)
+* minor #4916 Fix AppVeyor build (julienfalque)
+* minor #4917 CircleCI - Bump xcode to 11.4 (GrahamCampbell)
+* minor #4918 DX: do not fix ".phpt" files by default (kubawerlos)
+
 Changelog for v2.15.6
 ---------------------
 
