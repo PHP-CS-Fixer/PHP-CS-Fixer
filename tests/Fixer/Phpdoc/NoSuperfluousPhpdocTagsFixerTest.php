@@ -408,6 +408,25 @@ class Foo {
     private $foo;
 }',
             ],
+            'property with unsupported type' => [
+                '<?php
+class Foo {
+    /**
+     * @var foo:bar
+     */
+    private $foo;
+}',
+            ],
+            'method with unsupported types' => [
+                '<?php
+class Foo {
+    /**
+     * @param foo:bar $foo
+     * @return foo:bar
+     */
+    public function foo($foo) {}
+}',
+            ],
         ];
     }
 
