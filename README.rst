@@ -742,7 +742,7 @@ Choose from the list of available rules:
 
   - ``functions`` (a subset of ``['get_called_class', 'get_class',
     'get_class_this', 'php_sapi_name', 'phpversion', 'pi']``): list of
-    function names to fix; defaults to ``['get_class', 'php_sapi_name',
+    function names to fix; defaults to ``['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name',
     'phpversion', 'pi']``
 
 * **function_typehint_space** [@Symfony, @PhpCsFixer]
