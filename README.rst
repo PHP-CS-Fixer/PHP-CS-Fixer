@@ -1389,6 +1389,18 @@ Choose from the list of available rules:
   - ``target`` (``'7.5'``, ``'newest'``): target version of PHPUnit; defaults to
     ``'newest'``
 
+* **php_unit_exception_matches**
+
+  Changes expectExceptionMessageRegExp to expectExceptionMessageMatches
+  from PhpUnit 8.4.
+
+  *Risky rule: risky when project has PHPUnit incompatibilities.*
+
+  Configuration options:
+
+  - ``target`` (``'8.4'``, ``'newest'``): target version of PHPUnit; defaults to
+    ``'newest'``
+
 * **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky, @PHPUnit75Migration:risky]
 
   Usages of ``->setExpectedException*`` methods MUST be replaced by
