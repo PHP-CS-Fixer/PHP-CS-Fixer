@@ -214,6 +214,58 @@ final class AnnotationTest extends TestCase
     }
 
     /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideRemoveEdgeCasesCases
+     */
+    public function testRemoveEdgeCases($expected, $input)
+    {
+        $doc = new DocBlock($input);
+        $annotation = $doc->getAnnotation(0);
+
+        $annotation->remove();
+        static::assertSame($expected, $doc->getContent());
+    }
+
+    public function provideRemoveEdgeCasesCases()
+    {
+        return [
+            // Single line
+            ['', '/** @return null*/'],
+            ['', '/** @return null */'],
+            ['', '/** @return null  */'],
+
+            // Multi line, annotation on start line
+            [
+                '/**
+                 */',
+                '/** @return null
+                 */',
+            ],
+            [
+                '/**
+                 */',
+                '/** @return null '.'
+                 */',
+            ],
+            // Multi line, annotation on end line
+            [
+                '/**
+                 */',
+                '/**
+                 * @return null*/',
+            ],
+            [
+                '/**
+                 */',
+                '/**
+                 * @return null */',
+            ],
+        ];
+    }
+
+    /**
      * @param string   $input
      * @param string[] $expected
      *
