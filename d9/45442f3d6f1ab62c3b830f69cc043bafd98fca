@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-20T23:32:48Z
+
+@dmvdbrugge , @kubawerlos ,
+
+are this and #4035 PRs handling the very same issue? how shall we proceed on those two ?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-21T14:38:46Z
+
+Seems to me like they could live together, they don't even touch the same files. They also solve a problem that looks the same but is not entirely equal, even though it could result in the same outcome.
+
+My suggestion would be just merge both.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-11-21T16:17:04Z
+
+I'd like them both to be merged as well.
+
+Reading them again it got me thinking why `Line::isTheStart` checks if `false !== strpos($this->content, '/**');`? Wouldn't make more sense to check if it is `0`?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-21T17:17:21Z
+
+> Wouldn't make more sense to check if it is `0`?
+
+Can't because of whitespace, I think. Could make it a regex though.
+
+I hadn't even looked into the `Line` class itself, but now you caused me to 😉and I see that `containsUsefulContent` excludes start and end lines, which it should not (because as we both discovered, start and end lines actually could contain useful content). Shall I fix that in this PR too?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-11T09:20:19Z
+
+@dmvdbrugge I allowed myself to rebase your work to fix a conflict. I also rewrote test cases in `AnnotationTest` to make them easier to read. For me this can be merged now.
