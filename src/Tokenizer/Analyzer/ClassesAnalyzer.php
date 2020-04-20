@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ClassAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -24,7 +25,7 @@ final class ClassesAnalyzer
     /**
      * @param int $classIndex
      *
-     * @return array Contains information about the class being analyzed
+     * @return ClassAnalysis
      */
     public function getClassDefinition(Tokens $tokens, $classIndex)
     {
@@ -32,30 +33,23 @@ final class ClassesAnalyzer
         $prevIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $startIndex = $tokens[$prevIndex]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prevIndex : $classIndex;
 
-        $extends = false;
-        $implements = false;
+        $extends = [];
+        $implements = [];
         $anonymousClass = false;
 
         if (!$tokens[$classIndex]->isGivenKind(T_TRAIT)) {
             $extends = $tokens->findGivenKind(T_EXTENDS, $classIndex, $openIndex);
-            $extends = 0 !== \count($extends) ? $this->getClassInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
+            $extends = [] !== $extends ? $this->getClassInheritanceInfo($tokens, key($extends), 'numberOfExtends') : [];
 
             if (!$tokens[$classIndex]->isGivenKind(T_INTERFACE)) {
                 $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classIndex, $openIndex);
-                $implements = \count($implements) ? $this->getClassInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
+                $implements = [] !== $implements ? $this->getClassInheritanceInfo($tokens, key($implements), 'numberOfImplements') : [];
                 $tokensAnalyzer = new TokensAnalyzer($tokens);
                 $anonymousClass = $tokensAnalyzer->isAnonymousClass($classIndex);
             }
         }
 
-        return [
-            'start' => $startIndex,
-            'classy' => $classIndex,
-            'open' => $openIndex,
-            'extends' => $extends,
-            'implements' => $implements,
-            'anonymousClass' => $anonymousClass,
-        ];
+        return new ClassAnalysis($startIndex, $classIndex, $openIndex, $extends, $implements, $anonymousClass);
     }
 
     /**
@@ -65,14 +59,14 @@ final class ClassesAnalyzer
      */
     public function getClassExtends(Tokens $tokens, $classIndex)
     {
-        $definition = $this->getClassDefinition($tokens, $classIndex);
+        $analysis = $this->getClassDefinition($tokens, $classIndex);
 
-        if (!isset($definition['extends']['start'])) {
+        if ([] === $analysis->getExtends()) {
             return null;
         }
 
         $typeStartIndex = $tokens->getNextNonWhitespace(
-            $definition['extends']['start']
+            $analysis->getExtends()['start']
         );
 
         $type = $tokens[$typeStartIndex]->getContent();

@@ -104,7 +104,7 @@ class Cats {
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ClassesAnalyzer();
-        static::assertSame(serialize($expected), serialize($analyzer->getClassDefinition($tokens, $classIndex)));
+        static::assertSame(serialize($expected), serialize($analyzer->getClassDefinition($tokens, $classIndex)->toArray()));
     }
 
     public function provideClassDefinitionInfoCases()
@@ -128,8 +128,8 @@ class Nakano extends Izumi {
                         'numberOfExtends' => 1,
                         'multiLine' => false,
                     ],
-                    'implements' => false,
-                    'anonymousClass' => false,
+                    'implements' => [],
+                    'anonymous' => false,
                 ],
             ],
             [
@@ -155,7 +155,7 @@ class Nakano extends Izumi implements CatInterface {
                         'numberOfImplements' => 1,
                         'multiLine' => false,
                     ],
-                    'anonymousClass' => false,
+                    'anonymous' => false,
                 ],
             ],
             [
@@ -169,9 +169,9 @@ new class {};',
                     'start' => 11,
                     'classy' => 11,
                     'open' => 13,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => true,
+                    'extends' => [],
+                    'implements' => [],
+                    'anonymous' => true,
                 ],
             ],
         ];

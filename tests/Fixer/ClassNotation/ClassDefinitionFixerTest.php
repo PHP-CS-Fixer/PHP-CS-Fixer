@@ -171,7 +171,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
             ],
             [
                 "<?php \$a = new class('1a') implements A {};",
-                "<?php \$a = new class('1a')   implements\nA{};",
+                "<?php \$a = new class('1a')   implements A{};",
                 ['single_item_single_line' => true],
             ],
             [
@@ -416,7 +416,7 @@ TestInterface3, /**/     TestInterface4   ,
 
         $result = $method->invoke($this->fixer, $tokens, $expected['classy']);
 
-        static::assertSame($expected, $result);
+        static::assertSame($expected, $result->toArray());
     }
 
     public function provideClassyDefinitionInfoCases()
@@ -428,9 +428,9 @@ TestInterface3, /**/     TestInterface4   ,
                     'start' => 1,
                     'classy' => 1,
                     'open' => 4,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
+                    'extends' => [],
+                    'implements' => [],
+                    'anonymous' => false,
                 ],
             ],
             [
@@ -439,9 +439,9 @@ TestInterface3, /**/     TestInterface4   ,
                     'start' => 1,
                     'classy' => 3,
                     'open' => 6,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
+                    'extends' => [],
+                    'implements' => [],
+                    'anonymous' => false,
                 ],
             ],
             [
@@ -450,9 +450,9 @@ TestInterface3, /**/     TestInterface4   ,
                     'start' => 1,
                     'classy' => 5,
                     'open' => 8,
-                    'extends' => false,
-                    'implements' => false,
-                    'anonymousClass' => false,
+                    'extends' => [],
+                    'implements' => [],
+                    'anonymous' => false,
                 ],
             ],
             [
@@ -466,8 +466,8 @@ TestInterface3, /**/     TestInterface4   ,
                         'numberOfExtends' => 1,
                         'multiLine' => false,
                     ],
-                    'implements' => false,
-                    'anonymousClass' => false,
+                    'implements' => [],
+                    'anonymous' => false,
                 ],
             ],
             [
@@ -481,8 +481,8 @@ TestInterface3, /**/     TestInterface4   ,
                         'numberOfExtends' => 3,
                         'multiLine' => false,
                     ],
-                    'implements' => false,
-                    'anonymousClass' => false,
+                    'implements' => [],
+                    'anonymous' => false,
                 ],
             ],
         ];
