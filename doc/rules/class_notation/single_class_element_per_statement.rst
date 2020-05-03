@@ -63,6 +63,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``single_class_element_per_statement`` rule with the config below:
+
+  ``['elements' => ['property']]``
+
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``single_class_element_per_statement`` rule with the config below:
 

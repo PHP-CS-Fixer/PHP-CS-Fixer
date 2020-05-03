@@ -22,13 +22,12 @@ final class SymfonySet extends AbstractRuleSetDescription
     public function getRules()
     {
         return [
-            '@PSR2' => true,
+            '@PSR12' => true,
             'array_syntax' => [
                 'syntax' => 'short',
             ],
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,
-            'blank_line_after_opening_tag' => true,
             'blank_line_before_statement' => [
                 'statements' => [
                     'return',
@@ -49,7 +48,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'clean_namespace' => true,
             'concat_space' => true,
-            'declare_equal_normalize' => true,
             'echo_tag_syntax' => true,
             'fully_qualified_strict_types' => true,
             'function_typehint_space' => true,
@@ -62,18 +60,14 @@ final class SymfonySet extends AbstractRuleSetDescription
             'increment_style' => true,
             'lambda_not_used_import' => true,
             'linebreak_after_opening_tag' => true,
-            'lowercase_cast' => true,
-            'lowercase_static_reference' => true,
             'magic_constant_casing' => true,
             'magic_method_casing' => true,
             'method_argument_space' => true,
             'native_function_casing' => true,
             'native_function_type_declaration_casing' => true,
-            'new_with_braces' => true,
             'no_alias_language_construct_call' => true,
             'no_alternative_syntax' => true,
             'no_binary_string' => true,
-            'no_blank_lines_after_class_opening' => true,
             'no_blank_lines_after_phpdoc' => true,
             'no_empty_comment' => true,
             'no_empty_phpdoc' => true,
@@ -93,7 +87,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'use_trait',
                 ],
             ],
-            'no_leading_import_slash' => true,
             'no_leading_namespace_whitespace' => true,
             'no_mixed_echo_print' => true,
             'no_multiline_whitespace_around_double_arrow' => true,
@@ -122,7 +115,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_unset_cast' => true,
             'no_unused_imports' => true,
             'no_whitespace_before_comma_in_array' => true,
-            'no_whitespace_in_blank_line' => true,
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'ordered_imports' => true,
@@ -167,10 +159,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'phpdoc_var_without_name' => true,
             'protected_to_private' => true,
-            'return_type_declaration' => true,
             'semicolon_after_instruction' => true,
-            'short_scalar_cast' => true,
-            'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
             'single_line_comment_style' => [
                 'comment_types' => [
@@ -180,17 +169,16 @@ final class SymfonySet extends AbstractRuleSetDescription
             'single_line_throw' => true,
             'single_quote' => true,
             'single_space_after_construct' => true,
-            'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,
             ],
             'standardize_increment' => true,
             'standardize_not_equals' => true,
             'switch_continue_to_break' => true,
-            'ternary_operator_spaces' => true,
             'trailing_comma_in_multiline_array' => true,
             'trim_array_spaces' => true,
             'unary_operator_spaces' => true,
+            'visibility_required' => true,
             'whitespace_after_comma_in_array' => true,
             'yoda_style' => true,
         ];

@@ -46,7 +46,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'combine_consecutive_issets' => true,
             'combine_consecutive_unsets' => true,
-            'compact_nullable_typehint' => true,
             'escape_implicit_backslashes' => true,
             'explicit_indirect_variable' => true,
             'explicit_string_variable' => true,

@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PSR12 [whitespace version].
+--RULESET--
+{"@PSR12": true}
+--CONFIG--
+{"indent": "\t", "lineEnding": "\r\n"}

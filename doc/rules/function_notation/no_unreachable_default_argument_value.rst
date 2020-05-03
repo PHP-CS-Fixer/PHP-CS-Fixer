@@ -34,5 +34,8 @@ The rule is part of the following rule sets:
 @PHP80Migration:risky
   Using the `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
 
+@PSR12:risky
+  Using the `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.
+
 @PhpCsFixer:risky
   Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``no_unreachable_default_argument_value`` rule.

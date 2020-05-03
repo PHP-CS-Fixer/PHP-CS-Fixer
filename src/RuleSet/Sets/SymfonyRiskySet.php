@@ -23,6 +23,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
     {
         $rules = [
             '@PHP56Migration:risky' => true,
+            '@PSR12:risky' => true,
             'array_push' => true,
             'combine_nested_dirname' => true,
             'dir_constant' => true,
@@ -67,8 +68,8 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'no_php4_constructor' => true,
-            'no_trailing_whitespace_in_string' => true,
             'no_unneeded_final_method' => true,
+            'no_unreachable_default_argument_value' => false,
             'no_useless_sprintf' => true,
             'non_printable_character' => true,
             'ordered_traits' => true,
