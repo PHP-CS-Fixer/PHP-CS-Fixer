@@ -696,6 +696,30 @@ Integration of %s.
         }
     }
 
+    /**
+     * @param string $version
+     *
+     * @dataProvider providePhpUnitTargetVersionHasSetCases
+     */
+    public function testPhpUnitTargetVersionHasSet($version)
+    {
+        static::assertContains(
+            sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
+            RuleSet::create()->getSetDefinitionNames(),
+            sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
+        );
+    }
+
+    public static function providePhpUnitTargetVersionHasSetCases()
+    {
+        foreach ((new \ReflectionClass(PhpUnitTargetVersion::class))->getConstants() as $constant) {
+            if ('newest' === $constant) {
+                continue;
+            }
+            yield [$constant];
+        }
+    }
+
     private function findInSets(array $sets, $ruleName, $config)
     {
         $duplicates = [];
