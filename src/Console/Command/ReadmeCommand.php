@@ -55,8 +55,8 @@ If you are already using a linter to identify coding standards problems in your
 code, you know that fixing them by hand is tedious, especially on large
 projects. This tool does not only detect them, but also fixes them for you.
 
-The PHP CS Fixer is maintained on GitHub at https://github.com/FriendsOfPHP/PHP-CS-Fixer
-bug reports and ideas about new features are welcome there.
+The PHP CS Fixer is maintained on GitHub at https://github.com/FriendsOfPHP/PHP-CS-Fixer.
+Bug reports and ideas about new features are welcome there.
 
 You can talk to us at https://gitter.im/PHP-CS-Fixer/Lobby about the project,
 configuration, possible improvements, ideas and questions, please visit us!
