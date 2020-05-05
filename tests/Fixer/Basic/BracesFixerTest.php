@@ -27,6 +27,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
     private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
     private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
     private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => 'next'];
+    private static $configurationOopPositionMultilineSameLine = ['position_after_multiline_functions_and_oop_constructs' => 'same'];
+    private static $configurationOopPositionMultilineNextLine = ['position_after_multiline_functions_and_oop_constructs' => 'next'];
 
     public function testInvalidConfigurationClassyConstructs()
     {
@@ -166,6 +168,204 @@ final class BracesFixerTest extends AbstractFixerTestCase
         ){
         }
     }',
+            ],
+            [
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        ) {
+        }
+    }
+
+    class Bar
+    {
+        public function foo(Something $s)
+        {
+        }
+    }',
+                null,
+                self::$configurationOopPositionMultilineSameLine,
+            ],
+            [
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        ) {
+        }
+    }
+
+    class Bar
+    {
+        public function foo(Something $s)
+        {
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        )
+        {
+        }
+    }
+
+    class Bar
+    {
+        public function foo(Something $s) {}
+    }',
+                self::$configurationOopPositionMultilineSameLine,
+            ],
+            [
+                '<?php
+    function foo()
+    {
+        return new class {
+            public function __construct(
+                $multi,
+                $line
+            ) {
+            }
+        };
+    }',
+                null,
+                self::$configurationOopPositionMultilineSameLine,
+            ],
+            [
+                '<?php
+    function foo()
+    {
+        return new class {
+            public function __construct(
+                $multi,
+                $line
+            ) {
+            }
+        };
+    }',
+                '<?php
+    function foo()
+    {
+        return new class {
+            public function __construct(
+                $multi,
+                $line
+            )
+            {
+            }
+        };
+    }',
+                self::$configurationOopPositionMultilineSameLine,
+            ],
+            [
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        )
+        {
+        }
+    }
+
+    class Bar
+    {
+        public function foo(Something $s)
+        {
+        }
+    }',
+                null,
+                self::$configurationOopPositionMultilineNextLine,
+            ],
+            [
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        )
+        {
+        }
+    }
+
+    class Bar
+    {
+        public function foo(Something $s)
+        {
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        ) {
+        }
+    }
+
+    class Bar
+    {
+        public function foo(Something $s) {}
+    }',
+                self::$configurationOopPositionMultilineNextLine,
+            ],
+            [
+                '<?php
+    function foo()
+    {
+        return new class {
+            public function __construct(
+                $multi,
+                $line
+            )
+            {
+            }
+        };
+    }',
+                null,
+                self::$configurationOopPositionMultilineNextLine,
+            ],
+            [
+                '<?php
+    function foo()
+    {
+        return new class {
+            public function __construct(
+                $multi,
+                $line
+            )
+            {
+            }
+        };
+    }',
+                '<?php
+    function foo()
+    {
+        return new class {
+            public function __construct(
+                $multi,
+                $line
+            ) {
+            }
+        };
+    }',
+                self::$configurationOopPositionMultilineNextLine,
             ],
             [
                 '<?php
