@@ -280,7 +280,7 @@ Additionally, you might configure some caching to speed up your continuous build
               key: php-${{ matrix.php-version }}-php-cs-fixer-${{ github.sha }}
               restore-keys: php-${{ matrix.php-version }}-php-cs-fixer-
     
-    while you invoke PHP CS Fixer with e.g. `vendor/bin/php-cs-fixer fix --diff --dry-run --cache-file /tmp/php-cs/.php_cs.cache`.
+while you invoke PHP CS Fixer with e.g. `vendor/bin/php-cs-fixer fix --diff --dry-run --cache-file /tmp/php-cs/.php_cs.cache`.
     
 Exit code
 ---------
