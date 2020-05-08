@@ -271,17 +271,15 @@ Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` 
 
 Additionally, you might configure some caching to speed up your continuous builds, e.g. for GitHub Actions, this can be achieved using:
 
-    .. code-block:: yaml
-    
-          - name: "Cache results of PHP CS Fixer"
-            uses: actions/cache@v1
-            with:
-              path: /tmp/php-cs/
-              key: php-${{ matrix.php-version }}-php-cs-fixer-${{ github.sha }}
-              restore-keys: php-${{ matrix.php-version }}-php-cs-fixer-
-    
+    - name: "Cache results of PHP CS Fixer"
+      uses: actions/cache@v1
+      with:
+        path: /tmp/php-cs/
+        key: php-${{ matrix.php-version }}-php-cs-fixer-${{ github.sha }}
+        restore-keys: php-${{ matrix.php-version }}-php-cs-fixer-
+
 while you invoke PHP CS Fixer with e.g. `vendor/bin/php-cs-fixer fix --diff --dry-run --cache-file /tmp/php-cs/.php_cs.cache`.
-    
+
 Exit code
 ---------
 
