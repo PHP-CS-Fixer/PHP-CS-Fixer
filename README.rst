@@ -2109,7 +2109,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
     return PhpCsFixer\Config::create()
         ->setCacheFile(__DIR__.'/.php_cs.cache')
     ;
-    
+
 Using PHP CS Fixer on CI
 ------------------------
 
@@ -2142,7 +2142,7 @@ Additionally you might configure some caching to speedup your continous builds, 
           key: php-${{ matrix.php-version }}-php-cs-fixer-${{ github.sha }}
           restore-keys: php-${{ matrix.php-version }}-php-cs-fixer-
          
-while you invoke PHP CS Fixer with e.g. `vendor/bin/php-cs-fixer fix --diff --dry-run --cache-file /tmp/php-cs/.php_cs.cache`
+while you invoke PHP CS Fixer with e.g. `vendor/bin/php-cs-fixer fix --diff --dry-run --cache-file /tmp/php-cs/.php_cs.cache`.
 
 Exit code
 ---------
