@@ -2131,7 +2131,7 @@ Then, add the following command to your CI:
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
-Additionally you might configure some caching to speedup your continous builds, e.g. for GitHub Actions this can be achieved using:
+Additionally, you might configure some caching to speed up your continuous builds, e.g. for GitHub Actions, this can be achieved using:
 
 .. code-block:: yaml
 
