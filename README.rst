@@ -254,6 +254,21 @@ would be default in next MAJOR release (unified differ, estimating, full-width p
 
     $ PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
 
+Rules
+-----
+
+Use the following command to quickly understand what a rule will do to your code:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar describe align_multiline_comment
+
+To visualize all the rules that belong to a ruleset:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar describe @PSR2
+
 Choose from the list of available rules:
 
 * **align_multiline_comment** [@PhpCsFixer]
