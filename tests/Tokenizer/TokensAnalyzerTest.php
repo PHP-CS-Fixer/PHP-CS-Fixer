@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ClassyElementAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -70,54 +71,18 @@ PHP;
         $elements = $tokensAnalyzer->getClassyElements();
 
         static::assertSame(
-            [
-                9 => [
-                    'token' => $tokens[9],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                14 => [
-                    'token' => $tokens[14],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                19 => [
-                    'token' => $tokens[19],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                28 => [
-                    'token' => $tokens[28],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                42 => [
-                    'token' => $tokens[42],
-                    'type' => 'const',
-                    'classIndex' => 1,
-                ],
-                53 => [
-                    'token' => $tokens[53],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                83 => [
-                    'token' => $tokens[83],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                140 => [
-                    'token' => $tokens[140],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                164 => [
-                    'token' => $tokens[164],
-                    'type' => 'const',
-                    'classIndex' => 158,
-                ],
-            ],
-            $elements
+            serialize([
+                9 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                14 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                19 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                28 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                42 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, 1),
+                53 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1),
+                83 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1),
+                140 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1),
+                164 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, 158),
+            ]),
+            serialize($elements)
         );
     }
 
@@ -143,29 +108,13 @@ PHP;
         $elements = $tokensAnalyzer->getClassyElements();
 
         static::assertSame(
-            [
-                11 => [
-                    'token' => $tokens[11],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                19 => [
-                    'token' => $tokens[19],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                26 => [
-                    'token' => $tokens[26],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                41 => [
-                    'token' => $tokens[41],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-            ],
-            $elements
+            serialize([
+                11 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                19 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                26 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+                41 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1),
+            ]),
+            serialize($elements)
         );
     }
 
@@ -197,39 +146,15 @@ PHP;
         $elements = $tokensAnalyzer->getClassyElements();
 
         static::assertSame(
-            [
-                9 => [
-                    'token' => $tokens[9],
-                    'type' => 'property', // $A
-                    'classIndex' => 1,
-                ],
-                14 => [
-                    'token' => $tokens[14],
-                    'type' => 'method', // B
-                    'classIndex' => 1,
-                ],
-                33 => [
-                    'token' => $tokens[33],
-                    'type' => 'property', // $level1
-                    'classIndex' => 26,
-                ],
-                38 => [
-                    'token' => $tokens[38],
-                    'type' => 'method', // XYZ
-                    'classIndex' => 26,
-                ],
-                56 => [
-                    'token' => $tokens[56],
-                    'type' => 'property', // $level2
-                    'classIndex' => 50,
-                ],
-                74 => [
-                    'token' => $tokens[74],
-                    'type' => 'method', // C
-                    'classIndex' => 1,
-                ],
-            ],
-            $elements
+            serialize([
+                9 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1), // $A
+                14 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1), // B
+                33 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 26), // $level1
+                38 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 26), // XYZ
+                56 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 50), // $level2
+                74 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1), // C
+            ]),
+            serialize($elements)
         );
     }
 
@@ -310,69 +235,21 @@ PHP;
         $elements = $tokensAnalyzer->getClassyElements();
 
         static::assertSame(
-            [
-                9 => [
-                    'token' => $tokens[9],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                27 => [
-                    'token' => $tokens[27],
-                    'type' => 'method',
-                    'classIndex' => 21,
-                ],
-                44 => [
-                    'token' => $tokens[44],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                64 => [
-                    'token' => $tokens[64],
-                    'type' => 'method',
-                    'classIndex' => 56,
-                ],
-                82 => [
-                    'token' => $tokens[82],
-                    'type' => 'method',
-                    'classIndex' => 76,
-                ],
-                100 => [
-                    'token' => $tokens[100],
-                    'type' => 'method',
-                    'classIndex' => 94,
-                ],
-                118 => [
-                    'token' => $tokens[118],
-                    'type' => 'method',
-                    'classIndex' => 112,
-                ],
-                139 => [
-                    'token' => $tokens[139],
-                    'type' => 'method',
-                    'classIndex' => 112,
-                ],
-                170 => [
-                    'token' => $tokens[170],
-                    'type' => 'method',
-                    'classIndex' => 76,
-                ],
-                188 => [
-                    'token' => $tokens[188],
-                    'type' => 'method',
-                    'classIndex' => 182,
-                ],
-                206 => [
-                    'token' => $tokens[206],
-                    'type' => 'method',
-                    'classIndex' => 200,
-                ],
-                242 => [
-                    'token' => $tokens[242],
-                    'type' => 'method',
-                    'classIndex' => 56,
-                ],
-            ],
-            $elements
+            serialize([
+                9 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1),
+                27 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 21),
+                44 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1),
+                64 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 56),
+                82 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 76),
+                100 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 94),
+                118 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 112),
+                139 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 112),
+                170 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 76),
+                188 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 182),
+                206 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 200),
+                242 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 56),
+            ]),
+            serialize($elements)
         );
     }
 
@@ -407,14 +284,10 @@ PHP;
 
         $expected = [];
         foreach ([11, 23, 31, 44, 51, 54, 61, 69] as $index) {
-            $expected[$index] = [
-                'token' => $tokens[$index],
-                'type' => 'property',
-                'classIndex' => 1,
-            ];
+            $expected[$index] = new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, 1);
         }
 
-        static::assertSame($expected, $elements);
+        static::assertSame(serialize($expected), serialize($elements));
     }
 
     /**
@@ -1753,42 +1626,17 @@ class MyTestWithAnonymousClass extends TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
 
-        static::assertSame([
-            13 => [
-                'token' => $tokens[13],
-                'type' => 'method', // setUp
-                'classIndex' => 1,
-            ],
-            46 => [
-                'token' => $tokens[46],
-                'type' => 'method', // testSomethingWithMoney
-                'classIndex' => 1,
-            ],
-            100 => [
-                'token' => $tokens[100], // const A
-                'type' => 'const',
-                'classIndex' => 87,
-            ],
-            115 => [
-                'token' => $tokens[115], // const B
-                'type' => 'const',
-                'classIndex' => 65,
-            ],
-            124 => [
-                'token' => $tokens[124],
-                'type' => 'method', // foo
-                'classIndex' => 65, // $a
-            ],
-            143 => [
-                'token' => $tokens[143], // const AA
-                'type' => 'const',
-                'classIndex' => 138,
-            ],
-            161 => [
-                'token' => $tokens[161], // const AB
-                'type' => 'const',
-                'classIndex' => 158,
-            ],
-        ], $elements);
+        static::assertSame(
+            serialize([
+                13 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1), // setUp
+                46 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 1), // testSomethingWithMoney
+                100 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, 87), // const A
+                115 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, 65), // const B
+                124 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, 65), // foo
+                143 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, 138), // const AA
+                161 => new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, 158), // const AB
+            ]),
+            serialize($elements)
+        );
     }
 }

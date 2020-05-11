@@ -36,6 +36,16 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
+     * @internal
+     */
+    const ELEMENT_TYPE_CONSTANT = 'const';
+
+    /**
+     * @internal
+     */
+    const ELEMENT_TYPE_PROPERTY = 'property';
+
+    /**
      * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
@@ -83,11 +93,15 @@ final class Example
         $elements = array_reverse($analyzer->getClassyElements(), true);
 
         foreach ($elements as $index => $element) {
-            if (!\in_array($element['type'], $this->configuration['elements'], true)) {
-                continue; // not in configuration
+            if ($element->isConstant() && \in_array(self::ELEMENT_TYPE_CONSTANT, $this->configuration['elements'], true)) {
+                $this->fixElement($tokens, self::ELEMENT_TYPE_CONSTANT, $index);
+
+                continue;
             }
 
-            $this->fixElement($tokens, $element['type'], $index);
+            if ($element->isProperty() && \in_array(self::ELEMENT_TYPE_PROPERTY, $this->configuration['elements'], true)) {
+                $this->fixElement($tokens, self::ELEMENT_TYPE_PROPERTY, $index);
+            }
         }
     }
 
@@ -96,7 +110,7 @@ final class Example
      */
     protected function createConfigurationDefinition()
     {
-        $values = ['const', 'property'];
+        $values = [self::ELEMENT_TYPE_CONSTANT, self::ELEMENT_TYPE_PROPERTY];
 
         return new FixerConfigurationResolverRootless('elements', [
             (new FixerOptionBuilder('elements', 'List of strings which element should be modified.'))

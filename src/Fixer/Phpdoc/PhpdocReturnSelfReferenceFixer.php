@@ -119,7 +119,7 @@ class Sample
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
-            if ('method' === $element['type']) {
+            if ($element->isMethod()) {
                 $this->fixMethod($tokens, $index);
             }
         }

@@ -21,6 +21,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ClassyElementAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -36,6 +37,21 @@ use SplFileInfo;
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
+    /**
+     * @internal
+     */
+    const ELEMENT_TYPE_CONSTANT = 'const';
+
+    /**
+     * @internal
+     */
+    const ELEMENT_TYPE_METHOD = 'method';
+
+    /**
+     * @internal
+     */
+    const ELEMENT_TYPE_PROPERTY = 'property';
+
     /**
      * @var array<string, true>
      */
@@ -85,7 +101,7 @@ class Sample
     private $b;
 }
 ',
-                    ['elements' => ['property']]
+                    ['elements' => [self::ELEMENT_TYPE_PROPERTY]]
                 ),
                 new CodeSample(
                     '<?php
@@ -96,7 +112,7 @@ class Sample
     const B = 3600;
 }
 ',
-                    ['elements' => ['const']]
+                    ['elements' => [self::ELEMENT_TYPE_CONSTANT]]
                 ),
             ]
         );
@@ -129,18 +145,25 @@ class Sample
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = $classStart = $classEnd = false;
 
+        /** @var ClassyElementAnalysis $element */
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
-            if (!isset($this->classElementTypes[$element['type']])) {
-                continue; // not configured to be fixed
+            if ($element->isConstant() && !\in_array(self::ELEMENT_TYPE_CONSTANT, $this->configuration['elements'], true)) {
+                continue;
+            }
+            if ($element->isMethod() && !\in_array(self::ELEMENT_TYPE_METHOD, $this->configuration['elements'], true)) {
+                continue;
+            }
+            if ($element->isProperty() && !\in_array(self::ELEMENT_TYPE_PROPERTY, $this->configuration['elements'], true)) {
+                continue;
             }
 
-            if ($element['classIndex'] !== $class) {
-                $class = $element['classIndex'];
+            if ($element->getClassIndex() !== $class) {
+                $class = $element->getClassIndex();
                 $classStart = $tokens->getNextTokenOfKind($class, ['{']);
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
             }
 
-            if ('method' === $element['type'] && !$tokens[$class]->isGivenKind(T_INTERFACE)) {
+            if ($element->isMethod() && !$tokens[$class]->isGivenKind(T_INTERFACE)) {
                 // method of class or trait
                 $attributes = $tokensAnalyzer->getMethodAttributes($index);
 
@@ -166,13 +189,13 @@ class Sample
      */
     protected function createConfigurationDefinition()
     {
-        $types = ['const', 'method', 'property'];
+        $types = [self::ELEMENT_TYPE_CONSTANT, self::ELEMENT_TYPE_METHOD, self::ELEMENT_TYPE_PROPERTY];
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', sprintf('List of classy elements; \'%s\'.', implode("', '", $types))))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($types)])
-                ->setDefault(['const', 'method', 'property'])
+                ->setDefault($types)
                 ->getOption(),
         ]);
     }

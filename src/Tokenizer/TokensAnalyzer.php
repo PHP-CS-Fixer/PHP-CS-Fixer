@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ClassyElementAnalysis;
+
 /**
  * Analyzer of Tokens collection.
  *
@@ -40,7 +42,7 @@ final class TokensAnalyzer
     /**
      * Get indexes of methods and properties in classy code (classes, interfaces and traits).
      *
-     * @return array[]
+     * @return ClassyElementAnalysis[]
      */
     public function getClassyElements()
     {
@@ -714,27 +716,15 @@ final class TokensAnalyzer
             }
 
             if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
-                $elements[$index] = [
-                    'token' => $token,
-                    'type' => 'property',
-                    'classIndex' => $classIndex,
-                ];
+                $elements[$index] = new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_PROPERTY, $classIndex);
 
                 continue;
             }
 
             if ($token->isGivenKind(T_FUNCTION)) {
-                $elements[$index] = [
-                    'token' => $token,
-                    'type' => 'method',
-                    'classIndex' => $classIndex,
-                ];
+                $elements[$index] = new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_METHOD, $classIndex);
             } elseif ($token->isGivenKind(T_CONST)) {
-                $elements[$index] = [
-                    'token' => $token,
-                    'type' => 'const',
-                    'classIndex' => $classIndex,
-                ];
+                $elements[$index] = new ClassyElementAnalysis(ClassyElementAnalysis::TYPE_CONSTANT, $classIndex);
             }
         }
 

@@ -37,6 +37,21 @@ use Symfony\Component\OptionsResolver\Options;
 final class VisibilityRequiredFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
+     * @internal
+     */
+    const ELEMENT_TYPE_CONSTANT = 'const';
+
+    /**
+     * @internal
+     */
+    const ELEMENT_TYPE_METHOD = 'method';
+
+    /**
+     * @internal
+     */
+    const ELEMENT_TYPE_PROPERTY = 'property';
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -65,7 +80,7 @@ class Sample
 }
 ',
                     new VersionSpecification(70100),
-                    ['elements' => ['const']]
+                    ['elements' => [self::ELEMENT_TYPE_CONSTANT]]
                 ),
             ]
         );
@@ -87,15 +102,15 @@ class Sample
         return new FixerConfigurationResolverRootless('elements', [
             (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
+                ->setAllowedValues([new AllowedValueSubset([self::ELEMENT_TYPE_PROPERTY, self::ELEMENT_TYPE_METHOD, self::ELEMENT_TYPE_CONSTANT])])
                 ->setNormalizer(static function (Options $options, $value) {
-                    if (\PHP_VERSION_ID < 70100 && \in_array('const', $value, true)) {
-                        throw new InvalidOptionsForEnvException('"const" option can only be enabled with PHP 7.1+.');
+                    if (\PHP_VERSION_ID < 70100 && \in_array(self::ELEMENT_TYPE_CONSTANT, $value, true)) {
+                        throw new InvalidOptionsForEnvException(sprintf('"%s" option can only be enabled with PHP 7.1+.', self::ELEMENT_TYPE_CONSTANT));
                     }
 
                     return $value;
                 })
-                ->setDefault(['property', 'method'])
+                ->setDefault([self::ELEMENT_TYPE_PROPERTY, self::ELEMENT_TYPE_METHOD])
                 ->getOption(),
         ], $this->getName());
     }
@@ -111,10 +126,15 @@ class Sample
         $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
 
         foreach (array_reverse($elements, true) as $index => $element) {
-            if (!\in_array($element['type'], $this->configuration['elements'], true)) {
+            if ($element->isConstant() && !\in_array(self::ELEMENT_TYPE_CONSTANT, $this->configuration['elements'], true)) {
                 continue;
             }
-
+            if ($element->isMethod() && !\in_array(self::ELEMENT_TYPE_METHOD, $this->configuration['elements'], true)) {
+                continue;
+            }
+            if ($element->isProperty() && !\in_array(self::ELEMENT_TYPE_PROPERTY, $this->configuration['elements'], true)) {
+                continue;
+            }
             $abstractFinalIndex = null;
             $visibilityIndex = null;
             $staticIndex = null;
@@ -122,7 +142,7 @@ class Sample
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             $expectedKinds = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
-            if ('property' === $element['type']) {
+            if ($element->isProperty()) {
                 $expectedKinds = array_merge($expectedKinds, $propertyTypeDeclarationKinds);
             }
 
