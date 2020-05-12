@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,16 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractProxyFixer
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer
  */
 final class PhpdocNoAccessFixerTest extends AbstractFixerTestCase
 {
-    public function testFixAccess()
+    public function testFixAccess(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -44,7 +45,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixMany()
+    public function testFixMany(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -69,7 +70,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNothing()
+    public function testDoNothing(): void
     {
         $expected = <<<'EOF'
 <?php

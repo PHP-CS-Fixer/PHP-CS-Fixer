@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,18 +27,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitMockFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [
@@ -110,7 +109,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php
@@ -145,6 +144,31 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["bbb", ], );
             $this->getMock("Foo", ["aaa"], ["argument"], );
             $this->getMock("Foo", ["bbb", ], ["argument", ], );
+        }
+    }'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->doTest(
+            '<?php
+    class FooTest extends TestCase
+    {
+        public function testFoo()
+        {
+            $this?->createMock("Foo");
+        }
+    }',
+            '<?php
+    class FooTest extends TestCase
+    {
+        public function testFoo()
+        {
+            $this?->getMock("Foo");
         }
     }'
         );

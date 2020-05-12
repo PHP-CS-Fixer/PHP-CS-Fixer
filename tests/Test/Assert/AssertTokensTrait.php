@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,9 +24,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 trait AssertTokensTrait
 {
-    private static function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
+    private static function assertTokens(Tokens $expectedTokens, Tokens $inputTokens): void
     {
         foreach ($expectedTokens as $index => $expectedToken) {
+            if (!isset($inputTokens[$index])) {
+                static::fail(sprintf("The token at index %d must be:\n%s, but is not set in the input collection.", $index, $expectedToken->toJson()));
+            }
+
             $inputToken = $inputTokens[$index];
 
             static::assertTrue(

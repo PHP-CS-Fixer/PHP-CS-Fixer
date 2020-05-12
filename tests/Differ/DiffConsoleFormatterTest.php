@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,8 +19,6 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\DiffConsoleFormatter
@@ -27,14 +27,8 @@ final class DiffConsoleFormatterTest extends TestCase
 {
     /**
      * @dataProvider provideTestCases
-     *
-     * @param string $expected
-     * @param bool   $isDecoratedOutput
-     * @param string $template
-     * @param string $diff
-     * @param string $lineTemplate
      */
-    public function testDiffConsoleFormatter($expected, $isDecoratedOutput, $template, $diff, $lineTemplate)
+    public function testDiffConsoleFormatter(string $expected, bool $isDecoratedOutput, string $template, string $diff, string $lineTemplate): void
     {
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, $template);
 
@@ -44,7 +38,7 @@ final class DiffConsoleFormatterTest extends TestCase
         );
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             [

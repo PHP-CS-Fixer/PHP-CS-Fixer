@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,11 +28,9 @@ use PhpCsFixer\Tests\TestCase;
 final class CachingLinterTest extends TestCase
 {
     /**
-     * @param bool $isAsync
-     *
      * @dataProvider provideIsAsyncCases
      */
-    public function testIsAsync($isAsync)
+    public function testIsAsync(bool $isAsync): void
     {
         $sublinter = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $sublinter->isAsync()->willReturn($isAsync);
@@ -40,7 +40,7 @@ final class CachingLinterTest extends TestCase
         static::assertSame($isAsync, $linter->isAsync());
     }
 
-    public function provideIsAsyncCases()
+    public function provideIsAsyncCases(): array
     {
         return [
             [true],
@@ -48,7 +48,7 @@ final class CachingLinterTest extends TestCase
         ];
     }
 
-    public function testLintFileIsCalledOnceOnSameContent()
+    public function testLintFileIsCalledOnceOnSameContent(): void
     {
         $fs = vfsStream::setup('root', null, [
             'foo.php' => '<?php echo "baz";',
@@ -72,7 +72,7 @@ final class CachingLinterTest extends TestCase
         static::assertSame($result2->reveal(), $linter->lintFile($fs->url().'/baz.php'));
     }
 
-    public function testLintSourceIsCalledOnceOnSameContent()
+    public function testLintSourceIsCalledOnceOnSameContent(): void
     {
         $result1 = $this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class);
         $result2 = $this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class);

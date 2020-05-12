@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class FileSpecificCodeSampleTest extends TestCase
 {
-    public function testImplementsFileSpecificCodeSampleInterface()
+    public function testImplementsFileSpecificCodeSampleInterface(): void
     {
-        $sample = new FileSpecificCodeSample(
-            file_get_contents(__FILE__),
-            new \SplFileInfo(__FILE__)
-        );
+        $sample = new FileSpecificCodeSample(file_get_contents(__FILE__), new \SplFileInfo(__FILE__));
 
         static::assertInstanceOf(\PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface::class, $sample);
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $code = file_get_contents(__FILE__);
         $splFileInfo = new \SplFileInfo(__FILE__);
@@ -49,7 +48,7 @@ final class FileSpecificCodeSampleTest extends TestCase
         static::assertNull($sample->getConfiguration());
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $code = file_get_contents(__FILE__);
         $splFileInfo = new \SplFileInfo(__FILE__);

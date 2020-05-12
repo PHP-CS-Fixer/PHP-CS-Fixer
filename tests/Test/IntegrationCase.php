@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,7 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -21,6 +23,9 @@ use PhpCsFixer\RuleSet;
  */
 final class IntegrationCase
 {
+    /**
+     * @var array
+     */
     private $config;
 
     /**
@@ -62,21 +67,15 @@ final class IntegrationCase
      */
     private $title;
 
-    /**
-     * @param string      $fileName
-     * @param string      $title
-     * @param string      $expectedCode
-     * @param null|string $inputCode
-     */
     public function __construct(
-        $fileName,
-        $title,
+        string $fileName,
+        string $title,
         array $settings,
         array $requirements,
         array $config,
         RuleSet $ruleset,
-        $expectedCode,
-        $inputCode
+        string $expectedCode,
+        ?string $inputCode
     ) {
         $this->fileName = $fileName;
         $this->title = $title;
@@ -88,37 +87,35 @@ final class IntegrationCase
         $this->inputCode = $inputCode;
     }
 
-    public function hasInputCode()
+    public function hasInputCode(): bool
     {
         return null !== $this->inputCode;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    public function getExpectedCode()
+    public function getExpectedCode(): string
     {
         return $this->expectedCode;
     }
 
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    public function getInputCode()
+    public function getInputCode(): ?string
     {
         return $this->inputCode;
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      */
-    public function getRequirement($name)
+    public function getRequirement(string $name)
     {
         if (!\array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(
@@ -131,22 +128,22 @@ final class IntegrationCase
         return $this->requirements[$name];
     }
 
-    public function getRequirements()
+    public function getRequirements(): array
     {
         return $this->requirements;
     }
 
-    public function getRuleset()
+    public function getRuleset(): RuleSet
     {
         return $this->ruleset;
     }
 
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->settings;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

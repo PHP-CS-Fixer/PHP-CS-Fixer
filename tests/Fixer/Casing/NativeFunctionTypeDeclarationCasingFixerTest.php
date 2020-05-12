@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer
@@ -24,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -83,10 +80,10 @@ function Foo(/**/ARRAY/**/$bar) {
             ],
             [
                 '<?php
-function Foo(array $a, callable $b, self $c) {}
+class Bar { function Foo(array $a, callable $b, self $c) {} }
                 ',
                 '<?php
-function Foo(ARRAY $a, CALLABLE $b, Self $c) {}
+class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
                 ',
             ],
             [
@@ -94,44 +91,12 @@ function Foo(ARRAY $a, CALLABLE $b, Self $c) {}
 function Foo(INTEGER $a) {}
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP <7.0
-     *
-     * @param string $expected
-     *
-     * @dataProvider provideFixPre70Cases
-     */
-    public function testFixPre70($expected)
-    {
-        $this->doTest($expected);
-    }
-
-    public function provideFixPre70Cases()
-    {
-        return [
-            ['<?php function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D, ITERABLE $E, VOID $F, OBJECT $o) {}'],
-            ['<?php class Foo { public function Foo(\INT $a) {}}'],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
+            [
+                '<?php function Foo(
+                    String\A $x,
+                    B\String\C $y
+                ) {}',
+            ],
             [
                 '<?php final class Foo1 { final public function Foo(bool $A, float $B, int $C, string $D): int {} }',
                 '<?php final class Foo1 { final public function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {} }',
@@ -143,24 +108,6 @@ function Foo(INTEGER $a) {}
             [
                 '<?php function Foo(): Foo\A { return new Foo(); }',
             ],
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
             [
                 '<?php trait XYZ { function Foo(iterable $A): void {} }',
                 '<?php trait XYZ { function Foo(ITERABLE $A): VOID {} }',
@@ -169,28 +116,77 @@ function Foo(INTEGER $a) {}
                 '<?php function Foo(iterable $A): void {}',
                 '<?php function Foo(ITERABLE $A): VOID {}',
             ],
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases()
-    {
-        return [
+            [
+                '<?php function Foo(?int $A): void {}',
+                '<?php function Foo(?INT $A): VOID {}',
+            ],
+            [
+                '<?php function Foo(string $A): ?/* */int {}',
+                '<?php function Foo(STRING $A): ?/* */INT {}',
+            ],
             [
                 '<?php function Foo(object $A): void {}',
                 '<?php function Foo(OBJECT $A): VOID {}',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php class T { public function Foo(object $A): static {}}',
+            '<?php class T { public function Foo(object $A): StatiC {}}',
+        ];
+
+        yield [
+            '<?php class T { public function Foo(object $A): ?static {}}',
+            '<?php class T { public function Foo(object $A): ?StatiC {}}',
+        ];
+
+        yield [
+            '<?php class T { public function Foo(mixed $A): mixed {}}',
+            '<?php class T { public function Foo(Mixed $A): MIXED {}}',
+        ];
+
+        yield [
+            '<?php function foo(int|bool $x) {}',
+            '<?php function foo(INT|BOOL $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(int | bool $x) {}',
+            '<?php function foo(INT | BOOL $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(): int|bool {}',
+            '<?php function foo(): INT|BOOL {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class T { public function Foo(object $A): never {die;}}',
+            '<?php class T { public function Foo(object $A): NEVER {die;}}',
         ];
     }
 }

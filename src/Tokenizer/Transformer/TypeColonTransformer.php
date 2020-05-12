@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,24 +31,17 @@ final class TypeColonTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        return [CT::T_TYPE_COLON];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
+    public function getPriority(): int
     {
         // needs to run after ReturnRefTransformer and UseTransformer
+        // and before TypeAlternationTransformer
         return -10;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
         return 70000;
     }
@@ -54,7 +49,7 @@ final class TypeColonTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equals(':')) {
             return;
@@ -77,12 +72,21 @@ final class TypeColonTransformer extends AbstractTransformer
         }
 
         $prevKinds = [T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA];
-        if (\PHP_VERSION_ID >= 70400) {
+
+        if (\defined('T_FN')) { // @TODO: drop condition when PHP 7.4+ is required
             $prevKinds[] = T_FN;
         }
 
         if ($prevToken->isGivenKind($prevKinds)) {
             $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomTokens(): array
+    {
+        return [CT::T_TYPE_COLON];
     }
 }

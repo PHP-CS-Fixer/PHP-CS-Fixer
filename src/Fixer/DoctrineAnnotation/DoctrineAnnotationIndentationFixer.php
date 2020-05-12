@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,9 +18,11 @@ use Doctrine\Common\Annotations\DocLexer;
 use PhpCsFixer\AbstractDoctrineAnnotationFixer;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 
 final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotationFixer
@@ -26,7 +30,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Doctrine annotations must be indented with four spaces.',
@@ -43,7 +47,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver(array_merge(
             parent::createConfigurationDefinition()->getOptions(),
@@ -59,15 +63,15 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     /**
      * {@inheritdoc}
      */
-    protected function fixAnnotations(Tokens $tokens)
+    protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         $annotationPositions = [];
-        for ($index = 0, $max = \count($tokens); $index < $max; ++$index) {
-            if (!$tokens[$index]->isType(DocLexer::T_AT)) {
+        for ($index = 0, $max = \count($doctrineAnnotationTokens); $index < $max; ++$index) {
+            if (!$doctrineAnnotationTokens[$index]->isType(DocLexer::T_AT)) {
                 continue;
             }
 
-            $annotationEndIndex = $tokens->getAnnotationEnd($index);
+            $annotationEndIndex = $doctrineAnnotationTokens->getAnnotationEnd($index);
             if (null === $annotationEndIndex) {
                 return;
             }
@@ -77,16 +81,16 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         }
 
         $indentLevel = 0;
-        foreach ($tokens as $index => $token) {
-            if (!$token->isType(DocLexer::T_NONE) || false === strpos($token->getContent(), "\n")) {
+        foreach ($doctrineAnnotationTokens as $index => $token) {
+            if (!$token->isType(DocLexer::T_NONE) || !str_contains($token->getContent(), "\n")) {
                 continue;
             }
 
-            if (!$this->indentationCanBeFixed($tokens, $index, $annotationPositions)) {
+            if (!$this->indentationCanBeFixed($doctrineAnnotationTokens, $index, $annotationPositions)) {
                 continue;
             }
 
-            $braces = $this->getLineBracesCount($tokens, $index);
+            $braces = $this->getLineBracesCount($doctrineAnnotationTokens, $index);
             $delta = $braces[0] - $braces[1];
             $mixedBraces = 0 === $delta && $braces[0] > 0;
             $extraIndentLevel = 0;
@@ -94,7 +98,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             if ($indentLevel > 0 && ($delta < 0 || $mixedBraces)) {
                 --$indentLevel;
 
-                if ($this->configuration['indent_mixed_lines'] && $this->isClosingLineWithMeaningfulContent($tokens, $index)) {
+                if (true === $this->configuration['indent_mixed_lines'] && $this->isClosingLineWithMeaningfulContent($doctrineAnnotationTokens, $index)) {
                     $extraIndentLevel = 1;
                 }
             }
@@ -112,18 +116,16 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param int $index
-     *
      * @return int[]
      */
-    private function getLineBracesCount(Tokens $tokens, $index)
+    private function getLineBracesCount(Tokens $tokens, int $index): array
     {
         $opening = 0;
         $closing = 0;
 
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
-            if ($token->isType(DocLexer::T_NONE) && false !== strpos($token->getContent(), "\n")) {
+            if ($token->isType(DocLexer::T_NONE) && str_contains($token->getContent(), "\n")) {
                 break;
             }
 
@@ -147,17 +149,12 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         return [$opening, $closing];
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function isClosingLineWithMeaningfulContent(Tokens $tokens, $index)
+    private function isClosingLineWithMeaningfulContent(Tokens $tokens, int $index): bool
     {
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
             if ($token->isType(DocLexer::T_NONE)) {
-                if (false !== strpos($token->getContent(), "\n")) {
+                if (str_contains($token->getContent(), "\n")) {
                     return false;
                 }
 
@@ -171,12 +168,9 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
     }
 
     /**
-     * @param int               $newLineTokenIndex
-     * @param array<array<int>> $annotationPositions Pairs of begin and end indexes of main annotations
-     *
-     * @return bool
+     * @param array<array<int>> $annotationPositions Pairs of begin and end indices of main annotations
      */
-    private function indentationCanBeFixed(Tokens $tokens, $newLineTokenIndex, array $annotationPositions)
+    private function indentationCanBeFixed(Tokens $tokens, int $newLineTokenIndex, array $annotationPositions): bool
     {
         foreach ($annotationPositions as $position) {
             if ($newLineTokenIndex >= $position[0] && $newLineTokenIndex <= $position[1]) {
@@ -187,7 +181,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         for ($index = $newLineTokenIndex + 1, $max = \count($tokens); $index < $max; ++$index) {
             $token = $tokens[$index];
 
-            if (false !== strpos($token->getContent(), "\n")) {
+            if (str_contains($token->getContent(), "\n")) {
                 return false;
             }
 

@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: class_definition,braces.
+--RULESET--
+{"class_definition": true, "braces": {"position_after_functions_and_oop_constructs": "same"}}
+--EXPECT--
+<?php
+
+class Foo {
+}
+
+class Bar {
+}
+
+--INPUT--
+<?php
+
+class Foo{
+}
+
+class Bar
+{
+}

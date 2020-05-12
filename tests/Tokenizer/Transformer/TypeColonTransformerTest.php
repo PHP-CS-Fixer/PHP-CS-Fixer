@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
-     * @requires PHP 7.0
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -41,7 +40,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -85,12 +84,10 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessPhp74Cases
      * @requires PHP 7.4
      */
-    public function testProcessPhp74($source, array $expectedTokens = [])
+    public function testProcessPhp74(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -101,7 +98,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessPhp74Cases()
+    public function provideProcessPhp74Cases(): array
     {
         return [
             [

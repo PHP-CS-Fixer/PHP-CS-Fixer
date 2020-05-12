@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,7 +32,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $annotation
      */
-    public function testConfigureRejectsInvalidControlStatement($annotation)
+    public function testConfigureRejectsInvalidControlStatement($annotation): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
@@ -41,10 +43,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidAnnotationCases()
+    public function provideInvalidAnnotationCases(): array
     {
         return [
             'null' => [null],
@@ -59,23 +58,17 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithCoversCases
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAuthorCases
      */
-    public function testFixWithAuthor($expected, $input = null)
+    public function testFixWithAuthor(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -86,7 +79,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAuthorCases()
+    public function provideFixWithAuthorCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -193,12 +186,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithCoversCases
      */
-    public function testFixWithCovers($expected, $input = null)
+    public function testFixWithCovers(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -209,7 +199,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCoversCases()
+    public function provideFixWithCoversCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -316,12 +306,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithCoversNothingCases
      */
-    public function testFixWithCoversNothing($expected, $input = null)
+    public function testFixWithCoversNothing(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -332,7 +319,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithCoversNothingCases()
+    public function provideFixWithCoversNothingCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -439,12 +426,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithDataProviderCases
      */
-    public function testFixWithDataProvider($expected, $input = null)
+    public function testFixWithDataProvider(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -455,7 +439,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDataProviderCases()
+    public function provideFixWithDataProviderCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -562,12 +546,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithDependsCases
      */
-    public function testFixWithDepends($expected, $input = null)
+    public function testFixWithDepends(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -578,7 +559,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithDependsCases()
+    public function provideFixWithDependsCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -685,12 +666,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithGroupCases
      */
-    public function testFixWithGroup($expected, $input = null)
+    public function testFixWithGroup(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -701,7 +679,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithGroupCases()
+    public function provideFixWithGroupCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -808,12 +786,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithInternalCases
      */
-    public function testFixWithInternal($expected, $input = null)
+    public function testFixWithInternal(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -824,7 +799,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithInternalCases()
+    public function provideFixWithInternalCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -931,12 +906,457 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
+     * @dataProvider provideFixWithMethodCases
+     */
+    public function testFixWithMethod(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'method',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithMethodCases(): array
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                /**
+                 * @method int foo(array $b)
+                 */
+                class Foo {}
+                ',
+            ],
+            'base case' => [
+                '<?php
+                /**
+                 * @method bool bar(int $a, bool $b)
+                 * @method array|null baz()
+                 * @method int foo(array $b)
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @method int foo(array $b)
+                 * @method bool bar(int $a, bool $b)
+                 * @method array|null baz()
+                 */
+                class Foo {}
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                /**
+                 * Comment 1
+                 * @method bool bar(int $a, bool $b)
+                 * Comment 3
+                 * @method int foo(array $b)
+                 * Comment 2
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * Comment 1
+                 * @method int foo(array $b)
+                 * Comment 2
+                 * @method bool bar(int $a, bool $b)
+                 * Comment 3
+                 */
+                class Foo {}
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                /**
+                 * @method int A()
+                 * @method bool b()
+                 * @method array|null c()
+                 * @method float D()
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @method array|null c()
+                 * @method float D()
+                 * @method bool b()
+                 * @method int A()
+                 */
+                class Foo {}
+                ',
+            ],
+            'with-possibly-unexpected-comparable' => [
+                '<?php
+                /**
+                 * @method int foo(Z $b)
+                 * @method int fooA( $b)
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @method int fooA( $b)
+                 * @method int foo(Z $b)
+                 */
+                class Foo {}
+                ',
+            ],
+            'with-and-without-types' => [
+                '<?php
+                /**
+                 * @method int A()
+                 * @method b()
+                 * @method array|null c()
+                 * @method D()
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @method array|null c()
+                 * @method D()
+                 * @method b()
+                 * @method int A()
+                 */
+                class Foo {}
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithPropertyCases
+     */
+    public function testFixWithProperty(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'property',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithPropertyCases(): array
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                /**
+                 * @property int|\stdClass $foo
+                 */
+                class Foo {}
+                ',
+            ],
+            'base case' => [
+                '<?php
+                /**
+                 * @property bool $bar
+                 * @property array|null $baz
+                 * @property int|\stdClass $foo
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property int|\stdClass $foo
+                 * @property bool $bar
+                 * @property array|null $baz
+                 */
+                class Foo {}
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                /**
+                 * Comment 1
+                 * @property bool $bar
+                 * Comment 3
+                 * @property int|\stdClass $foo
+                 * Comment 2
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * Comment 1
+                 * @property int|\stdClass $foo
+                 * Comment 2
+                 * @property bool $bar
+                 * Comment 3
+                 */
+                class Foo {}
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                /**
+                 * @property int|\stdClass $A
+                 * @property bool $b
+                 * @property array|null $C
+                 * @property float $D
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property array|null $C
+                 * @property float $D
+                 * @property bool $b
+                 * @property int|\stdClass $A
+                 */
+                class Foo {}
+                ',
+            ],
+            'with-and-without-types' => [
+                '<?php
+                /**
+                 * @property int|\stdClass $A
+                 * @property $b
+                 * @property array|null $C
+                 * @property $D
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property array|null $C
+                 * @property $D
+                 * @property $b
+                 * @property int|\stdClass $A
+                 */
+                class Foo {}
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithPropertyReadCases
+     */
+    public function testFixWithPropertyRead(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'property-read',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithPropertyReadCases(): array
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                /**
+                 * @property-read int|\stdClass $foo
+                 */
+                class Foo {}
+                ',
+            ],
+            'base case' => [
+                '<?php
+                /**
+                 * @property-read bool $bar
+                 * @property-read array|null $baz
+                 * @property-read int|\stdClass $foo
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property-read int|\stdClass $foo
+                 * @property-read bool $bar
+                 * @property-read array|null $baz
+                 */
+                class Foo {}
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                /**
+                 * Comment 1
+                 * @property-read bool $bar
+                 * Comment 3
+                 * @property-read int|\stdClass $foo
+                 * Comment 2
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * Comment 1
+                 * @property-read int|\stdClass $foo
+                 * Comment 2
+                 * @property-read bool $bar
+                 * Comment 3
+                 */
+                class Foo {}
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                /**
+                 * @property-read int|\stdClass $A
+                 * @property-read bool $b
+                 * @property-read array|null $C
+                 * @property-read float $D
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property-read array|null $C
+                 * @property-read float $D
+                 * @property-read bool $b
+                 * @property-read int|\stdClass $A
+                 */
+                class Foo {}
+                ',
+            ],
+            'with-and-without-types' => [
+                '<?php
+                /**
+                 * @property-read int|\stdClass $A
+                 * @property-read $b
+                 * @property-read array|null $C
+                 * @property-read $D
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property-read array|null $C
+                 * @property-read $D
+                 * @property-read $b
+                 * @property-read int|\stdClass $A
+                 */
+                class Foo {}
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixWithPropertyWriteCases
+     */
+    public function testFixWithPropertyWrite(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'property-write',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithPropertyWriteCases(): array
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                /**
+                 * @property-write int|\stdClass $foo
+                 */
+                class Foo {}
+                ',
+            ],
+            'base case' => [
+                '<?php
+                /**
+                 * @property-write bool $bar
+                 * @property-write array|null $baz
+                 * @property-write int|\stdClass $foo
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property-write int|\stdClass $foo
+                 * @property-write bool $bar
+                 * @property-write array|null $baz
+                 */
+                class Foo {}
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                /**
+                 * Comment 1
+                 * @property-write bool $bar
+                 * Comment 3
+                 * @property-write int|\stdClass $foo
+                 * Comment 2
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * Comment 1
+                 * @property-write int|\stdClass $foo
+                 * Comment 2
+                 * @property-write bool $bar
+                 * Comment 3
+                 */
+                class Foo {}
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                /**
+                 * @property-write int|\stdClass $A
+                 * @property-write bool $b
+                 * @property-write array|null $C
+                 * @property-write float $D
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property-write array|null $C
+                 * @property-write float $D
+                 * @property-write bool $b
+                 * @property-write int|\stdClass $A
+                 */
+                class Foo {}
+                ',
+            ],
+            'with-and-without-types' => [
+                '<?php
+                /**
+                 * @property-write int|\stdClass $A
+                 * @property-write $b
+                 * @property-write array|null $C
+                 * @property-write $D
+                 */
+                class Foo {}
+                ',
+                '<?php
+                /**
+                 * @property-write array|null $C
+                 * @property-write $D
+                 * @property-write $b
+                 * @property-write int|\stdClass $A
+                 */
+                class Foo {}
+                ',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideFixWithRequiresCases
      */
-    public function testFixWithRequires($expected, $input = null)
+    public function testFixWithRequires(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -947,7 +1367,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithRequiresCases()
+    public function provideFixWithRequiresCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1054,12 +1474,145 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
+     * @dataProvider provideFixWithThrowsCases
+     */
+    public function testFixWithThrows(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'throws',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithThrowsCases(): array
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                    class Foo {
+                        /**
+                         * @throws Bar
+                         * @params bool $bool
+                         * @return void
+                         */
+                        public function bar() {}
+
+                        /**
+                         * @params bool $bool
+                         * @return void
+                         */
+                        public function baz() {}
+                    }
+                ',
+            ],
+            'base case' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws Bar
+                         * @throws Baz
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws Baz
+                         * @throws Bar
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * Comment 1
+                         * @throws Bar
+                         * Comment 3
+                         * @throws Baz
+                         * Comment 2
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * Comment 1
+                         * @throws Baz
+                         * Comment 2
+                         * @throws Bar
+                         * Comment 3
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws A
+                         * @throws b
+                         * @throws C
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws b
+                         * @throws C
+                         * @throws A
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+            'fully-qualified' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws \Bar\Baz\Qux
+                         * @throws Bar
+                         * @throws Foo
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws Bar
+                         * @throws \Bar\Baz\Qux
+                         * @throws Foo
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideFixWithUsesCases
      */
-    public function testFixWithUses($expected, $input = null)
+    public function testFixWithUses(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -1070,7 +1623,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithUsesCases()
+    public function provideFixWithUsesCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [
@@ -1177,12 +1730,9 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithMultipleConfiguredAnnotationsCases
      */
-    public function testFixWithMultipleConfiguredAnnotations($expected, $input = null)
+    public function testFixWithMultipleConfiguredAnnotations(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'annotations' => [
@@ -1194,7 +1744,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMultipleConfiguredAnnotationsCases()
+    public function provideFixWithMultipleConfiguredAnnotationsCases(): array
     {
         return [
             'skip on 1 or 0 occurrences' => [

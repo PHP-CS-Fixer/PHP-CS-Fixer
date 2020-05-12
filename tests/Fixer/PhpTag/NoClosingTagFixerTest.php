@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,23 +24,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithFullOpenTagCases
      */
-    public function testWithFullOpenTag($expected, $input = null)
+    public function testWithFullOpenTag(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithShortOpenTagCases
      */
-    public function testWithShortOpenTag($expected, $input = null)
+    public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
         if (!ini_get('short_open_tag')) {
             static::markTestSkipped('The short_open_tag option is required to be enabled.');
@@ -47,7 +43,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideWithFullOpenTagCases()
+    public function provideWithFullOpenTagCases(): array
     {
         return [
             [
@@ -145,7 +141,7 @@ if (true) {
         ];
     }
 
-    public function provideWithShortOpenTagCases()
+    public function provideWithShortOpenTagCases(): array
     {
         return [
             [

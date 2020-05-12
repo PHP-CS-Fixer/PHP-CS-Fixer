@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,11 +15,9 @@
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,12 +25,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
-final class IsNullFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class IsNullFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Replaces `is_null($var)` expression with `null === $var`.',
@@ -47,7 +47,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
      *
      * Must run before YodaStyleFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 1;
     }
@@ -55,7 +55,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
@@ -63,7 +63,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -71,13 +71,14 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
         $functionsAnalyzer = new FunctionsAnalyzer();
-
         $currIndex = 0;
-        while (null !== $currIndex) {
+
+        while (true) {
+            // recalculate "end" because we might have added tokens in previous iteration
             $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
@@ -89,13 +90,14 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             $matches = array_keys($matches);
 
             // move the cursor just after the sequence
-            list($isNullIndex, $currIndex) = $matches;
+            [$isNullIndex, $currIndex] = $matches;
 
             if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $matches[0])) {
                 continue;
             }
 
             $next = $tokens->getNextMeaningfulToken($currIndex);
+
             if ($tokens[$next]->equals(')')) {
                 continue;
             }
@@ -112,6 +114,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
             // check if inversion being used, text comparison is due to not existing constant
             $isInvertedNullCheck = false;
+
             if ($tokens[$prevTokenIndex]->equals('!')) {
                 $isInvertedNullCheck = true;
 
@@ -123,6 +126,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $isContainingDangerousConstructs = false;
+
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
                 if (\in_array($tokens[$paramTokenIndex]->getContent(), ['?', '?:', '=', '??'], true)) {
                     $isContainingDangerousConstructs = true;
@@ -139,6 +143,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
             // possible trailing comma removed
             $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
+
             if ($tokens[$prevIndex]->equals(',')) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
             }
@@ -162,42 +167,15 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
                 new Token([T_WHITESPACE, ' ']),
             ];
 
-            if (true === $this->configuration['use_yoda_style']) {
-                if ($wrapIntoParentheses) {
-                    array_unshift($replacement, new Token('('));
-                    $tokens->insertAt($referenceEnd + 1, new Token(')'));
-                }
-
-                $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
-            } else {
-                $replacement = array_reverse($replacement);
-                if ($wrapIntoParentheses) {
-                    $replacement[] = new Token(')');
-                    $tokens[$isNullIndex] = new Token('(');
-                } else {
-                    $tokens->clearAt($isNullIndex);
-                }
-
-                $tokens->insertAt($referenceEnd + 1, $replacement);
+            if ($wrapIntoParentheses) {
+                array_unshift($replacement, new Token('('));
+                $tokens->insertAt($referenceEnd + 1, new Token(')'));
             }
+
+            $tokens->overrideRange($isNullIndex, $isNullIndex, $replacement);
 
             // nested is_null calls support
             $currIndex = $isNullIndex;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        // @todo 3.0 drop `ConfigurationDefinitionFixerInterface`
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('use_yoda_style', 'Whether Yoda style conditions should be used.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(true)
-                ->setDeprecationMessage('Use `yoda_style` fixer instead.')
-                ->getOption(),
-        ]);
     }
 }

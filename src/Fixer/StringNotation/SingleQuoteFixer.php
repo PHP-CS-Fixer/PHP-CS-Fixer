@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,11 +15,13 @@
 namespace PhpCsFixer\Fixer\StringNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,12 +29,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class SingleQuoteFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = <<<'EOF'
 <?php
@@ -55,9 +59,9 @@ EOF;
     /**
      * {@inheritdoc}
      *
-     * Must run after EscapeImplicitBackslashesFixer.
+     * Must run after BacktickToShellExecFixer, EscapeImplicitBackslashesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -65,7 +69,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
     }
@@ -73,7 +77,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
@@ -89,10 +93,10 @@ EOF;
             }
 
             if (
-                '"' === $content[0] &&
-                (true === $this->configuration['strings_containing_single_quote_chars'] || false === strpos($content, "'")) &&
+                '"' === $content[0]
+                && (true === $this->configuration['strings_containing_single_quote_chars'] || !str_contains($content, "'"))
                 // regex: odd number of backslashes, not followed by double quote or dollar
-                !Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
+                && !Preg::match('/(?<!\\\\)(?:\\\\{2})*\\\\(?!["$\\\\])/', $content)
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace(['\\"', '\\$', '\''], ['"', '$', '\\\''], $content);
@@ -104,7 +108,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('strings_containing_single_quote_chars', 'Whether to fix double-quoted strings that contains single-quotes.'))

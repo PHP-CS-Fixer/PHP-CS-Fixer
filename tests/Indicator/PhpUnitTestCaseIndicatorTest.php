@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,35 +19,39 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author SpacePossum
- *
  * @internal
  * @covers \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator
  */
 final class PhpUnitTestCaseIndicatorTest extends TestCase
 {
     /**
-     * @var PhpUnitTestCaseIndicator
+     * @var null|PhpUnitTestCaseIndicator
      */
     private $indicator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->indicator = new PhpUnitTestCaseIndicator();
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->indicator = null;
+
+        parent::tearDown();
     }
 
     /**
-     * @param bool $expected
-     * @param int  $index
-     *
      * @dataProvider provideIsPhpUnitClassCases
      */
-    public function testIsPhpUnitClass($expected, Tokens $tokens, $index)
+    public function testIsPhpUnitClass(bool $expected, Tokens $tokens, int $index): void
     {
         static::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
 
-    public function provideIsPhpUnitClassCases()
+    public function provideIsPhpUnitClassCases(): array
     {
         return [
             'Test class' => [
@@ -109,39 +115,40 @@ class Foo implements TestInterface, SomethingElse
                 Tokens::fromCode('<?php final class MyClass {}'),
                 3,
             ],
+            'Anonymous class' => [
+                false,
+                Tokens::fromCode('<?php $a = new class {};'),
+                7,
+            ],
         ];
     }
 
-    public function testThrowsExceptionIfNotClass()
+    public function testThrowsExceptionIfNotClass(): void
     {
         $tokens = Tokens::fromCode('<?php echo 1;');
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessageRegExp('/^No T_CLASS at given index 1, got T_ECHO\.$/');
+        $this->expectExceptionMessageMatches('/^No "T_CLASS" at given index 1, got "T_ECHO"\.$/');
 
         $this->indicator->isPhpUnitClass($tokens, 1);
     }
 
     /**
      * @param array<int,int> $expectedIndexes
-     * @param string         $code
      *
      * @dataProvider provideFindPhpUnitClassesCases
      */
-    public function testFindPhpUnitClasses(array $expectedIndexes, $code)
+    public function testFindPhpUnitClasses(array $expectedIndexes, string $code): void
     {
         $tokens = Tokens::fromCode($code);
 
-        $classesFromTop = $this->indicator->findPhpUnitClasses($tokens, false);
-        $classesFromTop = iterator_to_array($classesFromTop);
-        $classesFromBottom = $this->indicator->findPhpUnitClasses($tokens);
-        $classesFromBottom = iterator_to_array($classesFromBottom);
+        $classes = $this->indicator->findPhpUnitClasses($tokens);
+        $classes = iterator_to_array($classes);
 
-        static::assertSame($expectedIndexes, $classesFromTop);
-        static::assertSame(array_reverse($classesFromBottom), $classesFromTop);
+        static::assertSame($expectedIndexes, $classes);
     }
 
-    public function provideFindPhpUnitClassesCases()
+    public function provideFindPhpUnitClassesCases(): array
     {
         return [
             'empty' => [
@@ -166,8 +173,8 @@ class Foo implements TestInterface, SomethingElse
             ],
             'two PHPUnit classes' => [
                 [
-                    [6, 7],
                     [13, 26],
+                    [6, 7],
                 ],
                 '<?php
                     class My1Test {}
@@ -176,8 +183,8 @@ class Foo implements TestInterface, SomethingElse
             ],
             'mixed classes' => [
                 [
-                    [25, 38],
                     [63, 76],
+                    [25, 38],
                 ],
                 '<?php
                     class Foo1 { public function A() {} }

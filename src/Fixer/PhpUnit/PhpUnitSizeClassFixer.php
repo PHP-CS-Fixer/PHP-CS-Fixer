@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,30 +14,31 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use SplFileInfo;
 
 /**
  * @author Jefersson Nathan <malukenho.dev@gmail.com>
  */
-final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurationDefinitionFixerInterface
+final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'All PHPUnit test cases should have `@small`, `@medium` or `@large` annotation to enable run time limits.',
@@ -50,24 +53,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
-    }
-
-    protected function applyFix(SplFileInfo $file, Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens, true) as $indexes) {
-            $this->markClassSize($tokens, $indexes[0]);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('group', 'Define a specific group to be used in case no group is already in use'))
@@ -78,9 +64,9 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     }
 
     /**
-     * @param int $startIndex
+     * {@inheritdoc}
      */
-    private function markClassSize(Tokens $tokens, $startIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
 
@@ -90,31 +76,24 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
 
-        if ($this->hasDocBlock($tokens, $classIndex)) {
+        if ($this->isPHPDoc($tokens, $docBlockIndex)) {
             $this->updateDocBlockIfNeeded($tokens, $docBlockIndex);
-
-            return;
+        } else {
+            $this->createDocBlock($tokens, $docBlockIndex);
         }
-
-        $this->createDocBlock($tokens, $docBlockIndex);
     }
 
-    /**
-     * @param int $i
-     *
-     * @return bool
-     */
-    private function isAbstractClass(Tokens $tokens, $i)
+    private function isAbstractClass(Tokens $tokens, int $i): bool
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
 
         return $tokens[$typeIndex]->isGivenKind(T_ABSTRACT);
     }
 
-    private function createDocBlock(Tokens $tokens, $docBlockIndex)
+    private function createDocBlock(Tokens $tokens, int $docBlockIndex): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $group = $this->configuration['group'];
         $toInsert = [
             new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @".$group.$lineEnd."{$originalIndent} */"]),
@@ -124,12 +103,14 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
         $tokens->insertAt($index, $toInsert);
     }
 
-    private function updateDocBlockIfNeeded(Tokens $tokens, $docBlockIndex)
+    private function updateDocBlockIfNeeded(Tokens $tokens, int $docBlockIndex): void
     {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
-        if (!empty($this->filterDocBlock($doc))) {
+
+        if (0 !== \count($this->filterDocBlock($doc))) {
             return;
         }
+
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex);
         $lines = $this->addSizeAnnotation($doc, $tokens, $docBlockIndex);
         $lines = implode('', $lines);
@@ -138,56 +119,12 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     }
 
     /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function hasDocBlock(Tokens $tokens, $index)
-    {
-        $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
-
-        return $tokens[$docBlockIndex]->isGivenKind(T_DOC_COMMENT);
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function getDocBlockIndex(Tokens $tokens, $index)
-    {
-        do {
-            $index = $tokens->getPrevNonWhitespace($index);
-        } while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT]));
-
-        return $index;
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return string
-     */
-    private function detectIndent(Tokens $tokens, $index)
-    {
-        if (!$tokens[$index - 1]->isWhitespace()) {
-            return ''; // cannot detect indent
-        }
-
-        $explodedContent = explode($this->whitespacesConfig->getLineEnding(), $tokens[$index - 1]->getContent());
-
-        return end($explodedContent);
-    }
-
-    /**
-     * @param int $docBlockIndex
-     *
      * @return Line[]
      */
-    private function addSizeAnnotation(DocBlock $docBlock, Tokens $tokens, $docBlockIndex)
+    private function addSizeAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex): array
     {
         $lines = $docBlock->getLines();
-        $originalIndent = $this->detectIndent($tokens, $docBlockIndex);
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $group = $this->configuration['group'];
         array_splice($lines, -1, 0, $originalIndent.' *'.$lineEnd.$originalIndent.' * @'.$group.$lineEnd);
@@ -195,15 +132,11 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
         return $lines;
     }
 
-    /**
-     * @param int $docBlockIndex
-     *
-     * @return DocBlock
-     */
-    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, $docBlockIndex)
+    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, int $docBlockIndex): DocBlock
     {
         $lines = $doc->getLines();
-        if (1 === \count($lines) && empty($this->filterDocBlock($doc))) {
+
+        if (1 === \count($lines) && 0 === \count($this->filterDocBlock($doc))) {
             $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
             return new DocBlock(implode('', $lines));
@@ -216,15 +149,14 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
      * Take a one line doc block, and turn it into a multi line doc block.
      *
      * @param Line[] $lines
-     * @param int    $docBlockIndex
      *
      * @return Line[]
      */
-    private function splitUpDocBlock($lines, Tokens $tokens, $docBlockIndex)
+    private function splitUpDocBlock(array $lines, Tokens $tokens, int $docBlockIndex): array
     {
-        $lineContent = $this->getSingleLineDocBlockEntry($lines);
+        $lineContent = $this->getSingleLineDocBlockEntry($lines[0]);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
 
         return [
             new Line('/**'.$lineEnd),
@@ -234,13 +166,11 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     }
 
     /**
-     * @param Line|Line[]|string $line
-     *
-     * @return string
+     * @todo check whether it's doable to use \PhpCsFixer\DocBlock\DocBlock::getSingleLineDocBlockEntry instead
      */
-    private function getSingleLineDocBlockEntry($line)
+    private function getSingleLineDocBlockEntry(Line $line): string
     {
-        $line = $line[0];
+        $line = $line->getContent();
         $line = str_replace('*/', '', $line);
         $line = trim($line);
         $line = str_split($line);
@@ -259,7 +189,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     /**
      * @return Annotation[][]
      */
-    private function filterDocBlock(DocBlock $doc)
+    private function filterDocBlock(DocBlock $doc): array
     {
         return array_filter([
             $doc->getAnnotationsOfType('small'),

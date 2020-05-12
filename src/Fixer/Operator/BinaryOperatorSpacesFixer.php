@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,13 +15,13 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Console\Command\HelpCommand;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -29,72 +31,44 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
-final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @internal
      */
-    const SINGLE_SPACE = 'single_space';
+    public const SINGLE_SPACE = 'single_space';
 
     /**
      * @internal
      */
-    const NO_SPACE = 'no_space';
+    public const NO_SPACE = 'no_space';
 
     /**
      * @internal
      */
-    const ALIGN = 'align';
+    public const ALIGN = 'align';
 
     /**
      * @internal
      */
-    const ALIGN_SINGLE_SPACE = 'align_single_space';
+    public const ALIGN_SINGLE_SPACE = 'align_single_space';
 
     /**
      * @internal
      */
-    const ALIGN_SINGLE_SPACE_MINIMAL = 'align_single_space_minimal';
+    public const ALIGN_SINGLE_SPACE_MINIMAL = 'align_single_space_minimal';
 
     /**
      * @internal
      * @const Placeholder used as anchor for right alignment.
      */
-    const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
-
-    /**
-     * Keep track of the deepest level ever achieved while
-     * parsing the code. Used later to replace alignment
-     * placeholders with spaces.
-     *
-     * @var int
-     */
-    private $deepestLevel;
-
-    /**
-     * Level counter of the current nest level.
-     * So one level alignments are not mixed with
-     * other level ones.
-     *
-     * @var int
-     */
-    private $currentLevel;
-
-    private static $allowedValues = [
-        self::ALIGN,
-        self::ALIGN_SINGLE_SPACE,
-        self::ALIGN_SINGLE_SPACE_MINIMAL,
-        self::SINGLE_SPACE,
-        self::NO_SPACE,
-        null,
-    ];
+    public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
      * @var string[]
      */
-    private static $supportedOperators = [
+    private const SUPPORTED_OPERATORS = [
         '=',
         '*',
         '/',
@@ -140,6 +114,36 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     ];
 
     /**
+     * Keep track of the deepest level ever achieved while
+     * parsing the code. Used later to replace alignment
+     * placeholders with spaces.
+     *
+     * @var int
+     */
+    private $deepestLevel;
+
+    /**
+     * Level counter of the current nest level.
+     * So one level alignments are not mixed with
+     * other level ones.
+     *
+     * @var int
+     */
+    private $currentLevel;
+
+    /**
+     * @var array<null|string>
+     */
+    private static $allowedValues = [
+        self::ALIGN,
+        self::ALIGN_SINGLE_SPACE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL,
+        self::SINGLE_SPACE,
+        self::NO_SPACE,
+        null,
+    ];
+
+    /**
      * @var TokensAnalyzer
      */
     private $tokensAnalyzer;
@@ -157,15 +161,8 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
-        if (
-            null !== $configuration &&
-            (\array_key_exists('align_equals', $configuration) || \array_key_exists('align_double_arrow', $configuration))
-        ) {
-            $configuration = $this->resolveOldConfig($configuration);
-        }
-
         parent::configure($configuration);
 
         $this->operators = $this->resolveOperatorsFromConfig();
@@ -174,7 +171,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Binary operators should be surrounded by space as configured.',
@@ -216,6 +213,42 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 ',
                     ['operators' => ['|' => 'no_space']]
                 ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo"            =>   1,
+    "baaaaaaaaaaar"  =>  11,
+];
+',
+                    ['operators' => ['=>' => 'single_space']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+];
+',
+                    ['operators' => ['=>' => 'align']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+];
+',
+                    ['operators' => ['=>' => 'align_single_space']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+];
+',
+                    ['operators' => ['=>' => 'align_single_space_minimal']]
+                ),
             ]
         );
     }
@@ -223,17 +256,17 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     /**
      * {@inheritdoc}
      *
-     * Must run after ArrayIndentationFixer, ArraySyntaxFixer, ListSyntaxFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer.
+     * Must run after ArrayIndentationFixer, ArraySyntaxFixer, AssignNullCoalescingToCoalesceEqualFixer, ListSyntaxFixer, ModernizeStrposFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUnsetCastFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        return -31;
+        return -32;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
@@ -241,7 +274,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -266,7 +299,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             --$index;
         }
 
-        if (\count($this->alignOperatorTokens)) {
+        if (\count($this->alignOperatorTokens) > 0) {
             $this->fixAlignment($tokens, $this->alignOperatorTokens);
         }
     }
@@ -274,23 +307,23 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('default', 'Default fix strategy.'))
                 ->setDefault(self::SINGLE_SPACE)
                 ->setAllowedValues(self::$allowedValues)
                 ->getOption(),
-            (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy.'))
+            (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy. Supported are: `'.implode('`, `', self::SUPPORTED_OPERATORS).'`'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function ($option) {
+                ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $operator => $value) {
-                        if (!\in_array($operator, self::$supportedOperators, true)) {
+                        if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "operators" key, expected any of "%s", got "%s".',
-                                    implode('", "', self::$supportedOperators),
-                                    \is_object($operator) ? \get_class($operator) : \gettype($operator).'#'.$operator
+                                    implode('", "', self::SUPPORTED_OPERATORS),
+                                    \gettype($operator).'#'.$operator
                                 )
                             );
                         }
@@ -311,24 +344,10 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                 }])
                 ->setDefault([])
                 ->getOption(),
-            // add deprecated options as BC layer
-            (new FixerOptionBuilder('align_double_arrow', 'Whether to apply, remove or ignore double arrows alignment.'))
-                ->setDefault(false)
-                ->setAllowedValues([true, false, null])
-                ->setDeprecationMessage('Use options `operators` and `default` instead.')
-                ->getOption(),
-            (new FixerOptionBuilder('align_equals', 'Whether to apply, remove or ignore equals alignment.'))
-                ->setDefault(false)
-                ->setAllowedValues([true, false, null])
-                ->setDeprecationMessage('Use options `operators` and `default` instead.')
-                ->getOption(),
         ]);
     }
 
-    /**
-     * @param int $index
-     */
-    private function fixWhiteSpaceAroundOperator(Tokens $tokens, $index)
+    private function fixWhiteSpaceAroundOperator(Tokens $tokens, int $index): void
     {
         $tokenContent = strtolower($tokens[$index]->getContent());
 
@@ -367,15 +386,12 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
     }
 
-    /**
-     * @param int $index
-     */
-    private function fixWhiteSpaceAroundOperatorToSingleSpace(Tokens $tokens, $index)
+    private function fixWhiteSpaceAroundOperatorToSingleSpace(Tokens $tokens, int $index): void
     {
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -385,7 +401,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -393,15 +409,12 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
     }
 
-    /**
-     * @param int $index
-     */
-    private function fixWhiteSpaceAroundOperatorToNoSpace(Tokens $tokens, $index)
+    private function fixWhiteSpaceAroundOperatorToNoSpace(Tokens $tokens, int $index): void
     {
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (!str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens->clearAt($index + 1);
             }
         }
@@ -409,18 +422,16 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (!str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens->clearAt($index - 1);
             }
         }
     }
 
     /**
-     * @param int $index
-     *
      * @return false|int index of T_DECLARE where the `=` belongs to or `false`
      */
-    private function isEqualPartOfDeclareStatement(Tokens $tokens, $index)
+    private function isEqualPartOfDeclareStatement(Tokens $tokens, int $index)
     {
         $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
         if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_STRING)) {
@@ -439,12 +450,12 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     /**
      * @return array<string, string>
      */
-    private function resolveOperatorsFromConfig()
+    private function resolveOperatorsFromConfig(): array
     {
         $operators = [];
 
         if (null !== $this->configuration['default']) {
-            foreach (self::$supportedOperators as $operator) {
+            foreach (self::SUPPORTED_OPERATORS as $operator) {
                 $operators[$operator] = $this->configuration['default'];
             }
         }
@@ -457,14 +468,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             }
         }
 
-        if (!\defined('T_SPACESHIP')) {
-            unset($operators['<=>']);
-        }
-
-        if (!\defined('T_COALESCE')) {
-            unset($operators['??']);
-        }
-
+        // @TODO: drop condition when PHP 7.4+ is required
         if (!\defined('T_COALESCE_EQUAL')) {
             unset($operators['??=']);
         }
@@ -472,70 +476,12 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         return $operators;
     }
 
-    /**
-     * @return array
-     */
-    private function resolveOldConfig(array $configuration)
-    {
-        $newConfig = [
-            'operators' => [],
-        ];
-
-        foreach ($configuration as $name => $setting) {
-            if ('align_double_arrow' === $name) {
-                if (true === $configuration[$name]) {
-                    $newConfig['operators']['=>'] = self::ALIGN;
-                } elseif (false === $configuration[$name]) {
-                    $newConfig['operators']['=>'] = self::SINGLE_SPACE;
-                } elseif (null !== $configuration[$name]) {
-                    throw new InvalidFixerConfigurationException(
-                        $this->getName(),
-                        sprintf(
-                            'Invalid configuration: The option "align_double_arrow" with value %s is invalid. Accepted values are: true, false, null.',
-                            $configuration[$name]
-                        )
-                    );
-                }
-            } elseif ('align_equals' === $name) {
-                if (true === $configuration[$name]) {
-                    $newConfig['operators']['='] = self::ALIGN;
-                } elseif (false === $configuration[$name]) {
-                    $newConfig['operators']['='] = self::SINGLE_SPACE;
-                } elseif (null !== $configuration[$name]) {
-                    throw new InvalidFixerConfigurationException(
-                        $this->getName(),
-                        sprintf(
-                            'Invalid configuration: The option "align_equals" with value %s is invalid. Accepted values are: true, false, null.',
-                            $configuration[$name]
-                        )
-                    );
-                }
-            } else {
-                throw new InvalidFixerConfigurationException($this->getName(), 'Mixing old configuration with new configuration is not allowed.');
-            }
-        }
-
-        $message = sprintf(
-            'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
-            HelpCommand::toString($newConfig),
-            HelpCommand::toString($configuration)
-        );
-
-        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new InvalidFixerConfigurationException($this->getName(), "{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-        }
-
-        @trigger_error($message, E_USER_DEPRECATED);
-
-        return $newConfig;
-    }
-
     // Alignment logic related methods
 
     /**
      * @param array<string, string> $toAlign
      */
-    private function fixAlignment(Tokens $tokens, array $toAlign)
+    private function fixAlignment(Tokens $tokens, array $toAlign): void
     {
         $this->deepestLevel = 0;
         $this->currentLevel = 0;
@@ -583,12 +529,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
     }
 
-    /**
-     * @param int    $startAt
-     * @param int    $endAt
-     * @param string $tokenContent
-     */
-    private function injectAlignmentPlaceholders(Tokens $tokens, $startAt, $endAt, $tokenContent)
+    private function injectAlignmentPlaceholders(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
     {
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
@@ -630,11 +571,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
     }
 
-    /**
-     * @param int $startAt
-     * @param int $endAt
-     */
-    private function injectAlignmentPlaceholdersForArrow(Tokens $tokens, $startAt, $endAt)
+    private function injectAlignmentPlaceholdersForArrow(Tokens $tokens, int $startAt, int $endAt): void
     {
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
@@ -690,7 +627,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if (false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                    if (str_contains($tokens[$i - 1]->getContent(), "\n")) {
                         break;
                     }
 
@@ -713,11 +650,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
     }
 
-    /**
-     * @param int $from
-     * @param int $until
-     */
-    private function injectArrayAlignmentPlaceholders(Tokens $tokens, $from, $until)
+    private function injectArrayAlignmentPlaceholders(Tokens $tokens, int $from, int $until): void
     {
         // Only inject placeholders for multi-line arrays
         if ($tokens->isPartialCodeMultiline($from, $until)) {
@@ -728,11 +661,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
     }
 
-    /**
-     * @param int    $index
-     * @param string $alignStrategy
-     */
-    private function fixWhiteSpaceBeforeOperator(Tokens $tokens, $index, $alignStrategy)
+    private function fixWhiteSpaceBeforeOperator(Tokens $tokens, int $index, string $alignStrategy): void
     {
         // fix white space after operator is not needed as BinaryOperatorSpacesFixer took care of this (if strategy is _not_ ALIGN)
         if (!$tokens[$index - 1]->isWhitespace()) {
@@ -746,26 +675,22 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
 
         $content = $tokens[$index - 1]->getContent();
-        if (' ' !== $content && false === strpos($content, "\n")) {
+        if (' ' !== $content && !str_contains($content, "\n")) {
             $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
         }
     }
 
     /**
      * Look for group of placeholders and provide vertical alignment.
-     *
-     * @param string $alignStrategy
-     *
-     * @return string
      */
-    private function replacePlaceholders(Tokens $tokens, $alignStrategy)
+    private function replacePlaceholders(Tokens $tokens, string $alignStrategy): string
     {
         $tmpCode = $tokens->generateCode();
 
         for ($j = 0; $j <= $this->deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGN_PLACEHOLDER, $j);
 
-            if (false === strpos($tmpCode, $placeholder)) {
+            if (!str_contains($tmpCode, $placeholder)) {
                 continue;
             }
 
@@ -789,13 +714,13 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                 }
 
                 if (self::ALIGN !== $alignStrategy) {
-                    // move place holders to match strategy
+                    // move placeholders to match strategy
                     foreach ($group as $index) {
                         $currentPosition = strpos($lines[$index], $placeholder);
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (self::ALIGN_SINGLE_SPACE === $alignStrategy) {
-                            if (1 > \strlen($before) || ' ' !== substr($before, -1)) { // if last char of before-content is not ' '; add it
+                            if (!str_ends_with($before, ' ')) { // if last char of before-content is not ' '; add it
                                 $before .= ' ';
                             }
                         } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {

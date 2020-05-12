@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,34 +25,25 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
 final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithEqual($expected, $input = null)
+    public function testFixWithEqual(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['operator' => '=']);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $cases = $this->createTestCases([
+        yield from $this->createTestCases([
             ['
 /**
  * @Foo
@@ -101,11 +94,11 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
             ],
             ['
 /**
- * See {@link http://help Help} or {@see BarClass} for details.
+ * See {@link https://help Help} or {@see BarClass} for details.
  */'],
         ]);
 
-        $cases[] = [
+        yield [
             '<?php
 
 /**
@@ -113,28 +106,20 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
 */
 ',
         ];
-
-        return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithColonCases
      */
-    public function testFixWithColon($expected, $input = null)
+    public function testFixWithColon(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['operator' => ':']);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithColonCases()
+    public function provideFixWithColonCases(): \Generator
     {
-        return $this->createTestCases([
+        yield from $this->createTestCases([
             ['
 /**
  * @Foo
@@ -185,8 +170,65 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
             ],
             ['
 /**
- * See {@link http://help Help} or {@see BarClass} for details.
+ * See {@link https://help Help} or {@see BarClass} for details.
  */'],
         ]);
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class FooClass{
+    /**
+     * @Foo({bar = "baz"})
+     */
+    private readonly Foo $foo;
+}',
+            '<?php class FooClass{
+    /**
+     * @Foo({bar : "baz"})
+     */
+    private readonly Foo $foo;
+}',
+        ];
+
+        yield [
+            '<?php class FooClass{
+    /**
+     * @Foo({bar = "baz"})
+     */
+    readonly private Foo $foo;
+}',
+            '<?php class FooClass{
+    /**
+     * @Foo({bar : "baz"})
+     */
+    readonly private Foo $foo;
+}',
+        ];
+
+        yield [
+            '<?php class FooClass{
+    /**
+     * @Foo({bar = "baz"})
+     */
+    readonly Foo $foo;
+}',
+            '<?php class FooClass{
+    /**
+     * @Foo({bar : "baz"})
+     */
+    readonly Foo $foo;
+}',
+        ];
     }
 }

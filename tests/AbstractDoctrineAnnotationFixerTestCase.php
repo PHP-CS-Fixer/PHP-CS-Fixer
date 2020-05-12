@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -22,17 +25,14 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     /**
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testConfigureWithInvalidConfiguration(array $configuration)
+    public function testConfigureWithInvalidConfiguration(array $configuration): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->fixer->configure($configuration);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidConfigurationCases()
+    public function provideInvalidConfigurationCases(): array
     {
         return [
             [['foo' => 'bar']],
@@ -42,10 +42,8 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
 
     /**
      * @param array<array<string>> $commentCases
-     *
-     * @return array
      */
-    protected function createTestCases(array $commentCases)
+    protected function createTestCases(array $commentCases): array
     {
         $cases = [];
         foreach ($commentCases as $commentCase) {
@@ -72,12 +70,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
         return $cases;
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withClassDocBlock($comment)
+    private function withClassDocBlock(string $comment): string
     {
         return $this->with('<?php
 
@@ -87,12 +80,7 @@ class FooClass
 }', $comment, false);
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withPropertyDocBlock($comment)
+    private function withPropertyDocBlock(string $comment): string
     {
         return $this->with('<?php
 
@@ -103,12 +91,7 @@ class FooClass
 }', $comment, true);
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withMethodDocBlock($comment)
+    private function withMethodDocBlock(string $comment): string
     {
         return $this->with('<?php
 
@@ -121,12 +104,7 @@ class FooClass
 }', $comment, true);
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return string
-     */
-    private function withWrongElementDocBlock($comment)
+    private function withWrongElementDocBlock(string $comment): string
     {
         return $this->with('<?php
 
@@ -134,14 +112,7 @@ class FooClass
 $foo = bar();', $comment, false);
     }
 
-    /**
-     * @param string $php
-     * @param string $comment
-     * @param bool   $indent
-     *
-     * @return string
-     */
-    private function with($php, $comment, $indent)
+    private function with(string $php, string $comment, bool $indent): string
     {
         $comment = trim($comment);
 

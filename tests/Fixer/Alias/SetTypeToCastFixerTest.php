@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\SetTypeToCastFixer
@@ -24,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SetTypeToCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'null cast' => [
@@ -146,7 +143,7 @@ $foo#5
             // do not fix cases
             'first argument is not a variable' => [
                 '<?php
-                    namespace A\B;             // needed to keep the linter happy on PHP5.6
+                    namespace A\B;             // comment
                     function settype($a, $b){} // "
 
                     settype(1, "double");
@@ -154,7 +151,7 @@ $foo#5
             ],
             'first argument is variable followed by operation' => [
                 '<?php
-                    namespace A\B;                // needed to keep the linter happy on PHP5.6
+                    namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
                     settype($foo + 1, "integer"); // function must be overridden, so do not fix it
@@ -203,7 +200,7 @@ $foo#5
             ],
             'wrapped statements, not-fixable, even after removing the useless parenthesis brace' => [
                 '<?php
-                    namespace A\B;                // needed to keep the linter happy on PHP5.6
+                    namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
                     settype($foo1, (("integer")."1"));
@@ -225,37 +222,15 @@ $foo#5
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        yield 'complex' => [
-            '<?php settype($foo + 1, "null");',
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             'null cast' => [

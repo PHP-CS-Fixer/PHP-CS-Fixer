@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,25 +24,24 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AllowedValueSubsetTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
-        static::assertInternalType('callable', new AllowedValueSubset(['foo', 'bar']));
+        static::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
     }
 
     /**
      * @param mixed $inputValue
-     * @param bool  $expectedResult
      *
      * @dataProvider provideInvokeCases
      */
-    public function testInvoke($inputValue, $expectedResult)
+    public function testInvoke($inputValue, bool $expectedResult): void
     {
         $subset = new AllowedValueSubset(['foo', 'bar']);
 
         static::assertSame($expectedResult, $subset($inputValue));
     }
 
-    public function provideInvokeCases()
+    public function provideInvokeCases(): array
     {
         return [
             [
@@ -98,7 +99,7 @@ final class AllowedValueSubsetTest extends TestCase
         ];
     }
 
-    public function testGetAllowedValues()
+    public function testGetAllowedValues(): void
     {
         $values = ['foo', 'bar'];
 

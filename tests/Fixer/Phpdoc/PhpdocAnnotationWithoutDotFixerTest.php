@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -56,7 +55,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @param string $ellipsis2  Ellipsis is this: 。。。
      * @param string $ellipsis3  Ellipsis is this: …
      * @param bool   $isStr      Is it a string?
-     * @param int    $int        Some single-line descrioption. With many dots.
+     * @param int    $int        Some single-line description. With many dots.
      * @param int    $int        Some multiline
      *                           description. With many dots.
      *
@@ -82,7 +81,7 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      * @param string $ellipsis2  Ellipsis is this: 。。。
      * @param string $ellipsis3  Ellipsis is this: …
      * @param bool   $isStr      Is it a string?
-     * @param int    $int        Some single-line descrioption. With many dots.
+     * @param int    $int        Some single-line description. With many dots.
      * @param int    $int        Some multiline
      *                           description. With many dots.
      *
@@ -206,6 +205,20 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
                          That was multilined comment. With plenty of sentenced.
      */
     function nothingToDo() {}',
+            ],
+            [
+                '<?php
+/**
+ * @param string $bar τάχιστη
+ */
+function foo ($bar) {}
+',
+                '<?php
+/**
+ * @param string $bar Τάχιστη.
+ */
+function foo ($bar) {}
+',
             ],
         ];
     }

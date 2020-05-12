@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
-use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,50 +25,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigurationWrongOption()
-    {
-        $fixer = new IsNullFixer();
-
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "yoda" does not exist.');
-        $fixer->configure(['yoda' => true]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
-     */
-    public function testConfigurationWrongValue()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[is_null] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "integer".');
-        $this->fixer->configure(['use_yoda_style' => -1]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
-     */
-    public function testCorrectConfiguration()
-    {
-        $this->fixer->configure(['use_yoda_style' => false]);
-
-        $configuration = static::getObjectAttribute($this->fixer, 'configuration');
-        static::assertFalse($configuration['use_yoda_style']);
-    }
-
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -237,73 +203,23 @@ FIXED;
                 '<?php $a === (null === ($a ? $x : $y));',
                 '<?php $a === is_null($a ? $x : $y);',
             ],
-        ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
-     *
-     * @dataProvider provideNonYodaFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testNonYodaFix($expected, $input)
-    {
-        $this->fixer->configure(['use_yoda_style' => false]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideNonYodaFixCases()
-    {
-        return [
             [
-                '<?php $x = $y === null;', '<?php $x = is_null($y);',
-            ],
-            [
-                '<?php $b = a(a(a(b() === null) === null) === null) === null;',
-                '<?php $b = \is_null(a(\is_null(a(\is_null(a(\is_null(b())))))));',
-            ],
-            [
-                '<?php if ($x === null && $y) echo "foo";',
-                '<?php if (is_null($x) && $y) echo "foo";',
-            ],
-            [
-                '<?php $x = ($x = array()) === null;',
-                '<?php $x = is_null($x = array());',
-            ],
-            [
-                '<?php while (($nextMaxId = $myTimeline->getNextMaxId()) === null);',
-                '<?php while (is_null($nextMaxId = $myTimeline->getNextMaxId()));',
+                '<?php null !== ($a ?? null);',
+                '<?php !is_null($a ?? null);',
             ],
         ];
     }
 
     /**
-     * @requires PHP 7.0
-     */
-    public function testFix70()
-    {
-        $this->doTest(
-            '<?php null !== ($a ?? null);',
-            '<?php !is_null($a ?? null);'
-        );
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

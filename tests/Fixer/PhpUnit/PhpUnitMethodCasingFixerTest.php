@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,22 +28,16 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixToCamelCase($expected, $input = null)
+    public function testFixToCamelCase(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixCases
-     *
-     * @param mixed      $camelExpected
-     * @param null|mixed $camelInput
      */
-    public function testFixToSnakeCase($camelExpected, $camelInput = null)
+    public function testFixToSnakeCase(string $camelExpected, ?string $camelInput = null): void
     {
         if (null === $camelInput) {
             $expected = $camelExpected;
@@ -55,10 +51,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'skip non phpunit methods' => [
@@ -95,6 +88,42 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
 
                     /**
                      * @depends test_my_app
+                     */
+                    public function test_my_app_too() {}
+                }',
+            ],
+            '@depends annotation with class name in PascalCase' => [
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function testMyApp () {}
+
+                    /**
+                     * @depends FooBarTest::testMyApp
+                     */
+                    public function testMyAppToo() {}
+                }',
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function test_my_app () {}
+
+                    /**
+                     * @depends FooBarTest::test_my_app
+                     */
+                    public function test_my_app_too() {}
+                }',
+            ],
+            '@depends annotation with class name in Snake_Case' => [
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function testMyApp () {}
+
+                    /**
+                     * @depends Foo_Bar_Test::testMyApp
+                     */
+                    public function testMyAppToo() {}
+                }',
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function test_my_app () {}
+
+                    /**
+                     * @depends Foo_Bar_Test::test_my_app
                      */
                     public function test_my_app_too() {}
                 }',

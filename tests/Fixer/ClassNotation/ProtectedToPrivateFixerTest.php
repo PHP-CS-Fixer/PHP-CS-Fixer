@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
         $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
@@ -65,8 +64,8 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php final class MyClass { \n // public protected private \n }",
             ],
             'final' => [
-                "<?php final class MyClass { {$attributesAndMethodsFixed} }",
-                "<?php final class MyClass { {$attributesAndMethodsOriginal} }",
+                "<?php final class MyClass { {$attributesAndMethodsFixed} } class B {use C;}",
+                "<?php final class MyClass { {$attributesAndMethodsOriginal} } class B {use C;}",
             ],
             'final-implements' => [
                 "<?php final class MyClass implements MyInterface { {$attributesAndMethodsFixed} }",
@@ -88,27 +87,6 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 '<?php final class MyClass { private $v1; }',
                 '<?php final class MyClass { protected $v1; }',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70Fix($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
-        $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
-
-        return [
             'anonymous-class-inside' => [
                 "<?php
 final class Foo
@@ -137,38 +115,99 @@ final class Foo
 }
 ",
             ],
+            [
+                '<?php $a = new class{protected function A(){ echo 123; }};',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function test74Fix($expected, $input = null)
+    public function test74Fix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php final class Foo { private int $foo; }',
             '<?php final class Foo { protected int $foo; }',
         ];
+
         yield [
             '<?php final class Foo { private ?string $foo; }',
             '<?php final class Foo { protected ?string $foo; }',
         ];
+
         yield [
             '<?php final class Foo { private array $foo; }',
             '<?php final class Foo { protected array $foo; }',
         ];
     }
 
-    private function getAttributesAndMethods($original)
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+final class Foo2 {
+    private int|float $a;
+}
+',
+            '<?php
+final class Foo2 {
+    protected int|float $a;
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                final class Foo { private readonly int $d; }
+            ',
+            '<?php
+                final class Foo { protected readonly int $d; }
+            ',
+        ];
+
+        yield [
+            // '<?php final class Foo { final private const Y = "i"; }', 'Fatal error: Private constant Foo::Y cannot be final as it is not visible to other classes on line 1.
+            '<?php
+                final class Foo1 { final protected const Y = "abc"; }
+                final class Foo2 { protected final const Y = "def"; }
+            ',
+        ];
+
+        yield [
+            '<?php final class Foo { private Foo1&Bar $foo; }',
+            '<?php final class Foo { protected Foo1&Bar $foo; }',
+        ];
+    }
+
+    private function getAttributesAndMethods(bool $original): string
     {
         $attributesAndMethodsOriginal = '
 public $v1;

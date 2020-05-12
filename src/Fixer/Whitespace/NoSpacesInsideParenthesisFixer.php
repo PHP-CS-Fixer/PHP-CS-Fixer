@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Whitespace;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -28,7 +31,7 @@ final class NoSpacesInsideParenthesisFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
@@ -47,10 +50,10 @@ function foo( \$bar, \$baz )
     /**
      * {@inheritdoc}
      *
-     * Must run before FunctionToConstantFixer.
-     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, LambdaNotUsedImportFixer, PowToExponentiationFixer.
+     * Must run before FunctionToConstantFixer, GetClassToClassKeywordFixer, StringLengthToEmptyFixer.
+     * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, LambdaNotUsedImportFixer, ModernizeStrposFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 2;
     }
@@ -58,7 +61,7 @@ function foo( \$bar, \$baz )
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('(');
     }
@@ -66,7 +69,7 @@ function foo( \$bar, \$baz )
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->equals('(')) {
@@ -96,14 +99,12 @@ function foo( \$bar, \$baz )
 
     /**
      * Remove spaces from token at a given index.
-     *
-     * @param int $index
      */
-    private function removeSpaceAroundToken(Tokens $tokens, $index)
+    private function removeSpaceAroundToken(Tokens $tokens, int $index): void
     {
         $token = $tokens[$index];
 
-        if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
+        if ($token->isWhitespace() && !str_contains($token->getContent(), "\n")) {
             $tokens->clearAt($index);
         }
     }

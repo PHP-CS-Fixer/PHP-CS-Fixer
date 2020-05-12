@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
 
 /**
@@ -24,15 +27,33 @@ use PhpCsFixer\Linter\ProcessLinter;
  */
 final class ProcessLinterTest extends AbstractLinterTestCase
 {
-    public function testIsAsync()
+    public function testIsAsync(): void
     {
         static::assertTrue($this->createLinter()->isAsync());
+    }
+
+    public function testSleep(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Linter');
+
+        $linter = new ProcessLinter();
+        $linter->__sleep();
+    }
+
+    public function testWakeup(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Linter');
+
+        $linter = new ProcessLinter();
+        $linter->__wakeup();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createLinter()
+    protected function createLinter(): LinterInterface
     {
         return new ProcessLinter();
     }

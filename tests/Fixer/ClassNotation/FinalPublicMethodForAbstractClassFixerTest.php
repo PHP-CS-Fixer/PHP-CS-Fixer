@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,12 +31,12 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $original = $fixed = $this->getClassElementStubs();
         $fixed = str_replace('public function f1', 'final public function f1', $fixed);
@@ -66,7 +68,6 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     public function __wakeup() {}
                     public function __toString() {}
                     public function __invoke() {}
-                    public function __set_state() {}
                     public function __clone() {}
                     public function __debugInfo() {}
                 }',
@@ -99,48 +100,12 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     abstract public static function bar();
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             'anonymous-class' => [
                 sprintf(
                     '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
                     $this->getClassElementStubs()
                 ),
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases()
-    {
-        return [
             'constant visibility' => [
                 '<?php abstract class MyClass {
                     public const A = 1;
@@ -151,10 +116,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getClassElementStubs()
+    private function getClassElementStubs(): string
     {
         return '
             public $a1;

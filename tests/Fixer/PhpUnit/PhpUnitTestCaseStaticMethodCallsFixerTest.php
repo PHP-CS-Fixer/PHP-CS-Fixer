@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestCase
 {
-    public function testFixerContainsAllPhpunitStaticMethodsInItsList()
+    public function testFixerContainsAllPhpunitStaticMethodsInItsList(): void
     {
         $assertionRefClass = new \ReflectionClass(TestCase::class);
         $updatedStaticMethodsList = $assertionRefClass->getMethods(\ReflectionMethod::IS_PUBLIC);
@@ -44,35 +47,32 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         static::assertSame([], $missingMethods, sprintf('The following static methods from "%s" are missing from "%s::$staticMethods"', TestCase::class, PhpUnitTestCaseStaticMethodCallsFixer::class));
     }
 
-    public function testWrongConfigTypeForMethodsKey()
+    public function testWrongConfigTypeForMethodsKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/Unexpected "methods" key, expected any of ".*", got "integer#123"\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/Unexpected "methods" key, expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['methods' => [123 => 1]]);
     }
 
-    public function testWrongConfigTypeForMethodsValue()
+    public function testWrongConfigTypeForMethodsValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/Unexpected value for method "assertSame", expected any of ".*", got "integer#123"\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/Unexpected value for method "assertSame", expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['methods' => ['assertSame' => 123]]);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [
@@ -466,13 +466,42 @@ class FooTest extends TestCase
 EOF
                 ,
             ],
+            'do not crash on abstract static function' => [
+                <<<'EOF'
+<?php
+abstract class FooTest extends TestCase
+{
+    abstract public static function dataProvider();
+}
+EOF
+                ,
+                null,
+                [
+                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
+                ],
+            ],
+            'handle $this with double colon following' => [
+                '<?php
+                class FooTest extends TestCase
+                {
+                    public function testFoo()
+                    {
+                        static::assertTrue(true);
+                    }
+                }',
+                '<?php
+                class FooTest extends TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this::assertTrue(true);
+                    }
+                }',
+            ],
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php
@@ -506,5 +535,29 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }'
         );
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                class FooTest extends TestCase
+                {
+                    public function testFoo()
+                    {
+                        $a = $this::assertTrue(...);
+                    }
+                }
+            ',
+        ];
     }
 }

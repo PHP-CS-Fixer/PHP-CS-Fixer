@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,19 +25,13 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -164,54 +160,12 @@ $bar) {}',
  ,#
 $bar) {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix56Cases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testFix56($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideFix56Cases()
-    {
-        return [
             [
                 '<?php function a($a = 1, ...$b) {}',
             ],
             [
                 '<?php function a($a = 1, \SplFileInfo ...$b) {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.1
-     */
-    public function testFix71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideFix71Cases()
-    {
-        return [
             [
                 '<?php function foo (?Foo $bar, $baz) {}',
                 '<?php function foo (?Foo $bar = null, $baz) {}',
@@ -225,25 +179,77 @@ $bar) {}',
     /**
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
                 '<?php $fn = fn ($a, $b) => null;',
                 '<?php $fn = fn ($a = 1, $b) => null;',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield 'handle trailing comma' => [
+            '<?php function foo($x, $y = 42, $z = 42 ) {}',
+        ];
+
+        yield 'handle attributes without arguments' => [
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y,
+                #[Attribute3] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y = 42,
+                #[Attribute3] $z
+            ) {}',
+        ];
+
+        yield 'handle attributes with arguments' => [
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y,
+                #[Attribute3(5, 6)] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y = 42,
+                #[Attribute3(5, 6)] $z
+            ) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'do not crash' => [
+            '<?php strlen( ... );',
         ];
     }
 }

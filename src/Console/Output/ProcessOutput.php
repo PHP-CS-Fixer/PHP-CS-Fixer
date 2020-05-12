@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -49,7 +51,7 @@ final class ProcessOutput implements ProcessOutputInterface
     private $output;
 
     /**
-     * @var null|int
+     * @var int
      */
     private $files;
 
@@ -59,31 +61,21 @@ final class ProcessOutput implements ProcessOutputInterface
     private $processedFiles = 0;
 
     /**
-     * @var null|int
+     * @var int
      */
     private $symbolsPerLine;
 
-    /**
-     * @TODO 3.0 make all parameters mandatory (`null` not allowed)
-     *
-     * @param null|int $width
-     * @param null|int $nbFiles
-     */
-    public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, $width, $nbFiles)
+    public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, int $width, int $nbFiles)
     {
         $this->output = $output;
         $this->eventDispatcher = $dispatcher;
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
-        $this->symbolsPerLine = $width;
+        $this->files = $nbFiles;
 
-        if (null !== $nbFiles) {
-            $this->files = $nbFiles;
-
-            //   max number of characters per line
-            // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
-            // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
-            $this->symbolsPerLine = max(1, ($width ?: 80) - \strlen((string) $this->files) * 2 - 11);
-        }
+        //   max number of characters per line
+        // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
+        // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
+        $this->symbolsPerLine = max(1, $width - \strlen((string) $this->files) * 2 - 11);
     }
 
     public function __destruct()
@@ -91,43 +83,52 @@ final class ProcessOutput implements ProcessOutputInterface
         $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
     }
 
-    public function onFixerFileProcessed(FixerFileProcessedEvent $event)
+    /**
+     * This class is not intended to be serialized,
+     * and cannot be deserialized (see __wakeup method).
+     */
+    public function __sleep(): array
     {
-        if (
-            null === $this->files
-            && null !== $this->symbolsPerLine
-            && 0 === $this->processedFiles % $this->symbolsPerLine
-            && 0 !== $this->processedFiles
-        ) {
-            $this->output->writeln('');
-        }
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
 
+    /**
+     * Disable the deserialization of the class to prevent attacker executing
+     * code by leveraging the __destruct method.
+     *
+     * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
+     */
+    public function __wakeup(): void
+    {
+        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+    }
+
+    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
+    {
         $status = self::$eventStatusMap[$event->getStatus()];
         $this->output->write($this->output->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
 
         ++$this->processedFiles;
 
-        if (null !== $this->files) {
-            $symbolsOnCurrentLine = $this->processedFiles % $this->symbolsPerLine;
-            $isLast = $this->processedFiles === $this->files;
+        $symbolsOnCurrentLine = $this->processedFiles % $this->symbolsPerLine;
+        $isLast = $this->processedFiles === $this->files;
 
-            if (0 === $symbolsOnCurrentLine || $isLast) {
-                $this->output->write(sprintf(
-                    '%s %'.\strlen((string) $this->files).'d / %d (%3d%%)',
-                    $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
-                    $this->processedFiles,
-                    $this->files,
-                    round($this->processedFiles / $this->files * 100)
-                ));
+        if (0 === $symbolsOnCurrentLine || $isLast) {
+            $this->output->write(sprintf(
+                '%s %'.\strlen((string) $this->files).'d / %d (%3d%%)',
+                $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
+                $this->processedFiles,
+                $this->files,
+                round($this->processedFiles / $this->files * 100)
+            ));
 
-                if (!$isLast) {
-                    $this->output->writeln('');
-                }
+            if (!$isLast) {
+                $this->output->writeln('');
             }
         }
     }
 
-    public function printLegend()
+    public function printLegend(): void
     {
         $symbols = [];
 

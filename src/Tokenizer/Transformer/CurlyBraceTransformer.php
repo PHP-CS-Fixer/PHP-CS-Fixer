@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -37,7 +39,28 @@ final class CurlyBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
+    public function getRequiredPhpVersionId(): int
+    {
+        return 50000;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(Tokens $tokens, Token $token, int $index): void
+    {
+        $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
+        $this->transformIntoDollarCloseBrace($tokens, $token, $index);
+        $this->transformIntoDynamicPropBraces($tokens, $token, $index);
+        $this->transformIntoDynamicVarBraces($tokens, $token, $index);
+        $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
+        $this->transformIntoGroupUseBraces($tokens, $token, $index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomTokens(): array
     {
         return [
             CT::T_CURLY_CLOSE,
@@ -54,65 +77,32 @@ final class CurlyBraceTransformer extends AbstractTransformer
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getRequiredPhpVersionId()
-    {
-        return 50000;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(Tokens $tokens, Token $token, $index)
-    {
-        $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
-        $this->transformIntoDollarCloseBrace($tokens, $token, $index);
-        $this->transformIntoDynamicPropBraces($tokens, $token, $index);
-        $this->transformIntoDynamicVarBraces($tokens, $token, $index);
-        $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
-
-        if (\PHP_VERSION_ID >= 70000) {
-            $this->transformIntoGroupUseBraces($tokens, $token, $index);
-        }
-    }
-
-    /**
      * Transform closing `}` for T_CURLY_OPEN into CT::T_CURLY_CLOSE.
      *
      * This should be done at very beginning of curly braces transformations.
-     *
-     * @param int $index
      */
-    private function transformIntoCurlyCloseBrace(Tokens $tokens, Token $token, $index)
+    private function transformIntoCurlyCloseBrace(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind(T_CURLY_OPEN)) {
             return;
         }
 
         $level = 1;
-        $nestIndex = $index;
 
-        while (0 < $level) {
-            ++$nestIndex;
+        do {
+            ++$index;
 
-            // we count all kind of {
-            if ($tokens[$nestIndex]->equals('{')) {
+            if ($tokens[$index]->equals('{') || $tokens[$index]->isGivenKind(T_CURLY_OPEN)) { // we count all kind of {
                 ++$level;
-
-                continue;
-            }
-
-            // we count all kind of }
-            if ($tokens[$nestIndex]->equals('}')) {
+            } elseif ($tokens[$index]->equals('}')) { // we count all kind of }
                 --$level;
             }
-        }
+        } while (0 < $level);
 
-        $tokens[$nestIndex] = new Token([CT::T_CURLY_CLOSE, '}']);
+        $tokens[$index] = new Token([CT::T_CURLY_CLOSE, '}']);
     }
 
-    private function transformIntoDollarCloseBrace(Tokens $tokens, Token $token, $index)
+    private function transformIntoDollarCloseBrace(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
             $nextIndex = $tokens->getNextTokenOfKind($index, ['}']);
@@ -120,9 +110,9 @@ final class CurlyBraceTransformer extends AbstractTransformer
         }
     }
 
-    private function transformIntoDynamicPropBraces(Tokens $tokens, Token $token, $index)
+    private function transformIntoDynamicPropBraces(Tokens $tokens, Token $token, int $index): void
     {
-        if (!$token->isGivenKind(T_OBJECT_OPERATOR)) {
+        if (!$token->isObjectOperator()) {
             return;
         }
 
@@ -131,13 +121,13 @@ final class CurlyBraceTransformer extends AbstractTransformer
         }
 
         $openIndex = $index + 1;
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $openIndex);
 
         $tokens[$openIndex] = new Token([CT::T_DYNAMIC_PROP_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoDynamicVarBraces(Tokens $tokens, Token $token, $index)
+    private function transformIntoDynamicVarBraces(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equals('$')) {
             return;
@@ -155,13 +145,13 @@ final class CurlyBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $openIndex);
 
         $tokens[$openIndex] = new Token([CT::T_DYNAMIC_VAR_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, $index)
+    private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equals('{')) {
             return;
@@ -181,7 +171,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
 
         if (
             $tokens[$prevIndex]->isGivenKind(T_STRING)
-            && !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_OBJECT_OPERATOR)
+            && !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isObjectOperator()
         ) {
             return;
         }
@@ -195,13 +185,13 @@ final class CurlyBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
 
         $tokens[$index] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoGroupUseBraces(Tokens $tokens, Token $token, $index)
+    private function transformIntoGroupUseBraces(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equals('{')) {
             return;
@@ -213,9 +203,51 @@ final class CurlyBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
 
         $tokens[$index] = new Token([CT::T_GROUP_IMPORT_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_GROUP_IMPORT_BRACE_CLOSE, '}']);
+    }
+
+    /**
+     * We do not want to rely on `$tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index)` here,
+     * as it relies on block types that are assuming that `}` tokens are already transformed to Custom Tokens that are allowing to distinguish different block types.
+     * As we are just about to transform `{` and `}` into Custom Tokens by this transformer, thus we need to compare those tokens manually by content without using `Tokens::findBlockEnd`.
+     */
+    private function naivelyFindCurlyBlockEnd(Tokens $tokens, int $startIndex): int
+    {
+        if (!$tokens->offsetExists($startIndex)) {
+            throw new \OutOfBoundsException(sprintf('Unavailable index: "%s".', $startIndex));
+        }
+
+        if ('{' !== $tokens[$startIndex]->getContent()) {
+            throw new \InvalidArgumentException(sprintf('Wrong start index: "%s".', $startIndex));
+        }
+
+        $blockLevel = 1;
+        $endIndex = $tokens->count() - 1;
+        for ($index = $startIndex + 1; $index !== $endIndex; ++$index) {
+            $token = $tokens[$index];
+
+            if ('{' === $token->getContent()) {
+                ++$blockLevel;
+
+                continue;
+            }
+
+            if ('}' === $token->getContent()) {
+                --$blockLevel;
+
+                if (0 === $blockLevel) {
+                    if (!$token->equals('}')) {
+                        throw new \UnexpectedValueException(sprintf('Detected block end for index: "%s" was already transformed into other token type: "%s".', $startIndex, $token->getName()));
+                    }
+
+                    return $index;
+                }
+            }
+        }
+
+        throw new \UnexpectedValueException(sprintf('Missing block end for index: "%s".', $startIndex));
     }
 }

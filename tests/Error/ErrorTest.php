@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,13 +24,13 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ErrorTest extends TestCase
 {
-    public function testThatErrorTypeConstantValuesAreDifferent()
+    public function testThatErrorTypeConstantValuesAreDifferent(): void
     {
         static::assertNotSame(Error::TYPE_INVALID, Error::TYPE_EXCEPTION);
         static::assertNotSame(Error::TYPE_EXCEPTION, Error::TYPE_LINT);
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $type = 123;
         $filePath = 'foo.php';
@@ -45,7 +47,7 @@ final class ErrorTest extends TestCase
         static::assertNull($error->getDiff());
     }
 
-    public function testConstructorSetsValues2()
+    public function testConstructorSetsValues2(): void
     {
         $type = 456;
         $filePath = __FILE__;

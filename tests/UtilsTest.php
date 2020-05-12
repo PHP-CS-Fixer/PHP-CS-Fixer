@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,10 +17,11 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Utils;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
@@ -27,13 +30,26 @@ use PhpCsFixer\Utils;
  */
 final class UtilsTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
+    private $originalValueOfFutureMode;
+
+    protected function setUp(): void
+    {
+        $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
+    }
+
+    protected function tearDown(): void
+    {
+        putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
+    }
+
     /**
      * @param string $expected Camel case string
-     * @param string $input    Input string
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
-    public function testCamelCaseToUnderscore($expected, $input = null)
+    public function testCamelCaseToUnderscore(string $expected, string $input = null): void
     {
         if (null !== $input) {
             static::assertSame($expected, Utils::camelCaseToUnderscore($input));
@@ -42,10 +58,7 @@ final class UtilsTest extends TestCase
         static::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
-    /**
-     * @return array
-     */
-    public function provideCamelCaseToUnderscoreCases()
+    public function provideCamelCaseToUnderscoreCases(): array
     {
         return [
             [
@@ -91,47 +104,26 @@ final class UtilsTest extends TestCase
                 'mr_t',
                 'MrT',
             ],
+            [
+                'voyage_éclair',
+                'VoyageÉclair',
+            ],
         ];
     }
 
     /**
-     * @param int $expected
-     * @param int $left
-     * @param int $right
-     *
-     * @dataProvider provideCmpIntCases
-     */
-    public function testCmpInt($expected, $left, $right)
-    {
-        static::assertSame($expected, Utils::cmpInt($left, $right));
-    }
-
-    public function provideCmpIntCases()
-    {
-        return [
-            [0,    1,   1],
-            [0,   -1,  -1],
-            [-1,  10,  20],
-            [-1, -20, -10],
-            [1,   20,  10],
-            [1,  -10, -20],
-        ];
-    }
-
-    /**
-     * @param string       $spaces
-     * @param array|string $input  token prototype
+     * @param array|string $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
-    public function testCalculateTrailingWhitespaceIndent($spaces, $input)
+    public function testCalculateTrailingWhitespaceIndent(string $spaces, $input): void
     {
         $token = new Token($input);
 
         static::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
-    public function provideCalculateTrailingWhitespaceIndentCases()
+    public function provideCalculateTrailingWhitespaceIndentCases(): array
     {
         return [
             ['    ', [T_WHITESPACE, "\n\n    "]],
@@ -143,7 +135,7 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    public function testCalculateTrailingWhitespaceIndentFail()
+    public function testCalculateTrailingWhitespaceIndentFail(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
@@ -161,14 +153,14 @@ final class UtilsTest extends TestCase
         array $elements,
         callable $getComparableValueCallback,
         callable $compareValuesCallback
-    ) {
+    ): void {
         static::assertSame(
             $expected,
             Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
         );
     }
 
-    public function provideStableSortCases()
+    public function provideStableSortCases(): array
     {
         return [
             [
@@ -180,14 +172,14 @@ final class UtilsTest extends TestCase
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return 'foo'; },
+                static function (): string { return 'foo'; },
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
                 static function ($element) { return $element; },
-                static function ($a, $b) { return 0; },
+                static function (): int { return 0; },
             ],
             [
                 ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
@@ -198,7 +190,7 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    public function testSortFixers()
+    public function testSortFixers(): void
     {
         $fixers = [
             $this->createFixerDouble('f1', 0),
@@ -218,7 +210,7 @@ final class UtilsTest extends TestCase
         );
     }
 
-    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
+    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -227,15 +219,13 @@ final class UtilsTest extends TestCase
 
     /**
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
-     *
-     * @param string $joined
      */
-    public function testNaturalLanguageJoinWithBackticks($joined, array $names)
+    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
     {
         static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
-    public function provideNaturalLanguageJoinWithBackticksCases()
+    public function provideNaturalLanguageJoinWithBackticksCases(): array
     {
         return [
             [
@@ -254,42 +244,42 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param int $expected
-     *
-     * @dataProvider provideCalculateBitmaskCases
+     * @group legacy
      */
-    public function testCalculateBitmask($expected, array $options)
+    public function testTriggerDeprecationWhenFutureModeIsOff(): void
     {
-        static::assertSame($expected, Utils::calculateBitmask($options));
+        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
+
+        $message = __METHOD__.'::The message';
+        $this->expectDeprecation($message);
+
+        Utils::triggerDeprecation(new \DomainException($message));
+
+        $triggered = Utils::getTriggeredDeprecations();
+        static::assertContains($message, $triggered);
     }
 
-    public function provideCalculateBitmaskCases()
+    public function testTriggerDeprecationWhenFutureModeIsOn(): void
     {
-        return [
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
-            ],
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
-            ],
-            [
-                JSON_HEX_TAG,
-                ['JSON_HEX_TAG'],
-            ],
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
-            ],
-            [
-                0,
-                [],
-            ],
-        ];
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $message = __METHOD__.'::The message';
+        $exception = new \DomainException($message);
+        $futureModeException = null;
+
+        try {
+            Utils::triggerDeprecation($exception);
+        } catch (\Exception $futureModeException) {
+        }
+
+        static::assertInstanceOf(\RuntimeException::class, $futureModeException);
+        static::assertSame($exception, $futureModeException->getPrevious());
+
+        $triggered = Utils::getTriggeredDeprecations();
+        static::assertNotContains($message, $triggered);
     }
 
-    private function createFixerDouble($name, $priority)
+    private function createFixerDouble(string $name, int $priority): FixerInterface
     {
         $fixer = $this->prophesize(FixerInterface::class);
         $fixer->getName()->willReturn($name);

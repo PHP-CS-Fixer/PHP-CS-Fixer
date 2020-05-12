@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: no_useless_else,no_break_comment.
+--RULESET--
+{"no_useless_else": true, "no_break_comment": true}
+--EXPECT--
+<?php
+switch($foo) {
+    case 1:
+        if ($bar) {
+            return 'bar';
+        }   // 1
+            return 'baz';
+         // 2
+     case 2:
+        echo 1;
+}
+
+--INPUT--
+<?php
+switch($foo) {
+    case 1:
+        if ($bar) {
+            return 'bar';
+        } else { // 1
+            return 'baz';
+        } // 2
+     case 2:
+        echo 1;
+}

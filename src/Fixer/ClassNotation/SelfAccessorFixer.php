@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -30,7 +33,7 @@ final class SelfAccessorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Inside class or interface element `self` should be preferred to the class name itself.',
@@ -58,7 +61,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
@@ -66,7 +69,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -74,7 +77,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -99,13 +102,8 @@ class Sample
 
     /**
      * Replace occurrences of the name of the classy element by "self" (if possible).
-     *
-     * @param string $namespace
-     * @param string $name
-     * @param int    $startIndex
-     * @param int    $endIndex
      */
-    private function replaceNameOccurrences(Tokens $tokens, $namespace, $name, $startIndex, $endIndex)
+    private function replaceNameOccurrences(Tokens $tokens, string $namespace, string $name, int $startIndex, int $endIndex): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $insideMethodSignatureUntil = null;
@@ -150,7 +148,7 @@ class Sample
                 }
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classStartIndex)];
             }
-            if ($prevToken->isGivenKind([T_OBJECT_OPERATOR, T_STRING])) {
+            if ($prevToken->isGivenKind(T_STRING) || $prevToken->isObjectOperator()) {
                 continue;
             }
 
@@ -171,7 +169,7 @@ class Sample
         }
     }
 
-    private function getClassStart(Tokens $tokens, $index, $namespace)
+    private function getClassStart(Tokens $tokens, int $index, string $namespace): ?int
     {
         $namespace = ('' !== $namespace ? '\\'.$namespace : '').'\\';
 

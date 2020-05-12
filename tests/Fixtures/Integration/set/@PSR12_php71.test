@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PSR12 [PHP 7.1 version].
+--RULESET--
+{"@PSR12": true}

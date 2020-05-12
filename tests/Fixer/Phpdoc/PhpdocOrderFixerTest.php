@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocOrderFixerTest extends AbstractFixerTestCase
 {
-    public function testNoChanges()
+    public function testNoChanges(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -42,7 +44,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOnlyParams()
+    public function testOnlyParams(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -55,7 +57,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOnlyReturns()
+    public function testOnlyReturns(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -69,12 +71,12 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $this->doTest('/***/');
     }
 
-    public function testNoAnnotations()
+    public function testNoAnnotations(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -88,7 +90,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testFixBasicCase()
+    public function testFixBasicCase(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -113,7 +115,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixCompeteCase()
+    public function testFixCompeteCase(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -170,7 +172,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testExampleFromSymfony()
+    public function testExampleFromSymfony(): void
     {
         $expected = <<<'EOF'
 <?php

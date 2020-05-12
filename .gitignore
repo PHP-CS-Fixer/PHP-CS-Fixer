@@ -1,6 +1,11 @@
-/.php_cs
+/.php-cs-fixer.php
+/.phpunit.result.cache
 /box.json
 /composer.lock
+/dev-tools/bin/
+/dev-tools/phpstan/cache/
+/dev-tools/vendor/
+/docker-compose.override.yaml
 /php-cs-fixer.phar
 /phpunit.xml
 /vendor/

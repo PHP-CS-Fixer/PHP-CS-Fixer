@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer
@@ -24,45 +24,41 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      * @dataProvider provideFixDeprecatedCases
      * @requires PHP < 7.4
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixDeprecatedCases
      * @requires PHP 7.4
      * @group legacy
-     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
      */
-    public function testFix74Deprecated($expected, $input = null)
+    public function testFix74Deprecated(string $expected, ?string $input = null): void
     {
+        if (\PHP_VERSION_ID >= 80000) {
+            static::markTestSkipped('PHP < 8.0 is required.');
+        }
+
+        $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
+
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
             foreach ($this->createCasesFor($from, $to) as $case) {
@@ -71,25 +67,29 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixDeprecatedCases()
+    public function provideFixDeprecatedCases(): \Generator
     {
         return $this->createCasesFor('real', 'float');
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideNoFixCases
      */
-    public function testNoFix($expected)
+    public function testNoFix(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public function provideNoFixCases()
+    public function provideNoFixCases(): array
     {
         $cases = [];
-        foreach (['string', 'array', 'object', 'unset'] as $cast) {
+        $types = ['string', 'array', 'object'];
+
+        if (\PHP_VERSION_ID < 80000) {
+            $types[] = 'unset';
+        }
+
+        foreach ($types as $cast) {
             $cases[] = [sprintf('<?php $b=(%s) $d;', $cast)];
             $cases[] = [sprintf('<?php $b=( %s ) $d;', $cast)];
             $cases[] = [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];
@@ -99,7 +99,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         return $cases;
     }
 
-    private function createCasesFor($from, $to)
+    private function createCasesFor(string $from, string $to): \Generator
     {
         yield [
             sprintf('<?php echo ( %s  )$a;', $to),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    public function testFix(): void
     {
         $this->doTest('<?php
 /** @param EngineInterface $templating
@@ -52,7 +54,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixMoreTags()
+    public function testFixMoreTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -88,7 +90,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixSpreadOut()
+    public function testFixSpreadOut(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -135,7 +137,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMultiLineComments()
+    public function testMultiLineComments(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -175,20 +177,20 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testCrazyMultiLineComments()
+    public function testCrazyMultiLineComments(): void
     {
         $expected = <<<'EOF'
 <?php
     /**
      * Clients accept an array of constructor parameters.
      *
-     * Here's an example of creating a client using an URI template for the
+     * Here's an example of creating a client using a URI template for the
      * client's base_url and an array of default request options to apply
      * to each request:
      *
      *     $client = new Client([
      *         'base_url' => [
-     *              'http://www.foo.com/{version}/',
+     *              'https://www.foo.com/{version}/',
      *              ['version' => '123']
      *          ],
      *         'defaults' => [
@@ -219,7 +221,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testDoctrineExample()
+    public function testDoctrineExample(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -260,7 +262,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testSymfonyExample()
+    public function testSymfonyExample(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -316,7 +318,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testDeprecatedAndSeeTags()
+    public function testDeprecatedAndSeeTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -358,7 +360,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPropertyTags()
+    public function testPropertyTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -388,7 +390,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testClassDocBlock()
+    public function testClassDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -404,7 +406,7 @@ namespace Foo;
  * @subpackage Foo\Bar
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @copyright Foo Bar
  * @license MIT
  */
@@ -426,7 +428,7 @@ namespace Foo;
  * @subpackage Foo\Bar
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @copyright Foo Bar
  *
@@ -440,7 +442,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPoorAlignment()
+    public function testPoorAlignment(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -453,7 +455,7 @@ namespace Foo;
 *    @internal
 *
  *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-    *@author Graham Campbell <graham@alt-three.com>
+    *@author Graham Campbell <hello@gjcampbell.co.uk>
  */
 class Bar {}
 
@@ -474,7 +476,7 @@ namespace Foo;
  *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      *
                              *
-    *@author Graham Campbell <graham@alt-three.com>
+    *@author Graham Campbell <hello@gjcampbell.co.uk>
  */
 class Bar {}
 
@@ -483,7 +485,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotMoveUnknownAnnotations()
+    public function testDoNotMoveUnknownAnnotations(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -523,33 +525,55 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testInheritDoc()
+    /**
+     * @dataProvider provideInheritDocCases
+     */
+    public function testInheritDoc(string $expected, string $input): void
     {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * {@inheritdoc}
-     *
-     * @param string $expected
-     * @param string $input
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * {@inheritdoc}
-     * @param string $expected
-     * @param string $input
-     */
-
-EOF;
-
         $this->doTest($expected, $input);
     }
 
-    public function testEmptyDocBlock()
+    public function provideInheritDocCases(): array
+    {
+        return [
+            [
+                '<?php
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $expected
+     * @param string $input
+     */
+',
+                '<?php
+    /**
+     * {@inheritdoc}
+     * @param string $expected
+     * @param string $input
+     */
+',
+            ],
+            [
+                '<?php
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $expected
+     * @param string $input
+     */
+',
+                '<?php
+    /**
+     * {@inheritDoc}
+     * @param string $expected
+     * @param string $input
+     */
+',
+            ],
+        ];
+    }
+
+    public function testEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -562,7 +586,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLargerEmptyDocBlock()
+    public function testLargerEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -578,7 +602,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOneLineDocBlock()
+    public function testOneLineDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -590,7 +614,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testMessyWhitespaces()
+    public function testMessyWhitespaces(): void
     {
         $expected = "<?php\t/**\r\n\t * @param string \$text\r\n\t *\r\n\t * @return string\r\n\t */";
         $input = "<?php\t/**\r\n\t * @param string \$text\r\n\t * @return string\r\n\t */";
@@ -598,7 +622,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithSpacing()
+    public function testWithSpacing(): void
     {
         $expected = '<?php
     /**

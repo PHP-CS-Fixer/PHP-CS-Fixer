@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,10 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\FinalInternalClassFixer
@@ -29,14 +30,15 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $input = $expected = '<?php ';
+
         for ($i = 1; $i < 10; ++$i) {
             $input .= sprintf("/** @internal */\nclass class%d\n{\n}\n", $i);
             $expected .= sprintf("/** @internal */\nfinal class class%d\n{\n}\n", $i);
@@ -129,30 +131,34 @@ class class3
 abstract class class4 {}
 ',
             ],
+            [
+                '<?php
+                    /**
+                     * @ annotation_with_space_after_at_sign
+                     */
+                    class A {}
+',
+            ],
         ];
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     * @param array  $config   Fixer configuration
-     *
      * @dataProvider provideFixWithConfigCases
      */
-    public function testFixWithConfig($expected, $input, array $config)
+    public function testFixWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfigCases()
+    public function provideFixWithConfigCases(): array
     {
         return [
             [
                 "<?php\n/** @CUSTOM */final class A{}",
                 "<?php\n/** @CUSTOM */class A{}",
                 [
-                    'annotation_white_list' => ['@Custom'],
+                    'annotation_include' => ['@Custom'],
                 ],
             ],
             [
@@ -181,7 +187,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation_white_list' => ['@Custom', '@abc'],
+                    'annotation_include' => ['@Custom', '@abc'],
                 ],
             ],
             [
@@ -228,8 +234,8 @@ class B{}
  class C{}
 ',
                 [
-                    'annotation_white_list' => ['@Custom', '@internal'],
-                    'annotation_black_list' => ['@not-fix'],
+                    'annotation_include' => ['@Custom', '@internal'],
+                    'annotation_exclude' => ['@not-fix'],
                 ],
             ],
             [
@@ -256,7 +262,7 @@ class A{}
 class B{}
 ',
                 [
-                    'annotation_black_list' => ['abc'],
+                    'annotation_exclude' => ['abc'],
                 ],
             ],
         ];
@@ -266,35 +272,56 @@ class B{}
      * @param string      $expected PHP source code
      * @param null|string $input    PHP source code
      *
-     * @requires PHP 7.0
      * @dataProvider provideAnonymousClassesCases
      */
-    public function testAnonymousClassesCases($expected, $input = null)
+    public function testAnonymousClassesCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousClassesCases()
+    public function provideAnonymousClassesCases(): \Generator
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 /** @internal */
 $a = new class (){};',
-            ],
+        ];
+
+        yield [
+            '<?php
+/** @internal */
+$a = new class{};',
         ];
     }
 
-    public function testConfigureSameAnnotationInBothLists()
+    public function testConfigureSameAnnotationInBothLists(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the white- and black list, got duplicates: "internal123".', '#'))
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the include and exclude list, got duplicates: "internal123".', '#'))
         );
 
         $this->fixer->configure([
-            'annotation_white_list' => ['@internal123', 'a'],
-            'annotation_black_list' => ['@internal123', 'b'],
+            'annotation_include' => ['@internal123', 'a'],
+            'annotation_exclude' => ['@internal123', 'b'],
         ]);
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+#[Internal]
+class Foo {}',
+        ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|int    $versionSpecificFix
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $versionSpecificFix = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
     {
         if (
-            (null !== $input && \PHP_VERSION_ID < 70000)
-            || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            null !== $input
+            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
         ) {
             $expected = $input;
             $input = null;
@@ -45,9 +43,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             'no phpdoc return' => [
                 '<?php function my_foo() {}',
             ],
@@ -60,7 +58,16 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'invalid class 2' => [
                 '<?php /** @return \\Foo\\\\Bar */ function my_foo() {}',
             ],
-            'blacklisted class methods' => [
+            'invalid class 3' => [
+                '<?php /** @return Break */ function my_foo() {}',
+            ],
+            'invalid class 4' => [
+                '<?php /** @return __CLASS__ */ function my_foo() {}',
+            ],
+            'invalid class 5' => [
+                '<?php /** @return I\Want\To\Bre\\\\ak\Free */ function queen() {}',
+            ],
+            'excluded class methods' => [
                 '<?php
 
                     class Foo
@@ -103,7 +110,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'void return on ^7.1' => [
                 '<?php /** @return void */ function my_foo(): void {}',
                 '<?php /** @return void */ function my_foo() {}',
-                70100,
             ],
             'invalid void return on ^7.1' => [
                 '<?php /** @return null|void */ function my_foo() {}',
@@ -111,7 +117,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'iterable return on ^7.1' => [
                 '<?php /** @return iterable */ function my_foo(): iterable {}',
                 '<?php /** @return iterable */ function my_foo() {}',
-                70100,
             ],
             'object return on ^7.2' => [
                 '<?php /** @return object */ function my_foo(): object {}',
@@ -133,6 +138,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'fix scalar types by default, bool' => [
                 '<?php /** @return bool */ function my_foo(): bool {}',
                 '<?php /** @return bool */ function my_foo() {}',
+            ],
+            'fix scalar types by default, bool, make unqualified' => [
+                '<?php /** @return \bool */ function my_foo(): bool {}',
+                '<?php /** @return \bool */ function my_foo() {}',
             ],
             'fix scalar types by default, false' => [
                 '<?php /** @return false */ function my_foo(): bool {}',
@@ -168,23 +177,20 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
-            'report static as self' => [
+            'nullable self accessor' => [
                 '<?php
                     class Foo {
-                        /** @return static */ function my_foo(): self {}
+                        /** @return self|null */ function my_foo(): ?self {}
                     }
                 ',
                 '<?php
                     class Foo {
-                        /** @return static */ function my_foo() {}
+                        /** @return self|null */ function my_foo() {}
                     }
                 ',
             ],
             'skip resource special type' => [
                 '<?php /** @return resource */ function my_foo() {}',
-            ],
-            'skip mixed special type' => [
-                '<?php /** @return mixed */ function my_foo() {}',
             ],
             'null alone cannot be a return type' => [
                 '<?php /** @return null */ function my_foo() {}',
@@ -195,22 +201,23 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'nullable type' => [
                 '<?php /** @return null|Bar */ function my_foo(): ?Bar {}',
                 '<?php /** @return null|Bar */ function my_foo() {}',
-                70100,
             ],
             'nullable type reverse order' => [
                 '<?php /** @return Bar|null */ function my_foo(): ?Bar {}',
                 '<?php /** @return Bar|null */ function my_foo() {}',
-                70100,
             ],
             'nullable native type' => [
                 '<?php /** @return null|array */ function my_foo(): ?array {}',
                 '<?php /** @return null|array */ function my_foo() {}',
-                70100,
+            ],
+            'skip primitive or array types' => [
+                '<?php /** @return string|string[] */ function my_foo() {}',
             ],
             'skip mixed nullable types' => [
                 '<?php /** @return null|Foo|Bar */ function my_foo() {}',
             ],
-            'skip generics' => [
+            'generics' => [
+                '<?php /** @return array<int, bool> */ function my_foo(): array {}',
                 '<?php /** @return array<int, bool> */ function my_foo() {}',
             ],
             'array of types' => [
@@ -220,12 +227,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'array of array of types' => [
                 '<?php /** @return Foo[][] */ function my_foo(): array {}',
                 '<?php /** @return Foo[][] */ function my_foo() {}',
-                70000,
             ],
             'nullable array of types' => [
                 '<?php /** @return null|Foo[] */ function my_foo(): ?array {}',
                 '<?php /** @return null|Foo[] */ function my_foo() {}',
-                70100,
             ],
             'comments' => [
                 '<?php
@@ -247,22 +252,98 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
+            'array and traversable' => [
+                '<?php /** @return array|Traversable */ function my_foo(): iterable {}',
+                '<?php /** @return array|Traversable */ function my_foo() {}',
+            ],
+            'array and traversable with leading slash' => [
+                '<?php /** @return array|\Traversable */ function my_foo(): iterable {}',
+                '<?php /** @return array|\Traversable */ function my_foo() {}',
+            ],
+            'array and traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @return array|Traversable */
+                     function my_foo() {}
+                ',
+            ],
+            'array and traversable with leading slash in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @return array|\Traversable */
+                     function my_foo(): iterable {}
+                ',
+                '<?php
+                     namespace App;
+                     /** @return array|\Traversable */
+                     function my_foo() {}
+                ',
+            ],
+            'array and imported traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @return array|Traversable */
+                     function my_foo(): iterable {}
+                ',
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @return array|Traversable */
+                     function my_foo() {}
+                ',
+            ],
+            'array and object aliased as traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Foo as Traversable;
+                     /** @return array|Traversable */
+                     function my_foo() {}
+                ',
+            ],
+            'array of object and traversable' => [
+                '<?php /** @return Foo[]|Traversable */ function my_foo(): iterable {}',
+                '<?php /** @return Foo[]|Traversable */ function my_foo() {}',
+            ],
+            'array of object and iterable' => [
+                '<?php /** @return Foo[]|iterable */ function my_foo(): iterable {}',
+                '<?php /** @return Foo[]|iterable */ function my_foo() {}',
+            ],
+            'array of string and array of int' => [
+                '<?php /** @return string[]|int[] */ function my_foo(): array {}',
+                '<?php /** @return string[]|int[] */ function my_foo() {}',
+            ],
+            'intersection types' => [
+                '<?php
+                    /** @return Bar&Baz */
+                    function bar() {}
+                ',
+            ],
+            'very long class name before ampersand' => [
+                '<?php
+                    /** @return Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */
+                    function bar() {}
+                ',
+            ],
+            'very long class name after ampersand' => [
+                '<?php
+                    /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
+                    function bar() {}
+                ',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input = null)
+    public function testFixPhp74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'arrow function' => [
@@ -270,6 +351,92 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return int */ fn() => 1;',
                 70400,
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield 'report static as self' => [
+            '<?php
+                class Foo {
+                    /** @return static */ function my_foo(): self {}
+                }
+            ',
+            '<?php
+                class Foo {
+                    /** @return static */ function my_foo() {}
+                }
+            ',
+        ];
+
+        yield 'skip mixed special type' => [
+            '<?php /** @return mixed */ function my_foo() {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases(): \Generator
+    {
+        yield 'static' => [
+            '<?php
+                final class Foo {
+                    /** @return static */
+                    public function something(): static {}
+                }
+            ',
+            '<?php
+                final class Foo {
+                    /** @return static */
+                    public function something() {}
+                }
+            ',
+        ];
+
+        yield 'nullable static' => [
+            '<?php
+                final class Foo {
+                    /** @return null|static */
+                    public function something(): ?static {}
+                }
+            ',
+            '<?php
+                final class Foo {
+                    /** @return null|static */
+                    public function something() {}
+                }
+            ',
+        ];
+
+        yield 'mixed' => [
+            '<?php
+                final class Foo {
+                    /** @return mixed */
+                    public function something(): mixed {}
+                }
+            ',
+            '<?php
+                final class Foo {
+                    /** @return mixed */
+                    public function something() {}
+                }
+            ',
         ];
     }
 }

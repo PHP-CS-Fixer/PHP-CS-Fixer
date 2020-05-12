@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,21 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class SignatureTest extends TestCase
 {
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
         static::assertTrue($reflection->isFinal());
     }
 
-    public function testImplementsSignatureInterface()
+    public function testImplementsSignatureInterface(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
 
         static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $php = PHP_VERSION;
         $version = '2.0';
@@ -66,16 +68,13 @@ final class SignatureTest extends TestCase
 
     /**
      * @dataProvider provideEqualsReturnsFalseIfValuesAreNotIdenticalCases
-     *
-     * @param Signature $signature
-     * @param Signature $anotherSignature
      */
-    public function testEqualsReturnsFalseIfValuesAreNotIdentical($signature, $anotherSignature)
+    public function testEqualsReturnsFalseIfValuesAreNotIdentical(Signature $signature, Signature $anotherSignature): void
     {
         static::assertFalse($signature->equals($anotherSignature));
     }
 
-    public function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases()
+    public function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases(): \Generator
     {
         $php = PHP_VERSION;
         $version = '2.0';
@@ -114,7 +113,7 @@ final class SignatureTest extends TestCase
         ];
     }
 
-    public function testEqualsReturnsTrueIfValuesAreIdentical()
+    public function testEqualsReturnsTrueIfValuesAreIdentical(): void
     {
         $php = PHP_VERSION;
         $version = '2.0';

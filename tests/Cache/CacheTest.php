@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,21 +30,21 @@ use PhpCsFixer\ToolInfo;
  */
 final class CacheTest extends TestCase
 {
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
         static::assertTrue($reflection->isFinal());
     }
 
-    public function testImplementsCacheInterface()
+    public function testImplementsCacheInterface(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Cache::class);
 
         static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheInterface::class));
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $signature = $this->getSignatureDouble();
 
@@ -51,7 +53,7 @@ final class CacheTest extends TestCase
         static::assertSame($signature, $cache->getSignature());
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $signature = $this->getSignatureDouble();
 
@@ -63,7 +65,7 @@ final class CacheTest extends TestCase
         static::assertNull($cache->get($file));
     }
 
-    public function testCanSetAndGetValue()
+    public function testCanSetAndGetValue(): void
     {
         $signature = $this->getSignatureDouble();
 
@@ -78,7 +80,7 @@ final class CacheTest extends TestCase
         static::assertSame($hash, $cache->get($file));
     }
 
-    public function testCanClearValue()
+    public function testCanClearValue(): void
     {
         $signature = $this->getSignatureDouble();
 
@@ -93,7 +95,7 @@ final class CacheTest extends TestCase
         static::assertNull($cache->get($file));
     }
 
-    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid()
+    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -105,7 +107,7 @@ final class CacheTest extends TestCase
     /**
      * @dataProvider provideMissingDataCases
      */
-    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data)
+    public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -114,10 +116,7 @@ final class CacheTest extends TestCase
         Cache::fromJson($json);
     }
 
-    /**
-     * @return array
-     */
-    public function provideMissingDataCases()
+    public function provideMissingDataCases(): array
     {
         $data = [
             'php' => '7.1.2',
@@ -129,7 +128,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(static function ($missingKey) use ($data) {
+        return array_map(static function (string $missingKey) use ($data): array {
             unset($data[$missingKey]);
 
             return [
@@ -141,7 +140,7 @@ final class CacheTest extends TestCase
     /**
      * @dataProvider provideCanConvertToAndFromJsonCases
      */
-    public function testCanConvertToAndFromJson(SignatureInterface $signature)
+    public function testCanConvertToAndFromJson(SignatureInterface $signature): void
     {
         $cache = new Cache($signature);
 
@@ -156,7 +155,7 @@ final class CacheTest extends TestCase
         static::assertSame($hash, $cached->get($file));
     }
 
-    public function provideCanConvertToAndFromJsonCases()
+    public function provideCanConvertToAndFromJsonCases(): array
     {
         $toolInfo = new ToolInfo();
         $config = new Config();
@@ -185,7 +184,7 @@ final class CacheTest extends TestCase
         ];
     }
 
-    public function testToJsonThrowsExceptionOnInvalid()
+    public function testToJsonThrowsExceptionOnInvalid(): void
     {
         $invalidUtf8Sequence = "\xB1\x31";
 
@@ -203,17 +202,15 @@ final class CacheTest extends TestCase
         $this->expectException(
             \UnexpectedValueException::class
         );
+
         $this->expectExceptionMessage(
-            'Can not encode cache signature to JSON, error: "Malformed UTF-8 characters, possibly incorrectly encoded". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.'
+            'Cannot encode cache signature to JSON, error: "Malformed UTF-8 characters, possibly incorrectly encoded". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.'
         );
 
         $cache->toJson();
     }
 
-    /**
-     * @return SignatureInterface
-     */
-    private function getSignatureDouble()
+    private function getSignatureDouble(): SignatureInterface
     {
         return $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
     }

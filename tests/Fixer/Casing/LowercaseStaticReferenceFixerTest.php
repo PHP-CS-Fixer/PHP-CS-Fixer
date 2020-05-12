@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -143,24 +142,6 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
             [
                 '<?php namespace Parent\Foo;',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php class Foo extends Bar { public function baz() : self {} }',
                 '<?php class Foo extends Bar { public function baz() : Self {} }',
@@ -175,27 +156,6 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
             [
                 '<?php class Foo extends Bar { public function baz() : Self\Qux {} }',
             ],
-            [
-                '<?php namespace Parent;',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.1
-     * @dataProvider provideFix71Cases
-     */
-    public function testFix71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
             [
                 '<?php class Foo extends Bar { public function baz(?self $x) {} }',
                 '<?php class Foo extends Bar { public function baz(?Self $x) {} }',
@@ -218,6 +178,98 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
             [
                 '<?php class Foo extends Bar { public function baz() : ?Self\Qux {} }',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases(): \Generator
+    {
+        yield [
+            '<?php class Foo {
+                private STATIC int $baz1;
+                private STATIC ?int $baz2;
+            }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield ['<?php $foo?->Self();'];
+
+        yield [
+            '<?php class Foo extends A {
+                public function baz1() : int|parent {}
+                public function baz2() : parent|int {}
+                public function baz3() : ?parent {}
+            }',
+            '<?php class Foo extends A {
+                public function baz1() : int|Parent {}
+                public function baz2() : Parent|int {}
+                public function baz3() : ?Parent {}
+            }',
+        ];
+
+        yield [
+            '<?php class Foo extends A {
+                public function baz1() : int|static {}
+                public function baz2() : static|int {}
+                public function baz3() : ?static {}
+            }',
+            '<?php class Foo extends A {
+                public function baz1() : int|STATIC {}
+                public function baz2() : STATIC|int {}
+                public function baz3() : ?STATIC {}
+            }',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    private int|self $prop1, $prop2;
+    private self|int $prop3, $prop4;
+}
+',
+            '<?php
+class Foo
+{
+    private int|SELF $prop1, $prop2;
+    private SELF|int $prop3, $prop4;
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class A { final const PARENT = 42; }',
         ];
     }
 }

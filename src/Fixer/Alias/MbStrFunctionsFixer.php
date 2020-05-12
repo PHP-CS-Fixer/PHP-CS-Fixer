@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -54,8 +57,8 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
 
         $this->functions = array_filter(
             self::$functionsMap,
-            static function (array $mapping) {
-                return \function_exists($mapping['alternativeName']) && (new \ReflectionFunction($mapping['alternativeName']))->isInternal();
+            static function (array $mapping): bool {
+                return (new \ReflectionFunction($mapping['alternativeName']))->isInternal();
             }
         );
     }
@@ -63,7 +66,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Replace non multibyte-safe functions with corresponding mb function.',
@@ -86,27 +89,19 @@ $a = substr_count($a, $b);
                 ),
             ],
             null,
-            'Risky when any of the functions are overridden.'
+            'Risky when any of the functions are overridden, or when relying on the string byte size rather than its length in characters.'
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         foreach ($this->functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;
-            while (null !== $currIndex) {
+            do {
                 // try getting function reference and translate boundaries for humans
                 $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
                 if (null === $boundaries) {
@@ -114,7 +109,7 @@ $a = substr_count($a, $b);
                     continue 2;
                 }
 
-                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                [$functionName, $openParenthesis, $closeParenthesis] = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
                 if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;
@@ -124,7 +119,7 @@ $a = substr_count($a, $b);
                 $currIndex = $openParenthesis;
 
                 $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
-            }
+            } while (null !== $currIndex);
         }
     }
 }

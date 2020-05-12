@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,11 +15,13 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitNamespacedFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpUnitNamespacedFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string
@@ -47,18 +51,23 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configuratio
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
+        $codeSample = '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomething()
+    {
+        PHPUnit_Framework_Assert::assertTrue(true);
+    }
+}
+';
+
         return new FixerDefinition(
             'PHPUnit classes MUST be used in namespaced version, e.g. `\PHPUnit\Framework\TestCase` instead of `\PHPUnit_Framework_TestCase`.',
             [
-                new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-}
-'
-                ),
+                new CodeSample($codeSample),
+                new CodeSample($codeSample, ['target' => PhpUnitTargetVersion::VERSION_4_8]),
             ],
             "PHPUnit v6 has finally fully switched to namespaces.\n"
             ."You could start preparing the upgrade by switching from non-namespaced TestCase to namespaced one.\n"
@@ -71,7 +80,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
@@ -79,7 +88,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -87,7 +96,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -135,16 +144,22 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $importedOriginalClassesMap = [];
         $currIndex = 0;
 
-        while (null !== $currIndex) {
+        while (true) {
             $currIndex = $tokens->getNextTokenOfKind($currIndex, [[T_STRING]]);
 
             if (null === $currIndex) {
                 break;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
+
+            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON])) {
+                continue;
             }
 
             $originalClass = $tokens[$currIndex]->getContent();
@@ -179,7 +194,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
@@ -190,12 +205,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    /**
-     * @param string $originalClassName
-     *
-     * @return Tokens
-     */
-    private function generateReplacement($originalClassName)
+    private function generateReplacement(string $originalClassName): Tokens
     {
         $delimiter = '_';
         $string = $originalClassName;
@@ -206,8 +216,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         $parts = explode($delimiter, $string);
-
         $tokensArray = [];
+
         while (!empty($parts)) {
             $tokensArray[] = new Token([T_STRING, array_shift($parts)]);
             if (!empty($parts)) {

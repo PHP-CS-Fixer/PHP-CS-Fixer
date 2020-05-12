@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,7 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -27,11 +29,8 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null, WhitespacesFixerConfig $whitespaces = null)
+    public function testFix(string $expected, ?string $input = null, WhitespacesFixerConfig $whitespaces = null): void
     {
         if (null !== $whitespaces) {
             $this->fixer->setWhitespacesConfig($whitespaces);
@@ -39,10 +38,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ['<?php namespace Some\Name\Space;'],
@@ -77,7 +73,7 @@ namespace Foo;
         ];
     }
 
-    public function testFixExampleWithComment()
+    public function testFixExampleWithComment(): void
     {
         $expected = <<<'EOF'
 <?php

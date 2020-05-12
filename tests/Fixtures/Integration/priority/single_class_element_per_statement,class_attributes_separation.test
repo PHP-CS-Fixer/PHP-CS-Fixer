@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: single_class_element_per_statement,class_attributes_separation.
+--RULESET--
+{"class_attributes_separation": true, "single_class_element_per_statement": true}
+--EXPECT--
+<?php
+class Foo
+{
+    private $x;
+
+    private $y;
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    private $x, $y;
+}

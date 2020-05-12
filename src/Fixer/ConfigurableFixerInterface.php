@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,12 +15,10 @@
 namespace PhpCsFixer\Fixer;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
- *
- * @todo Will incorporate `ConfigurationDefinitionFixerInterface` in 3.0
  */
 interface ConfigurableFixerInterface extends FixerInterface
 {
@@ -26,26 +26,22 @@ interface ConfigurableFixerInterface extends FixerInterface
      * Set configuration.
      *
      * New configuration must override current one, not patch it.
-     * Using `null` makes fixer to use default configuration (or reset configuration from previously configured back
-     * to default one).
+     * Using empty array makes fixer to use default configuration
+     * (or reset configuration from previously configured back to default one).
      *
-     * Some fixers may have no configuration, then - simply pass null.
+     * Some fixers may have no configuration, then - simply don't implement this interface.
      * Other ones may have configuration that will change behavior of fixer,
      * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
      * Finally, some fixers need configuration to work, eg `header_comment`.
      *
-     * @param null|array $configuration configuration depends on Fixer
+     * @param array $configuration configuration depends on Fixer
      *
      * @throws InvalidFixerConfigurationException
      */
-    public function configure(array $configuration = null);
+    public function configure(array $configuration): void;
 
-    /*
+    /**
      * Defines the available configuration options of the fixer.
-     *
-     * @return FixerConfigurationResolverInterface
-     *
-     * @todo uncomment at 3.0
      */
-    // public function getConfigurationDefinition();
+    public function getConfigurationDefinition(): FixerConfigurationResolverInterface;
 }

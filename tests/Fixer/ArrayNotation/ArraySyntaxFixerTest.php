@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,12 +14,12 @@
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Gregor Harlan <gharlan@web.de>
- * @author SpacePossum
  *
  * @internal
  *
@@ -25,49 +27,33 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    public function testInvalidConfiguration(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. Defined options are: "syntax"\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. Defined options are: "syntax"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyFixWithDefaultConfiguration()
-    {
-        $this->fixer->configure(null);
-        $this->doTest(
-            '<?php $a = array(); $b = array();',
-            '<?php $a = array(); $b = [];'
-        );
-    }
-
-    public function testFixWithDefaultConfiguration()
+    public function testFixWithDefaultConfiguration(): void
     {
         $this->fixer->configure([]);
         $this->doTest(
-            '<?php $a = array(); $b = array();',
-            '<?php $a = array(); $b = [];'
+            '<?php $a = []; $b = [];',
+            '<?php $a = []; $b = array();'
         );
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideLongSyntaxCases
      */
-    public function testFixLongSyntax($expected, $input = null)
+    public function testFixLongSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'long']);
         $this->doTest($expected, $input);
     }
 
-    public function provideLongSyntaxCases()
+    public function provideLongSyntaxCases(): array
     {
         return [
             ['<?php $x = array();', '<?php $x = [];'],
@@ -91,22 +77,21 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
             ['<?php $x = func()[$x];'],
             ['<?php $x = "foo"[$x];'],
             ['<?php $text = "foo ${aaa[123]} bar $bbb[0] baz";'],
+            ['<?php foreach ($array as [$x, $y]) {}'],
+            ['<?php foreach ($array as $key => [$x, $y]) {}'],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideShortSyntaxCases
      */
-    public function testFixShortSyntax($expected, $input = null)
+    public function testFixShortSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'short']);
         $this->doTest($expected, $input);
     }
 
-    public function provideShortSyntaxCases()
+    public function provideShortSyntaxCases(): array
     {
         return [
             ['<?php $x = [];', '<?php $x = array();'],

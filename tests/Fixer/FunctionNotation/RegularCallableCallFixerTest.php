@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield 'call by name - list' => [
             '<?php
@@ -54,10 +53,12 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func("Bar\Baz::d", 1, 2);
                 call_user_func("\Bar\Baz::d", 1, 2);',
         ];
+
         yield 'call by name - array' => [
             '<?php Bar\Baz::d(...[1, 2]);',
             '<?php call_user_func_array("Bar\Baz::d", [1, 2]);',
         ];
+
         yield 'call by array-as-name, not supported' => [
             '<?php
                 call_user_func(array("Bar\baz", "myCallbackMethod"), 1, 2);
@@ -68,18 +69,18 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`
             ',
         ];
+
         yield 'call by variable' => [
             '<?php
                 $c(1, 2);
                 $a["b"]["c"](1, 2);
-                $a["b"]{"c"}(1, 2);
             ',
             '<?php
                 call_user_func($c, 1, 2);
                 call_user_func($a["b"]["c"], 1, 2);
-                call_user_func($a["b"]{"c"}, 1, 2);
             ',
         ];
+
         yield 'call with comments' => [
             '<?php
                 dont_touch_me(/* a */1, 2/** b */);
@@ -110,30 +111,28 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func("Bar\Baz::d", 1, 2);
                 call_user_func("\Bar\Baz::d", 1, 2);',
         ];
+
         yield 'single var' => [
             '<?php $foo() ?>',
             '<?php \call_user_func($foo) ?>',
         ];
+
         yield 'unsafe repeated variable' => [
             '<?php call_user_func($foo, $foo = "bar");',
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'call by variable (PHP < 8.0)' => [
+                '<?php
+                    $a{"b"}{"c"}(1, 2);
+                ',
+                '<?php
+                    call_user_func($a{"b"}{"c"}, 1, 2);
+                ',
+            ];
+        }
 
-    public function provideFix70Cases()
-    {
-        yield 'call by variable' => [
+        yield 'call by property' => [
             '<?php
                 ($f->c)(1, 2);
                 ($f->{c})(1, 2);
@@ -147,6 +146,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func($x["y"]->{"c"}, 1, 2);
             ',
         ];
+
         yield 'call by anon-function' => [
             '<?php
                 (function ($a, $b) { var_dump($a, $b); })(1, 2);
@@ -157,30 +157,85 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             ',
         ];
+
         yield 'complex cases' => [
             '<?php
                 call_user_func(\'a\'.$a.$b, 1, 2);
                 ($a/**/.$b)(1, 2);
                 (function (){})();
-                ($a["b"]{"c"}->a)(1, 2, 3, 4);
+                ($a["b"]["c"]->a)(1, 2, 3, 4);
                 ($a::$b)(1, 2);
-                ($a[1]::$b[2]{3})([&$c], array(&$d));
+                ($a[1]::$b[2][3])([&$c], array(&$d));
             ',
             '<?php
                 call_user_func(\'a\'.$a.$b, 1, 2);
                 call_user_func($a/**/.$b, 1, 2);
                 \call_user_func(function (){});
-                call_user_func($a["b"]{"c"}->a, 1, 2, 3, 4);
+                call_user_func($a["b"]["c"]->a, 1, 2, 3, 4);
                 call_user_func($a::$b, 1, 2);
-                call_user_func($a[1]::$b[2]{3}, [&$c], array(&$d));
+                call_user_func($a[1]::$b[2][3], [&$c], array(&$d));
             ',
         ];
+
         yield [
             '<?php ($a(1, 2))([&$x], array(&$z));',
             '<?php call_user_func($a(1, 2), [&$x], array(&$z));',
         ];
+
         yield 'redeclare/override' => [
-            '<?php function call_user_func($foo){}',
+            '<?php
+                if (!function_exists("call_user_func")) {
+                    function call_user_func($foo){}
+                }
+            ',
+        ];
+
+        yield 'function name with escaped slash' => [
+            '<?php \pack(...$args);',
+            '<?php call_user_func_array("\\\\pack", $args);',
+        ];
+
+        yield 'function call_user_func_array with leading slash' => [
+            '<?php \pack(...$args);',
+            '<?php \call_user_func_array("\\\\pack", $args);',
+        ];
+
+        yield 'function call_user_func_array caps' => [
+            '<?php \pack(...$args);',
+            '<?php \CALL_USER_FUNC_ARRAY("\\\\pack", $args);',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases(): \Generator
+    {
+        yield [
+            '<?php foo(1,);',
+            '<?php call_user_func("foo", 1,);',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php \call_user_func(...) ?>',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,20 +26,16 @@ use PhpCsFixer\FixerNameValidator;
 final class FixerNameValidatorTest extends TestCase
 {
     /**
-     * @param string $name
-     * @param bool   $isCustom
-     * @param bool   $isValid
-     *
      * @dataProvider provideIsValidCases
      */
-    public function testIsValid($name, $isCustom, $isValid)
+    public function testIsValid(string $name, bool $isCustom, bool $isValid): void
     {
         $validator = new FixerNameValidator();
 
         static::assertSame($isValid, $validator->isValid($name, $isCustom));
     }
 
-    public function provideIsValidCases()
+    public function provideIsValidCases(): array
     {
         return [
             ['', true, false],

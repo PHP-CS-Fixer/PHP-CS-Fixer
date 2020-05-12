@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
+use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,19 +27,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param bool        $shortenSimpleStatementsOnly
-     *
      * @dataProvider provideLongToShortFormatCases
      */
-    public function testLongToShortFormat($expected, $input = null, $shortenSimpleStatementsOnly = true)
+    public function testLongToShortFormat(string $expected, ?string $input = null, bool $shortenSimpleStatementsOnly = true): void
     {
-        $this->fixer->configure(['format' => 'short', 'shorten_simple_statements_only' => $shortenSimpleStatementsOnly]);
+        $this->fixer->configure([EchoTagSyntaxFixer::OPTION_FORMAT => EchoTagSyntaxFixer::FORMAT_SHORT, EchoTagSyntaxFixer::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY => $shortenSimpleStatementsOnly]);
         $this->doTest($expected, $input);
     }
 
-    public function provideLongToShortFormatCases()
+    public function provideLongToShortFormatCases(): array
     {
         return [
             ['<?= \'Foo\';', '<?php echo \'Foo\';'],
@@ -94,19 +93,15 @@ EOT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param string      $function
-     *
      * @dataProvider provideShortToLongFormatCases
      */
-    public function testShortToLongFormat($expected, $input, $function)
+    public function testShortToLongFormat(string $expected, ?string $input, string $function): void
     {
-        $this->fixer->configure(['format' => 'long', 'long_function' => $function]);
+        $this->fixer->configure([EchoTagSyntaxFixer::OPTION_FORMAT => EchoTagSyntaxFixer::FORMAT_LONG, EchoTagSyntaxFixer::OPTION_LONG_FUNCTION => $function]);
         $this->doTest($expected, $input);
     }
 
-    public function provideShortToLongFormatCases()
+    public function provideShortToLongFormatCases(): array
     {
         $cases = [
             ['<?php <fn> 1;', '<?= 1;'],
@@ -120,7 +115,7 @@ EOT
             ['<?php <fn> foo();', '<?=foo();'],
         ];
         $result = [];
-        foreach (['echo', 'print'] as $fn) {
+        foreach ([EchoTagSyntaxFixer::LONG_FUNCTION_ECHO, EchoTagSyntaxFixer::LONG_FUNCTION_PRINT] as $fn) {
             foreach ($cases as $case) {
                 $result[] = [str_replace('<fn>', $fn, $case[0]), str_replace('<fn>', $fn, $case[1]), $fn];
             }

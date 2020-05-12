@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,17 +27,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $cases = [
             ['<?php $x = "strlen";'],
@@ -63,17 +62,29 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        if (\PHP_VERSION_ID >= 70400) {
-            $cases[] = [
-                '<?php $a = mb_str_split($a);',
-                '<?php $a = str_split($a);',
-            ];
-        } else {
+        if (\PHP_VERSION_ID < 70400) {
             $cases[] = [
                 '<?php $a = str_split($a);',
             ];
         }
 
         return $cases;
+    }
+
+    /**
+     * @dataProvider provideFixPhp74Cases
+     * @requires PHP 7.4
+     */
+    public function testFixPhp74(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp74Cases(): \Generator
+    {
+        yield [
+            '<?php $a = mb_str_split($a);',
+            '<?php $a = str_split($a);',
+        ];
     }
 }

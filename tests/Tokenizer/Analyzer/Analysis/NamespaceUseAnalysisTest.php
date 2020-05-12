@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,7 +16,6 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -25,46 +26,40 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
  */
 final class NamespaceUseAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis()
+    public function testFullName(): void
     {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
-        static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
-    }
-
-    public function testFullName()
-    {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
+        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 11, 21, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertSame('Full\NamespaceName', $analysis->getFullName());
     }
 
-    public function testAliased()
+    public function testAliased(): void
     {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
+        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 12, 22, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertFalse($analysis->isAliased());
 
         $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', true, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertTrue($analysis->isAliased());
     }
 
-    public function testShortName()
+    public function testShortName(): void
     {
         $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertSame('NamespaceName', $analysis->getShortName());
     }
 
-    public function testStartIndex()
+    public function testStartIndex(): void
     {
         $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertSame(1, $analysis->getStartIndex());
     }
 
-    public function testEndIndex()
+    public function testEndIndex(): void
     {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
-        static::assertSame(2, $analysis->getEndIndex());
+        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 72, NamespaceUseAnalysis::TYPE_CLASS);
+        static::assertSame(72, $analysis->getEndIndex());
     }
 
-    public function testTypeCheck()
+    public function testTypeCheck(): void
     {
         $class = new NamespaceUseAnalysis('Foo\Bar', 'Baz', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
         $function = new NamespaceUseAnalysis('Foo\Bar', 'Baz', false, 1, 2, NamespaceUseAnalysis::TYPE_FUNCTION);
@@ -73,13 +68,16 @@ final class NamespaceUseAnalysisTest extends TestCase
         static::assertTrue($class->isClass());
         static::assertFalse($class->isFunction());
         static::assertFalse($class->isConstant());
+        static::assertSame(NamespaceUseAnalysis::TYPE_CLASS, $class->getType());
 
         static::assertFalse($function->isClass());
         static::assertTrue($function->isFunction());
         static::assertFalse($function->isConstant());
+        static::assertSame(NamespaceUseAnalysis::TYPE_FUNCTION, $function->getType());
 
         static::assertFalse($constant->isClass());
         static::assertFalse($constant->isFunction());
         static::assertTrue($constant->isConstant());
+        static::assertSame(NamespaceUseAnalysis::TYPE_CONSTANT, $constant->getType());
     }
 }

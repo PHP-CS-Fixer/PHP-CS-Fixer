@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,23 +26,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FinalClassFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ['<?php /** @Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping; /** @Mapping\Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM; /** @ORM\Mapping\Entity */ class MyEntity {}'],
+            ['<?php /** @Document */ class MyDocument {}'],
+            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; /** @ODM\Document */ class MyEntity {}'],
             ['<?php /** @entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @orm\entity */ class MyEntity {}'],
             ['<?php abstract class MyAbstract {}'],
@@ -71,24 +72,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                 '<?php /** @internal Map my app to an @Entity */ final class MyMapper {}',
                 '<?php /** @internal Map my app to an @Entity */ class MyMapper {}',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             ['<?php $anonymClass = new class {};'],
         ];
     }

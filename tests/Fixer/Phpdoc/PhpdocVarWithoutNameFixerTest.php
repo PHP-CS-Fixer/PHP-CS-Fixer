@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -25,22 +27,16 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixVarCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixVar($expected, $input = null)
+    public function testFixVar(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixVarCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixType($expected, $input = null)
+    public function testFixType(string $expected, ?string $input = null): void
     {
         $expected = str_replace('@var', '@type', $expected);
         if (null !== $input) {
@@ -50,7 +46,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixVarCases()
+    public function provideFixVarCases(): array
     {
         return [
             'testFixVar' => [
@@ -386,24 +382,6 @@ class Foo
 class Foo{}
 /**  */',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFixVar70Cases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testFixVar70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixVar70Cases()
-    {
-        return [
             'anonymousClass' => [
                 <<<'EOF'
 <?php
@@ -498,6 +476,76 @@ $bar->doSomething(2);
 list($bar) = a();
                 ',
             ],
+            'const are not handled by this fixer' => [
+                '<?php
+class A
+{
+    /**
+     * @var array<string, true> SKIPPED_TYPES
+     */
+    private const SKIPPED_TYPES = ["a" => true];
+}
+',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly' => [
+            '<?php
+
+class Foo
+{
+    /** @var Foo */
+    public $bar1;
+
+    /** @var Foo */
+    public readonly int $bar2;
+
+    /** @var Foo */
+    readonly public int $bar3;
+
+    /** @var Foo */
+    readonly int $bar4;
+}',
+            '<?php
+
+class Foo
+{
+    /** @var Foo $bar1 */
+    public $bar1;
+
+    /** @var Foo $bar2 */
+    public readonly int $bar2;
+
+    /** @var Foo $bar3 */
+    readonly public int $bar3;
+
+    /** @var Foo $bar4 */
+    readonly int $bar4;
+}',
+        ];
+
+        yield 'final public const are not handled by this fixer' => [
+            '<?php
+class A
+{
+    /**
+     * @var array<string, true> SKIPPED_TYPES
+     */
+    final public const SKIPPED_TYPES = ["a" => true];
+}
+',
         ];
     }
 }

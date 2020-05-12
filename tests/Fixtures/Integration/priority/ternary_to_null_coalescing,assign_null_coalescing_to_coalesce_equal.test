@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: ternary_to_null_coalescing,assign_null_coalescing_to_coalesce_equal.
+--RULESET--
+{"ternary_to_null_coalescing": true, "assign_null_coalescing_to_coalesce_equal": true}
+--REQUIREMENTS--
+{"php": 70400}
+--EXPECT--
+<?php
+$a ??= 123;
+
+--INPUT--
+<?php
+$a = isset($a) ? $a : 123;

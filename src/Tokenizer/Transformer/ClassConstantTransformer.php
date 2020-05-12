@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,15 +31,7 @@ final class ClassConstantTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        return [CT::T_CLASS_CONSTANT];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
         return 50500;
     }
@@ -45,7 +39,7 @@ final class ClassConstantTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equalsAny([
             [T_CLASS, 'class'],
@@ -60,5 +54,13 @@ final class ClassConstantTransformer extends AbstractTransformer
         if ($prevToken->isGivenKind(T_DOUBLE_COLON)) {
             $tokens[$index] = new Token([CT::T_CLASS_CONSTANT, $token->getContent()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomTokens(): array
+    {
+        return [CT::T_CLASS_CONSTANT];
     }
 }

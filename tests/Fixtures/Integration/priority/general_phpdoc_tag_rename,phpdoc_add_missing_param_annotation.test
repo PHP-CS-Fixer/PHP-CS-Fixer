@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: general_phpdoc_tag_rename,phpdoc_add_missing_param_annotation.
+--RULESET--
+{"general_phpdoc_tag_rename": {"replacements": {"PARAM": "param"} }, "phpdoc_add_missing_param_annotation": true}
+--EXPECT--
+<?php
+/**
+ * @param string $name
+ */
+function sayHello($name) {
+}
+
+--INPUT--
+<?php
+/**
+ * @PARAM string $name
+ */
+function sayHello($name) {
+}

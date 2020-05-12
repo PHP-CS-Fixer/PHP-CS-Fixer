@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,18 +28,16 @@ use PhpCsFixer\Tests\TestCase;
 final class AliasedFixerOptionTest extends TestCase
 {
     /**
-     * @param string $name
-     *
      * @dataProvider provideGetNameCases
      */
-    public function testGetName($name)
+    public function testGetName(string $name): void
     {
         $option = new AliasedFixerOption(new FixerOption($name, 'Bar.'), 'baz');
 
         static::assertSame($name, $option->getName());
     }
 
-    public function provideGetNameCases()
+    public function provideGetNameCases(): array
     {
         return [
             ['foo'],
@@ -46,18 +46,16 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param string $description
-     *
      * @dataProvider provideGetDescriptionCases
      */
-    public function testGetDescription($description)
+    public function testGetDescription(string $description): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', $description), 'baz');
 
         static::assertSame($description, $option->getDescription());
     }
 
-    public function provideGetDescriptionCases()
+    public function provideGetDescriptionCases(): array
     {
         return [
             ['Foo.'],
@@ -66,16 +64,14 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param bool $hasDefault
-     *
      * @dataProvider provideHasDefaultCases
      */
-    public function testHasDefault($hasDefault, AliasedFixerOption $input)
+    public function testHasDefault(bool $hasDefault, AliasedFixerOption $input): void
     {
         static::assertSame($hasDefault, $input->hasDefault());
     }
 
-    public function provideHasDefaultCases()
+    public function provideHasDefaultCases(): array
     {
         return [
             [
@@ -90,18 +86,16 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param string $default
-     *
      * @dataProvider provideGetDefaultCases
      */
-    public function testGetDefault($default)
+    public function testGetDefault(string $default): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', false, $default), 'baz');
 
         static::assertSame($default, $option->getDefault());
     }
 
-    public function provideGetDefaultCases()
+    public function provideGetDefaultCases(): array
     {
         return [
             ['baz'],
@@ -109,7 +103,7 @@ final class AliasedFixerOptionTest extends TestCase
         ];
     }
 
-    public function testGetUndefinedDefault()
+    public function testGetUndefinedDefault(): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz');
 
@@ -119,18 +113,16 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param null|array $allowedTypes
-     *
      * @dataProvider provideGetAllowedTypesCases
      */
-    public function testGetAllowedTypes($allowedTypes)
+    public function testGetAllowedTypes(?array $allowedTypes): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, $allowedTypes), 'baz');
 
         static::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
-    public function provideGetAllowedTypesCases()
+    public function provideGetAllowedTypesCases(): array
     {
         return [
             [null],
@@ -140,18 +132,16 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param null|array $allowedValues
-     *
      * @dataProvider provideGetAllowedValuesCases
      */
-    public function testGetAllowedValues($allowedValues)
+    public function testGetAllowedValues(?array $allowedValues): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, $allowedValues), 'baz');
 
         static::assertSame($allowedValues, $option->getAllowedValues());
     }
 
-    public function provideGetAllowedValuesCases()
+    public function provideGetAllowedValuesCases(): array
     {
         return [
             [null],
@@ -160,38 +150,36 @@ final class AliasedFixerOptionTest extends TestCase
         ];
     }
 
-    public function testGetAllowedValuesClosure()
+    public function testGetAllowedValuesClosure(): void
     {
-        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static function () {}]), 'baz');
+        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static function (): void {}]), 'baz');
         $allowedTypes = $option->getAllowedValues();
-        static::assertInternalType('array', $allowedTypes);
+        static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);
         static::assertArrayHasKey(0, $allowedTypes);
         static::assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
-    public function testGetNormalizers()
+    public function testGetNormalizers(): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.'), 'baz');
         static::assertNull($option->getNormalizer());
 
-        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, static function () {}), 'baz');
+        $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, null, static function (): void {}), 'baz');
         static::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
     /**
-     * @param string $alias
-     *
      * @dataProvider provideGetAliasCases
      */
-    public function testGetAlias($alias)
+    public function testGetAlias(string $alias): void
     {
         $options = new AliasedFixerOption(new FixerOption('foo', 'Bar', true, null, null, null, null), $alias);
 
         static::assertSame($alias, $options->getAlias());
     }
 
-    public function provideGetAliasCases()
+    public function provideGetAliasCases(): array
     {
         return [
             ['bar'],
@@ -199,7 +187,7 @@ final class AliasedFixerOptionTest extends TestCase
         ];
     }
 
-    public function testRequiredWithDefaultValue()
+    public function testRequiredWithDefaultValue(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Required options cannot have a default value.');

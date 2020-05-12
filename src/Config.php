@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,40 +23,75 @@ use PhpCsFixer\Fixer\FixerInterface;
  */
 class Config implements ConfigInterface
 {
-    private $cacheFile = '.php_cs.cache';
+    /**
+     * @var string
+     */
+    private $cacheFile = '.php-cs-fixer.cache';
+
+    /**
+     * @var FixerInterface[]
+     */
     private $customFixers = [];
+
+    /**
+     * @var null|iterable
+     */
     private $finder;
+
+    /**
+     * @var string
+     */
     private $format = 'txt';
+
+    /**
+     * @var bool
+     */
     private $hideProgress = false;
+
+    /**
+     * @var string
+     */
     private $indent = '    ';
+
+    /**
+     * @var bool
+     */
     private $isRiskyAllowed = false;
+
+    /**
+     * @var string
+     */
     private $lineEnding = "\n";
+
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var null|string
+     */
     private $phpExecutable;
-    private $rules = ['@PSR2' => true];
+
+    /**
+     * @var array
+     */
+    private $rules = ['@PSR12' => true];
+
+    /**
+     * @var bool
+     */
     private $usingCache = true;
 
-    public function __construct($name = 'default')
+    public function __construct(string $name = 'default')
     {
         $this->name = $name;
     }
 
     /**
-     * @return static
-     *
-     * @deprecated since 2.17
-     */
-    public static function create()
-    {
-        @trigger_error(__METHOD__.' is deprecated since 2.17 and will be removed in 3.0.', E_USER_DEPRECATED);
-
-        return new static();
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function getCacheFile()
+    public function getCacheFile(): string
     {
         return $this->cacheFile;
     }
@@ -62,7 +99,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomFixers()
+    public function getCustomFixers(): array
     {
         return $this->customFixers;
     }
@@ -70,7 +107,7 @@ class Config implements ConfigInterface
     /**
      * @return Finder
      */
-    public function getFinder()
+    public function getFinder(): iterable
     {
         if (null === $this->finder) {
             $this->finder = new Finder();
@@ -82,7 +119,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return $this->format;
     }
@@ -90,7 +127,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getHideProgress()
+    public function getHideProgress(): bool
     {
         return $this->hideProgress;
     }
@@ -98,7 +135,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndent()
+    public function getIndent(): string
     {
         return $this->indent;
     }
@@ -106,7 +143,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getLineEnding()
+    public function getLineEnding(): string
     {
         return $this->lineEnding;
     }
@@ -114,7 +151,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -122,7 +159,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getPhpExecutable()
+    public function getPhpExecutable(): ?string
     {
         return $this->phpExecutable;
     }
@@ -130,7 +167,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getRiskyAllowed()
+    public function getRiskyAllowed(): bool
     {
         return $this->isRiskyAllowed;
     }
@@ -138,7 +175,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -146,7 +183,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsingCache()
+    public function getUsingCache(): bool
     {
         return $this->usingCache;
     }
@@ -154,15 +191,8 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function registerCustomFixers($fixers)
+    public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
-        if (false === \is_array($fixers) && false === $fixers instanceof \Traversable) {
-            throw new \InvalidArgumentException(sprintf(
-                'Argument must be an array or a Traversable, got "%s".',
-                \is_object($fixers) ? \get_class($fixers) : \gettype($fixers)
-            ));
-        }
-
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
         }
@@ -173,7 +203,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setCacheFile($cacheFile)
+    public function setCacheFile(string $cacheFile): ConfigInterface
     {
         $this->cacheFile = $cacheFile;
 
@@ -183,15 +213,8 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setFinder($finder)
+    public function setFinder(iterable $finder): ConfigInterface
     {
-        if (false === \is_array($finder) && false === $finder instanceof \Traversable) {
-            throw new \InvalidArgumentException(sprintf(
-                'Argument must be an array or a Traversable, got "%s".',
-                \is_object($finder) ? \get_class($finder) : \gettype($finder)
-            ));
-        }
-
         $this->finder = $finder;
 
         return $this;
@@ -200,7 +223,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setFormat($format)
+    public function setFormat(string $format): ConfigInterface
     {
         $this->format = $format;
 
@@ -210,7 +233,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setHideProgress($hideProgress)
+    public function setHideProgress(bool $hideProgress): ConfigInterface
     {
         $this->hideProgress = $hideProgress;
 
@@ -220,7 +243,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setIndent($indent)
+    public function setIndent(string $indent): ConfigInterface
     {
         $this->indent = $indent;
 
@@ -230,7 +253,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setLineEnding($lineEnding)
+    public function setLineEnding(string $lineEnding): ConfigInterface
     {
         $this->lineEnding = $lineEnding;
 
@@ -240,7 +263,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setPhpExecutable($phpExecutable)
+    public function setPhpExecutable(?string $phpExecutable): ConfigInterface
     {
         $this->phpExecutable = $phpExecutable;
 
@@ -250,7 +273,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setRiskyAllowed($isRiskyAllowed)
+    public function setRiskyAllowed(bool $isRiskyAllowed): ConfigInterface
     {
         $this->isRiskyAllowed = $isRiskyAllowed;
 
@@ -260,7 +283,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setRules(array $rules)
+    public function setRules(array $rules): ConfigInterface
     {
         $this->rules = $rules;
 
@@ -270,14 +293,14 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setUsingCache($usingCache)
+    public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;
 
         return $this;
     }
 
-    private function addCustomFixer(FixerInterface $fixer)
+    private function addCustomFixer(FixerInterface $fixer): void
     {
         $this->customFixers[] = $fixer;
     }

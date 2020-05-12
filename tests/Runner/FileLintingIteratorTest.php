@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,15 +20,13 @@ use PhpCsFixer\Runner\FileLintingIterator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileLintingIterator
  */
 final class FileLintingIteratorTest extends TestCase
 {
-    public function testFileLintingIteratorEmpty()
+    public function testFileLintingIteratorEmpty(): void
     {
         $fileLintingIteratorProphecy = $this->prophesize(LinterInterface::class);
 
@@ -43,7 +43,7 @@ final class FileLintingIteratorTest extends TestCase
         static::assertFalse($fileLintingIterator->valid());
     }
 
-    public function testFileLintingIterator()
+    public function testFileLintingIterator(): void
     {
         $file = new \SplFileInfo(__FILE__);
         $fileLintingIteratorProphecy = $this->prophesize(LinterInterface::class);
@@ -77,7 +77,7 @@ final class FileLintingIteratorTest extends TestCase
         FileLintingIterator $fileLintingIterator,
         \SplFileInfo $file,
         LintingResultInterface $lintingResultInterface
-    ) {
+    ): void {
         $iterations = 0;
 
         foreach ($fileLintingIterator as $lintedFile) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,14 +27,14 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidConfigurationExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException()
+    public function testIsInvalidArgumentException(): void
     {
         $exception = new InvalidConfigurationException('I cannot do that, Dave.');
 
         static::assertInstanceOf(\InvalidArgumentException::class, $exception);
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $message = 'I cannot do that, Dave.';
 
@@ -43,7 +45,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
         static::assertNull($exception->getPrevious());
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $message = 'I cannot do that, Dave.';
         $code = 9000;

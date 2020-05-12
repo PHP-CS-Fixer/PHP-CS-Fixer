@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -19,15 +22,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @requires PHP 7.0
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
  */
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    public function testInvalidConfiguration(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
             '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist\. (Known|Defined) options are: "space_before"\.$#'
         );
 
@@ -35,27 +37,9 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @group legacy
      * @dataProvider provideFixWithSpaceBeforeNoneCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
-    {
-        $this->fixer->configure(null);
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixWithSpaceBeforeNoneCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
 
@@ -64,11 +48,8 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixWithSpaceBeforeNoneCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithSpaceBeforeNone($expected, $input = null)
+    public function testFixWithSpaceBeforeNone(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'space_before' => 'none',
@@ -77,7 +58,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeNoneCases()
+    public function provideFixWithSpaceBeforeNoneCases(): array
     {
         return [
             [
@@ -133,11 +114,8 @@ string {}',
 
     /**
      * @dataProvider provideFixWithSpaceBeforeOneCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithSpaceBeforeOne($expected, $input = null)
+    public function testFixWithSpaceBeforeOne(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'space_before' => 'one',
@@ -146,7 +124,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeOneCases()
+    public function provideFixWithSpaceBeforeOneCases(): array
     {
         return [
             [
@@ -173,22 +151,41 @@ string {}',
     /**
      * @dataProvider provideFixWithSpaceBeforeNonePhp74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfigurationPhp74($expected, $input = null)
+    public function testFixWithDefaultConfigurationPhp74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeNonePhp74Cases()
+    public function provideFixWithSpaceBeforeNonePhp74Cases(): array
     {
         return [
             [
                 '<?php fn(): int => 1;',
                 '<?php fn():int => 1;',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php function foo(): mixed{}',
+            '<?php function foo()   :   mixed{}',
+        ];
+
+        yield [
+            '<?php class A { public function foo(): static{}}',
+            '<?php class A { public function foo()   :static{}}',
         ];
     }
 }

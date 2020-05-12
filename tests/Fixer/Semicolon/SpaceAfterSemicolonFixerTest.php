@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\SpaceAfterSemicolonFixer
@@ -24,23 +24,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithSpacesInEmptyForExpressions($expected, $input = null)
+    public function testFixWithSpacesInEmptyForExpressions(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'remove_in_empty_for_expressions' => false,
@@ -48,7 +42,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -286,12 +280,9 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpacesInEmptyForExpressionsCases
      */
-    public function testFixWithoutSpacesInEmptyForExpressions($expected, $input = null)
+    public function testFixWithoutSpacesInEmptyForExpressions(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'remove_in_empty_for_expressions' => true,
@@ -299,7 +290,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithoutSpacesInEmptyForExpressionsCases()
+    public function provideFixWithoutSpacesInEmptyForExpressionsCases(): array
     {
         return [
             [
@@ -525,7 +516,7 @@ final class SpaceAfterSemicolonFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testHaltCompiler()
+    public function testHaltCompiler(): void
     {
         $this->doTest('<?php
             __HALT_COMPILER();

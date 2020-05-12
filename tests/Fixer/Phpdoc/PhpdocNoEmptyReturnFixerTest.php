@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocNoEmptyReturnFixerTest extends AbstractFixerTestCase
 {
-    public function testFixVoid()
+    public function testFixVoid(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -43,7 +45,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixNull()
+    public function testFixNull(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -63,7 +65,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixNullWithEndOnSameLine()
+    public function testFixNullWithEndOnSameLine(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -82,7 +84,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixNullWithEndOnSameLineNoSpace()
+    public function testFixNullWithEndOnSameLineNoSpace(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -101,7 +103,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixVoidCaseInsensitive()
+    public function testFixVoidCaseInsensitive(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -121,7 +123,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixNullCaseInsensitive()
+    public function testFixNullCaseInsensitive(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -141,7 +143,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixFull()
+    public function testFixFull(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -167,7 +169,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNothing()
+    public function testDoNothing(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -180,7 +182,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testDoNothingAgain()
+    public function testDoNothingAgain(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -193,7 +195,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOtherDoNothing()
+    public function testOtherDoNothing(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -206,7 +208,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testYetAnotherDoNothing()
+    public function testYetAnotherDoNothing(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -219,7 +221,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testHandleSingleLinePhpdoc()
+    public function testHandleSingleLinePhpdoc(): void
     {
         $expected = <<<'EOF'
 <?php

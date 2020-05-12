@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,18 +17,18 @@ namespace PhpCsFixer\Fixer\Semicolon;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Single-line whitespace before closing semicolon are prohibited.',
@@ -39,7 +41,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
      *
      * Must run after CombineConsecutiveIssetsFixer, FunctionToConstantFixer, NoEmptyStatementFixer, SimplifiedIfReturnFixer, SingleImportPerStatementFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -47,7 +49,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(';');
     }
@@ -55,7 +57,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->equals(';') || !$tokens[$index - 1]->isWhitespace(" \t")) {
@@ -64,9 +66,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
 
             if ($tokens[$index - 2]->equals(';')) {
                 // do not remove all whitespace before the semicolon because it is also whitespace after another semicolon
-                if (!$tokens[$index - 1]->equals(' ')) {
-                    $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
-                }
+                $tokens->ensureWhitespaceAtIndex($index - 1, 0, ' ');
             } elseif (!$tokens[$index - 2]->isComment()) {
                 $tokens->clearAt($index - 1);
             }

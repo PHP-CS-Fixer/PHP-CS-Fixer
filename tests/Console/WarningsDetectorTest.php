@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class WarningsDetectorTest extends TestCase
 {
-    public function testDetectOldVendorNotInstalledByComposer()
+    public function testDetectOldVendorNotInstalledByComposer(): void
     {
         $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledByComposer()->willReturn(false);
@@ -35,7 +37,7 @@ final class WarningsDetectorTest extends TestCase
         static::assertSame([], $warningsDetector->getWarnings());
     }
 
-    public function testDetectOldVendorNotLegacyPackage()
+    public function testDetectOldVendorNotLegacyPackage(): void
     {
         $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledByComposer()->willReturn(false);
@@ -49,7 +51,7 @@ final class WarningsDetectorTest extends TestCase
         static::assertSame([], $warningsDetector->getWarnings());
     }
 
-    public function testDetectOldVendorLegacyPackage()
+    public function testDetectOldVendorLegacyPackage(): void
     {
         $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
         $toolInfo->isInstalledByComposer()->willReturn(true);

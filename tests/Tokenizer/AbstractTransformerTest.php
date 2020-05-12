@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,19 +18,24 @@ use PhpCsFixer\Tests\Fixtures\Test\AbstractTransformerTest\FooTransformer;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\AbstractTransformer
  */
 final class AbstractTransformerTest extends TestCase
 {
-    public function testAbstractTransformer()
+    public function testNameAndPriorityDefault(): void
     {
         $transformer = new FooTransformer();
 
         static::assertSame(0, $transformer->getPriority());
         static::assertSame('foo', $transformer->getName());
+    }
+
+    public function testCustomTokens(): void
+    {
+        $transformer = new FooTransformer();
+
+        static::assertSame([], $transformer->getCustomTokens());
     }
 }

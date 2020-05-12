@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,8 +14,8 @@
 
 namespace PhpCsFixer\Differ;
 
-use PhpCsFixer\Diff\v3_0\Differ;
-use PhpCsFixer\Diff\v3_0\Output\StrictUnifiedDiffOutputBuilder;
+use PhpCsFixer\Diff\Differ;
+use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -41,7 +43,7 @@ final class FullDiffer implements DifferInterface
     /**
      * {@inheritdoc}
      */
-    public function diff($old, $new)
+    public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
     {
         return $this->differ->diff($old, $new);
     }

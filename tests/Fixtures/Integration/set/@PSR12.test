@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PSR12.
+--RULESET--
+{"@PSR12": true}

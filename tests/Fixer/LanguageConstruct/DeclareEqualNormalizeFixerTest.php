@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,11 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -25,31 +27,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyFix()
-    {
-        $this->fixer->configure(null);
-        $this->doTest(
-            '<?php declare(ticks=1);',
-            '<?php declare(ticks= 1);'
-        );
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input, array $config)
+    public function testFix(string $expected, ?string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'minimal case remove whitespace (default config)' => [
@@ -101,23 +87,31 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
                 null,
                 ['space' => 'none'],
             ],
+            'declare having multiple directives, single' => [
+                '<?php declare(strict_types=1, ticks=1);',
+                '<?php declare(strict_types = 1, ticks = 1);',
+                [],
+            ],
+            'declare having multiple directives, none' => [
+                '<?php declare(strict_types = 1, ticks = 1);',
+                '<?php declare(strict_types=1, ticks=1);',
+                ['space' => 'single'],
+            ],
         ];
     }
 
     /**
-     * @param string $expectedMessage
-     *
      * @dataProvider provideInvalidConfigCases
      */
-    public function testInvalidConfig(array $config, $expectedMessage)
+    public function testInvalidConfig(array $config, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage));
 
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfigCases()
+    public function provideInvalidConfigCases(): array
     {
         return [
             [

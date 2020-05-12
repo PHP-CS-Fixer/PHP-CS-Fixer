@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,14 +15,12 @@
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Command\FixCommand;
-use PhpCsFixer\Report\ReporterFactory;
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @coversNothing
@@ -29,13 +29,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class TextDiffTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param string $format
-     * @param bool   $isDecorated
-     *
      * @dataProvider provideDiffReportingCases
      */
-    public function testDiffReportingDecorated($expected, $format, $isDecorated)
+    public function testDiffReportingDecorated(string $expected, string $format, bool $isDecorated): void
     {
         $command = new FixCommand(new ToolInfo());
         $commandTester = new CommandTester($command);
@@ -65,7 +61,7 @@ final class TextDiffTest extends TestCase
         static::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
-    public function provideDiffReportingCases()
+    public function provideDiffReportingCases(): \Generator
     {
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
@@ -74,25 +70,24 @@ final class TextDiffTest extends TestCase
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
 %A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
-        $cases = [];
+
         foreach (['txt', 'xml', 'junit'] as $format) {
-            $cases[] = [$expected, $format, true];
-            $cases[] = [$expected, $format, false];
+            yield [$expected, $format, true];
+            yield [$expected, $format, false];
         }
 
         $expected = substr(json_encode($expected), 1, -1);
-        $cases[] = [$expected, 'json', true];
-        $cases[] = [$expected, 'json', false];
 
-        return $cases;
+        yield [$expected, 'json', true];
+        yield [$expected, 'json', false];
     }
 
     /**
      * Test to make sure @see TextDiffTest::provideDiffReportingCases covers all formats.
      */
-    public function testAllFormatsCovered()
+    public function testAllFormatsCovered(): void
     {
-        $factory = ReporterFactory::create();
+        $factory = new ReporterFactory();
         $formats = $factory->registerBuiltInReporters()->getFormats();
         sort($formats);
 

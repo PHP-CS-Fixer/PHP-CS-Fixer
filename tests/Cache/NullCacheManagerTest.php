@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,21 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class NullCacheManagerTest extends TestCase
 {
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
 
         static::assertTrue($reflection->isFinal());
     }
 
-    public function testImplementsCacheManagerInterface()
+    public function testImplementsCacheManagerInterface(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
 
         static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
 
-    public function testNeedFixingReturnsTrue()
+    public function testNeedFixingReturnsTrue(): void
     {
         $manager = new NullCacheManager();
 

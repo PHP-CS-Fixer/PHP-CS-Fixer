@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,24 +19,19 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @author SpacePossum
- *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer
  */
 final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -42,8 +39,16 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 "<?php\n/** @inheritdoc */class min1{}",
             ],
             [
+                "<?php\n/** */class min1{}",
+                "<?php\n/** @inheritDoc */class min1{}",
+            ],
+            [
                 "<?php\nclass min2{/** */}",
                 "<?php\nclass min2{/** @inheritdoc */}",
+            ],
+            [
+                "<?php\nclass min2{/** */}",
+                "<?php\nclass min2{/** @inheritDoc */}",
             ],
             [
                 '<?php
@@ -255,25 +260,27 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
+                '<?php
+                class B
+                {
+                    /** @inheritDoc */
+                    public function falseImportFromTrait()
+                    {
+                    }
+                }
+
+                /** @inheritDoc */
+                class A
+                {
+                    use T;
+
+                    /** @inheritDoc */
+                    public function importFromTrait()
+                    {
+                    }
+                }
+                ',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
 

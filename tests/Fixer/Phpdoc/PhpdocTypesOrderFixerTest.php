@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,23 +24,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithNullFirst($expected, $input = null)
+    public function testFixWithNullFirst(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'none',
@@ -48,7 +44,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -145,16 +141,50 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @method void bar(null|string $delimiter = \',<br/>\') */',
                 '<?php /** @method void bar(string|null $delimiter = \',<br/>\') */',
             ],
+            [
+                '<?php /** @var array<array<int, int>, OutputInterface> */',
+            ],
+            [
+                '<?php /** @var iterable<array{names:array<string>, surname:string}> */',
+            ],
+            [
+                '<?php /** @var iterable<array{surname:string, names:array<string>}> */',
+            ],
+            [
+                '<?php /** @return array<array{level:string, message:string, context:array<mixed>}> */',
+            ],
+            [
+                '<?php /** @return Data<array{enabled: string[], all: array<string, string>}> */',
+            ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
+            [
+                '<?php /** @param null|callable(array<string>): array<string, T> $callback */',
+            ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
+            [
+                '<?php /** @return Closure(Iterator<TKey, T>): Generator<int, array<TKey, T>> */',
+            ],
+            [
+                '<?php /** @var Closure(Iterator<TKey, T>): Generator<int, array<TKey, T>> $pipe */',
+            ],
+            [
+                '<?php /** @return Generator<int, Promise<mixed>, mixed, Identity> */',
+            ],
+            [
+                '<?php /** @param null|callable(null|foo, null|bar): array<string, T> $callback */',
+                '<?php /** @param null|callable(foo|null, bar|null): array<string, T> $callback */',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithNullLastCases
      */
-    public function testFixWithNullLast($expected, $input = null)
+    public function testFixWithNullLast(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'none',
@@ -164,7 +194,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithNullLastCases()
+    public function provideFixWithNullLastCases(): array
     {
         return [
             [
@@ -263,16 +293,17 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var Foo[]|Foo|Foo\Bar|Foo_Bar|null */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, string|null> , DateTime): bool> */',
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmCases
      */
-    public function testFixWithAlphaAlgorithm($expected, $input = null)
+    public function testFixWithAlphaAlgorithm(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
@@ -282,7 +313,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAlphaAlgorithmCases()
+    public function provideFixWithAlphaAlgorithmCases(): array
     {
         return [
             [
@@ -377,16 +408,16 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var Foo|Foo[]|Foo\Bar|Foo_Bar|null */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases
      */
-    public function testFixWithAlphaAlgorithmAndNullAlwaysFirst($expected, $input = null)
+    public function testFixWithAlphaAlgorithmAndNullAlwaysFirst(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
@@ -396,7 +427,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases()
+    public function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases(): array
     {
         return [
             [
@@ -492,16 +523,16 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @return array<array<string, int>> */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysLastCases
      */
-    public function testFixWithAlphaAlgorithmAndNullAlwaysLast($expected, $input = null)
+    public function testFixWithAlphaAlgorithmAndNullAlwaysLast(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
@@ -511,7 +542,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases()
+    public function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): array
     {
         return [
             [
@@ -605,6 +636,13 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var Foo|Foo[]|Foo\Bar|Foo_Bar|null */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
+            ],
+            [
+                '<?php /** @return array<int, callable(array<string, string|null> , DateTime): bool> */',
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
+            [
+                '<?php /** @var ?Deferred<TestLocations> */',
             ],
         ];
     }

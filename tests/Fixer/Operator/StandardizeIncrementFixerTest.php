@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,24 +21,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
  */
 final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             [
                 '<?php ++$i;',
                 '<?php $i += 1;',
@@ -86,14 +86,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php echo $foo[$i += 1];',
             ],
             [
-                '<?php echo ++$foo->{$bar};',
-                '<?php echo $foo->{$bar} += 1;',
-            ],
-            [
-                '<?php echo ++$foo->{$bar->{$baz}};',
-                '<?php echo $foo->{$bar->{$baz}} += 1;',
-            ],
-            [
                 '<?php echo ++$foo[$bar[$baz]];',
                 '<?php echo $foo[$bar[$baz]] += 1;',
             ],
@@ -114,8 +106,8 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php $$${$foo} += 1;',
             ],
             [
-                '<?php ++$a{$b};',
-                '<?php $a{$b} += 1;',
+                '<?php ++$a[$b];',
+                '<?php $a[$b] += 1;',
             ],
             [
                 '<?php ++$a[++$b];',
@@ -254,8 +246,8 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php $$${$foo} -= 1;',
             ],
             [
-                '<?php --$a{$b};',
-                '<?php $a{$b} -= 1;',
+                '<?php --$a[$b];',
+                '<?php $a[$b] -= 1;',
             ],
             [
                 '<?php --$a[--$b];',
@@ -526,57 +518,126 @@ $i#3
                 '<?php $i *= 1; ++$i;',
                 '<?php $i *= 1; $i += 1;',
             ],
+            [
+                '<?php ++A::$b;',
+                '<?php A::$b += 1;',
+            ],
+            [
+                '<?php ++\A::$b;',
+                '<?php \A::$b += 1;',
+            ],
+            [
+                '<?php ++\A\B\C::$d;',
+                '<?php \A\B\C::$d += 1;',
+            ],
+            [
+                '<?php ++$a::$b;',
+                '<?php $a::$b += 1;',
+            ],
+            [
+                '<?php ++$a::$b->$c;',
+                '<?php $a::$b->$c += 1;',
+            ],
+            [
+                '<?php class Foo {
+                    public static function bar() {
+                        ++self::$v1;
+                        ++static::$v2;
+                    }
+                }',
+                '<?php class Foo {
+                    public static function bar() {
+                        self::$v1 += 1;
+                        static::$v2 += 1;
+                    }
+                }',
+            ],
+        ];
+
+        yield [
+            '<?php $i -= 1 ?? 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 ?? 2;',
+        ];
+
+        yield [
+            '<?php $i -= 1 <=> 2;',
+        ];
+
+        yield [
+            '<?php $i += 1 <=> 2;',
+        ];
+
+        yield [
+            '<?php ++$a::$b::$c;',
+            '<?php $a::$b::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->$b::$c;',
+            '<?php $a->$b::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a::${$b}::$c;',
+            '<?php $a::${$b}::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+            '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h += 1;',
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            [
-                '<?php $i -= 1 ?? 2;',
-            ],
-            [
-                '<?php $i += 1 ?? 2;',
-            ],
-            [
-                '<?php $i -= 1 <=> 2;',
-            ],
-            [
-                '<?php $i += 1 <=> 2;',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
                 '<?php $i += 1_0;',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php echo ++$foo->{$bar};',
+            '<?php echo $foo->{$bar} += 1;',
+        ];
+
+        yield [
+            '<?php echo ++$foo->{$bar->{$baz}};',
+            '<?php echo $foo->{$bar->{$baz}} += 1;',
+        ];
+
+        yield [
+            '<?php ++$a{$b};',
+            '<?php $a{$b} += 1;',
+        ];
+
+        yield [
+            '<?php --$a{$b};',
+            '<?php $a{$b} -= 1;',
         ];
     }
 }

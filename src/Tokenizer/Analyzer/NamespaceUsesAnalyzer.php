@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,25 +28,42 @@ final class NamespaceUsesAnalyzer
     /**
      * @return NamespaceUseAnalysis[]
      */
-    public function getDeclarationsFromTokens(Tokens $tokens)
+    public function getDeclarationsFromTokens(Tokens $tokens): array
     {
         $tokenAnalyzer = new TokensAnalyzer($tokens);
-        $useIndexes = $tokenAnalyzer->getImportUseIndexes();
+        $useIndices = $tokenAnalyzer->getImportUseIndexes();
 
-        return $this->getDeclarations($tokens, $useIndexes);
+        return $this->getDeclarations($tokens, $useIndices);
     }
 
     /**
      * @return NamespaceUseAnalysis[]
      */
-    private function getDeclarations(Tokens $tokens, array $useIndexes)
+    public function getDeclarationsInNamespace(Tokens $tokens, NamespaceAnalysis $namespace): array
+    {
+        $namespaceUses = [];
+
+        foreach ($this->getDeclarationsFromTokens($tokens) as $namespaceUse) {
+            if ($namespaceUse->getStartIndex() >= $namespace->getScopeStartIndex() && $namespaceUse->getStartIndex() <= $namespace->getScopeEndIndex()) {
+                $namespaceUses[] = $namespaceUse;
+            }
+        }
+
+        return $namespaceUses;
+    }
+
+    /**
+     * @return NamespaceUseAnalysis[]
+     */
+    private function getDeclarations(Tokens $tokens, array $useIndices): array
     {
         $uses = [];
 
-        foreach ($useIndexes as $index) {
+        foreach ($useIndices as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
-            if ($analysis) {
+
+            if (null !== $analysis) {
                 $uses[] = $analysis;
             }
         }
@@ -51,13 +71,7 @@ final class NamespaceUsesAnalyzer
         return $uses;
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return null|NamespaceUseAnalysis
-     */
-    private function parseDeclaration(Tokens $tokens, $startIndex, $endIndex)
+    private function parseDeclaration(Tokens $tokens, int $startIndex, int $endIndex): ?NamespaceUseAnalysis
     {
         $fullName = $shortName = '';
         $aliased = false;

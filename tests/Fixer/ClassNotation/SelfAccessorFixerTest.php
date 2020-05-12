@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SelfAccessorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -143,24 +142,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                     public function baz31(\Test\Foo\Foo2\Bar $bar);
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php class Foo { function bar() {
                     new class() { function baz() { new Foo(); } };
@@ -177,24 +158,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php interface Foo { public function bar(self $foo, self $bar): self; }',
                 '<?php interface Foo { public function bar(Foo $foo, Foo $bar): Foo; }',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
             [
                 '<?php class Foo { public function bar(?self $foo, ?self $bar): ?self { return new self(); } }',
                 '<?php class Foo { public function bar(?Foo $foo, ?Foo $bar): ?Foo { return new Foo(); } }',
@@ -203,6 +166,31 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 "<?php interface Foo{ public function bar()\t/**/:?/**/self; }",
                 "<?php interface Foo{ public function bar()\t/**/:?/**/Foo; }",
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases(): \Generator
+    {
+        yield [
+            '<?php interface Foo { public function bar(self $foo, self $bar,): self; }',
+            '<?php interface Foo { public function bar(Foo $foo, Foo $bar,): Foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { function bar() { $x instanceof (Foo()); } }',
+        ];
+
+        yield [
+            '<?php class Foo { protected $foo; function bar() { return $this?->foo::find(2); } }',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             // check correct statements aren't changed
@@ -53,24 +52,6 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
             ['<?php return /* hello */;', '<?php return /* hello */ null  ;'],
             ['<?php return;', '<?php return NULL;'],
             ['<?php return;', "<?php return\n(\nnull\n)\n;"],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideNullableReturnTypeCases
-     * @requires PHP 7.1
-     */
-    public function test71ReturnTypes($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideNullableReturnTypeCases()
-    {
-        return [
             ['<?php function foo(): ? /* C */ int { return null; }'],
             ['<?php function foo(): ?int { if (false) { return null; } }'],
             ['<?php function foo(): int { return null; }'],
@@ -89,7 +70,6 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php function foo(): void { return; }',
-                '<?php function foo(): void { return null; }',
             ],
         ];
     }

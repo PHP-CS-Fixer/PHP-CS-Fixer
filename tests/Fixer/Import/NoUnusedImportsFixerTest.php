@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'simple' => [
@@ -409,6 +408,7 @@ EOF
 <?php
 
 use Foo as Bar;
+use A\MyTrait1;
 
 class MyParent
 {
@@ -423,6 +423,7 @@ EOF
 
 use Foo;
 use Foo as Bar;
+use A\MyTrait1;
 
 class MyParent
 {
@@ -694,32 +695,6 @@ EOF
             'close_tag_3' => [
                 '<?php ?>',
                 '<?php use A\B?>',
-            ],
-            'with_comments' => [
-                '<?php
-# 1
-# 2
-# 3
-# 4
-  use /**/A\B/**/;
-  echo 1;
-  new B();
-',
-                '<?php
-use# 1
-\# 2
-Exception# 3
-# 4
-
-
-
-
-
-  ;
-use /**/A\B/**/;
-  echo 1;
-  new B();
-',
             ],
             'with_matches_in_comments' => [
                 '<?php
@@ -1112,15 +1087,194 @@ class StoreController
     {}
 }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testPHP70()
-    {
-        $expected = <<<'EOF'
+            'unused import matching function call' => [
+                '<?php
+namespace Foo;
+bar();',
+                '<?php
+namespace Foo;
+use Bar;
+bar();',
+            ],
+            'unused import matching function declaration' => [
+                '<?php
+namespace Foo;
+function bar () {}',
+                '<?php
+namespace Foo;
+use Bar;
+function bar () {}',
+            ],
+            'unused import matching method declaration' => [
+                '<?php
+namespace Foo;
+class Foo {
+    public function bar () {}
+}',
+                '<?php
+namespace Foo;
+use Bar;
+class Foo {
+    public function bar () {}
+}',
+            ],
+            'unused import matching constant usage' => [
+                '<?php
+namespace Foo;
+echo BAR;',
+                '<?php
+namespace Foo;
+use Bar;
+echo BAR;',
+            ],
+            'unused import matching class constant' => [
+                '<?php
+namespace Foo;
+class Foo {
+    const BAR = 1;
+}',
+                '<?php
+namespace Foo;
+use Bar;
+class Foo {
+    const BAR = 1;
+}',
+            ],
+            'unused function import matching class usage' => [
+                '<?php
+namespace Foo;
+new Bar();
+Baz::method();',
+                '<?php
+namespace Foo;
+use function bar;
+use function baz;
+new Bar();
+Baz::method();',
+            ],
+            'unused function import matching method call' => [
+                '<?php
+namespace Foo;
+Foo::bar();',
+                '<?php
+namespace Foo;
+use function bar;
+Foo::bar();',
+            ],
+            'unused function import matching method declaration' => [
+                '<?php
+namespace Foo;
+class Foo {
+    public function bar () {}
+}',
+                '<?php
+namespace Foo;
+use function bar;
+class Foo {
+    public function bar () {}
+}',
+            ],
+            'unused function import matching constant usage' => [
+                '<?php
+namespace Foo;
+echo BAR;',
+                '<?php
+namespace Foo;
+use function bar;
+echo BAR;',
+            ],
+            'unused function import matching class constant' => [
+                '<?php
+namespace Foo;
+class Foo {
+    const BAR = 1;
+}',
+                '<?php
+namespace Foo;
+use function bar;
+class Foo {
+    const BAR = 1;
+}',
+            ],
+            'unused constant import matching function call' => [
+                '<?php
+namespace Foo;
+bar();',
+                '<?php
+namespace Foo;
+use const BAR;
+bar();',
+            ],
+            'unused constant import matching function declaration' => [
+                '<?php
+namespace Foo;
+function bar () {}',
+                '<?php
+namespace Foo;
+use const BAR;
+function bar () {}',
+            ],
+            'unused constant import matching method declaration' => [
+                '<?php
+namespace Foo;
+class Foo {
+    public function bar () {}
+}',
+                '<?php
+namespace Foo;
+use const BAR;
+class Foo {
+    public function bar () {}
+}',
+            ],
+            'unused constant import matching class constant' => [
+                '<?php
+namespace Foo;
+class Foo {
+    const BAR = 1;
+}',
+                '<?php
+namespace Foo;
+use const BAR;
+class Foo {
+    const BAR = 1;
+}',
+            ],
+            'attribute without braces' => [
+                '<?php
+use Foo;
+class Controller
+{
+    #[Foo]
+    public function foo() {}
+}',
+            ],
+            'attribute with braces' => [
+                '<?php
+use Foo;
+class Controller
+{
+    #[Foo()]
+    public function foo() {}
+}',
+            ],
+            'go to' => [
+                '<?php
+Bar1:
+Bar2:
+Bar3:
+',
+                '<?php
+use Bar1;
+use const Bar2;
+use function Bar3;
+Bar1:
+Bar2:
+Bar3:
+',
+            ],
+            [
+                $expected = <<<'EOF'
 <?php
 use some\a\{ClassD};
 use some\b\{ClassA, ClassB, ClassC as C};
@@ -1129,25 +1283,8 @@ use const some\d\{ConstA, ConstB, ConstC};
 
 new CLassD();
 echo fn_a();
-EOF;
-        $this->doTest($expected);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases()
-    {
-        return [
+EOF
+            ],
             [ // TODO test shows lot of cases where imports are not removed while could be
                 '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};
@@ -1173,6 +1310,199 @@ use Z;
     fn_a(ClassA::test, new C());
 ',
             ],
+        ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(): void
+    {
+        $this->doTest(
+            '<?php
+# 1
+# 2
+# 3
+# 4
+  use /**/A\B/**/;
+  echo 1;
+  new B();
+',
+            '<?php
+use# 1
+\# 2
+Exception# 3
+# 4
+
+
+
+
+
+  ;
+use /**/A\B/**/;
+  echo 1;
+  new B();
+'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     * @dataProvider providePhp80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp80Cases(): \Generator
+    {
+        yield [
+            '<?php
+
+
+$x = $foo?->bar;
+$y = foo?->bar();
+',
+            '<?php
+
+use Foo\Bar;
+
+$x = $foo?->bar;
+$y = foo?->bar();
+',
+        ];
+
+        yield 'with union type in non-capturing catch' => [
+            '<?php
+use Foo;
+use Bar;
+try {} catch (Foo | Bar) {}',
+        ];
+
+        yield 'union return' => [
+            '<?php
+
+use Foo;
+use Bar;
+
+abstract class Baz
+{
+    abstract public function test(): Foo|Bar;
+}
+',
+        ];
+
+        yield 'attribute' => [
+            "<?php
+use Acme\\JsonSchemaValidationBundle\\Annotation\\JsonSchema;
+use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\IsGranted;
+use Symfony\\Component\\Routing\\Annotation\\Route;
+
+#[
+  Route('/basket/{uuid}/item', name: 'addBasketItem', requirements: ['uuid' => '%regex.uuid%'], methods: ['POST']),
+  IsGranted('ROLE_USER'),
+  JsonSchema('Public/Basket/addItem.json'),
+]
+class Foo {}
+",
+        ];
+    }
+
+    /**
+     * @requires PHP 8.1
+     * @dataProvider providePhp81Cases
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp81Cases(): \Generator
+    {
+        yield 'final const' => [
+            '<?php
+
+class Foo
+{
+    final public const B1 = "2";
+}
+',
+            '<?php
+use A\B1;
+
+class Foo
+{
+    final public const B1 = "2";
+}
+',
+        ];
+
+        yield 'first callable class' => [
+            '<?php
+use Foo;
+Foo::method(...);',
+            '<?php
+use Foo;
+use Bar;
+Foo::method(...);',
+        ];
+
+        yield 'New in initializers' => [
+            '<?php
+namespace A\B\C;
+
+use Foo1;
+use Foo2;
+use Foo3;
+use Foo4;
+use Foo5;
+use Foo6;
+use Foo7;
+
+class Test {
+    public function __construct(
+        public $prop = (new Foo1),
+    ) {}
+}
+
+function test(
+    $foo = (new Foo2),
+    $baz = (new Foo3(x: 2)),
+) {
+}
+
+static $x = new Foo4();
+
+const C = (new Foo5);
+
+function test2($param = (new Foo6)) {}
+
+const D = new Foo7(1,2);
+',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.1
+     * @dataProvider provideFixPhp81Cases
+     */
+    public function testFixPhp81(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFixPhp81Cases(): iterable
+    {
+        yield [
+            '<?php
+                enum Foo: string
+                {
+                    use Bar;
+
+                    case Test1 = "a";
+                }
+            ',
         ];
     }
 }

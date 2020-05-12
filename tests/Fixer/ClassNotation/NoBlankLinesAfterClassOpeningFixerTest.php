@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,28 +27,22 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTraitsCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixTraits(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $cases = [];
 
@@ -69,6 +65,7 @@ class Good
     }
 }',
         ];
+
         $cases[] = [
             '<?php
 class Good
@@ -167,7 +164,7 @@ function bar() {}
         return $cases;
     }
 
-    public function provideTraitsCases()
+    public function provideTraitsCases(): array
     {
         $cases = [];
 
@@ -195,19 +192,16 @@ trait Good
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

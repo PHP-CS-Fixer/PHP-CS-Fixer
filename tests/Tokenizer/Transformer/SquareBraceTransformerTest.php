@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,7 +21,6 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -28,15 +29,11 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @requires PHP 7.1
-     *
-     * @param string $source
-     * @param int[]  $inspectIndexes
-     * @param bool   $expected
+     * @param int[] $inspectIndexes
      *
      * @dataProvider provideIsShortArrayCases
      */
-    public function testIsShortArray($source, $inspectIndexes, $expected)
+    public function testIsShortArray(string $source, array $inspectIndexes, bool $expected): void
     {
         $transformer = new SquareBraceTransformer();
         $reflection = new \ReflectionObject($transformer);
@@ -66,7 +63,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         }
     }
 
-    public function provideIsShortArrayCases()
+    public function provideIsShortArrayCases(): array
     {
         return [
             ['<?php $a=[];', [3], false],
@@ -82,11 +79,9 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -100,7 +95,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             'Array offset only.' => [
@@ -231,33 +226,6 @@ class Test
     }
 }',
             ],
-        ];
-    }
-
-    /**
-     * @param string          $source
-     * @param array<int, int> $expectedTokens
-     *
-     * @dataProvider provideProcess71Cases
-     * @requires PHP 7.1
-     */
-    public function testProcess71($source, array $expectedTokens)
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_ARRAY_SQUARE_BRACE_OPEN,
-                CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
-        );
-    }
-
-    public function provideProcess71Cases()
-    {
-        return [
             [
                 '<?php [$a, $b, $c] = [1, 2, 3];',
                 [
@@ -350,17 +318,54 @@ class Test
                     25 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ],
             ],
+            [
+                '<?php foreach ($z as [$a, $b]) {}',
+                [
+                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php foreach ($a as $key => [$x, $y]) {}',
+                [
+                    12 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php [$key => [$x, $y]];',
+                [
+                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    6 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    11 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                    12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php array($key => [$x, $y]);',
+                [
+                    7 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php [$key => [$x, $y] = foo()];',
+                [
+                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    6 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ],
+            ],
         ];
     }
 
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess72Cases
-     * @requires PHP 7.2
      */
-    public function testProcess72($source, array $expectedTokens)
+    public function testProcess72(string $source, array $expectedTokens): void
     {
         $this->doTest(
             $source,
@@ -372,7 +377,7 @@ class Test
         );
     }
 
-    public function provideProcess72Cases()
+    public function provideProcess72Cases(): array
     {
         return [
             [

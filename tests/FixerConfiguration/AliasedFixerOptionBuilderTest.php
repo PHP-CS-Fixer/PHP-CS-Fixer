@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,6 @@
 
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
-use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tests\TestCase;
@@ -26,41 +27,41 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AliasedFixerOptionBuilderTest extends TestCase
 {
-    public function testSetDefault()
+    public function testSetDefault(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
         static::assertSame($builder, $builder->setDefault('baz'));
     }
 
-    public function testSetAllowedTypes()
+    public function testSetAllowedTypes(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
         static::assertSame($builder, $builder->setAllowedTypes(['bool']));
     }
 
-    public function testSetAllowedValues()
+    public function testSetAllowedValues(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
         static::assertSame($builder, $builder->setAllowedValues(['baz']));
     }
 
-    public function testSetNormalizer()
+    public function testSetNormalizer(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
-        static::assertSame($builder, $builder->setNormalizer(static function () {}));
+        static::assertSame($builder, $builder->setNormalizer(static function (): void {}));
     }
 
-    public function testGetOption()
+    public function testGetOption(): void
     {
         $builder = new AliasedFixerOptionBuilder(new FixerOptionBuilder('foo', 'Bar.'), 'baz');
         $option = $builder
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(static function () {})
+            ->setNormalizer(static function (): void {})
             ->getOption()
         ;
-        static::assertInstanceOf(AliasedFixerOption::class, $option);
+
         static::assertSame('foo', $option->getName());
         static::assertSame('Bar.', $option->getDescription());
         static::assertTrue($option->hasDefault());

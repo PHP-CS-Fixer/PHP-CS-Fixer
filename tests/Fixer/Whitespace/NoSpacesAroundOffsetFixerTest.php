@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,28 +27,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideInsideCases
      */
-    public function testFixSpaceInsideOffset($expected, $input = null)
+    public function testFixSpaceInsideOffset(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideOutsideCases
      */
-    public function testFixSpaceOutsideOffset($expected, $input = null)
+    public function testFixSpaceOutsideOffset(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function testLeaveNewLinesAlone()
+    public function testLeaveNewLinesAlone(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -68,17 +65,14 @@ EOF;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideCommentCases
      */
-    public function testCommentsCases($expected, $input = null)
+    public function testCommentsCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentCases()
+    public function provideCommentCases(): array
     {
         return [
             [
@@ -101,7 +95,7 @@ $a = $b[ # z
         ];
     }
 
-    public function testLeaveComplexString()
+    public function testLeaveComplexString(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -111,7 +105,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctions()
+    public function testLeaveFunctions(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -121,9 +115,9 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideOutsideCases()
+    public function provideOutsideCases(): \Generator
     {
-        return [
+        yield from [
             [
                 '<?php
 $a = $b[0]    ;',
@@ -184,22 +178,35 @@ $baz [0]
      [1]
      [2] = 3;',
             ],
-            [
+        ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
                 '<?php
 $foo{0}{1}{2} = 3;',
                 '<?php
 $foo {0} {1}   {2} = 3;',
-            ],
-            [
+            ];
+
+            yield [
                 '<?php
 $foobar = $foo{0}[1]{2};',
                 '<?php
 $foobar = $foo {0} [1]   {2};',
-            ],
-        ];
+            ];
+
+            yield [
+                '<?php
+$var = $arr[0]{0
+         };',
+                '<?php
+$var = $arr[0]{     0
+         };',
+            ];
+        }
     }
 
-    public function provideInsideCases()
+    public function provideInsideCases(): array
     {
         return [
             [
@@ -282,46 +289,21 @@ $var = $arr[0][0
 $var = $arr[0][     0
          ];',
             ],
-            [
-                '<?php
-$var = $arr[0]{0
-         };',
-                '<?php
-$var = $arr[0]{     0
-         };',
-            ],
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @group legacy
-     * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "positions" at the root of the configuration for rule "no_spaces_around_offset" is deprecated and will not be supported in 3.0, use "positions" => array(...) option instead.
-     */
-    public function testLegacyFixWithConfiguration(array $configuration, $expected, $input)
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, $expected, $input)
+    public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
     {
         $this->fixer->configure(['positions' => $configuration]);
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases()
+    public function provideConfigurationCases(): \Generator
     {
-        return [
+        $tests = [
             [
                 ['inside', 'outside'],
                 <<<'EOT'
@@ -362,30 +344,38 @@ EOT
                 ,
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            if (\PHP_VERSION_ID >= 80000) {
+                $test[1] = str_replace('{', '[', $test[1]);
+                $test[1] = str_replace('}', ']', $test[1]);
+                $test[2] = str_replace('{', '[', $test[2]);
+                $test[2] = str_replace('}', ']', $test[2]);
+            }
+
+            yield $index => $test;
+        }
     }
 
-    public function testWrongConfig()
+    public function testWrongConfig(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
 
         $this->fixer->configure(['positions' => ['foo']]);
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
-    public function testPHP71(array $configuration, $expected, $input)
+    public function testPHP71(array $configuration, string $expected, string $input): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             'Config "default".' => [

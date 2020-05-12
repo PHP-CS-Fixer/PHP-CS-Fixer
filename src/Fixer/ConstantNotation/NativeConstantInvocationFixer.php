@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,11 +15,13 @@
 namespace PhpCsFixer\Fixer\ConstantNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
@@ -29,7 +33,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class NativeConstantInvocationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class NativeConstantInvocationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var array<string, true>
@@ -44,7 +48,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Add leading `\` before constant invocation of internal constant to speed up resolving. Constant name match is case-sensitive, except for `null`, `false` and `true`.',
@@ -97,7 +101,7 @@ namespace {
      *
      * Must run before GlobalNamespaceImportFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 10;
     }
@@ -105,7 +109,7 @@ namespace {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
@@ -113,7 +117,7 @@ namespace {
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -121,14 +125,15 @@ namespace {
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
         $uniqueConfiguredExclude = array_unique($this->configuration['exclude']);
 
-        // Case sensitive constants handling
+        // Case-sensitive constants handling
         $constantsToEscape = array_values($this->configuration['include']);
+
         if (true === $this->configuration['fix_built_in']) {
             $getDefinedConstants = get_defined_constants(true);
             unset($getDefinedConstants['user']);
@@ -136,14 +141,16 @@ namespace {
                 $constantsToEscape = array_merge($constantsToEscape, array_keys($constants));
             }
         }
+
         $constantsToEscape = array_diff(
             array_unique($constantsToEscape),
             $uniqueConfiguredExclude
         );
 
-        // Case insensitive constants handling
+        // Case-insensitive constants handling
         static $caseInsensitiveConstants = ['null', 'false', 'true'];
         $caseInsensitiveConstantsToEscape = [];
+
         foreach ($constantsToEscape as $constantIndex => $constant) {
             $loweredConstant = strtolower($constant);
             if (\in_array($loweredConstant, $caseInsensitiveConstants, true)) {
@@ -154,7 +161,7 @@ namespace {
 
         $caseInsensitiveConstantsToEscape = array_diff(
             array_unique($caseInsensitiveConstantsToEscape),
-            array_map(static function ($function) { return strtolower($function); }, $uniqueConfiguredExclude)
+            array_map(static function (string $function): string { return strtolower($function); }, $uniqueConfiguredExclude)
         );
 
         // Store the cache
@@ -168,7 +175,7 @@ namespace {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('all' === $this->configuration['scope']) {
             $this->fixConstantInvocations($tokens, 0, \count($tokens) - 1);
@@ -192,9 +199,9 @@ namespace {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $constantChecker = static function ($value) {
+        $constantChecker = static function (array $value): bool {
             foreach ($value as $constantName) {
                 if (!\is_string($constantName) || '' === trim($constantName) || trim($constantName) !== $constantName) {
                     throw new InvalidOptionsException(sprintf(
@@ -228,19 +235,16 @@ namespace {
                 ->getOption(),
             (new FixerOptionBuilder('strict', 'Whether leading `\` of constant invocation not meant to have it should be removed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO: 3.0 change to true as default
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    private function fixConstantInvocations(Tokens $tokens, $startIndex, $endIndex)
+    private function fixConstantInvocations(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
         $useConstantDeclarations = [];
+
         foreach ($useDeclarations as $use) {
             if ($use->isConstant()) {
                 $useConstantDeclarations[$use->getShortName()] = true;
@@ -262,20 +266,23 @@ namespace {
             }
 
             $tokenContent = $token->getContent();
-
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             if (!isset($this->constantsToEscape[$tokenContent]) && !isset($this->caseInsensitiveConstantsToEscape[strtolower($tokenContent)])) {
-                if (!$this->configuration['strict']) {
+                if (false === $this->configuration['strict']) {
                     continue;
                 }
+
                 if (!$tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     continue;
                 }
+
                 $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+
                 if ($tokens[$prevPrevIndex]->isGivenKind(T_STRING)) {
                     continue;
                 }
+
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
 
                 continue;

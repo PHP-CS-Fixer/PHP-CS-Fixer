@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,8 +21,6 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author SpacePossum
- *
  * @internal
  */
 final class ErrorOutput
@@ -42,10 +42,9 @@ final class ErrorOutput
     }
 
     /**
-     * @param string  $process
      * @param Error[] $errors
      */
-    public function listErrors($process, array $errors)
+    public function listErrors(string $process, array $errors): void
     {
         $this->output->writeln(['', sprintf(
             'Files that were not fixed due to errors reported during %s:',
@@ -121,7 +120,7 @@ final class ErrorOutput
         }
     }
 
-    private function outputTrace(array $trace)
+    private function outputTrace(array $trace): void
     {
         if (isset($trace['class'], $trace['type'], $trace['function'])) {
             $this->output->writeln(sprintf(
@@ -139,12 +138,7 @@ final class ErrorOutput
         }
     }
 
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    private function prepareOutput($string)
+    private function prepareOutput(string $string): string
     {
         return $this->isDecorated
             ? OutputFormatter::escape($string)

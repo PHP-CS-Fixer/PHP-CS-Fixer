@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,12 +16,11 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\Test\IntegrationCase;
+use PhpCsFixer\Tests\Test\IntegrationCaseFactoryInterface;
 use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
 
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
- *
- * @author SpacePossum
  *
  * @internal
  *
@@ -31,7 +32,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
     /**
      * {@inheritdoc}
      */
-    protected static function getFixturesDir()
+    protected static function getFixturesDir(): string
     {
         return __DIR__.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'Integration';
     }
@@ -39,23 +40,17 @@ final class IntegrationTest extends AbstractIntegrationTestCase
     /**
      * {@inheritdoc}
      */
-    protected static function getTempFile()
+    protected static function getTempFile(): string
     {
-        return self::getFixturesDir().\DIRECTORY_SEPARATOR.'.tmp.php';
+        return tempnam(sys_get_temp_dir(), 'PHP-CS-Fixer');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected static function createIntegrationCaseFactory()
+    protected static function createIntegrationCaseFactory(): IntegrationCaseFactoryInterface
     {
         return new InternalIntegrationCaseFactory();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
+    protected static function assertRevertedOrderFixing(IntegrationCase $case, string $fixedInputCode, string $fixedInputCodeWithReversedFixers): void
     {
         parent::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
 
@@ -87,5 +82,28 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                 sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
             );
         }
+    }
+
+    protected function doTest(IntegrationCase $case): void
+    {
+        $requirements = $case->getRequirements();
+
+        if (isset($requirements['php<'])) {
+            $phpUpperLimit = $requirements['php<'];
+
+            if (!\is_int($phpUpperLimit)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Expected int value like 50509 for "php<", got "%s". IN "%s".',
+                    \is_object($phpUpperLimit) ? \get_class($phpUpperLimit) : \gettype($phpUpperLimit).'#'.$phpUpperLimit,
+                    $case->getFileName()
+                ));
+            }
+
+            if (\PHP_VERSION_ID >= $phpUpperLimit) {
+                static::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
+            }
+        }
+
+        parent::doTest($case);
     }
 }

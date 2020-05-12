@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer
@@ -24,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -155,22 +152,29 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                     $next2 = & \Next($array2);
                 ',
             ],
+            [
+                '<?php
+                    namespace Foo;
+                    use function MyStuff\StrToLower;
+                    class Bar {
+                        public function getName() {
+                            return StrToLower($this->name);
+                        }
+                    }',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input = null)
+    public function testFix73(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -186,6 +190,30 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                     $a->STRTOLOWER(1,);
                 ',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFix80Cases(): iterable
+    {
+        yield ['<?php $a?->STRTOLOWER(1,);'];
+
+        yield [
+            '<?php
+                    final class SomeClass
+            {
+                #[File(mimeTypes: ["application/pdf", "image/*"])]
+                public FileBlob $attachment;
+            }
+            ',
         ];
     }
 }

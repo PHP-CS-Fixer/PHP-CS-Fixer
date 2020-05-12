@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Tests\TestCase;
@@ -26,12 +29,12 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class FixCommandTest extends TestCase
 {
-    public function testEmptyRulesValue()
+    public function testEmptyRulesValue(): void
     {
         $this->expectException(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
+            InvalidConfigurationException::class
         );
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '#^Empty rules value is not allowed\.$#'
         );
 
@@ -40,12 +43,11 @@ final class FixCommandTest extends TestCase
         );
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Expected "yes" or "no" for option "using-cache", other values are deprecated and support will be removed in 3.0. Got "not today", this implicitly set the option to "false".
-     */
-    public function testEmptyFormatValue()
+    public function testEmptyFormatValue(): void
     {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Expected "yes" or "no" for option "using-cache", got "not today".');
+
         $cmdTester = $this->doTestExecute(
             [
                 '--using-cache' => 'not today',
@@ -53,13 +55,10 @@ final class FixCommandTest extends TestCase
             ]
         );
 
-        static::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+        $cmdTester->getStatusCode();
     }
 
-    /**
-     * @return CommandTester
-     */
-    private function doTestExecute(array $arguments)
+    private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();
         $application->add(new FixCommand(new ToolInfo()));
@@ -83,7 +82,7 @@ final class FixCommandTest extends TestCase
         return $commandTester;
     }
 
-    private function getDefaultArguments()
+    private function getDefaultArguments(): array
     {
         return [
             'path' => [__FILE__],

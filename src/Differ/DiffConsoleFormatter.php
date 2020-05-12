@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,23 +34,13 @@ final class DiffConsoleFormatter
      */
     private $template;
 
-    /**
-     * @param bool   $isDecoratedOutput
-     * @param string $template
-     */
-    public function __construct($isDecoratedOutput, $template = '%s')
+    public function __construct(bool $isDecoratedOutput, string $template = '%s')
     {
         $this->isDecoratedOutput = $isDecoratedOutput;
         $this->template = $template;
     }
 
-    /**
-     * @param string $diff
-     * @param string $lineTemplate
-     *
-     * @return string
-     */
-    public function format($diff, $lineTemplate = '%s')
+    public function format(string $diff, string $lineTemplate = '%s'): string
     {
         $isDecorated = $this->isDecoratedOutput;
 
@@ -62,16 +54,12 @@ final class DiffConsoleFormatter
             implode(
                 PHP_EOL,
                 array_map(
-                    static function ($line) use ($isDecorated, $lineTemplate) {
+                    static function (string $line) use ($isDecorated, $lineTemplate): string {
                         if ($isDecorated) {
                             $count = 0;
                             $line = Preg::replaceCallback(
-                                [
-                                    '/^(\+.*)/',
-                                    '/^(\-.*)/',
-                                    '/^(@.*)/',
-                                ],
-                                static function ($matches) {
+                                '/^([+\-@].*)/',
+                                static function (array $matches): string {
                                     if ('+' === $matches[0][0]) {
                                         $colour = 'green';
                                     } elseif ('-' === $matches[0][0]) {

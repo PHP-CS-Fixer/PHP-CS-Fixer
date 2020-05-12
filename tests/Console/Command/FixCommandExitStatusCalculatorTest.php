@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,16 +28,9 @@ use PhpCsFixer\Tests\TestCase;
 final class FixCommandExitStatusCalculatorTest extends TestCase
 {
     /**
-     * @param int  $expected
-     * @param bool $isDryRun
-     * @param bool $hasChangedFiles
-     * @param bool $hasInvalidErrors
-     * @param bool $hasExceptionErrors
-     * @param bool $hasLintErrorsAfterFixing
-     *
      * @dataProvider provideCalculateCases
      */
-    public function testCalculate($expected, $isDryRun, $hasChangedFiles, $hasInvalidErrors, $hasExceptionErrors, $hasLintErrorsAfterFixing)
+    public function testCalculate(int $expected, bool $isDryRun, bool $hasChangedFiles, bool $hasInvalidErrors, bool $hasExceptionErrors, bool $hasLintErrorsAfterFixing): void
     {
         $calculator = new FixCommandExitStatusCalculator();
 
@@ -45,7 +40,7 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
         );
     }
 
-    public function provideCalculateCases()
+    public function provideCalculateCases(): array
     {
         return [
             [0, true, false, false, false, false],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -76,6 +75,28 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
              // Some comment
              ->delete();',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php $object?->method();',
+            '<?php $object?->   method();',
+        ];
+
+        yield [
+            '<?php $object?->method();',
+            '<?php $object   ?->   method();',
         ];
     }
 }

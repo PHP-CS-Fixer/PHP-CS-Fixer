@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,27 +15,24 @@
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class ArrayPushFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Converts simple usages of `array_push($x, $y);` to `$x[] = $y;`.',
-            [new VersionSpecificCodeSample("<?php\narray_push(\$x, \$y);\n", new VersionSpecification(70000))],
+            [new CodeSample("<?php\narray_push(\$x, \$y);\n")],
             null,
             'Risky when the function `array_push` is overridden.'
         );
@@ -42,20 +41,20 @@ final class ArrayPushFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
+        return $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
@@ -149,12 +148,7 @@ final class ArrayPushFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function getFirstArgumentEnd(Tokens $tokens, $index)
+    private function getFirstArgumentEnd(Tokens $tokens, int $index): int
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         $nextToken = $tokens[$nextIndex];
@@ -195,12 +189,9 @@ final class ArrayPushFixer extends AbstractFixer
     }
 
     /**
-     * @param int $index
      * @param int $endIndex boundary, i.e. tokens index of `)`
-     *
-     * @return null|int
      */
-    private function getSecondArgumentEnd(Tokens $tokens, $index, $endIndex)
+    private function getSecondArgumentEnd(Tokens $tokens, int $index, int $endIndex): ?int
     {
         if ($tokens[$index]->isGivenKind(T_ELLIPSIS)) {
             return null;

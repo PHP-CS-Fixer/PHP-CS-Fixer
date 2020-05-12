@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,21 +17,20 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for part of rule defined in PSR5 ¶7.22.
- *
- * @author SpacePossum
  */
 final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Single line `@var` PHPDoc should have proper spacing.',
@@ -41,9 +42,9 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocNoAliasTagFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocNoAliasTagFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -10;
     }
@@ -51,7 +52,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
     }
@@ -59,48 +60,37 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         /** @var Token $token */
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixTokenContent($token->getContent())]);
-
-                continue;
-            }
-
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isComment()) {
                 continue;
             }
 
             $content = $token->getContent();
             $fixedContent = $this->fixTokenContent($content);
+
             if ($content !== $fixedContent) {
                 $tokens[$index] = new Token([T_DOC_COMMENT, $fixedContent]);
             }
         }
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private function fixTokenContent($content)
+    private function fixTokenContent(string $content): string
     {
         return Preg::replaceCallback(
             '#^/\*\*\h*@var\h+(\S+)\h*(\$\S+)?\h*([^\n]*)\*/$#',
             static function (array $matches) {
                 $content = '/** @var';
+
                 for ($i = 1, $m = \count($matches); $i < $m; ++$i) {
                     if ('' !== $matches[$i]) {
                         $content .= ' '.$matches[$i];
                     }
                 }
 
-                $content = rtrim($content);
-
-                return $content.' */';
+                return rtrim($content).' */';
             },
             $content
         );

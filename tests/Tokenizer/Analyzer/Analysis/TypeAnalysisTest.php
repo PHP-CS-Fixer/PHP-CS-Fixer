@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,6 @@
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
@@ -25,13 +26,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  */
 final class TypeAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis()
-    {
-        $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
-    }
-
-    public function testName()
+    public function testName(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
         static::assertSame('string', $analysis->getName());
@@ -42,47 +37,45 @@ final class TypeAnalysisTest extends TestCase
         static::assertTrue($analysis->isNullable());
     }
 
-    public function testStartIndex()
+    public function testStartIndex(): void
     {
-        $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertSame(1, $analysis->getStartIndex());
+        $analysis = new TypeAnalysis('string', 10, 20);
+        static::assertSame(10, $analysis->getStartIndex());
     }
 
-    public function testEndIndex()
+    public function testEndIndex(): void
     {
-        $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertSame(2, $analysis->getEndIndex());
+        $analysis = new TypeAnalysis('string', 1, 27);
+        static::assertSame(27, $analysis->getEndIndex());
     }
 
     /**
      * @dataProvider provideReservedCases
-     *
-     * @param mixed $type
-     * @param mixed $expected
      */
-    public function testReserved($type, $expected)
+    public function testReserved(string $type, bool $expected): void
     {
         $analysis = new TypeAnalysis($type, 1, 2);
         static::assertSame($expected, $analysis->isReservedType());
     }
 
-    public function provideReservedCases()
+    public function provideReservedCases(): array
     {
         return [
             ['array', true],
             ['bool', true],
             ['callable', true],
+            ['float', true],
             ['int', true],
             ['iterable', true],
-            ['float', true],
             ['mixed', true],
+            ['never', true],
             ['numeric', true],
             ['object', true],
+            ['other', false],
             ['resource', true],
             ['self', true],
             ['string', true],
             ['void', true],
-            ['other', false],
         ];
     }
 }

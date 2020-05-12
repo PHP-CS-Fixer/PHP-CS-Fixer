@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
@@ -25,16 +25,13 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixNestedFunctionsCases
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testFixNestedFunctions($expected, $input)
+    public function testFixNestedFunctions(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNestedFunctionsCases()
+    public function provideFixNestedFunctionsCases(): array
     {
         return [
             [
@@ -188,16 +185,13 @@ function B($b0, $b1, $b2)
 
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testFix($expected, $input)
+    public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -398,13 +392,13 @@ function A($b)
                     function a()
                     {
                         return $c + 1; /*
-var names are case insensitive */ }
+var names are case-insensitive */ }
                 ',
                 '<?php
                     function a()
                     {
                         $A = $c + 1; /*
-var names are case insensitive */ return $a   ;}
+var names are case-insensitive */ return $a   ;}
                 ',
             ],
             [
@@ -450,24 +444,6 @@ var names are case insensitive */ return $a   ;}
                     }',
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     *
-     * @param string $expected
-     * @param string $input
-     */
-    public function testFix70($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
                     function a($foos) {
@@ -489,15 +465,13 @@ var names are case insensitive */ return $a   ;}
 
     /**
      * @dataProvider provideDoNotFixCases
-     *
-     * @param string $expected
      */
-    public function testDoNotFix($expected)
+    public function testDoNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases()
+    public function provideDoNotFixCases(): array
     {
         return [
             'invalid reference stays invalid' => [
@@ -786,7 +760,7 @@ class XYZ
 {
     public function test1()
     {
-        $GLOBALS = 2;
+        $GLOBALS[\'a\'] = 2;
 
         return $GLOBALS;
     }
@@ -816,16 +790,13 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
 
     /**
      * @dataProvider provideRepetitiveFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testRepetitiveFix($expected, $input = null)
+    public function testRepetitiveFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideRepetitiveFixCases()
+    public function provideRepetitiveFixCases(): \Generator
     {
         yield [
             '<?php

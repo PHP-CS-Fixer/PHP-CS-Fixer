@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,26 +15,26 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use Symfony\Component\OptionsResolver\Options;
+use PhpCsFixer\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
-final class NoExtraBlankLinesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class NoExtraBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var string[]
@@ -50,7 +52,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
         'switch',
         'throw',
         'use',
-        'useTrait',
         'use_trait',
     ];
 
@@ -77,8 +78,12 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
+        if (isset($configuration['tokens']) && \in_array('use_trait', $configuration['tokens'], true)) {
+            Utils::triggerDeprecation(new \RuntimeException('Option "tokens: use_trait" used in `no_extra_blank_lines` rule is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.'));
+        }
+
         parent::configure($configuration);
 
         static $reprToTokenMap = [
@@ -104,7 +109,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
             T_DEFAULT => 'fixAfterToken',
             T_RETURN => 'fixAfterToken',
             T_SWITCH => 'fixAfterToken',
-            T_THROW => 'fixAfterToken',
+            T_THROW => 'fixAfterThrowToken',
             T_USE => 'removeBetweenUse',
             T_WHITESPACE => 'removeMultipleBlankLines',
             CT::T_USE_TRAIT => 'removeBetweenUse',
@@ -125,7 +130,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Removes extra blank lines and/or blank lines following configuration.',
@@ -247,18 +252,6 @@ class Bar
                 ),
                 new CodeSample(
                     '<?php
-
-class Foo
-{
-    use Bar;
-
-    use Baz;
-}
-',
-                    ['tokens' => ['use_trait']]
-                ),
-                new CodeSample(
-                    '<?php
 switch($a) {
 
     case 1:
@@ -278,9 +271,9 @@ switch($a) {
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer.
-     * Must run after CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer.
+     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer, StringLengthToEmptyFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -20;
     }
@@ -288,7 +281,7 @@ switch($a) {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
@@ -296,7 +289,7 @@ switch($a) {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokens = $tokens;
         $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
@@ -308,38 +301,18 @@ switch($a) {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $that = $this;
-
-        return new FixerConfigurationResolverRootless('tokens', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(self::$availableTokens)])
-                ->setNormalizer(static function (Options $options, $tokens) use ($that) {
-                    foreach ($tokens as &$token) {
-                        if ('useTrait' === $token) {
-                            $message = "Token \"useTrait\" in option \"tokens\" for rule \"{$that->getName()}\" is deprecated and will be removed in 3.0, use \"use_trait\" instead.";
-
-                            if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                                throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-                            }
-
-                            @trigger_error($message, E_USER_DEPRECATED);
-                            $token = 'use_trait';
-
-                            break;
-                        }
-                    }
-
-                    return $tokens;
-                })
                 ->setDefault(['extra'])
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
-    private function fixByToken(Token $token, $index)
+    private function fixByToken(Token $token, int $index): void
     {
         foreach ($this->tokenKindCallbackMap as $kind => $callback) {
             if (!$token->isGivenKind($kind)) {
@@ -362,7 +335,7 @@ switch($a) {
         }
     }
 
-    private function removeBetweenUse($index)
+    private function removeBetweenUse(int $index): void
     {
         $next = $this->tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
@@ -374,10 +347,10 @@ switch($a) {
             return;
         }
 
-        return $this->removeEmptyLinesAfterLineWithTokenAt($next);
+        $this->removeEmptyLinesAfterLineWithTokenAt($next);
     }
 
-    private function removeMultipleBlankLines($index)
+    private function removeMultipleBlankLines(int $index): void
     {
         $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && 1 === Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
@@ -389,7 +362,7 @@ switch($a) {
         }
     }
 
-    private function fixAfterToken($index)
+    private function fixAfterToken(int $index): void
     {
         for ($i = $index - 1; $i > 0; --$i) {
             if ($this->tokens[$i]->isGivenKind(T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
@@ -400,12 +373,19 @@ switch($a) {
                 return;
             }
 
-            if ($this->tokens[$i]->isWhitespace() && false !== strpos($this->tokens[$i]->getContent(), "\n")) {
+            if ($this->tokens[$i]->isWhitespace() && str_contains($this->tokens[$i]->getContent(), "\n")) {
                 break;
             }
         }
 
         $this->removeEmptyLinesAfterLineWithTokenAt($index);
+    }
+
+    private function fixAfterThrowToken(int $index): void
+    {
+        if ($this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+            $this->fixAfterToken($index);
+        }
     }
 
     /**
@@ -414,13 +394,13 @@ switch($a) {
      *
      * @param int $index body start
      */
-    private function fixStructureOpenCloseIfMultiLine($index)
+    private function fixStructureOpenCloseIfMultiLine(int $index): void
     {
         $blockTypeInfo = Tokens::detectBlockType($this->tokens[$index]);
         $bodyEnd = $this->tokens->findBlockEnd($blockTypeInfo['type'], $index);
 
         for ($i = $bodyEnd - 1; $i >= $index; --$i) {
-            if (false !== strpos($this->tokens[$i]->getContent(), "\n")) {
+            if (str_contains($this->tokens[$i]->getContent(), "\n")) {
                 $this->removeEmptyLinesAfterLineWithTokenAt($i);
                 $this->removeEmptyLinesAfterLineWithTokenAt($index);
 
@@ -429,14 +409,14 @@ switch($a) {
         }
     }
 
-    private function removeEmptyLinesAfterLineWithTokenAt($index)
+    private function removeEmptyLinesAfterLineWithTokenAt(int $index): void
     {
         // find the line break
         $tokenCount = \count($this->tokens);
         for ($end = $index; $end < $tokenCount; ++$end) {
             if (
                 $this->tokens[$end]->equals('}')
-                || false !== strpos($this->tokens[$end]->getContent(), "\n")
+                || str_contains($this->tokens[$end]->getContent(), "\n")
             ) {
                 break;
             }
@@ -465,13 +445,7 @@ switch($a) {
         }
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return bool
-     */
-    private function containsLinebreak($startIndex, $endIndex)
+    private function containsLinebreak(int $startIndex, int $endIndex): bool
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
             if (Preg::match('/\R/', $this->tokens[$i]->getContent())) {

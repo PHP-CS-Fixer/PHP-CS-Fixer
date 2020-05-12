@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,12 +24,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class OrderedTraitsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -35,7 +34,7 @@ final class OrderedTraitsFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<array>
      */
-    public function provideFixCases()
+    public function provideFixCases(): iterable
     {
         yield 'simple' => [
             '<?php

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,14 +27,9 @@ use PhpCsFixer\Tests\TestCase;
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
-     * @param bool        $expected
-     * @param string      $candidate
-     * @param string      $target
-     * @param null|string $exception
-     *
      * @dataProvider provideTestFulfillsCases
      */
-    public function testFulfills($expected, $candidate, $target, $exception = null)
+    public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {
         if (null !== $exception) {
             $this->expectException($exception);
@@ -44,7 +41,7 @@ final class PhpUnitTargetVersionTest extends TestCase
         );
     }
 
-    public function provideTestFulfillsCases()
+    public function provideTestFulfillsCases(): array
     {
         return [
             [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6],

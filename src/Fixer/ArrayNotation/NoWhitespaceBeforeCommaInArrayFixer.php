@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,12 +15,14 @@
 namespace PhpCsFixer\Fixer\ArrayNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
@@ -28,12 +32,12 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @author Adam Marczuk <adam@marczuk.info>
  */
-final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'In array declaration, there MUST NOT be a whitespace before each comma.',
@@ -60,7 +64,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
@@ -68,7 +72,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
@@ -80,7 +84,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
@@ -99,10 +103,8 @@ SAMPLE
 
     /**
      * Method to fix spacing in array declaration.
-     *
-     * @param int $index
      */
-    private function fixSpacing($index, Tokens $tokens)
+    private function fixSpacing(int $index, Tokens $tokens): void
     {
         if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
             $startIndex = $index;
@@ -118,8 +120,8 @@ SAMPLE
             $prevIndex = $tokens->getPrevNonWhitespace($i - 1);
 
             if (
-                $currentToken->equals(',') && !$tokens[$prevIndex]->isComment() &&
-                ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
+                $currentToken->equals(',') && !$tokens[$prevIndex]->isComment()
+                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
             ) {
                 $tokens->removeLeadingWhitespace($i);
             }
@@ -129,11 +131,9 @@ SAMPLE
     /**
      * Method to move index over the non-array elements like function calls or function declarations.
      *
-     * @param int $index
-     *
      * @return int New index
      */
-    private function skipNonArrayElements($index, Tokens $tokens)
+    private function skipNonArrayElements(int $index, Tokens $tokens): int
     {
         if ($tokens[$index]->equals('}')) {
             return $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);

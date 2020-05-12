@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
@@ -25,19 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             [
                 '<?php 1**2;',
                 '<?php pow(1,2);',
@@ -135,10 +132,6 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                 '<?php echo pow(${$bar}, ${$foo});',
             ],
             [
-                '<?php echo $a{1}** $b{2+5};',
-                '<?php echo pow($a{1}, $b{2+5});',
-            ],
-            [
                 '<?php echo $a[2^3+1]->test(1,2)** $b[2+$c];',
                 '<?php echo pow($a[2^3+1]->test(1,2), $b[2+$c]);',
             ],
@@ -222,20 +215,42 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                     public function &pow($a, $b);
                 }',
             ],
+            [
+                '<?php echo $a[1]** $b[2+5];',
+                '<?php echo pow($a[1], $b[2+5]);',
+            ],
+            [
+                '<?php pow($b, ...$a);',
+            ],
         ];
     }
 
     /**
-     * @param string $expected
-     *
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php echo $a{1}** $b{2+5};',
+            '<?php echo pow($a{1}, $b{2+5});',
+        ];
+    }
+
+    /**
      * @dataProvider provideNotFixCases
      */
-    public function testNotFix($expected)
+    public function testNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public function provideNotFixCases()
+    public function provideNotFixCases(): array
     {
         return [
             [
@@ -254,18 +269,15 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -280,23 +292,39 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.4
      * @dataProvider provideFix74Cases
      */
-    public function testFix74($expected, $input)
+    public function testFix74(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
                 '<?php echo 10_0** 2;',
                 '<?php echo pow(10_0, 2);',
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP 8.0
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): array
+    {
+        return [
+            [
+                '<?php echo $a[2^3+1]?->test(1,2)** $b[2+$c];',
+                '<?php echo pow($a[2^3+1]?->test(1,2), $b[2+$c]);',
             ],
         ];
     }

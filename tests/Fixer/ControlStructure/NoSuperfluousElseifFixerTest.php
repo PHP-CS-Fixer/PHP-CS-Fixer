@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,22 +19,20 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer
  */
 final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -233,24 +233,6 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                     echo 2;
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
 
@@ -277,6 +259,28 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
                     return 4;
                 }',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+            if ($foo) {
+                $a = $bar ?? throw new \Exception();
+            } elseif ($bar) {
+                echo 1;
+            }
+            ',
         ];
     }
 }

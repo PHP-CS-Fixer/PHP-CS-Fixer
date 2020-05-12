@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,25 +15,28 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements ConfigurableFixerInterface
 {
     /**
      * Available types, grouped.
      *
      * @var array<string,string[]>
      */
-    private static $possibleTypes = [
+    private const POSSIBLE_TYPES = [
         'simple' => [
             'array',
             'bool',
@@ -65,26 +70,39 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     ];
 
     /**
-     * @var array string[]
+     * @var string
      */
-    private $typesToFix = [];
+    private $patternToFix = '';
 
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
-        $this->typesToFix = array_merge(...array_map(static function ($group) {
-            return self::$possibleTypes[$group];
+        $typesToFix = array_merge(...array_map(static function (string $group): array {
+            return self::POSSIBLE_TYPES[$group];
         }, $this->configuration['groups']));
+
+        $this->patternToFix = sprintf(
+            '/(?<![a-zA-Z0-9_\x80-\xff]\\\\)(\b|.(?=\$))(%s)\b(?!\\\\)/i',
+            implode(
+                '|',
+                array_map(
+                    static function (string $type): string {
+                        return preg_quote($type, '/');
+                    },
+                    $typesToFix
+                )
+            )
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'The correct case must be used for standard PHP types in PHPDoc.',
@@ -98,6 +116,16 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
  */
 '
                 ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param BOOL $foo
+ *
+ * @return MIXED
+ */
+',
+                    ['groups' => ['simple', 'alias']]
+                ),
             ]
         );
     }
@@ -105,10 +133,10 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     /**
      * {@inheritdoc}
      *
-     * Must run before GeneralPhpdocAnnotationRemoveFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAlignFixer, PhpdocInlineTagFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocToParamTypeFixer, PhpdocToReturnTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
+     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
      * Must run after PhpdocAnnotationWithoutDotFixer, PhpdocIndentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         /*
          * Should be run before all other docblock fixers apart from the
@@ -124,23 +152,23 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     /**
      * {@inheritdoc}
      */
-    protected function normalize($type)
+    protected function normalize(string $type): string
     {
-        $lower = strtolower($type);
-
-        if (\in_array($lower, $this->typesToFix, true)) {
-            return $lower;
-        }
-
-        return $type;
+        return Preg::replaceCallback(
+            $this->patternToFix,
+            function (array $matches): string {
+                return strtolower($matches[0]);
+            },
+            $type
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $possibleGroups = array_keys(self::$possibleTypes);
+        $possibleGroups = array_keys(self::POSSIBLE_TYPES);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Type groups to fix.'))

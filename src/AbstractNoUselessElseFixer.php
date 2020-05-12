@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,32 +16,25 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 abstract class AbstractNoUselessElseFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // should be run before NoWhitespaceInBlankLineFixer, NoExtraBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
-        return 25;
+        return 39;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    protected function isSuperfluousElse(Tokens $tokens, $index)
+    protected function isSuperfluousElse(Tokens $tokens, int $index): bool
     {
         $previousBlockStart = $index;
+
         do {
             // Check if all 'if', 'else if ' and 'elseif' blocks above this 'else' always end,
             // if so this 'else' is overcomplete.
-            list($previousBlockStart, $previousBlockEnd) = $this->getPreviousBlock($tokens, $previousBlockStart);
+            [$previousBlockStart, $previousBlockEnd] = $this->getPreviousBlock($tokens, $previousBlockStart);
 
             // short 'if' detection
             $previous = $previousBlockEnd;
@@ -48,8 +43,8 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             }
 
             if (
-                !$tokens[$previous]->equals(';') ||                              // 'if' block doesn't end with semicolon, keep 'else'
-                $tokens[$tokens->getPrevMeaningfulToken($previous)]->equals('{') // empty 'if' block, keep 'else'
+                !$tokens[$previous]->equals(';')                                    // 'if' block doesn't end with semicolon, keep 'else'
+                || $tokens[$tokens->getPrevMeaningfulToken($previous)]->equals('{') // empty 'if' block, keep 'else'
             ) {
                 return false;
             }
@@ -69,10 +64,19 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 ]
             );
 
-            if (
-                null === $candidateIndex
-                || $tokens[$candidateIndex]->equalsAny([';', [T_CLOSE_TAG], [T_IF]])
-                || $this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
+            if (null === $candidateIndex || $tokens[$candidateIndex]->equalsAny([';', [T_CLOSE_TAG], [T_IF]])) {
+                return false;
+            }
+
+            if ($tokens[$candidateIndex]->equals([T_THROW])) {
+                $previousIndex = $tokens->getPrevMeaningfulToken($candidateIndex);
+
+                if (!$tokens[$previousIndex]->equalsAny([';', '{'])) {
+                    return false;
+                }
+            }
+
+            if ($this->isInConditional($tokens, $candidateIndex, $previousBlockStart)
                 || $this->isInConditionWithoutBraces($tokens, $candidateIndex, $previousBlockStart)
             ) {
                 return false;
@@ -94,7 +98,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      *
      * @return int[]
      */
-    private function getPreviousBlock(Tokens $tokens, $index)
+    private function getPreviousBlock(Tokens $tokens, int $index): array
     {
         $close = $previous = $tokens->getPrevMeaningfulToken($index);
         // short 'if' detection
@@ -116,10 +120,8 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     /**
      * @param int $index           Index of the token to check
      * @param int $lowerLimitIndex Lower limit index. Since the token to check will always be in a conditional we must stop checking at this index
-     *
-     * @return bool
      */
-    private function isInConditional(Tokens $tokens, $index, $lowerLimitIndex)
+    private function isInConditional(Tokens $tokens, int $index, int $lowerLimitIndex): bool
     {
         $candidateIndex = $tokens->getPrevTokenOfKind($index, [')', ';', ':']);
         if ($tokens[$candidateIndex]->equals(':')) {
@@ -141,16 +143,13 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     /**
      * For internal use only, as it is not perfect.
      *
-     * Returns if the token at given index is part of a if/elseif/else statement
+     * Returns if the token at given index is part of an if/elseif/else statement
      * without {}. Assumes not passing the last `;`/close tag of the statement, not
      * out of range index, etc.
      *
-     * @param int $index           Index of the token to check
-     * @param int $lowerLimitIndex
-     *
-     * @return bool
+     * @param int $index Index of the token to check
      */
-    private function isInConditionWithoutBraces(Tokens $tokens, $index, $lowerLimitIndex)
+    private function isInConditionWithoutBraces(Tokens $tokens, int $index, int $lowerLimitIndex): bool
     {
         do {
             if ($tokens[$index]->isComment() || $tokens[$index]->isWhitespace()) {
@@ -165,6 +164,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             if ($token->equals(';')) {
                 return false;
             }
+
             if ($token->equals('{')) {
                 $index = $tokens->getPrevMeaningfulToken($index);
 

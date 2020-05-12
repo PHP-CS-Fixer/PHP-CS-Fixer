@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\ConfigurationException;
 
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
@@ -25,14 +28,14 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidFixerConfigurationExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException()
+    public function testIsInvalidArgumentException(): void
     {
         $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
 
-        static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
+        static::assertInstanceOf(InvalidConfigurationException::class, $exception);
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $fixerName = 'hal';
         $message = 'I cannot do that, Dave.';
@@ -48,7 +51,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
         static::assertNull($exception->getPrevious());
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $fixerName = 'hal';
         $message = 'I cannot do that, Dave.';

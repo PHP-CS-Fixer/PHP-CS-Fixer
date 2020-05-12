@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,29 +16,27 @@ namespace PhpCsFixer\Fixer\Strict;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
- * @author SpacePossum
  */
 final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Force strict types declaration in all files. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\n"
                 ),
             ],
             null,
@@ -49,7 +49,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      *
      * Must run before BlankLineAfterOpeningTagFixer, DeclareEqualNormalizeFixer, HeaderCommentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 2;
     }
@@ -57,15 +57,15 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && isset($tokens[0]) && $tokens[0]->isGivenKind(T_OPEN_TAG);
+        return isset($tokens[0]) && $tokens[0]->isGivenKind(T_OPEN_TAG);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -73,7 +73,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // check if the declaration is already done
         $searchIndex = $tokens->getNextMeaningfulToken(0);
@@ -96,7 +96,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     /**
      * @param array<int, Token> $sequence
      */
-    private function fixStrictTypesCasingAndValue(Tokens $tokens, array $sequence)
+    private function fixStrictTypesCasingAndValue(Tokens $tokens, array $sequence): void
     {
         /** @var int $index */
         /** @var Token $token */
@@ -114,7 +114,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
     }
 
-    private function insertSequence(Tokens $tokens)
+    private function insertSequence(Tokens $tokens): void
     {
         $sequence = [
             new Token([T_DECLARE, 'declare']),
@@ -131,12 +131,12 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
         // start index of the sequence is always 1 here, 0 is always open tag
         // transform "<?php\n" to "<?php " if needed
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
+        if (str_contains($tokens[0]->getContent(), "\n")) {
             $tokens[0] = new Token([$tokens[0]->getId(), trim($tokens[0]->getContent()).' ']);
         }
 
         if ($endIndex === \count($tokens) - 1) {
-            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
+            return; // no more tokens after sequence, single_blank_line_at_eof might add a line
         }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();

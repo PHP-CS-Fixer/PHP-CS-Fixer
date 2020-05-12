@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,20 +29,20 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamespacesAnalyzerTest extends TestCase
 {
     /**
-     * @param string $code
-     * @param array  $expected
-     *
      * @dataProvider provideNamespacesCases
      */
-    public function testNamespaces($code, $expected)
+    public function testNamespaces(string $code, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespacesAnalyzer();
 
-        static::assertSame(serialize($expected), serialize(($analyzer->getDeclarations($tokens))));
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getDeclarations($tokens))
+        );
     }
 
-    public function provideNamespacesCases()
+    public function provideNamespacesCases(): array
     {
         return [
             ['<?php // no namespaces', [
@@ -82,5 +84,96 @@ final class NamespacesAnalyzerTest extends TestCase
                 ),
             ]],
         ];
+    }
+
+    /**
+     * @dataProvider provideGetNamespaceAtCases
+     */
+    public function testGetNamespaceAt(string $code, int $index, NamespaceAnalysis $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new NamespacesAnalyzer();
+
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getNamespaceAt($tokens, $index))
+        );
+    }
+
+    public function provideGetNamespaceAtCases(): \Generator
+    {
+        yield [
+            '<?php // no namespaces',
+            1,
+            new NamespaceAnalysis(
+                '',
+                '',
+                0,
+                0,
+                0,
+                1
+            ),
+        ];
+
+        yield [
+            '<?php namespace Foo\Bar;',
+            5,
+            new NamespaceAnalysis(
+                'Foo\Bar',
+                'Bar',
+                1,
+                6,
+                1,
+                6
+            ),
+        ];
+
+        yield [
+            '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
+            5,
+            new NamespaceAnalysis(
+                'Foo\Bar',
+                'Bar',
+                1,
+                6,
+                1,
+                7
+            ),
+        ];
+
+        yield [
+            '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
+            13,
+            new NamespaceAnalysis(
+                'Foo\Baz',
+                'Baz',
+                10,
+                16,
+                10,
+                17
+            ),
+        ];
+
+        yield [
+            ' ',
+            0,
+            new NamespaceAnalysis(
+                '',
+                '',
+                0,
+                0,
+                0,
+                0
+            ),
+        ];
+    }
+
+    public function testInvalidIndex(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Token index 666 does not exist.');
+
+        $analyzer = new NamespacesAnalyzer();
+        $analyzer->getNamespaceAt(new Tokens(), 666);
     }
 }

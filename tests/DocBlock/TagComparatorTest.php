@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,7 +20,7 @@ use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -27,13 +29,9 @@ use PhpCsFixer\Tests\TestCase;
 final class TagComparatorTest extends TestCase
 {
     /**
-     * @param string $first
-     * @param string $second
-     * @param bool   $expected
-     *
      * @dataProvider provideComparatorCases
      */
-    public function testComparatorTogether($first, $second, $expected)
+    public function testComparatorTogether(string $first, string $second, bool $expected): void
     {
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));
@@ -41,7 +39,7 @@ final class TagComparatorTest extends TestCase
         static::assertSame($expected, TagComparator::shouldBeTogether($tag1, $tag2));
     }
 
-    public function provideComparatorCases()
+    public function provideComparatorCases(): array
     {
         return [
             ['return', 'return', true],

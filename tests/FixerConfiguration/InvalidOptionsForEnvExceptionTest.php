@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,15 +18,13 @@ use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException
  */
 final class InvalidOptionsForEnvExceptionTest extends TestCase
 {
-    public function testInvalidOptionsForEnvException()
+    public function testInvalidOptionsForEnvException(): void
     {
         $exception = new InvalidOptionsForEnvException();
         static::assertInstanceOf(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class, $exception);

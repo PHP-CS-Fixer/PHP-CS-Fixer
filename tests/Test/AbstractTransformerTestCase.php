@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,7 +16,9 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,27 +27,91 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    protected function setUp()
+    /**
+     * @var null|TransformerInterface
+     */
+    protected $transformer;
+
+    protected function setUp(): void
     {
         parent::setUp();
 
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
+        $this->transformer = $this->createTransformer();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
+        $this->transformer = null;
     }
 
-    protected function doTest($source, array $expectedTokens = [], array $observedKindsOrPrototypes = [])
+    public function testGetPriority(): void
     {
-        $tokens = Tokens::fromCode($source);
+        static::assertIsInt($this->transformer->getPriority(), $this->transformer->getName());
+    }
+
+    public function testGetName(): void
+    {
+        $name = $this->transformer->getName();
+
+        static::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
+    }
+
+    public function testGetCustomTokens(): void
+    {
+        $name = $this->transformer->getName();
+        $customTokens = $this->transformer->getCustomTokens();
+
+        static::assertIsArray($customTokens, $name);
+
+        foreach ($customTokens as $customToken) {
+            static::assertIsInt($customToken, $name);
+        }
+    }
+
+    public function testGetRequiredPhpVersionId(): void
+    {
+        $name = $this->transformer->getName();
+        $requiredPhpVersionId = $this->transformer->getRequiredPhpVersionId();
+
+        static::assertIsInt($requiredPhpVersionId, $name);
+        static::assertGreaterThanOrEqual(50000, $requiredPhpVersionId, $name);
+    }
+
+    public function testTransformersIsFinal(): void
+    {
+        $transformerRef = new \ReflectionClass($this->transformer);
+
+        static::assertTrue(
+            $transformerRef->isFinal(),
+            sprintf('Transformer "%s" must be declared "final."', $this->transformer->getName())
+        );
+    }
+
+    public function testTransformDoesNotChangeSimpleCode(): void
+    {
+        if (\PHP_VERSION_ID < $this->transformer->getRequiredPhpVersionId()) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php ');
+
+        foreach ($tokens as $index => $token) {
+            $this->transformer->process($tokens, $token, $index);
+        }
+
+        static::assertFalse($tokens->isChanged());
+    }
+
+    protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
+    {
+        Tokens::clearCache();
+        $tokens = new TokensWithObservedTransformers();
+        $tokens->setCode($source);
 
         static::assertSame(
             \count($expectedTokens),
@@ -59,9 +127,47 @@ abstract class AbstractTransformerTestCase extends TestCase
             'Number of expected tokens does not match actual token count.'
         );
 
+        $transformerName = $this->transformer->getName();
+        $customTokensOfTransformer = $this->transformer->getCustomTokens();
+
+        foreach ($customTokensOfTransformer as $customTokenOfTransformer) {
+            static::assertTrue(CT::has($customTokenOfTransformer), sprintf('Unknown custom token id "%d" in "%s".', $transformerName, $customTokenOfTransformer));
+            static::assertStringStartsWith('CT::', CT::getName($customTokenOfTransformer));
+        }
+
+        $customTokensOfTransformerList = implode(', ', array_map(static function (int $ct): string { return CT::getName($ct); }, $customTokensOfTransformer));
+
+        foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
+            foreach ($modificationsOfTransformer as $modification) {
+                $customTokenName = Token::getNameForId($modification);
+
+                if ($appliedTransformerName === $transformerName) {
+                    static::assertContains(
+                        $modification,
+                        $customTokensOfTransformer,
+                        sprintf(
+                            'Transformation into "%s" must be allowed in self-documentation of the Transformer, currently allowed custom tokens are: %s',
+                            $customTokenName,
+                            $customTokensOfTransformerList
+                        )
+                    );
+                } else {
+                    static::assertNotContains(
+                        $modification,
+                        $customTokensOfTransformer,
+                        sprintf(
+                            'Transformation into "%s" must NOT be applied by other Transformer than "%s".',
+                            $customTokenName,
+                            $transformerName
+                        )
+                    );
+                }
+            }
+        }
+
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                static::assertTrue($tokens[$index]->equals($tokenIdOrContent));
+                static::assertTrue($tokens[$index]->equals($tokenIdOrContent), sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent), $tokens[$index]->toJson()));
 
                 continue;
             }
@@ -80,10 +186,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         }
     }
 
-    /**
-     * @return int
-     */
-    private function countTokenPrototypes(Tokens $tokens, array $prototypes)
+    private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {
         $count = 0;
 
@@ -94,5 +197,12 @@ abstract class AbstractTransformerTestCase extends TestCase
         }
 
         return $count;
+    }
+
+    private function createTransformer(): TransformerInterface
+    {
+        $transformerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
+
+        return new $transformerClassName();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,8 +18,6 @@ use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\NullOutput
@@ -27,7 +27,7 @@ final class NullOutputTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testNullOutput()
+    public function testNullOutput(): void
     {
         $output = new NullOutput();
         $output->printLegend();

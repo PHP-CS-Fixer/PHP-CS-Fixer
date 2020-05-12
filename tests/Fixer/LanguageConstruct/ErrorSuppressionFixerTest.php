@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\Fixer\LanguageConstruct\ErrorSuppressionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -25,23 +28,20 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             [
-                '<?php trigger_error("This is not a deprecation warning."); ?>',
+                '<?php trigger_error("This is not a deprecation warning."); @f(); ?>',
             ],
             [
                 '<?php trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
@@ -50,16 +50,13 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
                 '<?php A\B\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
             ],
             [
-                '<?php \A\B/* */\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
-            ],
-            [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
             ],
             [
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
                 null,
-                ['mute_deprecation_error' => false],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => false],
             ],
             [
                 '<?php @\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
@@ -90,44 +87,76 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); mkdir("dir"); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
             ],
             [
                 '<?php $foo->isBar(); ?>',
                 '<?php @$foo->isBar(); ?>',
-                ['noise_remaining_usages' => true],
+                [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
             ],
             [
                 '<?php Foo::isBar(); ?>',
                 '<?php @Foo::isBar(); ?>',
-                ['noise_remaining_usages' => true],
+                [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
             ],
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['mkdir']],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
             ],
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); unlink($path); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); @unlink($path); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['mkdir']],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
             ],
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['trigger_error']],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['trigger_error']],
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php \A\B/* */\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
         ];
     }
 
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
             '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );'
         );
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php $a = trigger_error(...);',
+        ];
     }
 }

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  php-7.4: &php
+    build: docker/php-7.4
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      PHP_IDE_CONFIG: serverName=php-cs-fixer
+      PHP_CS_FIXER_ALLOW_XDEBUG: 1
+  php-8.0:
+    <<: *php
+    build: docker/php-8.0
+  php-8.1:
+    <<: *php
+    build: docker/php-8.1

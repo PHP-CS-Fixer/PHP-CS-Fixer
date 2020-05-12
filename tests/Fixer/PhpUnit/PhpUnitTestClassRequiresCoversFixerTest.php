@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,17 +27,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'already with annotation: @covers' => [
@@ -219,16 +218,24 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     class Baz4 extends TestCase {}
                 ',
             ],
+            [
+                '<?php /* comment */
+
+/**
+ * @coversNothing
+ */
+class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+                '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $expected = str_replace(['    ', "\n"], ["\t", "\r\n"], $expected);
         if (null !== $input) {
@@ -240,7 +247,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

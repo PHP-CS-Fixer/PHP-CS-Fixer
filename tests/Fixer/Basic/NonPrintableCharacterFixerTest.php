@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,6 @@
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
-use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -25,31 +26,30 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixCases
-     */
-    public function testFixWithoutEscapeSequences($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => false,
         ]);
+
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFixWithoutEscapeSequences(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'use_escape_sequences_in_strings' => false,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases(): array
     {
         return [
             [
@@ -103,25 +103,34 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
                 '<?php echo \'12345\';?>abc<?php ?>',
                 '<?php echo \'123'.pack('H*', 'e2808b').'45\';?>a'.pack('H*', 'e2808b').'bc<?php ?>',
             ],
+            [
+                '<?php echo "${foo'.pack('H*', 'c2a0').'bar} is great!";',
+            ],
+            [
+                '<?php echo $foo'.pack('H*', 'c2a0').'bar;',
+            ],
+            [
+                '<?php /* foo *'.pack('H*', 'e2808b').'/ bar */',
+            ],
+            [
+                '<?php /** foo *'.pack('H*', 'e2808b').'/ bar */',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithEscapeSequencesInStringsCases
-     * @requires PHP 7.0
      */
-    public function testFixWithEscapeSequencesInStrings($expected, $input = null)
+    public function testFixWithEscapeSequencesInStrings(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => true,
         ]);
+
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithEscapeSequencesInStringsCases()
+    public function provideFixWithEscapeSequencesInStringsCases(): array
     {
         return [
             [
@@ -294,19 +303,10 @@ EXPECTED
 INPUT
                  , pack('H*', 'e2808b')),
             ],
+            [
+                "<?php \"String in single quotes, having non-breaking space: \\u{a0}, linebreak: \n, and single quote inside: ' is a dangerous mix.\";",
+                "<?php 'String in single quotes, having non-breaking space: ".pack('H*', 'c2a0').", linebreak: \n, and single quote inside: \\' is a dangerous mix.';",
+            ],
         ];
-    }
-
-    /**
-     * @requires PHP <7.0
-     */
-    public function testFixWithEscapeSequencesInStringsLowerThanPhp70()
-    {
-        $this->expectException(InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[non_printable_character\] Invalid configuration for env: Escape sequences require PHP 7\.0\+\.$/');
-
-        $this->fixer->configure([
-            'use_escape_sequences_in_strings' => true,
-        ]);
     }
 }

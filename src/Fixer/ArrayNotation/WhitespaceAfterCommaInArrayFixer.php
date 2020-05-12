@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ArrayNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,7 +30,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'In array declaration, there MUST be a whitespace after each comma.',
@@ -38,7 +41,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
@@ -46,46 +49,42 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokensToInsert = [];
+
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
-                $this->fixSpacing($index, $tokens);
+            if (!$tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                $startIndex = $index;
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+            } else {
+                $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+            }
+
+            for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+                $i = $this->skipNonArrayElements($i, $tokens);
+                if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
+                    $tokensToInsert[$i + 1] = new Token([T_WHITESPACE, ' ']);
+                }
             }
         }
-    }
 
-    /**
-     * Method to fix spacing in array declaration.
-     *
-     * @param int $index
-     */
-    private function fixSpacing($index, Tokens $tokens)
-    {
-        if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-            $startIndex = $index;
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
-        } else {
-            $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
-        }
-
-        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
-            $i = $this->skipNonArrayElements($i, $tokens);
-            if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
-            }
+        if ([] !== $tokensToInsert) {
+            $tokens->insertSlices($tokensToInsert);
         }
     }
 
     /**
      * Method to move index over the non-array elements like function calls or function declarations.
      *
-     * @param int $index
-     *
      * @return int New index
      */
-    private function skipNonArrayElements($index, Tokens $tokens)
+    private function skipNonArrayElements(int $index, Tokens $tokens): int
     {
         if ($tokens[$index]->equals('}')) {
             return $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);

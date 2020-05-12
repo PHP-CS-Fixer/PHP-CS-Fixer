@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,29 +26,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
-            [
-                "<?php echo 'DateTime'
-# a
- /* b */?>
-",
-                '<?php echo \
-DateTime:: # a
- /* b */ class?>
-',
-            ],
             [
                 "<?php
                 use Foo\\Bar\\Thing;
@@ -69,6 +58,18 @@ DateTime:: # a
                 use Foo\Bar;
             '.'
                 echo Bar\Thing::class;
+                ',
+            ],
+            [
+                "<?php
+                namespace Foo;
+                use Foo\\Bar;
+                echo 'Foo\\Bar\\Baz';
+                ",
+                '<?php
+                namespace Foo;
+                use Foo\\Bar;
+                echo \\Foo\\Bar\\Baz::class;
                 ',
             ],
             [
@@ -235,24 +236,6 @@ DateTime:: # a
                 var_dump(Baz::class);
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 "<?php
                 use Foo\\Bar\\{ClassA, ClassB, ClassC as C};
@@ -270,35 +253,79 @@ DateTime:: # a
                 echo ClassB::class;
                 echo C::class;
                 ',
-            ],
-            [
                 "<?php
-                var_dump('Foo');
+                namespace {
+                    var_dump('Foo');
+                }
                 namespace A {
                     use B\\C;
                     var_dump('B\\C');
                 }
-                var_dump('Bar\\Baz');
+                namespace {
+                    var_dump('Bar\\Baz');
+                }
                 namespace B {
                     use A\\C\\D;
                     var_dump('A\\C\\D');
                 }
-                var_dump('Qux\\Quux');
+                namespace {
+                    var_dump('Qux\\Quux');
+                }
                 ",
                 '<?php
-                var_dump(Foo::class);
+                namespace {
+                    var_dump(Foo::class);
+                }
                 namespace A {
                     use B\\C;
                     var_dump(C::class);
                 }
-                var_dump(Bar\\Baz::class);
+                namespace {
+                    var_dump(Bar\\Baz::class);
+                }
                 namespace B {
                     use A\\C\\D;
                     var_dump(D::class);
                 }
-                var_dump(Qux\\Quux::class);
+                namespace {
+                    var_dump(Qux\\Quux::class);
+                }
                 ',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(): void
+    {
+        $this->doTest(
+            "<?php echo 'DateTime'
+# a
+ /* b */?>
+",
+            '<?php echo \
+DateTime:: # a
+ /* b */ class?>
+'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testNotFixPHP8(): void
+    {
+        $this->doTest(
+            "<?php
+            echo 'Thing';
+            echo \$thing::class;
+            ",
+            '<?php
+            echo Thing::class;
+            echo $thing::class;
+            '
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,54 +14,34 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
  */
-final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyConfigureDefaultToNull()
+    public function testConfigureDefaultToFalse(): void
     {
         $defaultConfig = [
             'multi_line_extends_each_single_line' => false,
             'single_item_single_line' => false,
             'single_line' => false,
+            'space_before_parenthesis' => false,
         ];
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
-
-        $fixer->configure(null);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
-    }
-
-    public function testConfigureDefaultToNull()
-    {
-        $defaultConfig = [
-            'multi_line_extends_each_single_line' => false,
-            'single_item_single_line' => false,
-            'single_line' => false,
-        ];
-
-        $fixer = new ClassDefinitionFixer();
-        $fixer->configure($defaultConfig);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertConfigurationSame($defaultConfig, $fixer);
 
         $fixer->configure([]);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertConfigurationSame($defaultConfig, $fixer);
     }
 
     /**
@@ -68,23 +50,18 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      * @param array<string, bool> $config
      *
      * @dataProvider provideAnonymousClassesCases
-     *
-     * @requires PHP 7.0
      */
-    public function testFixingAnonymousClasses($expected, $input, array $config = [])
+    public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
      * @dataProvider provideClassesCases
      */
-    public function testFixingClasses($expected, $input)
+    public function testFixingClasses(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
@@ -92,26 +69,19 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
     }
 
     /**
-     * @param string              $expected PHP source code
-     * @param string              $input    PHP source code
-     * @param array<string, bool> $config
-     *
      * @dataProvider provideClassesWithConfigCases
      */
-    public function testFixingClassesWithConfig($expected, $input, array $config)
+    public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
      * @dataProvider provideInterfacesCases
      */
-    public function testFixingInterfaces($expected, $input)
+    public function testFixingInterfaces(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
@@ -119,33 +89,30 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
      * @dataProvider provideTraitsCases
      */
-    public function testFixingTraits($expected, $input)
+    public function testFixingTraits(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
-    public function testInvalidConfigurationKey()
+    public function testInvalidConfigurationKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
-            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line"\.$/'
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure(['a' => false]);
     }
 
-    public function testInvalidConfigurationValueType()
+    public function testInvalidConfigurationValueType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(
             '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 
@@ -153,7 +120,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
         $fixer->configure(['single_line' => 'z']);
     }
 
-    public function provideAnonymousClassesCases()
+    public function provideAnonymousClassesCases(): array
     {
         return [
             [
@@ -297,10 +264,20 @@ A#
                 '<?php $a = new class()#
 {};',
             ],
+            'space_before_parenthesis 1' => [
+                '<?php $z = new class () {};',
+                '<?php $z = new class()  {};',
+                ['space_before_parenthesis' => true],
+            ],
+            'space_before_parenthesis 2' => [
+                '<?php $z = new class () {};',
+                '<?php $z = new class   ()  {};',
+                ['space_before_parenthesis' => true],
+            ],
         ];
     }
 
-    public function provideClassesCases()
+    public function provideClassesCases(): array
     {
         return array_merge(
             $this->provideClassyCases('class'),
@@ -309,7 +286,7 @@ A#
         );
     }
 
-    public function provideClassesWithConfigCases()
+    public function provideClassesWithConfigCases(): array
     {
         return [
             [
@@ -359,7 +336,7 @@ A#
         ];
     }
 
-    public function provideInterfacesCases()
+    public function provideInterfacesCases(): array
     {
         $cases = array_merge(
             $this->provideClassyCases('interface'),
@@ -396,7 +373,7 @@ TestInterface3, /**/     TestInterface4   ,
         return $cases;
     }
 
-    public function provideTraitsCases()
+    public function provideTraitsCases(): array
     {
         return $this->provideClassyCases('trait');
     }
@@ -406,7 +383,7 @@ TestInterface3, /**/     TestInterface4   ,
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
-    public function testClassyDefinitionInfo($source, array $expected)
+    public function testClassyDefinitionInfo(string $source, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -419,7 +396,7 @@ TestInterface3, /**/     TestInterface4   ,
         static::assertSame($expected, $result);
     }
 
-    public function provideClassyDefinitionInfoCases()
+    public function provideClassyDefinitionInfoCases(): array
     {
         return [
             [
@@ -490,31 +467,18 @@ TestInterface3, /**/     TestInterface4   ,
 
     /**
      * @param string $source PHP source code
-     * @param string $label
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
-    public function testClassyInheritanceInfo($source, $label, array $expected)
+    public function testClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    /**
-     * @param string $source PHP source code
-     * @param string $label
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideClassyInheritanceInfo7Cases
-     */
-    public function testClassyInheritanceInfo7($source, $label, array $expected)
+    public function provideClassyImplementsInfoCases(): \Generator
     {
-        $this->doTestClassyInheritanceInfo($source, $label, $expected);
-    }
-
-    public function provideClassyImplementsInfoCases()
-    {
-        return [
-            [
+        yield from [
+            '1' => [
                 '<?php
 class X11 implements    Z   , T,R
 {
@@ -522,7 +486,7 @@ class X11 implements    Z   , T,R
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
-            [
+            '2' => [
                 '<?php
 class X10 implements    Z   , T,R    //
 {
@@ -530,25 +494,28 @@ class X10 implements    Z   , T,R    //
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
-            [
+            '3' => [
                 '<?php class A implements B {}',
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
             ],
-            [
-                "<?php class A implements B,\n C{}",
+            '4' => [
+                "<?php class A implements B,\n I{}",
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
             ],
-            [
+            '5' => [
                 "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
-            [
-                '<?php
+        ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            $multiLine = true;
+            $code = '<?php
 namespace A {
-    interface C {}
+    interface X {}
 }
 
 namespace {
@@ -565,16 +532,37 @@ namespace {
 
     $a = new A();
     $a->test();
-}',
-                'numberOfImplements',
-                ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
-            ],
-        ];
+}';
+        } else {
+            $multiLine = false;
+            $code = '<?php
+namespace A {
+    interface X {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A\C, Z{
+        public function test()
+        {
+            echo 1;
+        }
     }
 
-    public function provideClassyInheritanceInfo7Cases()
-    {
-        return [
+    $a = new A();
+    $a->test();
+}';
+        }
+
+        yield [
+            $code,
+            'numberOfImplements',
+            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
+        ];
+
+        yield from [
             [
                 "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
                 'numberOfExtends',
@@ -594,20 +582,16 @@ namespace {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
-    public function providePHP7Cases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -644,12 +628,37 @@ $a = new class implements
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
+     * @dataProvider providePHP73Cases
+     * @requires PHP 7.3
+     */
+    public function testFixPHP73(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([]);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP73Cases(): array
+    {
+        return [
+            [
+                '<?php new class(1, 2, 3, ) {};',
+                '<?php new class(1, 2, 3,) {};',
+            ],
+            [
+                '<?php new class(1, 2, 3, ) {};',
+                '<?php new class(
+                    1,
+                    2,
+                    3,
+                ) {};',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure([]);
@@ -657,7 +666,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -667,7 +676,15 @@ $a = new class implements
         ];
     }
 
-    private function doTestClassyInheritanceInfo($source, $label, array $expected)
+    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        static::assertSame($expected, $reflectionProperty->getValue($fixer));
+    }
+
+    private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -680,7 +697,7 @@ $a = new class implements
         static::assertSame($expected, $result);
     }
 
-    private function provideClassyCases($classy)
+    private function provideClassyCases(string $classy): array
     {
         return [
             [
@@ -748,7 +765,7 @@ namespace {
         ];
     }
 
-    private function provideClassyExtendingCases($classy)
+    private function provideClassyExtendingCases(string $classy): array
     {
         return [
             [
@@ -778,9 +795,14 @@ extends
         ];
     }
 
-    private function provideClassyImplementsCases()
+    private function provideClassyImplementsCases(): array
     {
         return [
+            [
+                '<?php class LotOfImplements implements A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q
+{}',
+                '<?php class LotOfImplements implements A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q{}',
+            ],
             [
                 "<?php class E implements B\n{}",
                 "<?php class    E   \nimplements     B       \t{}",

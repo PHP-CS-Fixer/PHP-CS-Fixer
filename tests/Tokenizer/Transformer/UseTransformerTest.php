@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens index => kind
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -43,150 +44,130 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): iterable
     {
-        return [
+        yield [
+            '<?php use Foo;',
             [
-                '<?php use Foo;',
-                [
-                    1 => T_USE,
-                ],
-            ],
-            [
-                '<?php $foo = function() use ($bar) {};',
-                [
-                    9 => CT::T_USE_LAMBDA,
-                ],
-            ],
-            [
-                '<?php class Foo { use Bar; }',
-                [
-                    7 => CT::T_USE_TRAIT,
-                ],
-            ],
-            [
-                '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
-                [
-                    6 => T_USE,
-                    17 => CT::T_USE_TRAIT,
-                    42 => CT::T_USE_LAMBDA,
-                ],
-            ],
-            [
-                '<?php
-                    namespace A {
-                        class Foo {}
-                        echo Foo::class;
-                    }
-
-                    namespace B {
-                        use \stdClass;
-
-                        echo 123;
-                    }',
-                [
-                    30 => T_USE,
-                ],
-            ],
-            [
-                '<?php use Foo; $a = Bar::class;',
-                [
-                    1 => T_USE,
-                ],
+                1 => T_USE,
             ],
         ];
-    }
 
-    /**
-     * @param string          $source
-     * @param array<int, int> $expectedTokens index => kind
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($source, array $expectedTokens = [])
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
+        yield [
+            '<?php $foo = function() use ($bar) {};',
             [
-                T_USE,
-                CT::T_USE_LAMBDA,
-                CT::T_USE_TRAIT,
-            ]
-        );
-    }
+                9 => CT::T_USE_LAMBDA,
+            ],
+        ];
 
-    public function provideFix70Cases()
-    {
-        return [
-            'nested anonymous classes' => [
-                '<?php
+        yield [
+            '<?php class Foo { use Bar; }',
+            [
+                7 => CT::T_USE_TRAIT,
+            ],
+        ];
+
+        yield [
+            '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
+            [
+                6 => T_USE,
+                17 => CT::T_USE_TRAIT,
+                42 => CT::T_USE_LAMBDA,
+            ],
+        ];
+
+        yield [
+            '<?php
+                namespace A {
+                    class Foo {}
+                    echo Foo::class;
+                }
+
+                namespace B {
+                    use \stdClass;
+
+                    echo 123;
+                }',
+            [
+                30 => T_USE,
+            ],
+        ];
+
+        yield [
+            '<?php use Foo; $a = Bar::class;',
+            [
+                1 => T_USE,
+            ],
+        ];
+
+        yield 'nested anonymous classes' => [
+            '<?php
 
 namespace SomeWhereOverTheRainbow;
 
 trait Foo {
-    public function test()
-    {
-        $a = time();
-        return function() use ($a) { echo $a; };
-    }
+public function test()
+{
+    $a = time();
+    return function() use ($a) { echo $a; };
+}
 };
 
 $a = new class(
-    new class() {
-        use Foo;
-    }
+new class() {
+    use Foo;
+}
 ) {
-    public function __construct($bar)
-    {
-        $a = $bar->test();
-        $a();
-    }
+public function __construct($bar)
+{
+    $a = $bar->test();
+    $a();
+}
 };
 ',
-                [
-                    38 => CT::T_USE_LAMBDA,
-                    76 => CT::T_USE_TRAIT,
-                ],
+            [
+                38 => CT::T_USE_LAMBDA,
+                76 => CT::T_USE_TRAIT,
+            ],
+        ];
+
+        yield [
+            '<?php
+use A\{B,};
+use function D;
+use C\{D,E,};
+',
+            [
+                1 => T_USE,
+                11 => T_USE,
+                18 => T_USE,
             ],
         ];
     }
 
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens index => kind
      *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
+     * @requires PHP 8.1
+     * @dataProvider provideProcessPhp81Cases
      */
-    public function testFix72($source, array $expectedTokens = [])
+    public function testProcessPhp81(string $source, array $expectedTokens = []): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_USE,
-                CT::T_USE_LAMBDA,
-                CT::T_USE_TRAIT,
-            ]
-        );
+        $this->doTest($source, $expectedTokens, [CT::T_USE_TRAIT]);
     }
 
-    public function provideFix72Cases()
+    public function provideProcessPhp81Cases(): iterable
     {
-        return [
-            [
-                '<?php
-use A\{B,};
-use function D;
-use C\{D,E,};
+        yield [
+            '<?php enum Foo: string
+{
+    use Bar;
+
+    case Test1 = "a";
+}
 ',
-                [
-                    1 => T_USE,
-                    11 => T_USE,
-                    18 => T_USE,
-                ],
+            [
+                10 => CT::T_USE_TRAIT,
             ],
         ];
     }

@@ -1,0 +1,154 @@
+name: CI
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'with lowest deps'
+            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'with Sf ^5'
+            execute-flex-with-symfony-version: '^5' # Explicit check for Sf 5.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.0'
+            job-description: 'with Sf ^6'
+            execute-flex-with-symfony-version: '^6' # Explicit check for Sf 6.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            job-description: 'with migration rules'
+            execute-migration-rules: 'yes' # should be checked on highest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            job-description: 'with calculating code coverage'
+            calculate-code-coverage: 'yes'
+            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            job-description: 'with deployment'
+            execute-deployment: 'yes'
+
+          - operating-system: 'windows-latest'
+            php-version: '8.1'
+            job-description: 'on Windows'
+            FAST_LINT_TEST_CASES: 1
+
+          - operating-system: 'macos-latest'
+            php-version: '8.1'
+            job-description: 'on macOS'
+
+    name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get code coverage driver
+        uses: actions/github-script@v3.1
+        id: code-coverage-driver
+        with:
+          script: 'return "${{ matrix.calculate-code-coverage }}" == "yes" ? "pcov" : "none"'
+          result-encoding: string
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: ${{ steps.code-coverage-driver.outputs.result }}
+          tools: flex
+        env:
+          fail-fast: false # disabled as old PHP version cannot run flex
+          update: ${{ matrix.php-version == '8.0' }} # force update to 8.0.1+, ref https://github.com/shivammathur/setup-php/issues/394#issuecomment-760461251
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
+            composer-${{ runner.os }}-${{ matrix.php-version }}-
+            composer-${{ runner.os }}-
+            composer-
+
+      - name: Configure Symfony Flex
+        if: matrix.execute-flex-with-symfony-version
+        run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
+
+      - name: Install dependencies
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: |
+            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+            composer info -D
+
+      - name: Execute migration rules # we want to execute migration rules BEFORE we gonna run tests and self-fixing, so we know that our codebase is future-ready
+        if: matrix.execute-migration-rules == 'yes'
+        run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
+
+      - name: Disable time limit for tests when collecting coverage
+        if: matrix.calculate-code-coverage == 'yes'
+        run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
+
+      - name: Run tests
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+
+      - name: Upload coverage results to Coveralls
+        if: matrix.calculate-code-coverage == 'yes'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --verbose
+
+      - name: Run PHP CS Fixer for PHP 7.2 types
+        if: matrix.php-version == '7.2' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
+        run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
+
+      - name: Run PHP CS Fixer
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          PHP_CS_FIXER_FUTURE_MODE: 1
+        run: php php-cs-fixer fix --diff --dry-run -v
+
+      - name: Execute deployment checks
+        if: matrix.execute-deployment == 'yes'
+        run: |
+          ./dev-tools/build.sh
+          PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
+
+      - name: Execute deployment post-hook
+        if: matrix.execute-deployment == 'yes' && startsWith(github.ref, 'refs/tags/v')
+        env:
+          TRAVIS_TOKEN: ${{ secrets.TRAVIS_TOKEN }}
+        run: |
+          # ensure that deployment is happening only if tag matches version of PHP CS Fixer
+          test $(php dev-tools/info-extractor.php | jq -r .version.vnumber) == "${GITHUB_REF#refs/tags/}"
+          # trigger website update
+          ./dev-tools/trigger-website.sh ${TRAVIS_TOKEN} ${GITHUB_REF#refs/tags/}

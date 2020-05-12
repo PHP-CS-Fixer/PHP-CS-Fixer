@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,11 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -24,35 +26,32 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigMissingKey()
+    public function testInvalidConfigMissingKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
 
-    public function testInvalidConfigValue()
+    public function testInvalidConfigValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#');
 
         $this->fixer->configure(['spacing' => 'tabs']);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithoutSpaceCases
      */
-    public function testFixWithoutSpace($expected, $input = null)
+    public function testFixWithoutSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['spacing' => 'none']);
         $this->doTest($expected, $input);
     }
 
-    public function provideWithoutSpaceCases()
+    public function provideWithoutSpaceCases(): array
     {
         return [
             [
@@ -143,18 +142,15 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithSpaceCases
      */
-    public function testFixWithSpace($expected, $input = null)
+    public function testFixWithSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['spacing' => 'one']);
         $this->doTest($expected, $input);
     }
 
-    public function provideWithSpaceCases()
+    public function provideWithSpaceCases(): array
     {
         return [
             [

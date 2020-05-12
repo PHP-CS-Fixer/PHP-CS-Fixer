@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,20 +26,22 @@ final class OrderedTraitsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Trait `use` statements must be sorted alphabetically.',
             [
                 new CodeSample("<?php class Foo { \nuse Z; use A; }\n"),
-            ]
+            ],
+            null,
+            'Risky when depending on order of the imports.'
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(CT::T_USE_TRAIT);
     }
@@ -44,7 +49,15 @@ final class OrderedTraitsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    public function isRisky(): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($this->findUseStatementsGroups($tokens) as $uses) {
             $this->sortUseStatements($tokens, $uses);
@@ -54,7 +67,7 @@ final class OrderedTraitsFixer extends AbstractFixer
     /**
      * @return iterable<array<int, Tokens>>
      */
-    private function findUseStatementsGroups(Tokens $tokens)
+    private function findUseStatementsGroups(Tokens $tokens): iterable
     {
         $uses = [];
 
@@ -82,6 +95,7 @@ final class OrderedTraitsFixer extends AbstractFixer
             }
 
             $use = [];
+
             for ($i = $index; $i <= $endIndex; ++$i) {
                 $use[] = $tokens[$i];
             }
@@ -95,7 +109,7 @@ final class OrderedTraitsFixer extends AbstractFixer
     /**
      * @param array<int, Tokens> $uses
      */
-    private function sortUseStatements(Tokens $tokens, array $uses)
+    private function sortUseStatements(Tokens $tokens, array $uses): void
     {
         foreach ($uses as $use) {
             $this->sortMultipleTraitsInStatement($use);
@@ -104,12 +118,12 @@ final class OrderedTraitsFixer extends AbstractFixer
         $this->sort($tokens, $uses);
     }
 
-    private function sortMultipleTraitsInStatement(Tokens $use)
+    private function sortMultipleTraitsInStatement(Tokens $use): void
     {
         $traits = [];
-
         $indexOfName = null;
         $name = [];
+
         for ($index = 0, $max = \count($use); $index < $max; ++$index) {
             $token = $use[$index];
 
@@ -141,12 +155,9 @@ final class OrderedTraitsFixer extends AbstractFixer
     /**
      * @param array<int, Tokens> $elements
      */
-    private function sort(Tokens $tokens, array $elements)
+    private function sort(Tokens $tokens, array $elements): void
     {
-        /**
-         * @return string
-         */
-        $toTraitName = static function (Tokens $use) {
+        $toTraitName = static function (Tokens $use): string {
             $string = '';
 
             foreach ($use as $token) {
@@ -154,7 +165,7 @@ final class OrderedTraitsFixer extends AbstractFixer
                     break;
                 }
 
-                if ($token->equalsAny([[T_NS_SEPARATOR], [T_STRING]])) {
+                if ($token->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
                     $string .= $token->getContent();
                 }
             }
@@ -163,7 +174,7 @@ final class OrderedTraitsFixer extends AbstractFixer
         };
 
         $sortedElements = $elements;
-        uasort($sortedElements, static function (Tokens $useA, Tokens $useB) use ($toTraitName) {
+        uasort($sortedElements, static function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
             return strcasecmp($toTraitName($useA), $toTraitName($useB));
         });
 

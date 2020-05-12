@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,96 +18,80 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
+ * @covers \PhpCsFixer\Fixer\Casing\ConstantCaseFixer
  */
 final class ConstantCaseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideLowerGeneratedCases
      */
-    public function testFixLowerGeneratedCases($expected, $input = null)
+    public function testFixLowerGeneratedCases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['case' => 'lower']);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideUpperGeneratedCases
      */
-    public function testFixUpperGeneratedCases($expected, $input = null)
+    public function testFixUpperGeneratedCases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['case' => 'upper']);
         $this->doTest($expected, $input);
     }
 
-    public function provideLowerGeneratedCases()
+    public function provideLowerGeneratedCases(): \Generator
     {
-        $cases = [];
         foreach (['true', 'false', 'null'] as $case) {
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', strtoupper($case)),
             ];
 
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', ucfirst($case)),
             ];
 
-            $cases[] = [sprintf('<?php $x = new %s;', ucfirst($case))];
-            $cases[] = [sprintf('<?php $x = new %s;', strtoupper($case))];
-            $cases[] = [sprintf('<?php $x = "%s story";', $case)];
-            $cases[] = [sprintf('<?php $x = "%s";', $case)];
+            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+            yield [sprintf('<?php $x = "%s story";', $case)];
+            yield [sprintf('<?php $x = "%s";', $case)];
         }
-
-        return $cases;
     }
 
-    public function provideUpperGeneratedCases()
+    public function provideUpperGeneratedCases(): \Generator
     {
-        $cases = [];
         foreach (['true', 'false', 'null'] as $case) {
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', strtoupper($case)),
                 sprintf('<?php $x = %s;', $case),
             ];
 
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', strtoupper($case)),
                 sprintf('<?php $x = %s;', ucfirst($case)),
             ];
 
-            $cases[] = [sprintf('<?php $x = new %s;', ucfirst($case))];
-            $cases[] = [sprintf('<?php $x = new %s;', strtoupper($case))];
-            $cases[] = [sprintf('<?php $x = "%s story";', $case)];
-            $cases[] = [sprintf('<?php $x = "%s";', $case)];
+            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+            yield [sprintf('<?php $x = "%s story";', $case)];
+            yield [sprintf('<?php $x = "%s";', $case)];
         }
-
-        return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -143,39 +129,77 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
             ['<?php echo $null;'],
             ['<?php $x = False::foo();'],
             ['<?php namespace Foo\Null;'],
-            ['<?php use Foo\Null;'],
-            ['<?php use Foo\Null as Null;'],
-            ['<?php class True {} class False {} class Null {}'],
             ['<?php class Foo extends True {}'],
             ['<?php class Foo implements False {}'],
-            ['<?php Class Null { use True; }'],
-            ['<?php interface True {}'],
             ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'],
             [
                 '<?php
     class Foo
     {
         const TRUE = 1;
-        const FALSE = 2;
+        const FALSE = true;
         const NULL = null;
+    }',
+                '<?php
+    class Foo
+    {
+        const TRUE = 1;
+        const FALSE = TRUE;
+        const NULL = NULL;
     }',
             ],
             ['<?php $x = new /**/False?>'],
             ['<?php Null/**/::test();'],
             ['<?php True//
                                 ::test();'],
-            ['<?php trait False {}'],
-            [
-                '<?php
-    class Null {
-        use True, False {
-            False::bar insteadof True;
-            True::baz insteadof False;
-            False::baz as Null;
-        }
-    }',
-            ],
             ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): array
+    {
+        return [
+            ['<?php class Foo { public function Bar() { return $this?->False; } }'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                class Foo
+                {
+                    final const TRUE = 1;
+                    public final const FALSE = true;
+                    final public const NULL = null;
+                }
+            ',
+            '<?php
+                class Foo
+                {
+                    final const TRUE = 1;
+                    public final const FALSE = TRUE;
+                    final public const NULL = NULL;
+                }
+            ',
         ];
     }
 }

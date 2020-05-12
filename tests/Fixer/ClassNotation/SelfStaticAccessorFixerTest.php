@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'simple' => [
@@ -167,25 +166,19 @@ final class Foo
 }
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            'simple' => [
+            'in method as new' => [
+                '<?php final class A { public static function b() { return new self(); } }',
+                '<?php final class A { public static function b() { return new static(); } }',
+            ],
+            'in method as new with comments' => [
+                '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
+                '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+            ],
+            'in method as new without parentheses' => [
+                '<?php final class A { public static function b() { return new self; } }',
+                '<?php final class A { public static function b() { return new static; } }',
+            ],
+            'simple anonymous class' => [
                 '<?php
 $a = new class {
     public function getBar()
@@ -201,7 +194,7 @@ $a = new class {
     }
 };',
             ],
-            'nested' => [
+            'nested anonymous class' => [
                 '<?php
 final class Foo
 {

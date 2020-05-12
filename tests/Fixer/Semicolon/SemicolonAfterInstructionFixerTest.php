@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\SemicolonAfterInstructionFixer
@@ -24,23 +24,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
-            [
-                '<?php $a = [1,2,3]; echo $a{1}; ?>',
-                '<?php $a = [1,2,3]; echo $a{1} ?>',
-            ],
+        yield from [
             'comment' => [
                 '<?php $a++;//a ?>',
                 '<?php $a++//a ?>',
@@ -89,7 +82,24 @@ A is equal to 5
         ];
     }
 
-    public function testOpenWithEcho()
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php $a = [1,2,3]; echo $a{1}; ?>',
+            '<?php $a = [1,2,3]; echo $a{1} ?>',
+        ];
+    }
+
+    public function testOpenWithEcho(): void
     {
         if (!ini_get('short_open_tag')) {
             static::markTestSkipped('The short_open_tag option is required to be enabled.');

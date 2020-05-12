@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,12 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -25,19 +28,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideEchoToPrintFixCases
+     * @dataProvider provideEchoToPrintFixNewCases
      */
-    public function testFixEchoToPrint($expected, $input = null)
+    public function testFixEchoToPrint(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'print']);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideEchoToPrintFixCases()
+    public function provideEchoToPrintFixCases(): array
     {
         return [
             [
@@ -129,29 +130,33 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 ',
             ],
             [
-                "<div><?php print 'foo' ?></div>",
-                "<div><?php echo 'foo' ?></div>",
-            ],
-            [
                 '<?=$foo?>',
             ],
         ];
     }
 
+    public static function provideEchoToPrintFixNewCases(): \Generator
+    {
+        foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
+            yield [
+                sprintf($codeSnippet, 'print'),
+                sprintf($codeSnippet, 'echo'),
+            ];
+        }
+    }
+
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePrintToEchoFixCases
+     * @dataProvider providePrintToEchoFixNewCases
      */
-    public function testFixPrintToEcho($expected, $input = null)
+    public function testFixPrintToEcho(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'echo']);
 
         $this->doTest($expected, $input);
     }
 
-    public function providePrintToEchoFixCases()
+    public function providePrintToEchoFixCases(): array
     {
         return [
             [
@@ -266,46 +271,38 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 print "bar";
                 ',
             ],
-            [
-                "<div><?php echo 'foo' ?></div>",
-                "<div><?php print 'foo' ?></div>",
-            ],
         ];
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyDefaultConfig()
+    public static function providePrintToEchoFixNewCases(): \Generator
     {
-        $this->fixer->configure(null);
-
-        static::assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
+        foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
+            yield [
+                sprintf($codeSnippet, 'echo'),
+                sprintf($codeSnippet, 'print'),
+            ];
+        }
     }
 
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $this->fixer->configure([]);
 
-        static::assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
+        static::assertCandidateTokenType(T_PRINT, $this->fixer);
     }
 
     /**
      * @dataProvider provideWrongConfigCases
-     *
-     * @param mixed  $wrongConfig
-     * @param string $expectedMessage
      */
-    public function testWrongConfig($wrongConfig, $expectedMessage)
+    public function testWrongConfig(array $wrongConfig, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp($expectedMessage);
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches($expectedMessage);
 
         $this->fixer->configure($wrongConfig);
     }
 
-    public function provideWrongConfigCases()
+    public function provideWrongConfigCases(): array
     {
         return [
             [
@@ -325,5 +322,34 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
             ],
         ];
+    }
+
+    private static function assertCandidateTokenType(int $expected, AbstractFixer $fixer): void
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
+        $reflectionProperty->setAccessible(true);
+
+        static::assertSame($expected, $reflectionProperty->getValue($fixer));
+    }
+
+    private static function getCodeSnippetsToConvertBothWays(): \Generator
+    {
+        yield 'inside of HTML' => '<div><?php %1$s "foo" ?></div>';
+
+        yield 'foreach without curly brackets' => '<?php
+            %1$s "There will be foos: ";
+            foreach ($foos as $foo)
+                %1$s $foo;
+            %1$s "End of foos";
+        ';
+
+        yield 'if and else without curly brackets' => '<?php
+            if ($foo)
+                %1$s "One";
+            elseif ($bar)
+                %1$s "Two";
+            else
+                %1$s "Three";
+        ';
     }
 }

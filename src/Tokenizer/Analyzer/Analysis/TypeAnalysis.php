@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,10 +34,11 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         'array',
         'bool',
         'callable',
+        'float',
         'int',
         'iterable',
-        'float',
         'mixed',
+        'never',
         'numeric',
         'object',
         'resource',
@@ -64,17 +67,12 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      */
     private $nullable;
 
-    /**
-     * @param string $name
-     * @param int    $startIndex
-     * @param int    $endIndex
-     */
-    public function __construct($name, $startIndex, $endIndex)
+    public function __construct(string $name, int $startIndex, int $endIndex)
     {
         $this->name = $name;
         $this->nullable = false;
 
-        if (0 === strpos($name, '?')) {
+        if (str_starts_with($name, '?')) {
             $this->name = substr($name, 1);
             $this->nullable = true;
         }
@@ -83,42 +81,27 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         $this->endIndex = $endIndex;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
-    public function getStartIndex()
+    public function getStartIndex(): int
     {
         return $this->startIndex;
     }
 
-    /**
-     * @return int
-     */
-    public function getEndIndex()
+    public function getEndIndex(): int
     {
         return $this->endIndex;
     }
 
-    /**
-     * @return bool
-     */
-    public function isReservedType()
+    public function isReservedType(): bool
     {
         return \in_array($this->name, self::$reservedTypes, true);
     }
 
-    /**
-     * @return bool
-     */
-    public function isNullable()
+    public function isNullable(): bool
     {
         return $this->nullable;
     }

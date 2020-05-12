@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,9 @@ use PhpCsFixer\Tokenizer\CT;
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcess(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
@@ -38,7 +38,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -304,13 +304,12 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param string             $source
      * @param array<int, string> $expectedTokens
      * @param string[]           $observedKinds
      *
      * @dataProvider provideProcessPhp70Cases
      */
-    public function testProcessPhp70($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcessPhp70(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
@@ -319,7 +318,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp70Cases()
+    public function provideProcessPhp70Cases(): array
     {
         return [
             [
@@ -333,8 +332,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                 [
                     '(',
                     ')',
-                    CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                    CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
             ],
             [
@@ -352,14 +349,13 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param string             $source
      * @param array<int, string> $expectedTokens
      * @param string[]           $observedKinds
      *
      * @dataProvider provideProcessPhp74Cases
      * @requires PHP 7.4
      */
-    public function testProcessPhp74($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcessPhp74(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
@@ -368,7 +364,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp74Cases()
+    public function provideProcessPhp74Cases(): array
     {
         return [
             [
@@ -384,6 +380,110 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
             ],
+        ];
+    }
+
+    /**
+     * @param array<int, string> $expectedTokens
+     * @param string[]           $observedKinds
+     *
+     * @dataProvider provideProcessPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    public function provideProcessPhp80Cases(): \Generator
+    {
+        yield [
+            [
+                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                8 => '(',
+                10 => '(',
+                11 => ')',
+                12 => ')',
+                13 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+            [
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+            '<?php $a = (new (foo()));',
+        ];
+
+        yield [
+            [
+                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                15 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+            [
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+            '<?php $a = (new #[Foo]
+                class{}) ?>',
+        ];
+    }
+
+    /**
+     * @param array<int, string> $expectedTokens
+     *
+     * @dataProvider provideProcessPhp81Cases
+     * @requires PHP 8.1
+     */
+    public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    public function provideProcessPhp81Cases(): \Generator
+    {
+        yield [
+            [
+                20 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                24 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                43 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                47 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                54 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                64 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                107 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                111 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+            [
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
+            '<?php
+class Test {
+    public function __construct(
+        public $prop = (new Foo),
+    ) {}
+}
+
+function test(
+    $foo = (new A),
+    $baz = (new C(x: 2)),
+) {
+}
+
+static $x = new (Foo);
+
+const C = new (Foo);
+
+function test2($param = (new Foo)) {}
+',
         ];
     }
 }

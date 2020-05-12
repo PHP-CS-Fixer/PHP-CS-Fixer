@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,6 +16,7 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,18 +28,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             'class_mapping' => [
@@ -234,6 +234,68 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
                     echo \PHPUnit_Runner_Version::id();
                     ',
             ],
+            [
+                '<?php
+                final class MyTest extends TestCase
+                {
+                    const PHPUNIT_FOO = "foo";
+                }',
+            ],
+            [
+                '<?php
+                final class MyTest extends TestCase
+                {
+                    const FOO = Bar::PHPUNIT_FOO;
+                }',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideClassIsFixedCases
+     */
+    public function testClassIsFixed(string $class): void
+    {
+        $this->fixer->configure(['target' => PhpUnitTargetVersion::VERSION_NEWEST]);
+
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode(sprintf('<?php new %s();', $class));
+
+        $this->fixer->fix($this->getTestFile(), $tokens);
+
+        static::assertTrue($tokens->isChanged());
+        static::assertStringNotContainsString('_', $tokens->generateCode());
+    }
+
+    public static function provideClassIsFixedCases(): \Generator
+    {
+        $classmap = require __DIR__.'/../../../vendor/composer/autoload_classmap.php';
+
+        foreach ($classmap as $class => $file) {
+            if (str_starts_with($class, 'PHPUnit_')) {
+                yield $file => [$class];
+            }
+        }
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                final class MyTest extends TestCase
+                {
+                    final public const PHPUNIT_FOO_A = "foo";
+                    final public const PHPUNIT_FOO_B = Bar::PHPUNIT_FOO;
+                }',
         ];
     }
 }

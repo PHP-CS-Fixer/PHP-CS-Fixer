@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -24,57 +27,41 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureCheckSearchFunction()
+    public function testConfigureCheckSearchFunction(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
 
         $this->fixer->configure(['replacements' => ['is_null' => 'random_int']]);
     }
 
-    public function testConfigureCheckReplacementType()
+    public function testConfigureCheckReplacementType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
 
         $this->fixer->configure(['replacements' => ['rand' => null]]);
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "random_api_migration" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
-     */
-    public function testLegacyConfigure()
-    {
-        $this->fixer->configure(['rand' => 'random_int']);
-
-        static::assertSame(
-            ['replacements' => [
-                'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
-            ],
-            static::getObjectAttribute($this->fixer, 'configuration')
-        );
-    }
-
-    public function testConfigure()
+    public function testConfigure(): void
     {
         $this->fixer->configure(['replacements' => ['rand' => 'random_int']]);
 
+        $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
         static::assertSame(
             ['replacements' => [
                 'rand' => ['alternativeName' => 'random_int', 'argumentCount' => [0, 2]], ],
             ],
-            static::getObjectAttribute($this->fixer, 'configuration')
+            $reflectionProperty->getValue($this->fixer)
         );
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
@@ -84,7 +71,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     /**
      * @return array[]
      */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -188,31 +175,43 @@ class srand extends SrandClass{
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input, array $config = [])
+    public function testFix73(string $expected, string $input, array $config = []): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): \Generator
     {
-        return [
-            [
-                '<?php $a = random_int(1,2,) + random_int(3,4,);',
-                '<?php $a = rand(1,2,) + mt_rand(3,4,);',
-                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-            ],
-            [
-                '<?php mt_srand($a,);',
-                '<?php srand($a,);',
-            ],
+        yield [
+            '<?php $a = random_int(1,2,) + random_int(3,4,);',
+            '<?php $a = rand(1,2,) + mt_rand(3,4,);',
+            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php mt_srand($a,);',
+            '<?php srand($a,);',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'simple 8.1' => [
+            '<?php $f = srand(...);',
         ];
     }
 }

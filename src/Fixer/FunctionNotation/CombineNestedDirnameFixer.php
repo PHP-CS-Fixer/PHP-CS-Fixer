@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,9 +15,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,14 +30,13 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\ndirname(dirname(dirname(\$path)));\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\ndirname(dirname(dirname(\$path)));\n"
                 ),
             ],
             null,
@@ -46,15 +47,15 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -65,15 +66,15 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      * Must run before MethodArgumentSpaceFixer, NoSpacesInsideParenthesisFixer.
      * Must run after DirConstantFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        return 3;
+        return 35;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $dirnameInfo = $this->getDirnameInfo($tokens, $index);
@@ -89,14 +90,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             }
 
             $prev = $tokens->getPrevMeaningfulToken($prev);
-
             $firstArgumentEnd = $dirnameInfo['end'];
-
             $dirnameInfoArray = [$dirnameInfo];
 
             while ($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) {
                 $dirnameInfoArray[] = $dirnameInfo;
-
                 $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indexes'][0]);
 
                 if (!$tokens[$prev]->equals('(')) {
@@ -121,7 +119,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      *
      * @return array|bool `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
      */
-    private function getDirnameInfo(Tokens $tokens, $index, $firstArgumentEndIndex = null)
+    private function getDirnameInfo(Tokens $tokens, int $index, ?int $firstArgumentEndIndex = null)
     {
         if (!$tokens[$index]->equals([T_STRING, 'dirname'], false)) {
             return false;
@@ -131,8 +129,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return false;
         }
 
-        $info['indexes'] = [];
-
+        $info = ['indexes' => []];
         $prev = $tokens->getPrevMeaningfulToken($index);
 
         if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
@@ -157,7 +154,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             while (!$tokens[$next]->equalsAny([',', ')'])) {
                 $blockType = Tokens::detectBlockType($tokens[$next]);
 
-                if ($blockType) {
+                if (null !== $blockType) {
                     $next = $tokens->findBlockEnd($blockType['type'], $next);
                 }
 
@@ -203,7 +200,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         return $info;
     }
 
-    private function combineDirnames(Tokens $tokens, array $dirnameInfoArray)
+    private function combineDirnames(Tokens $tokens, array $dirnameInfoArray): void
     {
         $outerDirnameInfo = array_pop($dirnameInfoArray);
         $levels = $outerDirnameInfo['levels'];
@@ -224,9 +221,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         } else {
             $prev = $tokens->getPrevMeaningfulToken($outerDirnameInfo['end']);
             $items = [];
+
             if (!$tokens[$prev]->equals(',')) {
                 $items = [new Token(','), new Token([T_WHITESPACE, ' '])];
             }
+
             $items[] = $levelsToken;
             $tokens->insertAt($outerDirnameInfo['end'], $items);
         }

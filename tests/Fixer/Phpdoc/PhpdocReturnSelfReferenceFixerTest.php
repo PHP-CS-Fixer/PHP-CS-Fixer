@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,10 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer
@@ -27,29 +28,15 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      * @param string      $expected PHP code
      * @param null|string $input    PHP code
      *
-     * @group legacy
-     * @dataProvider provideDefaultConfigurationTestCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
-    {
-        $this->fixer->configure(null);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
-     *
      * @dataProvider provideDefaultConfigurationTestCases
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
         $this->doTest($expected, $input);
     }
 
-    public function provideDefaultConfigurationTestCases()
+    public function provideDefaultConfigurationTestCases(): array
     {
         return [
             [
@@ -73,29 +60,15 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      * @param string      $expected PHP code
      * @param null|string $input    PHP code
      *
-     * @group legacy
-     * @dataProvider provideTestCases
-     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "phpdoc_return_self_reference" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
-     */
-    public function testLegacyFix($expected, $input = null, array $configuration = [])
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected PHP code
-     * @param null|string $input    PHP code
-     *
      * @dataProvider provideTestCases
      */
-    public function testFix($expected, $input = null, array $configuration = [])
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure(['replacements' => $configuration]);
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             [
@@ -107,12 +80,9 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideGeneratedFixCases
      */
-    public function testGeneratedFix($expected, $input)
+    public function testGeneratedFix(string $expected, string $input): void
     {
         $config = ['replacements' => [$input => $expected]];
         $this->fixer->configure($config);
@@ -156,7 +126,7 @@ class F
         $this->doTest($expected, $input);
     }
 
-    public function provideGeneratedFixCases()
+    public function provideGeneratedFixCases(): array
     {
         return [
             ['$this', 'this'],
@@ -169,19 +139,17 @@ class F
     }
 
     /**
-     * @param string $message
-     *
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfiguration(array $configuration, $message)
+    public function testInvalidConfiguration(array $configuration, string $message): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidConfigurationCases()
+    public function provideInvalidConfigurationCases(): array
     {
         return [
             [
@@ -197,10 +165,7 @@ class F
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php

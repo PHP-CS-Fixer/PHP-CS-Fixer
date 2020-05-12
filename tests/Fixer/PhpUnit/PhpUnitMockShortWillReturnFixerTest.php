@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,20 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'do not fix' => [
@@ -259,7 +255,7 @@ class FooTest extends TestCase {
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php
@@ -272,6 +268,42 @@ class FooTest extends TestCase {
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->will($this->returnValue( 10 , ));
+    }
+}'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->doTest(
+            '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $someMock?->method("someMethod")?->willReturn(10);
+    }
+}',
+            '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $someMock?->method("someMethod")?->will($this?->returnValue(10));
+    }
+}'
+        );
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testFix81(): void
+    {
+        $this->doTest(
+            '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $a = $someMock?->method("someMethod")->will($this?->returnValue(...));
     }
 }'
         );

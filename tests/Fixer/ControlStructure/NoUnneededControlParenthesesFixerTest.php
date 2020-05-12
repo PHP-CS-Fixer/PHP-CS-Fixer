@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,11 +29,12 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {
     private static $defaultStatements;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
+
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('statements' === $option->getName()) {
                 self::$defaultStatements = $option->getDefault();
@@ -42,60 +45,14 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $fixStatement = null)
+    public function testFix(string $expected, ?string $input = null, ?string $fixStatement = null): void
     {
         $this->fixerTest($expected, $input, $fixStatement);
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
-     * @group legacy
-     * @dataProvider provideFixCases
-     * @expectedDeprecation Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
-     */
-    public function testLegacyFix($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement, true);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
-     * @group legacy
-     * @dataProvider provideFix70Cases
-     * @expectedDeprecation Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
-     * @requires PHP 7.0
-     */
-    public function testLegacyFix70($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement, true);
-    }
-
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -464,12 +421,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 function foo() { $a = (yield($x)); }
                 ',
             ],
-        ];
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
@@ -479,77 +430,98 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixYieldFromCases
-     * @requires PHP 7.0
      */
-    public function testFixYieldFrom($expected, $input = null)
+    public function testFixYieldFrom(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['statements' => ['yield_from']]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixYieldFromCases()
+    public function provideFixYieldFromCases(): array
     {
         return [
             [
                 '<?php
-                function foo() { yield from "prod"; }
+                function foo1() { yield from "prod"; }
                 ',
             ],
             [
                 '<?php
-                function foo() { yield from (1 + 2) * 10; }
+                function foo2() { yield from (1 + 2) * 10; }
 
-                function foo() { $a = (yield($x)); }
+                function foo3() { $a = (yield($x)); }
                 ',
             ],
             [
                 '<?php
-                function foo() { yield from (1 + 2) * 10; }
+                function foo4() { yield from (1 + 2) * 10; }
                 ',
                 '<?php
-                function foo() { yield from ((1 + 2) * 10); }
-                ',
-            ],
-            [
-                '<?php
-                function foo() { yield from "prod"; }
-                function foo() { $a = (yield($x)); }
-                ',
-                '<?php
-                function foo() { yield from ("prod"); }
-                function foo() { $a = (yield($x)); }
+                function foo4() { yield from ((1 + 2) * 10); }
                 ',
             ],
             [
                 '<?php
-                function foo() { yield from 2; }
+                function foo5() { yield from "prod"; }
+                function foo6() { $a = (yield($x)); }
                 ',
                 '<?php
-                function foo() { yield from(2); }
+                function foo5() { yield from ("prod"); }
+                function foo6() { $a = (yield($x)); }
                 ',
             ],
             [
                 '<?php
-                function foo() { $a = (yield from $x); }
+                function foo7() { yield from 2; }
                 ',
                 '<?php
-                function foo() { $a = (yield from($x)); }
+                function foo7() { yield from(2); }
+                ',
+            ],
+            [
+                '<?php
+                function foo8() { $a = (yield from $x); }
+                ',
+                '<?php
+                function foo8() { $a = (yield from($x)); }
                 ',
             ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     * @param bool        $legacy
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
      */
-    private function fixerTest($expected, $input = null, $fixStatement = null, $legacy = false)
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['statements' => ['switch_case']]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts ;
+case Diamonds  ;
+case Clubs ;
+case Spades   ;
+}
+
+enum UserStatus: string {
+    case    Pending = "P";
+  case  Active = "A";
+  case   Suspended = "S";
+  case CanceledByUser = "C"  ;
+}
+',
+        ];
+    }
+
+    private function fixerTest(string $expected, ?string $input = null, ?string $fixStatement = null, bool $legacy = false): void
     {
         // Default config. Fixes all statements.
         $this->doTest($expected, $input);
@@ -565,9 +537,9 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         foreach (self::$defaultStatements as $statement) {
             $withInput = false;
 
-            if ($input && (!$fixStatement || $fixStatement === $statement)) {
+            if (null !== $input && (null === $fixStatement || $fixStatement === $statement)) {
                 foreach (explode('_', $statement) as $singleStatement) {
-                    if (false !== strpos($input, $singleStatement)) {
+                    if (str_contains($input, $singleStatement)) {
                         $withInput = true;
 
                         break;
@@ -576,10 +548,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             }
 
             $this->fixer->configure($legacy ? [$statement] : ['statements' => [$statement]]);
-            $this->doTest(
-                $expected,
-                $withInput ? $input : null
-            );
+            $this->doTest($expected, $withInput ? $input : null);
         }
     }
 }

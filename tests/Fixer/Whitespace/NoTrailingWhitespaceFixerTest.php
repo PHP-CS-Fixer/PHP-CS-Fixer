@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,19 +26,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             [
                 '<?php
 $a = 1;',
@@ -134,6 +133,29 @@ EOT;
                 "<?php\n   \n    ",
                 "<?php      \n   \n    ",
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php class Foo {
+    #[Required]
+    public $bar;
+}',
+            '<?php class Foo {
+    #[Required]     '.'
+    public $bar;
+}',
         ];
     }
 }

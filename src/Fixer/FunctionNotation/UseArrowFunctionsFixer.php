@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,6 +16,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
@@ -29,7 +32,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Anonymous functions with one-liner return statement must use arrow functions.',
@@ -54,7 +57,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return \PHP_VERSION_ID >= 70400 && $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]);
     }
@@ -62,7 +65,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -70,7 +73,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
 
@@ -171,16 +174,10 @@ SAMPLE
         }
     }
 
-    /**
-     * @param int $start
-     * @param int $end
-     *
-     * @return bool
-     */
-    private function isMultilined(Tokens $tokens, $start, $end)
+    private function isMultilined(Tokens $tokens, int $start, int $end): bool
     {
         for ($i = $start; $i < $end; ++$i) {
-            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+            if (str_contains($tokens[$i]->getContent(), "\n")) {
                 return true;
             }
         }
@@ -188,24 +185,20 @@ SAMPLE
         return false;
     }
 
-    /**
-     * @param int      $index
-     * @param null|int $useStart
-     * @param null|int $useEnd
-     * @param int      $braceOpen
-     * @param int      $return
-     * @param int      $semicolon
-     * @param int      $braceClose
-     */
-    private function transform(Tokens $tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose)
+    private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
     {
+        $tokensToInsert = [new Token([T_DOUBLE_ARROW, '=>'])];
+
+        if ($tokens->getNextMeaningfulToken($return) === $semicolon) {
+            $tokensToInsert[] = new Token([T_WHITESPACE, ' ']);
+            $tokensToInsert[] = new Token([T_STRING, 'null']);
+        }
+
         $tokens->clearRange($semicolon, $braceClose);
-
         $tokens->clearRange($braceOpen + 1, $return);
+        $tokens->overrideRange($braceOpen, $braceOpen, $tokensToInsert);
 
-        $tokens[$braceOpen] = new Token([T_DOUBLE_ARROW, '=>']);
-
-        if ($useStart) {
+        if (null !== $useStart) {
             $tokens->clearRange($useStart, $useEnd);
         }
 

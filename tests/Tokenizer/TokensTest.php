@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,12 +16,12 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -29,7 +31,7 @@ final class TokensTest extends TestCase
 {
     use AssertTokensTrait;
 
-    public function testReadFromCacheAfterClearing()
+    public function testReadFromCacheAfterClearing(): void
     {
         $code = '<?php echo 1;';
         $tokens = Tokens::fromCode($code);
@@ -46,22 +48,19 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param string     $source
-     * @param Token[]    $sequence
-     * @param int        $start
-     * @param null|int   $end
-     * @param array|bool $caseSensitive
+     * @param Token[]         $sequence
+     * @param null|array|bool $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
     public function testFindSequence(
-        $source,
-        array $expected = null,
+        string $source,
+        ?array $expected,
         array $sequence,
-        $start = 0,
-        $end = null,
+        int $start = 0,
+        int $end = null,
         $caseSensitive = true
-    ) {
+    ): void {
         $tokens = Tokens::fromCode($source);
 
         static::assertEqualsTokensArray(
@@ -75,7 +74,7 @@ final class TokensTest extends TestCase
         );
     }
 
-    public function provideFindSequenceCases()
+    public function provideFindSequenceCases(): array
     {
         return [
             [
@@ -210,7 +209,7 @@ final class TokensTest extends TestCase
                 ],
                 0,
                 1,
-                [1, true],
+                [1 => true],
             ],
             [
                 '<?php $x = 13;',
@@ -238,7 +237,7 @@ final class TokensTest extends TestCase
                 ],
                 0,
                 1,
-                [1, false],
+                [1 => false],
             ],
             [
                 '<?php $x = 15;',
@@ -279,11 +278,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param string $message
-     *
      * @dataProvider provideFindSequenceExceptionCases
      */
-    public function testFindSequenceException($message, array $sequence)
+    public function testFindSequenceException(string $message, array $sequence): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($message);
@@ -292,25 +289,28 @@ final class TokensTest extends TestCase
         $tokens->findSequence($sequence);
     }
 
-    public function provideFindSequenceExceptionCases()
+    public function provideFindSequenceExceptionCases(): array
     {
         $emptyToken = new Token('');
 
         return [
             ['Invalid sequence.', []],
-            ['Non-meaningful token at position: "0".', [
-                [T_WHITESPACE, '   '],
-            ]],
-            ['Non-meaningful token at position: "1".', [
-                '{', [T_COMMENT, '// Foo'], '}',
-            ]],
-            ['Non-meaningful token at position: "2".', [
-                '{', '!', $emptyToken, '}',
-            ]],
+            [
+                'Non-meaningful token at position: "0".',
+                [[T_WHITESPACE, '   ']],
+            ],
+            [
+                'Non-meaningful token at position: "1".',
+                ['{', [T_COMMENT, '// Foo'], '}'],
+            ],
+            [
+                'Non-meaningful (empty) token at position: "2".',
+                ['{', '!', $emptyToken, '}'],
+            ],
         ];
     }
 
-    public function testClearRange()
+    public function testClearRange(): void
     {
         $source = <<<'PHP'
 <?php
@@ -329,7 +329,7 @@ class FooBar
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(T_PUBLIC));
+        [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
@@ -343,87 +343,58 @@ PHP;
 
     /**
      * @dataProvider provideMonolithicPhpDetectionCases
-     *
-     * @param string $source
-     * @param bool   $isMonolithic
      */
-    public function testMonolithicPhpDetection($source, $isMonolithic)
+    public function testMonolithicPhpDetection(bool $isMonolithic, string $source): void
     {
         $tokens = Tokens::fromCode($source);
         static::assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideMonolithicPhpDetectionCases()
+    public function provideMonolithicPhpDetectionCases(): iterable
     {
-        return [
-            ["<?php\n", true],
-            ["<?php\n?>", true],
-            ['', false],
-            [' ', false],
-            ["#!/usr/bin/env php\n<?php\n", false],
-            [" <?php\n", false],
-            ["<?php\n?> ", false],
-            ["<?php\n?><?php\n", false],
-        ];
+        yield [true, "<?php\n"];
+        yield [true, "<?php\n?>"];
+        yield [false, "#!\n<?php\n"];
+        yield [false, "#!/usr/bin/bash\ncat <?php\n"];
+        yield [false, "#!/usr/bin/env bash\ncat <?php\n"];
+        yield [true, "#!/usr/bin/php\n<?php\n"];
+        yield [true, "#!/usr/bin/php7.4-cli\n<?php\n"];
+        yield [false, "#!/usr/bin/php\n\n<?php\n"]; // empty line after shebang would be printed to console before PHP executes
+        yield [true, "#!/usr/bin/php8\n<?php\n"];
+        yield [true, "#!/usr/bin/env php\n<?php\n"];
+        yield [true, "#!/usr/bin/env php7.4\n<?php\n"];
+        yield [true, "#!/usr/bin/env php7.4-cli\n<?php\n"];
+        yield [false, "#!/usr/bin/env this-is\ntoo-much\n<?php\n"];
+        yield [false, "#!/usr/bin/php\nFoo bar<?php\n"];
+        yield [false, "#!/usr/bin/env php -n \nFoo bar\n<?php\n"];
+        yield [false, ''];
+        yield [false, ' '];
+        yield [false, " <?php\n"];
+        yield [false, "<?php\n?> "];
+        yield [false, "<?php\n?><?php\n"];
+        yield [false, 'Hello<?php echo "World!"; ?>'];
+        yield [false, '<?php echo "Hello"; ?> World!'];
+        // short open tag
+        yield [(bool) ini_get('short_open_tag'), "<?\n"];
+        yield [(bool) ini_get('short_open_tag'), "<?\n?>"];
+        yield [false, " <?\n"];
+        yield [false, "<?\n?> "];
+        yield [false, "<?\n?><?\n"];
+        yield [false, "<?\n?><?php\n"];
+        yield [false, "<?\n?><?=' ';\n"];
+        yield [false, "<?php\n?><?\n"];
+        yield [false, "<?=' '\n?><?\n"];
+        // short open tag echo
+        yield [true, "<?=' ';\n"];
+        yield [true, "<?=' '?>"];
+        yield [false, " <?=' ';\n"];
+        yield [false, "<?=' '?> "];
+        yield [false, "<?php\n?><?=' ';\n"];
+        yield [false, "<?=' '\n?><?php\n"];
+        yield [false, "<?=' '\n?><?=' ';\n"];
     }
 
-    /**
-     * @dataProvider provideShortOpenTagMonolithicPhpDetectionCases
-     *
-     * @param string $source
-     * @param bool   $monolithic
-     */
-    public function testShortOpenTagMonolithicPhpDetection($source, $monolithic)
-    {
-        if (!ini_get('short_open_tag')) {
-            $monolithic = false;
-        }
-
-        $tokens = Tokens::fromCode($source);
-        static::assertSame($monolithic, $tokens->isMonolithicPhp());
-    }
-
-    public function provideShortOpenTagMonolithicPhpDetectionCases()
-    {
-        return [
-            ["<?\n", true],
-            ["<?\n?>", true],
-            [" <?\n", false],
-            ["<?\n?> ", false],
-            ["<?\n?><?\n", false],
-            ["<?\n?><?php\n", false],
-            ["<?\n?><?=' ';\n", false],
-            ["<?php\n?><?\n", false],
-            ["<?=' '\n?><?\n", false],
-        ];
-    }
-
-    /**
-     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetectionCases
-     *
-     * @param string $source
-     * @param bool   $monolithic
-     */
-    public function testShortOpenTagEchoMonolithicPhpDetection($source, $monolithic)
-    {
-        $tokens = Tokens::fromCode($source);
-        static::assertSame($monolithic, $tokens->isMonolithicPhp());
-    }
-
-    public function provideShortOpenTagEchoMonolithicPhpDetectionCases()
-    {
-        return [
-            ["<?=' ';\n", true],
-            ["<?=' '?>", true],
-            [" <?=' ';\n", false],
-            ["<?=' '?> ", false],
-            ["<?php\n?><?=' ';\n", false],
-            ["<?=' '\n?><?php\n", false],
-            ["<?=' '\n?><?=' ';\n", false],
-        ];
-    }
-
-    public function testTokenKindsFound()
+    public function testTokenKindsFound(): void
     {
         $code = <<<'EOF'
 <?php
@@ -456,7 +427,7 @@ EOF;
         static::assertFalse($tokens->isAnyTokenKindsFound([T_INTERFACE, T_ARRAY]));
     }
 
-    public function testFindGivenKind()
+    public function testFindGivenKind(): void
     {
         $source = <<<'PHP'
 <?php
@@ -474,24 +445,23 @@ class FooBar
 }
 PHP;
         $tokens = Tokens::fromCode($source);
+
         /** @var Token[] $found */
         $found = $tokens->findGivenKind(T_CLASS);
-        static::assertInternalType('array', $found);
         static::assertCount(1, $found);
         static::assertArrayHasKey(1, $found);
         static::assertSame(T_CLASS, $found[1]->getId());
 
-        /** @var array $found */
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
         static::assertCount(2, $found);
         static::assertArrayHasKey(T_CLASS, $found);
-        static::assertInternalType('array', $found[T_CLASS]);
+        static::assertIsArray($found[T_CLASS]);
         static::assertCount(1, $found[T_CLASS]);
         static::assertArrayHasKey(1, $found[T_CLASS]);
         static::assertSame(T_CLASS, $found[T_CLASS][1]->getId());
 
         static::assertArrayHasKey(T_FUNCTION, $found);
-        static::assertInternalType('array', $found[T_FUNCTION]);
+        static::assertIsArray($found[T_FUNCTION]);
         static::assertCount(2, $found[T_FUNCTION]);
         static::assertArrayHasKey(9, $found[T_FUNCTION]);
         static::assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
@@ -511,13 +481,12 @@ PHP;
     }
 
     /**
-     * @param string  $source
      * @param Token[] $expected tokens
      * @param int[]   $indexes  to clear
      *
      * @dataProvider provideGetClearTokenAndMergeSurroundingWhitespaceCases
      */
-    public function testClearTokenAndMergeSurroundingWhitespace($source, array $indexes, array $expected)
+    public function testClearTokenAndMergeSurroundingWhitespace(string $source, array $indexes, array $expected): void
     {
         $this->doTestClearTokens($source, $indexes, $expected);
         if (\count($indexes) > 1) {
@@ -525,7 +494,7 @@ PHP;
         }
     }
 
-    public function provideGetClearTokenAndMergeSurroundingWhitespaceCases()
+    public function provideGetClearTokenAndMergeSurroundingWhitespaceCases(): array
     {
         $clearToken = new Token('');
 
@@ -614,20 +583,17 @@ PHP;
     }
 
     /**
-     * @param int  $expectedIndex
-     * @param int  $direction
-     * @param int  $index
-     * @param bool $caseSensitive
+     * @param ?int $expectedIndex
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
     public function testTokenOfKindSibling(
-        $expectedIndex,
-        $direction,
-        $index,
+        ?int $expectedIndex,
+        int $direction,
+        int $index,
         array $findTokens,
-        $caseSensitive = true
-    ) {
+        bool $caseSensitive = true
+    ): void {
         $source =
             '<?php
                 $a = function ($b) {
@@ -649,7 +615,7 @@ PHP;
         static::assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
     }
 
-    public function provideTokenOfKindSiblingCases()
+    public function provideTokenOfKindSiblingCases(): array
     {
         return [
             // find next cases
@@ -679,19 +645,14 @@ PHP;
     }
 
     /**
-     * @param int    $expectedIndex
-     * @param string $source
-     * @param int    $type
-     * @param int    $searchIndex
-     *
      * @dataProvider provideFindBlockEndCases
      */
-    public function testFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    public function testFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public function provideFindBlockEndCases()
+    public function provideFindBlockEndCases(): array
     {
         return [
             [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2],
@@ -703,95 +664,84 @@ PHP;
             [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
             [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
             [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
-        ];
-    }
-
-    /**
-     * @param int    $expectedIndex
-     * @param string $source
-     * @param int    $type
-     * @param int    $searchIndex
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideFindBlockEnd70Cases
-     */
-    public function testFindBlockEnd70($expectedIndex, $source, $type, $searchIndex)
-    {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
-    }
-
-    public function provideFindBlockEnd70Cases()
-    {
-        return [
+            [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
             [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
-        ];
-    }
-
-    /**
-     * @param int    $expectedIndex
-     * @param string $source
-     * @param int    $type
-     * @param int    $searchIndex
-     *
-     * @requires PHP 7.1
-     * @dataProvider provideFindBlockEnd71Cases
-     */
-    public function testFindBlockEnd71($expectedIndex, $source, $type, $searchIndex)
-    {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
-    }
-
-    public function provideFindBlockEnd71Cases()
-    {
-        return [
             [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
             [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1],
         ];
     }
 
-    public function testFindBlockEndInvalidType()
+    /**
+     * @requires PHP 8.0
+     * @dataProvider provideFindBlockEnd80Cases
+     */
+    public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
+    {
+        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public function provideFindBlockEnd80Cases(): array
+    {
+        return [
+            [
+                9,
+                '<?php class Foo {
+                    #[Required]
+                    public $bar;
+                }',
+                Tokens::BLOCK_TYPE_ATTRIBUTE,
+                7,
+            ],
+        ];
+    }
+
+    public function testFindBlockEndInvalidType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Invalid param type: "-1"\.$/');
+        $this->expectExceptionMessageMatches('/^Invalid param type: "-1"\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(-1, 0);
     }
 
-    public function testFindBlockEndInvalidStart()
+    public function testFindBlockEndInvalidStart(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block "start"\.$/');
+        $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
-    /**
-     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.
-     * @group legacy
-     */
-    public function testFindBlockEndLastParameterFalseDeprecated()
+    public function testFindBlockEndCalledMultipleTimes(): void
     {
-        $tokens = Tokens::fromCode('<?php ${$bar};');
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        static::assertSame(2, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 4, false));
+        static::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
+
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7);
     }
 
-    /**
-     * @expectedDeprecation Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.
-     * @group legacy
-     */
-    public function testFindBlockEndLastParameterTrueDeprecated()
+    public function testFindBlockStartEdgeCalledMultipleTimes(): void
     {
-        $tokens = Tokens::fromCode('<?php ${$bar};');
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        static::assertSame(4, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2, true));
+        static::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "end"\.$/');
+
+        $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2);
     }
 
-    public function testEmptyTokens()
+    public function testEmptyTokens(): void
     {
         $code = '';
         $tokens = Tokens::fromCode($code);
@@ -800,21 +750,24 @@ PHP;
         static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 
-    public function testEmptyTokensMultiple()
+    public function testEmptyTokensMultiple(): void
     {
         $code = '';
 
         $tokens = Tokens::fromCode($code);
+        static::assertFalse($tokens->isChanged());
+
         $tokens->insertAt(0, new Token([T_WHITESPACE, ' ']));
         static::assertCount(1, $tokens);
         static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        static::assertTrue($tokens->isChanged());
 
         $tokens2 = Tokens::fromCode($code);
         static::assertCount(0, $tokens2);
         static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 
-    public function testFromArray()
+    public function testFromArray(): void
     {
         $code = '<?php echo 1;';
 
@@ -826,25 +779,23 @@ PHP;
         static::assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
     }
 
-    public function testFromArrayEmpty()
+    public function testFromArrayEmpty(): void
     {
         $tokens = Tokens::fromArray([]);
         static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
     }
 
     /**
-     * @param bool $isEmpty
-     *
      * @dataProvider provideIsEmptyCases
      */
-    public function testIsEmpty(Token $token, $isEmpty)
+    public function testIsEmpty(Token $token, bool $isEmpty): void
     {
         $tokens = Tokens::fromArray([$token]);
         Tokens::clearCache();
         static::assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
     }
 
-    public function provideIsEmptyCases()
+    public function provideIsEmptyCases(): array
     {
         return [
             [new Token(''), true],
@@ -853,7 +804,7 @@ PHP;
         ];
     }
 
-    public function testClone()
+    public function testClone(): void
     {
         $code = '<?php echo 1;';
         $tokens = Tokens::fromCode($code);
@@ -873,15 +824,9 @@ PHP;
     }
 
     /**
-     * @param string $expected   valid PHP code
-     * @param string $input      valid PHP code
-     * @param int    $index      token index
-     * @param int    $offset
-     * @param string $whiteSpace white space
-     *
      * @dataProvider provideEnsureWhitespaceAtIndexCases
      */
-    public function testEnsureWhitespaceAtIndex($expected, $input, $index, $offset, $whiteSpace)
+    public function testEnsureWhitespaceAtIndex(string $expected, string $input, int $index, int $offset, string $whiteSpace): void
     {
         $tokens = Tokens::fromCode($input);
         $tokens->ensureWhitespaceAtIndex($index, $offset, $whiteSpace);
@@ -889,7 +834,7 @@ PHP;
         static::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
-    public function provideEnsureWhitespaceAtIndexCases()
+    public function provideEnsureWhitespaceAtIndexCases(): array
     {
         return [
             [
@@ -1007,7 +952,7 @@ echo $a;',
         ];
     }
 
-    public function testAssertTokensAfterChanging()
+    public function testAssertTokensAfterChanging(): void
     {
         $template =
             '<?php class SomeClass {
@@ -1042,23 +987,18 @@ echo $a;',
 
     /**
      * @dataProvider provideRemoveLeadingWhitespaceCases
-     *
-     * @param int         $index
-     * @param null|string $whitespaces
-     * @param string      $expected
-     * @param string      $input
      */
-    public function testRemoveLeadingWhitespace($index, $whitespaces, $expected, $input = null)
+    public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
     {
         Tokens::clearCache();
 
-        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens = Tokens::fromCode($input ?? $expected);
         $tokens->removeLeadingWhitespace($index, $whitespaces);
 
         static::assertSame($expected, $tokens->generateCode());
     }
 
-    public function provideRemoveLeadingWhitespaceCases()
+    public function provideRemoveLeadingWhitespaceCases(): array
     {
         return [
             [
@@ -1113,35 +1053,28 @@ echo $a;',
 
     /**
      * @dataProvider provideRemoveTrailingWhitespaceCases
-     *
-     * @param int         $index
-     * @param null|string $whitespaces
-     * @param string      $expected
-     * @param string      $input
      */
-    public function testRemoveTrailingWhitespace($index, $whitespaces, $expected, $input = null)
+    public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
     {
         Tokens::clearCache();
 
-        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens = Tokens::fromCode($input ?? $expected);
         $tokens->removeTrailingWhitespace($index, $whitespaces);
 
         static::assertSame($expected, $tokens->generateCode());
     }
 
-    public function provideRemoveTrailingWhitespaceCases()
+    public function provideRemoveTrailingWhitespaceCases(): \Generator
     {
-        $cases = [];
         $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
+
         foreach ($leadingCases as $leadingCase) {
             $leadingCase[0] -= 2;
-            $cases[] = $leadingCase;
+            yield $leadingCase;
         }
-
-        return $cases;
     }
 
-    public function testRemovingLeadingWhitespaceWithEmptyTokenInCollection()
+    public function testRemovingLeadingWhitespaceWithEmptyTokenInCollection(): void
     {
         $code = "<?php\n    /* I will be removed */MY_INDEX_IS_THREE;foo();";
         $tokens = Tokens::fromCode($code);
@@ -1153,7 +1086,7 @@ echo $a;',
         static::assertTokens(Tokens::fromCode("<?php\nMY_INDEX_IS_THREE;foo();"), $tokens);
     }
 
-    public function testRemovingTrailingWhitespaceWithEmptyTokenInCollection()
+    public function testRemovingTrailingWhitespaceWithEmptyTokenInCollection(): void
     {
         $code = "<?php\nMY_INDEX_IS_ONE/* I will be removed */    ;foo();";
         $tokens = Tokens::fromCode($code);
@@ -1168,7 +1101,7 @@ echo $a;',
     /**
      * Action that begins with the word "remove" should not change the size of collection.
      */
-    public function testRemovingLeadingWhitespaceWillNotIncreaseTokensCount()
+    public function testRemovingLeadingWhitespaceWillNotIncreaseTokensCount(): void
     {
         $tokens = Tokens::fromCode('<?php
                                     // Foo
@@ -1189,7 +1122,7 @@ $bar;',
     /**
      * Action that begins with the word "remove" should not change the size of collection.
      */
-    public function testRemovingTrailingWhitespaceWillNotIncreaseTokensCount()
+    public function testRemovingTrailingWhitespaceWillNotIncreaseTokensCount(): void
     {
         $tokens = Tokens::fromCode('<?php
                                     // Foo
@@ -1208,19 +1141,15 @@ $bar;',
     }
 
     /**
-     * @param null|int $expected
-     * @param string   $code
-     * @param int      $index
-     *
      * @dataProvider provideDetectBlockTypeCases
      */
-    public function testDetectBlockType($expected, $code, $index)
+    public function testDetectBlockType(?array $expected, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         static::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
     }
 
-    public function provideDetectBlockTypeCases()
+    public function provideDetectBlockTypeCases(): \Generator
     {
         yield [
             [
@@ -1238,13 +1167,437 @@ $bar;',
         ];
     }
 
+    public function testOverrideRangeTokens(): void
+    {
+        $expected = [
+            new Token([T_OPEN_TAG, '<?php ']),
+            new Token([T_FUNCTION, 'function']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_STRING, 'foo']),
+            new Token('('),
+            new Token([T_ARRAY, 'array']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_VARIABLE, '$bar']),
+            new Token(')'),
+            new Token('{'),
+            new Token('}'),
+        ];
+        $code = '<?php function foo(array $bar){}';
+        $indexStart = 5;
+        $indexEnd = 5;
+        $items = Tokens::fromArray([new Token([T_ARRAY, 'array'])]);
+
+        $tokens = Tokens::fromCode($code);
+        $tokens->overrideRange($indexStart, $indexEnd, $items);
+        $tokens->clearEmptyTokens();
+
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
+    }
+
     /**
-     * @param int    $expectedIndex
-     * @param string $source
-     * @param int    $type
-     * @param int    $searchIndex
+     * @param int          $indexStart start overriding index
+     * @param int          $indexEnd   end overriding index
+     * @param array<Token> $items      tokens to insert
+     *
+     * @dataProvider provideOverrideRangeCases
      */
-    private static function assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex)
+    public function testOverrideRange(array $expected, string $code, int $indexStart, int $indexEnd, array $items): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $tokens->overrideRange($indexStart, $indexEnd, $items);
+        $tokens->clearEmptyTokens();
+
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
+    }
+
+    public function provideOverrideRangeCases(): \Generator
+    {
+        // typically done by transformers, here we test the reverse
+
+        yield 'override different tokens but same content' => [
+            [
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_FUNCTION, 'function']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_STRING, 'foo']),
+                new Token('('),
+                new Token([T_ARRAY, 'array']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_VARIABLE, '$bar']),
+                new Token(')'),
+                new Token('{'),
+                new Token('}'),
+            ],
+            '<?php function foo(array $bar){}',
+            5,
+            5,
+            [new Token([T_ARRAY, 'array'])],
+        ];
+
+        yield 'add more item than in range' => [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+            ],
+            "<?php\n#comment",
+            1,
+            1,
+            [
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+            ],
+        ];
+
+        yield [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '#comment1']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test 1']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '#comment5']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '#comment6']),
+            ],
+            "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6",
+            3,
+            7,
+            [
+                new Token([T_COMMENT, '// test 1']),
+            ],
+        ];
+
+        yield [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '// test']),
+            ],
+            "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6\n#comment7",
+            1,
+            13,
+            [
+                new Token([T_COMMENT, '// test']),
+            ],
+        ];
+
+        yield [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '// test']),
+            ],
+            "<?php\n#comment",
+            1,
+            1,
+            [
+                new Token([T_COMMENT, '// test']),
+            ],
+        ];
+    }
+
+    public function testInitialChangedState(): void
+    {
+        $tokens = Tokens::fromCode("<?php\n");
+        static::assertFalse($tokens->isChanged());
+
+        $tokens = Tokens::fromArray(
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_STRING, 'Foo']),
+                new Token(';'),
+            ]
+        );
+        static::assertFalse($tokens->isChanged());
+    }
+
+    /**
+     * @dataProvider provideGetMeaningfulTokenSiblingCases
+     */
+    public function testGetMeaningfulTokenSibling(?int $expectIndex, int $index, int $direction, string $source): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        static::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
+    }
+
+    public function provideGetMeaningfulTokenSiblingCases(): \Generator
+    {
+        yield [null, 0, 1, '<?php '];
+
+        yield [null, 1, 1, '<?php /**/ /**/ /**/ /**/#'];
+
+        for ($i = 0; $i < 3; ++$i) {
+            yield '>'.$i => [3, $i, 1, '<?php /**/ foo();'];
+        }
+
+        yield '>>' => [4, 3, 1, '<?php /**/ foo();'];
+        yield '@ end' => [null, 6, 1, '<?php /**/ foo();'];
+        yield 'over end' => [null, 888, 1, '<?php /**/ foo();'];
+
+        yield [0, 3, -1, '<?php /**/ foo();'];
+        yield [4, 5, -1, '<?php /**/ foo();'];
+        yield [5, 6, -1, '<?php /**/ foo();'];
+        yield [null, 0, -1, '<?php /**/ foo();'];
+    }
+
+    /**
+     * @dataProvider provideInsertSlicesAtMultiplePlacesCases
+     *
+     * @param array<int, Token> $slices
+     */
+    public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
+    {
+        $input = <<<'EOF'
+<?php
+
+$after = get_class($after);
+$before = get_class($before);
+EOF;
+
+        $tokens = Tokens::fromCode($input);
+        $tokens->insertSlices([
+            16 => $slices,
+            6 => $slices,
+        ]);
+        static::assertTokens(Tokens::fromCode($expected), $tokens);
+    }
+
+    public function provideInsertSlicesAtMultiplePlacesCases(): \Generator
+    {
+        yield 'one slice count' => [
+            <<<'EOF'
+<?php
+
+$after = /*foo*/get_class($after);
+$before = /*foo*/get_class($before);
+EOF
+            ,
+            [new Token([T_COMMENT, '/*foo*/'])],
+        ];
+
+        yield 'two slice count' => [
+            <<<'EOF'
+<?php
+
+$after = (string) get_class($after);
+$before = (string) get_class($before);
+EOF
+            ,
+            [new Token([T_STRING_CAST, '(string)']), new Token([T_WHITESPACE, ' '])],
+        ];
+
+        yield 'three slice count' => [
+            <<<'EOF'
+<?php
+
+$after = !(bool) get_class($after);
+$before = !(bool) get_class($before);
+EOF
+            ,
+            [new Token('!'), new Token([T_BOOL_CAST, '(bool)']), new Token([T_WHITESPACE, ' '])],
+        ];
+    }
+
+    public function testInsertSlicesChangesState(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1234567890;');
+
+        static::assertFalse($tokens->isChanged());
+        static::assertFalse($tokens->isTokenKindFound(T_COMMENT));
+        static::assertSame(5, $tokens->getSize());
+
+        $tokens->insertSlices([1 => new Token([T_COMMENT, '/* comment */'])]);
+
+        static::assertTrue($tokens->isChanged());
+        static::assertTrue($tokens->isTokenKindFound(T_COMMENT));
+        static::assertSame(6, $tokens->getSize());
+    }
+
+    /**
+     * @dataProvider provideInsertSlicesCases
+     */
+    public function testInsertSlices(Tokens $expected, Tokens $tokens, array $slices): void
+    {
+        $tokens->insertSlices($slices);
+        static::assertTokens($expected, $tokens);
+    }
+
+    public function provideInsertSlicesCases(): iterable
+    {
+        // basic insert of single token at 3 different locations including appending as new token
+
+        $template = "<?php\n%s\n/* single token test header */%s\necho 1;\n%s";
+        $commentContent = '/* test */';
+        $commentToken = new Token([T_COMMENT, $commentContent]);
+        $from = Tokens::fromCode(sprintf($template, '', '', ''));
+
+        yield 'single insert @ 1' => [
+            Tokens::fromCode(sprintf($template, $commentContent, '', '')),
+            clone $from,
+            [1 => $commentToken],
+        ];
+
+        yield 'single insert @ 3' => [
+            Tokens::fromCode(sprintf($template, '', $commentContent, '')),
+            clone $from,
+            [3 => Tokens::fromArray([$commentToken])],
+        ];
+
+        yield 'single insert @ 9' => [
+            Tokens::fromCode(sprintf($template, '', '', $commentContent)),
+            clone $from,
+            [9 => [$commentToken]],
+        ];
+
+        // basic tests for single token, array of that token and tokens object with that token
+
+        $openTagToken = new Token([T_OPEN_TAG, "<?php\n"]);
+        $expected = Tokens::fromArray([$openTagToken]);
+
+        $slices = [
+            [0 => $openTagToken],
+            [0 => [clone $openTagToken]],
+            [0 => clone Tokens::fromArray([$openTagToken])],
+        ];
+
+        foreach ($slices as $i => $slice) {
+            yield 'insert open tag @ 0 into empty collection '.$i => [$expected, new Tokens(), $slice];
+        }
+
+        // test insert lists of tokens, index out of order
+
+        $setOne = [
+            new Token([T_ECHO, 'echo']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_CONSTANT_ENCAPSED_STRING, '"new"']),
+            new Token(';'),
+        ];
+
+        $setTwo = [
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_COMMENT, '/* new comment */']),
+        ];
+
+        $setThree = Tokens::fromArray([
+            new Token([T_VARIABLE, '$new']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token('='),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_LNUMBER, '8899']),
+            new Token(';'),
+            new Token([T_WHITESPACE, "\n"]),
+        ]);
+
+        $template = "<?php\n%s\n/* header */%s\necho 789;\n%s";
+        $expected = Tokens::fromCode(
+            sprintf(
+                $template,
+                'echo "new";',
+                ' /* new comment */',
+                "\$new = 8899;\n"
+            )
+        );
+        $from = Tokens::fromCode(sprintf($template, '', '', ''));
+
+        yield 'insert 3 token collections' => [$expected, $from, [9 => $setThree, 1 => $setOne, 3 => $setTwo]];
+
+        $sets = [];
+
+        for ($j = 0; $j < 4; ++$j) {
+            $set = ['tokens' => [], 'content' => ''];
+
+            for ($i = 0; $i < 10; ++$i) {
+                $content = sprintf('/* new %d|%s */', $j, $i);
+
+                $set['tokens'][] = new Token([T_COMMENT, $content]);
+                $set['content'] .= $content;
+            }
+
+            $sets[$j] = $set;
+        }
+
+        yield 'overlapping inserts of bunch of comments ' => [
+            Tokens::fromCode(sprintf("<?php\n%s/* line 1 */\n%s/* line 2 */\n%s/* line 3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
+            Tokens::fromCode("<?php\n/* line 1 */\n/* line 2 */\n/* line 3 */"),
+            [1 => $sets[0]['tokens'], 3 => $sets[1]['tokens'], 5 => $sets[2]['tokens'], 6 => $sets[3]['tokens']],
+        ];
+    }
+
+    public function testBlockEdgeCachingOffsetSet(): void
+    {
+        $tokens = $this->getBlockEdgeCachingTestTokens();
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->offsetSet(5, new Token('('));
+        $tokens->offsetSet(9, new Token('('));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid param $startIndex - not a proper block "start".');
+
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+    }
+
+    public function testBlockEdgeCachingClearAt(): void
+    {
+        $tokens = $this->getBlockEdgeCachingTestTokens();
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->clearAt(7); // note: offsetUnset doesn't work here
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->clearEmptyTokens();
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(8, $endIndex);
+    }
+
+    public function testBlockEdgeCachingInsertSlices(): void
+    {
+        $tokens = $this->getBlockEdgeCachingTestTokens();
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->insertSlices([6 => [new Token([T_COMMENT, '/* A */'])], new Token([T_COMMENT, '/* B */'])]);
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(11, $endIndex);
+    }
+
+    private function getBlockEdgeCachingTestTokens(): Tokens
+    {
+        Tokens::clearCache();
+
+        return Tokens::fromArray([
+            new Token([T_OPEN_TAG, '<?php ']),
+            new Token([T_VARIABLE, '$a']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token('='),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_COMMENT, '/* foo */']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token(';'),
+            new Token([T_WHITESPACE, "\n"]),
+        ]);
+    }
+
+    private static function assertFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -1253,14 +1606,14 @@ $bar;',
         static::assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
-        static::assertInternalType('array', $detectedType);
+        static::assertIsArray($detectedType);
         static::assertArrayHasKey('type', $detectedType);
         static::assertArrayHasKey('isStart', $detectedType);
         static::assertSame($type, $detectedType['type']);
         static::assertTrue($detectedType['isStart']);
 
         $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
-        static::assertInternalType('array', $detectedType);
+        static::assertIsArray($detectedType);
         static::assertArrayHasKey('type', $detectedType);
         static::assertArrayHasKey('isStart', $detectedType);
         static::assertSame($type, $detectedType['type']);
@@ -1271,7 +1624,7 @@ $bar;',
      * @param null|Token[] $expected
      * @param null|Token[] $input
      */
-    private static function assertEqualsTokensArray(array $expected = null, array $input = null)
+    private static function assertEqualsTokensArray(array $expected = null, array $input = null): void
     {
         if (null === $expected) {
             static::assertNull($input);
@@ -1294,11 +1647,10 @@ $bar;',
     }
 
     /**
-     * @param string  $source
      * @param int[]   $indexes
      * @param Token[] $expected
      */
-    private function doTestClearTokens($source, array $indexes, array $expected)
+    private function doTestClearTokens(string $source, array $indexes, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,7 @@
 namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
+use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\FileRemoval;
@@ -22,11 +24,12 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\ProcessLinter;
+use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
-use Prophecy\Argument;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -56,14 +59,10 @@ use Symfony\Component\Finder\SplFileInfo;
  *   * Section or any line in it may be omitted.
  *  ** PHP minimum version. Default to current running php version (no effect).
  *
- * @author SpacePossum
- *
  * @internal
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
-    use IsIdenticalConstraint;
-
     /**
      * @var null|LinterInterface
      */
@@ -74,7 +73,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     private static $fileRemoval;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -92,7 +91,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 
@@ -102,35 +101,33 @@ abstract class AbstractIntegrationTestCase extends TestCase
         self::$fileRemoval = null;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->linter = $this->getLinter();
-
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
         $this->linter = null;
-
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
     }
 
     /**
      * @dataProvider provideIntegrationCases
      *
      * @see doTest()
+     * @large
+     * @group legacy
      */
-    public function testIntegration(IntegrationCase $case)
+    public function testIntegration(IntegrationCase $case): void
     {
+        foreach ($case->getSettings()['deprecations'] as $deprecation) {
+            $this->expectDeprecation($deprecation);
+        }
+
         $this->doTest($case);
     }
 
@@ -139,11 +136,13 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @return IntegrationCase[][]
      */
-    public function provideIntegrationCases()
+    public function provideIntegrationCases(): array
     {
-        $fixturesDir = realpath(static::getFixturesDir());
+        $dir = static::getFixturesDir();
+        $fixturesDir = realpath($dir);
+
         if (!is_dir($fixturesDir)) {
-            throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
+            throw new \UnexpectedValueException(sprintf('Given fixture dir "%s" is not a directory.', \is_string($fixturesDir) ? $fixturesDir : $dir));
         }
 
         $factory = static::createIntegrationCaseFactory();
@@ -163,30 +162,23 @@ abstract class AbstractIntegrationTestCase extends TestCase
         return $tests;
     }
 
-    /**
-     * @return IntegrationCaseFactoryInterface
-     */
-    protected static function createIntegrationCaseFactory()
+    protected static function createIntegrationCaseFactory(): IntegrationCaseFactoryInterface
     {
         return new IntegrationCaseFactory();
     }
 
     /**
      * Returns the full path to directory which contains the tests.
-     *
-     * @return string
      */
-    protected static function getFixturesDir()
+    protected static function getFixturesDir(): string
     {
         throw new \BadMethodCallException('Method "getFixturesDir" must be overridden by the extending class.');
     }
 
     /**
      * Returns the full path to the temporary file where the test will write to.
-     *
-     * @return string
      */
-    protected static function getTempFile()
+    protected static function getTempFile(): string
     {
         throw new \BadMethodCallException('Method "getTempFile" must be overridden by the extending class.');
     }
@@ -198,7 +190,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * configured with the given fixers. The result is compared with the expected output.
      * It checks if no errors were reported during the fixing.
      */
-    protected function doTest(IntegrationCase $case)
+    protected function doTest(IntegrationCase $case): void
     {
         if (\PHP_VERSION_ID < $case->getRequirement('php')) {
             static::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
@@ -220,7 +212,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $runner = new Runner(
             new \ArrayIterator([new \SplFileInfo($tmpFile)]),
             $fixers,
-            new SebastianBergmannDiffer(),
+            new UnifiedDiffer(),
             null,
             $errorsManager,
             $this->linter,
@@ -262,7 +254,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixedInputCode = file_get_contents($tmpFile);
         static::assertThat(
             $fixedInputCode,
-            self::createIsIdenticalStringConstraint($expected),
+            new IsIdenticalString($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
@@ -280,7 +272,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $runner = new Runner(
                 new \ArrayIterator([new \SplFileInfo($tmpFile)]),
                 array_reverse($fixers),
-                new SebastianBergmannDiffer(),
+                new UnifiedDiffer(),
                 null,
                 $errorsManager,
                 $this->linter,
@@ -310,11 +302,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         );
     }
 
-    /**
-     * @param string $fixedInputCode
-     * @param string $fixedInputCodeWithReversedFixers
-     */
-    protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
+    protected static function assertRevertedOrderFixing(IntegrationCase $case, string $fixedInputCode, string $fixedInputCodeWithReversedFixers): void
     {
         // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
         // If not, any order is valid.
@@ -322,7 +310,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             static::assertGreaterThan(
                 1,
                 \count(array_unique(array_map(
-                    static function (FixerInterface $fixer) {
+                    static function (FixerInterface $fixer): int {
                         return $fixer->getPriority();
                     },
                     static::createFixers($case)
@@ -338,11 +326,11 @@ abstract class AbstractIntegrationTestCase extends TestCase
     /**
      * @return FixerInterface[]
      */
-    private static function createFixers(IntegrationCase $case)
+    private static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
 
-        return FixerFactory::create()
+        return (new FixerFactory())
             ->registerBuiltInFixers()
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
@@ -354,10 +342,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     /**
      * @param Error[] $errors
-     *
-     * @return string
      */
-    private function implodeErrors(array $errors)
+    private function implodeErrors(array $errors): string
     {
         $errorStr = '';
         foreach ($errors as $error) {
@@ -368,33 +354,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
         return $errorStr;
     }
 
-    /**
-     * @return LinterInterface
-     */
-    private function getLinter()
+    private function getLinter(): LinterInterface
     {
         static $linter = null;
 
         if (null === $linter) {
-            if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-                $linterProphecy
-                    ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-                ;
-                $linterProphecy
-                    ->lintFile(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-                ;
-                $linterProphecy
-                    ->isAsync()
-                    ->willReturn(false)
-                ;
-
-                $linter = $linterProphecy->reveal();
-            } else {
-                $linter = new CachingLinter(new Linter());
-            }
+            $linter = new CachingLinter(
+                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+            );
         }
 
         return $linter;

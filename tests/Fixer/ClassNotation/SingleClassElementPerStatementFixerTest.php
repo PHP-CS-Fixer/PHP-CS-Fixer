@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -25,17 +28,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -614,38 +614,32 @@ B#
 echo Foo::A, Foo::B;
 ',
             ],
+            [
+                '<?php
+                    class Token {
+                        const PUBLIC_CONST = 0;
+                        private const PRIVATE_CONST = 0;
+                        protected const PROTECTED_CONST = 0;
+                        public const PUBLIC_CONST_TWO = 0;
+                        public const TEST_71 = 0;
+                    }
+                ',
+                '<?php
+                    class Token {
+                        const PUBLIC_CONST = 0;
+                        private const PRIVATE_CONST = 0;
+                        protected const PROTECTED_CONST = 0;
+                        public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
+                    }
+                ',
+            ],
         ];
     }
 
     /**
-     * @param string $expected
-     *
-     * @group legacy
-     * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration for rule "single_class_element_per_statement" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
-     */
-    public function testLegacyFixWithConfiguration(array $configuration, $expected)
-    {
-        static $input = <<<'EOT'
-<?php
-
-class Foo
-{
-    const SOME_CONST = 'a', OTHER_CONST = 'b';
-    protected static $foo = 1, $bar = 2;
-}
-EOT;
-
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     *
      * @dataProvider provideConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, $expected)
+    public function testFixWithConfiguration(array $configuration, string $expected): void
     {
         static $input = <<<'EOT'
 <?php
@@ -661,7 +655,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases()
+    public function provideConfigurationCases(): array
     {
         return [
             [
@@ -707,78 +701,33 @@ EOT
         ];
     }
 
-    public function testWrongConfig()
+    public function testWrongConfig(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['foo']]);
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
-     * @dataProvider providePHP71Cases
-     * @requires PHP 7.1
-     */
-    public function testPHP71($expected, $input)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function providePHP71Cases()
-    {
-        return [
-            [
-                '<?php
-                    class Token {
-                        const PUBLIC_CONST = 0;
-                        private const PRIVATE_CONST = 0;
-                        protected const PROTECTED_CONST = 0;
-                        public const PUBLIC_CONST_TWO = 0;
-                        public const TEST_71 = 0;
-                    }
-                ',
-                '<?php
-                    class Token {
-                        const PUBLIC_CONST = 0;
-                        private const PRIVATE_CONST = 0;
-                        protected const PROTECTED_CONST = 0;
-                        public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
-                    }
-                ',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): \Generator
     {
-        return [
-            [
-                "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
-                "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
-            ],
+        yield [
+            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
+            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php
@@ -827,16 +776,13 @@ EOT
     /**
      * @dataProvider provideTestFix74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFix74Cases()
+    public function provideTestFix74Cases(): \Generator
     {
         yield [
             '<?php class Foo {
@@ -847,6 +793,7 @@ EOT
                 private int $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 protected ?string $foo;
@@ -856,6 +803,7 @@ EOT
                 protected ?string $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 public ? string $foo;
@@ -865,6 +813,7 @@ EOT
                 public ? string $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 var ? Foo\Bar $foo;
@@ -874,6 +823,7 @@ EOT
                 var ? Foo\Bar $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 var array $foo;
@@ -882,6 +832,102 @@ EOT
             '<?php class Foo {
                 var array $foo, $bar;
             }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+class Foo
+{
+    private string|int $prop1;
+    private string|int $prop2;
+}
+',
+            '<?php
+class Foo
+{
+    private string|int $prop1, $prop2;
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+class Foo
+{
+    readonly int $a;
+    readonly int $b;
+    public readonly int $c;
+    public readonly int $d;
+    readonly private string /*1*/$e;
+    readonly private string /*2*/$f;
+    readonly float $g;
+    protected readonly float $h1;
+    protected readonly float $h2;
+    readonly float $z1;
+    readonly float $z2;
+    readonly float $z3;
+}',
+            '<?php
+class Foo
+{
+    readonly int $a, $b;
+    public readonly int $c, $d;
+    readonly private string /*1*/$e,/*2*/$f;
+    readonly float $g;
+    protected readonly float $h1, $h2;
+    readonly float $z1, $z2, $z3;
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    final public const B1 = "2";
+    final public const B2 = "2";
+    readonly float $z2;
+}
+',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    private Foo&Bar $prop1;
+    private Foo&Bar $prop2;
+}
+',
+            '<?php
+class Foo
+{
+    private Foo&Bar $prop1, $prop2;
+}
+',
         ];
     }
 }

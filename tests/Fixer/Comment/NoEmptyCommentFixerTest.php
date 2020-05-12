@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,8 +18,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
@@ -25,17 +25,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             // fix cases
@@ -212,6 +209,42 @@ echo 1;
                     $bar = 2;
                 ',
             ],
+            [
+                '<?php
+                    '.'
+                ',
+                '<?php
+                    /*
+                     *
+                     */
+                ',
+            ],
+            [
+                '<?php
+                    '.'
+                ',
+                '<?php
+                    /********
+                     *
+                     ********/
+                ',
+            ],
+            [
+                '<?php /* a */',
+                '<?php /* *//* a *//* */',
+            ],
+            [
+                '<?php
+                    '.'
+                    /* a */
+                    '.'
+                ',
+                '<?php
+                    //
+                    /* a */
+                    //
+                ',
+            ],
         ];
     }
 
@@ -223,7 +256,7 @@ echo 1;
      *
      * @dataProvider provideCommentBlockCases
      */
-    public function testGetCommentBlock($source, $startIndex, $endIndex, $isEmpty)
+    public function testGetCommentBlock(string $source, int $startIndex, int $endIndex, bool $isEmpty): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -232,14 +265,14 @@ echo 1;
         $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);
 
-        list($foundStart, $foundEnd, $foundIsEmpty) = $method->invoke($this->fixer, $tokens, $startIndex);
+        [$foundStart, $foundEnd, $foundIsEmpty] = $method->invoke($this->fixer, $tokens, $startIndex);
 
         static::assertSame($startIndex, $foundStart, 'Find start index of block failed.');
         static::assertSame($endIndex, $foundEnd, 'Find end index of block failed.');
         static::assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
     }
 
-    public function provideCommentBlockCases()
+    public function provideCommentBlockCases(): array
     {
         $cases = [
             [
@@ -353,7 +386,7 @@ echo 1;
             $cases[] = [$src, $i, 7, false];
         }
 
-        $cases[] = [$src, 8, 9, false];
+        $cases[] = [$src, 8, 8, false];
         $cases[] = [$src, 10, 11, false];
         $cases[] = [$src, 12, 12, false];
 

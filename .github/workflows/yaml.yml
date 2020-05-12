@@ -1,0 +1,21 @@
+name: YAML Validation
+
+on:
+  pull_request:
+    paths:
+      - '**.y?ml'
+  push:
+    paths:
+      - '**.y?ml'
+
+jobs:
+  validate-yaml:
+    name: Validate YAML
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run yamllint
+        run: find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint

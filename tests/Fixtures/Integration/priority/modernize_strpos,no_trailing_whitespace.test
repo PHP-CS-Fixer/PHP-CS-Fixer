@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: modernize_strpos,no_trailing_whitespace.
+--RULESET--
+{"modernize_strpos": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+$a = !str_starts_with($haystack9a, $needle)
+;
+
+--INPUT--
+<?php
+$a = strpos($haystack9a, $needle) !== 0
+;

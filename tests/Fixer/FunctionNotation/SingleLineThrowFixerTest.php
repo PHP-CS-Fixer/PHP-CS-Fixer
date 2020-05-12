@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleLineThrowFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield ['<?php throw new Exception; foo(
                     "Foo"
@@ -46,20 +45,20 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     "Foo"
                 );'];
 
-        yield ['<?php throw new Exception("Foo", 0);'];
+        yield ['<?php throw new Exception("Foo.", 0);'];
 
         yield [
-            '<?php throw new Exception("Foo", 0);',
+            '<?php throw new Exception("Foo.", 0);',
             '<?php throw new Exception(
-                "Foo",
+                "Foo.",
                 0
             );',
         ];
 
         yield [
-            '<?php throw new Exception("Foo" . "Bar");',
+            '<?php throw new Exception("Foo." . "Bar");',
             '<?php throw new Exception(
-                "Foo"
+                "Foo."
                 .
                 "Bar"
             );',
@@ -75,24 +74,24 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw new Exception(sprintf("Error with number %s", 42));',
+            '<?php throw new Exception(sprintf(\'Error with number "%s".\', 42));',
             '<?php throw new Exception(sprintf(
-                "Error with number %s",
+                \'Error with number "%s".\',
                 42
             ));',
         ];
 
         yield [
-            '<?php throw new SomeVendor\\Exception("Foo");',
+            '<?php throw new SomeVendor\\Exception("Foo.");',
             '<?php throw new SomeVendor\\Exception(
-                "Foo"
+                "Foo."
             );',
         ];
 
         yield [
-            '<?php throw new \SomeVendor\\Exception("Foo");',
+            '<?php throw new \SomeVendor\\Exception("Foo.");',
             '<?php throw new \SomeVendor\\Exception(
-                "Foo"
+                "Foo."
             );',
         ];
 
@@ -141,21 +140,21 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw new Exception("Foo", 0);',
+            '<?php throw new Exception("Foo.", 0);',
             '<?php throw
                 new
                     Exception
                         (
-                            "Foo"
+                            "Foo."
                                 ,
                             0
                         );',
         ];
 
         yield [
-            '<?php throw new $exceptionName("Foo");',
+            '<?php throw new $exceptionName("Foo.");',
             '<?php throw new $exceptionName(
-                "Foo"
+                "Foo."
             );',
         ];
 
@@ -167,15 +166,15 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw clone $exceptionName("Foo");',
+            '<?php throw clone $exceptionName("Foo.");',
             '<?php throw clone $exceptionName(
-                "Foo"
+                "Foo."
             );',
         ];
 
         yield [
-            '<?php throw new WeirdException("Foo", -20, "An elephant", 1, 2, 3, 4, 5, 6, 7, 8);',
-            '<?php throw new WeirdException("Foo", -20, "An elephant",
+            '<?php throw new WeirdException("Foo.", -20, "An elephant", 1, 2, 3, 4, 5, 6, 7, 8);',
+            '<?php throw new WeirdException("Foo.", -20, "An elephant",
 
                 1,
         2,
@@ -186,28 +185,45 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 if ($foo) {
-                    throw new Exception("It is foo", 1);
+                    throw new Exception("It is foo.", 1);
                 } else {
-                    throw new \Exception("It is not foo", 0);
+                    throw new \Exception("It is not foo.", 0);
                 }
             ',
             '<?php
                 if ($foo) {
                     throw new Exception(
-                        "It is foo",
+                        "It is foo.",
                         1
                     );
                 } else {
                     throw new \Exception(
-                        "It is not foo", 0
+                        "It is not foo.", 0
                     );
                 }
             ',
         ];
 
         yield [
-            '<?php throw new Exception( /* 0 */"Foo", /* 1 */0 /* 2 */); //3',
-            '<?php throw new Exception( // 0
+            '<?php throw new Exception( /* A */"Foo", /* 1 */0 /* 2 */); //3',
+            '<?php throw new Exception( // A
+                "Foo", // 1
+                0 // 2
+            ); //3',
+        ];
+
+        yield [
+            '<?php throw new Exception( /* 0123 */ "Foo", /* 1 */0 /* 2 */); //3',
+            '<?php throw new Exception( /* 0123 */
+                "Foo", // 1
+                0 // 2
+            ); //3',
+        ];
+
+        yield [
+            '<?php throw new Exception( /* X  */ "Foo", /* 1 */0 /* 2 */); //3',
+            '<?php throw new Exception( /* X
+ */
                 "Foo", // 1
                 0 // 2
             ); //3',
@@ -238,10 +254,90 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            "<?php throw new Exception('a'. 1);",
-            "<?php throw new Exception('a'.
+            "<?php throw new Exception('Message.'. 1);",
+            "<?php throw new Exception('Message.'.
 1
 );",
+        ];
+
+        yield [
+            '<?php throw new class() extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+            '<?php throw
+            new class()
+            extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+        ];
+
+        yield [
+            '<?php throw new class extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+            '<?php throw
+            new class
+            extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php throw $this?->getExceptionFactory()?->createAnException("Foo");',
+            '<?php throw $this
+                    ?->getExceptionFactory()
+                    ?->createAnException(
+                    "Foo"
+                );',
+        ];
+
+        yield [
+            '<?php
+                match ($number) {
+                    1 => $function->one(),
+                    2 => $function->two(),
+                    default => throw new \NotOneOrTwo()
+                };
+            ',
+        ];
+
+        yield [
+            '<?php
+                match ($number) {
+                    1 => $function->one(),
+                    2 => throw new Exception("Number 2 is not allowed."),
+                    1 => $function->three(),
+                    default => throw new \NotOneOrTwo()
+                };
+            ',
+        ];
+
+        yield [
+            '<?php throw new Exception(match ($a) { 1 => "a", 3 => "b" });',
+            '<?php throw new Exception(match ($a) {
+                1 => "a",
+                3 => "b"
+            });',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer
@@ -24,19 +24,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             [
                 '<?php
                 switch (1) {
@@ -61,6 +58,20 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 '<?php
                 switch ($a) {
                     case 42;
+                        break;
+                }
+                ',
+            ],
+            [
+                '<?php
+                switch ($a) {
+                    case ["foo" => "bar"]:
+                        break;
+                }
+                ',
+                '<?php
+                switch ($a) {
+                    case ["foo" => "bar"];
                         break;
                 }
                 ',
@@ -133,20 +144,6 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }
-                ',
-                '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly";
-                        break;
-                }
-                ',
-            ],
-            [
-                '<?php
                 switch($a) {
                     case (int) $a < 1: {
                         echo "leave ; alone";
@@ -210,23 +207,8 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
+        yield from [
             'nested switch in switch case' => [
                 '<?php
                     switch (1) {
@@ -251,6 +233,175 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 }
                 ',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly":
+                        break;
+                }
+                ',
+            '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly";
+                        break;
+                }
+                ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): array
+    {
+        return [
+            'Simple match' => [
+                '<?php
+                    echo match ($a) {
+                        default => "foo",
+                    };
+                ',
+            ],
+            'Match in switch' => [
+                '<?php
+                    switch ($foo) {
+                        case "bar":
+                            echo match ($a) {
+                                default => "foo",
+                            };
+                            break;
+                    }
+                ',
+            ],
+            'Match in case value' => [
+                '<?php
+                    switch ($foo) {
+                        case match ($bar) {
+                            default => "foo",
+                        }: echo "It works!";
+                    }
+                ',
+                '<?php
+                    switch ($foo) {
+                        case match ($bar) {
+                            default => "foo",
+                        }; echo "It works!";
+                    }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts; // do not fix
+}
+
+enum UserStatus: string {
+  case Pending = "P"; // do not fix
+
+  public function label(): string {
+    switch (foo()) {
+        case 42: // do fix
+            bar();
+
+            $a = new class() {
+                public function bar() {
+                    switch (foo()) {
+                        case 43: // do fix
+                        bar();
+                    }
+
+                    $expressionResult = match ($condition) {
+                        default => baz(),
+                    };
+                }
+            };
+
+            $a->bar();
+
+            break;
+    }
+
+    return "label";
+  }
+}
+
+$expressionResult = match ($condition) {
+    default => baz(),
+};
+',
+            '<?php
+enum Suit {
+    case Hearts; // do not fix
+}
+
+enum UserStatus: string {
+  case Pending = "P"; // do not fix
+
+  public function label(): string {
+    switch (foo()) {
+        case 42; // do fix
+            bar();
+
+            $a = new class() {
+                public function bar() {
+                    switch (foo()) {
+                        case 43; // do fix
+                        bar();
+                    }
+
+                    $expressionResult = match ($condition) {
+                        default => baz(),
+                    };
+                }
+            };
+
+            $a->bar();
+
+            break;
+    }
+
+    return "label";
+  }
+}
+
+$expressionResult = match ($condition) {
+    default => baz(),
+};
+',
         ];
     }
 }

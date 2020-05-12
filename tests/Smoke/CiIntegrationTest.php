@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,8 +14,10 @@
 
 namespace PhpCsFixer\Tests\Smoke;
 
+use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
+use PhpCsFixer\Console\Application;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,9 +31,12 @@ use Keradus\CliExecutor\ScriptExecutor;
  */
 final class CiIntegrationTest extends AbstractSmokeTest
 {
+    /**
+     * @var string
+     */
     public static $fixtureDir;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -61,14 +68,14 @@ final class CiIntegrationTest extends AbstractSmokeTest
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 
         self::executeCommand('rm -rf .git');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -81,21 +88,19 @@ final class CiIntegrationTest extends AbstractSmokeTest
     }
 
     /**
-     * @param string   $branchName
      * @param string[] $caseCommands
      * @param string[] $expectedResult1Lines
      * @param string[] $expectedResult2Lines
-     * @param string   $expectedResult3Files
      *
      * @dataProvider provideIntegrationCases
      */
     public function testIntegration(
-        $branchName,
+        string $branchName,
         array $caseCommands,
         array $expectedResult1Lines,
         array $expectedResult2Lines,
-        $expectedResult3Files
-    ) {
+        string $expectedResult3FilesLine
+    ): void {
         self::executeScript(array_merge(
             [
                 "git checkout -b {$branchName} -q",
@@ -139,38 +144,59 @@ final class CiIntegrationTest extends AbstractSmokeTest
             $steps[4],
         ]);
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.4.*.
+        $optionalDeprecatedVersionWarning = 'You are running PHP CS Fixer v3, which is not maintained anymore. Please update to v4.
+You may find an UPGRADE guide at https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v4.0.0/UPGRADE-v4.md .
+';
+
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.1.*.
+Current PHP version: '.PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
-If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
+        $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
+
+';
+
+        $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
+        $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
+        $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
+
+        /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
+        $aboutSubpattern = Application::VERSION_CODENAME
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier and Dariusz Ruminski.\nPHP runtime: ".PHP_VERSION
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier and Dariusz Ruminski.\nPHP runtime: ".PHP_VERSION;
+
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?%s\n([\.S]{%d})\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n([\.S]{%d})%s\n%s$/',
+            preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
-            preg_quote('Loaded config default from ".php_cs.dist".', '/'),
-            \strlen($expectedResult3Files),
+            preg_quote($optionalWarningsHelp, '/'),
+            $aboutSubpattern,
+            preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
+            \strlen($expectedResult3FilesDots),
+            preg_quote($expectedResult3FilesPercentage, '/'),
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );
 
-        static::assertRegExp($pattern, $result3->getError());
+        static::assertMatchesRegularExpression($pattern, $result3->getError());
 
         preg_match($pattern, $result3->getError(), $matches);
 
         static::assertArrayHasKey(1, $matches);
-        static::assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
-        static::assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
+        static::assertSame(substr_count($expectedResult3FilesDots, '.'), substr_count($matches[1], '.'));
+        static::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
 
-        static::assertRegExp(
+        static::assertMatchesRegularExpression(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );
     }
 
-    public function provideIntegrationCases()
+    public function provideIntegrationCases(): array
     {
         return [
             'random-changes' => [
@@ -194,7 +220,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     'dir b/file b.php',
                     '',
                 ],
-                'S.',
+                'S.                                                                  2 / 2 (100%)',
             ],
             'changes-including-dist-config-file' => [
                 'changes-including-dist-config-file',
@@ -202,39 +228,39 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     'echo "" >> dir\ b/file\ b.php',
                     'echo "echo 1;" >> dir\ b/file\ b.php',
                     // `sed -i ...` is not handled the same on Linux and macOS
-                    'sed -e \'s/@Symfony/@PSR2/\' .php_cs.dist > .php_cs.dist.new',
-                    'mv .php_cs.dist.new .php_cs.dist',
+                    'sed -e \'s/@Symfony/@PSR2/\' .php-cs-fixer.dist.php > .php-cs-fixer.dist.php.new',
+                    'mv .php-cs-fixer.dist.php.new .php-cs-fixer.dist.php',
                     'git add .',
                     'git commit -m "Random changes including config file" -q',
                 ],
                 [
-                    '.php_cs.dist',
+                    '.php-cs-fixer.dist.php',
                     'dir b/file b.php',
                 ],
                 [
                     '',
                     '',
                 ],
-                '...',
+                '...                                                                 3 / 3 (100%)',
             ],
             'changes-including-custom-config-file-creation' => [
                 'changes-including-custom-config-file-creation',
                 [
                     'echo "" >> dir\ b/file\ b.php',
                     'echo "echo 1;" >> dir\ b/file\ b.php',
-                    'sed -e \'s/@Symfony/@PSR2/\' .php_cs.dist > .php_cs',
+                    'sed -e \'s/@Symfony/@PSR2/\' .php-cs-fixer.dist.php > .php-cs-fixer.php',
                     'git add .',
                     'git commit -m "Random changes including custom config file creation" -q',
                 ],
                 [
-                    '.php_cs',
+                    '.php-cs-fixer.php',
                     'dir b/file b.php',
                 ],
                 [
                     '',
                     '',
                 ],
-                '...',
+                '...                                                                 3 / 3 (100%)',
             ],
             'changes-including-composer-lock' => [
                 'changes-including-composer-lock',
@@ -253,17 +279,17 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     '',
                     '',
                 ],
-                '...',
+                '...                                                                 3 / 3 (100%)',
             ],
         ];
     }
 
-    private static function executeCommand($command)
+    private static function executeCommand(string $command): CliResult
     {
         return CommandExecutor::create($command, self::$fixtureDir)->getResult();
     }
 
-    private static function executeScript(array $scriptParts)
+    private static function executeScript(array $scriptParts): CliResult
     {
         return ScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,26 +15,30 @@
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
-final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var null|string
+     */
     private $fixCallback;
 
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -46,7 +52,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Concatenation should be spaced according configuration.',
@@ -71,7 +77,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
      *
      * Must run after SingleLineThrowFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -79,7 +85,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('.');
     }
@@ -87,7 +93,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $callBack = $this->fixCallback;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
@@ -100,7 +106,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('spacing', 'Spacing to apply around concatenation operator.'))
@@ -113,10 +119,11 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * @param int $index index of concatenation '.' token
      */
-    private function fixConcatenationToNoSpace(Tokens $tokens, $index)
+    private function fixConcatenationToNoSpace(Tokens $tokens, int $index): void
     {
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || '/*' === substr($prevNonWhitespaceToken->getContent(), 0, 2)) {
+
+        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || str_starts_with($prevNonWhitespaceToken->getContent(), '/*')) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 
@@ -128,7 +135,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     /**
      * @param int $index index of concatenation '.' token
      */
-    private function fixConcatenationToSingleSpace(Tokens $tokens, $index)
+    private function fixConcatenationToSingleSpace(Tokens $tokens, int $index): void
     {
         $this->fixWhiteSpaceAroundConcatToken($tokens, $index, 1);
         $this->fixWhiteSpaceAroundConcatToken($tokens, $index, -1);
@@ -138,7 +145,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
      * @param int $index  index of concatenation '.' token
      * @param int $offset 1 or -1
      */
-    private function fixWhiteSpaceAroundConcatToken(Tokens $tokens, $index, $offset)
+    private function fixWhiteSpaceAroundConcatToken(Tokens $tokens, int $index, int $offset): void
     {
         $offsetIndex = $index + $offset;
 
@@ -148,7 +155,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
             return;
         }
 
-        if (false !== strpos($tokens[$offsetIndex]->getContent(), "\n")) {
+        if (str_contains($tokens[$offsetIndex]->getContent(), "\n")) {
             return;
         }
 

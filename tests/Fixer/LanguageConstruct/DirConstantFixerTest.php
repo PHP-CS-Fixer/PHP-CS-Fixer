@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,17 +27,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DirConstantFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -128,25 +127,6 @@ FIXED;
                 "<?php echo dirname\n(\n__FILE__/*1*/\n)\n?>",
             ],
             [
-                '<?php $x =# A
-# A1
-# B
-# C
-__DIR__# D
-# E
-;# F
-',
-                '<?php $x =# A
-\
-# A1
-dirname# B
-(# C
-__FILE__# D
-)# E
-;# F
-',
-            ],
-            [
                 $multiLinePatternFixed,
                 $multiLinePatternToFix,
             ],
@@ -167,18 +147,15 @@ __FILE__# D
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -196,5 +173,31 @@ __FILE__# D
                 );',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80(): void
+    {
+        $this->doTest(
+            '<?php $x =# A
+# A1
+# B
+# C
+__DIR__# D
+# E
+;# F
+',
+            '<?php $x =# A
+\
+# A1
+dirname# B
+(# C
+__FILE__# D
+)# E
+;# F
+'
+        );
     }
 }

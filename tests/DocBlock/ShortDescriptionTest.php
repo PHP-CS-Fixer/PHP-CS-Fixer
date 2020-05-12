@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\TestCase;
 final class ShortDescriptionTest extends TestCase
 {
     /**
-     * @param mixed      $expected
-     * @param null|mixed $input
-     *
      * @dataProvider provideGetEndCases
      */
-    public function testGetEnd($expected, $input = null)
+    public function testGetEnd(?int $expected, string $input): void
     {
         $doc = new DocBlock($input);
         $shortDescription = new ShortDescription($doc);
@@ -37,7 +36,7 @@ final class ShortDescriptionTest extends TestCase
         static::assertSame($expected, $shortDescription->getEnd());
     }
 
-    public function provideGetEndCases()
+    public function provideGetEndCases(): array
     {
         return [
             [1, '/**

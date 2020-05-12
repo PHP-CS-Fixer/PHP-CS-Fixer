@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
-use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -25,20 +27,254 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param int    $expected
-     * @param string $code
-     * @param int    $index
-     *
+     * @dataProvider provideFixCases
+     */
+    public function testFixCases(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases(): \Generator
+    {
+        yield [
+            '<?php
+class Sample
+{
+private $a; // foo
+
+    /** second in a hour */
+    private $b;
+}
+',
+            '<?php
+class Sample
+{private $a; // foo
+    /** second in a hour */
+    private $b;
+}
+',
+        ];
+
+        yield 'empty class' => [
+            '<?php class Foo {}',
+        ];
+
+        yield 'simple top class' => [
+            '<?php class A {
+public function Foo(){}
+}',
+            '<?php class A {public function Foo(){}}',
+        ];
+
+        yield 'comment' => [
+            '<?php class A {
+/* function comment */
+public function Bar(){}
+}',
+            '<?php class A {/* function comment */public function Bar(){}
+}',
+        ];
+
+        yield 'comment, multiple lines' => [
+            '<?php class A {
+/* some comment */
+
+public function Bar(){}
+}',
+            '<?php class A {
+/* some comment */
+
+
+
+public function Bar(){}
+}',
+        ];
+
+        yield 'simple PHPDoc case' => [
+            '<?php class Foo
+{
+/** Doc 1 */
+public function A(){}
+
+    /** Doc 2 */
+    public function B(){}
+}',
+            '<?php class Foo
+{/** Doc 1 */public function A(){}
+
+    /** Doc 2 */
+
+    public function B(){}
+}',
+        ];
+
+        yield 'add a newline at the end of a class with trait group' => [
+            '<?php class A
+{
+    use Bar {
+        __construct as barConstruct;
+        baz as barBaz;
+    }
+}',
+            '<?php class A
+{
+    use Bar {
+        __construct as barConstruct;
+        baz as barBaz;
+    }}',
+        ];
+
+        yield 'add a newline at the end of a class with trait' => [
+            '<?php class A
+{
+    use A\B\C;
+}',
+            '<?php class A
+{
+    use A\B\C;}',
+        ];
+
+        yield 'removes extra lines at the end of an interface' => [
+            '<?php interface F
+{
+    public function A();
+}',
+            '<?php interface F
+{
+    public function A();
+
+
+}',
+        ];
+
+        yield 'removes extra lines at the end of an abstract class' => [
+            '<?php abstract class F
+{
+    public abstract function A();
+}',
+            '<?php abstract class F
+{
+    public abstract function A();
+
+
+}',
+        ];
+
+        yield 'add a newline at the end of a class' => [
+            '<?php class A
+{
+    public function A(){}
+}',
+            '<?php class A
+{
+    public function A(){}}',
+        ];
+
+        yield 'add a newline at the end of a class: with comments' => [
+            '<?php class A
+{
+    public const A = 1; /* foo */ /* bar */
+}',
+            '<?php class A
+{
+    public const A = 1; /* foo */ /* bar */}',
+        ];
+
+        yield 'add a newline at the end of a class: with comments with trailing space' => [
+            '<?php class A
+{
+    public const A = 1; /* foo */ /* bar */
+   }',
+            '<?php class A
+{
+    public const A = 1; /* foo */ /* bar */   }',
+        ];
+
+        $to = $from = '<?php ';
+
+        for ($i = 0; $i < 15; ++$i) {
+            $from .= sprintf('class A%d{public function GA%d(){return new class {public function B6B%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
+            $to .= sprintf("class A%d{\npublic function GA%d(){return new class {\npublic function B6B%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
+        }
+
+        yield from [
+            [$to, $from],
+            [
+                '<?php $a = new class {
+                public function H(){}
+
+                public function B7(){}
+
+                private function C(){}
+                };',
+                '<?php $a = new class {
+                public function H(){}
+                public function B7(){}
+                private function C(){}
+                };',
+            ],
+            [
+                '<?php
+                    class A
+                    {
+public function getFilter()
+                        {
+                            return new class () implements FilterInterface {
+private $d = 123;
+
+                                public function pass($a, $b) {
+                                    echo $a;
+                                }
+
+                                public $e = 5;
+};}
+                    }
+                ',
+                '<?php
+                    class A
+                    {public function getFilter()
+                        {
+                            return new class () implements FilterInterface {private $d = 123;
+                                public function pass($a, $b) {
+                                    echo $a;
+                                }
+                                public $e = 5;};}
+
+
+
+                    }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideInvalidElementsCases
+     */
+    public function testInvalidElements(array $elements): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->fixer->configure(['elements' => $elements]);
+    }
+
+    public static function provideInvalidElementsCases(): iterable
+    {
+        yield 'numeric keys' => [['method', 'property']];
+        yield 'wrong key name' => [['methods' => 'one']];
+        yield 'wrong key value' => [['method' => 'two']];
+    }
+
+    /**
      * @dataProvider provideCommentBlockStartDetectionCases
      */
-    public function testCommentBlockStartDetection($expected, $code, $index)
+    public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($code);
         $method = new \ReflectionMethod($this->fixer, 'findCommentBlockStart');
         $method->setAccessible(true);
 
-        $result = $method->invoke($this->fixer, $tokens, $index);
+        $result = $method->invoke($this->fixer, $tokens, $index, 0);
         static::assertSame(
             $expected,
             $result,
@@ -46,7 +282,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function provideCommentBlockStartDetectionCases()
+    public function provideCommentBlockStartDetectionCases(): array
     {
         return [
             [
@@ -124,19 +360,17 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixClassesCases
      */
-    public function testFixClasses($expected, $input = null)
+    public function testFixClasses(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassesCases()
+    public function provideFixClassesCases(): array
     {
         $cases = [];
+
         $cases[] = ['<?php
 class SomeClass1
 {
@@ -148,6 +382,7 @@ class SomeClass1
     }
 }
 '];
+
         $cases[] = [
             '<?php
 class SomeClass2
@@ -171,6 +406,7 @@ class SomeClass2
 }
             ',
         ];
+
         $cases[] = [
             '<?php
 class SomeClass3
@@ -184,6 +420,7 @@ class SomeClass3
     }
 }
 ', ];
+
         $cases[] = [
             '<?php
 class SomeClass1
@@ -260,6 +497,7 @@ class SomeClass1
     }
 }
 ', ];
+
         $cases[] = ['<?php
 class SomeClass
 {
@@ -270,6 +508,7 @@ class SomeClass
     }
 }
 '];
+
         $cases[] = ['<?php
 class SomeClass
 {
@@ -281,6 +520,7 @@ class SomeClass
     }
 }
 '];
+
         $cases[] = [
             '<?php
 class SomeClass
@@ -306,6 +546,7 @@ class SomeClass
 }
 ',
         ];
+
         $cases[] = [
             '<?php
 class SomeClass
@@ -327,6 +568,7 @@ class SomeClass
 }
 ',
         ];
+
         $cases[] = [
             '<?php
 class SomeClass
@@ -348,6 +590,7 @@ class SomeClass
 }
 ',
         ];
+
         $cases[] = [
             '<?php
 abstract class MethodTest2
@@ -371,7 +614,6 @@ abstract class MethodTest2
      }
 
        abstract protected function method245();
-
     // comment
 
     final private function method345()
@@ -669,11 +911,11 @@ function some2() {
 
         $cases[] = [
             '<?php interface A {
-public function B(); // allowed comment
+public function B1(); // allowed comment
 
                 public function C(); // allowed comment
             }',
-            '<?php interface A {public function B(); // allowed comment
+            '<?php interface A {public function B1(); // allowed comment
                 public function C(); // allowed comment
             }',
         ];
@@ -689,21 +931,41 @@ public function B(); // allowed comment
             }',
         ];
 
+        $cases[] = [
+            '<?php
+                class A
+                {
+                    /**  1 */
+                    function A2() {}
+
+                    /**  2 */
+                    function B2() {}
+                }
+            ',
+            '<?php
+                class A
+                {
+
+                    /**  1 */
+                    function A2() {}
+                    /**  2 */
+                    function B2() {}
+                }
+            ',
+        ];
+
         return $cases;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixTraitsCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixTraits(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixTraitsCases()
+    public function provideFixTraitsCases(): array
     {
         $cases = [];
 
@@ -790,17 +1052,14 @@ trait SomeReturnInfo {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixInterfaceCases
      */
-    public function testFixInterface($expected, $input = null)
+    public function testFixInterface(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixInterfaceCases()
+    public function provideFixInterfaceCases(): array
     {
         $cases = [];
         $cases[] = [
@@ -876,19 +1135,16 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -903,20 +1159,270 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideConfigCases
      */
-    public function testWithConfig($expected, $input = null, array $config = [])
+    public function testWithConfig(string $expected, ?string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigCases()
+    public function provideConfigCases(): array
     {
         return [
+            'multi line property' => [
+                '<?php class Foo
+{
+     private $prop = [
+         1 => true,
+         2 => false,
+     ];
+
+ // comment2
+     private $bar = 1;
+}',
+                '<?php class Foo
+{
+     private $prop = [
+         1 => true,
+         2 => false,
+     ]; // comment2
+     private $bar = 1;
+}',
+                ['elements' => ['property' => 'one']],
+            ],
+            'trait group import none' => [
+                '<?php class Foo
+{
+    use Ao;
+    use B0 { X0 as Y0;} // test
+    use A;
+    use B { X as Y;} // test
+    use Char;
+    use Bar {
+        __construct as barConstruct;
+        baz as barBaz;
+    }
+    use Dua;
+}',
+                '<?php class Foo
+{
+    use Ao;
+
+    use B0 { X0 as Y0;} // test
+
+
+    use A;
+    use B { X as Y;} // test
+    use Char;
+
+    use Bar {
+        __construct as barConstruct;
+        baz as barBaz;
+    }
+    use Dua;
+}',
+                ['elements' => ['trait_import' => 'none']],
+            ],
+            [
+                '<?php
+class Foo
+{
+    /** A */
+    private $email;
+
+    private $foo0; #0 /* test */
+    private $foo1; #1
+    private $foo2; /* @2 */
+}',
+                '<?php
+class Foo
+{
+    /** A */
+
+    private $email;
+
+    private $foo0; #0 /* test */
+
+    private $foo1; #1
+
+    private $foo2; /* @2 */
+}',
+                ['elements' => ['property' => 'none']],
+            ],
+            [
+                '<?php
+ class Sample
+{
+    /** @var int */
+    const FOO = 1;
+
+    /** @var int */
+    const BAR = 2;
+
+    const BAZ = 3;
+    const OTHER = 4;
+    const OTHER2 = 5;
+}',
+                '<?php
+ class Sample
+{
+    /** @var int */
+    const FOO = 1;
+
+    /** @var int */
+    const BAR = 2;
+
+
+    const BAZ = 3;
+    const OTHER = 4;
+
+    const OTHER2 = 5;
+}',
+                ['elements' => ['const' => 'none']],
+            ],
+            'multiple trait import 5954' => [
+                '<?php
+class Foo
+{
+    use Bar, Baz;
+}',
+                null,
+                ['elements' => ['method' => 'one']],
+            ],
+            'multiple trait import with method 5954' => [
+                '<?php
+class Foo
+{
+    use Bar, Baz;
+
+    public function f() {}
+}',
+                '<?php
+class Foo
+{
+    use Bar, Baz;
+
+
+    public function f() {}
+}',
+                ['elements' => ['method' => 'one']],
+            ],
+            'trait group import 5843' => [
+                '<?php
+            class Foo
+{
+    use Ao;
+
+    use B0 { X0 as Y0;} // test
+
+    use A;
+
+    use B { X as Y;} // test
+
+    use Char;
+
+    use Bar {
+        __construct as barConstruct;
+        baz as barBaz;
+    }
+
+    use Dua;
+
+    public function aaa()
+    {
+    }
+}',
+                '<?php
+            class Foo
+{
+    use Ao;
+    use B0 { X0 as Y0;} // test
+    use A;
+    use B { X as Y;} // test
+
+
+    use Char;
+    use Bar {
+        __construct as barConstruct;
+        baz as barBaz;
+    }
+    use Dua;
+    public function aaa()
+    {
+    }
+}',
+                ['elements' => ['method' => 'one', 'trait_import' => 'one']],
+            ],
+            [
+                '<?php
+class Foo
+{
+    use SomeTrait1;
+
+    use SomeTrait2;
+
+    public function Bar(){}
+}
+',
+                '<?php
+class Foo
+{
+    use SomeTrait1;
+    use SomeTrait2;
+    public function Bar(){}
+}
+',
+                ['elements' => ['method' => 'one', 'trait_import' => 'one']],
+            ],
+            'trait group import 5852' => [
+                '<?php
+class Foo
+{
+    use A;
+    use B;
+
+    /**
+     *
+     */
+     public function A(){}
+}',
+                '<?php
+class Foo
+{
+    use A;
+
+    use B;
+
+    /**
+     *
+     */
+
+     public function A(){}
+}',
+                ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']],
+            ],
+            [
+                '<?php
+abstract class Example
+{
+    use SomeTrait;
+    use AnotherTrait;
+
+    public $property;
+
+    abstract public function method(): void;
+}',
+                '<?php
+abstract class Example
+{
+    use SomeTrait;
+    use AnotherTrait;
+    public $property;
+    abstract public function method(): void;
+}',
+                ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one']],
+            ],
             [
                 '<?php
                     class A
@@ -925,6 +1431,8 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         public $b = 1;
 
+
+
                         function A() {}
                      }
                 ',
@@ -939,7 +1447,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function A() {}
                      }
                 ',
-                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['property' => 'one']],
             ],
             [
                 '<?php
@@ -961,7 +1469,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function A() {}
                     }
                 ',
-                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE]],
+                ['elements' => ['property' => 'none']],
             ],
             [
                 '<?php
@@ -983,7 +1491,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const B = 2;
                     }
                 ',
-                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['const' => 'one']],
             ],
             [
                 '<?php
@@ -1004,14 +1512,31 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const B = 2;
                     }
                 ',
-                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE]],
+                ['elements' => ['const' => 'none']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        function D() {}
+
+                        function B4() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        function D() {}
+                        function B4() {}
+                    }
+                ',
+                ['elements' => ['method' => 'one']],
             ],
             [
                 '<?php
                     class A
                     {
                         function A() {}
-
                         function B() {}
                     }
                 ',
@@ -1019,210 +1544,263 @@ class ezcReflectionMethod extends ReflectionMethod {
                     class A
                     {
                         function A() {}
+
                         function B() {}
                     }
                 ',
-                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['method' => 'none']],
             ],
             [
                 '<?php
                     class A
                     {
-                        function A() {}
-                        function B() {}
-                    }
-                ',
-                '<?php
-                    class A
-                    {
-                        function A() {}
+                        private $x;
+                        private $y;
 
-                        function B() {}
-                    }
-                ',
-                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_NONE]],
-            ],
-        ];
-    }
+                        final function f1() {}
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideDeprecatedConfigCases
-     * @group legacy
-     * @expectedDeprecation A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.
-     */
-    public function testWithDeprecatedConfig($expected, $input = null, array $config = [])
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideDeprecatedConfigCases()
-    {
-        return [
-            [
-                '<?php
-                    class A
-                    {
-                        private $a = null;
-
-                        public $b = 1;
-
-                        function A() {}
+                        final function f2() {}
                      }
                 ',
                 '<?php
                     class A
                     {
-                        private $a = null;
-                        public $b = 1;
-
-
-
-                        function A() {}
+                        private $x;
+                        private $y;
+                        final function f1() {}
+                        final function f2() {}
                      }
                 ',
-                ['elements' => ['property']],
+                ['elements' => ['property' => 'none', 'method' => 'one']],
             ],
             [
                 '<?php
                     class A
                     {
-                        function A() {}
+                        const FOO = 1;
+                        const BAR = 2;
 
-                        function B() {}
-                    }
+                        function f1() {}
+
+                        function f2() {}
+                     }
                 ',
                 '<?php
                     class A
                     {
-                        function A() {}
-                        function B() {}
-                    }
+                        const FOO = 1;
+                        const BAR = 2;
+                        function f1() {}
+                        function f2() {}
+                     }
                 ',
-                ['elements' => ['method']],
+                ['elements' => ['const' => 'none', 'method' => 'one']],
             ],
             [
                 '<?php
                     class A
                     {
-                        const A = 1;
+                        const FOO = 1;
+                        const BAR = 2;
 
-                        const THREE = ONE + self::TWO; /* test */ # test
+                        public function f1() {}
 
+                        public function f2() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+                        const BAR = 2;
+                        public function f1() {}
+                        public function f2() {}
+                     }
+                ',
+                ['elements' => ['const' => 'none', 'method' => 'one']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
                         const B = 2;
+                        const FOO = 1;
+                        const BAR = 2;
+
+                        /** @var int */
+                        const BAZ = 3;
+
+                        /** @var int */
+                        const NEW = 4;
+
+                        /** @var int */
+                        const A = 5;
                     }
                 ',
                 '<?php
                     class A
                     {
-
-                        const A = 1;
-                        const THREE = ONE + self::TWO; /* test */ # test
                         const B = 2;
+                        const FOO = 1;
+
+                        const BAR = 2;
+
+                        /** @var int */
+                        const BAZ = 3;
+                        /** @var int */
+                        const NEW = 4;
+                        /** @var int */
+                        const A = 5;
                     }
                 ',
-                ['elements' => ['const']],
+                ['elements' => ['const' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                    class B
+                    {
+                        public $foo;
+
+                        /** @var string */
+                        public $bar;
+                        public $baz;
+                    }
+                ',
+                '<?php
+                    class B
+                    {
+                        public $foo;
+                        /** @var string */
+                        public $bar;
+
+                        public $baz;
+                    }
+                ',
+                ['elements' => ['property' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                    class C
+                    {
+                        public function f1() {}
+                        public function f2() {}
+                        public function f3() {}
+
+                        /** @return string */
+                        public function f4() {}
+                    }
+                ',
+                '<?php
+                    class C
+                    {
+                        public function f1() {}
+
+                        public function f2() {}
+
+                        public function f3() {}
+                        /** @return string */
+                        public function f4() {}
+                    }
+                ',
+                ['elements' => ['method' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                class Sample
+                {
+                    /** @var int */
+                    const ART = 1;
+                    const SCIENCE = 2;
+
+                    /** @var string */
+                    public $a;
+
+                    /** @var int */
+                    public $b;
+                    public $c;
+
+                    /**
+                     * @param string $a
+                     * @param int $b
+                     * @param int $c
+                     */
+                    public function __construct($a, $b, $c) {}
+                    public function __destruct() {}
+                }
+                ',
+                '<?php
+                class Sample
+                {
+                    /** @var int */
+                    const ART = 1;
+
+                    const SCIENCE = 2;
+                    /** @var string */
+                    public $a;
+                    /** @var int */
+                    public $b;
+
+                    public $c;
+
+                    /**
+                     * @param string $a
+                     * @param int $b
+                     * @param int $c
+                     */
+                    public function __construct($a, $b, $c) {}
+
+                    public function __destruct() {}
+                }
+                ',
+                ['elements' => ['const' => 'only_if_meta', 'property' => 'only_if_meta', 'method' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        use A;
+                        use B;
+
+                        private $a = null;
+                        public $b = 1;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        use A;
+
+                        use B;
+
+                        private $a = null;
+
+                        public $b = 1;
+                    }
+                ',
+                ['elements' => ['property' => 'none', 'trait_import' => 'none']],
             ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        $to = $from = '<?php ';
-
-        for ($i = 0; $i < 15; ++$i) {
-            $from .= sprintf('class A%d{public function AA%d(){return new class {public function BB%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
-            $to .= sprintf("class A%d{\npublic function AA%d(){return new class {\npublic function BB%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
-        }
-
-        return [
-            [$to, $from],
-            [
-                '<?php $a = new class {
-                public function A(){}
-
-                public function B(){}
-
-                private function C(){}
-                };',
-                '<?php $a = new class {
-                public function A(){}
-                public function B(){}
-                private function C(){}
-                };',
-            ],
-            [
-                '<?php
-                    class A
-                    {
-public function getFilter()
-                        {
-                            return new class () implements FilterInterface {
-private $d = 123;
-
-                                public function pass($a, $b) {
-                                    echo $a;
-                                }
-
-                                public $e = 5;
-};}
-                    }
-                ',
-                '<?php
-                    class A
-                    {public function getFilter()
-                        {
-                            return new class () implements FilterInterface {private $d = 123;
-                                public function pass($a, $b) {
-                                    echo $a;
-                                }
-                                public $e = 5;};}
-
-
-
-                    }
-                ',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix71(string $expected, string $input): void
     {
         $this->fixer->configure([
-            'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],
+            'elements' => ['method' => 'one', 'const' => 'one'],
         ]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
                 '<?php
                 class Foo {
-    public abstract function A(){}
+    public function H1(){}
 
     /**  */
     public const BAR = 123;
@@ -1235,7 +1813,7 @@ private $d = 123;
 
 
 
-    public abstract function A(){}
+    public function H1(){}
 
 
     /**  */
@@ -1250,18 +1828,19 @@ private $d = 123;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null, array $config = null): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php
@@ -1294,6 +1873,382 @@ private $d = 123;
             class Foo {
                 private array $foo;
                 private array $bar;
+            }',
+        ];
+
+        yield [
+            '<?php
+            class Entity
+            {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+                private string $three;
+                private string $four;
+                private string $five;
+            }',
+            '<?php
+            class Entity
+            {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+
+                private string $four;
+
+                private string $five;
+            }',
+            ['elements' => ['property' => 'only_if_meta']],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input, array $config = null): void
+    {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases(): \Generator
+    {
+        yield 'attributes' => [
+            '<?php
+class User1
+{
+    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+    private $id;
+
+    #[ORM\Column("string", ORM\Column::UNIQUE)]
+    #[Assert\String()]
+    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+    private $email;
+
+    #[Assert\String()]
+    private $name;
+}',
+            '<?php
+class User1
+{
+
+    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+
+
+    private $id;
+    #[ORM\Column("string", ORM\Column::UNIQUE)]
+    #[Assert\String()]
+    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+    private $email;
+
+
+    #[Assert\String()]
+
+
+    private $name;
+
+
+
+}',
+        ];
+
+        yield 'attributes minimal' => [
+            '<?php
+class User2{
+#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+ private $id;
+}',
+            '<?php
+class User2{#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue] private $id;}',
+        ];
+
+        yield 'attribute block' => [
+            '<?php
+class User3
+{
+    private $id;
+
+    #[ORM\Column("string")]
+    #[Assert\Email(["message" => "Foo"])]
+ private $email;
+}',
+
+            '<?php
+class User3
+{
+    private $id;
+    #[ORM\Column("string")]
+    #[Assert\Email(["message" => "Foo"])] private $email;
+}',
+        ];
+
+        yield 'constructor property promotion' => [
+            '<?php
+            class Foo {
+                private array $foo;
+
+                private array $bar;
+
+                public function __construct(
+                    public float $x = 0.0,
+                    protected float $y = 0.0,
+                    private float $z = 0.0,
+                ) {}
+            }',
+            '<?php
+            class Foo {
+                private array $foo;
+                private array $bar;
+                public function __construct(
+                    public float $x = 0.0,
+                    protected float $y = 0.0,
+                    private float $z = 0.0,
+                ) {}
+            }',
+        ];
+
+        yield 'typed properties' => [
+            '<?php
+            class Foo {
+                private static int | float | null $a;
+
+                private static int | float | null $b;
+
+                private int | float | null $c;
+
+                private int | float | null $d;
+            }',
+            '<?php
+            class Foo {
+                private static int | float | null $a;
+                private static int | float | null $b;
+                private int | float | null $c;
+                private int | float | null $d;
+            }',
+        ];
+
+        yield 'attributes with conditional spacing' => [
+            '<?php
+class User
+{
+    private $id;
+
+    #[Assert\String()]
+    private $name;
+    private $email;
+}
+',
+            '<?php
+class User
+{
+
+    private $id;
+    #[Assert\String()]
+    private $name;
+
+    private $email;
+}
+',
+            ['elements' => ['property' => 'only_if_meta']],
+        ];
+
+        yield 'mixed attributes and phpdoc with conditional spacing' => [
+            '<?php
+class User
+{
+    private $id;
+
+    /** @var string */
+    #[Assert\Email(["message" => "Foo"])]
+    private $email;
+
+    #[Assert\String()]
+    #[ORM\Column()]
+    private $place;
+
+    #[ORM\Column()]
+    /** @var string */
+    private $hash;
+
+    /** @var string **/
+    #[ORM\Column()]
+    /** @internal */
+    private $updatedAt;
+}
+',
+            '<?php
+class User
+{
+
+    private $id;
+    /** @var string */
+    #[Assert\Email(["message" => "Foo"])]
+    private $email;
+    #[Assert\String()]
+    #[ORM\Column()]
+    private $place;
+    #[ORM\Column()]
+    /** @var string */
+    private $hash;
+
+
+    /** @var string **/
+    #[ORM\Column()]
+    /** @internal */
+    private $updatedAt;
+}
+',
+            ['elements' => ['property' => 'only_if_meta']],
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    #[Assert\Email(["message" => "Foo"])]
+    private $email;
+
+    private $foo1; #1
+    private $foo2; /* @2 */
+}',
+            '<?php
+class Foo
+{
+    #[Assert\Email(["message" => "Foo"])]
+
+    private $email;
+
+    private $foo1; #1
+
+    private $foo2; /* @2 */
+}',
+            ['elements' => ['property' => 'none']],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixClassesWithTraitsCases
+     */
+    public function testFixClassesWithTraits(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixClassesWithTraitsCases(): iterable
+    {
+        yield [
+            '<?php
+class Foo
+{
+    use SomeTrait1;
+    use SomeTrait2;
+
+    public function Bar(){}
+}
+',
+            '<?php
+class Foo
+{
+    use SomeTrait1;
+
+    use SomeTrait2;
+    public function Bar(){}
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class A {
+    public int $a0;
+
+    public readonly int $a1;
+
+    readonly public int $a2;
+
+    readonly int $a3;
+
+    public int $a4;
+}',
+            '<?php class A {
+    public int $a0;
+    public readonly int $a1;
+    readonly public int $a2;
+    readonly int $a3;
+    public int $a4;
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    final public const B1 = "1";
+
+    public final const B2 = "2";
+
+    final const B3 = "3";
+}
+',
+            '<?php
+class Foo
+{
+    final public const B1 = "1";
+    public final const B2 = "2";
+
+
+    final const B3 = "3";
+
+
+}
+',
+        ];
+
+        yield 'intersection properties' => [
+            '<?php
+            class Foo {
+                private static Bar & Something & Baz $a;
+
+                private static Bar & Something & Baz $b;
+
+                private Bar & Something & Baz $c;
+
+                private Bar & Something & Baz $d;
+            }',
+            '<?php
+            class Foo {
+                private static Bar & Something & Baz $a;
+                private static Bar & Something & Baz $b;
+                private Bar & Something & Baz $c;
+                private Bar & Something & Baz $d;
             }',
         ];
     }

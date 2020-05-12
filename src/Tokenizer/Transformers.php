@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,6 @@
 
 namespace PhpCsFixer\Tokenizer;
 
-use PhpCsFixer\Utils;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -39,15 +40,12 @@ final class Transformers
     {
         $this->registerBuiltInTransformers();
 
-        usort($this->items, static function (TransformerInterface $a, TransformerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority());
+        usort($this->items, static function (TransformerInterface $a, TransformerInterface $b): int {
+            return $b->getPriority() <=> $a->getPriority();
         });
     }
 
-    /**
-     * @return Transformers
-     */
-    public static function create()
+    public static function createSingleton(): self
     {
         static $instance = null;
 
@@ -63,7 +61,7 @@ final class Transformers
      *
      * @param Tokens $tokens Tokens collection
      */
-    public function transform(Tokens $tokens)
+    public function transform(Tokens $tokens): void
     {
         foreach ($this->items as $transformer) {
             foreach ($tokens as $index => $token) {
@@ -75,14 +73,14 @@ final class Transformers
     /**
      * @param TransformerInterface $transformer Transformer
      */
-    private function registerTransformer(TransformerInterface $transformer)
+    private function registerTransformer(TransformerInterface $transformer): void
     {
         if (\PHP_VERSION_ID >= $transformer->getRequiredPhpVersionId()) {
             $this->items[] = $transformer;
         }
     }
 
-    private function registerBuiltInTransformers()
+    private function registerBuiltInTransformers(): void
     {
         static $registered = false;
 
@@ -100,7 +98,7 @@ final class Transformers
     /**
      * @return \Generator|TransformerInterface[]
      */
-    private function findBuiltInTransformers()
+    private function findBuiltInTransformers(): iterable
     {
         /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in(__DIR__.'/Transformer') as $file) {

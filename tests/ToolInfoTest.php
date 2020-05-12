@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,36 +14,35 @@
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\ToolInfo;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\ToolInfo
  */
 final class ToolInfoTest extends TestCase
 {
-    public function testGetVersion()
+    public function testGetVersion(): void
     {
         $toolInfo = new ToolInfo();
-        static::assertInternalType('string', $toolInfo->getVersion());
+        static::assertStringStartsWith(Application::VERSION, $toolInfo->getVersion());
     }
 
-    public function testIsInstallAsPhar()
+    public function testIsInstallAsPhar(): void
     {
         $toolInfo = new ToolInfo();
         static::assertFalse($toolInfo->isInstalledAsPhar());
     }
 
-    public function testIsInstalledByComposer()
+    public function testIsInstalledByComposer(): void
     {
         $toolInfo = new ToolInfo();
         static::assertFalse($toolInfo->isInstalledByComposer());
     }
 
-    public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope()
+    public function testGetComposerVersionThrowsExceptionIfOutsideComposerScope(): void
     {
         $toolInfo = new ToolInfo();
 
@@ -50,7 +51,7 @@ final class ToolInfoTest extends TestCase
         $toolInfo->getComposerVersion();
     }
 
-    public function testGetPharDownloadUri()
+    public function testGetPharDownloadUri(): void
     {
         $toolInfo = new ToolInfo();
         static::assertSame(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'It does not change doc blocks if not needed' => [
@@ -423,30 +419,70 @@ class Bar
 }
 ',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     * @dataProvider provideFix71Cases
-     *
-     * @param string $expected
-     * @param string $input
-     */
-    public function testFix71($expected, $input = null, array $config = [])
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
-            'It can handle constants with visibility' => [
+            'It does not change method doc blocks if configured to do so' => [
                 '<?php
 
 class Foo
 {
+    /** @return mixed */
+    public function bar() {}
+
+    /**
+     * @return void
+     */
+    public function baz() {}
+}',
+                null,
+                [
+                    'method' => null,
+                ],
+            ],
+            'It does not change property doc blocks if configured to do so' => [
+                '<?php
+
+class Foo
+{
+    /**
+     * @var int
+     */
+    public $foo;
+
+    /** @var mixed */
+    public $bar;
+}',
+                null,
+                [
+                    'property' => null,
+                ],
+            ],
+            'It does not change const doc blocks if configured to do so' => [
+                '<?php
+
+class Foo
+{
+    /**
+     * @var int
+     */
+    public const FOO = 1;
+
+    /** @var mixed */
+    public const BAR = null;
+}',
+                null,
+                [
+                    'const' => null,
+                ],
+            ],
+            'It can handle constants with visibility, does not crash on trait imports' => [
+                '<?php
+trait Bar
+{}
+
+class Foo
+{
+    /** whatever */
+    use Bar;
+
     /**
      *
      */
@@ -456,9 +492,14 @@ class Foo
     private $foo;
 }',
                 '<?php
+trait Bar
+{}
 
 class Foo
 {
+    /** whatever */
+    use Bar;
+
     /**  */
     public const FOO = "foobar";
 
@@ -477,17 +518,14 @@ class Foo
     /**
      * @requires PHP 7.4
      * @dataProvider provideFixPhp74Cases
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testFixPhp74($expected, $input = null, array $config = [])
+    public function testFixPhp74(string $expected, string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'It can handle properties with type declaration' => [
@@ -511,6 +549,121 @@ class Foo
                     'property' => 'single',
                 ],
             ],
+            'It can handle properties with array type declaration' => [
+                '<?php
+
+class Foo
+{
+    /** @var string[] */
+    private array $foo;
+}',
+                '<?php
+
+class Foo
+{
+    /**
+     * @var string[]
+     */
+    private array $foo;
+}',
+                [
+                    'property' => 'single',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly' => [
+            '<?php
+
+class Foo
+{
+    /** @var string[] */
+    private readonly array $foo1;
+
+    /** @var string[] */
+    readonly private array $foo2;
+
+    /** @var string[] */
+    readonly array $foo3;
+}',
+            '<?php
+
+class Foo
+{
+    /**
+     * @var string[]
+     */
+    private readonly array $foo1;
+
+    /**
+     * @var string[]
+     */
+    readonly private array $foo2;
+
+    /**
+     * @var string[]
+     */
+    readonly array $foo3;
+}',
+            [
+                'property' => 'single',
+            ],
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    /**
+     * 0
+     */
+    const B0 = "0";
+
+    /**
+     * 1
+     */
+    final public const B1 = "1";
+
+    /**
+     * 2
+     */
+    public final const B2 = "2";
+
+    /**
+     * 3
+     */
+    final const B3 = "3";
+}
+',
+            '<?php
+class Foo
+{
+    /** 0 */
+    const B0 = "0";
+
+    /** 1 */
+    final public const B1 = "1";
+
+    /** 2 */
+    public final const B2 = "2";
+
+    /** 3 */
+    final const B3 = "3";
+}
+',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class TokenTest extends TestCase
 {
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $token = new Token();
 
@@ -33,7 +35,7 @@ final class TokenTest extends TestCase
         static::assertSame('', $token->getContent());
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $type = 42;
         $content = 'questionable';
@@ -47,7 +49,7 @@ final class TokenTest extends TestCase
         static::assertSame($content, $token->getContent());
     }
 
-    public function testCanModifyType()
+    public function testCanModifyType(): void
     {
         $type = 42;
 
@@ -61,10 +63,9 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsTypeCases
      *
-     * @param int       $type
      * @param int|int[] $types
      */
-    public function testIsTypeReturnsTrue($type, $types)
+    public function testIsTypeReturnsTrue(int $type, $types): void
     {
         $token = new Token();
 
@@ -73,10 +74,7 @@ final class TokenTest extends TestCase
         static::assertTrue($token->isType($types));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsTypeCases()
+    public function provideIsTypeCases(): array
     {
         return [
             'same-value' => [
@@ -96,10 +94,9 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsNotTypeCases
      *
-     * @param int       $type
      * @param int|int[] $types
      */
-    public function testIsTypeReturnsFalse($types, $type)
+    public function testIsTypeReturnsFalse(int $type, $types): void
     {
         $token = new Token();
 
@@ -108,10 +105,7 @@ final class TokenTest extends TestCase
         static::assertFalse($token->isType($types));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsNotTypeCases()
+    public function provideIsNotTypeCases(): array
     {
         return [
             'different-value' => [
@@ -127,7 +121,7 @@ final class TokenTest extends TestCase
         ];
     }
 
-    public function testCanModifyContent()
+    public function testCanModifyContent(): void
     {
         $content = 'questionable';
 
@@ -138,7 +132,7 @@ final class TokenTest extends TestCase
         static::assertSame($content, $token->getContent());
     }
 
-    public function testCanClearContent()
+    public function testCanClearContent(): void
     {
         $content = 'questionable';
 

@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: empty_loop_condition,no_trailing_whitespace.
+--RULESET--
+{"empty_loop_condition": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+while (true){ foo2(); }
+
+--INPUT--
+<?php
+do{ foo2(); } while(true)            ;

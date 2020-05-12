@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,29 +28,29 @@ use Prophecy\Argument;
  */
 final class FileCacheManagerTest extends TestCase
 {
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\FileCacheManager::class);
 
         static::assertTrue($reflection->isFinal());
     }
 
-    public function testImplementsCacheManagerInterface()
+    public function testImplementsCacheManagerInterface(): void
     {
         $reflection = new \ReflectionClass(\PhpCsFixer\Cache\FileCacheManager::class);
 
         static::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
     }
 
-    public function testCreatesCacheIfHandlerReturnedNoCache()
+    public function testCreatesCacheIfHandlerReturnedNoCache(): void
     {
         $signature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->shouldBeCalled()->willReturn(null);
-        $handlerProphecy->write(Argument::that(static function (CacheInterface $cache) use ($signature) {
+        $handlerProphecy->write(Argument::that(static function (CacheInterface $cache) use ($signature): bool {
             return $cache->getSignature() === $signature;
-        }))->shouldBeCalled()->willReturn(null);
+        }))->shouldBeCalled();
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -59,7 +61,7 @@ final class FileCacheManagerTest extends TestCase
         unset($manager);
     }
 
-    public function testCreatesCacheIfCachedSignatureIsDifferent()
+    public function testCreatesCacheIfCachedSignatureIsDifferent(): void
     {
         $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
@@ -73,9 +75,9 @@ final class FileCacheManagerTest extends TestCase
 
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->shouldBeCalled()->willReturn($cache);
-        $handlerProphecy->write(Argument::that(static function (CacheInterface $cache) use ($signature) {
+        $handlerProphecy->write(Argument::that(static function (CacheInterface $cache) use ($signature): bool {
             return $cache->getSignature() === $signature;
-        }))->shouldBeCalled()->willReturn(null);
+        }))->shouldBeCalled();
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -86,7 +88,7 @@ final class FileCacheManagerTest extends TestCase
         unset($manager);
     }
 
-    public function testUsesCacheIfCachedSignatureIsEqual()
+    public function testUsesCacheIfCachedSignatureIsEqual(): void
     {
         $cachedSignature = $this->prophesize(\PhpCsFixer\Cache\SignatureInterface::class)->reveal();
 
@@ -100,7 +102,7 @@ final class FileCacheManagerTest extends TestCase
 
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->shouldBeCalled()->willReturn($cache);
-        $handlerProphecy->write(Argument::is($cache))->shouldBeCalled()->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache))->shouldBeCalled();
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -111,7 +113,7 @@ final class FileCacheManagerTest extends TestCase
         unset($manager);
     }
 
-    public function testNeedFixingReturnsTrueIfCacheHasNoHash()
+    public function testNeedFixingReturnsTrueIfCacheHasNoHash(): void
     {
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
@@ -130,7 +132,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -141,7 +143,7 @@ final class FileCacheManagerTest extends TestCase
         static::assertTrue($manager->needFixing($file, $fileContent));
     }
 
-    public function testNeedFixingReturnsTrueIfCachedHashIsDifferent()
+    public function testNeedFixingReturnsTrueIfCachedHashIsDifferent(): void
     {
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
@@ -162,7 +164,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -173,7 +175,7 @@ final class FileCacheManagerTest extends TestCase
         static::assertTrue($manager->needFixing($file, $fileContent));
     }
 
-    public function testNeedFixingReturnsFalseIfCachedHashIsIdentical()
+    public function testNeedFixingReturnsFalseIfCachedHashIsIdentical(): void
     {
         $file = 'hello.php';
         $fileContent = '<?php echo "Hello!"';
@@ -193,7 +195,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($this->getFile());
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -204,7 +206,7 @@ final class FileCacheManagerTest extends TestCase
         static::assertFalse($manager->needFixing($file, $fileContent));
     }
 
-    public function testNeedFixingUsesRelativePathToFile()
+    public function testNeedFixingUsesRelativePathToFile(): void
     {
         $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
@@ -229,7 +231,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -242,7 +244,7 @@ final class FileCacheManagerTest extends TestCase
         static::assertTrue($manager->needFixing($file, $fileContent));
     }
 
-    public function testSetFileSetsHashOfFileContent()
+    public function testSetFileSetsHashOfFileContent(): void
     {
         $cacheFile = $this->getFile();
         $file = 'hello.php';
@@ -262,7 +264,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -273,7 +275,7 @@ final class FileCacheManagerTest extends TestCase
         $manager->setFile($file, $fileContent);
     }
 
-    public function testSetFileSetsHashOfFileContentDuringDryRunIfCacheHasNoHash()
+    public function testSetFileSetsHashOfFileContentDuringDryRunIfCacheHasNoHash(): void
     {
         $isDryRun = true;
         $cacheFile = $this->getFile();
@@ -295,7 +297,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -307,7 +309,7 @@ final class FileCacheManagerTest extends TestCase
         $manager->setFile($file, $fileContent);
     }
 
-    public function testSetFileClearsHashDuringDryRunIfCachedHashIsDifferent()
+    public function testSetFileClearsHashDuringDryRunIfCachedHashIsDifferent(): void
     {
         $isDryRun = true;
         $cacheFile = $this->getFile();
@@ -331,7 +333,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -343,7 +345,7 @@ final class FileCacheManagerTest extends TestCase
         $manager->setFile($file, $fileContent);
     }
 
-    public function testSetFileUsesRelativePathToFile()
+    public function testSetFileUsesRelativePathToFile(): void
     {
         $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
@@ -367,7 +369,7 @@ final class FileCacheManagerTest extends TestCase
         $handlerProphecy = $this->prophesize(\PhpCsFixer\Cache\FileHandlerInterface::class);
         $handlerProphecy->read()->willReturn($cache);
         $handlerProphecy->getFile()->willReturn($cacheFile);
-        $handlerProphecy->write(Argument::is($cache))->willReturn(null);
+        $handlerProphecy->write(Argument::is($cache));
         $handler = $handlerProphecy->reveal();
 
         $manager = new FileCacheManager(
@@ -380,10 +382,7 @@ final class FileCacheManagerTest extends TestCase
         $manager->setFile($file, $fileContent);
     }
 
-    /**
-     * @return string
-     */
-    private function getFile()
+    private function getFile(): string
     {
         return __DIR__.'/../Fixtures/.php_cs.empty-cache';
     }

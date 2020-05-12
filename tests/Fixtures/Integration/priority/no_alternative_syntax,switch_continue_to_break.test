@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: no_alternative_syntax,switch_continue_to_break.
+--RULESET--
+{"no_alternative_syntax": true, "switch_continue_to_break": true}
+--EXPECT--
+<?php
+    switch ($foo) {
+        case 1:
+            break;
+    }
+
+--INPUT--
+<?php
+    switch ($foo) :
+        case 1:
+            continue;
+    endswitch;

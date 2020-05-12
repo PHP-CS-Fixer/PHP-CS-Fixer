@@ -1,21 +1,15 @@
-# @TODO 3.0 replace following `tests/... export-ignore` with single `tests/ export-ignore`
-/tests/**/*Test.php export-ignore
-/tests/AbstractDoctrineAnnotationFixerTestCase.php export-ignore
-/tests/Differ/AbstractDifferTestCase.php export-ignore
-/tests/Fixtures/ export-ignore
-/tests/Linter/AbstractLinterTestCase.php export-ignore
-/tests/Report/AbstractReporterTestCase.php export-ignore
-/tests/Test/AbstractFixerWithAliasedOptionsTestCase.php export-ignore
-/tests/Test/AbstractTransformerTestCase.php export-ignore
-
 /.* export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
-/check_trailing_spaces.sh export-ignore
 /dev-tools/ export-ignore
+/doc/ export-ignore
+/docker/ export-ignore
+/docker-compose.yaml export-ignore
+/docker-compose.override.yaml.dist export-ignore
 /phpmd.xml export-ignore
 /phpstan.neon export-ignore
 /phpunit.xml.dist export-ignore
+/tests/ export-ignore
 
 *       text=auto eol=lf
 *.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
@@ -23,4 +17,5 @@
 *.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
 *.rst   text whitespace=blank-at-eol,blank-at-eof
 *.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
+*.png   binary eol=unset
 /tests/Fixtures/**/* -text -filter

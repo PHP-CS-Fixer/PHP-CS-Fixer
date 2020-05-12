@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,22 +26,18 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|int    $versionSpecificFix
-     * @param null|array  $config
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $versionSpecificFix = null, $config = null)
+    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = null): void
     {
         if (
-            (null !== $input && \PHP_VERSION_ID < 70000)
-            || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            null !== $input
+            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
         ) {
             $expected = $input;
             $input = null;
         }
+
         if (null !== $config) {
             $this->fixer->configure($config);
         }
@@ -47,7 +45,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'typehint already defined' => [
@@ -79,6 +77,13 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     function my_foo() {}
                     function my_foo2($bar) {}
                     ',
+            ],
+            'invalid - phpdoc param with keyword' => [
+                '<?php
+                    /** @param Break $foo */ function foo_break($foo) {}
+                    /** @param __CLASS__ $foo */ function foo_class($foo) {}
+                    /** @param I\Want\To\Break\\\\Free $foo */ function foo_queen($foo) {}
+                ',
             ],
             'non-root class with single int param' => [
                 '<?php /** @param int $bar */ function my_foo(int $bar) {}',
@@ -192,7 +197,6 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'iterable return on ^7.1' => [
                 '<?php /** @param iterable $counter */ function my_foo(iterable $counter) {}',
                 '<?php /** @param iterable $counter */ function my_foo($counter) {}',
-                70100,
             ],
             'array native type' => [
                 '<?php /** @param array $foo */ function my_foo(array $foo) {}',
@@ -214,7 +218,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
-            'static is skipped' => [
+            'report static as self' => [
+                '<?php
+                    class Foo {
+                        /** @param static $foo */ function my_foo(self $foo) {}
+                    }
+                ',
                 '<?php
                     class Foo {
                         /** @param static $foo */ function my_foo($foo) {}
@@ -236,6 +245,9 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'skip mixed types including array' => [
                 '<?php /** @param array|Foo $expected */ function testResolveIntersectionOfPaths($expected) {}',
             ],
+            'skip primitive or array types' => [
+                '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths($expected) {}',
+            ],
             'array of types' => [
                 '<?php /** @param Foo[] $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param Foo[] $foo */ function my_foo($foo) {}',
@@ -243,62 +255,50 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'nullable array of types' => [
                 '<?php /** @param null|Foo[] $foo */ function my_foo(?array $foo) {}',
                 '<?php /** @param null|Foo[] $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and mixed types of arrays' => [
                 '<?php /** @param null|Foo[]|Bar[] $foo */ function my_foo(?array $foo) {}',
                 '<?php /** @param null|Foo[]|Bar[] $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and array and array of types' => [
                 '<?php /** @param null|Foo[]|array $foo */ function my_foo(?array $foo) {}',
                 '<?php /** @param null|Foo[]|array $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable array of array of types' => [
                 '<?php /** @param null|Foo[][] $foo */ function my_foo(?array $foo) {}',
                 '<?php /** @param null|Foo[][] $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and string param' => [
                 '<?php /** @param null|string $foo */ function my_foo(?string $foo) {}',
                 '<?php /** @param null|string $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and int param' => [
                 '<?php /** @param null|int $foo */ function my_foo(?int $foo) {}',
                 '<?php /** @param null|int $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and float param' => [
                 '<?php /** @param null|float $foo */ function my_foo(?float $foo) {}',
                 '<?php /** @param null|float $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and bool param' => [
                 '<?php /** @param null|bool $foo */ function my_foo(?bool $foo) {}',
                 '<?php /** @param null|bool $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and callable param' => [
                 '<?php /** @param null|callable $foo */ function my_foo(?callable $foo) {}',
                 '<?php /** @param null|callable $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and iterable param' => [
                 '<?php /** @param null|iterable $foo */ function my_foo(?iterable $foo) {}',
                 '<?php /** @param null|iterable $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'nullable and class name param' => [
                 '<?php /** @param null|Foo $foo */ function my_foo(?Foo $foo) {}',
                 '<?php /** @param null|Foo $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'array and iterable param' => [
-                '<?php /** @param Foo[]|iterable $foo */ function my_foo(array $foo) {}',
+                '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
                 '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
-                70100,
             ],
             'object param' => [
                 '<?php /** @param object $foo */ function my_foo(object $foo) {}',
@@ -310,10 +310,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @param null|object $foo */ function my_foo($foo) {}',
                 70200,
             ],
-            'generics with single type is not supported' => [
+            'generics with single type' => [
+                '<?php /** @param array<foo> $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param array<foo> $foo */ function my_foo($foo) {}',
             ],
-            'generics with multiple types are not supported' => [
+            'generics with multiple types' => [
+                '<?php /** @param array<int, string> $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param array<int, string> $foo */ function my_foo($foo) {}',
             ],
             'stop searching last token' => [
@@ -326,7 +328,111 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'optional param by reference' => [
                 '<?php /** @param null|string[] $matches */ function matchAll(?array &$matches) {}',
                 '<?php /** @param null|string[] $matches */ function matchAll(&$matches) {}',
+            ],
+            'void as type in phpdoc' => [
+                '<?php /** @param void $bar */ function foo($bar) {}',
+            ],
+            'array and traversable' => [
+                '<?php /** @param array|Traversable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param array|Traversable $foo */ function my_foo($foo) {}',
+            ],
+            'array and traversable with leading slash' => [
+                '<?php /** @param array|\Traversable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param array|\Traversable $foo */ function my_foo($foo) {}',
+            ],
+            'array and traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @param array|Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+            ],
+            'array and traversable with leading slash in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @param array|\Traversable $foo */
+                     function my_foo(iterable $foo) {}
+                ',
+                '<?php
+                     namespace App;
+                     /** @param array|\Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+            ],
+            'array and imported traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @param array|Traversable $foo */
+                     function my_foo(iterable $foo) {}
+                ',
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @param array|Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+            ],
+            'array and object aliased as traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Foo as Traversable;
+                     /** @param array|Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+            ],
+            'array of object and traversable' => [
+                '<?php /** @param Foo[]|Traversable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param Foo[]|Traversable $foo */ function my_foo($foo) {}',
                 70100,
+            ],
+            'array of object and iterable' => [
+                '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
+            ],
+            'array of string and array of int' => [
+                '<?php /** @param string[]|int[] $foo */ function my_foo(array $foo) {}',
+                '<?php /** @param string[]|int[] $foo */ function my_foo($foo) {}',
+            ],
+            'do not fix scalar types when configured as such' => [
+                '<?php /** @param int $foo */ function my_foo($foo) {}',
+                null,
+                null,
+                ['scalar_types' => false],
+            ],
+            'do not fix function call' => [
+                '<?php
+                    /** @param string $foo */
+                    function bar($notFoo) {
+                        return baz($foo);
+                    }
+                ',
+            ],
+            'do not fix function call when no parameter' => [
+                '<?php
+                    /** @param string $foo */
+                    function bar() {
+                        return baz($foo);
+                    }
+                ',
+            ],
+            'intersection types' => [
+                '<?php
+                    /** @param Bar&Baz $x */
+                    function bar($x) {}
+                ',
+            ],
+            'very long class name before ampersand' => [
+                '<?php
+                    /** @param Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz $x */
+                    function bar($x) {}
+                ',
+            ],
+            'very long class name after ampersand' => [
+                '<?php
+                    /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
+                    function bar($x) {}
+                ',
             ],
         ];
     }

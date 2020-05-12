@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,26 +16,29 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
  */
-final class PhpdocOrderByValueFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocOrderByValueFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Order phpdoc tags by value.',
@@ -71,9 +76,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after CommentToPhpdocFixer, PhpUnitFqcnAnnotationFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpUnitFqcnAnnotationFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -10;
     }
@@ -81,7 +86,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_DOC_COMMENT]);
     }
@@ -89,14 +94,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ([] === $this->configuration['annotations']) {
             return;
         }
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            foreach ($this->configuration['annotations'] as $type) {
+            foreach ($this->configuration['annotations'] as $type => $typeLowerCase) {
                 $findPattern = sprintf(
                     '/@%s\s.+@%s\s/s',
                     $type,
@@ -113,20 +118,33 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $docBlock = new DocBlock($tokens[$index]->getContent());
 
                 $annotations = $docBlock->getAnnotationsOfType($type);
-
                 $annotationMap = [];
 
-                $replacePattern = sprintf(
-                    '/\*\s*@%s\s+(.+)/',
-                    $type
-                );
+                if (\in_array($type, ['property', 'property-read', 'property-write'], true)) {
+                    $replacePattern = sprintf(
+                        '/(?s)\*\s*@%s\s+(?P<optionalTypes>.+\s+)?\$(?P<comparableContent>[^\s]+).*/',
+                        $type
+                    );
+
+                    $replacement = '\2';
+                } elseif ('method' === $type) {
+                    $replacePattern = '/(?s)\*\s*@method\s+(?P<optionalReturnTypes>.+\s+)?(?P<comparableContent>.+)\(.*/';
+                    $replacement = '\2';
+                } else {
+                    $replacePattern = sprintf(
+                        '/\*\s*@%s\s+(?P<comparableContent>.+)/',
+                        $typeLowerCase
+                    );
+
+                    $replacement = '\1';
+                }
 
                 foreach ($annotations as $annotation) {
                     $rawContent = $annotation->getContent();
 
                     $comparableContent = Preg::replace(
                         $replacePattern,
-                        '\1',
+                        $replacement,
                         strtolower(trim($rawContent))
                     );
 
@@ -157,7 +175,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $allowedValues = [
             'author',
@@ -167,7 +185,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             'depends',
             'group',
             'internal',
+            'method',
+            'property',
+            'property-read',
+            'property-write',
             'requires',
+            'throws',
             'uses',
         ];
 
@@ -179,6 +202,17 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->setAllowedValues([
                     new AllowedValueSubset($allowedValues),
                 ])
+                ->setNormalizer(static function (Options $options, $value): array {
+                    $normalized = [];
+
+                    foreach ($value as $annotation) {
+                        // since we will be using "strtolower" on the input annotations when building the sorting
+                        // map we must match the type in lower case as well
+                        $normalized[$annotation] = strtolower($annotation);
+                    }
+
+                    return $normalized;
+                })
                 ->setDefault([
                     'covers',
                 ])

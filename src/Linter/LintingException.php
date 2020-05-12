@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,6 +16,9 @@ namespace PhpCsFixer\Linter;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @final
+ * @TODO 4.0 make class "final"
  */
 class LintingException extends \RuntimeException
 {

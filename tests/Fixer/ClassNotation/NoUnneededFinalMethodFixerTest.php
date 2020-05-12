@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'default' => [
@@ -180,11 +179,25 @@ final class SomeClass {
             'private-method' => [
                 '<?php
 class Foo {
-    private function bar() {}
+    final function bar0() {}
+    final public function bar1() {}
+    final protected function bar2() {}
+    final static public function bar4() {}
+    final public static function bar5() {}
+
+    private function bar31() {}
+    private function bar32() {}
 }',
                 '<?php
 class Foo {
-    final private function bar() {}
+    final function bar0() {}
+    final public function bar1() {}
+    final protected function bar2() {}
+    final static public function bar4() {}
+    final public static function bar5() {}
+
+    final private function bar31() {}
+    private final function bar32() {}
 }',
             ],
             'private-method-with-visibility-before-final' => [
@@ -217,24 +230,15 @@ class Foo {
             'trait' => [
                 '<php trait Foo { final public function foo() {} }',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.0
-     * @dataProvider providePhp70Cases
-     */
-    public function testFixPhp70($expected, $input = null)
+            'do not fix constructors' => [
+                '<?php
+class Bar
+{
+    final private function __construct()
     {
-        $this->doTest($expected, $input);
     }
-
-    public function providePhp70Cases()
-    {
-        return [
+}',
+            ],
             'anonymous-class-inside' => [
                 '<?php
 final class Foo
@@ -299,22 +303,61 @@ class Foo
 }
 ',
             ],
+            'final private static' => [
+                '<?php
+class Foo {
+    public function bar(){}
+
+    private static function bar1() {echo 1;}
+    private static function bar2() {echo 2;}
+    static private function bar3() {echo 3;}
+    private static function bar4() {echo 4;}
+    static private function bar5() {echo 5;}
+    static private function bar6() {echo 6;}
+}
+',
+                '<?php
+class Foo {
+    public function bar(){}
+
+    private static final function bar1() {echo 1;}
+    private final static function bar2() {echo 2;}
+    final static private function bar3() {echo 3;}
+    final private static function bar4() {echo 4;}
+    static final private function bar5() {echo 5;}
+    static private final function bar6() {echo 6;}
+}
+',
+            ],
+            [
+                '<?php
+abstract class Foo {
+    public final function bar1(){ $this->bar3(); }
+    private function bar2(){ echo 1; }
+
+    private function bar3(){ echo 2; }
+}',
+                '<?php
+abstract class Foo {
+    public final function bar1(){ $this->bar3(); }
+    private function bar2(){ echo 1; }
+
+    private final function bar3(){ echo 2; }
+}',
+            ],
         ];
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixConfigCases
      */
-    public function testFixConfig($expected, $input, array $config)
+    public function testFixConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixConfigCases()
+    public function provideFixConfigCases(): \Generator
     {
         yield [
             '<?php
@@ -340,6 +383,61 @@ class Bar
 }
 ',
             ['private_methods' => false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+final class Foo81 {
+    public readonly string $prop1;
+    readonly public string $prop2;
+    readonly string $prop3;
+}
+            ',
+        ];
+
+        yield [
+            '<?php
+class Foo81 {
+    public readonly string $prop1;
+    readonly public string $prop2;
+    readonly string $prop3;
+}
+            ',
+        ];
+
+        yield [
+            '<?php
+final class Foo81 {
+    public function foo81() {}
+    protected function bar81() {}
+    private function baz81() {}
+    public readonly string $prop81;
+    final public const Y = "i81";
+    final const XY = "i81";
+}
+            ',
+            '<?php
+final class Foo81 {
+    final public function foo81() {}
+    final protected function bar81() {}
+    final private function baz81() {}
+    public readonly string $prop81;
+    final public const Y = "i81";
+    final const XY = "i81";
+}
+            ',
         ];
     }
 }

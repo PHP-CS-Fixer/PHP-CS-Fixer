@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,9 +25,22 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 {
     /**
+     * @var null|FunctionsAnalyzer
+     */
+    private $functionsAnalyzer;
+
+    /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky(): bool
     {
         return true;
     }
@@ -34,31 +49,29 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      * Looks up Tokens sequence for suitable candidates and delivers boundaries information,
      * which can be supplied by other methods in this abstract class.
      *
-     * @param string   $functionNameToSearch
-     * @param int      $start
-     * @param null|int $end
-     *
      * @return null|int[] returns $functionName, $openParenthesis, $closeParenthesis packed into array
      */
-    protected function find($functionNameToSearch, Tokens $tokens, $start = 0, $end = null)
+    protected function find(string $functionNameToSearch, Tokens $tokens, int $start = 0, ?int $end = null): ?array
     {
+        if (null === $this->functionsAnalyzer) {
+            $this->functionsAnalyzer = new FunctionsAnalyzer();
+        }
+
         // make interface consistent with findSequence
-        $end = null === $end ? $tokens->count() : $end;
+        $end = $end ?? $tokens->count();
 
         // find raw sequence which we can analyse for context
         $candidateSequence = [[T_STRING, $functionNameToSearch], '('];
         $matches = $tokens->findSequence($candidateSequence, $start, $end, false);
+
         if (null === $matches) {
-            // not found, simply return without further attempts
-            return null;
+            return null; // not found, simply return without further attempts
         }
 
         // translate results for humans
-        list($functionName, $openParenthesis) = array_keys($matches);
+        [$functionName, $openParenthesis] = array_keys($matches);
 
-        $functionsAnalyzer = new FunctionsAnalyzer();
-
-        if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $functionName)) {
+        if (!$this->functionsAnalyzer->isGlobalFunctionCall($tokens, $functionName)) {
             return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
 

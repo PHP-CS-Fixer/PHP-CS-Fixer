@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,7 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractDifferTestCase extends TestCase
 {
-    final public function testIsDiffer()
+    final public function testIsDiffer(): void
     {
         $className = preg_replace(
             '/Test$/',
@@ -38,7 +40,7 @@ abstract class AbstractDifferTestCase extends TestCase
         static::assertInstanceOf(\PhpCsFixer\Differ\DifferInterface::class, $differ);
     }
 
-    final protected function oldCode()
+    final protected function oldCode(): string
     {
         return <<<'PHP'
 <?php
@@ -55,7 +57,7 @@ function baz($options)
 PHP;
     }
 
-    final protected function newCode()
+    final protected function newCode(): string
     {
         return <<<'PHP'
 <?php

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,23 +19,16 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 /**
  * Exceptions of this type are thrown on misconfiguration of the Fixer.
  *
- * @author SpacePossum
- *
  * @internal
  * @final Only internal extending this class is supported
  */
 class InvalidConfigurationException extends \InvalidArgumentException
 {
-    /**
-     * @param string          $message
-     * @param null|int        $code
-     * @param null|\Throwable $previous
-     */
-    public function __construct($message, $code = null, $previous = null)
+    public function __construct(string $message, ?int $code = null, ?\Throwable $previous = null)
     {
         parent::__construct(
             $message,
-            null === $code ? FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG : $code,
+            $code ?? FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG,
             $previous
         );
     }

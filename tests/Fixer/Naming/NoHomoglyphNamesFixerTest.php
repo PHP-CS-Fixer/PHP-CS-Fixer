@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,16 +27,13 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param mixed      $expected
-     * @param null|mixed $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ['<?php $øøøøa = 1;'],
@@ -105,16 +104,13 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
-     *
-     * @param mixed      $expected
-     * @param null|mixed $input
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [

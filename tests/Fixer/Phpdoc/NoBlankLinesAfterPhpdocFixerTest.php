@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 {
-    public function testSimpleExampleIsNotChanged()
+    public function testSimpleExampleIsNotChanged(): void
     {
         $input = <<<'EOF'
 <?php
@@ -47,7 +49,7 @@ EOF;
         $this->doTest($input);
     }
 
-    public function testComplexExampleIsNotChanged()
+    public function testComplexExampleIsNotChanged(): void
     {
         $input = <<<'EOF'
 <?php
@@ -112,7 +114,7 @@ EOF;
         $this->doTest($input);
     }
 
-    public function testCommentsAreNotChanged()
+    public function testCommentsAreNotChanged(): void
     {
         $input = <<<'EOF'
 <?php
@@ -130,7 +132,7 @@ EOF;
         $this->doTest($input);
     }
 
-    public function testLineBeforeDeclareIsNotBeRemoved()
+    public function testLineBeforeDeclareIsNotBeRemoved(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -144,7 +146,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLineBeforeUseStatementIsNotRemoved()
+    public function testLineBeforeUseStatementIsNotRemoved(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -158,7 +160,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented()
+    public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
     {
         $this->doTest(
             '<?php
@@ -175,7 +177,7 @@ EOF;
         );
     }
 
-    public function testLineWithSpacesIsRemovedWhenNextTokenIsNotIndented()
+    public function testLineWithSpacesIsRemovedWhenNextTokenIsNotIndented(): void
     {
         $this->doTest(
             '<?php
@@ -192,7 +194,7 @@ class Foo {}'
         );
     }
 
-    public function testFixesSimpleClass()
+    public function testFixesSimpleClass(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -219,7 +221,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixesIndentedClass()
+    public function testFixesIndentedClass(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -249,7 +251,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixesOthers()
+    public function testFixesOthers(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -287,7 +289,23 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixesWindowsStyle()
+    public function testWhitespaceInDocBlockAboveNamespaceIsNotTouched(): void
+    {
+        $expected = <<<'EOF'
+<?php
+
+/**
+ * This is a file-level docblock.
+ */
+
+namespace Foo\Bar\Baz;
+
+EOF;
+
+        $this->doTest($expected);
+    }
+
+    public function testFixesWindowsStyle(): void
     {
         $expected = "<?php\r\n    /**     * Constant!     */\n    \$foo = 123;";
 
@@ -299,17 +317,14 @@ EOF;
     /**
      * Empty line between typehinting docs and return statement should be preserved.
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideInlineTypehintingDocsBeforeFlowBreakCases
      */
-    public function testInlineTypehintingDocsBeforeFlowBreak($expected, $input = null)
+    public function testInlineTypehintingDocsBeforeFlowBreak(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideInlineTypehintingDocsBeforeFlowBreakCases()
+    public function provideInlineTypehintingDocsBeforeFlowBreakCases(): array
     {
         $cases = [];
 

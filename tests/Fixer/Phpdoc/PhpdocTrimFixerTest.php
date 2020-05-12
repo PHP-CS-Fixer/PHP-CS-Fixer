@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -71,7 +70,7 @@ function foo(){}
         ];
     }
 
-    public function testFixMore()
+    public function testFixMore(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -110,7 +109,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testClassDocBlock()
+    public function testClassDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -123,7 +122,7 @@ namespace Foo;
  * @internal
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
    */
 class Bar {}
 
@@ -142,7 +141,7 @@ namespace Foo;
  * @internal
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
     *
   *
@@ -154,7 +153,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testEmptyDocBlock()
+    public function testEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -167,7 +166,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testEmptyLargerEmptyDocBlock()
+    public function testEmptyLargerEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -191,7 +190,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testSuperSimpleDocBlockStart()
+    public function testSuperSimpleDocBlockStart(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -213,7 +212,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testSuperSimpleDocBlockEnd()
+    public function testSuperSimpleDocBlockEnd(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -235,7 +234,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithLinesWithoutAsterisk()
+    public function testWithLinesWithoutAsterisk(): void
     {
         $expected = <<<'EOF'
 <?php

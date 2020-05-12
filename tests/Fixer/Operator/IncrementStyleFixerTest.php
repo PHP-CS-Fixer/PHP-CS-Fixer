@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\IncrementStyleFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -20,44 +23,39 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\IncrementStyleFixer
  */
 final class IncrementStyleFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPreIncrementCases
      */
-    public function testFixPreIncrement($expected, $input = null)
+    public function testFixPreIncrement(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['style' => 'pre']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_PRE]);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPostIncrementCases
      */
-    public function testFixPostIncrement($expected, $input = null)
+    public function testFixPostIncrement(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['style' => 'post']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_POST]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPostIncrementCases()
+    public function provideFixPostIncrementCases(): array
     {
-        return array_map(static function (array $case) {
+        return array_map(static function (array $case): array {
             return array_reverse($case);
         }, $this->provideFixPreIncrementCases());
     }
 
-    public function provideFixPreIncrementCases()
+    public function provideFixPreIncrementCases(): array
     {
-        return [
+        $cases = [
             [
                 '<?php ++$a;',
                 '<?php $a++;',
@@ -115,16 +113,8 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
                 '<?php $a[0]++;',
             ],
             [
-                '<?php ++$a{0};',
-                '<?php $a{0}++;',
-            ],
-            [
                 '<?php ++$a[$b];',
                 '<?php $a[$b]++;',
-            ],
-            [
-                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
-                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
             ],
 
             ['<?php $a = $b++;'],
@@ -178,5 +168,24 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) $a++;',
             ],
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            $cases[] = [
+                '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+                '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
+            ];
+
+            $cases[] = [
+                '<?php ++$a{0};',
+                '<?php $a{0}++;',
+            ];
+
+            $cases[] = [
+                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
+                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
+            ];
+        }
+
+        return $cases;
     }
 }

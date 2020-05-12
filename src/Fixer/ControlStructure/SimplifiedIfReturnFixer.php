@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,6 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
+    /**
+     * @var array[]
+     */
     private $sequences = [
         [
             'isNegative' => false,
@@ -57,7 +63,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Simplify `if` control structures that return the boolean result of their condition.',
@@ -68,10 +74,10 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoMultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
+     * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
      * Must run after NoSuperfluousElseifFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SemicolonAfterInstructionFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 1;
     }
@@ -79,7 +85,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_IF, T_RETURN, T_STRING]);
     }
@@ -87,7 +93,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
             $ifToken = $tokens[$ifIndex];
@@ -113,11 +119,11 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                     continue;
                 }
 
-                $indexesToClear = array_keys($sequenceFound);
-                array_pop($indexesToClear); // Preserve last semicolon
-                rsort($indexesToClear);
+                $indicesToClear = array_keys($sequenceFound);
+                array_pop($indicesToClear); // Preserve last semicolon
+                rsort($indicesToClear);
 
-                foreach ($indexesToClear as $index) {
+                foreach ($indicesToClear as $index) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($index);
                 }
 

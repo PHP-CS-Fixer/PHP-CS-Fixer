@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,16 +28,13 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -240,18 +239,15 @@ $foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWindowsWhitespacesCases
      */
-    public function testWindowsWhitespaces($expected, $input = null)
+    public function testWindowsWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->doTest($expected, $input);
     }
 
-    public function provideWindowsWhitespacesCases()
+    public function provideWindowsWhitespacesCases(): array
     {
         return [
             [
@@ -264,7 +260,7 @@ $foo
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php
@@ -281,6 +277,30 @@ $foo
      ->setPassword("233434" ,)
         ->setEmailConfirmed(false , )
 ->setEmailConfirmationCode("123456",    );
+'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->doTest(
+            '<?php
+
+    $user?->setEmail("voff.web@gmail.com")
+        ?->setPassword("233434")
+        ?->setEmailConfirmed(false)
+        ?->setEmailConfirmationCode("123456");
+',
+            '<?php
+
+    $user?->setEmail("voff.web@gmail.com")
+
+     ?->setPassword("233434")
+        ?->setEmailConfirmed(false)
+?->setEmailConfirmationCode("123456");
 '
         );
     }

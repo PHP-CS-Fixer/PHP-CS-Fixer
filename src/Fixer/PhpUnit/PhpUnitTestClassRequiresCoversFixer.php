@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,13 +14,13 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -26,12 +28,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitTestClassRequiresCoversFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.',
@@ -54,24 +56,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isTokenKindFound(T_CLASS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
-            $this->addRequiresCover($tokens, $indexes[0]);
-        }
-    }
-
-    private function addRequiresCover(Tokens $tokens, $startIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
         $prevIndex = $tokens->getPrevMeaningfulToken($classIndex);
@@ -94,14 +79,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $docContent = $tokens[$docIndex]->getContent();
 
             // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
-            if (false === strpos($docContent, "\n")) {
+            if (!str_contains($docContent, "\n")) {
                 return;
             }
 
             $doc = new DocBlock($docContent);
 
             // skip if already has annotation
-            if (!empty($doc->getAnnotationsOfType([
+            if (0 !== \count($doc->getAnnotationsOfType([
                 'covers',
                 'coversDefaultClass',
                 'coversNothing',

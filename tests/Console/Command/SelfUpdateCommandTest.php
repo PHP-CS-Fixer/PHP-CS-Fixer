@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -20,6 +22,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfoInterface;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -36,7 +39,7 @@ final class SelfUpdateCommandTest extends TestCase
      */
     private $root;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,11 +47,11 @@ final class SelfUpdateCommandTest extends TestCase
 
         file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
 
-        file_put_contents("{$this->root->url()}/{$this->getNewMinorVersion()}.phar", 'New minor version of PHP CS Fixer.');
-        file_put_contents("{$this->root->url()}/{$this->getNewMajorVersion()}.phar", 'New major version of PHP CS Fixer.');
+        file_put_contents("{$this->root->url()}/{$this->getNewMinorReleaseVersion()}.phar", 'New minor version of PHP CS Fixer.');
+        file_put_contents("{$this->root->url()}/{$this->getNewMajorReleaseVersion()}.phar", 'New major version of PHP CS Fixer.');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -62,11 +65,9 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @param string $name
-     *
      * @dataProvider provideCommandNameCases
      */
-    public function testCommandName($name)
+    public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
             $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
@@ -80,7 +81,7 @@ final class SelfUpdateCommandTest extends TestCase
         static::assertSame($command, $application->find($name));
     }
 
-    public function provideCommandNameCases()
+    public function provideCommandNameCases(): array
     {
         return [
             ['self-update'],
@@ -89,22 +90,18 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @param string $latestVersion
-     * @param string $latestMinorVersion
-     * @param bool   $decorated
-     * @param string $expectedFileContents
-     * @param string $expectedDisplay
+     * @param ?string $latestMinorVersion
      *
      * @dataProvider provideExecuteCases
      */
     public function testExecute(
-        $latestVersion,
-        $latestMinorVersion,
+        string $latestVersion,
+        ?string $latestMinorVersion,
         array $input,
-        $decorated,
-        $expectedFileContents,
-        $expectedDisplay
-    ) {
+        bool $decorated,
+        string $expectedFileContents,
+        string $expectedDisplay
+    ): void {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $versionChecker->getLatestVersion()->willReturn($latestVersion);
@@ -120,7 +117,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $versionChecker
             ->compareVersions(Argument::type('string'), Argument::type('string'))
-            ->will(function (array $arguments) use ($actualVersionCheck) {
+            ->will(function (array $arguments) use ($actualVersionCheck): int {
                 return $actualVersionCheck->compareVersions($arguments[0], $arguments[1]);
             })
         ;
@@ -138,32 +135,34 @@ final class SelfUpdateCommandTest extends TestCase
         static::assertSame(0, $commandTester->getStatusCode());
     }
 
-    public function provideExecuteCases()
+    public function provideExecuteCases(): array
     {
-        $minor = $this->getNewMinorVersion();
+        $currentVersion = Application::VERSION;
+        $minorRelease = $this->getNewMinorReleaseVersion();
+        $majorRelease = $this->getNewMajorReleaseVersion();
         $major = $this->getNewMajorVersion();
 
         $currentContents = 'Current PHP CS Fixer.';
         $minorContents = 'New minor version of PHP CS Fixer.';
         $majorContents = 'New major version of PHP CS Fixer.';
 
-        $upToDateDisplay = "\033[32mphp-cs-fixer is already up to date.\033[39m\n";
-        $newMinorDisplay = "\033[32mphp-cs-fixer updated\033[39m (\033[33m{$minor}\033[39m)\n";
-        $newMajorDisplay = "\033[32mphp-cs-fixer updated\033[39m (\033[33m{$major}\033[39m)\n";
+        $upToDateDisplay = "\033[32mPHP CS Fixer is already up-to-date.\033[39m\n";
+        $newMinorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$minorRelease}\033[39m)\n";
+        $newMajorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$majorRelease}\033[39m)\n";
         $majorInfoNoMinorDisplay = <<<OUTPUT
-\033[32mA new major version of php-cs-fixer is available\033[39m (\033[33m{$major}\033[39m)
-\033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$major}/UPGRADE.md
+\033[32mA new major version of PHP CS Fixer is available\033[39m (\033[33m{$majorRelease}\033[39m)
+\033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$majorRelease}/UPGRADE-v{$major}.md
 \033[32mIf you are ready to upgrade run this command with\033[39m \033[33m-f\033[39m
 \033[32mChecking for new minor/patch version...\033[39m
-\033[32mNo minor update for php-cs-fixer.\033[39m
+\033[32mNo minor update for PHP CS Fixer.\033[39m
 
 OUTPUT;
         $majorInfoNewMinorDisplay = <<<OUTPUT
-\033[32mA new major version of php-cs-fixer is available\033[39m (\033[33m{$major}\033[39m)
-\033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$major}/UPGRADE.md
+\033[32mA new major version of PHP CS Fixer is available\033[39m (\033[33m{$majorRelease}\033[39m)
+\033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$majorRelease}/UPGRADE-v{$major}.md
 \033[32mIf you are ready to upgrade run this command with\033[39m \033[33m-f\033[39m
 \033[32mChecking for new minor/patch version...\033[39m
-\033[32mphp-cs-fixer updated\033[39m (\033[33m{$minor}\033[39m)
+\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$minorRelease}\033[39m)
 
 OUTPUT;
 
@@ -177,28 +176,28 @@ OUTPUT;
             [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay],
 
             // new minor version available
-            [$minor, $minor, [], true, $minorContents, $newMinorDisplay],
-            [$minor, $minor, ['--force' => true], true, $minorContents, $newMinorDisplay],
-            [$minor, $minor, ['-f' => true], true, $minorContents, $newMinorDisplay],
-            [$minor, $minor, [], false, $minorContents, $newMinorDisplay],
-            [$minor, $minor, ['--force' => true], false, $minorContents, $newMinorDisplay],
-            [$minor, $minor, ['-f' => true], false, $minorContents, $newMinorDisplay],
+            [$minorRelease, $minorRelease, [], true, $minorContents, $newMinorDisplay],
+            [$minorRelease, $minorRelease, ['--force' => true], true, $minorContents, $newMinorDisplay],
+            [$minorRelease, $minorRelease, ['-f' => true], true, $minorContents, $newMinorDisplay],
+            [$minorRelease, $minorRelease, [], false, $minorContents, $newMinorDisplay],
+            [$minorRelease, $minorRelease, ['--force' => true], false, $minorContents, $newMinorDisplay],
+            [$minorRelease, $minorRelease, ['-f' => true], false, $minorContents, $newMinorDisplay],
 
             // new major version available
-            [$major, Application::VERSION, [], true, $currentContents, $majorInfoNoMinorDisplay],
-            [$major, Application::VERSION, [], false, $currentContents, $majorInfoNoMinorDisplay],
-            [$major, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$major, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
-            [$major, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$major, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
+            [$majorRelease, Application::VERSION, [], true, $currentContents, $majorInfoNoMinorDisplay],
+            [$majorRelease, Application::VERSION, [], false, $currentContents, $majorInfoNoMinorDisplay],
+            [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
+            [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay],
 
             // new minor version and new major version available
-            [$major, $minor, [], true, $minorContents, $majorInfoNewMinorDisplay],
-            [$major, $minor, [], false, $minorContents, $majorInfoNewMinorDisplay],
-            [$major, $minor, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$major, $minor, ['-f' => true], false, $majorContents, $newMajorDisplay],
-            [$major, $minor, ['--force' => true], true, $majorContents, $newMajorDisplay],
-            [$major, $minor, ['-f' => true], false, $majorContents, $newMajorDisplay],
+            [$majorRelease, $minorRelease, [], true, $minorContents, $majorInfoNewMinorDisplay],
+            [$majorRelease, $minorRelease, [], false, $minorContents, $majorInfoNewMinorDisplay],
+            [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay],
+            [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay],
+            [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay],
 
             // weird/unexpected versions
             ['v0.1.0', 'v0.1.0', [], true, $currentContents, $upToDateDisplay],
@@ -229,22 +228,18 @@ OUTPUT;
     }
 
     /**
-     * @param string $latestVersionSuccess
-     * @param string $latestMinorVersionSuccess
-     * @param bool   $decorated
-     *
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
     public function testExecuteWhenNotAbleToGetLatestVersions(
-        $latestVersionSuccess,
-        $latestMinorVersionSuccess,
+        bool $latestVersionSuccess,
+        bool $latestMinorVersionSuccess,
         array $input,
-        $decorated
-    ) {
+        bool $decorated
+    ): void {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
-        $newMajorVersion = $this->getNewMajorVersion();
-        $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion) {
+        $newMajorVersion = $this->getNewMajorReleaseVersion();
+        $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion): string {
             if ($latestVersionSuccess) {
                 return $newMajorVersion;
             }
@@ -252,10 +247,10 @@ OUTPUT;
             throw new \RuntimeException('Foo.');
         });
 
-        $newMinorVersion = $this->getNewMinorVersion();
+        $newMinorVersion = $this->getNewMinorReleaseVersion();
         $versionChecker
             ->getLatestVersionOfMajor($this->getCurrentMajorVersion())
-            ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion) {
+            ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
                 if ($latestMinorVersionSuccess) {
                     return $newMinorVersion;
                 }
@@ -279,7 +274,7 @@ OUTPUT;
         static::assertSame(1, $commandTester->getStatusCode());
     }
 
-    public function provideExecuteWhenNotAbleToGetLatestVersionsCases()
+    public function provideExecuteWhenNotAbleToGetLatestVersionsCases(): array
     {
         return [
             [false, false, [], true],
@@ -304,11 +299,9 @@ OUTPUT;
     }
 
     /**
-     * @param bool $decorated
-     *
      * @dataProvider provideExecuteWhenNotInstalledAsPharCases
      */
-    public function testExecuteWhenNotInstalledAsPhar(array $input, $decorated)
+    public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
             $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
@@ -325,7 +318,7 @@ OUTPUT;
         static::assertSame(1, $commandTester->getStatusCode());
     }
 
-    public function provideExecuteWhenNotInstalledAsPharCases()
+    public function provideExecuteWhenNotInstalledAsPharCases(): array
     {
         return [
             [[], true],
@@ -337,7 +330,7 @@ OUTPUT;
         ];
     }
 
-    private function execute(Command $command, array $input, $decorated)
+    private function execute(Command $command, array $input, bool $decorated): CommandTester
     {
         $application = new Application();
         $application->add($command);
@@ -356,32 +349,27 @@ OUTPUT;
         return $commandTester;
     }
 
-    private function assertDisplay($expectedDisplay, CommandTester $commandTester)
+    private static function assertDisplay(string $expectedDisplay, CommandTester $commandTester): void
     {
         if (!$commandTester->getOutput()->isDecorated()) {
             $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
-        // TODO drop preg_replace() usage when symfony/console is bumped
-        $cleanDisplay = function ($display) {
-            return preg_replace("/\033\\[39(;49)?m/", "\033[0m", $display);
-        };
-
         static::assertSame(
-            $cleanDisplay($expectedDisplay),
-            $cleanDisplay($commandTester->getDisplay(true))
+            $expectedDisplay,
+            $commandTester->getDisplay(true)
         );
     }
 
-    private function createToolInfo($isInstalledAsPhar = true)
+    private function createToolInfo(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
         $root = $this->root;
 
-        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
+        $toolInfo = $this->prophesize(ToolInfoInterface::class);
         $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
         $toolInfo
             ->getPharDownloadUri(Argument::type('string'))
-            ->will(function (array $arguments) use ($root) {
+            ->will(function (array $arguments) use ($root): string {
                 return "{$root->url()}/{$arguments[0]}.phar";
             })
         ;
@@ -389,23 +377,28 @@ OUTPUT;
         return $toolInfo->reveal();
     }
 
-    private function getToolPath()
+    private function getToolPath(): string
     {
         return "{$this->root->url()}/php-cs-fixer";
     }
 
-    private function getCurrentMajorVersion()
+    private function getCurrentMajorVersion(): int
     {
         return (int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION);
     }
 
-    private function getNewMinorVersion()
+    private function getNewMinorReleaseVersion(): string
     {
         return "{$this->getCurrentMajorVersion()}.999.0";
     }
 
-    private function getNewMajorVersion()
+    private function getNewMajorVersion(): int
     {
-        return ($this->getCurrentMajorVersion() + 1).'.0.0';
+        return $this->getCurrentMajorVersion() + 1;
+    }
+
+    private function getNewMajorReleaseVersion(): string
+    {
+        return $this->getNewMajorVersion().'.0.0';
     }
 }

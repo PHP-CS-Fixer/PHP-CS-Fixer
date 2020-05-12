@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,13 +28,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class BlocksAnalyzerTest extends TestCase
 {
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     *
      * @dataProvider provideBlocksCases
      */
-    public function testBlocks($code, $openIndex, $closeIndex)
+    public function testBlocks(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
@@ -40,7 +38,7 @@ final class BlocksAnalyzerTest extends TestCase
         static::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideBlocksCases()
+    public function provideBlocksCases(): array
     {
         return [
             ['<?php foo(1);', 2, 4],
@@ -59,13 +57,12 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
+     * @param ?int $openIndex
+     * @param ?int $closeIndex
      *
      * @dataProvider provideNonBlocksCases
      */
-    public function testNonBlocks($code, $openIndex, $closeIndex)
+    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
@@ -73,7 +70,7 @@ final class BlocksAnalyzerTest extends TestCase
         static::assertFalse($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideNonBlocksCases()
+    public function provideNonBlocksCases(): array
     {
         return [
             ['<?php foo(1);', null, 4],
@@ -89,14 +86,10 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     *
      * @dataProvider provideBlocksPhp74Cases
      * @requires PHP 7.4
      */
-    public function testBlocksPhp74($code, $openIndex, $closeIndex)
+    public function testBlocksPhp74(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
@@ -104,7 +97,7 @@ final class BlocksAnalyzerTest extends TestCase
         static::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideBlocksPhp74Cases()
+    public function provideBlocksPhp74Cases(): array
     {
         return [
             ['<?php $fn = fn($x) => $x + 10;', 6, 8],

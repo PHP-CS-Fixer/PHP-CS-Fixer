@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ final class InternalIntegrationCaseFactory extends AbstractIntegrationCaseFactor
     /**
      * {@inheritdoc}
      */
-    protected function determineSettings(SplFileInfo $file, $config)
+    protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
         $parsed = parent::determineSettings($file, $config);
 

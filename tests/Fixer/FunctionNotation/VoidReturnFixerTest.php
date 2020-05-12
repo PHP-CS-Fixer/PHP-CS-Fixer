@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,29 +15,26 @@
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Mark Nielsen
  *
  * @internal
  *
- * @requires PHP 7.1
- * @covers   \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ['<?php class Test { public function __construct() {} }'],
@@ -50,6 +49,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
             ['<?php interface Test { public function foo($param); }'],
             ['<?php function foo($param) { return function($a) use ($param): string {}; }'],
             ['<?php abstract class Test { abstract public function foo($param); }'],
+            ['<?php use Foo\ { function Bar }; function test() { return Bar(); }'],
             ['<?php
                 /**
                  * @return array
@@ -89,28 +89,28 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 '<?php trait Test { public function foo($param) {} }',
             ],
             [
-                '<?php usort([], function ($a, $b): void {});',
-                '<?php usort([], function ($a, $b) {});',
+                '<?php $arr = []; usort($arr, function ($a, $b): void {});',
+                '<?php $arr = []; usort($arr, function ($a, $b) {});',
             ],
             [
-                '<?php $param = 1; usort([], function ($a, $b) use ($param): void {});',
-                '<?php $param = 1; usort([], function ($a, $b) use ($param) {});',
+                '<?php $arr = []; $param = 1; usort($arr, function ($a, $b) use ($param): void {});',
+                '<?php $arr = []; $param = 1; usort($arr, function ($a, $b) use ($param) {});',
             ],
             [
                 '<?php function foo($param) { return function($a) use ($param): void {}; }',
                 '<?php function foo($param) { return function($a) use ($param) {}; }',
             ],
             [
-                '<?php function foo($param): void { usort([], function ($a, $b) use ($param): void {}); }',
-                '<?php function foo($param) { usort([], function ($a, $b) use ($param) {}); }',
+                '<?php function foo($param): void { $arr = []; usort($arr, function ($a, $b) use ($param): void {}); }',
+                '<?php function foo($param) { $arr = []; usort($arr, function ($a, $b) use ($param) {}); }',
             ],
             [
-                '<?php function foo() { return usort([], new class { public function __invoke($a, $b): void {} }); }',
-                '<?php function foo() { return usort([], new class { public function __invoke($a, $b) {} }); }',
+                '<?php function foo() { $arr = []; return usort($arr, new class { public function __invoke($a, $b): void {} }); }',
+                '<?php function foo() { $arr = []; return usort($arr, new class { public function __invoke($a, $b) {} }); }',
             ],
             [
-                '<?php function foo(): void { usort([], new class { public function __invoke($a, $b): void {} }); }',
-                '<?php function foo() { usort([], new class { public function __invoke($a, $b) {} }); }',
+                '<?php function foo(): void { $arr = []; usort($arr, new class { public function __invoke($a, $b): void {} }); }',
+                '<?php function foo() { $arr = []; usort($arr, new class { public function __invoke($a, $b) {} }); }',
             ],
             [
                 '<?php
@@ -202,7 +202,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                     /**
                      * @return void
                      */
-                    abstract private function foo($param): void;
+                    abstract protected function foo($param): void;
                 }',
 
                 '<?php
@@ -210,7 +210,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                     /**
                      * @return void
                      */
-                    abstract private function foo($param);
+                    abstract protected function foo($param);
                 }',
             ],
         ];
@@ -219,16 +219,13 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixPhp74($expected, $input = null)
+    public function testFixPhp74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [
@@ -241,5 +238,49 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 '<?php fn($a) => var_dump($a);',
             ],
         ];
+    }
+
+    /**
+     * Test if magic method is handled without causing syntax error.
+     *
+     * @dataProvider provideMethodWillNotCauseSyntaxErrorCases
+     */
+    public function testMethodWillNotCauseSyntaxError(string $method, int $arguments = 0, bool $static = false): void
+    {
+        $tokens = Tokens::fromCode(sprintf(
+            '<?php class Test { public%s function %s(%s) {} }',
+            $static ? ' static' : '',
+            $method,
+            implode(',', array_map(
+                static function (int $n): string { return sprintf('$x%d', $n); },
+                array_keys(array_fill(0, $arguments, true))
+            ))
+        ));
+
+        $this->fixer->fix($this->getTestFile(), $tokens);
+
+        static::assertNull($this->lintSource($tokens->generateCode()));
+    }
+
+    public static function provideMethodWillNotCauseSyntaxErrorCases(): iterable
+    {
+        // List: https://www.php.net/manual/en/language.oop5.magic.php
+        yield ['__construct'];
+        yield ['__destruct'];
+        yield ['__call', 2];
+        yield ['__callStatic', 2, true];
+        yield ['__get', 1];
+        yield ['__set', 2];
+        yield ['__isset', 1];
+        yield ['__unset', 1];
+        yield ['__sleep'];
+        yield ['__wakeup'];
+        yield ['__serialize'];
+        yield ['__unserialize', 1];
+        yield ['__toString'];
+        yield ['__invoke'];
+        yield ['__set_state', 1, true];
+        yield ['__clone'];
+        yield ['__debugInfo'];
     }
 }

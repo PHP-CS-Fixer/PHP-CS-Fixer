@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,7 +18,6 @@ use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
-use PhpCsFixer\Console\Command\HelpCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -30,10 +31,17 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class PharTest extends AbstractSmokeTest
 {
+    /**
+     * @var string
+     */
     private static $pharCwd;
+
+    /**
+     * @var string
+     */
     private static $pharName;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -45,27 +53,18 @@ final class PharTest extends AbstractSmokeTest
         }
     }
 
-    public function testVersion()
+    public function testVersion(): void
     {
-        static::assertRegExp(
-            '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
+        /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
+        $shouldExpectCodename = Application::VERSION_CODENAME ? 1 : 0;
+
+        static::assertMatchesRegularExpression(
+            sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
             self::executePharCommand('--version')->getOutput()
         );
     }
 
-    public function testReadme()
-    {
-        static::assertSame(
-            str_replace(
-                HelpCommand::getLatestReleaseVersionFromChangeLog(),
-                Application::VERSION,
-                file_get_contents(__DIR__.'/../../README.rst')
-            ),
-            self::executePharCommand('readme')->getOutput()
-        );
-    }
-
-    public function testDescribe()
+    public function testDescribe(): void
     {
         $command = new DescribeCommand();
 
@@ -84,7 +83,7 @@ final class PharTest extends AbstractSmokeTest
         );
     }
 
-    public function testFix()
+    public function testFix(): void
     {
         static::assertSame(
             0,
@@ -92,7 +91,7 @@ final class PharTest extends AbstractSmokeTest
         );
     }
 
-    public function testFixHelp()
+    public function testFixHelp(): void
     {
         static::assertSame(
             0,
@@ -100,12 +99,7 @@ final class PharTest extends AbstractSmokeTest
         );
     }
 
-    /**
-     * @param string $params
-     *
-     * @return CliResult
-     */
-    private static function executePharCommand($params)
+    private static function executePharCommand(string $params): CliResult
     {
         return CommandExecutor::create('php '.self::$pharName.' '.$params, self::$pharCwd)->getResult();
     }

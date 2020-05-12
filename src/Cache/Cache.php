@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ final class Cache implements CacheInterface
     private $signature;
 
     /**
-     * @var array
+     * @var array<string, int>
      */
     private $hashes = [];
 
@@ -34,17 +36,17 @@ final class Cache implements CacheInterface
         $this->signature = $signature;
     }
 
-    public function getSignature()
+    public function getSignature(): SignatureInterface
     {
         return $this->signature;
     }
 
-    public function has($file)
+    public function has(string $file): bool
     {
         return \array_key_exists($file, $this->hashes);
     }
 
-    public function get($file)
+    public function get(string $file): ?int
     {
         if (!$this->has($file)) {
             return null;
@@ -53,17 +55,17 @@ final class Cache implements CacheInterface
         return $this->hashes[$file];
     }
 
-    public function set($file, $hash)
+    public function set(string $file, int $hash): void
     {
         $this->hashes[$file] = $hash;
     }
 
-    public function clear($file)
+    public function clear(string $file): void
     {
         unset($this->hashes[$file]);
     }
 
-    public function toJson()
+    public function toJson(): string
     {
         $json = json_encode([
             'php' => $this->getSignature()->getPhpVersion(),
@@ -76,7 +78,7 @@ final class Cache implements CacheInterface
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \UnexpectedValueException(sprintf(
-                'Can not encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
+                'Cannot encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
                 json_last_error_msg()
             ));
         }
@@ -85,13 +87,9 @@ final class Cache implements CacheInterface
     }
 
     /**
-     * @param string $json
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return Cache
      */
-    public static function fromJson($json)
+    public static function fromJson(string $json): self
     {
         $data = json_decode($json, true);
 
@@ -114,7 +112,7 @@ final class Cache implements CacheInterface
 
         $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
 
-        if (\count($missingKeys)) {
+        if (\count($missingKeys) > 0) {
             throw new \InvalidArgumentException(sprintf(
                 'JSON data is missing keys "%s"',
                 implode('", "', $missingKeys)

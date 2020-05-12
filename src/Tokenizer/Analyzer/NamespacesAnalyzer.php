@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ final class NamespacesAnalyzer
     /**
      * @return NamespaceAnalysis[]
      */
-    public function getDeclarations(Tokens $tokens)
+    public function getDeclarations(Tokens $tokens): array
     {
         $namespaces = [];
 
@@ -67,5 +69,20 @@ final class NamespacesAnalyzer
         }
 
         return $namespaces;
+    }
+
+    public function getNamespaceAt(Tokens $tokens, int $index): NamespaceAnalysis
+    {
+        if (!$tokens->offsetExists($index)) {
+            throw new \InvalidArgumentException(sprintf('Token index %d does not exist.', $index));
+        }
+
+        foreach ($this->getDeclarations($tokens) as $namespace) {
+            if ($namespace->getScopeStartIndex() <= $index && $namespace->getScopeEndIndex() >= $index) {
+                return $namespace;
+            }
+        }
+
+        throw new \LogicException(sprintf('Unable to get the namespace at index %d.', $index));
     }
 }

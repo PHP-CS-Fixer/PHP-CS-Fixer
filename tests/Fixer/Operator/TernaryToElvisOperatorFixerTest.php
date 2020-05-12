@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer
@@ -25,16 +25,13 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $operators = ['+=', '-=', '*=', '**=', '/=', '.=', '%=', '&=', '|=', '^=', '<<=', '>>='];
 
@@ -48,11 +45,6 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         yield 'multiple fixes' => [
             '<?php $a ?  : 1; $a ?  : 1; $a ?  : 1; $a ?  : 1; $a ?  : 1; $a ?  : 1; $a ?  : 1;',
             '<?php $a ? $a : 1; $a ? $a : 1; $a ? $a : 1; $a ? $a : 1; $a ? $a : 1; $a ? $a : 1; $a ? $a : 1;',
-        ];
-
-        yield [
-            '<?php __FILE__.$a.$b{2}.$c->$a[0] ?  : 1;',
-            '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
         ];
 
         yield [
@@ -266,48 +258,13 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $i = $bar{0}[1]{2}[3] ?  : $foo;',
-            '<?php $i = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
-        ];
-
-        yield [
-            '<?php $z = $a[1][2] ?  : 1;',
-            '<?php $z = $a[1][2] ? $a[1][2] : 1;',
-        ];
-
-        yield [
-            '<?php $fooX = $bar{0}[1]{2}[3] ?  : $foo;',
-            '<?php $fooX = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
-        ];
-
-        yield [
-            '<?php $k = $bar{0} ?  : $foo;',
-            '<?php $k = $bar{0} ? $bar{0} : $foo;',
-        ];
-
-        yield [
             '<?php $j[$b ?  : $c];',
             '<?php $j[$b ? $b : $c];',
-        ];
-
-        yield 'ignore different type of index braces' => [
-            '<?php $z = $a[1] ?  : 1;',
-            '<?php $z = $a[1] ? $a{1} : 1;',
         ];
 
         yield [
             '<?php foo($a[0] ?  : $b[0], $c[0] ?  : $d[0]);',
             '<?php foo($a[0] ? $a[0] : $b[0], $c[0] ? $c[0] : $d[0]);',
-        ];
-
-        yield [
-            '<?php $l[$b[0] ?  : $c[0]];',
-            '<?php $l[$b[0] ? $b{0} : $c[0]];',
-        ];
-
-        yield [
-            '<?php $l{$b{0} ?  : $c{0}};',
-            '<?php $l{$b{0} ? $b{0} : $c{0}};',
         ];
 
         yield [
@@ -419,10 +376,6 @@ EOT
         ];
 
         yield [
-            '<?php $foo = $a->{$b} ? $bar{0} : $foo;',
-        ];
-
-        yield [
             '<?php $foo = $bar ? $$bar : 1;',
         ];
 
@@ -466,34 +419,98 @@ EOT
             '<?= $a ?  : $b ?>',
             '<?= $a ? $a : $b ?>',
         ];
+
+        yield [
+            '<?php new class() extends Foo {} ? new class{} : $a;',
+        ];
+
+        yield [
+            '<?php $a ?  : new class{};',
+            '<?php $a ? $a : new class{};',
+        ];
+
+        yield [
+            '<?php $a ?  : new class($a) extends Foo {};',
+            '<?php $a ? $a : new class($a) extends Foo {};',
+        ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
      */
-    public function test70Fix($expected, $input = null)
+    public function testFixPre80(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php $foo = $a->{$b} ? $bar{0} : $foo;',
+        ];
+
+        yield [
+            '<?php $l[$b[0] ?  : $c[0]];',
+            '<?php $l[$b[0] ? $b{0} : $c[0]];',
+        ];
+
+        yield [
+            '<?php $l{$b{0} ?  : $c{0}};',
+            '<?php $l{$b{0} ? $b{0} : $c{0}};',
+        ];
+
+        yield [
+            '<?php $z = $a[1][2] ?  : 1;',
+            '<?php $z = $a[1][2] ? $a[1][2] : 1;',
+        ];
+
+        yield [
+            '<?php $i = $bar{0}[1]{2}[3] ?  : $foo;',
+            '<?php $i = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
+        ];
+
+        yield [
+            '<?php $fooX = $bar{0}[1]{2}[3] ?  : $foo;',
+            '<?php $fooX = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
+        ];
+
+        yield [
+            '<?php $k = $bar{0} ?  : $foo;',
+            '<?php $k = $bar{0} ? $bar{0} : $foo;',
+        ];
+
+        yield 'ignore different type of index braces' => [
+            '<?php $z = $a[1] ?  : 1;',
+            '<?php $z = $a[1] ? $a{1} : 1;',
+        ];
+
+        yield [
+            '<?php __FILE__.$a.$b{2}.$c->$a[0] ?  : 1;',
+            '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
+        ];
+    }
+
+    /**
+     * @dataProvider provideDoNotFix80Cases
+     * @requires PHP 8.0
+     */
+    public function test80DoNotFix(string $input): void
+    {
+        $this->doTest($input);
+    }
+
+    public function provideDoNotFix80Cases(): array
     {
         return [
-            [
-                '<?php new class() extends Foo {} ? new class{} : $a;',
-            ],
-            [
-                '<?php $a ?  : new class{};',
-                '<?php $a ? $a : new class{};',
-            ],
-            [
-                '<?php $a ?  : new class($a) extends Foo {};',
-                '<?php $a ? $a : new class($a) extends Foo {};',
-            ],
+            ['<?php
+
+function test(#[TestAttribute] ?User $user) {}
+'],
+            ['<?php
+
+function test(#[TestAttribute] ?User $user = null) {}
+'],
         ];
     }
 }

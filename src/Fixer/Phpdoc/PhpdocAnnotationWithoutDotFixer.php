@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,12 +28,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
+    /**
+     * @var string[]
+     */
     private $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'PHPDoc annotation descriptions should not be a sentence.',
@@ -47,9 +53,9 @@ function foo ($bar) {}
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer, PhpdocTypesFixer, PhpdocTypesOrderFixer.
-     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocToCommentFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocToCommentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 17;
     }
@@ -57,7 +63,7 @@ function foo ($bar) {}
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -65,7 +71,7 @@ function foo ($bar) {}
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -75,7 +81,7 @@ function foo ($bar) {}
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotations();
 
-            if (empty($annotations)) {
+            if (0 === \count($annotations)) {
                 continue;
             }
 
@@ -89,7 +95,7 @@ function foo ($bar) {}
                 $lineAfterAnnotation = $doc->getLine($annotation->getEnd() + 1);
                 if (null !== $lineAfterAnnotation) {
                     $lineAfterAnnotationTrimmed = ltrim($lineAfterAnnotation->getContent());
-                    if ('' === $lineAfterAnnotationTrimmed || '*' !== $lineAfterAnnotationTrimmed[0]) {
+                    if ('' === $lineAfterAnnotationTrimmed || !str_starts_with($lineAfterAnnotationTrimmed, '*')) {
                         // malformed PHPDoc, missing asterisk !
                         continue;
                     }
@@ -113,8 +119,8 @@ function foo ($bar) {}
                     : '';
                 $content = Preg::replaceCallback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
-                    static function (array $matches) {
-                        return $matches[1].strtolower($matches[2]).$matches[3];
+                    static function (array $matches): string {
+                        return $matches[1].mb_strtolower($matches[2]).$matches[3];
                     },
                     $startLine->getContent(),
                     1

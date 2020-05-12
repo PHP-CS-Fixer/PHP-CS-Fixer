@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,11 +14,10 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\FunctionToConstantFixer
@@ -24,19 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FunctionToConstantFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             'Minimal case, alternative casing, alternative statement end.' => [
@@ -142,14 +140,6 @@ $a =
                         }
                     }
 
-                    trait A
-                    {
-                        public function A() {
-                            echo get_called_class(); // not in the default
-                            var_dump(__CLASS__);
-                        }
-                    }
-
                     class B
                     {
                         use A;
@@ -163,14 +153,6 @@ $a =
                             echo get_class($notMe);
                             echo get_class(/** 1 *//* 2 */);
                             echo GET_Class();
-                        }
-                    }
-
-                    trait A
-                    {
-                        public function A() {
-                            echo get_called_class(); // not in the default
-                            var_dump(get_class());
                         }
                     }
 
@@ -254,21 +236,24 @@ get_called_class#1
                 null,
                 ['functions' => ['get_class_this']],
             ],
+            [
+                "<?php namespace Foo;\nfunction &PHPversion(){}",
+            ],
         ];
     }
 
     /**
      * @dataProvider provideInvalidConfigurationKeysCases
      */
-    public function testInvalidConfigurationKeys(array $config)
+    public function testInvalidConfigurationKeys(array $config): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
 
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfigurationKeysCases()
+    public function provideInvalidConfigurationKeysCases(): array
     {
         return [
             [['functions' => ['a']]],
@@ -277,32 +262,27 @@ get_called_class#1
         ];
     }
 
-    public function testInvalidConfigurationValue()
+    public function testInvalidConfigurationValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
         $this->fixer->configure(['pi123']);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
      */
-    public function testFix70($expected, $input = null)
+    public function testFix81(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFix81Cases(): \Generator
     {
-        return [
-            [
-                '<?php function &PHPversion(){} ?>',
-            ],
+        yield 'first callable class' => [
+            '<?php $a = get_class(...);',
         ];
     }
 }

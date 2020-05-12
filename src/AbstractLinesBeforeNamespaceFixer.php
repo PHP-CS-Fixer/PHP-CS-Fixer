@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -20,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * This abstract fixer is responsible for ensuring that a certain number of
  * lines prefix a namespace declaration.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  */
@@ -29,11 +31,10 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
     /**
      * Make sure # of line breaks prefixing namespace is within given range.
      *
-     * @param int $index
      * @param int $expectedMin min. # of line breaks
      * @param int $expectedMax max. # of line breaks
      */
-    protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expectedMin, $expectedMax)
+    protected function fixLinesBeforeNamespace(Tokens $tokens, int $index, int $expectedMin, int $expectedMax): void
     {
         // Let's determine the total numbers of new lines before the namespace
         // and the opening token
@@ -41,22 +42,27 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
         $precedingNewlines = 0;
         $newlineInOpening = false;
         $openingToken = null;
+
         for ($i = 1; $i <= 2; ++$i) {
             if (isset($tokens[$index - $i])) {
                 $token = $tokens[$index - $i];
+
                 if ($token->isGivenKind(T_OPEN_TAG)) {
                     $openingToken = $token;
                     $openingTokenIndex = $index - $i;
-                    $newlineInOpening = false !== strpos($token->getContent(), "\n");
+                    $newlineInOpening = str_contains($token->getContent(), "\n");
+
                     if ($newlineInOpening) {
                         ++$precedingNewlines;
                     }
 
                     break;
                 }
+
                 if (false === $token->isGivenKind(T_WHITESPACE)) {
                     break;
                 }
+
                 $precedingNewlines += substr_count($token->getContent(), "\n");
             }
         }
@@ -73,6 +79,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             if ($previous->isWhitespace()) {
                 $tokens->clearAt($previousIndex);
             }
+
             // Remove new lines in opening token
             if ($newlineInOpening) {
                 $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
@@ -83,6 +90,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $newlinesForWhitespaceToken = $expectedMax;
+
         if (null !== $openingToken) {
             // Use the configured line ending for the PHP opening tag
             $content = rtrim($openingToken->getContent());
@@ -90,6 +98,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, $newContent]);
             --$newlinesForWhitespaceToken;
         }
+
         if (0 === $newlinesForWhitespaceToken) {
             // We have all the needed new lines in the opening tag
             if ($previous->isWhitespace()) {
@@ -99,6 +108,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
 
             return;
         }
+
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
             $tokens[$previousIndex] = new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).substr($previous->getContent(), strrpos($previous->getContent(), "\n") + 1)]);

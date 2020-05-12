@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class DeprecatedFixerOptionTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
@@ -36,7 +38,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
@@ -46,7 +48,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame('foo', $option->getName());
     }
 
-    public function testGetDescription()
+    public function testGetDescription(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
@@ -57,11 +59,9 @@ final class DeprecatedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param bool $isRequired
-     *
      * @dataProvider provideHasDefaultCases
      */
-    public function testHasDefault($isRequired)
+    public function testHasDefault(bool $isRequired): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', $isRequired),
@@ -71,7 +71,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame(!$isRequired, $option->hasDefault());
     }
 
-    public function provideHasDefaultCases()
+    public function provideHasDefaultCases(): array
     {
         return [
             [true],
@@ -84,7 +84,7 @@ final class DeprecatedFixerOptionTest extends TestCase
      *
      * @dataProvider provideGetDefaultCases
      */
-    public function testGetDefault($default)
+    public function testGetDefault($default): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', false, $default),
@@ -94,7 +94,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame($default, $option->getDefault());
     }
 
-    public function provideGetDefaultCases()
+    public function provideGetDefaultCases(): array
     {
         return [
             ['foo'],
@@ -102,7 +102,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         ];
     }
 
-    public function testGetAllowedTypes()
+    public function testGetAllowedTypes(): void
     {
         $allowedTypes = ['string', 'bool'];
 
@@ -114,7 +114,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
-    public function testGetAllowedValues()
+    public function testGetAllowedValues(): void
     {
         $allowedValues = ['string', 'bool'];
 
@@ -126,9 +126,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame($allowedValues, $option->getAllowedValues());
     }
 
-    public function testGetNormalizer()
+    public function testGetNormalizer(): void
     {
-        $normalizer = static function () {};
+        $normalizer = static function (): void {};
 
         $decoratedOption = $this->prophesize(FixerOptionInterface::class);
         $decoratedOption->getNormalizer()->willReturn($normalizer);
@@ -141,7 +141,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame($normalizer, $option->getNormalizer());
     }
 
-    public function testGetDeprecationMessage()
+    public function testGetDeprecationMessage(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),

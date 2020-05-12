@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,17 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SingleQuoteFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [
@@ -121,12 +120,9 @@ EOF
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestSingleQuoteFixCases
      */
-    public function testSingleQuoteFix($expected, $input = null)
+    public function testSingleQuoteFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'strings_containing_single_quote_chars' => true,
@@ -135,7 +131,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideTestSingleQuoteFixCases()
+    public function provideTestSingleQuoteFixCases(): array
     {
         return [
             [

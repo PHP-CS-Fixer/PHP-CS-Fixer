@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,8 +20,6 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @coversNothing
@@ -28,11 +28,10 @@ use PhpCsFixer\ToolInfo;
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $config = $this->loadConfig();
 
-        static::assertInstanceOf(\PhpCsFixer\Config::class, $config);
         static::assertEmpty($config->getCustomFixers());
         static::assertNotEmpty($config->getRules());
 
@@ -47,18 +46,15 @@ final class ProjectFixerConfigurationTest extends TestCase
         $resolver->getFixers();
     }
 
-    public function testRuleDefinedAlpha()
+    public function testRuleDefinedAlpha(): void
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
-        static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
+        static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php-cs-fixer.dist.php` of this project.');
     }
 
-    /**
-     * @return Config
-     */
-    private function loadConfig()
+    private function loadConfig(): Config
     {
-        return require __DIR__.'/../../.php_cs.dist';
+        return require __DIR__.'/../../.php-cs-fixer.dist.php';
     }
 }

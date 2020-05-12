@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,10 +14,11 @@
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
@@ -25,7 +28,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 {
-    public function testConversion()
+    public function testWindowsLinebreaks(): void
+    {
+        $this->doTest(
+            "<?php /**\r\n * @param string|string[] \$bar\r\n *\r\n * @return int[]\r\n */\r\n",
+            "<?php /**\r\n * @param STRING|String[] \$bar\r\n *\r\n * @return inT[]\r\n */\r\n"
+        );
+    }
+
+    public function testConversion(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -49,7 +60,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testArrayStuff()
+    public function testArrayStuff(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -73,7 +84,25 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMixedAndVoid()
+    public function testNestedArrayStuff(): void
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return int[][][]
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return INT[][][]
+     */
+EOF;
+        $this->doTest($expected, $input);
+    }
+
+    public function testMixedAndVoid(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -97,7 +126,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testIterableFix()
+    public function testIterableFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -121,7 +150,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMethodAndPropertyFix()
+    public function testMethodAndPropertyFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -148,7 +177,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testThrows()
+    public function testThrows(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -169,12 +198,12 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testInlineDoc()
+    public function testInlineDoc(): void
     {
         $expected = <<<'EOF'
 <?php
     /**
-     * Does stuffs with stuffs.
+     * Does stuff with stuffs.
      *
      * @param array $stuffs {
      *     @var bool $foo
@@ -187,7 +216,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * Does stuffs with stuffs.
+     * Does stuff with stuffs.
      *
      * @param array $stuffs {
      *     @var Bool $foo
@@ -200,7 +229,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithConfig()
+    public function testWithConfig(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -226,10 +255,39 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWrongConfig()
+    public function testGenerics(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');
+        $this->fixer->configure(['groups' => ['simple', 'meta']]);
+        $this->doTest(
+            '<?php
+            /**
+             * @param array<int, object> $a
+             * @param array<iterable> $b
+             * @param array<parent|$this|self> $c
+             * @param array<\int, \object> $d
+             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
+             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
+             *
+             * @return array<int, array<string, array<int, DoNotChangeThisAsThisIsAClass>>>
+             */',
+            '<?php
+            /**
+             * @param ARRAY<INT, OBJECT> $a
+             * @param ARRAY<ITERABLE> $b
+             * @param array<Parent|$This|Self> $c
+             * @param ARRAY<\INT, \OBJECT> $d
+             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
+             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
+             *
+             * @return ARRAY<INT, ARRAY<STRING, ARRAY<INT, DoNotChangeThisAsThisIsAClass>>>
+             */'
+        );
+    }
+
+    public function testWrongConfig(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');
 
         $this->fixer->configure(['groups' => ['__TEST__']]);
     }

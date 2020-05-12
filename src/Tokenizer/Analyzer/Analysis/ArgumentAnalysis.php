@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -41,16 +43,11 @@ final class ArgumentAnalysis
     /**
      * The type analysis of the argument.
      *
-     * @var null|TypeAnalysis
+     * @var ?TypeAnalysis
      */
     private $typeAnalysis;
 
-    /**
-     * @param string      $name
-     * @param int         $nameIndex
-     * @param null|string $default
-     */
-    public function __construct($name, $nameIndex, $default, TypeAnalysis $typeAnalysis = null)
+    public function __construct(string $name, int $nameIndex, ?string $default, ?TypeAnalysis $typeAnalysis = null)
     {
         $this->name = $name;
         $this->nameIndex = $nameIndex;
@@ -58,50 +55,32 @@ final class ArgumentAnalysis
         $this->typeAnalysis = $typeAnalysis ?: null;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getDefault()
+    public function getDefault(): ?string
     {
         return $this->default;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasDefault()
+    public function hasDefault(): bool
     {
         return null !== $this->default;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
-    public function getNameIndex()
+    public function getNameIndex(): int
     {
         return $this->nameIndex;
     }
 
-    /**
-     * @return null|TypeAnalysis
-     */
-    public function getTypeAnalysis()
+    public function getTypeAnalysis(): ?TypeAnalysis
     {
         return $this->typeAnalysis;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasTypeAnalysis()
+    public function hasTypeAnalysis(): bool
     {
         return null !== $this->typeAnalysis;
     }

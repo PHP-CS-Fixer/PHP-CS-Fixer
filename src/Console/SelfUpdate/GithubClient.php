@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -20,7 +22,7 @@ final class GithubClient implements GithubClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getTags()
+    public function getTags(): array
     {
         $url = 'https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/tags';
 

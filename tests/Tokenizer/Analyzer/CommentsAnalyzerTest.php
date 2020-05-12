@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,7 +20,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -26,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CommentsAnalyzerTest extends TestCase
 {
-    public function testWhenNotPointingToComment()
+    public function testWhenNotPointingToComment(): void
     {
         $analyzer = new CommentsAnalyzer();
         $tokens = Tokens::fromCode('<?php $no; $comment; $here;');
@@ -38,13 +39,9 @@ final class CommentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string     $code
-     * @param int        $index
-     * @param null|array $borders
-     *
      * @dataProvider provideCommentsCases
      */
-    public function testComments($code, $index, $borders)
+    public function testComments(string $code, int $index, ?array $borders): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
@@ -53,7 +50,7 @@ final class CommentsAnalyzerTest extends TestCase
         static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideCommentsCases()
+    public function provideCommentsCases(): array
     {
         return [
             'discover all 4 comments for the 1st comment with slash' => [
@@ -148,7 +145,7 @@ $bar;',
         ];
     }
 
-    public function testHeaderCommentAcceptsOnlyComments()
+    public function testHeaderCommentAcceptsOnlyComments(): void
     {
         $tokens = Tokens::fromCode('<?php 1; 2; 3;');
         $analyzer = new CommentsAnalyzer();
@@ -159,12 +156,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideHeaderCommentCases
      */
-    public function testHeaderComment($code, $index)
+    public function testHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
@@ -172,7 +166,7 @@ $bar;',
         static::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideHeaderCommentCases()
+    public function provideHeaderCommentCases(): array
     {
         return [
             ['<?php /* Comment */ namespace Foo;', 1],
@@ -184,12 +178,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideNotHeaderCommentCases
      */
-    public function testNotHeaderComment($code, $index)
+    public function testNotHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
@@ -197,7 +188,7 @@ $bar;',
         static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideNotHeaderCommentCases()
+    public function provideNotHeaderCommentCases(): array
     {
         return [
             ['<?php $foo; /* Comment */ $bar;', 4],
@@ -209,7 +200,7 @@ $bar;',
         ];
     }
 
-    public function testPhpdocCandidateAcceptsOnlyComments()
+    public function testPhpdocCandidateAcceptsOnlyComments(): void
     {
         $tokens = Tokens::fromCode('<?php 1; 2; 3;');
         $analyzer = new CommentsAnalyzer();
@@ -220,11 +211,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider providePhpdocCandidateCases
      */
-    public function testPhpdocCandidate($code)
+    public function testPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
@@ -233,7 +222,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidateCases()
+    public function providePhpdocCandidateCases(): array
     {
         return [
             ['<?php /* @var Foo */ $bar = "baz";'],
@@ -274,11 +263,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider provideNotPhpdocCandidateCases
      */
-    public function testNotPhpdocCandidate($code)
+    public function testNotPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
@@ -287,20 +274,22 @@ $bar;',
         static::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function provideNotPhpdocCandidateCases()
+    public function provideNotPhpdocCandidateCases(): array
     {
         return [
             ['<?php class Foo {} /* At the end of file */'],
             ['<?php class Foo { public $baz; public function baz(); /* At the end of class */ }'],
             ['<?php /* Before increment */ $i++;'],
             ['<?php /* Comment, but not doc block */ if ($foo === -1) {};'],
+            ['<?php
+                $a = $b[1]; // @phpstan-ignore-line
+
+                static::bar();',
+            ],
         ];
     }
 
-    /**
-     * @requires PHP 7.1
-     */
-    public function testPhpdocCandidate71()
+    public function testPhpdocCandidate71(): void
     {
         $tokens = Tokens::fromCode('<?php /* @var int $x */ [$x] = [2];');
         $analyzer = new CommentsAnalyzer();
@@ -308,10 +297,7 @@ $bar;',
         static::assertTrue($analyzer->isHeaderComment($tokens, 1));
     }
 
-    /**
-     * @requires PHP 7.1
-     */
-    public function testNotPhpdocCandidate71()
+    public function testNotPhpdocCandidate71(): void
     {
         $tokens = Tokens::fromCode('<?php /* @var int $a */ [$b] = [2];');
         $analyzer = new CommentsAnalyzer();
@@ -320,12 +306,10 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider providePhpdocCandidatePhp74Cases
      * @requires PHP 7.4
      */
-    public function testPhpdocCandidatePhp74($code)
+    public function testPhpdocCandidatePhp74(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
@@ -334,10 +318,79 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp74Cases()
+    public function providePhpdocCandidatePhp74Cases(): array
     {
         return [
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
+        ];
+    }
+
+    /**
+     * @dataProvider providePhpdocCandidatePhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testPhpdocCandidatePhp80(string $code): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+    }
+
+    public function providePhpdocCandidatePhp80Cases(): array
+    {
+        return [
+            ['<?php
+/**
+ * @Annotation
+ */
+#[CustomAnnotationA]
+Class MyAnnotation3 {}'],
+        ];
+    }
+
+    /**
+     * @dataProvider providePhpdocCandidatePhp81Cases
+     * @requires PHP 8.1
+     */
+    public function testPhpdocCandidatePhp81(string $code): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+    }
+
+    public function providePhpdocCandidatePhp81Cases(): \Generator
+    {
+        yield 'public readonly' => [
+            '<?php class Foo { /* */ public readonly int $a1; }',
+        ];
+
+        yield 'readonly public' => [
+            '<?php class Foo { /* */ readonly public int $a1; }',
+        ];
+
+        yield 'readonly union' => [
+            '<?php class Foo { /* */ readonly A|B $a1; }',
+        ];
+
+        yield 'public final const' => [
+            '<?php final class Foo2 extends B implements A
+            {
+                /* */
+                public final const Y = "i";
+            }',
+        ];
+
+        yield 'final public const' => [
+            '<?php final class Foo2 extends B implements A
+            {
+                /* */
+                final public const Y = "i";
+            }',
         ];
     }
 }

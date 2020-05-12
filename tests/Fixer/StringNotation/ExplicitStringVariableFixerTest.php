@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,19 +26,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         $input = $expected = '<?php';
+
         for ($inc = 1; $inc < 15; ++$inc) {
             $input .= " \$var{$inc} = \"My name is \$name!\";";
             $expected .= " \$var{$inc} = \"My name is \${name}!\";";
@@ -216,24 +216,6 @@ EOF;
                 '<?php $pair = "${foo}{$bar[0]}";',
                 '<?php $pair = "$foo{$bar[0]}";',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideTestFix71Cases()
-    {
-        return [
             [
                 '<?php $a = "My name is {$array[-1]} !";',
                 '<?php $a = "My name is $array[-1] !";',

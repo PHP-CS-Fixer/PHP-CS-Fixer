@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,28 +26,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDocblocksCases
-     */
-    public function testFix($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTraitsCases
+     * @dataProvider provideFixCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideDocblocksCases()
+    public function provideDocblocksCases(): array
     {
         $cases = [];
 
@@ -552,10 +543,140 @@ $loader = require __DIR__.\'/../vendor/autoload.php\';
 ',
         ];
 
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            null,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @fix-me Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @fix-me Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['fix-me']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* @todoNot Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @TODO Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @todoNot Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @TODO Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/**
+ * @deprecated This tag is not in the list but the next one is
+ * @todo This should be a PHPDoc as the tag is on "ignored_tags" list
+ */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/**
+ * @deprecated This tag is not in the list but the next one is
+ * @todo This should be a PHPDoc as the tag is on "ignored_tags" list
+ */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
         return $cases;
     }
 
-    public function provideTraitsCases()
+    public function provideTraitsCases(): array
     {
         return [
             [
@@ -573,19 +694,7 @@ trait DocBlocks
         ];
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -600,24 +709,6 @@ echo 123;
 $session = new Session();
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases()
-    {
-        return [
             [
                 '<?php
 $first = true;// needed because by default first docblock is never fixed.
@@ -652,18 +743,15 @@ $first = true;// needed because by default first docblock is never fixed.
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
@@ -710,6 +798,83 @@ $first = true;// needed because by default first docblock is never fixed.
                      */
                     var ? array $foo;
                 }',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): array
+    {
+        return [
+            [
+                '<?php
+/**
+ * @Annotation
+ */
+#[CustomAnnotationA]
+Class MyAnnotation3
+{
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationB]
+    #[CustomAnnotationC]
+    public function foo() {}
+
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationD]
+    public $var;
+
+    /*
+     * end of class
+     */
+}',
+                '<?php
+/**
+ * @Annotation
+ */
+#[CustomAnnotationA]
+Class MyAnnotation3
+{
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationB]
+    #[CustomAnnotationC]
+    public function foo() {}
+
+    /**
+     * @Annotation
+     */
+    #[CustomAnnotationD]
+    public $var;
+
+    /**
+     * end of class
+     */
+}',
+            ],
+            [
+                '<?php
+class Foo
+{
+	public function __construct(
+	    /** @var string Do not convert this */
+		public string $bar
+	) {
+	}
+}
+',
             ],
         ];
     }

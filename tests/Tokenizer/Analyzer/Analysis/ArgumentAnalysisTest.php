@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,28 +27,28 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  */
 final class ArgumentAnalysisTest extends TestCase
 {
-    public function testName()
+    public function testName(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
         static::assertSame('$name', $analysis->getName());
         static::assertSame(1, $analysis->getNameIndex());
     }
 
-    public function testDefault()
+    public function testDefault(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, 'default', null);
         static::assertTrue($analysis->hasDefault());
         static::assertSame('default', $analysis->getDefault());
     }
 
-    public function testNoDefaultFound()
+    public function testNoDefaultFound(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
         static::assertFalse($analysis->hasDefault());
         static::assertNull($analysis->getDefault());
     }
 
-    public function testType()
+    public function testType(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, new TypeAnalysis('string', 1, 4));
         static::assertTrue($analysis->hasTypeAnalysis());
@@ -55,7 +57,7 @@ final class ArgumentAnalysisTest extends TestCase
         static::assertSame(4, $analysis->getTypeAnalysis()->getEndIndex());
     }
 
-    public function testNoTypeFound()
+    public function testNoTypeFound(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
         static::assertFalse($analysis->hasDefault());

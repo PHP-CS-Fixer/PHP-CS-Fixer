@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer
@@ -24,17 +24,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class StaticLambdaFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input)
+    public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'sample' => [
@@ -61,16 +58,14 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideDoNotFixCases
      */
-    public function testDoNotFix($expected)
+    public function testDoNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases()
+    public function provideDoNotFixCases(): array
     {
         return [
             [
@@ -227,22 +222,32 @@ $b = new Q();
 $b->abc();
 ',
             ],
+            [
+                '<?php
+
+                class A {}
+                class B extends A {
+                    public function foo()
+                    {
+                        $c = function () {
+                            return parent::foo();
+                        };
+                    }
+                }',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input = null)
+    public function testFixPhp74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [
@@ -258,8 +263,12 @@ $b->abc();
                 '<?php $a  /**/  =   /**/ fn() => null;',
             ],
             [
-                '<?php $a  /**/  =   /**/static fn() => null;',
-                '<?php $a  /**/  =   /**/fn() => null;',
+                '<?php $a  /**/  =   /**/static fn() => null; echo $this->foo();',
+                '<?php $a  /**/  =   /**/fn() => null; echo $this->foo();',
+            ],
+            [
+                '<?php $a  /**/  =   /**/ static fn() => null ?> <?php echo $this->foo();',
+                '<?php $a  /**/  =   /**/ fn() => null ?> <?php echo $this->foo();',
             ],
             [
                 '<?php
@@ -274,8 +283,39 @@ $b->abc();
                 ',
             ],
             [
-                '<?php static fn($a = ["foo" => $this]) => [];',
-                '<?php fn($a = ["foo" => $this]) => [];',
+                '<?php static fn($a = ["foo" => "bar"]) => [];',
+                '<?php fn($a = ["foo" => "bar"]) => [];',
+            ],
+            [
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            static fn ($item) => $item->getName(),
+                            $this->getItems()
+                        );
+                    }
+                }',
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            fn ($item) => $item->getName(),
+                            $this->getItems()
+                        );
+                    }
+                }',
+            ],
+            [
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            fn ($item) => $item->getName(1, $this->foo()),
+                            $this->getItems()
+                        );
+                    }
+                }',
             ],
         ];
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class CodeSampleTest extends TestCase
 {
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $code = '<php echo $foo;';
         $configuration = [
@@ -40,7 +42,7 @@ final class CodeSampleTest extends TestCase
         static::assertSame($configuration, $codeSample->getConfiguration());
     }
 
-    public function testConfigurationDefaultsToNull()
+    public function testConfigurationDefaultsToNull(): void
     {
         $codeSample = new CodeSample('<php echo $foo;');
 

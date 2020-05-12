@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -30,7 +31,7 @@ final class RegularCallableCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Callables must be called without using `call_user_func*` when possible.',
@@ -44,29 +45,38 @@ final class RegularCallableCallFixer extends AbstractFixer
     call_user_func_array($callback, [1, 2]);
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
 call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
-',
-                    new VersionSpecification(70000)
+'
                 ),
             ],
             null,
-            'Risky when the `call_user_func` or `call_user_func_array` function is overridden.'
+            'Risky when the `call_user_func` or `call_user_func_array` function is overridden or when are used in constructions that should be avoided, like `call_user_func_array(\'foo\', [\'bar\' => \'baz\'])` or `call_user_func($foo, $foo = \'bar\')`.'
         );
     }
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NativeFunctionInvocationFixer.
      */
-    public function isCandidate(Tokens $tokens)
+    public function getPriority(): int
+    {
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -74,7 +84,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
@@ -100,10 +110,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
     }
 
-    /**
-     * @param int $index
-     */
-    private function processCall(Tokens $tokens, $index, array $arguments)
+    private function processCall(Tokens $tokens, int $index, array $arguments): void
     {
         $firstArgIndex = $tokens->getNextMeaningfulToken(
             $tokens->getNextMeaningfulToken($index)
@@ -118,7 +125,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
                 return; // first argument is an expression like `call_user_func("foo"."bar", ...)`, not supported!
             }
 
-            $newCallTokens = Tokens::fromCode('<?php '.substr($firstArgToken->getContent(), 1, -1).'();');
+            $newCallTokens = Tokens::fromCode('<?php '.substr(str_replace('\\\\', '\\', $firstArgToken->getContent()), 1, -1).'();');
             $newCallTokensSize = $newCallTokens->count();
             $newCallTokens->clearAt(0);
             $newCallTokens->clearRange($newCallTokensSize - 3, $newCallTokensSize - 1);
@@ -126,17 +133,15 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgIndex);
         } elseif ($firstArgToken->isGivenKind([T_FUNCTION, T_STATIC])) {
-            if (\PHP_VERSION_ID >= 70000) {
-                $firstArgEndIndex = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_CURLY_BRACE,
-                    $tokens->getNextTokenOfKind($firstArgIndex, ['{'])
-                );
+            $firstArgEndIndex = $tokens->findBlockEnd(
+                Tokens::BLOCK_TYPE_CURLY_BRACE,
+                $tokens->getNextTokenOfKind($firstArgIndex, ['{'])
+            );
 
-                $newCallTokens = $this->getTokensSubcollection($tokens, $firstArgIndex, $firstArgEndIndex);
-                $newCallTokens->insertAt($newCallTokens->count(), new Token(')'));
-                $newCallTokens->insertAt(0, new Token('('));
-                $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgEndIndex);
-            }
+            $newCallTokens = $this->getTokensSubcollection($tokens, $firstArgIndex, $firstArgEndIndex);
+            $newCallTokens->insertAt($newCallTokens->count(), new Token(')'));
+            $newCallTokens->insertAt(0, new Token('('));
+            $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgEndIndex);
         } elseif ($firstArgToken->isGivenKind(T_VARIABLE)) {
             $firstArgEndIndex = reset($arguments);
 
@@ -178,10 +183,6 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             }
 
             if ($complex) {
-                if (\PHP_VERSION_ID < 70000) {
-                    return;
-                }
-
                 $newCallTokens->insertAt($newCallTokens->count(), new Token(')'));
                 $newCallTokens->insertAt(0, new Token('('));
             }
@@ -189,20 +190,15 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
     }
 
-    /**
-     * @param int $callIndex
-     * @param int $firstArgStartIndex
-     * @param int $firstArgEndIndex
-     */
-    private function replaceCallUserFuncWithCallback(Tokens $tokens, $callIndex, Tokens $newCallTokens, $firstArgStartIndex, $firstArgEndIndex)
+    private function replaceCallUserFuncWithCallback(Tokens $tokens, int $callIndex, Tokens $newCallTokens, int $firstArgStartIndex, int $firstArgEndIndex): void
     {
-        $tokens->clearRange($firstArgStartIndex, $firstArgEndIndex); // FRS end?
+        $tokens->clearRange($firstArgStartIndex, $firstArgEndIndex);
 
         $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgEndIndex);
         $afterFirstArgToken = $tokens[$afterFirstArgIndex];
 
         if ($afterFirstArgToken->equals(',')) {
-            $useEllipsis = $tokens[$callIndex]->equals([T_STRING, 'call_user_func_array']);
+            $useEllipsis = $tokens[$callIndex]->equals([T_STRING, 'call_user_func_array'], false);
 
             if ($useEllipsis) {
                 $secondArgIndex = $tokens->getNextMeaningfulToken($afterFirstArgIndex);
@@ -214,7 +210,6 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
 
         $tokens->overrideRange($callIndex, $callIndex, $newCallTokens);
-
         $prevIndex = $tokens->getPrevMeaningfulToken($callIndex);
 
         if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
@@ -222,17 +217,17 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
     }
 
-    private function getTokensSubcollection(Tokens $tokens, $indexStart, $indexEnd)
+    private function getTokensSubcollection(Tokens $tokens, int $indexStart, int $indexEnd): Tokens
     {
         $size = $indexEnd - $indexStart + 1;
-        $subcollection = new Tokens($size);
+        $subCollection = new Tokens($size);
 
         for ($i = 0; $i < $size; ++$i) {
             /** @var Token $toClone */
             $toClone = $tokens[$i + $indexStart];
-            $subcollection[$i] = clone $toClone;
+            $subCollection[$i] = clone $toClone;
         }
 
-        return $subcollection;
+        return $subCollection;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,7 +18,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -45,7 +47,7 @@ final class DocBlockTest extends TestCase
      * @return void
      */';
 
-    public function testContent()
+    public function testContent(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -53,21 +55,21 @@ final class DocBlockTest extends TestCase
         static::assertSame(self::$sample, (string) $doc);
     }
 
-    public function testEmptyContent()
+    public function testEmptyContent(): void
     {
         $doc = new DocBlock('');
 
         static::assertSame('', $doc->getContent());
     }
 
-    public function testGetLines()
+    public function testGetLines(): void
     {
         $doc = new DocBlock(self::$sample);
+        $lines = $doc->getLines();
 
-        static::assertInternalType('array', $doc->getLines());
-        static::assertCount(15, $doc->getLines());
+        static::assertCount(15, $lines);
 
-        foreach ($doc->getLines() as $index => $line) {
+        foreach ($lines as $index => $line) {
             static::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
             static::assertSame($doc->getLine($index), $line);
         }
@@ -75,28 +77,26 @@ final class DocBlockTest extends TestCase
         static::assertEmpty($doc->getLine(15));
     }
 
-    public function testGetAnnotations()
+    public function testGetAnnotations(): void
     {
         $doc = new DocBlock(self::$sample);
+        $annotations = $doc->getAnnotations();
 
-        static::assertInternalType('array', $doc->getAnnotations());
-        static::assertCount(5, $doc->getAnnotations());
+        static::assertCount(5, $annotations);
 
-        foreach ($doc->getAnnotations() as $index => $annotations) {
-            static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotations);
-            static::assertSame($doc->getAnnotation($index), $annotations);
+        foreach ($annotations as $index => $annotation) {
+            static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
+            static::assertSame($doc->getAnnotation($index), $annotation);
         }
 
         static::assertEmpty($doc->getAnnotation(5));
     }
 
-    public function testGetAnnotationsOfTypeParam()
+    public function testGetAnnotationsOfTypeParam(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('param');
 
-        static::assertInternalType('array', $annotations);
         static::assertCount(3, $annotations);
 
         $first = '     * @param string $hello
@@ -112,13 +112,11 @@ final class DocBlockTest extends TestCase
         static::assertSame($third, $annotations[2]->getContent());
     }
 
-    public function testGetAnnotationsOfTypeThrows()
+    public function testGetAnnotationsOfTypeThrows(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('throws');
 
-        static::assertInternalType('array', $annotations);
         static::assertCount(1, $annotations);
 
         $content = '     * @throws \Exception asdnjkasd
@@ -129,13 +127,11 @@ final class DocBlockTest extends TestCase
         static::assertSame($content, $annotations[0]->getContent());
     }
 
-    public function testGetAnnotationsOfTypeReturn()
+    public function testGetAnnotationsOfTypeReturn(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('return');
 
-        static::assertInternalType('array', $annotations);
         static::assertCount(1, $annotations);
 
         $content = '     * @return void
@@ -144,17 +140,15 @@ final class DocBlockTest extends TestCase
         static::assertSame($content, $annotations[0]->getContent());
     }
 
-    public function testGetAnnotationsOfTypeFoo()
+    public function testGetAnnotationsOfTypeFoo(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('foo');
 
-        static::assertInternalType('array', $annotations);
         static::assertCount(0, $annotations);
     }
 
-    public function testIsMultiLIne()
+    public function testIsMultiLIne(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -163,13 +157,8 @@ final class DocBlockTest extends TestCase
 
     /**
      * @dataProvider provideDocBlocksToConvertToMultiLineCases
-     *
-     * @param string $inputDocBlock
-     * @param string $outputDocBlock
-     * @param mixed  $indent
-     * @param mixed  $newLine
      */
-    public function testMakeMultiLIne($inputDocBlock, $outputDocBlock = null, $indent = '', $newLine = "\n")
+    public function testMakeMultiLIne(string $inputDocBlock, string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeMultiLine($indent, $newLine);
@@ -181,7 +170,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($outputDocBlock, $doc->getContent());
     }
 
-    public function provideDocBlocksToConvertToMultiLineCases()
+    public function provideDocBlocksToConvertToMultiLineCases(): array
     {
         return [
             'It keeps a multi line doc block as is' => [
@@ -213,11 +202,8 @@ final class DocBlockTest extends TestCase
 
     /**
      * @dataProvider provideDocBlocksToConvertToSingleLineCases
-     *
-     * @param string $inputDocBlock
-     * @param string $outputDocBlock
      */
-    public function testMakeSingleLine($inputDocBlock, $outputDocBlock = null)
+    public function testMakeSingleLine(string $inputDocBlock, string $outputDocBlock = null): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeSingleLine();
@@ -229,7 +215,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($outputDocBlock, $doc->getContent());
     }
 
-    public function provideDocBlocksToConvertToSingleLineCases()
+    public function provideDocBlocksToConvertToSingleLineCases(): array
     {
         return [
             'It keeps a single line doc block as is' => [

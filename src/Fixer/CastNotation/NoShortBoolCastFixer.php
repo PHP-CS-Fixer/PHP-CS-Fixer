@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,12 +17,10 @@ namespace PhpCsFixer\Fixer\CastNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class NoShortBoolCastFixer extends AbstractFixer
 {
     /**
@@ -28,7 +28,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
      *
      * Must run before CastSpacesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -9;
     }
@@ -36,7 +36,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Short cast `bool` using double exclamation mark should not be used.',
@@ -47,7 +47,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('!');
     }
@@ -55,7 +55,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index > 1; --$index) {
             if ($tokens[$index]->equals('!')) {
@@ -64,12 +64,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function fixShortCast(Tokens $tokens, $index)
+    private function fixShortCast(Tokens $tokens, int $index): int
     {
         for ($i = $index - 1; $i > 1; --$i) {
             if ($tokens[$i]->equals('!')) {
@@ -86,11 +81,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
         return $i;
     }
 
-    /**
-     * @param int $start
-     * @param int $end
-     */
-    private function fixShortCastToBoolCast(Tokens $tokens, $start, $end)
+    private function fixShortCastToBoolCast(Tokens $tokens, int $start, int $end): void
     {
         for (; $start <= $end; ++$start) {
             if (

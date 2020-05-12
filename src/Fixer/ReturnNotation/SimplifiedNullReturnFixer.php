@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,26 +17,25 @@ namespace PhpCsFixer\Fixer\ReturnNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class SimplifiedNullReturnFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'A return statement wishing to return `void` should not return `null`.',
             [
                 new CodeSample("<?php return null;\n"),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'EOT'
 <?php
 function foo() { return null; }
@@ -43,8 +44,6 @@ function baz(): ?int { return null; }
 function xyz(): void { return null; }
 
 EOT
-                    ,
-                    new VersionSpecification(70100)
                 ),
             ]
         );
@@ -53,17 +52,17 @@ EOT
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessReturnFixer.
+     * Must run before NoUselessReturnFixer, VoidReturnFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
-        return -17;
+        return 16;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_RETURN);
     }
@@ -71,7 +70,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_RETURN)) {
@@ -86,10 +85,8 @@ EOT
 
     /**
      * Clear the return statement located at a given index.
-     *
-     * @param int $index
      */
-    private function clear(Tokens $tokens, $index)
+    private function clear(Tokens $tokens, int $index): void
     {
         while (!$tokens[++$index]->equals(';')) {
             if ($this->shouldClearToken($tokens, $index)) {
@@ -100,12 +97,8 @@ EOT
 
     /**
      * Does the return statement located at a given index need fixing?
-     *
-     * @param int $index
-     *
-     * @return bool
      */
-    private function needFixing(Tokens $tokens, $index)
+    private function needFixing(Tokens $tokens, int $index): bool
     {
         if ($this->isStrictOrNullableReturnTypeFunction($tokens, $index)) {
             return false;
@@ -127,10 +120,8 @@ EOT
      * Is the return within a function with a non-void or nullable return type?
      *
      * @param int $returnIndex Current return token index
-     *
-     * @return bool
      */
-    private function isStrictOrNullableReturnTypeFunction(Tokens $tokens, $returnIndex)
+    private function isStrictOrNullableReturnTypeFunction(Tokens $tokens, int $returnIndex): bool
     {
         $functionIndex = $returnIndex;
         do {
@@ -156,12 +147,8 @@ EOT
      *
      * If the token is a comment, or is whitespace that is immediately before a
      * comment, then we'll leave it alone.
-     *
-     * @param int $index
-     *
-     * @return bool
      */
-    private function shouldClearToken(Tokens $tokens, $index)
+    private function shouldClearToken(Tokens $tokens, int $index): bool
     {
         $token = $tokens[$index];
 

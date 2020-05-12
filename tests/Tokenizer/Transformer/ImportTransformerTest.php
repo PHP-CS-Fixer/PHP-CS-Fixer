@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,9 @@ use PhpCsFixer\Tokenizer\CT;
 final class ImportTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -43,7 +43,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -89,9 +89,39 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
                 ],
             ],
             [
+                '<?php function & foo() {}',
+                [
+                    1 => T_FUNCTION,
+                ],
+            ],
+            [
                 '<?php use function Foo\\bar;',
                 [
                     3 => CT::T_FUNCTION_IMPORT,
+                ],
+            ],
+            [
+                '<?php use Foo\ { function Bar };',
+                [
+                    8 => CT::T_FUNCTION_IMPORT,
+                ],
+            ],
+            [
+                '<?php use Foo\ {
+                    function F1,
+                    const Constants\C1,
+                    function Functions\F2,
+                    const C2,
+                    function F3,
+                    const C3,
+                };',
+                [
+                    8 => CT::T_FUNCTION_IMPORT,
+                    13 => CT::T_CONST_IMPORT,
+                    20 => CT::T_FUNCTION_IMPORT,
+                    27 => CT::T_CONST_IMPORT,
+                    32 => CT::T_FUNCTION_IMPORT,
+                    37 => CT::T_CONST_IMPORT,
                 ],
             ],
         ];

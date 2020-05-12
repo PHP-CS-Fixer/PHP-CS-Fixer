@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,9 +15,9 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -27,14 +29,13 @@ final class CompactNullableTypehintFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Remove extra spaces in a nullable typehint.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction sample(? string \$str): ? string\n{}\n",
-                    new VersionSpecification(70100)
+                new CodeSample(
+                    "<?php\nfunction sample(? string \$str): ? string\n{}\n"
                 ),
             ],
             'Rule is applied only in a PHP 7.1+ environment.'
@@ -44,15 +45,15 @@ final class CompactNullableTypehintFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
+        return $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $typehintKinds = [
             CT::T_ARRAY_TYPEHINT,
@@ -69,8 +70,8 @@ final class CompactNullableTypehintFixer extends AbstractFixer
             // remove whitespaces only if there are only whitespaces
             // between '?' and the variable type
             if (
-                $tokens[$index + 1]->isWhitespace() &&
-                $tokens[$index + 2]->isGivenKind($typehintKinds)
+                $tokens[$index + 1]->isWhitespace()
+                && $tokens[$index + 2]->isGivenKind($typehintKinds)
             ) {
                 $tokens->removeTrailingWhitespace($index);
             }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,18 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFix70($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -66,17 +64,14 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideSimpleCases
      */
-    public function testSimpleClass($expected, $input = null)
+    public function testSimpleClass(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideSimpleCases()
+    public function provideSimpleCases(): array
     {
         return [
             [
@@ -138,7 +133,7 @@ EOF
         ];
     }
 
-    public function testNamespaces()
+    public function testNamespaces(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -162,7 +157,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testNamespaces2()
+    public function testNamespaces2(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -195,7 +190,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testNamespaceGlobal()
+    public function testNamespaceGlobal(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -228,7 +223,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPhp5Only()
+    public function testPhp5Only(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -250,7 +245,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testPhp4Only()
+    public function testPhp4Only(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -295,7 +290,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testBothTheRightWay1()
+    public function testBothTheRightWay1(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -349,7 +344,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testBothTheRightWay2()
+    public function testBothTheRightWay2(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -403,7 +398,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testBothTheRightWay3()
+    public function testBothTheRightWay3(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -457,7 +452,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testBothTheOtherWayAround()
+    public function testBothTheOtherWayAround(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -518,7 +513,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPhp4Parent()
+    public function testPhp4Parent(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -565,7 +560,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPhp4ParentInit()
+    public function testPhp4ParentInit(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -612,7 +607,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMixedParent()
+    public function testMixedParent(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -659,7 +654,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMixedParent2()
+    public function testMixedParent2(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -706,7 +701,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testParentOther()
+    public function testParentOther(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -753,7 +748,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testParentOther2()
+    public function testParentOther2(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -800,7 +795,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testClassWithAnonymous()
+    public function testClassWithAnonymous(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -830,7 +825,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testClassWithComments()
+    public function testClassWithComments(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -857,7 +852,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testAlphaBeta()
+    public function testAlphaBeta(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -878,7 +873,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testAlphaBetaTrick1()
+    public function testAlphaBetaTrick1(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -900,7 +895,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testAlphaBetaTrick2()
+    public function testAlphaBetaTrick2(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -922,7 +917,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testAlphaBetaTrick3()
+    public function testAlphaBetaTrick3(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -945,7 +940,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testAlphaBetaTrick4WithAnotherClass()
+    public function testAlphaBetaTrick4WithAnotherClass(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -1002,7 +997,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testAbstract()
+    public function testAbstract(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -1016,7 +1011,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testAbstractTrick()
+    public function testAbstractTrick(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -1041,7 +1036,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testParentMultipleClasses()
+    public function testParentMultipleClasses(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -1088,7 +1083,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testInfiniteRecursion()
+    public function testInfiniteRecursion(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -1133,5 +1128,133 @@ EOF;
 EOF;
 
         $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases(): \Generator
+    {
+        yield [
+            <<<'EOF'
+<?php
+
+class Foo
+{
+    public function __construct($bar,)
+    {
+        var_dump(1);
+    }
+}
+EOF
+            ,
+            <<<'EOF'
+<?php
+
+class Foo
+{
+    public function Foo($bar,)
+    {
+        var_dump(1);
+    }
+}
+EOF
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public function __construct()
+    {
+    }
+}',
+            '<?php
+class Foo
+{
+    public function Foo()
+    {
+    }
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public function __construct()
+    {
+        $this?->__construct();
+    }
+}',
+            '<?php
+class Foo
+{
+    public function Foo()
+    {
+        $this?->__construct();
+    }
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo extends Bar
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+}',
+            '<?php
+class Foo extends Bar
+{
+    public function Foo()
+    {
+        $this?->Bar();
+    }
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    /**
+     * Constructor
+     */
+    public function __construct($bar = 1, $baz = null)
+    {
+        var_dump(1);
+    }
+}
+',
+            '<?php
+class Foo
+{
+    /**
+     * Constructor
+     */
+    public function __construct($bar = 1, $baz = null)
+    {
+        var_dump(1);
+    }
+
+    /**
+     * PHP-4 Constructor
+     */
+    function Foo($bar = 1, $baz = null)
+    {
+        $this?->__construct($bar, $baz);
+    }
+}
+',
+        ];
     }
 }

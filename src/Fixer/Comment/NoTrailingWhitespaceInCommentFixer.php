@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Comment;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,7 +30,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There MUST be no trailing spaces inside comment or PHPDoc.',
@@ -43,7 +46,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
      *
      * Must run after PhpdocNoUselessInheritdocFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -51,7 +54,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
     }
@@ -59,7 +62,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_DOC_COMMENT)) {
@@ -69,15 +72,11 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
             }
 
             if ($token->isGivenKind(T_COMMENT)) {
-                if ('/*' === substr($token->getContent(), 0, 2)) {
+                if (str_starts_with($token->getContent(), '/*')) {
                     $tokens[$index] = new Token([T_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
                 } elseif (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
                     $trimmedContent = ltrim($tokens[$index + 1]->getContent(), " \t");
-                    if ('' !== $trimmedContent) {
-                        $tokens[$index + 1] = new Token([T_WHITESPACE, $trimmedContent]);
-                    } else {
-                        $tokens->clearAt($index + 1);
-                    }
+                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, $trimmedContent);
                 }
             }
         }

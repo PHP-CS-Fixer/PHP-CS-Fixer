@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,18 +24,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'no typehint' => [
@@ -67,14 +66,14 @@ class Foo {
 class Foo {
     /**
      */
-    public function doFoo(Bar $bar = null) {}
+    public function doFoo(Bar $bar = NULL) {}
 }',
                 '<?php
 class Foo {
     /**
      * @param Bar|null $bar
      */
-    public function doFoo(Bar $bar = null) {}
+    public function doFoo(Bar $bar = NULL) {}
 }',
             ],
             'same typehint with description' => [
@@ -255,7 +254,7 @@ use Foo\Baz;
  */
 function foo(Bar $bar, \Foo\Baz $baz) {}',
             ],
-            'with aliased imported' => [
+            'with aliased import' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1042,13 +1041,17 @@ class Foo {
 }',
                 ['remove_inheritdoc' => true],
             ],
-            'dont_remove_inheritdoc_non_structural_element' => [
+            'remove_inheritdoc_non_structural_element_it_does_not_inherit' => [
+                '<?php
+/**
+ *
+ */
+$foo = 1;',
                 '<?php
 /**
  * @inheritDoc
  */
 $foo = 1;',
-                null,
                 ['remove_inheritdoc' => true],
             ],
             'property with unsupported type' => [
@@ -1070,24 +1073,20 @@ class Foo {
     public function foo($foo) {}
 }',
             ],
-        ];
-    }
+            'with constant values as type' => [
+                '<?php
+class Foo {
+    /**
+     * @var Bar::A|Bar::B|Baz::*|null
+     */
+    private $foo;
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixPhp70Cases
-     * @requires PHP 7.0
+     * @var 1|\'a\'|\'b\'
      */
-    public function testFixPhp70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp70Cases()
-    {
-        return [
+    private $bar;
+}',
+            ],
             'same type hint' => [
                 '<?php
 class Foo {
@@ -1117,7 +1116,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'multiple different types' => [
+            'multiple different types (with return type)' => [
                 '<?php
 class Foo {
     /**
@@ -1128,7 +1127,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'with import' => [
+            'with import (with return type)' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1146,7 +1145,7 @@ use Foo\Baz;
  */
 function foo(Bar $bar): Baz {}',
             ],
-            'with root symbols' => [
+            'with root symbols (with return type)' => [
                 '<?php
 /**
  */
@@ -1158,7 +1157,7 @@ function foo(\Foo\Bar $bar): \Foo\Baz {}',
  */
 function foo(\Foo\Bar $bar): \Foo\Baz {}',
             ],
-            'with mix of imported and fully qualified symbols' => [
+            'with mix of imported and fully qualified symbols (with return type)' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1179,7 +1178,7 @@ use Foo\Qux;
  */
 function foo(Bar $bar, \Foo\Baz $baz): \Foo\Qux {}',
             ],
-            'with aliased imported' => [
+            'with aliased import (with return type)' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1225,24 +1224,33 @@ class Foo {
                      function display($number) {}
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFixPhp71Cases
-     * @requires PHP 7.1
-     */
-    public function testFixPhp71($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp71Cases()
-    {
-        return [
+            'return with @inheritDoc in description' => [
+                '<?php
+                    /**
+                     */
+                    function foo(): bool {}
+                ',
+                '<?php
+                    /**
+                     * @return bool @inheritDoc
+                     */
+                    function foo(): bool {}
+                ',
+                ['remove_inheritdoc' => true],
+            ],
+            'remove_trait_inheritdoc' => [
+                '<?php
+/**
+ *
+ */
+trait Foo {}',
+                '<?php
+/**
+ * @inheritDoc
+ */
+trait Foo {}',
+                ['remove_inheritdoc' => true],
+            ],
             'same nullable type hint' => [
                 '<?php
 class Foo {
@@ -1305,7 +1313,7 @@ class Foo {
     public function doFoo(?Bar $bar = null) {}
 }',
             ],
-            'multiple different types' => [
+            'multiple different types (nullable)' => [
                 '<?php
 class Foo {
     /**
@@ -1316,7 +1324,7 @@ class Foo {
     public function doFoo(?Bar $bar): ?Baz {}
 }',
             ],
-            'with import' => [
+            'with nullable import' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1334,7 +1342,7 @@ use Foo\Baz;
  */
 function foo(?Bar $bar): ?Baz {}',
             ],
-            'with root symbols' => [
+            'with nullable root symbols' => [
                 '<?php
 /**
  */
@@ -1346,7 +1354,7 @@ function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
  */
 function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
             ],
-            'with mix of imported and fully qualified symbols' => [
+            'with nullable mix of imported and fully qualified symbols' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1367,7 +1375,7 @@ use Foo\Qux;
  */
 function foo(?Bar $bar, ?\Foo\Baz $baz): ?\Foo\Qux {}',
             ],
-            'with aliased imported' => [
+            'with nullable aliased import' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1383,7 +1391,7 @@ use Foo\Bar as Baz;
  */
 function foo(?Baz $bar): ?Baz {}',
             ],
-            'with special type hints' => [
+            'with nullable special type hints' => [
                 '<?php
 class Foo {
     /**
@@ -1402,23 +1410,204 @@ class Foo {
     public function doFoo(iterable $bar, ?int $baz): ?array {}
 }',
             ],
+            'remove abstract annotation in function' => [
+                '<?php
+abstract class Foo {
+    /**
+     */
+    public abstract function doFoo();
+}',
+                '<?php
+abstract class Foo {
+    /**
+     * @abstract
+     */
+    public abstract function doFoo();
+}', ],
+            'dont remove abstract annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     * @abstract
+     */
+    public function doFoo() {}
+}', ],
+            'remove final annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public final function doFoo() {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @final
+     */
+    public final function doFoo() {}
+}', ],
+            'dont remove final annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     * @final
+     */
+    public function doFoo() {}
+}', ],
+            'remove abstract annotation in class' => [
+                '<?php
+/**
+ */
+abstract class Foo {
+}',
+                '<?php
+/**
+ * @abstract
+ */
+abstract class Foo {
+}', ],
+            'dont remove abstract annotation in class' => [
+                '<?php
+abstract class Bar{}
+
+/**
+ * @abstract
+ */
+class Foo {
+}', ],
+            'remove final annotation in class' => [
+                '<?php
+/**
+ */
+final class Foo {
+}',
+                '<?php
+/**
+ * @final
+ */
+final class Foo {
+}', ],
+            'dont remove final annotation in class' => [
+                '<?php
+final class Bar{}
+
+/**
+ * @final
+ */
+class Foo {
+}', ],
+            'remove when used with reference' => [
+                '<?php class Foo {
+                    /**
+                     */
+                     function f1(string &$x) {}
+                    /**
+                     */
+                     function f2(string &$x) {}
+                    /**
+                     */
+                     function f3(string &$x) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string $x
+                     */
+                     function f1(string &$x) {}
+                    /**
+                     * @param string &$x
+                     */
+                     function f2(string &$x) {}
+                    /**
+                     * @param string $y Description
+                     */
+                     function f3(string &$x) {}
+                }',
+            ],
+            'dont remove when used with reference' => [
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x Description
+                     */
+                     function f(string ...$x) {}
+                }',
+            ],
+            'remove when used with splat operator' => [
+                '<?php class Foo {
+                    /**
+                     */
+                     function f1(string ...$x) {}
+                    /**
+                     */
+                     function f2(string ...$x) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x
+                     */
+                     function f1(string ...$x) {}
+                    /**
+                     * @param string ...$y Description
+                     */
+                     function f2(string ...$x) {}
+                }',
+            ],
+            'dont remove when used with splat operator' => [
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x Description
+                     */
+                     function f(string ...$x) {}
+                }',
+            ],
+            'remove when used with reference and splat operator' => [
+                '<?php class Foo {
+                    /**
+                     */
+                     function f1(string &...$x) {}
+                    /**
+                     */
+                     function f2(string &...$x) {}
+                    /**
+                     */
+                     function f3(string &...$x) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x
+                     */
+                     function f1(string &...$x) {}
+                    /**
+                     * @param string &...$x
+                     */
+                     function f2(string &...$x) {}
+                    /**
+                     * @param string ...$y Description
+                     */
+                     function f3(string &...$x) {}
+                }',
+            ],
+            'dont remove when used with reference and splat operator' => [
+                '<?php class Foo {
+                    /**
+                     * @param string &...$x Description
+                     */
+                     function f(string &...$x) {}
+                }',
+            ],
         ];
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input = null, array $config = [])
+    public function testFixPhp74(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'some typed static public property' => [
@@ -1464,6 +1653,40 @@ class Foo {
      * @var Bar
      */
     public Bar $bar;
+}',
+            ],
+            'some typed public property with single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**  */
+    public Bar $bar;
+}',
+                '<?php
+class Foo {
+    /** @var Bar */
+    public Bar $bar;
+}',
+            ],
+            'some typed public property with semi-single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public Bar $bar;
+
+    /**
+     */
+    public Baz $baz;
+}',
+                '<?php
+class Foo {
+    /** @var Bar
+     */
+    public Bar $bar;
+
+    /**
+     * @var Baz */
+    public Baz $baz;
 }',
             ],
             'some typed protected property' => [
@@ -1647,6 +1870,224 @@ class Foo {
     protected Bar $bar;
 }',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases(): array
+    {
+        return [
+            'static return' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo): static {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @return static
+     */
+    public function foo($foo): static {}
+}',
+            ],
+            'union type on parameter' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function foo(int|string $foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param int|string $foo
+     */
+    public function foo(int|string $foo) {}
+}',
+            ],
+            'union type on return type' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo): int|string {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @return int|string
+     */
+    public function foo($foo): int|string {}
+}',
+            ],
+            'union type on property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public int|string $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var int|string
+     */
+    public int|string $foo;
+}',
+            ],
+            'union type on property with spaces' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public int  |  string $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var int|string
+     */
+    public int  |  string $foo;
+}',
+            ],
+            'union type with null' => [
+                '<?php
+/**
+ */
+function foo(int|string|null $foo) {}',
+                '<?php
+/**
+ * @param int|string|null $foo
+ */
+function foo(int|string|null $foo) {}',
+            ],
+            'union type in different order' => [
+                '<?php
+/**
+ */
+function foo(string|int $foo) {}',
+                '<?php
+/**
+ * @param int|string $foo
+ */
+function foo(string|int $foo) {}',
+            ],
+            'more details in phpdocs' => [
+                '<?php
+/**
+ * @param string|array<string> $foo
+ */
+function foo(string|array $foo) {}',
+            ],
+            'missing types in phpdocs' => [
+                '<?php
+/**
+ * @param string|int $foo
+ */
+function foo(string|array|int $foo) {}',
+            ],
+            'too many types in phpdocs' => [
+                '<?php
+/**
+ * @param string|array|int $foo
+ */
+function foo(string|int $foo) {}',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null, array $config = []): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'some readonly properties' => [
+            '<?php
+class Foo {
+    /**
+     */
+    private readonly array $bar1;
+
+    /**
+     */
+    readonly private array $bar2;
+
+    /**
+     */
+    readonly array $bar3;
+}',
+            '<?php
+class Foo {
+    /**
+     * @var array
+     */
+    private readonly array $bar1;
+
+    /**
+     * @var array
+     */
+    readonly private array $bar2;
+
+    /**
+     * @var array
+     */
+    readonly array $bar3;
+}',
+        ];
+
+        yield 'more details in phpdocs' => [
+            '<?php
+/**
+ * @param Foo&Bar $foo
+ */
+function foo(FooInterface&Bar $foo) {}',
+        ];
+
+        yield 'intersection' => [
+            '<?php
+/**
+ */
+function foo(Foo&Bar $foo) {}',
+            '<?php
+/**
+ * @param Foo&Bar $foo
+ */
+function foo(Foo&Bar $foo) {}',
+        ];
+
+        yield 'intersection different order' => [
+            '<?php
+/**
+ * Composite types (i.e. mixing union and intersection types) is not supported in PHP8.1
+ *
+ * @param A|string[] $bar
+ */
+function foo(A & B & C $foo, A|array $bar) {}',
+            '<?php
+/**
+ * Composite types (i.e. mixing union and intersection types) is not supported in PHP8.1
+ *
+ * @param C&A&B $foo
+ * @param A|string[] $bar
+ */
+function foo(A & B & C $foo, A|array $bar) {}',
         ];
     }
 }

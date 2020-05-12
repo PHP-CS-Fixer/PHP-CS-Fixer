@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,7 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -22,10 +24,7 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryInterface
 {
-    /**
-     * @return IntegrationCase
-     */
-    public function create(SplFileInfo $file)
+    public function create(SplFileInfo $file): IntegrationCase
     {
         try {
             if (!preg_match(
@@ -77,11 +76,9 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--CONFIG--' block of a '.test' file.
      *
-     * @param string $config
-     *
-     * @return array
+     * @param ?string $config
      */
-    protected function determineConfig(SplFileInfo $file, $config)
+    protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'indent' => '    ',
@@ -108,11 +105,9 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @param string $config
-     *
-     * @return array
+     * @param ?string $config
      */
-    protected function determineRequirements(SplFileInfo $file, $config)
+    protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
@@ -130,24 +125,16 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
 
     /**
      * Parses the '--RULESET--' block of a '.test' file and determines what fixers should be used.
-     *
-     * @param string $config
-     *
-     * @return RuleSet
      */
-    protected function determineRuleset(SplFileInfo $file, $config)
+    protected function determineRuleset(SplFileInfo $file, string $config): RuleSet
     {
         return new RuleSet($this->parseJson($config));
     }
 
     /**
      * Parses the '--TEST--' block of a '.test' file and determines title.
-     *
-     * @param string $config
-     *
-     * @return string
      */
-    protected function determineTitle(SplFileInfo $file, $config)
+    protected function determineTitle(SplFileInfo $file, string $config): string
     {
         return $config;
     }
@@ -155,14 +142,13 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param string $config
-     *
-     * @return array
+     * @param ?string $config
      */
-    protected function determineSettings(SplFileInfo $file, $config)
+    protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
         $parsed = $this->parseJson($config, [
             'checkPriority' => true,
+            'deprecations' => [],
         ]);
 
         if (!\is_bool($parsed['checkPriority'])) {
@@ -172,15 +158,27 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             ));
         }
 
+        if (!\is_array($parsed['deprecations'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected array value for "deprecations", got "%s".',
+                \is_object($parsed['deprecations']) ? \get_class($parsed['deprecations']) : \gettype($parsed['deprecations']).'#'.$parsed['deprecations']
+            ));
+        }
+
+        foreach ($parsed['deprecations'] as $index => $deprecation) {
+            if (!\is_string($deprecation)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Expected only string value for "deprecations", got "%s" @ index %d.',
+                    \is_object($deprecation) ? \get_class($deprecation) : \gettype($deprecation).'#'.$deprecation,
+                    $index
+                ));
+            }
+        }
+
         return $parsed;
     }
 
-    /**
-     * @param null|string $code
-     *
-     * @return string
-     */
-    protected function determineExpectedCode(SplFileInfo $file, $code)
+    protected function determineExpectedCode(SplFileInfo $file, ?string $code): string
     {
         $code = $this->determineCode($file, $code, '-out.php');
 
@@ -191,23 +189,12 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         return $code;
     }
 
-    /**
-     * @param null|string $code
-     *
-     * @return null|string
-     */
-    protected function determineInputCode(SplFileInfo $file, $code)
+    protected function determineInputCode(SplFileInfo $file, ?string $code): ?string
     {
         return $this->determineCode($file, $code, '-in.php');
     }
 
-    /**
-     * @param null|string $code
-     * @param string      $suffix
-     *
-     * @return null|string
-     */
-    private function determineCode(SplFileInfo $file, $code, $suffix)
+    private function determineCode(SplFileInfo $file, ?string $code, string $suffix): ?string
     {
         if (null !== $code) {
             return $code;
@@ -221,12 +208,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         return null;
     }
 
-    /**
-     * @param null|string $encoded
-     *
-     * @return array
-     */
-    private function parseJson($encoded, array $template = null)
+    private function parseJson(?string $encoded, array $template = null): array
     {
         // content is optional if template is provided
         if (!$encoded && null !== $template) {
@@ -240,13 +222,11 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         }
 
         if (null !== $template) {
-            $decoded = array_merge(
-                $template,
-                array_intersect_key(
-                    $decoded,
-                    array_flip(array_keys($template))
-                )
-            );
+            foreach ($template as $index => $value) {
+                if (!\array_key_exists($index, $decoded)) {
+                    $decoded[$index] = $value;
+                }
+            }
         }
 
         return $decoded;

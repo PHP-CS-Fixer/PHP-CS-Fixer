@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,19 +26,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        return [
+        yield from [
             [
                 '<?php
     switch (1) {
@@ -197,20 +196,6 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
             [
                 '<?php
                 switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }
-                ',
-                '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly" :
-                        break;
-                }
-                ',
-            ],
-            [
-                '<?php
-                switch ($a) {
                     case $b ?: $c:
                         break;
                 }
@@ -344,6 +329,107 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                             return 2;
                 }',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly":
+                        break;
+                }
+                ',
+            '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly" :
+                        break;
+                }
+                ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+                match ($foo) {
+                    1 => "a",
+                    default => "b"
+                };
+                match ($bar) {
+                    2 => "c",
+                    default=> "d"
+                };
+                match ($baz) {
+                    3 => "e",
+                    default   => "f"
+                };
+            ',
+        ];
+
+        yield [
+            '<?php
+$a = function (): ?string {
+    return $rank ? match (true) {
+      $rank <= 1000 => \'bronze\',
+      default => null,
+  } : null;
+};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds  ;
+    case Clubs ;
+    case Spades   ;
+}
+
+enum UserStatus: string {
+  case    Pending = \'P\';
+  case  Active = \'A\';
+  case   Suspended = \'S\';
+  case CanceledByUser = \'C\'  ;
+}
+
+switch ($a) {
+    default:
+        echo 1;
+}
+',
         ];
     }
 }

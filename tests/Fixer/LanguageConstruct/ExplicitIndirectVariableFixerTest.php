@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,18 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
-     * @requires PHP 7.0
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [
@@ -67,6 +65,32 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 $foo
 // C3
 ;',
+            ],
+        ];
+    }
+
+    /**
+     * @param mixed $expected
+     * @param mixed $input
+     *
+     * @dataProvider provideTestFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestFix80Cases(): array
+    {
+        return [
+            [
+                '<?php echo $foo?->{$bar}["baz"];',
+                '<?php echo $foo?->$bar["baz"];',
+            ],
+            [
+                '<?php echo $foo?->{$bar}["baz"]();',
+                '<?php echo $foo?->$bar["baz"]();',
             ],
         ];
     }

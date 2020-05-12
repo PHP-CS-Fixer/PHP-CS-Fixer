@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,7 +20,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author John Kelly <wablam@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Egidijus Girčys <e.gircys@gmail.com>
  *
@@ -29,18 +31,15 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMultiLineWhitespaceFixCases
      */
-    public function testFixMultiLineWhitespace($expected, $input = null)
+    public function testFixMultiLineWhitespace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
         $this->doTest($expected, $input);
     }
 
-    public function provideMultiLineWhitespaceFixCases()
+    public function provideMultiLineWhitespaceFixCases(): array
     {
         return [
             [
@@ -203,12 +202,9 @@ self
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesMultiLineWhitespaceFixCases
      */
-    public function testMessyWhitespacesMultiLineWhitespace($expected, $input = null)
+    public function testMessyWhitespacesMultiLineWhitespace(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
@@ -216,7 +212,7 @@ self
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesMultiLineWhitespaceFixCases()
+    public function provideMessyWhitespacesMultiLineWhitespaceFixCases(): array
     {
         return [
             [
@@ -226,18 +222,15 @@ self
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideSemicolonForChainedCallsFixCases
      */
-    public function testSemicolonForChainedCallsFix($expected, $input = null)
+    public function testSemicolonForChainedCallsFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
         $this->doTest($expected, $input);
     }
 
-    public function provideSemicolonForChainedCallsFixCases()
+    public function provideSemicolonForChainedCallsFixCases(): array
     {
         return [
             [
@@ -849,12 +842,9 @@ Service
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsFixCases
      */
-    public function testMessyWhitespacesSemicolonForChainedCalls($expected, $input = null)
+    public function testMessyWhitespacesSemicolonForChainedCalls(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
@@ -862,7 +852,7 @@ Service
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesSemicolonForChainedCallsFixCases()
+    public function provideMessyWhitespacesSemicolonForChainedCallsFixCases(): array
     {
         return [
             [
@@ -881,19 +871,16 @@ Service
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -905,5 +892,28 @@ Service
                 "<?php\n\$this\n    ->one(1, )\n    ->two();",
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
+        $this->doTest(
+            '<?php
+
+                $foo?->method1()
+                    ?->method2()
+                    ?->method3()
+                ;
+                ',
+            '<?php
+
+                $foo?->method1()
+                    ?->method2()
+                    ?->method3();
+                '
+        );
     }
 }

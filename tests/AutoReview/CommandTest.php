@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,26 +32,26 @@ final class CommandTest extends TestCase
     /**
      * @dataProvider provideCommandHasNameConstCases
      */
-    public function testCommandHasNameConst(Command $command)
+    public function testCommandHasNameConst(Command $command): void
     {
-        static::assertNotNull($command->getDefaultName());
+        static::assertNotNull($command::getDefaultName());
     }
 
-    public function provideCommandHasNameConstCases()
+    public function provideCommandHasNameConstCases(): array
     {
         $application = new Application();
         $commands = $application->all();
 
-        $names = array_filter(array_keys($commands), static function ($name) use ($commands) {
+        $names = array_filter(array_keys($commands), static function (string $name) use ($commands): bool {
             return
                 // is not an alias
                 !\in_array($name, $commands[$name]->getAliases(), true)
                 // and is our command
-                && 0 === strpos(\get_class($commands[$name]), 'PhpCsFixer\\')
+                && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\')
             ;
         });
 
-        return array_map(static function ($name) use ($commands) {
+        return array_map(static function (string $name) use ($commands): array {
             return [$commands[$name]];
         }, $names);
     }

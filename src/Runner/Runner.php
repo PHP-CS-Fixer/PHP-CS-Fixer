@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,7 +21,6 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Event\Event;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
@@ -29,6 +30,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -89,13 +91,13 @@ final class Runner
         $finder,
         array $fixers,
         DifferInterface $differ,
-        EventDispatcherInterface $eventDispatcher = null,
+        ?EventDispatcherInterface $eventDispatcher,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
-        $isDryRun,
+        bool $isDryRun,
         CacheManagerInterface $cacheManager,
-        DirectoryInterface $directory = null,
-        $stopOnViolation = false
+        ?DirectoryInterface $directory = null,
+        bool $stopOnViolation = false
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -109,10 +111,7 @@ final class Runner
         $this->stopOnViolation = $stopOnViolation;
     }
 
-    /**
-     * @return array
-     */
-    public function fix()
+    public function fix(): array
     {
         $changed = [];
 
@@ -128,14 +127,15 @@ final class Runner
             ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)
             : new FileLintingIterator($fileFilteredFileIterator, $this->linter);
 
+        /** @var \SplFileInfo $file */
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
 
             // we do not need Tokens to still caching just fixed file - so clear the cache
             Tokens::clearCache();
 
-            if ($fixInfo) {
-                $name = $this->directory->getRelativePathTo($file);
+            if (null !== $fixInfo) {
+                $name = $this->directory->getRelativePathTo($file->__toString());
                 $changed[$name] = $fixInfo;
 
                 if ($this->stopOnViolation) {
@@ -147,7 +147,7 @@ final class Runner
         return $changed;
     }
 
-    private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult)
+    private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
         $name = $file->getPathname();
 
@@ -161,12 +161,10 @@ final class Runner
 
             $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
 
-            return;
+            return null;
         }
 
         $old = FileReader::createSingleton()->read($file->getRealPath());
-
-        Tokens::setLegacyMode(false);
 
         $tokens = Tokens::fromCode($old);
         $oldHash = $tokens->getCodeHash();
@@ -181,8 +179,8 @@ final class Runner
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
                 if (
-                    !$fixer instanceof AbstractFixer &&
-                    (!$fixer->supports($file) || !$fixer->isCandidate($tokens))
+                    !$fixer instanceof AbstractFixer
+                    && (!$fixer->supports($file) || !$fixer->isCandidate($tokens))
                 ) {
                     continue;
                 }
@@ -195,10 +193,6 @@ final class Runner
                     $appliedFixers[] = $fixer->getName();
                 }
             }
-        } catch (\Exception $e) {
-            $this->processException($name, $e);
-
-            return;
         } catch (\ParseError $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
@@ -207,11 +201,11 @@ final class Runner
 
             $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
 
-            return;
+            return null;
         } catch (\Throwable $e) {
             $this->processException($name, $e);
 
-            return;
+            return null;
         }
 
         $fixInfo = null;
@@ -222,13 +216,13 @@ final class Runner
         }
 
         // We need to check if content was changed and then applied changes.
-        // But we can't simple check $appliedFixers, because one fixer may revert
+        // But we can't simply check $appliedFixers, because one fixer may revert
         // work of other and both of them will mark collection as changed.
         // Therefore we need to check if code hashes changed.
         if ($oldHash !== $newHash) {
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
-                'diff' => $this->differ->diff($old, $new),
+                'diff' => $this->differ->diff($old, $new, $file),
             ];
 
             try {
@@ -241,18 +235,47 @@ final class Runner
 
                 $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
 
-                return;
+                return null;
             }
 
             if (!$this->isDryRun) {
-                if (false === @file_put_contents($file->getRealPath(), $new)) {
+                $fileName = $file->getRealPath();
+
+                if (!file_exists($fileName)) {
+                    throw new IOException(
+                        sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
+                        0,
+                        null,
+                        $file->getPathname()
+                    );
+                }
+
+                if (is_dir($fileName)) {
+                    throw new IOException(
+                        sprintf('Cannot write file "%s" as the location exists as directory.', $fileName),
+                        0,
+                        null,
+                        $fileName
+                    );
+                }
+
+                if (!is_writable($fileName)) {
+                    throw new IOException(
+                        sprintf('Cannot write to file "%s" as it is not writable.', $fileName),
+                        0,
+                        null,
+                        $fileName
+                    );
+                }
+
+                if (false === @file_put_contents($fileName, $new)) {
                     $error = error_get_last();
 
                     throw new IOException(
-                        sprintf('Failed to write file "%s", "%s".', $file->getPathname(), $error ? $error['message'] : 'no reason available'),
+                        sprintf('Failed to write file "%s", "%s".', $fileName, $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
-                        $file->getRealPath()
+                        $fileName
                     );
                 }
             }
@@ -270,11 +293,8 @@ final class Runner
 
     /**
      * Process an exception that occurred.
-     *
-     * @param string     $name
-     * @param \Throwable $e
      */
-    private function processException($name, $e)
+    private function processException(string $name, \Throwable $e): void
     {
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
@@ -284,21 +304,9 @@ final class Runner
         $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name, $e));
     }
 
-    /**
-     * @param string $name
-     */
-    private function dispatchEvent($name, Event $event)
+    private function dispatchEvent(string $name, Event $event): void
     {
         if (null === $this->eventDispatcher) {
-            return;
-        }
-
-        // BC compatibility < Sf 4.3
-        if (
-            !$this->eventDispatcher instanceof \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
-        ) {
-            $this->eventDispatcher->dispatch($name, $event);
-
             return;
         }
 
