@@ -22,7 +22,7 @@ final class ClassyElementAnalysis
     const TYPE_PROPERTY = 3;
 
     /**
-     * @var string
+     * @var int
      */
     private $type;
 
@@ -32,8 +32,8 @@ final class ClassyElementAnalysis
     private $classIndex;
 
     /**
-     * @param string $type
-     * @param int    $classIndex
+     * @param int $type
+     * @param int $classIndex
      */
     public function __construct($type, $classIndex)
     {
