@@ -665,11 +665,11 @@ return $foo === count($bar);
             $token = $tokens[$index];
 
             if ($token->isComment() || $token->isWhitespace()) {
-                if ($expectNothing) {
-                    return false;
-                }
-
                 continue;
+            }
+
+            if ($expectNothing) {
+                return false;
             }
 
             if ($expectNumberOnly && !$token->isGivenKind([T_LNUMBER, T_DNUMBER])) {
