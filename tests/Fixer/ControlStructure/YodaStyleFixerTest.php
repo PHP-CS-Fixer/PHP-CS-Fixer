@@ -220,6 +220,8 @@ if ($a = $obj instanceof A === true) {
             ['<?php $a = $b[$key]["1"] === $c["2"];'],
             ['<?php return $foo->$a[1] === $bar[$baz]{1}->$a[1][2][3]->$d[$z]{1};'],
             ['<?php return $foo->$a === $foo->$b->$c;'],
+            ['<?php return $x === 2 - 1;'],
+            ['<?php return $x === 2-1;'],
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],

@@ -13,7 +13,7 @@ If you need any help, don't hesitate to ask the community on [Gitter](https://gi
 * Make changes.
 * If you are adding functionality or fixing a bug - add a test! Prefer adding new test cases over modifying existing ones.
 * Make sure there is no trailing spaces in code: `./check_trailing_spaces.sh`.
-* Regenerate README: `php php-cs-fixer readme > README.rst`. Do not modify `README.rst` manually!
+* Regenerate README: `php php-cs-fixer readme > README.rst` (Windows `php.exe php-cs-fixer readme > README.rst`). Do not modify `README.rst` manually!
 * Check if tests pass: `vendor/bin/phpunit`.
 * Fix project itself: `php php-cs-fixer fix`.
 
