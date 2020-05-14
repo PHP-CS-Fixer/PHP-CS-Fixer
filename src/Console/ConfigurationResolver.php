@@ -374,6 +374,10 @@ final class ConfigurationResolver
             } else {
                 $this->path = array_map(
                     static function ($path) use ($cwd, $filesystem) {
+                        if ('' === $path) {
+                            throw new InvalidConfigurationException('Invalid path: "".');
+                        }
+
                         $absolutePath = $filesystem->isAbsolutePath($path)
                             ? $path
                             : $cwd.\DIRECTORY_SEPARATOR.$path;

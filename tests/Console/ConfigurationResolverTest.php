@@ -309,6 +309,30 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame([__DIR__], $resolver->getPath());
     }
 
+    /**
+     * @dataProvider provideEmptyPathCases
+     */
+    public function testRejectInvalidPath(array $paths)
+    {
+        $resolver = $this->createConfigurationResolver(
+            ['path' => $paths],
+            null,
+            \dirname(__DIR__)
+        );
+
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Invalid path: "".');
+
+        $resolver->getPath();
+    }
+
+    public function provideEmptyPathCases()
+    {
+        yield [['']];
+        yield [[__DIR__, '']];
+        yield [['', __DIR__]];
+    }
+
     public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode()
     {
         $config = new Config();
