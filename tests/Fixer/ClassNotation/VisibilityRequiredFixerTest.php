@@ -526,6 +526,15 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @requires PHP <7.1
+     */
+    public function testIgnoreConstants()
+    {
+        $this->fixer->configure(['elements' => ['const']]);
+        $this->doTest('<?php class A { const B=1; }');
+    }
+
     public function testInvalidConfigurationType()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
@@ -540,17 +549,6 @@ EOF;
         $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['_unknown_']]);
-    }
-
-    /**
-     * @requires PHP <7.1
-     */
-    public function testInvalidConfigurationValueForPHPVersion()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration for env: "const" option can only be enabled with PHP 7\.1\+\.$/');
-
-        $this->fixer->configure(['elements' => ['const']]);
     }
 
     /**
