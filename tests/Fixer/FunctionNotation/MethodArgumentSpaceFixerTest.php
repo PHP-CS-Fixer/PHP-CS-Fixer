@@ -932,13 +932,14 @@ if (true) {
     }
 
     /**
-     * @param string $expected
-     * @param string $input
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFix56Cases
      */
-    public function testFix56($expected, $input)
+    public function testFix56($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -948,6 +949,21 @@ if (true) {
             [
                 '<?php function A($c, ...$a){}',
                 '<?php function A($c ,...$a){}',
+            ],
+            [
+                '<?php
+    a(
+        [
+        ]
+    ); ?>
+
+    <?php b(
+        [
+        ]
+    );
+?>',
+                null,
+                ['on_multiline' => 'ensure_fully_multiline'],
             ],
         ];
     }
