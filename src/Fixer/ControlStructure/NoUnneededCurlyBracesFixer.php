@@ -61,11 +61,11 @@ namespace Foo {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, SimplifiedIfReturnFixer.
+     * Must run before NoUnneededNestedControlBlockFixer, NoUselessElseFixer, NoUselessReturnFixer, ReturnAssignmentFixer, SimplifiedIfReturnFixer.
      */
     public function getPriority()
     {
-        return 26;
+        return 28;
     }
 
     /**

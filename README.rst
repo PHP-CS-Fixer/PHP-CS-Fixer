@@ -1268,6 +1268,10 @@ Choose from the list of available rules:
   - ``private_methods`` (``bool``): private methods of non-``final`` classes must not
     be declared ``final``; defaults to ``true``
 
+* **no_unneeded_nested_control_block** [@Symfony, @PhpCsFixer]
+
+  There must not be unneeded nested ``if-if`` and ``else-if`` blocks.
+
 * **no_unreachable_default_argument_value** [@PhpCsFixer:risky]
 
   In function arguments there must not be arguments with default values

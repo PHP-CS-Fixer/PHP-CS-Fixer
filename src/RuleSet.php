@@ -131,6 +131,7 @@ final class RuleSet implements RuleSetInterface
                 'yield_from',
             ]],
             'no_unneeded_curly_braces' => ['namespaces' => true],
+            'no_unneeded_nested_control_block' => true,
             'no_unset_cast' => true,
             'no_unused_imports' => true,
             'no_whitespace_before_comma_in_array' => true,

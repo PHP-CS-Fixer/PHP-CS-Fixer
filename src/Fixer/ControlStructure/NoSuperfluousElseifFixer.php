@@ -46,7 +46,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
      * {@inheritdoc}
      *
      * Must run before SimplifiedIfReturnFixer.
-     * Must run after NoAlternativeSyntaxFixer.
+     * Must run after NoAlternativeSyntaxFixer, NoUnneededNestedControlBlockFixer.
      */
     public function getPriority()
     {

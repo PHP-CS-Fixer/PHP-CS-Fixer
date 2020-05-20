@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: no_unneeded_nested_control_block,no_useless_else.
+--RULESET--
+{"no_unneeded_nested_control_block": true, "no_useless_else": true}
+--EXPECT--
+<?php
+if (1) {
+    return 1;
+} elseif (2) {
+
+        echo 2;
+
+}
+
+--INPUT--
+<?php
+if (1) {
+    return 1;
+} else {
+    if (2) {
+        echo 2;
+    }
+}

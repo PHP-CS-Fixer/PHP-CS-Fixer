@@ -38,11 +38,11 @@ final class NoEmptyStatementFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, CombineConsecutiveUnsetsFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoUselessElseFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, ReturnAssignmentFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
+     * Must run before BracesFixer, CombineConsecutiveUnsetsFixer, MultilineWhitespaceBeforeSemicolonsFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, NoTrailingWhitespaceFixer, NoUnneededNestedControlBlockFixer, NoUselessElseFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, ReturnAssignmentFixer, SpaceAfterSemicolonFixer, SwitchCaseSemicolonToColonFixer.
      */
     public function getPriority()
     {
-        return 26;
+        return 27;
     }
 
     /**

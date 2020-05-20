@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: elseif,no_unneeded_nested_control_block.
+--RULESET--
+{"elseif": true, "no_unneeded_nested_control_block": true}
+--EXPECT--
+<?php
+
+if (time() > 1) {
+    echo 6;
+} elseif ($a && $foo) {
+
+        echo 5;
+
+}
+
+--INPUT--
+<?php
+
+if (time() > 1) {
+    echo 6;
+} else if ($a) {
+    if ($foo) {
+        echo 5;
+    }
+}

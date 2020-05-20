@@ -1,0 +1,29 @@
+--TEST--
+Integration of fixers: no_empty_statement,no_unneeded_nested_control_block.
+--RULESET--
+{"no_empty_statement": true, "no_unneeded_nested_control_block": true}
+--EXPECT--
+<?php
+
+if (time() > 1) {
+    echo 1;
+} elseif ($foo) {
+
+
+
+        echo 321;
+
+}
+
+--INPUT--
+<?php
+
+if (time() > 1) {
+    echo 1;
+} else {
+;
+
+    if ($foo) {
+        echo 321;
+    }
+}
