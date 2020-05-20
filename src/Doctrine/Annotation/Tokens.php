@@ -76,12 +76,10 @@ final class Tokens extends \SplFixedArray
 
                 if (DocLexer::T_OPEN_PARENTHESIS === $token['type']) {
                     ++$nbScopes;
-                } elseif (DocLexer::T_CLOSE_PARENTHESIS === $token['type']) {
-                    if (0 === --$nbScopes) {
-                        $nbScannedTokensToUse = \count($scannedTokens);
+                } elseif (DocLexer::T_CLOSE_PARENTHESIS === $token['type'] && 0 === --$nbScopes) {
+                    $nbScannedTokensToUse = \count($scannedTokens);
 
-                        break;
-                    }
+                    break;
                 }
 
                 ++$index;

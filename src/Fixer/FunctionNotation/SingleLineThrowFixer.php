@@ -135,12 +135,10 @@ final class SingleLineThrowFixer extends AbstractFixer
             }
 
             $nextIndex = $tokens->getNonEmptySibling($index, 1);
-            if ($tokens[$nextIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS))) {
-                if (!$tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
-                    $tokens->clearAt($index);
+            if ($tokens[$nextIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS)) && !$tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
+                $tokens->clearAt($index);
 
-                    continue;
-                }
+                continue;
             }
 
             $tokens[$index] = new Token([T_WHITESPACE, ' ']);

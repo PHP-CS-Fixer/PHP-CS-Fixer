@@ -375,12 +375,10 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         for ($i = 0; $i < \count($lines); ++$i) {
             // If we need to add test annotation and it is a single line comment we need to deal with that separately
-            if ($needsAnnotation && ($lines[$i]->isTheStart() && $lines[$i]->isTheEnd())) {
-                if (!$this->doesDocBlockContainTest($doc)) {
-                    $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
+            if ($needsAnnotation && ($lines[$i]->isTheStart() && $lines[$i]->isTheEnd()) && !$this->doesDocBlockContainTest($doc)) {
+                $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
-                    return $this->updateLines($lines, $tokens, $docBlockIndex);
-                }
+                return $this->updateLines($lines, $tokens, $docBlockIndex);
                 // One we split it up, we run the function again, so we deal with other things in a proper way
             }
 

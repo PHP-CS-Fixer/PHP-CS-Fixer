@@ -244,17 +244,15 @@ final class Runner
                 return;
             }
 
-            if (!$this->isDryRun) {
-                if (false === @file_put_contents($file->getRealPath(), $new)) {
-                    $error = error_get_last();
+            if (!$this->isDryRun && false === @file_put_contents($file->getRealPath(), $new)) {
+                $error = error_get_last();
 
-                    throw new IOException(
-                        sprintf('Failed to write file "%s", "%s".', $file->getPathname(), $error ? $error['message'] : 'no reason available'),
-                        0,
-                        null,
-                        $file->getRealPath()
-                    );
-                }
+                throw new IOException(
+                    sprintf('Failed to write file "%s", "%s".', $file->getPathname(), $error ? $error['message'] : 'no reason available'),
+                    0,
+                    null,
+                    $file->getRealPath()
+                );
             }
         }
 

@@ -140,11 +140,9 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 if (!$argumentTypeInfo->isNullable()) {
                     $tokens->insertAt($argumentTypeInfo->getStartIndex(), new Token([CT::T_NULLABLE_TYPE, '?']));
                 }
-            } else {
-                if ($argumentTypeInfo->isNullable()) {
-                    $tokens->removeTrailingWhitespace($argumentTypeInfo->getStartIndex());
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($argumentTypeInfo->getStartIndex());
-                }
+            } elseif ($argumentTypeInfo->isNullable()) {
+                $tokens->removeTrailingWhitespace($argumentTypeInfo->getStartIndex());
+                $tokens->clearTokenAndMergeSurroundingWhitespace($argumentTypeInfo->getStartIndex());
             }
         }
     }

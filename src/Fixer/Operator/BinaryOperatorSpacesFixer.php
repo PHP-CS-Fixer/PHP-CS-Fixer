@@ -798,10 +798,9 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                             if (1 > \strlen($before) || ' ' !== substr($before, -1)) { // if last char of before-content is not ' '; add it
                                 $before .= ' ';
                             }
-                        } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
-                            if (1 !== Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
-                                $before = rtrim($before).' ';
-                            }
+                        } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy && 1 !== Preg::match('/^\h+$/', $before)) {
+                            // if indent; do not move, leave to other fixer
+                            $before = rtrim($before).' ';
                         }
 
                         $lines[$index] = $before.substr($lines[$index], $currentPosition);
