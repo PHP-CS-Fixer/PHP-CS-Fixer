@@ -251,6 +251,12 @@ function my_foo()
                 continue;
             }
 
+            try {
+                Tokens::fromCode(sprintf('<?php function f():%s {}', $returnType));
+            } catch (\ParseError $e) {
+                continue;
+            }
+
             $this->fixFunctionDefinition($tokens, $startIndex, $isNullable, $returnType);
         }
     }
