@@ -1,0 +1,89 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-17T15:44:41Z
+
+It looks crazy, wouldn't be a nightmare during merges?
+
+Why this approach instead of step-by-step?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-17T16:44:03Z
+
+Fair point. This approach allows to enable all checks we want for *future* code without having to fix all *existing* code first. But I don't think it will report more than a few errors when merging PRs that are not up-to-date with upstream or when merging patches up to higher branches.
+
+Maybe regenerating the baseline file for each branch after merging this PR will be easier than updating it manually. I can take care of that if we agree on merging this.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-04-19T11:34:00Z
+
+The baseline way seems good to me. @julienfalque can you merge this and than merge upstream making sure on the branches the baseline file is good?
+Side note, do we want to do this with a psalm baseline as well?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-19T15:56:52Z
+
+I'll merge this one :+1:
+
+Regarding Psalm: I have no experience with it and I intended to use this project as a playground to test it. But if anyone wants to do it, I'm fine with that :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-19T16:03:26Z
+
+I'm marking this PR as WIP because I want to check if some errors from the baseline file should be in the regular file instead (errors yet to be fixed vs. errors we actually don't want to fix).
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-24T15:33:12Z
+
+I'm still kind of pessimistic with having this huge baseline, I'm afraid after it is merged we would start to think these issues are solved.
+
+Why not increase the level step-by-step and add errors to ignore list grouped by type, like the one with return void?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-24T17:24:10Z
+
+Because ignoring "by type" is not ideal. It hides all errors of the same kind, but maybe some of them can be fixed while some other can't (e.g. for BC reasons), so we have to check the errors one by one, which is very time consuming. Doing that would take months.
+
+On the other hand, the purpose of the baseline file is to list the errors that have yet to be fixed, we should never consider them fixed. And once merged, contributions to fix remaining errors will be easier.
+
+The `has no return type specified` exception I added is because we can't fix most of them until we drop PHP 5.6 support. We'll have to remember to remove the exception then and fix the errors properly.
+
+---------------------------------------------------------------------------
+
+by staabm at 2020-04-27T09:56:31Z
+
+I am a friend of a high phpstan level and the baseline approach. did things like that in some of our projects already.
+
+I would recommend to a lower level though, because level 8 is very strict and might even introduce rules you dont agree with.
+
+we usually try to fix errors on level 0, 1, ,2 step by step (as you did) and then do the rest by baselining arround level 5.
+
+IMO 8 seems to be too high for now.
+
+to get an idea what which level achieves you might consult https://phpstan.org/user-guide/rule-levels
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-27T10:50:09Z
+
+IMO we do want level 8 and strict rules here. As far as I remember, rules like e.g. forbidding implicit boolean casts in control structures are things we (often) check during code review anyway.
+
+---------------------------------------------------------------------------
+
+by staabm at 2020-04-27T12:39:54Z
+
+I see. if your goal is 8 you should go for it.
+
+have a look whether running with so many warnings/ignores will affect your phpstan runtime, otherwise 👍
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-13T11:03:15Z
+
+Looks good to me, having the baseline will prevent new issues from being introduced :+1:
+After this we can start cleaning out the baseline.
