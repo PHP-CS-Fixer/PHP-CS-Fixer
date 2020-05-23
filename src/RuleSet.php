@@ -441,6 +441,10 @@ final class RuleSet implements RuleSetInterface
             '@PHPUnit60Migration:risky' => true,
             'php_unit_dedicate_assert_internal_type' => ['target' => PhpUnitTargetVersion::VERSION_7_5],
         ],
+        '@PHPUnit84Migration:risky' => [
+            '@PHPUnit75Migration:risky' => true,
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_8_4],
+        ],
     ];
 
     /**

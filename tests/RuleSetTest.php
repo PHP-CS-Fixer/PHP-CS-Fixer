@@ -658,6 +658,7 @@ final class RuleSetTest extends TestCase
             '@PHPUnit48Migration',
             '@PHPUnit55Migration:risky',
             '@PHPUnit75Migration:risky',
+            '@PHPUnit84Migration:risky',
             '@PSR1',
         ];
 
@@ -666,7 +667,7 @@ final class RuleSetTest extends TestCase
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
-        $dir = __DIR__.'/../tests/Fixtures/Integration/set';
+        $dir = __DIR__.'/Fixtures/Integration/set';
         $file = sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
 
         static::assertFileExists($file);

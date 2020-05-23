@@ -48,6 +48,11 @@ final class PhpUnitExpectationFixer extends AbstractFixer implements Configurati
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_6)) {
             $this->methodMap['setExpectedExceptionRegExp'] = 'expectExceptionMessageRegExp';
         }
+
+        if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_8_4)) {
+            $this->methodMap['setExpectedExceptionRegExp'] = 'expectExceptionMessageMatches';
+            $this->methodMap['expectExceptionMessageRegExp'] = 'expectExceptionMessageMatches';
+        }
     }
 
     /**
@@ -75,6 +80,25 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 }
 '
+                ),
+                new CodeSample(
+                    '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", null, 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}
+',
+                    ['target' => PhpUnitTargetVersion::VERSION_8_4]
                 ),
                 new CodeSample(
                     '<?php
@@ -165,7 +189,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])
-                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_NEWEST])
+                ->setAllowedValues([PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_8_4, PhpUnitTargetVersion::VERSION_NEWEST])
                 ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
                 ->getOption(),
         ]);
@@ -260,7 +284,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $tokens->overrideRange($argBefore, $argBefore, $tokensOverrideArgBefore);
             }
 
-            $tokens[$index] = new Token([T_STRING, 'expectException']);
+            $methodName = 'expectException';
+            if ('expectExceptionMessageRegExp' === $tokens[$index]->getContent()) {
+                $methodName = $this->methodMap[$tokens[$index]->getContent()];
+            }
+            $tokens[$index] = new Token([T_STRING, $methodName]);
         }
     }
 
