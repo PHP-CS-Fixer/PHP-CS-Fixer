@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2020-04-20T08:09:01Z
+
+Phpunit version constraints sound plausible to me. Check.
+
+Using stuff from the vendor as fixtures in test (from the working tree) sounds brittle to me. Maybe just dump the list as a static file fixture?
