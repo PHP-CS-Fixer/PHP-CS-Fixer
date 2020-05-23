@@ -658,6 +658,7 @@ return $foo === count($bar);
 
     private function isConstant(Tokens $tokens, $index, $end)
     {
+        $expectArrayOnly = false;
         $expectNumberOnly = false;
         $expectNothing = false;
 
@@ -670,6 +671,20 @@ return $foo === count($bar);
 
             if ($expectNothing) {
                 return false;
+            }
+
+            if ($expectArrayOnly) {
+                if ($token->equalsAny(['(', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) {
+                    continue;
+                }
+
+                return false;
+            }
+
+            if ($token->isGivenKind([T_ARRAY,  CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                $expectArrayOnly = true;
+
+                continue;
             }
 
             if ($expectNumberOnly && !$token->isGivenKind([T_LNUMBER, T_DNUMBER])) {
