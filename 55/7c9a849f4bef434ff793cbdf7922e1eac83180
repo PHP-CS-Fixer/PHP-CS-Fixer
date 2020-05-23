@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-04-19T11:22:48Z
+
+I would say so yeah :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-13T11:22:42Z
+
+@kubawerlos
+
+please add these test (these pass btw :+1:)
+
+```
+            [
+                '<?php return [ [ [ ] ] ] === $array;',
+                '<?php return $array === [ [ [ ] ] ];',
+            ],
+            [
+                '<?php return array(/* foo */) === $array;',
+                '<?php return $array === array(/* foo */);',
+            ],
+            [
+                '<?php return [
+                    // 1
+                ] === $array;',
+                '<?php return $array === [
+                    // 1
+                ];',
+            ],
+```
+
+and please rebase on top of 2.15
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-13T22:07:35Z
+
+Let's merge https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4934 first and I will update this one, so we have no conflicts.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-14T07:33:10Z
+
+:+1:  I've merged it @kubawerlos
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-14T16:24:20Z
+
+@SpacePossum updated, but I've added only 2 of your 3 tests, without this one:
+```php
+          [
+                '<?php return [ [ [ ] ] ] === $array;',
+                '<?php return $array === [ [ [ ] ] ];',
+          ],
+```
+but I've added these:
+```php
+
+            ['<?php return $p == array(array());'],
+            ['<?php return $p == [[]];'],
+```
+
+Isn't this more consistent with these:
+```php
+
+            ['<?php return $p == array(2);'],
+            ['<?php return $p == array("2");'],
+            ['<?php return $p == array(TWO);'],
+```
+
+WDYT?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-17T14:13:03Z
+
+@kubawerlos yeah looks good to me, nice to see the `[[]]` edge case handled as well :)
