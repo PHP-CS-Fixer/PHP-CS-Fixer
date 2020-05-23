@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-16T09:30:38Z
+
+How to test:
+
+Use a differ of your choice to make the differences between the old and new behavior visible (here I took `meld`, `diff` does equally):
+
+```
+$ meld -- \
+	<(find . -type f -not -path "./.git/*" -not -path "./dev-tools/bin/*" -not -path "./dev-tools/vendor/*" -not -path "./vendor/*" -not -path "./tests/Fixtures/*" | sort -fh) \
+	<(git ls-files . ':!tests/Fixtures/*' | sed -e 's/^/.\//' | sort -fh)
+```
+
+Reviewing the changes should show no files added by the new behavior (right side) but instead show false-positive files from the left side removed.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-16T11:59:30Z
+
+@ktomk looks promising, can you point to `2.15` branch?
+
+The difference is that we lose colours:
+![image](https://user-images.githubusercontent.com/9282069/82119107-1ad30f80-977c-11ea-9ae8-4178a088ab12.png)
+
+The first one is before and second after your changes - I don't know if we want to lose that, might be helpful for contributors to easily spot the trailing whitespaces.
+
+And if we don't need the colour I guess some formating from the line `echo "${files_with_trailing_spaces}"...` could be removed.
+
+BTW have you tried with `git grep` instead of `git ls-files` with grep?
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-16T12:41:45Z
+
+@kubawerlos colors should be back with the last fixup, for git grep I'll take a look.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-16T13:20:40Z
+
+@kubawerlos Yes, **git-rep** worked like a charm. No more execs of grep.
+
+<pre><span style="background-color:#FF5252"><font color="#F5F5F5">Trailing whitespaces detected:</font></span>
+<font color="#FF5252"> - in </font><font color="#FFC135">CHANGELOG.md</font><font color="#FF5252"> at line </font><font color="#FFC135">14</font>
+<font color="#FFC135">   </font><font color="#FF5252">&gt;</font> Changelog for v2.15.6<span style="background-color:#FF5252"><b> </b></span>
+</pre>
+
+![Selection_074](https://user-images.githubusercontent.com/352517/82120768-bc605e00-9788-11ea-9257-9fd38613fd91.png)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-17T18:26:42Z
+
+Hi, thanks for all the work! You think this should also be applied to https://github.com/PHP-CS-Fixer/trailing-whitespace-checker ?
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-18T22:08:13Z
+
+Just squashed after review.
+
+@SpacePossum
+
+> Hi, thanks for all the work! You think this should also be applied to https://github.com/PHP-CS-Fixer/trailing-whitespace-checker ?
+
+I don't have it in use, no idea. The port is not straight forward at least for me as it needs also support for Subversion for which I currently don't have a system prepared for. Feel free to open an issue there if you need it there, too, then we can discuss the details of a port there. Just ping me.
