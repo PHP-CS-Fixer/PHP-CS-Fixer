@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-17T14:08:54Z
+
+looking good!
+
+I propose these tweaks;
+
+```diff
+diff --git a/src/Fixer/Import/OrderedImportsFixer.php b/src/Fixer/Import/OrderedImportsFixer.php
+index a6c5ed36b..98a580477 100644
+--- a/src/Fixer/Import/OrderedImportsFixer.php
++++ b/src/Fixer/Import/OrderedImportsFixer.php
+@@ -390,8 +390,8 @@ private function getNewOrder(array $uses, Tokens $tokens)
+                         $firstIndent = '';
+                         $separator = ', ';
+                         $lastIndent = '';
+-
+                         $hasGroupTrailingComma = false;
++
+                         for ($k1 = $k + 1; $k1 < $namespaceTokensCount; ++$k1) {
+                             $comment = '';
+                             $namespacePart = '';
+@@ -421,12 +421,13 @@ private function getNewOrder(array $uses, Tokens $tokens)
+                             }
+
+                             $namespacePart = trim($namespacePart);
+-                            $comment = trim($comment);
+                             if ('' === $namespacePart) {
+                                 $hasGroupTrailingComma = true;
+
+                                 continue;
+                             }
++
++                            $comment = trim($comment);
+                             if ('' !== $comment) {
+                                 $namespacePart .= ' '.$comment;
+                             }
+diff --git a/tests/Fixer/Import/OrderedImportsFixerTest.php b/tests/Fixer/Import/OrderedImportsFixerTest.php
+index e5de15806..117220275 100644
+--- a/tests/Fixer/Import/OrderedImportsFixerTest.php
++++ b/tests/Fixer/Import/OrderedImportsFixerTest.php
+@@ -2084,6 +2084,18 @@ public function provideFix72Cases()
+ use Foo\{
+     Bbb,
+     Aaa,
++};',
++            ],
++            [
++                '<?php
++use Foo\{
++    Aaa /* 3 *//* 4 *//* 5 */,
++    Bbb /* 1 *//* 2 */,
++};',
++                '<?php
++use Foo\{
++    /* 1 */Bbb/* 2 */,/* 3 */
++    /* 4 */Aaa/* 5 */,/* 6 */
+ };',
+             ],
+         ];
+```
