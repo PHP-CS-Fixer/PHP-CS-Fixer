@@ -1,0 +1,88 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-19T08:10:56Z
+
+This is a new feature, can you rebase onto master please?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-19T08:17:02Z
+
+> NOTE: As the old method is removed in Phpunit 9 (not 10!), an additional
+fixer is needed to rename an already fixed method.
+
+Can't we also map `expectExceptionMessageRegExp` to `expectExceptionMessageMatches`?
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-04-19T23:32:11Z
+
+@julienfalque
+> This is a new feature, can you rebase onto master please?
+
+and:
+
+> NOTE: As the old method is removed in Phpunit 9 (not 10!), an additional
+fixer is needed to rename an already fixed method.
+
+Does adding a new rule-set in this case count as new feature? Just wondering, as for this PR this is merely a fix to use the fixer for phpunit migration towards a PHP 7.4 target (coming from PHP 7.3 with backwards compat PHP 5.3 baseline in the project).
+
+For the change (not part of this PR and I could also benefit of help with using standard methods in renaming method calls) to upgrade the previous deprecated method to phpunit 8.4 new ones, this would be a different fixer (and I would be happy to base it onto master, no problem with that).
+
+Were you concerned about that part? Never edited RuleSet, so also please bear with me having such kind of questions.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-20T06:34:05Z
+
+> Does adding a new rule-set in this case count as new feature?
+
+Yes (it changes the public API of the tool), and so does adding a new value to an existing option of a rule.
+
+> For the change [...] to upgrade the previous deprecated method to phpunit 8.4 new ones, this would be a different fixer
+
+IMO it would be better to implement it in the same fixer. But I'm not familiar with this one so I don't know whether it's easily feasable.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-04-20T08:12:40Z
+
+@julienfalque I considered the fix here an easy catch - until I now changed the RuleSet and the tests fail and I don't understand what the test is testing when it fails. So better keep things smaller for this one and do it right.
+
+If someone could take a look at [the failing test](https://travis-ci.org/github/FriendsOfPHP/PHP-CS-Fixer/jobs/677041522#L791) for the fixer configuration and could give me some pointers would be great.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-20T08:23:47Z
+
+The failures are because:
+* the new ruleset contains the wrong rule (it should be `php_unit_expectation`);
+* the README file is out of date; you need to run `./php-cs-fixer readme > README.rst` (after fixing previous issue).
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-20T16:08:57Z
+
+@julienfalque @ktomk also some other tests for rule sets are failing.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-24T08:08:19Z
+
+@ktomk Looking good. Could add or update a test showing that an existing call to `expectExceptionMessageRegExp()` is replaced with `expectExceptionMessageMatches()`?
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-04-24T17:17:49Z
+
+> @ktomk Looking good. Could add or update a test showing that an existing call to `expectExceptionMessageRegExp()` is replaced with `expectExceptionMessageMatches()`?
+
+Actually this fixer did not come with such a fix which I noted early on, and that I was under the impression to have it a fixer of it's own (like on a base rename method fixer or similar).
+
+However your last comment made me curious so I wrote a test for exactly this and patched the fixer. It's kinda patched in, so this needs review.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-16T07:59:42Z
+
+Hi there, just refreshing again as it starts to rot a bit here. Are there any blockers?
