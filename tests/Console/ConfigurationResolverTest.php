@@ -287,32 +287,58 @@ final class ConfigurationResolverTest extends TestCase
         static::assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
     }
 
-    public function testResolvePathRelativeA()
+    /**
+     * @param array<int, string> $paths
+     * @param string             $cwd
+     * @param array<int, string> $expectedPaths
+     *
+     * @dataProvider providePathCases
+     */
+    public function testResolvePath(array $paths, $cwd, array $expectedPaths)
     {
         $resolver = $this->createConfigurationResolver(
-            ['path' => ['Command']],
+            ['path' => $paths],
             null,
-            __DIR__
+            $cwd
         );
 
-        static::assertSame([__DIR__.\DIRECTORY_SEPARATOR.'Command'], $resolver->getPath());
+        static::assertSame($expectedPaths, $resolver->getPath());
     }
 
-    public function testResolvePathRelativeB()
+    public function providePathCases()
     {
-        $resolver = $this->createConfigurationResolver(
-            ['path' => [basename(__DIR__)]],
-            null,
-            \dirname(__DIR__)
-        );
+        yield [
+            ['Command'],
+            __DIR__,
+            [__DIR__.\DIRECTORY_SEPARATOR.'Command'],
+        ];
 
-        static::assertSame([__DIR__], $resolver->getPath());
+        yield [
+            [basename(__DIR__)],
+            \dirname(__DIR__),
+            [__DIR__],
+        ];
+
+        yield [
+            [' Command'],
+            __DIR__,
+            [__DIR__.\DIRECTORY_SEPARATOR.'Command'],
+        ];
+
+        yield [
+            ['Command '],
+            __DIR__,
+            [__DIR__.\DIRECTORY_SEPARATOR.'Command'],
+        ];
     }
 
     /**
+     * @param array<string> $paths
+     * @param string        $expectedMessage
+     *
      * @dataProvider provideEmptyPathCases
      */
-    public function testRejectInvalidPath(array $paths)
+    public function testRejectInvalidPath(array $paths, $expectedMessage)
     {
         $resolver = $this->createConfigurationResolver(
             ['path' => $paths],
@@ -321,16 +347,42 @@ final class ConfigurationResolverTest extends TestCase
         );
 
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('Invalid path: "".');
+        $this->expectExceptionMessage($expectedMessage);
 
         $resolver->getPath();
     }
 
     public function provideEmptyPathCases()
     {
-        yield [['']];
-        yield [[__DIR__, '']];
-        yield [['', __DIR__]];
+        yield [
+            [''],
+            'Invalid path: "".',
+        ];
+
+        yield [
+            [__DIR__, ''],
+            'Invalid path: "".',
+        ];
+
+        yield [
+            ['', __DIR__],
+            'Invalid path: "".',
+        ];
+
+        yield [
+            ['  '],
+            'Invalid path: "  ".',
+        ];
+
+        yield [
+            [__DIR__, '  '],
+            'Invalid path: "  ".',
+        ];
+
+        yield [
+            ['  ', __DIR__],
+            'Invalid path: "  ".',
+        ];
     }
 
     public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode()

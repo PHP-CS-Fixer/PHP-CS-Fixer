@@ -373,9 +373,11 @@ final class ConfigurationResolver
                 $this->path = $this->options['path'];
             } else {
                 $this->path = array_map(
-                    static function ($path) use ($cwd, $filesystem) {
+                    static function ($rawPath) use ($cwd, $filesystem) {
+                        $path = trim($rawPath);
+
                         if ('' === $path) {
-                            throw new InvalidConfigurationException('Invalid path: "".');
+                            throw new InvalidConfigurationException("Invalid path: \"{$rawPath}\".");
                         }
 
                         $absolutePath = $filesystem->isAbsolutePath($path)

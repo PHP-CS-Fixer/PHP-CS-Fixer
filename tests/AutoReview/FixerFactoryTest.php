@@ -118,6 +118,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
+            [$fixers['method_chaining_indentation'], $fixers['method_argument_space']],
             [$fixers['multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']],
             [$fixers['native_constant_invocation'], $fixers['global_namespace_import']],
             [$fixers['native_function_invocation'], $fixers['global_namespace_import']],

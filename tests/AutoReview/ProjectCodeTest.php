@@ -250,7 +250,7 @@ final class ProjectCodeTest extends TestCase
             }
         );
 
-        if ($publicMethods === []) {
+        if ([] === $publicMethods) {
             $this->addToAssertionCount(1); // no methods to test, all good!
         }
 
@@ -302,7 +302,7 @@ final class ProjectCodeTest extends TestCase
             }
         );
 
-        if ($definedDataProviders === []) {
+        if ([] === $definedDataProviders) {
             $this->addToAssertionCount(1); // no methods to test, all good!
         }
 
@@ -365,7 +365,7 @@ final class ProjectCodeTest extends TestCase
             }
         );
 
-        if ($publicMethods === []) {
+        if ([] === $publicMethods) {
             $this->addToAssertionCount(1); // no methods to test, all good!
 
             return;

@@ -32,6 +32,7 @@ final class ComposerTest extends TestCase
 
         if (!isset($composerJson['extra']['branch-alias'])) {
             $this->addToAssertionCount(1); // composer.json doesn't contain branch alias, all good!
+
             return;
         }
 

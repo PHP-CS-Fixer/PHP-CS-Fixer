@@ -225,6 +225,10 @@ if ($a = $obj instanceof A === true) {
             // https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/693
             ['<?php return array(2) == $o;'],
             ['<?php return $p == array(2);'],
+            ['<?php return $p == array("2");'],
+            ['<?php return $p == array(TWO);'],
+            ['<?php return $p == array(array());'],
+            ['<?php return $p == [[]];'],
             ['<?php return array($q) == $a;'],
             ['<?php return $r == array($a);'],
             ['<?php $s = ((array(2))) == $a;'],
@@ -595,6 +599,26 @@ $a#4
             [
                 '<?php $a %= 4 === $b ? 2 : 3;',
                 '<?php $a %= $b === 4 ? 2 : 3;',
+            ],
+            [
+                '<?php return array() === $array;',
+                '<?php return $array === array();',
+            ],
+            [
+                '<?php return [] === $array;',
+                '<?php return $array === [];',
+            ],
+            [
+                '<?php return array(/* foo */) === $array;',
+                '<?php return $array === array(/* foo */);',
+            ],
+            [
+                '<?php return [
+                    // 1
+                ] === $array;',
+                '<?php return $array === [
+                    // 1
+                ];',
             ],
         ];
     }

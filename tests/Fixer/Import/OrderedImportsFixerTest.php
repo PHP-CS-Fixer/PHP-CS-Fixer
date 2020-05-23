@@ -2074,6 +2074,30 @@ use function some\a\{fn_a, fn_b, fn_c,};
                     'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
                 ],
             ],
+            [
+                '<?php
+use Foo\{
+    Aaa,
+    Bbb,
+};',
+                '<?php
+use Foo\{
+    Bbb,
+    Aaa,
+};',
+            ],
+            [
+                '<?php
+use Foo\{
+    Aaa /* 3 *//* 4 *//* 5 */,
+    Bbb /* 1 *//* 2 */,
+};',
+                '<?php
+use Foo\{
+    /* 1 */Bbb/* 2 */,/* 3 */
+    /* 4 */Aaa/* 5 */,/* 6 */
+};',
+            ],
         ];
     }
 

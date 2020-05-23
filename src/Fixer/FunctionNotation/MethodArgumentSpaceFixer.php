@@ -119,11 +119,11 @@ SAMPLE
     /**
      * {@inheritdoc}
      *
-     * Must run after BracesFixer, CombineNestedDirnameFixer, ImplodeCallFixer, PowToExponentiationFixer.
+     * Must run after BracesFixer, CombineNestedDirnameFixer, ImplodeCallFixer, MethodChainingIndentationFixer, PowToExponentiationFixer.
      */
     public function getPriority()
     {
-        return -26;
+        return -30;
     }
 
     /**
