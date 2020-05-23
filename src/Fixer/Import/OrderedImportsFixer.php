@@ -390,6 +390,7 @@ use Bar;
                         $firstIndent = '';
                         $separator = ', ';
                         $lastIndent = '';
+                        $hasGroupTrailingComma = false;
 
                         for ($k1 = $k + 1; $k1 < $namespaceTokensCount; ++$k1) {
                             $comment = '';
@@ -420,6 +421,12 @@ use Bar;
                             }
 
                             $namespacePart = trim($namespacePart);
+                            if ('' === $namespacePart) {
+                                $hasGroupTrailingComma = true;
+
+                                continue;
+                            }
+
                             $comment = trim($comment);
                             if ('' !== $comment) {
                                 $namespacePart .= ' '.$comment;
@@ -437,7 +444,7 @@ use Bar;
                         if ($sortedParts === $parts) {
                             $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                         } else {
-                            $namespace .= $firstIndent.implode($separator, $parts).$lastIndent.'}';
+                            $namespace .= $firstIndent.implode($separator, $parts).($hasGroupTrailingComma ? ',' : '').$lastIndent.'}';
                         }
                     } else {
                         $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
