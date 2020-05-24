@@ -74,7 +74,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 $tokens->clearAt($previousIndex);
             }
             // Remove new lines in opening token
-            if ($newlineInOpening) {
+            if ($newlineInOpening && null !== $openingToken) {
                 $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
             }
 

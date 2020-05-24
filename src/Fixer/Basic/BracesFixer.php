@@ -756,10 +756,6 @@ class Foo
         $nextIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
         $nextToken = $tokens[$nextIndex];
 
-        if (!$nextToken) {
-            return $parenthesisEndIndex;
-        }
-
         if ($nextToken->equals('{')) {
             return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
         }

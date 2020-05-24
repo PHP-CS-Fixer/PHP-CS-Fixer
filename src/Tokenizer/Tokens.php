@@ -289,6 +289,36 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * @param int $index
+     *
+     * @return Token
+     */
+    public function offsetGet($index)
+    {
+        $token = parent::offsetGet($index);
+
+        if (null === $token) {
+            return new Token('');
+        }
+
+        return $token;
+    }
+
+    /**
+     * @return Token
+     */
+    public function current()
+    {
+        $token = parent::current();
+
+        if (null === $token) {
+            return new Token('');
+        }
+
+        return $token;
+    }
+
+    /**
      * Unset collection item.
      *
      * @param int $index
