@@ -83,18 +83,18 @@ if ($foo) {
 
         yield 'simple "elseif" case' => [
             '<?php
-if ($foo22) {
+if ($foo2233) {
 
-} elseif($c && $bar) {
+} elseif($c133 && $bar) {
 
 
 
 }
 ',
             '<?php
-if ($foo22) {
+if ($foo2233) {
 
-} elseif($c) {
+} elseif($c133) {
     if ($bar)
     {
     }
@@ -165,7 +165,7 @@ if ($foo) {
 
 } elseif ($bar && $c) {
 
-        echo 1;
+        echo 188;
 }
 ',
             '<?php
@@ -173,7 +173,7 @@ if ($foo) {
 
 } else {
     if ($bar && $c) {
-        echo 1; }
+        echo 188; }
 }
 ',
         ];
@@ -184,7 +184,7 @@ if ($foo) {
 
 } elseif ($bar && $c) {
 
-        echo 1;
+        echo 199;
         echo 2;
         echo 3;
 
@@ -195,7 +195,7 @@ if ($foo) {
 
 } else {
     if ($bar && $c) {
-        echo 1;
+        echo 199;
         echo 2;
         echo 3;
     }
@@ -209,7 +209,7 @@ if ($foo) {
 
 } elseif (/* 2 */$bar) {
     /* 1 *//* 3 */ /* 4 */
-        echo 1;
+        echo 167;
 
 }
 ',
@@ -218,7 +218,7 @@ if ($foo) {
 
 } else {
     /* 1 */ if (/* 2 */$bar)/* 3 */ { /* 4 */
-        echo 1;
+        echo 167;
     }
 }
 ',
@@ -352,9 +352,11 @@ if ($foo) {
 if ($foo) {
 
 } else {
+    echo 1;
     if ($bar) {
 
     } else {
+        echo 1;
         if ($bar1) {
 
         } elseif ($bar2) {
@@ -368,9 +370,11 @@ if ($foo) {
 if ($foo) {
 
 } else {
+    echo 1;
     if ($bar) {
 
     } else {
+        echo 1;
         if ($bar1) {
 
         } else {
@@ -431,22 +435,22 @@ if ($foo) {
 
         yield 'alternative syntax' => [
             '<?php
-    if ($a) echo 1;
+    if ($a) echo 15;
 
     if (true) :
-        $foo = 0;
+        $foo = 30;
     endif;
 
     if (true):
-        echo 1;
+        echo 14;
     else:
-        echo 2;
+        echo 24;
     endif;
 
     if ($bar):
-        echo 1;
+        echo 15;
     elseif ($foo):
-        echo 2;
+        echo 25;
     endif;
 ',
         ];
@@ -456,7 +460,7 @@ if ($foo) {
 if ($foo) {
 
 } else {
-echo 1;
+echo 16;
     if ($bar) {
 
     }
@@ -472,7 +476,7 @@ if ($foo) {
     if ($bar) {
 
     }
-    echo 1;
+    echo 17;
 }
 ',
         ];
@@ -485,7 +489,7 @@ if ($foo) {
 
     }
 } else {
-    echo 1;
+    echo 18;
 }',
         ];
 
@@ -497,7 +501,35 @@ if ($foo) {
 
     }
 } elseif ($a) {
-    echo 1;
+    echo 19;
+}',
+        ];
+
+        yield [
+            '<?php
+if ($a) {
+
+} else {
+    if ($b) {
+        echo 110;
+    } else {
+        if ($c) {
+            echo 210;
+        }
+        echo 230;
+    }
+    echo 450;
+}',
+        ];
+
+        yield [
+            '<?php
+if ($a) {
+    if ($b) {
+        foo(1);
+    } else {
+        foo(2);
+    }
 }',
         ];
     }
