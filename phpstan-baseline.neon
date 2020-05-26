@@ -727,7 +727,7 @@ parameters:
 
 		-
 			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
-			count: 2
+			count: 3
 			path: src/Console/ConfigurationResolver.php
 
 		-
@@ -3647,7 +3647,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 23
+			count: 24
 			path: src/Fixer/ControlStructure/YodaStyleFixer.php
 
 		-
@@ -3762,7 +3762,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 3
+			count: 4
 			path: src/Fixer/ControlStructure/YodaStyleFixer.php
 
 		-
@@ -8611,23 +8611,43 @@ parameters:
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
+			message: "#^Only numeric types are allowed in pre\\-decrement, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 2
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
-			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			message: "#^Parameter \\#2 \\$prevNonWhitespace of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\BlankLineBeforeStatementFixer\\:\\:shouldAddBlankLine\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
-			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 1
+			message: "#^Cannot call method isComment\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
 			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 3
+			count: 4
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
+			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
+			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
@@ -12682,6 +12702,16 @@ parameters:
 
 		-
 			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 2
+			path: tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php
+
+		-
+			message: "#^Cannot call method fix\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 1
+			path: tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$haystack of function strpos expects string, int\\|string given\\.$#"
 			count: 1
 			path: tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php
 
