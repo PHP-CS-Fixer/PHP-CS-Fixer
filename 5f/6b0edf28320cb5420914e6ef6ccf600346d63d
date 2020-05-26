@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-23T13:16:00Z
+
+So after each series of merges (like today), we will need 4 PRs to fix PHPStan's baseline? I understand baseline as something we set up once and then if changing then only making it smaller, not extending it like in this PR.
+
+That's what I was afraid in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4904
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-23T14:06:53Z
+
+By bumping up to level 8 on 2.15 we have these initial issues on the on other branches as it was only added there in the upstream merge. Since I didn't fixed all the issues on the upstreams during merging I'm happy @julienfalque made these PRs :)
+
+After these, I expect way less issues as now all PR's will be tested with the new level 8.
+We might hit a conflict on the baseline every now and than, but it is a small price to pay compared to what it bring us IMHO.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-23T18:48:45Z
+
+The only annoying scenario I see is when a PR has an errors unrelated to its changes. For example: a method in `Tokens` that has wrong return type. Adding a new call to that method in some fixer will trigger a new error. The PR might either fix the return type and remove all related errors in baseline file but that will create a lot of noise. The other solution is to simply ignore the new error too, which is supposed to never happen. I'll try to fix most common errors in dedicated PRs to prevent this scenario as much as possible.
