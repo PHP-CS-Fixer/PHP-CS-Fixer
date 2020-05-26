@@ -727,7 +727,7 @@ parameters:
 
 		-
 			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
-			count: 2
+			count: 3
 			path: src/Console/ConfigurationResolver.php
 
 		-
@@ -889,6 +889,16 @@ parameters:
 			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
 			count: 1
 			path: src/DocBlock/Annotation.php
+
+		-
+			message: "#^Anonymous function should have native return typehint \"bool\"\\.$#"
+			count: 1
+			path: src/DocBlock/DocBlock.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, int\\<min, 1\\> given\\.$#"
+			count: 1
+			path: src/DocBlock/DocBlock.php
 
 		-
 			message: "#^Method PhpCsFixer\\\\DocBlock\\\\DocBlock\\:\\:findAnnotationLength\\(\\) has parameter \\$start with no typehint specified\\.$#"
@@ -1831,19 +1841,34 @@ parameters:
 			path: src/Fixer/Basic/Psr4Fixer.php
 
 		-
-			message: "#^Parameter \\#2 \\$index of method PhpCsFixer\\\\Fixer\\\\Casing\\\\LowercaseConstantsFixer\\:\\:isNeighbourAccepted\\(\\) expects int, int\\|null given\\.$#"
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Casing\\\\ConstantCaseFixer\\:\\:configure\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Casing/ConstantCaseFixer.php
+
+		-
+			message: "#^Offset 'case' does not exist on array\\<string, mixed\\>\\|null\\.$#"
 			count: 2
-			path: src/Fixer/Casing/LowercaseConstantsFixer.php
+			path: src/Fixer/Casing/ConstantCaseFixer.php
+
+		-
+			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
+			count: 2
+			path: src/Fixer/Casing/ConstantCaseFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$index of method PhpCsFixer\\\\Fixer\\\\Casing\\\\ConstantCaseFixer\\:\\:isNeighbourAccepted\\(\\) expects int, int\\|null given\\.$#"
+			count: 2
+			path: src/Fixer/Casing/ConstantCaseFixer.php
 
 		-
 			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 1
-			path: src/Fixer/Casing/LowercaseConstantsFixer.php
+			path: src/Fixer/Casing/ConstantCaseFixer.php
 
 		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 1
-			path: src/Fixer/Casing/LowercaseConstantsFixer.php
+			path: src/Fixer/Casing/ConstantCaseFixer.php
 
 		-
 			message: "#^Property PhpCsFixer\\\\Fixer\\\\Casing\\\\LowercaseKeywordsFixer\\:\\:\\$excludedTokens has no typehint specified\\.$#"
@@ -2336,6 +2361,91 @@ parameters:
 			path: src/Fixer/ClassNotation/FinalInternalClassFixer.php
 
 		-
+			message: "#^Property PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\FinalPublicMethodForAbstractClassFixer\\:\\:\\$magicMethods type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevMeaningfulToken\\(\\) expects int, int\\<1, max\\>\\|int\\<min, \\-1\\>\\|string given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 6
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextTokenOfKind\\(\\) expects int, int\\<1, max\\>\\|int\\<min, \\-1\\>\\|string given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$searchIndex of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findBlockEnd\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$classOpenIndex of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\FinalPublicMethodForAbstractClassFixer\\:\\:fixClass\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Only numeric types are allowed in pre\\-decrement, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
+			count: 2
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:insertAt\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 5
+			path: src/Fixer/ClassNotation/FinalStaticAccessFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextTokenOfKind\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalStaticAccessFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$searchIndex of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findBlockEnd\\(\\) expects int, int\\|null given\\.$#"
+			count: 3
+			path: src/Fixer/ClassNotation/FinalStaticAccessFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$startIndex of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\FinalStaticAccessFixer\\:\\:replaceStaticAccessWithSelfAccessBetween\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalStaticAccessFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/FinalStaticAccessFixer.php
+
+		-
 			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 1
 			path: src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php
@@ -2771,6 +2881,41 @@ parameters:
 			path: src/Fixer/ClassNotation/SelfAccessorFixer.php
 
 		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 6
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
+			message: "#^Only numeric types are allowed in pre\\-increment, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 4
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextTokenOfKind\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$index of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\SelfStaticAccessorFixer\\:\\:fixClass\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
+			message: "#^Cannot assign offset int\\|null to PhpCsFixer\\\\Tokenizer\\\\Tokens\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\SelfStaticAccessorFixer\\:\\:fixClass\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Fixer/ClassNotation/SelfStaticAccessorFixer.php
+
+		-
 			message: "#^Offset 'elements' does not exist on array\\<string, mixed\\>\\|null\\.$#"
 			count: 1
 			path: src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php
@@ -2961,6 +3106,21 @@ parameters:
 			path: src/Fixer/ClassUsage/DateTimeImmutableFixer.php
 
 		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Comment\\\\CommentToPhpdocFixer\\:\\:configure\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Comment/CommentToPhpdocFixer.php
+
+		-
+			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
+			count: 1
+			path: src/Fixer/Comment/CommentToPhpdocFixer.php
+
+		-
+			message: "#^Offset 'ignored_tags' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Comment/CommentToPhpdocFixer.php
+
+		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 1
 			path: src/Fixer/Comment/CommentToPhpdocFixer.php
@@ -3001,13 +3161,13 @@ parameters:
 			path: src/Fixer/Comment/CommentToPhpdocFixer.php
 
 		-
-			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 4
+			message: "#^Only booleans are allowed in an if condition, mixed given\\.$#"
+			count: 1
 			path: src/Fixer/Comment/CommentToPhpdocFixer.php
 
 		-
-			message: "#^Only booleans are allowed in \\|\\|, mixed given on the left side\\.$#"
-			count: 1
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 4
 			path: src/Fixer/Comment/CommentToPhpdocFixer.php
 
 		-
@@ -3647,7 +3807,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 23
+			count: 24
 			path: src/Fixer/ControlStructure/YodaStyleFixer.php
 
 		-
@@ -3762,7 +3922,7 @@ parameters:
 
 		-
 			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 3
+			count: 4
 			path: src/Fixer/ControlStructure/YodaStyleFixer.php
 
 		-
@@ -4492,6 +4652,76 @@ parameters:
 
 		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$str of function strtolower expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php
+
+		-
+			message: "#^Offset 'use_nullable_type…' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php
+
+		-
+			message: "#^Cannot call method isNullable\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\TypeAnalysis\\|null\\.$#"
+			count: 2
+			path: src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php
+
+		-
+			message: "#^Cannot call method getStartIndex\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\TypeAnalysis\\|null\\.$#"
+			count: 3
+			path: src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 4
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Only numeric types are allowed in \\+, int\\|null given on the left side\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Only numeric types are allowed in \\-, int\\|null given on the left side\\.$#"
+			count: 2
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Parameter \\#3 \\$index of method PhpCsFixer\\\\Fixer\\\\FunctionNotation\\\\PhpdocToParamTypeFixer\\:\\:fixFunctionDefinition\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevNonWhitespace\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Cannot assign offset int\\|null to PhpCsFixer\\\\Tokenizer\\\\Tokens\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 5
 			path: src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php
 
@@ -4554,6 +4784,31 @@ parameters:
 			message: "#^Cannot call method isComment\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 1
 			path: src/Fixer/FunctionNotation/ReturnTypeDeclarationFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 4
+			path: src/Fixer/FunctionNotation/SingleLineThrowFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/SingleLineThrowFixer.php
+
+		-
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/SingleLineThrowFixer.php
+
+		-
+			message: "#^Strict comparison using \\!\\=\\= between false and int will always evaluate to true\\.$#"
+			count: 1
+			path: src/Fixer/FunctionNotation/SingleLineThrowFixer.php
+
+		-
+			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Fixer/FunctionNotation/SingleLineThrowFixer.php
 
 		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
@@ -4674,6 +4929,151 @@ parameters:
 			message: "#^Only booleans are allowed in a negated boolean, PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\TypeAnalysis\\|null given\\.$#"
 			count: 1
 			path: src/Fixer/Import/FullyQualifiedStrictTypesFixer.php
+
+		-
+			message: "#^Offset 'import_constants' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Offset 'import_functions' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Offset 'import_classes' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, array\\<string, array\\> given\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:importConstants\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Anonymous function should have native return typehint \"bool\"\\.$#"
+			count: 6
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Only numeric types are allowed in pre\\-increment, int\\|null given\\.$#"
+			count: 3
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Cannot call method isClassy\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 3
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Parameter \\#2 \\$searchIndex of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findBlockEnd\\(\\) expects int, int\\|null given\\.$#"
+			count: 3
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 22
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 13
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
+			count: 2
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:importFunctions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:importClasses\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Anonymous function should have native return typehint \"void\"\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Cannot assign offset \\(int\\|string\\) to PhpCsFixer\\\\Tokenizer\\\\Tokens\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:prepareImports\\(\\) has parameter \\$global with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:prepareImports\\(\\) has parameter \\$other with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:prepareImports\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:insertImports\\(\\) has parameter \\$imports with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, array\\<PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\NamespaceUseAnalysis\\> given\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:filterUseDeclarations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:findFunctionDeclarations\\(\\) has parameter \\$end with no typehint specified\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Import\\\\GlobalNamespaceImportFixer\\:\\:findFunctionDeclarations\\(\\) has parameter \\$start with no typehint specified\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextTokenOfKind\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
+
+		-
+			message: "#^Only booleans are allowed in a negated boolean, array\\<PhpCsFixer\\\\DocBlock\\\\Annotation\\> given\\.$#"
+			count: 1
+			path: src/Fixer/Import/GlobalNamespaceImportFixer.php
 
 		-
 			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextMeaningfulToken\\(\\) expects int, array\\<int\\>\\|int given\\.$#"
@@ -7366,6 +7766,16 @@ parameters:
 			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
 
 		-
+			message: "#^Offset 'remove_inheritdoc' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, mixed given\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
+
+		-
 			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
 			count: 6
 			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
@@ -7382,6 +7792,16 @@ parameters:
 
 		-
 			message: "#^Only numeric types are allowed in \\+, int\\|null given on the left side\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
+
+		-
+			message: "#^Offset 'allow_unused_params' does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
+
+		-
+			message: "#^Only booleans are allowed in &&, mixed given on the right side\\.$#"
 			count: 1
 			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
 
@@ -7452,6 +7872,11 @@ parameters:
 
 		-
 			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\NoSuperfluousPhpdocTagsFixer\\:\\:removeSuperfluousInheritDoc\\(\\) should return string but returns array\\<string\\>\\|string\\.$#"
 			count: 1
 			path: src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php
 
@@ -7689,6 +8114,41 @@ parameters:
 			message: "#^Anonymous function should have native return typehint \"string\"\\.$#"
 			count: 1
 			path: src/Fixer/Phpdoc/PhpdocInlineTagFixer.php
+
+		-
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
+
+		-
+			message: "#^Offset mixed does not exist on array\\<string, mixed\\>\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevNonWhitespace\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Fixer\\\\Phpdoc\\\\PhpdocLineSpanFixer\\:\\:getDocBlockIndex\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
+
+		-
+			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
+
+		-
+			message: "#^Parameter \\#1 \\$array_arg of function end expects array\\|object, array\\<int, string\\>\\|false given\\.$#"
+			count: 1
+			path: src/Fixer/Phpdoc/PhpdocLineSpanFixer.php
 
 		-
 			message: "#^Offset 'replacements' does not exist on array\\<string, mixed\\>\\|null\\.$#"
@@ -8611,23 +9071,43 @@ parameters:
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
+			message: "#^Only numeric types are allowed in pre\\-decrement, int\\|null given\\.$#"
+			count: 1
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
 			count: 2
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
-			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			message: "#^Parameter \\#2 \\$prevNonWhitespace of method PhpCsFixer\\\\Fixer\\\\Whitespace\\\\BlankLineBeforeStatementFixer\\:\\:shouldAddBlankLine\\(\\) expects int, int\\|null given\\.$#"
 			count: 1
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
-			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 1
+			message: "#^Cannot call method isComment\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
 			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
-			count: 3
+			count: 4
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
+			message: "#^Cannot call method isWhitespace\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
+
+		-
+			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
 			path: src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php
 
 		-
@@ -9974,6 +10454,46 @@ parameters:
 			message: "#^Parameter \\#1 \\$token of method PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\BlocksAnalyzer\\:\\:getBlockType\\(\\) expects PhpCsFixer\\\\Tokenizer\\\\Token, PhpCsFixer\\\\Tokenizer\\\\Token\\|null given\\.$#"
 			count: 1
 			path: src/Tokenizer/Analyzer/BlocksAnalyzer.php
+
+		-
+			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 8
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Cannot call method getName\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Cannot call method getContent\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getPrevMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
+			count: 2
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Cannot call method equals\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 2
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextMeaningfulToken\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Only numeric types are allowed in \\+, int\\|null given on the left side\\.$#"
+			count: 1
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
+
+		-
+			message: "#^Cannot call method equalsAny\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
+			count: 1
+			path: src/Tokenizer/Analyzer/ClassyAnalyzer.php
 
 		-
 			message: "#^Cannot call method isGivenKind\\(\\) on PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\.$#"
@@ -11792,6 +12312,11 @@ parameters:
 
 		-
 			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 2
+			path: tests/Fixer/Casing/ConstantCaseFixerTest.php
+
+		-
+			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
 			count: 4
 			path: tests/Fixer/CastNotation/CastSpacesFixerTest.php
 
@@ -11999,6 +12524,16 @@ parameters:
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\ClassUsage\\\\DateTimeImmutableFixerTest\\:\\:provideFixCases\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/Fixer/ClassUsage/DateTimeImmutableFixerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Comment\\\\CommentToPhpdocFixerTest\\:\\:testFix\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Fixer/Comment/CommentToPhpdocFixerTest.php
+
+		-
+			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 1
+			path: tests/Fixer/Comment/CommentToPhpdocFixerTest.php
 
 		-
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Comment\\\\HeaderCommentFixerTest\\:\\:testFix\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
@@ -12396,6 +12931,26 @@ parameters:
 			path: tests/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixerTest.php
 
 		-
+			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 2
+			path: tests/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\FunctionNotation\\\\PhpdocToParamTypeFixerTest\\:\\:testFix\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php
+
+		-
+			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 1
+			path: tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$expected of method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractFixerTestCase\\:\\:doTest\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: tests/Fixer/FunctionNotation/PhpdocToParamTypeFixerTest.php
+
+		-
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\FunctionNotation\\\\PhpdocToReturnTypeFixerTest\\:\\:testFix\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/Fixer/FunctionNotation/PhpdocToReturnTypeFixerTest.php
@@ -12414,6 +12969,11 @@ parameters:
 			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
 			count: 5
 			path: tests/Fixer/FunctionNotation/ReturnTypeDeclarationFixerTest.php
+
+		-
+			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 9
+			path: tests/Fixer/Import/GlobalNamespaceImportFixerTest.php
 
 		-
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Import\\\\OrderedImportsFixerTest\\:\\:testFix70\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
@@ -12682,6 +13242,16 @@ parameters:
 
 		-
 			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 2
+			path: tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php
+
+		-
+			message: "#^Cannot call method fix\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 1
+			path: tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$haystack of function strpos expects string, int\\|string given\\.$#"
 			count: 1
 			path: tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php
 
@@ -12889,6 +13459,31 @@ parameters:
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Phpdoc\\\\PhpdocInlineTagFixerTest\\:\\:testFixInheritDoc\\(\\) has parameter \\$input with no typehint specified\\.$#"
 			count: 1
 			path: tests/Fixer/Phpdoc/PhpdocInlineTagFixerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Phpdoc\\\\PhpdocLineSpanFixerTest\\:\\:testFix\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php
+
+		-
+			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
+			count: 3
+			path: tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Phpdoc\\\\PhpdocLineSpanFixerTest\\:\\:provideFixCases\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Phpdoc\\\\PhpdocLineSpanFixerTest\\:\\:testFix71\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\Phpdoc\\\\PhpdocLineSpanFixerTest\\:\\:testFixPhp74\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php
 
 		-
 			message: "#^Cannot call method configure\\(\\) on PhpCsFixer\\\\AbstractFixer\\|null\\.$#"
@@ -14019,6 +14614,21 @@ parameters:
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Tokenizer\\\\Analyzer\\\\ArgumentsAnalyzerTest\\:\\:testArguments73\\(\\) has parameter \\$arguments with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: tests/Tokenizer/Analyzer/ArgumentsAnalyzerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Tokenizer\\\\Analyzer\\\\ClassyAnalyzerTest\\:\\:testIsClassyInvocation\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Tokenizer/Analyzer/ClassyAnalyzerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Tokenizer\\\\Analyzer\\\\ClassyAnalyzerTest\\:\\:testIsClassyInvocation70\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Tokenizer/Analyzer/ClassyAnalyzerTest.php
+
+		-
+			message: "#^Method PhpCsFixer\\\\Tests\\\\Tokenizer\\\\Analyzer\\\\ClassyAnalyzerTest\\:\\:testIsClassyInvocation71\\(\\) has parameter \\$expected with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Tokenizer/Analyzer/ClassyAnalyzerTest.php
 
 		-
 			message: "#^Method PhpCsFixer\\\\Tests\\\\Tokenizer\\\\Analyzer\\\\CommentsAnalyzerTest\\:\\:testComments\\(\\) has parameter \\$borders with no value type specified in iterable type array\\.$#"
