@@ -791,6 +791,27 @@ PHP;
         static::assertSame(4, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2, true));
     }
 
+    public function testReturnsEmptyTokenOnUninitializedIndex()
+    {
+        $tokens = new Tokens(1);
+
+        $token = $tokens[0];
+
+        static::assertNull($token->getId());
+        static::assertSame('', $token->getContent());
+    }
+
+    public function testReturnsEmptyTokenOnUnsetIndex()
+    {
+        $tokens = Tokens::fromCode('<?php $foo = 1;');
+
+        unset($tokens[0]);
+        $token = $tokens[0];
+
+        static::assertNull($token->getId());
+        static::assertSame('', $token->getContent());
+    }
+
     public function testEmptyTokens()
     {
         $code = '';
