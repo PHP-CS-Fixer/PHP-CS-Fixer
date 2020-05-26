@@ -22,10 +22,11 @@ interface DifferInterface
      *
      * @param string $old
      * @param string $new
+     * @param \SplFileInfo $fileName
      *
      * @return string
      *
      * TODO: on 3.0 pass the file name (if applicable) for which this diff is
      */
-    public function diff($old, $new);
+    public function diff($old, $new, $file);
 }

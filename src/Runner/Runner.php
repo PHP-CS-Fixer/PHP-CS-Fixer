@@ -226,7 +226,7 @@ final class Runner
         if ($oldHash !== $newHash) {
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
-                'diff' => $this->differ->diff($old, $new),
+                'diff' => $this->differ->diff($old, $new, $file),
             ];
 
             try {
