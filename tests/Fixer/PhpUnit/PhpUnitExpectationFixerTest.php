@@ -240,7 +240,89 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testBar()
     {
         $this->expectException("RuntimeException");
+        $this->expectExceptionMessageMatches("/Msg.*/");
+        $this->expectExceptionCode(123);
+        bar();
+    }
+}',
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->setExpectedException("RuntimeException", "Msg", 123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->setExpectedExceptionRegExp("RuntimeException", "/Msg.*/", 123);
+        bar();
+    }
+}',
+                ['target' => PhpUnitTargetVersion::VERSION_8_4],
+            ],
+            [
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->expectExceptionMessageMatches("/Msg.*/");
+        foo();
+    }
+}',
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
         $this->expectExceptionMessageRegExp("/Msg.*/");
+        foo();
+    }
+}',
+                ['target' => PhpUnitTargetVersion::VERSION_8_4],
+            ],
+            [
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        // turns wrong into wrong: has a single argument only, but ...
+        $this->expectExceptionMessageMatches("/Msg.*/");
+        $this->expectExceptionMessageMatches("fail-case");
+        foo();
+    }
+}',
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        // turns wrong into wrong: has a single argument only, but ...
+        $this->expectExceptionMessageRegExp("/Msg.*/", "fail-case");
+        foo();
+    }
+}',
+                ['target' => PhpUnitTargetVersion::VERSION_8_4],
+            ],
+            [
+                '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessage("Msg");
+        $this->expectExceptionCode(123);
+        foo();
+    }
+
+    public function testBar()
+    {
+        $this->expectException("RuntimeException");
+        $this->expectExceptionMessageMatches("/Msg.*/");
         $this->expectExceptionCode(123);
         bar();
     }

@@ -208,6 +208,7 @@ final class RuleSet implements RuleSetInterface
                 'fix_built_in' => false,
                 'include' => [
                     'DIRECTORY_SEPARATOR',
+                    'PHP_INT_SIZE',
                     'PHP_SAPI',
                     'PHP_VERSION_ID',
                 ],
@@ -420,6 +421,10 @@ final class RuleSet implements RuleSetInterface
         '@PHPUnit75Migration:risky' => [
             '@PHPUnit60Migration:risky' => true,
             'php_unit_dedicate_assert_internal_type' => ['target' => PhpUnitTargetVersion::VERSION_7_5],
+        ],
+        '@PHPUnit84Migration:risky' => [
+            '@PHPUnit75Migration:risky' => true,
+            'php_unit_expectation' => ['target' => PhpUnitTargetVersion::VERSION_8_4],
         ],
     ];
 
