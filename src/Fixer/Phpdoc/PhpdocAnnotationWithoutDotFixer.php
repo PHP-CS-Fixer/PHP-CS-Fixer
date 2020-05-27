@@ -112,9 +112,9 @@ function foo ($bar) {}
                     ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
                     : '';
                 $content = Preg::replaceCallback(
-                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
+                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/u',
                     static function (array $matches) {
-                        return $matches[1].strtolower($matches[2]).$matches[3];
+                        return $matches[1].mb_strtolower($matches[2]).$matches[3];
                     },
                     $startLine->getContent(),
                     1
