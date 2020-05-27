@@ -8,8 +8,7 @@
         "mi-schi/phpmd-extension": "^4.3",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan": "0.12.18",
-        "phpstan/phpstan-phpunit": "^0.12",
-        "phpstan/phpstan-strict-rules": "^0.12"
+        "phpstan/phpstan-phpunit": "^0.12"
     },
     "conflict": {
         "hhvm": "*"
