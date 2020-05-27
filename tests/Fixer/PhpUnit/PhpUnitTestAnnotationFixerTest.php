@@ -97,7 +97,7 @@ if (1) {
 }',
                 ['style' => 'annotation'],
             ],
-            'Annotation is not used, but should be, and there is already a docBlcok' => [
+            'Annotation is not used, but should be, and there is already a docBlock' => [
                 '<?php
 class Test extends \PhpUnit\FrameWork\TestCase
 {
