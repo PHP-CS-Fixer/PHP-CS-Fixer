@@ -2,11 +2,9 @@ includes:
     - dev-tools/vendor/jangregor/phpstan-prophecy/src/extension.neon
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
-    - dev-tools/vendor/phpstan/phpstan-strict-rules/rules.neon
-    - phpstan-baseline.neon
 
 parameters:
-    level: 8
+    level: 5
     paths:
         - src
         - tests
@@ -51,5 +49,4 @@ parameters:
         - # https://github.com/phpstan/phpstan/issues/1215
             message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
             path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
-        - '/has no return typehint specified\.$/'
     tipsOfTheDay: false
