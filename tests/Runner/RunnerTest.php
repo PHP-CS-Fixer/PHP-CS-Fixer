@@ -180,5 +180,7 @@ class FakeDiffer implements DifferInterface
     public function diff($old, $new, $file = null)
     {
         $this->passedFile = $file;
+
+        return 'some-diff';
     }
 }
