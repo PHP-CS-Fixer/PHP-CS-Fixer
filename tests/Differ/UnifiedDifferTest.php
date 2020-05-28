@@ -39,6 +39,6 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 ';
         $differ = new UnifiedDiffer();
 
-        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode(), new \SplFileInfo(__FILE__)));
+        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
     }
 }
