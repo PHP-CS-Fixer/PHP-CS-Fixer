@@ -150,7 +150,7 @@ final class RunnerTest extends TestCase
         $spy = new FakeDiffer();
         $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'file_path';
         $fixers = [
-            new Fixer\ClassNotation\VisibilityRequiredFixer()
+            new Fixer\ClassNotation\VisibilityRequiredFixer(),
         ];
 
         $runner = new Runner(
@@ -168,7 +168,7 @@ final class RunnerTest extends TestCase
 
         $runner->fix();
 
-        $this->assertSame($path, $spy->passedFile->getPath());
+        static::assertSame($path, $spy->passedFile->getPath());
     }
 }
 

@@ -20,8 +20,8 @@ interface DifferInterface
     /**
      * Create diff.
      *
-     * @param string $old
-     * @param string $new
+     * @param string       $old
+     * @param string       $new
      * @param \SplFileInfo $file
      *
      * @return string
