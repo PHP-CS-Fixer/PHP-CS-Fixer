@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
@@ -138,5 +139,46 @@ final class RunnerTest extends TestCase
 
         static::assertSame(Error::TYPE_INVALID, $error->getType());
         static::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     */
+    public function testThatDiffedFileIsPassedToDiffer()
+    {
+        $spy = new FakeDiffer();
+        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'file_path';
+        $fixers = [
+            new Fixer\ClassNotation\VisibilityRequiredFixer()
+        ];
+
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            $spy,
+            null,
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            true
+        );
+
+        $runner->fix();
+
+        $this->assertSame($path, $spy->passedFile->getPath());
+    }
+}
+
+class FakeDiffer implements DifferInterface
+{
+    /** @var \SplFileInfo */
+    public $passedFile;
+
+    public function diff($old, $new, $file = null)
+    {
+        $this->passedFile = $file;
     }
 }
