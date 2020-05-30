@@ -74,7 +74,7 @@ final class CTTest extends TestCase
     public function testConstants($name, $value)
     {
         static::assertGreaterThan(10000, $value);
-        static::assertNull(@\constant($name), 'The CT name must not use native T_* name.');
+        static::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
     }
 
     public function provideConstantsCases()
