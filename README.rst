@@ -254,6 +254,21 @@ would be default in next MAJOR release (unified differ, estimating, full-width p
 
     $ PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer.phar fix -v --diff
 
+Rules
+-----
+
+Use the following command to quickly understand what a rule will do to your code:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar describe align_multiline_comment
+
+To visualize all the rules that belong to a ruleset:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar describe @PSR2
+
 Choose from the list of available rules:
 
 * **align_multiline_comment** [@PhpCsFixer]
@@ -1676,7 +1691,7 @@ Choose from the list of available rules:
   EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts
   accordingly the function signature. Requires PHP >= 7.0.
 
-  *Risky rule: [1] This rule is EXPERIMENTAL and is not covered with backward compatibility promise. [2] ``@return`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] ``@inheritdocs`` support is under construction.*
+  *Risky rule: this rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] ``@return`` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] ``@inheritdocs`` support is under construction.*
 
   Configuration options:
 

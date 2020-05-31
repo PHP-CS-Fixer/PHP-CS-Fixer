@@ -97,14 +97,6 @@ function f9(string $foo, $bar, $baz) {}
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();

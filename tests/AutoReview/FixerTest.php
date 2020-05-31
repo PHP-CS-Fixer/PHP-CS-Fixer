@@ -173,12 +173,6 @@ final class FixerTest extends TestCase
                 static::assertRegExp('/^[a-z_]+[a-z]$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
             }
         }
-
-        if ($fixer->isRisky()) {
-            self::assertValidDescription($fixerName, 'risky description', $definition->getRiskyDescription());
-        } else {
-            static::assertNull($definition->getRiskyDescription(), sprintf('[%s] Fixer is not risky so no description of it expected.', $fixerName));
-        }
     }
 
     /**
@@ -297,7 +291,6 @@ final class FixerTest extends TestCase
         $emptyTokens = new Tokens();
 
         static::assertInternalType('int', $fixer->getPriority(), sprintf('Return type for ::getPriority of "%s" is invalid.', $fixer->getName()));
-        static::assertInternalType('bool', $fixer->isRisky(), sprintf('Return type for ::isRisky of "%s" is invalid.', $fixer->getName()));
         static::assertInternalType('bool', $fixer->supports(new \SplFileInfo(__FILE__)), sprintf('Return type for ::supports of "%s" is invalid.', $fixer->getName()));
 
         static::assertInternalType('bool', $fixer->isCandidate($emptyTokens), sprintf('Return type for ::isCandidate with empty tokens of "%s" is invalid.', $fixer->getName()));

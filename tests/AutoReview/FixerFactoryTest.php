@@ -115,6 +115,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['line_ending'], $fixers['braces']],
             [$fixers['list_syntax'], $fixers['binary_operator_spaces']],
             [$fixers['list_syntax'], $fixers['ternary_operator_spaces']],
+            [$fixers['method_argument_space'], $fixers['array_indentation']],
             [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
             [$fixers['method_chaining_indentation'], $fixers['method_argument_space']],
             [$fixers['method_separation'], $fixers['braces']],
