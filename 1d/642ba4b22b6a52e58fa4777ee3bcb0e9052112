@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------
+
+by 8ctopus at 2020-05-10T15:12:25Z
+
+sorry I made a mess with the readme, it's my first time here and still learning.
+
+---------------------------------------------------------------------------
+
+by 8ctopus at 2020-05-11T09:48:05Z
+
+@julienfalque Thanks for the feedback, I made all requested changes. readme update is coming...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-19T06:40:31Z
+
+@8ctopus can you help me out and rebase and squash your PR? seems the merge tooling has an issue that stops it from squashing automatically
+
+---------------------------------------------------------------------------
+
+by 8ctopus at 2020-05-26T03:21:36Z
+
+@SpacePossum sorry for the delayed reply, I need to check how to do that without messing the work.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-26T05:17:13Z
+
+no worries and no rush :)
+lemme know how it goes, I can do the squashing manually if you prefer that
