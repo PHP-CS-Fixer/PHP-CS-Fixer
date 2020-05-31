@@ -110,13 +110,6 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $this->doTest($after, $before);
     }
 
-    public function testIsRisky()
-    {
-        $fixer = $this->createFixer();
-
-        static::assertTrue($fixer->isRisky());
-    }
-
     /**
      * @dataProvider provideFixWithDefaultConfigurationCases
      *
