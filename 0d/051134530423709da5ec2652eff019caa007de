@@ -1,0 +1,125 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-12T09:57:36Z
+
+PHPUnit [checks](https://github.com/sebastianbergmann/phpunit/blob/9.1.1/src/Util/Test.php#L522) for `test` prefix simply with `strpos`. We, however, are [checking](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.2/src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php#L276) also 5th character.
+
+The result is that function `testingSomething` which is already test method for PHPUnit is changed (only if has DocBlock, because of [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.2/src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php#L164) `if`) to `testTestingSomething`.
+
+Can we name it a bug here and stop checking for 5th character to be uppercase?
+
+_(pinging @BackEndTea as the author of the fixer)_
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-12T17:14:46Z
+
+This should match PHPUnit behavior, looks like a bug to me.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-16T08:07:01Z
+
+But we *may* want to have a fixer that turns the lowercase on 5th into uppercase on "test" prefix? Would align well with taking over method names from SUT as they often start lowercase.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-25T06:22:14Z
+
+This change looks good to me. I think @ktomk suggestion for a new fixer can still be done even after this change.
+
+One thing I found when testing;
+```php
+<?php
+
+class Test extends \PhpUnit\FrameWork\TestCase
+{
+    public function test_test_snake_cased()
+    {
+    }
+}
+
+```
+with
+```
+'php_unit_test_annotation' => ['style' => 'annotation'],
+```
+changes the code after fixing, i.e. must run twice before stable.
+
+Not sure if this was introduced in this PR or if it is already an issue, maybe something we can look into in this PR as well?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-26T19:27:34Z
+
+@SpacePossum done -> https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4919/commits/3ce8d64b0635b14946cd0498212150173541cfd8
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-26T20:29:45Z
+
+... and PHPStan made CI failed.
+
+So, the situation is that we have over 5000 errors in the [phpstan-baseline.neon](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/phpstan-baseline.neon) that we are allowing, but "nothing should be added to this file ever" (as stated [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4904)) which implies that I am supposed to fix these errors where in fact we allow very similar ones all over the codebase.
+
+This feels horribly wrong and I'm simply not interested in doing this (especially the ridiculous errors like "Ignored error pattern blah blah blah is expected to occur 4 times, but occured only 3 times").
+
+P.S. I love PHPStan and I used it [a lot](https://github.com/kubawerlos/php-cs-fixer-custom-fixers/blob/v2.2.1/dev-tools/phpstan.neon), simply I don't want to waste time for ~fixing~ changing the code just because this PR was made after https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4904 was merged.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-26T21:21:48Z
+
+ouch plus hmm. this sounds not right for such a kind of change, but might need some time to settle.
+
+in any case at least me would like to see the typo fixed.
+
+and if you're open for presents, maybe some wine from over here?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-26T21:48:01Z
+
+I'd like to see that fixed too, but when I saw:
+
+> Ignored error pattern #^Cannot call method getContent\(\) on
+         PhpCsFixer\\Tokenizer\\Token\|null\.$# in path
+         /home/travis/build/FriendsOfPHP/PHP-CS-Fixer/src/Fixer/PhpUnit/PhpUni
+         tTestAnnotationFixer.php is expected to occur 8 times, but occured 9
+         times.
+
+I gave up. The changes are here, so actually anyone can pick it up and add some doubtful gymnastic with code to pass PHPStan check. Tests are passing as AppVeyor and Circle CI shows.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-05-26T22:28:24Z
+
+Yes, sounds like that Phpstan baseline feature on level 8 is not working for maintaining PHP-CS-Fixer, that's all I wanted to express. At least this is my guess, I'm personally not at all into Phpstan, more a Psalm user (both can be used together).
+
+Static utils like Phpstan should spare to write too many unit-tests. But if the utils start to stand in the way, this is generally wrong.
+
+And if it's starting to become a battle between a CS fixer and a static analysis tool, oh little boy imagine. @julienfalque: Can that change be reverted until some changes come into mainline and then give it a re-try?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-27T06:46:39Z
+
+I agree the baseline was not the correct approach after all. See #4975.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-27T14:04:11Z
+
+baseline has been revert, sorry for the noise!
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-27T16:30:56Z
+
+@SpacePossum great, I have updated the PR with your `test_test_snake_cased` suggestion, I think it's now ready for review.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-31T07:23:49Z
+
+@kubawerlos can you rebase and squash than I'll merge, thanks for all the work! :)
