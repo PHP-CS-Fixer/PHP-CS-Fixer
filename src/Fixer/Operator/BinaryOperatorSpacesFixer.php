@@ -219,7 +219,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
      */
     public function getPriority()
     {
-        return -31;
+        return -32;
     }
 
     /**

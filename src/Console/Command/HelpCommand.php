@@ -139,6 +139,17 @@ would be default in next MAJOR release (unified differ, dots, full-width progres
 
     <info>$ PHP_CS_FIXER_FUTURE_MODE=1 php %command.full_name% -v --diff</info>
 
+Rules
+-----
+
+Use the following command to quickly understand what a rule will do to your code:
+
+    <info>$ php php-cs-fixer.phar describe align_multiline_comment</info>
+
+To visualize all the rules that belong to a ruleset:
+
+    <info>$ php php-cs-fixer.phar describe @PSR2</info>
+
 Choose from the list of available rules:
 
 %%%FIXERS_DETAILS%%%

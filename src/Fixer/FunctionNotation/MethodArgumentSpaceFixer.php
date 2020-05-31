@@ -119,6 +119,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      *
+     * Must run before ArrayIndentationFixer.
      * Must run after BracesFixer, CombineNestedDirnameFixer, ImplodeCallFixer, MethodChainingIndentationFixer, PowToExponentiationFixer.
      */
     public function getPriority()
