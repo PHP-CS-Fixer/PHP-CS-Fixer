@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-26T20:29:10Z
+
+... and PHPStan made CI failed.
+
+So, the situation is that we have over 5000 errors in the [phpstan-baseline.neon](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/phpstan-baseline.neon) that we are allowing, but "nothing should be added to this file ever" (as stated [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4904)) which implies that I am supposed to fix these errors where in fact we allow very similar ones all over the codebase.
+
+This feels horribly wrong and I'm simply not interested in doing this (especially the ridiculous errors like "Ignored error pattern blah blah blah is expected to occur 4 times, but occured only 3 times").
+
+P.S. I love PHPStan and I used it [a lot](https://github.com/kubawerlos/php-cs-fixer-custom-fixers/blob/v2.2.1/dev-tools/phpstan.neon), simply I don't want to waste time for ~fixing~ changing the code just because this PR was made after https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4904 was merged.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-27T06:32:17Z
+
+I agree the baseline approach actually made things worse, sorry about that. See #4975.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-27T14:03:54Z
+
+baseline has been revert, sorry for the noise!
