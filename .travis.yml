@@ -83,14 +83,14 @@ jobs:
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.1
-            name: 7.1 | Symfony 4.1
+            name: 7.1 | Symfony ~4.1.0
             env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="~4.1.0"
 
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
             php: 7.2
-            name: 7.2 | Symfony 5.0
+            name: 7.2 | Symfony ^5.0
             env: SYMFONY_DEPRECATIONS_HELPER=disabled PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER=1 SYMFONY_VERSION="^5.0"
 
         -

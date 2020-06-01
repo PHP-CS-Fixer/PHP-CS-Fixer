@@ -42,15 +42,13 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @dataProvider provideConfigureRejectsInvalidConfigurationValueCases
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $expectedMessage
      */
-    public function testConfigureRejectsInvalidConfigurationValue($value)
+    public function testConfigureRejectsInvalidConfigurationValue($value, $expectedMessage)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
-        $this->expectExceptionMessage(sprintf(
-            'expected to be of type "bool", but is of type "%s".',
-            \is_object($value) ? \get_class($value) : \gettype($value)
-        ));
+        $this->expectExceptionMessageRegExp($expectedMessage);
 
         $this->fixer->configure([
             'only_untyped' => $value,
@@ -58,16 +56,33 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return array
+     * @return iterable<string, array>
      */
     public function provideConfigureRejectsInvalidConfigurationValueCases()
     {
-        return [
-            'null' => [null],
-            'int' => [1],
-            'array' => [[]],
-            'float' => [0.1],
-            'object' => [new \stdClass()],
+        yield 'null' => [
+            null,
+            '#expected to be of type "bool", but is of type "(null|NULL)"\.$#',
+        ];
+
+        yield 'int' => [
+            1,
+            '#expected to be of type "bool", but is of type "(int|integer)"\.$#',
+        ];
+
+        yield 'array' => [
+            [],
+            '#expected to be of type "bool", but is of type "array"\.$#',
+        ];
+
+        yield 'float' => [
+            0.1,
+            '#expected to be of type "bool", but is of type "(float|double)"\.$#',
+        ];
+
+        yield 'object' => [
+            new \stdClass(),
+            '#expected to be of type "bool", but is of type "stdClass"\.$#',
         ];
     }
 
