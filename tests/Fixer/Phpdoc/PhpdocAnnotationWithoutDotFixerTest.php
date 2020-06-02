@@ -207,6 +207,20 @@ final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
      */
     function nothingToDo() {}',
             ],
+            [
+                '<?php
+/**
+ * @param string $bar τάχιστη
+ */
+function foo ($bar) {}
+',
+                '<?php
+/**
+ * @param string $bar Τάχιστη.
+ */
+function foo ($bar) {}
+',
+            ],
         ];
     }
 }
