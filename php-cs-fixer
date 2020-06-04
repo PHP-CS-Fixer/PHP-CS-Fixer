@@ -11,7 +11,7 @@
  * with this source code in the file LICENSE.
  */
 
-error_reporting(-1);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 if (defined('HHVM_VERSION_ID')) {
     fwrite(STDERR, "HHVM is not supported.\n");
