@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author SpacePossum
@@ -23,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @param string      $expected
      * @param null|string $input
@@ -55,10 +58,11 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
      * @dataProvider provideFixDeprecatedCases
      * @requires PHP 7.4
      * @group legacy
-     * @expectedDeprecation Unsilenced deprecation: The (real) cast is deprecated, use (float) instead
      */
     public function testFix74Deprecated($expected, $input = null)
     {
+        $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
+
         $this->doTest($expected, $input);
     }
 

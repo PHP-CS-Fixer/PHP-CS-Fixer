@@ -32,7 +32,7 @@ bin/checkbashisms --version
 
 echo λλλ shellcheck
 if [ ! -x bin/shellcheck ]; then
-    wget -qO- "https://storage.googleapis.com/shellcheck/shellcheck-${VERSION_SC}.linux.x86_64.tar.xz" \
+    wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${VERSION_SC}/shellcheck-${VERSION_SC}.linux.x86_64.tar.xz" \
         | tar -xJv -O shellcheck-${VERSION_SC}/shellcheck \
         > bin/shellcheck
     chmod u+x bin/shellcheck
