@@ -700,11 +700,7 @@ $a#4
     public function testInvalidConfig(array $config, $expectedMessage)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(sprintf(
-            '#^\[%s\] %s$#',
-            $this->fixer->getName(),
-            preg_quote($expectedMessage, '#')
-        ));
+        $this->expectExceptionMessageRegExp("#^\\[{$this->fixer->getName()}\\] {$expectedMessage}$#");
 
         $this->fixer->configure($config);
     }
@@ -715,8 +711,8 @@ $a#4
     public function provideInvalidConfigurationCases()
     {
         return [
-            [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "integer".'],
-            [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater".'],
+            [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
+            [['_invalid_' => true], 'Invalid configuration: The option "_invalid_" does not exist\. Defined options are: "always_move_variable", "equal", "identical", "less_and_greater"\.'],
         ];
     }
 
