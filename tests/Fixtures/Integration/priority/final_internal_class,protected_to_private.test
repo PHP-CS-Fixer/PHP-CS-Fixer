@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: final_internal_class,protected_to_private.
+--RULESET--
+{"final_internal_class": true, "protected_to_private": true}
+--EXPECT--
+<?php
+/**
+ * @internal
+ */
+final class Foo
+{
+    private $bar;
+    private function baz() {}
+}
+
+--INPUT--
+<?php
+/**
+ * @internal
+ */
+class Foo
+{
+    protected $bar;
+    protected function baz() {}
+}

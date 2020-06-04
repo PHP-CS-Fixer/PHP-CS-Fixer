@@ -94,6 +94,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
             [$fixers['escape_implicit_backslashes'], $fixers['single_quote']],
             [$fixers['explicit_string_variable'], $fixers['simple_to_complex_string_variable']],
+            [$fixers['final_internal_class'], $fixers['protected_to_private']],
             [$fixers['fully_qualified_strict_types'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['function_to_constant'], $fixers['native_function_casing']],
             [$fixers['function_to_constant'], $fixers['no_extra_blank_lines']],
