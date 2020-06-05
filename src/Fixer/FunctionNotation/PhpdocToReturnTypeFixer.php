@@ -76,6 +76,11 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
     private $classRegex = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
 
     /**
+     * @var array<string, bool>
+     */
+    private $reservedKeywordCache = [];
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -251,9 +256,7 @@ function my_foo()
                 continue;
             }
 
-            try {
-                Tokens::fromCode(sprintf('<?php function f():%s {}', $returnType));
-            } catch (\ParseError $e) {
+            if ($this->isReservedKeyword($returnType)) {
                 continue;
             }
 
@@ -342,5 +345,28 @@ function my_foo()
         $doc = new DocBlock($tokens[$index]->getContent());
 
         return $doc->getAnnotationsOfType('return');
+    }
+
+    /**
+     * Test if a given return type is a reserved PHP keyword.
+     *
+     * @param string $returnType
+     *
+     * @return bool
+     */
+    private function isReservedKeyword($returnType)
+    {
+        if (! array_key_exists($returnType, $this->reservedKeywordCache)) {
+            $isReserved = false;
+            try {
+                Tokens::fromCode(sprintf('<?php function f():%s {}', $returnType));
+            } catch (\ParseError $e) {
+                $isReserved = true;
+            }
+
+            $this->reservedKeywordCache[$returnType] = $isReserved;
+        }
+        
+        return $this->reservedKeywordCache[$returnType];
     }
 }
