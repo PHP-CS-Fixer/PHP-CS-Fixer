@@ -102,6 +102,7 @@ final class FixCommand extends Command
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
+                    new InputOption('disable-commit-unfixed-code', '', InputOption::VALUE_NONE, 'If code contains unfixed files, it will thow exception.'),
                     new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules.'),
                     new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
                     new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
@@ -134,6 +135,7 @@ final class FixCommand extends Command
                 'dry-run' => $input->getOption('dry-run'),
                 'rules' => $passedRules,
                 'path' => $input->getArgument('path'),
+                'disable-commit-unfixed-code' => $input->getOption('disable-commit-unfixed-code'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
                 'cache-file' => $input->getOption('cache-file'),
@@ -220,6 +222,10 @@ final class FixCommand extends Command
         $this->stopwatch->stop('fixFiles');
 
         $progressOutput->printLegend();
+
+        if (!empty($changed) && $resolver->isDisableCommitUnfixedCode()) {
+            throw new \InvalidArgumentException('Check all fixed files before commit');
+        }
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 

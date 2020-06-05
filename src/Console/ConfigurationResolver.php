@@ -98,6 +98,11 @@ final class ConfigurationResolver
     private $isDryRun;
 
     /**
+     * @var null|bool
+     */
+    private $isDisableCommitUnfixedCode;
+
+    /**
      * @var null|FixerInterface[]
      */
     private $fixers;
@@ -122,6 +127,7 @@ final class ConfigurationResolver
         'diff' => null,
         'diff-format' => null,
         'dry-run' => null,
+        'disable-commit-unfixed-code' => null,
         'format' => null,
         'path' => [],
         'path-mode' => self::PATH_MODE_OVERRIDE,
@@ -544,6 +550,20 @@ final class ConfigurationResolver
         }
 
         return $this->isDryRun;
+    }
+
+    /**
+     * Returns disable-commit-unfixed-code flag.
+     *
+     * @return bool
+     */
+    public function isDisableCommitUnfixedCode()
+    {
+        if (null === $this->isDisableCommitUnfixedCode) {
+            $this->isDisableCommitUnfixedCode = $this->options['disable-commit-unfixed-code'];
+        }
+
+        return $this->isDisableCommitUnfixedCode;
     }
 
     public function shouldStopOnViolation()
