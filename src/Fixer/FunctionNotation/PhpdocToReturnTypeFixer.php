@@ -78,7 +78,7 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
     /**
      * @var array<string, bool>
      */
-    private $reservedKeywordCache = [];
+    private $returnTypeCache = [];
 
     /**
      * {@inheritdoc}
@@ -256,7 +256,7 @@ function my_foo()
                 continue;
             }
 
-            if ($this->isReservedKeyword($returnType)) {
+            if (!$this->isValidType($returnType)) {
                 continue;
             }
 
@@ -348,25 +348,21 @@ function my_foo()
     }
 
     /**
-     * Test if a given return type is a reserved PHP keyword.
-     *
      * @param string $returnType
      *
      * @return bool
      */
-    private function isReservedKeyword($returnType)
+    private function isValidType($returnType)
     {
-        if (! array_key_exists($returnType, $this->reservedKeywordCache)) {
-            $isReserved = false;
+        if (!\array_key_exists($returnType, $this->returnTypeCache)) {
             try {
                 Tokens::fromCode(sprintf('<?php function f():%s {}', $returnType));
+                $this->returnTypeCache[$returnType] = true;
             } catch (\ParseError $e) {
-                $isReserved = true;
+                $this->returnTypeCache[$returnType] = false;
             }
-
-            $this->reservedKeywordCache[$returnType] = $isReserved;
         }
-        
-        return $this->reservedKeywordCache[$returnType];
+
+        return $this->returnTypeCache[$returnType];
     }
 }
