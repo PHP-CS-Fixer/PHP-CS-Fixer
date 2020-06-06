@@ -145,21 +145,34 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getFunctionyTokenKinds()
     {
+        static $tokenKinds;
+
+        if (null === $tokenKinds) {
+            $tokenKinds = array_merge(
+                $this->getLanguageConstructTokenKinds(),
+                $this->getSpecialConstructTokenKinds(),
+                [T_VARIABLE]
+            );
+        }
+
+        return $tokenKinds;
+    }
+
+    /**
+     * Gets the functiony token kinds which need parentheses around their argument(s).
+     *
+     * @return int[]
+     */
+    private function getLanguageConstructTokenKinds()
+    {
         static $tokenKinds = [
             T_ARRAY,
-            T_ECHO,
             T_EMPTY,
             T_EVAL,
             T_EXIT,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
             T_ISSET,
             T_LIST,
-            T_PRINT,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
             T_UNSET,
-            T_VARIABLE,
         ];
 
         return $tokenKinds;
