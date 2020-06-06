@@ -116,6 +116,7 @@ final class RuleSet implements RuleSetInterface
             'no_multiline_whitespace_around_double_arrow' => true,
             'no_short_bool_cast' => true,
             'no_singleline_whitespace_before_semicolons' => true,
+            'no_spaces_after_function_name' => ['fix_special_constructs' => false],
             'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => ['allow_mixed' => true, 'allow_unused_params' => true],
             'no_trailing_comma_in_list_call' => true,

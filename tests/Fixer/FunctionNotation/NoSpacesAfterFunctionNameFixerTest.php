@@ -29,8 +29,12 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix($expected, $input = null, array $config = null)
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -80,6 +84,43 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     foo ();
     $foo = &ref ();
     ',
+            ],
+            'test function-like constructs, excluding special' => [
+                '<?php
+    include ("something.php");
+    include_once ("something.php");
+    require ("something.php");
+    require_once ("something.php");
+    print ("hello");
+    unset($hello);
+    isset($hello);
+    empty($hello);
+    die($hello);
+    echo ("hello");
+    array("hello");
+    list($a, $b) = $c;
+    eval("a");
+    foo();
+    $foo = &ref();
+    ',
+                '<?php
+    include ("something.php");
+    include_once ("something.php");
+    require ("something.php");
+    require_once ("something.php");
+    print ("hello");
+    unset ($hello);
+    isset ($hello);
+    empty ($hello);
+    die ($hello);
+    echo ("hello");
+    array ("hello");
+    list ($a, $b) = $c;
+    eval ("a");
+    foo ();
+    $foo = &ref ();
+    ',
+                ['fix_special_constructs' => false],
             ],
             [
                 '<?php echo foo(1) ? "y" : "n";',

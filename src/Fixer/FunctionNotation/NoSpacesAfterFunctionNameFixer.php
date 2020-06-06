@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\CT;
@@ -24,8 +27,23 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Varga Bence <vbence@czentral.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
+final class NoSpacesAfterFunctionNameFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
+    /**
+     * @var null|int[]
+     */
+    private $functionyTokenKinds;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null)
+    {
+        parent::configure($configuration);
+
+        $this->functionyTokenKinds = null;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +51,10 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
-            [new CodeSample("<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();\n")]
+            [
+                new CodeSample($code = "<?php\nrequire ('sample.php');\necho (test (3));\nexit  (1);\n\$func ();\n"),
+                new CodeSample($code, ['fix_special_constructs' => false]),
+            ]
         );
     }
 
@@ -76,7 +97,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             $prevNonWhitespace = $tokens->getPrevNonWhitespace($index);
 
             // check for special construct with ternary operator
-            if ($tokens[$prevNonWhitespace]->isGivenKind($specialConstructTokenKinds)) {
+            if ($this->configuration['fix_special_constructs'] && $tokens[$prevNonWhitespace]->isGivenKind($specialConstructTokenKinds)) {
                 $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
                 $nextMeaningful = $tokens->getNextMeaningfulToken($endParenthesisIndex);
                 if (
@@ -107,6 +128,19 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('fix_special_constructs', 'Whether to fix `echo`, `print`, `include`, `include_once`, `require`, `require_once`.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -145,17 +179,15 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getFunctionyTokenKinds()
     {
-        static $tokenKinds;
-
-        if (null === $tokenKinds) {
-            $tokenKinds = array_merge(
+        if (null === $this->functionyTokenKinds) {
+            $this->functionyTokenKinds = array_merge(
                 $this->getLanguageConstructTokenKinds(),
-                $this->getSpecialConstructTokenKinds(),
+                $this->configuration['fix_special_constructs'] ? $this->getSpecialConstructTokenKinds() : [],
                 [T_VARIABLE]
             );
         }
 
-        return $tokenKinds;
+        return $this->functionyTokenKinds;
     }
 
     /**

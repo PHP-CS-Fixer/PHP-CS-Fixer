@@ -1196,6 +1196,11 @@ Choose from the list of available rules:
   When making a method or function call, there MUST NOT be a space between
   the method or function name and the opening parenthesis.
 
+  Configuration options:
+
+  - ``fix_special_constructs`` (``bool``): whether to fix ``echo``, ``print``,
+    ``include``, ``include_once``, ``require``, ``require_once``; defaults to ``true``
+
 * **no_spaces_around_offset** [@Symfony, @PhpCsFixer]
 
   There MUST NOT be spaces around offset braces.
