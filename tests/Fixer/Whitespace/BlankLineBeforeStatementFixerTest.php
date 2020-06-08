@@ -1560,4 +1560,79 @@ do {
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithFunctionCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testFixWithFunction($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'statements' => ['function'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithFunctionCases()
+    {
+        // Fix
+
+        yield [
+            '<?php
+                echo 1;
+
+                function foo(){}
+            ',
+            '<?php
+                echo 1;
+                function foo(){}
+            ',
+        ];
+
+        // Do not fix
+
+        yield [
+            '<php
+$a = [
+1,
+2,
+static function(){},
+function(){},
+"foo",
+];
+
+        echo 1;
+        $content = Preg::replaceCallback(\'/^(?:    )+/m\', function ($matches) use ($indent) {
+            return $this->getExpectedIndent($matches[0], $indent);
+        }, $content);
+
+        echo 2;
+        $content = Preg::replaceCallback(\'/^(?:    )+/m\', function ($matches) use ($indent) {
+            return $this->getExpectedIndent($matches[0], $indent);
+        }, $content);
+',
+        ];
+
+        yield [
+            '<php
+
+            // function A comment
+            function A() {}',
+        ];
+
+        yield [
+            '<php
+
+            /** function A invalid PHPDoc */
+            function A($foo) {}',
+        ];
+
+        yield [
+            '<php /** function A invalid PHPDoc */ # followed by some comment
+            function A($foo) {}',
+        ];
+    }
 }

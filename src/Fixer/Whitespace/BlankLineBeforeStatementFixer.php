@@ -45,6 +45,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'exit' => T_EXIT,
         'for' => T_FOR,
         'foreach' => T_FOREACH,
+        'function' => T_FUNCTION,
         'goto' => T_GOTO,
         'if' => T_IF,
         'include' => T_INCLUDE,
@@ -281,7 +282,15 @@ if (true) {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($tokenKinds) || ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index))) {
+            if (!$token->isGivenKind($tokenKinds)) {
+                continue;
+            }
+
+            if ($token->isGivenKind(T_FUNCTION) && $analyzer->isLambda($index)) {
+                continue;
+            }
+
+            if ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 

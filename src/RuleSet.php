@@ -63,7 +63,10 @@ final class RuleSet implements RuleSetInterface
             'binary_operator_spaces' => true,
             'blank_line_after_opening_tag' => true,
             'blank_line_before_statement' => [
-                'statements' => ['return'],
+                'statements' => [
+                    'function',
+                    'return',
+                ],
             ],
             'braces' => [
                 'allow_single_line_anonymous_class_with_empty_body' => true,
@@ -266,6 +269,7 @@ final class RuleSet implements RuleSetInterface
                     'declare',
                     'default',
                     'exit',
+                    'function',
                     'goto',
                     'include',
                     'include_once',
