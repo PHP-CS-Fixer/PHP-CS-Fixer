@@ -143,7 +143,7 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_trim' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,
             'phpdoc_types' => [
-                'groups' => ['simple', 'meta']
+                'groups' => ['simple', 'meta'],
             ],
             'phpdoc_types_order' => [
                 'null_adjustment' => 'always_last',
