@@ -1714,7 +1714,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``groups`` (a subset of ``['simple', 'alias', 'meta']``): type groups to fix;
-    defaults to ``['simple', 'alias', 'meta']``
+    defaults to ``['simple', 'meta']``
 
 * **phpdoc_types_order** [@Symfony, @PhpCsFixer]
 
