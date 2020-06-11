@@ -140,7 +140,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
      */
     protected function createConfigurationDefinition()
     {
-        $possibleGroups = array_keys(array_diff_key(self::$possibleTypes, ['alias' => true]));
+        $possibleGroups = array_keys(array_diff_key(self::$possibleTypes, array_flip(['alias'])));
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('groups', 'Type groups to fix.'))
