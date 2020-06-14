@@ -34,7 +34,7 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
     /**
      * @var array<int, array<int, int|string>>
      */
-    private $blacklistFuncNames = [
+    private $excludeFuncNames = [
         [T_STRING, '__construct'],
         [T_STRING, '__destruct'],
         [T_STRING, '__clone'],
@@ -174,7 +174,7 @@ function my_foo()
             }
 
             $funcName = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$funcName]->equalsAny($this->blacklistFuncNames, false)) {
+            if ($tokens[$funcName]->equalsAny($this->excludeFuncNames, false)) {
                 continue;
             }
 

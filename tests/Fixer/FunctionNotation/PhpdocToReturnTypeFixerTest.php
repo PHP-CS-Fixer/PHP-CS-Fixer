@@ -60,7 +60,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'invalid class 2' => [
                 '<?php /** @return \\Foo\\\\Bar */ function my_foo() {}',
             ],
-            'blacklisted class methods' => [
+            'excluded class methods' => [
                 '<?php
 
                     class Foo

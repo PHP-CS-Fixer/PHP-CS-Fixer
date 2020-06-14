@@ -27,7 +27,7 @@
             ]
         }
     ],
-    "blacklist": [
+    "exclude": [
         "psalm-autoload.php"
     ],
     "git-commit": "git-commit"
