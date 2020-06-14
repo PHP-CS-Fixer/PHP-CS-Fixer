@@ -114,6 +114,10 @@ function foo ($bar) {}
                 $content = Preg::replaceCallback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
                     static function (array $matches) {
+                        if (\function_exists('mb_strtolower')) {
+                            return $matches[1].mb_strtolower($matches[2]).$matches[3];
+                        }
+
                         return $matches[1].strtolower($matches[2]).$matches[3];
                     },
                     $startLine->getContent(),

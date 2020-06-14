@@ -76,6 +76,11 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurabl
     private $classRegex = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
 
     /**
+     * @var array<string, bool>
+     */
+    private $returnTypeCache = [];
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -251,6 +256,10 @@ function my_foo()
                 continue;
             }
 
+            if (!$this->isValidType($returnType)) {
+                continue;
+            }
+
             $this->fixFunctionDefinition($tokens, $startIndex, $isNullable, $returnType);
         }
     }
@@ -336,5 +345,24 @@ function my_foo()
         $doc = new DocBlock($tokens[$index]->getContent());
 
         return $doc->getAnnotationsOfType('return');
+    }
+
+    /**
+     * @param string $returnType
+     *
+     * @return bool
+     */
+    private function isValidType($returnType)
+    {
+        if (!\array_key_exists($returnType, $this->returnTypeCache)) {
+            try {
+                Tokens::fromCode(sprintf('<?php function f():%s {}', $returnType));
+                $this->returnTypeCache[$returnType] = true;
+            } catch (\ParseError $e) {
+                $this->returnTypeCache[$returnType] = false;
+            }
+        }
+
+        return $this->returnTypeCache[$returnType];
     }
 }

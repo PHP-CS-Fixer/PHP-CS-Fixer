@@ -12,11 +12,8 @@
 
 namespace PhpCsFixer\Tests\AutoReview;
 
-if (!class_exists(\PHPUnit\Runner\Version::class)) {
-    class_alias('PHPUnit_Runner_Version', \PHPUnit\Runner\Version::class);
-}
-
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Event\Event;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -407,6 +404,67 @@ final class ProjectCodeTest extends TestCase
                 $expected['expected'],
                 sprintf('Public method "%s::%s" has parameter \'input\' before \'expected\'.', $reflectionClass->getName(), $method->getName())
             );
+        }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param string $className
+     */
+    public function testAllCodeContainSingleClassy($className)
+    {
+        $headerTypes = [
+            T_ABSTRACT,
+            T_AS,
+            T_COMMENT,
+            T_DECLARE,
+            T_DOC_COMMENT,
+            T_FINAL,
+            T_LNUMBER,
+            T_NAMESPACE,
+            T_NS_SEPARATOR,
+            T_OPEN_TAG,
+            T_STRING,
+            T_USE,
+            T_WHITESPACE,
+        ];
+
+        $rc = new \ReflectionClass($className);
+        $file = $rc->getFileName();
+        $tokens = Tokens::fromCode(file_get_contents($file));
+        $isEvent = Event::class === $rc->getName(); // remove this exception when no longer needed
+        $classyIndex = null;
+
+        static::assertTrue($tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds()), sprintf('File "%s" should contains a classy.', $file));
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isClassy()) {
+                $classyIndex = $index;
+
+                break;
+            }
+
+            if (!$token->isGivenKind($headerTypes) && !$token->equalsAny([';', '=', '(', ')']) && !$isEvent) {
+                static::fail(sprintf('File "%s" should only contains single classy, found "%s" @ %d.', $file, $token->toJson(), $index));
+            }
+        }
+
+        static::assertNotNull($classyIndex, sprintf('File "%s" does not contain a classy.', $file));
+
+        $nextTokenOfKind = $tokens->getNextTokenOfKind($classyIndex, ['{']);
+
+        if (!\is_int($nextTokenOfKind)) {
+            throw new \UnexpectedValueException('Classy without {} - braces.');
+        }
+
+        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
+
+        if ($isEvent) {
+            static::assertNotNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should not only contains a single classy.', $file));
+        } else {
+            static::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should only contains a single classy.', $file));
         }
     }
 

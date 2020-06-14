@@ -93,6 +93,8 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
+
+        $this->fixTokenMap = array_values($this->fixTokenMap);
     }
 
     /**
@@ -267,7 +269,7 @@ if (true) {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array_values($this->fixTokenMap));
+        return $tokens->isAnyTokenKindsFound($this->fixTokenMap);
     }
 
     /**
@@ -275,13 +277,16 @@ if (true) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $tokenKinds = array_values($this->fixTokenMap);
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($tokenKinds) || ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index))) {
+            if (!$token->isGivenKind($this->fixTokenMap)) {
+                continue;
+            }
+
+            if ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
@@ -341,7 +346,7 @@ if (true) {
                     continue;
                 }
 
-                return !$tokens[$j]->equals('{');
+                return $tokens[$j]->equalsAny([';', '}']);
             }
         }
 
