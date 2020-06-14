@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-06-06T11:48:06Z
+
+Shouldn't `no_empty_comment` remove multiline comments as well? This would remove the priority issue.
