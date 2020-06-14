@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpdocToReturnTypeFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * @var array<int, array<int, int|string>>
@@ -74,11 +74,6 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
      * @var string
      */
     private $classRegex = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
-
-    /**
-     * @var array<string, bool>
-     */
-    private $returnTypeCache = [];
 
     /**
      * {@inheritdoc}
@@ -256,7 +251,7 @@ function my_foo()
                 continue;
             }
 
-            if (!$this->isValidType($returnType)) {
+            if (!$this->isValidSyntax(sprintf('<?php function f():%s {}', $returnType))) {
                 continue;
             }
 
@@ -345,24 +340,5 @@ function my_foo()
         $doc = new DocBlock($tokens[$index]->getContent());
 
         return $doc->getAnnotationsOfType('return');
-    }
-
-    /**
-     * @param string $returnType
-     *
-     * @return bool
-     */
-    private function isValidType($returnType)
-    {
-        if (!\array_key_exists($returnType, $this->returnTypeCache)) {
-            try {
-                Tokens::fromCode(sprintf('<?php function f():%s {}', $returnType));
-                $this->returnTypeCache[$returnType] = true;
-            } catch (\ParseError $e) {
-                $this->returnTypeCache[$returnType] = false;
-            }
-        }
-
-        return $this->returnTypeCache[$returnType];
     }
 }
