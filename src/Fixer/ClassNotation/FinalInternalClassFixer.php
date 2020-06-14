@@ -72,11 +72,12 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      *
+     * Must run before ProtectedToPrivateFixer.
      * Must run after PhpUnitInternalClassFixer.
      */
     public function getPriority()
     {
-        return 0;
+        return 67;
     }
 
     /**
