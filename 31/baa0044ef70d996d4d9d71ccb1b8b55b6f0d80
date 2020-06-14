@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-20T07:53:26Z
+
+What is the value of this test (real question)?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-20T07:57:32Z
+
+I was close to merge 4953, but than spotted this:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4953/files#diff-24535a6889791dd70f4fe486f14c760fR1280
+
+I would like it as autoreview so I don't miss it again.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-20T08:15:43Z
+
+Not sure that would be spotted: this file *is* a monolithic PHP file (no inline HTML or multiple open tag).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-20T08:25:54Z
+
+check, I'll update to make sure there is only one named class declaration in the file!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-23T18:51:27Z
+
+Wondering: this looks like static analysis concerns. Isn't there some PHPStan extension that implements similar checks out there? It not, wouldn't it be better to implement one?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-25T05:23:04Z
+
+Maybe, there more of there in the same unit test. I think it would be great a stan plugin but till it exists I think it would be nice ti have here in this form.
+When I got time I'll look into making a stan plugin :)
