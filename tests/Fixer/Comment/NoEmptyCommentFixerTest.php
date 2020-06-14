@@ -232,6 +232,22 @@ echo 1;
                      ********/
                 ',
             ],
+            [
+                '<?php /* a */',
+                '<?php /* *//* a *//* */',
+            ],
+            [
+                '<?php
+                    '.'
+                    /* a */
+                    '.'
+                ',
+                '<?php
+                    //
+                    /* a */
+                    //
+                ',
+            ],
         ];
     }
 
@@ -373,7 +389,7 @@ echo 1;
             $cases[] = [$src, $i, 7, false];
         }
 
-        $cases[] = [$src, 8, 9, false];
+        $cases[] = [$src, 8, 8, false];
         $cases[] = [$src, 10, 11, false];
         $cases[] = [$src, 12, 12, false];
 
