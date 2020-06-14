@@ -69,7 +69,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'invalid class 5' => [
                 '<?php /** @return I\Want\To\Break\Free */ function queen() {}',
             ],
-            'blacklisted class methods' => [
+            'excluded class methods' => [
                 '<?php
 
                     class Foo
