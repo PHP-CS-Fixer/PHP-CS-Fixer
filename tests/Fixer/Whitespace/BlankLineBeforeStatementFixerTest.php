@@ -1024,6 +1024,17 @@ function foo()
     return "bar";
 }',
             ],
+            [
+                '<?php
+
+function foo()
+{
+    switch ($foo) {
+        case 2: // comment
+            return 1;
+    }
+}',
+            ],
         ];
     }
 
