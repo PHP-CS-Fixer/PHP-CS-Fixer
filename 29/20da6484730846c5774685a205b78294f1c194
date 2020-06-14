@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-04T21:13:44Z
+
+Is this the only case when multibyte can cause trouble with lower/upper casing? Maybe some wrapper similar to `Preg` class would be useful.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-05T09:20:33Z
+
+it is the only case I could find on 2.15, maybe when we have more candidates in the future we can extract etc.
