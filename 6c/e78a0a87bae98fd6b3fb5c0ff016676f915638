@@ -1,0 +1,57 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-22T08:26:03Z
+
+I would prefer not having to maintain that list over time. Maybe we could have a way to detect that automatically, e.g. https://3v4l.org/OCU5L:
+```php
+function is_valid_type($type) {
+    try {
+        return true === eval("function ({$type} \$arg) {}; return true;");
+    } catch (ParseError $exception) {
+        return false;
+    }
+}
+```
+Hacky but way simpler.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-23T09:30:06Z
+
+Shouldn't be time-consuming to keep the list up to date - how often new tokens are added to PHP? Every new "major" release - and we would, of course, automate that.
+
+Approach with `eval` (which is basically "change the code, but if it breaks the PHP syntax then don't") would be a precedence - we don't have a fixer yet to test the change by verifying syntax from string - maybe finally we go with it, but I'd like to try more cleaner approach - after all, it's open-source and we don't have to hurry.
+
+P.S. pinging @Slamdunk for an opinion as the author of fixer.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-23T11:32:05Z
+
+I think the best place would be somewhere within the `tests/` folder of the project for simplicity, however if you want to publish and maintain the package somewhere else than :+1:
+
+For maintaining the list; maybe we can have test that fails if you run the tests on a PHP major version higher than we know is complete for the list. Than on the failure we can update the list and update the test, something like that?
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-05-25T05:47:00Z
+
+While I appreciate the clean idea of @kubawerlos , as I get older I have less and less spare time to give to FOSS projects, and I guess everyone will have the same issue in the long run. I'd like to invest my (and your) time in a activities with more values, like fixers for new syntax in the upcoming PHP versions.
+
+So I'd go for @julienfalque solution: it seems to me easy to implement, future proof and with low performance impact since it can be easily cached if needed.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-31T10:36:08Z
+
+for me `eval` is a no-go in the code base, maybe we can generate the code and use the linter to verify the result?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-31T14:10:23Z
+
+Agree with ~`evil`~ `eval`.
+
+I was trying to create a linter instance in the fixer, but it was a lot of copy-paste code as Linter [needs](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.3/src/Linter/Linter.php#L32) executable in the constructor.
+
+The current solution is already [used](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.3/src/AbstractPsrAutoloadingFixer.php#L72) and looks acceptable to me.
