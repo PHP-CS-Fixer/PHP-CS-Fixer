@@ -178,6 +178,16 @@ $c = get_class($d);
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after StrictParamFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {

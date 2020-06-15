@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: strict_param,native_function_invocation.
+--RULESET--
+{"strict_param": true, "native_function_invocation": true}
+--EXPECT--
+<?php
+
+function isUtf8($content)
+{
+    return \mb_detect_encoding($content, \mb_detect_order(), true);
+}
+
+--INPUT--
+<?php
+
+function isUtf8($content)
+{
+    return \mb_detect_encoding($content);
+}

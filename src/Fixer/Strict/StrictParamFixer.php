@@ -55,6 +55,16 @@ final class StrictParamFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NativeFunctionInvocationFixer.
+     */
+    public function getPriority()
+    {
+        return 1;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
