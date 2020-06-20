@@ -61,6 +61,7 @@ final class FixerFactoryTest extends TestCase
         }
 
         return [
+            [$fixers['align_multiline_comment'], $fixers['phpdoc_trim_consecutive_blank_line_separation']],
             [$fixers['array_indentation'], $fixers['align_multiline_comment']],
             [$fixers['array_indentation'], $fixers['binary_operator_spaces']],
             [$fixers['array_syntax'], $fixers['binary_operator_spaces']],

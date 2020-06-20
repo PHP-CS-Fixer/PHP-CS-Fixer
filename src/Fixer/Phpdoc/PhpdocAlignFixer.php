@@ -155,7 +155,7 @@ EOF;
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
-        return -21;
+        return -42;
     }
 
     /**
