@@ -133,17 +133,10 @@ final class FixerTest extends TestCase
                 static::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
 
-            $fixerNamesWithKnownMissingSamplesWithConfig = [
-                'doctrine_annotation_spaces',
-                'general_phpdoc_annotation_remove',
-                'is_null',
+            // It may only shrink, never add anything to it.
+            $fixerNamesWithKnownMissingSamplesWithConfig = [ // @TODO 3.0 - remove this
+                'is_null', // has only one option which is deprecated
                 'php_unit_dedicate_assert_internal_type',
-                'php_unit_internal_class',
-                'php_unit_namespaced',
-                'php_unit_test_case_static_method_calls',
-                'phpdoc_scalar',
-                'phpdoc_to_return_type',
-                'phpdoc_types',
             ];
 
             if (\count($configSamplesProvided) < 2) {

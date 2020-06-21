@@ -38,7 +38,13 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
     {
         return new FixerDefinition(
             'All PHPUnit test classes should be marked as internal.',
-            [new CodeSample("<?php\nclass MyTest extends TestCase {}\n")]
+            [
+                new CodeSample("<?php\nclass MyTest extends TestCase {}\n"),
+                new CodeSample(
+                    "<?php\nclass MyTest extends TestCase {}\nfinal class FinalTest extends TestCase {}\nabstract class AbstractTest extends TestCase {}\n",
+                    ['types' => ['final']]
+                ),
+            ]
         );
     }
 
