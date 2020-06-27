@@ -289,7 +289,7 @@ $a = new class (){};',
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageRegExp(
-            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the white- and black list, got duplicates: "internal123".', '#'))
+            sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the include and exclude list, got duplicates: "internal123".', '#'))
         );
 
         $this->fixer->configure([

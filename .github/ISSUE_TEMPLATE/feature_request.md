@@ -1,7 +1,7 @@
 ---
 name: Feature request 🚀
 about: I have a suggestion about a new feature (and may want to implement it)!
-label: kind/feature request
+labels: kind/feature request
 ---
 
 ## Feature request

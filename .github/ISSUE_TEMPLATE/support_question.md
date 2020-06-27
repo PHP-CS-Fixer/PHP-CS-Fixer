@@ -1,7 +1,7 @@
 ---
 name: Support question ❓
 about: You have a question about how the tool works or how to use it.
-label: kind/question
+labels: kind/question
 ---
 
 ## Support question

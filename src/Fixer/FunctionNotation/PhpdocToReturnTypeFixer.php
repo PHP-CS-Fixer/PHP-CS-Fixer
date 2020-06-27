@@ -34,7 +34,7 @@ final class PhpdocToReturnTypeFixer extends AbstractFixer implements Configurati
     /**
      * @var array<int, array<int, int|string>>
      */
-    private $blacklistFuncNames = [
+    private $excludeFuncNames = [
         [T_STRING, '__construct'],
         [T_STRING, '__destruct'],
         [T_STRING, '__clone'],
@@ -115,6 +115,16 @@ function my_foo()
 ',
                     new VersionSpecification(70200)
                 ),
+                new VersionSpecificCodeSample(
+                    '<?php
+/** @return Foo */
+function foo() {}
+/** @return string */
+function bar() {}
+',
+                    new VersionSpecification(70100),
+                    ['scalar_types' => false]
+                ),
             ],
             null,
             'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] `@inheritdocs` support is under construction.'
@@ -179,7 +189,7 @@ function my_foo()
             }
 
             $funcName = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$funcName]->equalsAny($this->blacklistFuncNames, false)) {
+            if ($tokens[$funcName]->equalsAny($this->excludeFuncNames, false)) {
                 continue;
             }
 
