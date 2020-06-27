@@ -52,6 +52,7 @@ final class PhpdocToParamTypeFixer extends AbstractFixer implements Configuratio
         'mixed' => true,
         'resource' => true,
         'static' => true,
+        'void' => true,
     ];
 
     /**
@@ -157,7 +158,6 @@ function my_foo($bar)
 
                 $hasIterable = false;
                 $hasNull = false;
-                $hasVoid = false;
                 $hasArray = false;
                 $hasString = false;
                 $hasInt = false;
@@ -187,11 +187,6 @@ function my_foo($bar)
                         $hasNull = true;
                         unset($types[$key]);
                         $minimumTokenPhpVersion = 70100;
-                    }
-
-                    if ('void' === $type) {
-                        $hasVoid = true;
-                        unset($types[$key]);
                     }
 
                     if ('string' === $type) {
@@ -270,7 +265,6 @@ function my_foo($bar)
                     $hasNull,
                     $hasArray,
                     $hasIterable,
-                    $hasVoid,
                     $hasString,
                     $hasInt,
                     $hasFloat,
@@ -358,7 +352,6 @@ function my_foo($bar)
      * @param bool   $hasNull
      * @param bool   $hasArray
      * @param bool   $hasIterable
-     * @param bool   $hasVoid
      * @param bool   $hasString
      * @param bool   $hasInt
      * @param bool   $hasFloat
@@ -373,7 +366,6 @@ function my_foo($bar)
         $hasNull,
         $hasArray,
         $hasIterable,
-        $hasVoid,
         $hasString,
         $hasInt,
         $hasFloat,
@@ -383,9 +375,7 @@ function my_foo($bar)
     ) {
         $newTokens = [];
 
-        if (true === $hasVoid) {
-            $newTokens[] = new Token('void');
-        } elseif (true === $hasIterable && true === $hasArray) {
+        if (true === $hasIterable && true === $hasArray) {
             $newTokens[] = new Token([CT::T_ARRAY_TYPEHINT, 'array']);
         } elseif (true === $hasIterable) {
             $newTokens[] = new Token([T_STRING, 'iterable']);
