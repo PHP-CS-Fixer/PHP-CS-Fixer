@@ -361,6 +361,14 @@ final class AnnotationTest extends TestCase
                 '/** @var array<string|int, string>',
                 ['array<string|int, string>'],
             ],
+            [
+                " * @return int\n",
+                ['int'],
+            ],
+            [
+                " * @return int\r\n",
+                ['int'],
+            ],
         ];
     }
 
