@@ -137,6 +137,9 @@ final class Example
 
                 if ($tokens[$insertIndex]->isWhitespace()) {
                     $nextToken = $tokens[$insertIndex];
+                    if (2 === substr_count($nextToken->getContent(), "\n")) {
+                        continue;
+                    }
                     $nextMeaningfulAfterUseIndex = $tokens->getNextMeaningfulToken($insertIndex);
                     if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(T_USE)) {
                         if (substr_count($nextToken->getContent(), "\n") < 2) {
