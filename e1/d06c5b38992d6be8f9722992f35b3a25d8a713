@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-23T07:36:31Z
+
+`Fatal error: void cannot be used as a parameter type in`
+
+maybe this fixer needs the syntax-checker you wrote as well?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-23T15:56:26Z
+
+For that it will help, but not for the error you can see in Travis:
+```
+1) PhpCsFixer\Tests\Fixer\FunctionNotation\PhpdocToParamTypeFixerTest::testFix with data set "void as type" ('<?php /** @param void $bar */...ar) {}', '<?php /** @param void $bar */...ar) {}')
+The token at index 7 must be:
+{
+    "id": 319,
+    "name": "T_STRING",
+    "content": "void",
+    "isArray": true,
+    "changed": false
+},
+got:
+{
+    "id": null,
+    "name": null,
+    "content": "void",
+    "isArray": false,
+    "changed": false
+}.
+Failed asserting that false is true.
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-23T16:08:35Z
+
+but the fixer should not never try to put `void` as type right?
