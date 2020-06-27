@@ -436,6 +436,13 @@ use const some\c;
 use some\a\ClassA; use function some\a\fn_a; use const some\c;
 ',
             ],
+            [
+                str_replace("\n", "\r\n", '<?php
+use Foo;
+
+class Bar {}
+'),
+            ],
         ];
     }
 
