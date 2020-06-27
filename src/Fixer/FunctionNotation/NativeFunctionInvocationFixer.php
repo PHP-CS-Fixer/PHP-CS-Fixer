@@ -164,6 +164,7 @@ $c = get_class($d);
      * {@inheritdoc}
      *
      * Must run before GlobalNamespaceImportFixer.
+     * Must run after StrictParamFixer.
      */
     public function getPriority()
     {

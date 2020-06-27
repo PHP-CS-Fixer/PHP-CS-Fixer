@@ -93,12 +93,12 @@ apply (the rule names must be separated by a comma):
 
     <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
 
-You can also blacklist the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
+You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
 using <comment>-name_of_fixer</comment>:
 
     <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
 
-When using combinations of exact and blacklist rules, applying exact rules along with above blacklisted results:
+When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
 
     <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
 
@@ -199,7 +199,7 @@ Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones 
 See `Symfony\Finder` (<url>https://symfony.com/doc/current/components/finder.html</url>)
 online documentation for other `Finder` methods.
 
-You may also use a blacklist for the rules instead of the above shown whitelist approach.
+You may also use an exclude list for the rules instead of the above shown include approach.
 The following example shows how to use all ``Symfony`` rules but the ``full_opening_tag`` rule.
 
     <?php

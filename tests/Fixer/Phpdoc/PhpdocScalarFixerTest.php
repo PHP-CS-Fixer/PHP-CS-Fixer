@@ -24,330 +24,249 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocScalarFixerTest extends AbstractFixerTestCase
 {
-    public function testBasicFix()
-    {
-        $expected = <<<'EOF'
-<?php
     /**
-     * @return int
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * @return integer
-     */
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testPropertyFix()
-    {
-        $expected = <<<'EOF'
-<?php
-/**
- * @method int foo()
- * @property int $foo
- * @property callback $foo
- * @property-read bool $bar
- * @property-write float $baz
- */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-/**
- * @method integer foo()
- * @property integer $foo
- * @property callback $foo
- * @property-read boolean $bar
- * @property-write double $baz
- */
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testDoNotModifyVariables()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @param int $integer
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * @param integer $integer
-     */
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixWithTabsOnOneLine()
-    {
-        $expected = "<?php /**\t@return\tbool\t*/";
-
-        $input = "<?php /**\t@return\tboolean\t*/";
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixMoreThings()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * Hello there mr integer!
+     * @param string      $expected
+     * @param null|string $input
      *
-     * @param int|float $integer
-     * @param int|int[] $foo
-     * @param string|null $bar
-     *
-     * @return string|bool
+     * @dataProvider provideFixCases
      */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * Hello there mr integer!
-     *
-     * @param integer|real $integer
-     * @param int|integer[] $foo
-     * @param str|null $bar
-     *
-     * @return string|boolean
-     */
-
-EOF;
-
+    public function testFix($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function testFixVar()
+    public static function provideFixCases()
     {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var int Some integer value.
-     */
+        yield 'basic fix' => [
+            '<?php
+            /**
+             * @return int
+             */
+             ',
+            '<?php
+            /**
+             * @return integer
+             */
+             ',
+        ];
 
-EOF;
+        yield 'property fix' => [
+            '<?php
+            /**
+             * @method int foo()
+             * @property int $foo
+             * @property callback $foo
+             * @property-read bool $bar
+             * @property-write float $baz
+             */
+             ',
+            '<?php
+            /**
+             * @method integer foo()
+             * @property integer $foo
+             * @property callback $foo
+             * @property-read boolean $bar
+             * @property-write double $baz
+             */
+             ',
+        ];
 
-        $input = <<<'EOF'
-<?php
-    /**
-     * @var integer Some integer value.
-     */
+        yield 'do not modify variables' => [
+            '<?php
+            /**
+             * @param int $integer
+             */
+             ',
+            '<?php
+            /**
+             * @param integer $integer
+             */
+             ',
+        ];
 
-EOF;
+        yield 'fix with tabs on one line' => [
+            "<?php /**\t@return\tbool\t*/",
+            "<?php /**\t@return\tboolean\t*/",
+        ];
 
-        $this->doTest($expected, $input);
-    }
+        yield 'fix more things' => [
+            '<?php
+            /**
+             * Hello there mr integer!
+             *
+             * @param int|float $integer
+             * @param int|int[] $foo
+             * @param string|null $bar
+             *
+             * @return string|bool
+             */
+             ',
+            '<?php
+            /**
+             * Hello there mr integer!
+             *
+             * @param integer|real $integer
+             * @param int|integer[] $foo
+             * @param str|null $bar
+             *
+             * @return string|boolean
+             */
+             ',
+        ];
 
-    public function testFixVarWithMoreStuff()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var bool|int|Double Booleans, integers and doubles.
-     */
+        yield 'fix var' => [
+            '<?php
+            /**
+             * @var int Some integer value.
+             */
+             ',
+            '<?php
+            /**
+             * @var integer Some integer value.
+             */
+             ',
+        ];
 
-EOF;
+        yield 'fix var with more stuff' => [
+            '<?php
+            /**
+             * @var bool|int|Double Booleans, integers and doubles.
+             */
+             ',
+            '<?php
+            /**
+             * @var boolean|integer|Double Booleans, integers and doubles.
+             */
+             ',
+        ];
 
-        $input = <<<'EOF'
-<?php
-    /**
-     * @var boolean|integer|Double Booleans, integers and doubles.
-     */
+        yield 'fix type' => [
+            '<?php
+            /**
+             * @type float
+             */
+             ',
+            '<?php
+            /**
+             * @type real
+             */
+             ',
+        ];
 
-EOF;
+        yield 'do not fix' => [
+            '<?php
+            /**
+             * @var notaboolean
+             */
+             ',
+        ];
 
-        $this->doTest($expected, $input);
-    }
+        yield 'complex mix' => [
+            '<?php
+            /**
+             * @var notabooleanthistime|bool|integerr
+             */
+             ',
+            '<?php
+            /**
+             * @var notabooleanthistime|boolean|integerr
+             */
+             ',
+        ];
 
-    public function testFixType()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @type float
-     */
+        yield 'do not modify complex tag' => [
+            '<?php
+            /**
+             * @Type("boolean")
+             */
+             ',
+        ];
 
-EOF;
+        yield 'do not modify strings' => [
+            "<?php
+            \$string = '
+                /**
+                 * @var boolean
+                 */
+            ';
+             ",
+        ];
 
-        $input = <<<'EOF'
-<?php
-    /**
-     * @type real
-     */
+        yield 'empty DocBlock' => [
+            '<?php
+            /**
+             *
+             */
+             ',
+        ];
 
-EOF;
+        yield 'wrong cased Phpdoc tag is not altered' => [
+            '<?php
+            /**
+             * @Param boolean
+             *
+             * @Return int
+             */
+             ',
+        ];
 
-        $this->doTest($expected, $input);
-    }
+        yield 'inline doc' => [
+            '<?php
+            /**
+             * Does stuffs with stuffs.
+             *
+             * @param array $stuffs {
+             *     @type bool $foo
+             *     @type int $bar
+             * }
+             */
+             ',
+            '<?php
+            /**
+             * Does stuffs with stuffs.
+             *
+             * @param array $stuffs {
+             *     @type boolean $foo
+             *     @type integer $bar
+             * }
+             */
+             ',
+        ];
 
-    public function testDoNotFix()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var notaboolean
-     */
+        yield 'fix callback' => [
+            '<?php
+            /**
+             * @method int foo()
+             * @property int $foo
+             * @property callable $foo
+             * @property-read bool $bar
+             * @property-write float $baz
+             */
+             ',
+            '<?php
+            /**
+             * @method integer foo()
+             * @property integer $foo
+             * @property callback $foo
+             * @property-read boolean $bar
+             * @property-write double $baz
+             */
+             ',
+            ['types' => ['boolean', 'callback', 'double', 'integer', 'real', 'str']],
+        ];
 
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testComplexMix()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @var notabooleanthistime|bool|integerr
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * @var notabooleanthistime|boolean|integerr
-     */
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testDoNotModifyComplexTag()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @Type("boolean")
-     */
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testDoNotModifyStrings()
-    {
-        $expected = <<<'EOF'
-<?php
-
-$string = '
-    /**
-     * @var boolean
-     */
-';
-
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testEmptyDocBlock()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     *
-     */
-
-EOF;
-
-        $this->doTest($expected);
-    }
-
-    public function testWrongCasedPhpdocTagIsNotAltered()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * @Param boolean
-     *
-     * @Return int
-     */
-
-EOF;
-        $this->doTest($expected);
-    }
-
-    public function testInlineDoc()
-    {
-        $expected = <<<'EOF'
-<?php
-    /**
-     * Does stuffs with stuffs.
-     *
-     * @param array $stuffs {
-     *     @type bool $foo
-     *     @type int $bar
-     * }
-     */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-    /**
-     * Does stuffs with stuffs.
-     *
-     * @param array $stuffs {
-     *     @type boolean $foo
-     *     @type integer $bar
-     * }
-     */
-
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixCallback()
-    {
-        $expected = <<<'EOF'
-<?php
-/**
- * @method int foo()
- * @property int $foo
- * @property callable $foo
- * @property-read bool $bar
- * @property-write float $baz
- */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
-/**
- * @method integer foo()
- * @property integer $foo
- * @property callback $foo
- * @property-read boolean $bar
- * @property-write double $baz
- */
-
-EOF;
-
-        $this->fixer->configure(['types' => ['boolean', 'callback', 'double', 'integer', 'real', 'str']]);
-
-        $this->doTest($expected, $input);
+        yield 'fix Windows line endings' => [
+            str_replace("\n", "\r\n", '<?php
+            /**
+             * @return int
+             */
+             '),
+            str_replace("\n", "\r\n", '<?php
+            /**
+             * @return integer
+             */
+             '),
+        ];
     }
 }

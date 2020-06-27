@@ -302,7 +302,7 @@ final class Annotation
             }
 
             $matchingResult = Preg::match(
-                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.self::REGEX_TYPES.'(?:[*\h].*)?$}sx',
+                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.self::REGEX_TYPES.'(?:[*\h\v].*)?$}sx',
                 $this->lines[0]->getContent(),
                 $matches
             );

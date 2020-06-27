@@ -1,7 +1,7 @@
 ---
 name: Rule request ✍️
 about: I have a suggestion about a new rule (and may want to implement it)!
-label: kind/feature request
+labels: kind/feature request
 ---
 
 ## Rule request

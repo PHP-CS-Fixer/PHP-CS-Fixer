@@ -53,11 +53,11 @@ EOT
     /**
      * {@inheritdoc}
      *
-     * Must run before NoUselessReturnFixer.
+     * Must run before NoUselessReturnFixer, VoidReturnFixer.
      */
     public function getPriority()
     {
-        return -17;
+        return 16;
     }
 
     /**

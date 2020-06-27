@@ -328,6 +328,9 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @param null|string[] $matches */ function matchAll(&$matches) {}',
                 70100,
             ],
+            'void as type in phpdoc' => [
+                '<?php /** @param void $bar */ function foo($bar) {}',
+            ],
         ];
     }
 }

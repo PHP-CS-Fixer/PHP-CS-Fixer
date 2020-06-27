@@ -1,7 +1,7 @@
 ---
 name: Bug report 🐛
 about: Existing feature does not behave as expected.
-label: kind/bug
+labels: kind/bug
 ---
 
 ## Bug report

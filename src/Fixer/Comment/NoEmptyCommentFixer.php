@@ -100,6 +100,11 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         $commentType = $this->getCommentType($tokens[$index]->getContent());
         $empty = $this->isEmptyComment($tokens[$index]->getContent());
+
+        if (self::TYPE_SLASH_ASTERISK === $commentType) {
+            return [$index, $index, $empty];
+        }
+
         $start = $index;
         $count = \count($tokens);
         ++$index;
