@@ -193,14 +193,14 @@ apply (the rule names must be separated by a comma):
 
     $ php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
 
-You can also blacklist the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
+You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
 using ``-name_of_fixer``:
 
 .. code-block:: bash
 
     $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
 
-When using combinations of exact and blacklist rules, applying exact rules along with above blacklisted results:
+When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
 
 .. code-block:: bash
 
@@ -691,8 +691,8 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``annotation-black-list`` (``array``): class level annotations tags that must be
-    omitted to fix the class, even if all of the white list ones are used
-    as well. (case insensitive); defaults to ``['@final', '@Entity',
+    omitted to fix the class, even if all of the excluded ones are used as
+    well. (case insensitive); defaults to ``['@final', '@Entity',
     '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``
   - ``annotation-white-list`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case insensitive); defaults to
@@ -2061,7 +2061,7 @@ Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones 
 See `Symfony\\Finder <https://symfony.com/doc/current/components/finder.html>`_
 online documentation for other `Finder` methods.
 
-You may also use a blacklist for the rules instead of the above shown whitelist approach.
+You may also use an exclude list for the rules instead of the above shown include approach.
 The following example shows how to use all ``Symfony`` rules but the ``full_opening_tag`` rule.
 
 .. code-block:: php

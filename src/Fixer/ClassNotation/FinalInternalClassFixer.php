@@ -44,7 +44,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
         );
 
         if (\count($intersect)) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the white- and black list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the include and exclude list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
         }
     }
 
@@ -152,7 +152,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new FixerOptionBuilder('annotation-black-list', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
+            (new FixerOptionBuilder('annotation-black-list', 'Class level annotations tags that must be omitted to fix the class, even if all of the excluded ones are used as well. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault([
@@ -196,7 +196,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
             $tag = strtolower(substr(array_shift($matches), 1));
             foreach ($this->configuration['annotation-black-list'] as $tagStart => $true) {
                 if (0 === strpos($tag, $tagStart)) {
-                    return false; // ignore class: class-level PHPDoc contains tag that has been black listed through configuration
+                    return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration
                 }
             }
 
@@ -205,7 +205,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
 
         foreach ($this->configuration['annotation-white-list'] as $tag => $true) {
             if (!isset($tags[$tag])) {
-                return false; // ignore class: class-level PHPDoc does not contain all tags that has been white listed through configuration
+                return false; // ignore class: class-level PHPDoc does not contain all tags that has been included through configuration
             }
         }
 

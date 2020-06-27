@@ -40,11 +40,23 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
                     '<?php
 /**
  * @internal
- * @author someone
+ * @author John Doe
  */
 function foo() {}
 ',
                     ['annotations' => ['author']]
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * @author John Doe
+ * @package ACME API
+ * @subpackage Authorization
+ * @version 1.0
+ */
+function foo() {}
+',
+                    ['annotations' => ['package', 'subpackage']]
                 ),
             ]
         );

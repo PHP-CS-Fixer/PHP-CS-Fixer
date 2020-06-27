@@ -106,7 +106,7 @@ class Sample
      * {@inheritdoc}
      *
      * Must run before BracesFixer, IndentationTypeFixer.
-     * Must run after OrderedClassElementsFixer.
+     * Must run after OrderedClassElementsFixer, SingleClassElementPerStatementFixer.
      */
     public function getPriority()
     {
