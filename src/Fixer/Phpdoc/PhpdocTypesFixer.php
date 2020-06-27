@@ -98,6 +98,16 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
  */
 '
                 ),
+                new CodeSample(
+                    '<?php
+/**
+ * @param BOOL $foo
+ *
+ * @return MIXED
+ */
+',
+                    ['groups' => ['simple', 'alias']]
+                ),
             ]
         );
     }
