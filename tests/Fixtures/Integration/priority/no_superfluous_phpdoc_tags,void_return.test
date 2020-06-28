@@ -1,0 +1,18 @@
+--TEST--
+Integration of fixers: no_superfluous_phpdoc_tags,void_return.
+--RULESET--
+{"no_superfluous_phpdoc_tags": true, "void_return": true}
+--REQUIREMENTS--
+{"php": 70100}
+--EXPECT--
+<?php
+/**
+ */
+function test(): void {}
+
+--INPUT--
+<?php
+/**
+ * @return mixed
+ */
+function test() {}

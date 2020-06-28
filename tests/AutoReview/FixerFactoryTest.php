@@ -152,6 +152,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_spaces_after_function_name'], $fixers['function_to_constant']],
             [$fixers['no_spaces_inside_parenthesis'], $fixers['function_to_constant']],
             [$fixers['no_superfluous_phpdoc_tags'], $fixers['no_empty_phpdoc']],
+            [$fixers['no_superfluous_phpdoc_tags'], $fixers['void_return']],
             [$fixers['no_unneeded_control_parentheses'], $fixers['no_trailing_whitespace']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']],
