@@ -713,12 +713,12 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``annotation_black_list`` (``array``): class level annotations tags that must be
+  - ``annotation_exclude`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
     as well. (case insensitive); defaults to ``['@final', '@Entity',
     '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``;
     DEPRECATED alias: ``annotation-black-list``
-  - ``annotation_white_list`` (``array``): class level annotations tags that must be
+  - ``annotation_include`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``; DEPRECATED alias: ``annotation-white-list``
   - ``consider_absent_docblock_as_internal_class`` (``bool``): should classes

@@ -51,7 +51,7 @@ class MyApp {}
     {
         $fixer = new FinalInternalClassFixer();
         $fixer->configure([
-            'annotation_white_list' => [],
+            'annotation_include' => [],
             'consider_absent_docblock_as_internal_class' => true,
         ]);
 
