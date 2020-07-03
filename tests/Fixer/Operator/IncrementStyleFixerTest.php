@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\IncrementStyleFixer
  */
 final class IncrementStyleFixerTest extends AbstractFixerTestCase
@@ -57,7 +58,7 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
 
     public function provideFixPreIncrementCases()
     {
-        return [
+        $cases = [
             [
                 '<?php ++$a;',
                 '<?php $a++;',
@@ -178,5 +179,14 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
                 '<?php if ($foo) $a++;',
             ],
         ];
+
+        if (\PHP_VERSION_ID >= 70000) {
+            $cases[] = [
+                '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+                '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
+            ];
+        }
+
+        return $cases;
     }
 }
