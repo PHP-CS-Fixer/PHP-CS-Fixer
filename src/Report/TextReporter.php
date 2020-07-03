@@ -49,6 +49,13 @@ final class TextReporter implements ReporterInterface
             $output .= PHP_EOL;
         }
 
+        if ($reportSummary->shouldAddAppliedFixers() && [] !== $reportSummary->getSlowestFixers()) {
+            $output .= PHP_EOL.sprintf('Top %d slowest fixers:', \count($reportSummary->getSlowestFixers())).PHP_EOL;
+            foreach ($reportSummary->getSlowestFixers() as $fixer => $duration) {
+                $output .= sprintf('Fixer %s duration: %d ms', $fixer, $duration).PHP_EOL;
+            }
+        }
+
         return $output.$this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
     }
 

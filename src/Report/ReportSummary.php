@@ -50,11 +50,17 @@ final class ReportSummary
     private $time;
 
     /**
-     * @param int  $time              duration in milliseconds
-     * @param int  $memory            memory usage in bytes
-     * @param bool $addAppliedFixers
-     * @param bool $isDryRun
-     * @param bool $isDecoratedOutput
+     * @var array<string, int>
+     */
+    private $slowestFixers;
+
+    /**
+     * @param int                $time              duration in milliseconds
+     * @param int                $memory            memory usage in bytes
+     * @param bool               $addAppliedFixers
+     * @param bool               $isDryRun
+     * @param bool               $isDecoratedOutput
+     * @param array<string, int> $slowestFixers
      */
     public function __construct(
         array $changed,
@@ -62,7 +68,8 @@ final class ReportSummary
         $memory,
         $addAppliedFixers,
         $isDryRun,
-        $isDecoratedOutput
+        $isDecoratedOutput,
+        array $slowestFixers = []
     ) {
         $this->changed = $changed;
         $this->time = $time;
@@ -70,6 +77,7 @@ final class ReportSummary
         $this->addAppliedFixers = $addAppliedFixers;
         $this->isDryRun = $isDryRun;
         $this->isDecoratedOutput = $isDecoratedOutput;
+        $this->slowestFixers = $slowestFixers;
     }
 
     /**
@@ -118,5 +126,13 @@ final class ReportSummary
     public function shouldAddAppliedFixers()
     {
         return $this->addAppliedFixers;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getSlowestFixers()
+    {
+        return $this->slowestFixers;
     }
 }

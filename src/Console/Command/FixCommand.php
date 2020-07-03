@@ -32,6 +32,7 @@ use Symfony\Component\Console\Terminal;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Stopwatch\StopwatchEvent;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -75,7 +76,7 @@ final class FixCommand extends Command
         $this->defaultConfig = new Config();
         $this->errorsManager = new ErrorsManager();
         $this->eventDispatcher = new EventDispatcher();
-        $this->stopwatch = new Stopwatch();
+        $this->stopwatch = new Stopwatch(true);
         $this->toolInfo = $toolInfo;
     }
 
@@ -110,6 +111,7 @@ final class FixCommand extends Command
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                     new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, run-in, estimating, estimating-max or dots).'),
+                    new InputOption('show-slowest-fixers', '', InputOption::VALUE_REQUIRED, 'Show slowest fixers in the output.'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -143,6 +145,7 @@ final class FixCommand extends Command
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
+                'show-slowest-fixers' => $input->getOption('show-slowest-fixers'),
             ],
             getcwd(),
             $this->toolInfo
@@ -212,7 +215,8 @@ final class FixCommand extends Command
             $resolver->isDryRun(),
             $resolver->getCacheManager(),
             $resolver->getDirectory(),
-            $resolver->shouldStopOnViolation()
+            $resolver->shouldStopOnViolation(),
+            $this->stopwatch
         );
 
         $this->stopwatch->start('fixFiles');
@@ -223,13 +227,27 @@ final class FixCommand extends Command
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
+        $slowestFixers = [];
+        if ($resolver->showSlowestFixers() > 0) {
+            $slowestFixers = array_map(
+                function (StopwatchEvent $event) {
+                    return $event->getDuration();
+                },
+                $this->stopwatch->getSectionEvents('fixers_times')
+            );
+            unset($slowestFixers['__section__']);
+            arsort($slowestFixers);
+            $slowestFixers = \array_slice($slowestFixers, 0, $resolver->showSlowestFixers());
+        }
+
         $reportSummary = new ReportSummary(
             $changed,
             $fixEvent->getDuration(),
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity(),
             $resolver->isDryRun(),
-            $output->isDecorated()
+            $output->isDecorated(),
+            $slowestFixers
         );
 
         $output->isDecorated()

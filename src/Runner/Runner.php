@@ -29,6 +29,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -85,6 +86,11 @@ final class Runner
      */
     private $stopOnViolation;
 
+    /**
+     * @var null|Stopwatch
+     */
+    private $stopwatch;
+
     public function __construct(
         $finder,
         array $fixers,
@@ -95,7 +101,8 @@ final class Runner
         $isDryRun,
         CacheManagerInterface $cacheManager,
         DirectoryInterface $directory = null,
-        $stopOnViolation = false
+        $stopOnViolation = false,
+        Stopwatch $stopwatch = null
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -107,6 +114,7 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?: new Directory('');
         $this->stopOnViolation = $stopOnViolation;
+        $this->stopwatch = $stopwatch;
     }
 
     /**
@@ -128,6 +136,7 @@ final class Runner
             ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)
             : new FileLintingIterator($fileFilteredFileIterator, $this->linter);
 
+        null === $this->stopwatch || $this->stopwatch->openSection();
         foreach ($collection as $file) {
             $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
 
@@ -143,6 +152,7 @@ final class Runner
                 }
             }
         }
+        null === $this->stopwatch || $this->stopwatch->stopSection('fixers_times');
 
         return $changed;
     }
@@ -187,7 +197,9 @@ final class Runner
                     continue;
                 }
 
+                null === $this->stopwatch || $this->stopwatch->start($fixer->getName());
                 $fixer->fix($file, $tokens);
+                null === $this->stopwatch || $this->stopwatch->stop($fixer->getName());
 
                 if ($tokens->isChanged()) {
                     $tokens->clearEmptyTokens();
@@ -295,7 +307,7 @@ final class Runner
 
         // BC compatibility < Sf 4.3
         if (
-            !$this->eventDispatcher instanceof \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+        !$this->eventDispatcher instanceof \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
         ) {
             $this->eventDispatcher->dispatch($name, $event);
 
@@ -303,5 +315,18 @@ final class Runner
         }
 
         $this->eventDispatcher->dispatch($event, $name);
+    }
+
+    /**
+     * @param string $method
+     * @param string $fixerName
+     */
+    private function stopwatchFixer($method, $fixerName)
+    {
+        if (null === $this->stopwatch) {
+            return;
+        }
+
+        $this->stopwatch->{$method}($fixerName, 'fixFixer');
     }
 }

@@ -1053,7 +1053,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $options = $definition->getOptions();
         static::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress', 'show-slowest-fixers'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -1069,6 +1069,7 @@ final class ConfigurationResolverTest extends TestCase
             'diff-format' => 'udiff',
             'format' => 'json',
             'stop-on-violation' => true,
+            'show-slowest-fixers' => 10,
         ]);
 
         static::assertTrue($resolver->shouldStopOnViolation());

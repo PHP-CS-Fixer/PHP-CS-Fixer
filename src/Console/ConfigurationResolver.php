@@ -130,6 +130,7 @@ final class ConfigurationResolver
         'stop-on-violation' => null,
         'using-cache' => null,
         'verbosity' => null,
+        'show-slowest-fixers' => null,
     ];
 
     private $cacheFile;
@@ -561,6 +562,14 @@ final class ConfigurationResolver
         }
 
         return $this->configFinderIsOverridden;
+    }
+
+    /**
+     * @return int
+     */
+    public function showSlowestFixers()
+    {
+        return $this->options['show-slowest-fixers'];
     }
 
     /**
