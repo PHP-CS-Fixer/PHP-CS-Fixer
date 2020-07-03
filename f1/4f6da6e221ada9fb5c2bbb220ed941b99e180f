@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-30T06:59:10Z
+
+Maybe we can add a test step to Travis to run the fixer on its own code base with line break setting to `\r\n` and than run it again with `\n` and test the code is still the same ;)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-30T14:49:41Z
+
+@SpacePossum I was about adding a test in AutoReview when we test code samples that would take each code sample after fixing, run `\n` -> `\r\n\` replace and check if nothing is changed. Of course, there would be some exceptions like `line_ending` fixer. WDYT?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-30T15:47:23Z
+
+sounds great to me! we could do the same with the indenting spaces vs. tabs, however I've no idea how hard it would be to build so don't sink to much effort in it :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-30T20:52:07Z
+
+@SpacePossum POC of the AutoReview changes: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5039
