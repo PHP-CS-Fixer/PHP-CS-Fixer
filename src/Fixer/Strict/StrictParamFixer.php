@@ -60,7 +60,7 @@ final class StrictParamFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 1;
+        return 2;
     }
 
     /**

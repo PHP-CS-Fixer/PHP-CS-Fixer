@@ -179,11 +179,11 @@ $c = get_class($d);
     /**
      * {@inheritdoc}
      *
-     * Must run after StrictParamFixer.
+     * Must run after BacktickToShellExecFixer, StrictParamFixer.
      */
     public function getPriority()
     {
-        return 0;
+        return 1;
     }
 
     /**
