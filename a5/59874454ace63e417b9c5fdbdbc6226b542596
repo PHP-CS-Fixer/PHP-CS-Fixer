@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-29T19:20:39Z
+
+Your test prove the priority issue, however after testing I'm not sure why this dependency is here based on your example. Can you talk me through it?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-29T19:34:06Z
+
+For the example:
+```php
+<?php
+/**
+ * foo
+ *
+
+ * bar
+ */
+```
+first fixer - `align_multiline_comment` - "aligns" the empty line, which in this case means making it ` *`.
