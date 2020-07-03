@@ -1080,8 +1080,9 @@ class Foo {
      * @dataProvider provideFixPhp70Cases
      * @requires PHP 7.0
      */
-    public function testFixPhp70($expected, $input = null)
+    public function testFixPhp70($expected, $input = null, array $config = [])
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1224,6 +1225,20 @@ class Foo {
                      */
                      function display($number) {}
                 ',
+            ],
+            'return with @inheritDoc in description' => [
+                '<?php
+                    /**
+                     */
+                    function foo(): bool {}
+                ',
+                '<?php
+                    /**
+                     * @return bool @inheritDoc
+                     */
+                    function foo(): bool {}
+                ',
+                ['remove_inheritdoc' => true],
             ],
         ];
     }

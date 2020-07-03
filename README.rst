@@ -46,7 +46,7 @@ or with specified version:
 
 .. code-block:: bash
 
-    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.16.3/php-cs-fixer.phar -O php-cs-fixer
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.16.4/php-cs-fixer.phar -O php-cs-fixer
 
 or with curl:
 
@@ -691,12 +691,12 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``annotation_black_list`` (``array``): class level annotations tags that must be
+  - ``annotation_exclude`` (``array``): class level annotations tags that must be
     omitted to fix the class, even if all of the white list ones are used
     as well. (case insensitive); defaults to ``['@final', '@Entity',
     '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``;
     DEPRECATED alias: ``annotation-black-list``
-  - ``annotation_white_list`` (``array``): class level annotations tags that must be
+  - ``annotation_include`` (``array``): class level annotations tags that must be
     set in order to fix the class. (case insensitive); defaults to
     ``['@internal']``; DEPRECATED alias: ``annotation-white-list``
   - ``consider_absent_docblock_as_internal_class`` (``bool``): should classes
@@ -2034,7 +2034,7 @@ Config file
 
 Instead of using command line options to customize the rule, you can save the
 project configuration in a ``.php_cs.dist`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.3/src/ConfigInterface.php>`_
+The file must return an instance of `PhpCsFixer\\ConfigInterface <https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.4/src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
 need to be analyzed. You may also create ``.php_cs`` file, which is
 the local configuration that will be used instead of the project configuration. It

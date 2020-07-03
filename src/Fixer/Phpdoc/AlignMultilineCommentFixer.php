@@ -86,6 +86,7 @@ with a line not prefixed with asterisk
     /**
      * {@inheritdoc}
      *
+     * Must run before PhpdocTrimConsecutiveBlankLineSeparationFixer.
      * Must run after ArrayIndentationFixer.
      */
     public function getPriority()

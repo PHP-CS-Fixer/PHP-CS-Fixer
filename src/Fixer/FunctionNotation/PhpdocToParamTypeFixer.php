@@ -40,7 +40,7 @@ final class PhpdocToParamTypeFixer extends AbstractFixer implements Configurable
     /**
      * @var array{int, string}[]
      */
-    private $blacklistFuncNames = [
+    private $excludeFuncNames = [
         [T_STRING, '__clone'],
         [T_STRING, '__destruct'],
     ];
@@ -138,7 +138,7 @@ function my_foo($bar)
             }
 
             $funcName = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$funcName]->equalsAny($this->blacklistFuncNames, false)) {
+            if ($tokens[$funcName]->equalsAny($this->excludeFuncNames, false)) {
                 continue;
             }
 

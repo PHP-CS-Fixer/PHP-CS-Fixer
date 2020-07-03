@@ -92,7 +92,7 @@ class Foo {
     /**
      * {@inheritdoc}
      *
-     * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer.
+     * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer, VoidReturnFixer.
      * Must run after CommentToPhpdocFixer, FullyQualifiedStrictTypesFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToReturnTypeFixer, PhpdocTypesFixer.
      */
     public function getPriority()
@@ -135,14 +135,14 @@ class Foo {
 
             $token = $tokens[$documentedElementIndex];
 
+            if ($this->configuration['remove_inheritdoc']) {
+                $content = $this->removeSuperfluousInheritDoc($content);
+            }
+
             if ($token->isGivenKind(T_FUNCTION)) {
                 $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
             } elseif ($token->isGivenKind(T_VARIABLE)) {
                 $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
-            }
-
-            if ($this->configuration['remove_inheritdoc']) {
-                $content = $this->removeSuperfluousInheritDoc($content);
             }
 
             if ($content !== $initialContent) {
