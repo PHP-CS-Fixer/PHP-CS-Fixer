@@ -1843,7 +1843,7 @@ Choose from the list of available rules:
 
   Callables must be called without using ``call_user_func*`` when possible.
 
-  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden or when are used in constructions that should be avoided, like ``call_user_func_array("foo", ["bar" => "baz"])`` or ``call_user_func($foo, $foo = "bar")``.*
+  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden or when are used in constructions that should be avoided, like ``call_user_func_array('foo', ['bar' => 'baz'])`` or ``call_user_func($foo, $foo = 'bar')``.*
 
 * **return_assignment** [@PhpCsFixer]
 
