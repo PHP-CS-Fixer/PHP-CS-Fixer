@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-06-14T21:22:17Z
+
+> [...] but I imagine quite soon we will have PhpdocToPropertyTypeFixer.
+
+Indeed, #4592 introduces a parent abstract class where we could move this logic but a dedicated class sounds better :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-20T15:48:14Z
+
+@julienfalque the idea with `SyntaxValidator` failed as to validate the code in PHP 5.6 `Tokens` class fails and only working solution, which is using `eval` is... you know `evil` ;)
+
+Let's try with placing the check in `AbstractPhpdocToTypeDeclarationFixer`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-30T06:45:48Z
+
+I liked the validator more (composition over inheritance), can you explain the issue on 5.6 a bit more?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-30T15:01:35Z
+
+`Tokens::fromCode` runs `token_get_all` under the hood, with `TOKEN_PARSE` flag if it exists, but it does not in PHP 5.6. Without the flag everything is valid -> https://3v4l.org/CfW8M
+
+And that call was actually the validation done in `SyntaxValidator` class.
+
+Also as composition over inheritance is usually what I want to do in this case I'm not so sure - adding class `SyntaxValidator` would be like stating: "Look, here is the class to use in fixers" and I don't want to do that - I cannot see any other case when we would like to do this.
