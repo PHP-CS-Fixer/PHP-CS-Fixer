@@ -1314,14 +1314,17 @@ Choose from the list of available rules:
     'constant_private', 'property', 'property_static', 'property_public',
     'property_protected', 'property_private', 'property_public_static',
     'property_protected_static', 'property_private_static', 'method',
-    'method_static', 'method_public', 'method_protected', 'method_private',
-    'method_public_static', 'method_protected_static',
-    'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``):
-    list of strings defining order of elements; defaults to ``['use_trait',
-    'constant_public', 'constant_protected', 'constant_private',
-    'property_public', 'property_protected', 'property_private',
-    'construct', 'destruct', 'magic', 'phpunit', 'method_public',
-    'method_protected', 'method_private']``
+    'method_abstract', 'method_static', 'method_public',
+    'method_protected', 'method_private', 'method_public_abstract',
+    'method_protected_abstract', 'method_public_abstract_static',
+    'method_protected_abstract_static', 'method_public_static',
+    'method_protected_static', 'method_private_static', 'construct',
+    'destruct', 'magic', 'phpunit']``): list of strings defining order of
+    elements; defaults to ``['use_trait', 'constant_public',
+    'constant_protected', 'constant_private', 'property_public',
+    'property_protected', 'property_private', 'construct', 'destruct',
+    'magic', 'phpunit', 'method_public', 'method_protected',
+    'method_private']``
   - ``sort_algorithm`` (``'alpha'``, ``'none'``): how multiple occurrences of same type
     statements should be sorted; defaults to ``'none'``; DEPRECATED alias:
     ``sortAlgorithm``
@@ -1775,7 +1778,7 @@ Choose from the list of available rules:
 
   Callables must be called without using ``call_user_func*`` when possible.
 
-  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden.*
+  *Risky rule: risky when the ``call_user_func`` or ``call_user_func_array`` function is overridden or when are used in constructions that should be avoided, like ``call_user_func_array('foo', ['bar' => 'baz'])`` or ``call_user_func($foo, $foo = 'bar')``.*
 
 * **return_assignment** [@PhpCsFixer]
 

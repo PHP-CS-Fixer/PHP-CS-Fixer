@@ -23,6 +23,7 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
+use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
@@ -268,22 +269,34 @@ final class ConfigurationResolver
                 'udiff' => static function () { return new UnifiedDiffer(); },
             ];
 
-            if ($this->options['diff-format']) {
-                $option = $this->options['diff-format'];
-                if (!isset($mapper[$option])) {
-                    throw new InvalidConfigurationException(sprintf(
-                        '"diff-format" must be any of "%s", got "%s".',
-                        implode('", "', array_keys($mapper)),
-                        $option
-                    ));
-                }
+            if (!$this->options['diff']) {
+                $defaultOption = 'null';
             } else {
-                $default = 'udiff';
-
-                $option = $this->options['diff'] ? $default : 'null';
+                $defaultOption = 'udiff';
             }
 
-            $this->differ = $mapper[$option]();
+            $option = isset($this->options['diff-format'])
+                ? $this->options['diff-format']
+                : $defaultOption;
+
+            if (!\is_string($option)) {
+                throw new InvalidConfigurationException(sprintf(
+                    '"diff-format" must be a string, "%s" given.',
+                    \gettype($option)
+                ));
+            }
+
+            if (is_subclass_of($option, DifferInterface::class)) {
+                $this->differ = new $option();
+            } elseif (!isset($mapper[$option])) {
+                throw new InvalidConfigurationException(sprintf(
+                    '"diff-format" must be any of "%s", got "%s".',
+                    implode('", "', array_keys($mapper)),
+                    $option
+                ));
+            } else {
+                $this->differ = $mapper[$option]();
+            }
         }
 
         return $this->differ;

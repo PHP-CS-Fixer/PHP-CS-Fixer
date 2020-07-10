@@ -20,6 +20,7 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
+use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -1061,6 +1062,26 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         static::assertInstanceOf($expected, $resolver->getDiffer());
+    }
+
+    public function testCustomDiffer()
+    {
+        $resolver = $this->createConfigurationResolver([
+            'diff-format' => FakeDiffer::class,
+        ]);
+
+        static::assertInstanceOf(FakeDiffer::class, $resolver->getDiffer());
+    }
+
+    public function testCustomDifferMustBeAString()
+    {
+        $resolver = $this->createConfigurationResolver([
+            'diff-format' => new FakeDiffer(),
+        ]);
+
+        $this->expectExceptionMessage('"diff-format" must be a string, "object" given');
+
+        $resolver->getDiffer();
     }
 
     public function provideDifferCases()

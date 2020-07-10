@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Jan Gantzert <jan@familie-gantzert.de>
  */
-final class PhpdocToParamTypeFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ConfigurableFixerInterface
 {
     /** @internal */
     const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
@@ -255,6 +255,10 @@ function my_foo($bar)
                 }
 
                 if (!('(' === $tokens[$variableIndex - 1]->getContent()) && $this->hasParamTypeHint($tokens, $variableIndex - 2)) {
+                    continue;
+                }
+
+                if (!$this->isValidSyntax(sprintf('<?php function f(%s $x) {}', $paramType))) {
                     continue;
                 }
 

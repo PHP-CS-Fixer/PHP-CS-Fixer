@@ -56,10 +56,15 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'property_protected_static' => ['property_static', 'property_protected'],
         'property_private_static' => ['property_static', 'property_private'],
         'method' => null,
+        'method_abstract' => ['method'],
         'method_static' => ['method'],
         'method_public' => ['method', 'public'],
         'method_protected' => ['method', 'protected'],
         'method_private' => ['method', 'private'],
+        'method_public_abstract' => ['method_abstract', 'method_public'],
+        'method_protected_abstract' => ['method_abstract', 'method_protected'],
+        'method_public_abstract_static' => ['method_abstract', 'method_static', 'method_public'],
+        'method_protected_abstract_static' => ['method_abstract', 'method_static', 'method_protected'],
         'method_public_static' => ['method_static', 'method_public'],
         'method_protected_static' => ['method_static', 'method_protected'],
         'method_private_static' => ['method_static', 'method_private'],
@@ -301,6 +306,7 @@ class Example
             $element = [
                 'start' => $startIndex,
                 'visibility' => 'public',
+                'abstract' => false,
                 'static' => false,
             ];
 
@@ -310,6 +316,12 @@ class Example
                 // class end
                 if ($token->equals('}')) {
                     return $elements;
+                }
+
+                if ($token->isGivenKind(T_ABSTRACT)) {
+                    $element['abstract'] = true;
+
+                    continue;
                 }
 
                 if ($token->isGivenKind(T_STATIC)) {
@@ -453,6 +465,9 @@ class Example
 
             if (\in_array($type, ['constant', 'property', 'method'], true)) {
                 $type .= '_'.$element['visibility'];
+                if ($element['abstract']) {
+                    $type .= '_abstract';
+                }
                 if ($element['static']) {
                     $type .= '_static';
                 }
