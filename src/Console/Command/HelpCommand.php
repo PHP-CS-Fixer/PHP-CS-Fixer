@@ -620,8 +620,6 @@ EOF
     }
 
     /**
-     * @param mixed $value
-     *
      * @return string
      */
     private static function arrayToString(array $value)
