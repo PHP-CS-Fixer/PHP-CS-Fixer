@@ -30,29 +30,38 @@ class Annotation
     const REGEX_TYPES = '
     # <simple> is any non-array, non-generic, non-alternated type, eg `int` or `\Foo`
     # <array> is array of <simple>, eg `int[]` or `\Foo[]`
+    # <callable> is callable type, like `callable(string): bool`
     # <generic> is generic collection type, like `array<string, int>`, `Collection<Item>` and more complex like `Collection<int, \null|SubCollection<string>>`
-    # <type> is <simple>, <array> or <generic> type, like `int`, `bool[]` or `Collection<ItemKey, ItemVal>`
-    # <types> is one or more types alternated via `|`, like `int|bool[]|Collection<ItemKey, ItemVal>`
+    # <type> is <simple>, <array>, <callable> or <generic> type, like `int`, `bool[]`, `callable(string): bool` or `Collection<ItemKey, ItemVal>`
+    # <types> is one or more types alternated via `|`, like `int|bool[]|callable(string): bool|Collection<ItemKey, ItemVal>`
     (?<types>
         (?<type>
+            (?<simple>
+                [@$?]?[\\\\\w]+
+            )
+            |
             (?<array>
                 (?&simple)(\[\])*
             )
             |
-            (?<simple>
-                [@$?]?[\\\\\w]+
+            (?<callable>
+                (?&simple)
+                \(
+                    (?:(?&types))(?:,\s*(?&types))*
+                \)
+                (?:\:\s*(?&types))*
             )
             |
             (?<generic>
                 (?&simple)
                 <
-                    (?:(?&types),\s*)?(?:(?&types)|(?&generic))
+                    (?:(?&types),\s*)?(?:(?&types))
                 >
             )
         )
         (?:
             \|
-            (?:(?&simple)|(?&array)|(?&generic))
+            (?:(?&simple)|(?&array)|(?&callable)|(?&generic))
         )*
     )
     ';

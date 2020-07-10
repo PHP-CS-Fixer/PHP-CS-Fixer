@@ -361,6 +361,18 @@ final class AnnotationTest extends TestCase
                 '/** @var array<string|int, string>',
                 ['array<string|int, string>'],
             ],
+            [
+                '/** @param callable(string) $function',
+                ['callable(string)'],
+            ],
+            [
+                '/** @param callable(string): bool $function',
+                ['callable(string): bool'],
+            ],
+            [
+                '* @param TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null $x',
+                ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null'],
+            ],
         ];
     }
 
