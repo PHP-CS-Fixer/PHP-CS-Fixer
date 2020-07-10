@@ -317,38 +317,10 @@ EOF
      */
     public static function toString($value)
     {
-        if (\is_array($value)) {
-            // Output modifications:
-            // - remove new-lines
-            // - combine multiple whitespaces
-            // - switch array-syntax to short array-syntax
-            // - remove whitespace at array opening
-            // - remove trailing array comma and whitespace at array closing
-            // - remove numeric array indexes
-            static $replaces = [
-                ['#\r|\n#', '#\s{1,}#', '#array\s*\((.*)\)#s', '#\[\s+#', '#,\s*\]#', '#\d+\s*=>\s*#'],
-                ['', ' ', '[$1]', '[', ']', ''],
-            ];
-
-            $str = var_export($value, true);
-            do {
-                $strNew = Preg::replace(
-                    $replaces[0],
-                    $replaces[1],
-                    $str
-                );
-
-                if ($strNew === $str) {
-                    break;
-                }
-
-                $str = $strNew;
-            } while (true);
-        } else {
-            $str = var_export($value, true);
-        }
-
-        return Preg::replace('/\bNULL\b/', 'null', $str);
+        return \is_array($value)
+            ? static::arrayToString($value)
+            : static::scalarToString($value)
+        ;
     }
 
     /**
@@ -633,5 +605,63 @@ EOF
         return array_map(static function ($line) {
             return implode(' ', $line);
         }, $result);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    private static function scalarToString($value)
+    {
+        $str = var_export($value, true);
+
+        return Preg::replace('/\bNULL\b/', 'null', $str);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    private static function arrayToString(array $value)
+    {
+        if (0 === \count($value)) {
+            return '[]';
+        }
+
+        $isHash = static::isHash($value);
+        $str = '[';
+
+        foreach ($value as $k => $v) {
+            if ($isHash) {
+                $str .= static::scalarToString($k).' => ';
+            }
+
+            $str .= \is_array($v)
+                ? static::arrayToString($v).', '
+                : static::scalarToString($v).', '
+            ;
+        }
+
+        return substr($str, 0, -2).']';
+    }
+
+    /**
+     * @return bool
+     */
+    private static function isHash(array $array)
+    {
+        $i = 0;
+
+        foreach ($array as $k => $v) {
+            if ($k !== $i) {
+                return true;
+            }
+
+            ++$i;
+        }
+
+        return false;
     }
 }

@@ -81,6 +81,11 @@ Html here
 $foo = $bar;
 ?>',
             ],
+            [
+                str_replace("\n", "\r\n", '<?php
+// linebreak already present in file with Windows line endings
+'),
+            ],
         ];
     }
 
