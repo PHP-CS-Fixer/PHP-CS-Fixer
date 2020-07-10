@@ -36,26 +36,26 @@ class Annotation
     # <types> is one or more types alternated via `|`, like `int|bool[]|callable(string): bool|Collection<ItemKey, ItemVal>`
     (?<types>
         (?<type>
-            (?<simple>
-                [@$?]?[\\\\\w]+
-            )
-            |
             (?<array>
                 (?&simple)(\[\])*
+            )
+            |
+            (?<simple>
+                [@$?]?[\\\\\w]+
             )
             |
             (?<callable>
                 (?&simple)
                 \(
-                    (?:(?&types))(?:,\s*(?&types))*
+                    (?:(?&types)|(?&callable)|(?&generic))(?:,\s*(?:(?&types)|(?&callable)|(?&generic)))*
                 \)
-                (?:\:\s*(?&types))*
+                (?:\s*\:\s*(?:(?&types)|(?&callable)|(?&generic)))*
             )
             |
             (?<generic>
                 (?&simple)
                 <
-                    (?:(?&types),\s*)?(?:(?&types))
+                    (?:(?&types),\s*)?(?:(?&types)|(?&callable)|(?&generic))
                 >
             )
         )

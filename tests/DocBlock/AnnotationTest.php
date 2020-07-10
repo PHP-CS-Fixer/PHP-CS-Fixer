@@ -370,6 +370,22 @@ final class AnnotationTest extends TestCase
                 ['callable(string): bool'],
             ],
             [
+                '/** @param callable(array<int, string>, array<int, Foo>): bool $function',
+                ['callable(array<int, string>, array<int, Foo>): bool'],
+            ],
+            [
+                '/** @param array<int, callable(string): bool> $function',
+                ['array<int, callable(string): bool>'],
+            ],
+            [
+                '/** @param callable(string): callable(int) $function',
+                ['callable(string): callable(int)'],
+            ],
+            [
+                '/** @param callable(string) : callable(int) : bool $function',
+                ['callable(string) : callable(int) : bool'],
+            ],
+            [
                 '* @param TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null $x',
                 ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null'],
             ],
