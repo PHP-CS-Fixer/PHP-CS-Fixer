@@ -1,0 +1,149 @@
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-05-14T20:03:08Z
+
+Regarding the phpstan error. I've never used this tool so have no clue what the error is about 🤷‍♂️
+
+If you could point me in the right direction that would be cool.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-18T15:59:39Z
+
+Hi and thanks for the suggestion!
+
+I like the proposed change, however can you add a check that `$option` is a string? Like;
+
+>if (is_string($option) && is_subclass_of($option, DifferInterface::class)) {
+
+it will prevent people passing an instance of a differ already and causing a crash on the next line.
+
+I think the SCA fail might be an issue with PHPStan itself TBH, lets see what it does after the added check!
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-05-19T16:47:30Z
+
+So I've tried to add the `is_string` check inside the if but I had an error on the `elseif` because it was tryng to use the object as an index.
+
+I therefore went for a type check right before the first if. I thought about putting it before but that would have led to this :
+
+```php
+if (isset($options['diff-format'] && !is_string($options['diff-format'])))
+```
+
+Which I found a bit too verbose.
+
+Oh by the way, I also have an implementation that supports passing the diffed file to the differ. If that's of any interest to you I can make a PR for that one too :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-20T06:44:12Z
+
+Thanks for the updates, the PR looks good to me :)
+
+> Oh by the way, I also have an implementation that supports passing the diffed file to the differ. If that's of any interest to you I can make a PR for that one too :)
+
+You mean on update for `DifferInterface.php` to pass along the filename as well? That is in the planning for 3.0 so would be welcome there :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-20T08:16:50Z
+
+This looks like a new feature to me, I would merge this into master.
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-05-25T12:39:50Z
+
+@julienfalque Do you want me to change the target branch to master then ?
+
+@SpacePossum I'll have to polish a bit that implementation as it is really rough and open a pull request then ;)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-25T12:56:25Z
+
+nice, please retarget to master :+1:
+
+on the other one, feel free to open a rough first version so we might understand a bit better what it will be like etc., but no rush on it at all :)
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-05-26T21:36:57Z
+
+It seems that the travis build is failing again now that I have rebased my branch on master. An idea of what the issue might be?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-26T21:42:13Z
+
+You have to wait for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4966
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-27T14:06:59Z
+
+baseline has been revert, sorry for the noise!
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-05-28T19:58:44Z
+
+@SpacePossum No problem, I've rebased my work on master to make the fabbot.io check pass 😉
+
+Oh by the way the PR to add support for passing the file to the differ is on its way
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-05-28T20:00:18Z
+
+Well it looks like I've broken something.
+
+Ok so it appears that master is still broken, should I rebase on another branch?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-28T21:13:53Z
+
+@paulhenri-l you did not, the same issue is on other PRs. phive makes a mess again.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-31T07:08:19Z
+
+>Ok so it appears that master is still broken, should I rebase on another branch?
+
+please don't, it looks good :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-10T06:12:21Z
+
+@paulhenri-l can you fix the project itself (`php php-cs-fixer fix`), rebase and squash the commits? After that it looks good to me merge to me
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-06-11T08:07:13Z
+
+@SpacePossum Sure I'll try to do that today
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-06-11T20:16:28Z
+
+It should be ok now
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-28T21:47:55Z
+
+@paulhenri-l almost there, only 1 failing test.
+
+If you move `FakeDiffer` to `PhpCsFixer\Tests\Fixtures` namespace it would be fixed.
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-06-30T08:07:13Z
+
+@kubawerlos I'll try to do that today
