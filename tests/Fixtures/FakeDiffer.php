@@ -14,7 +14,10 @@ namespace PhpCsFixer\Tests\Fixtures;
 
 use PhpCsFixer\Differ\DifferInterface;
 
-class FakeDiffer implements DifferInterface
+/**
+ * @internal
+ */
+final class FakeDiffer implements DifferInterface
 {
     public function diff($old, $new)
     {
