@@ -1,0 +1,196 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-04T07:20:45Z
+
+As this is a new feature, I changed the target branch of the PR to `master`, please rebase your work onto that branch.
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-04T17:05:47Z
+
+Branch also rebased on `master`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-19T07:16:55Z
+
+Hi and thanks for the PR!
+
+Can you add this test case and let me know what you think :)
+
+```php
+    public function provideConfigurationCases()
+    {
+        return [
+            [
+                ['method_public_static', 'method_abstract'],
+                '<?php
+                abstract class Foo
+                {
+                    public function test2(){}
+                    private abstract function test1(){}
+                }',
+                '<?php
+                abstract class Foo
+                {
+                    private abstract function test1(){}
+                    public function test2(){}
+                }',
+            ],
+```
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-19T17:42:44Z
+
+@SpacePossum This test case will give an error because `method_private_abstract` doesn't exist. But that's normal since private methods can't be abstract.
+
+Do we want to support these cases even if it's not valid PHP code?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-20T07:32:58Z
+
+@carlalexander oops! no not needed to support invalid PHP code.
+If you make the abstract methods public is than still possible to configure the order so the not-static one go first?
+Something like:
+```
+            [
+                ['method_public_static', 'method_abstract'],
+                '<?php
+                abstract class Foo
+                {
+                    public function test2(){}
+                    public abstract function test1(){}
+                }',
+                '<?php
+                abstract class Foo
+                {
+                    public abstract function test1(){}
+                    public function test2(){}
+                }',
+            ],
+```
+?
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-21T07:50:04Z
+
+@SpacePossum Ok, so I tried to sort out this test case. But I think it's more complicated than it seems under the hood. Here's the `typePosition` array generated with this configuration:
+
+```
+array(29) {
+  ["method_public_static"]=> int(0)
+  ["method_abstract"]=> int(10)
+  ["use_trait"]=> int(20)
+  ["public"]=> int(20)
+  ["protected"]=> int(20)
+  ["private"]=> int(20)
+  ["constant"]=> int(20)
+  ["constant_public"]=> int(20)
+  ["constant_protected"]=> int(20)
+  ["constant_private"]=> int(20)
+  ["property"]=> int(20)
+  ["property_static"]=>  int(20)
+  ["property_public"]=> int(20)
+  ["property_protected"]=> int(20)
+  ["property_private"]=> int(20)
+  ["property_public_static"]=> int(20)
+  ["property_protected_static"]=> int(20)
+  ["property_private_static"]=> int(20)
+  ["method"]=> int(20)
+  ["method_static"]=> int(20)
+  ["method_public"]=> int(20)
+  ["method_protected"]=> int(20)
+  ["method_private"]=> int(20)
+  ["method_public_abstract"]=> int(10)
+  ["method_protected_abstract"]=> int(10)
+  ["method_public_abstract_static"]=> int(10)
+  ["method_protected_abstract_static"]=> int(10)
+  ["method_protected_static"]=> int(20)
+  ["method_private_static"]=> int(20)
+}
+```
+
+The only types that inherit a position are the abstract ones because `method_abstract` is their parent. `method_public_static` isn't the parent of anything and thus will not apply its position to `method_public`. You'd need to use `method_public` for this test case to work.
+
+If this is a requirement for this patch, the entire logic used by the `configure` method needs to be rethought. I think that's probably a change that's out of scope though.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-23T11:21:51Z
+
+Thanks for trying to fix it. What does the conclusion mean, that we cannot set the order of `abstract` methods other than always above any `method_p*` and `method_s*`?
+
+@gharlan could you maybe take a look at the PR as well?
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-23T17:45:58Z
+
+No, the issue is with `public function test2`. You're trying to put it ahead of `public abstract function test1`, but you're using `method_public_static` to do that. But `public function test2` isn't static so it's going to have a lower priority than an abstract method so it won't work.
+
+If we use `method_public` instead of `method_public_static`, the test will have the outcome you want.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-25T06:03:19Z
+
+Thanks!
+Let me maybe ask it differently, I really like the long complex test cases as I'm sure these cover a lot if not all cases. However, I as reviewer would like some simple minimal cases to play around with and it will help me understand the code changes faster.
+So could write something that looks like my wrong examples, but than correct :)  Like 4 lines of PHP before and after for each of the new options?
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-26T16:49:10Z
+
+Understood! Well, I fixed up your test case so that it passes. That should give you something to play with for the review!
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-26T16:56:15Z
+
+Any idea why the static code analysis step went from working to failing with 300+ errors?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-26T17:40:49Z
+
+@carlalexander you have to wait for https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4966
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-27T14:06:09Z
+
+baseline has been revert, sorry for the noise! the errors should now drop to zero :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-31T10:34:03Z
+
+@carlalexander looking good! Can you rebase and squash the commits? Also, one test fails on PHP5.6. only (see Travis), could you adjust the test for it? Thanks!
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-05-31T17:26:44Z
+
+@SpacePossum I'm pretty sure I fixed the issue, but Travis seems broken again on master
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-01T13:04:55Z
+
+yeah sadly, I think if you would rebase on latest master this will fix it, anyway I'm :+1:  on getting this in :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-06-01T18:08:47Z
+
+Yeah... I made PHPStan like super angry and reverted, then Phive started failing and we removed it... Now we need some little tweaks in our tests due to recent Symfony 5.1 release... Hopefully CI will be green after #4985 :)
+
+---------------------------------------------------------------------------
+
+by carlalexander at 2020-06-01T18:26:14Z
+
+No worries @julienfalque! So I rebased anyways, builds are failing still, but the PHP 5.6 build is green so looks like the test fix was good @SpacePossum :)
