@@ -63,6 +63,11 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     private $classElementTypes = [];
 
     /**
+     * @var bool
+     */
+    private $includingDocBlocks = false;
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration = null)
@@ -73,6 +78,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         foreach ($this->configuration['elements'] as $elementType => $spacing) {
             $this->classElementTypes[$elementType] = $spacing;
         }
+
+        $this->includingDocBlocks = $this->configuration['including_doc_blocks'];
     }
 
     /**
@@ -179,7 +186,7 @@ class Sample
             }
 
             // `const`, `property` or `method` of an `interface`
-            $this->fixSpaceBelowClassElement($tokens, $classEnd, $tokens->getNextTokenOfKind($index, [';']), $spacing);
+            $this->fixSpaceBelowClassElement($tokens, $classStart, $classEnd, $index, $tokens->getNextTokenOfKind($index, [';']), $spacing);
             $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
         }
     }
@@ -190,6 +197,10 @@ class Sample
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('including_doc_blocks', 'Whether the spacing rules should also be enforced for consts, methods and properties with doc blocks.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `none|one` values.'))
                 ->setNormalizer(static function (Options $options, $values) {
                     $deprecated = array_intersect($values, self::SUPPORTED_TYPES);
@@ -252,8 +263,10 @@ class Sample
      * @param int    $classEndIndex
      * @param int    $elementEndIndex
      * @param string $spacing
+     * @param mixed  $classStartIndex
+     * @param mixed  $elementIndex
      */
-    private function fixSpaceBelowClassElement(Tokens $tokens, $classEndIndex, $elementEndIndex, $spacing)
+    private function fixSpaceBelowClassElement(Tokens $tokens, $classStartIndex, $classEndIndex, $elementIndex, $elementEndIndex, $spacing)
     {
         for ($nextNotWhite = $elementEndIndex + 1;; ++$nextNotWhite) {
             if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
@@ -273,7 +286,15 @@ class Sample
             return;
         }
 
-        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2);
+        list($nonWhiteAbove) = $this->findBeginningOfElementDefinition($tokens, $classStartIndex, $elementIndex);
+
+        $reqLineCount = $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2;
+
+        if (true === $this->includingDocBlocks && true === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
+            $reqLineCount = 2;
+        }
+
+        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $reqLineCount);
     }
 
     /**
@@ -305,20 +326,7 @@ class Sample
      */
     private function fixSpaceAboveClassElement(Tokens $tokens, $classStartIndex, $elementIndex, $spacing)
     {
-        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
-
-        $nonWhiteAbove = null;
-
-        // find out where the element definition starts
-        $firstElementAttributeIndex = $elementIndex;
-        for ($i = $elementIndex; $i > $classStartIndex; --$i) {
-            $nonWhiteAbove = $tokens->getNonWhitespaceSibling($i, -1);
-            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($methodAttr)) {
-                $firstElementAttributeIndex = $nonWhiteAbove;
-            } else {
-                break;
-            }
-        }
+        list($nonWhiteAbove, $firstElementAttributeIndex) = $this->findBeginningOfElementDefinition($tokens, $classStartIndex, $elementIndex);
 
         // deal with comments above a element
         if ($tokens[$nonWhiteAbove]->isGivenKind(T_COMMENT)) {
@@ -358,7 +366,26 @@ class Sample
 
         // deal with element without a PHPDoc above it
         if (false === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
-            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2);
+            $reqLineCount = $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2;
+
+            if ($tokens[$nonWhiteAbove - 1]->isGivenKind(T_VARIABLE)) {
+                list($nonWhiteAboveAbove) = $this->findBeginningOfElementDefinition(
+                    $tokens,
+                    $classStartIndex,
+                    $nonWhiteAbove - 1
+                );
+
+                if (true === $this->includingDocBlocks && true === $tokens[$nonWhiteAboveAbove]->isGivenKind(T_DOC_COMMENT)) {
+                    $reqLineCount = 2;
+                }
+            }
+
+            $this->correctLineBreaks(
+                $tokens,
+                $nonWhiteAbove,
+                $firstElementAttributeIndex,
+                $reqLineCount
+            );
 
             return;
         }
@@ -369,6 +396,26 @@ class Sample
         // there should be one blank line between the PHPDoc and whatever is above (with the exception when it is directly after a class opening)
         $nonWhiteAbovePHPDoc = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
         $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $nonWhiteAbovePHPDoc === $classStartIndex ? 1 : 2);
+    }
+
+    private function findBeginningOfElementDefinition(Tokens $tokens, $classStartIndex, $elementIndex)
+    {
+        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
+
+        $nonWhiteAbove = null;
+
+        // find out where the element definition starts
+        $firstElementAttributeIndex = $elementIndex;
+        for ($i = $elementIndex; $i > $classStartIndex; --$i) {
+            $nonWhiteAbove = $tokens->getNonWhitespaceSibling($i, -1);
+            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($methodAttr)) {
+                $firstElementAttributeIndex = $nonWhiteAbove;
+            } else {
+                break;
+            }
+        }
+
+        return [$nonWhiteAbove, $firstElementAttributeIndex];
     }
 
     /**

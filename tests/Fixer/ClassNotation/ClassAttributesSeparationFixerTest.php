@@ -1258,6 +1258,9 @@ private $d = 123;
      */
     public function testFix74($expected, $input = null)
     {
+        $this->fixer->configure([
+            'including_doc_blocks' => true,
+        ]);
         $this->doTest($expected, $input);
     }
 
@@ -1294,6 +1297,62 @@ private $d = 123;
             class Foo {
                 private array $foo;
                 private array $bar;
+            }',
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDocBlocksCases
+     * @requires PHP 7.4
+     */
+    public function testDisablingIncludingDocBlocks($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'including_doc_blocks' => true,
+            'elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE],
+        ]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDocBlocksCases()
+    {
+        yield [
+            '<?php
+            class Foo {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+                private string $four;
+                private string $five;
+            }',
+            '<?php
+            class Foo {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+
+                private string $four;
+
+                private string $five;
             }',
         ];
     }
