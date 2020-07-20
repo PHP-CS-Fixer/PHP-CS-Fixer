@@ -1272,14 +1272,14 @@ private $d = 123;
 
                 public iterable $baz;
 
-                var ? Foo\Bar $qux;
+                var ?Foo\Bar $qux;
             }',
             '<?php
             class Foo {
                 private ?int $foo;
                 protected string $bar;
                 public iterable $baz;
-                var ? Foo\Bar $qux;
+                var ?Foo\Bar $qux;
             }',
         ];
 
