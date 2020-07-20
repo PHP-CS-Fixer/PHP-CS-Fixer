@@ -393,6 +393,9 @@ Choose from the list of available rules:
   - ``elements`` (``array``): dictionary of ``const|method|property`` => ``none|one``
     values; defaults to ``['const' => 'one', 'method' => 'one', 'property' =>
     'one']``
+  - ``including_doc_blocks`` (``bool``): whether the spacing rules should also be
+    enforced for consts, methods and properties with doc blocks; defaults
+    to ``false``
 
 * **class_definition** [@PSR2, @Symfony, @PhpCsFixer]
 
