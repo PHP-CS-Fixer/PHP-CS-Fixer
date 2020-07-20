@@ -1312,7 +1312,11 @@ private $d = 123;
     {
         $this->fixer->configure([
             'including_doc_blocks' => true,
-            'elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE],
+            'elements' => [
+                'const' => ClassAttributesSeparationFixer::SPACING_NONE,
+                'property' => ClassAttributesSeparationFixer::SPACING_NONE,
+                'method' => ClassAttributesSeparationFixer::SPACING_ONE,
+            ],
         ]);
         $this->doTest($expected, $input);
     }
@@ -1335,6 +1339,10 @@ private $d = 123;
                 private string $three;
                 private string $four;
                 private string $five;
+
+                final public static function __construct() {
+
+                }
             }',
             '<?php
             class Foo {
@@ -1353,6 +1361,100 @@ private $d = 123;
                 private string $four;
 
                 private string $five;
+
+                final public static function __construct() {
+
+                }
+            }',
+        ];
+
+        yield [
+            '<?php
+            class Foo {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+                private string $four;
+                private string $five;
+
+                public function __construct() {
+
+                }
+            }',
+            '<?php
+            class Foo {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+
+                private string $four;
+
+                private string $five;
+
+                public function __construct() {
+
+                }
+            }',
+        ];
+
+        yield [
+            '<?php
+            class Foo {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+                private string $four;
+                private string $five;
+
+                function __construct() {
+
+                }
+            }',
+            '<?php
+            class Foo {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+
+                private string $four;
+
+                private string $five;
+
+                function __construct() {
+
+                }
             }',
         ];
     }

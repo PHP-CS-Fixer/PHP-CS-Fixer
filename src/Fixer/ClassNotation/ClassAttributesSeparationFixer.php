@@ -280,6 +280,17 @@ class Sample
             $nextNotWhite = $tokens->getNextNonWhitespace($nextNotWhite);
         }
 
+        while (true) {
+            $token = $tokens[$nextNotWhite];
+            if ($tokens[$nextNotWhite]->isGivenKind([T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC])) {
+                $nextNotWhite = $tokens->getNextNonWhitespace($nextNotWhite);
+
+                continue;
+            }
+
+            break;
+        }
+
         if ($tokens[$nextNotWhite]->isGivenKind(T_FUNCTION)) {
             $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, 2);
 
