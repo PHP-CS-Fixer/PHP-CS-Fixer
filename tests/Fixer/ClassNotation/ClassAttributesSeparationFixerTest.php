@@ -1258,9 +1258,6 @@ private $d = 123;
      */
     public function testFix74($expected, $input = null)
     {
-        $this->fixer->configure([
-            'including_doc_blocks' => true,
-        ]);
         $this->doTest($expected, $input);
     }
 
@@ -1311,7 +1308,7 @@ private $d = 123;
     public function testDisablingIncludingDocBlocks($expected, $input = null)
     {
         $this->fixer->configure([
-            'including_doc_blocks' => true,
+            'including_doc_blocks' => false,
             'elements' => [
                 'const' => ClassAttributesSeparationFixer::SPACING_NONE,
                 'property' => ClassAttributesSeparationFixer::SPACING_NONE,

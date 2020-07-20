@@ -65,7 +65,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     /**
      * @var bool
      */
-    private $includingDocBlocks = false;
+    private $includingDocBlocks = true;
 
     /**
      * {@inheritdoc}
@@ -199,7 +199,7 @@ class Sample
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('including_doc_blocks', 'Whether the spacing rules should also be enforced for consts, methods and properties with doc blocks.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(true)
                 ->getOption(),
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `none|one` values.'))
                 ->setNormalizer(static function (Options $options, $values) {
@@ -301,7 +301,7 @@ class Sample
 
         $reqLineCount = $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2;
 
-        if (true === $this->includingDocBlocks && true === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
+        if (false === $this->includingDocBlocks && true === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
             $reqLineCount = 2;
         }
 
@@ -386,7 +386,7 @@ class Sample
                     $nonWhiteAbove - 1
                 );
 
-                if (true === $this->includingDocBlocks && true === $tokens[$nonWhiteAboveAbove]->isGivenKind(T_DOC_COMMENT)) {
+                if (false === $this->includingDocBlocks && true === $tokens[$nonWhiteAboveAbove]->isGivenKind(T_DOC_COMMENT)) {
                     $reqLineCount = 2;
                 }
             }
