@@ -41,8 +41,9 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
      *
      * Change function call to functions known to be optimized by the Zend engine.
      * For details:
-     * - @see https://github.com/php/php-src/blob/php-7.2.6/Zend/zend_compile.c "zend_try_compile_special_func"
-     * - @see https://github.com/php/php-src/blob/php-7.2.6/ext/opcache/Optimizer/pass1_5.c
+     * - @see https://github.com/php/php-src/blob/PHP-7.4/Zend/zend_compile.c "zend_try_compile_special_func"
+     * - @see https://github.com/php/php-src/blob/PHP-7.4/ext/opcache/Optimizer/pass1_5.c
+     * - @see https://github.com/php/php-src/blob/PHP-7.4/ext/opcache/Optimizer/sccp.c "ct_eval_func_call"
      *
      * @internal
      */
@@ -387,15 +388,52 @@ $c = get_class($d);
             'is_resource',
             'is_string',
             'ord',
+            'sizeof',
             'strlen',
             'strval',
-            // @see https://github.com/php/php-src/blob/php-7.2.6/ext/opcache/Optimizer/pass1_5.c
+            // @see https://github.com/php/php-src/blob/PHP-7.4/ext/opcache/Optimizer/pass1_5.c
             'constant',
             'define',
             'dirname',
             'extension_loaded',
             'function_exists',
             'is_callable',
+            // @see https://github.com/php/php-src/blob/PHP-7.4/ext/opcache/Optimizer/sccp.c ct_eval_func_call
+            'array_diff',
+            'array_diff_assoc',
+            'array_diff_key',
+            'array_flip',
+            'array_keys',
+            'array_merge',
+            'array_merge_recursive',
+            'array_replace',
+            'array_replace_recursive',
+            'array_values',
+            'base64_decode',
+            'base64_encode',
+            'get_magic_quotes_gpc',
+            'get_magic_quotes_gpc_runtime',
+            'ini_get',
+            'imagetypes',
+            'implode',
+            'ltrim',
+            'phpversion',
+            'php_sapi_name',
+            'php_uname',
+            'pow',
+            'preg_quote',
+            'rawurldecode',
+            'rawurlencode',
+            'rtrim',
+            'serialize',
+            'str_repeat',
+            'str_split',
+            'strpos',
+            'substr',
+            'trim',
+            'urldecode',
+            'urlencode',
+            'version_compare',
         ]);
     }
 
