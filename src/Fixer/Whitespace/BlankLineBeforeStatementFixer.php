@@ -77,7 +77,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
 
-        $this->fixTokenMap = array_values($this->fixTokenMap);
+        $this->fixTokenMap = \array_values($this->fixTokenMap);
     }
 
     /**
@@ -304,7 +304,7 @@ if (true) {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
+                ->setAllowedValues([new AllowedValueSubset(\array_keys(self::$tokenMap))])
                 ->setDefault([
                     'break',
                     'continue',
@@ -328,7 +328,7 @@ if (true) {
 
         if ($prevNonWhitespaceToken->isComment()) {
             for ($j = $prevNonWhitespace - 1; $j >= 0; --$j) {
-                if (false !== strpos($tokens[$j]->getContent(), "\n")) {
+                if (false !== \strpos($tokens[$j]->getContent(), "\n")) {
                     return false;
                 }
 
@@ -356,7 +356,7 @@ if (true) {
             $newlinesCount = substr_count($prevToken->getContent(), "\n");
 
             if (0 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
+                $tokens[$prevIndex] = new Token([T_WHITESPACE, \rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
             } elseif (1 === $newlinesCount) {
                 $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
             }

@@ -98,7 +98,7 @@ final class ImplodeCallFixer extends AbstractFixer
             }
 
             if (2 === \count($argumentsIndices)) {
-                list($firstArgumentIndex, $secondArgumentIndex) = array_keys($argumentsIndices);
+                list($firstArgumentIndex, $secondArgumentIndex) = \array_keys($argumentsIndices);
 
                 // If the first argument is string we have nothing to do
                 if ($tokens[$firstArgumentIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {

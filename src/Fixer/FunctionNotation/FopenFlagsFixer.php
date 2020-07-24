@@ -86,10 +86,10 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
         if ('b' === $contentQuote || 'B' === $contentQuote) {
             $binPrefix = $contentQuote;
             $contentQuote = $content[1]; // `'` or `"`
-            $mode = substr($content, 2, -1);
+            $mode = \substr($content, 2, -1);
         } else {
             $binPrefix = '';
-            $mode = substr($content, 1, -1);
+            $mode = \substr($content, 1, -1);
         }
 
         if (false === $this->isValidModeString($mode)) {
@@ -98,7 +98,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
 
         $mode = str_replace('t', '', $mode);
         if ($this->configuration['b_mode']) {
-            if (false === strpos($mode, 'b')) {
+            if (false === \strpos($mode, 'b')) {
                 $mode .= 'b';
             }
         } else {

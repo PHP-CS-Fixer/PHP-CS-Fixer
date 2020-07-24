@@ -117,8 +117,8 @@ EOT
             $content .= $tokens[$index]->getContent();
         }
 
-        $content = ltrim($content, '(');
-        $content = rtrim($content, ');');
+        $content = \ltrim($content, '(');
+        $content = \rtrim($content, ');');
 
         return 'null' === strtolower($content);
     }

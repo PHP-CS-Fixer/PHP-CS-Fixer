@@ -35,7 +35,7 @@ final class NamespacesAnalyzer
             }
 
             $declarationEndIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
-            $namespace = trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1));
+            $namespace = \trim($tokens->generatePartialCode($index + 1, $declarationEndIndex - 1));
             $declarationParts = explode('\\', $namespace);
             $shortName = end($declarationParts);
 

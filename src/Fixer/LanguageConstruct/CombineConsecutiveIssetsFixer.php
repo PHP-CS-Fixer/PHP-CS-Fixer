@@ -95,7 +95,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $clones = $this->getTokenClones($tokens, \array_slice($nextIssetInfo, 1, -1));
 
                 // clean up no the tokens of the 'isset' statement we're merging
-                $this->clearTokens($tokens, array_merge($nextIssetInfo, [$issetIndex, $booleanAndTokenIndex]));
+                $this->clearTokens($tokens, \array_merge($nextIssetInfo, [$issetIndex, $booleanAndTokenIndex]));
 
                 // insert the tokens to create the new statement
                 array_unshift($clones, new Token(','), new Token([T_WHITESPACE, ' ']));

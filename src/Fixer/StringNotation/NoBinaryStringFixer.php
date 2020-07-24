@@ -58,7 +58,7 @@ final class NoBinaryStringFixer extends AbstractFixer
             $content = $token->getContent();
 
             if ('b' === strtolower($content[0])) {
-                $tokens[$index] = new Token([$token->getId(), substr($content, 1)]);
+                $tokens[$index] = new Token([$token->getId(), \substr($content, 1)]);
             }
         }
     }

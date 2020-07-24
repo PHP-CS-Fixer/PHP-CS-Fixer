@@ -123,7 +123,7 @@ class DocBlocks
      */
     private function fixDocBlock($content, $indent)
     {
-        return ltrim(Preg::replace('/^\h*\*/m', $indent.' *', $content));
+        return \ltrim(Preg::replace('/^\h*\*/m', $indent.' *', $content));
     }
 
     /**
@@ -134,6 +134,6 @@ class DocBlocks
      */
     private function fixWhitespaceBeforeDocblock($content, $indent)
     {
-        return rtrim($content, " \t").$indent;
+        return \rtrim($content, " \t").$indent;
     }
 }

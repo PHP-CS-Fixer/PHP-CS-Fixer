@@ -165,7 +165,7 @@ JSON;
 
         static::assertTrue(
             $validator->isValid(),
-            implode(
+            \implode(
                 "\n",
                 array_map(
                     static function (array $item) { return sprintf('Property `%s`: %s.', $item['property'], $item['message']); },

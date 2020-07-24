@@ -152,7 +152,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      */
     protected function createConfigurationDefinition()
     {
-        $functionNames = array_keys(self::$availableFunctions);
+        $functionNames = \array_keys(self::$availableFunctions);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('functions', 'List of function names to fix.'))

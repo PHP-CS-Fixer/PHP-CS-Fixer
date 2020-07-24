@@ -85,14 +85,14 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             $lMax = isset($tokens[$index + 1]) ? $lineCount - 1 : $lineCount;
 
             $lStart = 1;
-            if ($tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && "\n" === substr($tokens[$index - 1]->getContent(), -1)) {
+            if ($tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && "\n" === \substr($tokens[$index - 1]->getContent(), -1)) {
                 $lStart = 0;
             }
 
             for ($l = $lStart; $l < $lMax; ++$l) {
                 $lines[$l] = Preg::replace('/^\h+$/', '', $lines[$l]);
             }
-            $content = implode($this->whitespacesConfig->getLineEnding(), $lines);
+            $content = \implode($this->whitespacesConfig->getLineEnding(), $lines);
             if ('' !== $content) {
                 $tokens[$index] = new Token([T_WHITESPACE, $content]);
             } else {

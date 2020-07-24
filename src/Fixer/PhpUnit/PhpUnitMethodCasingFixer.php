@@ -184,7 +184,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
         $doc = $tokens[$docBlockIndex]->getContent();
-        if (false === strpos($doc, '@test')) {
+        if (false === \strpos($doc, '@test')) {
             return false;
         }
 
@@ -211,7 +211,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
      */
     private function startsWith($needle, $haystack)
     {
-        return substr($haystack, 0, \strlen($needle)) === $needle;
+        return \substr($haystack, 0, \strlen($needle)) === $needle;
     }
 
     /**
@@ -251,7 +251,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $docBlockNeedsUpdate = false;
         for ($inc = 0; $inc < \count($lines); ++$inc) {
             $lineContent = $lines[$inc]->getContent();
-            if (false === strpos($lineContent, '@depends')) {
+            if (false === \strpos($lineContent, '@depends')) {
                 continue;
             }
 
@@ -271,7 +271,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         }
 
         if ($docBlockNeedsUpdate) {
-            $lines = implode('', $lines);
+            $lines = \implode('', $lines);
             $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
         }
     }

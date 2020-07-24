@@ -177,11 +177,11 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
     {
         $message = $this->getMessage($tokens[$index]->getContent());
 
-        if ('' !== trim(substr($message, 0, 1))) {
+        if ('' !== \trim(\substr($message, 0, 1))) {
             $message = ' '.$message;
         }
 
-        if ('' !== trim(substr($message, -1))) {
+        if ('' !== \trim(\substr($message, -1))) {
             $message .= ' ';
         }
 
@@ -203,7 +203,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
             if (!$tokens[$index]->isComment()) {
                 continue;
             }
-            if (false !== strpos($tokens[$index]->getContent(), '*/')) {
+            if (false !== \strpos($tokens[$index]->getContent(), '*/')) {
                 return;
             }
             $newContent .= $indent.' *'.$this->getMessage($tokens[$index]->getContent()).$this->whitespacesConfig->getLineEnding();
@@ -220,13 +220,13 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
 
     private function getMessage($content)
     {
-        if (0 === strpos($content, '#')) {
-            return substr($content, 1);
+        if (0 === \strpos($content, '#')) {
+            return \substr($content, 1);
         }
-        if (0 === strpos($content, '//')) {
-            return substr($content, 2);
+        if (0 === \strpos($content, '//')) {
+            return \substr($content, 2);
         }
 
-        return rtrim(ltrim($content, '/*'), '*/');
+        return \rtrim(\ltrim($content, '/*'), '*/');
     }
 }

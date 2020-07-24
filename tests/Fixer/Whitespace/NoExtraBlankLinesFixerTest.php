@@ -161,8 +161,8 @@ EOF;
 
         $all = [[], []];
         foreach ($tests as $test) {
-            $all[0] = array_merge($test[0], $all[0]);
-            $all[1] = array_merge($test[1], $all[1]);
+            $all[0] = \array_merge($test[0], $all[0]);
+            $all[1] = \array_merge($test[1], $all[1]);
         }
         $tests[] = $all;
 
@@ -1234,6 +1234,6 @@ use const some\Z\{ConstA,ConstB,ConstC,};
             unset($lines[$lineNumber]);
         }
 
-        return implode("\n", $lines);
+        return \implode("\n", $lines);
     }
 }

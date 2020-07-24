@@ -315,7 +315,7 @@ SAMPLE
     private function ensureSingleLine(Tokens $tokens, $index)
     {
         $previousToken = $tokens[$index - 1];
-        if ($previousToken->isComment() && 0 !== strpos($previousToken->getContent(), '/*')) {
+        if ($previousToken->isComment() && 0 !== \strpos($previousToken->getContent(), '/*')) {
             return false;
         }
 
@@ -343,7 +343,7 @@ SAMPLE
             );
             $searchIndex = $prevWhitespaceTokenIndex;
         } while (null !== $prevWhitespaceTokenIndex
-            && false === strpos($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
+            && false === \strpos($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
         );
 
         if (null === $prevWhitespaceTokenIndex) {
@@ -353,7 +353,7 @@ SAMPLE
             $lastLineIndex = strrpos($existingIndentation, "\n");
             $existingIndentation = false === $lastLineIndex
                 ? $existingIndentation
-                : substr($existingIndentation, $lastLineIndex + 1)
+                : \substr($existingIndentation, $lastLineIndex + 1)
             ;
         }
 
@@ -467,7 +467,7 @@ SAMPLE
                 (!$this->configuration['keep_multiple_spaces_after_comma'] || Preg::match('/\R/', $newContent))
                 && !$this->isCommentLastLineToken($tokens, $index + 2)
             ) {
-                $newContent = ltrim($newContent, " \t");
+                $newContent = \ltrim($newContent, " \t");
             }
 
             $tokens[$nextIndex] = new Token([T_WHITESPACE, '' === $newContent ? ' ' : $newContent]);
@@ -496,7 +496,7 @@ SAMPLE
 
         $content = $tokens[$index + 1]->getContent();
 
-        return $content !== ltrim($content, "\r\n");
+        return $content !== \ltrim($content, "\r\n");
     }
 
     /**
@@ -506,6 +506,6 @@ SAMPLE
      */
     private function isNewline(Token $token)
     {
-        return $token->isWhitespace() && false !== strpos($token->getContent(), "\n");
+        return $token->isWhitespace() && false !== \strpos($token->getContent(), "\n");
     }
 }

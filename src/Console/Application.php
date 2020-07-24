@@ -106,7 +106,7 @@ final class Application extends BaseApplication
         $commit = '@git-commit@';
 
         if ('@'.'git-commit@' !== $commit) {
-            $version .= ' ('.substr($commit, 0, 7).')';
+            $version .= ' ('.\substr($commit, 0, 7).')';
         }
 
         return $version;

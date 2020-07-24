@@ -94,7 +94,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $docContent = $tokens[$docIndex]->getContent();
 
             // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
-            if (false === strpos($docContent, "\n")) {
+            if (false === \strpos($docContent, "\n")) {
                 return;
             }
 
@@ -145,6 +145,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $tokens[$docIndex] = new Token([T_DOC_COMMENT, implode('', $lines)]);
+        $tokens[$docIndex] = new Token([T_DOC_COMMENT, \implode('', $lines)]);
     }
 }

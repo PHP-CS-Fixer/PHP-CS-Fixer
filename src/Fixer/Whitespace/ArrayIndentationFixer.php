@@ -83,7 +83,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                 if ($this->newlineIsInArrayScope($tokens, $index, $array)) {
                     $content = Preg::replace(
                         '/(\R+)\h*$/',
-                        '$1'.$arrayIndent.str_repeat($this->whitespacesConfig->getIndent(), $currentIndentLevel),
+                        '$1'.$arrayIndent.\str_repeat($this->whitespacesConfig->getIndent(), $currentIndentLevel),
                         $token->getContent()
                     );
 
@@ -91,7 +91,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     $previousLineNewIndent = $this->extractIndent($content);
                 } else {
                     $content = Preg::replace(
-                        '/(\R)'.preg_quote($previousLineInitialIndent, '/').'(\h*)$/',
+                        '/(\R)'.\preg_quote($previousLineInitialIndent, '/').'(\h*)$/',
                         '$1'.$previousLineNewIndent.'$2',
                         $token->getContent()
                     );

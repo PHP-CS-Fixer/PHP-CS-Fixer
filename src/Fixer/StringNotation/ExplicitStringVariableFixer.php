@@ -131,7 +131,7 @@ EOT
                     $singleVariableToken = current($distinctVariableSet['tokens']);
                     $tokens->overrideRange($singleVariableIndex, $singleVariableIndex, [
                         new Token([T_DOLLAR_OPEN_CURLY_BRACES, '${']),
-                        new Token([T_STRING_VARNAME, substr($singleVariableToken->getContent(), 1)]),
+                        new Token([T_STRING_VARNAME, \substr($singleVariableToken->getContent(), 1)]),
                         new Token([CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}']),
                     ]);
                 } else {

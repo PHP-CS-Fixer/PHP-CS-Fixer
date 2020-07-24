@@ -158,7 +158,7 @@ final class TokensAnalyzer
             if (
                 $token->isWhitespace() &&
                 !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC) &&
-                false !== strpos($token->getContent(), "\n")
+                false !== \strpos($token->getContent(), "\n")
             ) {
                 return true;
             }

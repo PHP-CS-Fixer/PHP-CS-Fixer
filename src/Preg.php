@@ -184,7 +184,7 @@ final class Preg
 
         $endDelimiterPosition = strrpos($pattern, $delimiter);
 
-        return substr($pattern, 0, $endDelimiterPosition).str_replace('u', '', substr($pattern, $endDelimiterPosition));
+        return \substr($pattern, 0, $endDelimiterPosition).str_replace('u', '', \substr($pattern, $endDelimiterPosition));
     }
 
     /**

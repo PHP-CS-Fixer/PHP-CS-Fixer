@@ -67,7 +67,7 @@ class Line
      */
     public function containsUsefulContent()
     {
-        return 0 !== Preg::match('/\\*\s*\S+/', $this->content) && '' !== trim(str_replace(['/', '*'], ' ', $this->content));
+        return 0 !== Preg::match('/\\*\s*\S+/', $this->content) && '' !== \trim(str_replace(['/', '*'], ' ', $this->content));
     }
 
     /**
@@ -89,7 +89,7 @@ class Line
      */
     public function isTheStart()
     {
-        return false !== strpos($this->content, '/**');
+        return false !== \strpos($this->content, '/**');
     }
 
     /**
@@ -99,7 +99,7 @@ class Line
      */
     public function isTheEnd()
     {
-        return false !== strpos($this->content, '*/');
+        return false !== \strpos($this->content, '*/');
     }
 
     /**

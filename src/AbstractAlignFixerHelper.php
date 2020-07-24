@@ -73,7 +73,7 @@ abstract class AbstractAlignFixerHelper
         for ($j = 0; $j <= $this->deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGNABLE_PLACEHOLDER, $j);
 
-            if (false === strpos($tmpCode, $placeholder)) {
+            if (false === \strpos($tmpCode, $placeholder)) {
                 continue;
             }
 
@@ -99,22 +99,22 @@ abstract class AbstractAlignFixerHelper
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($lines[$index]), $placeholder));
+                    $rightmostSymbol = max($rightmostSymbol, \strpos(utf8_decode($lines[$index]), $placeholder));
                 }
 
                 foreach ($group as $index) {
                     $line = $lines[$index];
-                    $currentSymbol = strpos(utf8_decode($line), $placeholder);
+                    $currentSymbol = \strpos(utf8_decode($line), $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
+                        $line = str_replace($placeholder, \str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }
                 }
             }
 
-            $tmpCode = str_replace($placeholder, '', implode("\n", $lines));
+            $tmpCode = str_replace($placeholder, '', \implode("\n", $lines));
         }
 
         return $tmpCode;

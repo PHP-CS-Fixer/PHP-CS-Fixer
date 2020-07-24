@@ -68,7 +68,7 @@ class Tag
             Preg::matchAll('/@[a-zA-Z0-9_-]+(?=\s|$)/', $this->line->getContent(), $matches);
 
             if (isset($matches[0][0])) {
-                $this->name = ltrim($matches[0][0], '@');
+                $this->name = \ltrim($matches[0][0], '@');
             } else {
                 $this->name = 'other';
             }

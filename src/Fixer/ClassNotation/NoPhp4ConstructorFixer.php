@@ -78,7 +78,7 @@ class Foo
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $classes = array_keys($tokens->findGivenKind(T_CLASS));
+        $classes = \array_keys($tokens->findGivenKind(T_CLASS));
         $numClasses = \count($classes);
 
         for ($i = 0; $i < $numClasses; ++$i) {
@@ -210,7 +210,7 @@ class Foo
 
             if (null !== $parentSeq) {
                 // we only need indexes
-                $parentSeq = array_keys($parentSeq);
+                $parentSeq = \array_keys($parentSeq);
 
                 // match either of the possibilities
                 if ($tokens[$parentSeq[0]]->equalsAny([[T_STRING, 'parent'], [T_STRING, $parentClass]], false)) {
@@ -230,7 +230,7 @@ class Foo
 
             if (null !== $parentSeq) {
                 // we only need indexes
-                $parentSeq = array_keys($parentSeq);
+                $parentSeq = \array_keys($parentSeq);
 
                 // replace call with parent::__construct()
                 $tokens[$parentSeq[0]] = new Token([
@@ -269,7 +269,7 @@ class Foo
                 return;
             }
 
-            $callSeq = array_keys($callSeq);
+            $callSeq = \array_keys($callSeq);
 
             $tokens[$callSeq[0]] = new Token([T_STRING, 'parent']);
             $tokens[$callSeq[1]] = new Token([T_DOUBLE_COLON, '::']);
@@ -357,7 +357,7 @@ class Foo
         }
 
         // keep only the indexes
-        $function = array_keys($function);
+        $function = \array_keys($function);
 
         // find previous block, saving method modifiers for later use
         $possibleModifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_ABSTRACT, T_FINAL];

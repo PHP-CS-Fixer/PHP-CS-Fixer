@@ -94,7 +94,7 @@ final class ProjectCodeTest extends TestCase
         );
 
         if (\count($allowedMethods)) {
-            $allowedMethods = array_unique(array_merge(...array_values($allowedMethods)));
+            $allowedMethods = array_unique(\array_merge(...\array_values($allowedMethods)));
         }
 
         $allowedMethods[] = '__construct';
@@ -117,7 +117,7 @@ final class ProjectCodeTest extends TestCase
 
         $definedMethods = $this->getPublicMethodNames($rc);
 
-        $extraMethods = array_diff(
+        $extraMethods = \array_diff(
             $definedMethods,
             $allowedMethods,
             $exceptionMethods,
@@ -131,7 +131,7 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static function ($item) {
+                \implode("\n", array_map(static function ($item) {
                     return " * {$item}";
                 }, $extraMethods))
             )
@@ -186,7 +186,7 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
         ];
 
-        $extraProps = array_diff(
+        $extraProps = \array_diff(
             $definedProps,
             $allowedProps,
             isset($exceptionPropsPerClass[$className]) ? $exceptionPropsPerClass[$className] : []
@@ -199,7 +199,7 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static function ($item) {
+                \implode("\n", array_map(static function ($item) {
                     return " * {$item}";
                 }, $extraProps))
             )
@@ -301,7 +301,7 @@ final class ProjectCodeTest extends TestCase
             $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
             static function (\ReflectionMethod $reflectionMethod) use ($reflectionClass) {
                 return $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
-                    && 'provide' === substr($reflectionMethod->getName(), 0, 7);
+                    && 'provide' === \substr($reflectionMethod->getName(), 0, 7);
             }
         );
 

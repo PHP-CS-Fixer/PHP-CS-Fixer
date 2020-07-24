@@ -43,7 +43,7 @@ final class Directory implements DirectoryInterface
             return $file;
         }
 
-        return substr($file, \strlen($this->directoryName) + 1);
+        return \substr($file, \strlen($this->directoryName) + 1);
     }
 
     private function normalizePath($path)

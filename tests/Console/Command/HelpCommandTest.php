@@ -74,7 +74,7 @@ final class HelpCommandTest extends TestCase
         $helpVersion = HelpCommand::getLatestReleaseVersionFromChangeLog();
         $appVersion = Application::VERSION;
         static::assertTrue(
-            version_compare($helpVersion, $appVersion, '<='),
+            \version_compare($helpVersion, $appVersion, '<='),
             sprintf(
                 'Expected version from change log "%s" <= as application version "%s".',
                 $helpVersion,

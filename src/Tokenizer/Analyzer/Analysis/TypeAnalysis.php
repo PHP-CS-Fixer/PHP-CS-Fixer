@@ -74,8 +74,8 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         $this->name = $name;
         $this->nullable = false;
 
-        if (0 === strpos($name, '?')) {
-            $this->name = substr($name, 1);
+        if (0 === \strpos($name, '?')) {
+            $this->name = \substr($name, 1);
             $this->nullable = true;
         }
 

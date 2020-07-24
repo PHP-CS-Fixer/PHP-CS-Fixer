@@ -916,7 +916,7 @@ INPUT
             $longSyntaxCases[] = $case;
         }
 
-        return array_merge($cases, $longSyntaxCases);
+        return \array_merge($cases, $longSyntaxCases);
     }
 
     private function toLongArraySyntax($php)

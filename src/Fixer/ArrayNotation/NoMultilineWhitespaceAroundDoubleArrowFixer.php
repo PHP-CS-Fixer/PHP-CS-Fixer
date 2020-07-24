@@ -80,7 +80,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
         $token = $tokens[$index];
 
         if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
-            $tokens[$index] = new Token([T_WHITESPACE, rtrim($token->getContent()).' ']);
+            $tokens[$index] = new Token([T_WHITESPACE, \rtrim($token->getContent()).' ']);
         }
     }
 }

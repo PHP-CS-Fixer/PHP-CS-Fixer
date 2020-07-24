@@ -94,7 +94,7 @@ switch ($foo) {
                     },
                 ])
                 ->setNormalizer(static function (Options $options, $value) {
-                    return rtrim($value);
+                    return \rtrim($value);
                 })
                 ->setDefault('no break')
                 ->getOption(),
@@ -190,7 +190,7 @@ switch ($foo) {
             return false;
         }
 
-        $text = preg_quote($this->configuration['comment_text'], '~');
+        $text = \preg_quote($this->configuration['comment_text'], '~');
 
         return 1 === Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}\\s*\\*/)$~i", $token->getContent());
     }

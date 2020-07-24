@@ -96,7 +96,7 @@ SAMPLE
         $currentIndent = $matches[0];
         $currentIndentLength = \strlen($currentIndent);
 
-        $content = $indent.substr($tokens[$end]->getContent(), $currentIndentLength);
+        $content = $indent.\substr($tokens[$end]->getContent(), $currentIndentLength);
         $tokens[$end] = new Token([T_END_HEREDOC, $content]);
 
         if ($end === $start + 1) {
@@ -130,8 +130,8 @@ SAMPLE
 
         $content = $tokens[$index]->getContent();
 
-        if (!\in_array($content[0], ["\r", "\n"], true) && (!$currentIndent || $currentIndent === substr($content, 0, $currentIndentLength))) {
-            $content = $indent.substr($content, $currentIndentLength);
+        if (!\in_array($content[0], ["\r", "\n"], true) && (!$currentIndent || $currentIndent === \substr($content, 0, $currentIndentLength))) {
+            $content = $indent.\substr($content, $currentIndentLength);
         } elseif ($currentIndent) {
             $content = Preg::replace('/^(?!'.$currentIndent.')\h+/', '', $content);
         }

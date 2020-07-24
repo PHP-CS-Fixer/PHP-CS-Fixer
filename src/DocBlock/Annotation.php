@@ -123,9 +123,9 @@ class Annotation
      */
     public function __construct(array $lines)
     {
-        $this->lines = array_values($lines);
+        $this->lines = \array_values($lines);
 
-        $keys = array_keys($lines);
+        $keys = \array_keys($lines);
 
         $this->start = $keys[0];
         $this->end = end($keys);
@@ -205,7 +205,7 @@ class Annotation
                 );
 
                 $this->types[] = $matches['type'];
-                $content = substr($content, \strlen($matches['type']) + 1);
+                $content = \substr($content, \strlen($matches['type']) + 1);
             }
         }
 
@@ -219,9 +219,9 @@ class Annotation
      */
     public function setTypes(array $types)
     {
-        $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
+        $pattern = '/'.\preg_quote($this->getTypesContent(), '/').'/';
 
-        $this->lines[0]->setContent(Preg::replace($pattern, implode('|', $types), $this->lines[0]->getContent(), 1));
+        $this->lines[0]->setContent(Preg::replace($pattern, \implode('|', $types), $this->lines[0]->getContent(), 1));
 
         $this->clearCache();
     }
@@ -277,7 +277,7 @@ class Annotation
      */
     public function getContent()
     {
-        return implode('', $this->lines);
+        return \implode('', $this->lines);
     }
 
     public function supportTypes()

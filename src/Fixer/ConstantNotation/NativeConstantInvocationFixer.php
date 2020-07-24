@@ -128,15 +128,15 @@ namespace {
         $uniqueConfiguredExclude = array_unique($this->configuration['exclude']);
 
         // Case sensitive constants handling
-        $constantsToEscape = array_values($this->configuration['include']);
+        $constantsToEscape = \array_values($this->configuration['include']);
         if (true === $this->configuration['fix_built_in']) {
             $getDefinedConstants = get_defined_constants(true);
             unset($getDefinedConstants['user']);
             foreach ($getDefinedConstants as $constants) {
-                $constantsToEscape = array_merge($constantsToEscape, array_keys($constants));
+                $constantsToEscape = \array_merge($constantsToEscape, \array_keys($constants));
             }
         }
-        $constantsToEscape = array_diff(
+        $constantsToEscape = \array_diff(
             array_unique($constantsToEscape),
             $uniqueConfiguredExclude
         );
@@ -152,7 +152,7 @@ namespace {
             }
         }
 
-        $caseInsensitiveConstantsToEscape = array_diff(
+        $caseInsensitiveConstantsToEscape = \array_diff(
             array_unique($caseInsensitiveConstantsToEscape),
             array_map(static function ($function) { return strtolower($function); }, $uniqueConfiguredExclude)
         );
@@ -196,7 +196,7 @@ namespace {
     {
         $constantChecker = static function ($value) {
             foreach ($value as $constantName) {
-                if (!\is_string($constantName) || '' === trim($constantName) || trim($constantName) !== $constantName) {
+                if (!\is_string($constantName) || '' === \trim($constantName) || \trim($constantName) !== $constantName) {
                     throw new InvalidOptionsException(sprintf(
                         'Each element must be a non-empty, trimmed string, got "%s" instead.',
                         \is_object($constantName) ? \get_class($constantName) : \gettype($constantName)

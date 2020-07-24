@@ -78,7 +78,7 @@ final class FixerTest extends TestCase
             static::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
 
             if (!($fixer instanceof SingleBlankLineAtEofFixer)) {
-                static::assertSame("\n", substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
+                static::assertSame("\n", \substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
             }
 
             $config = $sample->getConfiguration();
@@ -331,6 +331,6 @@ final class FixerTest extends TestCase
         static::assertNotContains('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType), true);
         static::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
         static::assertCorrectCasing($description, 'PHPUnit', sprintf('[%s] `PHPUnit` must be in correct casing in %s.', $fixerName, $descriptionType));
-        static::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
+        static::assertFalse(\strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 }

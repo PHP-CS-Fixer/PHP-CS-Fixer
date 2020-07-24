@@ -149,7 +149,7 @@ function my_foo($bar)
                     continue;
                 }
 
-                $types = array_values($paramTypeAnnotation->getTypes());
+                $types = \array_values($paramTypeAnnotation->getTypes());
                 $paramType = current($types);
 
                 if (isset($this->skippedTypes[$paramType])) {

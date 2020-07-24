@@ -454,7 +454,7 @@ final class RuleSet implements RuleSetInterface
      */
     public function getSetDefinitionNames()
     {
-        return array_keys($this->setDefinitions);
+        return \array_keys($this->setDefinitions);
     }
 
     /**
@@ -489,7 +489,7 @@ final class RuleSet implements RuleSetInterface
                 }
 
                 $set = $this->resolveSubset($name, $value);
-                $resolvedRules = array_merge($resolvedRules, $set);
+                $resolvedRules = \array_merge($resolvedRules, $set);
             } else {
                 $resolvedRules[$name] = $value;
             }
@@ -521,7 +521,7 @@ final class RuleSet implements RuleSetInterface
             if ('@' === $name[0]) {
                 $set = $this->resolveSubset($name, $setValue);
                 unset($rules[$name]);
-                $rules = array_merge($rules, $set);
+                $rules = \array_merge($rules, $set);
             } elseif (!$setValue) {
                 $rules[$name] = false;
             } else {

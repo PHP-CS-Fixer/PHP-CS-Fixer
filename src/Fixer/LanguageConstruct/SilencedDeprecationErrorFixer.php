@@ -42,7 +42,7 @@ final class SilencedDeprecationErrorFixer extends AbstractProxyFixer implements 
      */
     public function getSuccessorsNames()
     {
-        return array_keys($this->proxyFixers);
+        return \array_keys($this->proxyFixers);
     }
 
     /**

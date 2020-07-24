@@ -218,6 +218,6 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
             }
         );
 
-        return implode('|', $this->sortTypes($types));
+        return \implode('|', $this->sortTypes($types));
     }
 }

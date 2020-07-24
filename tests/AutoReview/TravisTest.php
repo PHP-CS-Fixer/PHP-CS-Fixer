@@ -68,7 +68,7 @@ final class TravisTest extends TestCase
 
         foreach ($ciVersionsForDeployments as $ciVersionsForDeployment) {
             static::assertTrue(
-                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+                \version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
                 sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
             );
         }
@@ -121,7 +121,7 @@ final class TravisTest extends TestCase
     private function getAllPhpVersionsUsedByCiForTests()
     {
         $jobs = array_filter($this->getTravisJobs(), function ($job) {
-            return false !== strpos($job['stage'], 'Test');
+            return false !== \strpos($job['stage'], 'Test');
         });
 
         return array_map(function ($job) {

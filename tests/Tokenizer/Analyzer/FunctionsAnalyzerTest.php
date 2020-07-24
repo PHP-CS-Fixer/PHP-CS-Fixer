@@ -358,7 +358,7 @@ A();
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        static::assertSame(\serialize($expected), \serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
     /**
@@ -373,7 +373,7 @@ A();
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionReturnType($tokens, $methodIndex)));
+        static::assertSame(\serialize($expected), \serialize($analyzer->getFunctionReturnType($tokens, $methodIndex)));
     }
 
     public function provideFunctionsWithArgumentsCases()
@@ -497,7 +497,7 @@ A();
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+        static::assertSame(\serialize($expected), \serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
     public function provideFunctionsWithArgumentsPhp74Cases()
@@ -611,7 +611,7 @@ A();
         $analyzer = new FunctionsAnalyzer();
 
         $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
-        static::assertSame(serialize($expected), serialize($actual));
+        static::assertSame(\serialize($expected), \serialize($actual));
     }
 
     public function provideFunctionsWithReturnTypePhp74Cases()

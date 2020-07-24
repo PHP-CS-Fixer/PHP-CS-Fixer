@@ -61,7 +61,7 @@ final class TextReporter implements ReporterInterface
     {
         return sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-            implode(', ', $fixResult['appliedFixers'])
+            \implode(', ', $fixResult['appliedFixers'])
         );
     }
 

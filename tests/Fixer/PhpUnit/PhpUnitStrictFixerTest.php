@@ -33,7 +33,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      */
     public function testLegacyFix($expected, $input = null)
     {
-        $this->fixer->configure(array_keys($this->getMethodsMap()));
+        $this->fixer->configure(\array_keys($this->getMethodsMap()));
         $this->doTest($expected, $input);
     }
 
@@ -47,7 +47,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     {
         $this->doTest($expected, $input);
 
-        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->fixer->configure(['assertions' => \array_keys($this->getMethodsMap())]);
         $this->doTest($expected, $input);
     }
 
@@ -107,7 +107,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      */
     public function testNoFixWithWrongNumberOfArguments($expected)
     {
-        $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
+        $this->fixer->configure(['assertions' => \array_keys($this->getMethodsMap())]);
         $this->doTest($expected);
     }
 
@@ -124,7 +124,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
                     sprintf(
                         '<?php $this->%s(%s);',
                         $candidate,
-                        substr(str_repeat('$a, ', $argumentCount), 0, -2)
+                        \substr(\str_repeat('$a, ', $argumentCount), 0, -2)
                     ),
                 ];
             }

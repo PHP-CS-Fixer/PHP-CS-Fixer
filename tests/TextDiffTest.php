@@ -80,7 +80,7 @@ TEST;
             $cases[] = [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected), 1, -1);
+        $expected = \substr(json_encode($expected), 1, -1);
         $cases[] = [$expected, 'json', true];
         $cases[] = [$expected, 'json', false];
 

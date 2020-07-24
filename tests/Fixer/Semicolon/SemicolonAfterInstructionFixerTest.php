@@ -91,7 +91,7 @@ A is equal to 5
 
     public function testOpenWithEcho()
     {
-        if (!ini_get('short_open_tag')) {
+        if (!\ini_get('short_open_tag')) {
             static::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 

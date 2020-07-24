@@ -112,12 +112,12 @@ final class Cache implements CacheInterface
             'hashes',
         ];
 
-        $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
+        $missingKeys = \array_diff_key(\array_flip($requiredKeys), $data);
 
         if (\count($missingKeys)) {
             throw new \InvalidArgumentException(sprintf(
                 'JSON data is missing keys "%s"',
-                implode('", "', $missingKeys)
+                \implode('", "', $missingKeys)
             ));
         }
 

@@ -286,9 +286,9 @@ final class FixerFactoryTest extends TestCase
         $cases[] = [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']];
 
         $docFixerNames = array_filter(
-            array_keys($fixers),
+            \array_keys($fixers),
             static function ($name) {
-                return false !== strpos($name, 'phpdoc');
+                return false !== \strpos($name, 'phpdoc');
             }
         );
 
@@ -350,7 +350,7 @@ final class FixerFactoryTest extends TestCase
         $test = $factory->create(new SplFileInfo($file, './', __DIR__));
         $rules = $test->getRuleset()->getRules();
         $expected = [$first->getName(), $second->getName()];
-        $actual = array_keys($rules);
+        $actual = \array_keys($rules);
 
         sort($expected);
         sort($actual);
@@ -506,7 +506,7 @@ final class FixerFactoryTest extends TestCase
 
     public function testFixerPriorityComment()
     {
-        $cases = array_merge(
+        $cases = \array_merge(
             $this->provideFixersPriorityCases(),
             $this->provideFixersPrioritySpecialPhpdocCases()
         );
@@ -519,8 +519,8 @@ final class FixerFactoryTest extends TestCase
             $beforeClass = \get_class($before);
             $afterClass = \get_class($after);
 
-            $beforeName = substr($beforeClass, strrpos($beforeClass, '\\') + 1);
-            $afterName = substr($afterClass, strrpos($afterClass, '\\') + 1);
+            $beforeName = \substr($beforeClass, strrpos($beforeClass, '\\') + 1);
+            $afterName = \substr($afterClass, strrpos($afterClass, '\\') + 1);
 
             if (!isset($map[$beforeName])) {
                 $map[$beforeName] = [
@@ -550,12 +550,12 @@ final class FixerFactoryTest extends TestCase
 
             if (\count($priorityMap['before']) > 0) {
                 sort($priorityMap['before']);
-                $expectedMessage .= sprintf("\n     * Must run before %s.", implode(', ', $priorityMap['before']));
+                $expectedMessage .= sprintf("\n     * Must run before %s.", \implode(', ', $priorityMap['before']));
             }
 
             if (\count($priorityMap['after']) > 0) {
                 sort($priorityMap['after']);
-                $expectedMessage .= sprintf("\n     * Must run after %s.", implode(', ', $priorityMap['after']));
+                $expectedMessage .= sprintf("\n     * Must run after %s.", \implode(', ', $priorityMap['after']));
             }
 
             $expectedMessage .= "\n     */";

@@ -99,7 +99,7 @@ final class FixerFactory
             foreach (SymfonyFinder::create()->files()->in(__DIR__.'/Fixer') as $file) {
                 $relativeNamespace = $file->getRelativePath();
                 $fixerClass = 'PhpCsFixer\\Fixer\\'.($relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
-                if ('Fixer' === substr($fixerClass, -5)) {
+                if ('Fixer' === \substr($fixerClass, -5)) {
                     $builtInFixers[] = $fixerClass;
                 }
             }
@@ -160,7 +160,7 @@ final class FixerFactory
         $fixersByName = [];
         $fixerConflicts = [];
 
-        $fixerNames = array_keys($ruleSet->getRules());
+        $fixerNames = \array_keys($ruleSet->getRules());
         foreach ($fixerNames as $name) {
             if (!\array_key_exists($name, $this->fixersByName)) {
                 throw new \UnexpectedValueException(sprintf('Rule "%s" does not exist.', $name));
@@ -245,7 +245,7 @@ final class FixerFactory
             );
 
             if (\count($report[$fixer]) > 0) {
-                $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, implode('", "', $report[$fixer]));
+                $message .= sprintf("\n- \"%s\" with \"%s\"", $fixer, \implode('", "', $report[$fixer]));
             }
         }
 

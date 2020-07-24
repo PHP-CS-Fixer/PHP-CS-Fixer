@@ -57,8 +57,8 @@ final class ArgumentsAnalyzerTest extends TestCase
         $analyzer = new ArgumentsAnalyzer();
 
         static::assertSame(
-            serialize($expected),
-            serialize($analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex))
+            \serialize($expected),
+            \serialize($analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex))
         );
     }
 

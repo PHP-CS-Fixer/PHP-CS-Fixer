@@ -80,7 +80,7 @@ final class ErrorOutput
 
             foreach ($lines as $line) {
                 if (\strlen($line) < $length) {
-                    $line .= str_repeat(' ', $length - \strlen($line));
+                    $line .= \str_repeat(' ', $length - \strlen($line));
                 }
 
                 $this->output->writeln(sprintf('      <error>  %s  </error>', $this->prepareOutput($line)));
@@ -102,7 +102,7 @@ final class ErrorOutput
 
             if (Error::TYPE_LINT === $error->getType() && 0 < \count($error->getAppliedFixers())) {
                 $this->output->writeln('');
-                $this->output->writeln(sprintf('      Applied fixers: <comment>%s</comment>', implode(', ', $error->getAppliedFixers())));
+                $this->output->writeln(sprintf('      Applied fixers: <comment>%s</comment>', \implode(', ', $error->getAppliedFixers())));
 
                 $diff = $error->getDiff();
                 if (!empty($diff)) {

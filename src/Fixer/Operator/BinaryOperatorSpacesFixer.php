@@ -289,7 +289,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "operators" key, expected any of "%s", got "%s".',
-                                    implode('", "', self::$supportedOperators),
+                                    \implode('", "', self::$supportedOperators),
                                     \is_object($operator) ? \get_class($operator) : \gettype($operator).'#'.$operator
                                 )
                             );
@@ -300,7 +300,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                                 sprintf(
                                     'Unexpected value for operator "%s", expected any of "%s", got "%s".',
                                     $operator,
-                                    implode('", "', self::$allowedValues),
+                                    \implode('", "', self::$allowedValues),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );
@@ -375,7 +375,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (' ' !== $content && false === \strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -385,7 +385,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (' ' !== $content && false === \strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -401,7 +401,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (false === \strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens->clearAt($index + 1);
             }
         }
@@ -409,7 +409,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (false === \strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens->clearAt($index - 1);
             }
         }
@@ -690,7 +690,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if (false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                    if (false !== \strpos($tokens[$i - 1]->getContent(), "\n")) {
                         break;
                     }
 
@@ -746,7 +746,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         }
 
         $content = $tokens[$index - 1]->getContent();
-        if (' ' !== $content && false === strpos($content, "\n")) {
+        if (' ' !== $content && false === \strpos($content, "\n")) {
             $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
         }
     }
@@ -765,7 +765,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         for ($j = 0; $j <= $this->deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGN_PLACEHOLDER, $j);
 
-            if (false === strpos($tmpCode, $placeholder)) {
+            if (false === \strpos($tmpCode, $placeholder)) {
                 continue;
             }
 
@@ -791,41 +791,41 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                 if (self::ALIGN !== $alignStrategy) {
                     // move place holders to match strategy
                     foreach ($group as $index) {
-                        $currentPosition = strpos($lines[$index], $placeholder);
-                        $before = substr($lines[$index], 0, $currentPosition);
+                        $currentPosition = \strpos($lines[$index], $placeholder);
+                        $before = \substr($lines[$index], 0, $currentPosition);
 
                         if (self::ALIGN_SINGLE_SPACE === $alignStrategy) {
-                            if (1 > \strlen($before) || ' ' !== substr($before, -1)) { // if last char of before-content is not ' '; add it
+                            if (1 > \strlen($before) || ' ' !== \substr($before, -1)) { // if last char of before-content is not ' '; add it
                                 $before .= ' ';
                             }
                         } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
                             if (1 !== Preg::match('/^\h+$/', $before)) { // if indent; do not move, leave to other fixer
-                                $before = rtrim($before).' ';
+                                $before = \rtrim($before).' ';
                             }
                         }
 
-                        $lines[$index] = $before.substr($lines[$index], $currentPosition);
+                        $lines[$index] = $before.\substr($lines[$index], $currentPosition);
                     }
                 }
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
-                    $rightmostSymbol = max($rightmostSymbol, strpos(utf8_decode($lines[$index]), $placeholder));
+                    $rightmostSymbol = max($rightmostSymbol, \strpos(utf8_decode($lines[$index]), $placeholder));
                 }
 
                 foreach ($group as $index) {
                     $line = $lines[$index];
-                    $currentSymbol = strpos(utf8_decode($line), $placeholder);
+                    $currentSymbol = \strpos(utf8_decode($line), $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);
 
                     if ($delta > 0) {
-                        $line = str_replace($placeholder, str_repeat(' ', $delta).$placeholder, $line);
+                        $line = str_replace($placeholder, \str_repeat(' ', $delta).$placeholder, $line);
                         $lines[$index] = $line;
                     }
                 }
             }
 
-            $tmpCode = str_replace($placeholder, '', implode("\n", $lines));
+            $tmpCode = str_replace($placeholder, '', \implode("\n", $lines));
         }
 
         return $tmpCode;

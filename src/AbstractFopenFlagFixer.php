@@ -61,7 +61,7 @@ abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
                 continue;
             }
 
-            $argumentStartIndex = array_keys($arguments)[1]; // get second argument index
+            $argumentStartIndex = \array_keys($arguments)[1]; // get second argument index
 
             $this->fixFopenFlagToken(
                 $tokens,

@@ -45,7 +45,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             $this->fixer->configure([$method]);
             $this->doTest(
                 $expected,
-                $input && false !== strpos($input, $method) ? $input : null
+                $input && false !== \strpos($input, $method) ? $input : null
             );
         }
     }
@@ -70,7 +70,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             $this->fixer->configure(['assertions' => [$method]]);
             $this->doTest(
                 $expected,
-                $input && false !== strpos($input, $method) ? $input : null
+                $input && false !== \strpos($input, $method) ? $input : null
             );
         }
     }
@@ -139,7 +139,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        return array_merge(
+        return \array_merge(
             $cases,
             $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
             $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");'),

@@ -132,7 +132,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
         }
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex);
         $lines = $this->addSizeAnnotation($doc, $tokens, $docBlockIndex);
-        $lines = implode('', $lines);
+        $lines = \implode('', $lines);
 
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
     }
@@ -206,7 +206,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
         if (1 === \count($lines) && empty($this->filterDocBlock($doc))) {
             $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
-            return new DocBlock(implode('', $lines));
+            return new DocBlock(\implode('', $lines));
         }
 
         return $doc;
@@ -242,8 +242,8 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
     {
         $line = $line[0];
         $line = str_replace('*/', '', $line);
-        $line = trim($line);
-        $line = str_split($line);
+        $line = \trim($line);
+        $line = \str_split($line);
         $i = \count($line);
         do {
             --$i;
@@ -253,7 +253,7 @@ final class PhpUnitSizeClassFixer extends AbstractFixer implements WhitespacesAw
         }
         $line = \array_slice($line, $i);
 
-        return implode('', $line);
+        return \implode('', $line);
     }
 
     /**

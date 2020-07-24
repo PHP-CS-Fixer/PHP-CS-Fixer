@@ -389,19 +389,19 @@ class Tokens extends \SplFixedArray
             $token = $tokens[$index];
 
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
-                if (0 === strpos($whitespace, "\r\n")) {
-                    $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
+                if (0 === \strpos($whitespace, "\r\n")) {
+                    $tokens[$index] = new Token([T_OPEN_TAG, \rtrim($token->getContent())."\r\n"]);
 
                     return \strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
-                        ? substr($whitespace, 2)
+                        ? \substr($whitespace, 2)
                         : ''
                     ;
                 }
 
-                $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
+                $tokens[$index] = new Token([T_OPEN_TAG, \rtrim($token->getContent()).$whitespace[0]]);
 
                 return \strlen($whitespace) > 1 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
-                    ? substr($whitespace, 1)
+                    ? \substr($whitespace, 1)
                     : ''
                 ;
             }
@@ -1200,7 +1200,7 @@ class Tokens extends \SplFixedArray
     public function isPartialCodeMultiline($start, $end)
     {
         for ($i = $start; $i <= $end; ++$i) {
-            if (false !== strpos($this[$i]->getContent(), "\n")) {
+            if (false !== \strpos($this[$i]->getContent(), "\n")) {
                 return true;
             }
         }
@@ -1245,7 +1245,7 @@ class Tokens extends \SplFixedArray
             $tokenToCheck = $this[$whitespaceIndex];
 
             // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
-            if (isset($this[$whitespaceIndex - 1]) && $this[$whitespaceIndex - 1]->isComment() && '/*' !== substr($this[$whitespaceIndex - 1]->getContent(), 0, 2)) {
+            if (isset($this[$whitespaceIndex - 1]) && $this[$whitespaceIndex - 1]->isComment() && '/*' !== \substr($this[$whitespaceIndex - 1]->getContent(), 0, 2)) {
                 list($emptyString, $newContent, $whitespacesToCheck) = Preg::split('/^(\R)/', $this[$whitespaceIndex]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
                 if ('' === $whitespacesToCheck) {
                     return;

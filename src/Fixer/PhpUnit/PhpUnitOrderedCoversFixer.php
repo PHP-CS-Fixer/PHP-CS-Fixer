@@ -82,7 +82,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             foreach ($covers as $annotation) {
                 $rawContent = $annotation->getContent();
 
-                $comparableContent = Preg::replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(trim($rawContent)));
+                $comparableContent = Preg::replace('/\*\s*@covers\s+(.+)/', '\1', strtolower(\trim($rawContent)));
                 $coversMap[$comparableContent] = $rawContent;
             }
             $orderedCoversMap = $coversMap;
@@ -101,7 +101,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 );
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, implode('', $lines)]);
+            $tokens[$index] = new Token([T_DOC_COMMENT, \implode('', $lines)]);
         }
     }
 }

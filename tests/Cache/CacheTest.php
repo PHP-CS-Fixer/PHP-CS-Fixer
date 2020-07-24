@@ -135,7 +135,7 @@ final class CacheTest extends TestCase
             return [
                 $data,
             ];
-        }, array_keys($data));
+        }, \array_keys($data));
     }
 
     /**
@@ -179,7 +179,7 @@ final class CacheTest extends TestCase
                 $config->getLineEnding(),
                 [
                     // value encoded in ANSI, not UTF
-                    'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
+                    'header_comment' => ['header' => 'Dariusz '.\base64_decode('UnVtafFza2k=', true)],
                 ]
             )],
         ];

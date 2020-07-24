@@ -79,7 +79,7 @@ class InvalidName {}
                 $namespaceIndex = $tokens->getNextMeaningfulToken($index);
                 $namespaceEndIndex = $tokens->getNextTokenOfKind($index, [';']);
 
-                $namespace = trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
+                $namespace = \trim($tokens->generatePartialCode($namespaceIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
                 if ($prevToken->isGivenKind(T_NEW)) {
@@ -106,7 +106,7 @@ class InvalidName {}
 
             if ('' !== $this->configuration['dir']) {
                 /** @var false|string $dir until support for PHP 5.6 is dropped */
-                $dir = substr($dir, \strlen(realpath($this->configuration['dir'])) + 1);
+                $dir = \substr($dir, \strlen(realpath($this->configuration['dir'])) + 1);
 
                 if (false === $dir) {
                     $dir = '';
@@ -114,7 +114,7 @@ class InvalidName {}
 
                 if (\strlen($normNamespace) > \strlen($dir)) {
                     if ('' !== $dir) {
-                        $normNamespace = substr($normNamespace, -\strlen($dir));
+                        $normNamespace = \substr($normNamespace, -\strlen($dir));
                     } else {
                         $normNamespace = '';
                     }
@@ -122,7 +122,7 @@ class InvalidName {}
             }
 
             /** @var false|string $dir until support for PHP 5.6 is dropped */
-            $dir = substr($dir, -\strlen($normNamespace));
+            $dir = \substr($dir, -\strlen($normNamespace));
             if (false === $dir) {
                 $dir = '';
             }
@@ -137,7 +137,7 @@ class InvalidName {}
                 for ($i = $namespaceIndex; $i <= $namespaceEndIndex; ++$i) {
                     $tokens->clearAt($i);
                 }
-                $namespace = substr($namespace, 0, -\strlen($dir)).str_replace('/', '\\', $dir);
+                $namespace = \substr($namespace, 0, -\strlen($dir)).str_replace('/', '\\', $dir);
 
                 $newNamespace = Tokens::fromCode('<?php namespace '.$namespace.';');
                 $newNamespace->clearRange(0, 2);
@@ -148,7 +148,7 @@ class InvalidName {}
         } else {
             $normClass = str_replace('_', '/', $classyName);
             $path = str_replace('\\', '/', $file->getRealPath());
-            $filename = substr($path, -\strlen($normClass) - 4, -4);
+            $filename = \substr($path, -\strlen($normClass) - 4, -4);
 
             if ($normClass !== $filename && strtolower($normClass) === strtolower($filename)) {
                 $tokens[$classyIndex] = new Token([T_STRING, str_replace('/', '_', $filename)]);

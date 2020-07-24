@@ -108,7 +108,7 @@ final class DescribeCommand extends Command
             $this->describeRule($output, $name);
         } catch (DescribeNameNotFoundException $e) {
             $matcher = new WordMatcher(
-                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers())
+                'set' === $e->getType() ? $this->getSetNames() : \array_keys($this->getFixers())
             );
 
             $alternative = $matcher->match($name);
@@ -204,7 +204,7 @@ final class DescribeCommand extends Command
                 }
 
                 if (null !== $allowed) {
-                    $line .= ' ('.implode(', ', $allowed).')';
+                    $line .= ' ('.\implode(', ', $allowed).')';
                 }
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));

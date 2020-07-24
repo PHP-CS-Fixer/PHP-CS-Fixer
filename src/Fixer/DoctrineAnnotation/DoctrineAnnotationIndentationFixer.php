@@ -45,7 +45,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolver(array_merge(
+        return new FixerConfigurationResolver(\array_merge(
             parent::createConfigurationDefinition()->getOptions(),
             [
                 (new FixerOptionBuilder('indent_mixed_lines', 'Whether to indent lines that have content before closing parenthesis.'))
@@ -78,7 +78,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
 
         $indentLevel = 0;
         foreach ($tokens as $index => $token) {
-            if (!$token->isType(DocLexer::T_NONE) || false === strpos($token->getContent(), "\n")) {
+            if (!$token->isType(DocLexer::T_NONE) || false === \strpos($token->getContent(), "\n")) {
                 continue;
             }
 
@@ -101,7 +101,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
 
             $token->setContent(Preg::replace(
                 '/(\n( +\*)?) *$/',
-                '$1'.str_repeat(' ', 4 * ($indentLevel + $extraIndentLevel) + 1),
+                '$1'.\str_repeat(' ', 4 * ($indentLevel + $extraIndentLevel) + 1),
                 $token->getContent()
             ));
 
@@ -123,7 +123,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
 
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
-            if ($token->isType(DocLexer::T_NONE) && false !== strpos($token->getContent(), "\n")) {
+            if ($token->isType(DocLexer::T_NONE) && false !== \strpos($token->getContent(), "\n")) {
                 break;
             }
 
@@ -157,7 +157,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
             if ($token->isType(DocLexer::T_NONE)) {
-                if (false !== strpos($token->getContent(), "\n")) {
+                if (false !== \strpos($token->getContent(), "\n")) {
                     return false;
                 }
 
@@ -187,7 +187,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         for ($index = $newLineTokenIndex + 1, $max = \count($tokens); $index < $max; ++$index) {
             $token = $tokens[$index];
 
-            if (false !== strpos($token->getContent(), "\n")) {
+            if (false !== \strpos($token->getContent(), "\n")) {
                 return false;
             }
 

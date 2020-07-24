@@ -98,7 +98,7 @@ final class NewVersionCheckerTest extends TestCase
             $cases[] = $case;
 
             // X.Y.Z vs. vX.Y.Z
-            $case[0] = substr($case[0], 1);
+            $case[0] = \substr($case[0], 1);
             $cases[] = $case;
         }
 

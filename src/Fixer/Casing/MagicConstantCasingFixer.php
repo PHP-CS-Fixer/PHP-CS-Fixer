@@ -90,7 +90,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
         static $magicConstantTokens = null;
 
         if (null === $magicConstantTokens) {
-            $magicConstantTokens = array_keys($this->getMagicConstants());
+            $magicConstantTokens = \array_keys($this->getMagicConstants());
         }
 
         return $magicConstantTokens;

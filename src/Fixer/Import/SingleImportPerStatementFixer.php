@@ -130,7 +130,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
 
         return [
-            rtrim($groupPrefix),
+            \rtrim($groupPrefix),
             $groupOpenIndex,
             $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupOpenIndex),
             $comment,
@@ -178,7 +178,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
                     $i += 2;
                 }
 
-                if ($token->isWhitespace(" \t") || '//' !== substr($tokens[$i - 1]->getContent(), 0, 2)) {
+                if ($token->isWhitespace(" \t") || '//' !== \substr($tokens[$i - 1]->getContent(), 0, 2)) {
                     continue;
                 }
             }
@@ -212,7 +212,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         }
 
         $ending = $this->whitespacesConfig->getLineEnding();
-        $importTokens = Tokens::fromCode('<?php '.implode($ending, $statements));
+        $importTokens = Tokens::fromCode('<?php '.\implode($ending, $statements));
         $importTokens->clearAt(0);
         $importTokens->clearEmptyTokens();
 
@@ -244,7 +244,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
                 continue;
             }
 
-            if (false === strpos($tokens[$i - 1]->getContent(), "\n")) {
+            if (false === \strpos($tokens[$i - 1]->getContent(), "\n")) {
                 $tokens->insertAt($i, new Token([T_WHITESPACE, $ending.$indent]));
             }
         }

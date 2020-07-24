@@ -121,7 +121,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $previousTokenHasTrailingLinebreak = false;
 
         // @TODO 3.0 this can be removed when we have a transformer for "T_OPEN_TAG" to "T_OPEN_TAG + T_WHITESPACE"
-        if (false !== strpos($tokens[$index - 1]->getContent(), "\n")) {
+        if (false !== \strpos($tokens[$index - 1]->getContent(), "\n")) {
             $content = "\n".$content;
             $previousTokenHasTrailingLinebreak = true;
         }
@@ -140,7 +140,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         );
 
         if ($previousTokenHasTrailingLinebreak) {
-            $newContent = substr($newContent, 1);
+            $newContent = \substr($newContent, 1);
         }
 
         return new Token([T_WHITESPACE, $newContent]);

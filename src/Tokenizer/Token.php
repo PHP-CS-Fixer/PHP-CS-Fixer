@@ -502,7 +502,7 @@ class Token
             return false;
         }
 
-        return '' === trim($this->content, $whitespaces);
+        return '' === \trim($this->content, $whitespaces);
     }
 
     /**

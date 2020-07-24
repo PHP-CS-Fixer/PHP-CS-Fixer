@@ -86,7 +86,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             }
 
             // 0 and 1 accordingly are "is_null", "(" tokens
-            $matches = array_keys($matches);
+            $matches = \array_keys($matches);
 
             // move the cursor just after the sequence
             list($isNullIndex, $currIndex) = $matches;

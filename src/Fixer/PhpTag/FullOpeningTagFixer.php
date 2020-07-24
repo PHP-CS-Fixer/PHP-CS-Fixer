@@ -88,7 +88,7 @@ echo "Hello!";
             if ($token->isGivenKind(T_OPEN_TAG)) {
                 $tokenContent = $token->getContent();
 
-                if ('<?php' !== strtolower(substr($content, $tokensOldContentLength, 5))) {
+                if ('<?php' !== strtolower(\substr($content, $tokensOldContentLength, 5))) {
                     $tokenContent = '<? ';
                 }
 
@@ -108,7 +108,7 @@ echo "Hello!";
                     $tokenContentLength += \strlen($part);
 
                     if ($i !== $iLast) {
-                        $originalTokenContent = substr($content, $tokensOldContentLength + $tokenContentLength, 5);
+                        $originalTokenContent = \substr($content, $tokensOldContentLength + $tokenContentLength, 5);
                         if ('<?php' === strtolower($originalTokenContent)) {
                             $tokenContent .= $originalTokenContent;
                             $tokenContentLength += 5;

@@ -154,7 +154,7 @@ class SomeClass
 
         $typeName = $type->getName();
 
-        if (0 !== strpos($typeName, '\\')) {
+        if (0 !== \strpos($typeName, '\\')) {
             return;
         }
 

@@ -153,7 +153,7 @@ class Sample
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown key "%s", expected any of "%s".',
                                 \is_object($from) ? \get_class($from) : \gettype($from).(\is_resource($from) ? '' : '#'.$from),
-                                implode('", "', array_keys($default))
+                                \implode('", "', \array_keys($default))
                             ));
                         }
 
@@ -161,7 +161,7 @@ class Sample
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown value "%s", expected any of "%s".',
                                 \is_object($to) ? \get_class($to) : \gettype($to).(\is_resource($to) ? '' : '#'.$to),
-                                implode('", "', self::$toTypes)
+                                \implode('", "', self::$toTypes)
                             ));
                         }
 

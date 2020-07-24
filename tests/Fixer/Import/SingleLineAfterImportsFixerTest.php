@@ -513,8 +513,8 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
                 '<?php use some\a\{ClassA, ClassZ};use const some\b\{ClassB, ClassX};use function some\\d;',
             ],
             'group types with trailing comma' => [
-                "<?php\nuse ".implode("\nuse ", $imports)."\n\necho 1;",
-                "<?php\nuse ".implode('use ', $imports).' echo 1;',
+                "<?php\nuse ".\implode("\nuse ", $imports)."\n\necho 1;",
+                "<?php\nuse ".\implode('use ', $imports).' echo 1;',
             ],
         ];
 

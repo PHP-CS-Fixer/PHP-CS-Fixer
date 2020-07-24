@@ -275,7 +275,7 @@ final class ConfigurationResolver
                 if (!isset($mapper[$option])) {
                     throw new InvalidConfigurationException(sprintf(
                         '"diff-format" must be any of "%s", got "%s".',
-                        implode('", "', array_keys($mapper)),
+                        \implode('", "', \array_keys($mapper)),
                         $option
                     ));
                 }
@@ -344,7 +344,7 @@ final class ConfigurationResolver
                 );
 
                 if (\count($riskyFixers)) {
-                    throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', implode(', ', $riskyFixers)));
+                    throw new InvalidConfigurationException(sprintf('The rules contain risky fixers (%s), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', \implode(', ', $riskyFixers)));
                 }
             }
         }
@@ -380,7 +380,7 @@ final class ConfigurationResolver
             } else {
                 $this->path = array_map(
                     static function ($rawPath) use ($cwd, $filesystem) {
-                        $path = trim($rawPath);
+                        $path = \trim($rawPath);
 
                         if ('' === $path) {
                             throw new InvalidConfigurationException("Invalid path: \"{$rawPath}\".");
@@ -431,7 +431,7 @@ final class ConfigurationResolver
                     throw new InvalidConfigurationException(sprintf(
                         'The progress type "%s" is not defined, supported are "%s".',
                         $progressType,
-                        implode('", "', $progressTypes)
+                        \implode('", "', $progressTypes)
                     ));
                 } elseif (\in_array($progressType, ['estimating', 'estimating-max', 'run-in'], true)) {
                     $message = 'Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.';
@@ -469,7 +469,7 @@ final class ConfigurationResolver
                 $formats = $reporterFactory->getFormats();
                 sort($formats);
 
-                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are "%s".', $format, implode('", "', $formats)));
+                throw new InvalidConfigurationException(sprintf('The format "%s" is not defined, supported are "%s".', $format, \implode('", "', $formats)));
             }
         }
 
@@ -680,7 +680,7 @@ final class ConfigurationResolver
             return $this->getConfig()->getRules();
         }
 
-        $rules = trim($this->options['rules']);
+        $rules = \trim($this->options['rules']);
         if ('' === $rules) {
             throw new InvalidConfigurationException('Empty rules value is not allowed.');
         }
@@ -697,13 +697,13 @@ final class ConfigurationResolver
         $rules = [];
 
         foreach (explode(',', $this->options['rules']) as $rule) {
-            $rule = trim($rule);
+            $rule = \trim($rule);
             if ('' === $rule) {
                 throw new InvalidConfigurationException('Empty rule name is not allowed.');
             }
 
             if ('-' === $rule[0]) {
-                $rules[substr($rule, 1)] = false;
+                $rules[\substr($rule, 1)] = false;
             } else {
                 $rules[$rule] = true;
             }
@@ -733,7 +733,7 @@ final class ConfigurationResolver
         $ruleSet = new RuleSet($ruleSet);
 
         /** @var string[] $configuredFixers */
-        $configuredFixers = array_keys($ruleSet->getRules());
+        $configuredFixers = \array_keys($ruleSet->getRules());
 
         $fixers = $this->createFixerFactory()->getFixers();
 
@@ -742,7 +742,7 @@ final class ConfigurationResolver
             return $fixer->getName();
         }, $fixers);
 
-        $unknownFixers = array_diff(
+        $unknownFixers = \array_diff(
             $configuredFixers,
             $availableFixers
         );
@@ -760,7 +760,7 @@ final class ConfigurationResolver
                 );
             }
 
-            throw new InvalidConfigurationException(substr($message, 0, -2).'.');
+            throw new InvalidConfigurationException(\substr($message, 0, -2).'.');
         }
 
         foreach ($fixers as $fixer) {
@@ -803,7 +803,7 @@ final class ConfigurationResolver
             throw new InvalidConfigurationException(sprintf(
                 'The path-mode "%s" is not defined, supported are "%s".',
                 $this->options['path-mode'],
-                implode('", "', $modes)
+                \implode('", "', $modes)
             ));
         }
 
@@ -862,7 +862,7 @@ final class ConfigurationResolver
                     }
 
                     foreach ($pathsByType['dir'] as $path) {
-                        if (0 === strpos($currentRealPath, $path)) {
+                        if (0 === \strpos($currentRealPath, $path)) {
                             return true;
                         }
                     }

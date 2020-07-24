@@ -36,7 +36,7 @@ final class TypeShortNameResolver
         // First match explicit imports:
         $useMap = $this->getUseMapFromTokens($tokens);
         foreach ($useMap as $shortName => $fullName) {
-            $regex = '/^\\\\?'.preg_quote($fullName, '/').'$/';
+            $regex = '/^\\\\?'.\preg_quote($fullName, '/').'$/';
             if (Preg::match($regex, $typeName)) {
                 return $shortName;
             }
@@ -48,7 +48,7 @@ final class TypeShortNameResolver
         if (1 === \count($namespaces)) {
             foreach ($namespaces as $fullName) {
                 $matches = [];
-                $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
+                $regex = '/^\\\\?'.\preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
                 if (Preg::match($regex, $typeName, $matches)) {
                     return $matches['className'];
                 }
@@ -59,7 +59,7 @@ final class TypeShortNameResolver
 
         foreach ($useMap as $shortName => $fullName) {
             $matches = [];
-            $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
+            $regex = '/^\\\\?'.\preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
             if (Preg::match($regex, $typeName, $matches)) {
                 return $shortName.'\\'.$matches['className'];
             }

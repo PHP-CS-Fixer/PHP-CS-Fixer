@@ -134,7 +134,7 @@ final class JunitReporter implements ReporterInterface
             $failureContent .= "\nDiff:\n---------------\n\n".$fixResult['diff'];
         }
 
-        $failure->appendChild($dom->createCDATASection(trim($failureContent)));
+        $failure->appendChild($dom->createCDATASection(\trim($failureContent)));
 
         return $testcase;
     }

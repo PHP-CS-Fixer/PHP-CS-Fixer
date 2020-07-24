@@ -62,7 +62,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         foreach (self::$loops as $loop) {
             $types[] = (array) $loop['lookupTokens'];
         }
-        $types = array_merge(...$types);
+        $types = \array_merge(...$types);
 
         return $tokens->isAnyTokenKindsFound($types);
     }
@@ -120,7 +120,7 @@ yield(2);
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // Checks if specific statements are set and uses them in this case.
-        $loops = array_intersect_key(self::$loops, array_flip($this->configuration['statements']));
+        $loops = array_intersect_key(self::$loops, \array_flip($this->configuration['statements']));
 
         foreach ($tokens as $index => $token) {
             if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {

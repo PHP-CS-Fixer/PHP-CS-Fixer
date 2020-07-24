@@ -301,7 +301,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
             $fistLinebreakPos = strrpos($content, "\n");
             $content = false === $fistLinebreakPos
                 ? ' '
-                : substr($content, $fistLinebreakPos)
+                : \substr($content, $fistLinebreakPos)
             ;
 
             $tokens[$returnIndex - 1] = new Token([T_WHITESPACE, $content]);

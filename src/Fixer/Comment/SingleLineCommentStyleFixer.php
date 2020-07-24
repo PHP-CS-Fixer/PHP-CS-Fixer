@@ -117,18 +117,18 @@ $c = 3;
             }
 
             $content = $token->getContent();
-            $commentContent = substr($content, 2, -2) ?: '';
+            $commentContent = \substr($content, 2, -2) ?: '';
 
             if ($this->hashEnabled && '#' === $content[0]) {
-                $tokens[$index] = new Token([$token->getId(), '//'.substr($content, 1)]);
+                $tokens[$index] = new Token([$token->getId(), '//'.\substr($content, 1)]);
 
                 continue;
             }
 
             if (
                 !$this->asteriskEnabled
-                || false !== strpos($commentContent, '?>')
-                || '/*' !== substr($content, 0, 2)
+                || false !== \strpos($commentContent, '?>')
+                || '/*' !== \substr($content, 0, 2)
                 || 1 === Preg::match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)
             ) {
                 continue;
@@ -141,7 +141,7 @@ $c = 3;
                     continue;
                 }
 
-                $tokens[$nextTokenIndex] = new Token([$nextToken->getId(), ltrim($nextToken->getContent(), " \t")]);
+                $tokens[$nextTokenIndex] = new Token([$nextToken->getId(), \ltrim($nextToken->getContent(), " \t")]);
             }
 
             $content = '//';

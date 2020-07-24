@@ -53,7 +53,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
+        return $tokens->isAnyTokenKindsFound(\array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
     }
 
     /**

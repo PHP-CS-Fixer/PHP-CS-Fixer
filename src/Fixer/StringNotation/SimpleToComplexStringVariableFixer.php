@@ -97,8 +97,8 @@ EOT
             $tokenOfStringBeforeToken = $tokens[$index - 1];
             $stringContent = $tokenOfStringBeforeToken->getContent();
 
-            if ('$' === substr($stringContent, -1) && '\\$' !== substr($stringContent, -2)) {
-                $newContent = substr($stringContent, 0, -1).'\\$';
+            if ('$' === \substr($stringContent, -1) && '\\$' !== \substr($stringContent, -2)) {
+                $newContent = \substr($stringContent, 0, -1).'\\$';
                 $tokenOfStringBeforeToken = new Token([T_ENCAPSED_AND_WHITESPACE, $newContent]);
             }
 

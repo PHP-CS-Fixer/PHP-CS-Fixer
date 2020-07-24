@@ -274,6 +274,6 @@ EOF;
 
     private function header($name, $underline)
     {
-        return $name."\n".str_repeat($underline, \strlen($name));
+        return $name."\n".\str_repeat($underline, \strlen($name));
     }
 }

@@ -125,9 +125,9 @@ namespace Test15a;namespace Test15b;',
             ],
             [
                 '<?php
-'.implode("\n", $manySpaces),
+'.\implode("\n", $manySpaces),
                 '<?php
-'.implode('', $manySpaces),
+'.\implode('', $manySpaces),
             ],
             [
                 '<?php

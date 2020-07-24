@@ -44,7 +44,7 @@ final class LowercaseConstantsFixer extends AbstractProxyFixer implements Deprec
      */
     public function getSuccessorsNames()
     {
-        return array_keys($this->proxyFixers);
+        return \array_keys($this->proxyFixers);
     }
 
     /**

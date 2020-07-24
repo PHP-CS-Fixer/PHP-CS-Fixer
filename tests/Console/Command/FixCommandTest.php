@@ -68,7 +68,7 @@ final class FixCommandTest extends TestCase
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
-            array_merge(
+            \array_merge(
                 ['command' => $command->getName()],
                 $this->getDefaultArguments(),
                 $arguments

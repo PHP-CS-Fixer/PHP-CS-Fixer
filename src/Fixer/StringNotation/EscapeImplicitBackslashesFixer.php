@@ -106,16 +106,16 @@ EOF;
             if ($token->equalsAny(['"', 'b"', 'B"'])) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
-            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
+            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === \strpos($content, '\\')) {
                 continue;
             }
 
             // Nowdoc syntax
-            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && '\'' === substr(rtrim($tokens[$index - 1]->getContent()), -1)) {
+            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE) && '\'' === \substr(\rtrim($tokens[$index - 1]->getContent()), -1)) {
                 continue;
             }
 
-            $firstTwoCharacters = strtolower(substr($content, 0, 2));
+            $firstTwoCharacters = strtolower(\substr($content, 0, 2));
             $isSingleQuotedString = $token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
             $isDoubleQuotedString =
                 ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))

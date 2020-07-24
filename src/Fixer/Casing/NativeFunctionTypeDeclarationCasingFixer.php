@@ -61,7 +61,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
         ];
 
         if (\PHP_VERSION_ID >= 70000) {
-            $this->hints = array_merge(
+            $this->hints = \array_merge(
                 $this->hints,
                 [
                     'bool' => true,
@@ -73,7 +73,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
         }
 
         if (\PHP_VERSION_ID >= 70100) {
-            $this->hints = array_merge(
+            $this->hints = \array_merge(
                 $this->hints,
                 [
                     'iterable' => true,
@@ -83,7 +83,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
         }
 
         if (\PHP_VERSION_ID >= 70200) {
-            $this->hints = array_merge($this->hints, ['object' => true]);
+            $this->hints = \array_merge($this->hints, ['object' => true]);
         }
 
         $this->functionsAnalyzer = new FunctionsAnalyzer();

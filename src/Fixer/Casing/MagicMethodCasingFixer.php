@@ -113,7 +113,7 @@ $foo->__INVOKE(1);
             }
 
             $content = $tokens[$index]->getContent();
-            if ('__' !== substr($content, 0, 2)) {
+            if ('__' !== \substr($content, 0, 2)) {
                 continue; // cheap look ahead
             }
 

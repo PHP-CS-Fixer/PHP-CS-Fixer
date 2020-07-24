@@ -201,7 +201,7 @@ class Foo
             $commentIndex = $tokens->getNextNonWhitespace($prevIndex);
             $commentToken = $tokens[$commentIndex];
 
-            if (!$commentToken->isGivenKind(T_COMMENT) || 0 === strpos($commentToken->getContent(), '/*')) {
+            if (!$commentToken->isGivenKind(T_COMMENT) || 0 === \strpos($commentToken->getContent(), '/*')) {
                 continue;
             }
 
@@ -231,7 +231,7 @@ class Foo
             $c = $tokens[$braceIndex]->getContent();
             if (substr_count($c, "\n") > 1) {
                 // left trim till last line break
-                $tokens[$braceIndex] = new Token([T_WHITESPACE, substr($c, strrpos($c, "\n"))]);
+                $tokens[$braceIndex] = new Token([T_WHITESPACE, \substr($c, strrpos($c, "\n"))]);
             }
         }
     }
@@ -290,10 +290,10 @@ class Foo
     private function fixIndents(Tokens $tokens)
     {
         $classyTokens = Token::getClassyTokenKinds();
-        $classyAndFunctionTokens = array_merge([T_FUNCTION], $classyTokens);
+        $classyAndFunctionTokens = \array_merge([T_FUNCTION], $classyTokens);
         $controlTokens = $this->getControlTokens();
         $indentTokens = array_filter(
-            array_merge($classyAndFunctionTokens, $controlTokens),
+            \array_merge($classyAndFunctionTokens, $controlTokens),
             static function ($item) {
                 return T_SWITCH !== $item;
             }
@@ -452,7 +452,7 @@ class Foo
                             $nextWhitespace = '';
 
                             if ($nextToken->isWhitespace()) {
-                                $nextWhitespace = rtrim($nextToken->getContent(), " \t");
+                                $nextWhitespace = \rtrim($nextToken->getContent(), " \t");
 
                                 if ('' !== $nextWhitespace) {
                                     $nextWhitespace = Preg::replace(
@@ -574,7 +574,7 @@ class Foo
                 if (
                     !$isAnonymousClass
                     && $tokens[$closingParenthesisIndex - 1]->isWhitespace()
-                    && false !== strpos($tokens[$closingParenthesisIndex - 1]->getContent(), "\n")
+                    && false !== \strpos($tokens[$closingParenthesisIndex - 1]->getContent(), "\n")
                 ) {
                     if (!$tokens[$startBraceIndex - 2]->isComment()) {
                         $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
@@ -710,13 +710,13 @@ class Foo
 
             $whitespaceToken = $tokens[$whitespaceIndex];
 
-            if (false !== strpos($whitespaceToken->getContent(), "\n")) {
+            if (false !== \strpos($whitespaceToken->getContent(), "\n")) {
                 break;
             }
 
             $prevToken = $tokens[$whitespaceIndex - 1];
 
-            if ($prevToken->isGivenKind([T_OPEN_TAG, T_COMMENT]) && "\n" === substr($prevToken->getContent(), -1)) {
+            if ($prevToken->isGivenKind([T_OPEN_TAG, T_COMMENT]) && "\n" === \substr($prevToken->getContent(), -1)) {
                 break;
             }
 
@@ -941,8 +941,8 @@ class Foo
                 $previousToken->isWhitespace()
                 && 1 === Preg::match('/\R$/', $previousToken->getContent())
                 && (
-                    (0 === strpos($nextTokenContent, '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextTokenContent)
-                    || (0 === strpos($nextTokenContent, '#'.$this->whitespacesConfig->getIndent()) || '#' === $nextTokenContent)
+                    (0 === \strpos($nextTokenContent, '//'.$this->whitespacesConfig->getIndent()) || '//' === $nextTokenContent)
+                    || (0 === \strpos($nextTokenContent, '#'.$this->whitespacesConfig->getIndent()) || '#' === $nextTokenContent)
                 )
             ) {
                 return;
@@ -970,7 +970,7 @@ class Foo
     private function isMultilined(Tokens $tokens, $startParenthesisIndex, $endParenthesisIndex)
     {
         for ($i = $startParenthesisIndex; $i < $endParenthesisIndex; ++$i) {
-            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+            if (false !== \strpos($tokens[$i]->getContent(), "\n")) {
                 return true;
             }
         }
@@ -996,7 +996,7 @@ class Foo
             return false;
         }
 
-        if (0 === strpos($tokens[$index]->getContent(), '/*')) {
+        if (0 === \strpos($tokens[$index]->getContent(), '/*')) {
             return true;
         }
 
@@ -1052,7 +1052,7 @@ class Foo
             if (null === $siblingIndex) {
                 return null;
             }
-        } while (0 === strpos($tokens[$siblingIndex]->getContent(), '/*'));
+        } while (0 === \strpos($tokens[$siblingIndex]->getContent(), '/*'));
 
         $newLines = 0;
         for ($i = min($siblingIndex, $index) + 1, $max = max($siblingIndex, $index); $i < $max; ++$i) {

@@ -1054,7 +1054,7 @@ final class ConfigurationResolverTest extends TestCase
         $options = $definition->getOptions();
         static::assertSame(
             ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
-            array_keys($options),
+            \array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
 

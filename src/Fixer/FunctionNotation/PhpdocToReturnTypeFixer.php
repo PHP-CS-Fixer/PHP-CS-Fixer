@@ -194,7 +194,7 @@ function bar() {}
             }
 
             $returnTypeAnnotation = current($returnTypeAnnotation);
-            $types = array_values($returnTypeAnnotation->getTypes());
+            $types = \array_values($returnTypeAnnotation->getTypes());
             $typesCount = \count($types);
 
             if (1 > $typesCount || 2 < $typesCount) {

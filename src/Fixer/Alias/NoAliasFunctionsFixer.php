@@ -93,17 +93,17 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements Configuration
         foreach ($this->configuration['sets'] as $set) {
             if ('@all' === $set) {
                 $this->aliases = self::$internalSet;
-                $this->aliases = array_merge($this->aliases, self::$imapSet);
-                $this->aliases = array_merge($this->aliases, self::$mbregSet);
+                $this->aliases = \array_merge($this->aliases, self::$imapSet);
+                $this->aliases = \array_merge($this->aliases, self::$mbregSet);
 
                 break;
             }
             if ('@internal' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$internalSet);
+                $this->aliases = \array_merge($this->aliases, self::$internalSet);
             } elseif ('@IMAP' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$imapSet);
+                $this->aliases = \array_merge($this->aliases, self::$imapSet);
             } elseif ('@mbreg' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$mbregSet);
+                $this->aliases = \array_merge($this->aliases, self::$mbregSet);
             }
         }
     }

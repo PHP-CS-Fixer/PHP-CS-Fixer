@@ -317,7 +317,7 @@ if (count($x)) {
                 $docBlocks[$index] = new DocBlock($token->getContent());
 
                 $this->traverseDocBlockTypes($docBlocks[$index], static function ($type) use ($global, &$other) {
-                    if (false !== strpos($type, '\\')) {
+                    if (false !== \strpos($type, '\\')) {
                         return;
                     }
 
@@ -385,10 +385,10 @@ if (count($x)) {
                     return $type;
                 }
 
-                $name = substr($type, 1);
+                $name = \substr($type, 1);
                 $checkName = strtolower($name);
 
-                if (false !== strpos($checkName, '\\') || isset($other[$checkName])) {
+                if (false !== \strpos($checkName, '\\') || isset($other[$checkName])) {
                     return $type;
                 }
 
@@ -456,7 +456,7 @@ if (count($x)) {
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        if (!$tokens[$index]->isWhitespace() || false === strpos($tokens[$index]->getContent(), "\n")) {
+        if (!$tokens[$index]->isWhitespace() || false === \strpos($tokens[$index]->getContent(), "\n")) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding]));
         }
 
@@ -644,9 +644,9 @@ if (count($x)) {
                 continue;
             }
 
-            $fullName = ltrim($declaration->getFullName(), '\\');
+            $fullName = \ltrim($declaration->getFullName(), '\\');
 
-            if (false !== strpos($fullName, '\\')) {
+            if (false !== \strpos($fullName, '\\')) {
                 $name = $caseSensitive ? $declaration->getShortName() : strtolower($declaration->getShortName());
                 $other[$name] = true;
 

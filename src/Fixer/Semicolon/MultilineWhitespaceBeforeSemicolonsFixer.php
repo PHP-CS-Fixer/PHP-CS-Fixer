@@ -130,12 +130,12 @@ function foo () {
 
             $previousIndex = $index - 1;
             $previous = $tokens[$previousIndex];
-            if (!$previous->isWhitespace() || false === strpos($previous->getContent(), "\n")) {
+            if (!$previous->isWhitespace() || false === \strpos($previous->getContent(), "\n")) {
                 continue;
             }
 
             $content = $previous->getContent();
-            if (0 === strpos($content, $lineEnding) && $tokens[$index - 2]->isComment()) {
+            if (0 === \strpos($content, $lineEnding) && $tokens[$index - 2]->isComment()) {
                 $tokens->ensureWhitespaceAtIndex($previousIndex, 0, $lineEnding);
             } else {
                 $tokens->clearAt($previousIndex);

@@ -70,7 +70,7 @@ final class ShortScalarCastFixer extends AbstractFixer
                 continue;
             }
 
-            $castFrom = trim(substr($tokens[$index]->getContent(), 1, -1));
+            $castFrom = \trim(\substr($tokens[$index]->getContent(), 1, -1));
             $castFromLowered = strtolower($castFrom);
 
             if (!\array_key_exists($castFromLowered, $castMap)) {

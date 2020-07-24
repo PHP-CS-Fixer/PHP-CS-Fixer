@@ -188,7 +188,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 return;
             }
 
-            list($thisIndex, , $index) = array_keys($match);
+            list($thisIndex, , $index) = \array_keys($match);
 
             if (!isset($this->methodMap[$tokens[$index]->getContent()])) {
                 continue;
@@ -212,7 +212,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $isMultilineWhitespace = false;
 
             for ($cnt = $argumentsCnt - 1; $cnt >= 1; --$cnt) {
-                $argStart = array_keys($arguments)[$cnt];
+                $argStart = \array_keys($arguments)[$cnt];
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
 
                 if ('expectExceptionMessage' === $argumentsReplacements[$cnt]) {

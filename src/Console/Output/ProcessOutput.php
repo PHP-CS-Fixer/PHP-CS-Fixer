@@ -114,7 +114,7 @@ final class ProcessOutput implements ProcessOutputInterface
             if (0 === $symbolsOnCurrentLine || $isLast) {
                 $this->output->write(sprintf(
                     '%s %'.\strlen((string) $this->files).'d / %d (%3d%%)',
-                    $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
+                    $isLast && 0 !== $symbolsOnCurrentLine ? \str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
                     $this->processedFiles,
                     $this->files,
                     round($this->processedFiles / $this->files * 100)
@@ -140,6 +140,6 @@ final class ProcessOutput implements ProcessOutputInterface
             $symbols[$symbol] = sprintf('%s-%s', $this->output->isDecorated() ? sprintf($status['format'], $symbol) : $symbol, $status['description']);
         }
 
-        $this->output->write(sprintf("\nLegend: %s\n", implode(', ', $symbols)));
+        $this->output->write(sprintf("\nLegend: %s\n", \implode(', ', $symbols)));
     }
 }

@@ -91,7 +91,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
      */
     protected function createConfigurationDefinition()
     {
-        return new FixerConfigurationResolver(array_merge(
+        return new FixerConfigurationResolver(\array_merge(
             parent::createConfigurationDefinition()->getOptions(),
             [
                 (new FixerOptionBuilder('around_parentheses', 'Whether to fix spaces around parentheses.'))
@@ -205,7 +205,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             }
 
             if ($token->isType(DocLexer::T_NONE)) {
-                if (false !== strpos($token->getContent(), "\n")) {
+                if (false !== \strpos($token->getContent(), "\n")) {
                     continue;
                 }
 

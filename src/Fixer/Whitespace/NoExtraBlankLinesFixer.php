@@ -116,7 +116,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
             '(' => 'fixStructureOpenCloseIfMultiLine', // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
         ];
 
-        $tokensAssoc = array_flip(array_intersect_key($reprToTokenMap, array_flip($this->configuration['tokens'])));
+        $tokensAssoc = \array_flip(array_intersect_key($reprToTokenMap, \array_flip($this->configuration['tokens'])));
 
         $this->tokenKindCallbackMap = array_intersect_key($tokenKindCallbackMap, $tokensAssoc);
         $this->tokenEqualsMap = array_intersect_key($tokenEqualsMap, $tokensAssoc);
@@ -385,7 +385,7 @@ switch($a) {
         $count = \count($parts);
 
         if ($count > $expected) {
-            $this->tokens[$index] = new Token([T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
+            $this->tokens[$index] = new Token([T_WHITESPACE, \implode('', \array_slice($parts, 0, $expected)).\rtrim($parts[$count - 1], "\r\n")]);
         }
     }
 
@@ -400,7 +400,7 @@ switch($a) {
                 return;
             }
 
-            if ($this->tokens[$i]->isWhitespace() && false !== strpos($this->tokens[$i]->getContent(), "\n")) {
+            if ($this->tokens[$i]->isWhitespace() && false !== \strpos($this->tokens[$i]->getContent(), "\n")) {
                 break;
             }
         }
@@ -420,7 +420,7 @@ switch($a) {
         $bodyEnd = $this->tokens->findBlockEnd($blockTypeInfo['type'], $index);
 
         for ($i = $bodyEnd - 1; $i >= $index; --$i) {
-            if (false !== strpos($this->tokens[$i]->getContent(), "\n")) {
+            if (false !== \strpos($this->tokens[$i]->getContent(), "\n")) {
                 $this->removeEmptyLinesAfterLineWithTokenAt($i);
                 $this->removeEmptyLinesAfterLineWithTokenAt($index);
 
@@ -436,7 +436,7 @@ switch($a) {
         for ($end = $index; $end < $tokenCount; ++$end) {
             if (
                 $this->tokens[$end]->equals('}')
-                || false !== strpos($this->tokens[$end]->getContent(), "\n")
+                || false !== \strpos($this->tokens[$end]->getContent(), "\n")
             ) {
                 break;
             }
@@ -456,7 +456,7 @@ switch($a) {
 
             $pos = strrpos($content, "\n");
             if ($pos + 2 <= \strlen($content)) { // preserve indenting where possible
-                $newContent = $ending.substr($content, $pos + 1);
+                $newContent = $ending.\substr($content, $pos + 1);
             } else {
                 $newContent = $ending;
             }

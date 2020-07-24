@@ -1416,7 +1416,7 @@ function foo() {
             'while',
         ];
 
-        $allStatements = array_merge($statementsWithoutCaseOrDefault, ['case', 'default']);
+        $allStatements = \array_merge($statementsWithoutCaseOrDefault, ['case', 'default']);
 
         return [
             [

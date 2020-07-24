@@ -190,7 +190,7 @@ use Bar;
         foreach ($namespacesImports as $uses) {
             $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
         }
-        $usesOrder = array_replace(...$usesOrder);
+        $usesOrder = \array_replace(...$usesOrder);
 
         $usesOrder = array_reverse($usesOrder, true);
         $mapStartToEnd = [];
@@ -251,21 +251,21 @@ use Bar;
                 ->setAllowedTypes(['array', 'null'])
                 ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {
-                        $missing = array_diff($supportedSortTypes, $value);
+                        $missing = \array_diff($supportedSortTypes, $value);
                         if (\count($missing)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Missing sort %s "%s".',
                                 1 === \count($missing) ? 'type' : 'types',
-                                implode('", "', $missing)
+                                \implode('", "', $missing)
                             ));
                         }
 
-                        $unknown = array_diff($value, $supportedSortTypes);
+                        $unknown = \array_diff($value, $supportedSortTypes);
                         if (\count($unknown)) {
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown sort %s "%s".',
                                 1 === \count($unknown) ? 'type' : 'types',
-                                implode('", "', $unknown)
+                                \implode('", "', $unknown)
                             ));
                         }
                     }
@@ -330,7 +330,7 @@ use Bar;
      */
     private function prepareNamespace($namespace)
     {
-        return trim(Preg::replace('%/\*(.*)\*/%s', '', $namespace));
+        return \trim(Preg::replace('%/\*(.*)\*/%s', '', $namespace));
     }
 
     /**
@@ -410,7 +410,7 @@ use Bar;
                                 if (
                                     '' === $firstIndent &&
                                     $namespaceTokens[$k2]->isWhitespace() &&
-                                    false !== strpos($namespaceTokens[$k2]->getContent(), $lineEnding)
+                                    false !== \strpos($namespaceTokens[$k2]->getContent(), $lineEnding)
                                 ) {
                                     $lastIndent = $lineEnding;
                                     $firstIndent = $lineEnding.$this->whitespacesConfig->getIndent();
@@ -420,14 +420,14 @@ use Bar;
                                 $namespacePart .= $namespaceTokens[$k2]->getContent();
                             }
 
-                            $namespacePart = trim($namespacePart);
+                            $namespacePart = \trim($namespacePart);
                             if ('' === $namespacePart) {
                                 $hasGroupTrailingComma = true;
 
                                 continue;
                             }
 
-                            $comment = trim($comment);
+                            $comment = \trim($comment);
                             if ('' !== $comment) {
                                 $namespacePart .= ' '.$comment;
                             }
@@ -444,7 +444,7 @@ use Bar;
                         if ($sortedParts === $parts) {
                             $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                         } else {
-                            $namespace .= $firstIndent.implode($separator, $parts).($hasGroupTrailingComma ? ',' : '').$lastIndent.'}';
+                            $namespace .= $firstIndent.\implode($separator, $parts).($hasGroupTrailingComma ? ',' : '').$lastIndent.'}';
                         }
                     } else {
                         $namespace = Tokens::fromArray($namespaceTokens)->generateCode();

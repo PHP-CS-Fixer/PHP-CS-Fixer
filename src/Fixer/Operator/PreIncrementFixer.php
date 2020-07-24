@@ -40,7 +40,7 @@ final class PreIncrementFixer extends AbstractProxyFixer implements DeprecatedFi
      */
     public function getSuccessorsNames()
     {
-        return array_keys($this->proxyFixers);
+        return \array_keys($this->proxyFixers);
     }
 
     /**

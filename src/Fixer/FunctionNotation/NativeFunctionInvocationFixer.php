@@ -218,7 +218,7 @@ $c = get_class($d);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
@@ -234,7 +234,7 @@ $c = get_class($d);
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $value) {
                     foreach ($value as $functionName) {
-                        if (!\is_string($functionName) || '' === trim($functionName) || trim($functionName) !== $functionName) {
+                        if (!\is_string($functionName) || '' === \trim($functionName) || \trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
                                 \is_object($functionName) ? \get_class($functionName) : \gettype($functionName)
@@ -248,7 +248,7 @@ $c = get_class($d);
                         ];
 
                         if ('@' === $functionName[0] && !\in_array($functionName, $sets, true)) {
-                            throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are "%s".', $functionName, implode('", "', $sets)));
+                            throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are "%s".', $functionName, \implode('", "', $sets)));
                         }
                     }
 

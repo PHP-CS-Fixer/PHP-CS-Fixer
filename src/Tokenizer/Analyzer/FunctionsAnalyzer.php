@@ -117,7 +117,7 @@ final class FunctionsAnalyzer
             }
 
             // global import like `use function \str_repeat;`
-            return $functionUse->getShortName() === ltrim($functionUse->getFullName(), '\\');
+            return $functionUse->getShortName() === \ltrim($functionUse->getFullName(), '\\');
         }
 
         return true;

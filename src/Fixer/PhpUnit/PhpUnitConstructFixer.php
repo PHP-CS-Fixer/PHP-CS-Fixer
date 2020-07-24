@@ -123,7 +123,7 @@ $this->assertNotSame(null, $d);
         return new FixerConfigurationResolverRootless('assertions', [
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionFixers))])
+                ->setAllowedValues([new AllowedValueSubset(\array_keys(self::$assertionFixers))])
                 ->setDefault([
                     'assertEquals',
                     'assertSame',
@@ -191,7 +191,7 @@ $this->assertNotSame(null, $d);
             return null;
         }
 
-        $sequenceIndexes = array_keys($sequence);
+        $sequenceIndexes = \array_keys($sequence);
         if (!$functionsAnalyzer->isTheSameClassCall($tokens, $sequenceIndexes[0])) {
             return null;
         }

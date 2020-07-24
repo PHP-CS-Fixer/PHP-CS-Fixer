@@ -143,7 +143,7 @@ $foo = bar();', $comment, false);
      */
     private function with($php, $comment, $indent)
     {
-        $comment = trim($comment);
+        $comment = \trim($comment);
 
         if ($indent) {
             $comment = str_replace("\n", "\n    ", $comment);

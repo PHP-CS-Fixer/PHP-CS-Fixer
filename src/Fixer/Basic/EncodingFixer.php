@@ -78,7 +78,7 @@ echo "Hello!";
 
         if (0 === strncmp($content, $this->BOM, 3)) {
             /** @var false|string $newContent until support for PHP 5.6 is dropped */
-            $newContent = substr($content, 3);
+            $newContent = \substr($content, 3);
 
             if (false === $newContent) {
                 $newContent = ''; // substr returns false rather than an empty string when starting at the end

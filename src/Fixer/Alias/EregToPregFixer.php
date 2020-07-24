@@ -99,7 +99,7 @@ final class EregToPregFixer extends AbstractFixer
                 // 0 => function name,
                 // 1 => bracket "("
                 // 2 => quoted string passed as 1st parameter
-                $match = array_keys($match);
+                $match = \array_keys($match);
 
                 // advance tokenizer cursor
                 $currIndex = $match[2];
@@ -116,7 +116,7 @@ final class EregToPregFixer extends AbstractFixer
 
                 // convert to PCRE
                 $regexTokenContent = $tokens[$match[2]]->getContent();
-                $string = substr($regexTokenContent, 1, -1);
+                $string = \substr($regexTokenContent, 1, -1);
                 $quote = $regexTokenContent[0];
                 $delim = $this->getBestDelimiter($string);
                 $preg = $delim.addcslashes($string, $delim).$delim.'D'.$map[2];
@@ -163,7 +163,7 @@ final class EregToPregFixer extends AbstractFixer
         // try do find something that's not used
         $delimiters = [];
         foreach (self::$delimiters as $k => $d) {
-            if (false === strpos($pattern, $d)) {
+            if (false === \strpos($pattern, $d)) {
                 return $d;
             }
 

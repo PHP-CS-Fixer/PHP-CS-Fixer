@@ -97,7 +97,7 @@ final class Example
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $searchFor = array_keys($this->configuration['replacements']);
+        $searchFor = \array_keys($this->configuration['replacements']);
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -142,7 +142,7 @@ final class Example
                             ));
                         }
 
-                        if (1 !== Preg::match('#^\S+$#', $to) || false !== strpos($to, '*/')) {
+                        if (1 !== Preg::match('#^\S+$#', $to) || false !== \strpos($to, '*/')) {
                             throw new InvalidOptionsException(sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,
@@ -150,7 +150,7 @@ final class Example
                             ));
                         }
 
-                        $normalizedValue[trim($from)] = trim($to);
+                        $normalizedValue[\trim($from)] = \trim($to);
                     }
 
                     foreach ($normalizedValue as $from => $to) {

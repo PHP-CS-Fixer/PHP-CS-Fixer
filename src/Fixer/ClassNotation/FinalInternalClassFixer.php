@@ -44,7 +44,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
         );
 
         if (\count($intersect)) {
-            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the include and exclude list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
+            throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the include and exclude list, got duplicates: "%s".', \implode('", "', \array_keys($intersect))));
         }
     }
 
@@ -136,7 +136,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
             $newValue = [];
             foreach ($value as $key) {
                 if ('@' === $key[0]) {
-                    $key = substr($key, 1);
+                    $key = \substr($key, 1);
                 }
 
                 $newValue[strtolower($key)] = true;
@@ -193,9 +193,9 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
 
         foreach ($doc->getAnnotations() as $annotation) {
             Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches);
-            $tag = strtolower(substr(array_shift($matches), 1));
+            $tag = strtolower(\substr(array_shift($matches), 1));
             foreach ($this->configuration['annotation-black-list'] as $tagStart => $true) {
-                if (0 === strpos($tag, $tagStart)) {
+                if (0 === \strpos($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration
                 }
             }

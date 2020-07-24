@@ -54,7 +54,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         }
 
         // translate results for humans
-        list($functionName, $openParenthesis) = array_keys($matches);
+        list($functionName, $openParenthesis) = \array_keys($matches);
 
         $functionsAnalyzer = new FunctionsAnalyzer();
 

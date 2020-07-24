@@ -76,7 +76,7 @@ function foo () {}
 
             if (null !== $end) {
                 $line = $doc->getLine($end);
-                $content = rtrim($line->getContent());
+                $content = \rtrim($line->getContent());
 
                 if (!$this->isCorrectlyFormatted($content)) {
                     $line->setContent($content.'.'.$this->whitespacesConfig->getLineEnding());
@@ -99,6 +99,6 @@ function foo () {}
             return true;
         }
 
-        return $content !== rtrim($content, '.。!?¡¿！？');
+        return $content !== \rtrim($content, '.。!?¡¿！？');
     }
 }

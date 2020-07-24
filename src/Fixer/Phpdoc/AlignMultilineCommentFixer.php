@@ -139,7 +139,7 @@ with a line not prefixed with asterisk
                     continue;
                 }
 
-                $line = ltrim($line);
+                $line = \ltrim($line);
                 if ($token->isGivenKind(T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
                     continue;
                 }
@@ -153,7 +153,7 @@ with a line not prefixed with asterisk
                 $lines[$lineNumber] = $indentation.' '.$line;
             }
 
-            $tokens[$index] = new Token([$token->getId(), implode($lineEnding, $lines)]);
+            $tokens[$index] = new Token([$token->getId(), \implode($lineEnding, $lines)]);
         }
     }
 

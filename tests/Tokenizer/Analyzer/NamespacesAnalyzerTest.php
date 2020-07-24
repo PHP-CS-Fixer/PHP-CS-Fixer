@@ -37,7 +37,7 @@ final class NamespacesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespacesAnalyzer();
 
-        static::assertSame(serialize($expected), serialize(($analyzer->getDeclarations($tokens))));
+        static::assertSame(\serialize($expected), \serialize(($analyzer->getDeclarations($tokens))));
     }
 
     public function provideNamespacesCases()

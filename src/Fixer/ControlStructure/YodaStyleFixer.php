@@ -745,6 +745,6 @@ return $foo === count($bar);
         }
 
         $this->candidateTypesConfiguration = $candidateTypes;
-        $this->candidateTypes = array_keys($candidateTypes);
+        $this->candidateTypes = \array_keys($candidateTypes);
     }
 }

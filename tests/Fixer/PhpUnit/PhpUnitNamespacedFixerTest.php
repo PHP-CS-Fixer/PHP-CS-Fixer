@@ -260,8 +260,8 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
     {
         $classmap = require __DIR__.'/../../../vendor/composer/autoload_classmap.php';
 
-        foreach (array_keys($classmap) as $class) {
-            if (0 !== strpos($class, 'PHPUnit_')) {
+        foreach (\array_keys($classmap) as $class) {
+            if (0 !== \strpos($class, 'PHPUnit_')) {
                 continue;
             }
             yield [$class];

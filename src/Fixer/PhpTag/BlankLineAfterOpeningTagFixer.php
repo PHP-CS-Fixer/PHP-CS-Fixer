@@ -69,7 +69,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
         $newlineFound = false;
         /** @var Token $token */
         foreach ($tokens as $token) {
-            if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
+            if ($token->isWhitespace() && false !== \strpos($token->getContent(), "\n")) {
                 $newlineFound = true;
 
                 break;
@@ -83,11 +83,11 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
         $token = $tokens[0];
 
-        if (false === strpos($token->getContent(), "\n")) {
-            $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$lineEnding]);
+        if (false === \strpos($token->getContent(), "\n")) {
+            $tokens[0] = new Token([$token->getId(), \rtrim($token->getContent()).$lineEnding]);
         }
 
-        if (false === strpos($tokens[1]->getContent(), "\n")) {
+        if (false === \strpos($tokens[1]->getContent(), "\n")) {
             if ($tokens[1]->isWhitespace()) {
                 $tokens[1] = new Token([T_WHITESPACE, $lineEnding.$tokens[1]->getContent()]);
             } else {

@@ -218,7 +218,7 @@ class DocBlock
      */
     public function getContent()
     {
-        return implode('', $this->lines);
+        return \implode('', $this->lines);
     }
 
     private function findAnnotationLength($start)
@@ -256,14 +256,14 @@ class DocBlock
         }
 
         $lineString = str_replace('*/', '', $lineString);
-        $lineString = trim($lineString);
+        $lineString = \trim($lineString);
 
-        if ('/**' === substr($lineString, 0, 3)) {
-            $lineString = substr($lineString, 3);
-        } elseif ('*' === substr($lineString, 0, 1)) {
-            $lineString = substr($lineString, 1);
+        if ('/**' === \substr($lineString, 0, 3)) {
+            $lineString = \substr($lineString, 3);
+        } elseif ('*' === \substr($lineString, 0, 1)) {
+            $lineString = \substr($lineString, 1);
         }
 
-        return trim($lineString);
+        return \trim($lineString);
     }
 }

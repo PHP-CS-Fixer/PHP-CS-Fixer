@@ -98,7 +98,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
                     }
                 }
 
-                $content = rtrim($content);
+                $content = \rtrim($content);
 
                 return $content.' */';
             },

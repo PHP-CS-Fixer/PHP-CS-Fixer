@@ -141,7 +141,7 @@ echo 1;
             }
         }
 
-        foreach (array_values($locationIndexes) as $possibleLocation) {
+        foreach (\array_values($locationIndexes) as $possibleLocation) {
             // figure out where the comment should be placed
             $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
 
@@ -181,11 +181,11 @@ echo 1;
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
                 ->setNormalizer(static function (Options $options, $value) use ($fixerName) {
-                    if ('' === trim($value)) {
+                    if ('' === \trim($value)) {
                         return '';
                     }
 
-                    if (false !== strpos($value, '*/')) {
+                    if (false !== \strpos($value, '*/')) {
                         throw new InvalidFixerConfigurationException($fixerName, 'Cannot use \'*/\' in header.');
                     }
 
@@ -223,7 +223,7 @@ echo 1;
         $lines = explode("\n", str_replace("\r", '', $this->configuration['header']));
 
         foreach ($lines as $line) {
-            $comment .= rtrim(' * '.$line).$lineEnding;
+            $comment .= \rtrim(' * '.$line).$lineEnding;
         }
 
         return $comment.' */';
@@ -336,11 +336,11 @@ echo 1;
             $expectedLineCount = 1;
         }
         if ($headerIndex === \count($tokens) - 1) {
-            $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount)]));
+            $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, \str_repeat($lineEnding, $expectedLineCount)]));
         } else {
             $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex, 1);
             if ($lineBreakCount < $expectedLineCount) {
-                $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
+                $missing = \str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
                     $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $missing.$tokens[$headerIndex + 1]->getContent()]);
                 } else {
@@ -367,7 +367,7 @@ echo 1;
         $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex, -1);
         if ($lineBreakCount < $expectedLineCount) {
             // because of the way the insert index was determined for header comment there cannot be an empty token here
-            $tokens->insertAt($headerIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount)]));
+            $tokens->insertAt($headerIndex, new Token([T_WHITESPACE, \str_repeat($lineEnding, $expectedLineCount - $lineBreakCount)]));
         }
     }
 

@@ -967,7 +967,7 @@ switch ($foo) {
             }
         }
 
-        $cases = array_merge($cases, [
+        $cases = \array_merge($cases, [
             [
                 '<?php
 switch ($foo) {

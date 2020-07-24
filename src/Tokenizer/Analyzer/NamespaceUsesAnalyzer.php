@@ -94,7 +94,7 @@ final class NamespaceUsesAnalyzer
         }
 
         return new NamespaceUseAnalysis(
-            trim($fullName),
+            \trim($fullName),
             $shortName,
             $aliased,
             $startIndex,

@@ -82,7 +82,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
             $content = Preg::replaceCallback(
                 '#(?:@{+|{+\h*@)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)s?([^}]*)(?:}+)#i',
                 static function (array $matches) {
-                    $doc = trim($matches[2]);
+                    $doc = \trim($matches[2]);
 
                     if ('' === $doc) {
                         return '{@'.strtolower($matches[1]).'}';

@@ -82,7 +82,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_3_5)) {
             // assertions added in 3.5: assertInternalType assertNotEmpty assertEmpty
-            $this->functions = array_merge($this->functions, [
+            $this->functions = \array_merge($this->functions, [
                 'empty',
                 'is_array',
                 'is_bool',
@@ -104,7 +104,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_0)) {
             // assertions added in 5.0: assertFinite assertInfinite assertNan
-            $this->functions = array_merge($this->functions, [
+            $this->functions = \array_merge($this->functions, [
                 'is_infinite',
                 'is_nan',
             ]);
@@ -112,7 +112,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
 
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_5_6)) {
             // assertions added in 5.6: assertDirectoryExists assertDirectoryNotExists assertIsReadable assertNotIsReadable assertIsWritable assertNotIsWritable
-            $this->functions = array_merge($this->functions, [
+            $this->functions = \array_merge($this->functions, [
                 'is_dir',
                 'is_readable',
                 'is_writable',
@@ -297,7 +297,7 @@ $this->assertTrue(is_readable($a));
             return;
         }
 
-        $type = substr($content, 3);
+        $type = \substr($content, 3);
 
         $tokens[$assertCall['index']] = new Token([T_STRING, $isPositive ? 'assertInternalType' : 'assertNotInternalType']);
         $tokens[$testIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "'".$type."'"]);
@@ -379,7 +379,7 @@ $this->assertTrue(is_readable($a));
 
         $tokens[$assertCall['index']] = new Token([
             T_STRING,
-            false === strpos($assertCall['loweredName'], 'not', 6) ? 'assertCount' : 'assertNotCount',
+            false === \strpos($assertCall['loweredName'], 'not', 6) ? 'assertCount' : 'assertNotCount',
         ]);
     }
 
@@ -395,7 +395,7 @@ $this->assertTrue(is_readable($a));
 
             // test if "assert" something call
             $loweredContent = strtolower($tokens[$index]->getContent());
-            if ('assert' !== substr($loweredContent, 0, 6)) {
+            if ('assert' !== \substr($loweredContent, 0, 6)) {
                 continue;
             }
 

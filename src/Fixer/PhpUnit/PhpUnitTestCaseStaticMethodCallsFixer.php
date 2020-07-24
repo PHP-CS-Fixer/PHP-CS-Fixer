@@ -344,7 +344,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('call_type', 'The call type to use for referring to PHPUnit methods.'))
                 ->setAllowedTypes(['string'])
-                ->setAllowedValues(array_keys($this->allowedValues))
+                ->setAllowedValues(\array_keys($this->allowedValues))
                 ->setDefault('static')
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
@@ -355,7 +355,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "methods" key, expected any of "%s", got "%s".',
-                                    implode('", "', array_keys($thisFixer->staticMethods)),
+                                    \implode('", "', \array_keys($thisFixer->staticMethods)),
                                     \is_object($method) ? \get_class($method) : \gettype($method).'#'.$method
                                 )
                             );
@@ -366,7 +366,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                                 sprintf(
                                     'Unexpected value for method "%s", expected any of "%s", got "%s".',
                                     $method,
-                                    implode('", "', array_keys($thisFixer->allowedValues)),
+                                    \implode('", "', \array_keys($thisFixer->allowedValues)),
                                     \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
                                 )
                             );

@@ -115,13 +115,13 @@ $className = Baz::class;
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
                     static function ($import) {
-                        return trim($import);
+                        return \trim($import);
                     },
                     explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))
                 );
                 foreach ($groupImports as $groupImport) {
                     $groupImportParts = array_map(static function ($import) {
-                        return trim($import);
+                        return \trim($import);
                     }, explode(' as ', $groupImport));
                     if (2 === \count($groupImportParts)) {
                         $this->imports[$groupImportParts[1]] = $import.$groupImportParts[0];
@@ -153,7 +153,7 @@ $className = Baz::class;
         $this->storeImports($tokens, $startIndex, $endIndex);
 
         $ctClassTokens = $tokens->findGivenKind(CT::T_CLASS_CONSTANT, $startIndex, $endIndex);
-        foreach (array_reverse(array_keys($ctClassTokens)) as $classIndex) {
+        foreach (array_reverse(\array_keys($ctClassTokens)) as $classIndex) {
             $this->replaceClassKeyword($tokens, $namespace, $classIndex);
         }
     }
@@ -199,7 +199,7 @@ $className = Baz::class;
             $classStringArray = explode('\\', $classString);
             $namespaceToTest = $classStringArray[0];
 
-            if (0 === strcmp($namespaceToTest, substr($import, -\strlen($namespaceToTest)))) {
+            if (0 === strcmp($namespaceToTest, \substr($import, -\strlen($namespaceToTest)))) {
                 $classImport = $import;
 
                 break;
@@ -207,7 +207,7 @@ $className = Baz::class;
         }
 
         for ($i = $classBeginIndex; $i <= $classIndex; ++$i) {
-            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))) {
+            if (!$tokens[$i]->isComment() && !($tokens[$i]->isWhitespace() && false !== \strpos($tokens[$i]->getContent(), "\n"))) {
                 $tokens->clearAt($i);
             }
         }
@@ -240,7 +240,7 @@ $className = Baz::class;
             return $classImport;
         }
 
-        return implode('\\', array_merge(
+        return \implode('\\', \array_merge(
             \array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
             $classStringArray
         ));

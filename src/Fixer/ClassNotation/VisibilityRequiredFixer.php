@@ -118,7 +118,7 @@ class Sample
 
             $expectedKinds = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
             if ('property' === $element['type']) {
-                $expectedKinds = array_merge($expectedKinds, $propertyTypeDeclarationKinds);
+                $expectedKinds = \array_merge($expectedKinds, $propertyTypeDeclarationKinds);
             }
 
             while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {

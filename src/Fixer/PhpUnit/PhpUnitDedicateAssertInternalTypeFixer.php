@@ -173,7 +173,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
                 continue;
             }
 
-            $expectedType = trim($expectedTypeToken->getContent(), '\'"');
+            $expectedType = \trim($expectedTypeToken->getContent(), '\'"');
             if (!isset($this->typeToDedicatedAssertMap[$expectedType])) {
                 continue;
             }

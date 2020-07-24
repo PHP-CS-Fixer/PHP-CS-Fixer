@@ -105,11 +105,11 @@ final class SingleLineThrowFixer extends AbstractFixer
             $content = $tokens[$index]->getContent();
 
             if ($tokens[$index]->isGivenKind(T_COMMENT)) {
-                if (0 === strpos($content, '//')) {
-                    $content = '/*'.substr($content, 2).' */';
+                if (0 === \strpos($content, '//')) {
+                    $content = '/*'.\substr($content, 2).' */';
                     $tokens->clearAt($index + 1);
-                } elseif (0 === strpos($content, '#')) {
-                    $content = '/*'.substr($content, 1).' */';
+                } elseif (0 === \strpos($content, '#')) {
+                    $content = '/*'.\substr($content, 1).' */';
                     $tokens->clearAt($index + 1);
                 } elseif (false !== Preg::match('/\R/', $content)) {
                     $content = Preg::replace('/\R/', ' ', $content);
@@ -128,14 +128,14 @@ final class SingleLineThrowFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getNonEmptySibling($index, -1);
-            if ($tokens[$prevIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AFTER_TOKENS, self::REMOVE_WHITESPACE_AROUND_TOKENS))) {
+            if ($tokens[$prevIndex]->equalsAny(\array_merge(self::REMOVE_WHITESPACE_AFTER_TOKENS, self::REMOVE_WHITESPACE_AROUND_TOKENS))) {
                 $tokens->clearAt($index);
 
                 continue;
             }
 
             $nextIndex = $tokens->getNonEmptySibling($index, 1);
-            if ($tokens[$nextIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS))) {
+            if ($tokens[$nextIndex]->equalsAny(\array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS))) {
                 if (!$tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
                     $tokens->clearAt($index);
 

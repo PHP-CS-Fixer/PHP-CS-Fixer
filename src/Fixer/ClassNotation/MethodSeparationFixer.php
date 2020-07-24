@@ -68,7 +68,7 @@ final class Sample
      */
     public function getSuccessorsNames()
     {
-        return array_keys($this->proxyFixers);
+        return \array_keys($this->proxyFixers);
     }
 
     /**

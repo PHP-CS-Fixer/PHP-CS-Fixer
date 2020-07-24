@@ -68,10 +68,10 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
         if ('b' === $contentQuote || 'B' === $contentQuote) {
             $binPrefix = $contentQuote;
             $contentQuote = $content[1]; // `'` or `"`
-            $mode = substr($content, 2, -1);
+            $mode = \substr($content, 2, -1);
         } else {
             $binPrefix = '';
-            $mode = substr($content, 1, -1);
+            $mode = \substr($content, 1, -1);
         }
 
         $modeLength = \strlen($mode);
@@ -84,7 +84,7 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
         }
 
         $split = $this->sortFlags(Preg::split('#([^\+]\+?)#', $mode, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-        $newContent = $binPrefix.$contentQuote.implode('', $split).$contentQuote;
+        $newContent = $binPrefix.$contentQuote.\implode('', $split).$contentQuote;
 
         if ($content !== $newContent) {
             $tokens[$argumentFlagIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, $newContent]);

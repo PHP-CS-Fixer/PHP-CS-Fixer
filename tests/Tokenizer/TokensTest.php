@@ -329,11 +329,11 @@ class FooBar
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(T_PUBLIC));
+        list($fooIndex, $barIndex) = \array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
-        $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $newPublicIndexes = \array_keys($tokens->findGivenKind(T_PUBLIC));
         static::assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
@@ -375,7 +375,7 @@ PHP;
      */
     public function testShortOpenTagMonolithicPhpDetection($source, $monolithic)
     {
-        if (!ini_get('short_open_tag')) {
+        if (!\ini_get('short_open_tag')) {
             $monolithic = false;
         }
 
@@ -1283,7 +1283,7 @@ $bar;',
             static::fail('While "input" is <null>, "expected" is not.');
         }
 
-        static::assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
+        static::assertSame(\array_keys($expected), \array_keys($input), 'Both arrays need to have same keys.');
 
         foreach ($expected as $index => $expectedToken) {
             static::assertTrue(

@@ -141,7 +141,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return new FixerConfigurationResolverRootless('assertions', [
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionMap))])
+                ->setAllowedValues([new AllowedValueSubset(\array_keys(self::$assertionMap))])
                 ->setDefault([
                     'assertAttributeEquals',
                     'assertAttributeNotEquals',

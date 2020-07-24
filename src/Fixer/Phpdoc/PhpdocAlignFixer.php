@@ -89,29 +89,29 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurationDefin
 
         $tagsWithNameToAlign = array_intersect($this->configuration['tags'], self::$tagsWithName);
         $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::$tagsWithMethodSignature);
-        $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
+        $tagsWithoutNameToAlign = \array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
         $types = [];
 
         $indent = '(?P<indent>(?: {2}|\t)*)';
         // e.g. @param <hint> <$var>
         if (!empty($tagsWithNameToAlign)) {
-            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+            $types[] = '(?P<tag>'.\implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
         }
 
         // e.g. @return <hint>
         if (!empty($tagsWithoutNameToAlign)) {
-            $types[] = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
+            $types[] = '(?P<tag2>'.\implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
         }
 
         // e.g. @method <hint> <signature>
         if (!empty($tagsWithMethodSignatureToAlign)) {
-            $types[] = '(?P<tag3>'.implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
+            $types[] = '(?P<tag3>'.\implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
         }
 
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/^'.$indent.' \* @(?:'.implode('|', $types).')'.$desc.'\s*$/u';
+        $this->regex = '/^'.$indent.' \* @(?:'.\implode('|', $types).')'.$desc.'\s*$/u';
         $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
         $this->align = $this->configuration['align'];
     }
@@ -351,7 +351,7 @@ EOF;
             }
 
             if (isset($matches['hint'])) {
-                $matches['hint'] = trim($matches['hint']);
+                $matches['hint'] = \trim($matches['hint']);
             }
 
             return $matches;
@@ -378,7 +378,7 @@ EOF;
     {
         $indent = self::ALIGN_VERTICAL === $this->align ? $verticalAlignIndent : $leftAlignIndent;
 
-        return str_repeat(' ', $indent);
+        return \str_repeat(' ', $indent);
     }
 
     /**

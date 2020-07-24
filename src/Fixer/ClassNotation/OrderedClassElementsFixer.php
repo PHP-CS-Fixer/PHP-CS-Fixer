@@ -256,7 +256,7 @@ class Example
         return new FixerConfigurationResolverRootless('order', [
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
+                ->setAllowedValues([new AllowedValueSubset(\array_keys(\array_merge(self::$typeHierarchy, self::$specialTypes)))])
                 ->setDefault([
                     'use_trait',
                     'constant_public',
@@ -390,7 +390,7 @@ class Example
             return ['phpunit', strtolower($nameToken->getContent())];
         }
 
-        if ('__' === substr($nameToken->getContent(), 0, 2)) {
+        if ('__' === \substr($nameToken->getContent(), 0, 2)) {
             return 'magic';
         }
 

@@ -193,7 +193,7 @@ else?><?php echo 5;',
                 }
             ';
 
-        $cases = array_merge($cases, $this->generateCases($expected));
+        $cases = \array_merge($cases, $this->generateCases($expected));
 
         $expected =
             '<?php
@@ -214,7 +214,7 @@ else?><?php echo 5;',
                 }
             ';
 
-        $cases = array_merge($cases, $this->generateCases($expected));
+        $cases = \array_merge($cases, $this->generateCases($expected));
 
         $cases[] = [
             '<?php

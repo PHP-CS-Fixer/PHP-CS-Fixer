@@ -106,7 +106,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     {
         if ($tokens[$index]->isWhitespace()) {
             if (
-                false === strpos($tokens[$index]->getContent(), "\n")
+                false === \strpos($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
                 $tokens[$index] = new Token([T_WHITESPACE, ' ']);

@@ -169,7 +169,7 @@ class Sample
         $types = ['const', 'method', 'property'];
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', sprintf('List of classy elements; \'%s\'.', implode("', '", $types))))
+            (new FixerOptionBuilder('elements', sprintf('List of classy elements; \'%s\'.', \implode("', '", $types))))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset($types)])
                 ->setDefault(['const', 'method', 'property'])
@@ -189,7 +189,7 @@ class Sample
     private function fixSpaceBelowClassElement(Tokens $tokens, $classEndIndex, $elementEndIndex)
     {
         for ($nextNotWhite = $elementEndIndex + 1;; ++$nextNotWhite) {
-            if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
+            if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === \strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
                 continue;
             }
 
@@ -308,7 +308,7 @@ class Sample
         ++$startIndex;
         $numbOfWhiteTokens = $endIndex - $startIndex;
         if (0 === $numbOfWhiteTokens) {
-            $tokens->insertAt($startIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
+            $tokens->insertAt($startIndex, new Token([T_WHITESPACE, \str_repeat($lineEnding, $reqLineCount)]));
 
             return;
         }
@@ -321,7 +321,7 @@ class Sample
         if ($lineBreakCount < $reqLineCount) {
             $tokens[$startIndex] = new Token([
                 T_WHITESPACE,
-                str_repeat($lineEnding, $reqLineCount - $lineBreakCount).$tokens[$startIndex]->getContent(),
+                \str_repeat($lineEnding, $reqLineCount - $lineBreakCount).$tokens[$startIndex]->getContent(),
             ]);
 
             return;

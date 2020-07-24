@@ -49,7 +49,7 @@ final class ProjectFixerConfigurationTest extends TestCase
 
     public function testRuleDefinedAlpha()
     {
-        $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
+        $rules = $rulesSorted = \array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
         static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
     }

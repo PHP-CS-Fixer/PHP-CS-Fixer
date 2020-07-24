@@ -84,7 +84,7 @@ final class ToolInfo implements ToolInfoInterface
 
     public function isInstalledAsPhar()
     {
-        return 'phar://' === substr(__DIR__, 0, 7);
+        return 'phar://' === \substr(__DIR__, 0, 7);
     }
 
     public function isInstalledByComposer()

@@ -44,7 +44,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                 throw new \InvalidArgumentException('File format is invalid.');
             }
 
-            $match = array_merge(
+            $match = \array_merge(
                 [
                     'config' => null,
                     'settings' => null,
@@ -240,11 +240,11 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         }
 
         if (null !== $template) {
-            $decoded = array_merge(
+            $decoded = \array_merge(
                 $template,
                 array_intersect_key(
                     $decoded,
-                    array_flip(array_keys($template))
+                    \array_flip(\array_keys($template))
                 )
             );
         }

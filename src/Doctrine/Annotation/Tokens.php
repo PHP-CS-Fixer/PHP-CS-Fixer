@@ -41,7 +41,7 @@ final class Tokens extends \SplFixedArray
         $content = $input->getContent();
         $ignoredTextPosition = 0;
         $currentPosition = 0;
-        while (false !== $nextAtPosition = strpos($content, '@', $currentPosition)) {
+        while (false !== $nextAtPosition = \strpos($content, '@', $currentPosition)) {
             if (0 !== $nextAtPosition && !Preg::match('/\s/', $content[$nextAtPosition - 1])) {
                 $currentPosition = $nextAtPosition + 1;
 
@@ -49,7 +49,7 @@ final class Tokens extends \SplFixedArray
             }
 
             $lexer = new DocLexer();
-            $lexer->setInput(substr($content, $nextAtPosition));
+            $lexer->setInput(\substr($content, $nextAtPosition));
 
             $scannedTokens = [];
             $index = 0;
@@ -94,7 +94,7 @@ final class Tokens extends \SplFixedArray
             if (0 !== $nbScannedTokensToUse) {
                 $ignoredTextLength = $nextAtPosition - $ignoredTextPosition;
                 if (0 !== $ignoredTextLength) {
-                    $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition, $ignoredTextLength));
+                    $tokens[] = new Token(DocLexer::T_NONE, \substr($content, $ignoredTextPosition, $ignoredTextLength));
                 }
 
                 $lastTokenEndIndex = 0;
@@ -105,7 +105,7 @@ final class Tokens extends \SplFixedArray
 
                     $missingTextLength = $token['position'] - $lastTokenEndIndex;
                     if ($missingTextLength > 0) {
-                        $tokens[] = new Token(DocLexer::T_NONE, substr(
+                        $tokens[] = new Token(DocLexer::T_NONE, \substr(
                             $content,
                             $nextAtPosition + $lastTokenEndIndex,
                             $missingTextLength
@@ -123,7 +123,7 @@ final class Tokens extends \SplFixedArray
         }
 
         if ($ignoredTextPosition < \strlen($content)) {
-            $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
+            $tokens[] = new Token(DocLexer::T_NONE, \substr($content, $ignoredTextPosition));
         }
 
         return $tokens;

@@ -494,7 +494,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
      */
     public function testCasesWithShortOpenTag($expected, $input = null)
     {
-        if (!ini_get('short_open_tag')) {
+        if (!\ini_get('short_open_tag')) {
             static::markTestSkipped('No short tag tests possible.');
         }
         $this->doTest($expected, $input);

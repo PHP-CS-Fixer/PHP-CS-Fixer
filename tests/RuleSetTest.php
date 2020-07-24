@@ -154,7 +154,7 @@ final class RuleSetTest extends TestCase
     public function testBuildInSetDefinitionNames($setName)
     {
         static::assertInternalType('string', $setName);
-        static::assertSame('@', substr($setName, 0, 1));
+        static::assertSame('@', \substr($setName, 0, 1));
     }
 
     public function testResolveRulesWithInvalidSet()
@@ -350,7 +350,7 @@ final class RuleSetTest extends TestCase
             sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
                 $safe ? 'safe' : 'risky',
-                implode('\', \'', $fixerNames)
+                \implode('\', \'', $fixerNames)
             )
         );
     }
@@ -364,7 +364,7 @@ final class RuleSetTest extends TestCase
         foreach ($ruleSet->getSetDefinitionNames() as $name) {
             $sets[$name] = [
                 [$name => true],
-                false === strpos($name, ':risky'),
+                false === \strpos($name, ':risky'),
             ];
         }
 
@@ -394,7 +394,7 @@ final class RuleSetTest extends TestCase
         $ruleSet = $this->createRuleSetToTestWith([]);
 
         static::assertSame(
-            array_keys(self::getRuleSetDefinitionsToTestWith()),
+            \array_keys(self::getRuleSetDefinitionsToTestWith()),
             $ruleSet->getSetDefinitionNames()
         );
     }
@@ -628,7 +628,7 @@ final class RuleSetTest extends TestCase
                 $message .= sprintf("\n\"%s\" defines rules the same as it extends from:", $setName);
 
                 foreach ($duplicates[$setName] as $ruleName => $otherSets) {
-                    $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, implode(', ', $otherSets));
+                    $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, \implode(', ', $otherSets));
                 }
             }
 
@@ -725,7 +725,7 @@ Integration of %s.
                 $subSetDuplicates = $this->findInSets($setRules['sets'], $ruleName, $config);
 
                 if (\count($subSetDuplicates) > 0) {
-                    $duplicates = array_merge($duplicates, $subSetDuplicates);
+                    $duplicates = \array_merge($duplicates, $subSetDuplicates);
                 }
             }
         }
@@ -764,7 +764,7 @@ Integration of %s.
      */
     private function sort(array &$data)
     {
-        $keys = array_keys($data);
+        $keys = \array_keys($data);
 
         if ($this->allInteger($keys)) {
             sort($data);
@@ -874,7 +874,7 @@ Integration of %s.
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
+                $allowedVersionsForFixer = \array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
 
                 break;
             }
@@ -896,7 +896,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            implode('", "', $allowedVersionsForRuleset)
+            \implode('", "', $allowedVersionsForRuleset)
         ));
 
         rsort($allowedVersionsForRuleset);

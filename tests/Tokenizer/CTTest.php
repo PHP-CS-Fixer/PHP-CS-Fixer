@@ -27,7 +27,7 @@ final class CTTest extends TestCase
     public function testUniqueValues()
     {
         $constants = $this->getConstants();
-        static::assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
+        static::assertSame($constants, \array_flip(\array_flip($constants)), 'Values of CT::T_* constants must be unique.');
     }
 
     /**

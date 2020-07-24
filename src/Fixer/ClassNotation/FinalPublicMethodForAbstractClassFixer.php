@@ -90,7 +90,7 @@ abstract class AbstractMachine
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $classes = array_keys($tokens->findGivenKind(T_CLASS));
+        $classes = \array_keys($tokens->findGivenKind(T_CLASS));
 
         while ($classIndex = array_pop($classes)) {
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];

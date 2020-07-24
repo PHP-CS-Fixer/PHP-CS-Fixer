@@ -302,7 +302,7 @@ A#
 
     public function provideClassesCases()
     {
-        return array_merge(
+        return \array_merge(
             $this->provideClassyCases('class'),
             $this->provideClassyExtendingCases('class'),
             $this->provideClassyImplementsCases()
@@ -361,7 +361,7 @@ A#
 
     public function provideInterfacesCases()
     {
-        $cases = array_merge(
+        $cases = \array_merge(
             $this->provideClassyCases('interface'),
             $this->provideClassyExtendingCases('interface')
         );

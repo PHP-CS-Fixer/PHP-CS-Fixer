@@ -232,7 +232,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $newMethodsCode = '<?php $this->'
                 .(isset($annotations['expectedExceptionMessageRegExp']) ? 'setExpectedExceptionRegExp' : 'setExpectedException')
                 .'('
-                .implode(', ', $paramList)
+                .\implode(', ', $paramList)
                 .');';
             $newMethods = Tokens::fromCode($newMethodsCode);
             $newMethods[0] = new Token([
@@ -271,13 +271,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
         }
 
-        return rtrim($content);
+        return \rtrim($content);
     }
 
     private function annotationsToParamList(array $annotations)
     {
         $params = [];
-        $exceptionClass = ltrim($annotations['expectedException'], '\\');
+        $exceptionClass = \ltrim($annotations['expectedException'], '\\');
 
         if ($this->configuration['use_class_const']) {
             $params[] = "\\{$exceptionClass}::class";

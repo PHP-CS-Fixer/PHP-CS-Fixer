@@ -78,7 +78,7 @@ final class ReporterFactory
      */
     public function getFormats()
     {
-        $formats = array_keys($this->reporters);
+        $formats = \array_keys($this->reporters);
         sort($formats);
 
         return $formats;

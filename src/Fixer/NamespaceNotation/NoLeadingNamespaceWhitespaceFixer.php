@@ -85,7 +85,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                     $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, ' ']);
                 }
             } else {
-                $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, substr($beforeNamespace->getContent(), 0, $lastNewline + 1)]);
+                $tokens[$beforeNamespaceIndex] = new Token([T_WHITESPACE, \substr($beforeNamespace->getContent(), 0, $lastNewline + 1)]);
             }
         }
     }
@@ -96,6 +96,6 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
             return false;
         }
 
-        return '' === trim(substr($str, -1));
+        return '' === \trim(\substr($str, -1));
     }
 }

@@ -98,7 +98,7 @@ final class Utils
             return '';
         }
 
-        return ltrim($str, "\n");
+        return \ltrim($str, "\n");
     }
 
     /**
@@ -177,7 +177,7 @@ final class Utils
         $last = array_pop($names);
 
         if ($names) {
-            return implode(', ', $names).' and '.$last;
+            return \implode(', ', $names).' and '.$last;
         }
 
         return $last;

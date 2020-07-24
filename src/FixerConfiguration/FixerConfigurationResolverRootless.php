@@ -79,9 +79,9 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
                 $this->resolver->getOptions()
             );
 
-            $passedNames = array_keys($options);
+            $passedNames = \array_keys($options);
 
-            if (!empty(array_diff($passedNames, $names))) {
+            if (!empty(\array_diff($passedNames, $names))) {
                 $message = "Passing \"{$this->root}\" at the root of the configuration for rule \"{$this->fixerName}\" is deprecated and will not be supported in 3.0, use \"{$this->root}\" => array(...) option instead.";
 
                 if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {

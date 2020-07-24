@@ -302,7 +302,7 @@ EOF
                 'https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v%s/src/ConfigInterface.php',
                 self::getLatestReleaseVersionFromChangeLog()
             ),
-            '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
+            '%%%CI_INTEGRATION%%%' => \implode("\n", array_map(
                 static function ($line) { return '    $ '.$line; },
                 \array_slice(file(__DIR__.'/../../../ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
@@ -473,13 +473,13 @@ EOF
                 $description .= sprintf(' DEPRECATED: %s.', $message);
             }
 
-            $description = implode("\n   | ", self::wordwrap(
+            $description = \implode("\n   | ", self::wordwrap(
                 Preg::replace('/(`.+?`)/', '<info>$1</info>', $description),
                 72
             ));
 
             if (!empty($sets)) {
-                $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), implode(', ', $sets), $description);
+                $help .= sprintf(" * <comment>%s</comment> [%s]\n   | %s\n", $fixer->getName(), \implode(', ', $sets), $description);
             } else {
                 $help .= sprintf(" * <comment>%s</comment>\n   | %s\n", $fixer->getName(), $description);
             }
@@ -530,7 +530,7 @@ EOF
                         }
 
                         if (null !== $allowed) {
-                            $line .= ' ('.implode(', ', $allowed).')';
+                            $line .= ' ('.\implode(', ', $allowed).')';
                         }
 
                         $line .= ': '.Preg::replace(
@@ -603,7 +603,7 @@ EOF
         }
 
         return array_map(static function ($line) {
-            return implode(' ', $line);
+            return \implode(' ', $line);
         }, $result);
     }
 
@@ -642,7 +642,7 @@ EOF
             ;
         }
 
-        return substr($str, 0, -2).']';
+        return \substr($str, 0, -2).']';
     }
 
     /**

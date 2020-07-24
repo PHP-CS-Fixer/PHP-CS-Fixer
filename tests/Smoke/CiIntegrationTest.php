@@ -96,7 +96,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
         array $expectedResult2Lines,
         $expectedResult3Files
     ) {
-        self::executeScript(array_merge(
+        self::executeScript(\array_merge(
             [
                 "git checkout -b {$branchName} -q",
             ],
@@ -119,7 +119,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             'echo "$CHANGED_FILES"',
         ]);
 
-        static::assertSame(implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
+        static::assertSame(\implode("\n", $expectedResult1Lines)."\n", $result1->getOutput());
 
         $result2 = self::executeScript([
             $steps[0],
@@ -129,7 +129,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             'echo "${EXTRA_ARGS}"',
         ]);
 
-        static::assertSame(implode("\n", $expectedResult2Lines), $result2->getOutput());
+        static::assertSame(\implode("\n", $expectedResult2Lines), $result2->getOutput());
 
         $result3 = self::executeScript([
             $steps[0],
@@ -149,11 +149,11 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
 
         $pattern = sprintf(
             '/^(?:%s)?(?:%s)?%s\n([\.S]{%d})\n%s$/',
-            preg_quote($optionalIncompatibilityWarning, '/'),
-            preg_quote($optionalXdebugWarning, '/'),
-            preg_quote('Loaded config default from ".php_cs.dist".', '/'),
+            \preg_quote($optionalIncompatibilityWarning, '/'),
+            \preg_quote($optionalXdebugWarning, '/'),
+            \preg_quote('Loaded config default from ".php_cs.dist".', '/'),
             \strlen($expectedResult3Files),
-            preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
+            \preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );
 
         static::assertRegExp($pattern, $result3->getError());

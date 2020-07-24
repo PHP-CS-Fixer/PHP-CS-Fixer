@@ -116,7 +116,7 @@ function f9(string $foo, $bar, $baz) {}
             }
 
             // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
-            if (false === strpos($tokenContent, "\n")) {
+            if (false === \strpos($tokenContent, "\n")) {
                 continue;
             }
 
@@ -207,7 +207,7 @@ function f9(string $foo, $bar, $baz) {}
                 $newLines
             );
 
-            $tokens[$mainIndex] = new Token([T_DOC_COMMENT, implode('', $lines)]);
+            $tokens[$mainIndex] = new Token([T_DOC_COMMENT, \implode('', $lines)]);
         }
     }
 

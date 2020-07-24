@@ -135,7 +135,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 $this->configuration['use_escape_sequences_in_strings']
                 && $token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])
             ) {
-                if (!Preg::match('/'.implode('|', array_keys($escapeSequences)).'/', $content)) {
+                if (!Preg::match('/'.\implode('|', \array_keys($escapeSequences)).'/', $content)) {
                     continue;
                 }
 
@@ -146,7 +146,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 if ($previousToken->isGivenKind(T_START_HEREDOC)) {
                     $previousTokenContent = $previousToken->getContent();
 
-                    if (false !== strpos($previousTokenContent, '\'')) {
+                    if (false !== \strpos($previousTokenContent, '\'')) {
                         $tokens[$index - 1] = new Token([T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
                         $stringTypeChanged = true;
                     }

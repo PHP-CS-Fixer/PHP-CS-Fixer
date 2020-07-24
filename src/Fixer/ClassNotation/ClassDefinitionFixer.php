@@ -258,7 +258,7 @@ interface Bar extends
         }
 
         $openIndex = $tokens->getNextTokenOfKind($classDefInfo['classy'], ['{']);
-        if (' ' !== $spacing && false !== strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
+        if (' ' !== $spacing && false !== \strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
             return $openIndex;
         }
 
@@ -331,7 +331,7 @@ interface Bar extends
                 continue;
             }
 
-            if (!$implementsInfo['multiLine'] && false !== strpos($tokens[$i]->getContent(), "\n")) {
+            if (!$implementsInfo['multiLine'] && false !== \strpos($tokens[$i]->getContent(), "\n")) {
                 $implementsInfo['multiLine'] = true;
             }
         }
@@ -352,9 +352,9 @@ interface Bar extends
 
                 if ($tokens[$prevNonWhite]->isComment() || $tokens[$nextNonWhite]->isComment()) {
                     $content = $tokens[$prevNonWhite]->getContent();
-                    if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                    if (!('#' === $content || '//' === \substr($content, 0, 2))) {
                         $content = $tokens[$nextNonWhite]->getContent();
-                        if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                        if (!('#' === $content || '//' === \substr($content, 0, 2))) {
                             $tokens[$i] = new Token([T_WHITESPACE, ' ']);
                         }
                     }
@@ -383,7 +383,7 @@ interface Bar extends
                 continue;
             }
 
-            if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && false === strpos($tokens[$i]->getContent(), "\n")) {
+            if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && false === \strpos($tokens[$i]->getContent(), "\n")) {
                 $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
             }
 
@@ -412,7 +412,7 @@ interface Bar extends
             // make sure the part is on its own line
             $isOnOwnLine = false;
             for ($j = $breakAtIndex; $j > $previousInterfaceImplementingIndex; --$j) {
-                if (false !== strpos($tokens[$j]->getContent(), "\n")) {
+                if (false !== \strpos($tokens[$j]->getContent(), "\n")) {
                     $isOnOwnLine = true;
 
                     break;
