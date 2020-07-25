@@ -107,13 +107,8 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
             ['<?php echo $null;'],
             ['<?php $x = False::foo();'],
             ['<?php namespace Foo\Null;'],
-            ['<?php use Foo\Null;'],
-            ['<?php use Foo\Null as Null;'],
-            ['<?php class True {} class False {} class Null {}'],
             ['<?php class Foo extends True {}'],
             ['<?php class Foo implements False {}'],
-            ['<?php Class Null { use True; }'],
-            ['<?php interface True {}'],
             ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'],
             [
                 '<?php
@@ -128,6 +123,30 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
             ['<?php Null/**/::test();'],
             ['<?php True//
                                 ::test();'],
+            ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp56Cases
+     * @requires PHP < 7
+     */
+    public function testFixPhp56($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp56Cases()
+    {
+        return [
+            ['<?php use Foo\Null;'],
+            ['<?php use Foo\Null as Null;'],
+            ['<?php class True {} class False {} class Null {}'],
+            ['<?php Class Null { use True; }'],
+            ['<?php interface True {}'],
             ['<?php trait False {}'],
             [
                 '<?php
@@ -139,7 +158,6 @@ final class LowercaseConstantsFixerTest extends AbstractFixerTestCase
         }
     }',
             ],
-            ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
         ];
     }
 }

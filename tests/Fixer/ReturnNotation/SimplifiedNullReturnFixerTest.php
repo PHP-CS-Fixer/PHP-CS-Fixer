@@ -89,7 +89,6 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php function foo(): void { return; }',
-                '<?php function foo(): void { return null; }',
             ],
         ];
     }

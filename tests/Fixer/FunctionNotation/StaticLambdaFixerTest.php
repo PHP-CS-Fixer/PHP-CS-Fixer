@@ -274,8 +274,8 @@ $b->abc();
                 ',
             ],
             [
-                '<?php static fn($a = ["foo" => $this]) => [];',
-                '<?php fn($a = ["foo" => $this]) => [];',
+                '<?php static fn($a = ["foo" => "bar"]) => [];',
+                '<?php fn($a = ["foo" => "bar"]) => [];',
             ],
         ];
     }

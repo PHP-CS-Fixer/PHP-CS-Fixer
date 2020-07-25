@@ -1055,7 +1055,7 @@ private $d = 123;
             [
                 '<?php
                 class Foo {
-    public abstract function A(){}
+    public function A(){}
 
     /**  */
     public const BAR = 123;
@@ -1068,7 +1068,7 @@ private $d = 123;
 
 
 
-    public abstract function A(){}
+    public function A(){}
 
 
     /**  */
