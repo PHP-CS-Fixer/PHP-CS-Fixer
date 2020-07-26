@@ -232,7 +232,7 @@ final class RuleSetTest extends TestCase
                 'strict_comparison' => true,
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
-                'visibility_required' => true,
+                'visibility_required' => ['elements' => ['method', 'property']],
             ],
             $ruleSet->getRules()
         );
@@ -271,7 +271,7 @@ final class RuleSetTest extends TestCase
                 'single_line_after_imports' => true,
                 'switch_case_semicolon_to_colon' => true,
                 'switch_case_space' => true,
-                'visibility_required' => true,
+                'visibility_required' => ['elements' => ['method', 'property']],
             ],
             $ruleSet->getRules()
         );
