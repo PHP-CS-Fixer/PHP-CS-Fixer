@@ -54,7 +54,7 @@ final class RuleSet implements RuleSetInterface
             'single_line_after_imports' => true,
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,
-            'visibility_required' => true,
+            'visibility_required' => ['elements' => ['method', 'property']],
         ],
         '@Symfony' => [
             '@PSR2' => true,
