@@ -168,7 +168,7 @@ $c = get_class($d);
      */
     public function getPriority()
     {
-        return 10;
+        return 10; // <- see, it's 10
     }
 
     /**

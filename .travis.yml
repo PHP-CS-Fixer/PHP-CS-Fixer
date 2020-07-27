@@ -25,40 +25,6 @@ before_install:
 
 jobs:
     include:
-        -
-            stage: Static Code Analysis
-            php: 7.4
-            env: COMPOSER_FLAGS="--prefer-stable"
-            install:
-                - travis_retry ./dev-tools/install.sh
-
-                - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
-                - composer info -D | sort
-            before_script:
-                - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then COMMIT_RANGE=$TRAVIS_COMMIT_RANGE; else COMMIT_RANGE="HEAD~..HEAD"; fi;
-                - export CHANGED_PHP_FILES=`git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE | grep -E "\.php$"`
-            script:
-                # @TODO remove at 3.0
-                - |
-                  git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php \
-                    | grep -v tests/Test/AbstractFixerTestCase.php \
-                    | grep -v tests/Test/AbstractIntegrationCaseFactory.php \
-                    | grep -v tests/Test/AbstractIntegrationTestCase.php \
-                    | grep -v tests/Test/Assert/AssertTokensTrait.php \
-                    | grep -v tests/Test/IntegrationCase.php \
-                    | grep -v tests/Test/IntegrationCaseFactory.php \
-                    | grep -v tests/Test/IntegrationCaseFactoryInterface.php \
-                    | grep -v tests/Test/InternalIntegrationCaseFactory.php \
-                    | grep -v tests/Test/IsIdenticalConstraint.php \
-                    | grep -v tests/TestCase.php \
-                    && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
-                - ./check_trailing_spaces.sh || travis_terminate 1
-                - dev-tools/vendor/bin/phpstan analyse
-                - if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
-                - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
-                - composer normalize --dry-run --working-dir=./dev-tools ../composer.json
-                - ./dev-tools/check-shell-scripts.sh
-
         - &STANDARD_TEST_JOB
             stage: Fast Test
             php: 7.0
@@ -70,7 +36,7 @@ jobs:
                 - travis_retry composer update $DEFAULT_COMPOSER_FLAGS $COMPOSER_FLAGS
                 - composer info -D | sort
             script:
-                - vendor/bin/phpunit || travis_terminate 1
+                - vendor/bin/phpunit tests/IntegrationTest.php || travis_terminate 1
                 - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
 
         -
