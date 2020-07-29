@@ -158,6 +158,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']],
             [$fixers['no_unneeded_curly_braces'], $fixers['return_assignment']],
+            [$fixers['no_unset_cast'], $fixers['binary_operator_spaces']],
             [$fixers['no_unset_on_property'], $fixers['combine_consecutive_unsets']],
             [$fixers['no_unused_imports'], $fixers['blank_line_after_namespace']],
             [$fixers['no_unused_imports'], $fixers['no_extra_blank_lines']],
