@@ -53,7 +53,7 @@ final class PriorityFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null)
     {
-        $this->doTest($expected, $input, new \SplFileInfo(__DIR__.'/../../src/Fixer/Basic/EncodingFixer.php'));
+        $this->doTest($expected, $input, new \SplFileInfo(realpath(__DIR__.'/../../src/Fixer/Basic/EncodingFixer.php')));
     }
 
     public static function provideFixCases()
