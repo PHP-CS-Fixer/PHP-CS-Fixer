@@ -105,7 +105,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      */
     public function getPriority()
     {
-        return 1;
+        return 2;
     }
 
     /**

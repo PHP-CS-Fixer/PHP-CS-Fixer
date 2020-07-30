@@ -89,7 +89,7 @@ $this->assertNotSame(null, $d);
      */
     public function getPriority()
     {
-        return -10;
+        return 2;
     }
 
     /**

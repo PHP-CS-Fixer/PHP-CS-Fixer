@@ -45,7 +45,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 2;
+        return 3;
     }
 
     /**

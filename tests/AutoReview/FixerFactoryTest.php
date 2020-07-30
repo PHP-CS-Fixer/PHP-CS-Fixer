@@ -49,7 +49,7 @@ final class FixerFactoryTest extends TestCase
         static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
     }
 
-    public function provideFixersPriorityCases()
+    public static function provideFixersPriorityCases()
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -158,6 +158,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_else']],
             [$fixers['no_unneeded_curly_braces'], $fixers['no_useless_return']],
             [$fixers['no_unneeded_curly_braces'], $fixers['return_assignment']],
+            [$fixers['no_unset_cast'], $fixers['binary_operator_spaces']],
             [$fixers['no_unset_on_property'], $fixers['combine_consecutive_unsets']],
             [$fixers['no_unused_imports'], $fixers['blank_line_after_namespace']],
             [$fixers['no_unused_imports'], $fixers['no_extra_blank_lines']],
@@ -247,7 +248,7 @@ final class FixerFactoryTest extends TestCase
         ];
     }
 
-    public function provideFixersPrioritySpecialPhpdocCases()
+    public static function provideFixersPrioritySpecialPhpdocCases()
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -308,6 +309,7 @@ final class FixerFactoryTest extends TestCase
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
             'indentation_type,phpdoc_indent.test',
+            'no_unset_cast,binary_operator_spaces.test', // Will be gone in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5077
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_package,phpdoc_order.test',
         ];
@@ -494,8 +496,8 @@ final class FixerFactoryTest extends TestCase
     public function testFixerPriorityComment()
     {
         $cases = array_merge(
-            $this->provideFixersPriorityCases(),
-            $this->provideFixersPrioritySpecialPhpdocCases()
+            self::provideFixersPriorityCases(),
+            self::provideFixersPrioritySpecialPhpdocCases()
         );
 
         $map = [];

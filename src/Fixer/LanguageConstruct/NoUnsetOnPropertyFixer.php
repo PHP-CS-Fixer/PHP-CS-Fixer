@@ -63,7 +63,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 25;
+        return 3;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)

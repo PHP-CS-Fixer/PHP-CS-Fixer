@@ -43,7 +43,7 @@ $foo = 2 + 2;
      */
     public function getPriority()
     {
-        return 0;
+        return 1;
     }
 
     public function isCandidate(Tokens $tokens)

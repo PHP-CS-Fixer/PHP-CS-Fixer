@@ -52,7 +52,7 @@ function foo( \$bar, \$baz )
      */
     public function getPriority()
     {
-        return 2;
+        return 3;
     }
 
     /**

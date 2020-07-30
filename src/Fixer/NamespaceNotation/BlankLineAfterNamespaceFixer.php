@@ -48,7 +48,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
      */
     public function getPriority()
     {
-        return -20;
+        return 0;
     }
 
     /**

@@ -58,7 +58,7 @@ final class Sample
      */
     public function getPriority()
     {
-        return parent::getPriority();
+        return 13;
     }
 
     /**

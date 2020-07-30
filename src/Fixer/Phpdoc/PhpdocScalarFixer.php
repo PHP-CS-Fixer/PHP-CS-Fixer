@@ -95,7 +95,7 @@ function sample($a, $b, $c)
          * the phpdoc_types_fixer because it can convert types to things that
          * we can fix.
          */
-        return 15;
+        return 8;
     }
 
     /**

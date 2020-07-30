@@ -69,7 +69,7 @@ function foo() {}
      */
     public function getPriority()
     {
-        return 4;
+        return 3;
     }
 
     /**

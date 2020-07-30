@@ -58,7 +58,7 @@ echo "Hello!";
     public function getPriority()
     {
         // must run first (at least before Fixers that using Tokens) - for speed reason of whole fixing process
-        return 100;
+        return 19;
     }
 
     /**

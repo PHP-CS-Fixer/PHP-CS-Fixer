@@ -151,7 +151,7 @@ function bar() {}
      */
     public function getPriority()
     {
-        return 13;
+        return 7;
     }
 
     /**

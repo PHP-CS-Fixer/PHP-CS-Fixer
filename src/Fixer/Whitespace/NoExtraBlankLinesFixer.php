@@ -282,7 +282,7 @@ switch($a) {
      */
     public function getPriority()
     {
-        return -20;
+        return 1;
     }
 
     /**

@@ -60,7 +60,7 @@ function example($b) {
      */
     public function getPriority()
     {
-        return -18;
+        return 2;
     }
 
     /**

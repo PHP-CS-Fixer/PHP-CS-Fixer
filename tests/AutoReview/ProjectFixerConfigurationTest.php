@@ -33,7 +33,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         $config = $this->loadConfig();
 
         static::assertInstanceOf(\PhpCsFixer\Config::class, $config);
-        static::assertEmpty($config->getCustomFixers());
+        static::assertCount(1, $config->getCustomFixers());
         static::assertNotEmpty($config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)

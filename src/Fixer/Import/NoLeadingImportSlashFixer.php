@@ -44,7 +44,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return -20;
+        return 1;
     }
 
     /**

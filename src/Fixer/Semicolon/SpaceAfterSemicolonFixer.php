@@ -56,7 +56,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
      */
     public function getPriority()
     {
-        return -1;
+        return 0;
     }
 
     /**

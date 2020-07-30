@@ -47,7 +47,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
      */
     public function getPriority()
     {
-        return 1;
+        return 3;
     }
 
     /**

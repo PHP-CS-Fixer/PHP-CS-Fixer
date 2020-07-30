@@ -55,7 +55,7 @@ final class PhpUnitInternalClassFixer extends AbstractFixer implements Whitespac
      */
     public function getPriority()
     {
-        return 68;
+        return 17;
     }
 
     /**

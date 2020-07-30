@@ -172,7 +172,7 @@ $this->assertTrue(is_readable($a));
      */
     public function getPriority()
     {
-        return -15;
+        return 1;
     }
 
     /**

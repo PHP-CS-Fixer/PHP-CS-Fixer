@@ -80,7 +80,7 @@ final class Example
      */
     public function getPriority()
     {
-        return -11;
+        return 0;
     }
 
     /**

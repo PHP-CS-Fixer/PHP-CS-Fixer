@@ -51,7 +51,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
      */
     public function getPriority()
     {
-        return parent::getPriority();
+        return 7;
     }
 
     /**

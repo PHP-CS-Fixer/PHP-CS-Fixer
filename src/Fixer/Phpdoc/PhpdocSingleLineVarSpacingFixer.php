@@ -45,7 +45,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return -10;
+        return 1;
     }
 
     /**

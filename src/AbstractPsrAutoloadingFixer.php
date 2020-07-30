@@ -44,14 +44,6 @@ abstract class AbstractPsrAutoloadingFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
-    {
-        return -10;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supports(\SplFileInfo $file)
     {
         if ($file instanceof StdinFileInfo) {

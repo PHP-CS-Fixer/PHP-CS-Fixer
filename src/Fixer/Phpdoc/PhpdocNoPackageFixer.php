@@ -54,7 +54,7 @@ class Baz
      */
     public function getPriority()
     {
-        return parent::getPriority();
+        return 3;
     }
 
     /**

@@ -80,7 +80,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
      */
     public function getPriority()
     {
-        return -10;
+        return 0;
     }
 
     /**

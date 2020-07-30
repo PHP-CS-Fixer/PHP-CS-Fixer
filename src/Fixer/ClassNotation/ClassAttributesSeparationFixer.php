@@ -110,7 +110,7 @@ class Sample
      */
     public function getPriority()
     {
-        return 55;
+        return 13;
     }
 
     /**

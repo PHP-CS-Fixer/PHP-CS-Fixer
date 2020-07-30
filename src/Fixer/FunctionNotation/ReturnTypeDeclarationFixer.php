@@ -64,7 +64,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      */
     public function getPriority()
     {
-        return -17;
+        return 0;
     }
 
     /**

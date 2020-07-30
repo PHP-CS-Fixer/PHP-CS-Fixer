@@ -43,7 +43,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
      */
     public function getPriority()
     {
-        return -19;
+        return 0;
     }
 
     /**

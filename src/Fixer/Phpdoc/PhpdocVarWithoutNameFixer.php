@@ -59,7 +59,7 @@ final class Foo
      */
     public function getPriority()
     {
-        return 0;
+        return 1;
     }
 
     /**

@@ -58,7 +58,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
      */
     public function getPriority()
     {
-        return 3;
+        return 5;
     }
 
     /**

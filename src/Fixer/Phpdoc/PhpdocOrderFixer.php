@@ -65,7 +65,7 @@ final class PhpdocOrderFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return -2;
+        return 2;
     }
 
     /**

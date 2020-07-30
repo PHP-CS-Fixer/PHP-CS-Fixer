@@ -50,7 +50,7 @@ echo "Hello!";
     public function getPriority()
     {
         // must run before all Token-based fixers
-        return 98;
+        return 18;
     }
 
     /**

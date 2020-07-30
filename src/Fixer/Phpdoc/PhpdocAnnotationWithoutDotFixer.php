@@ -51,7 +51,7 @@ function foo ($bar) {}
      */
     public function getPriority()
     {
-        return 17;
+        return 10;
     }
 
     /**

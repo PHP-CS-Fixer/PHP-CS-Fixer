@@ -41,7 +41,7 @@ final class NoShortEchoTagFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 0;
+        return 1;
     }
 
     /**

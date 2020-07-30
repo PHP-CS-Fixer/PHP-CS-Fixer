@@ -129,7 +129,7 @@ class Foo
      */
     public function getPriority()
     {
-        return -25;
+        return 6;
     }
 
     /**

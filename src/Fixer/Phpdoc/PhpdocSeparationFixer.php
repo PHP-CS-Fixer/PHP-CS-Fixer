@@ -60,7 +60,7 @@ function fnc($foo, $bar) {}
      */
     public function getPriority()
     {
-        return -3;
+        return 1;
     }
 
     /**

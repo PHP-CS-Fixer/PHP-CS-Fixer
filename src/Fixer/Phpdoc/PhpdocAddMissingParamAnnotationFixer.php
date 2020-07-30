@@ -83,7 +83,7 @@ function f9(string $foo, $bar, $baz) {}
      */
     public function getPriority()
     {
-        return 10;
+        return 6;
     }
 
     /**

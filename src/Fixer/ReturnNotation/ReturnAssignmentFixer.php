@@ -43,7 +43,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return -15;
+        return 1;
     }
 
     /**

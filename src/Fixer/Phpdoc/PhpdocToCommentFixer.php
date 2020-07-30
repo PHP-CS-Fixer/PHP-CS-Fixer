@@ -46,7 +46,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
          * don't touch doc comments which are meant to be converted to regular
          * comments.
          */
-        return 25;
+        return 12;
     }
 
     /**

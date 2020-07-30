@@ -48,7 +48,7 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     public function getPriority()
     {
         // must run last to be sure the file is properly formatted before it runs
-        return -50;
+        return -1;
     }
 
     /**

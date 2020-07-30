@@ -47,7 +47,7 @@ final class BlankLineBeforeReturnFixer extends AbstractProxyFixer implements Dep
      */
     public function getPriority()
     {
-        return parent::getPriority();
+        return 0;
     }
 
     /**

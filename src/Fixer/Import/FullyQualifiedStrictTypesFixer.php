@@ -80,7 +80,7 @@ class SomeClass
      */
     public function getPriority()
     {
-        return 7;
+        return 6;
     }
 
     /**

@@ -92,7 +92,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
      */
     public function getPriority()
     {
-        return 0;
+        return 1;
     }
 
     /**

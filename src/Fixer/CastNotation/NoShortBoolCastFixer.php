@@ -30,7 +30,7 @@ final class NoShortBoolCastFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return -9;
+        return 1;
     }
 
     /**

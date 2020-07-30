@@ -73,7 +73,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     public function getPriority()
     {
-        return 10;
+        return 3;
     }
 
     /**

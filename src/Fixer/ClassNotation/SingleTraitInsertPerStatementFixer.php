@@ -49,7 +49,7 @@ final class Example
      */
     public function getPriority()
     {
-        return 1;
+        return 7;
     }
 
     public function isCandidate(Tokens $tokens)

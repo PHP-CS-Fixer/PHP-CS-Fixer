@@ -111,7 +111,7 @@ yield(2);
      */
     public function getPriority()
     {
-        return 30;
+        return 1;
     }
 
     /**

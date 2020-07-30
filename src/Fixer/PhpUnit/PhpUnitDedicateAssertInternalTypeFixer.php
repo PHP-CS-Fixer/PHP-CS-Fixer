@@ -99,7 +99,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
      */
     public function getPriority()
     {
-        return -16;
+        return 0;
     }
 
     /**

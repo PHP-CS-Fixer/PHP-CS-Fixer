@@ -42,7 +42,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 24;
+        return 2;
     }
 
     /**

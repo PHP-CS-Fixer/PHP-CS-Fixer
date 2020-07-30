@@ -42,7 +42,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 3;
+        return 2;
     }
 
     /**

@@ -54,7 +54,7 @@ class Foo
      */
     public function getPriority()
     {
-        return parent::getPriority();
+        return 3;
     }
 
     /**

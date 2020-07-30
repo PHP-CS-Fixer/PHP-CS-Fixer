@@ -77,7 +77,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
      */
     public function getPriority()
     {
-        return 67;
+        return 16;
     }
 
     /**

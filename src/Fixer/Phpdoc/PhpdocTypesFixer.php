@@ -128,7 +128,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
          * the type and thereby un-aligning the params. We also must run before
          * the phpdoc_scalar_fixer so that it can make changes after us.
          */
-        return 16;
+        return 9;
     }
 
     /**

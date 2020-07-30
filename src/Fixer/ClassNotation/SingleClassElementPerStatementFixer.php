@@ -50,7 +50,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
      */
     public function getPriority()
     {
-        return 56;
+        return 14;
     }
 
     /**

@@ -53,7 +53,7 @@ class DocBlocks
      */
     public function getPriority()
     {
-        return 20;
+        return 11;
     }
 
     /**

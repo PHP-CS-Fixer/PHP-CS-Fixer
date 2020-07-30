@@ -53,7 +53,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     public function getPriority()
     {
-        return 50;
+        return 12;
     }
 
     /**

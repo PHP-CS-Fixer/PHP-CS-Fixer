@@ -163,7 +163,7 @@ use Bar;
      */
     public function getPriority()
     {
-        return -30;
+        return 0;
     }
 
     /**

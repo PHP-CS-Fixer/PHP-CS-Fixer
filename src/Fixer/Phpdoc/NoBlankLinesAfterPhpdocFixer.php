@@ -62,7 +62,7 @@ class Bar {}
      */
     public function getPriority()
     {
-        return -20;
+        return 1;
     }
 
     /**

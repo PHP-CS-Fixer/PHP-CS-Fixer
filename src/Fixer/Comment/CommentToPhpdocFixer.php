@@ -51,7 +51,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements WhitespacesAwa
     public function getPriority()
     {
         // Should be run before all other PHPDoc fixers
-        return 26;
+        return 13;
     }
 
     /**

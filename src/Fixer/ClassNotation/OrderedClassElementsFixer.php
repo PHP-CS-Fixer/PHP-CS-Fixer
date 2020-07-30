@@ -217,7 +217,7 @@ class Example
      */
     public function getPriority()
     {
-        return 65;
+        return 14;
     }
 
     /**

@@ -54,7 +54,7 @@ final class VoidReturnFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 5;
+        return 4;
     }
 
     /**

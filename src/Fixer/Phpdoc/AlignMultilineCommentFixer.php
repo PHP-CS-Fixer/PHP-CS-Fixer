@@ -91,7 +91,7 @@ with a line not prefixed with asterisk
      */
     public function getPriority()
     {
-        return -40;
+        return 2;
     }
 
     /**

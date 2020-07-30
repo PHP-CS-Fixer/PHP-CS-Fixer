@@ -57,7 +57,7 @@ EOT
      */
     public function getPriority()
     {
-        return 16;
+        return 5;
     }
 
     /**

@@ -16,13 +16,17 @@ $finder = PhpCsFixer\Finder::create()
     ->append([__DIR__.'/php-cs-fixer'])
 ;
 
+$priorityFixer = new \PhpCsFixer\Priority\PriorityFixer();
+
 $config = PhpCsFixer\Config::create()
+    ->registerCustomFixers([$priorityFixer])
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP56Migration' => true,
         '@PHPUnit60Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
+        $priorityFixer->getName() => true,
         'header_comment' => ['header' => $header],
         'list_syntax' => ['syntax' => 'long'],
     ])
