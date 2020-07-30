@@ -1,17 +1,9 @@
-# @TODO 3.0 replace following `tests/... export-ignore` with single `tests/ export-ignore`
-/tests/**/*Test.php export-ignore
-/tests/AbstractDoctrineAnnotationFixerTestCase.php export-ignore
-/tests/Differ/AbstractDifferTestCase.php export-ignore
-/tests/Fixtures/ export-ignore
-/tests/Linter/AbstractLinterTestCase.php export-ignore
-/tests/Report/AbstractReporterTestCase.php export-ignore
-/tests/Test/AbstractFixerWithAliasedOptionsTestCase.php export-ignore
-/tests/Test/AbstractTransformerTestCase.php export-ignore
-
+/tests export-ignore
 /.* export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
 /check_trailing_spaces.sh export-ignore
+/ci-integration.sh export-ignore
 /dev-tools/ export-ignore
 /phpmd.xml export-ignore
 /phpstan.neon export-ignore
