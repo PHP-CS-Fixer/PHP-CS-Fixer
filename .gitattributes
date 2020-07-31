@@ -12,6 +12,7 @@
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
 /check_trailing_spaces.sh export-ignore
+/ci-integration.sh export-ignore
 /dev-tools/ export-ignore
 /phpmd.xml export-ignore
 /phpstan.neon export-ignore
