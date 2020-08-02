@@ -187,6 +187,15 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
             '$$c' => [
                 '<?php $foo = function($g) use ($b) { $h = $$g; };',
             ],
+            'interpolation 1' => [
+                '<?php $foo = function() use ($world) { echo "hello $world"; };',
+            ],
+            'interpolation 2' => [
+                '<?php $foo = function() use ($world) { echo "hello {$world}"; };',
+            ],
+            'interpolation 3' => [
+                '<?php $foo = function() use ($world) { echo "hello ${world}"; };',
+            ],
         ];
     }
 }
