@@ -1,0 +1,35 @@
+# https://docs.github.com/en/actions
+
+name: "Issues and pull requests"
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+
+env:
+  DAYS_BEFORE_CLOSE: 90
+  DAYS_BEFORE_STALE: 1095
+
+jobs:
+  prune:
+    name: "Issues"
+
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Prune stale issues and pull requests"
+        uses: "actions/stale@v5"
+        with:
+          days-before-close: "${{ env.DAYS_BEFORE_CLOSE }}"
+          days-before-stale: "${{ env.DAYS_BEFORE_STALE }}"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          stale-issue-label: "stale"
+          stale-issue-message: |
+            Since this issue has not had any activity within the last ${{ env.DAYS_BEFORE_STALE }} days, I have marked it as stale.
+
+            I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_CLOSE }} days.
+          stale-pr-label: "stale"
+          stale-pr-message: |
+            Since this pull request has not had any activity within the last ${{ env.DAYS_BEFORE_STALE }} days, I have marked it as stale.
+
+            I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_CLOSE }} days.
