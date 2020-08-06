@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-06-22T05:52:53Z
+
+Mmm, I've redacted the fixer that way because all the fixers of the same kind as redacted so, I guess to provide forward compatibility. Not that I have a preference on the topic, just to share why it is so.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-22T17:57:26Z
+
+@Slamdunk not all of them have it, this option is to let the fixer fix differently for different target and this one has all the assertions it's introducing added in one PHPUnit version.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-07-10T07:35:42Z
+
+RTM, but sadly a conflict now, can you resolve @kubawerlos ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-10T07:55:50Z
+
+@SpacePossum done
