@@ -19,6 +19,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
  */
 final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
@@ -526,6 +527,40 @@ $i#3
                 '<?php $i *= 1; ++$i;',
                 '<?php $i *= 1; $i += 1;',
             ],
+            [
+                '<?php ++A::$b;',
+                '<?php A::$b += 1;',
+            ],
+            [
+                '<?php ++\A::$b;',
+                '<?php \A::$b += 1;',
+            ],
+            [
+                '<?php ++\A\B\C::$d;',
+                '<?php \A\B\C::$d += 1;',
+            ],
+            [
+                '<?php ++$a::$b;',
+                '<?php $a::$b += 1;',
+            ],
+            [
+                '<?php ++$a::$b->$c;',
+                '<?php $a::$b->$c += 1;',
+            ],
+            [
+                '<?php class Foo {
+                    public static function bar() {
+                        ++self::$v1;
+                        ++static::$v2;
+                    }
+                }',
+                '<?php class Foo {
+                    public static function bar() {
+                        self::$v1 += 1;
+                        static::$v2 += 1;
+                    }
+                }',
+            ],
         ];
     }
 
@@ -555,6 +590,22 @@ $i#3
             ],
             [
                 '<?php $i += 1 <=> 2;',
+            ],
+            [
+                '<?php ++$a::$b::$c;',
+                '<?php $a::$b::$c += 1;',
+            ],
+            [
+                '<?php ++$a->$b::$c;',
+                '<?php $a->$b::$c += 1;',
+            ],
+            [
+                '<?php ++$a::${$b}::$c;',
+                '<?php $a::${$b}::$c += 1;',
+            ],
+            [
+                '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+                '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h += 1;',
             ],
         ];
     }

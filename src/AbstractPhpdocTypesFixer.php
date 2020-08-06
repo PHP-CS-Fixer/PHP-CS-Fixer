@@ -127,7 +127,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     private function normalizeType($type)
     {
         if ('[]' === substr($type, -2)) {
-            return $this->normalize(substr($type, 0, -2)).'[]';
+            return $this->normalizeType(substr($type, 0, -2)).'[]';
         }
 
         return $this->normalize($type);

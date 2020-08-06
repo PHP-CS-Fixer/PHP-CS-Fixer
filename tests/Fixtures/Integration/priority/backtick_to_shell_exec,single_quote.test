@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: backtick_to_shell_exec,single_quote.
+--RULESET--
+{"backtick_to_shell_exec": true, "single_quote": true}
+--EXPECT--
+<?php
+$var = shell_exec('pwd');
+
+--INPUT--
+<?php
+$var = `pwd`;

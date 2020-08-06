@@ -37,7 +37,59 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
+            [
+                '<?php
+                    declare(ticks = 1) {
+                    }
+                ',
+                '<?php
+                    declare(ticks = 1) :
+                    enddeclare;
+                ',
+            ],
+            [
+                '<?php
+        switch ($foo) {
+            case 1:
+        }
+
+        switch ($foo)   {
+            case 1:
+        }    ?>',
+                '<?php
+        switch ($foo):
+            case 1:
+        endswitch;
+
+        switch ($foo)   :
+            case 1:
+        endswitch    ?>',
+            ],
+            [
+                '<?php
+                    if ($some1) {
+                        if ($some2) {
+                            if ($some3) {
+                                $test = true;
+                            }
+                        }
+                    }
+                ',
+                '<?php
+                    if ($some1) :
+                        if ($some2) :
+                            if ($some3) :
+                                $test = true;
+                            endif;
+                        endif;
+                    endif;
+                ',
+            ],
             ['<?php if ($some) { $test = true; } else { $test = false; }'],
+            [
+                '<?php if ($some) /* foo */ { $test = true; } else { $test = false; }',
+                '<?php if ($some) /* foo */ : $test = true; else :$test = false; endif;',
+            ],
             [
                 '<?php if ($some) { $test = true; } else { $test = false; }',
                 '<?php if ($some) : $test = true; else :$test = false; endif;',

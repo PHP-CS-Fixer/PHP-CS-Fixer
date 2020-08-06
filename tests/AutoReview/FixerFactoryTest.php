@@ -68,6 +68,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['array_syntax'], $fixers['ternary_operator_spaces']],
             [$fixers['backtick_to_shell_exec'], $fixers['escape_implicit_backslashes']],
             [$fixers['backtick_to_shell_exec'], $fixers['explicit_string_variable']],
+            [$fixers['backtick_to_shell_exec'], $fixers['native_function_invocation']],
+            [$fixers['backtick_to_shell_exec'], $fixers['single_quote']],
             [$fixers['blank_line_after_opening_tag'], $fixers['no_blank_lines_before_namespace']],
             [$fixers['braces'], $fixers['array_indentation']],
             [$fixers['braces'], $fixers['method_argument_space']],
@@ -174,6 +176,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_unused_imports'], $fixers['single_line_after_imports']],
             [$fixers['no_useless_else'], $fixers['braces']],
             [$fixers['no_useless_else'], $fixers['combine_consecutive_unsets']],
+            [$fixers['no_useless_else'], $fixers['no_break_comment']],
             [$fixers['no_useless_else'], $fixers['no_extra_blank_lines']],
             [$fixers['no_useless_else'], $fixers['no_trailing_whitespace']],
             [$fixers['no_useless_else'], $fixers['no_useless_return']],
@@ -325,7 +328,6 @@ final class FixerFactoryTest extends TestCase
         // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
-            'indentation_type,phpdoc_indent.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_package,phpdoc_order.test',
         ];
@@ -427,12 +429,6 @@ final class FixerFactoryTest extends TestCase
             }
 
             ksort($priorityCases);
-        }
-
-        if (\in_array($fileName, [
-            'braces,indentation_type,no_break_comment.test',
-        ], true)) {
-            static::markTestIncomplete(sprintf('Case "%s" has unexpected name, please help fixing it.', $fileName));
         }
 
         static::assertSame(

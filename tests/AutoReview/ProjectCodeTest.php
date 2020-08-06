@@ -106,7 +106,6 @@ final class ProjectCodeTest extends TestCase
 
         // @TODO: 3.0 should be removed
         $exceptionMethodsPerClass = [
-            \PhpCsFixer\Config::class => ['create'],
             \PhpCsFixer\Event\Event::class => ['stopPropagation'],
         ];
 

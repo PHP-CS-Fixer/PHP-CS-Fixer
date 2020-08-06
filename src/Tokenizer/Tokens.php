@@ -1118,6 +1118,21 @@ final class Tokens extends \SplFixedArray
     }
 
     /**
+     * @return bool
+     */
+    public function hasAlternativeSyntax()
+    {
+        return $this->isAnyTokenKindsFound([
+            T_ENDDECLARE,
+            T_ENDFOR,
+            T_ENDFOREACH,
+            T_ENDIF,
+            T_ENDSWITCH,
+            T_ENDWHILE,
+        ]);
+    }
+
+    /**
      * @param int $index
      */
     public function clearTokenAndMergeSurroundingWhitespace($index)

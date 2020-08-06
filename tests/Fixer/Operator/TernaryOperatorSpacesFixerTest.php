@@ -122,6 +122,30 @@ $a = ($b
     : ($d1?$d2:$d3)
 );',
             ],
+            [
+                '<?php
+                $foo = $isBar ? 1 : 2;
+                switch ($foo) {
+                    case 1: return 3;
+                    case 2: return 4;
+                }
+                ',
+                '<?php
+                $foo = $isBar? 1 : 2;
+                switch ($foo) {
+                    case 1: return 3;
+                    case 2: return 4;
+                }
+                ',
+            ],
+            [
+                '<?php
+                return $isBar ? array_sum(array_map(function ($x) { switch ($x) { case 1: return $y ? 2 : 3; case 4: return 5; } }, [1, 2, 3])) : 128;
+                ',
+                '<?php
+                return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;
+                ',
+            ],
         ];
     }
 }

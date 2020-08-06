@@ -56,7 +56,7 @@ EOT
     /**
      * {@inheritdoc}
      *
-     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer.
+     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer, NativeFunctionInvocationFixer, SingleQuoteFixer.
      */
     public function getPriority()
     {
