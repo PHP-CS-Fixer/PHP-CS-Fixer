@@ -18,6 +18,8 @@ use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet;
 
@@ -30,13 +32,6 @@ use PhpCsFixer\RuleSet;
  */
 final class RuleSetTest extends TestCase
 {
-    public function testCreate()
-    {
-        $ruleSet = new RuleSet();
-
-        static::assertInstanceOf(\PhpCsFixer\RuleSet::class, $ruleSet);
-    }
-
     /**
      * @param string     $ruleName
      * @param string     $setName
@@ -94,6 +89,10 @@ final class RuleSetTest extends TestCase
 
         $defaultConfig = [];
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ($option instanceof DeprecatedFixerOptionInterface) {
+                continue;
+            }
+
             $defaultConfig[$option->getName()] = $option->getDefault();
         }
 
@@ -283,9 +282,16 @@ final class RuleSetTest extends TestCase
      */
     public function testSetDefinitionsAreSorted($setDefinitionName)
     {
-        $reflection = new AccessibleObject(new RuleSet());
+        $ruleSet = new RuleSet();
 
-        $setDefinition = $reflection->getSetDefinition($setDefinitionName);
+        $method = new \ReflectionMethod(RuleSet::class, 'getSetDefinition');
+
+        $method->setAccessible(true);
+
+        $setDefinition = $method->invoke(
+            $ruleSet,
+            $setDefinitionName
+        );
 
         $sortedSetDefinition = $setDefinition;
 
@@ -650,6 +656,7 @@ final class RuleSetTest extends TestCase
     public function testHasIntegrationTest($setDefinitionName)
     {
         $setsWithoutTests = [
+            '@PHP56Migration',
             '@PHP56Migration:risky',
             '@PHP70Migration',
             '@PHP70Migration:risky',
@@ -887,6 +894,10 @@ Integration of %s.
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
+                if ($option instanceof DeprecatedFixerOption) {
+                    static::markTestSkipped(sprintf('The fixer "%s" has option "target" deprecated.', $fixer->getName()));
+                }
+
                 $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
 
                 break;

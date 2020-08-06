@@ -420,7 +420,7 @@ final class RuleSet implements RuleSetInterface
         ],
         '@PHPUnit75Migration:risky' => [
             '@PHPUnit60Migration:risky' => true,
-            'php_unit_dedicate_assert_internal_type' => ['target' => PhpUnitTargetVersion::VERSION_7_5],
+            'php_unit_dedicate_assert_internal_type' => true,
         ],
         '@PHPUnit84Migration:risky' => [
             '@PHPUnit75Migration:risky' => true,
