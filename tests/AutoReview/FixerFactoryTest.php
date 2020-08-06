@@ -309,7 +309,6 @@ final class FixerFactoryTest extends TestCase
         // This structure contains older cases that are not yet covered by tests.
         // It may only shrink, never add anything to it.
         $casesWithoutTests = [
-            'indentation_type,phpdoc_indent.test',
             'phpdoc_no_access,phpdoc_order.test',
             'phpdoc_no_package,phpdoc_order.test',
         ];
