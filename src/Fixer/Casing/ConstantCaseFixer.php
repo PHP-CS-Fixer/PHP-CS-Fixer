@@ -63,7 +63,10 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurationDefi
     {
         return new FixerDefinition(
             'The PHP constants `true`, `false`, and `null` MUST be written using the correct casing.',
-            [new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n")]
+            [
+                new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n"),
+                new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n", ['case' => 'upper']),
+            ]
         );
     }
 

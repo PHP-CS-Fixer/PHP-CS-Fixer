@@ -15,6 +15,8 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -57,20 +59,36 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $ternaryLevel = 0;
+        $ternaryOperatorIndices = [];
+        $excludedIndices = [];
 
         foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(T_SWITCH)) {
+                $excludedIndices = array_merge($excludedIndices, $this->getColonIndicesForSwitch($tokens, $index));
+
+                continue;
+            }
+
+            if (!$token->equalsAny(['?', ':'])) {
+                continue;
+            }
+
+            if (\in_array($index, $excludedIndices, true)) {
+                continue;
+            }
+
+            $ternaryOperatorIndices[] = $index;
+        }
+
+        foreach (array_reverse($ternaryOperatorIndices) as $index) {
+            $token = $tokens[$index];
+
             if ($token->equals('?')) {
-                ++$ternaryLevel;
-
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
-                $nextNonWhitespaceToken = $tokens[$nextNonWhitespaceIndex];
 
-                if ($nextNonWhitespaceToken->equals(':')) {
+                if ($tokens[$nextNonWhitespaceIndex]->equals(':')) {
                     // for `$a ?: $b` remove spaces between `?` and `:`
-                    if ($tokens[$index + 1]->isWhitespace()) {
-                        $tokens->clearAt($index + 1);
-                    }
+                    $tokens->ensureWhitespaceAtIndex($index + 1, 0, '');
                 } else {
                     // for `$a ? $b : $c` ensure space after `?`
                     $this->ensureWhitespaceExistence($tokens, $index + 1, true);
@@ -82,7 +100,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 continue;
             }
 
-            if ($ternaryLevel && $token->equals(':')) {
+            if ($token->equals(':')) {
                 // for `$a ? $b : $c` ensure space after `:`
                 $this->ensureWhitespaceExistence($tokens, $index + 1, true);
 
@@ -92,10 +110,23 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                     // for `$a ? $b : $c` ensure space before `:`
                     $this->ensureWhitespaceExistence($tokens, $index - 1, false);
                 }
-
-                --$ternaryLevel;
             }
         }
+    }
+
+    /**
+     * @param int $switchIndex
+     *
+     * @return int[]
+     */
+    private function getColonIndicesForSwitch(Tokens $tokens, $switchIndex)
+    {
+        return array_map(
+            static function (CaseAnalysis $caseAnalysis) {
+                return $caseAnalysis->getColonIndex();
+            },
+            (new SwitchAnalyzer())->getSwitchAnalysis($tokens, $switchIndex)->getCases()
+        );
     }
 
     /**

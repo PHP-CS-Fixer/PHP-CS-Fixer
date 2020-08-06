@@ -69,7 +69,10 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
     {
         return new FixerDefinition(
             'Comments with annotation should be docblock when used on structural elements.',
-            [new CodeSample("<?php /* header */ \$x = true; /* @var bool \$isFoo */ \$isFoo = true;\n")],
+            [
+                new CodeSample("<?php /* header */ \$x = true; /* @var bool \$isFoo */ \$isFoo = true;\n"),
+                new CodeSample("<?php\n// @todo do something later\n\$foo = 1;\n\n// @var int \$a\n\$a = foo();\n", ['ignored_tags' => ['todo']]),
+            ],
             null,
             'Risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.'
         );
