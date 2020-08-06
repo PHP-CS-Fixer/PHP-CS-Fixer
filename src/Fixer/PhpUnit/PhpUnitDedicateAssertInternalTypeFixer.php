@@ -118,11 +118,13 @@ final class MyTest extends \PHPUnit\Framework\TestCase
      */
     protected function createConfigurationDefinition()
     {
+        // @todo 3.0 drop `ConfigurationDefinitionFixerInterface`
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([PhpUnitTargetVersion::VERSION_7_5, PhpUnitTargetVersion::VERSION_NEWEST])
                 ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
+                ->setDeprecationMessage('Option was not used.')
                 ->getOption(),
         ]);
     }

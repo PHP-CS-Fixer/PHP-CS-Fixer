@@ -1464,7 +1464,7 @@ Choose from the list of available rules:
   Configuration options:
 
   - ``target`` (``'7.5'``, ``'newest'``): target version of PHPUnit; defaults to
-    ``'newest'``
+    ``'newest'``. DEPRECATED: option was not used
 
 * **php_unit_expectation** [@PHPUnit52Migration:risky, @PHPUnit54Migration:risky, @PHPUnit55Migration:risky, @PHPUnit56Migration:risky, @PHPUnit57Migration:risky, @PHPUnit60Migration:risky, @PHPUnit75Migration:risky, @PHPUnit84Migration:risky]
 
