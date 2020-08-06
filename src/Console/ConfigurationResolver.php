@@ -23,7 +23,6 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
-use PhpCsFixer\Differ\SebastianBergmannDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
