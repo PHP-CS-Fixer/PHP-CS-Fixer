@@ -73,6 +73,24 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testNestedArrayStuff()
+    {
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @return int[][][]
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @return INT[][][]
+     */
+EOF;
+        $this->doTest($expected, $input);
+    }
+
     public function testMixedAndVoid()
     {
         $expected = <<<'EOF'
