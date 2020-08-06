@@ -183,6 +183,18 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 }
             }
 
+            if ($token->isGivenKind(T_STRING_VARNAME)) {
+                $content = '$'.$token->getContent();
+
+                if (isset($imports[$content])) {
+                    unset($imports[$content]);
+
+                    if (0 === \count($imports)) {
+                        return $imports;
+                    }
+                }
+            }
+
             if ($token->isClassy()) { // is anonymous class
                 // check if used as argument in the constructor of the anonymous class
                 $index = $tokens->getNextTokenOfKind($index, ['(', '{']);
