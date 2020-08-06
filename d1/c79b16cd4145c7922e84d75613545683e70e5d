@@ -1,0 +1,174 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-26T19:25:51Z
+
+This PR doesn't take into account the new level of this fixer on the master branch. Can this level be adjusted so that its priority is correct wrt the GlobalNamespaceImportFixer fixer? I've left some review comments. Those match the priorities already on the master branch.
+
+EDIT: It seems using the priorities as on the master branch don't work properly, with the integration test failing.
+
+EDIT 2: Actually, I think `BacktickToShellExecFixer` simply needs to be adjusted to priority 12 too. ~So you need `BacktickToShellExecFixer: 12`, `SingleQuoteFixer: 11`, `NativeFunctionInvocationFixer: 10`.~
+
+EDIT 3: `BacktickToShellExecFixer: 12`, `StrictParamFixer: 11`, `NativeFunctionInvocationFixer: 10`, `SingleQuoteFixer: 0`.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-26T20:18:52Z
+
+> So you need `BacktickToShellExecFixer: 12`, `SingleQuoteFixer: 11`, `NativeFunctionInvocationFixer: 10`.
+
+Why? What's wrong with what I wrote in the first comment?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-26T21:32:04Z
+
+~Because if you apply your changes to the 2.17.x version (master), the integration tests fail.~
+
+EDIT; I had typoed `StrictParamFixer` for `SingleQuoteFixer`!
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-26T21:52:49Z
+
+> Because if you apply your changes to the 2.17.x version (master), the integration tests fail.
+
+Which test exactly?
+
+> The priorities I provided work on all branches upwards and including 2.15.x.
+
+I don't think so. You want `SingleQuoteFixer` to have priority `11` and it [must run after EscapeImplicitBackslashesFixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.4/src/Fixer/StringNotation/SingleQuoteFixer.php#L58), `EscapeImplicitBackslashesFixer` has priority [1](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.4/src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php#L91) and last time I've checked `11` is greater than `1` ;)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-26T22:06:16Z
+
+Well, with those values I have set, all the integration tests pass, including the new ones in this PR. If there is still an issue, it is missing a test?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-26T22:18:06Z
+
+> Well, with those values I have set, all the integration tests pass
+
+No, they don't, I've explained the reason in the previous comment.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-26T23:14:09Z
+
+> No, they don't, I've explained the reason in the previous comment.
+
+Well, they do, because I ran them?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-27T05:44:51Z
+
+> Well, they do
+
+Well, they don't, see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5071
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-27T08:23:12Z
+
+Oh, sorry! Leave the single quote fixer at priority 0. This is the src diff I applied (plus the tests changes from this PR):
+
+```diff
+diff --git a/src/Fixer/Alias/BacktickToShellExecFixer.php b/src/Fixer/Alias/BacktickToShellExecFixer.php
+index 09d63df50e834bad0e8bfa418bdb6e92e6079eca..a01b7c99d11ec2b82393ef3daa8421f14769056c 100644
+--- a/src/Fixer/Alias/BacktickToShellExecFixer.php
++++ b/src/Fixer/Alias/BacktickToShellExecFixer.php
+@@ -56,11 +56,11 @@ public function getDefinition()
+     /**
+      * {@inheritdoc}
+      *
+-     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer.
++     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer, NativeFunctionInvocationFixer, SingleQuoteFixer.
+      */
+     public function getPriority()
+     {
+-        return 2;
++        return 12;
+     }
+
+     /**
+diff --git a/src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php b/src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php
+index e118e066205d98a266aa2ce937dac678507f87e9..7ad76a832de3b3198c9ad60a6557aeec00781b4f 100644
+--- a/src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php
++++ b/src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php
+@@ -164,7 +164,7 @@ function baz($options)
+      * {@inheritdoc}
+      *
+      * Must run before GlobalNamespaceImportFixer.
+-     * Must run after StrictParamFixer.
++     * Must run after BacktickToShellExecFixer, StrictParamFixer.
+      */
+     public function getPriority()
+     {
+diff --git a/src/Fixer/StringNotation/SingleQuoteFixer.php b/src/Fixer/StringNotation/SingleQuoteFixer.php
+index 46055b478fe3c6d7069e8e6cbe572abacd596b0f..b9c987e04e1e791efbde6ef2785f8da185cc6345 100644
+--- a/src/Fixer/StringNotation/SingleQuoteFixer.php
++++ b/src/Fixer/StringNotation/SingleQuoteFixer.php
+@@ -55,7 +55,7 @@ public function getDefinition()
+     /**
+      * {@inheritdoc}
+      *
+-     * Must run after EscapeImplicitBackslashesFixer.
++     * Must run after BacktickToShellExecFixer, EscapeImplicitBackslashesFixer.
+      */
+     public function getPriority()
+     {
+```
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-27T17:36:54Z
+
+Ok, then the tests are passing.
+
+But still, I don't know why your idea suppose to be better than changes in this PR - both modify priorities of 2 fixers.
+
+Also, I don't like that `NativeConstantInvocationFixer` got priority `10` here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4355 - it should get `1` there as the only fixer it must run before has `0`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-07-28T10:18:04Z
+
+>here: #4355 - it should get 1 there as the only fixer it must run before has 0.
+
+did you test this, if so this PR is RTM I think?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-28T10:26:16Z
+
+> did you test this, if so this PR is RTM I think?
+
+It works with the updated priorities I'd recommended, but not the ones in this PR.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-28T20:57:39Z
+
+> did you test this, if so this PR is RTM I think?
+
+Yep, works if you follow the conflict resolution (choose `2` over `11` for `StrictParamFixer`, which should be obvious knowing the first conflict solution).
+
+> It works with the updated priorities I'd recommended, but not the ones in this PR.
+
+@GrahamCampbell how did you test it this time, so it's not working? It's "funny" that your changes works for you when in fact they don't and mine doesn't when in fact they do...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-28T22:27:10Z
+
+https://travis-ci.org/github/GrahamCampbell/PHP-CS-Fixer/jobs/712728528 shows what can happen if someone merges upwards but keeps the priorities of the master branch version. If you use the priorities that are already there, then there can be no opportunity for error, because merging your PR upwards would then be as simple as: https://github.com/GrahamCampbell/PHP-CS-Fixer/compare/ae91c78d3465ffd14f8bac52da6d88f5db37d5be...9054cece9dcec5e5935a1ae04e0fc0d6e3f2a15b.diff.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-29T16:40:07Z
+
+> what can happen if someone merges upwards but keeps the priorities of the master branch version
+
+That's why I put in the description how to solve conflicts...
