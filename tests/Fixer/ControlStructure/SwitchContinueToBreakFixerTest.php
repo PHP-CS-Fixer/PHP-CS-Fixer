@@ -35,6 +35,27 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
     public function provideTestFixCases()
     {
         return [
+            'alternative syntax |' => [
+                '<?php
+                    switch($foo):
+                        case 3:
+                            continue;
+                    endswitch?>
+                ',
+            ],
+            'alternative syntax ||' => [
+                '<?php
+
+foreach ([] as $v) {
+    continue;
+}
+
+if ($foo != 0) {
+}
+
+switch ($foo):
+endswitch;',
+            ],
             'simple case' => [
                 '<?php
 switch($a) {
