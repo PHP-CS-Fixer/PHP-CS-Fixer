@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: backtick_to_shell_exec,native_function_invocation.
+--RULESET--
+{"backtick_to_shell_exec": true, "native_function_invocation": true}
+--EXPECT--
+<?php
+$var = \shell_exec("pwd");
+
+--INPUT--
+<?php
+$var = `pwd`;

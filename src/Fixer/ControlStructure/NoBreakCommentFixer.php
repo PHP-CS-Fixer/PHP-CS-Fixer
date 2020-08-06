@@ -78,6 +78,16 @@ switch ($foo) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoUselessElseFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function createConfigurationDefinition()
     {
