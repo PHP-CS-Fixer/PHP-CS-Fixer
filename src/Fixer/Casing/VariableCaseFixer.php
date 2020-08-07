@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -48,8 +49,18 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
             [
                 new CodeSample("<?php \$my_variable = 2;\n"),
                 new CodeSample("<?php \$myVariable = 2;\n", ['case' => self::SNAKE_CASE]),
-            ]
+            ],
+            null,
+            'Risky because it cannot detect a change that will have an impact in other files.'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**
@@ -96,7 +107,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
 
     private function camelCase($string)
     {
-        $string = preg_replace('/_/i', ' ', $string);
+        $string = Preg::replace('/_/i', ' ', $string);
         $string = trim($string);
         // uppercase the first character of each word
         $string = ucwords($string);
@@ -108,11 +119,11 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     private function snakeCase($string, $separator = '_')
     {
         // insert separator between any letter and the beginning of a numeric chain
-        $string = preg_replace('/([a-z]+)([0-9]+)/i', '$1'.$separator.'$2', $string);
+        $string = Preg::replace('/([a-z]+)([0-9]+)/i', '$1'.$separator.'$2', $string);
         // insert separator between any lower-to-upper-case letter chain
-        $string = preg_replace('/([a-z]+)([A-Z]+)/', '$1'.$separator.'$2', $string);
+        $string = Preg::replace('/([a-z]+)([A-Z]+)/', '$1'.$separator.'$2', $string);
         // insert separator between the end of a numeric chain and the beginning of an alpha chain
-        $string = preg_replace('/([0-9]+)([a-z]+)/i', '$1'.$separator.'$2', $string);
+        $string = Preg::replace('/([0-9]+)([a-z]+)/i', '$1'.$separator.'$2', $string);
 
         // Lowercase
         return strtolower($string);

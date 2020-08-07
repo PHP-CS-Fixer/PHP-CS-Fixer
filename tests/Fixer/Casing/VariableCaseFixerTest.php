@@ -62,6 +62,10 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
                 '<?php echo $testModel->this_field;',
                 '<?php echo $test_model->this_field;',
             ],
+            [
+                '<?php function f($barBaz, $file) { require $file;}',
+                '<?php function f($bar_baz, $file) { require $file;}',
+            ],
         ];
     }
 
@@ -97,8 +101,24 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
                 '<?php function fooBar() { $testVariable = 2;}',
             ],
             [
-                '<?php echo $test_model->thisField;',
-                '<?php echo $testModel->thisField;',
+                '<?php $test_variable = 2; echo "hi $test_variable!";',
+                '<?php $testVariable = 2; echo "hi $testVariable!";',
+            ],
+            [
+                '<?php $test_variable = 2; echo "hi ${test_variable}!";',
+                '<?php $testVariable = 2; echo "hi ${testVariable}!";',
+            ],
+            [
+                '<?php $test_variable = 2; echo "hi {$test_variable}!";',
+                '<?php $testVariable = 2; echo "hi {$testVariable}!";',
+            ],
+            [
+                '<?php echo $test_model->this_field;',
+                '<?php echo $testModel->this_field;',
+            ],
+            [
+                '<?php function f($bar_baz, $file) { require $file;}',
+                '<?php function f($barBaz, $file) { require $file;}',
             ],
         ];
     }
