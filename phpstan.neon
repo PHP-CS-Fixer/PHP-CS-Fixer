@@ -15,9 +15,6 @@ parameters:
         - '/^Class (Symfony\\Contracts\\EventDispatcher\\Event|Symfony\\Component\\EventDispatcher\\Event) not found.$/'
         - '/^(Access|Call) to an undefined (property|method) PhpCsFixer\\AccessibleObject\\AccessibleObject::.+$/'
         -
-            message: '/^Unsafe usage of new static\(\)\.$/'
-            path: src/Config.php
-        -
             message: '/^Else branch is unreachable because previous condition is always true\.$/'
             path: src/Event/Event.php
         -
