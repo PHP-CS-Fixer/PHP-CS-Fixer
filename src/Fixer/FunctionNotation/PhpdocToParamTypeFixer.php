@@ -15,9 +15,6 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
@@ -29,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Jan Gantzert <jan@familie-gantzert.de>
  */
-final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
     /** @internal */
     const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
@@ -112,19 +109,6 @@ function my_foo($bar)
     public function isRisky()
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('scalar_types', 'Fix also scalar types; may have unexpected behaviour due to PHP bad type coercion system.'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(true)
-                ->getOption(),
-        ]);
     }
 
     /**
