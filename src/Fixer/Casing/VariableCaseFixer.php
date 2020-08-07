@@ -18,7 +18,6 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -40,42 +39,16 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     const SNAKE_CASE = 'snake_case';
 
     /**
-     * Hold the function that will be used to convert the constants.
-     *
-     * @var callable
-     */
-    private $fixFunction;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration = null)
-    {
-        parent::configure($configuration);
-
-        if (self::CAMEL_CASE === $this->configuration['case']) {
-            $this->fixFunction = static function ($token) {
-                // TODO: use camel case function
-                return VariableCaseFixer::camelCase($token);
-            };
-        }
-
-        if (self::SNAKE_CASE === $this->configuration['case']) {
-            $this->fixFunction = static function ($token) {
-                // TODO: use snake case function (yet to be defined)
-                return strtolower($token);
-            };
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getDefinition()
     {
         return new FixerDefinition(
-            'The PHP constants `true`, `false`, and `null` MUST be written using the correct casing.',
-            [new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n")]
+            'Enforce camel (or snake) case for variable names, following configuration',
+            [
+                new CodeSample('<?php $myVariable = 2;'),
+                new CodeSample('<?php $my_variable = 2;', ['case' => self::SNAKE_CASE]),
+            ]
         );
     }
 
@@ -94,8 +67,8 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('case', 'Apply `camel_case` or `snake_case` to variables.'))
-            ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE])
-            ->setDefault(self::CAMEL_CASE)
+                ->setAllowedValues([self::CAMEL_CASE, self::SNAKE_CASE])
+                ->setDefault(self::CAMEL_CASE)
                 ->getOption(),
         ]);
     }
@@ -106,7 +79,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (T_VARIABLE == $token->getId()) {
+            if (T_VARIABLE === $token->getId()) {
                 $tokens[$index] = new Token([$token->getId(), $this->updateVariableCasing($token->getContent())]);
             }
         }
@@ -116,9 +89,9 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     {
         if (self::CAMEL_CASE === $this->configuration['case']) {
             return $this->camelCase($variableName);
-        } else {
-            return $this->snakeCase($variableName);
         }
+
+        return $this->snakeCase($variableName);
     }
 
     private function camelCase($string)
@@ -127,24 +100,21 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
         $string = trim($string);
         // uppercase the first character of each word
         $string = ucwords($string);
-        $string = str_replace(" ", "", $string);
-        $string = lcfirst($string);
+        $string = str_replace(' ', '', $string);
 
-        return $string;
+        return lcfirst($string);
     }
 
-    private function snakeCase($string, $separator = "_")
+    private function snakeCase($string, $separator = '_')
     {
-        // insert hyphen between any letter and the beginning of a numeric chain
+        // insert separator between any letter and the beginning of a numeric chain
         $string = preg_replace('/([a-z]+)([0-9]+)/i', '$1'.$separator.'$2', $string);
-        // insert hyphen between any lower-to-upper-case letter chain
+        // insert separator between any lower-to-upper-case letter chain
         $string = preg_replace('/([a-z]+)([A-Z]+)/', '$1'.$separator.'$2', $string);
-        // insert hyphen between the end of a numeric chain and the beginning of an alpha chain
+        // insert separator between the end of a numeric chain and the beginning of an alpha chain
         $string = preg_replace('/([0-9]+)([a-z]+)/i', '$1'.$separator.'$2', $string);
 
         // Lowercase
-        $string = strtolower($string);
-
-        return $string;
+        return strtolower($string);
     }
 }
