@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-06T14:07:10Z
+
+I think the bug is that it is not used?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-08-06T14:20:47Z
+
+It should've never been added to the code base as it is not used. I also don't think it is a much wanted feature as no one reported that the option does nothing.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-06T14:29:58Z
+
+I suppose this is fine for now. The fixer is marked as experimental anyway, so we are free to add/remove/change options and defaults anyway. :)
