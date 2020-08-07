@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Fixer\Casing\VariableCaseFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -23,7 +24,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class VariableCaseFixerTest extends AbstractFixerTestCase
 {
-     /**
+    /**
      * @param string      $expected
      * @param null|string $input
      *
@@ -43,12 +44,12 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php function foo_bar() { $testVariable = 2;}',
-                '<?php function foo_bar() { $test__variable = 2;}'
+                '<?php function foo_bar() { $test__variable = 2;}',
             ],
             [
                 '<?php echo $testModel->this_field;',
-                '<?php echo $test_model->this_field;'
-            ]
+                '<?php echo $test_model->this_field;',
+            ],
         ];
     }
 
@@ -60,7 +61,7 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
      */
     public function testSnakeCaseFix($expected, $input = null)
     {
-        $this->fixer->configure(['case' => 'snake_case']);
+        $this->fixer->configure(['case' => VariableCaseFixer::SNAKE_CASE]);
         $this->doTest($expected, $input);
     }
 
@@ -72,13 +73,21 @@ final class VariableCaseFixerTest extends AbstractFixerTestCase
                 '<?php $testVariable = 2;',
             ],
             [
+                '<?php $abc_12_variable = 2;',
+                '<?php $abc12Variable = 2;',
+            ],
+            [
+                '<?php $abc_123_a_variable = 2;',
+                '<?php $abc123aVariable = 2;',
+            ],
+            [
                 '<?php function fooBar() { $test_variable = 2;}',
-                '<?php function fooBar() { $testVariable = 2;}'
+                '<?php function fooBar() { $testVariable = 2;}',
             ],
             [
                 '<?php echo $test_model->thisField;',
-                '<?php echo $testModel->thisField;'
-            ]
+                '<?php echo $testModel->thisField;',
+            ],
         ];
     }
 }
