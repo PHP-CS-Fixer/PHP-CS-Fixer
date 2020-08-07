@@ -44,10 +44,10 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Enforce camel (or snake) case for variable names, following configuration',
+            'Enforce camel (or snake) case for variable names, following configuration.',
             [
-                new CodeSample('<?php $myVariable = 2;'),
-                new CodeSample('<?php $my_variable = 2;', ['case' => self::SNAKE_CASE]),
+                new CodeSample("<?php \$my_variable = 2;\n"),
+                new CodeSample("<?php \$myVariable = 2;\n", ['case' => self::SNAKE_CASE]),
             ]
         );
     }
