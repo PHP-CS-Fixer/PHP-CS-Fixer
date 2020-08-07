@@ -57,7 +57,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_VARIABLE);
+        return $tokens->isAnyTokenKindsFound([T_VARIABLE, T_STRING_VARNAME]);
     }
 
     /**
@@ -79,7 +79,7 @@ final class VariableCaseFixer extends AbstractFixer implements ConfigurationDefi
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (T_VARIABLE === $token->getId()) {
+            if ((T_VARIABLE === $token->getId()) || (T_STRING_VARNAME === $token->getId())) {
                 $tokens[$index] = new Token([$token->getId(), $this->updateVariableCasing($token->getContent())]);
             }
         }
