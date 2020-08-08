@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-08-06T20:26:58Z
+
+Shouldn't the fixer actually support alternative syntax in case the `NoAlternativeSyntaxFixer` is not used?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-08-07T11:17:01Z
+
+Ideally it would support the alternative syntax, however the time I can spend on this PR is very limited. Maybe someone who actually uses the alternative syntax can send a PR later to add the support for it :)
