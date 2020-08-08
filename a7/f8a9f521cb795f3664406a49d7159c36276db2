@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-08-07T14:37:26Z
+
+The last fail is because on 3.0 we set the error logging here;
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/3.0/php-cs-fixer#L14
+and no longer in the [Application](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.4/src/Console/Application.php#L49) class.
+
+Now the setting is not loaded by PHPUnit so it runs with other values than we expected the app with. We could make a bootstrap file for PHPUnit, but maybe there is a more easy/better way to set the error reporting level in PHPUnit config?
+
+(@ see https://github.com/symfony/phpunit-bridge/blob/v5.1.3/Legacy/SymfonyTestsListenerTrait.php#L339 for why the error reporting settings causes the tests to fail)
