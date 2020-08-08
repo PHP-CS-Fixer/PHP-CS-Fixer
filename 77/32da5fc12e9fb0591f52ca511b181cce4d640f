@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-08-06T09:48:18Z
+
+Thanks @mvorisek !
+Could you retarget this PR to 2.15 so the biggest group of users will benefit from it?
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-08-06T10:09:43Z
+
+>
+>
+> Thanks @mvorisek !
+> Could you retarget this PR to 2.15 so the biggest group of users will benefit from it?
+
+@SpacePossum done, Symfony support of version >=4 .1 <4.4 removed as EOL/unfixed
