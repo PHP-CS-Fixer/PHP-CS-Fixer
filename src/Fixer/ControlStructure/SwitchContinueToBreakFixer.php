@@ -63,10 +63,20 @@ switch ($foo) {
 
     /**
      * {@inheritdoc}
+     *
+     * Must run after NoAlternativeSyntaxFixer.
+     */
+    public function getPriority()
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_SWITCH, T_CONTINUE, T_LNUMBER]);
+        return $tokens->isAllTokenKindsFound([T_SWITCH, T_CONTINUE, T_LNUMBER]) && !$tokens->hasAlternativeSyntax();
     }
 
     /**
