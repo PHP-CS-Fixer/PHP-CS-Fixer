@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-03-15T13:19:25Z
+
+As this is not a bug fix, doesn't it belong on `master`?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-03-15T13:33:32Z
+
+It's not a new feature nor a deprecation so I see no reason not to merge this in the lowest branch. Unless we want to have epic merge conflicts if a bugfix is merged afterwards :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-06T14:32:46Z
+
+Ping @SpacePossum I've been running these changes for around 2 weeks now, and not noticed any issues. :)
