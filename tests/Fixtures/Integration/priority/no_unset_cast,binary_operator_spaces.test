@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_unset_cast,binary_operator_spaces.
+--RULESET--
+{"no_unset_cast": true, "binary_operator_spaces": true}
+--EXPECT--
+<?php
+
+$foo = null;
+
+--INPUT--
+<?php
+
+$foo = (unset) $bar;
