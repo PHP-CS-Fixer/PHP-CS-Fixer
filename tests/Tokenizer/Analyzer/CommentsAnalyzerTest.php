@@ -270,6 +270,7 @@ $bar;',
             ['<?php /* @var string $s */ echo($s);'],
             ['<?php /* @var User $bar */ ($baz = tmp())->doSomething();'],
             ['<?php /* @var User $bar */ list($bar) = a();'],
+            ['<?php /* @var string */ return \'foo\';'],
         ];
     }
 

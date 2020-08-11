@@ -190,6 +190,10 @@ final class CommentsAnalyzer
      */
     private function isValidControl(Tokens $tokens, Token $docsToken, $controlIndex)
     {
+        if ($tokens[$controlIndex]->isGivenKind(T_RETURN) && false !== stripos($docsToken->getContent(), '@var')) {
+            return true;
+        }
+
         static $controlStructures = [
             T_FOR,
             T_FOREACH,
