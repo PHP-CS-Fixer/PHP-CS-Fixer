@@ -22,7 +22,6 @@ interface DifferInterface
      *
      * @param string $old
      * @param string $new
-     * @param \SplFileInfo|null $file
      *
      * @return string
      */
