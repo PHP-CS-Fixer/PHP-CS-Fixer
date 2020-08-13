@@ -20,11 +20,11 @@ interface DifferInterface
     /**
      * Create diff.
      *
-     * @param string       $old
-     * @param string       $new
-     * @param \SplFileInfo $file
+     * @param string $old
+     * @param string $new
+     * @param \SplFileInfo|null $file
      *
      * @return string
      */
-    public function diff($old, $new, $file = null);
+    public function diff($old, $new, \SplFileInfo $file = null);
 }

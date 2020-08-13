@@ -14,13 +14,13 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
-use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
@@ -169,18 +169,5 @@ final class RunnerTest extends TestCase
         $runner->fix();
 
         static::assertSame($path, $spy->passedFile->getPath());
-    }
-}
-
-class FakeDiffer implements DifferInterface
-{
-    /** @var \SplFileInfo */
-    public $passedFile;
-
-    public function diff($old, $new, $file = null)
-    {
-        $this->passedFile = $file;
-
-        return 'some-diff';
     }
 }

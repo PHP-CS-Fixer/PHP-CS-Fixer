@@ -36,7 +36,7 @@ final class UnifiedDiffer implements DifferInterface
     /**
      * {@inheritdoc}
      */
-    public function diff($old, $new, $file = null)
+    public function diff($old, $new, \SplFileInfo $file = null)
     {
         return $this->differ->diff($old, $new);
     }
