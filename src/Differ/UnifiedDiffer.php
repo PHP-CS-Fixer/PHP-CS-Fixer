@@ -21,23 +21,26 @@ use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
 final class UnifiedDiffer implements DifferInterface
 {
     /**
-     * @var Differ
-     */
-    private $differ;
-
-    public function __construct()
-    {
-        $this->differ = new Differ(new StrictUnifiedDiffOutputBuilder([
-            'fromFile' => 'Original',
-            'toFile' => 'New',
-        ]));
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function diff($old, $new, \SplFileInfo $file = null)
     {
-        return $this->differ->diff($old, $new);
+        $options = [
+            'fromFile' => 'Original',
+            'toFile' => 'New',
+        ];
+
+        if ($file) {
+            $options = [
+                'fromFile' => str_replace(getcwd(), '', $file->getPath()),
+                'toFile' => str_replace(getcwd(), '', $file->getPath()),
+                'fromFileDate' => date('Y-m-d H:i:s.u Z', $file->getMTime()),
+                'toFileDate' => date('Y-m-d H:i:s.u Z', $file->getMTime()),
+            ];
+        }
+
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder($options));
+
+        return $differ->diff($old, $new);
     }
 }
