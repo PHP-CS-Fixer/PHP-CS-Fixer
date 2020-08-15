@@ -11,6 +11,7 @@
 /.* export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
+/check_file_permissions.sh export-ignore
 /check_trailing_spaces.sh export-ignore
 /dev-tools/ export-ignore
 /phpmd.xml export-ignore
