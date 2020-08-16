@@ -37,6 +37,15 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // must run after CurlyBraceTransformer, TypeAlternationTransformer
+        return -1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 50300;
