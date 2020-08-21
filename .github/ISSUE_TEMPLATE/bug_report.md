@@ -12,8 +12,8 @@ labels: kind/bug
   Please describe the problem and provide technical details such as:
    * PHP version: php -v
    * PHP CS Fixer version: php-cs-fixer -V
-   * the command used to run PHP CS Fixer
-   * the configuration file you used
+   * the command used to run PHP CS Fixer (run with `-vvv`)
+   * the configuration (file) you used
 -->
 
 ### Code snippet that reproduces the problem
