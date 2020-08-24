@@ -24,6 +24,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -112,75 +113,64 @@ function foo () {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy']) {
-            $this->applyChainedCallsFix($tokens);
-
-            return;
-        }
-
-        if (self::STRATEGY_NO_MULTI_LINE === $this->configuration['strategy']) {
-            $this->applyNoMultiLineFix($tokens);
-        }
-    }
-
-    private function applyNoMultiLineFix(Tokens $tokens): void
-    {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->equals(';')) {
+        for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
+            if (!$tokens[$index]->equals(';')) {
                 continue;
             }
 
             $previousIndex = $index - 1;
             $previous = $tokens[$previousIndex];
-            if (!$previous->isWhitespace() || !str_contains($previous->getContent(), "\n")) {
-                continue;
-            }
 
-            $content = $previous->getContent();
-            if (str_starts_with($content, $lineEnding) && $tokens[$index - 2]->isComment()) {
-                $tokens->ensureWhitespaceAtIndex($previousIndex, 0, $lineEnding);
-            } else {
-                $tokens->clearAt($previousIndex);
-            }
-        }
-    }
-
-    private function applyChainedCallsFix(Tokens $tokens): void
-    {
-        for ($index = \count($tokens) - 1; $index >= 0; --$index) {
-            // continue if token is not a semicolon
-            if (!$tokens[$index]->equals(';')) {
-                continue;
-            }
-
-            // get the indent of the chained call, null in case it's not a chained call
             $indent = $this->findWhitespaceBeforeFirstCall($index - 1, $tokens);
+            if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy'] && null !== $indent) {
+                if ($previous->isWhitespace() && $previous->getContent() === $lineEnding.$indent) {
+                    continue;
+                }
 
-            if (null === $indent) {
-                continue;
+                // unset whitespace and semicolon
+                if ($previous->isWhitespace()) {
+                    $tokens->clearAt($previousIndex);
+                }
+                $tokens->clearAt($index);
+
+                // find the line ending token index after the semicolon
+                $index = $this->getNewLineIndex($index, $tokens);
+
+                // appended new line to the last method call
+                $newline = new Token([T_WHITESPACE, $lineEnding.$indent]);
+
+                // insert the new line with indented semicolon
+                $tokens->insertAt($index++, [$newline, new Token(';')]);
+            } else {
+                if (!$previous->isWhitespace() || !str_contains($previous->getContent(), "\n")) {
+                    continue;
+                }
+
+                $content = $previous->getContent();
+                if (str_starts_with($content, $lineEnding) && $tokens[$index - 2]->isComment()) {
+                    // if there is comment between closing bracket and semicolon
+
+                    // unset whitespace and semicolon
+                    $tokens->clearAt($previousIndex);
+                    $tokens->clearAt($index);
+
+                    // find the significant token index before the semicolon
+                    $significantTokenIndex = $this->getPreviousSignificantTokenIndex($index, $tokens);
+
+                    // insert the semicolon
+                    $tokens->insertAt($significantTokenIndex + 1, [new Token(';')]);
+                } else {
+                    // if there is whitespace between closing bracket and semicolon, just remove it
+                    $tokens->clearAt($previousIndex);
+                }
             }
-
-            // unset semicolon
-            $tokens->clearAt($index);
-
-            // find the line ending token index after the semicolon
-            $index = $this->getNewLineIndex($index, $tokens);
-
-            // line ending string of the last method call
-            $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-            // appended new line to the last method call
-            $newline = new Token([T_WHITESPACE, $lineEnding.$indent]);
-
-            // insert the new line with indented semicolon
-            $tokens->insertAt($index, [$newline, new Token(';')]);
         }
     }
 
     /**
-     * Find the index for the new line. Return the given index when there's no new line.
+     * Find the index for the next new line. Return the given index when there's no new line.
      */
     private function getNewLineIndex(int $index, Tokens $tokens): int
     {
@@ -188,6 +178,27 @@ function foo () {
 
         for ($index, $count = \count($tokens); $index < $count; ++$index) {
             if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
+                return $index;
+            }
+        }
+
+        return $index;
+    }
+
+    /**
+     * Find the index for the previous significant token. Return the given index when there's no significant token.
+     */
+    private function getPreviousSignificantTokenIndex(int $index, Tokens $tokens): int
+    {
+        $stopTokens = [
+            T_LNUMBER,
+            T_DNUMBER,
+            T_STRING,
+            T_VARIABLE,
+            T_CONSTANT_ENCAPSED_STRING,
+        ];
+        for ($index; $index > 0; --$index) {
+            if ($tokens[$index]->isGivenKind($stopTokens) || $tokens[$index]->equals(')')) {
                 return $index;
             }
         }
@@ -206,63 +217,75 @@ function foo () {
      */
     private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
     {
-        // semicolon followed by a closing bracket?
-        if (!$tokens[$index]->equals(')')) {
-            return null;
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+        $chained = false;
+
+        // skip whitespace between semicolon and closed bracket
+        while ($tokens[$index]->isWhitespace() || $tokens[$index]->isComment()) {
+            --$index;
         }
-
-        // find opening bracket
-        $openingBrackets = 1;
-        for (--$index; $index > 0; --$index) {
+        do {
+            // semicolon followed by a closing bracket?
             if ($tokens[$index]->equals(')')) {
-                ++$openingBrackets;
+                // find opening bracket
+                $openingBrackets = 1;
+                for (--$index; $index > 0; --$index) {
+                    if ($tokens[$index]->equals(')')) {
+                        ++$openingBrackets;
 
-                continue;
-            }
+                        continue;
+                    }
 
-            if ($tokens[$index]->equals('(')) {
-                if (1 === $openingBrackets) {
-                    break;
+                    if ($tokens[$index]->equals('(')) {
+                        if (1 === $openingBrackets) {
+                            break;
+                        }
+                        --$openingBrackets;
+                    }
                 }
-                --$openingBrackets;
-            }
-        }
-
-        // method name
-        if (!$tokens[--$index]->isGivenKind(T_STRING)) {
-            return null;
-        }
-
-        // ->, ?-> or ::
-        if (!$tokens[--$index]->isObjectOperator() && !$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
-            return null;
-        }
-
-        // white space
-        if (!$tokens[--$index]->isGivenKind(T_WHITESPACE)) {
-            return null;
-        }
-
-        $closingBrackets = 0;
-        for ($index; $index >= 0; --$index) {
-            if ($tokens[$index]->equals(')')) {
-                ++$closingBrackets;
+                --$index;
             }
 
-            if ($tokens[$index]->equals('(')) {
-                --$closingBrackets;
-            }
+            // method name
+            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+                if (!$tokens[$index]->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_CLOSE)) {
+                    return null;
+                }
+                // find opening curly bracket
+                $openingCurlyBrackets = 1;
+                for (--$index; $index > 0; --$index) {
+                    if ($tokens[$index]->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_CLOSE)) {
+                        ++$openingCurlyBrackets;
 
-            // must be the variable of the first call in the chain
-            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN, T_STRING]) && 0 === $closingBrackets) {
-                if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
-                    || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
-                    return $this->getIndentAt($tokens, $index);
+                        continue;
+                    }
+
+                    if ($tokens[$index]->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_OPEN)) {
+                        if (1 === $openingCurlyBrackets) {
+                            break;
+                        }
+                        --$openingCurlyBrackets;
+                    }
                 }
             }
-        }
 
-        return null;
+            // ->, ?-> or ::
+            if (!$tokens[--$index]->isObjectOperator() && !$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+                return null;
+            }
+
+            while ($tokens[--$index]->isWhitespace() || $tokens[$index]->isComment()) {
+                if (false !== strstr($tokens[$index]->getContent(), $lineEnding)) {
+                    $chained = true;
+                }
+            }
+
+            while ($tokens[$index]->isGivenKind(T_STRING) && $tokens[$index - 1]->isGivenKind(T_NS_SEPARATOR) || $tokens[$index]->isGivenKind(T_NS_SEPARATOR) && $tokens[$index - 1]->isGivenKind(T_STRING)) {
+                --$index;
+            }
+        } while (!($tokens[$index]->isGivenKind([T_VARIABLE, T_STRING, T_NS_SEPARATOR]) && $tokens[$index - 1]->isGivenKind([T_WHITESPACE, T_OPEN_TAG]) || $tokens[$index]->isGivenKind([CT::T_BRACE_CLASS_INSTANTIATION_CLOSE])));
+
+        return $chained ? $this->getIndentAt($tokens, $index) : null;
     }
 
     private function getIndentAt(Tokens $tokens, int $index): ?string
