@@ -343,7 +343,7 @@ Choose from the list of available rules:
     'include', 'include_once', 'require', 'require_once', 'return',
     'switch', 'throw', 'try', 'while', 'yield']``): list of statements which
     must be preceded by an empty line; defaults to ``['break', 'continue',
-    'declare', 'return', 'throw', 'try']``
+    'declare', 'return', 'throw']``
 
 * **braces** [@PSR2, @Symfony, @PhpCsFixer]
 

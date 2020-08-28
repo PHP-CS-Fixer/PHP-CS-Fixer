@@ -311,7 +311,6 @@ if (true) {
                     'declare',
                     'return',
                     'throw',
-                    'try',
                 ])
                 ->getOption(),
         ]);
