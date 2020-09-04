@@ -30,7 +30,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Fix PHPDoc inline tags, make `@inheritdoc` always inline.',
+            'Fix PHPDoc inline tags, make `@inheritDoc` always inline.',
             [new CodeSample(
                 '<?php
 /**
@@ -93,11 +93,17 @@ final class PhpdocInlineTagFixer extends AbstractFixer
                 $content
             );
 
-            // Always make inheritdoc inline using with '{' '}' when needed,
-            // make sure lowercase.
+            // Always write inheritDoc in camelCase
+            // https://docs.phpdoc.org/latest/guides/inheritance.html#the-inheritdoc-tag
+            $content = str_replace('inheritdoc', 'inheritDoc', $content);
+
+            // Make inheritDocs lowercase
+            $content = str_replace('inheritDocs', 'inheritdocs', $content);
+
+            // Always make inheritDoc inline using with '{' '}' when needed,
             $content = Preg::replace(
                 '#(?<!{)@inheritdocs?(?!})#i',
-                '{@inheritdoc}',
+                '{@inheritDoc}',
                 $content
             );
 

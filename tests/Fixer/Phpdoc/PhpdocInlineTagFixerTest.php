@@ -40,15 +40,15 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
     /**
      * {link} { LINK }
      * { test }
-     * {@inheritdoc rire éclatant des écoliers qui décontenança®¶ñ¿}
+     * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿}
      * test other comment
-     * {@inheritdoc test} a
-     * {@inheritdoc test} b
-     * {@inheritdoc test} c
-     * {@inheritdoc foo bar.} d
-     * {@inheritdoc foo bar.} e
-     * {@inheritdoc test} f
-     * end comment {@inheritdoc here we are done} @spacepossum {1}
+     * {@inheritDoc test} a
+     * {@inheritDoc test} b
+     * {@inheritDoc test} c
+     * {@inheritDoc foo bar.} d
+     * {@inheritDoc foo bar.} e
+     * {@inheritDoc test} f
+     * end comment {@inheritDoc here we are done} @spacepossum {1}
      */
 ',
                 '<?php
@@ -58,18 +58,18 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
      * {@inheritDoc rire éclatant des écoliers qui décontenança®¶ñ¿ }
      * test other comment
      * @{inheritdoc test} a
-     * {{@inheritdoc    test}} b
+     * {{@inheritDoc    test}} b
      * {@ inheritdoc   test} c
-     * { @inheritdoc 	foo bar.  } d
+     * { @inheritDoc 	foo bar.  } d
      * {@ 	inheritdoc foo bar.	} e
      * @{{inheritdoc test}} f
-     * end comment {@inheritdoc here we are done} @spacepossum {1}
+     * end comment {@inheritDoc here we are done} @spacepossum {1}
      */
 ',
             ],
         ];
 
-        foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+        foreach (['example', 'id', 'internal', 'inheritDoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             $cases[] = [
                 sprintf("<?php\n     /**\n      * {@%s}a\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * @{%s}a\n      */\n", $tag),
@@ -125,7 +125,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
         }
 
         // don't touch well formatted tags
-        foreach (['example', 'id', 'internal', 'inheritdoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
+        foreach (['example', 'id', 'internal', 'inheritDoc', 'link', 'source', 'toc', 'tutorial'] as $tag) {
             $cases[] = [
                 sprintf("<?php\n     /**\n      * {@%s}\n      */\n", $tag),
             ];
@@ -135,7 +135,7 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
         $cases[] = [
             '<?php
     /**
-     * Typo {@inheritdoc} {@example} {@id} {@source} {@tutorial} {links}
+     * Typo {@inheritDoc} {@example} {@id} {@source} {@tutorial} {links}
      * inheritdocs
      */
 ',
@@ -156,6 +156,12 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
     $someVar = "hello";',
         ];
 
+        // lowercase inheritdoc (correct spelling is inheritDoc)
+        $cases[] = [
+            "<?php\n     /**\n      * {@inheritDoc}\n      */\n",
+            "<?php\n     /**\n      * {@inheritdoc}\n      */\n",
+        ];
+
         return $cases;
     }
 
@@ -173,21 +179,21 @@ final class PhpdocInlineTagFixerTest extends AbstractFixerTestCase
             [
                 '<?php
     /**
-     * {@inheritdoc} should this be inside the tag?
-     * {@inheritdoc}
-     * {@inheritdoc}
-     * {@inheritdoc}
-     * inheritdoc
+     * {@inheritDoc} should this be inside the tag?
+     * {@inheritDoc}
+     * {@inheritDoc}
+     * {@inheritDoc}
+     * inheritDoc
      */
 ',
                 // missing { } test for inheritdoc
                 '<?php
     /**
-     * @inheritdoc should this be inside the tag?
-     * @inheritdoc
+     * @inheritDoc should this be inside the tag?
+     * @inheritDoc
      * @inheritdocs
      * {@inheritdocs}
-     * inheritdoc
+     * inheritDoc
      */
 ',
             ],
