@@ -150,7 +150,7 @@ jobs:
                 token:
                     secure: K9NKi7X1OPz898fxtVc1RfWrSI+4hTFFYOik932wTz1jC4dQJ64Khh1LV9frA1+JiDS3+R6TvmQtpzbkX3y4L75UrSnP1ADH5wfMYIVmydG3ZjTMo8SWQWHmRMh3ORAKTMMpjl4Q7EkRkLp6RncKe+FAFPP5mgv55mtIMaE4qUk=
                 file: php-cs-fixer.phar
-                cleanup : false
+                cleanup: false
                 on:
                     repo: FriendsOfPHP/PHP-CS-Fixer
                     tags: true
