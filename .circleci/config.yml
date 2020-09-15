@@ -3,7 +3,7 @@ version: 2
 jobs:
     build:
         macos:
-            xcode: '11.4.0'
+            xcode: '11.7.0'
         steps:
             - checkout
 
