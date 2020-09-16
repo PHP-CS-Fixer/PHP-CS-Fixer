@@ -1,3 +1,5 @@
+
+
 UPGRADE GUIDE FROM 1.x to 2.0
 =============================
 
@@ -12,7 +14,7 @@ Default ruleset was changed from Symfony standard to more generic PSR2. You can 
 The term of risky fixers was introduced. Risky fixer is a fixer that may change the meaning of code (like `StrictComparisonFixer` fixer, which will change `==` into `===`). No rules that are followed by risky fixers are run by default. You need to explicitly permit risky fixers to run them.
 
 Default configuration changes
-----------------------------
+-----------------------------
 By default, PSR2 rules are used instead of Symfony rules.
 Files that will be fixed are php/phpt/twig instead of php/twig/xml/yml.
 Finally, the caching mechanism is enabled by default.
