@@ -1302,7 +1302,7 @@ Choose from the list of available rules:
 
   Properties should be set to ``null`` instead of using ``unset``.
 
-  *Risky rule: changing variables to ``null`` instead of unsetting them will mean they still show up when looping over class variables. With PHP 7.4, this rule might introduce ``null`` assignments to property whose type declaration does not allow it.*
+  *Risky rule: risky when relying on attributes to be removed using ``unset`` rather than be set to ``null``. Changing variables to ``null`` instead of unsetting means these still show up when looping over class variables and reference properties remain unbroken. With PHP 7.4, this rule might introduce ``null`` assignments to properties whose type declaration does not allow it.*
 
 * **no_unused_imports** [@Symfony, @PhpCsFixer]
 
