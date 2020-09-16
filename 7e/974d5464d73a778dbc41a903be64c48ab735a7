@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-06T14:35:50Z
+
+It's a shame the CI is configured with that fast fail, so we can't see the test output from PHP 5.6...
