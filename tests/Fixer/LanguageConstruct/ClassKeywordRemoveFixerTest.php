@@ -73,6 +73,18 @@ DateTime:: # a
             ],
             [
                 "<?php
+                namespace Foo;
+                use Foo\\Bar;
+                echo 'Foo\\Bar\\Baz';
+                ",
+                '<?php
+                namespace Foo;
+                use Foo\\Bar;
+                echo \\Foo\\Bar\\Baz::class;
+                ',
+            ],
+            [
+                "<?php
                 use Foo\\Bar\\Thing as Alias;
 
                 echo 'Foo\\Bar\\Thing';

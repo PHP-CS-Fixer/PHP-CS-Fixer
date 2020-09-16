@@ -1533,4 +1533,42 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
  */'],
         ]);
     }
+
+    /**
+     * @param string $element
+     *
+     * @requires PHP 7.4
+     * @dataProvider provideElementDiscoveringCases
+     */
+    public function testElementDiscovering($element)
+    {
+        $this->doTest(
+            sprintf('<?php
+                class Foo
+                {
+                    /**
+                     * @Foo(foo="foo")
+                     */
+                    %s
+                }
+            ', $element),
+            sprintf('<?php
+                class Foo
+                {
+                    /**
+                     * @Foo(foo = "foo")
+                     */
+                    %s
+                }
+            ', $element)
+        );
+    }
+
+    public static function provideElementDiscoveringCases()
+    {
+        yield ['private $foo;'];
+        yield ['private string $foo;'];
+        yield ['private Foo\Bar $foo;'];
+        yield ['private ?Foo\Bar $foo;'];
+    }
 }

@@ -790,6 +790,10 @@ Choose from the list of available rules:
   - ``import_functions`` (``false``, ``null``, ``true``): whether to import, not import or
     ignore global functions; defaults to ``null``
 
+* **group_import**
+
+  There MUST be group use for the same namespaces.
+
 * **header_comment**
 
   Add, replace or remove header comment.

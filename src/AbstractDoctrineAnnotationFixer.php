@@ -16,6 +16,7 @@ use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
 use PhpCsFixer\Tokenizer\Tokens as PhpTokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -212,7 +213,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             return true;
         }
 
-        while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT])) {
+        while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE])) {
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
