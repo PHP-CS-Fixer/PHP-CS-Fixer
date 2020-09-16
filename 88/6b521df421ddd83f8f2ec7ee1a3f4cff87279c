@@ -1,0 +1,184 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2018-12-28T16:20:30Z
+
+Can you add a test case with these imports:
+```
+use Foo\Bar;
+use Foo\Baz;
+use Foo\Baz\John\Doe;
+use Foo\Baz\John\Smith;
+use Foo\Baz\John\Smith\Junior;
+use Foo\Baz\Johnny\Doe;
+use Foo\Baz\Johnny\Smith;
+```
+?
+
+Possibly other combinations.
+
+Also I wonder what strategy should be also in such case:
+```
+use Foo\Bar;
+use For\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings\One;
+use For\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings\Two;
+```
+Should it group by `Foo` or by `For\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings` or make nested grouping (is that even valid syntax?)?
+
+---------------------------------------------------------------------------
+
+by greeflas at 2019-03-07T15:40:12Z
+
+@kubawerlos
+1. Added test case with your imports.
+2. It will group by `For\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings`. I think in future we can implement different strategies for this :)
+
+---------------------------------------------------------------------------
+
+by greeflas at 2019-03-11T09:36:23Z
+
+@keradus @SpacePossum @kubawerlos guys, can you check this PR, please? Is it OK?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-03-29T11:53:49Z
+
+I think this new rule must be added to the (known) conflicts map [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.14.2/src/FixerFactory.php#L224)
+`single_import_per_statement` => `group_import`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-02T07:24:25Z
+
+When testing:
+
+```
+[09:03 AM]-[possum@zoo1]-[~/work/PHP-CS-Fixer]-[git feature-group-import-fixer]
+$ php php-cs-fixer fix --dry-run --rules=group_import -vvv src/Tokenizer/Transformer/NullableTypeTransformer.php
+Loaded config default.
+Using cache file ".php_cs.cache".
+E
+Legend: ?-unknown, I-invalid file syntax, file ignored, S-Skipped, .-no changes, F-fixed, E-error
+
+Checked all files in 0.010 seconds, 12.000 MB memory used
+
+Files that were not fixed due to errors reported during linting after fixing:
+1) /home/possum/work/PHP-CS-Fixer/src/Tokenizer/Transformer/NullableTypeTransformer.php
+
+[PhpCsFixer\Linter\LintingException]
+PHP Parse error: syntax error, unexpected 'use' (T_USE), expecting identifier (T_STRING) or function (T_FUNCTION) or const (T_CONST) on line 15.
+
+Applied fixers: group_import
+
+```
+
+```
+[09:03 AM]-[possum@zoo1]-[~/work/PHP-CS-Fixer]-[git feature-group-import-fixer]
+$ php -v
+PHP 7.2.15-0ubuntu0.18.04.2 (cli) (built: Mar 22 2019 17:05:14) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
+with Zend OPcache v7.2.15-0ubuntu0.18.04.2, Copyright (c) 1999-2018, by Zend Technologies
+with Xdebug v2.6.0, Copyright (c) 2002-2018, by Derick Rethans
+```
+
+```
+[09:03 AM]-[possum@zoo1]-[~/work/PHP-CS-Fixer]-[git feature-group-import-fixer]
+$ g log
+commit 77a3f327897274ffdeb61bc9f7b8066c6696b01b (HEAD -> feature-group-import-fixer, greeflas/feature-group-import-fixer)
+Author: greeflas <vldmr.kuprienko@gmail.com>
+Date:   Mon Apr 1 22:29:49 2019 +0300
+
+CR fixes
+```
+
+```
+[09:03 AM]-[possum@zoo1]-[~/work/PHP-CS-Fixer]-[git feature-group-import-fixer]
+$ g st
+On branch feature-group-import-fixer
+Your branch is up to date with 'greeflas/feature-group-import-fixer'.
+
+nothing to commit, working tree clean
+```
+
+It seems the rule created:
+
+```php
+<?php
+namespace PhpCsFixer\Tokenizer\Transformer;
+
+use PhpCsFixer\Tokeniz\{use PhpCsFixer\Tokenizer\{CT, Token, Tokens};
+```
+
+form:
+
+```php
+namespace PhpCsFixer\Tokenizer\Transformer;
+
+use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
+```
+
+---------------------------------------------------------------------------
+
+by greeflas at 2019-04-02T09:53:59Z
+
+@SpacePossum Issue was fixed. It was related to `rtrim()` function. In this case `rtrim('PhpCsFixer\Tokenizer\AbstractTransformer', '\\AbstractTransformer')` function was returned wrong namespace `PhpCsFixer\Tokeniz`.
+
+Also I added test case for this.
+
+---------------------------------------------------------------------------
+
+by basheerOct at 2019-06-27T09:51:14Z
+
+Wasn't it merged to **Master**?
+
+---------------------------------------------------------------------------
+
+by greeflas at 2019-07-08T08:12:50Z
+
+@basheerOct not yet.
+@SpacePossum any progress on this PR?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-18T08:21:28Z
+
+Friendly ping @greeflas. Would you have time to continue working on this PR?
+
+---------------------------------------------------------------------------
+
+by greeflas at 2020-02-18T12:05:48Z
+
+@juliendufresne yeap, I will check your comments when will have a time.
+
+---------------------------------------------------------------------------
+
+by Okspen at 2020-06-14T19:22:18Z
+
+@greeflas Hey, I would like to have this fixer. Will you update your merge request?
+
+---------------------------------------------------------------------------
+
+by greeflas at 2020-06-18T20:42:47Z
+
+@Okspen Yeap, waiting for @julienfalque response.
+
+---------------------------------------------------------------------------
+
+by Okspen at 2020-07-06T15:55:44Z
+
+@julienfalque & @SpacePossum Could you please review?
+
+---------------------------------------------------------------------------
+
+by Okspen at 2020-08-13T11:35:37Z
+
+@SpacePossum, @julienfalque Can you please merge the request or leave comments what is else required to finish it? Thanks!
+
+---------------------------------------------------------------------------
+
+by hackel at 2020-08-13T23:12:15Z
+
+This is probably out of scope for this PR at this point, but I would love to be able to configure which types of imports this fixer applies to.  e.g. I would group function and constant imports, but not classes or traits.  Just something to keep in mind.
