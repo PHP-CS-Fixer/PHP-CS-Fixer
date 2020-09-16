@@ -159,10 +159,10 @@ $className = Baz::class;
     }
 
     /**
-     * @param string $namespace
+     * @param string $namespacePrefix
      * @param int    $classIndex
      */
-    private function replaceClassKeyword(Tokens $tokens, $namespace, $classIndex)
+    private function replaceClassKeyword(Tokens $tokens, $namespacePrefix, $classIndex)
     {
         $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
@@ -189,20 +189,24 @@ $className = Baz::class;
         );
 
         $classImport = false;
-        foreach ($this->imports as $alias => $import) {
-            if ($classString === $alias) {
-                $classImport = $import;
+        if ($tokens[$classBeginIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            $namespacePrefix = '';
+        } else {
+            foreach ($this->imports as $alias => $import) {
+                if ($classString === $alias) {
+                    $classImport = $import;
 
-                break;
-            }
+                    break;
+                }
 
-            $classStringArray = explode('\\', $classString);
-            $namespaceToTest = $classStringArray[0];
+                $classStringArray = explode('\\', $classString);
+                $namespaceToTest = $classStringArray[0];
 
-            if (0 === strcmp($namespaceToTest, substr($import, -\strlen($namespaceToTest)))) {
-                $classImport = $import;
+                if (0 === strcmp($namespaceToTest, substr($import, -\strlen($namespaceToTest)))) {
+                    $classImport = $import;
 
-                break;
+                    break;
+                }
             }
         }
 
@@ -214,21 +218,21 @@ $className = Baz::class;
 
         $tokens->insertAt($classBeginIndex, new Token([
             T_CONSTANT_ENCAPSED_STRING,
-            "'".$this->makeClassFQN($namespace, $classImport, $classString)."'",
+            "'".$this->makeClassFQN($namespacePrefix, $classImport, $classString)."'",
         ]));
     }
 
     /**
-     * @param string       $namespace
+     * @param string       $namespacePrefix
      * @param false|string $classImport
      * @param string       $classString
      *
      * @return string
      */
-    private function makeClassFQN($namespace, $classImport, $classString)
+    private function makeClassFQN($namespacePrefix, $classImport, $classString)
     {
         if (false === $classImport) {
-            return ('' !== $namespace ? ($namespace.'\\') : '').$classString;
+            return ('' !== $namespacePrefix ? ($namespacePrefix.'\\') : '').$classString;
         }
 
         $classStringArray = explode('\\', $classString);

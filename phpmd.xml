@@ -18,6 +18,8 @@
 
     <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
 
+    <rule ref="rulesets/cleancode.xml/IfStatementAssignment" />
+
     <rule ref="../../../../../mi-schi/phpmd-extension/rulesets/cleancode.xml/DataStructureMethods" />
     <rule ref="../../../../../mi-schi/phpmd-extension/rulesets/cleancode.xml/SwitchStatement" />
 
