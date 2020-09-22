@@ -447,6 +447,59 @@ $b#
                     'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
                 ],
             ],
+            [
+                '<?php
+$arr = array_map(function /* foo */ ($i): array {
+    $a  = 1;
+    $aa = 1;
+
+    return [];
+}, [1, 2, 3]);',
+
+                '<?php
+$arr = array_map(function /* foo */ ($i): array {
+    $a = 1;
+    $aa = 1;
+
+    return [];
+}, [1, 2, 3]);',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            [
+                '<?php
+$arr = [
+    function (): array {
+    $a  = 1;
+    $aa = 1;
+
+    return [];
+},
+    /* function (): array {
+    $a = 1;
+    $aa = 1;
+
+    return [];
+} */ 0,
+];
+',
+                '<?php
+$arr = [
+    function (): array {
+    $a = 1;
+    $aa = 1;
+
+    return [];
+},
+    /* function (): array {
+    $a = 1;
+    $aa = 1;
+
+    return [];
+} */ 0,
+];
+',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
         ];
     }
 
