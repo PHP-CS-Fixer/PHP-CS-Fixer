@@ -32,8 +32,8 @@ final class UnifiedDiffer implements DifferInterface
             ];
         } else {
             $options = [
-                'fromFile' => $file->getPathname(),
-                'toFile' => $file->getPathname(),
+                'fromFile' => $file->getRealPath(),
+                'toFile' => $file->getRealPath(),
             ];
         }
 

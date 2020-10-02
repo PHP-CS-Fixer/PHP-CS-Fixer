@@ -148,7 +148,7 @@ final class RunnerTest extends TestCase
     public function testThatDiffedFileIsPassedToDiffer()
     {
         $spy = new FakeDiffer();
-        $path = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'file_path';
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $fixers = [
             new Fixer\ClassNotation\VisibilityRequiredFixer(),
         ];
