@@ -25,17 +25,15 @@ final class UnifiedDiffer implements DifferInterface
      */
     public function diff($old, $new, \SplFileInfo $file = null)
     {
-        $options = [
-            'fromFile' => 'Original',
-            'toFile' => 'New',
-        ];
-
-        if ($file) {
+        if (null === $file) {
             $options = [
-                'fromFile' => str_replace(getcwd(), '', $file->getPath()),
-                'toFile' => str_replace(getcwd(), '', $file->getPath()),
-                'fromFileDate' => date('Y-m-d H:i:s.u Z', $file->getMTime()),
-                'toFileDate' => date('Y-m-d H:i:s.u Z', $file->getMTime()),
+                'fromFile' => 'Original',
+                'toFile' => 'New',
+            ];
+        } else {
+            $options = [
+                'fromFile' => $file->getPathname(),
+                'toFile' => $file->getPathname(),
             ];
         }
 
