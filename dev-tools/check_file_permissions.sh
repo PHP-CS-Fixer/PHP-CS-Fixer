@@ -5,7 +5,7 @@ files_with_wrong_permissions=$(
     git ls-files --stage . \
         ':!*.sh' \
         ':!php-cs-fixer' \
-    | grep '100755 ' \
+    | grep -P "100\d\d(1|3|5|7) " \
     | sort -fh
 )
 
@@ -15,6 +15,14 @@ then
     e=$(printf '\033')
     echo "${files_with_wrong_permissions}"
     exit 3
+fi
+
+if [ -x "php-cs-fixer" ]
+then
+    echo '"php-cs-fixer" is executable'
+else
+    echo '"php-cs-fixer" not is executable'
+    exit 4
 fi
 
 printf '\033[0;32mNo wrong permissions detected.\033[0m\n'
