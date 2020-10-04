@@ -89,8 +89,8 @@ class SomeClass
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_FUNCTION) && (
-            \count((new NamespacesAnalyzer())->getDeclarations($tokens)) ||
-            \count((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens))
+            \count((new NamespacesAnalyzer())->getDeclarations($tokens))
+            || \count((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens))
         );
     }
 

@@ -1367,7 +1367,7 @@ Choose from the list of available rules:
   There should not be space before or after object ``T_OBJECT_OPERATOR``
   ``->``.
 
-* **operator_linebreak**
+* **operator_linebreak** [@PhpCsFixer]
 
   Operators - when multiline - must always be at the beginning or at the
   end of the line.

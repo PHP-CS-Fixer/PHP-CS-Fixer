@@ -104,8 +104,8 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurationDefi
             }
 
             if (
-                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index)) &&
-                $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
+                $this->isNeighbourAccepted($tokens, $tokens->getPrevMeaningfulToken($index))
+                && $this->isNeighbourAccepted($tokens, $tokens->getNextMeaningfulToken($index))
             ) {
                 $tokens[$index] = new Token([$token->getId(), $fixFunction($token->getContent())]);
             }

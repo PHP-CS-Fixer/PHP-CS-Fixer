@@ -160,8 +160,8 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public function configure(array $configuration = null)
     {
         if (
-            null !== $configuration &&
-            (\array_key_exists('align_equals', $configuration) || \array_key_exists('align_double_arrow', $configuration))
+            null !== $configuration
+            && (\array_key_exists('align_equals', $configuration) || \array_key_exists('align_double_arrow', $configuration))
         ) {
             $configuration = $this->resolveOldConfig($configuration);
         }
