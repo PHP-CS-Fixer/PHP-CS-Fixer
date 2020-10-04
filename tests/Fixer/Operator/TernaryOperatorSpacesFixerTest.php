@@ -37,6 +37,44 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
     public function provideFixCases()
     {
         return [
+            'handle goto labels 1' => [
+                '<?php
+beginning:
+echo $guard ? 1 : 2;',
+                '<?php
+beginning:
+echo $guard?1:2;',
+            ],
+            'handle goto labels 2' => [
+                '<?php
+function A(){}
+beginning:
+echo $guard ? 1 : 2;',
+                '<?php
+function A(){}
+beginning:
+echo $guard?1:2;',
+            ],
+            'handle goto labels 3' => [
+                '<?php
+;
+beginning:
+echo $guard ? 1 : 2;',
+                '<?php
+;
+beginning:
+echo $guard?1:2;',
+            ],
+            'handle goto labels 4' => [
+                '<?php
+{
+beginning:
+echo $guard ? 1 : 2;}',
+                '<?php
+{
+beginning:
+echo $guard?1:2;}',
+            ],
             [
                 '<?php $a = $a ? 1 : 0;',
                 '<?php $a = $a  ? 1 : 0;',

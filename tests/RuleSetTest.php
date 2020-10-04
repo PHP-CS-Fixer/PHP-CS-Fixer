@@ -89,19 +89,24 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        if (!$fixer instanceof ConfigurationDefinitionFixerInterface) {
+        if (!$fixer instanceof ConfigurationDefinitionFixerInterface || \is_bool($ruleConfig)) {
             $this->addToAssertionCount(1);
 
             return;
         }
 
         $defaultConfig = [];
+
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ($option instanceof DeprecatedFixerOptionInterface) {
                 continue;
             }
+
             $defaultConfig[$option->getName()] = $option->getDefault();
         }
+
+        ksort($defaultConfig);
+        ksort($ruleConfig);
 
         static::assertNotSame($defaultConfig, $ruleConfig, sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName));
     }
