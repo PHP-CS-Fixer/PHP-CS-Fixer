@@ -185,6 +185,11 @@ return $foo
                 {};',
             ];
         }
+
+        yield 'go to' => ['<?php
+                prepare_value:
+                $objectsPool[$value] = [$id = \count($objectsPool)];
+        '];
     }
 
     /**
@@ -287,6 +292,21 @@ return $foo
             '<?php
 return $foo ||
     $bar ||
+    $baz;
+',
+        ];
+
+        yield 'handle multiple operators with nested' => [
+            '<?php
+return $foo
+    || $bar
+    || ($bar2 || $bar3)
+    || $baz;
+',
+            '<?php
+return $foo ||
+    $bar ||
+    ($bar2 || $bar3) ||
     $baz;
 ',
         ];

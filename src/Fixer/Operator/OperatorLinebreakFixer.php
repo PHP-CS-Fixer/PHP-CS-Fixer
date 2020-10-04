@@ -137,6 +137,10 @@ function foo() {
                 continue;
             }
 
+            if ($this->belongsToGoToLabel($tokens, $index)) {
+                continue;
+            }
+
             if ($referenceAnalyzer->isReference($tokens, $index)) {
                 continue;
             }
@@ -310,5 +314,27 @@ function foo() {
         }
 
         return false;
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    private function belongsToGoToLabel(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->equals(':')) {
+            return false;
+        }
+
+        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING)) {
+            return false;
+        }
+
+        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
+
+        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG]]);
     }
 }
