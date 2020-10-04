@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
-use PhpCsFixer\Preg;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -45,13 +44,18 @@ final class StdinTest extends AbstractSmokeTest
         );
         static::assertSame($expectedError, $stdinResult->getError());
 
+        $fileResult = $this->unifyFooter($fileResult->getOutput());
+
+        $file = realpath($cwd).'/'.$inputFile;
+        $path = str_replace('/', \DIRECTORY_SEPARATOR, $file);
+        $fileResult = str_replace("\n--- ".$path."\n", "\n--- php://stdin\n", $fileResult);
+        $fileResult = str_replace("\n+++ ".$path."\n", "\n+++ php://stdin\n", $fileResult);
+
         $path = str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile);
+        $fileResult = str_replace($path, 'php://stdin', $fileResult);
+
         static::assertSame(
-            Preg::replace(
-                '#/?'.preg_quote($path, '#').'#',
-                'php://stdin',
-                $this->unifyFooter($fileResult->getOutput())
-            ),
+            $fileResult,
             $this->unifyFooter($stdinResult->getOutput())
         );
     }

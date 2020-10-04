@@ -25,8 +25,11 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff()
     {
-        $diff = '--- Original
-+++ New
+        $differ = new UnifiedDiffer();
+        $file = __FILE__;
+
+        $diff = '--- '.$file.'
++++ '.$file.'
 @@ -2,7 +2,7 @@
  '.'
  function baz($options)
@@ -37,8 +40,6 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
      }
  '.'
 ';
-        $differ = new UnifiedDiffer();
-
-        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode(), new \SplFileInfo($file)));
     }
 }

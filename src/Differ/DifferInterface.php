@@ -24,8 +24,6 @@ interface DifferInterface
      * @param string $new
      *
      * @return string
-     *
-     * TODO: on 3.0 pass the file name (if applicable) for which this diff is
      */
-    public function diff($old, $new);
+    public function diff($old, $new, \SplFileInfo $file = null);
 }

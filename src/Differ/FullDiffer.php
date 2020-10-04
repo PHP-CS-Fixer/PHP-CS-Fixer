@@ -41,7 +41,7 @@ final class FullDiffer implements DifferInterface
     /**
      * {@inheritdoc}
      */
-    public function diff($old, $new)
+    public function diff($old, $new, \SplFileInfo $file = null)
     {
         return $this->differ->diff($old, $new);
     }

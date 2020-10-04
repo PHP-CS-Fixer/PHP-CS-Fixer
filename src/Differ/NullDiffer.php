@@ -20,7 +20,7 @@ final class NullDiffer implements DifferInterface
     /**
      * {@inheritdoc}
      */
-    public function diff($old, $new)
+    public function diff($old, $new, \SplFileInfo $file = null)
     {
         return '';
     }
