@@ -103,6 +103,54 @@ $x=isset($a)?$a:null?>',
                 '<?php $x = isset($a) ? $a : isset($b) ? $b : isset($c) ? $c : "";',
             ],
             [
+                '<?php $x = $obj->a ?? null;',
+                '<?php $x = isset($obj->a) ? $obj->a : null;',
+            ],
+            [
+                '<?php $x = $obj->a->b ?? null;',
+                '<?php $x = isset($obj->a->b) ? $obj->a->b : null;',
+            ],
+            [
+                '<?php $x = $obj->$a ?? null;',
+                '<?php $x = isset($obj->$a) ? $obj->$a : null;',
+            ],
+            [
+                '<?php $x = $obj->a->$b ?? null;',
+                '<?php $x = isset($obj->a->$b) ? $obj->a->$b : null;',
+            ],
+            [
+                '<?php $x = $obj->a[3] ?? null;',
+                '<?php $x = isset($obj->a[3]) ? $obj->a[3] : null;',
+            ],
+            [
+                '<?php $x = $obj->a[\'foo\'] ?? null;',
+                '<?php $x = isset($obj->a[\'foo\']) ? $obj->a[\'foo\'] : null;',
+            ],
+            [
+                '<?php $x = $obj->a[$b] ?? null;',
+                '<?php $x = isset($obj->a[$b]) ? $obj->a[$b] : null;',
+            ],
+            [
+                '<?php $x = $obj->a[$b][\'foo\'] ?? null;',
+                '<?php $x = isset($obj->a[$b][\'foo\']) ? $obj->a[$b][\'foo\'] : null;',
+            ],
+            [
+                '<?php $x = $obj->a[$b[\'foo\']] ?? null;',
+                '<?php $x = isset($obj->a[$b[\'foo\']]) ? $obj->a[$b[\'foo\']] : null;',
+            ],
+            [
+                '<?php $x = $a[$obj->b] ?? null;',
+                '<?php $x = isset($a[$obj->b]) ? $a[$obj->b] : null;',
+            ],
+            [
+                '<?php $x = Foo::A[$b] ?? null;',
+                '<?php $x = isset(Foo::A[$b]) ? Foo::A[$b] : null;',
+            ],
+            [
+                '<?php $x = $a[Foo::B] ?? null;',
+                '<?php $x = isset($a[Foo::B]) ? $a[Foo::B] : null;',
+            ],
+            [
                 '<?php $x = /*a1*//*a2*/ /*b*/ $a /*c*/ ?? /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
                 '<?php $x = isset($a) /*a1*//*a2*/ ? /*b*/ $a /*c*/ : /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
             ],
