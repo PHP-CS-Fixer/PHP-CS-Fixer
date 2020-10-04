@@ -148,10 +148,11 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
 ';
 
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?%s\n([\.S]{%d})\n%s$/',
+            '/^(?:%s)?(?:%s)?%s\n(?:%s)([\.S]{%d})\n%s$/',
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             preg_quote('Loaded config default from ".php_cs.dist".', '/'),
+            preg_quote(sprintf("Runtime: PHP %s\n", \PHP_VERSION), '/'),
             \strlen($expectedResult3Files),
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );

@@ -61,7 +61,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
      */
     public function testFix74Deprecated($expected, $input = null)
     {
-        $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
+        $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
 
         $this->doTest($expected, $input);
     }
