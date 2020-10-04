@@ -64,7 +64,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
                 if (\array_key_exists($alias, $options)) {
                     if (\array_key_exists($name, $options)) {
-                        throw new InvalidOptionsException(sprintf('Aliased option %s/%s is passed multiple times.', $name, $alias));
+                        throw new InvalidOptionsException(sprintf('Aliased option "%s"/"%s" is passed multiple times.', $name, $alias));
                     }
 
                     @trigger_error(sprintf('Option "%s" is deprecated, use "%s" instead.', $alias, $name), E_USER_DEPRECATED);

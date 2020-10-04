@@ -161,6 +161,9 @@ final class FixCommand extends Command
         if (null !== $stdErr) {
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+            if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+                $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', \PHP_VERSION));
+            }
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
