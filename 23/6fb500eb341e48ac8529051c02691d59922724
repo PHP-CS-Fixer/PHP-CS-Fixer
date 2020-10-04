@@ -1,0 +1,52 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-31T07:03:06Z
+
+Hi @paulhenri-l ,
+
+Could you send this PR to 3.0.0 as it is a BC break?
+
+On the change for the `UnifiedDiffer`: I think here we should use the file info to generate the diff in udiff format with the file info so we create valid patches.
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-06-02T07:54:56Z
+
+@SpacePossum I'll have a look into that then
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-06-09T17:26:26Z
+
+@SpacePossum When do you plan on releasing v3 so I have a better idea of the due date on this?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-06-10T05:50:10Z
+
+there is no release date planned for v3 and I think we are at least a few months out, so no rush at all!
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-08-13T22:20:29Z
+
+Hey,
+
+I've made the requested changes and attempted to implement the unified diff output.
+
+Tell me if that is what you were thinking of :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-02T13:48:10Z
+
+Thanks @paulhenri-l !
+I've made some changes, please let me know what you think :)
+
+Ready for review by a second member.
+
+---------------------------------------------------------------------------
+
+by paulhenri-l at 2020-10-02T20:53:29Z
+
+Hey @SpacePossum this looks good to me, even simpler than my initial implementation 👍
