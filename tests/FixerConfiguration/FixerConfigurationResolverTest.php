@@ -193,7 +193,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
 
         $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
-        $this->expectExceptionMessage('Aliased option bar/baz is passed multiple times');
+        $this->expectExceptionMessage('Aliased option "bar"/"baz" is passed multiple times');
 
         $configuration->resolve([
             'bar' => '1',
