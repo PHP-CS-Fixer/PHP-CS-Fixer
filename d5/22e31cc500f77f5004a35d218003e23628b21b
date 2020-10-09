@@ -1,0 +1,166 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T10:43:10Z
+
+:+1: for the idea, please fix the tests :)
+missing code sample for configuration option in the description I think
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-20T14:07:07Z
+
+maybe it would be better to have a fixer for the casing of PHPDoc annotations and one fixer (this one) to deal with inline tags?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-22T19:43:19Z
+
+It would be better, but I think that would still require an option in `phpdoc_inline_tag` to tweak its behavior, so maybe not worth it? Maybe better to rename the current fixer instead?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-22T20:18:00Z
+
+After the split up you would only need the configuration option here to (not) always make the inheritdoc inline. Like to hear more opinions!
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-27T18:42:14Z
+
+What about:
+
+1. new fixer `GeneralPhpdocTagRenameFixer`
+Fixer that will rename inline-tag or annotation-tag based on configuration:
+```php
+[
+    'fix_annotation' => boolean,
+    'fix_inline' => boolean,
+    'ignore_casing' => boolean,
+    'replacements' => [ 'inheritdocS' => 'inheritdoc', ...]
+]
+```
+
+2. new fixer `PhpdocTagCasingFixer`
+that will be proxy fixer to `GeneralPhpdocTagRenameFixer` that will fix most common tags
+
+3. new fixer `PhpdocInlineTagNormalizerFixer`
+that will:
+```diff
+- @{{   tag description?      }}}}}}
++ {@tag description?}
+
+- {{   @tag description?      }}}}}}
++ {@tag description?}
+```
+
+4. current `PhpdocInlineTagFixer`
+- shall reuse fixers 1 and 3 without extra logic
+- shall be deprecated
+
+-----
+
+That way, you could achieve initial goal in very generic way: have `@inheridDoc` annotation tag
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-03-28T07:40:41Z
+
+sounds good to me :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-03-28T07:52:49Z
+
+Sounds like a good idea. Could you elaborate what the options would do exactly?
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-03-28T08:01:43Z
+
+> ```php
+> [
+>     'fix_annotation' => boolean,
+>     'fix_inline' => boolean,
+>     'ignore_casing' => boolean,
+>     'replacements' => [ 'inheritdocS' => 'inheritdoc', ...]
+> ]
+> ```
+
+- `replacements` - providing a replacement map
+- `ignore_casing` - if true the replaced tag may be written with different casing than provided in `replacements`, eg `iNhErItDoCs` would also be modified
+- `fix_inline` - rename inline tags, like in `* Foo @{inheritdocs} because... `
+- `fix_annotation` - rename annotations, like in `* @inheritdocs because....`
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-02T15:23:30Z
+
+ping @julienfalque
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-09-07T19:30:22Z
+
+PR reworked from scratch.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-09-20T21:08:18Z
+
+This PR is touching 25 files, including already existing rules and few generic files. For that, it's hard to focus on end-change we want to achieve here. Having all changes in one commit is not helping as well.
+I think we shall split this PR. As first step I see extracting ability for ProxyFixer to proxy multiple fixers at once. WDYT ?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2017-10-09T05:26:32Z
+
+@julienfalque can you split us the PR? I think a new fixer like the `PhpdocTagCasingFixer` can be reviewed on its own for example?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-11T18:12:45Z
+
+I extracted support for multiple proxied fixers in `AbstractProxyFixer`: #3149.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-13T19:25:04Z
+
+extracted PR got merged
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-14T11:16:57Z
+
+Rebased.
+
+---------------------------------------------------------------------------
+
+by keradus at 2017-10-14T11:37:13Z
+
+I like the idea of @SpacePossum to split this PR down to ease with review and overall process.
+Do you think there is still some nice thing that could be extracted?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-14T11:56:47Z
+
+Maybe, but I'd like to address https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/2619#discussion_r140091476 first.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2017-10-16T22:14:01Z
+
+This PR should be ready for a new review iteration. Not sure there is more that can be extracted into a separate PR though.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-10-26T19:14:00Z
+
+What's the status of this PR?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-26T19:22:39Z
+
+This PR still needs some review. It's not a priority to me anymore as I tend to remove `@inheritDocs` now but I'd still be happy to get it merged :)
