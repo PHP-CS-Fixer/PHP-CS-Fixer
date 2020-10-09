@@ -14,6 +14,7 @@ namespace PhpCsFixer\Differ;
 
 use PhpCsFixer\Diff\Differ;
 use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
+use PhpCsFixer\Preg;
 
 /**
  * @author SpacePossum
@@ -31,9 +32,15 @@ final class UnifiedDiffer implements DifferInterface
                 'toFile' => 'New',
             ];
         } else {
+            $filePath = $file->getRealPath();
+
+            if (1 === Preg::match('/\s/', $filePath)) {
+                $filePath = '"'.$filePath.'"';
+            }
+
             $options = [
-                'fromFile' => $file->getRealPath(),
-                'toFile' => $file->getRealPath(),
+                'fromFile' => $filePath,
+                'toFile' => $filePath,
             ];
         }
 
