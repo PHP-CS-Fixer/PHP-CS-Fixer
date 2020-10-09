@@ -58,7 +58,7 @@ jobs:
                 - if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize --dry-run --working-dir=./dev-tools ../composer.json
-                - ./dev-tools/check-shell-scripts.sh
+                - ./dev-tools/check_shell_scripts.sh
 
         - &STANDARD_TEST_JOB
             stage: Fast Test
