@@ -1,0 +1,105 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2019-08-20T22:47:37Z
+
+Any news on this fixer?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-12-07T20:00:24Z
+
+@dmvdbrugge @GrahamCampbell @julienfalque @SpacePossum I've reworked the fixers A LOT.
+
+The previous version didn't handle `&` (which can be "bitwise and" or reference) or `:` (can be part of ternary operator or part of `switch`).
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T08:28:51Z
+
+No activity for over half a year, so I guess no one is interested in having it here, and the fixer is already implemented here: https://github.com/kubawerlos/php-cs-fixer-custom-fixers#OperatorLinebreakFixer
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-07-12T13:42:41Z
+
+> I guess no one is interested in having it here
+
+I am :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T17:48:49Z
+
+> I am :)
+
+@julienfalque then go go go with review :stuck_out_tongue_winking_eye:
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-10-02T09:10:13Z
+
+@kubawerlos can this be merged?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-02T19:05:52Z
+
+@mvorisek I guess now after getting `RTM` label it can :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-02T20:45:48Z
+
+Should this rule be added to the php-cs-fixer ruleset?
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2020-10-02T21:02:13Z
+
+>
+>
+> Should this rule be added to the php-cs-fixer ruleset?
+
+I would like to see this in `@Symfony` ruleset with config described in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4021#discussion_r499048329
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-04T09:32:39Z
+
+@kubawerlos please review my changes. The goto-label edge case I found when running on the symfony source folder. I've copy-pasted the fix from https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5113/files so maybe someone can add a todo for making a colon-analyzer or something like that.
+
+@GrahamCampbell done
+
+@mvorisek I'm hesitant as there are a lot of fixes on the symfony source, so probably even far more in the symfony ecosystem. I would be more confident to add it to their set if a core member would request it. Than we don't have to deal with disappointments after 2.17 release like we had in the past releases. Thanks for the suggestion though!
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-04T14:40:56Z
+
+@SpacePossum looks good, are you sure we want to add it to `@PhpCsFixer` in this PR instead of applying it to `2.15` and then merge the changes up?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-05T07:30:11Z
+
+Yeah good point, I might run it on 2.15 later on, but as the fixer won't be part of it new cases might get in anyways.
+I was wondering though, I've added the `boolean` one only, because we (and on SF even more) get some hits on constructs like;
+
+```php
+$foo =
+<<<TXT
+
+TXT;
+```
+
+getting fixed to;
+
+```php
+$foo
+    =
+<<<TXT
+
+TXT;
+```
+
+WDYT, is this good, or something we want to make configurable on an operator bases?
