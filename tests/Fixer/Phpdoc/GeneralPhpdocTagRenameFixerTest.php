@@ -204,7 +204,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     public function testConfigureWithInvalidOption()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "replacements" with value true is expected to be of type "array", but is of type "bool"\.$/');
+        $this->expectExceptionMessageRegExp('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "replacements" with value true is expected to be of type "array", but is of type ".*ool.*"\.$/');
 
         $this->fixer->configure([
             'replacements' => true,
