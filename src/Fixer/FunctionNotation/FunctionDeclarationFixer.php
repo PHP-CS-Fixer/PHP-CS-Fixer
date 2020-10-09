@@ -129,10 +129,10 @@ $f = fn () => null;
             // eg: `function foo()   {}` => `function foo() {}`
             // eg: `fn()   =>` => `fn() =>`
             if (
-                $tokens[$startBraceIndex]->equalsAny(['{', [T_DOUBLE_ARROW]]) &&
-                (
-                    !$tokens[$startBraceIndex - 1]->isWhitespace() ||
-                    $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
+                $tokens[$startBraceIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])
+                && (
+                    !$tokens[$startBraceIndex - 1]->isWhitespace()
+                    || $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
                 )
             ) {
                 $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');

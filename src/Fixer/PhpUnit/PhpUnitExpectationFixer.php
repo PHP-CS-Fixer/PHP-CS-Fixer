@@ -244,8 +244,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     $afterParamIndicatorIndex = $tokens->getNextMeaningfulToken($paramIndicatorIndex);
 
                     if (
-                        $tokens[$paramIndicatorIndex]->equals([T_STRING, 'null'], false) &&
-                        $tokens[$afterParamIndicatorIndex]->equals(')')
+                        $tokens[$paramIndicatorIndex]->equals([T_STRING, 'null'], false)
+                        && $tokens[$afterParamIndicatorIndex]->equals(')')
                     ) {
                         if ($tokens[$argBefore + 1]->isWhitespace()) {
                             $tokens->clearTokenAndMergeSurroundingWhitespace($argBefore + 1);

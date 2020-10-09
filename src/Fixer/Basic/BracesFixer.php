@@ -193,8 +193,8 @@ class Foo
             if ($token->isGivenKind($controlTokens)) {
                 $prevIndex = $this->findParenthesisEnd($tokens, $index);
             } elseif (
-                ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index)) ||
-                ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index))
+                ($token->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($index))
+                || ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index))
             ) {
                 $prevIndex = $tokens->getNextTokenOfKind($index, ['{']);
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
@@ -444,15 +444,15 @@ class Foo
                         !($nextNonWhitespaceNestToken->isComment() && (
                             !$tokens[$nextNonWhitespaceNestIndex - 1]->isWhitespace()
                             || !Preg::match('/\R/', $tokens[$nextNonWhitespaceNestIndex - 1]->getContent())
-                        )) &&
+                        ))
                         // and it is not a `$foo = function () {};` situation
-                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny([';', ',', ']', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) &&
+                        && !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equalsAny([';', ',', ']', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]]))
                         // and it is not a `Foo::{bar}()` situation
-                        !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('(')) &&
+                        && !($nestToken->equals('}') && $nextNonWhitespaceNestToken->equals('('))
                         // and it is not a `${"a"}->...` and `${"b{$foo}"}->...` situation
-                        !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING], [T_VARIABLE]])) &&
+                        && !($nestToken->equals('}') && $tokens[$nestIndex - 1]->equalsAny(['"', "'", [T_CONSTANT_ENCAPSED_STRING], [T_VARIABLE]]))
                         // and next token is not a closing tag that would break heredoc/nowdoc syntax
-                        !($tokens[$nestIndex - 1]->isGivenKind(T_END_HEREDOC) && $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG))
+                        && !($tokens[$nestIndex - 1]->isGivenKind(T_END_HEREDOC) && $nextNonWhitespaceNestToken->isGivenKind(T_CLOSE_TAG))
                     ) {
                         if (
                             (
@@ -933,8 +933,8 @@ class Foo
         // eg: `declare(ticks=1){` => `declare(ticks=1) {`
         // eg: `declare(ticks=1)   {` => `declare(ticks=1) {`
         if (
-            !$tokens[$startBraceIndex - 1]->isWhitespace() ||
-            $tokens[$startBraceIndex - 1]->isWhitespace(" \t")
+            !$tokens[$startBraceIndex - 1]->isWhitespace()
+            || $tokens[$startBraceIndex - 1]->isWhitespace(" \t")
         ) {
             $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
         }

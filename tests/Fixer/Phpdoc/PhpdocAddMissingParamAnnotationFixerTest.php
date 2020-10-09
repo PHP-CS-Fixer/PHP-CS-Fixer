@@ -341,6 +341,13 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     function f10(string $foo = "null", $bar) {}',
             ],
+            [
+                '<?php
+    /**
+     * @inheritDoc
+     */
+    function f10(string $foo = "null", $bar) {}',
+            ],
         ];
     }
 

@@ -22,14 +22,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
 
-/**
- * Case sensitive tag replace fixer (does not process inline tags like {@inheritdoc}).
- *
- * @author Graham Campbell <graham@alt-three.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
- */
-final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements ConfigurableFixerInterface
+final class PhpdocTagCasingFixer extends AbstractProxyFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -37,35 +30,12 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
     public function getDefinition()
     {
         return new FixerDefinition(
-            'No alias PHPDoc tags should be used.',
+            'Fixes casing of PHPDoc tags.',
             [
-                new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-'
-                ),
-                new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-',
-                    ['replacements' => ['link' => 'website']]
-                ),
+                new CodeSample("<?php\n/**\n * @inheritdoc\n */\n"),
+                new CodeSample("<?php\n/**\n * @inheritdoc\n * @Foo\n */\n", [
+                    'tags' => ['foo'],
+                ]),
             ]
         );
     }
@@ -73,7 +43,7 @@ final class Example
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocSingleLineVarSpacingFixer.
+     * Must run before PhpdocAlignFixer.
      * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
@@ -85,15 +55,20 @@ final class Example
     {
         parent::configure($configuration);
 
+        $replacements = [];
+        foreach ($this->configuration['tags'] as $tag) {
+            $replacements[$tag] = $tag;
+        }
+
         /** @var GeneralPhpdocTagRenameFixer $generalPhpdocTagRenameFixer */
         $generalPhpdocTagRenameFixer = $this->proxyFixers['general_phpdoc_tag_rename'];
 
         try {
             $generalPhpdocTagRenameFixer->configure([
                 'fix_annotation' => true,
-                'fix_inline' => false,
-                'replacements' => $this->configuration['replacements'],
-                'case_sensitive' => true,
+                'fix_inline' => true,
+                'replacements' => $replacements,
+                'case_sensitive' => false,
             ]);
         } catch (InvalidConfigurationException $exception) {
             throw new InvalidFixerConfigurationException(
@@ -110,14 +85,9 @@ final class Example
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
+            (new FixerOptionBuilder('tags', 'List of tags to fix with their expected casing.'))
                 ->setAllowedTypes(['array'])
-                ->setDefault([
-                    'property-read' => 'property',
-                    'property-write' => 'property',
-                    'type' => 'var',
-                    'link' => 'see',
-                ])
+                ->setDefault(['inheritDoc'])
                 ->getOption(),
         ]);
     }

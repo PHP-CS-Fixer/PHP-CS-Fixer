@@ -128,8 +128,8 @@ final class NoEmptyStatementFixer extends AbstractFixer
             $tokensAnalyzer = new TokensAnalyzer($tokens);
 
             if (
-                $tokens[$classyTest]->isGivenKind(T_NAMESPACE) ||
-                ($tokens[$classyTest]->isClassy() && !$tokensAnalyzer->isAnonymousClass($classyTest))
+                $tokens[$classyTest]->isGivenKind(T_NAMESPACE)
+                || ($tokens[$classyTest]->isClassy() && !$tokensAnalyzer->isAnonymousClass($classyTest))
             ) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }

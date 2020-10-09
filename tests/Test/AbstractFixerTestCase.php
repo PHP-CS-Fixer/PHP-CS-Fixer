@@ -60,6 +60,7 @@ abstract class AbstractFixerTestCase extends TestCase
     // do not modify this structure without prior discussion
     private $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
+        'general_phpdoc_tag_rename' => true,
     ];
 
     protected function setUp()

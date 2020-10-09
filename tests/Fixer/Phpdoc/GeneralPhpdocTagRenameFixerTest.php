@@ -1,0 +1,298 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests\Fixer\Phpdoc;
+
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+
+/**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocTagRenameFixer
+ */
+final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
+{
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixCases
+     */
+    public function testFix($expected, $input = null, array $configuration = null)
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCases()
+    {
+        return [
+            [
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+            ],
+            [
+                '<?php
+    /**
+     * @inheritDoc
+     * @inheritDoc
+     * {@inheritDoc}
+     * {@inheritDoc}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                [
+                    'replacements' => ['inheritDocs' => 'inheritDoc'],
+                ],
+            ],
+            [
+                '<?php
+    /**
+     * @inheritdoc
+     * @inheritdoc
+     * {@inheritdoc}
+     * {@inheritdoc}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                [
+                    'fix_annotation' => true,
+                    'fix_inline' => true,
+                    'replacements' => ['inheritdocs' => 'inheritdoc'],
+                    'case_sensitive' => false,
+                ],
+            ],
+            [
+                '<?php
+    /**
+     * @inheritDoc
+     * @inheritDoc
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                [
+                    'fix_inline' => false,
+                    'replacements' => ['inheritDocs' => 'inheritDoc'],
+                ],
+            ],
+            [
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritDoc}
+     * {@inheritDoc}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                [
+                    'fix_annotation' => false,
+                    'replacements' => ['inheritDocs' => 'inheritDoc'],
+                ],
+            ],
+            [
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDoc
+     * {@inheritdocs}
+     * {@inheritDoc}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                [
+                    'case_sensitive' => true,
+                    'replacements' => ['inheritDocs' => 'inheritDoc'],
+                ],
+            ],
+            [
+                '<?php
+    /**
+     * @inheritdoc
+     * @inheritdoc
+     * {@inheritdoc}
+     * {@inheritdoc}
+     * @see Foo::bar()
+     * {@see Foo::bar()}
+     */',
+                '<?php
+    /**
+     * @inheritdocs
+     * @inheritDocs
+     * {@inheritdocs}
+     * {@inheritDocs}
+     * @link Foo::bar()
+     * {@link Foo::bar()}
+     */',
+                [
+                    'replacements' => [
+                        'inheritdocs' => 'inheritdoc',
+                        'link' => 'see',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function testConfigureWithInvalidOption()
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "replacements" with value true is expected to be of type "array", but is of type "bool"\.$/');
+
+        $this->fixer->configure([
+            'replacements' => true,
+        ]);
+    }
+
+    public function testConfigureWithUnknownOption()
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "case_sensitive", "fix_annotation", "fix_inline", "replacements"\.$/');
+
+        $this->fixer->configure([
+            'foo' => true,
+        ]);
+    }
+
+    /**
+     * @param bool   $caseSensitive
+     * @param string $expectedMessage
+     *
+     * @dataProvider provideConfigureWithInvalidReplacementsCases
+     */
+    public function testConfigureWithInvalidReplacements(array $replacements, $caseSensitive, $expectedMessage)
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '/^\[general_phpdoc_tag_rename\] Invalid configuration: %s$/',
+            preg_quote($expectedMessage, '/')
+        ));
+
+        $this->fixer->configure([
+            'replacements' => $replacements,
+            'case_sensitive' => $caseSensitive,
+        ]);
+    }
+
+    public function provideConfigureWithInvalidReplacementsCases()
+    {
+        return [
+            [
+                [1 => 'abc'],
+                true,
+                'Tag to replace must be a string.',
+            ],
+            [
+                ['a' => null],
+                true,
+                'Tag to replace to from "a" must be a string.',
+            ],
+            [
+                ['see' => 'link*/'],
+                true,
+                'Tag "see" cannot be replaced by invalid tag "link*/".',
+            ],
+            [
+                [
+                    'link' => 'see',
+                    'a' => 'b',
+                    'see' => 'link',
+                ],
+                true,
+                'Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link".',
+            ],
+            [
+                [
+                    'b' => 'see',
+                    'see' => 'link',
+                    'link' => 'b',
+                ],
+                true,
+                'Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link".',
+            ],
+            [
+                [
+                    'see' => 'link',
+                    'link' => 'b',
+                ],
+                true,
+                'Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b".',
+            ],
+            [
+                [
+                    'Foo' => 'bar',
+                    'foo' => 'baz',
+                ],
+                false,
+                'Tag "foo" cannot be configured to be replaced with several different tags when case sensitivity is off.',
+            ],
+        ];
+    }
+}

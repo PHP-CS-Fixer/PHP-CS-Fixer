@@ -79,8 +79,8 @@ EOF
             }
 
             if (
-                !$tokens[$index + 1]->isGivenKind(T_ENCAPSED_AND_WHITESPACE) ||
-                !$tokens[$index + 2]->isGivenKind(T_END_HEREDOC)
+                !$tokens[$index + 1]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)
+                || !$tokens[$index + 2]->isGivenKind(T_END_HEREDOC)
             ) {
                 continue;
             }
