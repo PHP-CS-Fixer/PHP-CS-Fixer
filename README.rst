@@ -799,6 +799,19 @@ Choose from the list of available rules:
   - ``annotations`` (``array``): list of annotations to remove, e.g. ``["author"]``;
     defaults to ``[]``
 
+* **general_phpdoc_tag_rename** [@Symfony, @PhpCsFixer]
+
+  Renames PHPDoc tags.
+
+  Configuration options:
+
+  - ``case_sensitive`` (``bool``): whether tags should be replaced only if they have
+    exact same casing; defaults to ``false``
+  - ``fix_annotation`` (``bool``): whether annotation tags should be fixed; defaults
+    to ``true``
+  - ``fix_inline`` (``bool``): whether inline tags should be fixed; defaults to ``true``
+  - ``replacements`` (``array``): a map of tags to replace; defaults to ``[]``
+
 * **global_namespace_import**
 
   Imports or fully qualifies global classes/functions/constants.
@@ -1661,9 +1674,21 @@ Choose from the list of available rules:
 
   Docblocks should have the same indentation as the documented subject.
 
-* **phpdoc_inline_tag** [@Symfony, @PhpCsFixer]
+* **phpdoc_inline_tag**
 
-  Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
+  Fix PHPDoc inline tags, make ``@inheritdoc`` always inline. DEPRECATED:
+  use ``general_phpdoc_tag_rename``, ``phpdoc_inline_tag_normalizer`` and
+  ``phpdoc_tag_type`` instead.
+
+* **phpdoc_inline_tag_normalizer** [@Symfony, @PhpCsFixer]
+
+  Fixes PHPDoc inline tags.
+
+  Configuration options:
+
+  - ``tags`` (``array``): the list of tags to normalize; defaults to ``['example',
+    'id', 'internal', 'inheritdoc', 'inheritdocs', 'link', 'source', 'toc',
+    'tutorial']``
 
 * **phpdoc_line_span**
 
@@ -1758,6 +1783,31 @@ Choose from the list of available rules:
 
   PHPDoc summary should end in either a full stop, exclamation mark, or
   question mark.
+
+* **phpdoc_tag_casing**
+
+  Fixes casing of PHPDoc tags.
+
+  Configuration options:
+
+  - ``tags`` (``array``): list of tags to fix with their expected casing; defaults
+    to ``['inheritDoc']``
+
+* **phpdoc_tag_type** [@Symfony, @PhpCsFixer]
+
+  Forces PHPDoc tags to be either regular annotations or inline.
+
+  Configuration options:
+
+  - ``tags`` (``array``): the list of tags to fix; defaults to ``['api' =>
+    'annotation', 'author' => 'annotation', 'copyright' => 'annotation',
+    'deprecated' => 'annotation', 'example' => 'annotation', 'global' =>
+    'annotation', 'inheritDoc' => 'annotation', 'internal' => 'annotation',
+    'license' => 'annotation', 'method' => 'annotation', 'package' =>
+    'annotation', 'param' => 'annotation', 'property' => 'annotation',
+    'return' => 'annotation', 'see' => 'annotation', 'since' =>
+    'annotation', 'throws' => 'annotation', 'todo' => 'annotation', 'uses'
+    => 'annotation', 'var' => 'annotation', 'version' => 'annotation']``
 
 * **phpdoc_to_comment** [@Symfony, @PhpCsFixer]
 

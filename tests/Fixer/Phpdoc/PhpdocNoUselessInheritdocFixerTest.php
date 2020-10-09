@@ -42,8 +42,16 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                 "<?php\n/** @inheritdoc */class min1{}",
             ],
             [
+                "<?php\n/** */class min1{}",
+                "<?php\n/** @inheritDoc */class min1{}",
+            ],
+            [
                 "<?php\nclass min2{/** */}",
                 "<?php\nclass min2{/** @inheritdoc */}",
+            ],
+            [
+                "<?php\nclass min2{/** */}",
+                "<?php\nclass min2{/** @inheritDoc */}",
             ],
             [
                 '<?php
@@ -250,6 +258,26 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     use T;
 
                     /** @inheritdoc */
+                    public function importFromTrait()
+                    {
+                    }
+                }
+                ',
+                '<?php
+                class B
+                {
+                    /** @inheritDoc */
+                    public function falseImportFromTrait()
+                    {
+                    }
+                }
+
+                /** @inheritDoc */
+                class A
+                {
+                    use T;
+
+                    /** @inheritDoc */
                     public function importFromTrait()
                     {
                     }

@@ -77,6 +77,11 @@ final class RuleSet implements RuleSetInterface
             'echo_tag_syntax' => true,
             'fully_qualified_strict_types' => true,
             'function_typehint_space' => true,
+            'general_phpdoc_tag_rename' => [
+                'replacements' => [
+                    'inheritDocs' => 'inheritDoc',
+                ],
+            ],
             'include' => true,
             'increment_style' => true,
             'lambda_not_used_import' => true,
@@ -155,7 +160,7 @@ final class RuleSet implements RuleSetInterface
             ],
             'phpdoc_annotation_without_dot' => true,
             'phpdoc_indent' => true,
-            'phpdoc_inline_tag' => true,
+            'phpdoc_inline_tag_normalizer' => true,
             'phpdoc_no_access' => true,
             'phpdoc_no_alias_tag' => true,
             'phpdoc_no_package' => true,
@@ -165,6 +170,11 @@ final class RuleSet implements RuleSetInterface
             'phpdoc_separation' => true,
             'phpdoc_single_line_var_spacing' => true,
             'phpdoc_summary' => true,
+            'phpdoc_tag_type' => [
+                'tags' => [
+                    'inheritDoc' => 'inline',
+                ],
+            ],
             'phpdoc_to_comment' => true,
             'phpdoc_trim' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,

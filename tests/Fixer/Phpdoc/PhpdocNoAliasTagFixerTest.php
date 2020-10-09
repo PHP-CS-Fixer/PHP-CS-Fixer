@@ -277,4 +277,37 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
             '<?php /** @link  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */'
         );
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideDefaultConfigCases
+     */
+    public function testDefaultConfig($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDefaultConfigCases()
+    {
+        return [
+            [
+                '<?php /** @see  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */',
+                '<?php /** @link  https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated */',
+            ],
+            [
+                '<?php /** @property mixed $bar */',
+                '<?php /** @property-write mixed $bar */',
+            ],
+            [
+                '<?php /** @property mixed $bar */',
+                '<?php /** @property-read mixed $bar */',
+            ],
+            [
+                '<?php /** @var string Hello! */',
+                '<?php /** @type string Hello! */',
+            ],
+        ];
+    }
 }

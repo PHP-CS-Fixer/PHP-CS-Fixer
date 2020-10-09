@@ -523,30 +523,55 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testInheritDoc()
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideInheritDocCases
+     */
+    public function testInheritDoc($expected, $input)
     {
-        $expected = <<<'EOF'
-<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideInheritDocCases()
+    {
+        return [
+            [
+                '<?php
     /**
      * {@inheritdoc}
      *
      * @param string $expected
      * @param string $input
      */
-
-EOF;
-
-        $input = <<<'EOF'
-<?php
+',
+                '<?php
     /**
      * {@inheritdoc}
      * @param string $expected
      * @param string $input
      */
-
-EOF;
-
-        $this->doTest($expected, $input);
+',
+            ],
+            [
+                '<?php
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $expected
+     * @param string $input
+     */
+',
+                '<?php
+    /**
+     * {@inheritDoc}
+     * @param string $expected
+     * @param string $input
+     */
+',
+            ],
+        ];
     }
 
     public function testEmptyDocBlock()
