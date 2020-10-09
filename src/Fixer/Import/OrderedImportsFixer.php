@@ -408,9 +408,9 @@ use Bar;
 
                                 // if there is any line ending inside the group import, it should be indented properly
                                 if (
-                                    '' === $firstIndent &&
-                                    $namespaceTokens[$k2]->isWhitespace() &&
-                                    false !== strpos($namespaceTokens[$k2]->getContent(), $lineEnding)
+                                    '' === $firstIndent
+                                    && $namespaceTokens[$k2]->isWhitespace()
+                                    && false !== strpos($namespaceTokens[$k2]->getContent(), $lineEnding)
                                 ) {
                                     $lastIndent = $lineEnding;
                                     $firstIndent = $lineEnding.$this->whitespacesConfig->getIndent();

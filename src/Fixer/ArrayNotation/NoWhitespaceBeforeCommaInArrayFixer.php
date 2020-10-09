@@ -118,8 +118,8 @@ SAMPLE
             $prevIndex = $tokens->getPrevNonWhitespace($i - 1);
 
             if (
-                $currentToken->equals(',') && !$tokens[$prevIndex]->isComment() &&
-                ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
+                $currentToken->equals(',') && !$tokens[$prevIndex]->isComment()
+                && ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
             ) {
                 $tokens->removeLeadingWhitespace($i);
             }

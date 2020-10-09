@@ -443,8 +443,8 @@ SAMPLE
             $prevIndex = $tokens->getPrevNonWhitespace($index - 1);
 
             if (
-                !$tokens[$prevIndex]->equals(',') && !$tokens[$prevIndex]->isComment() &&
-                ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
+                !$tokens[$prevIndex]->equals(',') && !$tokens[$prevIndex]->isComment()
+                && ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
             ) {
                 $tokens->clearAt($index - 1);
             }

@@ -156,9 +156,9 @@ final class TokensAnalyzer
             }
 
             if (
-                $token->isWhitespace() &&
-                !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC) &&
-                false !== strpos($token->getContent(), "\n")
+                $token->isWhitespace()
+                && !$tokens[$index - 1]->isGivenKind(T_END_HEREDOC)
+                && false !== strpos($token->getContent(), "\n")
             ) {
                 return true;
             }
@@ -315,8 +315,8 @@ final class TokensAnalyzer
         $nextIndex = $this->tokens->getNextMeaningfulToken($index);
 
         if (
-            $this->tokens[$nextIndex]->equalsAny(['(', '{']) ||
-            $this->tokens[$nextIndex]->isGivenKind([T_AS, T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, T_VARIABLE])
+            $this->tokens[$nextIndex]->equalsAny(['(', '{'])
+            || $this->tokens[$nextIndex]->isGivenKind([T_AS, T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, T_VARIABLE])
         ) {
             return false;
         }

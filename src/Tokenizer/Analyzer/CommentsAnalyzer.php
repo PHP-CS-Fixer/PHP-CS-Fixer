@@ -210,8 +210,8 @@ final class CommentsAnalyzer
             $token = $tokens[$index];
 
             if (
-                $token->isGivenKind(T_VARIABLE) &&
-                false !== strpos($docsContent, $token->getContent())
+                $token->isGivenKind(T_VARIABLE)
+                && false !== strpos($docsContent, $token->getContent())
             ) {
                 return true;
             }

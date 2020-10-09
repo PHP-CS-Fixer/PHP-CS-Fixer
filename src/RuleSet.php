@@ -307,6 +307,9 @@ final class RuleSet implements RuleSetInterface
             'no_superfluous_elseif' => true,
             'no_useless_else' => true,
             'no_useless_return' => true,
+            'operator_linebreak' => [
+                'only_booleans' => true,
+            ],
             'ordered_class_elements' => true,
             'php_unit_internal_class' => true,
             'php_unit_test_class_requires_covers' => true,
