@@ -476,7 +476,6 @@ class Tokens extends \SplFixedArray
      */
     public function findGivenKind($possibleKind, $start = 0, $end = null)
     {
-        $this->rewind();
         if (null === $end) {
             $end = $this->count();
         }
@@ -1058,7 +1057,6 @@ class Tokens extends \SplFixedArray
             $this->registerFoundToken($token);
         }
 
-        $this->rewind();
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
     }
@@ -1076,8 +1074,6 @@ class Tokens extends \SplFixedArray
         foreach ($this as $index => $token) {
             $output[$index] = $token->toArray();
         }
-
-        $this->rewind();
 
         return json_encode($output, $options);
     }
