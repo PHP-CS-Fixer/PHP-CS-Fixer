@@ -21,7 +21,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *
- * @covers  \PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer
  *
  * @internal
  */

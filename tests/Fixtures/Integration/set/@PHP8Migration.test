@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP8Migration.
+--RULESET--
+{"@PHP8Migration": true}
+--REQUIREMENTS--
+{"php": 80000}

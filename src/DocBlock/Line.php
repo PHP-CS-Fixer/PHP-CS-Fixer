@@ -18,6 +18,8 @@ use PhpCsFixer\Preg;
  * This represents a line of a docblock.
  *
  * @author Graham Campbell <graham@alt-three.com>
+ *
+ * @final
  */
 class Line
 {

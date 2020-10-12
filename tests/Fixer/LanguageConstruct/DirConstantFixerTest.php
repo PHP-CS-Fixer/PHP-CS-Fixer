@@ -128,25 +128,6 @@ FIXED;
                 "<?php echo dirname\n(\n__FILE__/*1*/\n)\n?>",
             ],
             [
-                '<?php $x =# A
-# A1
-# B
-# C
-__DIR__# D
-# E
-;# F
-',
-                '<?php $x =# A
-\
-# A1
-dirname# B
-(# C
-__FILE__# D
-)# E
-;# F
-',
-            ],
-            [
                 $multiLinePatternFixed,
                 $multiLinePatternToFix,
             ],
@@ -196,5 +177,31 @@ __FILE__# D
                 );',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        $this->doTest(
+            '<?php $x =# A
+# A1
+# B
+# C
+__DIR__# D
+# E
+;# F
+',
+            '<?php $x =# A
+\
+# A1
+dirname# B
+(# C
+__FILE__# D
+)# E
+;# F
+'
+        );
     }
 }

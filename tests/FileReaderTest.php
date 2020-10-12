@@ -73,7 +73,7 @@ final class FileReaderTest extends TestCase
         $reader = new FileReader();
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Failed to read content from "'.$nonExistentFilePath.'". file_get_contents('.$nonExistentFilePath.'): failed to open stream: "org\bovigo\vfs\vfsStreamWrapper::stream_open" call failed');
+        $this->expectExceptionMessageRegExp('#^Failed to read content from "'.preg_quote($nonExistentFilePath, '#').'.*$#');
 
         $reader->read($nonExistentFilePath);
     }

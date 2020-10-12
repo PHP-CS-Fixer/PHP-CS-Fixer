@@ -300,16 +300,8 @@ if ($a = $obj instanceof A === true) {
                 '<?php return self::$myVariable === self::MY_CONST;',
             ],
             [
-                '<?php return \A/*5*/\/*6*/B\/*7*/C::MY_CONST === \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable;',
-                '<?php return \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable === \A/*5*/\/*6*/B\/*7*/C::MY_CONST;',
-            ],
-            [
                 '<?php return \A\B\C::MY_CONST === \A\B\C::$myVariable;',
                 '<?php return \A\B\C::$myVariable === \A\B\C::MY_CONST;',
-            ],
-            [
-                '<?php return A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST === B\C::$myVariable;',
-                '<?php return B\C::$myVariable === A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST;',
             ],
             [
                 '<?php $a = 1 == $$a?>',
@@ -958,6 +950,32 @@ while (2 !== $b = array_pop($c));
                 '<?php $a ??= 4 === $b ? 2 : 3;',
                 '<?php $a ??= $b === 4 ? 2 : 3;',
             ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPrePHP80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPrePHP80Cases()
+    {
+        yield [
+            '<?php return \A/*5*/\/*6*/B\/*7*/C::MY_CONST === \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable;',
+            '<?php return \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable === \A/*5*/\/*6*/B\/*7*/C::MY_CONST;',
+        ];
+
+        yield [
+            '<?php return A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST === B\C::$myVariable;',
+            '<?php return B\C::$myVariable === A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST;',
         ];
     }
 }

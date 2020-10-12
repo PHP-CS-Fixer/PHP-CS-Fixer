@@ -38,16 +38,6 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-                "<?php echo 'DateTime'
-# a
- /* b */?>
-",
-                '<?php echo \
-DateTime:: # a
- /* b */ class?>
-',
-            ],
-            [
                 "<?php
                 use Foo\\Bar\\Thing;
 
@@ -312,5 +302,39 @@ DateTime:: # a
                 ',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        $this->doTest(
+            "<?php echo 'DateTime'
+# a
+ /* b */?>
+",
+            '<?php echo \
+DateTime:: # a
+ /* b */ class?>
+'
+        );
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testNotFixPHP8()
+    {
+        $this->doTest(
+            "<?php
+            echo 'Thing';
+            echo \$thing::class;
+            ",
+            '<?php
+            echo Thing::class;
+            echo $thing::class;
+            '
+        );
     }
 }

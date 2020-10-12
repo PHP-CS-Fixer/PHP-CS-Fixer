@@ -29,14 +29,6 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        return [CT::T_NAMESPACE_OPERATOR];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId()
     {
         return 50300;
@@ -52,10 +44,17 @@ final class NamespaceOperatorTransformer extends AbstractTransformer
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
-        $nextToken = $tokens[$nextIndex];
 
-        if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$nextIndex]->isGivenKind(T_NS_SEPARATOR)) {
             $tokens[$index] = new Token([CT::T_NAMESPACE_OPERATOR, $token->getContent()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDeprecatedCustomTokens()
+    {
+        return [CT::T_NAMESPACE_OPERATOR];
     }
 }

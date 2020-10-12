@@ -28,14 +28,6 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId()
     {
         return 50000;
@@ -67,5 +59,13 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
         } else {
             $tokens->insertAt($index + 1, new Token([T_WHITESPACE, $whitespaces]));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDeprecatedCustomTokens()
+    {
+        return [];
     }
 }

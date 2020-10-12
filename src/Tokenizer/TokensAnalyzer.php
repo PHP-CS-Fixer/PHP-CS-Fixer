@@ -44,7 +44,6 @@ final class TokensAnalyzer
      */
     public function getClassyElements()
     {
-        $this->tokens->rewind();
         $elements = [];
 
         for ($index = 1, $count = \count($this->tokens) - 2; $index < $count; ++$index) {
@@ -69,8 +68,6 @@ final class TokensAnalyzer
     public function getImportUseIndexes($perNamespace = false)
     {
         $tokens = $this->tokens;
-
-        $tokens->rewind();
 
         $uses = [];
         $namespaceIndex = 0;
