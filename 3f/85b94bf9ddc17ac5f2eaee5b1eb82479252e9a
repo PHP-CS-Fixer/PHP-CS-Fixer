@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-08-16T11:36:33Z
+
+nice!
+can you throw in to check `php-cs-fixer` in the root has `x` permission as well?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-08-21T22:46:44Z
+
+@SpacePossum do you mean another `git ls-files`?
+
+I wonder if it's possible to do it in one `git ls-files` or at least merge results instead of doing check and the `if` twice.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-08-30T12:33:15Z
+
+I think adding another check (`if`) for the execution flag on that one file is fine, there is not much gain trying to merge it in the current logic think.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-04T13:03:15Z
+
+please review my changes @kubawerlos
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-04T14:31:03Z
+
+Hold on, we need update `CONTRIBUTING.md` file.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-09T12:48:00Z
+
+seems the `checkbashisms` script is broken itself;
+https://travis-ci.org/github/FriendsOfPHP/PHP-CS-Fixer/jobs/734276849#L704
+
+maybe fix;
+```diff
+--- dev-tools/bin/checkbashisms	2020-10-09 14:45:37.499597123 +0200
++++ dev-tools/bin/checkbashisms	2020-10-09 14:45:37.499597123 +0200
+@@ -440,7 +440,7 @@
+ 	    # Finally the whole subexpression may be omitted for scripts
+ 	    # which do not pass on their parameters (i.e. after re-execing
+ 	    # they take their parameters (and potentially data) from stdin
+-	    .?(\${1:?\+.?)?(\$(\@|\*))?~x) {
++	    .?(\$\{1:?\+.?)?(\$(\@|\*))?~x) {
+             $ret = $. - 1;
+             last;
+         } elsif (/^\s*(\w+)=\$0;/) {
+@@ -453,7 +453,7 @@
+ 	    # As above
+ 	    .?\$$var.?\s*
+ 	    (--\s*)?
+-	    .?(\${1:?\+.?)?(\$(\@|\*))?.?\s*\&~x) {
++	    .?(\$\{1:?\+.?)?(\$(\@|\*))?.?\s*\&~x) {
+
+ 	    $backgrounded = 1;
+ 	} elsif ($backgrounded and m~
+
+```
+
+however they are not on github and my perl/regex/shell knowledge may not be enough, so I'll skip it for now
