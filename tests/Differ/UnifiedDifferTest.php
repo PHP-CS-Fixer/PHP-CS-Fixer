@@ -42,4 +42,19 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 ';
         static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode(), new \SplFileInfo($file)));
     }
+
+    public function testDiffAddsQuotes()
+    {
+        $differ = new UnifiedDiffer();
+
+        static::assertSame(
+            '--- "test test test.txt"
++++ "test test test.txt"
+@@ -1 +1 @@
+-a
++b
+',
+            $differ->diff("a\n", "b\n", new TestSplFileInfo('/foo/bar/test test test.txt'))
+        );
+    }
 }
