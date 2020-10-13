@@ -24,11 +24,22 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AbstractTransformerTest extends TestCase
 {
-    public function testAbstractTransformer()
+    public function testNameAndPriorityDefault()
     {
         $transformer = new FooTransformer();
 
         static::assertSame(0, $transformer->getPriority());
         static::assertSame('foo', $transformer->getName());
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation PhpCsFixer\Tokenizer\TransformerInterface::getCustomTokens is deprecated and will be removed in 3.0.
+     */
+    public function testCustomTokens()
+    {
+        $transformer = new FooTransformer();
+
+        static::assertSame([], $transformer->getCustomTokens());
     }
 }

@@ -74,14 +74,6 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
                 '<?php class Foo { public $bar = \null; }',
             ],
             [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public $bar = \     null; }',
-            ],
-            [
-                '<?php class Foo { public $bar/* oh hai! */; }',
-                '<?php class Foo { public $bar = \/* oh hai! */null; }',
-            ],
-            [
                 '<?php class Foo {/* */public/* A */$bar/* B *//** C */;/* D */}',
                 '<?php class Foo {/* */public/* A */$bar/* B */=/** C */null;/* D */}',
             ],
@@ -222,6 +214,32 @@ null;#13
         ];
         yield [
             '<?php class Foo { protected ? array $bar = null; }',
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPrePHP80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPrePHP80Cases()
+    {
+        yield [
+            '<?php class Foo { public $bar; }',
+            '<?php class Foo { public $bar = \     null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public $bar/* oh hai! */; }',
+            '<?php class Foo { public $bar = \/* oh hai! */null; }',
         ];
     }
 }

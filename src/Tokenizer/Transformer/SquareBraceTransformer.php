@@ -34,19 +34,6 @@ final class SquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        return [
-            CT::T_ARRAY_SQUARE_BRACE_OPEN,
-            CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         // must run after CurlyBraceTransformer
@@ -78,6 +65,19 @@ final class SquareBraceTransformer extends AbstractTransformer
         if ($this->isShortArray($tokens, $index)) {
             $this->transformIntoArraySquareBrace($tokens, $index);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDeprecatedCustomTokens()
+    {
+        return [
+            CT::T_ARRAY_SQUARE_BRACE_OPEN,
+            CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+            CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+        ];
     }
 
     /**

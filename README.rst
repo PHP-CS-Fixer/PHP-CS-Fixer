@@ -413,7 +413,7 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
-* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky]
+* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
 
   Replace multiple nested calls of ``dirname`` by only one call with second
   ``$level`` parameter. Requires PHP >= 7.0.
@@ -470,7 +470,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
-* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky]
+* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
@@ -813,7 +813,7 @@ Choose from the list of available rules:
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
 
-* **implode_call** [@Symfony:risky, @PhpCsFixer:risky]
+* **implode_call** [@Symfony:risky, @PhpCsFixer:risky, @PHP8Migration:risky]
 
   Function ``implode`` must be called with 2 arguments in the documented
   order.
@@ -1010,7 +1010,7 @@ Choose from the list of available rules:
 
   All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony:risky, @PhpCsFixer:risky]
+* **no_alias_functions** [@Symfony:risky, @PhpCsFixer:risky, @PHP8Migration:risky]
 
   Master functions shall be used instead of aliases.
 
@@ -1018,10 +1018,10 @@ Choose from the list of available rules:
 
   Configuration options:
 
-  - ``sets`` (a subset of ``['@internal', '@IMAP', '@mbreg', '@all']``): list of
-    sets to fix. Defined sets are ``@internal`` (native functions), ``@IMAP``
-    (IMAP functions), ``@mbreg`` (from ``ext-mbstring``) ``@all`` (all listed
-    sets); defaults to ``['@internal', '@IMAP']``
+  - ``sets`` (a subset of ``['@internal', '@IMAP', '@mbreg', '@all', '@time',
+    '@exif']``): list of sets to fix. Defined sets are ``@internal`` (native
+    functions), ``@IMAP`` (IMAP functions), ``@mbreg`` (from ``ext-mbstring``)
+    ``@all`` (all listed sets); defaults to ``['@internal', '@IMAP']``
 
 * **no_alternative_syntax** [@PhpCsFixer]
 
@@ -1222,7 +1222,7 @@ Choose from the list of available rules:
   - ``namespaces`` (``bool``): remove unneeded curly braces from bracketed
     namespaces; defaults to ``false``
 
-* **no_unneeded_final_method** [@Symfony:risky, @PhpCsFixer:risky]
+* **no_unneeded_final_method** [@Symfony:risky, @PhpCsFixer:risky, @PHP8Migration:risky]
 
   A ``final`` class must not have ``final`` methods and ``private`` methods must
   not be ``final``.
@@ -1236,7 +1236,7 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
-* **no_unset_cast** [@PhpCsFixer]
+* **no_unset_cast** [@PhpCsFixer, @PHP8Migration]
 
   Variables must be set ``null`` instead of using ``(unset)`` casting.
 
@@ -1272,7 +1272,7 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character** [@Symfony:risky, @PhpCsFixer:risky, @PHP70Migration:risky, @PHP71Migration:risky]
+* **non_printable_character** [@Symfony:risky, @PhpCsFixer:risky, @PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
@@ -1284,7 +1284,7 @@ Choose from the list of available rules:
   - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
     replaced with escape sequences in strings; defaults to ``false``
 
-* **normalize_index_brace** [@Symfony, @PhpCsFixer]
+* **normalize_index_brace** [@Symfony, @PhpCsFixer, @PHP8Migration]
 
   Array index should always be written by using square braces.
 
@@ -1733,7 +1733,7 @@ Choose from the list of available rules:
   ``@var`` and ``@type`` annotations of classy properties should not contain
   the name.
 
-* **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky]
+* **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
 
   Converts ``pow`` to the ``**`` operator.
 
@@ -1766,7 +1766,7 @@ Choose from the list of available rules:
 
   *Risky rule: this fixer may change your class name, which will break the code that depends on the old name.*
 
-* **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky]
+* **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
 
   Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
   analogs.
@@ -1946,7 +1946,7 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
-* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration]
+* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration, @PHP8Migration]
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
@@ -1968,7 +1968,7 @@ Choose from the list of available rules:
 
   Unary operators should be placed adjacent to their operands.
 
-* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration]
+* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration, @PHP8Migration]
 
   Visibility MUST be declared on all properties and methods; ``abstract``
   and ``final`` MUST be declared before the visibility; ``static`` MUST be
@@ -1980,7 +1980,7 @@ Choose from the list of available rules:
     elements to fix (PHP >= 7.1 required for ``const``); defaults to
     ``['property', 'method']``
 
-* **void_return** [@PHP71Migration:risky]
+* **void_return** [@PHP71Migration:risky, @PHP8Migration:risky]
 
   Add ``void`` return type to functions with missing or empty return
   statements, but priority is given to ``@return`` annotations. Requires

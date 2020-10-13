@@ -513,8 +513,8 @@ TestInterface3, /**/     TestInterface4   ,
 
     public function provideClassyImplementsInfoCases()
     {
-        return [
-            [
+        $tests = [
+            '1' => [
                 '<?php
 class X11 implements    Z   , T,R
 {
@@ -522,7 +522,7 @@ class X11 implements    Z   , T,R
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
-            [
+            '2' => [
                 '<?php
 class X10 implements    Z   , T,R    //
 {
@@ -530,25 +530,32 @@ class X10 implements    Z   , T,R    //
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
-            [
+            '3' => [
                 '<?php class A implements B {}',
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 1, 'multiLine' => false],
             ],
-            [
-                "<?php class A implements B,\n C{}",
+            '4' => [
+                "<?php class A implements B,\n I{}",
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 2, 'multiLine' => true],
             ],
-            [
+            '5' => [
                 "<?php class A implements Z\\C\\B,C,D  {\n\n\n}",
                 'numberOfImplements',
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
-            [
-                '<?php
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            $multiLine = true;
+            $code = '<?php
 namespace A {
-    interface C {}
+    interface X {}
 }
 
 namespace {
@@ -565,10 +572,34 @@ namespace {
 
     $a = new A();
     $a->test();
-}',
-                'numberOfImplements',
-                ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => true],
-            ],
+}';
+        } else {
+            $multiLine = false;
+            $code = '<?php
+namespace A {
+    interface X {}
+}
+
+namespace {
+    class B{}
+
+    class A extends //
+        B     implements /*  */ \A\C, Z{
+        public function test()
+        {
+            echo 1;
+        }
+    }
+
+    $a = new A();
+    $a->test();
+}';
+        }
+
+        yield [
+            $code,
+            'numberOfImplements',
+            ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
         ];
     }
 

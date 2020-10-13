@@ -19,7 +19,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\FOpenFlagOrderFixer
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer
  */
 final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
 {

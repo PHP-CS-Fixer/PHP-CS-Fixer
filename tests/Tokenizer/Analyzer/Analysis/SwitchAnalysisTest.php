@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *
- * @covers  \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
  *
  * @internal
  */

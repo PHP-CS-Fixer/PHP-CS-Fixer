@@ -805,9 +805,12 @@ PHP;
         $code = '';
 
         $tokens = Tokens::fromCode($code);
+        static::assertFalse($tokens->isChanged());
+
         $tokens->insertAt(0, new Token([T_WHITESPACE, ' ']));
         static::assertCount(1, $tokens);
         static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        static::assertTrue($tokens->isChanged());
 
         $tokens2 = Tokens::fromCode($code);
         static::assertCount(0, $tokens2);
@@ -1236,6 +1239,158 @@ $bar;',
             '<?php { echo 1;}',
             0,
         ];
+    }
+
+    public function testOverrideRangeTokens()
+    {
+        $expected = [
+            new Token([T_OPEN_TAG, '<?php ']),
+            new Token([T_FUNCTION, 'function']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_STRING, 'foo']),
+            new Token('('),
+            new Token([T_ARRAY, 'array']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_VARIABLE, '$bar']),
+            new Token(')'),
+            new Token('{'),
+            new Token('}'),
+        ];
+        $code = '<?php function foo(array $bar){}';
+        $indexStart = 5;
+        $indexEnd = 5;
+        $items = Tokens::fromArray([new Token([T_ARRAY, 'array'])]);
+
+        $tokens = Tokens::fromCode($code);
+        $tokens->overrideRange($indexStart, $indexEnd, $items);
+        $tokens->clearEmptyTokens();
+
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
+    }
+
+    /**
+     * @param string       $code
+     * @param int          $indexStart start overriding index
+     * @param int          $indexEnd   end overriding index
+     * @param array<Token> $items      tokens to insert
+     *
+     * @dataProvider provideOverrideRangeCases
+     */
+    public function testOverrideRange(array $expected, $code, $indexStart, $indexEnd, array $items)
+    {
+        $tokens = Tokens::fromCode($code);
+        $tokens->overrideRange($indexStart, $indexEnd, $items);
+        $tokens->clearEmptyTokens();
+
+        self::assertTokens(Tokens::fromArray($expected), $tokens);
+    }
+
+    public function provideOverrideRangeCases()
+    {
+        // typically done by transformers, here we test the reverse
+
+        yield 'override different tokens but same content' => [
+            [
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_FUNCTION, 'function']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_STRING, 'foo']),
+                new Token('('),
+                new Token([T_ARRAY, 'array']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_VARIABLE, '$bar']),
+                new Token(')'),
+                new Token('{'),
+                new Token('}'),
+            ],
+            '<?php function foo(array $bar){}',
+            5,
+            5,
+            [new Token([T_ARRAY, 'array'])],
+        ];
+
+        yield 'add more item than in range' => [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+            ],
+            "<?php\n#comment",
+            1,
+            1,
+            [
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test']),
+                new Token([T_WHITESPACE, "\n"]),
+            ],
+        ];
+
+        yield [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '#comment1']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '// test 1']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '#comment5']),
+                new Token([T_WHITESPACE, "\n"]),
+                new Token([T_COMMENT, '#comment6']),
+            ],
+            "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6",
+            3,
+            7,
+            [
+                new Token([T_COMMENT, '// test 1']),
+            ],
+        ];
+
+        yield [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '// test']),
+            ],
+            "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6\n#comment7",
+            1,
+            13,
+            [
+                new Token([T_COMMENT, '// test']),
+            ],
+        ];
+
+        yield [
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_COMMENT, '// test']),
+            ],
+            "<?php\n#comment",
+            1,
+            1,
+            [
+                new Token([T_COMMENT, '// test']),
+            ],
+        ];
+    }
+
+    public function testInitialChangedState()
+    {
+        $tokens = Tokens::fromCode("<?php\n");
+        static::assertFalse($tokens->isChanged());
+
+        $tokens = Tokens::fromArray(
+            [
+                new Token([T_OPEN_TAG, "<?php\n"]),
+                new Token([T_STRING, 'Foo']),
+                new Token(';'),
+            ]
+        );
+        static::assertFalse($tokens->isChanged());
     }
 
     /**

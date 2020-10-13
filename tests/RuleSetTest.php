@@ -683,7 +683,7 @@ Integration of %s.
 --RULESET--
 {"%s": true}
 ';
-        static::assertSame(
+        static::assertStringStartsWith(
             sprintf($template, $setDefinitionName, $setDefinitionName),
             file_get_contents($file)
         );
