@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-10T08:50:02Z
+
+@kubawerlos can rebase and squash this PR for me?
+
+I was wondering about two things:
+- PSR0 en PSR4 have the same code samples, yet one has only one, why is that?
+- with PSR0 and PSR4 deprecated, how to configure the new one to do either PSR0 or PSR4?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-10-20T08:31:17Z
+
+@SpacePossum rebased and squashed
+
+> PSR0 en PSR4 have the same code samples, yet one has only one, why is that?
+
+PsrAutoloadingFixer has 2 code samples - 1st without configuration and 2nd with configuration and Psr4Fixer is not configurable fixer, so it cannot have the 2nd sample
+
+> with PSR0 and PSR4 deprecated, how to configure the new one to do either PSR0 or PSR4?
+
+If you use PsrAutoloadingFixer without `dir` then it works as `psr0` or `psr4` without config - that was the reason for the merge - both work the same with default config. Adding `dir` makes the fixer works as `psr0` with a `dir`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-11-05T13:59:43Z
+
+thanks for explaining, I leave the review to someone with more knowledge on this topic
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T16:03:17Z
+
+@keradus is this still something you would like to have merged?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-09T11:54:01Z
+
+@kubawerlos please rebase, after that RTM :+1:
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-09T16:16:13Z
+
+@SpacePossum rebased
