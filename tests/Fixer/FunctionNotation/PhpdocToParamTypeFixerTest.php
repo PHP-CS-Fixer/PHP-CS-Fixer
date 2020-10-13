@@ -84,7 +84,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 '<?php
                     /** @param Break $foo */ function foo_break($foo) {}
                     /** @param __CLASS__ $foo */ function foo_class($foo) {}
-                    /** @param I\Want\To\Break\Free $foo */ function foo_queen($foo) {}
+                    /** @param I\Want\To\Break\\\\Free $foo */ function foo_queen($foo) {}
                 ',
             ],
             'non-root class with single int param' => [
