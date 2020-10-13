@@ -54,7 +54,7 @@ use Foo\Test;
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php
 
@@ -165,21 +165,6 @@ use const Some\Place\C as D;
             ],
             [
                 '<?php
-
-/*1*//*2*//*3*//*4*//*5*//*6*/
-/*7*//*8*//*9*//*10*//*11*//*12*/
-/*13*//*14*//*15*//*16*//*17*/use A\{B, C, D};
-/*18*/
-',
-                '<?php
-
-/*1*/use/*2*/A/*3*/\/*4*/B/*5*/;/*6*/
-/*7*/use/*8*/A/*9*/\/*10*/C/*11*/;/*12*/
-/*13*/use/*14*/A/*15*/\/*16*/D/*17*/;/*18*/
-',
-            ],
-            [
-                '<?php
 use Foo\Bar;
 use Foo\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings\{One, Two};
 ',
@@ -235,5 +220,27 @@ use Foo\Bar;use Foo\Baz;\DontTouch::me();
 ',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php
+
+/*1*//*2*//*3*//*4*//*5*//*6*/
+/*7*//*8*//*9*//*10*//*11*//*12*/
+/*13*//*14*//*15*//*16*//*17*/use A\{B, C, D};
+/*18*/
+',
+                '<?php
+
+/*1*/use/*2*/A/*3*/\/*4*/B/*5*/;/*6*/
+/*7*/use/*8*/A/*9*/\/*10*/C/*11*/;/*12*/
+/*13*/use/*14*/A/*15*/\/*16*/D/*17*/;/*18*/
+',
+            ];
+        }
     }
 }
