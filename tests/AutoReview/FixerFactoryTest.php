@@ -112,6 +112,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_line_span']],
             [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_separation']],
             [$fixers['general_phpdoc_annotation_remove'], $fixers['phpdoc_trim']],
+            [$fixers['general_phpdoc_tag_rename'], $fixers['phpdoc_add_missing_param_annotation']],
             [$fixers['global_namespace_import'], $fixers['no_unused_imports']],
             [$fixers['global_namespace_import'], $fixers['ordered_imports']],
             [$fixers['implode_call'], $fixers['method_argument_space']],
