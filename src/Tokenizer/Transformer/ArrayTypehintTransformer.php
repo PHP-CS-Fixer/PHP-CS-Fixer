@@ -29,14 +29,6 @@ final class ArrayTypehintTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        return [CT::T_ARRAY_TYPEHINT];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId()
     {
         return 50000;
@@ -57,5 +49,13 @@ final class ArrayTypehintTransformer extends AbstractTransformer
         if (!$nextToken->equals('(')) {
             $tokens[$index] = new Token([CT::T_ARRAY_TYPEHINT, $token->getContent()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDeprecatedCustomTokens()
+    {
+        return [CT::T_ARRAY_TYPEHINT];
     }
 }

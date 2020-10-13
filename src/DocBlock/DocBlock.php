@@ -20,6 +20,8 @@ use PhpCsFixer\Preg;
  * It internally splits it up into "lines" that we can manipulate.
  *
  * @author Graham Campbell <graham@alt-three.com>
+ *
+ * @final
  */
 class DocBlock
 {

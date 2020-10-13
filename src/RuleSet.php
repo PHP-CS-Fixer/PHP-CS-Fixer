@@ -338,6 +338,7 @@ final class RuleSet implements RuleSetInterface
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
+            'no_alias_functions' => ['sets' => ['@all']],
             'no_unreachable_default_argument_value' => true,
             'no_unset_on_property' => true,
             'php_unit_strict' => true,
@@ -402,6 +403,17 @@ final class RuleSet implements RuleSetInterface
             'implode_call' => true,
             'no_alias_functions' => true,
             'use_arrow_functions' => true,
+        ],
+        '@PHP8Migration' => [
+            '@PHP71Migration' => true,
+            'no_unset_cast' => true,
+            'normalize_index_brace' => true,
+        ],
+        '@PHP8Migration:risky' => [
+            '@PHP71Migration:risky' => true,
+            'implode_call' => true,
+            'no_alias_functions' => ['sets' => ['@all']],
+            'no_unneeded_final_method' => true,
         ],
         '@PHPUnit30Migration:risky' => [
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],

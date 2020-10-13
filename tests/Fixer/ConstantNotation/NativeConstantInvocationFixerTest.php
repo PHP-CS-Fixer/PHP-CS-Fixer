@@ -167,24 +167,6 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
                 '<?php namespace M_PI; const M_PI = 1; return M_PI;',
             ],
             [
-                '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
-#
-M_PI;
-echo \\M_PI;
-',
-                '<?php
-echo \\/**/M_PI;
-echo \\ M_PI;
-echo \\#
-#
-M_PI;
-echo M_PI;
-',
-            ],
-            [
                 '<?php foo(\E_DEPRECATED | \E_USER_DEPRECATED);',
                 '<?php foo(E_DEPRECATED | E_USER_DEPRECATED);',
             ],
@@ -544,6 +526,31 @@ EOT;
                 echo \MY_FRAMEWORK_MAJOR_VERSION . MY_FRAMEWORK_MINOR_VERSION; // non-built-in constants not to have backslash
                 echo \Dont\Touch\Namespaced\CONSTANT;
             '
+        );
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        $this->doTest(
+            '<?php
+echo \\/**/M_PI;
+echo \\ M_PI;
+echo \\#
+#
+M_PI;
+echo \\M_PI;
+',
+            '<?php
+echo \\/**/M_PI;
+echo \\ M_PI;
+echo \\#
+#
+M_PI;
+echo M_PI;
+'
         );
     }
 }

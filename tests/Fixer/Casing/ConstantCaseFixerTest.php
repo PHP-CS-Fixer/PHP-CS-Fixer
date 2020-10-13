@@ -20,7 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
+ * @covers \PhpCsFixer\Fixer\Casing\ConstantCaseFixer
  */
 final class ConstantCaseFixerTest extends AbstractFixerTestCase
 {

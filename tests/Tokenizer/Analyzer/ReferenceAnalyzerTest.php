@@ -19,7 +19,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *
- * @covers  \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
  *
  * @internal
  */

@@ -167,6 +167,10 @@ $className = Baz::class;
         $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
 
+        if (!$tokens[$classEndIndex]->isGivenKind(T_STRING)) {
+            return;
+        }
+
         if ($tokens[$classEndIndex]->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
             return;
         }

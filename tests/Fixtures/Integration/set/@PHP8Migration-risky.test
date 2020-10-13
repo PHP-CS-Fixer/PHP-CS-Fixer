@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP8Migration:risky.
+--RULESET--
+{"@PHP8Migration:risky": true}
+--REQUIREMENTS--
+{"php": 80000}

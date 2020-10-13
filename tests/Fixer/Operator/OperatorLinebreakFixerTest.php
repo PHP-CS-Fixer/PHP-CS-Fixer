@@ -17,7 +17,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @author  Kuba Werłos <werlos@gmail.com>
  *
- * @covers  \PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer
+ * @covers \PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer
  *
  * @internal
  */

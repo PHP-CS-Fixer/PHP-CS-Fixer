@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
 
@@ -30,47 +29,62 @@ use PhpCsFixer\Tokenizer\Transformers;
 final class TransformerTest extends TestCase
 {
     /**
-     * @dataProvider provideTransformerCases
+     * @dataProvider provideTransformerPriorityCases
      */
-    public function testTransformersAreFinal(TransformerInterface $transformer)
+    public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second)
     {
-        $transformerRef = new \ReflectionClass($transformer);
-
-        static::assertTrue(
-            $transformerRef->isFinal(),
-            sprintf('Transformer "%s" must be declared "final."', $transformer->getName())
+        static::assertLessThan(
+            $first->getPriority(),
+            $second->getPriority(),
+            sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
         );
     }
 
     /**
      * @dataProvider provideTransformerCases
      */
-    public function testTransformer(TransformerInterface $transformer)
+    public function testTransformerPriorityIsListed(TransformerInterface $transformer)
     {
-        $name = $transformer->getName();
         $priority = $transformer->getPriority();
-        $customTokens = $transformer->getCustomTokens();
-        $requiredPhpVersionId = $transformer->getRequiredPhpVersionId();
 
-        static::assertInternalType('string', $name, $name);
-        static::assertRegExp('/^[a-z]+[a-z_]*[a-z]$/', $name, $name);
+        if (0 === $priority) {
+            $this->addToAssertionCount(1);
 
-        static::assertInternalType('int', $priority, $name);
-        static::assertInternalType('array', $customTokens, $name);
-
-        foreach ($customTokens as $customToken) {
-            static::assertInternalType('int', $customToken, $name);
+            return;
         }
 
-        static::assertInternalType('int', $requiredPhpVersionId, $name);
-        static::assertGreaterThanOrEqual(50000, $requiredPhpVersionId, $name);
+        $name = $transformer->getName();
 
-        $tokens = Tokens::fromCode('<?php ');
+        foreach ($this->provideTransformerPriorityCases() as $pair) {
+            list($first, $second) = $pair;
 
-        foreach ($tokens as $index => $token) {
-            $transformer->process($tokens, $token, $index);
-            static::assertFalse($tokens->isChanged());
+            if ($name === $first->getName() || $name === $second->getName()) {
+                $this->addToAssertionCount(1);
+
+                return;
+            }
         }
+
+        static::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
+    }
+
+    public function provideTransformerPriorityCases()
+    {
+        $transformers = [];
+
+        foreach ($this->provideTransformerCases() as list($transformer)) {
+            $transformers[$transformer->getName()] = $transformer;
+        }
+
+        return [
+            [$transformers['curly_brace'], $transformers['brace_class_instantiation']],
+            [$transformers['curly_brace'], $transformers['use']],
+            [$transformers['return_ref'], $transformers['type_colon']],
+            [$transformers['square_brace'], $transformers['brace_class_instantiation']],
+            [$transformers['type_colon'], $transformers['nullable_type']],
+            [$transformers['use'], $transformers['type_colon']],
+            [$transformers['name_qualified'], $transformers['namespace_operator']],
+        ];
     }
 
     /**
@@ -92,35 +106,5 @@ final class TransformerTest extends TestCase
         }
 
         return $transformersArray;
-    }
-
-    /**
-     * @dataProvider provideTransformerPriorityCases
-     */
-    public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second)
-    {
-        static::assertLessThan(
-            $first->getPriority(),
-            $second->getPriority(),
-            sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
-        );
-    }
-
-    public function provideTransformerPriorityCases()
-    {
-        $transformers = [];
-
-        foreach ($this->provideTransformerCases() as list($transformer)) {
-            $transformers[$transformer->getName()] = $transformer;
-        }
-
-        return [
-            [$transformers['curly_brace'], $transformers['brace_class_instantiation']],
-            [$transformers['curly_brace'], $transformers['use']],
-            [$transformers['return_ref'], $transformers['type_colon']],
-            [$transformers['square_brace'], $transformers['brace_class_instantiation']],
-            [$transformers['type_colon'], $transformers['nullable_type']],
-            [$transformers['use'], $transformers['type_colon']],
-        ];
     }
 }

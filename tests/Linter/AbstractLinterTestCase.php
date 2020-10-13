@@ -66,7 +66,7 @@ abstract class AbstractLinterTestCase extends TestCase
             ],
             [
                 __DIR__.'/../Fixtures/Linter/invalid.php',
-                '/syntax error, unexpected.*T_ECHO.*line 5/',
+                '/syntax error, unexpected.*("echo"|T_ECHO).*line 5/',
             ],
         ];
     }
@@ -105,7 +105,7 @@ abstract class AbstractLinterTestCase extends TestCase
                     print "line 4";
                     echo echo;
                 ',
-                '/syntax error, unexpected.*T_ECHO.*line 5/',
+                '/syntax error, unexpected.*("echo"|T_ECHO).*line 5/',
             ],
         ];
     }

@@ -159,27 +159,6 @@ OVERRIDDEN;
                 }',
             ],
             [
-                '<?php $a = #
-#
-#
-(int) #
- (
-#
- $b#
- )#
- ;#',
-                '<?php $a = #
-#
-\
-#
-intval#
- (
-#
- $b#
- )#
- ;#',
-            ],
-            [
                 '<?php $foo = ((int) $x)**2;',
                 '<?php $foo = intval($x)**2;',
             ],
@@ -244,5 +223,33 @@ intval#
                 '<?php $a = strval($b . $c, );',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        $this->doTest(
+            '<?php $a = #
+#
+#
+(int) #
+ (
+#
+ $b#
+ )#
+ ;#',
+            '<?php $a = #
+#
+\
+#
+intval#
+ (
+#
+ $b#
+ )#
+ ;#'
+        );
     }
 }

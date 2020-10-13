@@ -44,93 +44,85 @@ final class FunctionsAnalyzerTest extends TestCase
 
     public function provideIsGlobalFunctionCallCases()
     {
-        yield [
+        yield '1' => [
             false,
             '<?php CONSTANT;',
             1,
         ];
 
-        yield [
+        yield '2' => [
             true,
             '<?php foo("bar");',
             1,
         ];
 
-        yield [
+        yield '3' => [
             false,
             '<?php \foo("bar");',
             1,
         ];
 
-        yield [
+        yield '4' => [
             true,
             '<?php \foo("bar");',
             2,
         ];
 
-        yield [
+        yield '5' => [
             false,
             '<?php foo\bar("baz");',
             1,
         ];
 
-        yield [
+        yield '6' => [
             false,
             '<?php foo\bar("baz");',
             3,
         ];
 
-        yield [
+        yield '7' => [
             false,
             '<?php foo::bar("baz");',
             1,
         ];
 
-        yield [
+        yield '8' => [
             false,
             '<?php foo::bar("baz");',
             3,
         ];
 
-        yield [
+        yield '9' => [
             false,
             '<?php $foo->bar("baz");',
             3,
         ];
 
-        yield [
+        yield '10' => [
             false,
             '<?php new bar("baz");',
             3,
         ];
-        yield [
+
+        yield '11' => [
             false,
             '<?php function foo() {}',
             3,
         ];
 
-        yield [
+        yield '12' => [
             false,
             '<?php function & foo() {}',
             5,
         ];
 
-        yield [
+        yield '13' => [
             false,
             '<?php namespace\foo("bar");',
             3,
         ];
 
-        yield [
-            true,
-            '<?php
-                use function \  str_repeat;
-                str_repeat($a, $b);
-            ',
-            11,
-        ];
-
-        yield [
+        yield '15' => [
             true,
             '<?php
                 namespace A {
@@ -144,7 +136,7 @@ final class FunctionsAnalyzerTest extends TestCase
             30,
         ];
 
-        yield [
+        yield '16' => [
             true,
             '<?php
                 function A(){}
@@ -153,7 +145,7 @@ final class FunctionsAnalyzerTest extends TestCase
             10,
         ];
 
-        yield [
+        yield '17' => [
             true,
             '<?php
                 function A(){}
@@ -162,7 +154,7 @@ final class FunctionsAnalyzerTest extends TestCase
             10,
         ];
 
-        yield [
+        yield '18' => [
             true,
             '<?php
                 namespace {
@@ -173,7 +165,7 @@ final class FunctionsAnalyzerTest extends TestCase
             14,
         ];
 
-        yield [
+        yield '19' => [
             false,
             '<?php
                 namespace Z {
@@ -184,7 +176,7 @@ final class FunctionsAnalyzerTest extends TestCase
             16,
         ];
 
-        yield [
+        yield '20' => [
             false,
             '<?php
             namespace Z;
@@ -195,7 +187,7 @@ final class FunctionsAnalyzerTest extends TestCase
             15,
         ];
 
-        yield [
+        yield '21' => [
             true,
             '<?php
                 function & A(){}
@@ -204,7 +196,7 @@ final class FunctionsAnalyzerTest extends TestCase
             12,
         ];
 
-        yield [
+        yield '22' => [
             true,
             '<?php
                 class Foo
@@ -216,7 +208,7 @@ final class FunctionsAnalyzerTest extends TestCase
             20,
         ];
 
-        yield [
+        yield '23' => [
             true,
             '<?php
                 namespace A {
@@ -229,7 +221,7 @@ final class FunctionsAnalyzerTest extends TestCase
             24,
         ];
 
-        yield [
+        yield '24' => [
             false,
             '<?php
                 use function X\a;
@@ -238,7 +230,7 @@ final class FunctionsAnalyzerTest extends TestCase
             11,
         ];
 
-        yield [
+        yield '25' => [
             true,
             '<?php
                 use A;
@@ -247,7 +239,7 @@ final class FunctionsAnalyzerTest extends TestCase
             7,
         ];
 
-        yield [
+        yield '26' => [
             true,
             '<?php
                 use const A;
@@ -256,7 +248,7 @@ final class FunctionsAnalyzerTest extends TestCase
             9,
         ];
 
-        yield [
+        yield '27' => [
             true,
             '<?php
                 use function A;
@@ -265,7 +257,7 @@ final class FunctionsAnalyzerTest extends TestCase
             9,
         ];
 
-        yield [
+        yield '28' => [
             true,
             '<?php
                 namespace {
@@ -282,6 +274,17 @@ final class FunctionsAnalyzerTest extends TestCase
                 true,
                 '<?php implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);',
                 $index,
+            ];
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield '14' => [
+                true,
+                '<?php
+                    use function \  str_repeat;
+                    str_repeat($a, $b);
+                ',
+                11,
             ];
         }
     }
@@ -378,7 +381,7 @@ A();
 
     public function provideFunctionsWithArgumentsCases()
     {
-        return [
+        $tests = [
             ['<?php function(){};', 1, []],
             ['<?php function($a){};', 1, [
                 '$a' => new ArgumentAnalysis(
@@ -458,7 +461,14 @@ A();
                     )
                 ),
             ]],
-            ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
                 '$a' => new ArgumentAnalysis(
                     '$a',
                     9,
@@ -469,19 +479,20 @@ A();
                         7
                     )
                 ),
-            ]],
-        ];
+            ]];
+        }
     }
 
     public function provideFunctionsWithReturnTypeCases()
     {
-        return [
-            ['<?php function(){};', 1, null],
-            ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)],
-            ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)],
-            ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)],
-            ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)],
-        ];
+        yield ['<?php function(){};', 1, null];
+        yield ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)];
+        yield ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
+        yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
+        }
     }
 
     /**
@@ -502,7 +513,7 @@ A();
 
     public function provideFunctionsWithArgumentsPhp74Cases()
     {
-        return [
+        $tests = [
             ['<?php fn() => null;', 1, []],
             ['<?php fn($a) => null;', 1, [
                 '$a' => new ArgumentAnalysis(
@@ -582,7 +593,14 @@ A();
                     )
                 ),
             ]],
-            ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
                 '$a' => new ArgumentAnalysis(
                     '$a',
                     9,
@@ -593,8 +611,8 @@ A();
                         7
                     )
                 ),
-            ]],
-        ];
+            ]];
+        }
     }
 
     /**
@@ -616,13 +634,14 @@ A();
 
     public function provideFunctionsWithReturnTypePhp74Cases()
     {
-        return [
-            ['<?php fn() => null;', 1, null],
-            ['<?php fn($a): array => null;', 1, new TypeAnalysis('array', 7, 7)],
-            ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)],
-            ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)],
-            ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)],
-        ];
+        yield ['<?php fn() => null;', 1, null];
+        yield ['<?php fn($a): array => null;', 1, new TypeAnalysis('array', 7, 7)];
+        yield ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
+        yield ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['<?php fn($a): \Foo/** TODO: change to something else */\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
+        }
     }
 
     /**
