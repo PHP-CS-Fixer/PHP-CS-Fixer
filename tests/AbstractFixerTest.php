@@ -10,10 +10,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Fixer;
+namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
-use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**

@@ -234,24 +234,6 @@ class Foo
 }
 ',
             ],
-            [
-                '<?php
-echo \/**/strlen($a);
-echo \ strlen($a);
-echo \#
-#
-strlen($a);
-echo \strlen($a);
-',
-                '<?php
-echo \/**/strlen($a);
-echo \ strlen($a);
-echo \#
-#
-strlen($a);
-echo strlen($a);
-',
-            ],
         ];
     }
 
@@ -484,12 +466,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
     public function provideFixWithConfiguredIncludeCases()
     {
-        return [
+        $tests = [
             'include set + 1, exclude 1' => [
                 '<?php
                     echo \count([1]);
@@ -555,22 +534,6 @@ namespace {
                     }
                 ',
             ],
-            'include @compiler_optimized with strict enabled' => [
-                '<?php
-                    $a = not_compiler_optimized_function();
-                    $b =  not_compiler_optimized_function();
-                    $c = \intval($d);
-                ',
-                '<?php
-                    $a = \not_compiler_optimized_function();
-                    $b = \ not_compiler_optimized_function();
-                    $c = intval($d);
-                ',
-                [
-                    'include' => ['@compiler_optimized'],
-                    'strict' => true,
-                ],
-            ],
             'scope namespaced and strict enabled' => [
                 '<?php
                     $a = not_compiler_optimized_function();
@@ -596,6 +559,29 @@ namespace {
                 ],
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'include @compiler_optimized with strict enabled' => [
+                '<?php
+                        $a = not_compiler_optimized_function();
+                        $b =  not_compiler_optimized_function();
+                        $c = \intval($d);
+                    ',
+                '<?php
+                        $a = \not_compiler_optimized_function();
+                        $b = \ not_compiler_optimized_function();
+                        $c = intval($d);
+                    ',
+                [
+                    'include' => ['@compiler_optimized'],
+                    'strict' => true,
+                ],
+            ];
+        }
     }
 
     /**
@@ -606,6 +592,31 @@ namespace {
         $this->doTest(
             '<?php $name = \get_class($foo, );',
             '<?php $name = get_class($foo, );'
+        );
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        $this->doTest(
+            '<?php
+echo \/**/strlen($a);
+echo \ strlen($a);
+echo \#
+#
+strlen($a);
+echo \strlen($a);
+',
+            '<?php
+echo \/**/strlen($a);
+echo \ strlen($a);
+echo \#
+#
+strlen($a);
+echo strlen($a);
+'
         );
     }
 }

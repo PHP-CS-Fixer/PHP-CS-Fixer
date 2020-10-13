@@ -155,6 +155,7 @@ final class Tokens extends \SplFixedArray
         }
 
         $tokens->generateCode(); // regenerate code to calculate code hash
+        $tokens->clearChanged();
 
         return $tokens;
     }
@@ -435,7 +436,6 @@ final class Tokens extends \SplFixedArray
      */
     public function findGivenKind($possibleKind, $start = 0, $end = null)
     {
-        $this->rewind();
         if (null === $end) {
             $end = $this->count();
         }
@@ -896,18 +896,6 @@ final class Tokens extends \SplFixedArray
      */
     public function overrideRange($indexStart, $indexEnd, $items)
     {
-        $oldCode = $this->generatePartialCode($indexStart, $indexEnd);
-
-        $newCode = '';
-        foreach ($items as $item) {
-            $newCode .= $item->getContent();
-        }
-
-        // no changes, return
-        if ($oldCode === $newCode) {
-            return;
-        }
-
         $indexToChange = $indexEnd - $indexStart + 1;
         $itemsCount = \count($items);
 
@@ -986,7 +974,10 @@ final class Tokens extends \SplFixedArray
             $this->registerFoundToken($token);
         }
 
-        $this->rewind();
+        if (\PHP_VERSION_ID < 80000) {
+            $this->rewind();
+        }
+
         $this->changeCodeHash(self::calculateCodeHash($code));
         $this->changed = true;
     }
@@ -1005,7 +996,9 @@ final class Tokens extends \SplFixedArray
             $output[$index] = $token->toArray();
         }
 
-        $this->rewind();
+        if (\PHP_VERSION_ID < 80000) {
+            $this->rewind();
+        }
 
         return json_encode($output, $options);
     }
@@ -1159,6 +1152,73 @@ final class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * @internal
+     *
+     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
+     */
+    public function current()
+    {
+        $this->warnPhp8SplFixerArrayChange(__METHOD__);
+
+        return parent::current();
+    }
+
+    /**
+     * @internal
+     *
+     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
+     */
+    public function key()
+    {
+        $this->warnPhp8SplFixerArrayChange(__METHOD__);
+
+        return parent::key();
+    }
+
+    /**
+     * @internal
+     *
+     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
+     */
+    public function next()
+    {
+        $this->warnPhp8SplFixerArrayChange(__METHOD__);
+
+        parent::next();
+    }
+
+    /**
+     * @internal
+     *
+     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
+     */
+    public function rewind()
+    {
+        $this->warnPhp8SplFixerArrayChange(__METHOD__);
+
+        parent::rewind();
+    }
+
+    /**
+     * @internal
+     *
+     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
+     */
+    public function valid()
+    {
+        $this->warnPhp8SplFixerArrayChange(__METHOD__);
+
+        return parent::valid();
+    }
+
+    private function warnPhp8SplFixerArrayChange($method)
+    {
+        if (80000 <= \PHP_VERSION_ID) {
+            throw new \BadMethodCallException(sprintf('"%s" has been removed on PHP8, use ::getIterator() in place.', $method));
+        }
     }
 
     private function removeWhitespaceSafely($index, $direction, $whitespaces = null)

@@ -226,32 +226,6 @@ use X ?><?php new X(); // run before white space around semicolon',
     {
         return [
             [
-                '<?php
-use some\a\ClassA;
-use some\a\ClassB;
-use some\a\ClassC as C;
-use function some\b\fn_a;
-use function some\b\fn_b;
-use function some\b\fn_c;
-use const some\c\ConstA/**/as/**/E; /* group comment */
-use const some\c\ConstB as D;
-use const some\c\// use.,{}
-ConstC;
-use A\{B};
-use D\E;
-use D\F;
-                ',
-                '<?php
-use some\a\{ClassA, ClassB, ClassC as C};
-use    function some\b\{fn_a, fn_b, fn_c};
-use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D, '.'
-// use.,{}
-ConstC};
-use A\{B};
-use D\{E,F};
-                ',
-            ],
-            [
                 '<?php use FooA#
 ;#
 #
@@ -296,6 +270,10 @@ use Foo\
      */
     public function testMessyComments()
     {
+        if (\PHP_VERSION_ID >= 80000) {
+            static::markTestSkipped('PHP < 8.0 is required.');
+        }
+
         $this->doTest(
             '<?php
 use D\/*1*//*2*//*3*/E;
@@ -361,5 +339,42 @@ use G\{H,I/*1*/,/*2*/};
 ',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        if (\PHP_VERSION_ID < 70000) {
+            static::markTestSkipped('PHP > 7.0 && < 8.0 is required.');
+        }
+
+        $this->doTest(
+            '<?php
+use some\a\ClassA;
+use some\a\ClassB;
+use some\a\ClassC as C;
+use function some\b\fn_a;
+use function some\b\fn_b;
+use function some\b\fn_c;
+use const some\c\ConstA/**/as/**/E; /* group comment */
+use const some\c\ConstB as D;
+use const some\c\// use.,{}
+ConstC;
+use A\{B};
+use D\E;
+use D\F;
+                ',
+            '<?php
+use some\a\{ClassA, ClassB, ClassC as C};
+use    function some\b\{fn_a, fn_b, fn_c};
+use const/* group comment */some\c\{ConstA/**/as/**/ E   ,    ConstB   AS    D, '.'
+// use.,{}
+ConstC};
+use A\{B};
+use D\{E,F};
+                '
+        );
     }
 }

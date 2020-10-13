@@ -29,7 +29,9 @@ interface TransformerInterface
     /**
      * Get tokens created by Transformer.
      *
-     * @return array
+     * @return int[]
+     *
+     * @deprecated will be removed in 3.0
      */
     public function getCustomTokens();
 

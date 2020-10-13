@@ -695,32 +695,6 @@ EOF
                 '<?php ?>',
                 '<?php use A\B?>',
             ],
-            'with_comments' => [
-                '<?php
-# 1
-# 2
-# 3
-# 4
-  use /**/A\B/**/;
-  echo 1;
-  new B();
-',
-                '<?php
-use# 1
-\# 2
-Exception# 3
-# 4
-
-
-
-
-
-  ;
-use /**/A\B/**/;
-  echo 1;
-  new B();
-',
-            ],
             'with_matches_in_comments' => [
                 '<?php
 use Foo;
@@ -1174,5 +1148,38 @@ use Z;
 ',
             ],
         ];
+    }
+
+    /**
+     * @requires PHP <8.0
+     */
+    public function testFixPrePHP80()
+    {
+        $this->doTest(
+            '<?php
+# 1
+# 2
+# 3
+# 4
+  use /**/A\B/**/;
+  echo 1;
+  new B();
+',
+            '<?php
+use# 1
+\# 2
+Exception# 3
+# 4
+
+
+
+
+
+  ;
+use /**/A\B/**/;
+  echo 1;
+  new B();
+'
+        );
     }
 }

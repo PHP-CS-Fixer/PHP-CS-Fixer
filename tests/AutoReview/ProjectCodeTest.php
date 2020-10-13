@@ -268,8 +268,10 @@ final class ProjectCodeTest extends TestCase
     {
         $usedDataProviderMethodNames = $this->getUsedDataProviderMethodNames($testClassName);
 
-        if (empty($dataProviderMethodNames)) {
+        if (empty($usedDataProviderMethodNames)) {
             $this->addToAssertionCount(1); // no data providers to test, all good!
+
+            return;
         }
 
         foreach ($usedDataProviderMethodNames as $dataProviderMethodName) {
@@ -310,6 +312,49 @@ final class ProjectCodeTest extends TestCase
                 $usedDataProviderMethodNames,
                 sprintf('Data provider in "%s" with name "%s" is not used.', $definedDataProvider->getDeclaringClass()->getName(), $definedDataProvider->getName())
             );
+        }
+    }
+
+    /**
+     * @dataProvider provideTestClassCases
+     *
+     * @param string $testClassName
+     */
+    public function testThatTestClassCoversAreCorrect($testClassName)
+    {
+        $reflectionClass = new \ReflectionClass($testClassName);
+
+        if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
+            self::addToAssertionCount(1);
+
+            return;
+        }
+
+        $doc = $reflectionClass->getDocComment();
+        static::assertNotFalse($doc);
+
+        if (1 === Preg::match('/@coversNothing/', $doc, $matches)) {
+            self::addToAssertionCount(1);
+
+            return;
+        }
+
+        $covers = Preg::match('/@covers (\S*)/', $doc, $matches);
+        static::assertNotFalse($covers, sprintf('Missing @covers in PHPDoc of test class "%s".', $testClassName));
+
+        array_shift($matches);
+        $class = '\\'.str_replace('PhpCsFixer\Tests\\', 'PhpCsFixer\\', substr($testClassName, 0, -4));
+        $parentClass = (new \ReflectionClass($class))->getParentClass();
+        $parentClassName = false === $parentClass ? null : '\\'.$parentClass->getName();
+
+        foreach ($matches as $match) {
+            if ($match === $class || $parentClassName === $match) {
+                $this->addToAssertionCount(1);
+
+                continue;
+            }
+
+            static::fail(sprintf('Unexpected @covers "%s" for "%s".', $match, $testClassName));
         }
     }
 
@@ -493,7 +538,6 @@ final class ProjectCodeTest extends TestCase
                 if (
                     $rc->isInterface()
                     || ($doc && \count($doc->getAnnotationsOfType('internal')))
-                    || 0 === \count($rc->getInterfaces())
                     || \in_array($className, [
                         \PhpCsFixer\Finder::class,
                         \PhpCsFixer\Test\AbstractFixerTestCase::class,
@@ -504,6 +548,21 @@ final class ProjectCodeTest extends TestCase
                     ], true)
                 ) {
                     return false;
+                }
+
+                $interfaces = $rc->getInterfaces();
+                $interfacesCount = \count($interfaces);
+
+                if (0 === $interfacesCount) {
+                    return false;
+                }
+
+                if (1 === $interfacesCount) {
+                    $interface = reset($interfaces);
+
+                    if ('Stringable' === $interface->getName()) {
+                        return false;
+                    }
                 }
 
                 return true;

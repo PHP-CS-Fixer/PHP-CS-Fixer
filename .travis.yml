@@ -52,12 +52,13 @@ jobs:
                     | grep -v tests/Test/IsIdenticalConstraint.php \
                     | grep -v tests/TestCase.php \
                     && (echo "UNKNOWN FILES DETECTED" && travis_terminate 1) || echo "NO UNKNOWN FILES"
-                - ./check_trailing_spaces.sh || travis_terminate 1
+                - ./dev-tools/check_file_permissions.sh || travis_terminate 1
+                - ./dev-tools/check_trailing_spaces.sh || travis_terminate 1
                 - dev-tools/vendor/bin/phpstan analyse
                 - if [ -n "$CHANGED_PHP_FILES" ]; then ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml || travis_terminate 1; fi
                 - ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json) || travis_terminate 1
                 - composer normalize --dry-run --working-dir=./dev-tools ../composer.json
-                - ./dev-tools/check-shell-scripts.sh
+                - ./dev-tools/check_shell_scripts.sh
 
         - &STANDARD_TEST_JOB
             stage: Fast Test
