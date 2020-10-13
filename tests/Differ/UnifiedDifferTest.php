@@ -54,7 +54,7 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 -a
 +b
 ',
-            $differ->diff("a\n", "b\n", new TestSplFileInfo('/foo/bar/test test test.txt'))
+            $differ->diff("a\n", "b\n", new DummyTestSplFileInfo('/foo/bar/test test test.txt'))
         );
     }
 }
