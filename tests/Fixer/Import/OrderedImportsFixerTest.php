@@ -598,45 +598,39 @@ EOF;
         );
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideCommentCases
-     */
-    public function testCodeWithComments($expected, $input = null)
+    public function testCodeWithComments()
     {
-        $this->doTest($expected, $input);
+        $this->doTest(
+            '<?php
+                use A\C1 /* A */;
+                use /* B */ B\C2;',
+            '<?php
+                use /* B */ B\C2;
+                use A\C1 /* A */;'
+        );
     }
 
-    public function provideCommentCases()
+    /**
+     * @requires PHP <8.0
+     */
+    public function testCodeWithCommentsAndMultiLine()
     {
-        return [
-            [
-                '<?php
-                    use A\C1 /* A */;
-                    use /* B */ B\C2;',
-                '<?php
-                    use /* B */ B\C2;
-                    use A\C1 /* A */;',
-            ],
-            [
-                '<?php
+        $this->doTest(
+            '<?php
                     use#
 A\C1;
                     use B#
 \C2#
 #
 ;',
-                '<?php
+            '<?php
                     use#
 B#
 \C2#
 #
 ;
-                    use A\C1;',
-            ],
-        ];
+                    use A\C1;'
+        );
     }
 
     /**

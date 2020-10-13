@@ -19,7 +19,10 @@
         "null", "true", "false",
         "static", "self", "parent",
         "array", "string", "int", "float", "bool", "iterable", "callable", "void",
-        "T_COALESCE_EQUAL", "T_FN"
+        "T_COALESCE_EQUAL", "T_FN",
+        "T_NAME_QUALIFIED",
+        "T_NAME_FULLY_QUALIFIED",
+        "T_NAME_RELATIVE"
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",

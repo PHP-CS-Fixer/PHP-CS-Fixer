@@ -24,13 +24,6 @@ final class FooTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId()
     {
     }
@@ -40,5 +33,13 @@ final class FooTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDeprecatedCustomTokens()
+    {
+        return [];
     }
 }

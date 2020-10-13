@@ -625,6 +625,15 @@ preg_replace_callback(
         ];
     }
 
+    public function testIsLambdaInvalid()
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No T_FUNCTION or T_FN at given index 0, got "T_OPEN_TAG".');
+
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode('<?php '));
+        $tokensAnalyzer->isLambda(0);
+    }
+
     /**
      * @param string $source
      *
@@ -873,6 +882,15 @@ preg_replace_callback(
                 [18 => false],
             ],
         ];
+    }
+
+    public function testIsConstantInvocationInvalid()
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No T_STRING at given index 0, got "T_OPEN_TAG".');
+
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode('<?php '));
+        $tokensAnalyzer->isConstantInvocation(0);
     }
 
     /**

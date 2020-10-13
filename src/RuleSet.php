@@ -269,6 +269,7 @@ final class RuleSet implements RuleSetInterface
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
             'logical_operators' => true,
+            'no_alias_functions' => ['sets' => ['@all']],
             'no_unreachable_default_argument_value' => true,
             'no_unset_on_property' => true,
             'php_unit_set_up_tear_down_visibility' => true,
@@ -324,6 +325,17 @@ final class RuleSet implements RuleSetInterface
         '@PHP73Migration' => [
             '@PHP71Migration' => true,
             'heredoc_indentation' => true,
+        ],
+        '@PHP8Migration' => [
+            '@PHP71Migration' => true,
+            'no_unset_cast' => true,
+            'normalize_index_brace' => true,
+        ],
+        '@PHP8Migration:risky' => [
+            '@PHP71Migration:risky' => true,
+            'implode_call' => true,
+            'no_alias_functions' => ['sets' => ['@all']],
+            'no_unneeded_final_method' => true,
         ],
         '@PHPUnit30Migration:risky' => [
             'php_unit_dedicate_assert' => ['target' => PhpUnitTargetVersion::VERSION_3_0],

@@ -20,7 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @requires PHP 7.1
- * @covers   \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase
 {

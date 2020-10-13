@@ -40,7 +40,7 @@ final class Transformers
         $this->registerBuiltInTransformers();
 
         usort($this->items, static function (TransformerInterface $a, TransformerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority());
+            return Utils::cmpInt($b->getPriority(), $a->getPriority()); // TODO spaceship
         });
     }
 
