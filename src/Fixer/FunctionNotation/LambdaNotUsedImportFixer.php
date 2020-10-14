@@ -16,7 +16,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\VariableAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -32,14 +32,14 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
     private $argumentsAnalyzer;
 
     /**
-     * @var FunctionsAnalyzer
-     */
-    private $functionAnalyzer;
-
-    /**
      * @var TokensAnalyzer
      */
     private $tokensAnalyzer;
+
+    /**
+     * @var VariableAnalyzer
+     */
+    private $variableAnalyzer;
 
     /**
      * {@inheritdoc}
@@ -73,8 +73,8 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $this->argumentsAnalyzer = new ArgumentsAnalyzer();
-        $this->functionAnalyzer = new FunctionsAnalyzer();
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->variableAnalyzer = new VariableAnalyzer();
 
         for ($index = $tokens->count() - 4; $index > 0; --$index) {
             $lambdaUseIndex = $this->getLambdaUseIndex($tokens, $index);
@@ -100,7 +100,11 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
             return; // no imports to remove
         }
 
-        $notUsedImports = $this->findNotUsedLambdaImports($tokens, $imports, $lambdaUseCloseBraceIndex);
+        // figure out where the lambda starts ...
+        $lambdaOpenIndex = $tokens->getNextTokenOfKind($lambdaUseCloseBraceIndex, ['{']);
+        $lambdaEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $lambdaOpenIndex);
+
+        $notUsedImports = $this->variableAnalyzer->filterVariablePossiblyUsed($tokens, $lambdaOpenIndex, $lambdaEndIndex, $imports);
         $notUsedImportsCount = \count($notUsedImports);
 
         if (0 === $notUsedImportsCount) {
@@ -114,156 +118,6 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
         }
 
         $this->clearImports($tokens, array_reverse($notUsedImports));
-    }
-
-    /**
-     * @param int $lambdaUseCloseBraceIndex
-     *
-     * @return array
-     */
-    private function findNotUsedLambdaImports(Tokens $tokens, array $imports, $lambdaUseCloseBraceIndex)
-    {
-        static $riskyKinds = [
-            CT::T_DYNAMIC_VAR_BRACE_OPEN,
-            T_EVAL,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-        ];
-
-        // figure out where the lambda starts ...
-        $lambdaOpenIndex = $tokens->getNextTokenOfKind($lambdaUseCloseBraceIndex, ['{']);
-        $curlyBracesLevel = 0;
-
-        for ($index = $lambdaOpenIndex;; ++$index) { // go through the body of the lambda and keep count of the (possible) usages of the imported variables
-            $token = $tokens[$index];
-
-            if ($token->equals('{')) {
-                ++$curlyBracesLevel;
-
-                continue;
-            }
-
-            if ($token->equals('}')) {
-                --$curlyBracesLevel;
-
-                if (0 === $curlyBracesLevel) {
-                    break;
-                }
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_STRING) && 'compact' === strtolower($token->getContent()) && $this->functionAnalyzer->isGlobalFunctionCall($tokens, $index)) {
-                return []; // wouldn't touch it with a ten-foot pole
-            }
-
-            if ($token->isGivenKind($riskyKinds)) {
-                return [];
-            }
-
-            if ($token->equals('$')) {
-                $nextIndex = $tokens->getNextMeaningfulToken($index);
-
-                if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
-                    return []; // "$$a" case
-                }
-            }
-
-            if ($token->isGivenKind(T_VARIABLE)) {
-                $content = $token->getContent();
-
-                if (isset($imports[$content])) {
-                    unset($imports[$content]);
-
-                    if (0 === \count($imports)) {
-                        return $imports;
-                    }
-                }
-            }
-
-            if ($token->isGivenKind(T_STRING_VARNAME)) {
-                $content = '$'.$token->getContent();
-
-                if (isset($imports[$content])) {
-                    unset($imports[$content]);
-
-                    if (0 === \count($imports)) {
-                        return $imports;
-                    }
-                }
-            }
-
-            if ($token->isClassy()) { // is anonymous class
-                // check if used as argument in the constructor of the anonymous class
-                $index = $tokens->getNextTokenOfKind($index, ['(', '{']);
-
-                if ($tokens[$index]->equals('(')) {
-                    $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-                    $arguments = $this->argumentsAnalyzer->getArguments($tokens, $index, $closeBraceIndex);
-
-                    $imports = $this->countImportsUsedAsArgument($tokens, $imports, $arguments);
-
-                    $index = $tokens->getNextTokenOfKind($closeBraceIndex, ['{']);
-                }
-
-                // skip body
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                continue;
-            }
-
-            if ($token->isGivenKind(T_FUNCTION)) {
-                // check if used as argument
-                $lambdaUseOpenBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
-                $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseOpenBraceIndex);
-                $arguments = $this->argumentsAnalyzer->getArguments($tokens, $lambdaUseOpenBraceIndex, $lambdaUseCloseBraceIndex);
-
-                $imports = $this->countImportsUsedAsArgument($tokens, $imports, $arguments);
-
-                // check if used as import
-                $index = $tokens->getNextTokenOfKind($index, [[CT::T_USE_LAMBDA], '{']);
-
-                if ($tokens[$index]->isGivenKind(CT::T_USE_LAMBDA)) {
-                    $lambdaUseOpenBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
-                    $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseOpenBraceIndex);
-                    $arguments = $this->argumentsAnalyzer->getArguments($tokens, $lambdaUseOpenBraceIndex, $lambdaUseCloseBraceIndex);
-
-                    $imports = $this->countImportsUsedAsArgument($tokens, $imports, $arguments);
-
-                    $index = $tokens->getNextTokenOfKind($lambdaUseCloseBraceIndex, ['{']);
-                }
-
-                // skip body
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                continue;
-            }
-        }
-
-        return $imports;
-    }
-
-    /**
-     * @return array
-     */
-    private function countImportsUsedAsArgument(Tokens $tokens, array $imports, array $arguments)
-    {
-        foreach ($arguments as $start => $end) {
-            $info = $this->argumentsAnalyzer->getArgumentInfo($tokens, $start, $end);
-            $content = $info->getName();
-
-            if (isset($imports[$content])) {
-                unset($imports[$content]);
-
-                if (0 === \count($imports)) {
-                    return $imports;
-                }
-            }
-        }
-
-        return $imports;
     }
 
     /**
@@ -308,17 +162,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 continue;
             }
 
-            $argumentCandidate = $tokens[$argument];
-
-            if ('$this' === $argumentCandidate->getContent()) {
-                continue;
-            }
-
-            if ($this->tokensAnalyzer->isSuperGlobal($argument)) {
-                continue;
-            }
-
-            $imports[$argumentCandidate->getContent()] = $argument;
+            $imports[$tokens[$argument]->getContent()] = $argument;
         }
 
         return $imports;

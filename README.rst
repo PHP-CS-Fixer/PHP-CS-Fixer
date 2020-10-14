@@ -1317,6 +1317,10 @@ Choose from the list of available rules:
 
   *Risky rule: risky when relying on attributes to be removed using ``unset`` rather than be set to ``null``. Changing variables to ``null`` instead of unsetting means these still show up when looping over class variables and reference properties remain unbroken. With PHP 7.4, this rule might introduce ``null`` assignments to properties whose type declaration does not allow it.*
 
+* **no_unused_capturing_catch**
+
+  Remove not used captured exception variables. Requires PHP >= 8.0.
+
 * **no_unused_imports** [@Symfony, @PhpCsFixer]
 
   Unused ``use`` statements must be removed.

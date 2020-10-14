@@ -315,6 +315,7 @@ final class RuleSet implements RuleSetInterface
             ]],
             'no_null_property_initialization' => true,
             'no_superfluous_elseif' => true,
+            'no_unused_capturing_catch' => true,
             'no_useless_else' => true,
             'no_useless_return' => true,
             'operator_linebreak' => [
