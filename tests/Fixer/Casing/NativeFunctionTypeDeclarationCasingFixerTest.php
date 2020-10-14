@@ -83,10 +83,10 @@ function Foo(/**/ARRAY/**/$bar) {
             ],
             [
                 '<?php
-function Foo(array $a, callable $b, self $c) {}
+class Bar { function Foo(array $a, callable $b, self $c) {} }
                 ',
                 '<?php
-function Foo(ARRAY $a, CALLABLE $b, Self $c) {}
+class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
                 ',
             ],
             [

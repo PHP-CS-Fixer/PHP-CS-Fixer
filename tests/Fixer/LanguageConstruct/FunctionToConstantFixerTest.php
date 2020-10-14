@@ -238,6 +238,9 @@ get_called_class#1
                 null,
                 ['functions' => ['get_class_this']],
             ],
+            [
+                "<?php namespace Foo;\nfunction &PHPversion(){}",
+            ],
         ];
     }
 
@@ -267,26 +270,5 @@ get_called_class#1
         $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
         $this->fixer->configure(['pi123']);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            [
-                '<?php function &PHPversion(){} ?>',
-            ],
-        ];
     }
 }

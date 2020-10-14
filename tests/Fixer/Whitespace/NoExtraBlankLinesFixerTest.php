@@ -35,7 +35,7 @@ class Test {
     public function testThrow($a)
     {
         if ($a) {
-            throw new InvalidArgumentException('test'); // test
+            throw new InvalidArgumentException('test.'); // test
 
         }
         $date = new DateTime();
@@ -779,8 +779,8 @@ class Foo
                 "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",
             ],
             [
-                "<?php throw new \\Exception('do not import');\n",
-                "<?php throw new \\Exception('do not import');\n\n",
+                "<?php throw new \\Exception('do not import.');\n",
+                "<?php throw new \\Exception('do not import.');\n\n",
             ],
             [
                 "<?php\n\n\$a = \$b{0};\n\n",
@@ -1132,7 +1132,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA,ConstB,ConstC
 ,
 };
-use const some\Z\{ConstA,ConstB,ConstC,};
+use const some\Z\{ConstX,ConstY,ConstZ,};
 ',
             '<?php
 use some\a\{ClassA, ClassB, ClassC as C,};
@@ -1144,7 +1144,7 @@ use const some\a\{ConstA,ConstB,ConstC
 ,
 };
   '.'
-use const some\Z\{ConstA,ConstB,ConstC,};
+use const some\Z\{ConstX,ConstY,ConstZ,};
 ',
         ];
     }

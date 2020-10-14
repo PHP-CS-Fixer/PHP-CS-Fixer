@@ -610,8 +610,8 @@ $b,
     $c#
 #
 )#
-use ($b,
-$c,$d) {
+use ($x,
+$y,$z) {
 };
 EXPECTED
                 ,
@@ -627,8 +627,8 @@ $a#
 $b,$c#
 #
 )#
-use ($b,
-$c,$d) {
+use ($x,
+$y,$z) {
 };
 INPUT
                 ,
