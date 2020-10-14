@@ -90,14 +90,6 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
                     "<?php \\{$alias}(\$a);",
                 ];
                 $cases[] = [
-                    "<?php \$ref = &{$master}(\$a);",
-                    "<?php \$ref = &{$alias}(\$a);",
-                ];
-                $cases[] = [
-                    "<?php \$ref = &\\{$master}(\$a);",
-                    "<?php \$ref = &\\{$alias}(\$a);",
-                ];
-                $cases[] = [
                     "<?php {$master}
                                 (\$a);",
                     "<?php {$alias}

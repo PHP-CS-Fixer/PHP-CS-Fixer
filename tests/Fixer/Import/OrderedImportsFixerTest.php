@@ -660,30 +660,30 @@ use some\b\{
 };
 use const some\a\{ConstA, ConstB, ConstC};
 use const some\b\{
-    ConstA,
-    ConstB,
-    ConstC
+    ConstX,
+    ConstY,
+    ConstZ
 };
 use function some\a\{fn_a, fn_b, fn_c};
 use function some\b\{
-    fn_a,
-    fn_b,
-    fn_c
+    fn_x,
+    fn_y,
+    fn_z
 };
 ',
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\b\{
-    fn_b,
-    fn_c,
-    fn_a
+    fn_y,
+    fn_z,
+    fn_x
 };
 use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
 use const some\b\{
-    ConstC,
-    ConstA,
-    ConstB
+    ConstZ,
+    ConstX,
+    ConstY
 };
 use const some\a\{ConstA, ConstB, ConstC};
 use some\b\{
@@ -733,29 +733,29 @@ use some\b\{
     ClassG
 };
 use const some\b\{
-    ConstA,
-    ConstB,
-    ConstC
+    ConstX,
+    ConstY,
+    ConstZ
 };
 use function some\b\{
-    fn_a,
-    fn_b,
-    fn_c
+    fn_x,
+    fn_y,
+    fn_z
 };
 ',
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
 use function some\b\{
-    fn_b,
-    fn_c,
-    fn_a
+    fn_y,
+    fn_z,
+    fn_x
 };
 use function some\a\{fn_a, fn_b, fn_c};
 use A\B;
 use const some\b\{
-    ConstC,
-    ConstA,
-    ConstB
+    ConstZ,
+    ConstX,
+    ConstY
 };
 use const some\a\{ConstA, ConstB, ConstC};
 use some\b\{
@@ -1753,7 +1753,7 @@ use some\b\{
 use function some\a\{fn_a, fn_b, fn_c};
 use some\b\{ClassA, ClassB, ClassC as C};
 use const some\a\{ConstA, ConstB, ConstC};
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
 use Some\Biz\Barz\Boozz\Foz\Which\Is\Really\Long;
 use const some\b\{ConstG, ConstX, ConstY, ConstZ};
 use some\c\{ClassR, ClassT, ClassV as V, NiceClassName};
@@ -1771,7 +1771,7 @@ use some\b\{
 use const some\a\{ConstB, ConstA, ConstC};
 use const some\b\{ConstX, ConstY, ConstZ, ConstG};
 use some\b\{ClassA, ClassB, ClassC as C};
-use some\a\{  ClassB,ClassC, /*z*/ ClassA as A};
+use some\a\{  ClassY,ClassZ, /*z*/ ClassX as X};
 ',
             ],
             [
@@ -1820,7 +1820,7 @@ use some\b\{
 };
 use some\a\{ClassA, ClassB, ClassC as C};
 use some\b\{ClassK, ClassL, ClassM as M};
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
 use const some\a\{ConstA, ConstB, ConstC};
 use const some\b\{ConstD, ConstE, ConstF};
 use function some\a\{fn_a, fn_b};
@@ -1832,7 +1832,7 @@ use const some\a\{ConstA, ConstB, ConstC};
 use some\a\{ClassA, ClassB, ClassC as C};
 use Foo\Zar\Baz;
 use some\b\{ClassK, ClassL, ClassM as M};
-use some\a\{ClassA as A /*z*/, ClassB, ClassC};
+use some\a\{ClassX as X /*z*/, ClassY, ClassZ};
 use A\B;
 use some\b\{
     ClassF,

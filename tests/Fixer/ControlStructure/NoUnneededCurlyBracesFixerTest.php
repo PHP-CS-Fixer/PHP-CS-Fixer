@@ -138,7 +138,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     use some\a\{ClassA, ClassB, ClassC as C};
                     use function some\a\{fn_a, fn_b, fn_c};
                     use const some\a\{ConstA, ConstB, ConstC};
-                    use some\x\{ClassB, function CC as C, function D, const E, function A\B};
+                    use some\x\{ClassD, function CC as C, function D, const E, function A\B};
                     class Foo
                     {
                         public function getBar(): array

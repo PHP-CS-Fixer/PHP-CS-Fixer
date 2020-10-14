@@ -208,6 +208,42 @@ $a;#
     {
         return [
             [
+                '<?php [$a, $b,, [$c, $d]] = $a;',
+                '<?php list($a, $b,, list($c, $d)) = $a;',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider providePhp73Cases
+     */
+    public function testFixToShortSyntaxPhp73($expected, $input)
+    {
+        $this->fixer->configure(['syntax' => 'short']);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @requires PHP 7.3
+     * @dataProvider providePhp73Cases
+     */
+    public function testFixToLongSyntaxPhp73($input, $expected)
+    {
+        $this->fixer->configure(['syntax' => 'long']);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp73Cases()
+    {
+        return [
+            [
                 '<?php [&$a, $b] = $a;',
                 '<?php list(&$a, $b) = $a;',
             ],
@@ -218,10 +254,6 @@ $a;#
             [
                 '<?php [&$a, $b,, [&$c, $d]] = $a;',
                 '<?php list(&$a, $b,, list(&$c, $d)) = $a;',
-            ],
-            [
-                '<?php [$a, $b,, [$c, $d]] = $a;',
-                '<?php list($a, $b,, list($c, $d)) = $a;',
             ],
         ];
     }

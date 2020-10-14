@@ -213,7 +213,7 @@ use function some\a\{fn_a, fn_b, fn_c,};
 use const some\a\{ConstA,ConstB,ConstC
 ,
 };
-use const some\Z\{ConstA,ConstB,ConstC,};
+use const some\Z\{ConstX,ConstY,ConstZ,};
 ',
                 '<?php
 namespace AAA;
@@ -222,7 +222,7 @@ use function \some\a\{fn_a, fn_b, fn_c,};
 use const \some\a\{ConstA,ConstB,ConstC
 ,
 };
-use const \some\Z\{ConstA,ConstB,ConstC,};
+use const \some\Z\{ConstX,ConstY,ConstZ,};
 ',
             ],
         ];
