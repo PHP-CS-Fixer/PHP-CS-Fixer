@@ -492,7 +492,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
             'some\a\{ClassA, ClassB, ClassC as C,};',
             'function some\a\{fn_a, fn_b, fn_c,};',
             'const some\a\{ConstA,ConstB,ConstC,};',
-            'const some\Z\{ConstA,ConstB,ConstC,};',
+            'const some\Z\{ConstX,ConstY,ConstZ,};',
         ];
 
         $cases = [

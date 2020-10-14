@@ -272,33 +272,43 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 echo ClassB::class;
                 echo C::class;
                 ',
-            ],
-            [
                 "<?php
-                var_dump('Foo');
+                namespace {
+                    var_dump('Foo');
+                }
                 namespace A {
                     use B\\C;
                     var_dump('B\\C');
                 }
-                var_dump('Bar\\Baz');
+                namespace {
+                    var_dump('Bar\\Baz');
+                }
                 namespace B {
                     use A\\C\\D;
                     var_dump('A\\C\\D');
                 }
-                var_dump('Qux\\Quux');
+                namespace {
+                    var_dump('Qux\\Quux');
+                }
                 ",
                 '<?php
-                var_dump(Foo::class);
+                namespace {
+                    var_dump(Foo::class);
+                }
                 namespace A {
                     use B\\C;
                     var_dump(C::class);
                 }
-                var_dump(Bar\\Baz::class);
+                namespace {
+                    var_dump(Bar\\Baz::class);
+                }
                 namespace B {
                     use A\\C\\D;
                     var_dump(D::class);
                 }
-                var_dump(Qux\\Quux::class);
+                namespace {
+                    var_dump(Qux\\Quux::class);
+                }
                 ',
             ],
         ];

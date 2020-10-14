@@ -848,7 +848,7 @@ Choose from the list of available rules:
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
-* **heredoc_indentation** [@PHP73Migration, @PHP74Migration]
+* **heredoc_indentation** [@PHP73Migration, @PHP74Migration, @PHP8Migration]
 
   Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
 
@@ -2106,7 +2106,7 @@ Choose from the list of available rules:
 
   Removes extra spaces between colon and case value.
 
-* **switch_continue_to_break** [@Symfony, @PhpCsFixer, @PHP73Migration, @PHP74Migration]
+* **switch_continue_to_break** [@Symfony, @PhpCsFixer, @PHP73Migration, @PHP74Migration, @PHP8Migration]
 
   Switch case must not be ended with ``continue`` but with ``break``.
 

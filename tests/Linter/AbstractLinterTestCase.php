@@ -68,6 +68,10 @@ abstract class AbstractLinterTestCase extends TestCase
                 __DIR__.'/../Fixtures/Linter/invalid.php',
                 '/syntax error, unexpected.*("echo"|T_ECHO).*line 5/',
             ],
+            [
+                __DIR__.'/../Fixtures/Linter/multiple.php',
+                '/Multiple access type modifiers are not allowed.*line 4/',
+            ],
         ];
     }
 

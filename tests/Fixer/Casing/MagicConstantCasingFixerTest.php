@@ -88,15 +88,15 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
+     * @requires PHP 7.4
+     * @dataProvider provideFix74Cases
      */
-    public function testFix70($expected, $input = null)
+    public function testFix74($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFix74Cases()
     {
         return [
             [

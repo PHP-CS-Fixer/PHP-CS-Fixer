@@ -405,7 +405,7 @@ final class RuleSet implements RuleSetInterface
             'use_arrow_functions' => true,
         ],
         '@PHP8Migration' => [
-            '@PHP71Migration' => true,
+            '@PHP73Migration' => true,
             'no_unset_cast' => true,
             'normalize_index_brace' => true,
         ],
