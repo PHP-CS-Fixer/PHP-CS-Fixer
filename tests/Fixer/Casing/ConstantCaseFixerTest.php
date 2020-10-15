@@ -143,13 +143,8 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
             ['<?php echo $null;'],
             ['<?php $x = False::foo();'],
             ['<?php namespace Foo\Null;'],
-            ['<?php use Foo\Null;'],
-            ['<?php use Foo\Null as Null;'],
-            ['<?php class True {} class False {} class Null {}'],
             ['<?php class Foo extends True {}'],
             ['<?php class Foo implements False {}'],
-            ['<?php Class Null { use True; }'],
-            ['<?php interface True {}'],
             ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'],
             [
                 '<?php
@@ -164,18 +159,42 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
             ['<?php Null/**/::test();'],
             ['<?php True//
                                 ::test();'],
+            ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix56Cases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP <7.0
+     */
+    public function testFix56($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix56Cases()
+    {
+        return [
+            ['<?php use Foo\Null;'],
+            ['<?php use Foo\Null as Null;'],
+            ['<?php class True {} class False {} class Null {}'],
+            ['<?php Class Null { use True; }'],
+            ['<?php interface True {}'],
             ['<?php trait False {}'],
             [
                 '<?php
-    class Null {
-        use True, False {
-            False::bar insteadof True;
-            True::baz insteadof False;
-            False::baz as Null;
-        }
-    }',
+                class Null {
+                    use True, False {
+                        False::bar insteadof True;
+                        True::baz insteadof False;
+                        False::baz as Null;
+                    }
+                }',
             ],
-            ['<?php class Foo { public function Bar() { $this->False = 1; $this->True = 2; $this->Null = 3; } }'],
         ];
     }
 }

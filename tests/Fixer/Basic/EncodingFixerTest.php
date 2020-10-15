@@ -40,8 +40,6 @@ final class EncodingFixerTest extends AbstractFixerTestCase
 
         yield $this->prepareTestCase('test-utf8.case2.php', 'test-utf8.case2-bom.php');
 
-        yield ['<?php'];
-
         yield ['<?php '];
     }
 
