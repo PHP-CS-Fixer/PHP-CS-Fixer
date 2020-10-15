@@ -33,9 +33,9 @@ final class TokenizerLintingResultTest extends TestCase
         $result->check();
     }
 
-    public function testTokenizerLintingResultFail()
+    public function testTokenizerLintingResultFailParseError()
     {
-        $error = new \ParseError('PHPUnit', 567);
+        $error = new \ParseError('syntax error, unexpected end of file, expecting \'{\'', 567);
         $line = __LINE__ - 1;
 
         $result = new TokenizerLintingResult($error);
@@ -44,12 +44,33 @@ final class TokenizerLintingResultTest extends TestCase
             \PhpCsFixer\Linter\LintingException::class
         );
 
-        $this->expectExceptionMessageRegExp(
-            sprintf('#^%s: PHPUnit on line %d\.#', preg_quote(\get_class($error), '#'), $line)
+        $this->expectExceptionMessage(
+            sprintf('Parse error: syntax error, unexpected end of file, expecting \'{\' on line %d.', $line)
         );
 
         $this->expectExceptionCode(
             567
+        );
+
+        $result->check();
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testTokenizerLintingResultFailCompileError()
+    {
+        $error = new \CompileError('Multiple access type modifiers are not allowed');
+        $line = __LINE__ - 1;
+
+        $result = new TokenizerLintingResult($error);
+
+        $this->expectException(
+            \PhpCsFixer\Linter\LintingException::class
+        );
+
+        $this->expectExceptionMessage(
+            sprintf('Fatal error: Multiple access type modifiers are not allowed on line %d.', $line)
         );
 
         $result->check();
