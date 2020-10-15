@@ -36,7 +36,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php
                 switch (1) {
@@ -133,20 +133,6 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }
-                ',
-                '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly";
-                        break;
-                }
-                ',
-            ],
-            [
-                '<?php
                 switch($a) {
                     case (int) $a < 1: {
                         echo "leave ; alone";
@@ -210,6 +196,27 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly":
+                        break;
+                }
+                ',
+                '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly";
+                        break;
+                }
+                ',
+            ];
+        }
     }
 
     /**

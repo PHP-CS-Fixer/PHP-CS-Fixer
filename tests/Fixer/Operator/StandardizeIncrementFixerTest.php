@@ -37,7 +37,7 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php ++$i;',
                 '<?php $i += 1;',
@@ -87,14 +87,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php echo $foo[$i += 1];',
             ],
             [
-                '<?php echo ++$foo->{$bar};',
-                '<?php echo $foo->{$bar} += 1;',
-            ],
-            [
-                '<?php echo ++$foo->{$bar->{$baz}};',
-                '<?php echo $foo->{$bar->{$baz}} += 1;',
-            ],
-            [
                 '<?php echo ++$foo[$bar[$baz]];',
                 '<?php echo $foo[$bar[$baz]] += 1;',
             ],
@@ -115,8 +107,8 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php $$${$foo} += 1;',
             ],
             [
-                '<?php ++$a{$b};',
-                '<?php $a{$b} += 1;',
+                '<?php ++$a[$b];',
+                '<?php $a[$b] += 1;',
             ],
             [
                 '<?php ++$a[++$b];',
@@ -255,8 +247,8 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
                 '<?php $$${$foo} -= 1;',
             ],
             [
-                '<?php --$a{$b};',
-                '<?php $a{$b} -= 1;',
+                '<?php --$a[$b];',
+                '<?php $a[$b] -= 1;',
             ],
             [
                 '<?php --$a[--$b];',
@@ -562,6 +554,32 @@ $i#3
                 }',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php echo ++$foo->{$bar};',
+                '<?php echo $foo->{$bar} += 1;',
+            ];
+
+            yield [
+                '<?php echo ++$foo->{$bar->{$baz}};',
+                '<?php echo $foo->{$bar->{$baz}} += 1;',
+            ];
+
+            yield [
+                '<?php ++$a{$b};',
+                '<?php $a{$b} += 1;',
+            ];
+
+            yield [
+                '<?php --$a{$b};',
+                '<?php $a{$b} -= 1;',
+            ];
+        }
     }
 
     /**
