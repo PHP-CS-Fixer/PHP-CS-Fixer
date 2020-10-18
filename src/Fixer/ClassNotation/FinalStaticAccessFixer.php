@@ -118,9 +118,10 @@ final class Sample
                 continue;
             }
 
+            $newIndex = $tokens->getPrevMeaningfulToken($index);
             $doubleColonIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$doubleColonIndex]->isGivenKind(T_DOUBLE_COLON)) {
+            if (!$tokens[$newIndex]->isGivenKind(T_NEW) && !$tokens[$doubleColonIndex]->isGivenKind(T_DOUBLE_COLON)) {
                 continue;
             }
 
