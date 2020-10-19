@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-19T08:17:47Z
+
+As far as I can tell, build failures are unrelated.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-19T08:27:12Z
+
+> Not sure, should I target the 2.15 branch instead?
+
+The rule does not exist in 2.15 branch so we're good :)
