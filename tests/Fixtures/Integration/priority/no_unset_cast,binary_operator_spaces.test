@@ -2,6 +2,8 @@
 Integration of fixers: no_unset_cast,binary_operator_spaces.
 --RULESET--
 {"no_unset_cast": true, "binary_operator_spaces": true}
+--REQUIREMENTS--
+{"php<": 80000}
 --EXPECT--
 <?php
 

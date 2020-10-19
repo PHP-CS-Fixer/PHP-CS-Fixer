@@ -22,6 +22,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -367,7 +368,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
         static $linter = null;
 
         if (null === $linter) {
-            $linter = new CachingLinter(new Linter());
+            $linter = new CachingLinter(
+                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+            );
         }
 
         return $linter;

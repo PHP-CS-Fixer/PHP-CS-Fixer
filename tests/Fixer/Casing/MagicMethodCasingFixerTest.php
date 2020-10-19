@@ -57,8 +57,8 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 
         // static version of '__set_state'
         yield 'method declaration for "__set_state".' => [
-            '<?php class Foo {public static function __set_state($a, $b){}}',
-            '<?php class Foo {public static function __set_STATE($a, $b){}}',
+            '<?php class Foo {public static function __set_state($a){}}',
+            '<?php class Foo {public static function __set_STATE($a){}}',
         ];
 
         yield 'static call to "__set_state".' => [
@@ -72,7 +72,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
             '<?php class Foo {public function __CLONE(){}}',
         ];
 
-        unset($allMethodNames['__clone']);
+        unset($allMethodNames['__clone'], $allMethodNames['__set_state']);
 
         // two arguments
         $methodNames = ['__call', '__set'];
@@ -94,7 +94,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         }
 
         // single argument
-        $methodNames = ['__get', '__isset', '__unset'];
+        $methodNames = ['__get', '__isset', '__unset', '__unserialize'];
 
         foreach ($methodNames as $i => $name) {
             unset($allMethodNames[$name]);
@@ -148,7 +148,7 @@ class Foo extends Bar
     }
 
     public function __unserialize($payload) {
-        $this->__unserialize($this_>$a);
+        $this->__unserialize($this->$a);
     }
 }
 ',
@@ -161,7 +161,7 @@ class Foo extends Bar
     }
 
     public function __unSERIALIZE($payload) {
-        $this->__unSERIALIZE($this_>$a);
+        $this->__unSERIALIZE($this->$a);
     }
 }
 ',

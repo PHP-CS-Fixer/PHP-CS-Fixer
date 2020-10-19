@@ -37,7 +37,7 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             // Do not fix cases.
             ['<?php $x = isset($a) ? $a[1] : null;'],
             ['<?php $x = isset($a) and $a ? $a : "";'],
@@ -45,7 +45,6 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
             ['<?php $x = isset($a) ? $$a : null;'],
             ['<?php $x = isset($a) ? "$a" : null;'],
             ['<?php $x = isset($a) ?: false;'],
-            ['<?php $x = $a ? $a : isset($b) ? $b : isset($c) ? $c : "";'],
             ['<?php $x = $y ?? isset($a) ? $a : null;'],
             ['<?php $x = isset($a) ?: $b;'],
             ['<?php $x = isset($a, $b) ? $a : null;'],
@@ -99,10 +98,6 @@ $x=isset($a)?$a:null?>',
                 '<?php $x = (isset($a) ? $a : isset($b)) ? $b : "";',
             ],
             [
-                '<?php $x = $a ?? isset($b) ? $b : isset($c) ? $c : "";',
-                '<?php $x = isset($a) ? $a : isset($b) ? $b : isset($c) ? $c : "";',
-            ],
-            [
                 '<?php $x = $obj->a ?? null;',
                 '<?php $x = isset($obj->a) ? $obj->a : null;',
             ],
@@ -151,10 +146,6 @@ $x=isset($a)?$a:null?>',
                 '<?php $x = isset($a[Foo::B]) ? $a[Foo::B] : null;',
             ],
             [
-                '<?php $x = /*a1*//*a2*/ /*b*/ $a /*c*/ ?? /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
-                '<?php $x = isset($a) /*a1*//*a2*/ ? /*b*/ $a /*c*/ : /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
-            ],
-            [
                 '<?php $x = (
 // c1
 // c2
@@ -185,5 +176,28 @@ null
 ;',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['<?php $x = $a ? $a : isset($b) ? $b : isset($c) ? $c : "";'];
+
+            yield [
+                '<?php $x = $a ?? isset($b) ? $b : isset($c) ? $c : "";',
+                '<?php $x = isset($a) ? $a : isset($b) ? $b : isset($c) ? $c : "";',
+            ];
+
+            yield [
+                '<?php $x = /*a1*//*a2*/ /*b*/ $a /*c*/ ?? /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
+                '<?php $x = isset($a) /*a1*//*a2*/ ? /*b*/ $a /*c*/ : /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
+            ];
+
+            yield [
+                '<?php $x = /*a1*//*a2*/ /*b*/ $a /*c*/ ?? /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
+                '<?php $x = isset($a) /*a1*//*a2*/ ? /*b*/ $a /*c*/ : /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
+            ];
+        }
     }
 }
