@@ -132,9 +132,6 @@ $a = function() use ($b) { new class($b){}; }; // do not fix
 $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; // do fix
 ',
             ],
-            [
-                '<?php $fn = function() use ($this) {} ?>',
-            ],
         ];
     }
 
@@ -150,12 +147,9 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
 
     public function provideDoNotFixCases()
     {
-        return [
+        $tests = [
             'reference' => [
                 '<?php $fn = function() use(&$b) {} ?>',
-            ],
-            'super global, invalid from PHP7.1' => [
-                '<?php $fn = function() use($_COOKIE) {} ?>',
             ],
             'compact 1' => [
                 '<?php $foo = function() use ($b) { return compact(\'b\'); };',
@@ -165,9 +159,6 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
             ],
             'eval' => [
                 '<?php $foo = function($c) use ($b) { eval($c); };',
-            ],
-            'super global' => [
-                '<?php $foo = function($c) use ($_COOKIE) {};',
             ],
             'include' => [
                 '<?php $foo = function($c) use ($b) { include __DIR__."/test3.php"; };',
@@ -210,5 +201,19 @@ $foo();
 ',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 70100) {
+            yield 'super global, invalid from PHP7.1' => [
+                '<?php $fn = function() use($_COOKIE) {} ?>',
+            ];
+
+            yield 'super global' => [
+                '<?php $foo = function($c) use ($_COOKIE) {};',
+            ];
+        }
     }
 }
