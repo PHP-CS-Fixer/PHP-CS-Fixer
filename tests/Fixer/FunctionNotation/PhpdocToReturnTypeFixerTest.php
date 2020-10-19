@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
+ * @requires PHP 7.0
  */
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 {
@@ -32,10 +33,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, $versionSpecificFix = null, array $config = [])
     {
-        if (
-            (null !== $input && \PHP_VERSION_ID < 70000)
-            || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
-        ) {
+        if (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix) {
             $expected = $input;
             $input = null;
         }
@@ -47,7 +45,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             'no phpdoc return' => [
                 '<?php function my_foo() {}',
             ],
@@ -143,6 +141,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return bool */ function my_foo(): bool {}',
                 '<?php /** @return bool */ function my_foo() {}',
             ],
+            'fix scalar types by default, bool, make unqualified' => [
+                '<?php /** @return \bool */ function my_foo(): bool {}',
+                '<?php /** @return \bool */ function my_foo() {}',
+            ],
             'fix scalar types by default, false' => [
                 '<?php /** @return false */ function my_foo(): bool {}',
                 '<?php /** @return false */ function my_foo() {}',
@@ -177,17 +179,18 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
-            'report static as self' => [
+            'nullable self accessor' => [
                 '<?php
                     class Foo {
-                        /** @return static */ function my_foo(): self {}
+                        /** @return self|null */ function my_foo(): ?self {}
                     }
                 ',
                 '<?php
                     class Foo {
-                        /** @return static */ function my_foo() {}
+                        /** @return self|null */ function my_foo() {}
                     }
                 ',
+                70100,
             ],
             'skip resource special type' => [
                 '<?php /** @return resource */ function my_foo() {}',
@@ -257,6 +260,25 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'report static as self' => [
+                '<?php
+                    class Foo {
+                        /** @return static */ function my_foo(): self {}
+                    }
+                ',
+                '<?php
+                    class Foo {
+                        /** @return static */ function my_foo() {}
+                    }
+                ',
+            ];
+        }
     }
 
     /**
@@ -278,6 +300,52 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return int */ fn(): int => 1;',
                 '<?php /** @return int */ fn() => 1;',
                 70400,
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases()
+    {
+        return [
+            'static' => [
+                '<?php
+                    final class Foo {
+                        /** @return static */
+                        public function something(): static {}
+                    }
+                ',
+                '<?php
+                    final class Foo {
+                        /** @return static */
+                        public function something() {}
+                    }
+                ',
+            ],
+            'nullable static' => [
+                '<?php
+                    final class Foo {
+                        /** @return null|static */
+                        public function something(): ?static {}
+                    }
+                ',
+                '<?php
+                    final class Foo {
+                        /** @return null|static */
+                        public function something() {}
+                    }
+                ',
             ],
         ];
     }

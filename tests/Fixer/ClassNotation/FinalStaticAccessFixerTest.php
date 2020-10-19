@@ -57,6 +57,18 @@ final class FinalStaticAccessFixerTest extends AbstractFixerTestCase
                 '<?php final class A { public function b() { echo self::C; } }',
                 '<?php final class A { public function b() { echo static::C; } }',
             ],
+            'in method as new' => [
+                '<?php final class A { public static function b() { return new self(); } }',
+                '<?php final class A { public static function b() { return new static(); } }',
+            ],
+            'in method as new with comments' => [
+                '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
+                '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+            ],
+            'in method as new without parentheses' => [
+                '<?php final class A { public static function b() { return new self; } }',
+                '<?php final class A { public static function b() { return new static; } }',
+            ],
             'does not change non-final classes' => [
                 '<?php class A { public function b() { echo static::c(); } }',
             ],
@@ -111,59 +123,6 @@ final class FinalStaticAccessFixerTest extends AbstractFixerTestCase
                         public function c() { return static function(){}; }
                     }
                 ',
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            'property' => [
-                '<?php final class A { public $b = self::class; }',
-                '<?php final class A { public $b = static::class; }',
-            ],
-            'does not change non-final classes' => [
-                '<?php class A { public $b = static::class; }',
-            ],
-            'changes anonymous classes' => [
-                '<?php $a = new class { public $b = self::class; };',
-                '<?php $a = new class { public $b = static::class; };',
-            ],
-            'handles comments' => [
-                '<?php /*a*/final/*b*/class/*c*/A { public $b = /*1*/self/*2*/::/*3*/class; }',
-                '<?php /*a*/final/*b*/class/*c*/A { public $b = /*1*/static/*2*/::/*3*/class; }',
-            ],
-            'property and nested anonymous class' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class { public $b = self::class; }; }}',
-                '<?php final class A { public $b = static::class; public function foo(){ return new class { public $b = static::class; }; }}',
-            ],
-            'property and nested anonymous class with set function' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class ($a = function () {}) { public $b = self::class; }; }}',
-                '<?php final class A { public $b = static::class; public function foo(){ return new class ($a = function () {}) { public $b = static::class; }; }}',
-            ],
-            'property and nested anonymous class with set anonymous class' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class ($a = new class {}) { public $b = self::class; }; }}',
-                '<?php final class A { public $b = static::class; public function foo(){ return new class ($a = new class {}) { public $b = static::class; }; }}',
-            ],
-            'property and nested anonymous class with change after' => [
-                '<?php final class A { public function foo(){ return new class { public $b = self::class; }; } public $b = self::class; }',
-                '<?php final class A { public function foo(){ return new class { public $b = static::class; }; } public $b = static::class; }',
-            ],
-            'property and nested anonymous class with extends' => [
-                '<?php final class A { public $b = self::class; public function foo(){ return new class extends X implements Y { public $b = self::class; }; }}',
-                '<?php final class A { public $b = static::class; public function foo(){ return new class extends X implements Y { public $b = static::class; }; }}',
             ],
         ];
     }

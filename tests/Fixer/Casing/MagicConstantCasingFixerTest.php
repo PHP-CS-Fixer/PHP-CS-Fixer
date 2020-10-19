@@ -93,6 +93,10 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
      */
     public function testFix74($expected, $input = null)
     {
+        if (\PHP_VERSION_ID >= 80000) {
+            static::markTestSkipped('PHP < 8.0 is required.');
+        }
+
         $this->doTest($expected, $input);
     }
 

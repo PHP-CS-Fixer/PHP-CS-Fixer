@@ -167,6 +167,18 @@ final class Foo
 }
                 ',
             ],
+            'in method as new' => [
+                '<?php final class A { public static function b() { return new self(); } }',
+                '<?php final class A { public static function b() { return new static(); } }',
+            ],
+            'in method as new with comments' => [
+                '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
+                '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+            ],
+            'in method as new without parentheses' => [
+                '<?php final class A { public static function b() { return new self; } }',
+                '<?php final class A { public static function b() { return new static; } }',
+            ],
         ];
     }
 

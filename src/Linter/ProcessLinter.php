@@ -96,7 +96,7 @@ final class ProcessLinter implements LinterInterface
      */
     public function lintFile($path)
     {
-        return new ProcessLintingResult($this->createProcessForFile($path));
+        return new ProcessLintingResult($this->createProcessForFile($path), $path);
     }
 
     /**
@@ -104,7 +104,7 @@ final class ProcessLinter implements LinterInterface
      */
     public function lintSource($source)
     {
-        return new ProcessLintingResult($this->createProcessForSource($source));
+        return new ProcessLintingResult($this->createProcessForSource($source), $this->temporaryFile);
     }
 
     /**

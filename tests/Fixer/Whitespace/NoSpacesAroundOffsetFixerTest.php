@@ -123,7 +123,7 @@ EOF;
 
     public function provideOutsideCases()
     {
-        return [
+        $tests = [
             [
                 '<?php
 $a = $b[0]    ;',
@@ -184,19 +184,36 @@ $baz [0]
      [1]
      [2] = 3;',
             ],
-            [
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
                 '<?php
 $foo{0}{1}{2} = 3;',
                 '<?php
 $foo {0} {1}   {2} = 3;',
-            ],
-            [
+            ];
+
+            yield [
                 '<?php
 $foobar = $foo{0}[1]{2};',
                 '<?php
 $foobar = $foo {0} [1]   {2};',
-            ],
-        ];
+            ];
+
+            yield [
+                '<?php
+$var = $arr[0]{0
+         };',
+                '<?php
+$var = $arr[0]{     0
+         };',
+            ];
+        }
     }
 
     public function provideInsideCases()
@@ -282,14 +299,6 @@ $var = $arr[0][0
 $var = $arr[0][     0
          ];',
             ],
-            [
-                '<?php
-$var = $arr[0]{0
-         };',
-                '<?php
-$var = $arr[0]{     0
-         };',
-            ],
         ];
     }
 
@@ -321,7 +330,7 @@ $var = $arr[0]{     0
 
     public function provideConfigurationCases()
     {
-        return [
+        $tests = [
             [
                 ['inside', 'outside'],
                 <<<'EOT'
@@ -362,6 +371,17 @@ EOT
                 ,
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            if (\PHP_VERSION_ID >= 80000) {
+                $test[1] = str_replace('{', '[', $test[1]);
+                $test[1] = str_replace('}', ']', $test[1]);
+                $test[2] = str_replace('{', '[', $test[2]);
+                $test[2] = str_replace('}', ']', $test[2]);
+            }
+
+            yield $index => $test;
+        }
     }
 
     public function testWrongConfig()

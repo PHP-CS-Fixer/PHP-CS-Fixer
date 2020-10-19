@@ -45,6 +45,6 @@ final class TokenizerLintingResult implements LintingResultInterface
 
     private function getMessagePrefix()
     {
-        return \get_class($this->error);
+        return $this->error instanceof \ParseError ? 'Parse error' : 'Fatal error';
     }
 }

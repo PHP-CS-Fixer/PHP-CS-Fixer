@@ -88,4 +88,27 @@ final class IntegrationTest extends AbstractIntegrationTestCase
             );
         }
     }
+
+    protected function doTest(IntegrationCase $case)
+    {
+        $requirements = $case->getRequirements();
+
+        if (isset($requirements['php<'])) {
+            $phpUpperLimit = $requirements['php<'];
+
+            if (!\is_int($phpUpperLimit)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Expected int value like 50509 for "php<", got "%s". IN "%s".',
+                    \is_object($phpUpperLimit) ? \get_class($phpUpperLimit) : \gettype($phpUpperLimit).'#'.$phpUpperLimit,
+                    $case->getFileName()
+                ));
+            }
+
+            if (\PHP_VERSION_ID >= $phpUpperLimit) {
+                static::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
+            }
+        }
+
+        parent::doTest($case);
+    }
 }
