@@ -57,6 +57,18 @@ final class FinalStaticAccessFixerTest extends AbstractFixerTestCase
                 '<?php final class A { public function b() { echo self::C; } }',
                 '<?php final class A { public function b() { echo static::C; } }',
             ],
+            'in method as new' => [
+                '<?php final class A { public static function b() { return new self(); } }',
+                '<?php final class A { public static function b() { return new static(); } }',
+            ],
+            'in method as new with comments' => [
+                '<?php final class A { public static function b() { return new /* hmm */ self(); } }',
+                '<?php final class A { public static function b() { return new /* hmm */ static(); } }',
+            ],
+            'in method as new without parentheses' => [
+                '<?php final class A { public static function b() { return new self; } }',
+                '<?php final class A { public static function b() { return new static; } }',
+            ],
             'does not change non-final classes' => [
                 '<?php class A { public function b() { echo static::c(); } }',
             ],
