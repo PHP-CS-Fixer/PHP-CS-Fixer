@@ -658,7 +658,7 @@ final class RuleSetTest extends TestCase
             '@PHP71Migration',
             '@PHP71Migration:risky',
             '@PHP73Migration',
-            '@PHP8Migration',
+            '@PHP80Migration',
             '@PhpCsFixer',
             '@PhpCsFixer:risky',
             '@PHPUnit48Migration',
