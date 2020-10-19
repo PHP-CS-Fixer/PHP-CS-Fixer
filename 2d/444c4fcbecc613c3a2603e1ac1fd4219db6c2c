@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-15T12:19:34Z
+
+NB This also highlights a bunch of PHP 8 linting issues (which should be addressed in separate followup PRs).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-15T15:26:07Z
+
+Thanks, looking good so far :+1:
+I'm going to try to fix all the tests in this PR as well to save me the trouble later.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-18T13:01:06Z
+
+@SpacePossum I think this is ready for merge, followed by merges upwards, and then your other fixes PR for 2.16.
+
+After that, I will PR some GitHub actions stuff to the 2.15 branch.
