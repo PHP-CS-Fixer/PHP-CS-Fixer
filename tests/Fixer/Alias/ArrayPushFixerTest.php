@@ -96,18 +96,8 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a5{1*3}[2+1][] = $b4{2+1};',
-            '<?php array_push($a5{1*3}[2+1], $b4{2+1});',
-        ];
-
-        yield [
             '<?php $a4[1][] = $b6[2];',
             '<?php array_push($a4[1], $b6[2]);',
-        ];
-
-        yield [
-            '<?php $a5{1*3}[2+1][] = $b7{2+1};',
-            '<?php array_push($a5{1*3}[2+1], $b7{2+1});',
         ];
 
         yield 'case insensitive and precedence' => [
@@ -116,14 +106,14 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 $a[] = ++$b;
                 $a[] = !$b;
                 $a[] = $b + $c;
-                $a[] = 1 ** $c / 2 || !b && c(1,2,3) ^ $a{1};
+                $a[] = 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1];
             ',
             '<?php
                 array_push($a, $b--);
                 ARRAY_push($a, ++$b);
                 array_PUSH($a, !$b);
                 ARRAY_PUSH($a, $b + $c);
-                \array_push($a, 1 ** $c / 2 || !b && c(1,2,3) ^ $a{1});
+                \array_push($a, 1 ** $c / 2 || !b && c(1,2,3) ^ $a[1]);
             ',
         ];
 
@@ -208,13 +198,6 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php namespace Foo; array_push($a + 1, $a16);',
         ];
 
-        yield [
-            '<?php
-                array_push(++foo()->bar, 1);
-                array_push(foo()->bar + 1, 1);
-            ',
-        ];
-
         yield 'different namespace and not a function call' => [
             '<?php
                 A\array_push($a, $b17);
@@ -232,8 +215,6 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         $precedenceCases = [
-            '$b = yield $c',
-            '$b = yield from $c',
             '$b and $c',
             '$b or $c',
             '$b xor $c',
@@ -262,5 +243,17 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 if ($b) {} elseif (foo()) array_push($a, $b);
             ',
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php $a5{1*3}[2+1][] = $b4{2+1};',
+                '<?php array_push($a5{1*3}[2+1], $b4{2+1});',
+            ];
+
+            yield [
+                '<?php $a5{1*3}[2+1][] = $b7{2+1};',
+                '<?php array_push($a5{1*3}[2+1], $b7{2+1});',
+            ];
+        }
     }
 }

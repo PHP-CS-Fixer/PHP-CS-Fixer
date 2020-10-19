@@ -72,12 +72,10 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php
                 $c(1, 2);
                 $a["b"]["c"](1, 2);
-                $a["b"]{"c"}(1, 2);
             ',
             '<?php
                 call_user_func($c, 1, 2);
                 call_user_func($a["b"]["c"], 1, 2);
-                call_user_func($a["b"]{"c"}, 1, 2);
             ',
         ];
         yield 'call with comments' => [
@@ -117,6 +115,17 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         yield 'unsafe repeated variable' => [
             '<?php call_user_func($foo, $foo = "bar");',
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'call by variable' => [
+                '<?php
+                    $a{"b"}{"c"}(1, 2);
+                ',
+                '<?php
+                    call_user_func($a{"b"}{"c"}, 1, 2);
+                ',
+            ];
+        }
     }
 
     /**
@@ -162,17 +171,17 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func(\'a\'.$a.$b, 1, 2);
                 ($a/**/.$b)(1, 2);
                 (function (){})();
-                ($a["b"]{"c"}->a)(1, 2, 3, 4);
+                ($a["b"]["c"]->a)(1, 2, 3, 4);
                 ($a::$b)(1, 2);
-                ($a[1]::$b[2]{3})([&$c], array(&$d));
+                ($a[1]::$b[2][3])([&$c], array(&$d));
             ',
             '<?php
                 call_user_func(\'a\'.$a.$b, 1, 2);
                 call_user_func($a/**/.$b, 1, 2);
                 \call_user_func(function (){});
-                call_user_func($a["b"]{"c"}->a, 1, 2, 3, 4);
+                call_user_func($a["b"]["c"]->a, 1, 2, 3, 4);
                 call_user_func($a::$b, 1, 2);
-                call_user_func($a[1]::$b[2]{3}, [&$c], array(&$d));
+                call_user_func($a[1]::$b[2][3], [&$c], array(&$d));
             ',
         ];
         yield [
@@ -180,7 +189,11 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php call_user_func($a(1, 2), [&$x], array(&$z));',
         ];
         yield 'redeclare/override' => [
-            '<?php function call_user_func($foo){}',
+            '<?php
+                if (!function_exists("call_user_func")) {
+                    function call_user_func($foo){}
+                }
+            ',
         ];
     }
 }

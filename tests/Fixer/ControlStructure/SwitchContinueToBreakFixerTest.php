@@ -34,7 +34,7 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        return [
+        $tests = [
             'alternative syntax |' => [
                 '<?php
                     switch($foo):
@@ -55,48 +55,6 @@ if ($foo != 0) {
 
 switch ($foo):
 endswitch;',
-            ],
-            'simple case' => [
-                '<?php
-switch($a) {
-    case 1:
-        echo 1;
-
-        break;
-    case 2:
-        echo 2;
-
-        if ($z) break 1;
-
-        break 1;
-    case 3:
-        echo 2;
-
-        continue 2;
-    case 4:
-        continue 12;
-}
-',
-                '<?php
-switch($a) {
-    case 1:
-        echo 1;
-
-        continue;
-    case 2:
-        echo 2;
-
-        if ($z) continue 1;
-
-        continue 1;
-    case 3:
-        echo 2;
-
-        continue 2;
-    case 4:
-        continue 12;
-}
-',
             ],
             'nested switches' => [
                 '<?php
@@ -134,52 +92,6 @@ switch($z) {
         }
         continue; // x
 }
-',
-            ],
-            'nested 1' => [
-                '<?php
-    while($a) {
-        switch($b) {
-            case 1:
-                break 1;
-            case 2:
-                break 1;
-            case 3:
-                continue 2;
-            case 4:
-                continue 3;
-        }
-    }
-
-    switch($b) {
-        case 1:
-            switch($c) {
-                case 1:
-                    break 2;
-        }
-    }
-',
-                '<?php
-    while($a) {
-        switch($b) {
-            case 1:
-                continue 1;
-            case 2:
-                continue 1;
-            case 3:
-                continue 2;
-            case 4:
-                continue 3;
-        }
-    }
-
-    switch($b) {
-        case 1:
-            switch($c) {
-                case 1:
-                    continue 2;
-        }
-    }
 ',
             ],
             'nested 2' => [
@@ -368,7 +280,7 @@ switch($a) {
             continue;
         }
 
-        while (false) continue 2;
+        while (false) break 1;
 
         do {
             continue;
@@ -379,7 +291,7 @@ switch($a) {
         }
 
         foreach ($a as $b) continue;
-        for (; $i < 1; ++$i) continue 7; echo $i;
+        for (; $i < 1; ++$i) break 1; echo $i;
         for (;;) continue;
         while(false) continue;
         while(false) continue?><?php
@@ -488,49 +400,102 @@ case $b:
 }}}}}}}}}}',
             ],
         ];
-    }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixPhp70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixPhp70($expected, $input = null)
-    {
-        $this->doTest($expected, $input);
-    }
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
 
-    public function provideTestFixPhp70Cases()
-    {
-        return [
-            [
-                sprintf('<?php switch($a){ case 1: continue 1%d;}', PHP_INT_MAX),
-            ],
-            [
+        if (\PHP_VERSION_ID < 70000) {
+            yield 'simple case' => [
                 '<?php
 switch($a) {
     case 1:
-        continue $a;
+        echo 1;
+
+        break;
     case 2:
-        break 0;
+        echo 2;
+
+        if ($z) break 1;
+
+        break 1;
     case 3:
-        continue 1.2;
+        echo 2;
+
+        continue 2;
+    case 4:
+        continue 12;
 }
 ',
                 '<?php
 switch($a) {
     case 1:
-        continue $a;
+        echo 1;
+
+        continue;
     case 2:
-        continue 0;
+        echo 2;
+
+        if ($z) continue 1;
+
+        continue 1;
     case 3:
-        continue 1.2;
+        echo 2;
+
+        continue 2;
+    case 4:
+        continue 12;
 }
 ',
-            ],
-        ];
+            ];
+
+            yield 'nested 1' => [
+                '<?php
+    while($a) {
+        switch($b) {
+            case 1:
+                break 1;
+            case 2:
+                break 1;
+            case 3:
+                continue 2;
+            case 4:
+                continue 3;
+        }
+    }
+
+    switch($b) {
+        case 1:
+            switch($c) {
+                case 1:
+                    break 2;
+        }
+    }
+',
+                '<?php
+    while($a) {
+        switch($b) {
+            case 1:
+                continue 1;
+            case 2:
+                continue 1;
+            case 3:
+                continue 2;
+            case 4:
+                continue 3;
+        }
+    }
+
+    switch($b) {
+        case 1:
+            switch($c) {
+                case 1:
+                    continue 2;
+        }
+    }
+',
+            ];
+        }
     }
 
     /**
