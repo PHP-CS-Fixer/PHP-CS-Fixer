@@ -97,7 +97,13 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     public function provideNoFixCases()
     {
         $cases = [];
-        foreach (['string', 'array', 'object', 'unset'] as $cast) {
+        $types = ['string', 'array', 'object'];
+
+        if (\PHP_VERSION_ID < 80000) {
+            $types[] = 'unset';
+        }
+
+        foreach ($types as $cast) {
             $cases[] = [sprintf('<?php $b=(%s) $d;', $cast)];
             $cases[] = [sprintf('<?php $b=( %s ) $d;', $cast)];
             $cases[] = [sprintf('<?php $b=(%s ) $d;', ucfirst($cast))];

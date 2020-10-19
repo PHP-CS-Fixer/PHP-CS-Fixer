@@ -24,7 +24,7 @@ PHP 7.3 test.
     "trailing_comma_in_multiline_array": {"after_heredoc": true}
 }
 --REQUIREMENTS--
-{"php": 70300}
+{"php": 70300, "php<": 80000}
 --EXPECT--
 <?php
 

@@ -36,7 +36,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             'simple sample, last token candidate' => [
                 '<?php  echo 1;',
                 '<?php { echo 1;}',
@@ -65,9 +65,6 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
             ],
             'no fixes' => [
                 '<?php
-                    echo ${$a};
-                    echo $a{1};
-
                     foreach($a as $b){}
                     while($a){}
                     do {} while($a);
@@ -116,6 +113,19 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'no fixes, offset access syntax with curly braces' => [
+                '<?php
+                    echo ${$a};
+                    echo $a{1};
+                ',
+            ];
+        }
     }
 
     /**

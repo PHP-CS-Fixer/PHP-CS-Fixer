@@ -37,7 +37,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php 1**2;',
                 '<?php pow(1,2);',
@@ -135,10 +135,6 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                 '<?php echo pow(${$bar}, ${$foo});',
             ],
             [
-                '<?php echo $a{1}** $b{2+5};',
-                '<?php echo pow($a{1}, $b{2+5});',
-            ],
-            [
                 '<?php echo $a[2^3+1]->test(1,2)** $b[2+$c];',
                 '<?php echo pow($a[2^3+1]->test(1,2), $b[2+$c]);',
             ],
@@ -222,7 +218,22 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                     public function &pow($a, $b);
                 }',
             ],
+            [
+                '<?php echo $a[1]** $b[2+5];',
+                '<?php echo pow($a[1], $b[2+5]);',
+            ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php echo $a{1}** $b{2+5};',
+                '<?php echo pow($a{1}, $b{2+5});',
+            ];
+        }
     }
 
     /**

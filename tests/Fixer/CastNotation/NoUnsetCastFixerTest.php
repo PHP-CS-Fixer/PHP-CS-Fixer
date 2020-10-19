@@ -18,6 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
+ * @requires PHP <8.0
  */
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {

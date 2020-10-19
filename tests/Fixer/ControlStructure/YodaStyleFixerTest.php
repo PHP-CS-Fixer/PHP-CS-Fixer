@@ -113,10 +113,6 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 '<?php echo (object) $a === 1 ? 8 : 7;',
             ],
             [
-                '<?php echo 1 === (unset) $a ? 8 : 7;',
-                '<?php echo (unset) $a === 1 ? 8 : 7;',
-            ],
-            [
                 '<?php echo 1 === (int) $a ? 8 : 7;',
                 '<?php echo (int) $a === 1 ? 8 : 7;',
             ],
@@ -213,12 +209,8 @@ if ($a = $obj instanceof A === true) {
             ['<?php $l = $c > 2;'],
             ['<?php return $this->myObject1->{$index}+$b === "";'],
             ['<?php return $m[2]+1 == 2;'],
-            ['<?php return $m{2}+1 == 2;'],
-            ['<?php return $m->a{2}+1 == 2;'],
             ['<?php return $foo === $bar[$baz][1];'],
-            ['<?php return $foo === $bar[$baz]{1};'],
             ['<?php $a = $b[$key]["1"] === $c["2"];'],
-            ['<?php return $foo->$a[1] === $bar[$baz]{1}->$a[1][2][3]->$d[$z]{1};'],
             ['<?php return $foo->$a === $foo->$b->$c;'],
             ['<?php return $x === 2 - 1;'],
             ['<?php return $x === 2-1;'],
@@ -976,6 +968,19 @@ while (2 !== $b = array_pop($c));
         yield [
             '<?php return A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST === B\C::$myVariable;',
             '<?php return B\C::$myVariable === A\/**//**//**/B/*a*//*a*//*a*//*a*/::MY_CONST;',
+        ];
+
+        yield ['<?php return $foo === $bar[$baz]{1};'];
+
+        yield ['<?php return $foo->$a[1] === $bar[$baz]{1}->$a[1][2][3]->$d[$z]{1};'];
+
+        yield ['<?php return $m->a{2}+1 == 2;'];
+
+        yield ['<?php return $m{2}+1 == 2;'];
+
+        yield [
+            '<?php echo 1 === (unset) $a ? 8 : 7;',
+            '<?php echo (unset) $a === 1 ? 8 : 7;',
         ];
     }
 }

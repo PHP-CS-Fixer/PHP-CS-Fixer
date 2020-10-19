@@ -72,7 +72,13 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        foreach (['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'unset', 'binary'] as $from) {
+        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
+
+        if (\PHP_VERSION_ID < 80000) {
+            $types[] = 'unset';
+        }
+
+        foreach ($types as $from) {
             foreach ($this->createCasesFor($from) as $case) {
                 yield $case;
             }

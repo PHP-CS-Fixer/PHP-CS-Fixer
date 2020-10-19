@@ -36,7 +36,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             'It replaces an unset on a property with  = null' => [
                 '<?php $foo->bar = null;',
                 '<?php unset($foo->bar);',
@@ -79,9 +79,6 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 '<?php $foo->bar = null; unset($foo); unset($bar); unset($baz); $this->ab = null;',
                 '<?php unset($foo->bar, $foo, $bar, $baz, $this->ab);',
             ],
-            'It does not replace unsets on arrays with special notation' => [
-                '<?php unset($bar->foo{0});',
-            ],
             'It works when around messy whitespace' => [
                 '<?php
      unset($a); $this->b = null;
@@ -111,6 +108,16 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 '<?php unset($this->property[array_search(\Types::TYPE_RANDOM, $this->property)]);',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'It does not replace unsets on arrays with special notation' => [
+                '<?php unset($bar->foo{0});',
+            ];
+        }
     }
 
     /**
@@ -127,17 +134,20 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 
     public function provideFix70Cases()
     {
-        return [
-            'It does not break complex expressions' => [
-                '<?php
-                    unset(a()[b()["a"]]);
-                    unset(a()[b()]);
-                    unset(a()["a"]);
-                    unset(a(){"a"});
-                    unset(c($a)->a);
-                ',
-            ],
+        yield 'It does not break complex expressions' => [
+            '<?php
+                unset(a()[b()["a"]]);
+                unset(a()[b()]);
+                unset(a()["a"]);
+                unset(c($a)->a);
+            ',
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'It does not break curly access expressions' => [
+                '<?php unset(a(){"a"});',
+            ];
+        }
     }
 
     /**
@@ -154,7 +164,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 
     public function provideFix73Cases()
     {
-        return [
+        $tests = [
             'It replaces an unset on a property with  = null' => [
                 '<?php $foo->bar = null;',
                 '<?php unset($foo->bar,);',
@@ -192,9 +202,6 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
             'It works with consecutive unsets' => [
                 '<?php $foo->bar = null; unset($foo); unset($bar); unset($baz); $this->ab = null;',
                 '<?php unset($foo->bar, $foo, $bar, $baz, $this->ab,);',
-            ],
-            'It does not replace unsets on arrays with special notation' => [
-                '<?php unset($bar->foo{0},);',
             ],
             'It works when around messy whitespace' => [
                 '<?php
@@ -237,5 +244,15 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 '<?php unset($foo->bar , );',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield 'It does not replace unsets on arrays with special notation' => [
+                '<?php unset($bar->foo{0},);',
+            ];
+        }
     }
 }

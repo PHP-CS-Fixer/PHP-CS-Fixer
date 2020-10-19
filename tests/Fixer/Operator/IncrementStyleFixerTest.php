@@ -116,16 +116,8 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
                 '<?php $a[0]++;',
             ],
             [
-                '<?php ++$a{0};',
-                '<?php $a{0}++;',
-            ],
-            [
                 '<?php ++$a[$b];',
                 '<?php $a[$b]++;',
-            ],
-            [
-                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
-                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
             ],
 
             ['<?php $a = $b++;'],
@@ -180,10 +172,20 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
+        if (\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 80000) {
             $cases[] = [
                 '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
                 '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',
+            ];
+
+            $cases[] = [
+                '<?php ++$a{0};',
+                '<?php $a{0}++;',
+            ];
+
+            $cases[] = [
+                '<?php ++${$a}->{$b."foo"}->bar[$c]->$baz;',
+                '<?php ${$a}->{$b."foo"}->bar[$c]->$baz++;',
             ];
         }
 
