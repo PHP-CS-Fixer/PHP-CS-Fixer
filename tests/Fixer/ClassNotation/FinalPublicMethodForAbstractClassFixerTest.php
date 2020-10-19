@@ -66,7 +66,6 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     public function __wakeup() {}
                     public function __toString() {}
                     public function __invoke() {}
-                    public function __set_state() {}
                     public function __clone() {}
                     public function __debugInfo() {}
                 }',
