@@ -39,15 +39,15 @@ abstract class AbstractLinterTestCase extends TestCase
 
     /**
      * @param string      $file
-     * @param null|string $errorRegExp
+     * @param null|string $errorMessage
      *
      * @dataProvider provideLintFileCases
      */
-    public function testLintFile($file, $errorRegExp = null)
+    public function testLintFile($file, $errorMessage = null)
     {
-        if (null !== $errorRegExp) {
+        if (null !== $errorMessage) {
             $this->expectException(\PhpCsFixer\Linter\LintingException::class);
-            $this->expectExceptionMessageRegExp($errorRegExp);
+            $this->expectExceptionMessage($errorMessage);
         }
 
         $linter = $this->createLinter();
@@ -66,26 +66,26 @@ abstract class AbstractLinterTestCase extends TestCase
             ],
             [
                 __DIR__.'/../Fixtures/Linter/invalid.php',
-                '/syntax error, unexpected.*("echo"|T_ECHO).*line 5/',
+                sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
             ],
             [
                 __DIR__.'/../Fixtures/Linter/multiple.php',
-                '/Multiple access type modifiers are not allowed.*line 4/',
+                'Fatal error: Multiple access type modifiers are not allowed on line 4.',
             ],
         ];
     }
 
     /**
      * @param string      $source
-     * @param null|string $errorRegExp
+     * @param null|string $errorMessage
      *
      * @dataProvider provideLintSourceCases
      */
-    public function testLintSource($source, $errorRegExp = null)
+    public function testLintSource($source, $errorMessage = null)
     {
-        if (null !== $errorRegExp) {
+        if (null !== $errorMessage) {
             $this->expectException(\PhpCsFixer\Linter\LintingException::class);
-            $this->expectExceptionMessageRegExp($errorRegExp);
+            $this->expectExceptionMessage($errorMessage);
         }
 
         $linter = $this->createLinter();
@@ -109,7 +109,7 @@ abstract class AbstractLinterTestCase extends TestCase
                     print "line 4";
                     echo echo;
                 ',
-                '/syntax error, unexpected.*("echo"|T_ECHO).*line 5/',
+                sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
             ],
         ];
     }

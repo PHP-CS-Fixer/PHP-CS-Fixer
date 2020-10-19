@@ -63,7 +63,7 @@ final class ProcessLintingResultTest extends TestCase
 
         $process
             ->getErrorOutput()
-            ->willReturn('test')
+            ->willReturn('PHP Parse error:  syntax error, unexpected end of file, expecting \'{\' in test.php on line 4')
         ;
 
         $process
@@ -71,13 +71,13 @@ final class ProcessLintingResultTest extends TestCase
             ->willReturn(123)
         ;
 
-        $result = new ProcessLintingResult($process->reveal());
+        $result = new ProcessLintingResult($process->reveal(), 'test.php');
 
         $this->expectException(
             \PhpCsFixer\Linter\LintingException::class
         );
-        $this->expectExceptionMessageRegExp(
-            '#^test$#'
+        $this->expectExceptionMessage(
+            'Parse error: syntax error, unexpected end of file, expecting \'{\' on line 4.'
         );
         $this->expectExceptionCode(
             123
