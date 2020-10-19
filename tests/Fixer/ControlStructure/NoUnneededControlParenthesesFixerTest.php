@@ -467,48 +467,48 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         return [
             [
                 '<?php
-                function foo() { yield from "prod"; }
+                function foo1() { yield from "prod"; }
                 ',
             ],
             [
                 '<?php
-                function foo() { yield from (1 + 2) * 10; }
+                function foo2() { yield from (1 + 2) * 10; }
 
-                function foo() { $a = (yield($x)); }
+                function foo3() { $a = (yield($x)); }
                 ',
             ],
             [
                 '<?php
-                function foo() { yield from (1 + 2) * 10; }
+                function foo4() { yield from (1 + 2) * 10; }
                 ',
                 '<?php
-                function foo() { yield from ((1 + 2) * 10); }
-                ',
-            ],
-            [
-                '<?php
-                function foo() { yield from "prod"; }
-                function foo() { $a = (yield($x)); }
-                ',
-                '<?php
-                function foo() { yield from ("prod"); }
-                function foo() { $a = (yield($x)); }
+                function foo4() { yield from ((1 + 2) * 10); }
                 ',
             ],
             [
                 '<?php
-                function foo() { yield from 2; }
+                function foo5() { yield from "prod"; }
+                function foo6() { $a = (yield($x)); }
                 ',
                 '<?php
-                function foo() { yield from(2); }
+                function foo5() { yield from ("prod"); }
+                function foo6() { $a = (yield($x)); }
                 ',
             ],
             [
                 '<?php
-                function foo() { $a = (yield from $x); }
+                function foo7() { yield from 2; }
                 ',
                 '<?php
-                function foo() { $a = (yield from($x)); }
+                function foo7() { yield from(2); }
+                ',
+            ],
+            [
+                '<?php
+                function foo8() { $a = (yield from $x); }
+                ',
+                '<?php
+                function foo8() { $a = (yield from($x)); }
                 ',
             ],
         ];

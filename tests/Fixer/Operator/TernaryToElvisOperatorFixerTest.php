@@ -51,11 +51,6 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php __FILE__.$a.$b{2}.$c->$a[0] ?  : 1;',
-            '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
-        ];
-
-        yield [
             '<?php $z = $z ?  : "a";',
             '<?php $z = $z ? $z : "a";',
         ];
@@ -266,48 +261,13 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $i = $bar{0}[1]{2}[3] ?  : $foo;',
-            '<?php $i = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
-        ];
-
-        yield [
-            '<?php $z = $a[1][2] ?  : 1;',
-            '<?php $z = $a[1][2] ? $a[1][2] : 1;',
-        ];
-
-        yield [
-            '<?php $fooX = $bar{0}[1]{2}[3] ?  : $foo;',
-            '<?php $fooX = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
-        ];
-
-        yield [
-            '<?php $k = $bar{0} ?  : $foo;',
-            '<?php $k = $bar{0} ? $bar{0} : $foo;',
-        ];
-
-        yield [
             '<?php $j[$b ?  : $c];',
             '<?php $j[$b ? $b : $c];',
-        ];
-
-        yield 'ignore different type of index braces' => [
-            '<?php $z = $a[1] ?  : 1;',
-            '<?php $z = $a[1] ? $a{1} : 1;',
         ];
 
         yield [
             '<?php foo($a[0] ?  : $b[0], $c[0] ?  : $d[0]);',
             '<?php foo($a[0] ? $a[0] : $b[0], $c[0] ? $c[0] : $d[0]);',
-        ];
-
-        yield [
-            '<?php $l[$b[0] ?  : $c[0]];',
-            '<?php $l[$b[0] ? $b{0} : $c[0]];',
-        ];
-
-        yield [
-            '<?php $l{$b{0} ?  : $c{0}};',
-            '<?php $l{$b{0} ? $b{0} : $c{0}};',
         ];
 
         yield [
@@ -419,10 +379,6 @@ EOT
         ];
 
         yield [
-            '<?php $foo = $a->{$b} ? $bar{0} : $foo;',
-        ];
-
-        yield [
             '<?php $foo = $bar ? $$bar : 1;',
         ];
 
@@ -466,6 +422,52 @@ EOT
             '<?= $a ?  : $b ?>',
             '<?= $a ? $a : $b ?>',
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php $foo = $a->{$b} ? $bar{0} : $foo;',
+            ];
+
+            yield [
+                '<?php $l[$b[0] ?  : $c[0]];',
+                '<?php $l[$b[0] ? $b{0} : $c[0]];',
+            ];
+
+            yield [
+                '<?php $l{$b{0} ?  : $c{0}};',
+                '<?php $l{$b{0} ? $b{0} : $c{0}};',
+            ];
+
+            yield [
+                '<?php $z = $a[1][2] ?  : 1;',
+                '<?php $z = $a[1][2] ? $a[1][2] : 1;',
+            ];
+
+            yield [
+                '<?php $i = $bar{0}[1]{2}[3] ?  : $foo;',
+                '<?php $i = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
+            ];
+
+            yield [
+                '<?php $fooX = $bar{0}[1]{2}[3] ?  : $foo;',
+                '<?php $fooX = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
+            ];
+
+            yield [
+                '<?php $k = $bar{0} ?  : $foo;',
+                '<?php $k = $bar{0} ? $bar{0} : $foo;',
+            ];
+
+            yield 'ignore different type of index braces' => [
+                '<?php $z = $a[1] ?  : 1;',
+                '<?php $z = $a[1] ? $a{1} : 1;',
+            ];
+
+            yield [
+                '<?php __FILE__.$a.$b{2}.$c->$a[0] ?  : 1;',
+                '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
+            ];
+        }
     }
 
     /**
