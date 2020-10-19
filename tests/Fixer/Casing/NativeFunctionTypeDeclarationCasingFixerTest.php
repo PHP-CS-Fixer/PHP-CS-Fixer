@@ -169,6 +169,14 @@ function Foo(INTEGER $a) {}
                 '<?php function Foo(iterable $A): void {}',
                 '<?php function Foo(ITERABLE $A): VOID {}',
             ],
+            [
+                '<?php function Foo(?int $A): void {}',
+                '<?php function Foo(?INT $A): VOID {}',
+            ],
+            [
+                '<?php function Foo(string $A): ?/* */int {}',
+                '<?php function Foo(STRING $A): ?/* */INT {}',
+            ],
         ];
     }
 
@@ -190,6 +198,32 @@ function Foo(INTEGER $a) {}
             [
                 '<?php function Foo(object $A): void {}',
                 '<?php function Foo(OBJECT $A): VOID {}',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        return [
+            [
+                '<?php class T { public function Foo(object $A): static {}}',
+                '<?php class T { public function Foo(object $A): StatiC {}}',
+            ],
+            [
+                '<?php class T { public function Foo(object $A): ?static {}}',
+                '<?php class T { public function Foo(object $A): ?StatiC {}}',
             ],
         ];
     }

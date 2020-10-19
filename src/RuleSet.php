@@ -326,12 +326,12 @@ final class RuleSet implements RuleSetInterface
             '@PHP71Migration' => true,
             'heredoc_indentation' => true,
         ],
-        '@PHP8Migration' => [
+        '@PHP80Migration' => [
             '@PHP73Migration' => true,
             'no_unset_cast' => true,
             'normalize_index_brace' => true,
         ],
-        '@PHP8Migration:risky' => [
+        '@PHP80Migration:risky' => [
             '@PHP71Migration:risky' => true,
             'implode_call' => true,
             'no_alias_functions' => ['sets' => ['@all']],

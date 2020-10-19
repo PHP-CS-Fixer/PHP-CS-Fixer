@@ -617,10 +617,52 @@ preg_replace_callback(
             ],
             [
                 '<?php
+                    $a = function (): int {
+                        return [];
+                    };',
+                [6 => true],
+            ],
+            [
+                '<?php
                     function foo (): ?int {
                         return [];
                     };',
                 [2 => false],
+            ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideIsLambda80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsLambda80($source, array $expected)
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+        }
+    }
+
+    public function provideIsLambda80Cases()
+    {
+        return [
+            [
+                '<?php
+                    $a = function (): ?static {
+                        return [];
+                    };',
+                [6 => true],
+            ],
+            [
+                '<?php
+                    $a = function (): static {
+                        return [];
+                    };',
+                [6 => true],
             ],
         ];
     }
