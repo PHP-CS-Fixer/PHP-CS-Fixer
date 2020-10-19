@@ -413,7 +413,7 @@ Choose from the list of available rules:
 
   Calling ``unset`` on multiple items should be done in one call.
 
-* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
+* **combine_nested_dirname** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP80Migration:risky]
 
   Replace multiple nested calls of ``dirname`` by only one call with second
   ``$level`` parameter. Requires PHP >= 7.0.
@@ -456,7 +456,7 @@ Choose from the list of available rules:
   - ``space`` (``'none'``, ``'single'``): spacing to apply around the equal sign;
     defaults to ``'none'``
 
-* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
+* **declare_strict_types** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP80Migration:risky]
 
   Force strict types declaration in all files. Requires PHP >= 7.0.
 
@@ -768,7 +768,7 @@ Choose from the list of available rules:
   - ``separate`` (``'both'``, ``'bottom'``, ``'none'``, ``'top'``): whether the header should be
     separated from the file content with a new line; defaults to ``'both'``
 
-* **heredoc_indentation** [@PHP73Migration, @PHP8Migration]
+* **heredoc_indentation** [@PHP73Migration, @PHP80Migration]
 
   Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
 
@@ -776,7 +776,7 @@ Choose from the list of available rules:
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
 
-* **implode_call** [@Symfony:risky, @PhpCsFixer:risky, @PHP8Migration:risky]
+* **implode_call** [@Symfony:risky, @PhpCsFixer:risky, @PHP80Migration:risky]
 
   Function ``implode`` must be called with 2 arguments in the documented
   order.
@@ -972,7 +972,7 @@ Choose from the list of available rules:
 
   All instances created with new keyword must be followed by braces.
 
-* **no_alias_functions** [@Symfony:risky, @PhpCsFixer:risky, @PHP8Migration:risky]
+* **no_alias_functions** [@Symfony:risky, @PhpCsFixer:risky, @PHP80Migration:risky]
 
   Master functions shall be used instead of aliases.
 
@@ -1180,7 +1180,7 @@ Choose from the list of available rules:
   - ``namespaces`` (``bool``): remove unneeded curly braces from bracketed
     namespaces; defaults to ``false``
 
-* **no_unneeded_final_method** [@Symfony:risky, @PhpCsFixer:risky, @PHP8Migration:risky]
+* **no_unneeded_final_method** [@Symfony:risky, @PhpCsFixer:risky, @PHP80Migration:risky]
 
   A ``final`` class must not have ``final`` methods and ``private`` methods must
   not be ``final``.
@@ -1194,7 +1194,7 @@ Choose from the list of available rules:
 
   *Risky rule: modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).*
 
-* **no_unset_cast** [@PhpCsFixer, @PHP8Migration]
+* **no_unset_cast** [@PhpCsFixer, @PHP80Migration]
 
   Variables must be set ``null`` instead of using ``(unset)`` casting.
 
@@ -1230,7 +1230,7 @@ Choose from the list of available rules:
 
   Remove trailing whitespace at the end of blank lines.
 
-* **non_printable_character** [@Symfony:risky, @PhpCsFixer:risky, @PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
+* **non_printable_character** [@Symfony:risky, @PhpCsFixer:risky, @PHP70Migration:risky, @PHP71Migration:risky, @PHP80Migration:risky]
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other
   invisible unicode symbols.
@@ -1242,7 +1242,7 @@ Choose from the list of available rules:
   - ``use_escape_sequences_in_strings`` (``bool``): whether characters should be
     replaced with escape sequences in strings; defaults to ``false``
 
-* **normalize_index_brace** [@Symfony, @PhpCsFixer, @PHP8Migration]
+* **normalize_index_brace** [@Symfony, @PhpCsFixer, @PHP80Migration]
 
   Array index should always be written by using square braces.
 
@@ -1658,7 +1658,7 @@ Choose from the list of available rules:
   ``@var`` and ``@type`` annotations of classy properties should not contain
   the name.
 
-* **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
+* **pow_to_exponentiation** [@PHP56Migration:risky, @PHP70Migration:risky, @PHP71Migration:risky, @PHP80Migration:risky]
 
   Converts ``pow`` to the ``**`` operator.
 
@@ -1691,7 +1691,7 @@ Choose from the list of available rules:
 
   *Risky rule: this fixer may change your class name, which will break the code that depends on the old name.*
 
-* **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP8Migration:risky]
+* **random_api_migration** [@PHP70Migration:risky, @PHP71Migration:risky, @PHP80Migration:risky]
 
   Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
   analogs.
@@ -1862,7 +1862,7 @@ Choose from the list of available rules:
 
   Standardize spaces around ternary operator.
 
-* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration, @PHP8Migration]
+* **ternary_to_null_coalescing** [@PHP70Migration, @PHP71Migration, @PHP73Migration, @PHP80Migration]
 
   Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
@@ -1884,7 +1884,7 @@ Choose from the list of available rules:
 
   Unary operators should be placed adjacent to their operands.
 
-* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration, @PHP8Migration]
+* **visibility_required** [@PSR2, @Symfony, @PhpCsFixer, @PHP71Migration, @PHP73Migration, @PHP80Migration]
 
   Visibility MUST be declared on all properties and methods; ``abstract``
   and ``final`` MUST be declared before the visibility; ``static`` MUST be
@@ -1896,7 +1896,7 @@ Choose from the list of available rules:
     elements to fix (PHP >= 7.1 required for ``const``); defaults to
     ``['property', 'method']``
 
-* **void_return** [@PHP71Migration:risky, @PHP8Migration:risky]
+* **void_return** [@PHP71Migration:risky, @PHP80Migration:risky]
 
   Add ``void`` return type to functions with missing or empty return
   statements, but priority is given to ``@return`` annotations. Requires

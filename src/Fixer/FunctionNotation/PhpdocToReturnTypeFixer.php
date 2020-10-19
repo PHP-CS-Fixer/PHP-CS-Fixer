@@ -125,6 +125,19 @@ function bar() {}
                     new VersionSpecification(70100),
                     ['scalar_types' => false]
                 ),
+                new VersionSpecificCodeSample(
+                    '<?php
+final class Foo {
+    /**
+     * @return static
+     */
+    public function create($prototype) {
+        return new static($prototype);
+    }
+}
+',
+                    new VersionSpecification(80000)
+                ),
             ],
             null,
             'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] `@inheritdocs` support is under construction.'
@@ -189,11 +202,13 @@ function bar() {}
             }
 
             $funcName = $tokens->getNextMeaningfulToken($index);
+
             if ($tokens[$funcName]->equalsAny($this->excludeFuncNames, false)) {
                 continue;
             }
 
             $returnTypeAnnotation = $this->findReturnAnnotations($tokens, $index);
+
             if (1 !== \count($returnTypeAnnotation)) {
                 continue;
             }
@@ -233,7 +248,7 @@ function bar() {}
             }
 
             if ('static' === $returnType) {
-                $returnType = 'self';
+                $returnType = \PHP_VERSION_ID < 80000 ? 'self' : 'static';
             }
 
             if (isset($this->skippedTypes[$returnType])) {
@@ -299,11 +314,14 @@ function bar() {}
         static $specialTypes = [
             'array' => [CT::T_ARRAY_TYPEHINT, 'array'],
             'callable' => [T_CALLABLE, 'callable'],
+            'static' => [T_STATIC, 'static'],
         ];
+
         $newTokens = [
             new Token([CT::T_TYPE_COLON, ':']),
             new Token([T_WHITESPACE, ' ']),
         ];
+
         if (true === $isNullable) {
             $newTokens[] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }
@@ -311,15 +329,23 @@ function bar() {}
         if (isset($specialTypes[$returnType])) {
             $newTokens[] = new Token($specialTypes[$returnType]);
         } else {
-            foreach (explode('\\', $returnType) as $nsIndex => $value) {
-                if (0 === $nsIndex && '' === $value) {
-                    continue;
-                }
+            $returnTypeUnqualified = ltrim($returnType, '\\');
 
-                if (0 < $nsIndex) {
-                    $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            if (isset($this->scalarTypes[$returnTypeUnqualified]) || isset($this->versionSpecificTypes[$returnTypeUnqualified])) {
+                // 'scalar's, 'void', 'iterable' and 'object' must be unqualified
+                $newTokens[] = new Token([T_STRING, $returnTypeUnqualified]);
+            } else {
+                foreach (explode('\\', $returnType) as $nsIndex => $value) {
+                    if (0 === $nsIndex && '' === $value) {
+                        continue;
+                    }
+
+                    if (0 < $nsIndex) {
+                        $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+                    }
+
+                    $newTokens[] = new Token([T_STRING, $value]);
                 }
-                $newTokens[] = new Token([T_STRING, $value]);
             }
         }
 
