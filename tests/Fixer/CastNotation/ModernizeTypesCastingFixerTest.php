@@ -179,7 +179,7 @@ OVERRIDDEN;
 
     public function provideFix70Cases()
     {
-        return [
+        $tests = [
             [
                 '<?php $foo = ((string) $x)[0];',
                 '<?php $foo = strval($x)[0];',
@@ -188,11 +188,18 @@ OVERRIDDEN;
                 '<?php $foo = ((string) ($x + $y))[0];',
                 '<?php $foo = strval($x + $y)[0];',
             ],
-            [
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
                 '<?php $foo = ((string) ($x + $y)){0};',
                 '<?php $foo = strval($x + $y){0};',
-            ],
-        ];
+            ];
+        }
     }
 
     /**

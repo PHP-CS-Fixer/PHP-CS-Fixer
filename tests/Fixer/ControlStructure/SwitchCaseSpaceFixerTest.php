@@ -36,7 +36,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php
     switch (1) {
@@ -197,20 +197,6 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
             [
                 '<?php
                 switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }
-                ',
-                '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly" :
-                        break;
-                }
-                ',
-            ],
-            [
-                '<?php
-                switch ($a) {
                     case $b ?: $c:
                         break;
                 }
@@ -345,5 +331,26 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 }',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly":
+                        break;
+                }
+                ',
+                '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly" :
+                        break;
+                }
+                ',
+            ];
+        }
     }
 }

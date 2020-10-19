@@ -90,9 +90,6 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
-                use C;
-                use C\X;
-
                 namespace Foo {
                     use A;
                     use A\X;
@@ -108,9 +105,6 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 ',
                 '<?php
-                use \C;
-                use \C\X;
-
                 namespace Foo {
                     use \A;
                     use \A\X;
@@ -256,6 +250,45 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
             '<?php
                 use\Events\Payment\Base as PaymentEvent;
                 use const\d\e;
+            ',
+        ];
+
+        yield [
+            '<?php
+            use C;
+            use C\X;
+
+            namespace Foo {
+                use A;
+                use A\X;
+
+                new X();
+            }
+
+            namespace Bar {
+                use B;
+                use B\X;
+
+                new X();
+            }
+            ',
+            '<?php
+            use \C;
+            use \C\X;
+
+            namespace Foo {
+                use \A;
+                use \A\X;
+
+                new X();
+            }
+
+            namespace Bar {
+                use \B;
+                use \B\X;
+
+                new X();
+            }
             ',
         ];
     }

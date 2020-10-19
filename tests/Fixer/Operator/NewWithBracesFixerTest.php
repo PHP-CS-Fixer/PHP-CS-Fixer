@@ -48,7 +48,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php class A { public function B(){ $static = new static(new \SplFileInfo(__FILE__)); }}',
             ],
@@ -115,18 +115,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
             [
                 '<?php $a = new $b[$c][0]();',
                 '<?php $a = new $b[$c][0];',
-            ],
-            [
-                '<?php $a = new $b{$c}();',
-                '<?php $a = new $b{$c};',
-            ],
-            [
-                '<?php $a = new $b{$c}{0}{1}() ?>',
-                '<?php $a = new $b{$c}{0}{1} ?>',
-            ],
-            [
-                '<?php $a = new $b{$c}[1]{0}[2]();',
-                '<?php $a = new $b{$c}[1]{0}[2];',
             ],
             [
                 '<?php $a = new $b[$c[$d ? foo() : bar("bar[...]") - 1]]();',
@@ -270,6 +258,27 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php $a = new $b{$c}();',
+                '<?php $a = new $b{$c};',
+            ];
+
+            yield [
+                '<?php $a = new $b{$c}{0}{1}() ?>',
+                '<?php $a = new $b{$c}{0}{1} ?>',
+            ];
+
+            yield [
+                '<?php $a = new $b{$c}[1]{0}[2]();',
+                '<?php $a = new $b{$c}[1]{0}[2];',
+            ];
+        }
     }
 
     public function provideFix70Cases()
