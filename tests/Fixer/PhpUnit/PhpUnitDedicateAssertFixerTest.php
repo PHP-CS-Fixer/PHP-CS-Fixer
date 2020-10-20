@@ -77,187 +77,187 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
     {
         $cases = [
             [
-                '<?php
+                self::generateTest('
                     $this->assertNan($a);
                     $this->assertNan($a);
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertTrue(is_nan($a));
                     $this->assertTrue(\is_nan($a));
                     $this->assertTrue(test\is_nan($a));
                     $this->assertTrue(test\a\is_nan($a));
-                ',
+                '),
             ],
             [
-                '<?php
+                self::generateTest('
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
                     $this->assertFileExists($a);
                     $this->assertFileNotExists($a);
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertTrue(file_exists($a));
                     $this->assertFalse(file_exists($a));
                     $this->assertTrue(\file_exists($a));
                     $this->assertFalse(\file_exists($a));
-                ',
+                '),
             ],
             [
-                '<?php
+                self::generateTest('
                     $this->assertNull($a);
                     $this->assertNotNull($a);
                     $this->assertNull($a);
                     $this->assertNotNull($a, "my message");
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertTrue(is_null($a));
                     $this->assertFalse(is_null($a));
                     $this->assertTrue(\is_null($a));
                     $this->assertFalse(\is_null($a), "my message");
-                ',
+                '),
             ],
             [
-                '<?php
+                self::generateTest('
                     $this->assertEmpty($a);
                     $this->assertNotEmpty($a);
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertTrue(empty($a));
                     $this->ASSERTFALSE(empty($a));
-                ',
+                '),
             ],
             [
-                '<?php
+                self::generateTest('
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
                     $this->assertInfinite($a);
                     $this->assertFinite($a, "my message");
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertTrue(is_infinite($a));
                     $this->assertFalse(is_infinite($a), "my message");
                     $this->assertTrue(\is_infinite($a));
                     $this->assertFalse(\is_infinite($a), "my message");
-                ',
+                '),
             ],
             [
-                '<?php
+                self::generateTest('
                     $this->assertArrayHasKey("test", $a);
                     $this->assertArrayNotHasKey($b, $a, $c);
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertTrue(\array_key_exists("test", $a));
                     $this->ASSERTFALSE(array_key_exists($b, $a), $c);
-                ',
+                '),
             ],
             [
-                '<?php
+                self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
-',
+'),
                 null,
             ],
             [
-                '<?php
+                self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
-',
+'),
                 null,
                 ['target' => PhpUnitTargetVersion::VERSION_3_0],
             ],
             [
-                '<?php
+                self::generateTest('
 $this->assertDirectoryNotExists($a);
 $this->assertNotIsWritable($a);
 $this->assertNotIsReadable($a);
-',
-                '<?php
+'),
+                self::generateTest('
 $this->assertFalse(is_dir($a));
 $this->assertFalse(is_writable($a));
 $this->assertFalse(is_readable($a));
-',
+'),
                 ['target' => PhpUnitTargetVersion::VERSION_5_6],
             ],
             [
-                '<?php
+                self::generateTest('
 $this->assertDirectoryExists($a);
 $this->assertIsWritable($a);
 $this->assertIsReadable($a);
-',
-                '<?php
+'),
+                self::generateTest('
 $this->assertTrue(is_dir($a));
 $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
-',
+'),
                 ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
             ],
         ];
 
         foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
             $cases[] = [
-                sprintf('<?php $this->assertInternalType(\'%s\', $a);', $type),
-                sprintf('<?php $this->assertTrue(is_%s($a));', $type),
+                self::generateTest(sprintf('$this->assertInternalType(\'%s\', $a);', $type)),
+                self::generateTest(sprintf('$this->assertTrue(is_%s($a));', $type)),
             ];
 
             $cases[] = [
-                sprintf('<?php $this->assertNotInternalType(\'%s\', $a);', $type),
-                sprintf('<?php $this->assertFalse(is_%s($a));', $type),
+                self::generateTest(sprintf('$this->assertNotInternalType(\'%s\', $a);', $type)),
+                self::generateTest(sprintf('$this->assertFalse(is_%s($a));', $type)),
             ];
         }
 
         $cases[] = [
-            '<?php $this->assertInternalType(\'float\', $a, "my message");',
-            '<?php $this->assertTrue(is_float( $a), "my message");',
+            self::generateTest('$this->assertInternalType(\'float\', $a, "my message");'),
+            self::generateTest('$this->assertTrue(is_float( $a), "my message");'),
         ];
 
         $cases[] = [
-            '<?php $this->assertInternalType(\'float\', $a);',
-            '<?php $this->assertTrue(\IS_FLOAT($a));',
+            self::generateTest('$this->assertInternalType(\'float\', $a);'),
+            self::generateTest('$this->assertTrue(\IS_FLOAT($a));'),
         ];
 
         $cases[] = [
-            '<?php $this->assertInternalType(#
+            self::generateTest('$this->assertInternalType(#
 \'float\'#
 , #
 $a#
 #
 )#
-;',
-            '<?php $this->assertTrue(#
+;'),
+            self::generateTest('$this->assertTrue(#
 \IS_FLOAT#
 (#
 $a#
 )#
 )#
-;',
+;'),
         ];
 
         $cases[] = [
-            '<?php static::assertInternalType(\'float\', $a);',
-            '<?php static::assertTrue(is_float( $a));',
+            self::generateTest('static::assertInternalType(\'float\', $a);'),
+            self::generateTest('static::assertTrue(is_float( $a));'),
         ];
 
         $cases[] = [
-            '<?php self::assertInternalType(\'float\', $a);',
-            '<?php self::assertTrue(is_float( $a));',
+            self::generateTest('self::assertInternalType(\'float\', $a);'),
+            self::generateTest('self::assertTrue(is_float( $a));'),
         ];
 
         $cases[] = [
-            '<?php static::assertNull($a);',
-            '<?php static::assertTrue(is_null($a));',
+            self::generateTest('static::assertNull($a);'),
+            self::generateTest('static::assertTrue(is_null($a));'),
         ];
 
         $cases[] = [
-            '<?php self::assertNull($a);',
-            '<?php self::assertTrue(is_null($a));',
+            self::generateTest('self::assertNull($a);'),
+            self::generateTest('self::assertTrue(is_null($a));'),
         ];
         $cases[] = [
-            '<?php SELF::assertNull($a);',
-            '<?php SELF::assertTrue(is_null($a));',
+            self::generateTest('SELF::assertNull($a);'),
+            self::generateTest('SELF::assertTrue(is_null($a));'),
         ];
 
         return $cases;
@@ -282,14 +282,10 @@ $a#
     {
         return [
             [
-                '<?php echo $this->assertTrue;',
+                self::generateTest('echo $this->assertTrue;'),
             ],
             [
-                '<?php echo $this->assertTrue?>',
-            ],
-            [
-                '<?php
-                    const is_null = 1;
+                self::generateTest('
                     $this->assertTrue(is_null);
                     $this->assertTrue(is_int($a) && $b);
                     $this->assertFalse(is_nan($a));
@@ -297,7 +293,10 @@ $a#
                     $this->assertTrue($a&&is_int($a));
                     static::assertTrue(is_null);
                     self::assertTrue(is_null);
-                ',
+                '),
+            ],
+            'not in class' => [
+                '<?php self::assertTrue(is_null($a));',
             ],
         ];
     }
@@ -310,14 +309,14 @@ $a#
     {
         $this->fixer->configure(['file_exists']);
         $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
+            self::generateTest('
+                $this->assertFileExists($a);
+                $this->assertTrue(is_infinite($a));
+            '),
+            self::generateTest('
+                $this->assertTrue(file_exists($a));
+                $this->assertTrue(is_infinite($a));
+            ')
         );
     }
 
@@ -329,14 +328,14 @@ $a#
     {
         $this->fixer->configure(['functions' => ['file_exists']]);
         $this->doTest(
-            '<?php
-                    $this->assertFileExists($a);
-                    $this->assertTrue(is_infinite($a));
-            ',
-            '<?php
-                    $this->assertTrue(file_exists($a));
-                    $this->assertTrue(is_infinite($a));
-            '
+            self::generateTest('
+                $this->assertFileExists($a);
+                $this->assertTrue(is_infinite($a));
+            '),
+            self::generateTest('
+                $this->assertTrue(file_exists($a));
+                $this->assertTrue(is_infinite($a));
+            ')
         );
     }
 
@@ -387,33 +386,33 @@ $a#
         return [
             // positive fixing
             'assert same' => [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, %s($a));',
+                self::generateTest('$this->assertCount(1, $a);'),
+                self::generateTest('$this->assertSame(1, %s($a));'),
             ],
             'assert equals' => [
-                '<?php $this->assertCount(2, $b);',
-                '<?php $this->assertEquals(2, %s($b));',
+                self::generateTest('$this->assertCount(2, $b);'),
+                self::generateTest('$this->assertEquals(2, %s($b));'),
             ],
             // negative fixing
             'assert not same' => [
-                '<?php $this->assertNotCount(11, $c);',
-                '<?php $this->assertNotSame(11, %s($c));',
+                self::generateTest('$this->assertNotCount(11, $c);'),
+                self::generateTest('$this->assertNotSame(11, %s($c));'),
             ],
             'assert not equals' => [
-                '<?php $this->assertNotCount(122, $d);',
-                '<?php $this->assertNotEquals(122, %s($d));',
+                self::generateTest('$this->assertNotCount(122, $d);'),
+                self::generateTest('$this->assertNotEquals(122, %s($d));'),
             ],
             // other cases
             'assert same with namespace' => [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, \%s($a));',
+                self::generateTest('$this->assertCount(1, $a);'),
+                self::generateTest('$this->assertSame(1, \%s($a));'),
             ],
             'no spacing' => [
-                '<?php $this->assertCount(1,$a);',
-                '<?php $this->assertSame(1,%s($a));',
+                self::generateTest('$this->assertCount(1,$a);'),
+                self::generateTest('$this->assertSame(1,%s($a));'),
             ],
             'lot of spacing' => [
-                '<?php $this->assertCount(
+                self::generateTest('$this->assertCount(
                 1
                 ,
                 '.'
@@ -421,8 +420,8 @@ $a#
                 $a
                 '.'
                 )
-                ;',
-                '<?php $this->assertSame(
+                ;'),
+                self::generateTest('$this->assertSame(
                 1
                 ,
                 %s
@@ -430,28 +429,28 @@ $a#
                 $a
                 )
                 )
-                ;',
+                ;'),
             ],
             'lot of fix cases' => [
-                '<?php
+                self::generateTest('
                     $this->assertCount(1, $a);
                     $this->assertCount(2, $a);
                     $this->assertCount(3, $a);
                     $this->assertNotCount(4, $a);
                     $this->assertCount(5, $a, "abc");
                     $this->assertCount(6, $a, "def");
-                ',
-                '<?php
+                '),
+                self::generateTest('
                     $this->assertSame(1, %1$s($a));
                     $this->assertSame(2, %1$s($a));
                     $this->assertEquals(3, %1$s($a));
                     $this->assertNotSame(4, %1$s($a));
                     $this->assertEquals(5, %1$s($a), "abc");
                     $this->assertSame(6, \%1$s($a), "def");
-                ',
+                '),
             ],
             'comment handling' => [
-                '<?php $this->assertCount(# 0
+                self::generateTest('$this->assertCount(# 0
 1# 1
 ,# 2
 # 3
@@ -459,8 +458,8 @@ $a#
 $a# 5
 # 6
 )# 7
-;# 8',
-                '<?php $this->assertSame(# 0
+;# 8'),
+                self::generateTest('$this->assertSame(# 0
 1# 1
 ,# 2
 %s# 3
@@ -468,42 +467,28 @@ $a# 5
 $a# 5
 )# 6
 )# 7
-;# 8',
+;# 8'),
             ],
             'do not fix 1' => [
-                '<?php
-                    $this->assertSame($b, %s($a));
-                ',
+                self::generateTest('$this->assertSame($b, %s($a));'),
             ],
             'do not fix 2' => [
-                '<?php
-                    $this->assertSame(b(), %s($a));
-                ',
+                self::generateTest('$this->assertSame(b(), %s($a));'),
             ],
             'do not fix 3' => [
-                '<?php
-                    $this->assertSame(1.0, %s($a));
-                ',
+                self::generateTest('$this->assertSame(1.0, %s($a));'),
             ],
             'do not fix 4' => [
-                '<?php
-                    $this->assertSame(1);
-                ',
+                self::generateTest('$this->assertSame(1);'),
             ],
             'do not fix 5' => [
-                '<?php
-                    $this->assertSame(1, "%s");
-                ',
+                self::generateTest('$this->assertSame(1, "%s");'),
             ],
             'do not fix 6' => [
-                '<?php
-                    $this->test(); // $this->assertSame($b, %s($a));
-                ',
+                self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
             ],
             'do not fix 7' => [
-                '<?php
-                    $this->assertSame(2, count($array) - 1);
-                ',
+                self::generateTest('$this->assertSame(2, count($array) - 1);'),
             ],
         ];
     }
@@ -540,12 +525,12 @@ $a# 5
     {
         return [
             [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, %s($a));',
+                self::generateTest('$this->assertCount(1, $a);'),
+                self::generateTest('$this->assertSame(1, %s($a));'),
             ],
             [
-                '<?php $this->assertCount(1, $a);',
-                '<?php $this->assertSame(1, \%s($a));',
+                self::generateTest('$this->assertCount(1, $a);'),
+                self::generateTest('$this->assertSame(1, \%s($a));'),
             ],
         ];
     }
@@ -566,41 +551,43 @@ $a# 5
     {
         return [
             [
-                '<?php $this->assertNan($a, );',
-                '<?php $this->assertTrue(is_nan($a), );',
+                self::generateTest('$this->assertNan($a, );'),
+                self::generateTest('$this->assertTrue(is_nan($a), );'),
             ],
             [
-                '<?php $this->assertNan($a);',
-                '<?php $this->assertTrue(is_nan($a, ));',
+                self::generateTest('$this->assertNan($a);'),
+                self::generateTest('$this->assertTrue(is_nan($a, ));'),
             ],
             [
-                '<?php $this->assertNan($a, );',
-                '<?php $this->assertTrue(is_nan($a, ), );',
+                self::generateTest('$this->assertNan($a, );'),
+                self::generateTest('$this->assertTrue(is_nan($a, ), );'),
             ],
             [
-                '<?php $this->assertInternalType(\'array\', $a,);',
-                '<?php $this->assertTrue(is_array($a,),);',
+                self::generateTest('$this->assertInternalType(\'array\', $a,);'),
+                self::generateTest('$this->assertTrue(is_array($a,),);'),
             ],
             [
-                '<?php
-                   $this->assertNan($b);
-               ',
-                '<?php
-                   $this->assertTrue(\is_nan($b,));
-               ',
+                self::generateTest('$this->assertNan($b);'),
+                self::generateTest('$this->assertTrue(\is_nan($b,));'),
             ],
             [
-                '<?php
-                   $this->assertFileExists($f, \'message\',);
-               ',
-                '<?php
-                   $this->assertTrue(file_exists($f,), \'message\',);
-               ',
+                self::generateTest('$this->assertFileExists($f, \'message\',);'),
+                self::generateTest('$this->assertTrue(file_exists($f,), \'message\',);'),
             ],
             [
-                '<?php $this->assertNan($y  , );',
-                '<?php $this->assertTrue(is_nan($y)  , );',
+                self::generateTest('$this->assertNan($y  , );'),
+                self::generateTest('$this->assertTrue(is_nan($y)  , );'),
             ],
         ];
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return string
+     */
+    private static function generateTest($content)
+    {
+        return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }
 }
