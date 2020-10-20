@@ -12,16 +12,15 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -30,7 +29,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitNoExpectationAnnotationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var bool
@@ -115,28 +114,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_DOC_COMMENT]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky()
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
-            $this->fixPhpUnitClass($tokens, $indexes[0], $indexes[1]);
-        }
     }
 
     /**
@@ -158,26 +138,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param int $index
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    private function detectIndent(Tokens $tokens, $index)
-    {
-        if (!$tokens[$index - 1]->isWhitespace()) {
-            return ''; // cannot detect indent
-        }
-
-        $explodedContent = explode("\n", $tokens[$index - 1]->getContent());
-
-        return end($explodedContent);
-    }
-
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    private function fixPhpUnitClass(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -256,6 +219,22 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $i = $docBlockIndex;
         }
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return string
+     */
+    private function detectIndent(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index - 1]->isWhitespace()) {
+            return ''; // cannot detect indent
+        }
+
+        $explodedContent = explode("\n", $tokens[$index - 1]->getContent());
+
+        return end($explodedContent);
     }
 
     /**

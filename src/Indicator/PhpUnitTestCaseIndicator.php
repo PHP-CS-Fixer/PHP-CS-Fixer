@@ -49,15 +49,11 @@ final class PhpUnitTestCaseIndicator
     }
 
     /**
-     * @param bool $beginAtBottom whether we should start yielding PHPUnit classes from the bottom of the file
-     *
      * @return \Generator array of [int start, int end] indexes from sooner to later classes
      */
-    public function findPhpUnitClasses(Tokens $tokens, $beginAtBottom = true)
+    public function findPhpUnitClasses(Tokens $tokens)
     {
-        $direction = $beginAtBottom ? -1 : 1;
-
-        for ($index = 1 === $direction ? 0 : $tokens->count() - 1; $tokens->offsetExists($index); $index += $direction) {
+        for ($index = $tokens->count() - 1; $tokens->offsetExists($index); --$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isPhpUnitClass($tokens, $index)) {
                 continue;
             }

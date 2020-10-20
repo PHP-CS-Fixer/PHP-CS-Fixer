@@ -12,8 +12,8 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpUnitOrderedCoversFixer extends AbstractFixer
+final class PhpUnitOrderedCoversFixer extends AbstractPhpUnitFixer
 {
     /**
      * {@inheritdoc}
@@ -60,17 +60,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_DOC_COMMENT]);
-    }
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+        for ($index = $endIndex; $index >= $docBlockIndex; --$index) {
             if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT) || 0 === Preg::match('/@covers\s.+@covers\s/s', $tokens[$index]->getContent())) {
                 continue;
             }
