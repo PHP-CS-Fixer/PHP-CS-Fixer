@@ -118,7 +118,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isAllTokenKindsFound([T_CLASS, T_FUNCTION, T_STRING]);
     }
 
     /**
@@ -139,15 +139,27 @@ final class PhpUnitDedicateAssertFixer extends AbstractFixer implements Configur
             [
                 new CodeSample(
                     '<?php
-$this->assertTrue(is_float( $a), "my message");
-$this->assertTrue(is_nan($a));
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertTrue(is_float( $a), "my message");
+        $this->assertTrue(is_nan($a));
+    }
+}
 '
                 ),
                 new CodeSample(
                     '<?php
-$this->assertTrue(is_dir($a));
-$this->assertTrue(is_writable($a));
-$this->assertTrue(is_readable($a));
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertTrue(is_dir($a));
+        $this->assertTrue(is_writable($a));
+        $this->assertTrue(is_readable($a));
+    }
+}
 ',
                     ['target' => PhpUnitTargetVersion::VERSION_5_6]
                 ),
@@ -173,6 +185,8 @@ $this->assertTrue(is_readable($a));
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        //findPhpUnitClasses
+
         foreach ($this->getPreviousAssertCall($tokens) as $assertCall) {
             // test and fix for assertTrue/False to dedicated asserts
             if ('asserttrue' === $assertCall['loweredName'] || 'assertfalse' === $assertCall['loweredName']) {

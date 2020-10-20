@@ -19,6 +19,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -84,7 +85,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isAllTokenKindsFound([T_CLASS, T_FUNCTION, T_STRING]);
     }
 
     /**
@@ -100,35 +101,38 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach ($this->configuration['assertions'] as $methodBefore) {
-            $methodAfter = self::$assertionMap[$methodBefore];
+        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
+            foreach ($this->configuration['assertions'] as $methodBefore) {
+                $methodAfter = self::$assertionMap[$methodBefore];
 
-            for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-                $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
+                for ($index = $indexes[0]; $index < $indexes[1]; ++$index) {
+                    $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
 
-                if (null === $methodIndex) {
-                    break;
+                    if (null === $methodIndex) {
+                        break;
+                    }
+
+                    if (!$functionsAnalyzer->isTheSameClassCall($tokens, $methodIndex)) {
+                        continue;
+                    }
+
+                    $openingParenthesisIndex = $tokens->getNextMeaningfulToken($methodIndex);
+                    $argumentsCount = $argumentsAnalyzer->countArguments(
+                        $tokens,
+                        $openingParenthesisIndex,
+                        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
+                    );
+
+                    if (2 === $argumentsCount || 3 === $argumentsCount) {
+                        $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
+                    }
+
+                    $index = $methodIndex;
                 }
-
-                if (!$functionsAnalyzer->isTheSameClassCall($tokens, $methodIndex)) {
-                    continue;
-                }
-
-                $openingParenthesisIndex = $tokens->getNextMeaningfulToken($methodIndex);
-                $argumentsCount = $argumentsAnalyzer->countArguments(
-                    $tokens,
-                    $openingParenthesisIndex,
-                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
-                );
-
-                if (2 === $argumentsCount || 3 === $argumentsCount) {
-                    $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
-                }
-
-                $index = $methodIndex;
             }
         }
     }

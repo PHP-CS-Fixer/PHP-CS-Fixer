@@ -610,8 +610,11 @@ $b,
     $c#
 #
 )#
-use ($x,
-$y,$z) {
+use (
+    $b1,
+    $c1,
+    $d1
+) {
 };
 EXPECTED
                 ,
@@ -627,8 +630,8 @@ $a#
 $b,$c#
 #
 )#
-use ($x,
-$y,$z) {
+use ($b1,
+$c1,$d1) {
 };
 INPUT
                 ,
@@ -832,6 +835,14 @@ if (true) {
                 [
                     'on_multiline' => 'ensure_fully_multiline',
                 ],
+            ],
+            'test anonymous functions' => [
+                '<?php
+$example = function () use ($message1, $message2) {
+};',
+                '<?php
+$example = function () use ($message1,$message2) {
+};',
             ],
         ];
     }

@@ -51,25 +51,25 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     public function provideTestFixCases()
     {
         $cases = [
-            ['<?php $sth->assertSame(true, $foo);'],
-            ['<?php $this->assertSame($b, null);'],
+            ['$sth->assertSame(true, $foo);'],
+            ['$this->assertSame($b, null);'],
             [
-                '<?php $this->assertNull(/*bar*/ $a);',
-                '<?php $this->assertSame(null /*foo*/, /*bar*/ $a);',
+                '$this->assertNull(/*bar*/ $a);',
+                '$this->assertSame(null /*foo*/, /*bar*/ $a);',
             ],
             [
-                '<?php $this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
+                '$this->assertSame(null === $eventException ? $exception : $eventException, $event->getException());',
             ],
             [
-                '<?php $this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
+                '$this->assertSame(null /*comment*/ === $eventException ? $exception : $eventException, $event->getException());',
             ],
             [
-                '<?php
+                '
     $this->assertTrue(
         $a,
         "foo" . $bar
     );',
-                '<?php
+                '
     $this->assertSame(
         true,
         $a,
@@ -77,13 +77,13 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     );',
             ],
             [
-                '<?php
+                '
     $this->assertTrue(#
         #
         $a,#
         "foo" . $bar#
     );',
-                '<?php
+                '
     $this->assertSame(#
         true,#
         $a,#
@@ -91,34 +91,61 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     );',
             ],
             [
-                '<?php $this->assertSame("a", $a); $this->assertTrue($b);',
-                '<?php $this->assertSame("a", $a); $this->assertSame(true, $b);',
+                '$this->assertSame("a", $a); $this->assertTrue($b);',
+                '$this->assertSame("a", $a); $this->assertSame(true, $b);',
             ],
             [
-                '<?php $this->assertSame(true || $a, $b); $this->assertTrue($c);',
-                '<?php $this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
+                '$this->assertSame(true || $a, $b); $this->assertTrue($c);',
+                '$this->assertSame(true || $a, $b); $this->assertSame(true, $c);',
             ],
             [
-                '<?php $this->assertFalse($foo);',
-                '<?php $this->assertEquals(FALSE, $foo);',
+                '$this->assertFalse($foo);',
+                '$this->assertEquals(FALSE, $foo);',
             ],
             [
-                '<?php $this->assertTrue($foo);',
-                '<?php $this->assertEquals(TruE, $foo);',
+                '$this->assertTrue($foo);',
+                '$this->assertEquals(TruE, $foo);',
             ],
             [
-                '<?php $this->assertNull($foo);',
-                '<?php $this->assertEquals(NULL, $foo);',
+                '$this->assertNull($foo);',
+                '$this->assertEquals(NULL, $foo);',
             ],
         ];
 
+        array_walk(
+            $cases,
+            static function (&$case) {
+                $case[0] = static::generateTest($case[0]);
+
+                if (isset($case[1])) {
+                    $case[1] = static::generateTest($case[1]);
+                }
+            }
+        );
+
         return array_merge(
             $cases,
-            $this->generateCases('<?php $this->assert%s%s($a); //%s %s', '<?php $this->assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php $this->assert%s%s($a, "%s", "%s");', '<?php $this->assert%s(%s, $a, "%s", "%s");'),
-            $this->generateCases('<?php static::assert%s%s($a); //%s %s', '<?php static::assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php STATIC::assert%s%s($a); //%s %s', '<?php STATIC::assert%s(%s, $a); //%s %s'),
-            $this->generateCases('<?php self::assert%s%s($a); //%s %s', '<?php self::assert%s(%s, $a); //%s %s')
+            [
+                'not in a class' => ['<?php $this->assertEquals(NULL, $foo);'],
+                'not phpunit class' => ['<?php class Foo { public function testFoo(){ $this->assertEquals(NULL, $foo); }}'],
+                'multiple candidates in multiple classes ' => [
+                    '<?php
+                        class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                        class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                        class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
+                    ',
+                    '<?php
+                        class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                        class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                        class FooTest3 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertEquals(NULL, $foo); }}
+                    ',
+                ],
+            ],
+            $this->generateCases('$this->assert%s%s($a); //%s %s', '$this->assert%s(%s, $a); //%s %s'),
+            $this->generateCases('$this->assert%s%s($a, "%s", "%s");', '$this->assert%s(%s, $a, "%s", "%s");'),
+            $this->generateCases('static::assert%s%s($a); //%s %s', 'static::assert%s(%s, $a); //%s %s'),
+            $this->generateCases('STATIC::assert%s%s($a); //%s %s', 'STATIC::assert%s(%s, $a); //%s %s'),
+            $this->generateCases('self::assert%s%s($a); //%s %s', 'self::assert%s(%s, $a); //%s %s')
         );
     }
 
@@ -146,12 +173,12 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     {
         return [
             [
-                '<?php $this->assertTrue($a, );',
-                '<?php $this->assertSame(true, $a, );',
+                static::generateTest('$this->assertTrue($a, );'),
+                static::generateTest('$this->assertSame(true, $a, );'),
             ],
             [
-                '<?php $this->assertTrue($a, $message , );',
-                '<?php $this->assertSame(true, $a, $message , );',
+                static::generateTest('$this->assertTrue($a, $message , );'),
+                static::generateTest('$this->assertSame(true, $a, $message , );'),
             ],
         ];
     }
@@ -159,7 +186,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     public function testEmptyAssertions()
     {
         $this->fixer->configure(['assertions' => []]);
-        $this->doTest('<?php $this->assertSame($b, null);');
+        $this->doTest(self::generateTest('$this->assertSame(null, $a);'));
     }
 
     private function generateCases($expectedTemplate, $inputTemplate)
@@ -169,12 +196,22 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         foreach (['true', 'false', 'null'] as $type) {
             foreach ($functionTypes as $method => $positive) {
                 $cases[] = [
-                    sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type),
-                    sprintf($inputTemplate, $method, $type, $method, $type),
+                    self::generateTest(sprintf($expectedTemplate, $positive ? '' : 'Not', ucfirst($type), $method, $type)),
+                    self::generateTest(sprintf($inputTemplate, $method, $type, $method, $type)),
                 ];
             }
         }
 
         return $cases;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return string
+     */
+    private static function generateTest($content)
+    {
+        return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }
 }
