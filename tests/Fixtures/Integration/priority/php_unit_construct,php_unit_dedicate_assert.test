@@ -4,10 +4,20 @@ Integration of fixers: php_unit_construct,php_unit_dedicate_assert.
 {"php_unit_construct": true, "php_unit_dedicate_assert": true}
 --EXPECT--
 <?php
-
-$this->assertInternalType('array', $a);
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertInternalType('array', $a);
+    }
+}
 
 --INPUT--
 <?php
-
-$this->assertSame(true, is_array($a));
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testSomeTest()
+    {
+        $this->assertSame(true, is_array($a));
+    }
+}

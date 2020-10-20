@@ -66,12 +66,12 @@ mb_strlen($str, ); // `native_function_casing` rule
 $c = \get_class($d, ); // `native_function_invocation` rule
 $a = rtrim($b, ); // `no_alias_functions` rule
 $foo->bar($arg1, $arg2, ); // `no_spaces_inside_parenthesis` rule
-$this->assertTrue($a, ); // `php_unit_construct` rule
-$this->assertNan($a, ); // `php_unit_dedicate_assert` rule
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {
+        $this->assertTrue($a, ); // `php_unit_construct` rule
+        $this->assertNan($a, ); // `php_unit_dedicate_assert` rule
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Msg');
         $this->expectExceptionCode(123); // `php_unit_expectation` rule
@@ -158,12 +158,12 @@ STRLEN($str, ); // `native_function_casing` rule
 $c = get_class($d, ); // `native_function_invocation` rule
 $a = chop($b, ); // `no_alias_functions` rule
 $foo->bar(  $arg1, $arg2,   );// `no_spaces_inside_parenthesis` rule
-$this->assertSame(true, $a, ); // `php_unit_construct` rule
-$this->assertTrue(is_nan($a, ), ); // `php_unit_dedicate_assert` rule
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {
+        $this->assertSame(true, $a, ); // `php_unit_construct` rule
+        $this->assertTrue(is_nan($a, ), ); // `php_unit_dedicate_assert` rule
         $this->setExpectedException('RuntimeException', 'Msg', 123, ); // `php_unit_expectation` rule
         $this->getMock('Foo', ); // `php_unit_mock` rule
         static::assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
