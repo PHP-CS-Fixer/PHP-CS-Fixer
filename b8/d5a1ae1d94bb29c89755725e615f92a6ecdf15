@@ -1,0 +1,130 @@
+---------------------------------------------------------------------------
+
+by gharlan at 2019-04-18T17:07:56Z
+
+@keradus It would be nice when a ruleset could define `if fixer X is enabled, then set option Y to Z`.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-04-18T17:11:56Z
+
+But because we do not have this possibility at the moment, I think it is ok to add the three fixers with `after_heredoc` option to the PHP73Migration ruleset.
+The migration rulesets are opinionated anyway (not everybody who is migrating to 7.1 wants the declare-strict-fixer). So I think it is ok, that we add the three fixers to the ruleset as our opinionated suggestion when migrating a code base to 7.3.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-04-18T17:53:02Z
+
+Idea behind 7.3 ruleset is to have `heredoc_indentation` in it, as this syntax came with 7.3.
+I'm not sure that adding few more rules to it, not related to 7.3, is the best idea.
+
+Maybe we shall follow similar idea we have for phpunit rules?
+`target ('5.2', '5.6', 'newest'): target version of PHPUnit; defaults to 'newest'`
+
+here, we can make sth like
+deprecate `after_heredoc` and add
+```
+heredoc_handling ('remove', 'keep', `best_for_php_version`): ..., defaults to ``best_for_php_version``
+```
+
+what do you think ?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-04-18T18:39:14Z
+
+> Maybe we shall follow similar idea we have for phpunit rules?
+> `target ('5.2', '5.6', 'newest'): target version of PHPUnit; defaults to 'newest'`
+
+This would be a global configuration, like newline and indentation config?
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-04-18T18:44:25Z
+
+I think a global configuration for the php target version would be nice.
+In my opinion we could deprecate the `after_heredoc` option then without a new option. I can not imagine that someone (with target version 7.3) wants to use `method_argument_space` but wants to keep the newline between heredoc end and the comma.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-04-18T18:53:20Z
+
+We could remove the option without deprecation, because the option is not released yet.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-04-19T01:04:58Z
+
+> This would be a global configuration, like newline and indentation config?
+
+No, this would not be global config, it would be rule config. Look at example of phpunit_ rules I gave.
+
+> I think a global configuration for the php target version would be nice.
+
+We dont have a good mechanism for global rules config
+
+---------------------------------------------------------------------------
+
+by gharlan at 2019-04-19T05:27:55Z
+
+Hmm then I don't understand your proposal, why is it better than the `after_heredoc` option?
+We would still need to add the three fixers to the migration rule, but we would only change the `after_heredoc` option with the target php option.
+I'm ok with this, but I don't see the benefit.
+
+I thought we search a solution where we don't need to add the three fixers to the migration rule, but users with target php 7.3 would get the fixes after heredoc end anyway (when using these fixers).
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-05-03T16:11:03Z
+
+I let myself extract non-problematic part of this PR to #4375 keeping your authorship (so we can still release the new ruleset as 2.15 and adjust it in 2.15.x)
+
+Unfortunately, i'm out of home for loooong and had no time to properly think about this proposal. maybe some other maintainers would ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T17:35:28Z
+
+@gharlan can you update this PR? It looks fine for me to have these 3 `after_heredoc` options in PHP 7.3 migration set.
+
+@keradus did you had an opportunity to think about this PR?
+
+@SpacePossum @julienfalque WDYT about this?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-07-12T18:55:48Z
+
+IMO it is simpler if we either:
+1. add the `after_heredoc` option like proposed here, making the ruleset a bit more opinionated, but users can easily opt out
+2. remove the option and keep the ruleset more related to PHP *upgrade*, users can easily enable the option anyway
+
+The alternative solution proposed by @keradus tries to keep the best of bost options but requires much more work, really not worth it IMO.
+
+---------------------------------------------------------------------------
+
+by gharlan at 2020-07-20T07:54:38Z
+
+> @gharlan can you update this PR? It looks fine for me to have these 3 `after_heredoc` options in PHP 7.3 migration set.
+
+I can do it, if there is a consensus to merge it. Otherwise let's close the pr.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-07-28T11:01:26Z
+
+>can you update this PR? It looks fine for me to have these 3 after_heredoc options in PHP 7.3 migration set.
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-20T09:43:37Z
+
+What's the status here?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-20T10:15:56Z
+
+rebased, conflicts resolved, force pushed to @gharlan his branch (!) , if the tests are green on all version, than RTM :+1:
