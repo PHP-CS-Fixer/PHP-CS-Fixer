@@ -1,0 +1,380 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-06-03T13:10:53Z
+
+btw, CI is constantly failing on broken AutoReview
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-06-03T16:16:42Z
+
+Not sure how to deal with the failure related to the constant `T_YIELD_FROM` not defined on PHP 5.6, what do you think?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-07-05T09:35:14Z
+
+A bunch of tests are currently missing.
+
+---------------------------------------------------------------------------
+
+by IllyaMoskvin at 2019-07-21T05:21:50Z
+
+Just want to say that this seems like a great feature. I'm new to using this tool, so I might have missed something, but the only other way I've found to fix things like `if(` to `if (` is by using the `braces` fixer. I'm hesitant to do so due to how many responsibilities it has (cf. #472, #823). I think this is a nice addition for users who'd like to make those choices in a more granular manner.
+
+---------------------------------------------------------------------------
+
+by IllyaMoskvin at 2019-07-21T06:14:54Z
+
+Found what looks like a bug. Running the fixer on this file:
+
+```php
+<?php
+
+if (1 === 1)
+{
+    echo 'foo';
+}
+else
+{
+    echo 'bar';
+}
+```
+
+...will produce the following output:
+
+```php
+<?php
+
+if (1 === 1)
+{
+    echo 'foo';
+}
+else {
+    echo 'bar';
+}
+```
+
+Uhh please ignore the non-standard brace style, we don't usually do this. Just spotted it in the diff. It feels like removing the newline after the `else` is beyond the intended scope of this fixer.
+
+---------------------------------------------------------------------------
+
+by IllyaMoskvin at 2019-07-21T06:26:51Z
+
+Another bug:
+
+```php
+<?php
+
+return;
+```
+
+...results in this:
+
+```php
+<?php
+
+return ;
+```
+
+This seems to impact `break` and `continue` the most. I can see adding spaces being useful for these constructs in some cases (e.g. `continue(2)`). Just thinking of scope. Can we make it so that there's no space added if the construct is immediately followed by a semicolon?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-07-21T08:49:36Z
+
+@IllyaMoskvin
+
+Thank you for reporting!
+
+This definitely needs work. I’m on vacation right now, will take a look when back behind my computer!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-11-08T11:00:50Z
+
+@derrabus @dmvdbrugge @julienfalque @IllyaMoskvin @keradus
+
+Let's see if the tests pass (`yield from` requires PHP 7).
+
+Can you think of something else, perhaps, which of these constructs should be defaults?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-11-08T11:04:33Z
+
+Opinion: I would say all of them should be default (even `yield from` if the running version allows it).
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-11-08T11:07:13Z
+
+Also the remaining points in the initial comment, you ask
+> (should it?)
+
+In my opinion: yes (surprise surprise 😜)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2019-11-08T16:56:43Z
+
+Does anyone have an idea how to work around the tests failing on PHP 5.6?
+
+See https://travis-ci.org/FriendsOfPHP/PHP-CS-Fixer/jobs/609203996#L791-L800:
+
+```
+1) PhpCsFixer\Tests\Console\Command\ReadmeCommandTest::testIfReadmeFileIsCorrect
+README.rst file is not up to date! Do not modify it manually! Regenerate readme with command: `php php-cs-fixer readme > README.rst`.
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+     'goto', 'include', 'include_once', 'new', 'print', 'require',
+-    'require_once', 'return', 'throw', 'yield']``): list of constructs which
+-    must be followed by a single space; defaults to ``['break', 'case',
+-    'clone', 'continue', 'echo', 'goto', 'include', 'include_once', 'new',
+-    'print', 'require', 'require_once', 'return', 'throw', 'yield']``
++    'require_once', 'return', 'throw', 'yield', 'yield_from']``): list of
++    constructs which must be followed by a single space; defaults to
++    ``['break', 'case', 'clone', 'continue', 'echo', 'goto', 'include',
++    'include_once', 'new', 'print', 'require', 'require_once', 'return',
++    'throw', 'yield', 'yield_from']``
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-02-08T14:28:48Z
+
+👋 @localheinz. I'm currently working on breaking down the `braces` rule into several smaller rules with less responsibilities. As you noticed, one of `braces`' responsibilities is to ensure control structure keywords such as `if`, `else` but also `declare` are followed by a single space. Do you mind adding support for these keywords in your PR?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-02-11T22:43:10Z
+
+> Does anyone have an idea how to work around the tests failing on PHP 5.6?
+
+@localheinz I'd say test `README.rst` is up to date only on PHP 7.4.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-02-12T07:23:42Z
+
+@kubawerlos
+
+Thank you for your feedback - I'm a bit busy at the moment, but might get around to it next week!
+
+---------------------------------------------------------------------------
+
+by guilliamxavier at 2020-02-22T19:07:22Z
+
+Hello, thanks for the work! What do you think about adding a test for the following fix?
+
+```diff
+-echo$a;
++echo $a;
+```
+
+(yes, `echo$a;` without space actually [works](https://3v4l.org/R1J4h)...)
+
+Same for `return` (https://3v4l.org/2btMT) and maybe others?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-02-26T08:44:53Z
+
+~~please add;~~
+```
+```
+
+--edit: nevermind
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2020-09-08T12:24:17Z
+
+Hey guys, looks like this PR is ready for a long time. What is keeping us from merging?
+
+@localheinz @derrabus @julienfalque @keradus @kubawerlos @dmvdbrugge
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-19T06:56:29Z
+
+For the record, I have update the list of tokens this fixer should handle, thanks to the work of @kubawerlos on https://github.com/kubawerlos/php-cs-fixer-custom-fixers/blob/v1.17.0/src/Fixer/SingleSpaceAfterStatementFixer.php#L21.
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-19T15:51:29Z
+
+@derrabus @dmvdbrugge @julienfalque @keradus @kubawerlos @rquadling @SpacePossum
+
+Can I ask you to take a look?
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-19T15:54:38Z
+
+~~There are a bunch of case I don't know how to handle - not sure which tokens I should use to identify and fix these cases:~~
+
+### ~~`use const`~~
+
+```diff
+-use const  Foo\BAR;
++use const Foo\BAR;
+```
+### ~~`use function`~~
+
+```diff
+-use function  Foo\bar;
++use function Foo\bar;
+```
+
+~~Can anyone help?~~
+
+Sorted out thanks to @guilliamxavier!
+
+---------------------------------------------------------------------------
+
+by guilliamxavier at 2020-10-20T08:55:21Z
+
+You can quickly debug tokens by printing `Tokens::fromCode('<?php ...')->toJson()`
+
+So I see that `use const` and `use function` respectively give [`T_USE`, `T_WHITESPACE`, `CT::T_CONST_IMPORT`] and [`T_USE`, `T_WHITESPACE`, `CT::T_FUNCTION_IMPORT`]
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-20T10:16:28Z
+
+Thank you, @guilliamxavier!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-20T10:32:31Z
+
+can you maybe add T_OPEN_TAG_WITH_ECHO as well?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-20T10:59:12Z
+
+I've added support for T_OPEN_TAG, please pull @localheinz  :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-20T11:03:12Z
+
+Thank you, @SpacePossum!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-20T11:05:52Z
+
+Fixed below, please pull
+
+```diff
+-            $this->translator = new class() implements TranslatorInterface {
++            $this->translator = new class () implements TranslatorInterface {
+```
+
+I think we should not change this one  (PHP7 anonymous class case)
+
+-----------------
+
+we should bother dealing with alternative syntax, added `&& !$tokens->hasAlternativeSyntax()` in the candidate check
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-20T11:33:04Z
+
+I think the only case open is what @julienfalque also commented, multi line `return` statements;
+
+```diff
+-        return
+-            Preg::match('/(^|\R)\h*[^@\s]\N*/', $this->cleanComment($parts[$index - 1]))
++        return Preg::match('/(^|\R)\h*[^@\s]\N*/', $this->cleanComment($parts[$index - 1]))
+             || Preg::match('/^.*?\R\s*[^@\s]/', $this->cleanComment($parts[$index + 1]))
+         ;
+```
+
+do we want to fix these? or maybe skip? or maybe as configuration option?
+(after that we can add it to the RuleSet `'@PhpCsFixer'`)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-20T12:28:32Z
+
+@SpacePossum
+
+> I think the only case open is what @julienfalque also commented, multi line `return` statements;
+
+Ha, good point!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-20T16:42:30Z
+
+@julienfalque @SpacePossum
+
+I think I got the detection of multi-line return statements right - do you want to take a look?
+
+Is there a need to handle something like this?
+
+```php
+return
+    $foo ?
+    $bar :
+    $baz;
+```
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-20T17:06:53Z
+
+Unless there are any objections, I think this is good!
+
+🤓
+
+Sorry for taking so long to push this through!
+
+---------------------------------------------------------------------------
+
+by OskarStark at 2020-10-20T18:39:01Z
+
+Great work, thank you 😃
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-20T20:38:06Z
+
+Thank you, @OskarStark!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-21T08:07:12Z
+
+looks great @localheinz :+1:
+can you review my changes in this commit: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4435/commits/be1aeb1722a812107b8c5883bea8287c4c01412f ?
+
+if any others can review that would be great, but I think this RTM :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-21T09:00:02Z
+
+please squash into one commit :)
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-21T09:00:51Z
+
+@SpacePossum
+
+Hang on a moment!
+
+---------------------------------------------------------------------------
+
+by localheinz at 2020-10-21T09:38:19Z
+
+@SpacePossum
+
+Squashed and rebased!
