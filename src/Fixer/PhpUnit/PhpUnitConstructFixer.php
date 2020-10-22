@@ -12,14 +12,13 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,7 +26,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     private static $assertionFixers = [
         'assertSame' => 'fixAssertPositive',
@@ -35,14 +34,6 @@ final class PhpUnitConstructFixer extends AbstractFixer implements ConfigurableF
         'assertNotEquals' => 'fixAssertNegative',
         'assertNotSame' => 'fixAssertNegative',
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FUNCTION, T_STRING]);
-    }
 
     /**
      * {@inheritdoc}
@@ -104,25 +95,21 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
         // no assertions to be fixed - fast return
         if (empty($this->configuration['assertions'])) {
             return;
         }
 
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
+        foreach ($this->configuration['assertions'] as $assertionMethod) {
+            $assertionFixer = self::$assertionFixers[$assertionMethod];
 
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
-            foreach ($this->configuration['assertions'] as $assertionMethod) {
-                $assertionFixer = self::$assertionFixers[$assertionMethod];
+            for ($index = $startIndex; $index < $endIndex; ++$index) {
+                $index = $this->{$assertionFixer}($tokens, $index, $assertionMethod);
 
-                for ($index = $indexes[0]; $index < $indexes[1]; ++$index) {
-                    $index = $this->{$assertionFixer}($tokens, $index, $assertionMethod);
-
-                    if (null === $index) {
-                        break;
-                    }
+                if (null === $index) {
+                    break;
                 }
             }
         }

@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -126,6 +127,7 @@ function foo() {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $referenceAnalyzer = new ReferenceAnalyzer();
+        $gotoLabelAnalyzer = new GotoLabelAnalyzer();
 
         $excludedIndices = $this->getExcludedIndices($tokens);
 
@@ -137,7 +139,7 @@ function foo() {
                 continue;
             }
 
-            if ($this->belongsToGoToLabel($tokens, $index)) {
+            if ($gotoLabelAnalyzer->belongsToGoToLabel($tokens, $index)) {
                 continue;
             }
 
@@ -314,27 +316,5 @@ function foo() {
         }
 
         return false;
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function belongsToGoToLabel(Tokens $tokens, $index)
-    {
-        if (!$tokens[$index]->equals(':')) {
-            return false;
-        }
-
-        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING)) {
-            return false;
-        }
-
-        $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
-
-        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG]]);
     }
 }

@@ -12,14 +12,13 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -28,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitStrictFixer extends AbstractFixer implements ConfigurableFixerInterface
+final class PhpUnitStrictFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     private static $assertionMap = [
         'assertAttributeEquals' => 'assertAttributeSame',
@@ -83,14 +82,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FUNCTION, T_STRING]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky()
     {
         return true;
@@ -99,40 +90,37 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
-            foreach ($this->configuration['assertions'] as $methodBefore) {
-                $methodAfter = self::$assertionMap[$methodBefore];
+        foreach ($this->configuration['assertions'] as $methodBefore) {
+            $methodAfter = self::$assertionMap[$methodBefore];
 
-                for ($index = $indexes[0]; $index < $indexes[1]; ++$index) {
-                    $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
+            for ($index = $startIndex; $index < $endIndex; ++$index) {
+                $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
 
-                    if (null === $methodIndex) {
-                        break;
-                    }
-
-                    if (!$functionsAnalyzer->isTheSameClassCall($tokens, $methodIndex)) {
-                        continue;
-                    }
-
-                    $openingParenthesisIndex = $tokens->getNextMeaningfulToken($methodIndex);
-                    $argumentsCount = $argumentsAnalyzer->countArguments(
-                        $tokens,
-                        $openingParenthesisIndex,
-                        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
-                    );
-
-                    if (2 === $argumentsCount || 3 === $argumentsCount) {
-                        $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
-                    }
-
-                    $index = $methodIndex;
+                if (null === $methodIndex) {
+                    break;
                 }
+
+                if (!$functionsAnalyzer->isTheSameClassCall($tokens, $methodIndex)) {
+                    continue;
+                }
+
+                $openingParenthesisIndex = $tokens->getNextMeaningfulToken($methodIndex);
+                $argumentsCount = $argumentsAnalyzer->countArguments(
+                    $tokens,
+                    $openingParenthesisIndex,
+                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
+                );
+
+                if (2 === $argumentsCount || 3 === $argumentsCount) {
+                    $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
+                }
+
+                $index = $methodIndex;
             }
         }
     }

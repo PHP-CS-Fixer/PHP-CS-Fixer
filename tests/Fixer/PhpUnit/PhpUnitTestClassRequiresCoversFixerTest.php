@@ -219,6 +219,17 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
                     class Baz4 extends TestCase {}
                 ',
             ],
+            [
+                '<?php /* comment */
+
+/**
+ * @coversNothing
+ */
+class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+                '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}
+                ',
+            ],
         ];
     }
 

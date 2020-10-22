@@ -411,6 +411,13 @@ $a# 5
             'do not fix 7' => [
                 self::generateTest('$this->assertSame(2, count($array) - 1);'),
             ],
+            'do not fix 8' => [
+                self::generateTest('
+                    Foo::assertSame(1, sizeof($a));
+                    $this->assertSame(1, sizeof2(2));
+                    $this->assertSame(1, sizeof::foo);
+                '),
+            ],
         ];
     }
 

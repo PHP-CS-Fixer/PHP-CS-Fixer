@@ -132,13 +132,10 @@ class Foo implements TestInterface, SomethingElse
     {
         $tokens = Tokens::fromCode($code);
 
-        $classesFromTop = $this->indicator->findPhpUnitClasses($tokens, false);
-        $classesFromTop = iterator_to_array($classesFromTop);
-        $classesFromBottom = $this->indicator->findPhpUnitClasses($tokens);
-        $classesFromBottom = iterator_to_array($classesFromBottom);
+        $classes = $this->indicator->findPhpUnitClasses($tokens);
+        $classes = iterator_to_array($classes);
 
-        static::assertSame($expectedIndexes, $classesFromTop);
-        static::assertSame(array_reverse($classesFromBottom), $classesFromTop);
+        static::assertSame($expectedIndexes, $classes);
     }
 
     public function provideFindPhpUnitClassesCases()
@@ -166,8 +163,8 @@ class Foo implements TestInterface, SomethingElse
             ],
             'two PHPUnit classes' => [
                 [
-                    [6, 7],
                     [13, 26],
+                    [6, 7],
                 ],
                 '<?php
                     class My1Test {}
@@ -176,8 +173,8 @@ class Foo implements TestInterface, SomethingElse
             ],
             'mixed classes' => [
                 [
-                    [25, 38],
                     [63, 76],
+                    [25, 38],
                 ],
                 '<?php
                     class Foo1 { public function A() {} }

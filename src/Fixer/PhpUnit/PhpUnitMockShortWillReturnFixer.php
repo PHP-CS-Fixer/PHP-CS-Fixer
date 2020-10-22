@@ -12,10 +12,9 @@
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Michał Adamski <michal.adamski@gmail.com>
  * @author Kuba Werłos <werlos@gmail.com>
  */
-final class PhpUnitMockShortWillReturnFixer extends AbstractFixer
+final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
 {
     /**
      * @internal
@@ -67,14 +66,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
-    {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_OBJECT_OPERATOR, T_STRING]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky()
     {
         return true;
@@ -83,19 +74,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
-    {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indexes) {
-            $this->fixWillReturn($tokens, $indexes[0], $indexes[1]);
-        }
-    }
-
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    private function fixWillReturn(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {

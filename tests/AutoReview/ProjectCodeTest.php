@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Event\Event;
+use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -608,6 +609,41 @@ final class ProjectCodeTest extends TestCase
                 }
             )
         );
+    }
+
+    /**
+     * @param string $className
+     *
+     * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
+     */
+    public function testPhpUnitFixerExtendsAbstractPhpUnitFixer($className)
+    {
+        $reflection = new \ReflectionClass($className);
+
+        static::assertTrue($reflection->isSubclassOf(\PhpCsFixer\Fixer\AbstractPhpUnitFixer::class));
+    }
+
+    public function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases()
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+
+        foreach ($factory->getFixers() as $fixer) {
+            if (0 !== strpos($fixer->getName(), 'php_unit_')) {
+                continue;
+            }
+
+            // this one fixes usage of PHPUnit classes
+            if ($fixer instanceof \PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer) {
+                continue;
+            }
+
+            if ($fixer instanceof \PhpCsFixer\AbstractProxyFixer) {
+                continue;
+            }
+
+            yield [\get_class($fixer)];
+        }
     }
 
     private function getUsedDataProviderMethodNames($testClassName)
