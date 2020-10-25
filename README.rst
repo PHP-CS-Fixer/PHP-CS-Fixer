@@ -78,6 +78,12 @@ Then make sure you have the global Composer binaries directory in your ``PATH``.
 
     $ export PATH="$PATH:$HOME/.composer/vendor/bin"
 
+In Debian based distros:
+
+.. code-block:: bash
+
+    $ export PATH="$PATH:$HOME/.config/composer/vendor/bin"
+
 Globally (homebrew)
 ~~~~~~~~~~~~~~~~~~~
 
