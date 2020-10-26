@@ -62,6 +62,43 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
     {
         return [
             [
+                '<?php $a = ($b + $c) || 1 === true ? 1 : 2;',
+                null,
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php $a = 1 + ($b + $c) === true ? 1 : 2;',
+                null,
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php $a = true === ($b + $c) ? 1 : 2;',
+                '<?php $a = ($b + $c) === true ? 1 : 2;',
+                ['always_move_variable' => true],
+            ],
+            [
+                '<?php
+if ((1 === $a) === 1) {
+    return;
+}',
+                '<?php
+if (($a === 1) === 1) {
+    return;
+}',
+                ['always_move_variable' => false],
+            ],
+            [
+                '<?php
+if (true === (1 !== $foo[0])) {
+    return;
+}',
+                '<?php
+if (($foo[0] !== 1) === true) {
+    return;
+}',
+                ['always_move_variable' => true],
+            ],
+            [
                 '<?php return 1 !== $a [$b];',
                 '<?php return $a [$b] !== 1;',
             ],
@@ -81,8 +118,8 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
                 ',
             ],
             [
-                '<?php 1 === lala($a) ? 1 : 2;',
-                '<?php lala($a) === 1 ? 1 : 2;',
+                '<?php 1 === foo($a) ? 1 : 2;',
+                '<?php foo($a) === 1 ? 1 : 2;',
             ],
             [
                 '<?php 1 === $a::$a ? 1 : 2;',
@@ -200,8 +237,8 @@ if ($a = $obj instanceof A === true) {
             ['<?php $c = $$b === $$c;'],
             ['<?php $d = count($this->array[$var]) === $a;'],
             ['<?php $e = $a === count($this->array[$var]);'],
-            ['<?php $f = ($a & self::MY_BITMASK) === $a;'],
-            ['<?php $g = $a === ($a & self::MY_BITMASK);'],
+            ['<?php $f = ($a123 & self::MY_BITMASK) === $a;'],
+            ['<?php $g = $a === ($a456 & self::MY_BITMASK);'],
             ['<?php $h = $this->getStuff() === $myVariable;'],
             ['<?php $i = $myVariable === $this->getStuff();'],
             ['<?php $j = 2 * $myVar % 3 === $a;'],
@@ -249,7 +286,14 @@ if ($a = $obj instanceof A === true) {
             ],
             [
                 '<?php return 2 == ($a)?>',
+            ],
+            [
                 '<?php return ($a) == 2?>',
+            ],
+            [
+                '<?php return 2 == ($a)?>',
+                '<?php return ($a) == 2?>',
+                ['always_move_variable' => true],
             ],
             [
                 '<?php $a = ($c === ((null === $b)));',
@@ -422,8 +466,8 @@ $a#4
                 ['always_move_variable' => true],
             ],
             [
-                '<?php $g = ($a & self::MY_BITMASK) === $a;',
-                '<?php $g = $a === ($a & self::MY_BITMASK);',
+                '<?php $g = ($a789 & self::MY_BITMASK) === $a;',
+                null,
                 ['always_move_variable' => true],
             ],
             [
