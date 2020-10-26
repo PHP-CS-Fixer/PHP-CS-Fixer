@@ -53,7 +53,7 @@ namespace PhpCsFixer\FIXER\Basic;
 class InvalidName {}
 ',
                     new \SplFileInfo(__FILE__),
-                    ['dir' => realpath(__DIR__.'/../..')]
+                    ['dir' => './src']
                 ),
             ],
             null,
