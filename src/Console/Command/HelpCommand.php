@@ -87,7 +87,7 @@ project:
 
     <info>$ php %command.full_name% /path/to/project --rules=@PSR2</info>
 
-By default the PSR1 and PSR2 rules are used.
+If the <comment>--rules</comment> option is used, <comment>.php_cs</comment> is ignored. By default the PSR1 and PSR2 rules are used.
 
 The <comment>--rules</comment> option lets you choose the exact rules to
 apply (the rule names must be separated by a comma):
@@ -95,9 +95,13 @@ apply (the rule names must be separated by a comma):
     <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
 
 You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-using <comment>-name_of_fixer</comment>:
+using <comment>-name_of_fixer</comment>.:
 
     <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
+
+Excluding rules without applying at least one rule will result in no rules being applied. At least one rule needs to be applied in order to exclude other rules:
+
+    <info>$ php %command.full_name% /path/to/dir --rules=@Symfony,-full_opening_tag,-indentation_type</info>
 
 When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
 

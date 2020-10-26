@@ -184,7 +184,7 @@ project:
 
     $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
 
-By default the PSR1 and PSR2 rules are used.
+If the ``--rules`` option is used, ``.php_cs`` is ignored. By default the PSR1 and PSR2 rules are used.
 
 The ``--rules`` option lets you choose the exact rules to
 apply (the rule names must be separated by a comma):
@@ -194,11 +194,17 @@ apply (the rule names must be separated by a comma):
     $ php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
 
 You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-using ``-name_of_fixer``:
+using ``-name_of_fixer``.:
 
 .. code-block:: bash
 
     $ php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
+
+Excluding rules without applying at least one rule will result in no rules being applied. At least one rule needs to be applied in order to exclude other rules:
+
+.. code-block:: bash
+
+    $ php php-cs-fixer.phar fix /path/to/dir --rules=@Symfony,-full_opening_tag,-indentation_type
 
 When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
 
