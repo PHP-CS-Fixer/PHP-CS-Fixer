@@ -1,0 +1,214 @@
+---------------------------------------------------------------------------
+
+by PowerKiKi at 2018-01-26T10:56:09Z
+
+This seems somewhat related to #3473, though it might not necessarily impact each other technically speaking.
+
+Were you planning on publishing that documentation via https://readthedocs.org ?
+
+I would suggest to use `docs` instead of `doc`, which seems slightly more popular (default for GitHub pages and Read the Docs).
+
+I would also consider `rm -rf docs/rules` when starting the process to ensure that there is no left-over for fixers that got removed between versions.
+
+Otherwise it's very close to what I had in mind for #3474. I think it would be a very nice improvement.
+
+---------------------------------------------------------------------------
+
+by PowerKiKi at 2018-01-26T10:58:03Z
+
+What is the behavior of the `decribe` command for the fixer that would require a specific PHP version that you mentioned ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-01-26T13:51:38Z
+
+> Were you planning on publishing that documentation via https://readthedocs.org ?
+
+Not for now, might be interesting.
+
+> I would suggest to use `docs` instead of `doc`, which seems slightly more popular (default for GitHub pages and Read the Docs).
+
+👍 for me.
+
+> I would also consider `rm -rf docs/rules` when starting the process to ensure that there is no left-over for fixers that got removed between versions.
+
+Yep, I planned to add it :)
+
+> What is the behavior of the decribe command for the fixer that would require a specific PHP version that you mentioned ?
+
+I think it just skips code samples that are not compatible with the PHP version it is running on. Not sure we can do the same here as the documentation has to be up-to-date whatever the PHP version you are using when contributing this project.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-16T18:08:01Z
+
+Thinking about the PHP compatibility issue again. I'm willing to do the following:
+- make the `documentation` command:
+  - remove all rules documentation pages
+  - generate all pages but those with code samples not compatible with current PHP version
+- make the test suite check all pages have the expected content but skips those with code samples not compatible with current PHP version
+- provide a Docker image with a PHP version that is compatible with all code samples (currently 7.2).
+
+The Docker image would give contributors an alternative choice to update the documentation when needed. In case one still can't have the documentation up-to-date, maintainers will still be able to retrieve the branch and do it but that should not happen frequently.
+
+WDYT?
+
+---------------------------------------------------------------------------
+
+by PowerKiKi at 2018-05-17T02:36:34Z
+
+I am not sure I understand the benefit of the docker image. Would it not be simpler to have an automation to generate documentation in a controlled environnement (I'm thinking Travis here and its [GitHub Pages Deployment](https://docs.travis-ci.com/user/deployment/pages/)) ?
+
+Also I don't think tests should assert the actual content of every single page of the docs, but rather the mechanic to produce it, so it should be possible to test that mechanic with all PHP versions.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-17T08:36:36Z
+
+If you only have the documentation building on CI, there would be no way of verifying it works and is correct until you make a PR, which would be annoying for many contributors. I'm +1 for the docker image.
+
+---------------------------------------------------------------------------
+
+by PowerKiKi at 2018-05-17T10:29:42Z
+
+If you want to double-check the documentation for a fixer modified by your own PR, you most likely are running the correct PHP version that allow you to develop the PR in the first place, aren't you ?
+
+And for people who want to work specifically on the documentation generation process, it does not seems too far-fetched to require PHP 7.2 to have a complete output. To me, the intersection of people who cannot install PHP 7.2, and people who can install docker, is probably very small.
+
+The docker thing seems to be a waste of your time to set up in the first place. On the other hand, I'm not gonna stop you if think it is necessary.
+
+---------------------------------------------------------------------------
+
+by ntzm at 2018-05-17T10:45:50Z
+
+Any reason for choosing RST instead of MD for the new files?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2018-05-19T12:23:04Z
+
+@ntzm I think reStructuredText is more suitable for full documentation as it has more features than Markdown and is extensible. Markdown is more suitable for simple introduction files like most README out there.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-09-15T16:35:47Z
+
+I've rebased the PR on the 2.15 branch and worked a bit more on it. I consider everything is ready except the missing tests to check whether the doc is up-to-date (as was done with the README file). Please have a look at [the new README](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/1b59948982a8b853544dbfc3d3830e992f1c69b1/README.md) and tell me what you think about it.
+
+About the highest PHP version required to update the documentation, I updated the related instruction in the CONTRIBUTING file:
+
+> - Update documentation: `php php-cs-fixer documentation`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker run -it --rm --user="$(id -u):$(id -g)" -w="/app" --volume="$(pwd):/app" php:7.3-cli php php-cs-fixer documentation`.
+
+I used the Docker command and it works fine. We still might receive PRs where a maintainer will have to update the documentation because the contributor could not do it, but this should be rare. Would do you think?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-09-16T12:39:12Z
+
+I like the "first step" of the separation so to say: the readme itself is nice and clean. I did expect the "list of available rules" to be the full list though, not just an index. As it stands now, you either have to know what a rule does by its name, or you have to click every rule to see. This reduces searchability. Add to that the fact that the classification is a bit random, I never know where to look. Keeping it just the big alphabetical list with all details would imho be better.
+
+I haven't checked, but does this also affect the output of `php-cs-fixer help fix`? Because I never liked all the rules being printed there too, I mean, that's not what you expect when looking for help for the command itself, right? If you ask me it should just be what "Usage" now is.
+
+As for building the docs, I'm fine with docker, but I would like to see a "simple" command for it, even though right now it already is just a one-liner. (a `build-documentation.sh` would do imho)
+
+I do think that CI needs to build them as well, and check if all is ok.
+
+Lastly, I agree with the `doc` -> `docs` comment which you seemed to agree with but didn't actually do.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-09-16T14:19:19Z
+
+> I did expect the "list of available rules" to be the full list though, not just an index. As it stands now, you either have to know what a rule does by its name, or you have to click every rule to see. This reduces searchability.
+
+Indeed, I'll try adding description and configuration options as in the current README.
+
+> Add to that the fact that the classification is a bit random, I never know where to look. Keeping it just the big alphabetical list with all details would imho be better.
+
+Maybe just a matter of habits, I would keep the new grouping. But I'd be happy to hear what others think about it.
+
+> I haven't checked, but does this also affect the output of `php-cs-fixer help fix`? Because I never liked all the rules being printed there too, I mean, that's not what you expect when looking for help for the command itself, right? If you ask me it should just be what "Usage" now is.
+
+Nothing changed for the `fix` command help but I agree with you. If others are ok, I'll remove it to get something much lighter too.
+
+> As for building the docs, I'm fine with docker, but I would like to see a "simple" command for it, even though right now it already is just a one-liner. (a `build-documentation.sh` would do imho)
+
+Meh. That belongs to personal aliases IMO.
+
+> I do think that CI needs to build them as well, and check if all is ok.
+
+That's the last remaining point on the TODO list :)
+
+> Lastly, I agree with the `doc` -> `docs` comment which you seemed to agree with but didn't actually do.
+
+I agree too, but the `doc` directory already exists before this PR and contains files that might be referenced somewhere else. Are we sure we should rename the directory?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-09-16T20:12:55Z
+
+@dmvdbrugge I added rules summary to the list of rules but not the configuration details, I'm afraid the page would contain too much information, and the initial purpose of this PR was to avoid this. What do you think?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-09-17T08:27:02Z
+
+That's already better indeed. Can you also add deprecated and/or risky where applicable? For example:
+
+- [`silenced_deprecation_error`](https://github.com/julienfalque/PHP-CS-Fixer/blob/doc/doc/rules/language_construct/silenced_deprecation_error.rst) *(deprecated, risky)*
+    Ensures deprecation notices are silenced.
+
+I think that would give the most information while still being as minimal as possible. Then you can read all of the what, and for the why/how you can click.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-09-17T08:43:14Z
+
+The list of rules headings I see are generated based on the namespace, which makes sense, but also causes inconsistency with the rule summaries:
+
+- Php Unit
+    Referred to as PHPUnit in the summaries
+- Php Tag
+    Referred to as PHP tags in the summaries
+- Phpdoc
+    Referred to as PHPDoc in the summaries
+
+Do you think there is value in just mapping these cases, to have the desired consistency?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-09-17T09:06:11Z
+
+The single-rule description pages could also list the rulesets the rule is part of. That's currently in the main readme as well. I wouldn't do it in the list, but it deserves a spot on the single-rule page imho.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-06T21:28:26Z
+
+The new documentation now has some tests. I consider this PR ready for review.
+
+@dmvdbrugge I think reworking the `fix` command help should actually be done in a separate PR.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-12T08:37:59Z
+
+Documentation command is now in a dedicated script: `dev-tools/doc` (ref #3473).
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-20T07:19:05Z
+
+Note: won't merging this break something on https://cs.symfony.com? ping @keradus (and @fabpot maybe?)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2020-04-22T21:33:34Z
+
+Maybe it's time to archive cs.symfony.com?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-25T12:22:23Z
+
+Changes from #4890 integrated here.
