@@ -154,8 +154,17 @@ echo 1;
                 }
 
                 $this->insertHeader($tokens, $headerNewIndex);
-            } elseif ($this->getHeaderAsComment() !== $tokens[$headerCurrentIndex]->getContent() || $possibleLocation !== $location) {
-                $this->removeHeader($tokens, $headerCurrentIndex);
+
+                continue;
+            }
+
+            $sameComment = $this->getHeaderAsComment() === $tokens[$headerCurrentIndex]->getContent();
+            $expectedLocation = $possibleLocation === $location;
+
+            if (!$sameComment || !$expectedLocation) {
+                if ($expectedLocation ^ $sameComment) {
+                    $this->removeHeader($tokens, $headerCurrentIndex);
+                }
 
                 if ('' === $this->configuration['header']) {
                     continue;
@@ -164,9 +173,11 @@ echo 1;
                 if ($possibleLocation === $location) {
                     $this->insertHeader($tokens, $headerNewIndex);
                 }
-            } else {
-                $this->fixWhiteSpaceAroundHeader($tokens, $headerCurrentIndex);
+
+                continue;
             }
+
+            $this->fixWhiteSpaceAroundHeader($tokens, $headerCurrentIndex);
         }
     }
 
