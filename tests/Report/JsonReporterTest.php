@@ -153,7 +153,7 @@ JSON;
      */
     private static function assertJsonSchema($json)
     {
-        $jsonPath = __DIR__.'/../../doc/schema.json';
+        $jsonPath = __DIR__.'/../../doc/report-schema/schema.json';
 
         $data = json_decode($json);
 
