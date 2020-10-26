@@ -340,6 +340,9 @@ echo 1;',
  */
 
 declare(strict_types=1);
+/**
+ * bar
+ */
 
 namespace A;
 
@@ -476,6 +479,73 @@ class Foo {}',
  * Foo class doc.
  */
 class Foo {}',
+            ],
+            [
+                [
+                    'header' => 'bar',
+                    'location' => 'after_open',
+                ],
+                '<?php
+
+/*
+ * bar
+ */
+
+declare(strict_types=1);
+
+// foo
+foo();',
+                '<?php
+
+/*
+ * foo
+ */
+
+declare(strict_types=1);
+
+// foo
+foo();',
+            ],
+            [
+                [
+                    'header' => 'bar',
+                    'location' => 'after_open',
+                ],
+                '<?php
+
+/*
+ * bar
+ */
+
+declare(strict_types=1);
+
+/* foo */
+foo();',
+                '<?php
+
+/*
+ * foo
+ */
+
+declare(strict_types=1);
+
+/* foo */
+foo();',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ],
+                '<?php
+
+/*
+ * tmp
+ */
+
+declare(strict_types=1) ?>',
+                '<?php
+declare(strict_types=1) ?>',
             ],
         ];
     }
