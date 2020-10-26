@@ -42,7 +42,9 @@ final class ProjectCodeTest extends TestCase
      */
     private static $classesWithoutTests = [
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
+        \PhpCsFixer\Console\Command\DocumentationCommand::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
+        \PhpCsFixer\Documentation\DocumentationGenerator::class,
         \PhpCsFixer\Fixer\Operator\AlignDoubleArrowFixerHelper::class,
         \PhpCsFixer\Fixer\Operator\AlignEqualsFixerHelper::class,
         \PhpCsFixer\Fixer\Whitespace\NoExtraConsecutiveBlankLinesFixer::class,

@@ -1,0 +1,126 @@
+============
+Installation
+============
+
+Requirements
+------------
+
+PHP needs to be a minimum version of PHP 5.6.0.
+
+Installation
+------------
+
+Locally
+~~~~~~~
+
+Download the `php-cs-fixer.phar`_ file and store it somewhere on your computer.
+
+Globally (manual)
+~~~~~~~~~~~~~~~~~
+
+You can run these commands to easily access latest ``php-cs-fixer`` from anywhere on
+your system:
+
+.. code-block:: console
+
+    $ wget https://cs.symfony.com/download/php-cs-fixer-v2.phar -O php-cs-fixer
+
+or with specified version:
+
+.. code-block:: console
+
+    $ wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.15.8/php-cs-fixer.phar -O php-cs-fixer
+
+or with curl:
+
+.. code-block:: console
+
+    $ curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
+
+then:
+
+.. code-block:: console
+
+    $ sudo chmod a+x php-cs-fixer
+    $ sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
+
+Then, just run ``php-cs-fixer``.
+
+Globally (Composer)
+~~~~~~~~~~~~~~~~~~~
+
+To install PHP CS Fixer, `install Composer <https://getcomposer.org/download/>`_ and issue the following command:
+
+.. code-block:: console
+
+    $ composer global require friendsofphp/php-cs-fixer
+
+Then make sure you have the global Composer binaries directory in your ``PATH``. This directory is platform-dependent, see `Composer documentation <https://getcomposer.org/doc/03-cli.md#composer-home>`_ for details. Example for some Unix systems:
+
+.. code-block:: console
+
+    $ export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+Globally (homebrew)
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: console
+
+    $ brew install php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~
+
+Install `PHIVE <https://phar.io>`_ and issue the following command:
+
+.. code-block:: console
+
+    $ phive install php-cs-fixer # use `--global` for global install
+
+Update
+------
+
+Locally
+~~~~~~~
+
+The ``self-update`` command tries to update ``php-cs-fixer`` itself:
+
+.. code-block:: console
+
+    $ php php-cs-fixer.phar self-update
+
+Globally (manual)
+~~~~~~~~~~~~~~~~~
+
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: console
+
+    $ sudo php-cs-fixer self-update
+
+Globally (Composer)
+~~~~~~~~~~~~~~~~~~~
+
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: console
+
+    $ ./composer.phar global update friendsofphp/php-cs-fixer
+
+Globally (homebrew)
+~~~~~~~~~~~~~~~~~~~
+
+You can update ``php-cs-fixer`` through this command:
+
+.. code-block:: console
+
+    $ brew upgrade php-cs-fixer
+
+Locally (PHIVE)
+~~~~~~~~~~~~~~~
+
+.. code-block:: console
+
+    $ phive update php-cs-fixer
+
+.. _php-cs-fixer.phar: https://cs.symfony.com/download/php-cs-fixer-v2.phar

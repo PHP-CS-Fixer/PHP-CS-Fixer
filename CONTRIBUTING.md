@@ -4,6 +4,20 @@ If you need any help, don't hesitate to ask the community on [Gitter](https://gi
 
 ## Quick Guide
 
+### Fixer
+
+A *fixer* is a class that tries to fix one code style issue (a ``Fixer`` class
+must implement ``FixerInterface``).
+
+### Config
+
+A *config* knows about the code style rules and the files and directories that
+must be scanned by the tool when run in the directory of your project. It is
+useful for projects that follow a well-known directory structures (like for
+Symfony projects for instance).
+
+### How-To
+
 * [Fork](https://help.github.com/articles/fork-a-repo/) the repo.
 * [Checkout](https://git-scm.com/docs/git-checkout) the branch you want to make changes on:
   * If you are fixing a bug or typo, improving tests or for any small tweak: the lowest branch where the changes can be applied. Once your Pull Request is accepted, the changes will get merged up to highest branches.
@@ -14,7 +28,7 @@ If you need any help, don't hesitate to ask the community on [Gitter](https://gi
 * If you are adding functionality or fixing a bug - add a test! Prefer adding new test cases over modifying existing ones.
 * Make sure there is no wrong file permissions in the repository: `./dev-tools/check_file_permissions.sh`.
 * Make sure there is no trailing spaces in the code: `./dev-tools/check_trailing_spaces.sh`.
-* Regenerate README: `php php-cs-fixer readme > README.rst` (Windows `php.exe php-cs-fixer readme > README.rst`). Do not modify `README.rst` manually!
+* Update documentation: `php dev-tools/doc`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker run -it --rm --user="$(id -u):$(id -g)" -w="/app" --volume="$(pwd):/app" php:7.4-cli php dev-tools/doc`.
 * Install dev tools: `dev-tools/install.sh`
 * Run static analysis using PHPStan: `php -d memory_limit=256M dev-tools/vendor/bin/phpstan analyse`
 * Check if tests pass: `vendor/bin/phpunit`.
@@ -32,7 +46,7 @@ You can do some things to increase the chance that your Pull Request is accepted
 
 ## Making New Fixers
 
-There is a [cookbook](doc/COOKBOOK-FIXERS.md) with basic instructions on how to build a new fixer. Consider reading it
+There is a [cookbook](doc/cookbook_fixers.rst) with basic instructions on how to build a new fixer. Consider reading it
 before opening a PR.
 
 ## Project's Standards
