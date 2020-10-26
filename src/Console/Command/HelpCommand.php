@@ -58,29 +58,29 @@ problems as possible on a given file or files in a given directory and its subdi
     <info>$ php %command.full_name% /path/to/dir</info>
     <info>$ php %command.full_name% /path/to/file</info>
 
-By default <comment>--path-mode</comment> is set to ``override``, which means, that if you specify the path to a file or a directory via
-command arguments, then the paths provided to a ``Finder`` in config file will be ignored. You can use <comment>--path-mode=intersection</comment>
+By default <comment>--path-mode</comment> is set to `override`, which means, that if you specify the path to a file or a directory via
+command arguments, then the paths provided to a `Finder` in config file will be ignored. You can use <comment>--path-mode=intersection</comment>
 to merge paths from the config file and from the argument:
 
     <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-The <comment>--format</comment> option for the output format. Supported formats are ``txt`` (default one), ``json``, ``xml``, ``checkstyle``, ``junit`` and ``gitlab``.
+The <comment>--format</comment> option for the output format. Supported formats are `txt` (default one), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 
-* ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
-* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
+* `junit` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
+* `checkstyle` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
 
 The <comment>--quiet</comment> Do not output any message.
 
-The <comment>--verbose</comment> option will show the applied rules. When using the ``txt`` format it will also display progress notifications.
+The <comment>--verbose</comment> option will show the applied rules. When using the `txt` format it will also display progress notifications.
 
 NOTE: if there is an error like "errors reported during linting after fixing", you can use this to be even more verbose for debugging purpose
 
-* ``--verbose=0`` or no option: normal
-* ``--verbose``, ``--verbose=1``, ``-v``: verbose
-* ``--verbose=2``, ``-vv``: very verbose
-* ``--verbose=3``, ``-vvv``: debug
+* `--verbose=0` or no option: normal
+* `--verbose`, `--verbose=1`, `-v`: verbose
+* `--verbose=2`, `-vv`: very verbose
+* `--verbose=3`, `-vvv`: debug
 
 The <comment>--rules</comment> option limits the rules to apply to the
 project:
@@ -103,7 +103,7 @@ When using combinations of exact and exclude rules, applying exact rules along w
 
     <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
 
-Complete configuration for rules can be supplied using a ``json`` formatted string.
+Complete configuration for rules can be supplied using a `json` formatted string.
 
     <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
 
@@ -116,7 +116,7 @@ The <comment>--diff-format</comment> option allows to specify in which format th
 * <comment>udiff</comment>: unified diff format;
 * <comment>sbd</comment>: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
 
-The <comment>--allow-risky</comment> option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
+The <comment>--allow-risky</comment> option (pass `yes` or `no`) allows you to set whether risky rules may run. Default value is taken from config file.
 A rule is considered risky if it could change code behaviour. By default no risky rules are run.
 
 The <comment>--stop-on-violation</comment> flag stops the execution upon first file that needs to be fixed.
@@ -197,14 +197,14 @@ The example below will add two rules to the default list of PSR2 set rules:
 
     ?>
 
-**NOTE**: ``exclude`` will work only for directories, so if you need to exclude file, try ``notPath``.
-Both ``exclude`` and ``notPath`` methods accept only relative paths to the ones defined with the ``in`` method.
+**NOTE**: `exclude` will work only for directories, so if you need to exclude file, try `notPath`.
+Both `exclude` and `notPath` methods accept only relative paths to the ones defined with the `in` method.
 
 See `Symfony\Finder` (<url>https://symfony.com/doc/current/components/finder.html</url>)
 online documentation for other `Finder` methods.
 
 You may also use an exclude list for the rules instead of the above shown include approach.
-The following example shows how to use all ``Symfony`` rules but the ``full_opening_tag`` rule.
+The following example shows how to use all `Symfony` rules but the `full_opening_tag` rule.
 
     <?php
 
@@ -235,7 +235,7 @@ configure them in your config file.
 
     ?>
 
-By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
+By using `--using-cache` option with `yes` or `no` you can set if the caching
 mechanism should be used.
 
 Caching
@@ -247,7 +247,7 @@ files if the tool version has changed or the list of rules has changed.
 Cache is supported only for tool downloaded as phar file or installed via
 composer.
 
-Cache can be disabled via ``--using-cache`` option or config file:
+Cache can be disabled via `--using-cache` option or config file:
 
     <?php
 
@@ -257,7 +257,7 @@ Cache can be disabled via ``--using-cache`` option or config file:
 
     ?>
 
-Cache file can be specified via ``--cache-file`` option or config file:
+Cache file can be specified via `--cache-file` option or config file:
 
     <?php
 
@@ -270,7 +270,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
 Using PHP CS Fixer on CI
 ------------------------
 
-Require ``friendsofphp/php-cs-fixer`` as a ``dev`` dependency:
+Require `friendsofphp/php-cs-fixer` as a `dev` dependency:
 
     $ ./composer.phar require --dev friendsofphp/php-cs-fixer
 
@@ -278,12 +278,12 @@ Then, add the following command to your CI:
 
 %%%CI_INTEGRATION%%%
 
-Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
+Where `$COMMIT_RANGE` is your range of commits, e.g. `$TRAVIS_COMMIT_RANGE` or `HEAD~..HEAD`.
 
 Exit code
 ---------
 
-Exit code is built using following bit flags:
+Exit code of the fix command is built using following bit flags:
 
 *  0 - OK.
 *  1 - General error (or PHP minimal requirement not matched).
@@ -293,7 +293,6 @@ Exit code is built using following bit flags:
 * 32 - Configuration error of a Fixer.
 * 64 - Exception raised within the application.
 
-(Applies to exit code of the ``fix`` command only)
 EOF
         ;
 
