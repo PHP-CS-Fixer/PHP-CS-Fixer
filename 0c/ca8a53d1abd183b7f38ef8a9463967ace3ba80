@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-05-13T11:14:32Z
+
+I think this will still remove the 2nd comment:
+
+```php
+<?php
+
+/*
+ * foo
+ */
+
+declare(strict_types=1);
+
+/* 2 */
+foo();
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-14T19:51:26Z
+
+Indeed. Also this was a bad fix. I tried a different approach, I think it's more robust and reliable, but it's also a small behavior change: now the comments that are not in the expected location will not be removed unless they have the exact same content as the header.
