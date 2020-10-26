@@ -1,0 +1,34 @@
+==========================
+Rule ``array_indentation``
+==========================
+
+Each element of an array must be indented exactly once.
+
+Examples
+--------
+
+Example #1
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,6 +1,6 @@
+    <?php
+    $foo = [
+   -   'bar' => [
+   -    'baz' => true,
+   -  ],
+   +    'bar' => [
+   +        'baz' => true,
+   +    ],
+    ];
+
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+@PhpCsFixer
+  Using the ``@PhpCsFixer`` rule set will enable the ``array_indentation`` rule.

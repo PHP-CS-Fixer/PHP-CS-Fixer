@@ -21,7 +21,10 @@ if (defined('HHVM_VERSION_ID')) {
     } else {
         exit(1);
     }
-} elseif (!defined('PHP_VERSION_ID') || \PHP_VERSION_ID < 50600 || \PHP_VERSION_ID >= 70500) {
+} elseif (
+    (!defined('PHP_VERSION_ID') || \PHP_VERSION_ID < 50600 || \PHP_VERSION_ID >= 70500)
+    && (!isset($_SERVER['argv'][1]) || 'documentation' !== $_SERVER['argv'][1])
+) {
     fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.4.*.\n");
 
     if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {

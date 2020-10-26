@@ -16,7 +16,6 @@ use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
-use PhpCsFixer\Console\Command\HelpCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -50,18 +49,6 @@ final class PharTest extends AbstractSmokeTest
         static::assertRegExp(
             '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
             self::executePharCommand('--version')->getOutput()
-        );
-    }
-
-    public function testReadme()
-    {
-        static::assertSame(
-            str_replace(
-                HelpCommand::getLatestReleaseVersionFromChangeLog(),
-                Application::VERSION,
-                file_get_contents(__DIR__.'/../../README.rst')
-            ),
-            self::executePharCommand('readme')->getOutput()
         );
     }
 

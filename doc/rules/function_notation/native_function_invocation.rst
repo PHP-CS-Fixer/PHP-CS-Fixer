@@ -1,0 +1,211 @@
+===================================
+Rule ``native_function_invocation``
+===================================
+
+Add leading ``\`` before function invocation to speed up resolving.
+
+.. warning:: Using this rule is risky.
+
+   Risky when any of the functions are overridden.
+
+Configuration
+-------------
+
+``exclude``
+~~~~~~~~~~~
+
+List of functions to ignore.
+
+Allowed types: ``array``
+
+Default value: ``[]``
+
+``include``
+~~~~~~~~~~~
+
+List of function names or sets to fix. Defined sets are ``@internal`` (all
+native functions), ``@all`` (all global functions) and ``@compiler_optimized``
+(functions that are specially optimized by Zend).
+
+Allowed types: ``array``
+
+Default value: ``['@internal']``
+
+``scope``
+~~~~~~~~~
+
+Only fix function calls that are made within a namespace or fix all.
+
+Allowed values: ``'all'``, ``'namespaced'``
+
+Default value: ``'all'``
+
+``strict``
+~~~~~~~~~~
+
+Whether leading ``\`` of function call not meant to have it should be removed.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
+Examples
+--------
+
+Example #1
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -2,9 +2,9 @@
+
+    function baz($options)
+    {
+   -    if (!array_key_exists("foo", $options)) {
+   +    if (!\array_key_exists("foo", $options)) {
+            throw new \InvalidArgumentException();
+        }
+
+   -    return json_encode($options);
+   +    return \json_encode($options);
+    }
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['exclude' => ['json_encode']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -2,9 +2,9 @@
+
+    function baz($options)
+    {
+   -    if (!array_key_exists("foo", $options)) {
+   +    if (!\array_key_exists("foo", $options)) {
+            throw new \InvalidArgumentException();
+        }
+
+        return json_encode($options);
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['scope' => 'all']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,7 +1,7 @@
+    <?php
+    namespace space1 {
+   -    echo count([1]);
+   +    echo \count([1]);
+    }
+    namespace {
+   -    echo count([1]);
+   +    echo \count([1]);
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['scope' => 'namespaced']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,7 +1,7 @@
+    <?php
+    namespace space1 {
+   -    echo count([1]);
+   +    echo \count([1]);
+    }
+    namespace {
+        echo count([1]);
+    }
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['include' => ['myGlobalFunction']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,3 +1,3 @@
+    <?php
+   -myGlobalFunction();
+   +\myGlobalFunction();
+    count();
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['include' => ['@all']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,3 +1,3 @@
+    <?php
+   -myGlobalFunction();
+   -count();
+   +\myGlobalFunction();
+   +\count();
+
+Example #7
+~~~~~~~~~~
+
+With configuration: ``['include' => ['@internal']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,3 +1,3 @@
+    <?php
+    myGlobalFunction();
+   -count();
+   +\count();
+
+Example #8
+~~~~~~~~~~
+
+With configuration: ``['include' => ['@compiler_optimized']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,3 +1,3 @@
+    <?php
+    $a .= str_repeat($a, 4);
+   -$c = get_class($d);
+   +$c = \get_class($d);
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@Symfony:risky
+  Using the ``@Symfony:risky`` rule set will enable the ``native_function_invocation`` rule with the config below:
+
+  ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
+
+@PhpCsFixer:risky
+  Using the ``@PhpCsFixer:risky`` rule set will enable the ``native_function_invocation`` rule with the config below:
+
+  ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
