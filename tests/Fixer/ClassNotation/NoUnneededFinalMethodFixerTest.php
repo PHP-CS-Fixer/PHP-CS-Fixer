@@ -217,6 +217,15 @@ class Foo {
             'trait' => [
                 '<php trait Foo { final public function foo() {} }',
             ],
+            'do not fix constructors' => [
+                '<?php
+class Bar
+{
+    final private function __construct()
+    {
+    }
+}',
+            ],
         ];
     }
 
