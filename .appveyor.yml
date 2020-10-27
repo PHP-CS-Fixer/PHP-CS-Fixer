@@ -31,7 +31,6 @@ install:
     - echo extension=php_mbstring.dll >> php.ini
     - IF NOT EXIST C:\tools\composer.phar (cd C:\tools && appveyor DownloadFile https://getcomposer.org/composer-stable.phar -FileName composer.phar)
     - cd C:\projects\php-cs-fixer
-    - php C:\tools\composer.phar global show hirak/prestissimo -q || php C:\tools\composer.phar global require hirak/prestissimo
 
 before_test:
     - cd C:\projects\php-cs-fixer

@@ -44,4 +44,7 @@ parameters:
         - # https://github.com/phpstan/phpstan/issues/1215
             message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
             path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
+        -
+            message: '/^Unreachable statement - code above always terminates\.$/'
+            path: tests/AutoReview/DocumentationTest.php
     tipsOfTheDay: false

@@ -20,12 +20,14 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="2.0.0.2"
+VERSION_CB="2.20.4"
 VERSION_SC="stable"
 
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
-    wget -Obin/checkbashisms https://sourceforge.net/projects/checkbaskisms/files/${VERSION_CB}/checkbashisms/download
+    wget -qO- "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_${VERSION_CB}.tar.xz" \
+        | tar -xJv -O devscripts-${VERSION_CB}/scripts/checkbashisms.pl \
+        > bin/checkbashisms
     chmod u+x bin/checkbashisms
 fi
 bin/checkbashisms --version

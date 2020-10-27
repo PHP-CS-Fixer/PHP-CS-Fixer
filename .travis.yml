@@ -20,8 +20,8 @@ before_install:
     # turn off XDebug
     - phpenv config-rm xdebug.ini || return 0
 
-    # Composer: boost installation
-    - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+    # Composer v2
+    - composer self-update --2
 
 jobs:
     include:
@@ -115,8 +115,8 @@ jobs:
                 # turn off XDebug
                 - phpenv config-rm xdebug.ini || return 0
 
-                # Composer: boost installation
-                - composer global show hirak/prestissimo -q || travis_retry composer global require $DEFAULT_COMPOSER_FLAGS hirak/prestissimo
+                # Composer v2
+                - composer self-update --2
 
                 # Require PHPUnit 8
                 - composer require --dev --no-update phpunit/phpunit:^8
