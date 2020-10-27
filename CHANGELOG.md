@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.16.7
+---------------------
+
+experimental release
+
+* Require PHP 7.1
+
 Changelog for v2.16.6
 ---------------------
 
