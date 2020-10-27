@@ -2,6 +2,10 @@
 Rule ``lowercase_constants``
 ============================
 
+.. warning:: This rule is deprecated and will be removed on next major version.
+
+   You should use ``constant_case`` instead.
+
 The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
 
 Examples
@@ -22,17 +26,3 @@ Example #1
    +$a = false;
    +$b = true;
    +$c = null;
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-@PSR2
-  Using the ``@PSR2`` rule set will enable the ``lowercase_constants`` rule.
-
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``lowercase_constants`` rule.
-
-@PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``lowercase_constants`` rule.
