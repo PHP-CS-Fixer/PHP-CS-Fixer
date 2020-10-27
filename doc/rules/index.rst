@@ -59,7 +59,9 @@ Basic
 Casing
 ------
 
-- `lowercase_constants <./casing/lowercase_constants.rst>`_
+- `constant_case <./casing/constant_case.rst>`_
+    The PHP constants ``true``, ``false``, and ``null`` MUST be written using the correct casing.
+- `lowercase_constants <./casing/lowercase_constants.rst>`_ *(deprecated)*
     The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
 - `lowercase_keywords <./casing/lowercase_keywords.rst>`_
     PHP keywords MUST be in lower case.
@@ -101,6 +103,10 @@ Class Notation
     All classes must be final, except abstract ones and Doctrine entities.
 - `final_internal_class <./class_notation/final_internal_class.rst>`_ *(risky)*
     Internal classes should be ``final``.
+- `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
+    All ``public`` methods of ``abstract`` classes should be ``final``.
+- `final_static_access <./class_notation/final_static_access.rst>`_
+    Converts ``static`` access to ``self`` access in ``final`` classes.
 - `method_separation <./class_notation/method_separation.rst>`_ *(deprecated)*
     Methods must be separated with one blank line.
 - `no_blank_lines_after_class_opening <./class_notation/no_blank_lines_after_class_opening.rst>`_
@@ -119,6 +125,8 @@ Class Notation
     Converts ``protected`` variables and methods to ``private`` where possible.
 - `self_accessor <./class_notation/self_accessor.rst>`_ *(risky)*
     Inside class or interface element ``self`` should be preferred to the class name itself.
+- `self_static_accessor <./class_notation/self_static_accessor.rst>`_
+    Inside a ``final`` class or anonymous class ``self`` should be preferred to ``static``.
 - `single_class_element_per_statement <./class_notation/single_class_element_per_statement.rst>`_
     There MUST NOT be more than one property or constant declared per statement.
 - `single_trait_insert_per_statement <./class_notation/single_trait_insert_per_statement.rst>`_
@@ -219,10 +227,16 @@ Function Notation
     When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
     In function arguments there must not be arguments with default values before non-default ones.
+- `nullable_type_declaration_for_default_null_value <./function_notation/nullable_type_declaration_for_default_null_value.rst>`_
+    Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
+- `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*
+    EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
     EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
 - `return_type_declaration <./function_notation/return_type_declaration.rst>`_
     There should be one or no space before colon, and one space after it in return type declarations, according to configuration.
+- `single_line_throw <./function_notation/single_line_throw.rst>`_
+    Throwing exception must be done in single line.
 - `static_lambda <./function_notation/static_lambda.rst>`_ *(risky)*
     Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 - `void_return <./function_notation/void_return.rst>`_ *(risky)*
@@ -233,6 +247,8 @@ Import
 
 - `fully_qualified_strict_types <./import/fully_qualified_strict_types.rst>`_
     Transforms imported FQCN parameters and return types in function arguments to short version.
+- `global_namespace_import <./import/global_namespace_import.rst>`_
+    Imports or fully qualifies global classes/functions/constants.
 - `no_leading_import_slash <./import/no_leading_import_slash.rst>`_
     Remove leading slashes in ``use`` clauses.
 - `no_unused_imports <./import/no_unused_imports.rst>`_
@@ -403,6 +419,8 @@ PHPDoc
     Docblocks should have the same indentation as the documented subject.
 - `phpdoc_inline_tag <./phpdoc/phpdoc_inline_tag.rst>`_
     Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
+- `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_
+    Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
     ``@access`` annotations should be omitted from PHPDoc.
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_
