@@ -2,7 +2,7 @@
 set -eu
 
 # ensure that deps will work on lowest supported PHP version
-composer config platform.php 2> /dev/null || composer config platform.php 7.0.0
+composer config platform.php 2> /dev/null || composer config platform.php 7.0.8
 
 # require suggested packages
 composer require --no-update symfony/polyfill-mbstring
