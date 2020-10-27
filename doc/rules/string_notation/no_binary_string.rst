@@ -34,7 +34,10 @@ Example #2
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+@Symfony
+  Using the ``@Symfony`` rule set will enable the ``no_binary_string`` rule.
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``no_binary_string`` rule.

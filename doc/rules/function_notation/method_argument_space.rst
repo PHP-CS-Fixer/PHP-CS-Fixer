@@ -239,3 +239,18 @@ The rule is part of the following rule sets:
   Using the ``@PhpCsFixer`` rule set will enable the ``method_argument_space`` rule with the config below:
 
   ``['on_multiline' => 'ensure_fully_multiline']``
+
+@PHP73Migration
+  Using the ``@PHP73Migration`` rule set will enable the ``method_argument_space`` rule with the config below:
+
+  ``['after_heredoc' => true]``
+
+@PHP74Migration
+  Using the ``@PHP74Migration`` rule set will enable the ``method_argument_space`` rule with the config below:
+
+  ``['after_heredoc' => true]``
+
+@PHP80Migration
+  Using the ``@PHP80Migration`` rule set will enable the ``method_argument_space`` rule with the config below:
+
+  ``['after_heredoc' => true]``

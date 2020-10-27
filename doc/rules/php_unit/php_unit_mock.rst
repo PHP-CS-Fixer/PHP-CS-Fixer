@@ -101,3 +101,8 @@ The rule is part of the following rule sets:
   Using the ``@PHPUnit75Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.5']``
+
+@PHPUnit84Migration:risky
+  Using the ``@PHPUnit84Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+
+  ``['target' => '5.5']``

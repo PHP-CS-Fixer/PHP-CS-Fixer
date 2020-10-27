@@ -13,7 +13,7 @@ Configuration
 
 The tags that should be aligned.
 
-Allowed values: a subset of ``['param', 'property', 'return', 'throws', 'type', 'var', 'method']``
+Allowed values: a subset of ``['param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var', 'method']``
 
 Default value: ``['param', 'return', 'throws', 'type', 'var']``
 

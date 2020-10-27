@@ -8,6 +8,15 @@ placed. Body of braces should be properly indented.
 Configuration
 -------------
 
+``allow_single_line_anonymous_class_with_empty_body``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether single line anonymous class with empty body notation should be allowed.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``allow_single_line_closure``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -179,9 +188,9 @@ The rule is part of the following rule sets:
 @Symfony
   Using the ``@Symfony`` rule set will enable the ``braces`` rule with the config below:
 
-  ``['allow_single_line_closure' => true]``
+  ``['allow_single_line_anonymous_class_with_empty_body' => true, 'allow_single_line_closure' => true]``
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``braces`` rule with the config below:
 
-  ``['allow_single_line_closure' => true]``
+  ``['allow_single_line_anonymous_class_with_empty_body' => true, 'allow_single_line_closure' => true]``

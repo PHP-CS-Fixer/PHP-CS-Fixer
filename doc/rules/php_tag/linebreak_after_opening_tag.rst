@@ -19,3 +19,14 @@ Example #1
    +<?php
    +$a = 1;
     $b = 3;
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@Symfony
+  Using the ``@Symfony`` rule set will enable the ``linebreak_after_opening_tag`` rule.
+
+@PhpCsFixer
+  Using the ``@PhpCsFixer`` rule set will enable the ``linebreak_after_opening_tag`` rule.

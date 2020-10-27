@@ -46,5 +46,8 @@ The rule is part of the following rule sets:
 @PhpCsFixer:risky
   Using the ``@PhpCsFixer:risky`` rule set will enable the ``implode_call`` rule.
 
+@PHP74Migration:risky
+  Using the ``@PHP74Migration:risky`` rule set will enable the ``implode_call`` rule.
+
 @PHP80Migration:risky
   Using the ``@PHP80Migration:risky`` rule set will enable the ``implode_call`` rule.

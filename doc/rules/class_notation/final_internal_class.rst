@@ -11,30 +11,36 @@ Internal classes should be ``final``.
 Configuration
 -------------
 
-``annotation-white-list``
-~~~~~~~~~~~~~~~~~~~~~~~~~
+``annotation_include``
+~~~~~~~~~~~~~~~~~~~~~~
 
 Class level annotations tags that must be set in order to fix the class. (case
 insensitive)
+
+.. note:: The previous name of this option was ``annotation-white-list`` but it is now deprecated and will be removed on next major version.
 
 Allowed types: ``array``
 
 Default value: ``['@internal']``
 
-``annotation-black-list``
-~~~~~~~~~~~~~~~~~~~~~~~~~
+``annotation_exclude``
+~~~~~~~~~~~~~~~~~~~~~~
 
 Class level annotations tags that must be omitted to fix the class, even if all
-of the excluded ones are used as well. (case insensitive)
+of the white list ones are used as well. (case insensitive)
+
+.. note:: The previous name of this option was ``annotation-black-list`` but it is now deprecated and will be removed on next major version.
 
 Allowed types: ``array``
 
 Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``
 
-``consider-absent-docblock-as-internal-class``
+``consider_absent_docblock_as_internal_class``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Should classes without any DocBlock be fixed to final?
+
+.. note:: The previous name of this option was ``consider-absent-docblock-as-internal-class`` but it is now deprecated and will be removed on next major version.
 
 Allowed types: ``bool``
 
@@ -64,16 +70,18 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['annotation-white-list' => ['@Custom']]``.
+With configuration: ``['annotation_include' => ['@Custom'], 'annotation_exclude' => ['@not-fix']]``.
 
 .. code-block:: diff
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
-    <?php
-   -/** @CUSTOM */class A{}
-   +/** @CUSTOM */final class A{}
+   @@ -2,5 +2,5 @@
+    /**
+     * @CUSTOM
+     */
+   -class A{}
+   +final class A{}
 
 Rule sets
 ---------

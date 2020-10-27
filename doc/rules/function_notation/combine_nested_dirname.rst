@@ -29,11 +29,20 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Symfony:risky
+  Using the ``@Symfony:risky`` rule set will enable the ``combine_nested_dirname`` rule.
+
+@PhpCsFixer:risky
+  Using the ``@PhpCsFixer:risky`` rule set will enable the ``combine_nested_dirname`` rule.
+
 @PHP70Migration:risky
   Using the ``@PHP70Migration:risky`` rule set will enable the ``combine_nested_dirname`` rule.
 
 @PHP71Migration:risky
   Using the ``@PHP71Migration:risky`` rule set will enable the ``combine_nested_dirname`` rule.
+
+@PHP74Migration:risky
+  Using the ``@PHP74Migration:risky`` rule set will enable the ``combine_nested_dirname`` rule.
 
 @PHP80Migration:risky
   Using the ``@PHP80Migration:risky`` rule set will enable the ``combine_nested_dirname`` rule.

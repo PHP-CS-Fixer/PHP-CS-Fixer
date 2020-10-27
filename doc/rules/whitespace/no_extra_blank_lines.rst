@@ -237,9 +237,9 @@ The rule is part of the following rule sets:
 @Symfony
   Using the ``@Symfony`` rule set will enable the ``no_extra_blank_lines`` rule with the config below:
 
-  ``['tokens' => ['curly_brace_block', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'throw', 'use']]``
+  ``['tokens' => ['case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``no_extra_blank_lines`` rule with the config below:
 
-  ``['tokens' => ['break', 'continue', 'curly_brace_block', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'throw', 'use']]``
+  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``

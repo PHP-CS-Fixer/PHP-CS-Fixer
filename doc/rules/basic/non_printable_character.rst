@@ -71,6 +71,11 @@ The rule is part of the following rule sets:
 
   ``['use_escape_sequences_in_strings' => true]``
 
+@PHP74Migration:risky
+  Using the ``@PHP74Migration:risky`` rule set will enable the ``non_printable_character`` rule with the config below:
+
+  ``['use_escape_sequences_in_strings' => true]``
+
 @PHP80Migration:risky
   Using the ``@PHP80Migration:risky`` rule set will enable the ``non_printable_character`` rule with the config below:
 

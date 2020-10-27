@@ -56,7 +56,10 @@ With configuration: ``['case' => 'snake_case']``.
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+@Symfony
+  Using the ``@Symfony`` rule set will enable the ``php_unit_method_casing`` rule with the default config.
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``php_unit_method_casing`` rule with the default config.

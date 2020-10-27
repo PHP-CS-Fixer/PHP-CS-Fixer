@@ -58,7 +58,10 @@ Example #4
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+@Symfony
+  Using the ``@Symfony`` rule set will enable the ``no_alternative_syntax`` rule.
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``no_alternative_syntax`` rule.

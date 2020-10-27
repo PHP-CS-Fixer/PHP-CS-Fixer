@@ -50,6 +50,16 @@ Allowed values: ``'all'``, ``'namespaced'``
 
 Default value: ``'all'``
 
+``strict``
+~~~~~~~~~~
+
+Whether leading ``\`` of constant invocation not meant to have it should be
+removed.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -132,9 +142,9 @@ The rule is part of the following rule sets:
 @Symfony:risky
   Using the ``@Symfony:risky`` rule set will enable the ``native_constant_invocation`` rule with the config below:
 
-  ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced']``
+  ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_INT_SIZE', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced', 'strict' => true]``
 
 @PhpCsFixer:risky
   Using the ``@PhpCsFixer:risky`` rule set will enable the ``native_constant_invocation`` rule with the config below:
 
-  ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced']``
+  ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_INT_SIZE', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced', 'strict' => true]``
