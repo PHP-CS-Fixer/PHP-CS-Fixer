@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-10-27T10:54:16Z
+
+now, the checkbashisms is failing
+https://travis-ci.org/github/FriendsOfPHP/PHP-CS-Fixer/jobs/739234651#L717
