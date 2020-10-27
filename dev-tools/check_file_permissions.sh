@@ -5,6 +5,7 @@ files_with_wrong_permissions=$(
     git ls-files --stage . \
         ':!*.sh' \
         ':!php-cs-fixer' \
+        ':!dev-tools/*.php' \
     | grep -P "^100\d\d(1|3|5|7) " \
     | sort -fh
 )
