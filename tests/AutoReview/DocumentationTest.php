@@ -33,6 +33,8 @@ final class DocumentationTest extends TestCase
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer)
     {
+        static::markTestIncomplete('Define whether this test brings value and drop it or fix it - https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5209 .');
+
         $generator = new DocumentationGenerator();
 
         $path = $generator->getFixerDocumentationFilePath($fixer);
