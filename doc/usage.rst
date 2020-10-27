@@ -22,8 +22,8 @@ The ``--format`` option for the output format. Supported formats are ``txt`` (de
 
 NOTE: the output for the following formats are generated in accordance with XML schemas
 
-* ``junit`` follows the `JUnit xml schema from Jenkins </doc/junit-10.xsd>`_
-* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/checkstyle.xsd>`_
+* ``checkstyle`` follows the common `"checkstyle" xml schema </doc/report-schema/checkstyle.xsd>`_
+* ``junit`` follows the `JUnit xml schema from Jenkins </doc/report-schema/junit-10.xsd>`_
 
 The ``--quiet`` Do not output any message.
 

@@ -279,7 +279,7 @@ Execute the following command in your command shell:
 
 .. code-block:: console
 
-   $ php dev-tools/doc
+   $ php dev-tools/doc.php
 
 Next, we must filter what type of tokens we want to fix. Here, we are interested in code that contains ``T_COMMENT`` tokens:
 

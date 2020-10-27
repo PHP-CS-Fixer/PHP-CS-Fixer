@@ -14,7 +14,7 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('tests/Fixtures')
     ->in(__DIR__)
     ->append([
-        __DIR__.'/dev-tools/doc',
+        __DIR__.'/dev-tools/doc.php',
         __DIR__.'/php-cs-fixer',
     ])
 ;
