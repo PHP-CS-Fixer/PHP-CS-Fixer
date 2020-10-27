@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^1.4 || ^2.0 || ^3.0",

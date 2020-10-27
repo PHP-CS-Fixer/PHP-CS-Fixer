@@ -139,7 +139,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
             $steps[4],
         ]);
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.0.0 and maximum version of PHP 7.4.*.
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.1.0 and maximum version of PHP 7.4.*.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
