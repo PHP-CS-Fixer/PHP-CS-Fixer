@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-06-28T17:14:09Z
+
+So the `cleanup : false` does not work? Or the space between `cleanup` and `:` could be a problem?
+
+Because now there is a warning on Travis:
+
+> `jobs.include.deploy`: deprecated key `skip_cleanup` (not supported in dpl v2, use cleanup)
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-06-29T08:11:24Z
+
+Maybe its indeed about that space. Not sure. Check travis log for those 2 new tags- first build was executing the cleanup of files and then complain nothing to deploy.
+With change picked to this pr, it got the build published.
+Maybe its indeed about the space
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-07-10T06:43:08Z
+
+I tried without the space, lets see if that works, also this should target 2.15 I think?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T16:53:14Z
+
+How can we verify this without having new tag?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-10-27T21:45:09Z
+
+https://travis-ci.com/github/FriendsOfPHP/PHP-CS-Fixer/jobs/411486429#L691
+> Cleaning up git repository with `git stash --all`. If you need build artifacts for deployment, set `deploy.skip_cleanup: true`. See https://docs.travis-ci.com/user/deployment#Uploading-Files-and-skip_cleanup.
