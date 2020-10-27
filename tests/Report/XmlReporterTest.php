@@ -35,7 +35,7 @@ final class XmlReporterTest extends AbstractReporterTestCase
     {
         parent::setUpBeforeClass();
 
-        self::$xsd = file_get_contents(__DIR__.'/../../doc/xml.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/xml.xsd');
     }
 
     public static function tearDownAfterClass()
