@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
-    /** @var array<string, string> stores alias (key) - master (value) functions mapping */
+    /** @var array<string, array<int|string>|string> stores alias (key) - master (value) functions mapping */
     private $aliases = [];
 
     /** @var array<string, string> stores alias (key) - master (value) functions mapping */
