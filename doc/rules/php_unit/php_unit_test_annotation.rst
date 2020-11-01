@@ -21,17 +21,6 @@ Allowed values: ``'annotation'``, ``'prefix'``
 
 Default value: ``'prefix'``
 
-``case``
-~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use ``php_unit_method_casing`` fixer instead.
-
-Whether to camel or snake case when adding the test prefix
-
-Allowed values: ``'camel'``, ``'snake'``
-
-Default value: ``'camel'``
-
 Examples
 --------
 
@@ -76,7 +65,10 @@ With configuration: ``['style' => 'annotation']``.
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+@Symfony:risky
+  Using the ``@Symfony:risky`` rule set will enable the ``php_unit_test_annotation`` rule with the default config.
 
 @PhpCsFixer:risky
   Using the ``@PhpCsFixer:risky`` rule set will enable the ``php_unit_test_annotation`` rule with the default config.

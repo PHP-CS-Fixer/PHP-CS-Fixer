@@ -255,7 +255,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      */
     private function addTestPrefix($functionName)
     {
-        return'test'.ucfirst($functionName);
+        return 'test'.ucfirst($functionName);
     }
 
     /**

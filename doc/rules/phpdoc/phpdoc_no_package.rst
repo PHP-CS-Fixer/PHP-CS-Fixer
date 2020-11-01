@@ -14,7 +14,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,9 +1,7 @@
+   @@ -1,8 +1,6 @@
     <?php
     /**
      * @internal
@@ -23,7 +23,6 @@ Example #1
      */
     class Baz
     {
-    }
 
 Rule sets
 ---------

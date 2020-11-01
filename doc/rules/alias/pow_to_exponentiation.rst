@@ -28,6 +28,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@Symfony:risky
+  Using the ``@Symfony:risky`` rule set will enable the ``pow_to_exponentiation`` rule.
+
+@PhpCsFixer:risky
+  Using the ``@PhpCsFixer:risky`` rule set will enable the ``pow_to_exponentiation`` rule.
+
 @PHP56Migration:risky
   Using the ``@PHP56Migration:risky`` rule set will enable the ``pow_to_exponentiation`` rule.
 
@@ -36,6 +42,9 @@ The rule is part of the following rule sets:
 
 @PHP71Migration:risky
   Using the ``@PHP71Migration:risky`` rule set will enable the ``pow_to_exponentiation`` rule.
+
+@PHP74Migration:risky
+  Using the ``@PHP74Migration:risky`` rule set will enable the ``pow_to_exponentiation`` rule.
 
 @PHP80Migration:risky
   Using the ``@PHP80Migration:risky`` rule set will enable the ``pow_to_exponentiation`` rule.

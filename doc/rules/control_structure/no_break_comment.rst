@@ -35,7 +35,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,10 +2,10 @@
+   @@ -2,9 +2,9 @@
     switch ($foo) {
         case 1:
             foo();
@@ -46,7 +46,6 @@ Example #1
             break;
         case 3:
             baz();
-    }
 
 Example #2
 ~~~~~~~~~~

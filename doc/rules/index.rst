@@ -5,6 +5,8 @@ List of Available Rules
 Alias
 -----
 
+- `array_push <./alias/array_push.rst>`_ *(risky)*
+    Converts simple usages of ``array_push($x, $y);`` to ``$x[] = $y;``.
 - `backtick_to_shell_exec <./alias/backtick_to_shell_exec.rst>`_
     Converts backtick operators to ``shell_exec`` calls.
 - `ereg_to_preg <./alias/ereg_to_preg.rst>`_ *(risky)*
@@ -13,6 +15,8 @@ Alias
     Replace non multibyte-safe functions with corresponding mb function.
 - `no_alias_functions <./alias/no_alias_functions.rst>`_ *(risky)*
     Master functions shall be used instead of aliases.
+- `no_alias_language_construct_call <./alias/no_alias_language_construct_call.rst>`_
+    Master language constructs shall be used instead of aliases.
 - `no_mixed_echo_print <./alias/no_mixed_echo_print.rst>`_
     Either language construct ``print`` or ``echo`` should be used.
 - `pow_to_exponentiation <./alias/pow_to_exponentiation.rst>`_ *(risky)*
@@ -51,16 +55,18 @@ Basic
     PHP code MUST use only UTF-8 without BOM (remove BOM).
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
     Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
-- `psr0 <./basic/psr0.rst>`_ *(risky)*
+- `psr0 <./basic/psr0.rst>`_ *(deprecated, risky)*
     Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
-- `psr4 <./basic/psr4.rst>`_ *(risky)*
+- `psr4 <./basic/psr4.rst>`_ *(deprecated, risky)*
     Class names should match the file name.
+- `psr_autoloading <./basic/psr_autoloading.rst>`_ *(risky)*
+    Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
 
 Casing
 ------
 
-- `lowercase_constants <./casing/lowercase_constants.rst>`_
-    The PHP constants ``true``, ``false``, and ``null`` MUST be in lower case.
+- `constant_case <./casing/constant_case.rst>`_
+    The PHP constants ``true``, ``false``, and ``null`` MUST be written using the correct casing.
 - `lowercase_keywords <./casing/lowercase_keywords.rst>`_
     PHP keywords MUST be in lower case.
 - `lowercase_static_reference <./casing/lowercase_static_reference.rst>`_
@@ -94,15 +100,17 @@ Class Notation
 --------------
 
 - `class_attributes_separation <./class_notation/class_attributes_separation.rst>`_
-    Class, trait and interface elements must be separated with one blank line.
+    Class, trait and interface elements must be separated with one or none blank line.
 - `class_definition <./class_notation/class_definition.rst>`_
     Whitespace around the keywords of a class, trait or interfaces definition should be one space.
 - `final_class <./class_notation/final_class.rst>`_ *(risky)*
     All classes must be final, except abstract ones and Doctrine entities.
 - `final_internal_class <./class_notation/final_internal_class.rst>`_ *(risky)*
     Internal classes should be ``final``.
-- `method_separation <./class_notation/method_separation.rst>`_ *(deprecated)*
-    Methods must be separated with one blank line.
+- `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
+    All ``public`` methods of ``abstract`` classes should be ``final``.
+- `final_static_access <./class_notation/final_static_access.rst>`_ *(deprecated)*
+    Converts ``static`` access to ``self`` access in ``final`` classes.
 - `no_blank_lines_after_class_opening <./class_notation/no_blank_lines_after_class_opening.rst>`_
     There should be no empty lines after class opening brace.
 - `no_null_property_initialization <./class_notation/no_null_property_initialization.rst>`_
@@ -115,10 +123,14 @@ Class Notation
     Orders the elements of classes/interfaces/traits.
 - `ordered_interfaces <./class_notation/ordered_interfaces.rst>`_ *(risky)*
     Orders the interfaces in an ``implements`` or ``interface extends`` clause.
+- `ordered_traits <./class_notation/ordered_traits.rst>`_
+    Trait ``use`` statements must be sorted alphabetically.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
     Converts ``protected`` variables and methods to ``private`` where possible.
 - `self_accessor <./class_notation/self_accessor.rst>`_ *(risky)*
     Inside class or interface element ``self`` should be preferred to the class name itself.
+- `self_static_accessor <./class_notation/self_static_accessor.rst>`_
+    Inside a ``final`` class or anonymous class ``self`` should be preferred to ``static``.
 - `single_class_element_per_statement <./class_notation/single_class_element_per_statement.rst>`_
     There MUST NOT be more than one property or constant declared per statement.
 - `single_trait_insert_per_statement <./class_notation/single_trait_insert_per_statement.rst>`_
@@ -137,8 +149,6 @@ Comment
 
 - `comment_to_phpdoc <./comment/comment_to_phpdoc.rst>`_ *(risky)*
     Comments with annotation should be docblock when used on structural elements.
-- `hash_to_slash_comment <./comment/hash_to_slash_comment.rst>`_ *(deprecated)*
-    Single line comments should use double slashes ``//`` and not hash ``#``.
 - `header_comment <./comment/header_comment.rst>`_
     Add, replace or remove header comment.
 - `multiline_comment_opening_closing <./comment/multiline_comment_opening_closing.rst>`_
@@ -177,10 +187,14 @@ Control Structure
     Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 - `no_useless_else <./control_structure/no_useless_else.rst>`_
     There should not be useless ``else`` cases.
+- `simplified_if_return <./control_structure/simplified_if_return.rst>`_
+    Simplify ``if`` control structures that return the boolean result of their condition.
 - `switch_case_semicolon_to_colon <./control_structure/switch_case_semicolon_to_colon.rst>`_
     A case should be followed by a colon and not a semicolon.
 - `switch_case_space <./control_structure/switch_case_space.rst>`_
     Removes extra spaces between colon and case value.
+- `switch_continue_to_break <./control_structure/switch_continue_to_break.rst>`_
+    Switch case must not be ended with ``continue`` but with ``break``.
 - `yoda_style <./control_structure/yoda_style.rst>`_
     Write conditions in Yoda style (``true``), non-Yoda style (``false``) or ignore those conditions (``null``) based on configuration.
 
@@ -211,6 +225,8 @@ Function Notation
     Ensure single space between function's argument and its typehint.
 - `implode_call <./function_notation/implode_call.rst>`_ *(risky)*
     Function ``implode`` must be called with 2 arguments in the documented order.
+- `lambda_not_used_import <./function_notation/lambda_not_used_import.rst>`_
+    Lambda must not import variables it doesn't use.
 - `method_argument_space <./function_notation/method_argument_space.rst>`_
     In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
@@ -219,12 +235,22 @@ Function Notation
     When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
     In function arguments there must not be arguments with default values before non-default ones.
+- `nullable_type_declaration_for_default_null_value <./function_notation/nullable_type_declaration_for_default_null_value.rst>`_
+    Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
+- `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*
+    EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
     EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+- `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
+    Callables must be called without using ``call_user_func*`` when possible.
 - `return_type_declaration <./function_notation/return_type_declaration.rst>`_
     There should be one or no space before colon, and one space after it in return type declarations, according to configuration.
+- `single_line_throw <./function_notation/single_line_throw.rst>`_
+    Throwing exception must be done in single line.
 - `static_lambda <./function_notation/static_lambda.rst>`_ *(risky)*
     Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
+- `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
+    Anonymous functions with one-liner return statement must use arrow functions.
 - `void_return <./function_notation/void_return.rst>`_ *(risky)*
     Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations. Requires PHP >= 7.1.
 
@@ -233,6 +259,10 @@ Import
 
 - `fully_qualified_strict_types <./import/fully_qualified_strict_types.rst>`_
     Transforms imported FQCN parameters and return types in function arguments to short version.
+- `global_namespace_import <./import/global_namespace_import.rst>`_
+    Imports or fully qualifies global classes/functions/constants.
+- `group_import <./import/group_import.rst>`_
+    There MUST be group use for the same namespaces.
 - `no_leading_import_slash <./import/no_leading_import_slash.rst>`_
     Remove leading slashes in ``use`` clauses.
 - `no_unused_imports <./import/no_unused_imports.rst>`_
@@ -267,8 +297,8 @@ Language Construct
     Replaces ``is_null($var)`` expression with ``null === $var``.
 - `no_unset_on_property <./language_construct/no_unset_on_property.rst>`_ *(risky)*
     Properties should be set to ``null`` instead of using ``unset``.
-- `silenced_deprecation_error <./language_construct/silenced_deprecation_error.rst>`_ *(deprecated, risky)*
-    Ensures deprecation notices are silenced.
+- `single_space_after_construct <./language_construct/single_space_after_construct.rst>`_
+    Ensures a single space after language constructs.
 
 List Notation
 -------------
@@ -313,14 +343,16 @@ Operator
     Logical NOT operators (``!``) should have one trailing whitespace.
 - `object_operator_without_whitespace <./operator/object_operator_without_whitespace.rst>`_
     There should not be space before or after object ``T_OBJECT_OPERATOR`` ``->``.
-- `pre_increment <./operator/pre_increment.rst>`_ *(deprecated)*
-    Pre incrementation/decrementation should be used if possible.
+- `operator_linebreak <./operator/operator_linebreak.rst>`_
+    Operators - when multiline - must always be at the beginning or at the end of the line.
 - `standardize_increment <./operator/standardize_increment.rst>`_
     Increment and decrement operators should be used if possible.
 - `standardize_not_equals <./operator/standardize_not_equals.rst>`_
     Replace all ``<>`` with ``!=``.
 - `ternary_operator_spaces <./operator/ternary_operator_spaces.rst>`_
     Standardize spaces around ternary operator.
+- `ternary_to_elvis_operator <./operator/ternary_to_elvis_operator.rst>`_ *(risky)*
+    Use the Elvis operator ``?:`` where possible.
 - `ternary_to_null_coalescing <./operator/ternary_to_null_coalescing.rst>`_
     Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 - `unary_operator_spaces <./operator/unary_operator_spaces.rst>`_
@@ -331,14 +363,14 @@ PHP Tag
 
 - `blank_line_after_opening_tag <./php_tag/blank_line_after_opening_tag.rst>`_
     Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.
+- `echo_tag_syntax <./php_tag/echo_tag_syntax.rst>`_
+    Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print`` syntax, or vice-versa.
 - `full_opening_tag <./php_tag/full_opening_tag.rst>`_
     PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not other tag variations.
 - `linebreak_after_opening_tag <./php_tag/linebreak_after_opening_tag.rst>`_
     Ensure there is no code on the same line as the PHP open tag.
 - `no_closing_tag <./php_tag/no_closing_tag.rst>`_
     The closing ``?>`` tag MUST be omitted from files containing only PHP.
-- `no_short_echo_tag <./php_tag/no_short_echo_tag.rst>`_
-    Replace short-echo ``<?=`` with long format ``<?php echo`` syntax.
 
 PHPUnit
 -------
@@ -365,8 +397,6 @@ PHPUnit
     PHPUnit classes MUST be used in namespaced version, e.g. ``\PHPUnit\Framework\TestCase`` instead of ``\PHPUnit_Framework_TestCase``.
 - `php_unit_no_expectation_annotation <./php_unit/php_unit_no_expectation_annotation.rst>`_ *(risky)*
     Usages of ``@expectedException*`` annotations MUST be replaced by ``->setExpectedException*`` methods.
-- `php_unit_ordered_covers <./php_unit/php_unit_ordered_covers.rst>`_
-    Order ``@covers`` annotation of PHPUnit tests.
 - `php_unit_set_up_tear_down_visibility <./php_unit/php_unit_set_up_tear_down_visibility.rst>`_ *(risky)*
     Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of PHPUnit to ``protected``, to match the PHPUnit TestCase.
 - `php_unit_size_class <./php_unit/php_unit_size_class.rst>`_
@@ -387,6 +417,8 @@ PHPDoc
     Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
 - `general_phpdoc_annotation_remove <./phpdoc/general_phpdoc_annotation_remove.rst>`_
     Configured annotations should be omitted from PHPDoc.
+- `general_phpdoc_tag_rename <./phpdoc/general_phpdoc_tag_rename.rst>`_
+    Renames PHPDoc tags.
 - `no_blank_lines_after_phpdoc <./phpdoc/no_blank_lines_after_phpdoc.rst>`_
     There should not be blank lines between docblock and the documented element.
 - `no_empty_phpdoc <./phpdoc/no_empty_phpdoc.rst>`_
@@ -401,8 +433,12 @@ PHPDoc
     PHPDoc annotation descriptions should not be a sentence.
 - `phpdoc_indent <./phpdoc/phpdoc_indent.rst>`_
     Docblocks should have the same indentation as the documented subject.
-- `phpdoc_inline_tag <./phpdoc/phpdoc_inline_tag.rst>`_
+- `phpdoc_inline_tag <./phpdoc/phpdoc_inline_tag.rst>`_ *(deprecated)*
     Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
+- `phpdoc_inline_tag_normalizer <./phpdoc/phpdoc_inline_tag_normalizer.rst>`_
+    Fixes PHPDoc inline tags.
+- `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_
+    Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
     ``@access`` annotations should be omitted from PHPDoc.
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_
@@ -413,6 +449,8 @@ PHPDoc
     ``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
 - `phpdoc_no_useless_inheritdoc <./phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
     Classy that does not inherit must not have ``@inheritdoc`` tags.
+- `phpdoc_order_by_value <./phpdoc/phpdoc_order_by_value.rst>`_
+    Order phpdoc tags by value.
 - `phpdoc_order <./phpdoc/phpdoc_order.rst>`_
     Annotations in PHPDoc should be ordered so that ``@param`` annotations come first, then ``@throws`` annotations, then ``@return`` annotations.
 - `phpdoc_return_self_reference <./phpdoc/phpdoc_return_self_reference.rst>`_
@@ -425,6 +463,10 @@ PHPDoc
     Single line ``@var`` PHPDoc should have proper spacing.
 - `phpdoc_summary <./phpdoc/phpdoc_summary.rst>`_
     PHPDoc summary should end in either a full stop, exclamation mark, or question mark.
+- `phpdoc_tag_casing <./phpdoc/phpdoc_tag_casing.rst>`_
+    Fixes casing of PHPDoc tags.
+- `phpdoc_tag_type <./phpdoc/phpdoc_tag_type.rst>`_
+    Forces PHPDoc tags to be either regular annotations or inline.
 - `phpdoc_to_comment <./phpdoc/phpdoc_to_comment.rst>`_
     Docblocks should only be used on structural elements.
 - `phpdoc_trim_consecutive_blank_line_separation <./phpdoc/phpdoc_trim_consecutive_blank_line_separation.rst>`_
@@ -443,8 +485,6 @@ PHPDoc
 Return Notation
 ---------------
 
-- `blank_line_before_return <./return_notation/blank_line_before_return.rst>`_ *(deprecated)*
-    An empty line feed should precede a return statement.
 - `no_useless_return <./return_notation/no_useless_return.rst>`_
     There should not be an empty ``return`` statement at the end of a function.
 - `return_assignment <./return_notation/return_assignment.rst>`_
@@ -459,8 +499,6 @@ Semicolon
     Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.
 - `no_empty_statement <./semicolon/no_empty_statement.rst>`_
     Remove useless semicolon statements.
-- `no_multiline_whitespace_before_semicolons <./semicolon/no_multiline_whitespace_before_semicolons.rst>`_ *(deprecated)*
-    Multi-line whitespace before closing semicolon are prohibited.
 - `no_singleline_whitespace_before_semicolons <./semicolon/no_singleline_whitespace_before_semicolons.rst>`_
     Single-line whitespace before closing semicolon are prohibited.
 - `semicolon_after_instruction <./semicolon/semicolon_after_instruction.rst>`_
@@ -489,6 +527,8 @@ String Notation
     Convert ``heredoc`` to ``nowdoc`` where possible.
 - `no_binary_string <./string_notation/no_binary_string.rst>`_
     There should not be a binary flag before strings.
+- `no_trailing_whitespace_in_string <./string_notation/no_trailing_whitespace_in_string.rst>`_ *(risky)*
+    There must be no trailing whitespace in strings.
 - `simple_to_complex_string_variable <./string_notation/simple_to_complex_string_variable.rst>`_
     Converts explicit variables in double-quoted strings and heredoc syntax from simple to complex format (``${`` to ``{$``).
 - `single_quote <./string_notation/single_quote.rst>`_
@@ -514,8 +554,6 @@ Whitespace
 - `method_chaining_indentation <./whitespace/method_chaining_indentation.rst>`_
     Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.
 - `no_extra_blank_lines <./whitespace/no_extra_blank_lines.rst>`_
-    Removes extra blank lines and/or blank lines following configuration.
-- `no_extra_consecutive_blank_lines <./whitespace/no_extra_consecutive_blank_lines.rst>`_ *(deprecated)*
     Removes extra blank lines and/or blank lines following configuration.
 - `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_
     There MUST NOT be spaces around offset braces.

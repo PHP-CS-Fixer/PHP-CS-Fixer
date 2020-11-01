@@ -2,6 +2,10 @@
 Rule ``psr0``
 =============
 
+.. warning:: This rule is deprecated and will be removed on next major version.
+
+   You should use ``psr_autoloading`` instead.
+
 Classes must be in a path that matches their namespace, be at least one
 namespace deep and the class name should match the file name.
 
@@ -38,7 +42,7 @@ Example #1
     <?php
     namespace PhpCsFixer\FIXER\Basic;
    -class InvalidName {}
-   +class Psr0Fixer {}
+   +class PsrAutoloadingFixer {}
 
 Example #2
 ~~~~~~~~~~
@@ -54,4 +58,4 @@ With configuration: ``['dir' => './src']``.
    -namespace PhpCsFixer\FIXER\Basic;
    -class InvalidName {}
    +namespace PhpCsFixer\Fixer\Basic;
-   +class Psr0Fixer {}
+   +class PsrAutoloadingFixer {}

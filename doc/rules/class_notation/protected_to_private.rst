@@ -30,7 +30,10 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+@Symfony
+  Using the ``@Symfony`` rule set will enable the ``protected_to_private`` rule.
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``protected_to_private`` rule.

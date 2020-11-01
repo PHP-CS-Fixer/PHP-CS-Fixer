@@ -56,7 +56,7 @@ With configuration: ``['statements' => ['break', 'continue']]``.
 
    --- Original
    +++ New
-   @@ -1,9 +1,9 @@
+   @@ -1,7 +1,7 @@
     <?php
    -while ($x) { while ($y) { break (2); } }
    +while ($x) { while ($y) { break 2; } }
@@ -66,8 +66,6 @@ With configuration: ``['statements' => ['break', 'continue']]``.
     echo("foo");
     print("foo");
     return (1 + 2);
-    switch ($a) { case($x); }
-    yield(2);
 
 Rule sets
 ---------
@@ -75,7 +73,11 @@ Rule sets
 The rule is part of the following rule sets:
 
 @Symfony
-  Using the ``@Symfony`` rule set will enable the ``no_unneeded_control_parentheses`` rule with the default config.
+  Using the ``@Symfony`` rule set will enable the ``no_unneeded_control_parentheses`` rule with the config below:
+
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']]``
 
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``no_unneeded_control_parentheses`` rule with the default config.
+  Using the ``@PhpCsFixer`` rule set will enable the ``no_unneeded_control_parentheses`` rule with the config below:
+
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']]``

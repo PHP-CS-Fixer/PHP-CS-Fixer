@@ -14,12 +14,10 @@ namespace PhpCsFixer\Documentation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
-use PhpCsFixer\Diff\GeckoPackages\DiffOutputBuilder\UnifiedDiffOutputBuilder;
-use PhpCsFixer\Diff\v2_0\Differ;
+use PhpCsFixer\Diff\Differ;
+use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
 use PhpCsFixer\Fixer\Basic\Psr0Fixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
@@ -48,12 +46,12 @@ final class DocumentationGenerator
 
     public function __construct()
     {
-        $this->differ = new Differ(new UnifiedDiffOutputBuilder([
+        $this->differ = new Differ(new StrictUnifiedDiffOutputBuilder([
             'fromFile' => 'Original',
             'toFile' => 'New',
         ]));
 
-        $this->path = \dirname(\dirname(__DIR__)).'/doc/rules';
+        $this->path = \dirname(__DIR__, 2).'/doc/rules';
     }
 
     /**
@@ -183,7 +181,7 @@ RST;
         $riskyDescription = null;
         $samples = [];
 
-        if ($fixer instanceof DefinedFixerInterface) {
+        if ($fixer instanceof FixerInterface) {
             $definition = $fixer->getDefinition();
 
             $doc .= "\n\n".$this->toRst($definition->getSummary());
@@ -219,7 +217,7 @@ RST;
 RST;
         }
 
-        if ($fixer instanceof ConfigurationDefinitionFixerInterface) {
+        if ($fixer instanceof ConfigurableFixerInterface) {
             $doc .= <<<'RST'
 
 
@@ -337,7 +335,7 @@ RST;
 
                 if (null !== $config) {
                     $doc .= " with the config below:\n\n  ``".HelpCommand::toString($config).'``';
-                } elseif ($fixer instanceof ConfigurationDefinitionFixerInterface) {
+                } elseif ($fixer instanceof ConfigurableFixerInterface) {
                     $doc .= ' with the default config.';
                 } else {
                     $doc .= '.';
@@ -358,7 +356,7 @@ RST;
    the sample is not suitable for current version of PHP (%s).
 RST;
 
-            return sprintf($error, \PHP_VERSION);
+            return sprintf($error, PHP_VERSION);
         }
 
         $old = $sample->getCode();
@@ -380,7 +378,7 @@ RST;
                 // Psr0Fixer relies on realpath() which fails for directories
                 // relative to some path when the working directory is a
                 // different path. Using an absolute path prevents this issue.
-                $configuration['dir'] = \dirname(\dirname(__DIR__)).substr($configuration['dir'], 1);
+                $configuration['dir'] = \dirname(__DIR__, 2).substr($configuration['dir'], 1);
             }
 
             $fixer->configure($configuration);

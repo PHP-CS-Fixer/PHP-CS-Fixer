@@ -29,7 +29,7 @@ native functions), ``@all`` (all global functions) and ``@compiler_optimized``
 
 Allowed types: ``array``
 
-Default value: ``['@internal']``
+Default value: ``['@compiler_optimized']``
 
 ``scope``
 ~~~~~~~~~
@@ -61,7 +61,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,9 +2,9 @@
+   @@ -2,7 +2,7 @@
 
     function baz($options)
     {
@@ -69,10 +69,6 @@ Example #1
    +    if (!\array_key_exists("foo", $options)) {
             throw new \InvalidArgumentException();
         }
-
-   -    return json_encode($options);
-   +    return \json_encode($options);
-    }
 
 Example #2
 ~~~~~~~~~~
@@ -83,7 +79,7 @@ With configuration: ``['exclude' => ['json_encode']]``.
 
    --- Original
    +++ New
-   @@ -2,9 +2,9 @@
+   @@ -2,7 +2,7 @@
 
     function baz($options)
     {
@@ -91,9 +87,6 @@ With configuration: ``['exclude' => ['json_encode']]``.
    +    if (!\array_key_exists("foo", $options)) {
             throw new \InvalidArgumentException();
         }
-
-        return json_encode($options);
-    }
 
 Example #3
 ~~~~~~~~~~
@@ -124,7 +117,7 @@ With configuration: ``['scope' => 'namespaced']``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
+   @@ -1,6 +1,6 @@
     <?php
     namespace space1 {
    -    echo count([1]);
@@ -132,7 +125,6 @@ With configuration: ``['scope' => 'namespaced']``.
     }
     namespace {
         echo count([1]);
-    }
 
 Example #5
 ~~~~~~~~~~

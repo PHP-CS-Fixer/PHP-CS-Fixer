@@ -32,5 +32,8 @@ The rule is part of the following rule sets:
 @PHP71Migration:risky
   Using the ``@PHP71Migration:risky`` rule set will enable the ``void_return`` rule.
 
+@PHP74Migration:risky
+  Using the ``@PHP74Migration:risky`` rule set will enable the ``void_return`` rule.
+
 @PHP80Migration:risky
   Using the ``@PHP80Migration:risky`` rule set will enable the ``void_return`` rule.

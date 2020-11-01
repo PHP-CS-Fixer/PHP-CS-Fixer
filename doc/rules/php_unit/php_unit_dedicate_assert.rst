@@ -12,17 +12,6 @@ used over ``assertTrue``.
 Configuration
 -------------
 
-``functions``
-~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use option ``target`` instead.
-
-List of assertions to fix (overrides ``target``).
-
-Allowed values: a subset of ``['array_key_exists', 'empty', 'file_exists', 'is_array', 'is_bool', 'is_callable', 'is_double', 'is_float', 'is_infinite', 'is_int', 'is_integer', 'is_long', 'is_nan', 'is_null', 'is_numeric', 'is_object', 'is_real', 'is_resource', 'is_scalar', 'is_string']``, ``null``
-
-Default value: ``null``
-
 ``target``
 ~~~~~~~~~~
 
@@ -30,7 +19,7 @@ Target version of PHPUnit.
 
 Allowed values: ``'3.0'``, ``'3.5'``, ``'5.0'``, ``'5.6'``, ``'newest'``
 
-Default value: ``'5.0'``
+Default value: ``'newest'``
 
 Examples
 --------
@@ -108,16 +97,24 @@ The rule is part of the following rule sets:
   ``['target' => '3.5']``
 
 @PHPUnit50Migration:risky
-  Using the ``@PHPUnit50Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
+  Using the ``@PHPUnit50Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
+
+  ``['target' => '5.0']``
 
 @PHPUnit52Migration:risky
-  Using the ``@PHPUnit52Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
+  Using the ``@PHPUnit52Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
+
+  ``['target' => '5.0']``
 
 @PHPUnit54Migration:risky
-  Using the ``@PHPUnit54Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
+  Using the ``@PHPUnit54Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
+
+  ``['target' => '5.0']``
 
 @PHPUnit55Migration:risky
-  Using the ``@PHPUnit55Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
+  Using the ``@PHPUnit55Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
+
+  ``['target' => '5.0']``
 
 @PHPUnit56Migration:risky
   Using the ``@PHPUnit56Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
@@ -136,5 +133,10 @@ The rule is part of the following rule sets:
 
 @PHPUnit75Migration:risky
   Using the ``@PHPUnit75Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
+
+  ``['target' => '5.6']``
+
+@PHPUnit84Migration:risky
+  Using the ``@PHPUnit84Migration:risky`` rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
 
   ``['target' => '5.6']``

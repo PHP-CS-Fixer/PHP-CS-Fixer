@@ -123,7 +123,7 @@ With configuration: ``['heredoc_syntax' => false]``.
 
    --- Original
    +++ New
-   @@ -2,8 +2,8 @@
+   @@ -2,7 +2,7 @@
 
     $singleQuoted = 'String with \" and My\Prefix\\';
 
@@ -132,7 +132,6 @@ With configuration: ``['heredoc_syntax' => false]``.
 
     $hereDoc = <<<HEREDOC
     Interpret my \100 but not my \999
-    HEREDOC;
 
 Rule sets
 ---------

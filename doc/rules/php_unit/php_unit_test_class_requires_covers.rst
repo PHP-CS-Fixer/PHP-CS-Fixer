@@ -15,7 +15,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,7 @@
+   @@ -1,4 +1,8 @@
     <?php
    +
    +/**
@@ -23,6 +23,7 @@ Example #1
    + */
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
+        public function testSomeTest()
 
 Rule sets
 ---------

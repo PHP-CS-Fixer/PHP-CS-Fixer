@@ -9,11 +9,25 @@ not be ``final``.
 
    Risky when child class overrides a ``private`` method.
 
+Configuration
+-------------
+
+``private_methods``
+~~~~~~~~~~~~~~~~~~~
+
+Private methods of non-``final`` classes must not be declared ``final``.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -37,16 +51,35 @@ Example #1
    +    private function bar1() {}
     }
 
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['private_methods' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,7 +1,7 @@
+    <?php
+    final class Foo
+    {
+   -    final private function baz() {}
+   +    private function baz() {}
+    }
+
+    class Bar
+
 Rule sets
 ---------
 
 The rule is part of the following rule sets:
 
 @Symfony:risky
-  Using the ``@Symfony:risky`` rule set will enable the ``no_unneeded_final_method`` rule.
+  Using the ``@Symfony:risky`` rule set will enable the ``no_unneeded_final_method`` rule with the default config.
 
 @PhpCsFixer:risky
-  Using the ``@PhpCsFixer:risky`` rule set will enable the ``no_unneeded_final_method`` rule.
+  Using the ``@PhpCsFixer:risky`` rule set will enable the ``no_unneeded_final_method`` rule with the default config.
 
 @PHP80Migration:risky
-  Using the ``@PHP80Migration:risky`` rule set will enable the ``no_unneeded_final_method`` rule.
+  Using the ``@PHP80Migration:risky`` rule set will enable the ``no_unneeded_final_method`` rule with the default config.

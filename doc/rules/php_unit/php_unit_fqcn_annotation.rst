@@ -14,7 +14,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,12 +2,12 @@
+   @@ -2,10 +2,10 @@
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -29,8 +29,6 @@ Example #1
          */
         public function testSomeTest()
         {
-        }
-    }
 
 Rule sets
 ---------

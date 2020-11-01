@@ -38,13 +38,15 @@ Example #1
          */
         public function test1()
         {
-   @@ -10,5 +10,5 @@
+   @@ -10,7 +10,7 @@
         }
 
         /**
    -     * @return $self
    +     * @return self
          */
+        public function test2()
+        {
 
 Example #2
 ~~~~~~~~~~

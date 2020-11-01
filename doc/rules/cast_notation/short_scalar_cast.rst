@@ -59,3 +59,6 @@ The rule is part of the following rule sets:
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``short_scalar_cast`` rule.
+
+@PHP74Migration
+  Using the ``@PHP74Migration`` rule set will enable the ``short_scalar_cast`` rule.

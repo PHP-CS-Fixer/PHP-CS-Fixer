@@ -18,6 +18,25 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``remove_inheritdoc``
+~~~~~~~~~~~~~~~~~~~~~
+
+Remove ``@inheritDoc`` tags
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
+``allow_unused_params``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether ``param`` annotation without actual signature is allowed (``true``) or
+considered superfluous (``false``)
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -49,7 +68,7 @@ With configuration: ``['allow_mixed' => true]``.
 
    --- Original
    +++ New
-   @@ -1,8 +1,7 @@
+   @@ -1,7 +1,6 @@
     <?php
     class Foo {
         /**
@@ -57,7 +76,6 @@ With configuration: ``['allow_mixed' => true]``.
          * @param mixed $baz
          */
         public function doFoo(Bar $bar, $baz) {}
-    }
 
 Example #3
 ~~~~~~~~~~
@@ -83,20 +101,40 @@ Example #3
 Example #4
 ~~~~~~~~~~
 
-*Default* configuration.
+With configuration: ``['remove_inheritdoc' => true]``.
 
 .. code-block:: diff
 
    --- Original
    +++ New
-   @@ -1,7 +1,6 @@
+   @@ -1,7 +1,7 @@
     <?php
     class Foo {
         /**
-   -     * @var Bar
+   -     * @inheritDoc
+   +     *
          */
-        private Bar $bar;
+        public function doFoo(Bar $bar, $baz) {}
     }
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['allow_unused_params' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,8 +1,6 @@
+    <?php
+    class Foo {
+        /**
+   -     * @param Bar $bar
+   -     * @param mixed $baz
+         * @param string|int|null $qux
+         */
+        public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
 
 Rule sets
 ---------
@@ -106,9 +144,9 @@ The rule is part of the following rule sets:
 @Symfony
   Using the ``@Symfony`` rule set will enable the ``no_superfluous_phpdoc_tags`` rule with the config below:
 
-  ``['allow_mixed' => true]``
+  ``['allow_mixed' => true, 'allow_unused_params' => true]``
 
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``no_superfluous_phpdoc_tags`` rule with the config below:
 
-  ``['allow_mixed' => true]``
+  ``['allow_mixed' => true, 'allow_unused_params' => true]``

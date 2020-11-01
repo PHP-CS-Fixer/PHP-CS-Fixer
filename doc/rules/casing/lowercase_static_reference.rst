@@ -15,7 +15,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,16 +3,16 @@
+   @@ -3,15 +3,15 @@
     {
         public function baz1()
         {
@@ -34,7 +34,6 @@ Example #1
         {
             return true;
         }
-    }
 
 Example #2
 ~~~~~~~~~~
@@ -43,7 +42,7 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,8 +1,8 @@
+   @@ -1,7 +1,7 @@
     <?php
     class Foo extends Bar
     {
@@ -52,7 +51,6 @@ Example #2
         {
             return false;
         }
-    }
 
 Rule sets
 ---------

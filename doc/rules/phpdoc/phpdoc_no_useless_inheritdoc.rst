@@ -29,7 +29,7 @@ Example #2
 
    --- Original
    +++ New
-   @@ -2,9 +2,9 @@
+   @@ -2,7 +2,7 @@
     class Sample
     {
         /**
@@ -38,8 +38,6 @@ Example #2
          */
         public function Test()
         {
-        }
-    }
 
 Rule sets
 ---------

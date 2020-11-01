@@ -30,5 +30,8 @@ The rule is part of the following rule sets:
 @PhpCsFixer
   Using the ``@PhpCsFixer`` rule set will enable the ``normalize_index_brace`` rule.
 
+@PHP74Migration
+  Using the ``@PHP74Migration`` rule set will enable the ``normalize_index_brace`` rule.
+
 @PHP80Migration
   Using the ``@PHP80Migration`` rule set will enable the ``normalize_index_brace`` rule.

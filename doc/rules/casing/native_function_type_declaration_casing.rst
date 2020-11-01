@@ -14,7 +14,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
+   @@ -1,6 +1,6 @@
     <?php
     class Bar {
    -    public function Foo(CALLABLE $bar)
@@ -22,7 +22,6 @@ Example #1
         {
             return 1;
         }
-    }
 
 Example #2
 ~~~~~~~~~~

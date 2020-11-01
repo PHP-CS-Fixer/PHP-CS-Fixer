@@ -3,7 +3,8 @@ version: 2
 jobs:
     build:
         macos:
-            xcode: '11.7.0'
+            # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+            xcode: '12.2.0'
         steps:
             - checkout
 

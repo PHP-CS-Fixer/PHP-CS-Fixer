@@ -28,3 +28,14 @@ Example #1
         {
         }
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@Symfony:risky
+  Using the ``@Symfony:risky`` rule set will enable the ``no_php4_constructor`` rule.
+
+@PhpCsFixer:risky
+  Using the ``@PhpCsFixer:risky`` rule set will enable the ``no_php4_constructor`` rule.

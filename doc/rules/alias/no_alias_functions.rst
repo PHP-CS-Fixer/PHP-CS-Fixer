@@ -106,6 +106,9 @@ The rule is part of the following rule sets:
 
   ``['sets' => ['@all']]``
 
+@PHP74Migration:risky
+  Using the ``@PHP74Migration:risky`` rule set will enable the ``no_alias_functions`` rule with the default config.
+
 @PHP80Migration:risky
   Using the ``@PHP80Migration:risky`` rule set will enable the ``no_alias_functions`` rule with the config below:
 
