@@ -53,7 +53,7 @@ final class DocumentationGenerator
             'toFile' => 'New',
         ]));
 
-        $this->path = \dirname(\dirname(__DIR__)).'/doc/rules';
+        $this->path = \dirname(__DIR__, 2).'/doc/rules';
     }
 
     /**
@@ -358,7 +358,7 @@ RST;
    the sample is not suitable for current version of PHP (%s).
 RST;
 
-            return sprintf($error, \PHP_VERSION);
+            return sprintf($error, PHP_VERSION);
         }
 
         $old = $sample->getCode();
@@ -380,7 +380,7 @@ RST;
                 // Psr0Fixer relies on realpath() which fails for directories
                 // relative to some path when the working directory is a
                 // different path. Using an absolute path prevents this issue.
-                $configuration['dir'] = \dirname(\dirname(__DIR__)).substr($configuration['dir'], 1);
+                $configuration['dir'] = \dirname(__DIR__, 2).substr($configuration['dir'], 1);
             }
 
             $fixer->configure($configuration);
