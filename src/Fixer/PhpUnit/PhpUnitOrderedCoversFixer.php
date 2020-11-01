@@ -19,7 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 
 /**
- * @deprecated since 2.16, replaced by PhpUnitOrderedAnnotationsFixer
+ * @deprecated since 2.16, replaced by PhpdocOrderByValueFixer
  *
  * @todo To be removed at 3.0
  *
