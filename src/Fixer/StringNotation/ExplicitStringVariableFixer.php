@@ -123,7 +123,7 @@ EOT
 
                 ++$nextIndex;
             }
-            krsort($variableTokens, \SORT_NUMERIC);
+            krsort($variableTokens, SORT_NUMERIC);
 
             foreach ($variableTokens as $distinctVariableSet) {
                 if (1 === \count($distinctVariableSet['tokens'])) {

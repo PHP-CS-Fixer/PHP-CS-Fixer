@@ -230,7 +230,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ];
 
                 if ($isMultilineWhitespace) {
-                    array_push($tokensOverrideArgStart, new Token([T_WHITESPACE, $indent.$this->whitespacesConfig->getIndent()]));
+                    $tokensOverrideArgStart[] = new Token([T_WHITESPACE, $indent.$this->whitespacesConfig->getIndent()]);
                     array_unshift($tokensOverrideArgBefore, new Token([T_WHITESPACE, $indent]));
                 }
 
