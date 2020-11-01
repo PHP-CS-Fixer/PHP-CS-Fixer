@@ -57,6 +57,7 @@ if (class_exists('Phar')) {
     // Maybe this file is used as phar-stub? Let's try!
     try {
         Phar::mapPhar('php-cs-fixer.phar');
+
         require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
         $require = false;
     } catch (PharException $e) {
