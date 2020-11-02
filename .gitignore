@@ -2,6 +2,7 @@
 /.phpunit.result.cache
 /box.json
 /composer.lock
+/docker-compose.override.yaml
 /php-cs-fixer.phar
 /phpunit.xml
 /vendor/
