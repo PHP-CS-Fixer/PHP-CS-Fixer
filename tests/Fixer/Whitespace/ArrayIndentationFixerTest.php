@@ -810,6 +810,30 @@ $foo = [[
 INPUT
                 ,
             ],
+            [
+                <<<'EXPECTED'
+<?php
+$array = [
+    'foo' => [
+        'bar' => [
+            'baz',
+        ],
+    ], // <- this one
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$array = [
+    'foo' => [
+        'bar' => [
+            'baz',
+        ],
+], // <- this one
+];
+INPUT
+                ,
+            ],
         ]);
     }
 
