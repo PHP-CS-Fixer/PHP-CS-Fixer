@@ -734,19 +734,25 @@ switch ($foo) {
             [
                 '<?php
 switch ($foo) {
-    case 1:
+    case 1: {
         throw new \Exception();
+    }
     case 2:
+        ?>
+        <?php
         throw new \Exception();
     default:
         throw new \Exception();
 }',
                 '<?php
 switch ($foo) {
-    case 1:
+    case 1: {
         // no break
         throw new \Exception();
+    }
     case 2:
+        ?>
+        <?php
         // no break
         throw new \Exception();
     default:
@@ -1112,5 +1118,55 @@ switch ($foo) {
         $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
 
         $this->fixer->configure(['foo' => true]);
+    }
+
+    /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php
+                switch ($foo) {
+                    case 1:
+                        foo() ?? throw new \Exception();
+                        // no break
+                    case 2:
+                        $a = $condition and throw new Exception();
+                        // no break
+                    case 3:
+                        $callable = fn() => throw new Exception();
+                        // no break
+                    case 4:
+                        $value = $falsableValue ?: throw new InvalidArgumentException();
+                        // no break
+                    default:
+                        echo "PHP8";
+                }
+            ',
+            '<?php
+                switch ($foo) {
+                    case 1:
+                        foo() ?? throw new \Exception();
+                    case 2:
+                        $a = $condition and throw new Exception();
+                    case 3:
+                        $callable = fn() => throw new Exception();
+                    case 4:
+                        $value = $falsableValue ?: throw new InvalidArgumentException();
+                    default:
+                        echo "PHP8";
+                }
+            ',
+        ];
     }
 }
