@@ -82,6 +82,10 @@ use Bar;
 ',
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
+                new CodeSample(
+                    "<?php\nuse Acme\{Foo, Bar, Baz};\n",
+                    ['group_sort' => true]
+                ),
                 new VersionSpecificCodeSample(
                     "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n",
                     new VersionSpecification(70000)
@@ -244,6 +248,10 @@ use Bar;
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
+            (new FixerOptionBuilder('group_sort', 'whether to sort alphabetically within import groups'))
+                ->setAllowedValues([true, false, null])
+                ->setDefault(false)
+                ->getOption(),
             (new AliasedFixerOptionBuilder(
                 new FixerOptionBuilder('imports_order', 'Defines the order of import types.'),
                 'importsOrder'
@@ -289,6 +297,13 @@ use Bar;
      */
     private function sortAlphabetically(array $first, array $second)
     {
+        if ($first['group'] === true && $this->configuration['group_sort']) {
+            $first['namespace'] = $this->sortNamespaceGroup($first['namespace']);
+        }
+        if ($second['group'] === true && $this->configuration['group_sort']) {
+            $second['namespace'] = $this->sortNamespaceGroup($second['namespace']);
+        }
+
         // Replace backslashes by spaces before sorting for correct sort order
         $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
         $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
@@ -308,6 +323,13 @@ use Bar;
      */
     private function sortByLength(array $first, array $second)
     {
+        if ($first['group'] === true && $this->configuration['group_sort']) {
+            $first['namespace'] = $this->sortNamespaceGroup($first['namespace']);
+        }
+        if ($second['group'] === true && $this->configuration['group_sort']) {
+            $second['namespace'] = $this->sortNamespaceGroup($second['namespace']);
+        }
+
         $firstNamespace = (self::IMPORT_TYPE_CLASS === $first['importType'] ? '' : $first['importType'].' ').$this->prepareNamespace($first['namespace']);
         $secondNamespace = (self::IMPORT_TYPE_CLASS === $second['importType'] ? '' : $second['importType'].' ').$this->prepareNamespace($second['namespace']);
 
@@ -331,6 +353,20 @@ use Bar;
     private function prepareNamespace($namespace)
     {
         return trim(Preg::replace('%/\*(.*)\*/%s', '', $namespace));
+    }
+
+    /**
+     * @param string $namespace
+     *
+     * @return string
+     */
+    private function sortNamespaceGroup($namespace)
+    {
+        return Preg::replaceCallback('/\{(.*)\}/s', function($matches) {
+            $parts = array_map('trim', explode(',', $matches[1]));
+            natsort($parts);
+            return '{' . implode(', ', $parts) . '}';
+        }, $namespace);
     }
 
     /**
