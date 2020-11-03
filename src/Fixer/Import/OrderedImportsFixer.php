@@ -82,8 +82,9 @@ use Bar;
 ',
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     "<?php\nuse Acme\\{Foo, Bar, Baz};\n",
+                    new VersionSpecification(70000),
                     ['group_sort' => true]
                 ),
                 new VersionSpecificCodeSample(
