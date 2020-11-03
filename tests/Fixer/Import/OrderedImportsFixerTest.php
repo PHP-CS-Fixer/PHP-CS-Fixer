@@ -2144,4 +2144,48 @@ EOF;
 
         $this->doTest($expected);
     }
+
+    public function testFixWithGroupedImports()
+    {
+        $this->fixer->configure([
+            'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
+            'group_sort' => true,
+        ]);
+
+        $expected = <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Baz;
+use abc\Bar;
+
+<?php
+
+use Acme\{Bar, Baz, Foo};
+use Zoo\Baz;
+
+class Test
+{
+}
+EOF;
+
+        $input = <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Baz;
+use abc\Bar;
+
+<?php
+
+use Zoo\Baz;
+use Acme\{Foo, Bar, Baz};
+
+class Test
+{
+}
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }
