@@ -83,7 +83,7 @@ use Bar;
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new CodeSample(
-                    "<?php\nuse Acme\{Foo, Bar, Baz};\n",
+                    "<?php\nuse Acme\\{Foo, Bar, Baz};\n",
                     ['group_sort' => true]
                 ),
                 new VersionSpecificCodeSample(
@@ -297,10 +297,10 @@ use Bar;
      */
     private function sortAlphabetically(array $first, array $second)
     {
-        if ($first['group'] === true && $this->configuration['group_sort']) {
+        if (true === $first['group'] && $this->configuration['group_sort']) {
             $first['namespace'] = $this->sortNamespaceGroup($first['namespace']);
         }
-        if ($second['group'] === true && $this->configuration['group_sort']) {
+        if (true === $second['group'] && $this->configuration['group_sort']) {
             $second['namespace'] = $this->sortNamespaceGroup($second['namespace']);
         }
 
@@ -323,10 +323,10 @@ use Bar;
      */
     private function sortByLength(array $first, array $second)
     {
-        if ($first['group'] === true && $this->configuration['group_sort']) {
+        if (true === $first['group'] && $this->configuration['group_sort']) {
             $first['namespace'] = $this->sortNamespaceGroup($first['namespace']);
         }
-        if ($second['group'] === true && $this->configuration['group_sort']) {
+        if (true === $second['group'] && $this->configuration['group_sort']) {
             $second['namespace'] = $this->sortNamespaceGroup($second['namespace']);
         }
 
@@ -362,10 +362,11 @@ use Bar;
      */
     private function sortNamespaceGroup($namespace)
     {
-        return Preg::replaceCallback('/\{(.*)\}/s', function($matches) {
+        return Preg::replaceCallback('/\{(.*)\}/s', function ($matches) {
             $parts = array_map('trim', explode(',', $matches[1]));
             natsort($parts);
-            return '{' . implode(', ', $parts) . '}';
+
+            return '{'.implode(', ', $parts).'}';
         }, $namespace);
     }
 
