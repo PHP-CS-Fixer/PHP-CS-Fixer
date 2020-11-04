@@ -973,10 +973,10 @@ use A\A1;
             'grouped import sorting' => [
                 '<?php
 use Acme\{Bar, Baz, Foo};
-use Zoo\Baz;
+use Zoo\Zab;
                 ',
                 '<?php
-use Zoo\Baz;
+use Zoo\Zab;
 use Acme\{Foo, Bar, Baz};
                  ',
                 [
