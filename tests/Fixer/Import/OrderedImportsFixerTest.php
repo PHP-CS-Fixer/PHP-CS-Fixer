@@ -978,7 +978,7 @@ use Zoo\Zab;
                 '<?php
 use Zoo\Zab;
 use Acme\{Foo, Bar, Baz};
-                 ',
+                ',
                 [
                     'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
                     'group_sort' => true,
