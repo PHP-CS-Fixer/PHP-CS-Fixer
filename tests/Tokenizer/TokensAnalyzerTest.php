@@ -664,6 +664,22 @@ preg_replace_callback(
                     };',
                 [6 => true],
             ],
+            [
+                '<?php
+$c = 4; //
+$a = function(
+    $a,
+    $b,
+) use (
+    $c,
+) {
+    echo $a + $b + $c;
+};
+
+
+$a(1,2);',
+                [14 => true],
+            ],
         ];
     }
 
