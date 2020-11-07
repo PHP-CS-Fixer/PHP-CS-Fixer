@@ -82,8 +82,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``lowercase_cast`` rule.
-
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``lowercase_cast`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``lowercase_cast`` rule.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``lowercase_cast`` rule.

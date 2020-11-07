@@ -1481,6 +1481,40 @@ class Foo {
     public Bar $bar;
 }',
             ],
+            'some typed public property with single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**  */
+    public Bar $bar;
+}',
+                '<?php
+class Foo {
+    /** @var Bar */
+    public Bar $bar;
+}',
+            ],
+            'some typed public property with semi-single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public Bar $bar;
+
+    /**
+     */
+    public Baz $baz;
+}',
+                '<?php
+class Foo {
+    /** @var Bar
+     */
+    public Bar $bar;
+
+    /**
+     * @var Baz */
+    public Baz $baz;
+}',
+            ],
             'some typed protected property' => [
                 '<?php
 class Foo {

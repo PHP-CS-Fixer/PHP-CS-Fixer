@@ -88,61 +88,61 @@ Rule sets
 The rule is part of the following rule sets:
 
 @PHPUnit32Migration:risky
-  Using the ``@PHPUnit32Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit32Migration:risky <./../../ruleSets/PHPUnit32MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '3.2']``
 
 @PHPUnit35Migration:risky
-  Using the ``@PHPUnit35Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit35Migration:risky <./../../ruleSets/PHPUnit35MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '3.2']``
 
 @PHPUnit43Migration:risky
-  Using the ``@PHPUnit43Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit43Migration:risky <./../../ruleSets/PHPUnit43MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit48Migration:risky
-  Using the ``@PHPUnit48Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit48Migration:risky <./../../ruleSets/PHPUnit48MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit50Migration:risky
-  Using the ``@PHPUnit50Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit50Migration:risky <./../../ruleSets/PHPUnit50MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit52Migration:risky
-  Using the ``@PHPUnit52Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit52Migration:risky <./../../ruleSets/PHPUnit52MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit54Migration:risky
-  Using the ``@PHPUnit54Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit55Migration:risky
-  Using the ``@PHPUnit55Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit55Migration:risky <./../../ruleSets/PHPUnit55MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit56Migration:risky
-  Using the ``@PHPUnit56Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit56Migration:risky <./../../ruleSets/PHPUnit56MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit57Migration:risky
-  Using the ``@PHPUnit57Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit57Migration:risky <./../../ruleSets/PHPUnit57MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit60Migration:risky
-  Using the ``@PHPUnit60Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit60Migration:risky <./../../ruleSets/PHPUnit60MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``
 
 @PHPUnit75Migration:risky
-  Using the ``@PHPUnit75Migration:risky`` rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
+  Using the `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ rule set will enable the ``php_unit_no_expectation_annotation`` rule with the config below:
 
   ``['target' => '4.3']``

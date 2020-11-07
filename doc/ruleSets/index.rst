@@ -1,0 +1,32 @@
+===========================
+List of Available Rule sets
+===========================
+- `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
+- `@PHP56Migration <./PHP56Migration.rst>`_
+- `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
+- `@PHP70Migration <./PHP70Migration.rst>`_
+- `@PHP70Migration:risky <./PHP70MigrationRisky.rst>`_
+- `@PHP71Migration <./PHP71Migration.rst>`_
+- `@PHP71Migration:risky <./PHP71MigrationRisky.rst>`_
+- `@PHP73Migration <./PHP73Migration.rst>`_
+- `@PHP80Migration <./PHP80Migration.rst>`_
+- `@PHP80Migration:risky <./PHP80MigrationRisky.rst>`_
+- `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_
+- `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_
+- `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_
+- `@PHPUnit43Migration:risky <./PHPUnit43MigrationRisky.rst>`_
+- `@PHPUnit48Migration:risky <./PHPUnit48MigrationRisky.rst>`_
+- `@PHPUnit50Migration:risky <./PHPUnit50MigrationRisky.rst>`_
+- `@PHPUnit52Migration:risky <./PHPUnit52MigrationRisky.rst>`_
+- `@PHPUnit54Migration:risky <./PHPUnit54MigrationRisky.rst>`_
+- `@PHPUnit55Migration:risky <./PHPUnit55MigrationRisky.rst>`_
+- `@PHPUnit56Migration:risky <./PHPUnit56MigrationRisky.rst>`_
+- `@PHPUnit57Migration:risky <./PHPUnit57MigrationRisky.rst>`_
+- `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_
+- `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_
+- `@PSR1 <./PSR1.rst>`_
+- `@PSR2 <./PSR2.rst>`_
+- `@PhpCsFixer <./PhpCsFixer.rst>`_
+- `@PhpCsFixer:risky <./PhpCsFixerRisky.rst>`_
+- `@Symfony <./Symfony.rst>`_
+- `@Symfony:risky <./SymfonyRisky.rst>`_

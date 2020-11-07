@@ -24,8 +24,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``phpdoc_single_line_var_spacing`` rule.
-
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``phpdoc_single_line_var_spacing`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``phpdoc_single_line_var_spacing`` rule.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``phpdoc_single_line_var_spacing`` rule.

@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

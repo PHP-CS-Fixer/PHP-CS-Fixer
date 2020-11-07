@@ -28,8 +28,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``phpdoc_no_access`` rule.
-
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``phpdoc_no_access`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``phpdoc_no_access`` rule.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``phpdoc_no_access`` rule.

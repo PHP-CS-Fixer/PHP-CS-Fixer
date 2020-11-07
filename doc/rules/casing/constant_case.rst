@@ -54,17 +54,3 @@ With configuration: ``['case' => 'upper']``.
    -$c = nuLL;
    +$b = TRUE;
    +$c = NULL;
-
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-@PSR2
-  Using the ``@PSR2`` rule set will enable the ``constant_case`` rule with the default config.
-
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``constant_case`` rule with the default config.
-
-@PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``constant_case`` rule with the default config.

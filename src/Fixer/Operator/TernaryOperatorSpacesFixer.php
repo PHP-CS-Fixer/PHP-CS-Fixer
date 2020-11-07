@@ -77,6 +77,10 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 continue;
             }
 
+            if ($this->belongsToAlternativeSyntax($tokens, $index)) {
+                continue;
+            }
+
             if ($this->belongsToGoToLabel($tokens, $index)) {
                 continue;
             }
@@ -116,6 +120,32 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 }
             }
         }
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    private function belongsToAlternativeSyntax(Tokens $tokens, $index)
+    {
+        if (!$tokens[$index]->equals(':')) {
+            return false;
+        }
+
+        $closeParenthesisIndex = $tokens->getPrevMeaningfulToken($index);
+        if ($tokens[$closeParenthesisIndex]->isGivenKind(T_ELSE)) {
+            return true;
+        }
+        if (!$tokens[$closeParenthesisIndex]->equals(')')) {
+            return false;
+        }
+
+        $openParenthesisIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $closeParenthesisIndex);
+
+        $alternativeControlStructureIndex = $tokens->getPrevMeaningfulToken($openParenthesisIndex);
+
+        return $tokens[$alternativeControlStructureIndex]->isGivenKind([T_DECLARE, T_ELSEIF, T_FOR, T_FOREACH, T_IF, T_SWITCH, T_WHILE]);
     }
 
     /**

@@ -82,12 +82,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony:risky
-  Using the ``@Symfony:risky`` rule set will enable the ``function_to_constant`` rule with the config below:
+@PhpCsFixer:risky
+  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``function_to_constant`` rule with the config below:
 
   ``['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']]``
 
-@PhpCsFixer:risky
-  Using the ``@PhpCsFixer:risky`` rule set will enable the ``function_to_constant`` rule with the config below:
+@Symfony:risky
+  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``function_to_constant`` rule with the config below:
 
   ``['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']]``

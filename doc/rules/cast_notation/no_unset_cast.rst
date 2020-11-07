@@ -24,8 +24,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``no_unset_cast`` rule.
-
 @PHP80Migration
-  Using the ``@PHP80Migration`` rule set will enable the ``no_unset_cast`` rule.
+  Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``no_unset_cast`` rule.
+
+@PhpCsFixer
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_unset_cast`` rule.

@@ -71,11 +71,10 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
      */
     private function isElseif(Tokens $tokens, $index)
     {
-        if ($tokens[$index]->isGivenKind(T_ELSEIF)) {
-            return true;
-        }
-
-        return $tokens[$index]->isGivenKind(T_ELSE) && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_IF);
+        return
+            $tokens[$index]->isGivenKind(T_ELSEIF)
+            || ($tokens[$index]->isGivenKind(T_ELSE) && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_IF))
+        ;
     }
 
     /**
@@ -90,6 +89,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
         }
 
         $whitespace = '';
+
         for ($previous = $index - 1; $previous > 0; --$previous) {
             $token = $tokens[$previous];
             if ($token->isWhitespace() && Preg::match('/(\R\N*)$/', $token->getContent(), $matches)) {
@@ -104,6 +104,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
         }
 
         $previousToken = $tokens[$index - 1];
+
         if (!$previousToken->isWhitespace()) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, $whitespace]));
         } elseif (!Preg::match('/\R/', $previousToken->getContent())) {
