@@ -196,4 +196,24 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             ',
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        yield [
+            '<?php foo(1,);',
+            '<?php call_user_func("foo", 1,);',
+        ];
+    }
 }
