@@ -286,6 +286,14 @@ final class AnnotationTest extends TestCase
                 ['int'],
             ],
             [
+                " * @return int[]\r",
+                ['int[]'],
+            ],
+            [
+                " * @return int[]\r\n",
+                ['int[]'],
+            ],
+            [
                 ' * @method Foo[][] method()',
                 ['Foo[][]'],
             ],
