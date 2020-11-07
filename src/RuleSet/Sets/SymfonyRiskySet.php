@@ -53,7 +53,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             ],
             'native_function_invocation' => [
                 'include' => [
-                    '@compiler_optimized',
+                    NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED,
                 ],
                 'scope' => 'namespaced',
                 'strict' => true,
