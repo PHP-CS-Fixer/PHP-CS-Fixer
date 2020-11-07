@@ -73,31 +73,31 @@ Rule sets
 The rule is part of the following rule sets:
 
 @PHPUnit54Migration:risky
-  Using the ``@PHPUnit54Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+  Using the `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.4']``
 
 @PHPUnit55Migration:risky
-  Using the ``@PHPUnit55Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+  Using the `@PHPUnit55Migration:risky <./../../ruleSets/PHPUnit55MigrationRisky.rst>`_ rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.5']``
 
 @PHPUnit56Migration:risky
-  Using the ``@PHPUnit56Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+  Using the `@PHPUnit56Migration:risky <./../../ruleSets/PHPUnit56MigrationRisky.rst>`_ rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.5']``
 
 @PHPUnit57Migration:risky
-  Using the ``@PHPUnit57Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+  Using the `@PHPUnit57Migration:risky <./../../ruleSets/PHPUnit57MigrationRisky.rst>`_ rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.5']``
 
 @PHPUnit60Migration:risky
-  Using the ``@PHPUnit60Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+  Using the `@PHPUnit60Migration:risky <./../../ruleSets/PHPUnit60MigrationRisky.rst>`_ rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.5']``
 
 @PHPUnit75Migration:risky
-  Using the ``@PHPUnit75Migration:risky`` rule set will enable the ``php_unit_mock`` rule with the config below:
+  Using the `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ rule set will enable the ``php_unit_mock`` rule with the config below:
 
   ``['target' => '5.5']``

@@ -24,11 +24,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``normalize_index_brace`` rule.
+@PHP80Migration
+  Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``normalize_index_brace`` rule.
 
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``normalize_index_brace`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``normalize_index_brace`` rule.
 
-@PHP80Migration
-  Using the ``@PHP80Migration`` rule set will enable the ``normalize_index_brace`` rule.
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``normalize_index_brace`` rule.

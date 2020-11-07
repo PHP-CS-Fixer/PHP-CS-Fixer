@@ -13,47 +13,8 @@
 namespace PhpCsFixer;
 
 /**
- * Set of rules to be used by fixer.
- *
- * Example of set: ["@PSR2" => true, "@PSR1" => false, "strict" => true].
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @deprecated will be removed in 3.0 Use \PhpCsFixer\RuleSet\RuleSetInterface
  */
-interface RuleSetInterface
+interface RuleSetInterface extends \PhpCsFixer\RuleSet\RuleSetInterface
 {
-    public function __construct(array $set = []);
-
-    public static function create(array $set = []);
-
-    /**
-     * Get configuration for given rule.
-     *
-     * @param string $rule name of rule
-     *
-     * @return null|array
-     */
-    public function getRuleConfiguration($rule);
-
-    /**
-     * Get all rules from rules set.
-     *
-     * @return array
-     */
-    public function getRules();
-
-    /**
-     * Get names of all set definitions.
-     *
-     * @return string[]
-     */
-    public function getSetDefinitionNames();
-
-    /**
-     * Check given rule is in rules set.
-     *
-     * @param string $rule name of rule
-     *
-     * @return bool
-     */
-    public function hasRule($rule);
 }
