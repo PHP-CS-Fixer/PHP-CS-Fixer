@@ -1134,4 +1134,45 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases()
+    {
+        yield [
+            <<<'EOF'
+<?php
+
+class Foo
+{
+    public function __construct($bar,)
+    {
+        var_dump(1);
+    }
+}
+EOF
+            ,
+            <<<'EOF'
+<?php
+
+class Foo
+{
+    public function Foo($bar,)
+    {
+        var_dump(1);
+    }
+}
+EOF
+        ];
+    }
 }

@@ -55,17 +55,9 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public function provideFixCases()
     {
-        return [
-            [
-                '<?php $a = ($b + $c) || 1 === true ? 1 : 2;',
-                null,
-                ['always_move_variable' => true],
-            ],
+        $tests = [
             [
                 '<?php $a = 1 + ($b + $c) === true ? 1 : 2;',
                 null,
@@ -621,10 +613,6 @@ $a#4
                 '<?php $a = reset($foo) === -/* bar */1;',
             ],
             [
-                '<?php $a **= 4 === $b ? 2 : 3;',
-                '<?php $a **= $b === 4 ? 2 : 3;',
-            ],
-            [
                 '<?php $a %= 4 === $b ? 2 : 3;',
                 '<?php $a %= $b === 4 ? 2 : 3;',
             ],
@@ -648,7 +636,37 @@ $a#4
                     // 1
                 ];',
             ],
+            [
+                '<?php $a = $b = null === $c;',
+                '<?php $a = $b = $c === null;',
+            ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        $template = '<?php $a = ($b + $c) %s 1 === true ? 1 : 2;';
+        $operators = ['||', '&&'];
+
+        foreach ($operators as $operator) {
+            yield [
+                sprintf($template, $operator),
+                null,
+                ['always_move_variable' => true],
+            ];
+        }
+
+        $templateExpected = '<?php $a %s 4 === $b ? 2 : 3;';
+        $templateInput = '<?php $a %s $b === 4 ? 2 : 3;';
+        $operators = ['**=', '*=', '|=', '+=', '-=', '^=', 'xor', 'or', 'and', '<<=', '>>=', '&=', '.=', '/=', '-=', '||', '&&'];
+
+        foreach ($operators as $operator) {
+            yield [
+                sprintf($templateExpected, $operator),
+                sprintf($templateInput, $operator),
+            ];
+        }
     }
 
     /**
@@ -677,9 +695,6 @@ $a#4
         $this->doTest($input, $expected);
     }
 
-    /**
-     * @return array<string[]>
-     */
     public function provideLessGreaterCases()
     {
         return [
@@ -782,9 +797,6 @@ $a#4
         }
     }
 
-    /**
-     * @return array<string[]>
-     */
     public function providePHP70Cases()
     {
         return [
@@ -845,9 +857,6 @@ function a() {
         }
     }
 
-    /**
-     * @return array<string[]>
-     */
     public function providePHP71Cases()
     {
         return [

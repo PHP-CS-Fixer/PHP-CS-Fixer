@@ -24,8 +24,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``lambda_not_used_import`` rule.
-
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``lambda_not_used_import`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``lambda_not_used_import`` rule.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``lambda_not_used_import`` rule.

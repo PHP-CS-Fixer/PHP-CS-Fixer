@@ -6,7 +6,7 @@ files_with_wrong_permissions=$(
         ':!*.sh' \
         ':!php-cs-fixer' \
         ':!dev-tools/*.php' \
-    | grep -P "^100\d\d(1|3|5|7) " \
+    | grep -P "^100755 " \
     | sort -fh
 )
 

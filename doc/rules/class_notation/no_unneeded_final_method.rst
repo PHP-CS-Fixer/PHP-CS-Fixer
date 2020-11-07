@@ -73,11 +73,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony:risky
-  Using the ``@Symfony:risky`` rule set will enable the ``no_unneeded_final_method`` rule with the default config.
+@PHP80Migration:risky
+  Using the `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ rule set will enable the ``no_unneeded_final_method`` rule with the default config.
 
 @PhpCsFixer:risky
-  Using the ``@PhpCsFixer:risky`` rule set will enable the ``no_unneeded_final_method`` rule with the default config.
+  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``no_unneeded_final_method`` rule with the default config.
 
-@PHP80Migration:risky
-  Using the ``@PHP80Migration:risky`` rule set will enable the ``no_unneeded_final_method`` rule with the default config.
+@Symfony:risky
+  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``no_unneeded_final_method`` rule with the default config.

@@ -713,4 +713,47 @@ A();
             24,
         ];
     }
+
+    /**
+     * @param string $code
+     * @param int    $methodIndex
+     * @param array  $expected
+     *
+     * @dataProvider provideFunctionsWithArgumentsPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFunctionArgumentInfoPhp80($code, $methodIndex, $expected)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
+    }
+
+    public function provideFunctionsWithArgumentsPhp80Cases()
+    {
+        yield ['<?php function($aa,){};', 1, [
+            '$aa' => new ArgumentAnalysis(
+                '$aa',
+                3,
+                null,
+                null
+            ),
+        ]];
+
+        yield ['<?php fn($a,    $bc  ,) => null;', 1, [
+            '$a' => new ArgumentAnalysis(
+                '$a',
+                3,
+                null,
+                null
+            ),
+            '$bc' => new ArgumentAnalysis(
+                '$bc',
+                6,
+                null,
+                null
+            ),
+        ]];
+    }
 }

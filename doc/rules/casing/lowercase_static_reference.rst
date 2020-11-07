@@ -59,8 +59,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``lowercase_static_reference`` rule.
-
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``lowercase_static_reference`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``lowercase_static_reference`` rule.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``lowercase_static_reference`` rule.

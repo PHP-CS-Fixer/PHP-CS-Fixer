@@ -32,4 +32,4 @@ Rule sets
 The rule is part of the following rule set:
 
 @PHP74Migration:risky
-  Using the ``@PHP74Migration:risky`` rule set will enable the ``use_arrow_functions`` rule.
+  Using the `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ rule set will enable the ``use_arrow_functions`` rule.

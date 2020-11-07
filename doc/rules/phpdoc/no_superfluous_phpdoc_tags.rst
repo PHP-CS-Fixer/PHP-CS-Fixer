@@ -143,12 +143,12 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``no_superfluous_phpdoc_tags`` rule with the config below:
+@PhpCsFixer
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_superfluous_phpdoc_tags`` rule with the config below:
 
   ``['allow_mixed' => true, 'allow_unused_params' => true]``
 
-@PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``no_superfluous_phpdoc_tags`` rule with the config below:
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``no_superfluous_phpdoc_tags`` rule with the config below:
 
   ``['allow_mixed' => true, 'allow_unused_params' => true]``

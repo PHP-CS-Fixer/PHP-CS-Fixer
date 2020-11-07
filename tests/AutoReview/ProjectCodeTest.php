@@ -69,7 +69,7 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassHaveTestClass($className)
     {
-        $testClassName = str_replace('PhpCsFixer', 'PhpCsFixer\\Tests', $className).'Test';
+        $testClassName = 'PhpCsFixer\\Tests'.substr($className, 10).'Test';
 
         if (\in_array($className, self::$classesWithoutTests, true)) {
             static::assertFalse(class_exists($testClassName), sprintf('Class "%s" already has tests, so it should be removed from "%s::$classesWithoutTests".', $className, __CLASS__));

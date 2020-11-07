@@ -184,6 +184,17 @@ $a = ($b
                 return $isBar?array_sum(array_map(function ($x) { switch ($x) { case 1: return $y? 2 : 3; case 4: return 5; } }, [1, 2, 3])):128;
                 ',
             ],
+            [
+                '<?php
+                declare(ticks=1):enddeclare;
+                for ($i = 0; $i < 100; $i++): echo "."; endfor;
+                foreach ($foo as $bar): $i++; endforeach;
+                if ($x === 1): echo "One"; elseif ($x === 2): echo "Two"; else: echo "Three"; endif;
+                switch (true): default: return 0; endswitch;
+                while ($i > 10): $i--; endwhile;
+                /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
+                ',
+            ],
         ];
     }
 }

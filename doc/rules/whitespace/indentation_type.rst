@@ -28,10 +28,10 @@ Rule sets
 The rule is part of the following rule sets:
 
 @PSR2
-  Using the ``@PSR2`` rule set will enable the ``indentation_type`` rule.
-
-@Symfony
-  Using the ``@Symfony`` rule set will enable the ``indentation_type`` rule.
+  Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``indentation_type`` rule.
 
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``indentation_type`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``indentation_type`` rule.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``indentation_type`` rule.

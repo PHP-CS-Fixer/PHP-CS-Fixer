@@ -13,7 +13,6 @@ parameters:
     ignoreErrors:
         - '/^Return typehint of method PhpCsFixer\\Tests\\Test\\.+::createIsIdenticalStringConstraint\(\) has invalid type PHPUnit_Framework_Constraint_IsIdentical\.$/'
         - '/^Class (Symfony\\Contracts\\EventDispatcher\\Event|Symfony\\Component\\EventDispatcher\\Event) not found.$/'
-        - '/^(Access|Call) to an undefined (property|method) PhpCsFixer\\AccessibleObject\\AccessibleObject::.+$/'
         - '/^Constant T_NAME_(RELATIVE|FULLY_QUALIFIED|QUALIFIED) not found\.$/'
         -
             message: '/^Unsafe usage of new static\(\)\.$/'
@@ -50,7 +49,4 @@ parameters:
         - # https://github.com/phpstan/phpstan/issues/1215
             message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
             path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
-        -
-            message: '/^Unreachable statement - code above always terminates\.$/'
-            path: tests/AutoReview/DocumentationTest.php
     tipsOfTheDay: false

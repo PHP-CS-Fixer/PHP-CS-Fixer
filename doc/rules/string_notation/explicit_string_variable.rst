@@ -45,4 +45,4 @@ Rule sets
 The rule is part of the following rule set:
 
 @PhpCsFixer
-  Using the ``@PhpCsFixer`` rule set will enable the ``explicit_string_variable`` rule.
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``explicit_string_variable`` rule.
