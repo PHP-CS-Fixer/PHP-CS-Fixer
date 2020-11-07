@@ -24,7 +24,8 @@ use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Command\HelpCommand as BaseHelpCommand;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -186,7 +187,9 @@ The example below will add two rules to the default list of PSR2 set rules:
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
+    $config = new Config();
+
+    return $config
         ->setRules([
             '@PSR2' => true,
             'strict_param' => true,
@@ -213,7 +216,9 @@ The following example shows how to use all `Symfony` rules but the `full_opening
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
+    $config = new Config();
+
+    return $config
         ->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
@@ -228,7 +233,9 @@ configure them in your config file.
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    $config = new Config();
+
+    return $config
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
@@ -251,9 +258,9 @@ Cache can be disabled via `--using-cache` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
-        ->setUsingCache(false)
-    ;
+    $config = new Config();
+
+    return $config->setUsingCache(false);
 
     ?>
 
@@ -261,9 +268,9 @@ Cache file can be specified via `--cache-file` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
-        ->setCacheFile(__DIR__.'/.php_cs.cache')
-    ;
+    $config = new Config();
+
+    return $config->setCacheFile(__DIR__.'/.php_cs.cache');
 
     ?>
 
@@ -442,7 +449,7 @@ EOF
         );
 
         $ruleSets = [];
-        foreach (RuleSet::create()->getSetDefinitionNames() as $setName) {
+        foreach (RuleSets::getSetDefinitionNames() as $setName) {
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 

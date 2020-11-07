@@ -383,10 +383,12 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     ->lintSource(Argument::type('string'))
                     ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
                 ;
+
                 $linterProphecy
                     ->lintFile(Argument::type('string'))
                     ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
                 ;
+
                 $linterProphecy
                     ->isAsync()
                     ->willReturn(false)
