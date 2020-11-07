@@ -90,6 +90,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
     private function fixEmptyElse(Tokens $tokens, $index)
     {
         $next = $tokens->getNextMeaningfulToken($index);
+
         if ($tokens[$next]->equals('{')) {
             $close = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $next);
             if (1 === $close - $next) { // '{}'
@@ -117,6 +118,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
 
         // clear T_ELSE and the '{' '}' if there are any
         $next = $tokens->getNextMeaningfulToken($index);
+
         if (!$tokens[$next]->equals('{')) {
             return;
         }
