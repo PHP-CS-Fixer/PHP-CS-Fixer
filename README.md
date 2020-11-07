@@ -44,7 +44,7 @@ following command to fix the files PHP files in the `src` directory:
 $ tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src
 ```
 
-See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst)
+See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst), list of [rule sets](./doc/ruleSets/index.rst)
 and [configuration file](./doc/config.rst) documentation for more details.
 
 If you need to apply code styles that are not supported by the tool, you can

@@ -73,4 +73,4 @@ Rule sets
 The rule is part of the following rule set:
 
 @PhpCsFixer:risky
-  Using the ``@PhpCsFixer:risky`` rule set will enable the ``php_unit_strict`` rule with the default config.
+  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``php_unit_strict`` rule with the default config.
