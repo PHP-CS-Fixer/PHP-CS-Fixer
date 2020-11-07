@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by Riimu at 2020-10-29T09:25:22Z
+
+I believe the list is missing `T_ELSE` and `T_ELSEIF`. I.e. to cover cases like:
+
+```php
+<?php
+
+if (true ? true : false):
+  echo "Hello World\n";
+elseif (true):
+  echo "Second Hello\n";
+else:
+  echo "Last Hello\n";
+endif;
+```
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-29T14:50:34Z
+
+@Riimu definitely, fixed, thanks for spotting this.
+
+---------------------------------------------------------------------------
+
+by Riimu at 2020-11-02T08:36:07Z
+
+Tried this against the test case and the company project where I first noticed the issue. No more false positives! Thanks for taking time to fix this.
+
+So, LGTM ✅
