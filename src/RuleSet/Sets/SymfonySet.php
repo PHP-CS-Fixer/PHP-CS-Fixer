@@ -97,6 +97,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'ordered_imports' => true,
             'php_unit_fqcn_annotation' => true,
             'phpdoc_align' => [
+                // @TODO: on 3.0 switch whole rule to `=> true`, currently we use custom config that will be default on 3.0
                 'tags' => [
                     'method',
                     'param',
