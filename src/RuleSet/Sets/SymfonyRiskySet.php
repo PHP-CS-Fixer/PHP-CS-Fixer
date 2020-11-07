@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
