@@ -17,14 +17,15 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  */
-final class PHPUnit75MigrationRiskySet extends AbstractRuleSetDescription
+final class PHPUnit84MigrationRiskySet extends AbstractRuleSetDescription
 {
     public function getRules()
     {
         return [
             '@PHPUnit60Migration:risky' => true,
-            'php_unit_dedicate_assert_internal_type' => [
-                'target' => '7.5',
+            '@PHPUnit75Migration:risky' => true,
+            'php_unit_expectation' => [
+                'target' => '8.4',
             ],
         ];
     }
