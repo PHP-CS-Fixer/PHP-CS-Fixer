@@ -138,8 +138,3 @@ The rule is part of the following rule sets:
   Using the `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
 
   ``['target' => '5.6']``
-
-@PHPUnit84Migration:risky
-  Using the `@PHPUnit84Migration:risky <./../../ruleSets/PHPUnit84MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
-
-  ``['target' => '5.6']``
