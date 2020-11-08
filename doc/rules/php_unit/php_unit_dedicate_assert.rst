@@ -108,24 +108,16 @@ The rule is part of the following rule sets:
   ``['target' => '3.5']``
 
 @PHPUnit50Migration:risky
-  Using the `@PHPUnit50Migration:risky <./../../ruleSets/PHPUnit50MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
-
-  ``['target' => '5.0']``
+  Using the `@PHPUnit50Migration:risky <./../../ruleSets/PHPUnit50MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
 
 @PHPUnit52Migration:risky
-  Using the `@PHPUnit52Migration:risky <./../../ruleSets/PHPUnit52MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
-
-  ``['target' => '5.0']``
+  Using the `@PHPUnit52Migration:risky <./../../ruleSets/PHPUnit52MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
 
 @PHPUnit54Migration:risky
-  Using the `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
-
-  ``['target' => '5.0']``
+  Using the `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
 
 @PHPUnit55Migration:risky
-  Using the `@PHPUnit55Migration:risky <./../../ruleSets/PHPUnit55MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
-
-  ``['target' => '5.0']``
+  Using the `@PHPUnit55Migration:risky <./../../ruleSets/PHPUnit55MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the default config.
 
 @PHPUnit56Migration:risky
   Using the `@PHPUnit56Migration:risky <./../../ruleSets/PHPUnit56MigrationRisky.rst>`_ rule set will enable the ``php_unit_dedicate_assert`` rule with the config below:
