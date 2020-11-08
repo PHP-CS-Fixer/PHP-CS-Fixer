@@ -236,7 +236,6 @@ final class RuleSetTest extends TestCase
                 'braces' => true,
                 'constant_case' => true,
                 'class_definition' => true,
-                'constant_case' => true,
                 'elseif' => true,
                 'encoding' => true,
                 'function_declaration' => true,
