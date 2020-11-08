@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Test;
 
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\Tests\Test\IntegrationCase as BaseIntegrationCase;
 
 /**

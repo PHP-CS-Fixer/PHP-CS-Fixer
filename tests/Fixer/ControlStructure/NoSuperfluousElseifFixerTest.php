@@ -279,4 +279,28 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected)
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php
+            if ($foo) {
+                $a = $bar ?? throw new \Exception();
+            } elseif ($bar) {
+                echo 1;
+            }
+            ',
+        ];
+    }
 }

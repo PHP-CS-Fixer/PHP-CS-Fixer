@@ -68,6 +68,6 @@ Rule sets
 The rule is part of the following rule set:
 
 @DoctrineAnnotation
-  Using the ``@DoctrineAnnotation`` rule set will enable the ``doctrine_annotation_array_assignment`` rule with the config below:
+  Using the `@DoctrineAnnotation <./../../ruleSets/DoctrineAnnotation.rst>`_ rule set will enable the ``doctrine_annotation_array_assignment`` rule with the config below:
 
   ``['operator' => ':']``

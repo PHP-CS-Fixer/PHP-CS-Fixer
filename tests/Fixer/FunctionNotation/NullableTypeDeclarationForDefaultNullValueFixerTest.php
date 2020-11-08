@@ -128,46 +128,57 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(string $param = null) {}',
             '<?php function foo(?string $param = null) {}',
         ];
+
         yield [
             '<?php function foo(string $param= null) {}',
             '<?php function foo(?string $param= null) {}',
         ];
+
         yield [
             '<?php function foo(string $param =null) {}',
             '<?php function foo(?string $param =null) {}',
         ];
+
         yield [
             '<?php function foo(string $param=null) {}',
             '<?php function foo(?string $param=null) {}',
         ];
+
         yield [
             '<?php function foo(string $param1 = null, string $param2 = null) {}',
             '<?php function foo(?string $param1 = null, ?string $param2 = null) {}',
         ];
+
         yield [
             '<?php function foo(string &$param = null) {}',
             '<?php function foo(?string &$param = null) {}',
         ];
+
         yield [
             '<?php function foo(string & $param = null) {}',
             '<?php function foo(?string & $param = null) {}',
         ];
+
         yield [
             '<?php function foo(string /*comment*/$param = null) {}',
             '<?php function foo(?string /*comment*/$param = null) {}',
         ];
+
         yield [
             '<?php function foo(string /*comment*/&$param = null) {}',
             '<?php function foo(?string /*comment*/&$param = null) {}',
         ];
+
         yield [
             '<?php function foo(string &/*comment*/$param = null) {}',
             '<?php function foo(?string &/*comment*/$param = null) {}',
         ];
+
         yield [
             '<?php $foo = function (string $param = null) {};',
             '<?php $foo = function (?string $param = null) {};',
         ];
+
         yield [
             '<?php $foo = function (string &$param = null) {};',
             '<?php $foo = function (?string &$param = null) {};',
@@ -177,78 +188,97 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(Baz $param = null) {}',
             '<?php function foo(?Baz $param = null) {}',
         ];
+
         yield [
             '<?php function foo(\Baz $param = null) {}',
             '<?php function foo(?\Baz $param = null) {}',
         ];
+
         yield [
             '<?php function foo(Bar\Baz $param = null) {}',
             '<?php function foo(?Bar\Baz $param = null) {}',
         ];
+
         yield [
             '<?php function foo(\Bar\Baz $param = null) {}',
             '<?php function foo(?\Bar\Baz $param = null) {}',
         ];
+
         yield [
             '<?php function foo(Baz &$param = null) {}',
             '<?php function foo(?Baz &$param = null) {}',
         ];
+
         yield [
             '<?php function foo(\Baz &$param = null) {}',
             '<?php function foo(?\Baz &$param = null) {}',
         ];
+
         yield [
             '<?php function foo(Bar\Baz &$param = null) {}',
             '<?php function foo(?Bar\Baz &$param = null) {}',
         ];
+
         yield [
             '<?php function foo(\Bar\Baz &$param = null) {}',
             '<?php function foo(?\Bar\Baz &$param = null) {}',
         ];
+
         yield [
             '<?php function foo(Baz & $param = null) {}',
             '<?php function foo(?Baz & $param = null) {}',
         ];
+
         yield [
             '<?php function foo(\Baz & $param = null) {}',
             '<?php function foo(?\Baz & $param = null) {}',
         ];
+
         yield [
             '<?php function foo(Bar\Baz & $param = null) {}',
             '<?php function foo(?Bar\Baz & $param = null) {}',
         ];
+
         yield [
             '<?php function foo(\Bar\Baz & $param = null) {}',
             '<?php function foo(?\Bar\Baz & $param = null) {}',
         ];
+
         yield [
             '<?php function foo(array &$param = null) {}',
             '<?php function foo(?array &$param = null) {}',
         ];
+
         yield [
             '<?php function foo(array & $param = null) {}',
             '<?php function foo(?array & $param = null) {}',
         ];
+
         yield [
             '<?php function foo(callable $param = null) {}',
             '<?php function foo(?callable $param = null) {}',
         ];
+
         yield [
             '<?php $foo = function (Baz $param = null) {};',
             '<?php $foo = function (?Baz $param = null) {};',
         ];
+
         yield [
             '<?php $foo = function (Baz &$param = null) {};',
             '<?php $foo = function (?Baz &$param = null) {};',
         ];
+
         yield [
             '<?php $foo = function (Baz & $param = null) {};',
             '<?php $foo = function (?Baz & $param = null) {};',
         ];
+
         yield [
             '<?php class Test { public function foo(Bar\Baz $param = null) {} }',
             '<?php class Test { public function foo(?Bar\Baz $param = null) {} }',
         ];
+
         yield [
             '<?php class Test { public function foo(self $param = null) {} }',
             '<?php class Test { public function foo(?self $param = null) {} }',
@@ -258,6 +288,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(iterable $param = null) {}',
             '<?php function foo(?iterable $param = null) {}',
         ];
+
         yield [
             '<?php $foo = function(array $a = null,
                     array $b = null, array     $c = null, array
@@ -266,6 +297,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                     ?array $b = null, ?array     $c = null, ?array
                     $d = null) {};',
         ];
+
         yield [
             '<?php function foo(string $param = NULL) {}',
             '<?php function foo(?string $param = NULL) {}',
@@ -278,10 +310,12 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo( string $param = null) {}',
             '<?php function foo( ?string $param = null) {}',
         ];
+
         yield [
             '<?php function foo(/*comment*/string $param = null) {}',
             '<?php function foo(/*comment*/?string $param = null) {}',
         ];
+
         yield [
             '<?php function foo( /*comment*/ string $param = null) {}',
             '<?php function foo( /*comment*/ ?string $param = null) {}',
@@ -294,10 +328,12 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php function foo(string $param = null) {}',
             '<?php function foo(? string $param = null) {}',
         ];
+
         yield [
             '<?php function foo(/*comment*/string $param = null) {}',
             '<?php function foo(?/*comment*/string $param = null) {}',
         ];
+
         yield [
             '<?php function foo(/*comment*/ string $param = null) {}',
             '<?php function foo(? /*comment*/ string $param = null) {}',
@@ -336,22 +372,27 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php $foo = fn (string $param = null) => null;',
             '<?php $foo = fn (?string $param = null) => null;',
         ];
+
         yield [
             '<?php $foo = fn (string &$param = null) => null;',
             '<?php $foo = fn (?string &$param = null) => null;',
         ];
+
         yield [
             '<?php $foo = fn (Baz $param = null) => null;',
             '<?php $foo = fn (?Baz $param = null) => null;',
         ];
+
         yield [
             '<?php $foo = fn (Baz &$param = null) => null;',
             '<?php $foo = fn (?Baz &$param = null) => null;',
         ];
+
         yield [
             '<?php $foo = fn (Baz & $param = null) => null;',
             '<?php $foo = fn (?Baz & $param = null) => null;',
         ];
+
         yield [
             '<?php $foo = fn(array $a = null,
                     array $b = null, array     $c = null, array
@@ -359,6 +400,26 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
             '<?php $foo = fn(?array $a = null,
                     ?array $b = null, ?array     $c = null, ?array
                     $d = null) => null;',
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php function foo(?string $param = null,) {}',
+            '<?php function foo(string $param = null,) {}',
         ];
     }
 }

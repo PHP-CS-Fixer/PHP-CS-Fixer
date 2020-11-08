@@ -1159,6 +1159,37 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         ];
     }
 
+    /**
+     * @param string $expected
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected)
+    {
+        $this->fixer->configure(['tokens' => ['throw']]);
+
+        $this->doTest($expected);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php
+                $a = $bar ?? throw new \Exception();
+                $a = $bar ?? throw new \Exception();
+                $a = $bar ?? throw new \Exception();
+            ',
+            '<?php
+                $a = $bar ?? throw new \Exception();
+
+                $a = $bar ?? throw new \Exception();
+
+                $a = $bar ?? throw new \Exception();
+            ',
+        ];
+    }
+
     private function removeLinesFromString($input, array $lineNumbers)
     {
         sort($lineNumbers);

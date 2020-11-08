@@ -25,7 +25,7 @@ use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -298,18 +298,34 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSet = new RuleSet([$name => true]);
-        $rules = $ruleSet->getRules();
-        ksort($rules);
-
+        $ruleSetDefinitions = RuleSets::getSetDefinitions();
         $fixers = $this->getFixers();
 
-        $output->writeln(sprintf('<info>Description of</info> %s <info>set.</info>', $name));
+        $output->writeln(sprintf('<info>Description of the</info> %s <info>set.</info>', $ruleSetDefinitions[$name]->getName()));
+
+        $output->writeln($this->replaceRstLinks($ruleSetDefinitions[$name]->getDescription()));
+
+        if ($ruleSetDefinitions[$name]->isRisky()) {
+            $output->writeln('This set contains <error>risky</error> rules.');
+        }
+
         $output->writeln('');
 
         $help = '';
 
-        foreach ($rules as $rule => $config) {
+        foreach ($ruleSetDefinitions[$name]->getRules() as $rule => $config) {
+            if ('@' === $rule[0]) {
+                $set = $ruleSetDefinitions[$rule];
+                $help .= sprintf(
+                    " * <info>%s</info>%s\n   | %s\n\n",
+                    $rule,
+                    $set->isRisky() ? ' <error>risky</error>' : '',
+                    $this->replaceRstLinks($set->getDescription())
+                );
+
+                continue;
+            }
+
             /** @var FixerInterface $fixer */
             $fixer = $fixers[$rule];
 
@@ -355,9 +371,7 @@ final class DescribeCommand extends Command
             return $this->setNames;
         }
 
-        $set = new RuleSet();
-        $this->setNames = $set->getSetDefinitionNames();
-        sort($this->setNames);
+        $this->setNames = RuleSets::getSetDefinitionNames();
 
         return $this->setNames;
     }
@@ -385,5 +399,27 @@ final class DescribeCommand extends Command
                 $output->writeln(sprintf('* <info>%s</info>', \is_string($name) ? $name : $item));
             }
         }
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return string
+     */
+    private function replaceRstLinks($content)
+    {
+        return Preg::replaceCallback(
+            '/(`[^<]+<[^>]+>`_)/',
+            static function (array $matches) {
+                return Preg::replaceCallback(
+                    '/`(.*)<(.*)>`_/',
+                    static function (array $matches) {
+                        return $matches[1].'('.$matches[2].')';
+                    },
+                    $matches[1]
+                );
+            },
+            $content
+        );
     }
 }

@@ -131,6 +131,7 @@ switch ($foo) {
         $empty = true;
         $fallThrough = true;
         $commentPosition = null;
+
         for ($i = $tokens->getNextTokenOfKind($casePosition, [':', ';']) + 1, $max = \count($tokens); $i < $max; ++$i) {
             if ($tokens[$i]->isGivenKind([T_SWITCH, T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_DO, T_FUNCTION, T_CLASS])) {
                 $empty = false;
@@ -139,8 +140,18 @@ switch ($foo) {
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_BREAK, T_CONTINUE, T_RETURN, T_EXIT, T_THROW, T_GOTO])) {
+            if ($tokens[$i]->isGivenKind([T_BREAK, T_CONTINUE, T_RETURN, T_EXIT, T_GOTO])) {
                 $fallThrough = false;
+
+                continue;
+            }
+
+            if ($tokens[$i]->isGivenKind([T_THROW])) {
+                $previousIndex = $tokens->getPrevMeaningfulToken($i);
+
+                if ($previousIndex === $casePosition || $tokens[$previousIndex]->equalsAny(['{', ';', [T_OPEN_TAG]])) {
+                    $fallThrough = false;
+                }
 
                 continue;
             }
@@ -170,7 +181,6 @@ switch ($foo) {
                         $this->insertCommentAt($tokens, $i);
                     } else {
                         $text = $this->configuration['comment_text'];
-
                         $tokens[$commentPosition] = new Token([
                             $tokens[$commentPosition]->getId(),
                             str_ireplace($text, $text, $tokens[$commentPosition]->getContent()),
@@ -211,12 +221,10 @@ switch ($foo) {
     private function insertCommentAt(Tokens $tokens, $casePosition)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-
         $newlinePosition = $this->ensureNewLineAt($tokens, $casePosition);
-
         $newlineToken = $tokens[$newlinePosition];
-
         $nbNewlines = substr_count($newlineToken->getContent(), $lineEnding);
+
         if ($newlineToken->isGivenKind(T_OPEN_TAG) && Preg::match('/\R/', $newlineToken->getContent())) {
             ++$nbNewlines;
         } elseif ($tokens[$newlinePosition - 1]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
@@ -236,7 +244,6 @@ switch ($foo) {
         }
 
         $tokens->insertAt($newlinePosition, new Token([T_COMMENT, '// '.$this->configuration['comment_text']]));
-
         $this->ensureNewLineAt($tokens, $newlinePosition);
     }
 
@@ -249,8 +256,8 @@ switch ($foo) {
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $content = $lineEnding.$this->getIndentAt($tokens, $position);
-
         $whitespaceToken = $tokens[$position - 1];
+
         if (!$whitespaceToken->isGivenKind(T_WHITESPACE)) {
             if ($whitespaceToken->isGivenKind(T_OPEN_TAG)) {
                 $content = Preg::replace('/\R/', '', $content);
@@ -293,6 +300,7 @@ switch ($foo) {
         }
 
         $whitespaceToken = $tokens[$whitespacePosition];
+
         if ($whitespaceToken->isGivenKind(T_WHITESPACE)) {
             $content = Preg::replace($regex, '', $whitespaceToken->getContent());
             if ('' !== $content) {
@@ -320,8 +328,8 @@ switch ($foo) {
             }
 
             $content = $tokens[$position]->getContent();
-
             $prevToken = $tokens[$position - 1];
+
             if ($prevToken->isGivenKind(T_OPEN_TAG) && Preg::match('/\R$/', $prevToken->getContent())) {
                 $content = $this->whitespacesConfig->getLineEnding().$content;
             }
@@ -359,6 +367,7 @@ switch ($foo) {
         }
 
         $position = $tokens->getNextMeaningfulToken($position);
+
         if ('{' !== $tokens[$position]->getContent()) {
             return $tokens->getNextTokenOfKind($position, [';']);
         }

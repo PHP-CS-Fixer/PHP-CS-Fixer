@@ -12,9 +12,9 @@
 
 namespace PhpCsFixer\Console\Command;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Documentation\DocumentationGenerator;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSets;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -53,36 +53,56 @@ final class DocumentationCommand extends Command
     {
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerBuiltInFixers();
-
-        /** @var AbstractFixer[] $fixers */
         $fixers = $fixerFactory->getFixers();
 
-        $paths = [
-            '_index' => $this->generator->getFixersDocumentationIndexFilePath(),
-        ];
+        $this->generateFixersDocs($fixers);
+        $this->generateRuleSetsDocs($fixers);
 
+        return 0;
+    }
+
+    private function generateFixersDocs(array $fixers)
+    {
         $filesystem = new Filesystem();
-
-        foreach ($fixers as $fixer) {
-            $class = \get_class($fixer);
-            $paths[$class] = $path = $this->generator->getFixerDocumentationFilePath($fixer);
-
-            $filesystem->dumpFile($path, $this->generator->generateFixerDocumentation($fixer));
-        }
 
         /** @var SplFileInfo $file */
         foreach ((new Finder())->files()->in($this->generator->getFixersDocumentationDirectoryPath()) as $file) {
-            $path = $file->getPathname();
-
-            if (!\in_array($path, $paths, true)) {
-                $filesystem->remove($path);
-            }
+            $filesystem->remove($file->getPathname());
         }
 
-        if (false === @file_put_contents($paths['_index'], $this->generator->generateFixersDocumentationIndex($fixers))) {
-            throw new \RuntimeException("Failed updating file {$paths['_index']}.");
+        foreach ($fixers as $fixer) {
+            $filesystem->dumpFile(
+                $this->generator->getFixerDocumentationFilePath($fixer),
+                $this->generator->generateFixerDocumentation($fixer)
+            );
         }
 
-        return 0;
+        $index = $this->generator->getFixersDocumentationIndexFilePath();
+
+        if (false === @file_put_contents($index, $this->generator->generateFixersDocumentationIndex($fixers))) {
+            throw new \RuntimeException("Failed updating file {$index}.");
+        }
+    }
+
+    private function generateRuleSetsDocs(array $fixers)
+    {
+        $filesystem = new Filesystem();
+
+        /** @var SplFileInfo $file */
+        foreach ((new Finder())->files()->in($this->generator->getRuleSetsDocumentationDirectoryPath()) as $file) {
+            $filesystem->remove($file->getPathname());
+        }
+
+        $index = $this->generator->getRuleSetsDocumentationIndexFilePath();
+        $paths = [];
+
+        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
+            $paths[$name] = $path = $this->generator->getRuleSetsDocumentationFilePath($name);
+            $filesystem->dumpFile($path, $this->generator->generateRuleSetsDocumentation($definition, $fixers));
+        }
+
+        if (false === @file_put_contents($index, $this->generator->generateRuleSetsDocumentationIndex($paths))) {
+            throw new \RuntimeException("Failed updating file {$index}.");
+        }
     }
 }

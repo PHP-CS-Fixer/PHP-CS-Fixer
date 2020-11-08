@@ -216,4 +216,24 @@ $foo();
             ];
         }
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield 'simple' => [
+            '<?php $foo = function() {};',
+            '<?php $foo = function() use ($bar,) {};',
+        ];
+    }
 }
