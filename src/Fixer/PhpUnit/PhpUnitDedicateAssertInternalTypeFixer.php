@@ -98,7 +98,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
      */
     protected function createConfigurationDefinition()
     {
-        // @todo 3.0 drop `ConfigurationDefinitionFixerInterface`
+        // @todo 3.0 drop `ConfigurableFixerInterface`
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])

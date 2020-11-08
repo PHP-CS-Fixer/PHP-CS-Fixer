@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
@@ -81,7 +80,7 @@ final class RuleSetTest extends TestCase
 
         $fixer = current($factory->getFixers());
 
-        if (!$fixer instanceof ConfigurationDefinitionFixerInterface || \is_bool($ruleConfig)) {
+        if (!$fixer instanceof ConfigurableFixerInterface || \is_bool($ruleConfig)) {
             $this->addToAssertionCount(1);
 
             return;
