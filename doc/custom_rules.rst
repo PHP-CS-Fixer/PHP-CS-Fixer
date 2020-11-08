@@ -30,7 +30,6 @@ Then register your custom fixers and enable them in the config file:
     ;
 There are several interfaces that your fixers can also implement if needed:
 
-* `PhpCsFixer\\Fixer\\DefinedFixerInterface <./src/Fixer/DefinedFixerInterface.php>`_: allows to describe what the fixer does in details;
 * `PhpCsFixer\\Fixer\\WhitespacesAwareFixerInterface <./src/Fixer/WhitespacesAwareFixerInterface.php>`_: for fixers that need to know the configured indentation and line endings;
 * `PhpCsFixer\\Fixer\\ConfigurableFixerInterface <./src/Fixer/ConfigurableFixerInterface.php>`_: to create a configurable fixer;
 * `PhpCsFixer\\Fixer\\DeprecatedFixerInterface <./src/Fixer/DeprecatedFixerInterface.php>`_: to deprecate a fixer.

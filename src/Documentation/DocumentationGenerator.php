@@ -203,8 +203,6 @@ RST;
 
             $riskyDescription = $definition->getRiskyDescription();
             $samples = $definition->getCodeSamples();
-        } elseif ($fixer->isRisky()) {
-            $riskyDescription = 'Changes applied by the rule to your code might change its behavior.';
         }
 
         if (null !== $riskyDescription) {
@@ -274,8 +272,6 @@ RST;
 
                 $doc .= "\n\n{$optionInfo}";
             }
-        } elseif ($fixer instanceof ConfigurableFixerInterface) {
-            $doc .= "\n\nThis rule is configurable.";
         }
 
         if (0 !== \count($samples)) {

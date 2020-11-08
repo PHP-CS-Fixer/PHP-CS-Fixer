@@ -23,7 +23,9 @@ final class PHPUnit50MigrationRiskySet extends AbstractRuleSetDescription
     {
         return [
             '@PHPUnit48Migration:risky' => true,
-            'php_unit_dedicate_assert' => true,
+            'php_unit_dedicate_assert' => [
+                'target' => '5.0',
+            ],
         ];
     }
 

@@ -2,6 +2,7 @@
 /tests/**/*Test.php export-ignore
 /tests/AbstractDoctrineAnnotationFixerTestCase.php export-ignore
 /tests/Differ/AbstractDifferTestCase.php export-ignore
+/tests/Differ/DummyTestSplFileInfo.php export-ignore
 /tests/Fixtures/ export-ignore
 /tests/Linter/AbstractLinterTestCase.php export-ignore
 /tests/Report/AbstractReporterTestCase.php export-ignore
