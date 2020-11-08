@@ -82,6 +82,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_spaces_around_offset' => true,
             'no_superfluous_phpdoc_tags' => [
                 'allow_mixed' => true,
+                'allow_unused_params' => true,
             ],
             'no_trailing_comma_in_list_call' => true,
             'no_trailing_comma_in_singleline_array' => true,
@@ -139,6 +140,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'hash',
                 ],
             ],
+            'single_line_throw' => true,
             'single_quote' => true,
             'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => [

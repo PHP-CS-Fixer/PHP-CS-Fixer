@@ -56,7 +56,7 @@ Rules
 - `no_spaces_around_offset <./../rules/whitespace/no_spaces_around_offset.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_
   config:
-  ``['allow_mixed' => true]``
+  ``['allow_mixed' => true, 'allow_unused_params' => true]``
 - `no_trailing_comma_in_list_call <./../rules/control_structure/no_trailing_comma_in_list_call.rst>`_
 - `no_trailing_comma_in_singleline_array <./../rules/array_notation/no_trailing_comma_in_singleline_array.rst>`_
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_
@@ -101,6 +101,7 @@ Rules
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
   config:
   ``['comment_types' => ['hash']]``
+- `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_
 - `single_quote <./../rules/string_notation/single_quote.rst>`_
 - `single_trait_insert_per_statement <./../rules/class_notation/single_trait_insert_per_statement.rst>`_
 - `space_after_semicolon <./../rules/semicolon/space_after_semicolon.rst>`_

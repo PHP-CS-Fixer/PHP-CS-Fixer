@@ -11,11 +11,11 @@ Rules
 - `blank_line_after_namespace <./../rules/namespace_notation/blank_line_after_namespace.rst>`_
 - `braces <./../rules/basic/braces.rst>`_
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
+- `constant_case <./../rules/casing/constant_case.rst>`_
 - `elseif <./../rules/control_structure/elseif.rst>`_
 - `function_declaration <./../rules/function_notation/function_declaration.rst>`_
 - `indentation_type <./../rules/whitespace/indentation_type.rst>`_
 - `line_ending <./../rules/whitespace/line_ending.rst>`_
-- `lowercase_constants <./../rules/casing/lowercase_constants.rst>`_
 - `lowercase_keywords <./../rules/casing/lowercase_keywords.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
   config:

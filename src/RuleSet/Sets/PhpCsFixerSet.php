@@ -77,6 +77,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'return_assignment' => true,
             'simple_to_complex_string_variable' => true,
             'single_line_comment_style' => true,
+            'single_line_throw' => false,
         ];
     }
 
