@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -273,6 +274,10 @@ Integration of %s.
         $fixer = self::getFixerByName($ruleName);
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
+            if ($option instanceof DeprecatedFixerOption) {
+                continue;
+            }
+
             if ('target' === $option->getName()) {
                 $targetVersion = $option->getDefault();
 

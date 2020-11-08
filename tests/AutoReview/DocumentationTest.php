@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Documentation\DocumentationGenerator;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
