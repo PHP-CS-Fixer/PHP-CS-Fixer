@@ -649,4 +649,34 @@ EOF;
 
         $this->doTest($expected, $input);
     }
+
+    public function testShouldGroupWhenConfigurationPassedToGroup()
+    {
+        $this->fixer->configure([
+            ['return', 'throws'],
+        ]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @param EngineInterface $templating
+     *
+     * @return void
+     * @throws \Exception
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @param EngineInterface $templating
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
 }

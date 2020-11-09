@@ -15,7 +15,10 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\DocBlock\TagComparator;
+use PhpCsFixer\DocBlock\Tag;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -24,8 +27,30 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <graham@alt-three.com>
  */
-final class PhpdocSeparationFixer extends AbstractFixer
+final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * Groups of tags that should be allowed to immediately follow each other.
+     *
+     * @var array
+     */
+    const DEFAULT_GROUPS = [
+        ['deprecated', 'link', 'see', 'since'],
+        ['author', 'copyright', 'license'],
+        ['category', 'package', 'subpackage'],
+        ['property', 'property-read', 'property-write'],
+    ];
+
+    public function configure(array $configuration = null)
+    {
+        if (null === $configuration || [] === $configuration) {
+            $this->configuration['phpdoc_separation'] = self::DEFAULT_GROUPS;
+
+            return;
+        }
+        $this->configuration['phpdoc_separation'] = $configuration;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -90,6 +115,21 @@ function fnc($foo, $bar) {}
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver(
+            [
+                (new FixerOptionBuilder('groups', 'List of groups (arrays)'))
+                    ->setAllowedTypes(['array'])
+                    ->setDefault(self::DEFAULT_GROUPS)
+                    ->getOption(),
+            ]
+        );
+    }
+
+    /**
      * Make sure the description is separated from the annotations.
      */
     private function fixDescription(DocBlock $doc)
@@ -126,7 +166,7 @@ function fnc($foo, $bar) {}
             }
 
             if (true === $next->getTag()->valid()) {
-                if (TagComparator::shouldBeTogether($annotation->getTag(), $next->getTag())) {
+                if ($this->shouldBeTogether($annotation->getTag(), $next->getTag())) {
                     $this->ensureAreTogether($doc, $annotation, $next);
                 } else {
                     $this->ensureAreSeparate($doc, $annotation, $next);
@@ -168,5 +208,28 @@ function fnc($foo, $bar) {}
         for ($pos = $pos + 1; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
+    }
+
+    /**
+     * Should the given tags be kept together, or kept apart?
+     *
+     * @return bool
+     */
+    private function shouldBeTogether(Tag $first, Tag $second)
+    {
+        $firstName = $first->getName();
+        $secondName = $second->getName();
+
+        if ($firstName === $secondName) {
+            return true;
+        }
+
+        foreach ($this->configuration['phpdoc_separation'] as $group) {
+            if (\in_array($firstName, $group, true) && \in_array($secondName, $group, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

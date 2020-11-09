@@ -6,11 +6,15 @@ Annotations in PHPDoc should be grouped together so that annotations of the same
 type immediately follow each other, and annotations of a different type are
 separated by a single blank line.
 
+This rule is configurable.
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
