@@ -129,11 +129,7 @@ RST;
                 $attributes = '';
             }
 
-            $path = Preg::replace(
-                '#^'.preg_quote($this->getFixersDocumentationDirectoryPath(), '#').'/#',
-                './',
-                $this->getFixerDocumentationFilePath($fixer)
-            );
+            $path = './'.$this->getFixerDocumentationFileRelativePath($fixer);
 
             $documentation .= <<<RST
 
@@ -157,6 +153,18 @@ RST;
             },
             \get_class($fixer)
         ).'.rst';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixerDocumentationFileRelativePath(FixerInterface $fixer)
+    {
+        return Preg::replace(
+            '#^'.preg_quote($this->getFixersDocumentationDirectoryPath(), '#').'/#',
+            '',
+            $this->getFixerDocumentationFilePath($fixer)
+        );
     }
 
     /**
