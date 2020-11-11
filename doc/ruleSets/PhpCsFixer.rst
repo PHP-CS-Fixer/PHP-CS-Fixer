@@ -51,4 +51,3 @@ Rules
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_
-- `single_space_after_construct <./../rules/language_construct/single_space_after_construct.rst>`_

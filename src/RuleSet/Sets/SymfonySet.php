@@ -172,6 +172,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'single_line_throw' => true,
             'single_quote' => true,
+            'single_space_after_construct' => true,
             'single_trait_insert_per_statement' => true,
             'space_after_semicolon' => [
                 'remove_in_empty_for_expressions' => true,
