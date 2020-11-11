@@ -123,6 +123,7 @@ Rules
   ``['comment_types' => ['hash']]``
 - `single_line_throw <./../rules/function_notation/single_line_throw.rst>`_
 - `single_quote <./../rules/string_notation/single_quote.rst>`_
+- `single_space_after_construct <./../rules/language_construct/single_space_after_construct.rst>`_
 - `single_trait_insert_per_statement <./../rules/class_notation/single_trait_insert_per_statement.rst>`_
 - `space_after_semicolon <./../rules/semicolon/space_after_semicolon.rst>`_
   config:
