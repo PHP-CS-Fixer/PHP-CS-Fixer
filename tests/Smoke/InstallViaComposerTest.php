@@ -137,6 +137,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
             // Warning! Only already committed changes will be cloned!
             "git clone . {$tmpArtifactPath}",
         ];
+
         $stepsToPrepareArtifact = [
             // Configure git user for new repo to not use global git user.
             // We need this, as global git user may not be set!
@@ -168,9 +169,9 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         }
 
         $composer = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
-        $autoloadedFiles = $composer['autoload']['classmap'];
+        $autoloadFiles = $composer['autoload']['classmap'];
 
-        static::assertSame($filesInRelease, $autoloadedFiles);
+        static::assertSame($filesInRelease, $autoloadFiles, 'Expected all files in "./tests" directory to be in "classmap" "composer.json", update the "classmap" or ".gitattributes".');
 
         $fs->remove($tmpPath);
         $fs->remove($tmpArtifactPath);
