@@ -129,11 +129,7 @@ RST;
                 $attributes = '';
             }
 
-            $path = Preg::replace(
-                '#^'.preg_quote($this->getFixersDocumentationDirectoryPath(), '#').'/#',
-                './',
-                $this->getFixerDocumentationFilePath($fixer)
-            );
+            $path = './'.$this->getFixerDocumentationFileRelativePath($fixer);
 
             $documentation .= <<<RST
 
@@ -157,6 +153,18 @@ RST;
             },
             \get_class($fixer)
         ).'.rst';
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixerDocumentationFileRelativePath(FixerInterface $fixer)
+    {
+        return Preg::replace(
+            '#^'.preg_quote($this->getFixersDocumentationDirectoryPath(), '#').'/#',
+            '',
+            $this->getFixerDocumentationFilePath($fixer)
+        );
     }
 
     /**
@@ -304,7 +312,7 @@ RST;
                     }
                 }
 
-                $doc .= "\n".$this->generateSampleDiff($fixer, $sample, $index, $name);
+                $doc .= "\n".$this->generateSampleDiff($fixer, $sample, $index + 1, $name);
             }
         }
 
@@ -450,18 +458,28 @@ RST;
     }
 
     /**
-     * @param int    $sampleIndex
+     * @param int    $sampleNumber
      * @param string $ruleName
      *
      * @return string
      */
-    private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, $sampleIndex, $ruleName)
+    private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, $sampleNumber, $ruleName)
     {
         if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(\PHP_VERSION_ID)) {
+            $existingFile = @file_get_contents($this->getFixerDocumentationFilePath($fixer));
+
+            if (false !== $existingFile) {
+                Preg::match("/\\RExample #{$sampleNumber}\\R.+?(?<diff>\\R\\.\\. code-block:: diff\\R\\R.*?)\\R(?:\\R\\S|$)/s", $existingFile, $matches);
+
+                if (isset($matches['diff'])) {
+                    return $matches['diff'];
+                }
+            }
+
             $error = <<<RST
 
 .. error::
-   Cannot generate diff for code sample #{$sampleIndex} of rule {$ruleName}:
+   Cannot generate diff for code sample #{$sampleNumber} of rule {$ruleName}:
    the sample is not suitable for current version of PHP (%s).
 RST;
 

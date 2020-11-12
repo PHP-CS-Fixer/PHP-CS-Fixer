@@ -58,6 +58,8 @@ final class DocumentationCommand extends Command
         $this->generateFixersDocs($fixers);
         $this->generateRuleSetsDocs($fixers);
 
+        $output->writeln('Docs updated.');
+
         return 0;
     }
 
@@ -65,16 +67,27 @@ final class DocumentationCommand extends Command
     {
         $filesystem = new Filesystem();
 
-        /** @var SplFileInfo $file */
-        foreach ((new Finder())->files()->in($this->generator->getFixersDocumentationDirectoryPath()) as $file) {
-            $filesystem->remove($file->getPathname());
-        }
+        // Array of existing fixer docs.
+        // We first override existing files, and then we will delete files that are no longer needed.
+        // We cannot remove all files first, as generation of docs is re-using existing docs to extract code-samples for
+        // VersionSpecificCodeSample under incompatible PHP version.
+        $docForFixerRelativePaths = [];
 
         foreach ($fixers as $fixer) {
+            $docForFixerRelativePaths[] = $this->generator->getFixerDocumentationFileRelativePath($fixer);
             $filesystem->dumpFile(
                 $this->generator->getFixerDocumentationFilePath($fixer),
                 $this->generator->generateFixerDocumentation($fixer)
             );
+        }
+
+        /** @var SplFileInfo $file */
+        foreach (
+            (new Finder())->files()
+                ->in($this->generator->getFixersDocumentationDirectoryPath())
+                ->notPath($docForFixerRelativePaths) as $file
+        ) {
+            $filesystem->remove($file->getPathname());
         }
 
         $index = $this->generator->getFixersDocumentationIndexFilePath();
