@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Documentation\DocumentationGenerator;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -35,12 +34,6 @@ final class DocumentationTest extends TestCase
     public function testFixerDocumentationFileIsUpToDate(DefinedFixerInterface $fixer)
     {
         $samples = $fixer->getDefinition()->getCodeSamples();
-
-        foreach ($samples as $sample) {
-            if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(\PHP_VERSION_ID)) {
-                static::markTestIncomplete(sprintf('Define whether this test for "%d" brings value and drop it or fix it - https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5209 .', $fixer->getName()));
-            }
-        }
 
         $generator = new DocumentationGenerator();
 
