@@ -96,3 +96,22 @@ With configuration: ``['scalar_types' => false]``.
    +function foo(): Foo {}
     /** @return string */
     function bar() {}
+
+Example #5
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -3,7 +3,7 @@
+        /**
+         * @return static
+         */
+   -    public function create($prototype) {
+   +    public function create($prototype): static {
+            return new static($prototype);
+        }
+    }
