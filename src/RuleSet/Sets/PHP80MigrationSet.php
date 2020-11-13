@@ -23,6 +23,7 @@ final class PHP80MigrationSet extends AbstractRuleSetDescription
     {
         return [
             '@PHP73Migration' => true,
+            'clean_namespace' => true,
             'no_unset_cast' => true,
             'normalize_index_brace' => true,
         ];
