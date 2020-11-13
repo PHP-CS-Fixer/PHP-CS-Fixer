@@ -1036,4 +1036,30 @@ while (2 !== $b = array_pop($c));
             '<?php echo (unset) $a === 1 ? 8 : 7;',
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php
+if ($a = true === $obj instanceof (foo())) {
+    echo 1;
+}',
+            '<?php
+if ($a = $obj instanceof (foo()) === true) {
+    echo 1;
+}',
+        ];
+    }
 }
