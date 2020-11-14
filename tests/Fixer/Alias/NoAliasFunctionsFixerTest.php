@@ -41,7 +41,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 
         foreach (['internalSet', 'imapSet'] as $setStaticAttributeName) {
             /** @var string[] $aliases */
-            $aliases = static::getStaticAttribute(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, $setStaticAttributeName);
+            $aliases = static::getStaticAttributeActual(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, $setStaticAttributeName);
 
             foreach ($aliases as $alias => $master) {
                 // valid cases

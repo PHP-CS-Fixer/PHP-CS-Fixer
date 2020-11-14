@@ -31,16 +31,16 @@ final class XmlReporterTest extends AbstractReporterTestCase
      */
     private static $xsd;
 
-    public static function setUpBeforeClass()
+    public static function legacySetUpBeforeClass()
     {
-        parent::setUpBeforeClass();
+        parent::legacySetUpBeforeClass();
 
         self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/xml.xsd');
     }
 
-    public static function tearDownAfterClass()
+    public static function legacyTearDownAfterClass()
     {
-        parent::tearDownAfterClass();
+        parent::legacyTearDownAfterClass();
 
         self::$xsd = null;
     }

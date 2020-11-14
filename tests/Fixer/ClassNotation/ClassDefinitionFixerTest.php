@@ -134,7 +134,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
     public function testInvalidConfigurationKey()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line"\.$/'
         );
 
@@ -145,7 +145,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
     public function testInvalidConfigurationValueType()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );
 

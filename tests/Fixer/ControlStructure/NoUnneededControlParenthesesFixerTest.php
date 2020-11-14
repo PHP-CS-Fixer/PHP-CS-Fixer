@@ -27,9 +27,9 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {
     private static $defaultStatements;
 
-    public static function setUpBeforeClass()
+    public static function legacySetUpBeforeClass()
     {
-        parent::setUpBeforeClass();
+        parent::legacySetUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {

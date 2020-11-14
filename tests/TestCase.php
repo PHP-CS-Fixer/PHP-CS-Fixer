@@ -12,7 +12,8 @@
 
 namespace PhpCsFixer\Tests;
 
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use LegacyPHPUnit\TestCase as BaseTestCase;
+use PhpCsFixer\Tests\DeprecatedTestMethods;
 use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
 use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
 use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
@@ -32,6 +33,7 @@ if (trait_exists(ProphesizeOnlyInterfaceTrait::class)) {
         use IdentityOverEqualityTrait;
         use ProphecyOverMockObjectTrait;
         use ProphesizeOnlyInterfaceTrait;
+        use DeprecatedTestMethods;
     }
 } else {
     /**

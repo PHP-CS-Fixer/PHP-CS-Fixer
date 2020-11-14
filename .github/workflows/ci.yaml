@@ -1,0 +1,66 @@
+# yamllint disable rule:line-length
+# yamllint disable rule:braces
+
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 2.16
+      - 3.0
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system:
+          - ubuntu-latest
+        php-version:
+          - 7.1
+          - 7.2
+          - 7.3
+          - 7.4
+        dependencies: ['--ignore-platform-req=hhvm']
+        include:
+          - { operating-system: 'ubuntu-latest', php-version: '8.0', dependencies: '--ignore-platform-req=php --ignore-platform-req=hhvm' }
+          # - { operating-system: 'windows-latest', php-version: '7.1', dependencies: '--ignore-platform-req=hhvm' }
+          - { operating-system: 'macos-latest', php-version: '7.1', dependencies: '--ignore-platform-req=hhvm' }
+
+    name: PHP ${{ matrix.php-version }} CI on ${{ matrix.operating-system }} ${{ matrix.dependencies }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('composer.*') }}-${{ matrix.dependencies }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('composer.*') }}-
+            composer-${{ runner.os }}-${{ matrix.php-version }}-
+            composer-${{ runner.os }}-
+            composer-
+
+      - name: Install dependencies
+        run: |
+          composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.dependencies }}
+
+      - name: Run tests
+        run: |
+          vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing
+          PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer --diff --dry-run -v fix

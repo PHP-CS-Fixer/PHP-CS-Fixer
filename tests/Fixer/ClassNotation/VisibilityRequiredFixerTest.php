@@ -538,7 +538,7 @@ EOF;
     public function testInvalidConfigurationType()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
+        $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => [null]]);
     }
@@ -546,7 +546,7 @@ EOF;
     public function testInvalidConfigurationValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
+        $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['_unknown_']]);
     }

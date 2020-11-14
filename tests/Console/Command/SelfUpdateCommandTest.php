@@ -36,31 +36,6 @@ final class SelfUpdateCommandTest extends TestCase
      */
     private $root;
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->root = vfsStream::setup();
-
-        file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
-
-        file_put_contents("{$this->root->url()}/{$this->getNewMinorVersion()}.phar", 'New minor version of PHP CS Fixer.');
-        file_put_contents("{$this->root->url()}/{$this->getNewMajorVersion()}.phar", 'New major version of PHP CS Fixer.');
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->root = null;
-
-        try {
-            vfsStreamWrapper::unregister();
-        } catch (vfsStreamException $exception) {
-            // ignored
-        }
-    }
-
     /**
      * @param string $name
      *
@@ -335,6 +310,31 @@ OUTPUT;
             [['--force' => true], false],
             [['-f' => true], false],
         ];
+    }
+
+    protected function legacySetUp()
+    {
+        parent::legacySetUp();
+
+        $this->root = vfsStream::setup();
+
+        file_put_contents($this->getToolPath(), 'Current PHP CS Fixer.');
+
+        file_put_contents("{$this->root->url()}/{$this->getNewMinorVersion()}.phar", 'New minor version of PHP CS Fixer.');
+        file_put_contents("{$this->root->url()}/{$this->getNewMajorVersion()}.phar", 'New major version of PHP CS Fixer.');
+    }
+
+    protected function legacyTearDown()
+    {
+        parent::legacyTearDown();
+
+        $this->root = null;
+
+        try {
+            vfsStreamWrapper::unregister();
+        } catch (vfsStreamException $exception) {
+            // ignored
+        }
     }
 
     private function execute(Command $command, array $input, $decorated)

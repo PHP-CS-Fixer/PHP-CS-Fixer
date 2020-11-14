@@ -24,20 +24,6 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     private $fixer;
 
-    protected function setUp()
-    {
-        $this->fixer = new FunctionReferenceTestFixer();
-
-        parent::setUp();
-    }
-
-    protected function tearDown()
-    {
-        $this->fixer = null;
-
-        parent::tearDown();
-    }
-
     /**
      * @param null|int[] $expected
      * @param string     $source
@@ -130,5 +116,19 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
                 'foo',
             ],
         ];
+    }
+
+    protected function legacySetUp()
+    {
+        $this->fixer = new FunctionReferenceTestFixer();
+
+        parent::legacySetUp();
+    }
+
+    protected function legacyTearDown()
+    {
+        $this->fixer = null;
+
+        parent::legacyTearDown();
     }
 }

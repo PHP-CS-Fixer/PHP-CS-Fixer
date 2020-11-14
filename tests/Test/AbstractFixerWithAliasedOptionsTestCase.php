@@ -30,9 +30,9 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
      */
     private $fixerWithAliasedConfig;
 
-    protected function tearDown()
+    protected function legacyTearDown()
     {
-        parent::tearDown();
+        parent::legacyTearDown();
 
         $this->fixerWithAliasedConfig = null;
     }

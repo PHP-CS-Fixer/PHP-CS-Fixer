@@ -47,7 +47,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     public function testWrongConfigTypeForMethodsKey()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/Unexpected "methods" key, expected any of ".*", got "integer#123"\.$/');
+        $this->expectExceptionMessageMatches('/Unexpected "methods" key, expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['methods' => [123 => 1]]);
     }
@@ -55,7 +55,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     public function testWrongConfigTypeForMethodsValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/Unexpected value for method "assertSame", expected any of ".*", got "integer#123"\.$/');
+        $this->expectExceptionMessageMatches('/Unexpected value for method "assertSame", expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['methods' => ['assertSame' => 123]]);
     }

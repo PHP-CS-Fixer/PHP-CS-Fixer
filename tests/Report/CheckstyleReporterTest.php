@@ -32,12 +32,12 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
      */
     private static $xsd;
 
-    public static function setUpBeforeClass()
+    public static function legacySetUpBeforeClass()
     {
         self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/checkstyle.xsd');
     }
 
-    public static function tearDownAfterClass()
+    public static function legacyTearDownAfterClass()
     {
         self::$xsd = null;
     }

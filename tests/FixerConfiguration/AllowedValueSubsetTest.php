@@ -24,7 +24,7 @@ final class AllowedValueSubsetTest extends TestCase
 {
     public function testConstructor()
     {
-        static::assertInternalType('callable', new AllowedValueSubset(['foo', 'bar']));
+        static::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
     }
 
     /**

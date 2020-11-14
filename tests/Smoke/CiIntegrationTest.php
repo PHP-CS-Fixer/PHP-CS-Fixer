@@ -29,9 +29,9 @@ final class CiIntegrationTest extends AbstractSmokeTest
 {
     public static $fixtureDir;
 
-    public static function setUpBeforeClass()
+    public static function legacySetUpBeforeClass()
     {
-        parent::setUpBeforeClass();
+        parent::legacySetUpBeforeClass();
 
         self::$fixtureDir = __DIR__.'/../Fixtures/ci-integration';
 
@@ -61,23 +61,11 @@ final class CiIntegrationTest extends AbstractSmokeTest
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function legacyTearDownAfterClass()
     {
-        parent::tearDownAfterClass();
+        parent::legacyTearDownAfterClass();
 
         self::executeCommand('rm -rf .git');
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        self::executeScript([
-            'git reset . -q',
-            'git checkout . -q',
-            'git clean -fdq',
-            'git checkout master -q',
-        ]);
     }
 
     /**
@@ -157,7 +145,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );
 
-        static::assertRegExp($pattern, $result3->getError());
+        static::assertMatchesRegularExpression($pattern, $result3->getError());
 
         preg_match($pattern, $result3->getError(), $matches);
 
@@ -165,7 +153,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
         static::assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
         static::assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
 
-        static::assertRegExp(
+        static::assertMatchesRegularExpression(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );
@@ -257,6 +245,18 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                 '...',
             ],
         ];
+    }
+
+    protected function legacyTearDown()
+    {
+        parent::legacyTearDown();
+
+        self::executeScript([
+            'git reset . -q',
+            'git checkout . -q',
+            'git clean -fdq',
+            'git checkout master -q',
+        ]);
     }
 
     private static function executeCommand($command)

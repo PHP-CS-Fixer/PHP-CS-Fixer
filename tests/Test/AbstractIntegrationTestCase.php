@@ -75,9 +75,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     private static $fileRemoval;
 
-    public static function setUpBeforeClass()
+    public static function legacySetUpBeforeClass()
     {
-        parent::setUpBeforeClass();
+        parent::legacySetUpBeforeClass();
 
         $tmpFile = static::getTempFile();
         self::$fileRemoval = new FileRemoval();
@@ -93,36 +93,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function legacyTearDownAfterClass()
     {
-        parent::tearDownAfterClass();
+        parent::legacyTearDownAfterClass();
 
         $tmpFile = static::getTempFile();
 
         self::$fileRemoval->delete($tmpFile);
         self::$fileRemoval = null;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->linter = $this->getLinter();
-
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->linter = null;
-
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
     }
 
     /**
@@ -162,6 +140,28 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         return $tests;
+    }
+
+    protected function legacySetUp()
+    {
+        parent::legacySetUp();
+
+        $this->linter = $this->getLinter();
+
+        // @todo remove at 3.0 together with env var itself
+        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
+            Tokens::setLegacyMode(true);
+        }
+    }
+
+    protected function legacyTearDown()
+    {
+        parent::legacyTearDown();
+
+        $this->linter = null;
+
+        // @todo remove at 3.0
+        Tokens::setLegacyMode(false);
     }
 
     /**

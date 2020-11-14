@@ -32,9 +32,9 @@ final class PharTest extends AbstractSmokeTest
     private static $pharCwd;
     private static $pharName;
 
-    public static function setUpBeforeClass()
+    public static function legacySetUpBeforeClass()
     {
-        parent::setUpBeforeClass();
+        parent::legacySetUpBeforeClass();
 
         self::$pharCwd = __DIR__.'/../..';
         self::$pharName = 'php-cs-fixer.phar';
@@ -46,7 +46,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testVersion()
     {
-        static::assertRegExp(
+        static::assertMatchesRegularExpression(
             '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
             self::executePharCommand('--version')->getOutput()
         );

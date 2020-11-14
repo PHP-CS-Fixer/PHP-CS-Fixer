@@ -25,9 +25,9 @@ use PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream;
  */
 final class FileReaderTest extends TestCase
 {
-    public static function tearDownAfterClass()
+    public static function legacyTearDownAfterClass()
     {
-        parent::tearDownAfterClass();
+        parent::legacyTearDownAfterClass();
 
         // testReadStdinCaches registers a stream wrapper for php so we can mock
         // php://stdin. Restore the original stream wrapper after this class so
@@ -73,7 +73,7 @@ final class FileReaderTest extends TestCase
         $reader = new FileReader();
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageRegExp('#^Failed to read content from "'.preg_quote($nonExistentFilePath, '#').'.*$#');
+        $this->expectExceptionMessageMatches('#^Failed to read content from "'.preg_quote($nonExistentFilePath, '#').'.*$#');
 
         $reader->read($nonExistentFilePath);
     }

@@ -29,11 +29,6 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
      */
     private $indicator;
 
-    protected function setUp()
-    {
-        $this->indicator = new PhpUnitTestCaseIndicator();
-    }
-
     /**
      * @param bool $expected
      * @param int  $index
@@ -117,7 +112,7 @@ class Foo implements TestInterface, SomethingElse
         $tokens = Tokens::fromCode('<?php echo 1;');
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessageRegExp('/^No "T_CLASS" at given index 1, got "T_ECHO"\.$/');
+        $this->expectExceptionMessageMatches('/^No "T_CLASS" at given index 1, got "T_ECHO"\.$/');
 
         $this->indicator->isPhpUnitClass($tokens, 1);
     }
@@ -197,5 +192,10 @@ class Foo implements TestInterface, SomethingElse
                 ',
             ],
         ];
+    }
+
+    protected function legacySetUp()
+    {
+        $this->indicator = new PhpUnitTestCaseIndicator();
     }
 }
