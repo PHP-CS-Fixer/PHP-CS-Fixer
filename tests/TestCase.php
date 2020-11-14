@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests;
 
 use LegacyPHPUnit\TestCase as BaseTestCase;
-use PhpCsFixer\Tests\DeprecatedTestMethods;
 use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
 use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;
 use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
