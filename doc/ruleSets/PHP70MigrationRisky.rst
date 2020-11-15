@@ -14,5 +14,3 @@ Rules
   config:
   ``['use_escape_sequences_in_strings' => true]``
 - `random_api_migration <./../rules/alias/random_api_migration.rst>`_
-  config:
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
