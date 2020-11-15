@@ -28,12 +28,7 @@ final class PHP70MigrationRiskySet extends AbstractRuleSetDescription
             'non_printable_character' => [
                 'use_escape_sequences_in_strings' => true,
             ],
-            'random_api_migration' => [
-                'replacements' => [
-                    'mt_rand' => 'random_int',
-                    'rand' => 'random_int',
-                ],
-            ],
+            'random_api_migration' => true,
         ];
     }
 
