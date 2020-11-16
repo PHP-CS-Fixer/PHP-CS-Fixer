@@ -511,6 +511,27 @@ class Foo
                     'property' => 'single',
                 ],
             ],
+            'It can handle properties with array type declaration' => [
+                '<?php
+
+class Foo
+{
+    /** @var string[] */
+    private array $foo;
+}',
+                '<?php
+
+class Foo
+{
+    /**
+     * @var string[]
+     */
+    private array $foo;
+}',
+                [
+                    'property' => 'single',
+                ],
+            ],
         ];
     }
 }
