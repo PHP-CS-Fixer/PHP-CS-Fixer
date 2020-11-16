@@ -340,12 +340,40 @@ A();
 
     public function provideIsGlobalFunctionCallPhp74Cases()
     {
-        return [
-            [
-                false,
-                '<?php $foo = fn() => false;',
-                5,
-            ],
+        yield [
+            false,
+            '<?php $foo = fn() => false;',
+            5,
+        ];
+    }
+
+    /**
+     * @param int[]  $globalFunctionIndexes
+     * @param string $code
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsGlobalFunctionCallPhp80(array $globalFunctionIndexes, $code)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        foreach ($globalFunctionIndexes as $index) {
+            static::assertTrue($analyzer->isGlobalFunctionCall($tokens, $index));
+        }
+    }
+
+    public function provideIsGlobalFunctionCallPhp80Cases()
+    {
+        yield [
+            [8],
+            '<?php $a = new (foo());',
+        ];
+
+        yield [
+            [10],
+            '<?php $b = $foo instanceof (foo());',
         ];
     }
 

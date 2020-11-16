@@ -15,6 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Documentation\DocumentationGenerator;
 use PhpCsFixer\Fixer\DefinedFixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSets;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -33,8 +34,6 @@ final class DocumentationTest extends TestCase
      */
     public function testFixerDocumentationFileIsUpToDate(DefinedFixerInterface $fixer)
     {
-        $samples = $fixer->getDefinition()->getCodeSamples();
-
         $generator = new DocumentationGenerator();
 
         $path = $generator->getFixerDocumentationFilePath($fixer);
@@ -105,7 +104,7 @@ final class DocumentationTest extends TestCase
         );
     }
 
-    public function testThereAreNoExtraFiles()
+    public function testFixersDocumentationDirectoryHasNoExtraFiles()
     {
         $generator = new DocumentationGenerator();
 
@@ -115,10 +114,45 @@ final class DocumentationTest extends TestCase
         );
     }
 
-    private static function assertFileEqualsString($expectedString, $actualFilePath)
+    public function testRuleSetsDocumentationIsUpToDate()
     {
-        static::assertFileExists($actualFilePath);
-        static::assertSame($expectedString, file_get_contents($actualFilePath));
+        $fixers = $this->getFixers();
+        $generator = new DocumentationGenerator();
+        $paths = [];
+
+        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
+            $paths[$name] = $path = $generator->getRuleSetsDocumentationFilePath($name);
+
+            static::assertFileEqualsString(
+                $generator->generateRuleSetsDocumentation($definition, $fixers),
+                $path,
+                sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
+            );
+        }
+
+        $indexFilePath = $generator->getRuleSetsDocumentationIndexFilePath();
+
+        static::assertFileEqualsString(
+            $generator->generateRuleSetsDocumentationIndex($paths),
+            $indexFilePath,
+            sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
+        );
+    }
+
+    public function testRuleSetsDocumentationDirectoryHasNoExtraFiles()
+    {
+        $generator = new DocumentationGenerator();
+
+        static::assertCount(
+            \count(RuleSets::getSetDefinitions()) + 1,
+            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
+        );
+    }
+
+    private static function assertFileEqualsString($expectedString, $actualFilePath, $message = '')
+    {
+        static::assertFileExists($actualFilePath, $message);
+        static::assertSame($expectedString, file_get_contents($actualFilePath), $message);
     }
 
     private function getFixers()
