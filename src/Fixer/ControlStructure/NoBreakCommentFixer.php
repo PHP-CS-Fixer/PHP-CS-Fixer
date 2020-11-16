@@ -131,8 +131,9 @@ switch ($foo) {
         $empty = true;
         $fallThrough = true;
         $commentPosition = null;
+        $caseColonIndex = $tokens->getNextTokenOfKind($casePosition, [':', ';']);
 
-        for ($i = $tokens->getNextTokenOfKind($casePosition, [':', ';']) + 1, $max = \count($tokens); $i < $max; ++$i) {
+        for ($i = $caseColonIndex + 1, $max = \count($tokens); $i < $max; ++$i) {
             if ($tokens[$i]->isGivenKind([T_SWITCH, T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_DO, T_FUNCTION, T_CLASS])) {
                 $empty = false;
                 $i = $this->getStructureEnd($tokens, $i);
@@ -149,7 +150,7 @@ switch ($foo) {
             if ($tokens[$i]->isGivenKind([T_THROW])) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
-                if ($previousIndex === $casePosition || $tokens[$previousIndex]->equalsAny(['{', ';', [T_OPEN_TAG]])) {
+                if ($previousIndex === $caseColonIndex || $tokens[$previousIndex]->equalsAny(['{', ';', [T_OPEN_TAG]])) {
                     $fallThrough = false;
                 }
 

@@ -58,6 +58,19 @@ With configuration: ``['replacements' => ['getrandmax' => 'mt_getrandmax']]``.
     $a = rand($b, $c);
     $a = srand();
 
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['replacements' => ['rand' => 'random_int']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1 +1 @@
+   -<?php $a = rand($b, $c);
+   +<?php $a = random_int($b, $c);
+
 Rule sets
 ---------
 

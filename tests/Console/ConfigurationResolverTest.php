@@ -820,14 +820,17 @@ final class ConfigurationResolverTest extends TestCase
         $cacheFile = 'foo/bar.baz';
 
         $config = new Config();
-        $config->setCacheFile($cacheFile);
+        $config
+            ->setUsingCache(false)
+            ->setCacheFile($cacheFile)
+        ;
 
         $resolver = $this->createConfigurationResolver(
             [],
             $config
         );
 
-        static::assertSame($cacheFile, $resolver->getCacheFile());
+        static::assertNull($resolver->getCacheFile());
 
         $cacheManager = $resolver->getCacheManager();
 
@@ -1217,29 +1220,32 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetDirectoryCases
-     *
      * @param null|string $cacheFile
      * @param string      $file
      * @param string      $expectedPathRelativeToFile
+     *
+     * @dataProvider provideGetDirectoryCases
      */
     public function testGetDirectory($cacheFile, $file, $expectedPathRelativeToFile)
     {
         if (null !== $cacheFile) {
             $cacheFile = $this->normalizePath($cacheFile);
         }
+
         $file = $this->normalizePath($file);
         $expectedPathRelativeToFile = $this->normalizePath($expectedPathRelativeToFile);
 
         $config = new Config();
+
         if (null === $cacheFile) {
             $config->setUsingCache(false);
         } else {
             $config->setCacheFile($cacheFile);
         }
 
-        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), new ToolInfo());
+        $resolver = new ConfigurationResolver($config, [], $this->normalizePath('/my/path'), new TestToolInfo());
         $directory = $resolver->getDirectory();
+
         static::assertSame($expectedPathRelativeToFile, $directory->getRelativePathTo($file));
     }
 
@@ -1271,7 +1277,7 @@ final class ConfigurationResolverTest extends TestCase
             $config,
             $options,
             $cwdPath,
-            new ToolInfo()
+            new TestToolInfo()
         );
     }
 }

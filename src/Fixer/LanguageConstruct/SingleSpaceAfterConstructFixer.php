@@ -65,6 +65,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'instanceof' => T_INSTANCEOF,
         'insteadof' => T_INSTEADOF,
         'interface' => T_INTERFACE,
+        'match' => null,
         'new' => T_NEW,
         'open_tag_with_echo' => T_OPEN_TAG_WITH_ECHO,
         'php_open' => T_OPEN_TAG,
@@ -100,8 +101,12 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     {
         parent::configure($configuration);
 
-        if (70000 <= \PHP_VERSION_ID) {
+        if (\defined('T_YIELD_FROM')) {
             self::$tokenMap['yield_from'] = T_YIELD_FROM;
+        }
+
+        if (\defined('T_MATCH')) {
+            self::$tokenMap['match'] = T_MATCH;
         }
 
         $this->fixTokenMap = [];

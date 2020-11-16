@@ -195,9 +195,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'skip resource special type' => [
                 '<?php /** @return resource */ function my_foo() {}',
             ],
-            'skip mixed special type' => [
-                '<?php /** @return mixed */ function my_foo() {}',
-            ],
             'null alone cannot be a return type' => [
                 '<?php /** @return null */ function my_foo() {}',
             ],
@@ -278,6 +275,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ];
+
+            yield 'skip mixed special type' => [
+                '<?php /** @return mixed */ function my_foo() {}',
+            ];
         }
     }
 
@@ -318,35 +319,49 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
     public function provideFixPhp80Cases()
     {
-        return [
-            'static' => [
-                '<?php
-                    final class Foo {
-                        /** @return static */
-                        public function something(): static {}
-                    }
-                ',
-                '<?php
-                    final class Foo {
-                        /** @return static */
-                        public function something() {}
-                    }
-                ',
-            ],
-            'nullable static' => [
-                '<?php
-                    final class Foo {
-                        /** @return null|static */
-                        public function something(): ?static {}
-                    }
-                ',
-                '<?php
-                    final class Foo {
-                        /** @return null|static */
-                        public function something() {}
-                    }
-                ',
-            ],
+        yield 'static' => [
+            '<?php
+                final class Foo {
+                    /** @return static */
+                    public function something(): static {}
+                }
+            ',
+            '<?php
+                final class Foo {
+                    /** @return static */
+                    public function something() {}
+                }
+            ',
+        ];
+
+        yield 'nullable static' => [
+            '<?php
+                final class Foo {
+                    /** @return null|static */
+                    public function something(): ?static {}
+                }
+            ',
+            '<?php
+                final class Foo {
+                    /** @return null|static */
+                    public function something() {}
+                }
+            ',
+        ];
+
+        yield 'mixed' => [
+            '<?php
+                final class Foo {
+                    /** @return mixed */
+                    public function something(): mixed {}
+                }
+            ',
+            '<?php
+                final class Foo {
+                    /** @return mixed */
+                    public function something() {}
+                }
+            ',
         ];
     }
 }

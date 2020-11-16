@@ -27,6 +27,7 @@ Rules
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
   ``['single_line' => true]``
+- `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_

@@ -328,4 +328,37 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php $a = new (foo());',
+        ];
+
+        yield [
+            '<?php
+
+class Bar {
+    public function __construct(int $a = null) {
+        echo $a;
+    }
+};
+
+$foo = "B";
+
+$a = new ($foo."ar");',
+        ];
+    }
 }

@@ -54,14 +54,53 @@ final class SwitchAnalyzerTest extends TestCase
     public static function provideGettingSwitchAnalysisCases()
     {
         yield 'two cases' => [
-            new SwitchAnalysis(7, 29, [new CaseAnalysis(12), new CaseAnalysis(22)]),
-            '<?php switch ($foo) { case 10: return true; case 100: return false; }',
+            new SwitchAnalysis(7, 46, [new CaseAnalysis(12), new CaseAnalysis(39)]),
+            '<?php switch ($foo) {
+                case 1: $x = bar() ? 1 : 0; return true;
+                case 2: return false;
+            }',
+            1,
+        ];
+
+        yield 'case without code' => [
+            new SwitchAnalysis(7, 34, [new CaseAnalysis(12), new CaseAnalysis(22), new CaseAnalysis(27)]),
+            '<?php switch ($foo) {
+                case 1: return true;
+                case 2:
+                case 3: return false;
+            }',
+            1,
+        ];
+
+        yield 'advanced cases' => [
+            new SwitchAnalysis(7, 132, [
+                new CaseAnalysis(10),
+                new CaseAnalysis(22),
+                new CaseAnalysis(40),
+                new CaseAnalysis(53),
+                new CaseAnalysis(71),
+                new CaseAnalysis(125),
+            ]),
+            '<?php switch (true) {
+                default: return 0;
+                case ("a"): return 1;
+                case [1, 2, 3]: return 2;
+                case getValue($foo): return 3;
+                case getValue2($foo)["key"]->bar: return 4;
+                case $a->$b::$c->${$d}->${$e}::foo(function ($x) { return $x * 2 + 2; })->$g::$h: return 5;
+            }',
             1,
         ];
 
         yield 'two case and default' => [
-            new SwitchAnalysis(7, 37, [new CaseAnalysis(12), new CaseAnalysis(22), new CaseAnalysis(30)]),
-            '<?php switch ($foo) { case 10: return true; case 100: return false; default: return -1;}',
+            new SwitchAnalysis(7, 38, [new CaseAnalysis(12), new CaseAnalysis(22), new CaseAnalysis(30)]),
+            '<?php switch ($foo) { case 10: return true; case 100: return false; default: return -1; }',
+            1,
+        ];
+
+        yield 'two case and default with semicolon instead of colon' => [
+            new SwitchAnalysis(7, 38, [new CaseAnalysis(12), new CaseAnalysis(22), new CaseAnalysis(30)]),
+            '<?php switch ($foo) { case 10; return true; case 100; return false; default; return -1; }',
             1,
         ];
 
@@ -95,7 +134,7 @@ final class SwitchAnalyzerTest extends TestCase
         ];
 
         yield 'alternative syntax with closing tag' => [
-            new SwitchAnalysis(7, 29, [new CaseAnalysis(12), new CaseAnalysis(22)]),
+            new SwitchAnalysis(7, 31, [new CaseAnalysis(12), new CaseAnalysis(22)]),
             '<?php switch ($foo) : case 10: return true; case 100: return false; endswitch ?>',
             1,
         ];
@@ -106,6 +145,24 @@ final class SwitchAnalyzerTest extends TestCase
                 switch ($bar) : case "a": return "b"; case "c": return "d"; case "e": return "f"; endswitch;
                 return;
                 case 100: return false; endswitch;',
+            1,
+        ];
+
+        yield 'alternative syntax nested with mixed colon/semicolon' => [
+            new SwitchAnalysis(7, 69, [new CaseAnalysis(12), new CaseAnalysis(61)]),
+            '<?php switch ($foo) : case 10;
+                switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
+                return;
+                case 100: return false; endswitch;',
+            1,
+        ];
+
+        yield 'alternative syntax nested with closing tab and mixed colon/semicolon' => [
+            new SwitchAnalysis(7, 70, [new CaseAnalysis(12), new CaseAnalysis(61)]),
+            '<?php switch ($foo) : case 10;
+                switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
+                return;
+                case 100: return false; endswitch ?>  <?php echo 1;',
             1,
         ];
 

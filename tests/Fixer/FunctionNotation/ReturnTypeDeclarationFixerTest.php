@@ -176,4 +176,29 @@ string {}',
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php function foo(): mixed{}',
+            '<?php function foo()   :   mixed{}',
+        ];
+
+        yield [
+            '<?php class A { public function foo(): static{}}',
+            '<?php class A { public function foo()   :static{}}',
+        ];
+    }
 }

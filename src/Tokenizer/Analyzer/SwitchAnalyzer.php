@@ -38,29 +38,17 @@ final class SwitchAnalyzer
         $casesEndIndex = $this->getCasesEnd($tokens, $casesStartIndex);
 
         $cases = [];
-        $ternaryOperatorDepth = 0;
         $index = $casesStartIndex;
         while ($index < $casesEndIndex) {
-            ++$index;
-            if ($tokens[$index]->isGivenKind(T_SWITCH)) {
-                $index = (new self())->getSwitchAnalysis($tokens, $index)->getCasesEnd();
+            $index = $this->getNextSameLevelToken($tokens, $index);
 
+            if (!$tokens[$index]->isGivenKind([T_CASE, T_DEFAULT])) {
                 continue;
             }
-            if ($tokens[$index]->equals('?')) {
-                ++$ternaryOperatorDepth;
 
-                continue;
-            }
-            if (!$tokens[$index]->equals(':')) {
-                continue;
-            }
-            if ($ternaryOperatorDepth > 0) {
-                --$ternaryOperatorDepth;
+            $caseAnalysis = $this->getCaseAnalysis($tokens, $index);
 
-                continue;
-            }
-            $cases[] = new CaseAnalysis($index);
+            $cases[] = $caseAnalysis;
         }
 
         return new SwitchAnalysis($casesStartIndex, $casesEndIndex, $cases);
@@ -94,30 +82,59 @@ final class SwitchAnalyzer
             return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $casesStartIndex);
         }
 
-        $depth = 1;
         $index = $casesStartIndex;
-        while ($depth > 0) {
-            /** @var int $index */
-            $index = $tokens->getNextMeaningfulToken($index);
+        while ($index < $tokens->count()) {
+            $index = $this->getNextSameLevelToken($tokens, $index);
 
             if ($tokens[$index]->isGivenKind(T_ENDSWITCH)) {
-                --$depth;
-
-                continue;
-            }
-
-            if (!$tokens[$index]->isGivenKind(T_SWITCH)) {
-                continue;
-            }
-            $index = $this->getCasesStart($tokens, $index);
-            if ($tokens[$index]->equals(':')) {
-                ++$depth;
+                break;
             }
         }
 
-        /** @var int $afterEndswitchIndex */
         $afterEndswitchIndex = $tokens->getNextMeaningfulToken($index);
 
-        return $tokens[$afterEndswitchIndex]->equals(';') ? $afterEndswitchIndex : $index;
+        $afterEndswitchToken = $tokens[$afterEndswitchIndex];
+
+        return $afterEndswitchToken->equalsAny([';', [T_CLOSE_TAG]]) ? $afterEndswitchIndex : $index;
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return CaseAnalysis
+     */
+    private function getCaseAnalysis(Tokens $tokens, $index)
+    {
+        while ($index < $tokens->count()) {
+            $index = $this->getNextSameLevelToken($tokens, $index);
+
+            if ($tokens[$index]->equalsAny([':', ';'])) {
+                break;
+            }
+        }
+
+        return new CaseAnalysis($index);
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return int
+     */
+    private function getNextSameLevelToken(Tokens $tokens, $index)
+    {
+        $index = $tokens->getNextMeaningfulToken($index);
+
+        if ($tokens[$index]->isGivenKind(T_SWITCH)) {
+            return (new self())->getSwitchAnalysis($tokens, $index)->getCasesEnd();
+        }
+
+        /** @var null|array{isStart: bool, type: int} $blockType */
+        $blockType = Tokens::detectBlockType($tokens[$index]);
+        if (null !== $blockType && $blockType['isStart']) {
+            return $tokens->findBlockEnd($blockType['type'], $index) + 1;
+        }
+
+        return $index;
     }
 }

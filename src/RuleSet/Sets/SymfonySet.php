@@ -47,6 +47,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'class_definition' => [
                 'single_line' => true,
             ],
+            'clean_namespace' => true,
             'concat_space' => true,
             'declare_equal_normalize' => true,
             'echo_tag_syntax' => true,

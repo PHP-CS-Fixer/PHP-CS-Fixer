@@ -20,9 +20,6 @@ before_install:
     # turn off XDebug
     - phpenv config-rm xdebug.ini || return 0
 
-    # Composer v2
-    - composer self-update --2
-
 jobs:
     include:
         -
@@ -114,9 +111,6 @@ jobs:
                 ## regular `before_install`
                 # turn off XDebug
                 - phpenv config-rm xdebug.ini || return 0
-
-                # Composer v2
-                - composer self-update --2
 
                 # Require PHPUnit 8
                 - composer require --dev --no-update phpunit/phpunit:^8
