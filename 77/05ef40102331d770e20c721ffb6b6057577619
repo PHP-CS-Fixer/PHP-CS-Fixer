@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-11-13T10:49:54Z
+
+Hi and thanks for your PR!
+
+I think this is happening on 2.15 as well, maybe you can target that branch? You removed both the self-update statements, do we not need one?
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-13T13:48:32Z
+
+Sure thing!
+
+We don't need not a one. [Travis CI does that for us by default.](https://travis-ci.com/github/FriendsOfPHP/PHP-CS-Fixer/jobs/439868381#L196)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-11-16T08:58:41Z
+
+nice, thanks for the rebase and info :+1:
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T09:02:47Z
+
+No prob. It wasn't a mistake when this was added initially, just for the record. At that time Travis CI wouldn't update to Composer v2 because it wasn't released yet.
