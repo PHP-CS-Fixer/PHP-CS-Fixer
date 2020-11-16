@@ -224,5 +224,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
             '<?php interface Foo { public function bar(self $foo, self $bar,): self; }',
             '<?php interface Foo { public function bar(Foo $foo, Foo $bar,): Foo; }',
         ];
+
+        yield [
+            '<?php class Foo { function bar() { $x instanceof (Foo()); } }',
+        ];
     }
 }

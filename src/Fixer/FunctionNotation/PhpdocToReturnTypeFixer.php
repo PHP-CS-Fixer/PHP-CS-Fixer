@@ -188,6 +188,10 @@ final class Foo {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        if (\PHP_VERSION_ID >= 80000) {
+            unset($this->skippedTypes['mixed']);
+        }
+
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
             if (
                 !$tokens[$index]->isGivenKind(T_FUNCTION)
