@@ -216,15 +216,19 @@ function Foo(INTEGER $a) {}
 
     public function provideFix80Cases()
     {
-        return [
-            [
-                '<?php class T { public function Foo(object $A): static {}}',
-                '<?php class T { public function Foo(object $A): StatiC {}}',
-            ],
-            [
-                '<?php class T { public function Foo(object $A): ?static {}}',
-                '<?php class T { public function Foo(object $A): ?StatiC {}}',
-            ],
+        yield [
+            '<?php class T { public function Foo(object $A): static {}}',
+            '<?php class T { public function Foo(object $A): StatiC {}}',
+        ];
+
+        yield [
+            '<?php class T { public function Foo(object $A): ?static {}}',
+            '<?php class T { public function Foo(object $A): ?StatiC {}}',
+        ];
+
+        yield [
+            '<?php class T { public function Foo(mixed $A): mixed {}}',
+            '<?php class T { public function Foo(Mixed $A): MIXED {}}',
         ];
     }
 }
