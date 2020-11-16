@@ -3083,4 +3083,37 @@ baz(); }',
             ],
         ];
     }
+
+    /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php echo match ($x) {
+    1, 2 => "Same for 1 and 2",
+};',
+            '<?php      echo              match     ($x) {
+    1, 2 => "Same for 1 and 2",
+};',
+        ];
+
+        yield [
+            '<?php echo match ($x) {
+    1, 2 => "Same for 1 and 2",
+};',
+            '<?php echo match($x) {
+    1, 2 => "Same for 1 and 2",
+};',
+        ];
+    }
 }
