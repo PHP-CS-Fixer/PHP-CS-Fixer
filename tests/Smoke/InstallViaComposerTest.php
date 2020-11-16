@@ -135,15 +135,16 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         $stepsToInitializeArtifact = [
             // Clone current version of project to new location, as we gonna modify it.
             // Warning! Only already committed changes will be cloned!
-            "git clone . {$tmpArtifactPath}",
+            "git clone --depth=1 . {$tmpArtifactPath}",
         ];
+
         $stepsToPrepareArtifact = [
             // Configure git user for new repo to not use global git user.
             // We need this, as global git user may not be set!
             'git config user.name test && git config user.email test',
             // Adjust cloned project to expose version in `composer.json`.
             // Without that, it would not be possible to use it as Composer Artifact.
-            "composer config version {$fakeVersion} && git add . && git commit -m 'provide version'",
+            "composer config version {$fakeVersion} && git add . && git commit --no-gpg-sign -m 'provide version'",
             // Create repo archive that will serve as Composer Artifact.
             'git archive HEAD --format=zip -o archive.zip',
             // Drop the repo, keep the archive
@@ -168,9 +169,9 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         }
 
         $composer = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
-        $autoloadedFiles = $composer['autoload']['classmap'];
+        $autoloadFiles = $composer['autoload']['classmap'];
 
-        static::assertSame($filesInRelease, $autoloadedFiles);
+        static::assertSame($filesInRelease, $autoloadFiles, 'Expected all files in "./tests" directory to be in "classmap" "composer.json", update the "classmap" or ".gitattributes".');
 
         $fs->remove($tmpPath);
         $fs->remove($tmpArtifactPath);

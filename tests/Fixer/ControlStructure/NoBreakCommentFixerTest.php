@@ -858,6 +858,24 @@ switch ($foo) {
         bar();
 }',
             ],
+            [
+                '<?php
+switch ($a) {
+    case 1:
+        throw new \Exception("");
+    case 2;
+        throw new \Exception("");
+    case 3:
+        throw new \Exception("");
+    case 4;
+        throw new \Exception("");
+    case 5:
+        throw new \Exception("");
+    case 6;
+        throw new \Exception("");
+}
+                ',
+            ],
         ];
     }
 
@@ -937,6 +955,39 @@ switch ($foo) {
     case 2;
         bar();
 }',
+            ],
+            [
+                '<?php
+switch($a) {
+    case 1:
+        $a = function () { throw new \Exception(""); };
+        // no break
+    case 2:
+        $a = new class(){
+            public function foo () { throw new \Exception(""); }
+        };
+        // no break
+    case 3:
+        echo 5;
+        // no break
+    default:
+        echo 1;
+}
+                ',
+                '<?php
+switch($a) {
+    case 1:
+        $a = function () { throw new \Exception(""); };
+    case 2:
+        $a = new class(){
+            public function foo () { throw new \Exception(""); }
+        };
+    case 3:
+        echo 5;
+    default:
+        echo 1;
+}
+                ',
             ],
         ];
     }
