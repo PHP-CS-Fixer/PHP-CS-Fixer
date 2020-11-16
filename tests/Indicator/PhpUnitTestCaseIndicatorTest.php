@@ -32,6 +32,15 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
     protected function setUp()
     {
         $this->indicator = new PhpUnitTestCaseIndicator();
+
+        parent::setUp();
+    }
+
+    protected function tearDown()
+    {
+        $this->indicator = null;
+
+        parent::tearDown();
     }
 
     /**
