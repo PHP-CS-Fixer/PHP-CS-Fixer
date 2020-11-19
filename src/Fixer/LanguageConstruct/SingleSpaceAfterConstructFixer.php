@@ -114,6 +114,18 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         foreach ($this->configuration['constructs'] as $key) {
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
+
+        if (isset($this->fixTokenMap['public'])) {
+            $this->fixTokenMap['constructor_public'] = CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC;
+        }
+
+        if (isset($this->fixTokenMap['protected'])) {
+            $this->fixTokenMap['constructor_protected'] = CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED;
+        }
+
+        if (isset($this->fixTokenMap['private'])) {
+            $this->fixTokenMap['constructor_private'] = CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE;
+        }
     }
 
     /**

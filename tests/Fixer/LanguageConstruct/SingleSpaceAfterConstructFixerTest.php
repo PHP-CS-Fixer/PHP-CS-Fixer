@@ -3115,5 +3115,26 @@ baz(); }',
     1, 2 => "Same for 1 and 2",
 };',
         ];
+
+        yield [
+            '<?php
+class Point {
+    public function __construct(
+        public float $x = 0.0,
+        protected float $y = 0.0,
+        private float $z = 0.0,
+    ) {}
+}
+',
+            "<?php
+class Point {
+    public function __construct(
+        public       float \$x = 0.0,
+        protected\tfloat \$y = 0.0,
+        private\nfloat \$z = 0.0,
+    ) {}
+}
+",
+        ];
     }
 }
