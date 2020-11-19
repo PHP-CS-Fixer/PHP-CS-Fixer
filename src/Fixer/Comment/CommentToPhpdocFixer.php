@@ -99,7 +99,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('ignored_tags', sprintf('List of ignored tags')))
+            (new FixerOptionBuilder('ignored_tags', 'List of ignored tags'))
                 ->setAllowedTypes(['array'])
                 ->setDefault([])
                 ->getOption(),

@@ -35,6 +35,7 @@ Rules
 - `no_php4_constructor <./../rules/class_notation/no_php4_constructor.rst>`_
 - `no_trailing_whitespace_in_string <./../rules/string_notation/no_trailing_whitespace_in_string.rst>`_
 - `no_unneeded_final_method <./../rules/class_notation/no_unneeded_final_method.rst>`_
+- `no_useless_sprintf <./../rules/function_notation/no_useless_sprintf.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
 - `php_unit_construct <./../rules/php_unit/php_unit_construct.rst>`_
 - `php_unit_mock_short_will_return <./../rules/php_unit/php_unit_mock_short_will_return.rst>`_

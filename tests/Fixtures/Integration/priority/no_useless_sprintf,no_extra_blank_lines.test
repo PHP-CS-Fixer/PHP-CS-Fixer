@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_useless_sprintf,no_extra_blank_lines.
+--RULESET--
+{"no_useless_sprintf": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+
+$a = /**/
+
+$a
+
+;
+
+--INPUT--
+<?php
+
+$a = sprintf/**/
+
+(
+
+$a
+
+)
+
+;
