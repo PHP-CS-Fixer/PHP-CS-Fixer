@@ -182,6 +182,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             '^',
             '|',
             '~',
+            '.',
         ];
 
         return isset($operatorsPerId[$token->getId()]) || $token->equalsAny($operatorsPerContent);

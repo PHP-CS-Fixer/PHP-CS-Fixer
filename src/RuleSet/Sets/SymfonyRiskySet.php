@@ -60,6 +60,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             ],
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
+            'no_php4_constructor' => true,
             'no_unneeded_final_method' => true,
             'non_printable_character' => true,
             'php_unit_construct' => true,

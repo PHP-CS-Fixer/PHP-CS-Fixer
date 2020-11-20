@@ -29,7 +29,9 @@ final class PHP80MigrationRiskySet extends AbstractRuleSetDescription
                     '@all',
                 ],
             ],
+            'no_php4_constructor' => true,
             'no_unneeded_final_method' => true,
+            'no_unreachable_default_argument_value' => true,
         ];
     }
 
