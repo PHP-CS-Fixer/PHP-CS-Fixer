@@ -28,6 +28,7 @@ Rules
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
 - `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_
 - `no_homoglyph_names <./../rules/naming/no_homoglyph_names.rst>`_
+- `no_php4_constructor <./../rules/class_notation/no_php4_constructor.rst>`_
 - `no_unneeded_final_method <./../rules/class_notation/no_unneeded_final_method.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
 - `php_unit_construct <./../rules/php_unit/php_unit_construct.rst>`_
