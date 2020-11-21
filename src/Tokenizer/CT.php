@@ -44,6 +44,9 @@ final class CT
     const T_TYPE_COLON = 10025;
     const T_USE_LAMBDA = 10026;
     const T_USE_TRAIT = 10027;
+    const T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC = 10028;
+    const T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED = 10029;
+    const T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE = 10030;
 
     private function __construct()
     {
