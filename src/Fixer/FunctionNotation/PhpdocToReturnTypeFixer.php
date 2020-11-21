@@ -47,6 +47,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
         'void' => 70100,
         'iterable' => 70100,
         'object' => 70200,
+        'mixed' => 80000,
     ];
 
     /**
