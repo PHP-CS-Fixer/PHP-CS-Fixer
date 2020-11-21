@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  linux_tests:
+  linux:
 
     runs-on: ubuntu-20.04
     strategy:
@@ -16,8 +16,6 @@ jobs:
         stability: ["Stable"]
         include:
           - php: "5.6"
-            stability: "Lowest"
-          - php: "7.4"
             stability: "Lowest"
           - php: "8.0"
             stability: "Ignore"
@@ -77,24 +75,14 @@ jobs:
       - name: Execute php-cs-fixer ignoring env
         run: PHP_CS_FIXER_FUTURE_MODE=1 PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer --diff --dry-run -v fix
         if: "matrix.php == '8.0'"
-  windows_tests:
+
+  windows:
 
     runs-on: windows-2019
     strategy:
       matrix:
-        include:
-          - php: "5.6"
-            stability: "Lowest"
-            linting: "Skip"
-          - php: "5.6"
-            stability: "Stable"
-            linting: "Skip"
-          - php: "7.4"
-            stability: "Stable"
-            linting: "Fast"
-          - php: "7.4"
-            stability: "Lowest"
-            linting: "Fast"
+        php: ["5.6", "7.1", "7.4"]
+        stability: ["Stable"]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - Windows
 
@@ -150,13 +138,13 @@ jobs:
           set PHP_CS_FIXER_FUTURE_MODE=1
           php php-cs-fixer --diff --dry-run -v fix
 
-  macos_tests:
+  macos:
 
     runs-on: macos-10.15
     strategy:
       matrix:
-        php: ["5.6", "7.4"]
-        stability: ["Stable", "Lowest"]
+        php: ["5.6", "7.1", "7.4"]
+        stability: ["Stable"]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - MacOS
 
