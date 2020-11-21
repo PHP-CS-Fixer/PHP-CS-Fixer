@@ -2,8 +2,7 @@
 Rule ``yoda_style``
 ===================
 
-Write conditions in Yoda style (``true``), non-Yoda style (``false``) or ignore
-those conditions (``null``) based on configuration.
+Enforce Yoda style conditions (``true``), disable Yoda style conditions enforcement (``false``) or ignore those conditions (``null``) based on configuration.
 
 Configuration
 -------------
@@ -94,6 +93,18 @@ With configuration: ``['always_move_variable' => true]``.
     <?php
    -return $foo === count($bar);
    +return count($bar) === $foo;
+
+Enforcing non-Yoda conditions
+-------------
+You can also enforce non-Yoda conditions, by setting `yoda_style` to:
+
+```
+'yoda_style' => [
+    'equal' => false,
+    'identical' => false,
+    'less_and_greater' => false,
+],
+```
 
 Rule sets
 ---------
