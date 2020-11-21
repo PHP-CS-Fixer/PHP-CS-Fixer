@@ -1,0 +1,197 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  linux_tests:
+
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php: ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4"]
+        stability: ["Stable"]
+        include:
+          - php: "5.6"
+            stability: "Lowest"
+          - php: "7.4"
+            stability: "Lowest"
+          - php: "8.0"
+            stability: "Ignore"
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - Linux
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:snapshot
+          coverage: none
+
+      - name: Setup problem matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Install platform ignoring dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-dist --no-interaction --no-progress --ignore-platform-req=php --ignore-platform-req=hhvm
+        if: "matrix.stability == 'Ignore'"
+
+      - name: Install stable dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-dist --no-interaction --no-progress --ignore-platform-req=hhvm
+        if: "matrix.stability == 'Stable'"
+
+      - name: Install lowest dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-stable --prefer-lowest --prefer-dist --no-interaction --no-progress --ignore-platform-req=hhvm
+        if: "matrix.stability == 'Lowest'"
+
+      - name: Execute tests
+        run: vendor/bin/phpunit
+        if: "matrix.php != '8.0'"
+
+      - name: Execute tests with weak deprecation warnings
+        run: SYMFONY_DEPRECATIONS_HELPER=weak vendor/bin/phpunit
+        if: "matrix.php == '8.0'"
+
+      - name: Execute php-cs-fixer standard mode
+        run: PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
+        if: "matrix.php != '8.0'"
+
+      - name: Execute php-cs-fixer ignoring env
+        run: PHP_CS_FIXER_FUTURE_MODE=1 PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer --diff --dry-run -v fix
+        if: "matrix.php == '8.0'"
+  windows_tests:
+
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        include:
+          - php: "5.6"
+            stability: "Lowest"
+            linting: "Skip"
+          - php: "5.6"
+            stability: "Stable"
+            linting: "Skip"
+          - php: "7.4"
+            stability: "Stable"
+            linting: "Fast"
+          - php: "7.4"
+            stability: "Lowest"
+            linting: "Fast"
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - Windows
+
+    steps:
+      - name: Set git to use LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:snapshot
+          coverage: none
+
+      - name: Setup problem matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Install stable dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-dist --no-interaction --no-progress
+        if: "matrix.stability == 'Stable'"
+
+      - name: Install lowest dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-stable --prefer-lowest --prefer-dist --no-interaction --no-progress
+        if: "matrix.stability == 'Lowest'"
+
+      - name: Execute tests without linting
+        run: |
+          set SKIP_LINT_TEST_CASES=1
+          vendor/bin/phpunit
+        if: "matrix.linting == 'Skip'"
+
+      - name: Execute tests with fast linting
+        run: |
+          set FAST_LINT_TEST_CASES=1
+          vendor/bin/phpunit
+        if: "matrix.linting == 'Fast'"
+
+      - name: Execute php-cs-fixer
+        run: |
+          set PHP_CS_FIXER_FUTURE_MODE=1
+          php php-cs-fixer --diff --dry-run -v fix
+
+  macos_tests:
+
+    runs-on: macos-10.15
+    strategy:
+      matrix:
+        php: ["5.6", "7.4"]
+        stability: ["Stable", "Lowest"]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - MacOS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:snapshot
+          coverage: none
+
+      - name: Setup problem matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Install stable dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-dist --no-interaction --no-progress
+        if: "matrix.stability == 'Stable'"
+
+      - name: Install lowest dependencies
+        uses: nick-invision/retry@v1
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: composer update --prefer-stable --prefer-lowest --prefer-dist --no-interaction --no-progress
+        if: "matrix.stability == 'Lowest'"
+
+      - name: Execute tests
+        run: vendor/bin/phpunit
+
+      - name: Execute php-cs-fixer
+        run: PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer --diff --dry-run -v fix
