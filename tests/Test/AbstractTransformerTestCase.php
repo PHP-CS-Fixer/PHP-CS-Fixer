@@ -99,6 +99,7 @@ abstract class AbstractTransformerTestCase extends TestCase
             return;
         }
 
+        Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
 
         foreach ($tokens as $index => $token) {
@@ -110,6 +111,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     protected function doTest($source, array $expectedTokens = [], array $observedKindsOrPrototypes = [])
     {
+        Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
 
         static::assertSame(

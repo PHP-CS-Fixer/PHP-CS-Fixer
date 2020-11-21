@@ -780,26 +780,33 @@ AB# <- this is the name
         yield [
             '<?php class Foo { private int $foo; }',
         ];
+
         yield [
             '<?php class Foo { protected ?string $foo; }',
         ];
+
         yield [
             '<?php class Foo { public ? string $foo; }',
         ];
+
         yield [
             '<?php class Foo { public ? string $foo; }',
             '<?php class Foo { var ? string $foo; }',
         ];
+
         yield [
             '<?php class Foo { public static Foo\Bar $foo; }',
             '<?php class Foo { static public Foo\Bar $foo; }',
         ];
+
         yield [
             '<?php class Foo { public array $foo; }',
         ];
+
         yield [
             '<?php class Foo { public ?array $foo; }',
         ];
+
         yield [
             '<?php class Foo { public static ?array $foo; }',
             '<?php class Foo { static public ?array $foo; }',

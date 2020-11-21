@@ -242,4 +242,20 @@ null;#13
             '<?php class Foo { public $bar = \/* oh hai! */null; }',
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80()
+    {
+        $this->doTest('<?php
+class Point {
+    public function __construct(
+        public ?float $x = null,
+        protected ?float $y = null,
+        private ?float $z = null,
+    ) {}
+}
+');
+    }
 }

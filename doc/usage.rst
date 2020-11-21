@@ -31,10 +31,9 @@ The ``--verbose`` option will show the applied rules. When using the ``txt`` for
 
 NOTE: if there is an error like "errors reported during linting after fixing", you can use this to be even more verbose for debugging purpose
 
-* ``--verbose=0`` or no option: normal
-* ``--verbose``, ``--verbose=1``, ``-v``: verbose
-* ``--verbose=2``, ``-vv``: very verbose
-* ``--verbose=3``, ``-vvv``: debug
+* `-v`: verbose
+* `-vv`: very verbose
+* `-vvv`: debug
 
 The ``--rules`` option limits the rules to apply to the
 project:

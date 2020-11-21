@@ -43,4 +43,8 @@ parameters:
         - # https://github.com/phpstan/phpstan/issues/1215
             message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
             path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
+        -
+            message: '/^Property .*::\$indicator .* does not accept null\.$/'
+            path: tests/Indicator/PhpUnitTestCaseIndicatorTest.php
+
     tipsOfTheDay: false

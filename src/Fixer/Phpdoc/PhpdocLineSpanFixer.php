@@ -144,6 +144,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             T_STATIC,
             T_STRING,
             T_NS_SEPARATOR,
+            CT::T_ARRAY_TYPEHINT,
             CT::T_NULLABLE_TYPE,
         ]));
 
