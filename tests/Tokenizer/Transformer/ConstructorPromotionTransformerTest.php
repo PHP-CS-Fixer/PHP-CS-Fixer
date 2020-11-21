@@ -62,7 +62,7 @@ class Point {
         ];
 
         yield [
-            '<?php $a = new class {function/* 1 */__CONSTRUCT/* 2 */(/* 3 */public float $x,protected float $y,private float $z) {}}',
+            '<?php $a = new class {function/* 1 */__CONSTRUCT/* 2 */(/* 3 */public float $x,protected float $y,private float $z) {}};',
             [
                 16 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 22 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
