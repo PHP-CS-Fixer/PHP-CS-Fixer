@@ -26,6 +26,7 @@ use Symfony\Component\Finder\Finder;
  * @group auto-review
  * @group covers-nothing
  * @requires PHP 7.3
+ * @requires PHP < 8
  */
 final class DocumentationTest extends TestCase
 {
