@@ -124,12 +124,12 @@ final class Runner
             $this->cacheManager
         );
 
-        $collection = $this->linter->isAsync()
+        $files = $this->linter->isAsync()
             ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)
             : new FileLintingIterator($fileFilteredFileIterator, $this->linter);
 
-        foreach ($collection as $file) {
-            $fixInfo = $this->fixFile($file, $collection->currentLintingResult());
+        foreach ($files as $file) {
+            $fixInfo = $this->fixFile($file, $files->currentLintingResult());
 
             // we do not need Tokens to still caching just fixed file - so clear the cache
             Tokens::clearCache();
