@@ -30,7 +30,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:snapshot
+          tools: composer
           coverage: none
 
       - name: Setup problem matchers
@@ -99,7 +99,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:snapshot
+          tools: composer
           coverage: none
 
       - name: Setup problem matchers
@@ -156,7 +156,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:snapshot
+          tools: composer
           coverage: none
 
       - name: Setup problem matchers
