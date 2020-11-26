@@ -2,8 +2,9 @@
 Rule ``yoda_style``
 ===================
 
-Write conditions in Yoda style (``true``), non-Yoda style (``false``) or ignore
-those conditions (``null``) based on configuration.
+Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false,
+'identical' => false, 'less_and_greater' => false]``) or ignore those conditions
+(``null``) based on configuration.
 
 Configuration
 -------------
@@ -94,6 +95,23 @@ With configuration: ``['always_move_variable' => true]``.
     <?php
    -return $foo === count($bar);
    +return count($bar) === $foo;
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['equal' => false, 'identical' => false, 'less_and_greater' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,5 +1,5 @@
+    <?php
+        // Enforce non-Yoda style.
+   -    if (null === $a) {
+   +    if ($a === null) {
+            echo "null";
+        }
 
 Rule sets
 ---------

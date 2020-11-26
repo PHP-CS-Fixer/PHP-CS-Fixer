@@ -202,7 +202,7 @@ Control Structure
 - `switch_continue_to_break <./control_structure/switch_continue_to_break.rst>`_
     Switch case must not be ended with ``continue`` but with ``break``.
 - `yoda_style <./control_structure/yoda_style.rst>`_
-    Write conditions in Yoda style (``true``), non-Yoda style (``false``) or ignore those conditions (``null``) based on configuration.
+    Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.
 
 Doctrine Annotation
 -------------------

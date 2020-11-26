@@ -1,0 +1,114 @@
+# yamllint disable rule:line-length
+
+name: Static Code Analysis
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        operating-system:
+          - ubuntu-latest
+        php-version:
+          - 7.4
+
+    name: Static Code Analysis
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
+            composer-${{ runner.os }}-${{ matrix.php-version }}-
+            composer-${{ runner.os }}-
+            composer-
+
+      - name: Install dependencies
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: |
+            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+
+      - name: Report versions
+        run: |
+          composer info -D
+
+      - name: Install dev-tools
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: |
+            ./dev-tools/install.sh
+
+      - name: Run checks
+        run: |
+          ./dev-tools/check_file_permissions.sh
+          ./dev-tools/check_trailing_spaces.sh
+          ./dev-tools/vendor/bin/phpstan analyse
+          ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json)
+          composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+          ./dev-tools/check_shell_scripts.sh
+
+      - name: Find changed files (for pull request)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$" || true
+          echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
+          git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$" || true >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Find changed files (for push)
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" || true
+          echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
+          git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" || true >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Validate changed files
+        if: ${{ github.env.CHANGED_PHP_FILES }}
+        run: |
+          ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml
+
+      - name: Check for unknown files (to be removed in 3.0)
+        run: |
+          # @TODO remove at 3.0
+          git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php |
+            grep -v tests/Test/AbstractFixerTestCase.php |
+            grep -v tests/Test/AbstractIntegrationCaseFactory.php |
+            grep -v tests/Test/AbstractIntegrationTestCase.php |
+            grep -v tests/Test/Assert/AssertTokensTrait.php |
+            grep -v tests/Test/IntegrationCase.php |
+            grep -v tests/Test/IntegrationCaseFactory.php |
+            grep -v tests/Test/IntegrationCaseFactoryInterface.php |
+            grep -v tests/Test/InternalIntegrationCaseFactory.php |
+            grep -v tests/Test/IsIdenticalConstraint.php |
+            grep -v tests/TestCase.php \
+          && (echo "UNKNOWN FILES DETECTED" && exit 1) || echo "NO UNKNOWN FILES"
