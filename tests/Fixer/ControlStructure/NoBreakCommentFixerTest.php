@@ -1147,7 +1147,7 @@ switch ($foo) {
     public function testFixWithCommentTextContainingNewLines($text)
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The comment text must not contain new lines\.$/');
+        $this->expectExceptionMessageMatches('/^\[no_break_comment\] Invalid configuration: The comment text must not contain new lines\.$/');
 
         $this->fixer->configure([
             'comment_text' => $text,
@@ -1166,7 +1166,7 @@ switch ($foo) {
     public function testConfigureWithInvalidOptions()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
+        $this->expectExceptionMessageMatches('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
 
         $this->fixer->configure(['foo' => true]);
     }

@@ -46,7 +46,7 @@ final class PharTest extends AbstractSmokeTest
 
     public function testVersion()
     {
-        static::assertRegExp(
+        static::assertMatchesRegularExpression(
             '/^.* '.Application::VERSION.'(?: '.Application::VERSION_CODENAME.')? by .*$/',
             self::executePharCommand('--version')->getOutput()
         );

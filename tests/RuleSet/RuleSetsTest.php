@@ -41,9 +41,9 @@ final class RuleSetsTest extends TestCase
         $sets = RuleSets::getSetDefinitions();
 
         foreach ($sets as $name => $set) {
-            static::assertInternalType('string', $name);
+            static::assertIsString($name);
             static::assertTrue('@' === $name[0]);
-            static::assertInternalType('array', $set->getRules());
+            static::assertIsArray($set->getRules());
         }
     }
 
@@ -101,7 +101,7 @@ Integration of %s.
      */
     public function testBuildInSetDefinitionNames($setName)
     {
-        static::assertInternalType('string', $setName);
+        static::assertIsString($setName);
         static::assertSame('@', substr($setName, 0, 1));
     }
 

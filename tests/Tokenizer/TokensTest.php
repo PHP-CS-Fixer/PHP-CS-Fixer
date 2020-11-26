@@ -476,7 +476,7 @@ PHP;
         $tokens = Tokens::fromCode($source);
         /** @var Token[] $found */
         $found = $tokens->findGivenKind(T_CLASS);
-        static::assertInternalType('array', $found);
+        static::assertIsArray($found);
         static::assertCount(1, $found);
         static::assertArrayHasKey(1, $found);
         static::assertSame(T_CLASS, $found[1]->getId());
@@ -485,13 +485,13 @@ PHP;
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
         static::assertCount(2, $found);
         static::assertArrayHasKey(T_CLASS, $found);
-        static::assertInternalType('array', $found[T_CLASS]);
+        static::assertIsArray($found[T_CLASS]);
         static::assertCount(1, $found[T_CLASS]);
         static::assertArrayHasKey(1, $found[T_CLASS]);
         static::assertSame(T_CLASS, $found[T_CLASS][1]->getId());
 
         static::assertArrayHasKey(T_FUNCTION, $found);
-        static::assertInternalType('array', $found[T_FUNCTION]);
+        static::assertIsArray($found[T_FUNCTION]);
         static::assertCount(2, $found[T_FUNCTION]);
         static::assertArrayHasKey(9, $found[T_FUNCTION]);
         static::assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
@@ -752,7 +752,7 @@ PHP;
     public function testFindBlockEndInvalidType()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Invalid param type: "-1"\.$/');
+        $this->expectExceptionMessageMatches('/^Invalid param type: "-1"\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -762,7 +762,7 @@ PHP;
     public function testFindBlockEndInvalidStart()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Invalid param \$startIndex - not a proper block "start"\.$/');
+        $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php ');
@@ -1408,14 +1408,14 @@ $bar;',
         static::assertSame($searchIndex, $tokens->findBlockStart($type, $expectedIndex));
 
         $detectedType = Tokens::detectBlockType($tokens[$searchIndex]);
-        static::assertInternalType('array', $detectedType);
+        static::assertIsArray($detectedType);
         static::assertArrayHasKey('type', $detectedType);
         static::assertArrayHasKey('isStart', $detectedType);
         static::assertSame($type, $detectedType['type']);
         static::assertTrue($detectedType['isStart']);
 
         $detectedType = Tokens::detectBlockType($tokens[$expectedIndex]);
-        static::assertInternalType('array', $detectedType);
+        static::assertIsArray($detectedType);
         static::assertArrayHasKey('type', $detectedType);
         static::assertArrayHasKey('isStart', $detectedType);
         static::assertSame($type, $detectedType['type']);

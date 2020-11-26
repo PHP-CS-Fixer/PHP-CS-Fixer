@@ -26,7 +26,7 @@ final class ToolInfoTest extends TestCase
     public function testGetVersion()
     {
         $toolInfo = new ToolInfo();
-        static::assertInternalType('string', $toolInfo->getVersion());
+        static::assertIsString($toolInfo->getVersion());
     }
 
     public function testIsInstallAsPhar()

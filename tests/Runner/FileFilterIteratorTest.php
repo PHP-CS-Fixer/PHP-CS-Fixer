@@ -182,7 +182,7 @@ final class FileFilterIteratorTest extends TestCase
         $this->expectException(
             \RuntimeException::class
         );
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '#^Expected instance of "\\\SplFileInfo", got "string"\.$#'
         );
 

@@ -44,6 +44,10 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     {
         parent::setUpBeforeClass();
 
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            static::markTestIncomplete('This test is broken on Windows');
+        }
+
         try {
             CommandExecutor::create('php --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {

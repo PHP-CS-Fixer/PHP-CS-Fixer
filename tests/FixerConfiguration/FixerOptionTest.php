@@ -83,7 +83,7 @@ final class FixerOptionTest extends TestCase
 
         $option = new FixerOption('foo', 'Bar.', true, null, null, [static function () {}]);
         $allowedTypes = $option->getAllowedValues();
-        static::assertInternalType('array', $allowedTypes);
+        static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);
         static::assertArrayHasKey(0, $allowedTypes);
         static::assertInstanceOf(\Closure::class, $allowedTypes[0]);

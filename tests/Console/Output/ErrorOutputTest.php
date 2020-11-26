@@ -134,13 +134,13 @@ EOT;
 
         $displayed = $this->readFullStreamOutput($output);
 
-        static::assertContains($fixerName, $displayed);
-        static::assertContains($diffSpecificContext, $displayed);
+        static::assertStringContainsString($fixerName, $displayed);
+        static::assertStringContainsString($diffSpecificContext, $displayed);
 
-        static::assertContains($noDiffLintFixerName, $displayed);
+        static::assertStringContainsString($noDiffLintFixerName, $displayed);
 
-        static::assertNotContains($invalidErrorFixerName, $displayed);
-        static::assertNotContains($invalidDiff, $displayed);
+        static::assertStringNotContainsString($invalidErrorFixerName, $displayed);
+        static::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
     /**

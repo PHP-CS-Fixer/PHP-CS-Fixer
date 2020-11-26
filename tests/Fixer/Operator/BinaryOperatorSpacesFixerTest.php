@@ -797,7 +797,7 @@ $b;
     public function testWrongConfigItem()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals", "default", "operators"\.$/'
         );
 
@@ -807,7 +807,7 @@ $b;
     public function testWrongConfigOldValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
         );
 
@@ -899,7 +899,7 @@ $b;
     public function testWrongConfigOldAndNewMixed()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Mixing old configuration with new configuration is not allowed\.$/');
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Mixing old configuration with new configuration is not allowed\.$/');
 
         $this->fixer->configure([
             'align_double_arrow' => true,
@@ -910,7 +910,7 @@ $b;
     public function testWrongConfigTypeForOperators()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[binary_operator_spaces\] Invalid configuration: The option "operators" with value true is expected to be of type "array", but is of type "(bool|boolean)"\.$/'
         );
 
@@ -920,7 +920,7 @@ $b;
     public function testWrongConfigTypeForOperatorsKey()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['operators' => [123 => 1]]);
     }
@@ -928,7 +928,7 @@ $b;
     public function testWrongConfigTypeForOperatorsKeyValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
 
         $this->fixer->configure(['operators' => ['+' => 'abc']]);
     }

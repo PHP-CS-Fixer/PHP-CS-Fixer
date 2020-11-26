@@ -78,8 +78,8 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
 
         static::assertCount(2, $changed);
-        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
-        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
+        static::assertSame($expectedChangedInfo, array_pop($changed));
+        static::assertSame($expectedChangedInfo, array_pop($changed));
 
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $runner = new Runner(
@@ -98,7 +98,7 @@ final class RunnerTest extends TestCase
         $changed = $runner->fix();
 
         static::assertCount(1, $changed);
-        static::assertArraySubset($expectedChangedInfo, array_pop($changed));
+        static::assertSame($expectedChangedInfo, array_pop($changed));
     }
 
     /**

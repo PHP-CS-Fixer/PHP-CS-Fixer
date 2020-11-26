@@ -27,7 +27,7 @@ use Symfony\Component\Yaml\Yaml;
  * @group auto-review
  * @group covers-nothing
  */
-final class TravisTest extends TestCase
+final class CiConfigurationTest extends TestCase
 {
     public function testTestJobsRunOnEachPhp()
     {
@@ -85,7 +85,10 @@ final class TravisTest extends TestCase
             new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion)),
             // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
             new TraversableContains('nightly'),
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1))
+            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
+            // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
+            new TraversableContains(sprintf('%.1f', $lastSupportedVersion + 0.1)),
+            new TraversableContains(sprintf('%.1f', round($lastSupportedVersion + 1)))
         ));
     }
 
@@ -120,13 +123,10 @@ final class TravisTest extends TestCase
 
     private function getAllPhpVersionsUsedByCiForTests()
     {
-        $jobs = array_filter($this->getTravisJobs(), function ($job) {
-            return false !== strpos($job['stage'], 'Test');
-        });
-
-        return array_map(function ($job) {
-            return (string) $job['php'];
-        }, $jobs);
+        return array_merge(
+            $this->getPhpVersionsUsedByTravis(),
+            $this->getPhpVersionsUsedByGitHub()
+        );
     }
 
     private function convertPhpVerIdToNiceVer($verId)
@@ -180,5 +180,29 @@ final class TravisTest extends TestCase
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.travis.yml'));
 
         return $yaml['jobs']['include'];
+    }
+
+    private function getPhpVersionsUsedByGitHub()
+    {
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
+
+        $phpVersions = isset($yaml['jobs']['tests']['strategy']['matrix']['php-version']) ? $yaml['jobs']['tests']['strategy']['matrix']['php-version'] : [];
+
+        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
+            $phpVersions[] = $job['php-version'];
+        }
+
+        return $phpVersions;
+    }
+
+    private function getPhpVersionsUsedByTravis()
+    {
+        $jobs = array_filter($this->getTravisJobs(), function ($job) {
+            return false !== strpos($job['stage'], 'Test');
+        });
+
+        return array_map(function ($job) {
+            return (string) $job['php'];
+        }, $jobs);
     }
 }
