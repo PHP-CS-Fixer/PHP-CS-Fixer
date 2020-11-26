@@ -1,0 +1,21 @@
+# yamllint disable rule:line-length
+
+name: YAML Validation
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  validate-yaml:
+    name: Validate YAML
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run YAMLlint
+        run: |
+          find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint -d relaxed
+
