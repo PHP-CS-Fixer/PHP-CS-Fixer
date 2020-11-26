@@ -12,9 +12,6 @@
         "phpstan/phpstan": "0.12.18",
         "phpstan/phpstan-phpunit": "^0.12"
     },
-    "conflict": {
-        "hhvm": "*"
-    },
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true
