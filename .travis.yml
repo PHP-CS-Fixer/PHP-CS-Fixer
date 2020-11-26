@@ -92,6 +92,31 @@ jobs:
         -
             <<: *STANDARD_TEST_JOB
             stage: Test
+            php: 8.0
+            name: 8.0 | Collect coverage
+            before_install:
+                # for building a tag release we don't need to collect code coverage
+                - if [ $TRAVIS_TAG ]; then travis_terminate 0; fi
+
+                ## regular `before_install`
+                # turn off XDebug
+                - phpenv config-rm xdebug.ini || return 0
+
+                # Require PHPUnit 8
+                - composer require --dev --no-update phpunit/phpunit:^8
+
+                # Install PCOV
+                - pecl install pcov
+            before_script:
+                # Make code compatible with PHPUnit 8
+                - PHP_CS_FIXER_FUTURE_MODE=1 php php-cs-fixer fix --rules=void_return -q tests || return 0
+            script:
+                - vendor/bin/phpunit --testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml || travis_terminate 1
+                - php vendor/bin/php-coveralls -v
+
+        -
+            <<: *STANDARD_TEST_JOB
+            stage: Test
             php: nightly
             env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
 

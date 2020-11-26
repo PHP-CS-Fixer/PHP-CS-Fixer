@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^5.6 || ^7.0 || ^8.0",
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^1.4 || ^2.0 || ^3.0",
@@ -40,7 +40,7 @@
         "php-cs-fixer/accessible-object": "^1.0",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.2",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.2.1",
-        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.1",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.1 || ^8.0 || ^9.0",
         "phpunitgoodpractices/traits": "^1.9.1",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/yaml": "^3.0 || ^4.0 || ^5.0"
