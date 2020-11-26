@@ -61,7 +61,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurationDefinit
     public function getDefinition()
     {
         return new FixerDefinition(
-            'Write conditions in Yoda style (`true`), non-Yoda style (`false`) or ignore those conditions (`null`) based on configuration.',
+            'Write conditions in Yoda style (`true`), non-Yoda style (`[\'equal\' => false, \'identical\' => false, \'less_and_greater\' => false]`) or ignore those conditions (`null`) based on configuration.',
             [
                 new CodeSample(
                     '<?php
@@ -88,6 +88,19 @@ return $foo === count($bar);
 ',
                     [
                         'always_move_variable' => true,
+                    ]
+                ),
+                new CodeSample(
+                    '<?php
+    // Enforce non-Yoda style.
+    if (null === $a) {
+        echo "null";
+    }
+',
+                    [
+                        'equal' => false,
+                        'identical' => false,
+                        'less_and_greater' => false,
                     ]
                 ),
             ]

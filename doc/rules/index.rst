@@ -190,7 +190,7 @@ Control Structure
 - `switch_case_space <./control_structure/switch_case_space.rst>`_
     Removes extra spaces between colon and case value.
 - `yoda_style <./control_structure/yoda_style.rst>`_
-    Write conditions in Yoda style (``true``), non-Yoda style (``false``) or ignore those conditions (``null``) based on configuration.
+    Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.
 
 Doctrine Annotation
 -------------------
