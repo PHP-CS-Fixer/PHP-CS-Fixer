@@ -85,7 +85,10 @@ final class TravisTest extends TestCase
             new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion)),
             // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
             new TraversableContains('nightly'),
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1))
+            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
+            // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
+            new TraversableContains(sprintf('%.1f', $lastSupportedVersion + 0.1)),
+            new TraversableContains(sprintf('%.1f', round($lastSupportedVersion + 1)))
         ));
     }
 
@@ -124,9 +127,13 @@ final class TravisTest extends TestCase
             return false !== strpos($job['stage'], 'Test');
         });
 
-        return array_map(function ($job) {
+        $travisPhpVersions = array_map(function ($job) {
             return (string) $job['php'];
         }, $jobs);
+
+        $gitHubPhpVersions = $this->getGitHubPhpVersions();
+
+        return array_merge($travisPhpVersions, $gitHubPhpVersions);
     }
 
     private function convertPhpVerIdToNiceVer($verId)
@@ -180,5 +187,18 @@ final class TravisTest extends TestCase
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.travis.yml'));
 
         return $yaml['jobs']['include'];
+    }
+
+    private function getGitHubPhpVersions()
+    {
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yaml'));
+
+        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'];
+
+        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
+            $phpVersions[] = $job['php-version'];
+        }
+
+        return $phpVersions;
     }
 }
