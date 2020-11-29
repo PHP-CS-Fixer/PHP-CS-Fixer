@@ -1,0 +1,7 @@
+extends: relaxed
+
+rules:
+  indentation: disable
+  line-length:
+    max: 180
+    level: warning

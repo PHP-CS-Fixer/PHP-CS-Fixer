@@ -1,5 +1,3 @@
-# yamllint disable rule:line-length
-
 name: YAML Validation
 
 on:
@@ -17,5 +15,4 @@ jobs:
 
       - name: Run YAMLlint
         run: |
-          find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint -d relaxed
-
+          find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint
