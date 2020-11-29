@@ -1,5 +1,3 @@
-# yamllint disable rule:line-length
-
 name: Continuous Integration
 
 on:
