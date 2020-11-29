@@ -186,7 +186,7 @@ final class CiConfigurationTest extends TestCase
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yaml'));
 
-        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'];
+        $phpVersions = isset($yaml['jobs']['tests']['strategy']['matrix']['php-version']) ? $yaml['jobs']['tests']['strategy']['matrix']['php-version'] : [];
 
         foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
             $phpVersions[] = $job['php-version'];
