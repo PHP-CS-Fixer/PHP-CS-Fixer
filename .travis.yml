@@ -90,12 +90,6 @@ jobs:
                 - php vendor/bin/php-coveralls -v
 
         -
-            <<: *STANDARD_TEST_JOB
-            stage: Test
-            php: nightly
-            env: COMPOSER_FLAGS="--ignore-platform-reqs" PHP_CS_FIXER_IGNORE_ENV=1 SYMFONY_DEPRECATIONS_HELPER=weak
-
-        -
             stage: Deployment
             php: 7.4
             install: ./dev-tools/build.sh
