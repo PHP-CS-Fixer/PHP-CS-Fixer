@@ -2,7 +2,11 @@ name: YAML Validation
 
 on:
   pull_request:
+    paths:
+      - '**.yaml'
   push:
+    paths:
+      - '**.yaml'
 
 jobs:
   validate-yaml:
@@ -13,6 +17,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run YAMLlint
+      - name: Run yamllint
         run: |
           find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint
