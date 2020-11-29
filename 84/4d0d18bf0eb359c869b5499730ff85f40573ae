@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-16T10:55:05Z
+
+can you combine the effort with #5183 , please?
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T10:59:42Z
+
+This is possible, but #5183 does quite more than just to replicate existing processes. How about we merge this, get it running properly, and then I'll do what I can?
+
+It's really annoying to use a fork to keep track of the changes here.
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T11:59:22Z
+
+What's bad about #5183 it tries to do several things at once. One thing to add GitHub CI, and another is to remove AppVeyor etc. These could be done step-by-step, smoothly, not all at once. We did this for Infection in multiple steps, and it was just flawless.
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T14:33:52Z
+
+@keradus If you have something specific in mind you want ported from #5183, please let me know.
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-20T15:19:07Z
+
+I feel like this PR can bring definite improvements to the speed and efficiency of the CI process. If there's anything I can do to help it getting reviewed/merged, I'll be happy to help.
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-22T19:24:58Z
+
+> @keradus If you have something specific in mind you want ported from #5183, please let me know.
+
+I don't want you to port from #5183 or vice versa.
+We have 2 competitive PRs, let's avoid duplicating the effort in work on the job separately.
+
+what I'm asking for is you and creator of #5183 to talk one to another and align how to achieve best outcome together ;)
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-23T02:10:43Z
+
+So far so good after the most recent changes: https://github.com/sanmai/PHP-CS-Fixer/actions/runs/378021524
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-29T00:45:28Z
+
+A week passed and TravisCI still didn't respond for request for open-source credits.
+let's merge this one as-is to unblock further effort on other PRs, while keep this PR a starting point for potential future improvements to CICD
