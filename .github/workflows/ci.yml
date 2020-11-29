@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  - pull_request
+  - push
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        include:
+          - operating-system: 'ubuntu-20.04'
+            php-version: '5.6'
+            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.0'
+            job-description: 'with Sf ^3'
+            execute-flex-with-symfony-version: '^3' # Explicit check for Sf 3.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.1'
+            job-description: 'with Sf ^4'
+            execute-flex-with-symfony-version: '^4' # Explicit check for Sf 4.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.2'
+            job-description: 'with Sf ^5'
+            execute-flex-with-symfony-version: '^5' # Explicit check for Sf 5.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.3'
+            job-description: 'with legacy Tokenizer' # should be checked on any job, one is enough
+            PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER: 1
+            SYMFONY_DEPRECATIONS_HELPER: 'disabled'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
+            job-description: 'with migration rules'
+            execute-migration-rules: 'yes' # should be checked on highest supported PHP version
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.0'
+            composer-flags: '--ignore-platform-req=php' # as this is a version not yet officially supported by PHP CS Fixer
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: 'windows-latest'
+            php-version: '7.4'
+            job-description: 'on Windows'
+            FAST_LINT_TEST_CASES: 1
+
+          - operating-system: 'macos-latest'
+            php-version: '7.4'
+            job-description: 'on macOS'
+
+    name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
+
+    runs-on: ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          tools: flex
+        env:
+          fail-fast: false # disabled as old PHP version cannot run flex
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
+            composer-${{ runner.os }}-${{ matrix.php-version }}-
+            composer-${{ runner.os }}-
+            composer-
+
+      - name: Configure Symfony Flex
+        run: |
+            composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
+        if: "matrix.execute-flex-with-symfony-version"
+
+      - name: Install dependencies
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          retry_wait_seconds: 30
+          command: |
+            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+            composer info -D | sort
+
+      - name: Execute migration rules
+        run: |
+          php php-cs-fixer fix --rules @PHP73Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q
+        if: "matrix.execute-migration-rules == 'yes'"
+
+      - name: Run tests
+        continue-on-error: ${{ matrix.php-version == '8.0' }}
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER: ${{ matrix.PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER }}
+          SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.SYMFONY_DEPRECATIONS_HELPER }}
+        run: |
+          vendor/bin/phpunit
+
+      - name: Run PHP CS Fixer
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          PHP_CS_FIXER_FUTURE_MODE: 1
+        run: |
+          php php-cs-fixer --diff --dry-run -v fix
