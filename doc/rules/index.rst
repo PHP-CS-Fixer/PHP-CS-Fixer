@@ -379,6 +379,8 @@ PHP Tag
     Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print`` syntax, or vice-versa.
 - `full_opening_tag <./php_tag/full_opening_tag.rst>`_
     PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not other tag variations.
+- `inline_tag <./php_tag/inline_tag.rst>`_
+    Changes spaces and semicolons in inline PHP tags.
 - `linebreak_after_opening_tag <./php_tag/linebreak_after_opening_tag.rst>`_
     Ensure there is no code on the same line as the PHP open tag.
 - `no_closing_tag <./php_tag/no_closing_tag.rst>`_
