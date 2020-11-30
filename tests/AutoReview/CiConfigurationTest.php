@@ -184,7 +184,7 @@ final class CiConfigurationTest extends TestCase
 
     private function getPhpVersionsUsedByGitHub()
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yaml'));
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
         $phpVersions = isset($yaml['jobs']['tests']['strategy']['matrix']['php-version']) ? $yaml['jobs']['tests']['strategy']['matrix']['php-version'] : [];
 

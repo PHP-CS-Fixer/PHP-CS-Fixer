@@ -3,10 +3,10 @@ name: YAML Validation
 on:
   pull_request:
     paths:
-      - '**.yaml'
+      - '**.y?ml'
   push:
     paths:
-      - '**.yaml'
+      - '**.y?ml'
 
 jobs:
   validate-yaml:
