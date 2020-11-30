@@ -27,7 +27,7 @@ use Symfony\Component\Yaml\Yaml;
  * @group auto-review
  * @group covers-nothing
  */
-final class TravisTest extends TestCase
+final class CiConfigurationTest extends TestCase
 {
     public function testTestJobsRunOnEachPhp()
     {
@@ -123,17 +123,10 @@ final class TravisTest extends TestCase
 
     private function getAllPhpVersionsUsedByCiForTests()
     {
-        $jobs = array_filter($this->getTravisJobs(), function ($job) {
-            return false !== strpos($job['stage'], 'Test');
-        });
-
-        $travisPhpVersions = array_map(function ($job) {
-            return (string) $job['php'];
-        }, $jobs);
-
-        $gitHubPhpVersions = $this->getGitHubPhpVersions();
-
-        return array_merge($travisPhpVersions, $gitHubPhpVersions);
+        return array_merge(
+            $this->getPhpVersionsUsedByTravis(),
+            $this->getPhpVersionsUsedByGitHub()
+        );
     }
 
     private function convertPhpVerIdToNiceVer($verId)
@@ -189,16 +182,27 @@ final class TravisTest extends TestCase
         return $yaml['jobs']['include'];
     }
 
-    private function getGitHubPhpVersions()
+    private function getPhpVersionsUsedByGitHub()
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yaml'));
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
-        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'];
+        $phpVersions = isset($yaml['jobs']['tests']['strategy']['matrix']['php-version']) ? $yaml['jobs']['tests']['strategy']['matrix']['php-version'] : [];
 
         foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
             $phpVersions[] = $job['php-version'];
         }
 
         return $phpVersions;
+    }
+
+    private function getPhpVersionsUsedByTravis()
+    {
+        $jobs = array_filter($this->getTravisJobs(), function ($job) {
+            return false !== strpos($job['stage'], 'Test');
+        });
+
+        return array_map(function ($job) {
+            return (string) $job['php'];
+        }, $jobs);
     }
 }
