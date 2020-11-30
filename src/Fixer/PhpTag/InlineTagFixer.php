@@ -217,6 +217,8 @@ EOT
             }
             $start = $nextIndex;
         }
+
+        return null;
     }
 
     /**
@@ -313,7 +315,7 @@ EOT
         for (;;) {
             $token = array_pop($tokens);
             if (null === $token) {
-                return $result;
+                break;
             }
             if ($semicolons && ';' === $token->getContent() || $whitespaces && $token->isWhitespace()) {
                 array_unshift($result, $token);
@@ -322,8 +324,10 @@ EOT
             }
             $tokens[] = $token;
 
-            return $result;
+            break;
         }
+
+        return $result;
     }
 
     /**
