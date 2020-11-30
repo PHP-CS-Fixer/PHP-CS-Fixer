@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-29T23:04:40Z
+
+in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5305 , yaml lint took 5s
+do we need this PR, actually ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-11-29T23:17:42Z
+
+5s to compute something when we already know it in advance is still a waste. Since it's really easy to avoid it, why not do it?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-29T23:19:28Z
+
+with the check you added, it increased by 2s , actually
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-11-29T23:52:00Z
+
+I think these extra 2s are caused by usual CI performance variations rather than a fast check on whether a YAML was changed :)
