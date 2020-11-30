@@ -1,5 +1,3 @@
-# yamllint disable rule:line-length
-
 name: Static Code Analysis
 
 on:
@@ -11,7 +9,7 @@ jobs:
     strategy:
       matrix:
         operating-system:
-          - ubuntu-latest
+          - ubuntu-20.04
         php-version:
           - 7.4
 
