@@ -1,0 +1,103 @@
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T10:48:22Z
+
+@keradus should it be more appropriate to use `phpunitgoodpractices/polyfill` here instead of a purpose-build short polyfill?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-11-16T10:51:15Z
+
+utilizing `phpunitgoodpractices/polyfill` would be great as more people found benefit from your work : )
+
+(also we would have less maintenance in this project so I'm biased ;) )
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T10:53:16Z
+
+Good point. Give me a minute to sort this out.
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T10:53:41Z
+
+Should I add `phpunitgoodpractices/polyfill` as a direct dependency?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-16T10:54:26Z
+
+:+1:
+feel free to raise PRs to that polyfill repo too, don't hesitate to reach out to me over https://gitter.im/keradus
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T11:13:13Z
+
+@keradus DM'ing you there!
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-16T14:11:11Z
+
+As of now `phpunitgoodpractices/polyfill` has none of the methods we need here. First PR for `phpunitgoodpractices/polyfill` is go https://github.com/PHPUnitGoodPractices/polyfill/pull/16. Once there's a CI, I'll add other necessary methods.
+
+Meanwhile this is ready for merge. Migrating to  `phpunitgoodpractices/polyfill` will be as simple as removing _one_ file and changing _one_ line.
+
+This is a blocker to #5262. Reviewing and merging this will let me to continue my work on #5262. Please consider this.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-20T15:10:49Z
+
+What is the reason for the re-target?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-20T15:24:47Z
+
+Oh, I see. The last 2.15.x release has just happened?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-20T20:14:25Z
+
+So, what is the status with `phpunitgoodpractices/polyfill`? I think this is the only outstanding thing blocking merge now. The rest looks great, from what I can see.
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-20T23:43:26Z
+
+@GrahamCampbell what we're doing there is fairly tricky, and, considering that @keradus is, understandably, looking for an uncompromising quality, at these circumstances I'd like to see it getting as thorough review as possible. Therefore, we have to wait for it to happen.
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-11-23T15:21:17Z
+
+Do I need to squash-rebase it? It's not a big deal, but squash merging will be easier.
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-23T18:16:08Z
+
+squash doesn't matter.
+i only await for CI to confirm it works on all supported combinations of phpunit
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-29T02:27:37Z
+
+This can be (squash) merged now, I think?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-29T03:01:07Z
+
+easy @GrahamCampbell , it will be merged when it will be merged. no need for pinging, especially when you see movement around related changes
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-29T03:27:40Z
+
+I wasn't rushing. I was just re-approving after the changes you just made. :)
