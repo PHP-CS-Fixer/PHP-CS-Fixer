@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-30T00:08:50Z
+
+Could just only run the CI auto-review tests on Linux. Who cares why they are broken on Windows. There are better things to spend time on. ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-30T13:48:46Z
+
+@GrahamCampbell I see Windows build green
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-30T18:21:06Z
+
+Odd. It was red before. The last build, 5 hours ago has it green.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-30T18:40:14Z
+
+I guess this is good to go, then.
