@@ -587,7 +587,7 @@ echo 1;'
     public function testMisconfiguration($configuration, $exceptionMessage)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp("#^\\[header_comment\\] {$exceptionMessage}$#");
+        $this->expectExceptionMessageMatches("#^\\[header_comment\\] {$exceptionMessage}$#");
 
         $this->configureFixerWithAliasedOptions($configuration);
     }
@@ -773,7 +773,7 @@ echo 1;'
     public function testInvalidHeaderConfiguration()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
+        $this->expectExceptionMessageMatches('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
 
         $this->fixer->configure([
             'header' => '/** test */',

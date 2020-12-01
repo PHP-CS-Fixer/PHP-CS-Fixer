@@ -48,7 +48,7 @@ final class ErrorsManagerTest extends TestCase
 
         $errors = $errorsManager->getInvalidErrors();
 
-        static::assertInternalType('array', $errors);
+        static::assertIsArray($errors);
         static::assertCount(1, $errors);
         static::assertSame($error, array_shift($errors));
 
@@ -71,7 +71,7 @@ final class ErrorsManagerTest extends TestCase
 
         $errors = $errorsManager->getExceptionErrors();
 
-        static::assertInternalType('array', $errors);
+        static::assertIsArray($errors);
         static::assertCount(1, $errors);
         static::assertSame($error, array_shift($errors));
 
@@ -94,7 +94,7 @@ final class ErrorsManagerTest extends TestCase
 
         $errors = $errorsManager->getLintErrors();
 
-        static::assertInternalType('array', $errors);
+        static::assertIsArray($errors);
         static::assertCount(1, $errors);
         static::assertSame($error, array_shift($errors));
 

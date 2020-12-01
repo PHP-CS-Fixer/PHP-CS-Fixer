@@ -53,15 +53,15 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     public function testGetPriority()
     {
-        static::assertInternalType('int', $this->transformer->getPriority(), $this->transformer->getName());
+        static::assertIsInt($this->transformer->getPriority(), $this->transformer->getName());
     }
 
     public function testGetName()
     {
         $name = $this->transformer->getName();
 
-        static::assertInternalType('string', $name);
-        static::assertRegExp('/^[a-z]+[a-z_]*[a-z]$/', $name);
+        static::assertIsString($name);
+        static::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
     }
 
     /**
@@ -73,10 +73,10 @@ abstract class AbstractTransformerTestCase extends TestCase
         $name = $this->transformer->getName();
         $customTokens = $this->transformer->getCustomTokens();
 
-        static::assertInternalType('array', $customTokens, $name);
+        static::assertIsArray($customTokens, $name);
 
         foreach ($customTokens as $customToken) {
-            static::assertInternalType('int', $customToken, $name);
+            static::assertIsInt($customToken, $name);
         }
     }
 
@@ -85,7 +85,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         $name = $this->transformer->getName();
         $requiredPhpVersionId = $this->transformer->getRequiredPhpVersionId();
 
-        static::assertInternalType('int', $requiredPhpVersionId, $name);
+        static::assertIsInt($requiredPhpVersionId, $name);
         static::assertGreaterThanOrEqual(50000, $requiredPhpVersionId, $name);
     }
 

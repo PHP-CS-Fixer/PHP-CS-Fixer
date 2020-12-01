@@ -126,7 +126,7 @@ class Foo implements TestInterface, SomethingElse
         $tokens = Tokens::fromCode('<?php echo 1;');
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessageRegExp('/^No "T_CLASS" at given index 1, got "T_ECHO"\.$/');
+        $this->expectExceptionMessageMatches('/^No "T_CLASS" at given index 1, got "T_ECHO"\.$/');
 
         $this->indicator->isPhpUnitClass($tokens, 1);
     }

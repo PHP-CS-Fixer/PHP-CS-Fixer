@@ -24,7 +24,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigMissingKey()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[cast_spaces\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
+        $this->expectExceptionMessageMatches('#^\[cast_spaces\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }
@@ -32,7 +32,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[cast_spaces\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#');
+        $this->expectExceptionMessageMatches('#^\[cast_spaces\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#');
 
         $this->fixer->configure(['space' => 'double']);
     }

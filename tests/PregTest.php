@@ -180,7 +180,7 @@ final class PregTest extends TestCase
     public function testReplaceFailing()
     {
         $this->expectException(PregException::class);
-        $this->expectExceptionMessageRegExp('~\Q\Preg::replace()\E: Invalid PCRE pattern "": \(code: \d+\) [^(]+ \(version: \d+~');
+        $this->expectExceptionMessageMatches('~\Q\Preg::replace()\E: Invalid PCRE pattern "": \(code: \d+\) [^(]+ \(version: \d+~');
 
         Preg::replace('', 'foo', 'bar');
     }
