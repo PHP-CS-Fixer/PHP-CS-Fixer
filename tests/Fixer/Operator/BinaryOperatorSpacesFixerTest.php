@@ -797,7 +797,7 @@ $b;
     public function testWrongConfigItem()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "default", "operators"\.$/'
         );
 
@@ -807,7 +807,7 @@ $b;
     public function testWrongConfigTypeForOperators()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/^\[binary_operator_spaces\] Invalid configuration: The option "operators" with value true is expected to be of type "array", but is of type "(bool|boolean)"\.$/'
         );
 
@@ -817,7 +817,7 @@ $b;
     public function testWrongConfigTypeForOperatorsKey()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
 
         $this->fixer->configure(['operators' => [123 => 1]]);
     }
@@ -825,7 +825,7 @@ $b;
     public function testWrongConfigTypeForOperatorsKeyValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
+        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
 
         $this->fixer->configure(['operators' => ['+' => 'abc']]);
     }

@@ -64,7 +64,7 @@ final class DocBlockTest extends TestCase
     {
         $doc = new DocBlock(self::$sample);
 
-        static::assertInternalType('array', $doc->getLines());
+        static::assertIsArray($doc->getLines());
         static::assertCount(15, $doc->getLines());
 
         foreach ($doc->getLines() as $index => $line) {
@@ -79,7 +79,7 @@ final class DocBlockTest extends TestCase
     {
         $doc = new DocBlock(self::$sample);
 
-        static::assertInternalType('array', $doc->getAnnotations());
+        static::assertIsArray($doc->getAnnotations());
         static::assertCount(5, $doc->getAnnotations());
 
         foreach ($doc->getAnnotations() as $index => $annotations) {
@@ -96,7 +96,7 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('param');
 
-        static::assertInternalType('array', $annotations);
+        static::assertIsArray($annotations);
         static::assertCount(3, $annotations);
 
         $first = '     * @param string $hello
@@ -118,7 +118,7 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('throws');
 
-        static::assertInternalType('array', $annotations);
+        static::assertIsArray($annotations);
         static::assertCount(1, $annotations);
 
         $content = '     * @throws \Exception asdnjkasd
@@ -135,7 +135,7 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('return');
 
-        static::assertInternalType('array', $annotations);
+        static::assertIsArray($annotations);
         static::assertCount(1, $annotations);
 
         $content = '     * @return void
@@ -150,7 +150,7 @@ final class DocBlockTest extends TestCase
 
         $annotations = $doc->getAnnotationsOfType('foo');
 
-        static::assertInternalType('array', $annotations);
+        static::assertIsArray($annotations);
         static::assertCount(0, $annotations);
     }
 

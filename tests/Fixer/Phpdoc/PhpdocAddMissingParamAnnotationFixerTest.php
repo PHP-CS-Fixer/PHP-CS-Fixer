@@ -48,7 +48,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     public function testConfigureRejectsInvalidConfigurationValue($value, $expectedMessage)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
-        $this->expectExceptionMessageRegExp($expectedMessage);
+        $this->expectExceptionMessageMatches($expectedMessage);
 
         $this->fixer->configure([
             'only_untyped' => $value,

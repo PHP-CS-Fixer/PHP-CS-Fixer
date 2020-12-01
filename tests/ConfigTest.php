@@ -44,7 +44,7 @@ final class ConfigTest extends TestCase
             new ToolInfo()
         );
 
-        static::assertArraySubset(
+        static::assertSame(
             [
                 'cast_spaces' => true,
                 'braces' => true,
@@ -65,7 +65,7 @@ final class ConfigTest extends TestCase
             new ToolInfo()
         );
 
-        static::assertArraySubset(
+        static::assertSame(
             [
                 'array_syntax' => [
                     'syntax' => 'short',
@@ -190,7 +190,7 @@ final class ConfigTest extends TestCase
     public function testRegisterCustomFixersWithInvalidArgument()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Argument must be an array or a Traversable, got "\w+"\.$/');
+        $this->expectExceptionMessageMatches('/^Argument must be an array or a Traversable, got "\w+"\.$/');
 
         $config = new Config();
         $config->registerCustomFixers('foo');
@@ -257,7 +257,7 @@ final class ConfigTest extends TestCase
         $config = new Config();
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Argument must be an array or a Traversable, got "integer"\.$/');
+        $this->expectExceptionMessageMatches('/^Argument must be an array or a Traversable, got "integer"\.$/');
 
         $config->setFinder(123);
     }

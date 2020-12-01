@@ -255,7 +255,7 @@ EOF;
     public function testWrongConfig()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');
+        $this->expectExceptionMessageMatches('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');
 
         $this->fixer->configure(['groups' => ['__TEST__']]);
     }

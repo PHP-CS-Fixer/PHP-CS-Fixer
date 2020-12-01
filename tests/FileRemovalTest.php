@@ -67,7 +67,7 @@ final class FileRemovalTest extends TestCase
      */
     public function testShutdownRemovesObservedFiles()
     {
-        static::assertFileNotExists(sys_get_temp_dir().'/cs_fixer_foo.php');
+        static::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
         static::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
     }
 
@@ -82,8 +82,8 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->clean();
 
-        static::assertFileNotExists($fs->url().'/foo.php');
-        static::assertFileNotExists($fs->url().'/baz.php');
+        static::assertFileDoesNotExist($fs->url().'/foo.php');
+        static::assertFileDoesNotExist($fs->url().'/baz.php');
         static::assertFileExists($fs->url().'/bar.php');
     }
 
@@ -98,8 +98,8 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->__destruct();
 
-        static::assertFileNotExists($fs->url().'/foo.php');
-        static::assertFileNotExists($fs->url().'/baz.php');
+        static::assertFileDoesNotExist($fs->url().'/foo.php');
+        static::assertFileDoesNotExist($fs->url().'/baz.php');
         static::assertFileExists($fs->url().'/bar.php');
     }
 
@@ -114,7 +114,7 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->delete($fs->url().'/foo.php');
 
-        static::assertFileNotExists($fs->url().'/foo.php');
+        static::assertFileDoesNotExist($fs->url().'/foo.php');
         static::assertFileExists($fs->url().'/baz.php');
     }
 
@@ -126,7 +126,7 @@ final class FileRemovalTest extends TestCase
 
         $fileRemoval->delete($fs->url().'/foo.php');
 
-        static::assertFileNotExists($fs->url().'/foo.php');
+        static::assertFileDoesNotExist($fs->url().'/foo.php');
     }
 
     private function getMockFileSystem()

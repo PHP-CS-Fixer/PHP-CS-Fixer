@@ -23,7 +23,7 @@ $config = (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP56Migration:risky' => true,
-        '@PHPUnit60Migration:risky' => true,
+        '@PHPUnit75Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'header_comment' => ['header' => $header],

@@ -250,7 +250,7 @@ get_called_class#1
     public function testInvalidConfigurationKeys(array $config)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
+        $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
 
         $this->fixer->configure($config);
     }
@@ -267,7 +267,7 @@ get_called_class#1
     public function testInvalidConfigurationValue()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
+        $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');
 
         $this->fixer->configure(['pi123']);
     }

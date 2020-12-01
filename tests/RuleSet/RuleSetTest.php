@@ -140,7 +140,7 @@ final class RuleSetTest extends TestCase
     {
         $setNames = RuleSets::getSetDefinitionNames();
 
-        static::assertInternalType('array', $setNames);
+        static::assertIsArray($setNames);
         static::assertNotEmpty($setNames);
     }
 
@@ -320,7 +320,7 @@ final class RuleSetTest extends TestCase
     public function testInvalidConfigNestedSets()
     {
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessageRegExp('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
+        $this->expectExceptionMessageMatches('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
 
         new RuleSet(
             ['@PSR1' => ['@PSR2' => 'no']]
@@ -332,7 +332,7 @@ final class RuleSetTest extends TestCase
         $ruleSet = new RuleSet();
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Rule "_not_exists" is not in the set\.$#');
+        $this->expectExceptionMessageMatches('#^Rule "_not_exists" is not in the set\.$#');
 
         $ruleSet->getRuleConfiguration('_not_exists');
     }

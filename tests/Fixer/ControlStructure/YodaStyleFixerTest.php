@@ -743,7 +743,7 @@ $a#4
     public function testInvalidConfig(array $config, $expectedMessage)
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp("#^\\[{$this->fixer->getName()}\\] {$expectedMessage}$#");
+        $this->expectExceptionMessageMatches("#^\\[{$this->fixer->getName()}\\] {$expectedMessage}$#");
 
         $this->fixer->configure($config);
     }

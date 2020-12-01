@@ -28,7 +28,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     public function testInvalidConfiguration()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. Defined options are: "syntax"\.$#');
+        $this->expectExceptionMessageMatches('#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. Defined options are: "syntax"\.$#');
 
         $this->fixer->configure(['a' => 1]);
     }

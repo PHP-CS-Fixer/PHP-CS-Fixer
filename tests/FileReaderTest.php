@@ -73,7 +73,7 @@ final class FileReaderTest extends TestCase
         $reader = new FileReader();
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageRegExp('#^Failed to read content from "'.preg_quote($nonExistentFilePath, '#').'.*$#');
+        $this->expectExceptionMessageMatches('#^Failed to read content from "'.preg_quote($nonExistentFilePath, '#').'.*$#');
 
         $reader->read($nonExistentFilePath);
     }

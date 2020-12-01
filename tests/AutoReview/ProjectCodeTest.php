@@ -254,8 +254,8 @@ final class ProjectCodeTest extends TestCase
         }
 
         foreach ($publicMethods as $method) {
-            static::assertRegExp(
-                '/^(test|provide|setUpBeforeClass$|tearDownAfterClass$)/',
+            static::assertMatchesRegularExpression(
+                '/^(test|expect|provide|setUpBeforeClass$|tearDownAfterClass$)/',
                 $method->getName(),
                 sprintf('Public method "%s::%s" is not properly named.', $reflectionClass->getName(), $method->getName())
             );
@@ -278,7 +278,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         foreach ($usedDataProviderMethodNames as $dataProviderMethodName) {
-            static::assertRegExp('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
+            static::assertMatchesRegularExpression('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
                 'Data provider in "%s" with name "%s" is not correctly named.',
                 $testClassName,
                 $dataProviderMethodName

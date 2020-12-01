@@ -129,7 +129,7 @@ Fixing examples:
         $commandTester = new CommandTester($command);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Rule "Foo/bar" not found\.$#');
+        $this->expectExceptionMessageMatches('#^Rule "Foo/bar" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
@@ -146,7 +146,7 @@ Fixing examples:
         $commandTester = new CommandTester($command);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Set "@NoSuchSet" not found\.$#');
+        $this->expectExceptionMessageMatches('#^Set "@NoSuchSet" not found\.$#');
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
@@ -163,7 +163,7 @@ Fixing examples:
         $commandTester = new CommandTester($command);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageRegExp('/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectExceptionMessageMatches('/^Not enough arguments( \(missing: "name"\))?\.$/');
         $commandTester->execute([
             'command' => $command->getName(),
         ]);
@@ -172,7 +172,7 @@ Fixing examples:
     public function testGetAlternativeSuggestion()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
+        $this->expectExceptionMessageMatches('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
     }
 
@@ -206,7 +206,7 @@ Fixing examples:
             ]
         );
 
-        static::assertContains(\get_class($mock), $commandTester->getDisplay(true));
+        static::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
     }
 
     /**

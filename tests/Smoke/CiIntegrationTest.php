@@ -159,7 +159,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );
 
-        static::assertRegExp($pattern, $result3->getError());
+        static::assertMatchesRegularExpression($pattern, $result3->getError());
 
         preg_match($pattern, $result3->getError(), $matches);
 
@@ -167,7 +167,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
         static::assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
         static::assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
 
-        static::assertRegExp(
+        static::assertMatchesRegularExpression(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
             $result3->getOutput()
         );
