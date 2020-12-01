@@ -28,7 +28,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase1()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace must be a string\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace must be a string\.$#');
 
         $this->fixer->configure(['replacements' => [1 => 'abc']]);
     }
@@ -36,7 +36,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase2()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace to from "a" must be a string\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace to from "a" must be a string\.$#');
 
         $this->fixer->configure(['replacements' => ['a' => null]]);
     }
@@ -44,7 +44,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase3()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag "see" cannot be replaced by invalid tag "link\*\/"\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag "see" cannot be replaced by invalid tag "link\*\/"\.$#');
 
         $this->fixer->configure(['replacements' => ['see' => 'link*/']]);
     }
@@ -52,7 +52,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase4()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#');
 
         $this->fixer->configure(['replacements' => [
             'link' => 'see',
@@ -64,7 +64,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase5()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#');
 
         $this->fixer->configure(['replacements' => [
             'b' => 'see',
@@ -76,7 +76,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     public function testInvalidConfigCase6()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b"\.$#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b"\.$#');
 
         $this->fixer->configure(['replacements' => [
             'see' => 'link',

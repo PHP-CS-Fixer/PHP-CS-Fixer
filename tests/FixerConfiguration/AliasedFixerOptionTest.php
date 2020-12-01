@@ -164,7 +164,7 @@ final class AliasedFixerOptionTest extends TestCase
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, [static function () {}]), 'baz');
         $allowedTypes = $option->getAllowedValues();
-        static::assertInternalType('array', $allowedTypes);
+        static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);
         static::assertArrayHasKey(0, $allowedTypes);
         static::assertInstanceOf(\Closure::class, $allowedTypes[0]);

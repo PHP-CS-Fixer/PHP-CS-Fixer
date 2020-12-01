@@ -33,7 +33,7 @@ abstract class AbstractSetTest extends TestCase
 
         $rules = $set->getRules();
 
-        static::assertInternalType('array', $rules);
+        static::assertIsArray($rules);
 
         foreach ($rules as $rule => $config) {
             self::assertSanityString($rule);
@@ -45,7 +45,7 @@ abstract class AbstractSetTest extends TestCase
         $set = self::getSet();
         $isRisky = $set->isRisky();
 
-        static::assertInternalType('bool', $isRisky);
+        static::assertIsBool($isRisky);
 
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -63,7 +63,7 @@ abstract class AbstractSetTest extends TestCase
 
     private static function assertSanityString($string)
     {
-        static::assertInternalType('string', $string);
+        static::assertIsString($string);
         static::assertSame(trim($string), $string);
         static::assertFalse('' === $string);
     }

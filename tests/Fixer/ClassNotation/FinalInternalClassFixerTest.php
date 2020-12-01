@@ -288,7 +288,7 @@ $a = new class (){};',
     public function testConfigureSameAnnotationInBothLists()
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the include and exclude list, got duplicates: "internal123".', '#'))
         );
 

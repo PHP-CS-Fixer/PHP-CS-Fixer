@@ -303,7 +303,7 @@ INPUT
     public function testFixWithEscapeSequencesInStringsLowerThanPhp70()
     {
         $this->expectException(InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[non_printable_character\] Invalid configuration for env: Escape sequences require PHP 7\.0\+\.$/');
+        $this->expectExceptionMessageMatches('/^\[non_printable_character\] Invalid configuration for env: Escape sequences require PHP 7\.0\+\.$/');
 
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => true,
