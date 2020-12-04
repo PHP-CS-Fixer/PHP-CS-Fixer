@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-11-20T08:44:30Z
+
+I think fixers should've only have one responsibility, in this case dealing with the useless `sprintf`. There can be other fixers dealing with the spacing and I think the priorities work for that.
+Having a generic way to remove a complete line sounds good to me, but that is it.
+After spending a lot of time checking all the fixers for PHP8 I feel some have to much logic which makes it hard to maintain and support.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-11-22T11:25:05Z
+
+Fair enough, then just please fix the non-whitespace related e.g. by adding a case:
+```php
+
+        yield 'very simple' => [
+            '<?php foo";',
+            '<?php sprintf("foo");',
+        ];
+```
+and this is RTM for me.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-11-22T13:25:02Z
+
+good catch, tests added :+1:
