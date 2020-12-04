@@ -1,0 +1,49 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-12-02T15:39:37Z
+
+Is this a breaking change? Do we need to make this fixer configurable, and default it to the original methods only?
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-12-02T21:35:54Z
+
+I would not say it is breaking, @GrahamCampbell
+
+However, strictly speaking: If someone would have used any of the four method names for _different_ purposes (I'd say highly unlikely but as you ask, please share your thoughts on probabilities as I did not scan Github/Gitlab/... public PHP projects for this change-set and gather statistical data) and _did_ use that fixer _with_ the `phpunit` setting _and_ requires the `do....` methods to be ordered _down_ (not on top), then this change _would_ appear breaking. Okay, many ifs. Highly unlikely from my perspective, but I'm glad you ask and it would be great if you share your thoughts on this one.
+
+Apart from that I've been thinking hard about easy to miss implications but none came to my attention yet. I have run this fixed version on a project and the results are as expected (as they came to me unexpected before the fix).
+
+I have however in the very beginning thought about offering extra sets of method names to order them by configuration (this is I think what you suggest a bit, maybe less) and then also thought about to support extending the special set `phpunit` (e.g. with a `phpunit+` config notation) but after looking into the concrete code did not follow such ideas any longer as this is hard-encoded in the fixer and also the ordering per method-name groups (there is only one, the bespoken `phpunit`) is hard-encoded and a singularity and therefore for a first patch I considered it over-engineered. This might be interesting for a follow-up thought - whenever that may be.
+
+Honestly I'm fine with the Symfony PHPUnit Bridge support here for starters, I know others are using it as well. Also PHP-CS-Fixer is historically close to Symfony eco-system so I thought it's worth the matter. This may penalize other, similar projects, but maybe they adopt to the same schema or can offer their cause and PR as well (hopefully this does not sound ignorant).
+
+In my case I would have expected actually that PHP-CS-Fixer would take care of that, but I don't want to complain so instead filed the issue and PR. Just my 2 cents, your mileage may vary.
+
+---------------------------------------------------------------------------
+
+by ktomk at 2020-12-02T21:48:32Z
+
+(just refresh against base-branch)
+
+---------------------------------------------------------------------------
+
+by sanmai at 2020-12-04T01:49:14Z
+
+Is it going to be better to make the list configurable instead?
+
+There are at least three different workarounds for the same problem, and, guess what, all use different names for the replaced methods.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-12-04T02:03:15Z
+
+I don't have a strong opinion on this (and am not volunteering to implement config for this). I think this PR is acceptable in it's current state, but could be improved by adding config, and not changing the default yet. It is up to the core team to decide what needs to happen next. :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-12-04T09:00:08Z
+
+This is good as is and I'll merge it soon. I see no BC break here but an enhancement within the current functionality scope of the fixer, so the new behavior can be expected by the current users.
+
+We have a lot of this type of cases as it is very hard to deliver 100% in one major version. Like we have a PSR2 set that is not 100% complete and same will happen with PSR12 or PHP8 support, but we are not going to add a lot of configuration and major releases to make it more complete. Besides BC "breaks" we have a lot more to consider, like; maintainability, velocity, user base activity/willing to raise PR's, end user ease of user/acceptance, etc..
