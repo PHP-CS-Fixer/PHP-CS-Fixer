@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_useless_sprintf,method_argument_space.
+--RULESET--
+{"no_useless_sprintf": true, "method_argument_space": true}
+--REQUIREMENTS--
+{"php": 70300}
+--EXPECT--
+<?php $a =   $a  ;
+
+--INPUT--
+<?php $a = sprintf(  $a  ,);
