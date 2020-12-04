@@ -382,9 +382,13 @@ class Example
         if (
             $nameToken->equalsAny([
                 [T_STRING, 'setUpBeforeClass'],
+                [T_STRING, 'doSetUpBeforeClass'],
                 [T_STRING, 'tearDownAfterClass'],
+                [T_STRING, 'doTearDownAfterClass'],
                 [T_STRING, 'setUp'],
+                [T_STRING, 'doSetUp'],
                 [T_STRING, 'tearDown'],
+                [T_STRING, 'doTearDown'],
             ], false)
         ) {
             return ['phpunit', strtolower($nameToken->getContent())];
@@ -426,9 +430,13 @@ class Example
     {
         static $phpunitPositions = [
             'setupbeforeclass' => 1,
-            'teardownafterclass' => 2,
-            'setup' => 3,
-            'teardown' => 4,
+            'dosetupbeforeclass' => 2,
+            'teardownafterclass' => 3,
+            'doteardownafterclass' => 4,
+            'setup' => 5,
+            'dosetup' => 6,
+            'teardown' => 7,
+            'doteardown' => 8,
         ];
 
         foreach ($elements as &$element) {
