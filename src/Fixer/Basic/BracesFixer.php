@@ -1043,11 +1043,7 @@ class Foo
     {
         $siblingIndex = $index;
         do {
-            if ($after) {
-                $siblingIndex = $tokens->getNextTokenOfKind($siblingIndex, [[T_COMMENT]]);
-            } else {
-                $siblingIndex = $tokens->getPrevTokenOfKind($siblingIndex, [[T_COMMENT]]);
-            }
+            $siblingIndex = $tokens->getTokenOfKindSibling($siblingIndex, $after ? 1 : -1, [[T_COMMENT]]);
 
             if (null === $siblingIndex) {
                 return null;
