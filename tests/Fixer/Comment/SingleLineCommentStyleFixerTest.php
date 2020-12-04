@@ -258,7 +258,10 @@ second line*/',
                     # test 4
                 ',
             ],
-
+            [
+                '<?php //',
+                '<?php #',
+            ],
             // Untouched cases
             [
                 '<?php
@@ -278,6 +281,11 @@ second line*/',
             ],
             [
                 '<?php /* start-end */',
+            ],
+            [
+                '<?php function foo(
+    #[MyAttr([1, 2])] Type $myParam,
+) {} // foo',
             ],
         ];
     }
