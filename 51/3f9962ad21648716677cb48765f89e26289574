@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by b1rdex at 2020-11-27T12:47:28Z
+
+Does this include fixing `single_line_comment_style`? It converts attributes to a `//` comment.
+Or should I open a separate issue?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-11-27T13:03:09Z
+
+good point, will be fixed in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5302
