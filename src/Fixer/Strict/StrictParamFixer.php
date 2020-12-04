@@ -138,6 +138,7 @@ final class StrictParamFixer extends AbstractFixer
         }
 
         $tokensToInsert = [];
+
         for ($i = $paramsQuantity; $i < $functionParamsQuantity; ++$i) {
             // function call do not have all params that are required to set useStrict flag, exit from method!
             if (!$functionParams[$i]) {
@@ -158,7 +159,13 @@ final class StrictParamFixer extends AbstractFixer
             }
         }
 
-        $beforeEndBraceIndex = $tokens->getTokenNotOfKindSibling($endBraceIndex, -1, [[T_WHITESPACE], ',']);
+        $beforeEndBraceIndex = $tokens->getPrevMeaningfulToken($endBraceIndex);
+
+        if ($tokens[$beforeEndBraceIndex]->equals(',')) {
+            array_shift($tokensToInsert);
+            $tokensToInsert[] = new Token(',');
+        }
+
         $tokens->insertAt($beforeEndBraceIndex + 1, $tokensToInsert);
     }
 }

@@ -52,5 +52,11 @@ parameters:
         -
             message: '/^Property .*::\$indicator .* does not accept null\.$/'
             path: tests/Indicator/PhpUnitTestCaseIndicatorTest.php
+        -
+            message: '/^Constant T_ATTRIBUTE not found\.$/'
+            path: src/Tokenizer/Transformer/AttributeTransformer.php
+        -
+            message: '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
+            path: src/Tokenizer/Tokens.php
 
     tipsOfTheDay: false

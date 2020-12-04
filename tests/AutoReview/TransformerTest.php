@@ -77,13 +77,15 @@ final class TransformerTest extends TestCase
         }
 
         return [
+            [$transformers['attribute'], $transformers['curly_brace']],
+            [$transformers['attribute'], $transformers['square_brace']],
             [$transformers['curly_brace'], $transformers['brace_class_instantiation']],
             [$transformers['curly_brace'], $transformers['use']],
+            [$transformers['name_qualified'], $transformers['namespace_operator']],
             [$transformers['return_ref'], $transformers['type_colon']],
             [$transformers['square_brace'], $transformers['brace_class_instantiation']],
             [$transformers['type_colon'], $transformers['nullable_type']],
             [$transformers['use'], $transformers['type_colon']],
-            [$transformers['name_qualified'], $transformers['namespace_operator']],
         ];
     }
 

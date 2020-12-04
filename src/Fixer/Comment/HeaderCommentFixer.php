@@ -37,15 +37,19 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurationDef
 
     /** @deprecated will be removed in 3.0 */
     const HEADER_LOCATION_AFTER_OPEN = 1;
+
     /** @deprecated will be removed in 3.0 */
     const HEADER_LOCATION_AFTER_DECLARE_STRICT = 2;
 
     /** @deprecated will be removed in 3.0 */
     const HEADER_LINE_SEPARATION_BOTH = 1;
+
     /** @deprecated will be removed in 3.0 */
     const HEADER_LINE_SEPARATION_TOP = 2;
+
     /** @deprecated will be removed in 3.0 */
     const HEADER_LINE_SEPARATION_BOTTOM = 3;
+
     /** @deprecated will be removed in 3.0 */
     const HEADER_LINE_SEPARATION_NONE = 4;
 
@@ -129,8 +133,8 @@ echo 1;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $location = $this->configuration['location'];
-
         $locationIndexes = [];
+
         foreach (['after_open', 'after_declare_strict'] as $possibleLocation) {
             $locationIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
 
@@ -229,7 +233,6 @@ echo 1;
     private function getHeaderAsComment()
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-
         $comment = (self::HEADER_COMMENT === $this->configuration['comment_type'] ? '/*' : '/**').$lineEnding;
         $lines = explode("\n", str_replace("\r", '', $this->configuration['header']));
 
@@ -288,9 +291,9 @@ echo 1;
         }
 
         $index = $tokens->getNextMeaningfulToken(0);
+
         if (null === $index) {
-            // file without meaningful tokens but an open tag, comment should always be placed directly after the open tag
-            return 1;
+            return 1; // file without meaningful tokens but an open tag, comment should always be placed directly after the open tag
         }
 
         if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
@@ -298,31 +301,37 @@ echo 1;
         }
 
         $next = $tokens->getNextMeaningfulToken($index);
+
         if (null === $next || !$tokens[$next]->equals('(')) {
             return 1;
         }
 
         $next = $tokens->getNextMeaningfulToken($next);
+
         if (null === $next || !$tokens[$next]->equals([T_STRING, 'strict_types'], false)) {
             return 1;
         }
 
         $next = $tokens->getNextMeaningfulToken($next);
+
         if (null === $next || !$tokens[$next]->equals('=')) {
             return 1;
         }
 
         $next = $tokens->getNextMeaningfulToken($next);
+
         if (null === $next || !$tokens[$next]->isGivenKind(T_LNUMBER)) {
             return 1;
         }
 
         $next = $tokens->getNextMeaningfulToken($next);
+
         if (null === $next || !$tokens[$next]->equals(')')) {
             return 1;
         }
 
         $next = $tokens->getNextMeaningfulToken($next);
+
         if (null === $next || !$tokens[$next]->equals(';')) { // don't insert after close tag
             return 1;
         }
@@ -346,12 +355,15 @@ echo 1;
         } else {
             $expectedLineCount = 1;
         }
+
         if ($headerIndex === \count($tokens) - 1) {
             $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount)]));
         } else {
             $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex, 1);
+
             if ($lineBreakCount < $expectedLineCount) {
                 $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
+
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
                     $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $missing.$tokens[$headerIndex + 1]->getContent()]);
                 } else {
@@ -371,11 +383,13 @@ echo 1;
         $prev = $tokens->getPrevNonWhitespace($headerIndex);
 
         $regex = '/\h$/';
+
         if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
             $tokens[$prev] = new Token([T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex, -1);
+
         if ($lineBreakCount < $expectedLineCount) {
             // because of the way the insert index was determined for header comment there cannot be an empty token here
             $tokens->insertAt($headerIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount)]));
@@ -428,10 +442,10 @@ echo 1;
 
             $content = Preg::replace('/\R?\h*$/', '', $content);
 
-            if ('' !== $content) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, $content]);
-            } else {
+            if ('' === $content) {
                 $tokens->clearAt($prevIndex);
+            } else {
+                $tokens[$prevIndex] = new Token([T_WHITESPACE, $content]);
             }
         }
 
@@ -441,10 +455,10 @@ echo 1;
         if (!$newlineRemoved && null !== $nextToken && $nextToken->isWhitespace()) {
             $content = Preg::replace('/^\R/', '', $nextToken->getContent());
 
-            if ('' !== $content) {
-                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
-            } else {
+            if ('' === $content) {
                 $tokens->clearAt($nextIndex);
+            } else {
+                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
             }
         }
 
@@ -457,7 +471,6 @@ echo 1;
     private function insertHeader(Tokens $tokens, $index)
     {
         $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? T_COMMENT : T_DOC_COMMENT, $this->getHeaderAsComment()]));
-
         $this->fixWhiteSpaceAroundHeader($tokens, $index);
     }
 }

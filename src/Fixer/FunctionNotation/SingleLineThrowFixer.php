@@ -87,6 +87,7 @@ final class SingleLineThrowFixer extends AbstractFixer
             while ($tokens[$openingBraceCandidateIndex]->equals('(')) {
                 /** @var int $closingBraceIndex */
                 $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingBraceCandidateIndex);
+
                 /** @var int $openingBraceCandidateIndex */
                 $openingBraceCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, [';', '(']);
             }
@@ -114,6 +115,7 @@ final class SingleLineThrowFixer extends AbstractFixer
                 } elseif (false !== Preg::match('/\R/', $content)) {
                     $content = Preg::replace('/\R/', ' ', $content);
                 }
+
                 $tokens[$index] = new Token([T_COMMENT, $content]);
 
                 continue;
@@ -128,6 +130,7 @@ final class SingleLineThrowFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getNonEmptySibling($index, -1);
+
             if ($tokens[$prevIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AFTER_TOKENS, self::REMOVE_WHITESPACE_AROUND_TOKENS))) {
                 $tokens->clearAt($index);
 
@@ -135,12 +138,14 @@ final class SingleLineThrowFixer extends AbstractFixer
             }
 
             $nextIndex = $tokens->getNonEmptySibling($index, 1);
-            if ($tokens[$nextIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS))) {
-                if (!$tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
-                    $tokens->clearAt($index);
 
-                    continue;
-                }
+            if (
+                $tokens[$nextIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS))
+                && !$tokens[$prevIndex]->isGivenKind(T_FUNCTION)
+            ) {
+                $tokens->clearAt($index);
+
+                continue;
             }
 
             $tokens[$index] = new Token([T_WHITESPACE, ' ']);
