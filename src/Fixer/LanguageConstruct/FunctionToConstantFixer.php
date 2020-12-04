@@ -179,7 +179,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     private function fixFunctionCallToConstant(Tokens $tokens, $index, $braceOpenIndex, $braceCloseIndex, array $replacements)
     {
         for ($i = $braceCloseIndex; $i >= $braceOpenIndex; --$i) {
-            if ($tokens[$i]->equalsAny([[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT]])) {
+            if ($tokens[$i]->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
                 continue;
             }
 
@@ -265,33 +265,31 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
             if (isset($this->functionsFixMap['get_class'])) {
                 return $this->getReplacementTokenClones('get_class', $braceOpenIndex, $braceCloseIndex);
             }
-        } else {
-            if (isset($this->functionsFixMap['get_class_this'])) {
+        } elseif (isset($this->functionsFixMap['get_class_this'])) {
+            $isThis = false;
+
+            for ($i = $braceOpenIndex + 1; $i < $braceCloseIndex; ++$i) {
+                if ($tokens[$i]->equalsAny([[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], ')'])) {
+                    continue;
+                }
+
+                if ($tokens[$i]->isGivenKind(T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
+                    $isThis = true;
+
+                    continue;
+                }
+
+                if (false === $isThis && $tokens[$i]->equals('(')) {
+                    continue;
+                }
+
                 $isThis = false;
 
-                for ($i = $braceOpenIndex + 1; $i < $braceCloseIndex; ++$i) {
-                    if ($tokens[$i]->equalsAny([[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], ')'])) {
-                        continue;
-                    }
+                break;
+            }
 
-                    if ($tokens[$i]->isGivenKind(T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
-                        $isThis = true;
-
-                        continue;
-                    }
-
-                    if (false === $isThis && $tokens[$i]->equals('(')) {
-                        continue;
-                    }
-
-                    $isThis = false;
-
-                    break;
-                }
-
-                if ($isThis) {
-                    return $this->getReplacementTokenClones('get_class_this', $braceOpenIndex, $braceCloseIndex);
-                }
+            if ($isThis) {
+                return $this->getReplacementTokenClones('get_class_this', $braceOpenIndex, $braceCloseIndex);
             }
         }
 

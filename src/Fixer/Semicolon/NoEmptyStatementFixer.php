@@ -106,12 +106,14 @@ final class NoEmptyStatementFixer extends AbstractFixer
     private function fixSemicolonAfterCurlyBraceClose(Tokens $tokens, $index, $curlyCloseIndex)
     {
         static $beforeCurlyOpeningKinds = null;
+
         if (null === $beforeCurlyOpeningKinds) {
             $beforeCurlyOpeningKinds = [T_ELSE, T_FINALLY, T_NAMESPACE, T_OPEN_TAG];
         }
 
         $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex);
         $beforeCurlyOpening = $tokens->getPrevMeaningfulToken($curlyOpeningIndex);
+
         if ($tokens[$beforeCurlyOpening]->isGivenKind($beforeCurlyOpeningKinds) || $tokens[$beforeCurlyOpening]->equalsAny([';', '{', '}'])) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
@@ -121,6 +123,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
         // check for namespaces and class, interface and trait definitions
         if ($tokens[$beforeCurlyOpening]->isGivenKind(T_STRING)) {
             $classyTest = $tokens->getPrevMeaningfulToken($beforeCurlyOpening);
+
             while ($tokens[$classyTest]->equals(',') || $tokens[$classyTest]->isGivenKind([T_STRING, T_NS_SEPARATOR, T_EXTENDS, T_IMPLEMENTS])) {
                 $classyTest = $tokens->getPrevMeaningfulToken($classyTest);
             }
@@ -154,6 +157,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
         // check for function definition
         if ($tokens[$beforeOpeningBrace]->isGivenKind(T_STRING)) {
             $beforeString = $tokens->getPrevMeaningfulToken($beforeOpeningBrace);
+
             if ($tokens[$beforeString]->isGivenKind(T_FUNCTION)) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index); // implicit return
             }

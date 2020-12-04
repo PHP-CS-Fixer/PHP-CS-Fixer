@@ -52,7 +52,7 @@ abstract class AbstractIncrementOperatorFixer extends AbstractFixer
                 return $this->findStart($tokens, $prevIndex);
             }
 
-            $index = $tokens->getTokenNotOfKindSibling($prevIndex, -1, [[T_NS_SEPARATOR], [T_STATIC], [T_STRING]]);
+            $index = $tokens->getTokenNotOfKindsSibling($prevIndex, -1, [T_NS_SEPARATOR, T_STATIC, T_STRING]);
             $index = $tokens->getNextMeaningfulToken($index);
         }
 

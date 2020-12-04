@@ -309,4 +309,21 @@ INPUT
             'use_escape_sequences_in_strings' => true,
         ]);
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80()
+    {
+        $this->doTest(
+            '<?php class Foo {
+    #[Required]
+    public $bar;
+}',
+            '<?php class Foo {
+    #[Requi'.pack('H*', 'e2808b').'red]
+    public $bar;
+}'
+        );
+    }
 }

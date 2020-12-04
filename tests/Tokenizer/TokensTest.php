@@ -296,18 +296,25 @@ final class TokensTest extends TestCase
     {
         $emptyToken = new Token('');
 
-        return [
+        $tests = [
             ['Invalid sequence.', []],
-            ['Non-meaningful token at position: "0".', [
-                [T_WHITESPACE, '   '],
-            ]],
-            ['Non-meaningful token at position: "1".', [
-                '{', [T_COMMENT, '// Foo'], '}',
-            ]],
-            ['Non-meaningful token at position: "2".', [
-                '{', '!', $emptyToken, '}',
-            ]],
+            [
+                'Non-meaningful token at position: "0".',
+                [[T_WHITESPACE, '   ']],
+            ],
+            [
+                'Non-meaningful token at position: "1".',
+                ['{', [T_COMMENT, '// Foo'], '}'],
+            ],
+            [
+                'Non-meaningful (empty) token at position: "2".',
+                ['{', '!', $emptyToken, '}'],
+            ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
     }
 
     public function testClearRange()
@@ -746,6 +753,35 @@ PHP;
         return [
             [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
             [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1],
+        ];
+    }
+
+    /**
+     * @param int    $expectedIndex
+     * @param string $source
+     * @param int    $type
+     * @param int    $searchIndex
+     *
+     * @requires PHP 8.0
+     * @dataProvider provideFindBlockEnd80Cases
+     */
+    public function testFindBlockEnd80($expectedIndex, $source, $type, $searchIndex)
+    {
+        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
+    }
+
+    public function provideFindBlockEnd80Cases()
+    {
+        return [
+            [
+                9,
+                '<?php class Foo {
+                    #[Required]
+                    public $bar;
+                }',
+                Tokens::BLOCK_TYPE_ATTRIBUTE,
+                7,
+            ],
         ];
     }
 
@@ -1391,6 +1427,42 @@ $bar;',
             ]
         );
         static::assertFalse($tokens->isChanged());
+    }
+
+    /**
+     * @param null|int $expectIndex
+     * @param int      $index
+     * @param int      $direction
+     * @param string   $source
+     *
+     * @dataProvider provideGetMeaningfulTokenSiblingCases
+     */
+    public function testGetMeaningfulTokenSibling($expectIndex, $index, $direction, $source)
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode($source);
+
+        static::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
+    }
+
+    public function provideGetMeaningfulTokenSiblingCases()
+    {
+        yield [null, 0, 1, '<?php '];
+
+        yield [null, 1, 1, '<?php /**/ /**/ /**/ /**/#'];
+
+        for ($i = 0; $i < 3; ++$i) {
+            yield '>'.$i => [3, $i, 1, '<?php /**/ foo();'];
+        }
+
+        yield '>>' => [4, 3, 1, '<?php /**/ foo();'];
+        yield '@ end' => [null, 6, 1, '<?php /**/ foo();'];
+        yield 'over end' => [null, 888, 1, '<?php /**/ foo();'];
+
+        yield [0, 3, -1, '<?php /**/ foo();'];
+        yield [4, 5, -1, '<?php /**/ foo();'];
+        yield [5, 6, -1, '<?php /**/ foo();'];
+        yield [null, 0, -1, '<?php /**/ foo();'];
     }
 
     /**

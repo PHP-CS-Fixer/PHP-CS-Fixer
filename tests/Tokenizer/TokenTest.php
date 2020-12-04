@@ -123,12 +123,20 @@ final class TokenTest extends TestCase
 
     public function provideIsCommentCases()
     {
-        return [
+        $tests = [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
             [new Token([T_COMMENT, '/* comment */', 1]), true],
             [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\defined('T_ATTRIBUTE')) {
+            yield [new Token([T_ATTRIBUTE, '#[', 1]), false];
+        }
     }
 
     public function testIsGivenKind()

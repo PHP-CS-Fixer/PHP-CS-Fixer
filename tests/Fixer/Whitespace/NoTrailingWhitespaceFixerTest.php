@@ -36,7 +36,7 @@ final class NoTrailingWhitespaceFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        return [
+        $tests = [
             [
                 '<?php
 $a = 1;',
@@ -135,5 +135,22 @@ EOT;
                 "<?php      \n   \n    ",
             ],
         ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield [
+                '<?php class Foo {
+    #[Required]
+    public $bar;
+}',
+                '<?php class Foo {
+    #[Required]     '.'
+    public $bar;
+}',
+            ];
+        }
     }
 }
