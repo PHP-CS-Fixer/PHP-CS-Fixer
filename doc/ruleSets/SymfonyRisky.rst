@@ -37,6 +37,8 @@ Rules
 - `no_unneeded_final_method <./../rules/class_notation/no_unneeded_final_method.rst>`_
 - `no_useless_sprintf <./../rules/function_notation/no_useless_sprintf.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
+  config:
+  ``['use_escape_sequences_in_strings' => true]``
 - `php_unit_construct <./../rules/php_unit/php_unit_construct.rst>`_
 - `php_unit_mock_short_will_return <./../rules/php_unit/php_unit_mock_short_will_return.rst>`_
 - `php_unit_set_up_tear_down_visibility <./../rules/php_unit/php_unit_set_up_tear_down_visibility.rst>`_

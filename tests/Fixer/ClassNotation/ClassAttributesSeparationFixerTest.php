@@ -137,6 +137,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
     public function provideFixClassesCases()
     {
         $cases = [];
+
         $cases[] = ['<?php
 class SomeClass1
 {
@@ -148,6 +149,7 @@ class SomeClass1
     }
 }
 '];
+
         $cases[] = [
             '<?php
 class SomeClass2
@@ -171,6 +173,7 @@ class SomeClass2
 }
             ',
         ];
+
         $cases[] = [
             '<?php
 class SomeClass3
@@ -184,6 +187,7 @@ class SomeClass3
     }
 }
 ', ];
+
         $cases[] = [
             '<?php
 class SomeClass1
@@ -260,6 +264,7 @@ class SomeClass1
     }
 }
 ', ];
+
         $cases[] = ['<?php
 class SomeClass
 {
@@ -270,6 +275,7 @@ class SomeClass
     }
 }
 '];
+
         $cases[] = ['<?php
 class SomeClass
 {
@@ -281,6 +287,7 @@ class SomeClass
     }
 }
 '];
+
         $cases[] = [
             '<?php
 class SomeClass
@@ -306,6 +313,7 @@ class SomeClass
 }
 ',
         ];
+
         $cases[] = [
             '<?php
 class SomeClass
@@ -327,6 +335,7 @@ class SomeClass
 }
 ',
         ];
+
         $cases[] = [
             '<?php
 class SomeClass
@@ -348,6 +357,7 @@ class SomeClass
 }
 ',
         ];
+
         $cases[] = [
             '<?php
 abstract class MethodTest2
@@ -669,11 +679,11 @@ function some2() {
 
         $cases[] = [
             '<?php interface A {
-public function B(); // allowed comment
+public function B1(); // allowed comment
 
                 public function C(); // allowed comment
             }',
-            '<?php interface A {public function B(); // allowed comment
+            '<?php interface A {public function B1(); // allowed comment
                 public function C(); // allowed comment
             }',
         ];
@@ -687,6 +697,29 @@ public function B(); // allowed comment
                 var $a;
                 var $b;
             }',
+        ];
+
+        $cases[] = [
+            '<?php
+                class A
+                {
+                    /**  1 */
+                    function A2() {}
+
+                    /**  2 */
+                    function B2() {}
+                }
+            ',
+            '<?php
+                class A
+                {
+
+                    /**  1 */
+                    function A2() {}
+                    /**  2 */
+                    function B2() {}
+                }
+            ',
         ];
 
         return $cases;
@@ -1010,16 +1043,16 @@ class ezcReflectionMethod extends ReflectionMethod {
                 '<?php
                     class A
                     {
-                        function A() {}
+                        function D() {}
 
-                        function B() {}
+                        function B4() {}
                     }
                 ',
                 '<?php
                     class A
                     {
-                        function A() {}
-                        function B() {}
+                        function D() {}
+                        function B4() {}
                     }
                 ',
                 ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE]],
@@ -1070,7 +1103,7 @@ class ezcReflectionMethod extends ReflectionMethod {
 
                         public $b = 1;
 
-                        function A() {}
+                        function E() {}
                      }
                 ',
                 '<?php
@@ -1081,7 +1114,7 @@ class ezcReflectionMethod extends ReflectionMethod {
 
 
 
-                        function A() {}
+                        function E() {}
                      }
                 ',
                 ['elements' => ['property']],
@@ -1090,16 +1123,16 @@ class ezcReflectionMethod extends ReflectionMethod {
                 '<?php
                     class A
                     {
-                        function A() {}
+                        function F() {}
 
-                        function B() {}
+                        function B5() {}
                     }
                 ',
                 '<?php
                     class A
                     {
-                        function A() {}
-                        function B() {}
+                        function F() {}
+                        function B5() {}
                     }
                 ',
                 ['elements' => ['method']],
@@ -1146,23 +1179,23 @@ class ezcReflectionMethod extends ReflectionMethod {
         $to = $from = '<?php ';
 
         for ($i = 0; $i < 15; ++$i) {
-            $from .= sprintf('class A%d{public function AA%d(){return new class {public function BB%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
-            $to .= sprintf("class A%d{\npublic function AA%d(){return new class {\npublic function BB%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
+            $from .= sprintf('class A%d{public function GA%d(){return new class {public function B6B%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
+            $to .= sprintf("class A%d{\npublic function GA%d(){return new class {\npublic function B6B%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
         }
 
         return [
             [$to, $from],
             [
                 '<?php $a = new class {
-                public function A(){}
+                public function H(){}
 
-                public function B(){}
+                public function B7(){}
 
                 private function C(){}
                 };',
                 '<?php $a = new class {
-                public function A(){}
-                public function B(){}
+                public function H(){}
+                public function B7(){}
                 private function C(){}
                 };',
             ],
@@ -1222,7 +1255,7 @@ private $d = 123;
             [
                 '<?php
                 class Foo {
-    public function A(){}
+    public function H1(){}
 
     /**  */
     public const BAR = 123;
@@ -1235,7 +1268,7 @@ private $d = 123;
 
 
 
-    public function A(){}
+    public function H1(){}
 
 
     /**  */
@@ -1294,6 +1327,117 @@ private $d = 123;
             class Foo {
                 private array $foo;
                 private array $bar;
+            }',
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases()
+    {
+        yield 'attributes' => [
+            '<?php
+class User1
+{
+    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+    private $id;
+
+    #[ORM\Column("string", ORM\Column::UNIQUE)]
+    #[Assert\String()]
+    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+    private $email;
+
+    #[Assert\String()]
+    private $name;
+}',
+            '<?php
+class User1
+{
+
+    #[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+
+
+    private $id;
+    #[ORM\Column("string", ORM\Column::UNIQUE)]
+    #[Assert\String()]
+    #[Assert\Email(["message" => "The email {{ value }} is not a valid email."])]
+    private $email;
+
+
+    #[Assert\String()]
+
+
+    private $name;
+
+
+
+}',
+        ];
+
+        yield 'attributes minimal' => [
+            '<?php
+class User2{
+#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue]
+ private $id;
+}',
+            '<?php
+class User2{#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue] private $id;}',
+        ];
+
+        yield 'attributes not blocks' => [
+            '<?php
+class User3
+{
+    private $id;
+
+    #[ORM\Column("string")]
+
+    #[Assert\Email(["message" => "Foo"])]
+ private $email;
+}',
+
+            '<?php
+class User3
+{
+    private $id;
+    #[ORM\Column("string")]
+
+    #[Assert\Email(["message" => "Foo"])] private $email;
+}',
+        ];
+
+        yield [
+            '<?php
+            class Foo {
+                private array $foo;
+
+                private array $bar;
+
+                public function __construct(
+                    public float $x = 0.0,
+                    protected float $y = 0.0,
+                    private float $z = 0.0,
+                ) {}
+            }',
+            '<?php
+            class Foo {
+                private array $foo;
+                private array $bar;
+                public function __construct(
+                    public float $x = 0.0,
+                    protected float $y = 0.0,
+                    private float $z = 0.0,
+                ) {}
             }',
         ];
     }

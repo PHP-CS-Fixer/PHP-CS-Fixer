@@ -3136,5 +3136,16 @@ class Point {
 }
 ",
         ];
+
+        yield [
+            '<?php class Foo {
+    #[Required] // foo
+    public $bar;
+}',
+            '<?php class Foo {
+    #[Required]// foo
+    public $bar;
+}',
+        ];
     }
 }

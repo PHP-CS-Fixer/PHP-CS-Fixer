@@ -76,7 +76,7 @@ final class CleanNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
     {
         $spaceIndexes = [];
 
-        while ($tokens[++$index]->equalsAny([[T_NS_SEPARATOR], [T_STRING], [T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT]])) {
+        while ($tokens[++$index]->isGivenKind([T_NS_SEPARATOR, T_STRING, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
             if ($tokens[$index]->isGivenKind(T_WHITESPACE)) {
                 $spaceIndexes[] = $index;
             } elseif ($tokens[$index]->isComment()) {
