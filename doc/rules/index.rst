@@ -235,6 +235,8 @@ Function Notation
     When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
     In function arguments there must not be arguments with default values before non-default ones.
+- `no_useless_sprintf <./function_notation/no_useless_sprintf.rst>`_ *(risky)*
+    There must be no ``sprintf`` calls with only the first argument.
 - `nullable_type_declaration_for_default_null_value <./function_notation/nullable_type_declaration_for_default_null_value.rst>`_
     Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
 - `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*

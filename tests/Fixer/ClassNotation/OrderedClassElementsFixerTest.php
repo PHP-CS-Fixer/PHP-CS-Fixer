@@ -147,7 +147,11 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 
     protected function setUp() {}
 
+    protected function doSetUp() {}
+
     protected function tearDown() {}
+
+    protected function doTearDown() {}
 
     abstract public function foo1($a, $b = 1);
 
@@ -195,6 +199,10 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     abstract public function foo1($a, $b = 1);
 
     protected function tearDown() {}
+
+    protected function doSetUp() {}
+
+    protected function doTearDown() {}
 
     public function __clone() {}
 

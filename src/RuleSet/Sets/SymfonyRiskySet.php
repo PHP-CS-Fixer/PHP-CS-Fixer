@@ -60,6 +60,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'no_php4_constructor' => true,
             'no_trailing_whitespace_in_string' => true,
             'no_unneeded_final_method' => true,
+            'no_useless_sprintf' => true,
             'non_printable_character' => true,
             'php_unit_construct' => true,
             'php_unit_mock_short_will_return' => true,
