@@ -37,6 +37,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     private static $tokenMap = [
         'abstract' => T_ABSTRACT,
         'as' => T_AS,
+        'attribute' => CT::T_ATTRIBUTE_CLOSE,
         'break' => T_BREAK,
         'case' => T_CASE,
         'catch' => T_CATCH,

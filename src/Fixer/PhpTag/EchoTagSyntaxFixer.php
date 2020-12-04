@@ -20,7 +20,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use SplFileInfo;
 
 /**
  * @author Michele Locati <michele@locati.it>
@@ -133,7 +132,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
             $this->longToShort($tokens);
@@ -146,24 +145,30 @@ EOT
     {
         $skipWhenComplexCode = $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY];
         $count = $tokens->count();
+
         for ($index = 0; $index < $count; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_OPEN_TAG)) {
                 continue;
             }
+
             $nextMeaningful = $tokens->getNextMeaningfulToken($index);
+
             if (null === $nextMeaningful) {
                 return;
             }
+
             if (!$tokens[$nextMeaningful]->isGivenKind([T_ECHO, T_PRINT])) {
                 $index = $nextMeaningful;
 
                 continue;
             }
+
             if ($skipWhenComplexCode && $this->isComplexCode($tokens, $nextMeaningful + 1)) {
                 $index = $nextMeaningful;
 
                 continue;
             }
+
             $newTokens = $this->buildLongToShortTokens($tokens, $index, $nextMeaningful);
             $tokens->overrideRange($index, $nextMeaningful, $newTokens);
             $count = $tokens->count();
@@ -177,16 +182,22 @@ EOT
         } else {
             $echoToken = [T_ECHO, 'echo'];
         }
+
         $index = -1;
-        for (;;) {
+
+        while (true) {
             $index = $tokens->getNextTokenOfKind($index, [[T_OPEN_TAG_WITH_ECHO]]);
+
             if (null === $index) {
                 return;
             }
+
             $replace = [new Token([T_OPEN_TAG, '<?php ']), new Token($echoToken)];
+
             if (!$tokens[$index + 1]->isWhitespace()) {
                 $replace[] = new Token([T_WHITESPACE, ' ']);
             }
+
             $tokens->overrideRange($index, $index, $replace);
             ++$index;
         }
@@ -210,11 +221,14 @@ EOT
     private function isComplexCode(Tokens $tokens, $index)
     {
         $semicolonFound = false;
+
         for ($count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
+
             if ($token->isGivenKind(T_CLOSE_TAG)) {
                 return false;
             }
+
             if (';' === $token->getContent()) {
                 $semicolonFound = true;
             } elseif ($semicolonFound && !$token->isWhitespace()) {
@@ -243,11 +257,14 @@ EOT
             // No non-whitespace tokens between $openTagIndex and $echoTagIndex
             return $result;
         }
+
         // Find the last non-whitespace index before $echoTagIndex
         $end = $echoTagIndex - 1;
+
         while ($tokens[$end]->isWhitespace()) {
             --$end;
         }
+
         // Copy the non-whitespace tokens between $openTagIndex and $echoTagIndex
         for ($index = $start; $index <= $end; ++$index) {
             $result[] = clone $tokens[$index];

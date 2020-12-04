@@ -54,10 +54,12 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func("Bar\Baz::d", 1, 2);
                 call_user_func("\Bar\Baz::d", 1, 2);',
         ];
+
         yield 'call by name - array' => [
             '<?php Bar\Baz::d(...[1, 2]);',
             '<?php call_user_func_array("Bar\Baz::d", [1, 2]);',
         ];
+
         yield 'call by array-as-name, not supported' => [
             '<?php
                 call_user_func(array("Bar\baz", "myCallbackMethod"), 1, 2);
@@ -68,6 +70,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func(array("Foo", "parent::method"), 1, 2); // no way to convert `parent::`
             ',
         ];
+
         yield 'call by variable' => [
             '<?php
                 $c(1, 2);
@@ -78,6 +81,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func($a["b"]["c"], 1, 2);
             ',
         ];
+
         yield 'call with comments' => [
             '<?php
                 dont_touch_me(/* a */1, 2/** b */);
@@ -108,10 +112,12 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func("Bar\Baz::d", 1, 2);
                 call_user_func("\Bar\Baz::d", 1, 2);',
         ];
+
         yield 'single var' => [
             '<?php $foo() ?>',
             '<?php \call_user_func($foo) ?>',
         ];
+
         yield 'unsafe repeated variable' => [
             '<?php call_user_func($foo, $foo = "bar");',
         ];
@@ -156,6 +162,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func($x["y"]->{"c"}, 1, 2);
             ',
         ];
+
         yield 'call by anon-function' => [
             '<?php
                 (function ($a, $b) { var_dump($a, $b); })(1, 2);
@@ -166,6 +173,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             ',
         ];
+
         yield 'complex cases' => [
             '<?php
                 call_user_func(\'a\'.$a.$b, 1, 2);
@@ -184,10 +192,12 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 call_user_func($a[1]::$b[2][3], [&$c], array(&$d));
             ',
         ];
+
         yield [
             '<?php ($a(1, 2))([&$x], array(&$z));',
             '<?php call_user_func($a(1, 2), [&$x], array(&$z));',
         ];
+
         yield 'redeclare/override' => [
             '<?php
                 if (!function_exists("call_user_func")) {

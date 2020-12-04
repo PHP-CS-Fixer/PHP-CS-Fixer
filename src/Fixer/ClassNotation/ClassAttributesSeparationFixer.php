@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use SplFileInfo;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -145,7 +144,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = $classStart = $classEnd = false;
@@ -311,8 +310,10 @@ class Sample
 
         // find out where the element definition starts
         $firstElementAttributeIndex = $elementIndex;
+
         for ($i = $elementIndex; $i > $classStartIndex; --$i) {
             $nonWhiteAbove = $tokens->getNonWhitespaceSibling($i, -1);
+
             if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($methodAttr)) {
                 $firstElementAttributeIndex = $nonWhiteAbove;
             } else {
@@ -356,19 +357,33 @@ class Sample
             return;
         }
 
-        // deal with element without a PHPDoc above it
-        if (false === $tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
-            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2);
+        // deal with element with a PHPDoc above it
+        if ($tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
+            // there should be one linebreak between the element and the PHPDoc above it
+            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
+
+            // there should be one blank line between the PHPDoc and whatever is above (with the exception when it is directly after a class opening)
+            $nonWhiteAbovePHPDoc = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
+            $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $nonWhiteAbovePHPDoc === $classStartIndex ? 1 : 2);
 
             return;
         }
 
-        // there should be one linebreak between the element and the PHPDoc above it
-        $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
+        // deal with element with an attribute above it
+        if ($tokens[$nonWhiteAbove]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            // there should be one linebreak between the element and the attribute above it
+            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
 
-        // there should be one blank line between the PHPDoc and whatever is above (with the exception when it is directly after a class opening)
-        $nonWhiteAbovePHPDoc = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
-        $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $nonWhiteAbovePHPDoc === $classStartIndex ? 1 : 2);
+            // make sure there is blank line above the comment (with the exception when it is directly after a class opening)
+            $nonWhiteAbove = $this->findAttributeBlockStart($tokens, $nonWhiteAbove);
+            $nonWhiteAboveComment = $tokens->getNonWhitespaceSibling($nonWhiteAbove, -1);
+
+            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $classStartIndex ? 1 : 2);
+
+            return;
+        }
+
+        $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2);
     }
 
     /**
@@ -382,6 +397,7 @@ class Sample
 
         ++$startIndex;
         $numbOfWhiteTokens = $endIndex - $startIndex;
+
         if (0 === $numbOfWhiteTokens) {
             $tokens->insertAt($startIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
 
@@ -389,6 +405,7 @@ class Sample
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $startIndex, $endIndex);
+
         if ($reqLineCount === $lineBreakCount) {
             return;
         }
@@ -414,8 +431,10 @@ class Sample
 
         // $numbOfWhiteTokens = > 1
         $toReplaceCount = $lineBreakCount - $reqLineCount;
+
         for ($i = $startIndex; $i < $endIndex && $toReplaceCount > 0; ++$i) {
             $tokenLineCount = substr_count($tokens[$i]->getContent(), "\n");
+
             if ($tokenLineCount > 0) {
                 $tokens[$i] = new Token([
                     T_WHITESPACE,
@@ -435,6 +454,7 @@ class Sample
     private function getLineBreakCount(Tokens $tokens, $whiteSpaceStartIndex, $whiteSpaceEndIndex)
     {
         $lineCount = 0;
+
         for ($i = $whiteSpaceStartIndex; $i < $whiteSpaceEndIndex; ++$i) {
             $lineCount += substr_count($tokens[$i]->getContent(), "\n");
         }
@@ -450,9 +470,34 @@ class Sample
     private function findCommentBlockStart(Tokens $tokens, $commentIndex)
     {
         $start = $commentIndex;
+
         for ($i = $commentIndex - 1; $i > 0; --$i) {
             if ($tokens[$i]->isComment()) {
                 $start = $i;
+
+                continue;
+            }
+
+            if (!$tokens[$i]->isWhitespace() || $this->getLineBreakCount($tokens, $i, $i + 1) > 1) {
+                break;
+            }
+        }
+
+        return $start;
+    }
+
+    /**
+     * @param int $index attribute close index
+     *
+     * @return int
+     */
+    private function findAttributeBlockStart(Tokens $tokens, $index)
+    {
+        $start = $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+        for ($i = $index - 1; $i > 0; --$i) {
+            if ($tokens[$i]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $start = $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $i);
 
                 continue;
             }

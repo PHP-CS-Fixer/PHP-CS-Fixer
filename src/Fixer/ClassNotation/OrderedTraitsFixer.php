@@ -82,6 +82,7 @@ final class OrderedTraitsFixer extends AbstractFixer
             }
 
             $use = [];
+
             for ($i = $index; $i <= $endIndex; ++$i) {
                 $use[] = $tokens[$i];
             }
@@ -107,9 +108,9 @@ final class OrderedTraitsFixer extends AbstractFixer
     private function sortMultipleTraitsInStatement(Tokens $use)
     {
         $traits = [];
-
         $indexOfName = null;
         $name = [];
+
         for ($index = 0, $max = \count($use); $index < $max; ++$index) {
             $token = $use[$index];
 
@@ -154,7 +155,7 @@ final class OrderedTraitsFixer extends AbstractFixer
                     break;
                 }
 
-                if ($token->equalsAny([[T_NS_SEPARATOR], [T_STRING]])) {
+                if ($token->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
                     $string .= $token->getContent();
                 }
             }

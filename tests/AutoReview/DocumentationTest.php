@@ -104,6 +104,9 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    /**
+     * @requires PHP 7.4
+     */
     public function testFixersDocumentationDirectoryHasNoExtraFiles()
     {
         $generator = new DocumentationGenerator();
@@ -114,6 +117,9 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    /**
+     * @requires PHP 7.4
+     */
     public function testRuleSetsDocumentationIsUpToDate()
     {
         $fixers = $this->getFixers();
@@ -139,6 +145,9 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    /**
+     * @requires PHP 7.4
+     */
     public function testRuleSetsDocumentationDirectoryHasNoExtraFiles()
     {
         $generator = new DocumentationGenerator();
