@@ -3,7 +3,8 @@ Rule ``php_unit_test_case_static_method_calls``
 ===============================================
 
 Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same
-type, either ``$this->``, ``self::`` or ``static::``.
+type, either ``$this->``, ``self::`` or ``static::`` or cut call type and import
+method with ``use function``.
 
 .. warning:: Using this rule is risky.
 
@@ -18,7 +19,7 @@ Configuration
 
 The call type to use for referring to PHPUnit methods.
 
-Allowed values: ``'self'``, ``'static'``, ``'this'``
+Allowed values: ``'none'``, ``'self'``, ``'static'``, ``'this'``
 
 Default value: ``'static'``
 

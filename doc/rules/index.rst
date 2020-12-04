@@ -424,7 +424,7 @@ PHPUnit
 - `php_unit_test_annotation <./php_unit/php_unit_test_annotation.rst>`_ *(risky)*
     Adds or removes @test annotations from tests, following configuration.
 - `php_unit_test_case_static_method_calls <./php_unit/php_unit_test_case_static_method_calls.rst>`_ *(risky)*
-    Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same type, either ``$this->``, ``self::`` or ``static::``.
+    Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same type, either ``$this->``, ``self::`` or ``static::`` or cut call type and import method with ``use function``.
 - `php_unit_test_class_requires_covers <./php_unit/php_unit_test_class_requires_covers.rst>`_
     Adds a default ``@coversNothing`` annotation to PHPUnit test classes that have no ``@covers*`` annotation.
 
