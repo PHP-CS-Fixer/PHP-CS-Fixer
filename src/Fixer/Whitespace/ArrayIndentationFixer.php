@@ -232,7 +232,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     private function isNewLineToken(Tokens $tokens, $index)
     {
-        if (!$tokens[$index]->equalsAny([[T_WHITESPACE], [T_INLINE_HTML]])) {
+        if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
             return false;
         }
 

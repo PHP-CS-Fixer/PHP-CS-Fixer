@@ -140,7 +140,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
         }
 
         if ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
-            $nextIndex = $tokens->getTokenNotOfKindSibling($index, 1, [[T_DOUBLE_COLON], [T_NS_SEPARATOR], [T_STRING]]);
+            $nextIndex = $tokens->getTokenNotOfKindsSibling($index, 1, [T_DOUBLE_COLON, T_NS_SEPARATOR, T_STRING]);
             $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             if (null !== $nextNextIndex && $nextNextIndex < $endIndex) {
                 return false;

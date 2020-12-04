@@ -165,17 +165,37 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
     use function Baz\base64_decode;
     foo($bar);',
             ],
+            [
+                '<?php
+    in_array(1, foo(), true /* 1 *//* 2 *//* 3 */);',
+                '<?php
+    in_array(1, foo() /* 1 *//* 2 *//* 3 */);',
+            ],
         ];
     }
 
     /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
      */
-    public function testFix73()
+    public function testFix73($expected, $input = null)
     {
-        $this->doTest(
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        yield [
             '<?php in_array($b, $c, true, );',
-            '<?php in_array($b, $c, );'
-        );
+            '<?php in_array($b, $c, );',
+        ];
+
+        yield [
+            '<?php in_array($b, $c/* 0 *//* 1 */, true,/* 2 *//* 3 */);',
+            '<?php in_array($b, $c/* 0 *//* 1 */,/* 2 *//* 3 */);',
+        ];
     }
 }
