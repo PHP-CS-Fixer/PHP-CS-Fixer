@@ -70,7 +70,7 @@ jobs:
           ./dev-tools/check_file_permissions.sh
           ./dev-tools/check_trailing_spaces.sh
           ./dev-tools/vendor/bin/phpstan analyse
-          ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file $(realpath .composer-require-checker.json)
+          ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
           composer normalize --dry-run --working-dir=./dev-tools ../composer.json
           ./dev-tools/check_shell_scripts.sh
 
