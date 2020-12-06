@@ -3,6 +3,52 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.16.8
+---------------------
+
+* bug #5095 Annotation - fix for Windows line endings (SpacePossum)
+* bug #5221 NoSuperfluousPhpdocTagsFixer - fix for single line PHPDoc (kubawerlos)
+* bug #5225 TernaryOperatorSpacesFixer - fix for alternative control structures (kubawerlos)
+* bug #5235 ArrayIndentationFixer - fix for nested arrays (kubawerlos)
+* bug #5248 NoBreakCommentFixer - fix throw detect (SpacePossum)
+* bug #5250 SwitchAnalyzer - fix for semicolon after case/default (kubawerlos)
+* bug #5253 IO - fix cache info message (SpacePossum)
+* bug #5273 Fix PHPDoc line span fixer when property has array typehint (ossinkine)
+* bug #5274 TernaryToNullCoalescingFixer - concat precedence fix (SpacePossum)
+* feature #5216 Add RuleSets to docs (SpacePossum)
+* minor #5226 Applied CS fixes from 2.17-dev (GrahamCampbell)
+* minor #5229 Fixed incorrect phpdoc (GrahamCampbell)
+* minor #5231 CS: unify styling with younger branches (keradus)
+* minor #5232 PHP8 - throw expression support (SpacePossum)
+* minor #5233 DX: simplify check_file_permissions.sh (kubawerlos)
+* minor #5236 Improve handling of unavailable code samples (julienfalque, keradus)
+* minor #5239 PHP8 - Allow trailing comma in parameter list support (SpacePossum)
+* minor #5254 PHP8 - mixed type support (SpacePossum)
+* minor #5255 Tests: do not skip documentation test (keradus)
+* minor #5256 Docs: phpdoc_to_return_type - add new example in docs (keradus)
+* minor #5261 Do not update Composer twice (sanmai)
+* minor #5263 PHP8 support (SpacePossum)
+* minor #5266 PhpUnitTestCaseStaticMethodCallsFixer - PHPUnit 9.x support (sanmai)
+* minor #5267 Improve InstallViaComposerTest (sanmai)
+* minor #5268 Add GitHub Workflows CI, including testing on PHP 8 and on macOS/Windows/Ubuntu (sanmai)
+* minor #5269 Prep work to migrate to PHPUnit 9.x (sanmai, keradus)
+* minor #5275 remove not supported verbose options (SpacePossum)
+* minor #5276 PHP8 - add NoUnreachableDefaultArgumentValueFixer to risky set (SpacePossum)
+* minor #5277 PHP8 - Constructor Property Promotion support (SpacePossum)
+* minor #5292 Disable blank issue template and expose community chat (keradus)
+* minor #5293 Add documentation to "yoda_style" sniff to convert Yoda style to non-Yoda style (Luc45)
+* minor #5295 Run static code analysis off GitHub Actions (sanmai)
+* minor #5298 Add yamllint workflow, validates .yaml files (sanmai)
+* minor #5302 SingleLineCommentStyleFixer - do not fix possible attributes (PHP8) (SpacePossum)
+* minor #5303 Drop CircleCI and AppVeyor (keradus)
+* minor #5304 DX: rename TravisTest, as we no longer test only Travis there (keradus)
+* minor #5305 Groom GitHub CI and move some checks from TravisCI to GitHub CI (keradus)
+* minor #5308 Only run yamllint when a YAML file is changed (julienfalque, keradus)
+* minor #5309 CICD: create yamllint config file (keradus)
+* minor #5311 OrderedClassElementsFixer - PHPUnit Bridge support (ktomk)
+* minor #5316 PHP8 - Attribute support (SpacePossum)
+* minor #5321 DX: little code grooming (keradus)
+
 Changelog for v2.16.5
 ---------------------
 
