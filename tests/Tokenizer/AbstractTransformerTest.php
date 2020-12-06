@@ -34,7 +34,7 @@ final class AbstractTransformerTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\TransformerInterface::getCustomTokens is deprecated and will be removed in 3.0.
+     * @expectedDeprecation PhpCsFixer\Tokenizer\AbstractTransformer::getCustomTokens is deprecated and will be removed in 3.0.
      */
     public function testCustomTokens()
     {
