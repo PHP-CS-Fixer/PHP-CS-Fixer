@@ -28,16 +28,16 @@ abstract class AbstractReporterTestCase extends TestCase
      */
     protected $reporter;
 
-    protected function setUp()
+    protected function doSetUp()
     {
-        parent::setUp();
+        parent::doSetUp();
 
         $this->reporter = $this->createReporter();
     }
 
-    protected function tearDown()
+    protected function doTearDown()
     {
-        parent::tearDown();
+        parent::doTearDown();
 
         $this->reporter = null;
     }

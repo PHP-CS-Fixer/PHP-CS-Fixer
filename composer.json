@@ -40,9 +40,10 @@
         "php-cs-fixer/accessible-object": "^1.0",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.2",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.2.1",
-        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.1",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.20 || ^8.5.13 || ^9.4.4 <9.5",
         "phpunitgoodpractices/polyfill": "^1.5",
         "phpunitgoodpractices/traits": "^1.9.1",
+        "sanmai/phpunit-legacy-adapter": "^6.4 || ^8.2.1",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/yaml": "^3.0 || ^4.0 || ^5.0"
     },
