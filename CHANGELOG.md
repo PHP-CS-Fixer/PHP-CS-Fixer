@@ -10,7 +10,6 @@ Changelog for v2.17.0
 * bug #4794 TernaryToElvisOperatorFixer - fix open tag with echo (SpacePossum)
 * bug #5084 Fix for variables within string interpolation in lambda_not_used_import (GrahamCampbell)
 * bug #5094 SwitchContinueToBreakFixer - do not support alternative syntax (SpacePossum)
-* bumped version
 * feature #2619 PSR-5 @inheritDoc support (julienfalque)
 * feature #3253 Add SimplifiedIfReturnFixer (Slamdunk, SpacePossum)
 * feature #4005 GroupImportFixer - introduction (greeflas)
