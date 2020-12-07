@@ -49,12 +49,10 @@ jobs:
           timeout_minutes: 5
           max_attempts: 5
           retry_wait_seconds: 30
-          command: |
-            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+          command: composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
 
       - name: Report versions
-        run: |
-          composer info -D
+        run: composer info -D
 
       - name: Install dev-tools
         uses: nick-invision/retry@v2
@@ -62,8 +60,7 @@ jobs:
           timeout_minutes: 5
           max_attempts: 5
           retry_wait_seconds: 30
-          command: |
-            ./dev-tools/install.sh
+          command: ./dev-tools/install.sh
 
       - name: Run checks
         run: |
@@ -92,8 +89,7 @@ jobs:
 
       - name: Validate changed files
         if: ${{ github.env.CHANGED_PHP_FILES }}
-        run: |
-          ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml
+        run: ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml
 
       - name: Check for unknown files (to be removed in 3.0)
         run: |

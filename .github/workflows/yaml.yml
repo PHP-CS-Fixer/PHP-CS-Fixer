@@ -18,5 +18,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run yamllint
-        run: |
-          find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint
+        run: find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint
