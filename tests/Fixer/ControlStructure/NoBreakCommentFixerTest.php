@@ -45,6 +45,7 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
         $this->fixer->configure([
             'comment_text' => 'no break',
         ]);
+
         $this->doTest($expected, $input);
     }
 
@@ -875,6 +876,19 @@ switch ($a) {
         throw new \Exception("");
 }
                 ',
+            ],
+            [
+                '<?php
+switch ($f) {
+    case 1:
+        if ($a) {
+            return "";
+        }
+
+        throw new $f();
+    case Z:
+        break;
+}',
             ],
         ];
     }
