@@ -94,9 +94,15 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
                 echo sprint("%d", 1);
                 echo sprint("%d%d%d", 1, 2, 3);
                 echo sprint();
-                echo sprint[2]("foo");
             ',
         ];
+
+        if (\PHP_VERSION_ID >= 70000) {
+            yield [
+                '<?php echo sprint[2]("foo");
+            ',
+            ];
+        }
 
         if (\PHP_VERSION_ID > 70300) {
             yield 'trailing comma' => [
