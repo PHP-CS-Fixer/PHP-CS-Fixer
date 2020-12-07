@@ -36,6 +36,12 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
+            job-description: 'with calculating code coverage'
+            calculate-code-coverage: 'yes'
+            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
             job-description: 'with migration rules'
             execute-migration-rules: 'yes' # should be checked on highest supported PHP version
 
@@ -61,11 +67,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Get code coverage driver
+        uses: actions/github-script@v3.1
+        id: code-coverage-driver
+        with:
+          script: 'return "${{ matrix.calculate-code-coverage }}" == "yes" ? "pcov" : "none"'
+          result-encoding: string
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: none
+          coverage: ${{ steps.code-coverage-driver.outputs.result }}
           tools: flex
         env:
           fail-fast: false # disabled as old PHP version cannot run flex
@@ -110,7 +123,13 @@ jobs:
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
           PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER: ${{ matrix.PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER }}
           SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.SYMFONY_DEPRECATIONS_HELPER }}
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+
+      - name: Upload coverage results to Coveralls
+        if: matrix.calculate-code-coverage == 'yes'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --verbose
 
       - name: Run PHP CS Fixer
         env:
