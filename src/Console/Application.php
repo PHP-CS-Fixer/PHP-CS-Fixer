@@ -34,8 +34,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.17.0-DEV';
-    const VERSION_CODENAME = '';
+    const VERSION = '2.17.0';
+    const VERSION_CODENAME = 'Desert Beast';
 
     /**
      * @var ToolInfo
