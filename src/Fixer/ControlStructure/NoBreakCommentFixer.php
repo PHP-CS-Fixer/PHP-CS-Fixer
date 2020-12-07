@@ -150,7 +150,7 @@ switch ($foo) {
             if ($tokens[$i]->isGivenKind([T_THROW])) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
-                if ($previousIndex === $caseColonIndex || $tokens[$previousIndex]->equalsAny(['{', ';', [T_OPEN_TAG]])) {
+                if ($previousIndex === $caseColonIndex || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [T_OPEN_TAG]])) {
                     $fallThrough = false;
                 }
 
