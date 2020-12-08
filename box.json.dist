@@ -13,7 +13,8 @@
     "finder": [
         {
             "name": [
-                "*.php"
+                "*.php",
+                "*.php8"
             ],
             "exclude": [
                 "Test",
