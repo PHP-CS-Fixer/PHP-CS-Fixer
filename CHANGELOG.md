@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.17.1
+---------------------
+
+* bug #5325 NoBreakCommentFixer - better throw handling (SpacePossum)
+* bug #5327 StaticLambdaFixer - fix for arrow function used in class with $this (kubawerlos, SpacePossum)
+* bug #5332 Fix file missing for php8 (jderusse)
+* bug #5333 Fix file missing for php8 (jderusse)
+* minor #5328 Fixed deprecation message version (GrahamCampbell)
+* minor #5330 DX: cleanup Github Actions configs (kubawerlos)
+
 Changelog for v2.17.0
 ---------------------
 
