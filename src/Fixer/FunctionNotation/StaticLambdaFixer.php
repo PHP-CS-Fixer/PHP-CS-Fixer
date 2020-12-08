@@ -64,8 +64,8 @@ final class StaticLambdaFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $analyzer = new TokensAnalyzer($tokens);
-
         $expectedFunctionKinds = [T_FUNCTION];
+
         if (\PHP_VERSION_ID >= 70400) {
             $expectedFunctionKinds[] = T_FN;
         }
@@ -76,6 +76,7 @@ final class StaticLambdaFixer extends AbstractFixer
             }
 
             $prev = $tokens->getPrevMeaningfulToken($index);
+
             if ($tokens[$prev]->isGivenKind(T_STATIC)) {
                 continue; // lambda is already 'static'
             }
@@ -83,14 +84,14 @@ final class StaticLambdaFixer extends AbstractFixer
             $argumentsStartIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $argumentsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStartIndex);
 
-            // figure out where the lambda starts ...
-            $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, ['{', [T_DOUBLE_ARROW]]);
+            // figure out where the lambda starts and ends
 
-            // ... and where it ends
-            if ($tokens[$lambdaOpenIndex]->isGivenKind(T_DOUBLE_ARROW)) {
-                $lambdaEndIndex = $tokens->getNextTokenOfKind($lambdaOpenIndex, [';']);
-            } else {
+            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, ['{']);
                 $lambdaEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $lambdaOpenIndex);
+            } else { // T_FN
+                $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, [[T_DOUBLE_ARROW]]);
+                $lambdaEndIndex = $this->findExpressionEnd($tokens, $lambdaOpenIndex);
             }
 
             if ($this->hasPossibleReferenceToThis($tokens, $lambdaOpenIndex, $lambdaEndIndex)) {
@@ -108,6 +109,37 @@ final class StaticLambdaFixer extends AbstractFixer
 
             $index -= 4; // fixed after a lambda, closes candidate is at least 4 tokens before that
         }
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return int
+     */
+    private function findExpressionEnd(Tokens $tokens, $index)
+    {
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+        while (null !== $nextIndex) {
+            /** @var Token $nextToken */
+            $nextToken = $tokens[$nextIndex];
+
+            if ($nextToken->equalsAny([',', ';', [T_CLOSE_TAG]])) {
+                break;
+            }
+
+            /** @var null|array{isStart: bool, type: int} $blockType */
+            $blockType = Tokens::detectBlockType($nextToken);
+
+            if (null !== $blockType && $blockType['isStart']) {
+                $nextIndex = $tokens->findBlockEnd($blockType['type'], $nextIndex);
+            }
+
+            $index = $nextIndex;
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+        }
+
+        return $index;
     }
 
     /**
@@ -138,6 +170,7 @@ final class StaticLambdaFixer extends AbstractFixer
 
             if ($tokens[$i]->equals('$')) {
                 $nextIndex = $tokens->getNextMeaningfulToken($i);
+
                 if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
                     return true; // "$$a" case
                 }
