@@ -1050,7 +1050,12 @@ class Tokens extends \SplFixedArray
         // clear memory
         $this->setSize(0);
 
-        $tokens = \defined('TOKEN_PARSE')
+        /**
+         * T_NULLSAFE_OBJECT_OPERATOR will not appear if TOKEN_PARSE is used on PHP 8.0.0.
+         *
+         * @see https://bugs.php.net/bug.php?id=80462
+         */
+        $tokens = \defined('TOKEN_PARSE') && \PHP_VERSION_ID !== 80000
             ? token_get_all($code, TOKEN_PARSE)
             : token_get_all($code);
 
