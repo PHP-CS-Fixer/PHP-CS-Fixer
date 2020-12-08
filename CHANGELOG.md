@@ -6,6 +6,15 @@ This file contains changelogs for stable releases only.
 Changelog for v2.16.8
 ---------------------
 
+* bug #5325 NoBreakCommentFixer - better throw handling (SpacePossum)
+* bug #5327 StaticLambdaFixer - fix for arrow function used in class with $this (kubawerlos, SpacePossum)
+* bug #5333 Fix file missing for php8 (jderusse)
+* minor #5328 Fixed deprecation message version (GrahamCampbell)
+* minor #5330 DX: cleanup Github Actions configs (kubawerlos)
+
+Changelog for v2.16.9
+---------------------
+
 * bug #5095 Annotation - fix for Windows line endings (SpacePossum)
 * bug #5221 NoSuperfluousPhpdocTagsFixer - fix for single line PHPDoc (kubawerlos)
 * bug #5225 TernaryOperatorSpacesFixer - fix for alternative control structures (kubawerlos)
