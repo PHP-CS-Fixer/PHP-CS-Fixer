@@ -43,6 +43,11 @@ jobs:
             php-version: '8.0'
             composer-flags: '--ignore-platform-req=php' # as this is a version not yet officially supported by PHP CS Fixer
 
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            composer-flags: '--ignore-platform-req=php' # as this is a version not yet officially supported by PHP CS Fixer
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
           - operating-system: 'windows-latest'
             php-version: '7.4'
             job-description: 'on Windows'
