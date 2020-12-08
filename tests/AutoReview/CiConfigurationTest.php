@@ -40,6 +40,11 @@ final class CiConfigurationTest extends TestCase
             $supportedVersions[] = '5.6';
         }
 
+        if ($supportedMinPhp < 8) {
+            $supportedMinPhp = 8;
+            $supportedVersions = array_merge($supportedVersions, ['7.0', '7.1', '7.2', '7.3', '7.4']);
+        }
+
         for ($version = $supportedMinPhp; $version <= $supportedMaxPhp; $version += 0.1) {
             $supportedVersions[] = sprintf('%.1f', $version);
         }
