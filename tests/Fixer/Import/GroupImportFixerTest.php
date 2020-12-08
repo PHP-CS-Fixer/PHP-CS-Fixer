@@ -219,6 +219,19 @@ use Foo\{Bar, Baz};
 use Foo\Bar;use Foo\Baz;\DontTouch::me();
 ',
             ],
+            [
+                '<?php
+use Foo\Module;
+use Foo\Module\{A, B};
+use Foo\OtherModule;
+',
+                '<?php
+use Foo\Module;
+use Foo\Module\A;
+use Foo\Module\B;
+use Foo\OtherModule;
+',
+            ],
         ];
 
         foreach ($tests as $index => $test) {
