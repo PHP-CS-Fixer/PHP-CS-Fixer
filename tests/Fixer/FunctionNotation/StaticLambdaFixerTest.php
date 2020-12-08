@@ -258,8 +258,12 @@ $b->abc();
                 '<?php $a  /**/  =   /**/ fn() => null;',
             ],
             [
-                '<?php $a  /**/  =   /**/static fn() => null;',
-                '<?php $a  /**/  =   /**/fn() => null;',
+                '<?php $a  /**/  =   /**/static fn() => null; echo $this->foo();',
+                '<?php $a  /**/  =   /**/fn() => null; echo $this->foo();',
+            ],
+            [
+                '<?php $a  /**/  =   /**/ static fn() => null ?> <?php echo $this->foo();',
+                '<?php $a  /**/  =   /**/ fn() => null ?> <?php echo $this->foo();',
             ],
             [
                 '<?php
@@ -276,6 +280,37 @@ $b->abc();
             [
                 '<?php static fn($a = ["foo" => "bar"]) => [];',
                 '<?php fn($a = ["foo" => "bar"]) => [];',
+            ],
+            [
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            static fn ($item) => $item->getName(),
+                            $this->getItems()
+                        );
+                    }
+                }',
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            fn ($item) => $item->getName(),
+                            $this->getItems()
+                        );
+                    }
+                }',
+            ],
+            [
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            fn ($item) => $item->getName(1, $this->foo()),
+                            $this->getItems()
+                        );
+                    }
+                }',
             ],
         ];
     }
