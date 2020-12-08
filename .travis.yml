@@ -24,8 +24,8 @@ jobs:
     include:
         -
             stage: Test
-            php: 7.4
-            name: 7.4 | Collect coverage
+            php: 8.0
+            name: 8.0 | Collect coverage
             before_install:
                 # for building a tag release we don't need to collect code coverage
                 - if [ $TRAVIS_TAG ]; then travis_terminate 0; fi
@@ -51,7 +51,7 @@ jobs:
 
         -
             stage: Deployment
-            php: 7.4
+            php: 8.0
             install: ./dev-tools/build.sh
             script:
                 - PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS=0 vendor/bin/phpunit tests/Smoke/
