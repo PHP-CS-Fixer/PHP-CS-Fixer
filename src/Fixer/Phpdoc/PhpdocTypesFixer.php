@@ -138,11 +138,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     {
         $lower = strtolower($type);
 
-        if (\in_array($lower, $this->typesToFix, true)) {
-            return $lower;
-        }
-
-        return $type;
+        return \in_array($lower, $this->typesToFix, true) ? $lower : $type;
     }
 
     /**

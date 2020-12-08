@@ -48,6 +48,8 @@ final class CT
     const T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED = 10029;
     const T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE = 10030;
     const T_ATTRIBUTE_CLOSE = 10031;
+    const T_NAMED_ARGUMENT_NAME = 10032;
+    const T_NAMED_ARGUMENT_COLON = 10033;
 
     private function __construct()
     {
