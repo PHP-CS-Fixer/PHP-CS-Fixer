@@ -502,7 +502,7 @@ Semicolon
 - `multiline_whitespace_before_semicolons <./semicolon/multiline_whitespace_before_semicolons.rst>`_
     Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.
 - `no_empty_statement <./semicolon/no_empty_statement.rst>`_
-    Remove useless semicolon statements.
+    Remove useless (semicolon) statements.
 - `no_singleline_whitespace_before_semicolons <./semicolon/no_singleline_whitespace_before_semicolons.rst>`_
     Single-line whitespace before closing semicolon are prohibited.
 - `semicolon_after_instruction <./semicolon/semicolon_after_instruction.rst>`_

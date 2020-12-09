@@ -37,7 +37,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function provideNoEmptyStatementsCases()
     {
-        return [
+        $tests = [
             [
                 '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
@@ -255,13 +255,13 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     while($a > 1){
                     }
                     do {
-                    } while($a>1);
+                    } while($a>1);  // 1
                 ',
                 '<?php
                     while($a > 1){
                     };
                     do {
-                    } while($a>1);
+                    } while($a>1); 1; // 1
                 ',
             ],
             [
@@ -373,7 +373,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             [
                 '<?php
                     try {
-                        throw new \Exception("a");
+                        throw new \Exception("Foo.");
                     } catch (\Exception $e){
                         //
                     } finally {
@@ -381,13 +381,53 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 ',
                 '<?php
                     try {
-                        throw new \Exception("a");
+                        throw new \Exception("Foo.");
                     } catch (\Exception $e){
                         //
                     } finally {
                     }  ;
                 ',
             ],
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        foreach (['break', 'continue'] as $ops) {
+            yield [
+                sprintf('<?php while(true) {%s ;}', $ops),
+                sprintf('<?php while(true) {%s 1;}', $ops),
+            ];
+        }
+
+        foreach (['1', '1.0', '"foo"', '$foo'] as $noop) {
+            yield [
+                '<?php echo "foo";  ',
+                sprintf('<?php echo "foo"; %s ;', $noop),
+            ];
+        }
+
+        yield [
+            '<?php /* 1 */   /* 2 */  /* 3 */ ',
+            '<?php /* 1 */ ;  /* 2 */ 1 /* 3 */ ;',
+        ];
+
+        yield [
+            '<?php
+                while(true) {while(true) {break 2;}}
+                while(true) {continue;}
+            ',
+        ];
+
+        yield [
+            '<?php if ($foo1) {} ',
+            '<?php if ($foo1) {} 1;',
+        ];
+
+        yield [
+            '<?php if ($foo2) {}',
+            '<?php if ($foo2) {1;}',
         ];
     }
 
@@ -497,6 +537,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         if (!ini_get('short_open_tag')) {
             static::markTestSkipped('No short tag tests possible.');
         }
+
         $this->doTest($expected, $input);
     }
 
