@@ -67,6 +67,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'insteadof' => T_INSTEADOF,
         'interface' => T_INTERFACE,
         'match' => null,
+        'named_argument' => CT::T_NAMED_ARGUMENT_COLON,
         'new' => T_NEW,
         'open_tag_with_echo' => T_OPEN_TAG_WITH_ECHO,
         'php_open' => T_OPEN_TAG,
