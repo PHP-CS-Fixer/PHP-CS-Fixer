@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-12-07T14:25:18Z
+
+>can you elaborate on this PR?
+
+I do this PR like the previous ones; fix as much as possible issues and implement PHP8 support as much as possible, than I look at the CI, if OK than I apply on it on the lowest branch, make a PR out of that, check CI, if green merge that PR and merge it upstream, than go back to this PR, rebase, check  CI, merge.
+That way I spent as much time as possible fixing as much as possible on as many branches as possible without the overhead of creating a PR out of each issue just to see nobody actually caring about these PR _before_ it is merged
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-07T16:06:15Z
+
+Thanks for details. I was looking into master failing on 5.6 and I spot fix here, but together with all other changes. actually i had to pick up few lines only to make master green again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-08T13:44:39Z
+
+@SpacePossum , I rebased to 2.17
