@@ -56,7 +56,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-namespace Psr\foo;
+namespace Psr\Foo;
 class Bar {}
 ',
             '<?php
@@ -64,6 +64,7 @@ namespace Psr\foo;
 class bar {}
 ',
             $file,
+            __DIR__,
         ];
 
         yield [
@@ -74,6 +75,7 @@ class Psr_Foo_Bar {}
 class Psr_fOo_bAr {}
 ',
             $file,
+            __DIR__,
         ];
 
         yield [
@@ -219,6 +221,16 @@ class PsrAutoloadingFixer {}
             null,
             $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
             __DIR__.'/../../../src/Fixer/Basic',
+        ];
+
+        yield [ // short named class without namespace
+            '<?php class PsrAutoloadingFixerTest {}',
+            '<?php class Foo {}',
+        ];
+
+        yield [ // long named class without namespace
+            '<?php class PsrAutoloadingFixerTest {}',
+            '<?php class PsrAutoloadingFixerTestFoo {}',
         ];
     }
 
