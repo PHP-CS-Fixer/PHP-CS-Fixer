@@ -349,7 +349,7 @@ final class DescribeCommand extends Command
 
             if (!$fixer instanceof DefinedFixerInterface) {
                 throw new \RuntimeException(sprintf(
-                    'Cannot describe rule %s, the fixer does not implement %s',
+                    'Cannot describe rule %s, the fixer does not implement "%s".',
                     $rule,
                     DefinedFixerInterface::class
                 ));
