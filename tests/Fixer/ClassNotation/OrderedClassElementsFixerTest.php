@@ -926,4 +926,56 @@ class TestClass
         yield ['z', '__sleep'];
         yield ['z', 'abc'];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php class Foo
+            {
+
+                #[PublicBarAttribute0]
+                public int $bar = 1;
+
+                #[PublicAttribute0]
+                #[PublicAttribute1]
+                #[PublicAttribute2]
+                public function fooPublic()
+                {
+                }
+                #[PrivateAttribute0]
+                private function fooPrivate()
+                {
+                }
+            }',
+            '<?php class Foo
+            {
+                #[PrivateAttribute0]
+                private function fooPrivate()
+                {
+                }
+
+                #[PublicBarAttribute0]
+                public int $bar = 1;
+
+                #[PublicAttribute0]
+                #[PublicAttribute1]
+                #[PublicAttribute2]
+                public function fooPublic()
+                {
+                }
+            }',
+        ];
+    }
 }
