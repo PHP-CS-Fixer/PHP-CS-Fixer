@@ -194,6 +194,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['no_useless_sprintf'], $fixers['method_argument_space']],
             [$fixers['no_useless_sprintf'], $fixers['native_function_casing']],
+            [$fixers['no_useless_sprintf'], $fixers['no_empty_statement']],
             [$fixers['no_useless_sprintf'], $fixers['no_extra_blank_lines']],
             [$fixers['no_useless_sprintf'], $fixers['no_spaces_inside_parenthesis']],
             [$fixers['nullable_type_declaration_for_default_null_value'], $fixers['no_unreachable_default_argument_value']],
