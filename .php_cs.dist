@@ -19,7 +19,8 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-$config = PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+$config
     ->setRiskyAllowed(true)
     ->setRules([
         '@PHP56Migration' => true,
