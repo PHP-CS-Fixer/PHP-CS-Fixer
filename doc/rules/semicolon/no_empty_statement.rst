@@ -2,7 +2,7 @@
 Rule ``no_empty_statement``
 ===========================
 
-Remove useless semicolon statements.
+Remove useless (semicolon) statements.
 
 Examples
 --------
@@ -17,6 +17,30 @@ Example #1
    @@ -1 +1 @@
    -<?php $a = 1;;
    +<?php $a = 1;
+
+Example #2
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1 +1 @@
+   -<?php echo 1;2;
+   +<?php echo 1;
+
+Example #3
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,3 +1,3 @@
+    <?php while(foo()){
+   -    continue 1;
+   +    continue ;
+    }
 
 Rule sets
 ---------
