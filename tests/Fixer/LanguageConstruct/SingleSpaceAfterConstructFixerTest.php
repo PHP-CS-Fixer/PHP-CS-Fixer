@@ -3147,5 +3147,10 @@ class Point {
     public $bar;
 }',
         ];
+
+        yield [
+            '<?php $foo(test: 1);',
+            '<?php $foo(test:    1);',
+        ];
     }
 }
