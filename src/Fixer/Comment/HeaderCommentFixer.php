@@ -16,7 +16,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -196,10 +195,7 @@ echo 1;
                     return $value;
                 })
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('comment_type', 'Comment syntax type.'),
-                'commentType'
-            ))
+            (new FixerOptionBuilder('comment_type', 'Comment syntax type.'))
                 ->setAllowedValues([self::HEADER_PHPDOC, self::HEADER_COMMENT])
                 ->setDefault(self::HEADER_COMMENT)
                 ->getOption(),

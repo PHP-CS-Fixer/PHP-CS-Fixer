@@ -55,10 +55,6 @@ Basic
     PHP code MUST use only UTF-8 without BOM (remove BOM).
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
     Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
-- `psr0 <./basic/psr0.rst>`_ *(deprecated, risky)*
-    Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
-- `psr4 <./basic/psr4.rst>`_ *(deprecated, risky)*
-    Class names should match the file name.
 - `psr_autoloading <./basic/psr_autoloading.rst>`_ *(risky)*
     Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
 
@@ -109,8 +105,6 @@ Class Notation
     Internal classes should be ``final``.
 - `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
     All ``public`` methods of ``abstract`` classes should be ``final``.
-- `final_static_access <./class_notation/final_static_access.rst>`_ *(deprecated)*
-    Converts ``static`` access to ``self`` access in ``final`` classes.
 - `no_blank_lines_after_class_opening <./class_notation/no_blank_lines_after_class_opening.rst>`_
     There should be no empty lines after class opening brace.
 - `no_null_property_initialization <./class_notation/no_null_property_initialization.rst>`_
@@ -437,8 +431,6 @@ PHPDoc
     PHPDoc annotation descriptions should not be a sentence.
 - `phpdoc_indent <./phpdoc/phpdoc_indent.rst>`_
     Docblocks should have the same indentation as the documented subject.
-- `phpdoc_inline_tag <./phpdoc/phpdoc_inline_tag.rst>`_ *(deprecated)*
-    Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 - `phpdoc_inline_tag_normalizer <./phpdoc/phpdoc_inline_tag_normalizer.rst>`_
     Fixes PHPDoc inline tags.
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_

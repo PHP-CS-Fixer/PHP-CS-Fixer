@@ -21,8 +21,6 @@ This option is required.
 
 Comment syntax type.
 
-.. note:: The previous name of this option was ``commentType`` but it is now deprecated and will be removed on next major version.
-
 Allowed values: ``'comment'``, ``'PHPDoc'``
 
 Default value: ``'comment'``

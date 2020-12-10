@@ -6,13 +6,14 @@ This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 CLI options
 -----------
 
-| 2.x             | 3.0             | Description                                     | Note                                   |
-| --------------- | --------------- | ----------------------------------------------- | -------------------------------------- |
-| --diff-format   | --diff-format   | Type of differ                                  | Allowed value `sbd` was removed,       |
-|                 |                 |                                                 | new default is `udiff`                 |
-| --show-progress | --show-progress | Type of progress indicator                      | Allowed values were modified:          |
-|                 |                 |                                                 | `run-in` and `estimating` was removed, |
-|                 |                 |                                                 | `estimating-max` was removed to `dots` |
+| 2.x              | 3.0             | Description                                     | Note                                   |
+| ---------------- | --------------- | ----------------------------------------------- | -------------------------------------- |
+| --diff-format    | --diff-format   | Type of differ                                  | Allowed value `sbd` was removed,       |
+|                  |                 |                                                 | new default is `udiff`                 |
+| --show-progress  | --show-progress | Type of progress indicator                      | Allowed values were modified:          |
+|                  |                 |                                                 | `run-in` and `estimating` was removed, |
+|                  |                 |                                                 | `estimating-max` was removed to `dots` |
+| --config --rules |                 |                                                 | No longer allowed to pass both         |
 
 Changes to rules
 ----------------
@@ -21,15 +22,20 @@ Changes to rules
 
 Old name | New name | Note
 -------- | -------- | ----
-`blank_line_before_return`                      | `blank_line_before_statement`                 | use configuration `['statements' => ['return']]`
-`hash_to_slash_comment`                         | `single_line_comment_style`                   | use configuration `['comment_types' => ['hash']]`
-`lowercase_constants`                           | `constant_case`                               | use configuration `['case' => 'lower']`
-`method_separation`                             | `class_attributes_separation`                 | use configuration `['elements' => ['method']]`
-`no_extra_consecutive_blank_lines`              | `no_extra_blank_lines`                        |
-`no_short_echo_tag`                             | `echo_tag_syntax`                             | use configuration `['format' => 'long']`
-`php_unit_ordered_covers`                       | `phpdoc_order_by_value`                       | use configuration `['annotations' => [ 'covers' ]]`
-`pre_increment`                                 | `increment_style`                             | use configuration `['style' => 'pre']`
-`silenced_deprecation_error`                    | `error_suppression`                           |
+`blank_line_before_return`                      | `blank_line_before_statement`                                                     | use configuration `['statements' => ['return']]`
+`hash_to_slash_comment`                         | `single_line_comment_style`                                                       | use configuration `['comment_types' => ['hash']]`
+`lowercase_constants`                           | `constant_case`                                                                   | use configuration `['case' => 'lower']`
+`method_separation`                             | `class_attributes_separation`                                                     | use configuration `['elements' => ['method']]`
+`no_extra_consecutive_blank_lines`              | `no_extra_blank_lines`                                                            |
+`no_multiline_whitespace_before_semicolons`     | `multiline_whitespace_before_semicolons`                                          |
+`no_short_echo_tag`                             | `echo_tag_syntax`                                                                 | use configuration `['format' => 'long']`
+`php_unit_ordered_covers`                       | `phpdoc_order_by_value`                                                           | use configuration `['annotations' => [ 'covers' ]]`
+`pre_increment`                                 | `increment_style`                                                                 | use configuration `['style' => 'pre']`
+`psr0`                                          | `psr_autoloading`                                                                 | use configuration `['dir' => x ]`
+`psr4`                                          | `psr_autoloading`                                                                 |
+`silenced_deprecation_error`                    | `error_suppression`                                                               |
+`final_static_access`                           | `self_static_accessor`                                                            |
+`phpdoc_inline_tag`                             | `general_phpdoc_tag_rename`, `phpdoc_inline_tag_normalizer` and `phpdoc_tag_type` |
 
 ### Removed rootless configuration
 
@@ -53,13 +59,25 @@ Rule                                 | Root option    | Note
 
 Rule | Option | Change
 ---- | ------ | ------
-`binary_operator_spaces`           | `align_double_arrow` | option was removed, use `operators` instead
-`binary_operator_spaces`           | `align_equals`       | option was removed use `operators` instead
-`doctrine_annotation_spaces`       | `around_argument_assignments` | option was removed, use `before_argument_assignments` and `after_argument_assignments` instead
-`doctrine_annotation_spaces`       | `around_array_assignments`    | option was removed, use `after_array_assignments_colon`, `after_array_assignments_equals`, `before_array_assignments_colon` and `before_array_assignments_equals` instead
-`is_null`                          | `use_yoda_style` | option was removed, use `yoda_style` rule instead
-`no_extra_consecutive_blank_lines` | `tokens`    | one of possible values, `useTrait`, was renamed to `use_trait`
-`php_unit_dedicate_assert`         | `functions` | option was removed, use `target` instead
+`binary_operator_spaces`                 | `align_double_arrow`                         | option was removed, use `operators` instead
+`binary_operator_spaces`                 | `align_equals`                               | option was removed use `operators` instead
+`blank_line_before_statement`            | `statements: die`                            | option `die` was removed from `statements`, use `exit` instead
+`class_definition`                       | `multiLineExtendsEachSingleLine`             | option was renamed to  `multi_line_extends_each_single_line`
+`class_definition`                       | `singleItemSingleLine`                       | option was renamed to  `single_item_single_line`
+`class_definition`                       | `singleLine`                                 | option was renamed to  `single_line`
+`doctrine_annotation_spaces`             | `around_argument_assignments`                | option was removed, use `before_argument_assignments` and `after_argument_assignments` instead
+`doctrine_annotation_spaces`             | `around_array_assignments`                   | option was removed, use `after_array_assignments_colon`, `after_array_assignments_equals`, `before_array_assignments_colon` and `before_array_assignments_equals` instead
+`final_internal_class`                   | `annotation-black-list`                      | option was renamed, use `annotation_exclude`
+`final_internal_class`                   | `annotation-white-list`                      | option was renamed, use `annotation_include`
+`final_internal_class`                   | `consider-absent-docblock-as-internal-class` | option was renamed, use `consider_absent_docblock_as_internal_class`
+`header_comment`                         | `commentType`                                | option was renamed to `comment_type`
+`is_null`                                | `use_yoda_style`                             | option was removed, use `yoda_style` rule instead
+`no_extra_consecutive_blank_lines`       | `tokens`                                     | one of possible values, `useTrait`, was renamed to `use_trait`
+`ordered_class_elements`                 | `sortAlgorithm`                              | option was renamed, use `sort_algorithm` instead
+`ordered_imports`                        | `importsOrder`                               | option was renamed, use `imports_order`
+`ordered_imports`                        | `sortAlgorithm`                              | option was renamed, use `sort_algorithm`
+`php_unit_dedicate_assert_internal_type` | `target`                                     | option was removed, it was not used
+`php_unit_dedicate_assert`               | `functions`                                  | option was removed, use `target` instead
 
 ### Changed default values of options
 
@@ -67,12 +85,65 @@ Rule | Option | Old value | New value
 ---- | ---- | ---- | ----
 `function_to_constant` | `functions` | `['get_class', 'php_sapi_name', 'phpversion', 'pi']` | `['get_called_class', 'get_class', 'php_sapi_name', 'phpversion', 'pi']`
 `method_argument_space` | `on_multiline` | `'ignore'` | `'ensure_fully_multiline'`
+`native_function_casing` | `include` | `@internal` | `@compiler_optimized`
 `native_function_invocation` | `include` | `@internal` | `@compiler_optimized`
 `php_unit_dedicate_assert` | `target` | `5.0` | `newest`
 `phpdoc_align` | `tags` | `['param', 'return', 'throws', 'type', 'var']` | `['method', 'param', 'property', 'return', 'throws', 'type', 'var']`
+`phpdoc_scalar` | `types` | `['boolean', 'double', 'integer', 'real', 'str']` | `['boolean', 'callback', 'double', 'integer', 'real', 'str']`
+
+### Updated rule sets
+
+- `@PHPUnit50MigrationRiskySet`
+- `@SymfonyRiskySet`
+- `@SymfonySet`
 
 ### Removed rule sets
 
 Rule set | Note
 -------- | ----
 `@PHP56Migration` | was empty
+
+### Rule behavior changes
+
+- `no_unused_imports` now runs all files defined in the configuration (used to exclude some hardcoded directories)
+
+### Various
+
+- `udiff` output now includes the file name in the output (if applicable)
+
+Code BC changes
+===============
+
+### Removed; various
+
+- class `AbstractAlignFixerHelper` has been removed
+- class `AccessibleObject` has been removed
+- class `AlignDoubleArrowFixerHelper` has been removed
+- class `AlignEqualsFixerHelper` has been removed
+- class `FixerConfigurationResolverRootless` has been removed
+- `HeaderCommentFixer` deprecated properties have been removed
+- `MethodArgumentSpaceFixer` deprecated methods have been removed
+- `NoMixedEchoPrintFixer` the property `$defaultConfig` has been removed
+- class `Tokens`, the following methods has been removed:
+    - `current()`
+    - `key()`
+    - `next()`
+    - `rewind()`
+    - `valid()`
+
+### Interface changes
+
+- `ConfigurableFixerInterface` has been updated
+- `ConfigurationDefinitionFixerInterface` has been removed in favor of the updated `ConfigurableFixerInterface`
+- `DefinedFixerInterface` has been removed, related methods are now part of the updated `FixerInterface` interface
+- `DifferInterface` has been updated
+- `FixerInterface` interface has been updated
+- `PhpCsFixer\RuleSetInterface` has been removed in favor of `\PhpCsFixer\RuleSet\RuleSetInterface`
+
+### BC breaks; various
+
+- class `Token` is now `final`
+- class `Tokens` is now `final`
+- method `create` of class `Config` has been removed, use the constructor
+- method `create` of class `RuleSet` has been removed, use the constructor
+- method `getSetDefinitionNames` of class `RuleSet` has been removed, use `RuleSets::getSetDefinitionNames()`

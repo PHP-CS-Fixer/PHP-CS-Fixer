@@ -21,8 +21,6 @@ Default value: ``['use_trait', 'constant_public', 'constant_protected', 'constan
 
 How multiple occurrences of same type statements should be sorted
 
-.. note:: The previous name of this option was ``sortAlgorithm`` but it is now deprecated and will be removed on next major version.
-
 Allowed values: ``'alpha'``, ``'none'``
 
 Default value: ``'none'``

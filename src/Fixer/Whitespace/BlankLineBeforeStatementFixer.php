@@ -40,7 +40,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
         'default' => T_DEFAULT,
-        'die' => T_EXIT, // TODO remove this alias 3.0, use `exit`
         'do' => T_DO,
         'exit' => T_EXIT,
         'for' => T_FOR,
@@ -87,10 +86,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         $this->fixTokenMap = [];
 
         foreach ($this->configuration['statements'] as $key) {
-            if ('die' === $key) {
-                @trigger_error('Option "die" is deprecated, use "exit" instead.', E_USER_DEPRECATED);
-            }
-
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
 

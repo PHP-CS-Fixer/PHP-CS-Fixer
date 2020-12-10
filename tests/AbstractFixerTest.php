@@ -40,7 +40,7 @@ final class AbstractFixerTest extends TestCase
         $fixer = new UnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
+        $this->expectExceptionMessage(sprintf('Cannot get configuration definition using Abstract parent, child "%s" not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".', \get_class($fixer)));
 
         $fixer->getConfigurationDefinition();
     }

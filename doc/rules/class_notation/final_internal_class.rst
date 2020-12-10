@@ -17,8 +17,6 @@ Configuration
 Class level annotations tags that must be set in order to fix the class. (case
 insensitive)
 
-.. note:: The previous name of this option was ``annotation-white-list`` but it is now deprecated and will be removed on next major version.
-
 Allowed types: ``array``
 
 Default value: ``['@internal']``
@@ -29,8 +27,6 @@ Default value: ``['@internal']``
 Class level annotations tags that must be omitted to fix the class, even if all
 of the white list ones are used as well. (case insensitive)
 
-.. note:: The previous name of this option was ``annotation-black-list`` but it is now deprecated and will be removed on next major version.
-
 Allowed types: ``array``
 
 Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``
@@ -39,8 +35,6 @@ Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Should classes without any DocBlock be fixed to final?
-
-.. note:: The previous name of this option was ``consider-absent-docblock-as-internal-class`` but it is now deprecated and will be removed on next major version.
 
 Allowed types: ``bool``
 
