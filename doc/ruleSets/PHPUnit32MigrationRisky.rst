@@ -2,7 +2,7 @@
 Rule set ``@PHPUnit32Migration:risky``
 ======================================
 
-Rules to improve tests code for PHPUnit 3.2 compatibility This set contains rules that are risky.
+Rules to improve tests code for PHPUnit 3.2 compatibility. This set contains rules that are risky.
 
 Rules
 -----
