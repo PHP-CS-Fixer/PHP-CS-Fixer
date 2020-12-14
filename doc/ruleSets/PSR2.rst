@@ -2,7 +2,7 @@
 Rule set ``@PSR2``
 ==================
 
-Rules that follow `PSR-2 <https://www.php-fig.org/psr/psr-2/>`_ standard
+Rules that follow `PSR-2 <https://www.php-fig.org/psr/psr-2/>`_ standard.
 
 Rules
 -----

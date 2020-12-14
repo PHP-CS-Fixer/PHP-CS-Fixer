@@ -73,6 +73,6 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
 
     public function getDescription()
     {
-        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_';
+        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.';
     }
 }

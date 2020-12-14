@@ -26,38 +26,35 @@ abstract class AbstractSetTest extends TestCase
     public function testSet()
     {
         $set = self::getSet();
-
         static::assertTrue($set instanceof RuleSetDescriptionInterface);
-        self::assertSanityString($set->getName());
-        self::assertSanityString($set->getDescription());
 
-        $rules = $set->getRules();
-
-        static::assertIsArray($rules);
-
-        foreach ($rules as $rule => $config) {
-            self::assertSanityString($rule);
-        }
-    }
-
-    public function testIsRisky()
-    {
-        $set = self::getSet();
-        $isRisky = $set->isRisky();
-
-        static::assertIsBool($isRisky);
+        $setName = $set->getName();
+        $setDescription = $set->getDescription();
+        $isRiskySet = $set->isRisky();
+        $setRules = $set->getRules();
 
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
+        static::assertSanityString($setName);
+        static::assertSanityString($setDescription);
+        static::assertSame('.', substr($setDescription, -1), sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
+        static::assertIsBool($isRiskySet);
+        static::assertIsArray($setRules);
+
         try {
             $factory->useRuleSet(new RuleSet($set->getRules()));
         } catch (InvalidForEnvFixerConfigurationException $e) {
-            static::markTestSkipped(sprintf('Cannot test set "%s" on this environment. %s', $set->getName(), $e->getMessage()));
+            static::markTestSkipped(sprintf('Cannot test set "%s" on this environment. %s', $setName, $e->getMessage()));
         }
 
         foreach ($factory->getFixers() as $fixer) {
-            static::assertSame($isRisky, $fixer->isRisky());
+            $fixerName = $fixer->getName();
+            static::assertSame($isRiskySet, $fixer->isRisky(), sprintf('Is risky mismatch between set "%s" and rule "%s".', $setName, $fixerName));
+
+            if (isset($setRules[$fixerName])) {
+                static::assertTrue(\is_bool($setRules[$fixerName]) || \is_array($setRules[$fixerName]));
+            }
         }
     }
 
@@ -65,7 +62,7 @@ abstract class AbstractSetTest extends TestCase
     {
         static::assertIsString($string);
         static::assertSame(trim($string), $string);
-        static::assertFalse('' === $string);
+        static::assertNotSame('', $string);
     }
 
     /**
