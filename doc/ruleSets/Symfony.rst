@@ -86,7 +86,6 @@ Rules
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `ordered_imports <./../rules/import/ordered_imports.rst>`_
-- `ordered_traits <./../rules/class_notation/ordered_traits.rst>`_
 - `php_unit_fqcn_annotation <./../rules/php_unit/php_unit_fqcn_annotation.rst>`_
 - `php_unit_method_casing <./../rules/php_unit/php_unit_method_casing.rst>`_
 - `phpdoc_align <./../rules/phpdoc/phpdoc_align.rst>`_

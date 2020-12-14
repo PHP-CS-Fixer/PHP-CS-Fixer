@@ -28,8 +28,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-@PhpCsFixer
-  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``ordered_traits`` rule.
+@PhpCsFixer:risky
+  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``ordered_traits`` rule.
 
-@Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``ordered_traits`` rule.
+@Symfony:risky
+  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``ordered_traits`` rule.

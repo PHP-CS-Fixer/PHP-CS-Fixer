@@ -130,7 +130,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             'normalize_index_brace' => true,
             'object_operator_without_whitespace' => true,
             'ordered_imports' => true,
-            'ordered_traits' => true,
             'php_unit_fqcn_annotation' => true,
             'php_unit_method_casing' => true,
             'phpdoc_align' => true,

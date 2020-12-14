@@ -62,6 +62,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'no_unneeded_final_method' => true,
             'no_useless_sprintf' => true,
             'non_printable_character' => true,
+            'ordered_traits' => true,
             'php_unit_construct' => true,
             'php_unit_mock_short_will_return' => true,
             'php_unit_set_up_tear_down_visibility' => true,

@@ -37,6 +37,7 @@ Rules
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
   config:
   ``['use_escape_sequences_in_strings' => true]``
+- `ordered_traits <./../rules/class_notation/ordered_traits.rst>`_
 - `php_unit_construct <./../rules/php_unit/php_unit_construct.rst>`_
 - `php_unit_mock_short_will_return <./../rules/php_unit/php_unit_mock_short_will_return.rst>`_
 - `php_unit_set_up_tear_down_visibility <./../rules/php_unit/php_unit_set_up_tear_down_visibility.rst>`_
