@@ -1,0 +1,62 @@
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
+
+use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
+use PhpCsFixer\Tokenizer\Tokens;
+
+/**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer
+ */
+final class WhitespacesAnalyzerTest extends TestCase
+{
+    /**
+     * @param string $code
+     * @param string $indent
+     * @param int    $index
+     *
+     * @dataProvider provideIndentCases
+     */
+    public function testIndent($code, $indent, $index)
+    {
+        $tokens = Tokens::fromCode($code);
+
+        static::assertSame($indent, WhitespacesAnalyzer::detectIndent($tokens, $index));
+    }
+
+    public function provideIndentCases()
+    {
+        yield ['<?php function foo() { return true; }', '', 10];
+
+        yield [
+            '<?php
+                        function foo() { return true; }
+            ',
+            '                        ',
+            8,
+        ];
+
+        $code = '<?php
+            // wrong indent
+                function foo() { /* foo */ return    true; }
+            ';
+        $tokens = Tokens::fromCode($code);
+
+        foreach (range(4, $tokens->count() - 2) as $index) {
+            yield [$code, '                ', $index];
+        }
+    }
+}
