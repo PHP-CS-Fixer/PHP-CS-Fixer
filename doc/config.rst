@@ -24,8 +24,8 @@ The example below will add two rules to the default list of PSR2 set rules:
         ->in(__DIR__)
     ;
 
-    return PhpCsFixer\Config::create()
-        ->setRules([
+    $config = new PhpCsFixer\Config();
+    return $config->setRules([
             '@PSR2' => true,
             'strict_param' => true,
             'array_syntax' => ['syntax' => 'short'],
@@ -51,8 +51,8 @@ The following example shows how to use all ``Symfony`` rules but the ``full_open
         ->exclude('somedir')
     ;
 
-    return PhpCsFixer\Config::create()
-        ->setRules([
+    $config = new PhpCsFixer\Config();
+    return $config->setRules([
             '@Symfony' => true,
             'full_opening_tag' => false,
         ])
@@ -66,7 +66,8 @@ configure them in your config file.
 
     <?php
 
-    return PhpCsFixer\Config::create()
+    $config = new PhpCsFixer\Config();
+    return $config
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
