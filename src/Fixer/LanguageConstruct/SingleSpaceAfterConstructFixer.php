@@ -218,6 +218,10 @@ yield  from  baz();
                 continue;
             }
 
+            if ($token->isGivenKind(T_EXTENDS) && $this->isMultilineExtendsWithMoreThanOneAncestor($tokens, $index)) {
+                continue;
+            }
+
             if ($token->isGivenKind(T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
                 continue;
             }
@@ -283,6 +287,30 @@ yield  from  baz();
                 --$nestedCount;
             } elseif (0 === $nestedCount && $tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
                 break;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    private function isMultilineExtendsWithMoreThanOneAncestor(Tokens $tokens, $index)
+    {
+        $hasMoreThanOneAncestor = false;
+
+        for ($i = $index + 1; $i < $tokens->getNextTokenOfKind($index, ['{']); ++$i) {
+            $token = $tokens[$i];
+
+            if (false !== strpos($token->getContent(), "\n") && $hasMoreThanOneAncestor) {
+                return true;
+            }
+
+            if (',' === $token->getContent()) {
+                $hasMoreThanOneAncestor = true;
             }
         }
 

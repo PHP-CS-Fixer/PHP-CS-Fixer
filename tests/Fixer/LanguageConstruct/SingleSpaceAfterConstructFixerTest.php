@@ -920,6 +920,49 @@ $foo;',
                 '<?php class Foo extends /* foo */\InvalidArgumentException {}',
                 '<?php class Foo extends  /* foo */\InvalidArgumentException {}',
             ],
+            [
+                '<?php interface Foo extends Bar {}',
+                '<?php interface Foo extends  Bar {}',
+            ],
+            [
+                '<?php interface Foo extends Bar {}',
+                '<?php interface Foo extends
+
+Bar {}',
+            ],
+            [
+                '<?php interface Foo extends /* foo */Bar {}',
+                '<?php interface Foo extends/* foo */Bar {}',
+            ],
+            [
+                '<?php interface Foo extends /* foo */Bar {}',
+                '<?php interface Foo extends  /* foo */Bar {}',
+            ],
+            [
+                '<?php interface Foo extends Bar, Baz, Qux {}',
+                '<?php interface Foo extends  Bar, Baz, Qux {}',
+            ],
+            [
+                '<?php interface Foo extends Bar, Baz, Qux {}',
+                '<?php interface Foo extends
+
+Bar, Baz, Qux {}',
+            ],
+            [
+                '<?php interface Foo extends /* foo */Bar, Baz, Qux {}',
+                '<?php interface Foo extends/* foo */Bar, Baz, Qux {}',
+            ],
+            [
+                '<?php interface Foo extends /* foo */Bar, Baz, Qux {}',
+                '<?php interface Foo extends  /* foo */Bar, Baz, Qux {}',
+            ],
+            [
+                '<?php interface Foo extends
+    Bar,
+    Baz,
+    Qux
+{}',
+            ],
         ];
     }
 
