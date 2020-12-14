@@ -31,6 +31,6 @@ final class PHPUnit54MigrationRiskySet extends AbstractRuleSetDescription
 
     public function getDescription()
     {
-        return 'Rules to improve tests code for PHPUnit 5.4 compatibility';
+        return 'Rules to improve tests code for PHPUnit 5.4 compatibility.';
     }
 }

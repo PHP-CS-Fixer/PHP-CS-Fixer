@@ -46,7 +46,7 @@ final class CleanNamespaceFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php namespace AT\B
+            '<?php namespace AT\B # foo 3
 ;',
             '<?php namespace AT # foo 1
 \ /**
@@ -98,18 +98,18 @@ B # foo 3
 
         yield [
             '<?php
-                namespace A\B\C\D\E { }
-                namespace B\B\C\D\E { }
-                namespace C\B\C\D\E { }
-                namespace D\B\C\D\E { }
-                namespace E\B\C\D\E { }
+                namespace A\B\C\D\E /* 5.1 */{ }
+                namespace B\B\C\D\E /* 5.2 */{ }
+                namespace C\B\C\D\E /* 5.3 */{ }
+                namespace D\B\C\D\E /* 5.4 */{ }
+                namespace E\B\C\D\E /* 5.5 */{ }
             ',
             '<?php
-                namespace A /* 1 */ \ B \   /** 2 */ C \ /* 3 */ D   /* 4 */ \ E /* 5 */{ }
-                namespace B /* 1 */ \ B \      /* 2 */ C \ /** 3 */ D /* 4 */ \ E /* 5 */{ }
-                namespace C /* 1 */ \ B \  /* 2 */ C \ /* 3 */ D /** 4 */ \ E /* 5 */{ }
-                namespace D /* 1 */ \ B \ /* 2 */ C \    /* 3 */ D /* 4 */ \ E /* 5 */{ }
-                namespace E /* 1 */ \ B \ /* 2 */ C \ /* 3 */ D /* 4 */ \ E /* 5 */{ }
+                namespace A /* 1 */ \ B \   /** 2 */ C \ /* 3 */ D   /* 4 */ \ E /* 5.1 */{ }
+                namespace B /* 1 */ \ B \      /* 2 */ C \ /** 3 */ D /* 4 */ \ E /* 5.2 */{ }
+                namespace C /* 1 */ \ B \  /* 2 */ C \ /* 3 */ D /** 4 */ \ E /* 5.3 */{ }
+                namespace D /* 1 */ \ B \ /* 2 */ C \    /* 3 */ D /* 4 */ \ E /* 5.4 */{ }
+                namespace E /* 1 */ \ B \ /* 2 */ C \ /* 3 */ D /* 4 */ \ E /* 5.5 */{ }
             ',
         ];
 
@@ -146,8 +146,28 @@ if (
 
         if (\PHP_VERSION_ID >= 70000) {
             yield [
-                '<?php use function Foo\iter\ { range, map, filter, apply, reduce, foo\operator };',
-                '<?php use function Foo \ iter /* A */ \ { range, map, filter, apply, reduce, foo \ operator };',
+                '<?php use function Foo\iter\ { range, map, filter, apply, reduce, foo\operator };
+class Foo
+{
+    private function foo1(): \Exception\A /** 2 */   // trailing comment
+    {
+    }
+
+    private function foo2(): \Exception // trailing comment
+    {
+    }
+}',
+                '<?php use function Foo \ iter /* A */ \ { range, map, filter, apply, reduce, foo \ operator };
+class Foo
+{
+    private function foo1(): \Exception   \ /* 1 */  A /** 2 */   // trailing comment
+    {
+    }
+
+    private function foo2(): \Exception // trailing comment
+    {
+    }
+}',
             ];
         }
     }

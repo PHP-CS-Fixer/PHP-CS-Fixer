@@ -2,7 +2,7 @@
 Rule set ``@PHPUnit56Migration:risky``
 ======================================
 
-Rules to improve tests code for PHPUnit 5.6 compatibility This set contains rules that are risky.
+Rules to improve tests code for PHPUnit 5.6 compatibility. This set contains rules that are risky.
 
 Rules
 -----
