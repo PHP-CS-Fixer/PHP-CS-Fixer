@@ -151,9 +151,8 @@ Cache can be disabled via ``--using-cache`` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
-        ->setUsingCache(false)
-    ;
+    $config = new PhpCsFixer\Config();
+    return $config->setUsingCache(false);
 
 Cache file can be specified via ``--cache-file`` option or config file:
 
@@ -161,9 +160,8 @@ Cache file can be specified via ``--cache-file`` option or config file:
 
     <?php
 
-    return PhpCsFixer\Config::create()
-        ->setCacheFile(__DIR__.'/.php_cs.cache')
-    ;
+    $config = new PhpCsFixer\Config();
+    return $config->setCacheFile(__DIR__.'/.php_cs.cache');
 
 Using PHP CS Fixer on CI
 ------------------------

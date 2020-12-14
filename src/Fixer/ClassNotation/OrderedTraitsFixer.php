@@ -29,7 +29,9 @@ final class OrderedTraitsFixer extends AbstractFixer
             'Trait `use` statements must be sorted alphabetically.',
             [
                 new CodeSample("<?php class Foo { \nuse Z; use A; }\n"),
-            ]
+            ],
+            null,
+            'Risky when depending on order of the imports.'
         );
     }
 
@@ -39,6 +41,14 @@ final class OrderedTraitsFixer extends AbstractFixer
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(CT::T_USE_TRAIT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRisky()
+    {
+        return true;
     }
 
     /**

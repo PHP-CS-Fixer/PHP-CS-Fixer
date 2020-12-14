@@ -47,7 +47,7 @@ EOF;
 
         $expected = <<<'EOF'
 <?php
-class Psr4_Foo_Bar {}
+class Bar {}
 EOF;
         $input = <<<'EOF'
 <?php

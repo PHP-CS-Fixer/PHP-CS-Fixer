@@ -21,7 +21,7 @@ labels: kind/bug
 <!--
   Provide a minimal code snippet before running PHP CS Fixer. If relevant,
   also provide the expected output, the actual output and/or the error that
-  occured, if any.
+  occurred, if any.
 
   Please use markdown syntax for each code snippet, e.g.:
 
