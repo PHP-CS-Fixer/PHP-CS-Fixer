@@ -237,6 +237,8 @@ Function Notation
     In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
     Add leading ``\`` before function invocation to speed up resolving.
+- `no_optional_arguments_with_default_value <./function_notation/no_optional_arguments_with_default_value.rst>`_
+    Remove arguments whose value is their default’s. Requires PHP >= 8.
 - `no_spaces_after_function_name <./function_notation/no_spaces_after_function_name.rst>`_
     When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
