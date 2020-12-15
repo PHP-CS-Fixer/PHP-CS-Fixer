@@ -122,6 +122,8 @@ final class FixCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $verbosity = $output->getVerbosity();
+
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
@@ -144,7 +146,7 @@ final class FixCommand extends Command
                 'diff' => $input->getOption('diff'),
                 'diff-format' => $input->getOption('diff-format'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
-                'verbosity' => $output->getVerbosity(),
+                'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
             ],
             getcwd(),
@@ -159,14 +161,21 @@ final class FixCommand extends Command
         ;
 
         if (null !== $stdErr) {
+            if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
+                $stdErr->writeln($this->getApplication()->getLongVersion());
+                $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+            }
+
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
-            if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+
+            if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                 $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
             }
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
+
                 if (is_file($cacheFile)) {
                     $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
                 }
@@ -219,7 +228,7 @@ final class FixCommand extends Command
             $changed,
             $fixEvent->getDuration(),
             $fixEvent->getMemory(),
-            OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity(),
+            OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
             $output->isDecorated()
         );

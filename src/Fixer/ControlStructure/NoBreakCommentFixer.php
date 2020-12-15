@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -239,7 +240,7 @@ switch ($foo) {
         if ($nbNewlines > 1) {
             Preg::match('/^(.*?)(\R\h*)$/s', $newlineToken->getContent(), $matches);
 
-            $indent = $this->getIndentAt($tokens, $newlinePosition - 1);
+            $indent = WhitespacesAnalyzer::detectIndent($tokens, $newlinePosition - 1);
             $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $matches[1].$lineEnding.$indent]);
             $tokens->insertAt(++$newlinePosition, new Token([T_WHITESPACE, $matches[2]]));
         }
@@ -256,7 +257,7 @@ switch ($foo) {
     private function ensureNewLineAt(Tokens $tokens, $position)
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
-        $content = $lineEnding.$this->getIndentAt($tokens, $position);
+        $content = $lineEnding.WhitespacesAnalyzer::detectIndent($tokens, $position);
         $whitespaceToken = $tokens[$position - 1];
 
         if (!$whitespaceToken->isGivenKind(T_WHITESPACE)) {
@@ -312,35 +313,6 @@ switch ($foo) {
         }
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($commentPosition);
-    }
-
-    /**
-     * @param int $position
-     *
-     * @return string
-     */
-    private function getIndentAt(Tokens $tokens, $position)
-    {
-        while (true) {
-            $position = $tokens->getPrevTokenOfKind($position, [[T_WHITESPACE]]);
-
-            if (null === $position) {
-                break;
-            }
-
-            $content = $tokens[$position]->getContent();
-            $prevToken = $tokens[$position - 1];
-
-            if ($prevToken->isGivenKind(T_OPEN_TAG) && Preg::match('/\R$/', $prevToken->getContent())) {
-                $content = $this->whitespacesConfig->getLineEnding().$content;
-            }
-
-            if (Preg::match('/\R(\h*)$/', $content, $matches)) {
-                return $matches[1];
-            }
-        }
-
-        return '';
     }
 
     /**
