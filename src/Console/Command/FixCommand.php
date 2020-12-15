@@ -156,6 +156,11 @@ final class FixCommand extends Command
         ;
 
         if (null !== $stdErr) {
+            if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
+                $stdErr->writeln($this->getApplication()->getLongVersion());
+                $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+            }
+
             if (null !== $passedConfig && null !== $passedRules) {
                 if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
                     throw new \RuntimeException('Passing both `config` and `rules` options is not possible. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.');
@@ -169,12 +174,10 @@ final class FixCommand extends Command
 
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
-            if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-                $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
-            }
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
+
                 if (is_file($cacheFile)) {
                     $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
                 }
@@ -230,7 +233,7 @@ final class FixCommand extends Command
             $changed,
             $fixEvent->getDuration(),
             $fixEvent->getMemory(),
-            OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity(),
+            OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
             $output->isDecorated()
         );

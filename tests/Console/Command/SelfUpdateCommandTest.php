@@ -140,6 +140,7 @@ final class SelfUpdateCommandTest extends TestCase
 
     public function provideExecuteCases()
     {
+        $currentVersion = Application::VERSION;
         $minor = $this->getNewMinorVersion();
         $major = $this->getNewMajorVersion();
 
@@ -147,23 +148,23 @@ final class SelfUpdateCommandTest extends TestCase
         $minorContents = 'New minor version of PHP CS Fixer.';
         $majorContents = 'New major version of PHP CS Fixer.';
 
-        $upToDateDisplay = "\033[32mphp-cs-fixer is already up to date.\033[39m\n";
-        $newMinorDisplay = "\033[32mphp-cs-fixer updated\033[39m (\033[33m{$minor}\033[39m)\n";
-        $newMajorDisplay = "\033[32mphp-cs-fixer updated\033[39m (\033[33m{$major}\033[39m)\n";
+        $upToDateDisplay = "\033[32mPHP CS Fixer is already up to date.\033[39m\n";
+        $newMinorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$minor}\033[39m)\n";
+        $newMajorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$major}\033[39m)\n";
         $majorInfoNoMinorDisplay = <<<OUTPUT
-\033[32mA new major version of php-cs-fixer is available\033[39m (\033[33m{$major}\033[39m)
+\033[32mA new major version of PHP CS Fixer is available\033[39m (\033[33m{$major}\033[39m)
 \033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$major}/UPGRADE.md
 \033[32mIf you are ready to upgrade run this command with\033[39m \033[33m-f\033[39m
 \033[32mChecking for new minor/patch version...\033[39m
-\033[32mNo minor update for php-cs-fixer.\033[39m
+\033[32mNo minor update for PHP CS Fixer.\033[39m
 
 OUTPUT;
         $majorInfoNewMinorDisplay = <<<OUTPUT
-\033[32mA new major version of php-cs-fixer is available\033[39m (\033[33m{$major}\033[39m)
+\033[32mA new major version of PHP CS Fixer is available\033[39m (\033[33m{$major}\033[39m)
 \033[32mBefore upgrading please read\033[39m https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/{$major}/UPGRADE.md
 \033[32mIf you are ready to upgrade run this command with\033[39m \033[33m-f\033[39m
 \033[32mChecking for new minor/patch version...\033[39m
-\033[32mphp-cs-fixer updated\033[39m (\033[33m{$minor}\033[39m)
+\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$minor}\033[39m)
 
 OUTPUT;
 
