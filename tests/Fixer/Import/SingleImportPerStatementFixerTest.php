@@ -42,7 +42,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
             [
                 '<?php
                     /**/use Foo;
-use FooB;
+                    use FooB;
                 ',
                 '<?php
                     /**/use Foo,FooB;
