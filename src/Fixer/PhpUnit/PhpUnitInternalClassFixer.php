@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -115,7 +116,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     private function createDocBlock(Tokens $tokens, $docBlockIndex)
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $originalIndent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
             new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @internal".$lineEnd."{$originalIndent} */"]),
             new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
@@ -138,22 +139,6 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     }
 
     /**
-     * @param int $index
-     *
-     * @return string
-     */
-    private function detectIndent(Tokens $tokens, $index)
-    {
-        if (!$tokens[$index - 1]->isWhitespace()) {
-            return ''; // cannot detect indent
-        }
-
-        $explodedContent = explode($this->whitespacesConfig->getLineEnding(), $tokens[$index - 1]->getContent());
-
-        return end($explodedContent);
-    }
-
-    /**
      * @param int $docBlockIndex
      *
      * @return Line[]
@@ -161,7 +146,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, $docBlockIndex)
     {
         $lines = $docBlock->getLines();
-        $originalIndent = $this->detectIndent($tokens, $docBlockIndex);
+        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         array_splice($lines, -1, 0, $originalIndent.' *'.$lineEnd.$originalIndent.' * @internal'.$lineEnd);
 
@@ -177,7 +162,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     {
         $lines = $doc->getLines();
         if (1 === \count($lines) && empty($doc->getAnnotationsOfType('internal'))) {
-            $indent = $this->detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
+            $indent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
             $doc->makeMultiLine($indent, $this->whitespacesConfig->getLineEnding());
 
             return $doc;

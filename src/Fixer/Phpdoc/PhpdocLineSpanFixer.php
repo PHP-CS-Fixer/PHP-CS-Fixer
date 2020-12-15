@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -103,7 +104,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             $doc = new DocBlock($tokens[$docIndex]->getContent());
 
             if ('multi' === $this->configuration[$type]) {
-                $doc->makeMultiLine($originalIndent = $this->detectIndent($tokens, $docIndex), $this->whitespacesConfig->getLineEnding());
+                $doc->makeMultiLine($originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docIndex), $this->whitespacesConfig->getLineEnding());
             } else {
                 $doc->makeSingleLine();
             }
@@ -149,21 +150,5 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         ]));
 
         return $index;
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return string
-     */
-    private function detectIndent(Tokens $tokens, $index)
-    {
-        if (!$tokens[$index - 1]->isWhitespace()) {
-            return ''; // cannot detect indent
-        }
-
-        $explodedContent = explode($this->whitespacesConfig->getLineEnding(), $tokens[$index - 1]->getContent());
-
-        return end($explodedContent);
     }
 }

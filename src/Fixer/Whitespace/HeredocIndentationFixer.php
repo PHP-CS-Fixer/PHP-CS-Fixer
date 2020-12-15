@@ -18,6 +18,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -90,7 +91,7 @@ SAMPLE
      */
     private function fixIndentation(Tokens $tokens, $start, $end)
     {
-        $indent = $this->getIndentAt($tokens, $start).$this->whitespacesConfig->getIndent();
+        $indent = WhitespacesAnalyzer::detectIndent($tokens, $start).$this->whitespacesConfig->getIndent();
 
         Preg::match('/^\h*/', $tokens[$end]->getContent(), $matches);
         $currentIndent = $matches[0];
@@ -137,31 +138,5 @@ SAMPLE
         }
 
         $tokens[$index] = new Token([T_ENCAPSED_AND_WHITESPACE, $content]);
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return string
-     */
-    private function getIndentAt(Tokens $tokens, $index)
-    {
-        for (; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML, T_OPEN_TAG])) {
-                continue;
-            }
-
-            $content = $tokens[$index]->getContent();
-
-            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
-                $content = $tokens[$index - 1]->getContent().$content;
-            }
-
-            if (1 === Preg::match('/\R(\h*)$/', $content, $matches)) {
-                return $matches[1];
-            }
-        }
-
-        return '';
     }
 }
