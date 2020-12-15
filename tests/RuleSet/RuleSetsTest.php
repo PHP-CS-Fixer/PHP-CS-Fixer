@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerFactory;
@@ -272,6 +273,10 @@ Integration of %s.
     {
         $targetVersion = null;
         $fixer = self::getFixerByName($ruleName);
+
+        if (!$fixer instanceof ConfigurableFixerInterface) {
+            static::markTestSkipped(sprintf('The fixer "%s" is not configurable.', $fixer->getName()));
+        }
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ($option instanceof DeprecatedFixerOption) {

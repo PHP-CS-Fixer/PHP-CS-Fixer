@@ -15,7 +15,6 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -252,17 +251,11 @@ use Bar;
         $supportedSortTypes = $this->supportedSortTypes;
 
         return new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'),
-                'sortAlgorithm'
-            ))
+            (new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'))
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('imports_order', 'Defines the order of import types.'),
-                'importsOrder'
-            ))
+            (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
                 ->setAllowedValues([static function ($value) use ($supportedSortTypes) {
                     if (null !== $value) {

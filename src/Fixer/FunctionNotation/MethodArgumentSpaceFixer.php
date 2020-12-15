@@ -175,14 +175,6 @@ SAMPLE
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
-                'ensure_fully_multiline',
-                'ensure every argument of a multiline argument list is on its own line'
-            ))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 3.0 remove
-                ->setDeprecationMessage('Use option `on_multiline` instead.')
-                ->getOption(),
-            (new FixerOptionBuilder(
                 'on_multiline',
                 'Defines how to handle function arguments lists that contain newlines.'
             ))

@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
  */
-final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
     public function testConfigureDefaultToNull()
     {
@@ -53,7 +53,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      */
     public function testFixingAnonymousClasses($expected, $input, array $config = [])
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -80,7 +80,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      */
     public function testFixingClassesWithConfig($expected, $input, array $config)
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }

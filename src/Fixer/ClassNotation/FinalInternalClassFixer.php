@@ -16,7 +16,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -74,7 +73,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run before FinalStaticAccessFixer, ProtectedToPrivateFixer, SelfStaticAccessorFixer.
+     * Must run before ProtectedToPrivateFixer, SelfStaticAccessorFixer.
      * Must run after PhpUnitInternalClassFixer.
      */
     public function getPriority()
@@ -148,19 +147,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         };
 
         return new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'),
-                'annotation-white-list'
-            ))
+            (new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'),
-                'annotation-black-list'
-            ))
+            (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault([
@@ -172,10 +165,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'),
-                'consider-absent-docblock-as-internal-class'
-            ))
+            (new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),

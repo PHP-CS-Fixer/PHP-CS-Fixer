@@ -13,9 +13,6 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
-use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Token;
@@ -25,7 +22,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
+final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer
 {
     /**
      * @var array
@@ -96,22 +93,6 @@ final class MyTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
-    {
-        // @todo 3.0 drop `ConfigurableFixerInterface`
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
-                ->setAllowedTypes(['string'])
-                ->setAllowedValues([PhpUnitTargetVersion::VERSION_7_5, PhpUnitTargetVersion::VERSION_NEWEST])
-                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
-                ->setDeprecationMessage('Option was not used.')
-                ->getOption(),
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
         $anonymousClassIndexes = [];
@@ -139,32 +120,38 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             }
 
             $functionName = strtolower($tokens[$index]->getContent());
+
             if ('assertinternaltype' !== $functionName && 'assertnotinternaltype' !== $functionName) {
                 continue;
             }
 
             $bracketTokenIndex = $tokens->getNextMeaningfulToken($index);
+
             if (!$tokens[$bracketTokenIndex]->equals('(')) {
                 continue;
             }
 
             $expectedTypeTokenIndex = $tokens->getNextMeaningfulToken($bracketTokenIndex);
             $expectedTypeToken = $tokens[$expectedTypeTokenIndex];
+
             if (!$expectedTypeToken->equals([T_CONSTANT_ENCAPSED_STRING])) {
                 continue;
             }
 
             $expectedType = trim($expectedTypeToken->getContent(), '\'"');
+
             if (!isset($this->typeToDedicatedAssertMap[$expectedType])) {
                 continue;
             }
 
             $commaTokenIndex = $tokens->getNextMeaningfulToken($expectedTypeTokenIndex);
+
             if (!$tokens[$commaTokenIndex]->equals(',')) {
                 continue;
             }
 
             $newAssertion = $this->typeToDedicatedAssertMap[$expectedType];
+
             if ('assertnotinternaltype' === $functionName) {
                 $newAssertion = str_replace('Is', 'IsNot', $newAssertion);
                 $newAssertion = str_replace('Null', 'NotNull', $newAssertion);

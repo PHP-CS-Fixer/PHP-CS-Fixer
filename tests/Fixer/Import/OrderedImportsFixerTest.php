@@ -13,14 +13,14 @@
 namespace PhpCsFixer\Tests\Fixer\Import;
 
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\OrderedImportsFixer
  */
-final class OrderedImportsFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {
     public function testFix()
     {
@@ -978,7 +978,7 @@ use A\A1;
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo", "bar".');
 
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
             'imports_order' => ['class', 'const', 'function', 'foo', 'bar'],
         ]);
@@ -995,7 +995,7 @@ use A\A1;
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
 
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
             'imports_order' => ['class', 'const'],
         ]);
@@ -1006,7 +1006,7 @@ use A\A1;
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
 
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
             'imports_order' => ['const', 'function', 'bar'],
         ]);
@@ -1025,7 +1025,7 @@ use A\A1;
             $expectedValue
         ));
 
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
     }
 
     public function provideInvalidSortAlgorithmCases()
@@ -1057,7 +1057,7 @@ use A\A1;
 
     public function testFixByLength()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1147,7 +1147,7 @@ EOF;
 
     public function testByLengthFixWithSameLength()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1205,7 +1205,7 @@ EOF;
 
     public function testByLengthFixWithMultipleNamespace()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1333,7 +1333,7 @@ EOF;
 
     public function testByLengthFixWithComment()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1423,7 +1423,7 @@ EOF;
 
     public function testByLength()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1503,7 +1503,7 @@ EOF;
 
     public function testByLengthFixWithTraitImports()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1599,7 +1599,7 @@ EOF;
 
     public function testByLengthFixWithDifferentCases()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1643,7 +1643,7 @@ EOF;
 
     public function testByLengthOrderWithTrailingDigit()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1683,7 +1683,7 @@ EOF;
 
     public function testByLengthCodeWithImportsOnly()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1707,7 +1707,7 @@ EOF;
 
     public function testByLengthWithoutUses()
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1731,7 +1731,7 @@ EOF
      */
     public function testFix70ByLength($expected, $input = null)
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => null,
         ]);
@@ -1798,7 +1798,7 @@ use const ZZZ;
      */
     public function testFix70TypesOrderAndLength($expected, $input = null)
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
             'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
         ]);
@@ -1858,7 +1858,7 @@ use function some\f\{fn_c, fn_d, fn_e};
      */
     public function testFix70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
             'imports_order' => $importOrder,
         ]);
@@ -1999,7 +1999,7 @@ use function some\a\{fn_a, fn_b};
      */
     public function testFix72($expected, $input = null, array $config = [])
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }

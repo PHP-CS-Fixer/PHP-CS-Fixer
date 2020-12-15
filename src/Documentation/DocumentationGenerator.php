@@ -16,7 +16,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Diff\Differ;
 use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
-use PhpCsFixer\Fixer\Basic\Psr0Fixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -493,13 +492,6 @@ RST;
 
             if (null === $configuration) {
                 $configuration = [];
-            }
-
-            if ($fixer instanceof Psr0Fixer && isset($configuration['dir']) && 0 === strpos($configuration['dir'], './')) {
-                // Psr0Fixer relies on realpath() which fails for directories
-                // relative to some path when the working directory is a
-                // different path. Using an absolute path prevents this issue.
-                $configuration['dir'] = \dirname(__DIR__, 2).substr($configuration['dir'], 1);
             }
 
             $fixer->configure($configuration);

@@ -167,7 +167,7 @@ abstract class AbstractFixer implements FixerInterface
     public function getConfigurationDefinition()
     {
         if (!$this instanceof ConfigurableFixerInterface) {
-            throw new \LogicException('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
+            throw new \LogicException(sprintf('Cannot get configuration definition using Abstract parent, child "%s" not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".', static::class));
         }
 
         if (null === $this->configurationDefinition) {

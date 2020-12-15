@@ -15,7 +15,7 @@ A map of types to fix.
 
 Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
 
-Default value: ``['boolean', 'double', 'integer', 'real', 'str']``
+Default value: ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
 
 Examples
 --------

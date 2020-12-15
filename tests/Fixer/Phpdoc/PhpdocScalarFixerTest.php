@@ -56,7 +56,7 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
             /**
              * @method int foo()
              * @property int $foo
-             * @property callback $foo
+             * @property callable $foo
              * @property-read bool $bar
              * @property-write float $baz
              */

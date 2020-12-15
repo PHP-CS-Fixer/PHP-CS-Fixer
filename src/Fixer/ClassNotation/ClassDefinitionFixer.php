@@ -15,7 +15,6 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -134,24 +133,15 @@ interface Bar extends
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('multi_line_extends_each_single_line', 'Whether definitions should be multiline.'),
-                'multiLineExtendsEachSingleLine'
-            ))
+            (new FixerOptionBuilder('multi_line_extends_each_single_line', 'Whether definitions should be multiline.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('single_item_single_line', 'Whether definitions should be single line when including a single item.'),
-                'singleItemSingleLine'
-            ))
+            (new FixerOptionBuilder('single_item_single_line', 'Whether definitions should be single line when including a single item.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('single_line', 'Whether definitions should be single line.'),
-                'singleLine'
-            ))
+            (new FixerOptionBuilder('single_line', 'Whether definitions should be single line.'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),

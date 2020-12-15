@@ -326,7 +326,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before FinalStaticAccessFixer, SelfStaticAccessorFixer.
+     * Must run before SelfStaticAccessorFixer.
      */
     public function getPriority()
     {

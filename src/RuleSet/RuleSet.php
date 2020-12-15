@@ -79,26 +79,6 @@ class RuleSet implements RuleSetInterface
     }
 
     /**
-     * @deprecated will be removed in 3.0 Use the constructor.
-     */
-    public static function create(array $set = [])
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.', E_USER_DEPRECATED);
-
-        return new self($set);
-    }
-
-    /**
-     * @deprecated will be removed in 3.0 Use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames
-     */
-    public function getSetDefinitionNames()
-    {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.', E_USER_DEPRECATED);
-
-        return RuleSets::getSetDefinitionNames();
-    }
-
-    /**
      * Resolve input set into group of rules.
      *
      * @return $this

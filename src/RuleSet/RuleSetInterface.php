@@ -47,14 +47,4 @@ interface RuleSetInterface
      * @return bool
      */
     public function hasRule($rule);
-
-    /**
-     * @deprecated will be removed in 3.0 Use the constructor.
-     */
-    public static function create(array $set = []);
-
-    /**
-     * @deprecated will be removed in 3.0 Use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames
-     */
-    public function getSetDefinitionNames();
 }

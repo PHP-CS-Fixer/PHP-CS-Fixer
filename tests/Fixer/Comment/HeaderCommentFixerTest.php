@@ -13,7 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -21,7 +21,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\Comment\HeaderCommentFixer
  */
-final class HeaderCommentFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string $expected
@@ -31,7 +31,7 @@ final class HeaderCommentFixerTest extends AbstractFixerWithAliasedOptionsTestCa
      */
     public function testFix(array $configuration, $expected, $input)
     {
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -577,7 +577,7 @@ echo 1;'
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[header_comment\\] {$exceptionMessage}$#");
 
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
     }
 
     public function provideMisconfigurationCases()
@@ -628,7 +628,7 @@ echo 1;'
      */
     public function testHeaderGeneration($expected, $header, $type)
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'header' => $header,
             'comment_type' => $type,
         ]);
@@ -706,7 +706,7 @@ echo 1;'
     public function testMessyWhitespaces(array $configuration, $expected, $input = null)
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }

@@ -1177,66 +1177,6 @@ final class Tokens extends \SplFixedArray
         $this->clearAt($nextIndex);
     }
 
-    /**
-     * @internal
-     *
-     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
-     */
-    public function current()
-    {
-        $this->warnPhp8SplFixerArrayChange(__METHOD__);
-
-        return parent::current();
-    }
-
-    /**
-     * @internal
-     *
-     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
-     */
-    public function key()
-    {
-        $this->warnPhp8SplFixerArrayChange(__METHOD__);
-
-        return parent::key();
-    }
-
-    /**
-     * @internal
-     *
-     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
-     */
-    public function next()
-    {
-        $this->warnPhp8SplFixerArrayChange(__METHOD__);
-
-        parent::next();
-    }
-
-    /**
-     * @internal
-     *
-     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
-     */
-    public function rewind()
-    {
-        $this->warnPhp8SplFixerArrayChange(__METHOD__);
-
-        parent::rewind();
-    }
-
-    /**
-     * @internal
-     *
-     * @deprecated Do not call directly, not available on PHP8 and will be removed in the future
-     */
-    public function valid()
-    {
-        $this->warnPhp8SplFixerArrayChange(__METHOD__);
-
-        return parent::valid();
-    }
-
     private function warnPhp8SplFixerArrayChange($method)
     {
         if (80000 <= \PHP_VERSION_ID) {

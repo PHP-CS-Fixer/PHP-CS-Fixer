@@ -20,17 +20,6 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
-``ensure_fully_multiline``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use option ``on_multiline`` instead.
-
-ensure every argument of a multiline argument list is on its own line
-
-Allowed types: ``bool``
-
-Default value: ``false``
-
 ``on_multiline``
 ~~~~~~~~~~~~~~~~
 

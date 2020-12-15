@@ -415,27 +415,6 @@ final class RuleSetTest extends TestCase
         }
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\RuleSet\RuleSet::create is deprecated and will be removed in 3.0, use the constructor.
-     */
-    public function testCreate()
-    {
-        $ruleSet = RuleSet::create();
-
-        static::assertInstanceOf(RuleSet::class, $ruleSet);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\RuleSet\RuleSet::getSetDefinitionNames is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.
-     */
-    public function testGetSetDefinitionNames()
-    {
-        $ruleSet = new RuleSet([]);
-        $ruleSet->getSetDefinitionNames();
-    }
-
     private function findInSets(array $sets, $ruleName, $config)
     {
         $duplicates = [];

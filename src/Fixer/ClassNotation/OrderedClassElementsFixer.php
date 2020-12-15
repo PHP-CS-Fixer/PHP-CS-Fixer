@@ -14,7 +14,6 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -280,10 +279,7 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
-                'sortAlgorithm'
-            ))
+            (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'))
                 ->setAllowedValues($this->supportedSortAlgorithms)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
