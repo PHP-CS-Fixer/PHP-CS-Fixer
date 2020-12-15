@@ -302,15 +302,21 @@ yield  from  baz();
     {
         $hasMoreThanOneAncestor = false;
 
-        for ($i = $index + 1; $i < $tokens->getNextTokenOfKind($index, ['{']); ++$i) {
-            $token = $tokens[$i];
+        while (++$index) {
+            $token = $tokens[$index];
 
-            if (false !== strpos($token->getContent(), "\n") && $hasMoreThanOneAncestor) {
-                return true;
+            if ($token->equals(',')) {
+                $hasMoreThanOneAncestor = true;
+
+                continue;
             }
 
-            if (',' === $token->getContent()) {
-                $hasMoreThanOneAncestor = true;
+            if ($token->equals('{')) {
+                return false;
+            }
+
+            if ($hasMoreThanOneAncestor && false !== strpos($token->getContent(), "\n")) {
+                return true;
             }
         }
 
