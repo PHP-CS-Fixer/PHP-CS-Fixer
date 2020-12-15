@@ -37,6 +37,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -96,6 +97,12 @@ final class DescribeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity() && $output instanceof ConsoleOutputInterface) {
+            $stdErr = $output->getErrorOutput();
+            $stdErr->writeln($this->getApplication()->getLongVersion());
+            $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+        }
+
         $name = $input->getArgument('name');
 
         try {
@@ -139,6 +146,7 @@ final class DescribeCommand extends Command
 
         /** @var FixerInterface $fixer */
         $fixer = $fixers[$name];
+
         if ($fixer instanceof DefinedFixerInterface) {
             $definition = $fixer->getDefinition();
         } else {
@@ -146,6 +154,7 @@ final class DescribeCommand extends Command
         }
 
         $description = $definition->getSummary();
+
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
             $message = [] === $successors
@@ -156,14 +165,17 @@ final class DescribeCommand extends Command
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
+
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
         }
 
         $output->writeln($description);
+
         if ($definition->getDescription()) {
             $output->writeln($definition->getDescription());
         }
+
         $output->writeln('');
 
         if ($fixer->isRisky()) {
@@ -184,8 +196,8 @@ final class DescribeCommand extends Command
 
             foreach ($options as $option) {
                 $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
-
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
+
                 if (null !== $allowed) {
                     foreach ($allowed as &$value) {
                         if ($value instanceof AllowedValueSubset) {
@@ -209,6 +221,7 @@ final class DescribeCommand extends Command
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';
+
                 if ($option->hasDefault()) {
                     $line .= sprintf(
                         'defaults to <comment>%s</comment>',
@@ -225,6 +238,7 @@ final class DescribeCommand extends Command
                         OutputFormatter::escape(lcfirst($option->getDeprecationMessage()))
                     );
                 }
+
                 if ($option instanceof AliasedFixerOption) {
                     $line .= '; <error>DEPRECATED</error> alias: <comment>'.$option->getAlias().'</comment>';
                 }
@@ -302,8 +316,7 @@ final class DescribeCommand extends Command
                     $output->writeln(sprintf(' * Example #%d.', $index + 1));
                 }
 
-                $output->writeln($diffFormatter->format($diff, '   %s'));
-                $output->writeln('');
+                $output->writeln([$diffFormatter->format($diff, '   %s'), '']);
             }
         }
     }
@@ -321,7 +334,6 @@ final class DescribeCommand extends Command
         $fixers = $this->getFixers();
 
         $output->writeln(sprintf('<info>Description of the</info> %s <info>set.</info>', $ruleSetDefinitions[$name]->getName()));
-
         $output->writeln($this->replaceRstLinks($ruleSetDefinitions[$name]->getDescription()));
 
         if ($ruleSetDefinitions[$name]->isRisky()) {
@@ -378,6 +390,7 @@ final class DescribeCommand extends Command
         }
 
         $fixers = [];
+
         foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
@@ -409,11 +422,11 @@ final class DescribeCommand extends Command
     {
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
             $describe = [
-                'set' => $this->getSetNames(),
+                'sets' => $this->getSetNames(),
                 'rules' => $this->getFixers(),
             ];
         } elseif ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $describe = 'set' === $type ? ['set' => $this->getSetNames()] : ['rules' => $this->getFixers()];
+            $describe = 'set' === $type ? ['sets' => $this->getSetNames()] : ['rules' => $this->getFixers()];
         } else {
             return;
         }
@@ -421,6 +434,7 @@ final class DescribeCommand extends Command
         /** @var string[] $items */
         foreach ($describe as $list => $items) {
             $output->writeln(sprintf('<comment>Defined %s:</comment>', $list));
+
             foreach ($items as $name => $item) {
                 $output->writeln(sprintf('* <info>%s</info>', \is_string($name) ? $name : $item));
             }
