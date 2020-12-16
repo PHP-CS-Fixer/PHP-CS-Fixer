@@ -52,7 +52,11 @@ final class IsNullFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure(['use_yoda_style' => false]);
 
-        $configuration = static::getObjectAttribute($this->fixer, 'configuration');
+        $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        $configuration = $reflectionProperty->getValue($this->fixer);
+
         static::assertFalse($configuration['use_yoda_style']);
     }
 
