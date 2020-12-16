@@ -204,7 +204,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     public function testConfigureWithInvalidOption()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "replacements" with value true is expected to be of type "array", but is of type ".*ool.*"\.$/');
+        $this->expectExceptionMessageMatches('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "replacements" with value true is expected to be of type "array", but is of type ".*ool.*"\.$/');
 
         $this->fixer->configure([
             'replacements' => true,
@@ -214,7 +214,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     public function testConfigureWithUnknownOption()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "case_sensitive", "fix_annotation", "fix_inline", "replacements"\.$/');
+        $this->expectExceptionMessageMatches('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "case_sensitive", "fix_annotation", "fix_inline", "replacements"\.$/');
 
         $this->fixer->configure([
             'foo' => true,
@@ -230,7 +230,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     public function testConfigureWithInvalidReplacements(array $replacements, $caseSensitive, $expectedMessage)
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp(sprintf(
+        $this->expectExceptionMessageMatches(sprintf(
             '/^\[general_phpdoc_tag_rename\] Invalid configuration: %s$/',
             preg_quote($expectedMessage, '/')
         ));
