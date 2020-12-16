@@ -351,7 +351,7 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
     public function testConfigureWithInvalidTagType()
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageRegExp('#^\[phpdoc_tag_type\] Invalid configuration: Unknown tag type "foo"\.#');
+        $this->expectExceptionMessageMatches('#^\[phpdoc_tag_type\] Invalid configuration: Unknown tag type "foo"\.#');
 
         $this->fixer->configure([
             'tags' => ['inheritDoc' => 'foo'],
