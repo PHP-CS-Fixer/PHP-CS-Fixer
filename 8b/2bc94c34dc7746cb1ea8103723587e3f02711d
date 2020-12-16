@@ -1,0 +1,9 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-16T10:38:37Z
+
+Reason 1 https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5351/files?diff=split&w=1#r544162908
+> it is a way that the default config is `VERSION_NEWEST`, so we can add support for future PHPUnit versions to the rule WITHOUT a need to change default config, which would be a BC breaker
+
+Reason 2 https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5025#issuecomment-647297125
+> I guess to provide forward compatibility
