@@ -11,7 +11,7 @@ jobs:
         include:
           - operating-system: 'ubuntu-20.04'
             php-version: '5.6'
-            composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
+            composer-flags: '--prefer-lowest --prefer-stable' # should be checked on lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.0'
@@ -96,7 +96,7 @@ jobs:
           max_attempts: 5
           retry_wait_seconds: 30
           command: |
-            composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
+            composer update --no-interaction --no-progress --optimize-autoloader ${{ matrix.composer-flags }}
             composer info -D
 
       - name: Execute migration rules
