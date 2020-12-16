@@ -32,9 +32,9 @@ final class PharTest extends AbstractSmokeTest
     private static $pharCwd;
     private static $pharName;
 
-    public static function setUpBeforeClass()
+    public static function doSetUpBeforeClass()
     {
-        parent::setUpBeforeClass();
+        parent::doSetUpBeforeClass();
 
         self::$pharCwd = __DIR__.'/../..';
         self::$pharName = 'php-cs-fixer.phar';

@@ -74,11 +74,26 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
-    private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
+    private static function ensureTraversableContainsIsAvailable()
     {
         if (!class_exists(TraversableContains::class)) {
             static::markTestSkipped('TraversableContains not available.');
         }
+
+        try {
+            new TraversableContains('');
+        } catch (\Error $e) {
+            if (false === strpos($e->getMessage(), 'Cannot instantiate abstract class')) {
+                throw $e;
+            }
+
+            static::markTestSkipped('TraversableContains not available.');
+        }
+    }
+
+    private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
+    {
+        self::ensureTraversableContainsIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
             // if `$lastsupportedVersion` is already a snapshot version
@@ -100,9 +115,7 @@ final class CiConfigurationTest extends TestCase
             static::assertContains($expectedVersion, $ciVersions);
         }
 
-        if (!class_exists(TraversableContains::class)) {
-            static::markTestSkipped('TraversableContains not available.');
-        }
+        self::ensureTraversableContainsIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
             new TraversableContains($lastSupportedVersion),
@@ -117,7 +130,7 @@ final class CiConfigurationTest extends TestCase
         });
 
         return array_map(function ($job) {
-            return (string) $job['php'];
+            return \is_string($job['php']) ? $job['php'] : sprintf('%.1f', $job['php']);
         }, $jobs);
     }
 

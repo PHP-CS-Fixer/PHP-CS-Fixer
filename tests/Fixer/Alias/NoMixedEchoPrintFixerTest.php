@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -277,7 +278,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([]);
 
-        static::assertAttributeSame(T_PRINT, 'candidateTokenType', $this->fixer);
+        static::assertCandidateTokenType(T_PRINT, $this->fixer);
     }
 
     /**
@@ -314,5 +315,13 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 '#^\[no_mixed_echo_print\] Invalid configuration: The option "use" with value "_invalid_" is invalid\. Accepted values are: "print", "echo"\.$#',
             ],
         ];
+    }
+
+    private static function assertCandidateTokenType($expected, AbstractFixer $fixer)
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
+        $reflectionProperty->setAccessible(true);
+
+        static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 }

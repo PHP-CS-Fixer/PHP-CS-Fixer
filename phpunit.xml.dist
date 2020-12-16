@@ -18,6 +18,7 @@
     enforceTimeLimit="true"
     processIsolation="false"
     stopOnFailure="false"
+    timeoutForSmallTests="2"
     verbose="true"
 >
     <testsuites>
