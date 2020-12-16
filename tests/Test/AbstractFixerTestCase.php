@@ -195,7 +195,6 @@ abstract class AbstractFixerTestCase extends TestCase
             // It may only shrink, never add anything to it.
             $fixerNamesWithKnownMissingSamplesWithConfig = [ // @TODO 3.0 - remove this
                 'is_null', // has only one option which is deprecated
-                'php_unit_dedicate_assert_internal_type',
             ];
 
             if (\count($configSamplesProvided) < 2) {
