@@ -133,7 +133,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
             '<?php interface Foo {public function __tostring();}',
         ];
 
-        yield 'method declaration in interface' => [
+        yield 'method declaration in trait' => [
             '<?php trait Foo {public function __toString(){}}',
             '<?php trait Foo {public function __tostring(){}}',
         ];
