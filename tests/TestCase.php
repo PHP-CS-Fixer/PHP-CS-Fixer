@@ -12,7 +12,7 @@
 
 namespace PhpCsFixer\Tests;
 
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use LegacyPHPUnit\TestCase as BaseTestCase;
 use PHPUnitGoodPractices\Polyfill\PolyfillTrait;
 use PHPUnitGoodPractices\Traits\ExpectationViaCodeOverAnnotationTrait;
 use PHPUnitGoodPractices\Traits\ExpectOverSetExceptionTrait;

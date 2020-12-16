@@ -1,5 +1,6 @@
 {
     "symbol-whitelist" : [
+        "LegacyPHPUnit\\TestCase",
         "PhpCsFixer\\PhpunitConstraintIsIdenticalString\\Constraint\\IsIdenticalString",
         "PhpCsFixer\\Tests\\Test\\Constraint\\SameStringsConstraint",
         "PhpCsFixer\\Tests\\Test\\IsIdenticalConstraint",

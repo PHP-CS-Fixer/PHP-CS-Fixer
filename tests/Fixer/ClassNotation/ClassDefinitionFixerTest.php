@@ -40,10 +40,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertConfigurationSame($defaultConfig, $fixer);
 
         $fixer->configure(null);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertConfigurationSame($defaultConfig, $fixer);
     }
 
     public function testConfigureDefaultToNull()
@@ -56,10 +56,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
 
         $fixer = new ClassDefinitionFixer();
         $fixer->configure($defaultConfig);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertConfigurationSame($defaultConfig, $fixer);
 
         $fixer->configure([]);
-        static::assertAttributeSame($defaultConfig, 'configuration', $fixer);
+        static::assertConfigurationSame($defaultConfig, $fixer);
     }
 
     /**
@@ -696,6 +696,14 @@ $a = new class implements
                 "<?php\r\nclass Aaa implements\r\n\tBbb, Ccc,\r\n\tDdd\r\n\t{\r\n\t}",
             ],
         ];
+    }
+
+    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer)
+    {
+        $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
+        $reflectionProperty->setAccessible(true);
+
+        static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
     private function doTestClassyInheritanceInfo($source, $label, array $expected)

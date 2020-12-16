@@ -24,18 +24,18 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     private $fixer;
 
-    protected function setUp()
+    protected function doSetUp()
     {
         $this->fixer = new FunctionReferenceTestFixer();
 
-        parent::setUp();
+        parent::doSetUp();
     }
 
-    protected function tearDown()
+    protected function doTearDown()
     {
         $this->fixer = null;
 
-        parent::tearDown();
+        parent::doTearDown();
     }
 
     /**

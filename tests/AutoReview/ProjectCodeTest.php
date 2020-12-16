@@ -262,7 +262,7 @@ final class ProjectCodeTest extends TestCase
 
         foreach ($publicMethods as $method) {
             static::assertMatchesRegularExpression(
-                '/^(test|expect|provide|setUpBeforeClass$|tearDownAfterClass$)/',
+                '/^(test|expect|provide|doSetUpBeforeClass$|doTearDownAfterClass$)/',
                 $method->getName(),
                 sprintf('Public method "%s::%s" is not properly named.', $reflectionClass->getName(), $method->getName())
             );
