@@ -13,9 +13,7 @@
 namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -198,7 +196,7 @@ Integration of %s.
         }
 
         if (!isset($allowedVersionsForFixer)) {
-            static::markTestSkipped(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+            throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
         $allowedVersionsForRuleset = array_filter(
@@ -274,15 +272,7 @@ Integration of %s.
         $targetVersion = null;
         $fixer = self::getFixerByName($ruleName);
 
-        if (!$fixer instanceof ConfigurableFixerInterface) {
-            static::markTestSkipped(sprintf('The fixer "%s" is not configurable.', $fixer->getName()));
-        }
-
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
-            if ($option instanceof DeprecatedFixerOption) {
-                continue;
-            }
-
             if ('target' === $option->getName()) {
                 $targetVersion = $option->getDefault();
 
@@ -291,7 +281,7 @@ Integration of %s.
         }
 
         if (null === $targetVersion) {
-            static::markTestSkipped(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+            throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
         return $targetVersion;

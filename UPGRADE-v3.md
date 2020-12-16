@@ -76,7 +76,6 @@ Rule | Option | Change
 `ordered_class_elements`                 | `sortAlgorithm`                              | option was renamed, use `sort_algorithm` instead
 `ordered_imports`                        | `importsOrder`                               | option was renamed, use `imports_order`
 `ordered_imports`                        | `sortAlgorithm`                              | option was renamed, use `sort_algorithm`
-`php_unit_dedicate_assert_internal_type` | `target`                                     | option was removed, it was not used
 `php_unit_dedicate_assert`               | `functions`                                  | option was removed, use `target` instead
 
 ### Changed default values of options
