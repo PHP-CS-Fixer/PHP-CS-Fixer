@@ -14,6 +14,7 @@
         "PHPUnitGoodPractices\\Traits\\ProphecyOverMockObjectTrait",
         "PHPUnitGoodPractices\\Traits\\ProphesizeOnlyInterfaceTrait",
         "Prophecy\\Argument",
+        "Prophecy\\PhpUnit\\ProphecyTrait",
         "Symfony\\Component\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
