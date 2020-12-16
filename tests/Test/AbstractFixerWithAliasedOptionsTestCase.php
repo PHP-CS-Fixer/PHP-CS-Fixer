@@ -30,9 +30,9 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
      */
     private $fixerWithAliasedConfig;
 
-    protected function tearDown()
+    protected function doTearDown()
     {
-        parent::tearDown();
+        parent::doTearDown();
 
         $this->fixerWithAliasedConfig = null;
     }
@@ -62,7 +62,7 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
     protected function configureFixerWithAliasedOptions(array $configuration)
     {
         if (!$this->fixer instanceof ConfigurationDefinitionFixerInterface) {
-            throw new \LogicException('Fixer is not configurable');
+            throw new \LogicException('Fixer is not configurable.');
         }
 
         $this->fixer->configure($configuration);
@@ -85,7 +85,7 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
         }
 
         if (!$hasAliasedOptions) {
-            throw new \LogicException('Fixer has no aliased options');
+            throw new \LogicException('Fixer has no aliased options.');
         }
 
         $this->fixerWithAliasedConfig = clone $this->fixer;

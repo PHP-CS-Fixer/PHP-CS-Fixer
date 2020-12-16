@@ -66,9 +66,9 @@ abstract class AbstractFixerTestCase extends TestCase
         'general_phpdoc_tag_rename' => true,
     ];
 
-    protected function setUp()
+    protected function doSetUp()
     {
-        parent::setUp();
+        parent::doSetUp();
 
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
@@ -79,9 +79,9 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function doTearDown()
     {
-        parent::tearDown();
+        parent::doTearDown();
 
         $this->linter = null;
         $this->fixer = null;

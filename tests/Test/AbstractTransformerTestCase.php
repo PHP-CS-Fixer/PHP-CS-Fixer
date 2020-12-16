@@ -29,9 +29,9 @@ abstract class AbstractTransformerTestCase extends TestCase
      */
     protected $transformer;
 
-    protected function setUp()
+    protected function doSetUp()
     {
-        parent::setUp();
+        parent::doSetUp();
 
         $this->transformer = $this->createTransformer();
 
@@ -41,9 +41,9 @@ abstract class AbstractTransformerTestCase extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function doTearDown()
     {
-        parent::tearDown();
+        parent::doTearDown();
 
         $this->transformer = null;
 
