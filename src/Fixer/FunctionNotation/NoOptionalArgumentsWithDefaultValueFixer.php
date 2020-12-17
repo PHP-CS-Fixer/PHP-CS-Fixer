@@ -235,18 +235,21 @@ final class NoOptionalArgumentsWithDefaultValueFixer extends AbstractFixer
         }
 
         $token = $tokens[$start];
-        $argument = $token->getContent();
+        $value = $token->getContent();
+        $defaultValue = $parameter->getDefaultValue();
 
-        if ($token->isGivenKind(T_STRING) && \defined($argument)) {
-            $argumentValue = \constant($argument);
-        } elseif ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
-            $argumentValue = trim($argument, '"\'');
-        } elseif ($token->isGivenKind(T_LNUMBER)) {
-            $argumentValue = $argument + 0;
-        } else {
-            return false;
+        if ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            return trim($value, '"\'') === $defaultValue;
         }
 
-        return $argumentValue === $parameter->getDefaultValue();
+        if ($token->isGivenKind(T_LNUMBER)) {
+            return var_export($defaultValue, true) === $value;
+        }
+
+        if ($token->isGivenKind(T_STRING) && \defined($value)) {
+            return \constant($value) === $defaultValue;
+        }
+
+        return false;
     }
 }
