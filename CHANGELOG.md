@@ -3,14 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
-Changelog for v2.16.8
----------------------
+Changelog for v2.16.10
+----------------------
 
-* bug #5325 NoBreakCommentFixer - better throw handling (SpacePossum)
-* bug #5327 StaticLambdaFixer - fix for arrow function used in class with $this (kubawerlos, SpacePossum)
-* bug #5333 Fix file missing for php8 (jderusse)
-* minor #5328 Fixed deprecation message version (GrahamCampbell)
-* minor #5330 DX: cleanup Github Actions configs (kubawerlos)
+* minor #5314 Enable testing with PHPUnit 9.x (sanmai)
+* minor #5338 clean ups (SpacePossum)
+* minor #5339 NoEmptyStatementFixer - fix more cases (SpacePossum)
+* minor #5340 NamedArgumentTransformer - Introduction (SpacePossum)
+* minor #5344 Update docs: do not use deprecated create method (SpacePossum)
+* minor #5356 RuleSet description fixes (SpacePossum)
+* minor #5360 DX: clean up detectIndent methods (kubawerlos)
+* minor #5370 DX: update PHPUnit usage to use external Prophecy trait and solve warning (keradus)
+* minor #5373 DX: MagicMethodCasingFixerTest - fix test case description (keradus)
+* minor #5374 DX: PhpUnitDedicateAssertInternalTypeFixer - add code sample for non-default config (keradus)
 
 Changelog for v2.16.9
 ---------------------
@@ -57,6 +62,15 @@ Changelog for v2.16.9
 * minor #5311 OrderedClassElementsFixer - PHPUnit Bridge support (ktomk)
 * minor #5316 PHP8 - Attribute support (SpacePossum)
 * minor #5321 DX: little code grooming (keradus)
+
+Changelog for v2.16.8
+---------------------
+
+* bug #5325 NoBreakCommentFixer - better throw handling (SpacePossum)
+* bug #5327 StaticLambdaFixer - fix for arrow function used in class with $this (kubawerlos, SpacePossum)
+* bug #5333 Fix file missing for php8 (jderusse)
+* minor #5328 Fixed deprecation message version (GrahamCampbell)
+* minor #5330 DX: cleanup Github Actions configs (kubawerlos)
 
 Changelog for v2.16.5
 ---------------------
