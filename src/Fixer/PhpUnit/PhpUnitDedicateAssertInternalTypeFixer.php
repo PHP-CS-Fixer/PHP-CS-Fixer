@@ -69,6 +69,19 @@ final class MyTest extends \PHPUnit\Framework\TestCase
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+final class MyTest extends \PHPUnit\Framework\TestCase
+{
+    public function testMe()
+    {
+        $this->assertInternalType("array", $var);
+        $this->assertInternalType("boolean", $var);
+    }
+}
+',
+                    ['target' => PhpUnitTargetVersion::VERSION_7_5]
+                ),
             ],
             null,
             'Risky when PHPUnit methods are overridden or when project has PHPUnit incompatibilities.'

@@ -181,6 +181,18 @@ Then, add the following command to your CI:
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``$TRAVIS_COMMIT_RANGE`` or ``HEAD~..HEAD``.
 
+Environment options
+-------------------
+
+The ``PHP_CS_FIXER_IGNORE_ENV`` environment variable can be used to ignore any environment requirements.
+This includes requirements like missing PHP extensions, unsupported PHP versions or by using HHVM.
+
+NOTE: Execution may be unstable when used.
+
+.. code-block:: console
+
+    $ PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer.phar fix /path/to/dir
+
 Exit code
 ---------
 

@@ -45,6 +45,26 @@ Example #1
         }
     }
 
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['target' => '7.5']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -3,7 +3,7 @@
+    {
+        public function testMe()
+        {
+   -        $this->assertInternalType("array", $var);
+   -        $this->assertInternalType("boolean", $var);
+   +        $this->assertIsArray($var);
+   +        $this->assertIsBool($var);
+        }
+    }
+
 Rule sets
 ---------
 
