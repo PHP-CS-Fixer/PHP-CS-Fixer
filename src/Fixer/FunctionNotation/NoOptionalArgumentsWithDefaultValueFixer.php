@@ -51,9 +51,7 @@ final class NoOptionalArgumentsWithDefaultValueFixer extends AbstractFixer
         $operations = [];
 
         foreach ($this->getGlobalCalls($tokens) as $parenthesisIndex => $call) {
-            try {
-                $parameters = $this->getParameters($call);
-            } catch (\ReflectionException $ex) {
+            if (!$parameters = $this->getParameters($call)) {
                 continue;
             }
 
