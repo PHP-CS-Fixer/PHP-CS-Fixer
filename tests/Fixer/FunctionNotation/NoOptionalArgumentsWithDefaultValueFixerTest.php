@@ -28,6 +28,10 @@ final class NoOptionalArgumentsWithDefaultValueFixerTest extends AbstractFixerTe
      */
     public function testFix($expected, $input = null)
     {
+        if (\PHP_VERSION_ID < 80000) {
+            static::markTestSkipped('PHP >= 8.0 is required.');
+        }
+
         $this->doTest($expected, $input);
     }
 
