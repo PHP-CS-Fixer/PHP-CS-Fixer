@@ -148,16 +148,19 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
-        $expectedResult3Files = substr($expectedResult3FilesLine, 0, strpos($expectedResult3FilesLine, ' '));
+        $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
+        $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
+        $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
 
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})\n%s$/',
+            '/^(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/').' by Fabien Potencier and Dariusz Ruminski',
             preg_quote(sprintf('Runtime: PHP %s', PHP_VERSION), '/'),
             preg_quote('Loaded config default from ".php_cs.dist".', '/'),
-            \strlen($expectedResult3Files),
+            \strlen($expectedResult3FilesDots),
+            preg_quote($expectedResult3FilesPercentage, '/'),
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );
 
@@ -166,8 +169,8 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
         preg_match($pattern, $result3->getError(), $matches);
 
         static::assertArrayHasKey(1, $matches);
-        static::assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
-        static::assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
+        static::assertSame(substr_count($expectedResult3FilesDots, '.'), substr_count($matches[1], '.'));
+        static::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
 
         static::assertMatchesRegularExpression(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
