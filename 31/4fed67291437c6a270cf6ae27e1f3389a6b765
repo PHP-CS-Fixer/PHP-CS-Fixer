@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-12-16T07:35:36Z
+
+Nice catch! :+1:
+Must have messed up the conflict merging.
+Please see the failing utest and when green RTM
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-16T11:11:03Z
+
+CI broken not related. all except 2.16 is broken due to PHPUnit 9 merge
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-17T23:00:38Z
+
+looks like 3.0 is broken due to this change on 2.x line... let me see...
