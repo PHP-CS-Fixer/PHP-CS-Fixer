@@ -29,7 +29,7 @@ final class Psr0FixerTest extends AbstractFixerTestCase
         $fileProphecy->willExtend(\SplFileInfo::class);
         $fileProphecy->getBasename('.php')->willReturn('Bar');
         $fileProphecy->getExtension()->willReturn('php');
-        $fileProphecy->getRealPath()->willReturn(__DIR__.'/Psr0/Foo/Bar.php');
+        $fileProphecy->getRealPath()->willReturn(__DIR__.\DIRECTORY_SEPARATOR.'Psr0'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php');
         $file = $fileProphecy->reveal();
 
         $expected = <<<'EOF'

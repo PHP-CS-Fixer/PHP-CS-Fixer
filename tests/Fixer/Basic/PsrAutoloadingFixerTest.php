@@ -25,6 +25,135 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
 {
     /**
+     * This is new test method, to replace old one one day.
+     *
+     * @param string      $expected
+     * @param null|string $input
+     * @param null|string $dir
+     *
+     * @dataProvider provideFixNewCases
+     */
+    public function testFixNew($expected, $input = null, $dir = null)
+    {
+        if (null !== $dir) {
+            $this->fixer->configure(['dir' => $dir]);
+        }
+
+        $this->doTest($expected, $input, $this->getTestFile(__FILE__));
+    }
+
+    public static function provideFixNewCases()
+    {
+        foreach (['class', 'interface', 'trait'] as $element) {
+            yield sprintf('%s with originally short name', $element) => [
+                sprintf('<?php %s PsrAutoloadingFixerTest {}', $element),
+                sprintf('<?php %s Foo {}', $element),
+            ];
+        }
+
+        yield 'abstract class' => [
+            '<?php abstract class PsrAutoloadingFixerTest {}',
+            '<?php abstract class WrongName {}',
+        ];
+
+        yield 'final class' => [
+            '<?php final class PsrAutoloadingFixerTest {}',
+            '<?php final class WrongName {}',
+        ];
+
+        yield 'class with originally long name' => [
+            '<?php class PsrAutoloadingFixerTest {}',
+            '<?php class FooFooFooFooFooFooFooFooFooFooFooFooFoo {}',
+        ];
+
+        yield 'class with wrong casing' => [
+            '<?php class PsrAutoloadingFixerTest {}',
+            '<?php class psrautoloadingfixertest {}',
+        ];
+
+        yield 'namespaced class with wrong casing' => [
+            '<?php namespace Foo; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo; class psrautoloadingfixertest {}',
+        ];
+
+        yield 'class with wrong casing (1 level namespace)' => [
+            '<?php class Basic_PsrAutoloadingFixerTest {}',
+            '<?php class BASIC_PSRAUTOLOADINGFIXERTEST {}',
+        ];
+
+        yield 'class with wrong casing (2 levels namespace)' => [
+            '<?php class Fixer_Basic_PsrAutoloadingFixerTest {}',
+            '<?php class FIXER_BASIC_PSRAUTOLOADINGFIXERTEST {}',
+        ];
+
+        yield 'class with name not matching directory structure' => [
+            '<?php class PsrAutoloadingFixerTest {}',
+            '<?php class Aaaaa_Bbbbb_PsrAutoloadingFixerTest {}',
+        ];
+
+        yield 'configured directory (1 subdirectory)' => [
+            '<?php class Basic_PsrAutoloadingFixerTest {}',
+            '<?php class PsrAutoloadingFixerTest {}',
+            __DIR__.'/..',
+        ];
+
+        yield 'configured directory (2 subdirectories)' => [
+            '<?php class Fixer_Basic_PsrAutoloadingFixerTest {}',
+            '<?php class PsrAutoloadingFixerTest {}',
+            __DIR__.'/../..',
+        ];
+
+        yield 'multiple classy elements in file' => [
+            '<?php interface Foo {} class Bar {}',
+        ];
+
+        yield 'namespace with wrong casing' => [
+            '<?php namespace Fixer\\Basic; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Fixer\\BASIC; class PsrAutoloadingFixerTest {}',
+            __DIR__.'/../..',
+        ];
+
+        yield 'multiple namespaces in file' => [
+            '<?php namespace Foo\\Helpers; function helper() {}; namespace Foo\\Domain; class Feature {}',
+        ];
+
+        yield 'namespace and class with comments' => [
+            '<?php namespace /* namespace here */ PhpCsFixer\\Tests\\Fixer\\Basic; class /* hi there */ PsrAutoloadingFixerTest /* hello */ {} /* class end */',
+            '<?php namespace /* namespace here */ PhpCsFixer\\Tests\\Fixer\\Basic; class /* hi there */ Foo /* hello */ {} /* class end */',
+        ];
+
+        yield 'namespace partially matching directory structure' => [
+            '<?php namespace Foo\\Bar\\Baz\\FIXER\\Basic; class PsrAutoloadingFixerTest {}',
+        ];
+
+        yield 'namespace partially matching directory structure with comment' => [
+            '<?php namespace /* hi there */ Foo\\Bar\\Baz\\FIXER\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+        ];
+
+        yield 'namespace partially matching directory structure with configured directory' => [
+            '<?php namespace Foo\\Bar\\Baz\\Fixer\\Basic; class PsrAutoloadingFixerTest {}',
+            '<?php namespace Foo\\Bar\\Baz\\FIXER\\Basic; class PsrAutoloadingFixerTest {}',
+            __DIR__.'/../..',
+        ];
+
+        yield 'namespace partially matching directory structure with comment and configured directory' => [
+            '<?php namespace /* hi there */ Foo\\Bar\\Baz\\Fixer\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+            '<?php namespace /* hi there */ Foo\\Bar\\Baz\\FIXER\\Basic; class /* hi there */ PsrAutoloadingFixerTest {}',
+            __DIR__.'/../..',
+        ];
+
+        yield 'namespace not matching directory structure' => [
+            '<?php namespace Foo\\Bar\\Baz; class PsrAutoloadingFixerTest {}',
+        ];
+
+        yield 'namespace not matching directory structure with configured directory' => [
+            '<?php namespace Foo\\Bar\\Baz; class PsrAutoloadingFixerTest {}',
+            null,
+            __DIR__,
+        ];
+    }
+
+    /**
      * @param string            $expected
      * @param null|string       $input
      * @param null|\SplFileInfo $file
@@ -51,10 +180,10 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $fileProphecy->willExtend(\SplFileInfo::class);
         $fileProphecy->getBasename('.php')->willReturn('Bar');
         $fileProphecy->getExtension()->willReturn('php');
-        $fileProphecy->getRealPath()->willReturn(__DIR__.'/Psr/Foo/Bar.php');
+        $fileProphecy->getRealPath()->willReturn(__DIR__.\DIRECTORY_SEPARATOR.'Psr'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php');
         $file = $fileProphecy->reveal();
 
-        yield [
+        yield [ // namespace with wrong casing
             '<?php
 namespace Psr\Foo;
 class Bar {}
@@ -67,7 +196,7 @@ class bar {}
             __DIR__,
         ];
 
-        yield [
+        yield [ // class with wrong casing (2 levels namespace)
             '<?php
 class Psr_Foo_Bar {}
 ',
@@ -78,7 +207,7 @@ class Psr_fOo_bAr {}
             __DIR__,
         ];
 
-        yield [
+        yield [ // namespaced class with wrong casing
             '<?php
 namespace Psr\Foo;
 class Bar {}
@@ -91,7 +220,7 @@ class bar {}
             __DIR__,
         ];
 
-        yield [ // ignore multiple classy in file
+        yield [ // multiple classy elements in file
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 interface SomeInterfaceToBeUsedInTests {}
@@ -99,7 +228,7 @@ class blah {}
 /* class foo */',
         ];
 
-        yield [ // ignore multiple namespaces in file
+        yield [ // multiple namespaces in file
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 interface SomeInterfaceToBeUsedInTests {}
@@ -147,7 +276,7 @@ final class blah {}
 ',
         ];
 
-        yield [ // class with comment
+        yield [ // namespace and class with comments
             '<?php
 namespace /* namespace here */ PhpCsFixer\Fixer\Psr;
 class /* hi there */ PsrAutoloadingFixerTest /* why hello */ {}
@@ -160,7 +289,7 @@ class /* hi there */ blah /* why hello */ {}
 ',
         ];
 
-        yield [ // partial namespace
+        yield [ // namespace partially matching directory structure
             '<?php
 namespace Foo\Bar\Baz\FIXER\Basic;
 class PsrAutoloadingFixer {}
@@ -169,7 +298,7 @@ class PsrAutoloadingFixer {}
             $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
         ];
 
-        yield [ // partial namespace with comment
+        yield [ // namespace partially matching directory structure with comment
             '<?php
 namespace /* hi there */ Foo\Bar\Baz\FIXER\Basic;
 class /* hi there */ PsrAutoloadingFixer {}
@@ -178,7 +307,7 @@ class /* hi there */ PsrAutoloadingFixer {}
             $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
         ];
 
-        yield [ // partial namespace
+        yield [ // namespace not matching directory structure
             '<?php
 namespace Foo\Bar\Baz;
 class PsrAutoloadingFixer {}
@@ -187,7 +316,7 @@ class PsrAutoloadingFixer {}
             $this->getTestFile(__DIR__.'/../../../src/Fixer/Basic/PsrAutoloadingFixer.php'),
         ];
 
-        yield [ // partial namespace with directory
+        yield [ // namespace partially matching directory structure with configured directory
             '<?php
 namespace Foo\Bar\Baz\Fixer\Basic;
 class PsrAutoloadingFixer {}
@@ -200,7 +329,7 @@ class PsrAutoloadingFixer {}
             __DIR__.'/../../../src/',
         ];
 
-        yield [ // partial namespace with comment and directory
+        yield [ // namespace partially matching directory structure with comment and configured directory
             '<?php
 namespace /* hi there */ Foo\Bar\Baz\Fixer\Basic;
 class /* hi there */ PsrAutoloadingFixer {}
@@ -213,7 +342,7 @@ class /* hi there */ PsrAutoloadingFixer {}
             __DIR__.'/../../../src/',
         ];
 
-        yield [ // partial namespace with directory
+        yield [ // namespace not matching directory structure with configured directory
             '<?php
 namespace Foo\Bar\Baz;
 class PsrAutoloadingFixer {}
@@ -223,12 +352,12 @@ class PsrAutoloadingFixer {}
             __DIR__.'/../../../src/Fixer/Basic',
         ];
 
-        yield [ // short named class without namespace
+        yield [ // class with originally short name
             '<?php class PsrAutoloadingFixerTest {}',
             '<?php class Foo {}',
         ];
 
-        yield [ // long named class without namespace
+        yield [ // class with originally long name
             '<?php class PsrAutoloadingFixerTest {}',
             '<?php class PsrAutoloadingFixerTestFoo {}',
         ];
@@ -285,7 +414,7 @@ class Bar {}',
 
     public function provideFix70Cases()
     {
-        yield [ // class with anonymous class
+        yield 'class with anonymous class' => [
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 class PsrAutoloadingFixerTest {
@@ -304,21 +433,21 @@ class stdClass {
 ',
         ];
 
-        yield [ // ignore anonymous class
+        yield 'ignore anonymous class implementing interface' => [
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 new class implements Countable {};
 ',
         ];
 
-        yield [ // ignore anonymous class
+        yield 'ignore anonymous class extending other class' => [
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 new class extends stdClass {};
 ',
         ];
 
-        yield [ // ignore multiple classy in file with anonymous class between them
+        yield 'ignore multiple classy in file with anonymous class between them' => [
             '<?php
 namespace PhpCsFixer\Tests\Fixer\Basic;
 class ClassOne {};

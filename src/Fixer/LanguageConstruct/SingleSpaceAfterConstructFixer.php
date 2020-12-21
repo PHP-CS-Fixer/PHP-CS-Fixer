@@ -218,7 +218,7 @@ yield  from  baz();
                 continue;
             }
 
-            if ($token->isGivenKind(T_EXTENDS) && $this->isMultilineExtendsWithMoreThanOneAncestor($tokens, $index)) {
+            if ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
                 continue;
             }
 
@@ -298,7 +298,7 @@ yield  from  baz();
      *
      * @return bool
      */
-    private function isMultilineExtendsWithMoreThanOneAncestor(Tokens $tokens, $index)
+    private function isMultilineExtendsOrImplementsWithMoreThanOneAncestor(Tokens $tokens, $index)
     {
         $hasMoreThanOneAncestor = false;
 
