@@ -1057,6 +1057,145 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
      * @param string      $expected
      * @param null|string $input
      *
+     * @dataProvider provideFixWithThrowsCases
+     */
+    public function testFixWithThrows($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'annotations' => [
+                'throws',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithThrowsCases()
+    {
+        return [
+            'skip on 1 or 0 occurrences' => [
+                '<?php
+                    class Foo {
+                        /**
+                         * @throws Bar
+                         * @params bool $bool
+                         * @return void
+                         */
+                        public function bar() {}
+
+                        /**
+                         * @params bool $bool
+                         * @return void
+                         */
+                        public function baz() {}
+                    }
+                ',
+            ],
+            'base case' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws Bar
+                         * @throws Baz
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws Baz
+                         * @throws Bar
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+            'preserve positions if other docblock parts are present' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * Comment 1
+                         * @throws Bar
+                         * Comment 3
+                         * @throws Baz
+                         * Comment 2
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * Comment 1
+                         * @throws Baz
+                         * Comment 2
+                         * @throws Bar
+                         * Comment 3
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+            'case-insensitive' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws A
+                         * @throws b
+                         * @throws C
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws b
+                         * @throws C
+                         * @throws A
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+            'fully-qualified' => [
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws \Bar\Baz\Qux
+                         * @throws Bar
+                         * @throws Foo
+                         */
+                        public function bar() {}
+                    }
+                ',
+                '<?php
+                    class Foo
+                    {
+                        /**
+                         * @throws Bar
+                         * @throws \Bar\Baz\Qux
+                         * @throws Foo
+                         */
+                        public function bar() {}
+                    }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
      * @dataProvider provideFixWithUsesCases
      */
     public function testFixWithUses($expected, $input = null)
