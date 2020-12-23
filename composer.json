@@ -36,7 +36,7 @@
         "justinrainbow/json-schema": "^5.0",
         "keradus/cli-executor": "^1.4",
         "mikey179/vfsstream": "^1.6",
-        "php-coveralls/php-coveralls": "^2.4.1",
+        "php-coveralls/php-coveralls": "^2.4.2",
         "php-cs-fixer/accessible-object": "^1.0",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.2",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.2.1",
