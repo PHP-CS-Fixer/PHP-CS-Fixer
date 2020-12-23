@@ -1,0 +1,44 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-07T23:22:52Z
+
+pls convert to draft until ready + remove travis CI code coverage job
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-12-08T17:35:27Z
+
+It's working: https://coveralls.io/jobs/71898867
+
+After mergin https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5314 small update and we have collecting coverage from GA.
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-16T12:10:29Z
+
+diff is huge. can you drop `build/logs/clover.xml` ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-17T13:31:20Z
+
+can we have the coverage reported on PR ?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-12-17T13:34:19Z
+
+@keradus I think so, go to https://coveralls.io/github/FriendsOfPHP/PHP-CS-Fixer/settings > `PULL REQUESTS ALERTS` and enable `LEAVE COMMENTS?`.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-12-18T16:56:14Z
+
+@keradus can we try this ☝🏼 and merge this PR?
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-23T11:21:04Z
+
+I decided to merge the change as-is, to unblock coverage for the project.
+I agree that there could be some improvements done (eg collect coverage everywhere, not only on 7.4), but I don't see them blocking the PR - please, if you are able to, help and raise a PR to improve coverage integration / github actions further
