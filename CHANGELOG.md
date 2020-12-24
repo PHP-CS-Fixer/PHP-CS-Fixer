@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.17.3
+---------------------
+
+* bug #5384 PsrAutoloadingFixer - do not remove directory structure from the Class name (kubawerlos, keradus)
+* bug #5385 SingleLineCommentStyleFixer- run before NoUselessReturnFixer (kubawerlos)
+* bug #5387 SingleSpaceAfterConstructFixer - do not touch multi line implements (SpacePossum)
+* minor #5329 DX: collect coverage with Github Actions (kubawerlos)
+* minor #5380 PhpdocOrderByValueFixer - Allow sorting of throws annotations by value (localheinz, keradus)
+* minor #5383 DX: fail PHPUnit tests on warning (kubawerlos)
+* minor #5386 DX: remove incorrect priority relations (kubawerlos)
+
 Changelog for v2.17.2
 ---------------------
 
