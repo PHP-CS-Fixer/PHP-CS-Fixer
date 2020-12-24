@@ -55,7 +55,7 @@ function example($b) {
     /**
      * {@inheritdoc}
      *
-     * Must run before BlankLineBeforeReturnFixer, BlankLineBeforeStatementFixer, NoExtraBlankLinesFixer, NoWhitespaceInBlankLineFixer.
+     * Must run before BlankLineBeforeReturnFixer, BlankLineBeforeStatementFixer, NoExtraBlankLinesFixer, NoWhitespaceInBlankLineFixer, SingleLineCommentStyleFixer.
      * Must run after NoEmptyStatementFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SimplifiedNullReturnFixer.
      */
     public function getPriority()

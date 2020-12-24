@@ -1544,6 +1544,13 @@ foo; foo: echo "Bar";',
                 '<?php class Foo implements /* foo */\Countable {}',
                 '<?php class Foo implements  /* foo */\Countable {}',
             ],
+            [
+                '<?php class Foo implements
+                    \Countable,
+                    Bar,
+                    Baz
+                {}',
+            ],
         ];
     }
 
