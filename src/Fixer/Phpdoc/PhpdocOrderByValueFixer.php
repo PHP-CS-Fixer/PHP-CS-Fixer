@@ -168,6 +168,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             'group',
             'internal',
             'requires',
+            'throws',
             'uses',
         ];
 

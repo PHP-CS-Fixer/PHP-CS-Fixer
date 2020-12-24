@@ -16,6 +16,7 @@
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
     enforceTimeLimit="true"
+    failOnWarning="true"
     processIsolation="false"
     stopOnFailure="false"
     timeoutForSmallTests="2"

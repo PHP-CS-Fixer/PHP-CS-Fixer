@@ -172,11 +172,7 @@ class InvalidName {}
             return;
         }
 
-        if (null === $namespace && null !== $this->configuration['dir']) {
-            $expectedClassyName = substr(str_replace('/', '_', $file->getRealPath()), -\strlen($classyName) - 4, -4);
-        } else {
-            $expectedClassyName = $file->getBasename('.php');
-        }
+        $expectedClassyName = $this->calculateClassyName($file, $namespace, $classyName);
 
         if ($classyName !== $expectedClassyName) {
             $tokens[$classyIndex] = new Token([T_STRING, $expectedClassyName]);
@@ -209,5 +205,72 @@ class InvalidName {}
 
             $tokens->insertAt($namespaceStartIndex, $newNamespace);
         }
+    }
+
+    /**
+     * @param null|string $namespace
+     * @param string      $currentName
+     *
+     * @return string
+     */
+    private function calculateClassyName(\SplFileInfo $file, $namespace, $currentName)
+    {
+        $name = $file->getBasename('.php');
+
+        $maxNamespace = $this->calculateMaxNamespace($file, $namespace);
+
+        if (null !== $this->configuration['dir']) {
+            return ('' !== $maxNamespace ? (str_replace('\\', '_', $maxNamespace).'_') : '').$name;
+        }
+
+        $namespaceParts = array_reverse(explode('\\', $maxNamespace));
+
+        foreach ($namespaceParts as $namespacePart) {
+            $nameCandidate = sprintf('%s_%s', $namespacePart, $name);
+            if (strtolower($nameCandidate) !== strtolower(substr($currentName, -\strlen($nameCandidate)))) {
+                break;
+            }
+            $name = $nameCandidate;
+        }
+
+        return $name;
+    }
+
+    /**
+     * @param null|string $namespace
+     *
+     * @return string
+     */
+    private function calculateMaxNamespace(\SplFileInfo $file, $namespace)
+    {
+        if (null === $this->configuration['dir']) {
+            $root = \dirname($file->getRealPath());
+            while ($root !== \dirname($root)) {
+                $root = \dirname($root);
+            }
+        } else {
+            $root = realpath($this->configuration['dir']);
+        }
+
+        $namespaceAccordingToFileLocation = trim(str_replace(\DIRECTORY_SEPARATOR, '\\', substr(\dirname($file->getRealPath()), \strlen($root))), '\\');
+
+        if (null === $namespace) {
+            return $namespaceAccordingToFileLocation;
+        }
+
+        $namespaceAccordingToFileLocationPartsReversed = array_reverse(explode('\\', $namespaceAccordingToFileLocation));
+        $namespacePartsReversed = array_reverse(explode('\\', $namespace));
+
+        foreach ($namespacePartsReversed as $key => $namespaceParte) {
+            if (!isset($namespaceAccordingToFileLocationPartsReversed[$key])) {
+                break;
+            }
+            if (strtolower($namespaceParte) !== strtolower($namespaceAccordingToFileLocationPartsReversed[$key])) {
+                break;
+            }
+            unset($namespaceAccordingToFileLocationPartsReversed[$key]);
+        }
+
+        return implode('\\', array_reverse($namespaceAccordingToFileLocationPartsReversed));
     }
 }
