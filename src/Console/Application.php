@@ -53,9 +53,10 @@ final class Application extends BaseApplication
 
         $this->toolInfo = new ToolInfo();
 
-        $this->add(new ListFilesCommand($this->toolInfo));
+        // in alphabetical order
         $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
+        $this->add(new ListFilesCommand($this->toolInfo));
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
