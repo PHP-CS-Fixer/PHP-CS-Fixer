@@ -1,0 +1,20 @@
+--TEST--
+Integration test to verify that property promotion with nullable type does not crash the Tokenizer.
+--RULESET--
+{
+    "ternary_to_elvis_operator": true
+}
+--SETTINGS--
+{"checkPriority": false}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+class Foo
+{
+    public function __construct(
+        public ?float $x = 1.23,
+    ) {
+    }
+}
+
