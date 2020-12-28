@@ -81,9 +81,6 @@ final class ListFilesCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $passedConfig = $input->getOption('config');
