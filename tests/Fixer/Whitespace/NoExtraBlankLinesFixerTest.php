@@ -1263,6 +1263,21 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
                 $a = $bar ?? throw new \Exception();
             ',
         ];
+
+        yield [
+            '<?php
+                $a = $bar ?? throw new \Exception();
+
+                // Now, we gonna use it!
+                var_dump($a);
+            ',
+            '<?php
+                $a = $bar ?? throw new \Exception();
+
+                // Now, we gonna use it!
+                var_dump($a);
+            ',
+        ];
     }
 
     private function removeLinesFromString($input, array $lineNumbers)
