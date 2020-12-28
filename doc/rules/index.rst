@@ -347,7 +347,9 @@ Operator
     Pre- or post-increment and decrement operators should be used if possible.
 - `logical_operators <./operator/logical_operators.rst>`_ *(risky)*
     Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
-- `new_with_braces <./operator/new_with_braces.rst>`_
+- `new <./operator/new.rst>`_
+    All instances created with new keyword must be followed by braces (or not).
+- `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
     All instances created with new keyword must be followed by braces.
 - `not_operator_with_space <./operator/not_operator_with_space.rst>`_
     Logical NOT operators (``!``) should have leading and trailing whitespaces.

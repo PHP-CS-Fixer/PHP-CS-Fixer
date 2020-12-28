@@ -2,6 +2,10 @@
 Rule ``new_with_braces``
 ========================
 
+.. warning:: This rule is deprecated and will be removed on next major version.
+
+   You should use ``new`` instead.
+
 All instances created with new keyword must be followed by braces.
 
 Examples
