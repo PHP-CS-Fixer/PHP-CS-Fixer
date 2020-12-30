@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2020-12-30T12:01:32Z
+
+[![Coverage Status](https://coveralls.io/builds/36004516/badge)](https://coveralls.io/builds/36004516)
+
+Coverage increased (+0.005%) to 91.369% when pulling **35543399a4475a8943df787b965b46b5f5ec2b69 on Wirone:improved-nullable-type-transformer** into **98dd81994cf1710dec9fbd1218113f010c3d227c on FriendsOfPHP:2.17**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-12-30T14:24:52Z
+
+@Wirone thanks for reporting and fixing, looking good!
+
+Could you add your example from https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5401 as a test to [TernaryOperatorSpacesFixerTest](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.17.3/tests/Fixer/Operator/TernaryOperatorSpacesFixerTest.php) (with `@requires PHP 8.0`) ?
