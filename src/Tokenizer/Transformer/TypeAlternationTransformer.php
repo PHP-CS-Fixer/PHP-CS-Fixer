@@ -29,6 +29,15 @@ final class TypeAlternationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
+    public function getPriority()
+    {
+        // needs to run after TypeColonTransformer
+        return -15;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredPhpVersionId()
     {
         return 70100;
@@ -44,36 +53,63 @@ final class TypeAlternationTransformer extends AbstractTransformer
         }
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
 
-        if (!$prevToken->isGivenKind(T_STRING)) {
+        if (!$tokens[$prevIndex]->isGivenKind(T_STRING)) {
             return;
         }
 
         do {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+
             if (null === $prevIndex) {
+                return;
+            }
+
+            if (!$tokens[$prevIndex]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
                 break;
             }
-
-            $prevToken = $tokens[$prevIndex];
-
-            if ($prevToken->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
-                continue;
-            }
-
-            if (
-                $prevToken->isGivenKind(CT::T_TYPE_ALTERNATION)
-                || (
-                    $prevToken->equals('(')
-                    && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_CATCH)
-                )
-            ) {
-                $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
-            }
-
-            break;
         } while (true);
+
+        /** @var Token $prevToken */
+        $prevToken = $tokens[$prevIndex];
+
+        if ($prevToken->isGivenKind([
+            CT::T_TYPE_COLON, // `|` is part of a function return type union `foo(): A|B`
+            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `| X | Y`
+            T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `|` is part of class property `var X|Y $a;`
+        ])) {
+            $this->replaceToken($tokens, $index);
+
+            return;
+        }
+
+        if (!$prevToken->equals('(')) {
+            return;
+        }
+
+        $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+
+        /** @var Token $prePrevToken */
+        $prePrevToken = $tokens[$prevPrevTokenIndex];
+
+        if ($prePrevToken->isGivenKind([
+            T_CATCH, // `|` is part of catch `catch(X |`
+            T_FUNCTION, // `|` is part of an anonymous function variable `static function (X|Y`
+        ])) {
+            $this->replaceToken($tokens, $index);
+
+            return;
+        }
+
+        if (
+            $prePrevToken->isGivenKind(T_STRING)
+            && $tokens[$tokens->getPrevMeaningfulToken($prevPrevTokenIndex)]->isGivenKind(T_FUNCTION)
+        ) {
+            // `|` is part of function variable `function Foo (X|Y`
+            $this->replaceToken($tokens, $index);
+
+            return;
+        }
     }
 
     /**
@@ -82,5 +118,10 @@ final class TypeAlternationTransformer extends AbstractTransformer
     protected function getDeprecatedCustomTokens()
     {
         return [CT::T_TYPE_ALTERNATION];
+    }
+
+    private function replaceToken(Tokens $tokens, $index)
+    {
+        $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
     }
 }
