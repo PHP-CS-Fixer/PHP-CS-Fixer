@@ -197,4 +197,36 @@ $a = ($b
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        return [
+            'nullable types in constructor property promotion' => [
+                '<?php
+
+class Foo
+{
+    public function __construct(
+        private ?string $foo = null,
+        protected ?string $bar = null,
+        public ?string $xyz = null,
+    ) {
+        /* ternary operator to make the file a candidate for fixing */ true ? 1 : 0;
+    }
+}',
+            ],
+        ];
+    }
 }
