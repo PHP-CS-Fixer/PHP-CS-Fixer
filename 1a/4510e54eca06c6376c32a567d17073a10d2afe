@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2020-12-30T14:31:49Z
+
+[![Coverage Status](https://coveralls.io/builds/36005495/badge)](https://coveralls.io/builds/36005495)
+
+Coverage decreased (-0.004%) to 91.36% when pulling **559b1a639f6239376c69bc35779d0f607c7fe8bd on SpacePossum:2_17_PHP8_TypeAlternationTransformer** into **98dd81994cf1710dec9fbd1218113f010c3d227c on FriendsOfPHP:2.17**.
