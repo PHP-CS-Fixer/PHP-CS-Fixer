@@ -44,7 +44,17 @@ final class RuleSetsTest extends TestCase
             static::assertIsString($name);
             static::assertTrue('@' === $name[0]);
             static::assertIsArray($set->getRules());
+            static::assertSame($set, RuleSets::getSetDefinition($name));
         }
+    }
+
+    public function testGetUnknownSetDefinition()
+    {
+        $name = 'Unknown';
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches(sprintf('#^Set "%s" does not exist\.$#', $name));
+
+        RuleSets::getSetDefinition($name);
     }
 
     /**

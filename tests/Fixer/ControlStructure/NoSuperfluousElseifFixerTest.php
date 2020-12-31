@@ -17,6 +17,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer
  */
 final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
