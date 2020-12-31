@@ -104,7 +104,7 @@ function sample($a, $b, $c)
     protected function createConfigurationDefinition()
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('types', 'A map of types to fix.'))
+            (new FixerOptionBuilder('types', 'A list of types to fix.'))
                 ->setAllowedValues([new AllowedValueSubset(array_keys(self::$types))])
                 ->setDefault(['boolean', 'double', 'integer', 'real', 'str']) // TODO 3.0 add "callback"
                 ->getOption(),

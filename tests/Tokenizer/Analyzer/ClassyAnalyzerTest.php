@@ -24,18 +24,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ClassyAnalyzerTest extends TestCase
 {
     /**
-     * @param string $source
+     * @param string           $source
+     * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocationCases
      */
     public function testIsClassyInvocation($source, array $expected)
     {
-        $tokens = Tokens::fromCode($source);
-        $analyzer = new ClassyAnalyzer();
-
-        foreach ($expected as $index => $isClassy) {
-            static::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), 'Token at index '.$index.' should match the expected value.');
-        }
+        self::assertClassyInvocation($source, $expected);
     }
 
     public function provideIsClassyInvocationCases()
@@ -109,53 +105,52 @@ final class ClassyAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $source
+     * @param string           $source
+     * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocation70Cases
      * @requires PHP 7.0
      */
     public function testIsClassyInvocation70($source, array $expected)
     {
-        $tokens = Tokens::fromCode($source);
-        $analyzer = new ClassyAnalyzer();
-
-        foreach ($expected as $index => $isClassy) {
-            static::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), 'Token at index '.$index.' should match the expected value.');
-        }
+        self::assertClassyInvocation($source, $expected);
     }
 
     public function provideIsClassyInvocation70Cases()
     {
-        return [
-            [
-                '<?php function foo(int $foo, string &$bar): self {}',
-                [3 => false, 5 => false, 10 => false, 17 => false],
-            ],
-            [
-                '<?php function foo(): Foo {}',
-                [3 => false, 8 => true],
-            ],
-            [
-                '<?php function foo(): \Foo {}',
-                [3 => false, 9 => true],
-            ],
+        yield [
+            '<?php function foo(int $foo, string &$bar): self {}',
+            [3 => false, 5 => false, 10 => false, 17 => false],
         ];
+
+        yield [
+            '<?php function foo(): Foo {}',
+            [3 => false, 8 => true],
+        ];
+
+        yield [
+            '<?php function foo(): \Foo {}',
+            [3 => false, 9 => true],
+        ];
+
+        foreach (['bool', 'float', 'int', 'parent', 'self', 'string', 'void'] as $returnType) {
+            yield [
+                sprintf('<?php function foo(): %s {}', $returnType),
+                [3 => false, 8 => false],
+            ];
+        }
     }
 
     /**
-     * @param string $source
+     * @param string           $source
+     * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocation71Cases
      * @requires PHP 7.1
      */
     public function testIsClassyInvocation71($source, array $expected)
     {
-        $tokens = Tokens::fromCode($source);
-        $analyzer = new ClassyAnalyzer();
-
-        foreach ($expected as $index => $isClassy) {
-            static::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), 'Token at index '.$index.' should match the expected value.');
-        }
+        self::assertClassyInvocation($source, $expected);
     }
 
     public function provideIsClassyInvocation71Cases()
@@ -178,5 +173,50 @@ final class ClassyAnalyzerTest extends TestCase
                 [3 => false, 6 => false, 13 => false],
             ],
         ];
+    }
+
+    /**
+     * @param string           $source
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsClassyInvocation80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsClassyInvocation80($source, array $expected)
+    {
+        self::assertClassyInvocation($source, $expected);
+    }
+
+    public function provideIsClassyInvocation80Cases()
+    {
+        yield [
+            '<?php function foo(): \Foo|int {}',
+            [3 => false, 9 => true, 11 => false],
+        ];
+
+        yield [
+            '<?php function foo(): \Foo|A|int {}',
+            [3 => false, 9 => true, 11 => true, 13 => false],
+        ];
+
+        yield [
+            '<?php function foo(): int|A|NULL {}',
+            [3 => false, 8 => false, 10 => true, 12 => false],
+        ];
+
+        yield [
+            '<?php function foo(): int|A|false {}',
+            [3 => false, 8 => false, 10 => true, 12 => false],
+        ];
+    }
+
+    private static function assertClassyInvocation($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+        $analyzer = new ClassyAnalyzer();
+
+        foreach ($expected as $index => $isClassy) {
+            static::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
+        }
     }
 }

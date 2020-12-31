@@ -82,4 +82,117 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideProcess80Cases
+     * @requires PHP 8.0
+     */
+    public function testProcess80($source, array $expectedTokens)
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public function provideProcess80Cases()
+    {
+        yield 'static function' => ['<?php
+$a = static function (A|B|int $a) {};
+',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                13 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'function variable unions' => ['<?php
+function Bar1(A|B|int $a) {
+}
+',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'class method variable unions' => ['<?php
+class Foo
+{
+    public function Bar1(A|B|int $a) {}
+    public function Bar2(A\B|\A\Z $a) {}
+    public function Bar3(int $a) {}
+}
+',
+            [
+                // Bar1
+                14 => CT::T_TYPE_ALTERNATION,
+                16 => CT::T_TYPE_ALTERNATION,
+                // Bar2
+                34 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'class method return unions' => ['<?php
+class Foo
+{
+    public function Bar(): A|B|int {}
+}
+',
+            [
+                17 => CT::T_TYPE_ALTERNATION,
+                19 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'class attribute var + union' => ['<?php
+class Number
+{
+    var int|float|null $number;
+}
+',
+            [
+                10 => CT::T_TYPE_ALTERNATION,
+                12 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'class attributes visibility + unions' => ['<?php
+class Number
+{
+    public array $numbers;
+
+    /**  */
+    public int|float $number1;
+
+    // 2
+    protected int|float|null $number2;
+
+    # - foo 3
+    private int|float|string|null $number3;
+
+    /* foo 4 */
+    private \Foo\Bar\A|null $number4;
+
+    private \Foo|Bar $number5;
+
+    private ?Bar $number6; // ? cannot be part of an union in PHP8
+}
+',
+            [
+                // number 1
+                19 => CT::T_TYPE_ALTERNATION,
+                // number 2
+                30 => CT::T_TYPE_ALTERNATION,
+                32 => CT::T_TYPE_ALTERNATION,
+                // number 3
+                43 => CT::T_TYPE_ALTERNATION,
+                45 => CT::T_TYPE_ALTERNATION,
+                47 => CT::T_TYPE_ALTERNATION,
+                // number 4
+                63 => CT::T_TYPE_ALTERNATION,
+                // number 5
+                73 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+    }
 }
