@@ -20,6 +20,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase

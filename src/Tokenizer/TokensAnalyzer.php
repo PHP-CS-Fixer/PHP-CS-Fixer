@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
+
 /**
  * Analyzer of Tokens collection.
  *
@@ -31,6 +33,11 @@ final class TokensAnalyzer
      * @var Tokens
      */
     private $tokens;
+
+    /**
+     * @var ?GotoLabelAnalyzer
+     */
+    private $gotoLabelAnalyzer;
 
     public function __construct(Tokens $tokens)
     {
@@ -364,8 +371,14 @@ final class TokensAnalyzer
         }
 
         // check for goto label
-        if ($this->tokens[$nextIndex]->equals(':') && $this->tokens[$prevIndex]->equalsAny([';', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]])) {
-            return false;
+        if ($this->tokens[$nextIndex]->equals(':')) {
+            if (null === $this->gotoLabelAnalyzer) {
+                $this->gotoLabelAnalyzer = new GotoLabelAnalyzer();
+            }
+
+            if ($this->gotoLabelAnalyzer->belongsToGoToLabel($this->tokens, $nextIndex)) {
+                return false;
+            }
         }
 
         return true;
