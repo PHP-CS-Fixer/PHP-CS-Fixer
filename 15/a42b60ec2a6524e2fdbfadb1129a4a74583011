@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2020-12-30T15:02:50Z
+
+[![Coverage Status](https://coveralls.io/builds/36005877/badge)](https://coveralls.io/builds/36005877)
+
+Coverage increased (+0.002%) to 91.366% when pulling **ab2e7cdb844d094ec9755a578bee5934cfe4a3ee on SpacePossum:2_17_TokensAnalyzer_getClassyElements_return_trait_imports** into **98dd81994cf1710dec9fbd1218113f010c3d227c on FriendsOfPHP:2.17**.
