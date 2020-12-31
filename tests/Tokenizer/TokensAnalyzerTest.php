@@ -28,9 +28,130 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class TokensAnalyzerTest extends TestCase
 {
-    public function testGetClassyElements()
+    /**
+     * @dataProvider provideGetClassyElementsCases
+     *
+     * @param bool   $returnTraitsImports
+     * @param string $source
+     */
+    public function testGetClassyElements(array $expectedElements, $returnTraitsImports, $source)
     {
-        $source = <<<'PHP'
+        $tokens = Tokens::fromCode($source);
+
+        foreach ($expectedElements as $index => $element) {
+            $expectedElements[$index] = [
+                'token' => $tokens[$index],
+                'type' => $element['type'],
+                'classIndex' => $element['classIndex'],
+            ];
+        }
+
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        static::assertSame(
+            $expectedElements,
+            $tokensAnalyzer->getClassyElements($returnTraitsImports)
+        );
+    }
+
+    public function provideGetClassyElementsCases()
+    {
+        yield 'trait import' => [
+            [
+                10 => [
+                    'type' => 'trait_import',
+                    'classIndex' => 4,
+                ],
+                19 => [
+                    'type' => 'trait_import',
+                    'classIndex' => 4,
+                ],
+                24 => [
+                    'type' => 'const',
+                    'classIndex' => 4,
+                ],
+                35 => [
+                    'type' => 'method',
+                    'classIndex' => 4,
+                ],
+                55 => [
+                    'type' => 'trait_import',
+                    'classIndex' => 49,
+                ],
+                64 => [
+                    'type' => 'method',
+                    'classIndex' => 49,
+                ],
+            ],
+            true,
+            '<?php
+            /**  */
+            class Foo
+            {
+                use A\B;
+                //
+                use Foo;
+
+                const A = 1;
+
+                public function foo()
+                {
+                    $a = new class()
+                    {
+                        use Z; // nested trait import
+
+                        public function bar()
+                        {
+                            echo 123;
+                        }
+                    };
+
+                    $a->bar();
+                }
+            }',
+        ];
+
+        yield [
+            [
+                9 => [
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                14 => [
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                19 => [
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                28 => [
+                    'type' => 'property',
+                    'classIndex' => 1,
+                ],
+                42 => [
+                    'type' => 'const',
+                    'classIndex' => 1,
+                ],
+                53 => [
+                    'type' => 'method',
+                    'classIndex' => 1,
+                ],
+                83 => [
+                    'type' => 'method',
+                    'classIndex' => 1,
+                ],
+                140 => [
+                    'type' => 'method',
+                    'classIndex' => 1,
+                ],
+                164 => [
+                    'type' => 'const',
+                    'classIndex' => 158,
+                ],
+            ],
+            false,
+            <<<'PHP'
 <?php
 class Foo
 {
@@ -61,64 +182,13 @@ function test(){}
 class Foo2
 {
     const CONSTANT = 'constant value';
+
+    use Foo\Bar; // not expected in the return value by default (BC)
 }
 
-PHP;
-
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        static::assertSame(
-            [
-                9 => [
-                    'token' => $tokens[9],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                14 => [
-                    'token' => $tokens[14],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                19 => [
-                    'token' => $tokens[19],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                28 => [
-                    'token' => $tokens[28],
-                    'type' => 'property',
-                    'classIndex' => 1,
-                ],
-                42 => [
-                    'token' => $tokens[42],
-                    'type' => 'const',
-                    'classIndex' => 1,
-                ],
-                53 => [
-                    'token' => $tokens[53],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                83 => [
-                    'token' => $tokens[83],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                140 => [
-                    'token' => $tokens[140],
-                    'type' => 'method',
-                    'classIndex' => 1,
-                ],
-                164 => [
-                    'token' => $tokens[164],
-                    'type' => 'const',
-                    'classIndex' => 158,
-                ],
-            ],
-            $elements
-        );
+PHP
+            ,
+        ];
     }
 
     /**

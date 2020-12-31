@@ -101,7 +101,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
             T_DEFAULT => 'fixAfterToken',
             T_RETURN => 'fixAfterToken',
             T_SWITCH => 'fixAfterToken',
-            T_THROW => 'fixAfterToken',
+            T_THROW => 'fixAfterThrowToken',
             T_USE => 'removeBetweenUse',
             T_WHITESPACE => 'removeMultipleBlankLines',
             CT::T_USE_TRAIT => 'removeBetweenUse',
@@ -383,6 +383,13 @@ switch($a) {
         }
 
         $this->removeEmptyLinesAfterLineWithTokenAt($index);
+    }
+
+    private function fixAfterThrowToken($index)
+    {
+        if ($this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+            $this->fixAfterToken($index);
+        }
     }
 
     /**

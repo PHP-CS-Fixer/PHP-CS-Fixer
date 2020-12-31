@@ -1177,15 +1177,19 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         yield [
             '<?php
                 $a = $bar ?? throw new \Exception();
+
                 $a = $bar ?? throw new \Exception();
+
                 $a = $bar ?? throw new \Exception();
             ',
+        ];
+
+        yield [
             '<?php
                 $a = $bar ?? throw new \Exception();
 
-                $a = $bar ?? throw new \Exception();
-
-                $a = $bar ?? throw new \Exception();
+                // Now, we gonna use it!
+                var_dump($a);
             ',
         ];
     }

@@ -106,7 +106,7 @@ function sample($a, $b, $c)
         $types = array_keys(self::$types);
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('types', 'A map of types to fix.'))
+            (new FixerOptionBuilder('types', 'A list of types to fix.'))
                 ->setAllowedValues([new AllowedValueSubset($types)])
                 ->setDefault($types)
                 ->getOption(),
