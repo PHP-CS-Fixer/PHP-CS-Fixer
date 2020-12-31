@@ -23,6 +23,7 @@ Changes to rules
 Old name | New name | Note
 -------- | -------- | ----
 `blank_line_before_return`                      | `blank_line_before_statement`                                                     | use configuration `['statements' => ['return']]`
+`final_static_access`                           | `self_static_accessor`                                                            |
 `hash_to_slash_comment`                         | `single_line_comment_style`                                                       | use configuration `['comment_types' => ['hash']]`
 `lowercase_constants`                           | `constant_case`                                                                   | use configuration `['case' => 'lower']`
 `method_separation`                             | `class_attributes_separation`                                                     | use configuration `['elements' => ['method']]`
@@ -30,12 +31,11 @@ Old name | New name | Note
 `no_multiline_whitespace_before_semicolons`     | `multiline_whitespace_before_semicolons`                                          |
 `no_short_echo_tag`                             | `echo_tag_syntax`                                                                 | use configuration `['format' => 'long']`
 `php_unit_ordered_covers`                       | `phpdoc_order_by_value`                                                           | use configuration `['annotations' => [ 'covers' ]]`
+`phpdoc_inline_tag`                             | `general_phpdoc_tag_rename`, `phpdoc_inline_tag_normalizer` and `phpdoc_tag_type` |
 `pre_increment`                                 | `increment_style`                                                                 | use configuration `['style' => 'pre']`
 `psr0`                                          | `psr_autoloading`                                                                 | use configuration `['dir' => x ]`
 `psr4`                                          | `psr_autoloading`                                                                 |
 `silenced_deprecation_error`                    | `error_suppression`                                                               |
-`final_static_access`                           | `self_static_accessor`                                                            |
-`phpdoc_inline_tag`                             | `general_phpdoc_tag_rename`, `phpdoc_inline_tag_normalizer` and `phpdoc_tag_type` |
 
 ### Removed rootless configuration
 
@@ -84,8 +84,11 @@ Rule | Option | Old value | New value
 ---- | ---- | ---- | ----
 `function_to_constant` | `functions` | `['get_class', 'php_sapi_name', 'phpversion', 'pi']` | `['get_called_class', 'get_class', 'php_sapi_name', 'phpversion', 'pi']`
 `method_argument_space` | `on_multiline` | `'ignore'` | `'ensure_fully_multiline'`
+`native_constant_invocation` | `strict` | `false` | `true`
 `native_function_casing` | `include` | `@internal` | `@compiler_optimized`
 `native_function_invocation` | `include` | `@internal` | `@compiler_optimized`
+`native_function_invocation` | `strict` | `false` | `true`
+`non_printable_character` | `use_escape_sequences_in_strings` | `false` | `true` (when running on PHP 7.0 and up)
 `php_unit_dedicate_assert` | `target` | `5.0` | `newest`
 `phpdoc_align` | `tags` | `['param', 'return', 'throws', 'type', 'var']` | `['method', 'param', 'property', 'return', 'throws', 'type', 'var']`
 `phpdoc_scalar` | `types` | `['boolean', 'double', 'integer', 'real', 'str']` | `['boolean', 'callback', 'double', 'integer', 'real', 'str']`
@@ -145,4 +148,8 @@ Code BC changes
 - class `Tokens` is now `final`
 - method `create` of class `Config` has been removed, use the constructor
 - method `create` of class `RuleSet` has been removed, use the constructor
+
+### BC breaks; common internal classes
+
+- method `getClassyElements` of class `TokensAnalyzer` parameter `$returnTraitsImports` has been removed; now always returns trait import information
 - method `getSetDefinitionNames` of class `RuleSet` has been removed, use `RuleSets::getSetDefinitionNames()`

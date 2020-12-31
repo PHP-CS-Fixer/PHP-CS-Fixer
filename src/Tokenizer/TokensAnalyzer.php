@@ -47,17 +47,15 @@ final class TokensAnalyzer
     /**
      * Get indexes of methods and properties in classy code (classes, interfaces and traits).
      *
-     * @param bool $returnTraitsImports TODO on v3 remove flag and return the imports
-     *
      * @return array[]
      */
-    public function getClassyElements($returnTraitsImports = false)
+    public function getClassyElements()
     {
         $elements = [];
 
         for ($index = 1, $count = \count($this->tokens) - 2; $index < $count; ++$index) {
             if ($this->tokens[$index]->isClassy()) {
-                list($index, $newElements) = $this->findClassyElements($index, $index, $returnTraitsImports);
+                list($index, $newElements) = $this->findClassyElements($index, $index);
                 $elements += $newElements;
             }
         }
@@ -653,13 +651,12 @@ final class TokensAnalyzer
      * Searches in tokens from the classy (start) index till the end (index) of the classy.
      * Returns an array; first value is the index until the method has analysed (int), second the found classy elements (array).
      *
-     * @param int  $classIndex          classy index
-     * @param int  $index
-     * @param bool $returnTraitsImports
+     * @param int $classIndex classy index
+     * @param int $index
      *
      * @return array
      */
-    private function findClassyElements($classIndex, $index, $returnTraitsImports = false)
+    private function findClassyElements($classIndex, $index)
     {
         $elements = [];
         $curlyBracesLevel = 0;
@@ -697,7 +694,7 @@ final class TokensAnalyzer
                             --$nestedBracesLevel;
 
                             if (0 === $nestedBracesLevel) {
-                                list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $index, $returnTraitsImports);
+                                list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $index);
                                 $elements += $newElements;
 
                                 break;
@@ -707,12 +704,12 @@ final class TokensAnalyzer
                         }
 
                         if ($token->isClassy()) { // anonymous class in class
-                            list($index, $newElements) = $this->findClassyElements($index, $index, $returnTraitsImports);
+                            list($index, $newElements) = $this->findClassyElements($index, $index);
                             $elements += $newElements;
                         }
                     }
                 } else {
-                    list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $nestedClassIndex, $returnTraitsImports);
+                    list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $nestedClassIndex);
                     $elements += $newElements;
                 }
 
@@ -773,7 +770,7 @@ final class TokensAnalyzer
                     'type' => 'const',
                     'classIndex' => $classIndex,
                 ];
-            } elseif ($returnTraitsImports && $token->isGivenKind(CT::T_USE_TRAIT)) {
+            } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
                 $elements[$index] = [
                     'token' => $token,
                     'type' => 'trait_import',

@@ -129,6 +129,7 @@ namespace {
 
         // Case sensitive constants handling
         $constantsToEscape = array_values($this->configuration['include']);
+
         if (true === $this->configuration['fix_built_in']) {
             $getDefinedConstants = get_defined_constants(true);
             unset($getDefinedConstants['user']);
@@ -136,6 +137,7 @@ namespace {
                 $constantsToEscape = array_merge($constantsToEscape, array_keys($constants));
             }
         }
+
         $constantsToEscape = array_diff(
             array_unique($constantsToEscape),
             $uniqueConfiguredExclude
@@ -144,6 +146,7 @@ namespace {
         // Case insensitive constants handling
         static $caseInsensitiveConstants = ['null', 'false', 'true'];
         $caseInsensitiveConstantsToEscape = [];
+
         foreach ($constantsToEscape as $constantIndex => $constant) {
             $loweredConstant = strtolower($constant);
             if (\in_array($loweredConstant, $caseInsensitiveConstants, true)) {
@@ -228,7 +231,7 @@ namespace {
                 ->getOption(),
             (new FixerOptionBuilder('strict', 'Whether leading `\` of constant invocation not meant to have it should be removed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO: 3.0 change to true as default
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }
@@ -241,6 +244,7 @@ namespace {
     {
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
         $useConstantDeclarations = [];
+
         foreach ($useDeclarations as $use) {
             if ($use->isConstant()) {
                 $useConstantDeclarations[$use->getShortName()] = true;
@@ -262,20 +266,23 @@ namespace {
             }
 
             $tokenContent = $token->getContent();
-
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             if (!isset($this->constantsToEscape[$tokenContent]) && !isset($this->caseInsensitiveConstantsToEscape[strtolower($tokenContent)])) {
                 if (!$this->configuration['strict']) {
                     continue;
                 }
+
                 if (!$tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     continue;
                 }
+
                 $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+
                 if ($tokens[$prevPrevIndex]->isGivenKind(T_STRING)) {
                     continue;
                 }
+
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
 
                 continue;

@@ -261,7 +261,7 @@ $c = get_class($d);
                 ->getOption(),
             (new FixerOptionBuilder('strict', 'Whether leading `\` of function call not meant to have it should be removed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO: 3.0 change to true as default
+                ->setDefault(true)
                 ->getOption(),
         ]);
     }

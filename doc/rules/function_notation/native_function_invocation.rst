@@ -47,7 +47,7 @@ Whether leading ``\`` of function call not meant to have it should be removed.
 
 Allowed types: ``bool``
 
-Default value: ``false``
+Default value: ``true``
 
 Examples
 --------

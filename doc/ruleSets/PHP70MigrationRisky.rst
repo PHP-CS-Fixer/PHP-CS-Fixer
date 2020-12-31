@@ -11,8 +11,6 @@ Rules
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_
 - `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
-  config:
-  ``['use_escape_sequences_in_strings' => true]``
 - `random_api_migration <./../rules/alias/random_api_migration.rst>`_
   config:
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``

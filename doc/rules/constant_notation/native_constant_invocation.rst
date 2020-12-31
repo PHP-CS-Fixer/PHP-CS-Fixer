@@ -58,7 +58,7 @@ removed.
 
 Allowed types: ``bool``
 
-Default value: ``false``
+Default value: ``true``
 
 Examples
 --------

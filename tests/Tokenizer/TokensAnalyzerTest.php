@@ -31,10 +31,9 @@ final class TokensAnalyzerTest extends TestCase
     /**
      * @dataProvider provideGetClassyElementsCases
      *
-     * @param bool   $returnTraitsImports
      * @param string $source
      */
-    public function testGetClassyElements(array $expectedElements, $returnTraitsImports, $source)
+    public function testGetClassyElements(array $expectedElements, $source)
     {
         $tokens = Tokens::fromCode($source);
 
@@ -50,7 +49,7 @@ final class TokensAnalyzerTest extends TestCase
 
         static::assertSame(
             $expectedElements,
-            $tokensAnalyzer->getClassyElements($returnTraitsImports)
+            $tokensAnalyzer->getClassyElements()
         );
     }
 
@@ -83,7 +82,6 @@ final class TokensAnalyzerTest extends TestCase
                     'classIndex' => 49,
                 ],
             ],
-            true,
             '<?php
             /**  */
             class Foo
@@ -149,8 +147,11 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'const',
                     'classIndex' => 158,
                 ],
+                173 => [
+                    'type' => 'trait_import',
+                    'classIndex' => 158,
+                ],
             ],
-            false,
             <<<'PHP'
 <?php
 class Foo
@@ -183,7 +184,7 @@ class Foo2
 {
     const CONSTANT = 'constant value';
 
-    use Foo\Bar; // not expected in the return value by default (BC)
+    use Foo\Bar; // expected in the return value
 }
 
 PHP
@@ -207,7 +208,6 @@ class Foo
 }
 
 PHP;
-
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
