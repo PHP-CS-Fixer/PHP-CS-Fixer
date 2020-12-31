@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2020-12-28T16:43:47Z
+
+[![Coverage Status](https://coveralls.io/builds/35971299/badge)](https://coveralls.io/builds/35971299)
+
+Coverage increased (+0.001%) to 91.365% when pulling **6c12df2965d26af913f25cf683e894e6a8727e7d on SpacePossum:2_17_PHP8_5396** into **98dd81994cf1710dec9fbd1218113f010c3d227c on FriendsOfPHP:2.17**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-12-29T15:20:21Z
+
+note to self, failing CI not related and needs squashing before merging
