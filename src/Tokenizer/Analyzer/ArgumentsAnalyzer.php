@@ -54,12 +54,14 @@ final class ArgumentsAnalyzer
     {
         $arguments = [];
         $firstSensibleToken = $tokens->getNextMeaningfulToken($openParenthesis);
+
         if ($tokens[$firstSensibleToken]->equals(')')) {
             return $arguments;
         }
 
         $paramContentIndex = $openParenthesis + 1;
         $argumentsStart = $paramContentIndex;
+
         for (; $paramContentIndex < $closeParenthesis; ++$paramContentIndex) {
             $token = $tokens[$paramContentIndex];
 
@@ -106,11 +108,14 @@ final class ArgumentsAnalyzer
         ];
 
         $sawName = false;
+
         for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
             $token = $tokens[$index];
+
             if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS) || $token->equals('&')) {
                 continue;
             }
+
             if ($token->isGivenKind(T_VARIABLE)) {
                 $sawName = true;
                 $info['name_index'] = $index;
@@ -118,9 +123,11 @@ final class ArgumentsAnalyzer
 
                 continue;
             }
+
             if ($token->equals('=')) {
                 continue;
             }
+
             if ($sawName) {
                 $info['default'] .= $token->getContent();
             } else {
