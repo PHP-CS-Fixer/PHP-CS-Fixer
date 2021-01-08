@@ -125,21 +125,18 @@ final class CiConfigurationTest extends TestCase
 
     private function getAllPhpVersionsUsedByCiForDeployments()
     {
-        $jobs = array_filter($this->getTravisJobs(), function ($job) {
-            return 'Deployment' === $job['stage'];
+        $jobs = array_filter($this->getGitHubJobs(), function ($job) {
+            return isset($job['execute-deployment']) && 'yes' === $job['execute-deployment'];
         });
 
         return array_map(function ($job) {
-            return \is_string($job['php']) ? $job['php'] : sprintf('%.1f', $job['php']);
+            return \is_string($job['php-version']) ? $job['php-version'] : sprintf('%.1f', $job['php-version']);
         }, $jobs);
     }
 
     private function getAllPhpVersionsUsedByCiForTests()
     {
-        return array_merge(
-            $this->getPhpVersionsUsedByTravis(),
-            $this->getPhpVersionsUsedByGitHub()
-        );
+        return $this->getPhpVersionsUsedByGitHub();
     }
 
     private function convertPhpVerIdToNiceVer($verId)
@@ -188,11 +185,11 @@ final class CiConfigurationTest extends TestCase
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
 
-    private function getTravisJobs()
+    private function getGitHubJobs()
     {
-        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.travis.yml'));
+        $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
-        return $yaml['jobs']['include'];
+        return $yaml['jobs']['tests']['strategy']['matrix']['include'];
     }
 
     private function getPhpVersionsUsedByGitHub()
@@ -206,16 +203,5 @@ final class CiConfigurationTest extends TestCase
         }
 
         return $phpVersions;
-    }
-
-    private function getPhpVersionsUsedByTravis()
-    {
-        $jobs = array_filter($this->getTravisJobs(), function ($job) {
-            return false !== strpos($job['stage'], 'Test');
-        });
-
-        return array_map(function ($job) {
-            return (string) $job['php'];
-        }, $jobs);
     }
 }
