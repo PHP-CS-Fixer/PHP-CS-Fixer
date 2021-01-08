@@ -45,7 +45,6 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
         \PhpCsFixer\Doctrine\Annotation\Tokens::class,
         \PhpCsFixer\Documentation\DocumentationGenerator::class,
-        \PhpCsFixer\RuleSet::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
     ];
 
@@ -144,13 +143,6 @@ final class ProjectCodeTest extends TestCase
     public function testThatSrcClassesNotExposeProperties($className)
     {
         $rc = new \ReflectionClass($className);
-
-        if (\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class === $className) {
-            static::markTestIncomplete(sprintf(
-                'Public properties of fixer `%s` will be removed on 3.0.',
-                \PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class
-            ));
-        }
 
         static::assertEmpty(
             $rc->getProperties(\ReflectionProperty::IS_PUBLIC),

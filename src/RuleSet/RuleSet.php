@@ -19,11 +19,8 @@ namespace PhpCsFixer\RuleSet;
  * @author SpacePossum
  *
  * @internal
- * @final
- *
- * TODO on 3.0 make final after PhpCsFixer\RuleSet has been removed
  */
-class RuleSet implements RuleSetInterface
+final class RuleSet implements RuleSetInterface
 {
     /**
      * Group of rules generated from input set.
