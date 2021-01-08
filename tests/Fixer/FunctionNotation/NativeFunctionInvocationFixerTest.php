@@ -509,7 +509,7 @@ namespace {
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
-                    $b = \already_prefixed_function();
+                    $b = already_prefixed_function();
                     // fix
                     $c = \get_class($d);
                     $e = \intval($f);

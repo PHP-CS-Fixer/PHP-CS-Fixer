@@ -217,7 +217,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
             [
                 '<?php
 try {
-    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|\JOB_QUEUE_PRIORITY_HIGH);
+    foo(\JSON_ERROR_DEPTH|\JSON_PRETTY_PRINT|JOB_QUEUE_PRIORITY_HIGH);
 } catch (\Exception | \InvalidArgumentException|\UnexpectedValueException|LogicException $e) {
 }
 ',

@@ -72,7 +72,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 new VersionSpecificCodeSample(
                     '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0')."!\";\n",
                     new VersionSpecification(70000),
-                    ['use_escape_sequences_in_strings' => true]
+                    ['use_escape_sequences_in_strings' => false]
                 ),
             ],
             null,
@@ -104,7 +104,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('use_escape_sequences_in_strings', 'Whether characters should be replaced with escape sequences in strings.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 3.0 consider changing to true, but it will require that all fixed code by default is php7+, maybe the best is to keep it in `@PHP70Migration:risky` only
+                ->setDefault(\PHP_VERSION_ID >= 70000) // @TODO 3.0 replace with `true` when changing PHP requirement to 7+
                 ->setNormalizer(static function (Options $options, $value) {
                     if (\PHP_VERSION_ID < 70000 && $value) {
                         throw new InvalidOptionsForEnvException('Escape sequences require PHP 7.0+.');
@@ -123,6 +123,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
     {
         $replacements = [];
         $escapeSequences = [];
+
         foreach ($this->symbolsReplace as $character => list($replacement, $codepoint)) {
             $replacements[$character] = $replacement;
             $escapeSequences[$character] = '\u{'.$codepoint.'}';
@@ -158,10 +159,12 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 if ($swapQuotes) {
                     $content = str_replace("\\'", "'", $content);
                 }
+
                 if ($stringTypeChanged) {
                     $content = Preg::replace('/(\\\\{1,2})/', '\\\\\\\\', $content);
                     $content = str_replace('$', '\$', $content);
                 }
+
                 if ($swapQuotes) {
                     $content = str_replace('"', '\"', $content);
                     $content = Preg::replace('/^\'(.*)\'$/', '"$1"', $content);

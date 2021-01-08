@@ -32,6 +32,10 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null)
     {
+        $this->fixer->configure([
+            'use_escape_sequences_in_strings' => false,
+        ]);
+
         $this->doTest($expected, $input);
     }
 
@@ -46,6 +50,7 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => false,
         ]);
+
         $this->doTest($expected, $input);
     }
 
@@ -118,6 +123,7 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => true,
         ]);
+
         $this->doTest($expected, $input);
     }
 

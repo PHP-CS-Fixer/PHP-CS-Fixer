@@ -25,9 +25,7 @@ final class PHP70MigrationRiskySet extends AbstractRuleSetDescription
             '@PHP56Migration:risky' => true,
             'combine_nested_dirname' => true,
             'declare_strict_types' => true,
-            'non_printable_character' => [
-                'use_escape_sequences_in_strings' => true,
-            ],
+            'non_printable_character' => true,
             'random_api_migration' => [
                 'replacements' => [
                     'mt_rand' => 'random_int',

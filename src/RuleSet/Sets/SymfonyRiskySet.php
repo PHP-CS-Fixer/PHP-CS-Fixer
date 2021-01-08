@@ -74,11 +74,6 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'ternary_to_elvis_operator' => true,
         ];
 
-        $rules['non_printable_character'] = \PHP_VERSION_ID < 70000
-            ? true
-            : ['use_escape_sequences_in_strings' => true]
-        ;
-
         ksort($rules);
 
         return $rules;
