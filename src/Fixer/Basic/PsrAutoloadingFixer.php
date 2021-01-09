@@ -137,6 +137,10 @@ class InvalidName {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        if (null !== $this->configuration['dir'] && 0 !== strpos($file->getRealPath(), realpath($this->configuration['dir']))) {
+            return;
+        }
+
         $namespace = null;
         $namespaceStartIndex = null;
         $namespaceEndIndex = null;
