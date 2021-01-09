@@ -171,8 +171,6 @@ final class ProjectCodeTest extends TestCase
             \PhpCsFixer\AbstractPhpdocTypesFixer::class => ['tags'],
             \PhpCsFixer\AbstractFixer::class => ['configuration', 'configurationDefinition', 'whitespacesConfig'],
             \PhpCsFixer\AbstractProxyFixer::class => ['proxyFixers'],
-            \PhpCsFixer\Test\AbstractFixerTestCase::class => ['fixer', 'linter'],
-            \PhpCsFixer\Test\AbstractIntegrationTestCase::class => ['linter'],
         ];
 
         $extraProps = array_diff(
@@ -536,8 +534,6 @@ final class ProjectCodeTest extends TestCase
                     || ($doc && \count($doc->getAnnotationsOfType('internal')))
                     || \in_array($className, [
                         \PhpCsFixer\Finder::class,
-                        \PhpCsFixer\Test\AbstractFixerTestCase::class,
-                        \PhpCsFixer\Test\AbstractIntegrationTestCase::class,
                         \PhpCsFixer\Tests\Test\AbstractFixerTestCase::class,
                         \PhpCsFixer\Tests\Test\AbstractIntegrationTestCase::class,
                         \PhpCsFixer\Tokenizer\Tokens::class,

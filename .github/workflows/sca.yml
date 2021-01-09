@@ -102,16 +102,5 @@ jobs:
 
       - name: Check - ensure test files are not present in the archive
         run: |
-          # @TODO remove listed exceptions at 3.0
-          git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php |
-            grep -v tests/Test/AbstractFixerTestCase.php |
-            grep -v tests/Test/AbstractIntegrationCaseFactory.php |
-            grep -v tests/Test/AbstractIntegrationTestCase.php |
-            grep -v tests/Test/Assert/AssertTokensTrait.php |
-            grep -v tests/Test/IntegrationCase.php |
-            grep -v tests/Test/IntegrationCaseFactory.php |
-            grep -v tests/Test/IntegrationCaseFactoryInterface.php |
-            grep -v tests/Test/InternalIntegrationCaseFactory.php |
-            grep -v tests/Test/IsIdenticalConstraint.php |
-            grep -v tests/TestCase.php \
-          && (echo "UNKNOWN FILES DETECTED" && exit 1) || echo "NO UNKNOWN FILES"
+          git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php \
+          && (echo "Test files detected in archive" && exit 1) || echo "No test files detected in archive"
