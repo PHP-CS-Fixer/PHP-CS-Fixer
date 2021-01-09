@@ -20,7 +20,7 @@
     processIsolation="false"
     stopOnFailure="false"
     timeoutForSmallTests="2"
-    verbose="true"
+    verbose="false"
 >
     <testsuites>
         <testsuite name="all">
