@@ -62,14 +62,23 @@ jobs:
           retry_wait_seconds: 30
           command: ./dev-tools/install.sh
 
-      - name: Run checks
-        run: |
-          ./dev-tools/check_file_permissions.sh
-          ./dev-tools/check_trailing_spaces.sh
-          ./dev-tools/vendor/bin/phpstan analyse
-          ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
-          composer normalize --dry-run --working-dir=./dev-tools ../composer.json
-          ./dev-tools/check_shell_scripts.sh
+      - name: Check - file permissions
+        run: ./dev-tools/check_file_permissions.sh
+
+      - name: Check - trailing spaces
+        run: ./dev-tools/check_trailing_spaces.sh
+
+      - name: Check - phpstan
+        run: ./dev-tools/vendor/bin/phpstan analyse
+
+      - name: Check - composer-require-checker
+        run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
+
+      - name: Check - composer normalize
+        run: composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+
+      - name: Check - shell scripts
+        run: ./dev-tools/check_shell_scripts.sh
 
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}
@@ -87,13 +96,13 @@ jobs:
           git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" || true >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Validate changed files
+      - name: Check - phpmd
         if: ${{ github.env.CHANGED_PHP_FILES }}
         run: ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml
 
-      - name: Check for unknown files (to be removed in 3.0)
+      - name: Check - ensure test files are not present in the archive
         run: |
-          # @TODO remove at 3.0
+          # @TODO remove listed exceptions at 3.0
           git archive -o /dev/null HEAD -v 2>&1 | grep tests | grep \.php |
             grep -v tests/Test/AbstractFixerTestCase.php |
             grep -v tests/Test/AbstractIntegrationCaseFactory.php |
