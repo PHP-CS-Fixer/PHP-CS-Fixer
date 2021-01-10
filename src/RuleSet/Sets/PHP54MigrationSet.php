@@ -17,12 +17,12 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  */
-final class PHP56MigrationSet extends AbstractRuleSetDescription
+final class PHP54MigrationSet extends AbstractRuleSetDescription
 {
     public function getRules()
     {
         return [
-            '@PHP54Migration' => true,
+            'array_syntax' => ['syntax' => 'short'],
         ];
     }
 

@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP54Migration.
+--RULESET--
+{"@PHP54Migration": true}
+--REQUIREMENTS--
+{"php": 50400}

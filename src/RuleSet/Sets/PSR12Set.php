@@ -65,6 +65,6 @@ final class PSR12Set extends AbstractRuleSetDescription
 
     public function getDescription()
     {
-        return 'Rules that follow `PSR-2 <https://www.php-fig.org/psr/psr-2/>`_ standard.';
+        return 'Rules that follow `PSR-12 <https://www.php-fig.org/psr/psr-12/>`_ standard.';
     }
 }
