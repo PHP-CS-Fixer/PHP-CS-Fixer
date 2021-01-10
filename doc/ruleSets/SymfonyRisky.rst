@@ -26,8 +26,6 @@ Rules
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
 - `modernize_types_casting <./../rules/cast_notation/modernize_types_casting.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_
-  config:
-  ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_INT_SIZE', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced', 'strict' => true]``
 - `native_function_invocation <./../rules/function_notation/native_function_invocation.rst>`_
   config:
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``

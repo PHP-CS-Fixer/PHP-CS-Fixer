@@ -81,7 +81,7 @@ $a ** 1; // `pow_to_exponentiation` rule
 random_int($a, $b, ); // `random_api_migration` rule
 $foo = (int) $foo; // `set_type_to_cast` rule
 in_array($b, $c, true, ); // `strict_param` rule
-@trigger_error('Warning.', E_USER_DEPRECATED, ); // `error_suppression` rule
+@trigger_error('Warning.', \E_USER_DEPRECATED, ); // `error_suppression` rule
 foo(null === $a, ); // `yoda_style` rule
 $a = null; // `no_unset_cast` rule
 $foo->bar = null; // `no_unset_on_property` rule
