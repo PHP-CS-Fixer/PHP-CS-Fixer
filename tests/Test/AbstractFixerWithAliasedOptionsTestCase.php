@@ -20,8 +20,6 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
  * @author ntzm
  *
  * @internal
- *
- * @todo 3.0 Drop this class
  */
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {
