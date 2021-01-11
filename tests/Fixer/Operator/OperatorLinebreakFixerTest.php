@@ -490,7 +490,6 @@ switch ($foo) {
             '==', '===', '!=', '<>', '!==', '<', '>', '<=', '>=',  // Comparison
             'and', 'or', 'xor', '&&', '||', // Logical
             '.', '.=', // String
-            '->', // Object
             '::', // Scope Resolution
         ];
 
