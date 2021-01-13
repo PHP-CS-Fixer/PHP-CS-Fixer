@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-13T14:12:06Z
+
+We should probably keep verbose enabled on actions, though?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T21:24:01Z
+
+not sure about the value. scrolling 1k lines of "skipped.... PHP version...." is boring regardless it's CI or local. i actually came up with this proposal because of getting bord scrolling CI logs
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T21:24:59Z
+
+happy to discuss further if we would have more arguments or proposals.
+
+for now, as it's not that crucial to deeply discuss it, merging as-is
