@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-01-10T19:15:17Z
+
+:+1:  for the new `short` default, but maybe the default should only be `short` when running on a PHP version supporting the short syntax?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T21:33:21Z
+
+the required php for 3.0 will support short syntax
