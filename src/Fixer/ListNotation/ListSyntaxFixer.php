@@ -108,7 +108,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurationDefini
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` `list` syntax.'))
                 ->setAllowedValues(['long', 'short'])
-                ->setDefault('long')
+                ->setDefault('long') // TODO @3.0 change to short
                 ->getOption(),
         ]);
     }
