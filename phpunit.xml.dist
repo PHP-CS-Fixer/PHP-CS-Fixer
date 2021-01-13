@@ -15,11 +15,9 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
-    enforceTimeLimit="true"
     failOnWarning="true"
     processIsolation="false"
     stopOnFailure="false"
-    timeoutForSmallTests="2"
     verbose="false"
 >
     <testsuites>
