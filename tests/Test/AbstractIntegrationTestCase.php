@@ -129,6 +129,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * @dataProvider provideIntegrationCases
      *
      * @see doTest()
+     * @large
      */
     public function testIntegration(IntegrationCase $case)
     {

@@ -121,6 +121,10 @@ jobs:
         if: matrix.execute-migration-rules == 'yes'
         run: php php-cs-fixer fix --rules @PHP73Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q
 
+      - name: Disable time limit for tests when collecting coverage
+        if: matrix.calculate-code-coverage == 'yes'
+        run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
+
       - name: Run tests
         continue-on-error: ${{ matrix.php-version == '8.0' }}
         env:
