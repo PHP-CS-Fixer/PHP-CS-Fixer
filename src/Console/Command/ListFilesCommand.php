@@ -87,7 +87,7 @@ final class ListFilesCommand extends Command
         $finder = $resolver->getFinder();
 
         foreach ($finder as $file) {
-            $output->writeln(escapeshellarg($file->getRealPath()));
+            $output->writeln(escapeshellarg($file->getPath()));
         }
 
         return 0;
