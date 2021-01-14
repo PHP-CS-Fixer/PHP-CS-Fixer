@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T21:29:00Z
+
+> you meant GitHub Actions, right?
+
+indeed :+1:
+after 9 years of PHP CS Fixer on Travis, still kind of falling back to it when thinking about CI
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T21:30:17Z
+
+> can you also add `defaultTimeLimit`
+
+good idea
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T23:49:27Z
+
+i extracted non-speedtrap listener changes into #5435 and do some more work there
