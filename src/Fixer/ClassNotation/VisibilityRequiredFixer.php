@@ -86,7 +86,7 @@ class Sample
             (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(['property', 'method', 'const'])])
-                ->setDefault(['property', 'method'])
+                ->setDefault(['property', 'method'])  // @TODO v3 / PHP 7.1 add `const`
                 ->getOption(),
         ], $this->getName());
     }

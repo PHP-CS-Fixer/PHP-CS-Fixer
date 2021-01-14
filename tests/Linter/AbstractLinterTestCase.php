@@ -57,6 +57,8 @@ abstract class AbstractLinterTestCase extends TestCase
 
     /**
      * @return array
+     *
+     * @medium
      */
     public function provideLintFileCases()
     {
