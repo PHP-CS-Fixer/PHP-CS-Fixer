@@ -58,16 +58,6 @@ final class ListFilesCommand extends Command
 
     /**
      * {@inheritdoc}
-     *
-     * Override here to only generate the help copy when used.
-     */
-    public function getHelp()
-    {
-        return HelpCommand::getHelpCopy();
-    }
-
-    /**
-     * {@inheritdoc}
      */
     protected function configure()
     {
