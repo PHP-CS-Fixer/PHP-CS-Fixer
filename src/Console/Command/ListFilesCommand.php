@@ -20,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @author Markus Staab <markus.staab@redaxo.org>
@@ -79,10 +80,10 @@ final class ListFilesCommand extends Command
 
         $finder = $resolver->getFinder();
 
-        /** @var \SplFileInfo $file */
+        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             if ($file->isFile()) {
-                $output->writeln(escapeshellarg($file->getPath().DIRECTORY_SEPARATOR.$file->getFilename()));
+                $output->writeln(escapeshellarg($file->getRelativePathname()));
             }
         }
 

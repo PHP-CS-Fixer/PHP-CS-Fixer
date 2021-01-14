@@ -25,17 +25,18 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ListFilesCommandTest extends TestCase
 {
-    public function testEmptyRulesValue()
+    public function testListWithConfig()
     {
-        $commandTester = $this->doTestExecute();
-        // TODO adjust expectation
-        $this->assertSame('', $commandTester->getDisplay());
+        $commandTester = $this->doTestExecute([
+            '--config' => __DIR__.'/test-project/.php_cs'
+        ]);
+        $this->assertSame('"needs-fixing.php"', $commandTester->getDisplay());
     }
 
     /**
      * @return CommandTester
      */
-    private function doTestExecute(/*array $arguments*/)
+    private function doTestExecute(array $arguments)
     {
         $application = new Application();
         $application->add(new ListFilesCommand(new ToolInfo()));
@@ -43,10 +44,7 @@ final class ListFilesCommandTest extends TestCase
         $command = $application->find('list-files');
         $commandTester = new CommandTester($command);
 
-        $commandTester->execute([
-            '--config' => __DIR__.'/test-project/.php_cs'
-        ]
-        );
+        $commandTester->execute($arguments);
 
         return $commandTester;
     }
