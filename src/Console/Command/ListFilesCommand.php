@@ -79,8 +79,11 @@ final class ListFilesCommand extends Command
 
         $finder = $resolver->getFinder();
 
+        /** @var \SplFileInfo $file */
         foreach ($finder as $file) {
-            $output->writeln(escapeshellarg($file->getPath()));
+            if ($file->isFile()) {
+                $output->writeln(escapeshellarg($file->getPath().DIRECTORY_SEPARATOR.$file->getFilename()));
+            }
         }
 
         return 0;
