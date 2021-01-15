@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by shouze at 2021-01-07T17:28:33Z
+
+[Here we are! :tada:](https://www.php.net/ChangeLog-8.php#8.0.1)
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-07T18:41:34Z
+
+GitHub CI is still having PHP 8.0.0 https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5415/checks?check_run_id=1664321299#step:10:12
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-15T10:39:37Z
+
+[![Coverage Status](https://coveralls.io/builds/36351340/badge)](https://coveralls.io/builds/36351340)
+
+Coverage remained the same at 91.971% when pulling **456a622367639a0bbe283a216a0b1262c2c8b6cc on keradus:2.17_forbid_800** into **e029b62cbb759eb2596184acf44314a04aa400ac on FriendsOfPHP:2.17**.
