@@ -77,6 +77,26 @@ final class FileCacheManager implements CacheManagerInterface
         $this->writeCache();
     }
 
+    /**
+     * This class is not intended to be serialized,
+     * and cannot be deserialized (see __wakeup method).
+     */
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+    }
+
+    /**
+     * Disable the deserialization of the class to prevent attacker executing
+     * code by leveraging the __destruct method.
+     *
+     * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
+     */
+    public function __wakeup()
+    {
+        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+    }
+
     public function needFixing($file, $fileContent)
     {
         $file = $this->cacheDirectory->getRelativePathTo($file);
