@@ -50,8 +50,6 @@
     "suggest": {
         "ext-dom": "For handling output formats in XML",
         "ext-mbstring": "For handling non-UTF8 characters.",
-        "php-cs-fixer/phpunit-constraint-isidenticalstring": "For IsIdenticalString constraint.",
-        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "For XmlMatchesXsd constraint.",
         "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
     },
     "config": {
@@ -60,19 +58,7 @@
     "autoload": {
         "psr-4": {
             "PhpCsFixer\\": "src/"
-        },
-        "classmap": [
-            "tests/Test/AbstractFixerTestCase.php",
-            "tests/Test/AbstractIntegrationCaseFactory.php",
-            "tests/Test/AbstractIntegrationTestCase.php",
-            "tests/Test/Assert/AssertTokensTrait.php",
-            "tests/Test/IntegrationCase.php",
-            "tests/Test/IntegrationCaseFactory.php",
-            "tests/Test/IntegrationCaseFactoryInterface.php",
-            "tests/Test/InternalIntegrationCaseFactory.php",
-            "tests/Test/IsIdenticalConstraint.php",
-            "tests/TestCase.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

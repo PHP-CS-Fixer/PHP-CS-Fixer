@@ -132,6 +132,7 @@ Code BC changes
     - `next()`
     - `rewind()`
     - `valid()`
+- namespace `PhpCsFixer\Test\` and each class in it has been removed, as it served pure development purpose and should not be part of production code - reach out to community if you are willing to help building dev package
 
 ### Interface changes
 
