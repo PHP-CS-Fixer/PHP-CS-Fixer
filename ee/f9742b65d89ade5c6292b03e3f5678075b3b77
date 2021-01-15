@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T22:01:34Z
+
+were you actually serializing those classes? what is the issue you are eager to solve here?
+
+---------------------------------------------------------------------------
+
+by jderusse at 2021-01-13T23:03:07Z
+
+> were you actually serializing those classes? what is the issue you are eager to solve here?
+
+thanks for reviewing, sorry for the lack of context. We (symfony) fixed yesterday similar cases as security hardening.
+
+I don't serialize these classes (and nobody should). But if these classes are present on the file system, and the application unserialize untrusted data, an attacker could leverage theses classes to execute code via `__destruct`. See https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection.
+This PR does not fix the initial issue (unserializing untrusted input) but make the exploit harder for the attacker.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T23:38:58Z
+
+thanks for the context!
+can you please reference the reasoning in code as well? like John Doe gonna see the code only, and will have no clue why those (and only those) classes forbids serialization
