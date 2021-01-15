@@ -466,6 +466,128 @@ class FooTest extends TestCase
 EOF
                 ,
             ],
+            [
+                <<<'EOF'
+<?php
+
+use function PHPUnit\Framework\assertTrue;
+use function PHPUnit\Framework\assertSame;
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testBaseCase()
+    {
+        assertSame(1, 2);
+        assertTrue(true);
+        assertSame(1, 2);
+        static::someFunction('foo');
+    }
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testBaseCase()
+    {
+        static::assertSame(1, 2);
+        $this->assertTrue(true);
+        self::assertSame(1, 2);
+        static::someFunction('foo');
+    }
+}
+EOF
+                ,
+                [
+                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_NONE,
+                ],
+            ],
+            [
+                <<<'EOF'
+<?php
+
+use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testExistingImport()
+    {
+        assertSame(1, 2);
+        assertTrue(true);
+        assertSame(1, 2);
+        static::someFunction('foo');
+    }
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+
+use function PHPUnit\Framework\assertSame;
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testExistingImport()
+    {
+        static::assertSame(1, 2);
+        $this->assertTrue(true);
+        self::assertSame(1, 2);
+        static::someFunction('foo');
+    }
+}
+EOF
+                ,
+                [
+                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_NONE,
+                ],
+            ],
+            [
+                <<<'EOF'
+<?php
+
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertTrue;
+use function PHPUnit\Framework\assertSame;
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testLambda()
+    {
+        assertSame(1, 2);
+        assertTrue(true);
+        assertFalse(false);
+
+        $lambda = function () {
+            $this->assertSame(1, 2);
+            self::assertTrue(true);
+            static::assertFalse(false);
+        };
+    }
+}
+EOF
+                ,
+                <<<'EOF'
+<?php
+class MyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testLambda()
+    {
+        $this->assertSame(1, 2);
+        self::assertTrue(true);
+        static::assertFalse(false);
+
+        $lambda = function () {
+            $this->assertSame(1, 2);
+            self::assertTrue(true);
+            static::assertFalse(false);
+        };
+    }
+}
+EOF
+                ,
+                [
+                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_NONE,
+                ],
+            ],
         ];
     }
 

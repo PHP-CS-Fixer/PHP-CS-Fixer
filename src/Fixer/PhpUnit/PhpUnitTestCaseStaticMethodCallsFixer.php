@@ -14,11 +14,15 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -27,7 +31,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
-final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurationDefinitionFixerInterface
+final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @internal
@@ -44,10 +48,16 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
      */
     const CALL_TYPE_STATIC = 'static';
 
+    /**
+     * @internal
+     */
+    const CALL_TYPE_NONE = 'none';
+
     private $allowedValues = [
         self::CALL_TYPE_THIS => true,
         self::CALL_TYPE_SELF => true,
         self::CALL_TYPE_STATIC => true,
+        self::CALL_TYPE_NONE => true,
     ];
 
     private $staticMethods = [
@@ -293,6 +303,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         self::CALL_TYPE_THIS => [[T_OBJECT_OPERATOR, '->'], [T_VARIABLE, '$this']],
         self::CALL_TYPE_SELF => [[T_DOUBLE_COLON, '::'], [T_STRING, 'self']],
         self::CALL_TYPE_STATIC => [[T_DOUBLE_COLON, '::'], [T_STATIC, 'static']],
+        self::CALL_TYPE_NONE => [[T_EMPTY, ''], [T_EMPTY, '']],
     ];
 
     /**
@@ -313,7 +324,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 ';
 
         return new FixerDefinition(
-            'Calls to `PHPUnit\Framework\TestCase` static methods must all be of the same type, either `$this->`, `self::` or `static::`.',
+            'Calls to `PHPUnit\Framework\TestCase` static methods must all be of the same type, either `$this->`, `self::` or `static::` or cut call type and import method with `use function`.',
             [
                 new CodeSample($codeSample),
                 new CodeSample($codeSample, ['call_type' => self::CALL_TYPE_THIS]),
@@ -330,6 +341,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function getPriority()
     {
+        //if call type none - must run after NoUnusedImportsFixer
+        if ('none' === $this->configuration['call_type']) {
+            return -11;
+        }
+
         return 0;
     }
 
@@ -392,6 +408,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
+        $imports = [];
+
+        $useDeclarations = $this->getUseDeclarations($tokens);
+
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
@@ -446,8 +466,74 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            $tokens[$operatorIndex] = new Token($this->conversionMap[$callType][0]);
-            $tokens[$referenceIndex] = new Token($this->conversionMap[$callType][1]);
+            if ('none' === $callType) {
+                $tokens->clearAt($operatorIndex);
+                $tokens->clearAt($referenceIndex);
+            } else {
+                $tokens[$operatorIndex] = new Token($this->conversionMap[$callType][0]);
+                $tokens[$referenceIndex] = new Token($this->conversionMap[$callType][1]);
+            }
+
+            if ('none' === $callType && !\in_array($methodName, $useDeclarations, true) && \in_array($methodName, array_keys($this->staticMethods), true)) {
+                $imports[] = $methodName;
+                $useDeclarations[] = $methodName;
+            }
+        }
+
+        if (\count($imports) > 0) {
+            $this->insertImports($tokens, $imports);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    private function getUseDeclarations(Tokens $tokens)
+    {
+        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
+        $useDeclarationsShortNames = [];
+
+        foreach ($useDeclarations as $useDeclaration) {
+            $useDeclarationsShortNames[] = $useDeclaration->getShortName();
+        }
+
+        return $useDeclarationsShortNames;
+    }
+
+    private function insertImports(Tokens $tokens, array $imports)
+    {
+        $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
+
+        if ($useDeclarations) {
+            $useDeclaration = end($useDeclarations);
+            $index = $useDeclaration->getEndIndex() + 1;
+        } else {
+            $namespace = (new NamespacesAnalyzer())->getDeclarations($tokens)[0];
+            $index = $namespace->getEndIndex() + 1;
+        }
+
+        $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        if (!$tokens[$index]->isWhitespace() || false === strpos($tokens[$index]->getContent(), "\n")) {
+            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding]));
+        }
+
+        foreach ($imports as $methodName) {
+            $items = [
+                new Token([T_WHITESPACE, $lineEnding]),
+                new Token([T_USE, 'use']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([CT::T_FUNCTION_IMPORT, 'function']),
+                new Token([T_WHITESPACE, ' ']),
+                new Token([T_STRING, 'PHPUnit']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Framework']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, $methodName]),
+                new Token(';'),
+            ];
+
+            $tokens->insertAt($index, $items);
         }
     }
 
