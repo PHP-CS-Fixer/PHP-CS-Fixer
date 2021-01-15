@@ -40,12 +40,11 @@ final class FixCommandTest extends TestCase
         );
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Expected "yes" or "no" for option "using-cache", other values are deprecated and support will be removed in 3.0. Got "not today", this implicitly set the option to "false".
-     */
     public function testEmptyFormatValue()
     {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Expected "yes" or "no" for option "using-cache", got "not today".');
+
         $cmdTester = $this->doTestExecute(
             [
                 '--using-cache' => 'not today',
@@ -53,7 +52,7 @@ final class FixCommandTest extends TestCase
             ]
         );
 
-        static::assertSame(0, $cmdTester->getStatusCode(), "Expected exit code mismatch. Output:\n".$cmdTester->getDisplay());
+        $cmdTester->getStatusCode();
     }
 
     /**

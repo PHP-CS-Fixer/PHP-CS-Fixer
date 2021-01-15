@@ -904,9 +904,6 @@ final class ConfigurationResolver
     private function resolveOptionBooleanValue($optionName)
     {
         $value = $this->options[$optionName];
-        if (\is_bool($value)) {
-            return $value;
-        }
 
         if (!\is_string($value)) {
             throw new InvalidConfigurationException(sprintf('Expected boolean or string value for option "%s".', $optionName));
@@ -920,15 +917,7 @@ final class ConfigurationResolver
             return false;
         }
 
-        $message = sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value);
-
-        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-        }
-
-        @trigger_error($message, E_USER_DEPRECATED);
-
-        return false;
+        throw new InvalidConfigurationException(sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, $value));
     }
 
     private static function separatedContextLessInclude($path)

@@ -757,9 +757,9 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param bool             $expected
-     * @param bool             $configValue
-     * @param null|bool|string $passed
+     * @param bool        $expected
+     * @param bool        $configValue
+     * @param null|string $passed
      *
      * @dataProvider provideResolveBooleanOptionCases
      */
@@ -873,9 +873,9 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @param bool             $expected
-     * @param bool             $configValue
-     * @param null|bool|string $passed
+     * @param bool        $expected
+     * @param bool        $configValue
+     * @param null|string $passed
      *
      * @dataProvider provideResolveBooleanOptionCases
      */
@@ -1033,7 +1033,7 @@ final class ConfigurationResolverTest extends TestCase
             'config' => null,
             'dry-run' => true,
             'rules' => 'php_unit_construct',
-            'using-cache' => false,
+            'using-cache' => 'no',
             'diff' => true,
             'diff-format' => 'udiff',
             'format' => 'json',
@@ -1145,28 +1145,23 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame('xml', $resolver->getReporter()->getFormat());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Expected "yes" or "no" for option "allow-risky", other values are deprecated and support will be removed in 3.0. Got "yes please", this implicitly set the option to "false".
-     */
     public function testDeprecationOfPassingOtherThanNoOrYes()
     {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Expected "yes" or "no" for option "allow-risky", got "yes please".');
+
         $resolver = $this->createConfigurationResolver(['allow-risky' => 'yes please']);
 
-        static::assertFalse($resolver->getRiskyAllowed());
+        $resolver->getRiskyAllowed();
     }
 
     public function provideResolveBooleanOptionCases()
     {
         return [
             [true, true, 'yes'],
-            [true, true, true],
             [true, false, 'yes'],
-            [true, false, true],
             [false, true, 'no'],
-            [false, true, false],
             [false, false, 'no'],
-            [false, false, false],
             [true, true, null],
             [false, false, null],
         ];

@@ -102,7 +102,7 @@ automatically fix anything:
     $ cat foo.php | php php-cs-fixer.phar fix --diff -
 
 Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
-would be default in next MAJOR release (unified differ, estimating, full-width progress indicator):
+would be default in next MAJOR release and to forbid using deprecated configuration:
 
 .. code-block:: console
 
