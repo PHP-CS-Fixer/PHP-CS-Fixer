@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-11-03T08:57:29Z
+
+I would somehow explicitly notice whether this is a PHP CS Fixer docker image, to be used by folks willing to run the fixer, or dev-purpose image to use internally for development of this repo itself?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-11-03T09:01:21Z
+
+These images are intended for internal usage (dev and tests). I'll add information in `CONTRIBUTING.md` after the setup itself is approved.
