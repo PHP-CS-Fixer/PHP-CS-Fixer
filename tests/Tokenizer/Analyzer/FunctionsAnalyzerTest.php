@@ -404,7 +404,25 @@ A();
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionReturnType($tokens, $methodIndex)));
+        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+        static::assertSame(serialize($expected), serialize($actual));
+    }
+
+    /**
+     * @param string $code
+     * @param int    $methodIndex
+     * @param array  $expected
+     *
+     * @dataProvider provideFunctionsWithReturnTypePhp70Cases
+     * @requires PHP 7.0
+     */
+    public function testFunctionReturnTypeInfoPhp70($code, $methodIndex, $expected)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+        static::assertSame(serialize($expected), serialize($actual));
     }
 
     public function provideFunctionsWithArgumentsCases()
@@ -514,6 +532,10 @@ A();
     public function provideFunctionsWithReturnTypeCases()
     {
         yield ['<?php function(){};', 1, null];
+    }
+
+    public function provideFunctionsWithReturnTypePhp70Cases()
+    {
         yield ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)];
         yield ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
         yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];

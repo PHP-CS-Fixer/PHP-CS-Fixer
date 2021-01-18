@@ -25,6 +25,18 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
+            // @TODO: consider switching to `true`, like in @Symfony
+            'native_constant_invocation' => [
+                'fix_built_in' => false,
+                'include' => [
+                    'DIRECTORY_SEPARATOR',
+                    'PHP_INT_SIZE',
+                    'PHP_SAPI',
+                    'PHP_VERSION_ID',
+                ],
+                'scope' => 'namespaced',
+                'strict' => true,
+            ],
             'no_alias_functions' => [
                 'sets' => [
                     '@all',

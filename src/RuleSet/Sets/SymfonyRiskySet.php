@@ -38,17 +38,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'is_null' => true,
             'logical_operators' => true,
             'modernize_types_casting' => true,
-            'native_constant_invocation' => [
-                'fix_built_in' => false,
-                'include' => [
-                    'DIRECTORY_SEPARATOR',
-                    'PHP_INT_SIZE',
-                    'PHP_SAPI',
-                    'PHP_VERSION_ID',
-                ],
-                'scope' => 'namespaced',
-                'strict' => true,
-            ],
+            'native_constant_invocation' => true,
             'native_function_invocation' => [
                 'include' => [
                     '@compiler_optimized',

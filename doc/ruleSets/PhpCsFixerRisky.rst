@@ -10,6 +10,9 @@ Rules
 - `@Symfony:risky <./SymfonyRisky.rst>`_
 - `comment_to_phpdoc <./../rules/comment/comment_to_phpdoc.rst>`_
 - `final_internal_class <./../rules/class_notation/final_internal_class.rst>`_
+- `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_
+  config:
+  ``['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_INT_SIZE', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced', 'strict' => true]``
 - `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_
   config:
   ``['sets' => ['@all']]``
