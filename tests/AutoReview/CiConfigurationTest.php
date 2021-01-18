@@ -40,9 +40,19 @@ final class CiConfigurationTest extends TestCase
             $supportedVersions[] = '5.6';
         }
 
-        for ($version = $supportedMinPhp; $version <= $supportedMaxPhp; $version += 0.1) {
-            $supportedVersions[] = sprintf('%.1f', $version);
+        if ($supportedMaxPhp >= 8) {
+            $supportedVersions = array_merge(
+                $supportedVersions,
+                self::generateMinorVersionsRange($supportedMinPhp, 7.4)
+            );
+
+            $supportedMinPhp = 8;
         }
+
+        $supportedVersions = array_merge(
+            $supportedVersions,
+            self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp)
+        );
 
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
 
@@ -56,7 +66,7 @@ final class CiConfigurationTest extends TestCase
     {
         $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
-        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
+        $expectedPhp = '7.4'; // can't run dev-tools on 8.0 yet; $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
             // last version of used PHP is snapshot. we should test against previous one, that is stable
@@ -72,6 +82,17 @@ final class CiConfigurationTest extends TestCase
                 sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
             );
         }
+    }
+
+    private static function generateMinorVersionsRange($from, $to)
+    {
+        $range = [];
+
+        for ($version = $from; $version <= $to; $version += 0.1) {
+            $range[] = sprintf('%.1f', $version);
+        }
+
+        return $range;
     }
 
     private static function ensureTraversableContainsIsAvailable()
@@ -93,6 +114,10 @@ final class CiConfigurationTest extends TestCase
 
     private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
     {
+        if ('8.0' === $lastSupportedVersion) {
+            return; // no further releases available yet
+        }
+
         self::ensureTraversableContainsIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
