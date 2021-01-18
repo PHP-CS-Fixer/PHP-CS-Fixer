@@ -84,9 +84,9 @@ NOTE: if there is an error like "errors reported during linting after fixing", y
 The <comment>--rules</comment> option limits the rules to apply to the
 project:
 
-    <info>$ php %command.full_name% /path/to/project --rules=@PSR2</info>
+    <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
 
-By default the PSR1 and PSR2 rules are used.
+By default the PSR12 rules are used.
 
 The <comment>--rules</comment> option lets you choose the exact rules to
 apply (the rule names must be separated by a comma):
@@ -148,7 +148,7 @@ Use the following command to quickly understand what a rule will do to your code
 
 To visualize all the rules that belong to a ruleset:
 
-    <info>$ php php-cs-fixer.phar describe @PSR2</info>
+    <info>$ php php-cs-fixer.phar describe @PSR12</info>
 
 Choose from the list of available rules:
 
@@ -172,7 +172,7 @@ is a good practice to add that file into your <comment>.gitignore</comment> file
 With the <comment>--config</comment> option you can specify the path to the
 <comment>.php_cs</comment> file.
 
-The example below will add two rules to the default list of PSR2 set rules:
+The example below will add two rules to the default list of PSR12 set rules:
 
     <?php
 
@@ -186,7 +186,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
     return $config
         ->setRules([
-            '@PSR2' => true,
+            '@PSR12' => true,
             'strict_param' => true,
             'array_syntax' => ['syntax' => 'short'],
         ])

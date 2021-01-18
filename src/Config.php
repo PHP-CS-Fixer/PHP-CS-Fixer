@@ -31,7 +31,7 @@ class Config implements ConfigInterface
     private $lineEnding = "\n";
     private $name;
     private $phpExecutable;
-    private $rules = ['@PSR2' => true];
+    private $rules = ['@PSR12' => true];
     private $usingCache = true;
 
     public function __construct($name = 'default')
