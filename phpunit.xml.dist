@@ -15,14 +15,14 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
-    defaultTimeLimit="3"
+    defaultTimeLimit="10"
     enforceTimeLimit="true"
     failOnWarning="true"
     processIsolation="false"
     stopOnFailure="false"
-    timeoutForSmallTests="3"
-    timeoutForMediumTests="6"
-    timeoutForLargeTests="9"
+    timeoutForSmallTests="10"
+    timeoutForMediumTests="20"
+    timeoutForLargeTests="30"
     verbose="false"
 >
     <testsuites>

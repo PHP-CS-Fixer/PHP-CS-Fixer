@@ -17,18 +17,17 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 /**
  * @internal
  */
-final class PHP70MigrationSet extends AbstractRuleSetDescription
+final class PHP54MigrationSet extends AbstractRuleSetDescription
 {
     public function getRules()
     {
         return [
-            '@PHP54Migration' => true,
-            'ternary_to_null_coalescing' => true,
+            'array_syntax' => ['syntax' => 'short'],
         ];
     }
 
     public function getDescription()
     {
-        return 'Rules to improve code for PHP 7.0 compatibility.';
+        return 'Rules to improve code for PHP 5.6 compatibility.';
     }
 }

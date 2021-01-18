@@ -99,6 +99,42 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
                     public function test_my_app_too() {}
                 }',
             ],
+            '@depends annotation with class name in PascalCase' => [
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function testMyApp () {}
+
+                    /**
+                     * @depends FooBarTest::testMyApp
+                     */
+                    public function testMyAppToo() {}
+                }',
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function test_my_app () {}
+
+                    /**
+                     * @depends FooBarTest::test_my_app
+                     */
+                    public function test_my_app_too() {}
+                }',
+            ],
+            '@depends annotation with class name in Snake_Case' => [
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function testMyApp () {}
+
+                    /**
+                     * @depends Foo_Bar_Test::testMyApp
+                     */
+                    public function testMyAppToo() {}
+                }',
+                '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
+                    public function test_my_app () {}
+
+                    /**
+                     * @depends Foo_Bar_Test::test_my_app
+                     */
+                    public function test_my_app_too() {}
+                }',
+            ],
             '@depends and @test annotation' => [
                 '<?php class MyTest extends \PhpUnit\FrameWork\TestCase {
                     /**

@@ -466,6 +466,20 @@ class FooTest extends TestCase
 EOF
                 ,
             ],
+            'do not crash on abstract static function' => [
+                <<<'EOF'
+<?php
+abstract class FooTest extends TestCase
+{
+    abstract public static function dataProvider();
+}
+EOF
+                ,
+                null,
+                [
+                    'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
+                ],
+            ],
         ];
     }
 

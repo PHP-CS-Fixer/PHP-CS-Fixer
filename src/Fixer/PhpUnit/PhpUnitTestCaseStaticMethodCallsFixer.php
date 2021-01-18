@@ -473,8 +473,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     private function findEndOfNextBlock(Tokens $tokens, $index)
     {
-        $index = $tokens->getNextTokenOfKind($index, ['{']);
+        $nextIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
-        return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        return $tokens[$nextIndex]->equals('{')
+            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex)
+            : $nextIndex;
     }
 }

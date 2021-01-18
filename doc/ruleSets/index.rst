@@ -2,6 +2,7 @@
 List of Available Rule sets
 ===========================
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
+- `@PHP54Migration <./PHP54Migration.rst>`_
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
 - `@PHP70Migration <./PHP70Migration.rst>`_
 - `@PHP70Migration:risky <./PHP70MigrationRisky.rst>`_
