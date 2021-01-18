@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2020-12-30T23:34:53Z
+
+[![Coverage Status](https://coveralls.io/builds/36012613/badge)](https://coveralls.io/builds/36012613)
+
+Coverage remained the same at 91.369% when pulling **640a7ae48426f2e546c123ea8e5820e4090ada1d on keradus:2.17_php8-integration-test** into **bb6ee853fadea6c8fee2f2d1eff4c42f22ba5e37 on FriendsOfPHP:2.17**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-18T01:04:06Z
+
+time performance on CI looks unstable. i wonder can we count cpu ticks and not actual time
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-18T01:24:13Z
+
+PHP 8 integration test is green, finally ;)
