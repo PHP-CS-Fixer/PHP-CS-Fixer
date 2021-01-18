@@ -827,4 +827,27 @@ AB# <- this is the name
             '<?php class Foo { static public ?array $foo; }',
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @requires PHP 8.0
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield [
+            '<?php class Foo { private int|float|null $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { private int | /* or empty */ null $foo; }',
+        ];
+    }
 }
