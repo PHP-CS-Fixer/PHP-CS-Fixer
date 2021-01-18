@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\Constraint\TraversableContains;
+use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -74,36 +74,26 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
-    private static function ensureTraversableContainsIsAvailable()
+    private static function ensureTraversableContainsIdenticalIsAvailable()
     {
-        if (!class_exists(TraversableContains::class)) {
-            static::markTestSkipped('TraversableContains not available.');
-        }
-
-        try {
-            new TraversableContains('');
-        } catch (\Error $e) {
-            if (false === strpos($e->getMessage(), 'Cannot instantiate abstract class')) {
-                throw $e;
-            }
-
-            static::markTestSkipped('TraversableContains not available.');
+        if (!class_exists(TraversableContainsIdentical::class)) {
+            static::markTestSkipped('TraversableContainsIdentical not available.');
         }
     }
 
     private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
     {
-        self::ensureTraversableContainsIsAvailable();
+        self::ensureTraversableContainsIdenticalIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
             // if `$lastsupportedVersion` is already a snapshot version
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion)),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion)),
             // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
-            new TraversableContains('nightly'),
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical('nightly'),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
-            new TraversableContains(sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContains(sprintf('%.1f', round($lastSupportedVersion + 1)))
+            new TraversableContainsIdentical(sprintf('%.1f', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical(sprintf('%.1f', round($lastSupportedVersion + 1)))
         ));
     }
 
@@ -115,11 +105,11 @@ final class CiConfigurationTest extends TestCase
             static::assertContains($expectedVersion, $ciVersions);
         }
 
-        self::ensureTraversableContainsIsAvailable();
+        self::ensureTraversableContainsIdenticalIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
-            new TraversableContains($lastSupportedVersion),
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion))
+            new TraversableContainsIdentical($lastSupportedVersion),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion))
         ));
     }
 
