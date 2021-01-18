@@ -1,0 +1,17 @@
+---------------------------------------------------------------------------
+
+by tigitz at 2021-01-10T23:18:45Z
+
+I understand "Migration" as a replacement of a deprecated concept by a new one.
+
+Short array syntax is just an alternative way to express your arrays. `array()` is not deprecated and short array syntax is not meant to replace it.
+
+Just because someone prefers `array()` syntax doesn't mean they haven't migrated to 5.4
+
+I feel the rule should stay out of a migration set and be kept as a style preference.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T21:36:38Z
+
+When I created Migration rulesets, they were for purpose of "let use the new language/syntax/feature of higher version of PHP/PHPUnit". I agree one can say it's a matter of style. But one can also say that not using `**` operator is matter of style, and we aim to use it, if possible. But no worry, one can always disable the rules s/he would not like to follow
