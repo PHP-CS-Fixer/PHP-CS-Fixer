@@ -8,6 +8,7 @@ Rules
 -----
 
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
+- `@PSR12:risky <./PSR12Risky.rst>`_
 - `array_push <./../rules/alias/array_push.rst>`_
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_
 - `dir_constant <./../rules/language_construct/dir_constant.rst>`_
@@ -33,8 +34,8 @@ Rules
 - `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_
 - `no_homoglyph_names <./../rules/naming/no_homoglyph_names.rst>`_
 - `no_php4_constructor <./../rules/class_notation/no_php4_constructor.rst>`_
-- `no_trailing_whitespace_in_string <./../rules/string_notation/no_trailing_whitespace_in_string.rst>`_
 - `no_unneeded_final_method <./../rules/class_notation/no_unneeded_final_method.rst>`_
+- `no_unreachable_default_argument_value <./../rules/function_notation/no_unreachable_default_argument_value.rst>`_
 - `no_useless_sprintf <./../rules/function_notation/no_useless_sprintf.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
   config:

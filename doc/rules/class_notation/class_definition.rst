@@ -146,6 +146,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``class_definition`` rule with the default config.
+
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``class_definition`` rule with the default config.
 

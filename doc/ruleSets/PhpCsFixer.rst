@@ -15,7 +15,6 @@ Rules
   ``['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'include', 'include_once', 'require', 'require_once', 'return', 'switch', 'throw', 'try']]``
 - `combine_consecutive_issets <./../rules/language_construct/combine_consecutive_issets.rst>`_
 - `combine_consecutive_unsets <./../rules/language_construct/combine_consecutive_unsets.rst>`_
-- `compact_nullable_typehint <./../rules/whitespace/compact_nullable_typehint.rst>`_
 - `escape_implicit_backslashes <./../rules/string_notation/escape_implicit_backslashes.rst>`_
 - `explicit_indirect_variable <./../rules/language_construct/explicit_indirect_variable.rst>`_
 - `explicit_string_variable <./../rules/string_notation/explicit_string_variable.rst>`_

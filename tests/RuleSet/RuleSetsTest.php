@@ -243,6 +243,18 @@ Integration of %s.
      */
     private function sort(array &$data)
     {
+        $this->doSort($data, '');
+    }
+
+    /**
+     * @param string $path
+     */
+    private function doSort(array &$data, $path)
+    {
+        if ('ordered_imports.imports_order' === $path) { // order matters
+            return;
+        }
+
         $keys = array_keys($data);
 
         if ($this->allInteger($keys)) {
@@ -253,7 +265,10 @@ Integration of %s.
 
         foreach ($data as $key => $value) {
             if (\is_array($value)) {
-                $this->sort($data[$key]);
+                $this->doSort(
+                    $data[$key],
+                    $path.('' !== $path ? '.' : '').$key
+                );
             }
         }
     }
