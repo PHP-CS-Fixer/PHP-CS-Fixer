@@ -59,7 +59,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.18-dev"
+            "dev-master": "2.19-dev"
         }
     },
     "autoload": {

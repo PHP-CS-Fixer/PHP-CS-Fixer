@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.0
+---------------------
+
+* feature #4943 Add PSR12 ruleset (julienfalque, keradus)
+* feature #5426 Update Symfony ruleset (keradus)
+* feature #5428 Add/Change PHP.MigrationSet to update array/list syntax to short one (keradus)
+* minor #5441 Allow execution under PHP 8 (keradus)
+
 Changelog for v2.17.4
 ---------------------
 
