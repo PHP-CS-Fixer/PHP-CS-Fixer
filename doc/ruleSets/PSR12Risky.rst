@@ -2,7 +2,7 @@
 Rule set ``@PSR12:risky``
 =========================
 
-Rules that follow `PSR-2 <https://www.php-fig.org/psr/psr-2/>`_ standard. This set contains rules that are risky.
+Rules that follow `PSR-12 <https://www.php-fig.org/psr/psr-12/>`_ standard. This set contains rules that are risky.
 
 Rules
 -----
