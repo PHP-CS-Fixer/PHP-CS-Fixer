@@ -1,0 +1,234 @@
+---------------------------------------------------------------------------
+
+by drupol at 2020-05-06T19:49:50Z
+
+Can't wait for this :)
+
+---------------------------------------------------------------------------
+
+by drupol at 2020-05-07T05:43:23Z
+
+Just FYI,
+
+On my side, I'm using [a package of mine](https://github.com/drupol/phpcsfixer-configs-php) implementing this ruleset among some others.
+
+This is completely in sync with [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) and [ECS](https://packagist.org/packages/symplify/easy-coding-standard).
+
+The configuration for PSR12 is [here](https://github.com/drupol/phpcsfixer-configs-php/blob/master/config/psr12/phpcsfixer.rules.yml), maybe that will help.
+
+The scripts i'm using in `composer.json`:
+```
+  "scripts": {
+    "phpcsfixer": "vendor/bin/php-cs-fixer  --dry-run --allow-risky=yes --config=./vendor/drupol/php-conventions/config/psr12/php_cs_fixer.config.php --using-cache=no --verbose fix",
+  }
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-08T09:08:00Z
+
+Thanks @drupol, I updated the ruleset :)
+
+---------------------------------------------------------------------------
+
+by drupol at 2020-05-08T09:11:10Z
+
+Great, glad it helped :)
+
+---------------------------------------------------------------------------
+
+by drupol at 2020-05-08T09:25:26Z
+
+Weird issue.
+
+```
+There was 1 failure:
+
+1) PhpCsFixer\Tests\RuleSetTest::testDuplicateRuleConfigurationInSetDefinitions
+
+"@PSR12" defines rules the same as it extends from:
+- "visibility_required" is also in "@PSR2"
+
+"@Symfony" defines rules the same as it extends from:
+- "visibility_required" is also in "@PSR12"
+
+/home/travis/build/FriendsOfPHP/PHP-CS-Fixer/tests/RuleSetTest.php:639
+```
+
+Overriding rules is not allowed ?!
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-08T09:51:05Z
+
+Our tests prevent having a ruleset that overrides a rule with the exact same config.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-08T09:55:13Z
+
+@nicolas-grekas @fabpot This introduces changes in the `@Symfony` ruleset, are you ok with those?
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2020-05-08T10:26:53Z
+
+I ran this PR on the Symfony, there are some suspicious changes, but looks good otherwise.
+
+Here are the changes that I think should not happen:
+
+![image](https://user-images.githubusercontent.com/243674/81396975-b6ce9c80-9126-11ea-9209-06f893860a72.png)
+
+![image](https://user-images.githubusercontent.com/243674/81397020-cc43c680-9126-11ea-82d9-8a6baea74886.png)
+
+![image](https://user-images.githubusercontent.com/243674/81397102-f301fd00-9126-11ea-8410-4d339e78a20e.png)
+
+---------------------------------------------------------------------------
+
+by drupol at 2020-05-08T10:35:22Z
+
+Hi,
+
+Just for the record, here are the rules (and the ruleset that uses them) from your screenshots.
+
+> ![image](https://user-images.githubusercontent.com/243674/81396975-b6ce9c80-9126-11ea-9209-06f893860a72.png)
+
+`ordered_imports [@Symfony, @PhpCsFixer]`
+
+> ![image](https://user-images.githubusercontent.com/243674/81397020-cc43c680-9126-11ea-82d9-8a6baea74886.png)
+
+`full_opening_tag [@PSR1, @PSR2, @Symfony, @PhpCsFixer]`
+
+> ![image](https://user-images.githubusercontent.com/243674/81397102-f301fd00-9126-11ea-8410-4d339e78a20e.png)
+
+`global_namespace_import`
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-05-08T10:47:30Z
+
+@nicolas-grekas Having trait imports at the very beginning of classes is required by PSR-12, do you mean you don't want Symfony's coding style to follow that specific rule?
+
+The second change looks like a bug unrelated to this PR, `<?=` is supposed to be allowed. In which file was that change introduced?
+
+The last change looks unrelated to this PR, `global_namespace_import` isn't part of any ruleset.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2020-05-08T11:48:13Z
+
+Having trait imports at the beginning of the classes looks ok to me.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-08T12:16:58Z
+
+@nicolas-grekas @julienfalque last change is related to ["strict" flag](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4679#issuecomment-567024804) for NativeConstantInvocationFixer which will be released in `2.17`.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2020-05-08T12:29:36Z
+
+> last change is related to "strict" flag for NativeConstantInvocationFixer which will be released in 2.17.
+
+OK, then that's something that `NativeConstantInvocationFixer` should *not* do for some selected constants. `PHP_INT_SIZE` is one of them: while for most other constants we don't care, this one, but also e.g. `PHP_VERSION_ID`, is used by PHP at compile time to optimize the compiled opcodes. Removing the `\` breaks the optimization.
+
+I think looking at which constants have a leading `\` in the codebase could give the list. `PHP_DIRECTORY_SEPARATOR` is one of them.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-05-08T12:41:09Z
+
+Like these https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.16.3/src/RuleSet.php#L193?
+
+The only update in 2.17 would be making it strict.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2020-05-08T12:49:52Z
+
+Yes, this. PHP_INT_SIZE should be added to the list.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-10T13:18:05Z
+
+I have actually already re-built this PR myself using the new rule set classes. Would you like me to PR the replacement?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-10T16:34:43Z
+
+If you have sth ready out of the box, please share it and maybe collaborate with Julien to finalize the topic.
+
+What I would love to have is rather agreeable set that we can easily merge and use rather than starting another never ending discussion what config should be inside. Let's take minimum agreeable config, merge, and have needed discussion as 2nd step
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-10T22:39:58Z
+
+I don't have time to send a replacement PR this second, but in the meanwhile, here's the patch: https://gist.github.com/GrahamCampbell/4902e84e782d2aee1954a25c42aa61ee (without the docs directory changes, and also without correct co-authorship).
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-10T22:40:36Z
+
+If nobody else gets to this before me (probably in the next 3 weeks), then I will go the whole way and send a PR with docs dir genned, etc.
+
+---------------------------------------------------------------------------
+
+by drupol at 2021-01-11T18:31:23Z
+
+Can't believe this is happening! Great!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-11T19:10:49Z
+
+@drupol Just because this ruleset is named PSR12, it doesn't mean it actually enforces all the rules. In fact, many fixers remain to be implemented/updated.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-11T19:11:20Z
+
+I think the import fixing will be something many people will notice.
+
+---------------------------------------------------------------------------
+
+by drupol at 2021-01-11T19:30:29Z
+
+> @drupol Just because this ruleset is named PSR12, it doesn't mean it actually enforces all the rules. In fact, many fixers remain to be implemented/updated.
+
+Yes, I guess.
+
+That said, it's nice that we will have the `PSR12` ruleset! It will be refined and improved with time.
+
+---------------------------------------------------------------------------
+
+by pkruithof at 2021-01-12T07:54:11Z
+
+> Just because this ruleset is named PSR12, it doesn't mean it actually enforces all the rules.
+
+Out of curiosity: why not? I would assume it does, otherwise why give it that name?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-01-12T09:43:52Z
+
+> Out of curiosity: why not?
+
+> many fixers remain to be implemented/updated.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-13T23:53:31Z
+
+@pkruithof the goal of ruleset is to gather all the rules that are aiming to match the standard as close as possible. of course, there will be cases when not every single line of standard is automated by the ruleset. but we would already have a starting point that we can extend. the idea of "let's have psr-12 ruleset with all the rules for each line" failed badly after half year of not having all the rules implemented (the folks are simply focusing on other parts of app). let's start small.
+
+don't hesitate to bring implement the new rules if you would spot that sth is missing in PSR12 ruleset
+
+---------------------------------------------------------------------------
+
+by pkruithof at 2021-01-14T07:52:37Z
+
+Thanks for the clarification, I understand now and I appreciate all the work you guys are doing here.
