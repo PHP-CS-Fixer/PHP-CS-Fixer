@@ -96,12 +96,29 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 
     public function provideProcess80Cases()
     {
+        yield 'arrow function' => [
+            '<?php $a = fn(int|null $item): int|null => $item * 2;',
+            [
+                8 => CT::T_TYPE_ALTERNATION,
+                16 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
         yield 'static function' => ['<?php
-$a = static function (A|B|int $a) {};
+$a = static function (A|B|int $a):int|null {};
 ',
             [
                 11 => CT::T_TYPE_ALTERNATION,
                 13 => CT::T_TYPE_ALTERNATION,
+                20 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'static function with use' => ['<?php
+$a = static function () use ($a) : int|null {};
+',
+            [
+                21 => CT::T_TYPE_ALTERNATION,
             ],
         ];
 

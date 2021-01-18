@@ -663,6 +663,7 @@ A();
     public function provideFunctionsWithReturnTypePhp74Cases()
     {
         yield ['<?php fn() => null;', 1, null];
+        yield ['<?php fn(array $a) => null;', 1, null];
         yield ['<?php fn($a): array => null;', 1, new TypeAnalysis('array', 7, 7)];
         yield ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
         yield ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)];
