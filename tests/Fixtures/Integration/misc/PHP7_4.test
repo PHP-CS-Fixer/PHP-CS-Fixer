@@ -43,7 +43,7 @@ class Foo {
     private ?int $foo;
     protected string $bar;
     public iterable $baz;
-    var ? Foo\Bar $qux;
+    var ?Foo\Bar $qux;
 }
 // https://wiki.php.net/rfc/arrow_functions_v2
 $foo = fn ($v) => (string) $v;

@@ -31,6 +31,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PSR12:risky
+  Using the `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.
+
 @PhpCsFixer:risky
   Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``no_trailing_whitespace_in_string`` rule.
 

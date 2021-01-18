@@ -87,6 +87,11 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['const', 'method', 'property']]``
 
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
+
+  ``['elements' => ['const', 'method', 'property']]``
+
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
