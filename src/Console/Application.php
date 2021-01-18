@@ -34,7 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.18.0';
+    const VERSION = '2.18.1-DEV';
     const VERSION_CODENAME = 'Remote Void';
 
     /**
