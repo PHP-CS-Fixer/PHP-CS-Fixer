@@ -97,7 +97,7 @@ class Sample
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
+        $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             if (!\in_array($element['type'], $this->configuration['elements'], true)) {

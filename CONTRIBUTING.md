@@ -34,6 +34,52 @@ Symfony projects for instance).
 * Check if tests pass: `vendor/bin/phpunit`.
 * Fix project itself: `php php-cs-fixer fix`.
 
+## Working With Docker
+
+This project provides a Docker setup that allows working on it using any of the supported PHP versions.
+
+To use it, you first need to install:
+
+ * [Docker](https://docs.docker.com/get-docker/)
+ * [Docker Compose](https://docs.docker.com/compose/install/)
+
+Make sure the versions installed support [Compose file format 3.8](https://docs.docker.com/compose/compose-file/).
+
+Next, copy [`docker-compose.override.yaml.dist`](./docker-compose.override.yaml.dist) to `docker-compose.override.yaml`
+and edit it to your needs. The relevant parameters that might require some tweaking have comments to help you.
+
+You can then build the images:
+
+```console
+$ docker-compose build --parallel
+```
+
+Now you can run commands needed to work on the project. For example, say you want to run PHPUnit tests on PHP 7.4:
+
+```console
+$ docker-compose run php-7.4 vendor/bin/phpunit
+```
+
+Sometimes it can be more convenient to have a shell inside the container:
+
+```console
+$ docker-compose run php-7.4 sh
+/app $ vendor/bin/phpunit
+```
+
+The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with
+Xdebug enabled to help debug problems.
+
+```console
+docker-compose run php-7.4 xdebug vendor/bin/phpunit
+```
+
+If you're using PhpStorm, you need to create a [server](https://www.jetbrains.com/help/phpstorm/servers.html) with a
+name that matches the `PHP_IDE_CONFIG` environment variable defined in the Docker Compose configuration files, which is
+`php-cs-fixer` by default.
+
+All images use port 9003 for debug connections.
+
 ## Opening a [Pull Request](https://help.github.com/articles/about-pull-requests/)
 
 You can do some things to increase the chance that your Pull Request is accepted the first time:
