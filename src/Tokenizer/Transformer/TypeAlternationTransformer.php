@@ -101,6 +101,12 @@ final class TypeAlternationTransformer extends AbstractTransformer
             return;
         }
 
+        if (\PHP_VERSION_ID >= 70400 && $prePrevToken->isGivenKind(T_FN)) {
+            $this->replaceToken($tokens, $index); // `|` is part of an array function variable `fn(int|null`
+
+            return;
+        }
+
         if (
             $prePrevToken->isGivenKind(T_STRING)
             && $tokens[$tokens->getPrevMeaningfulToken($prevPrevTokenIndex)]->isGivenKind(T_FUNCTION)

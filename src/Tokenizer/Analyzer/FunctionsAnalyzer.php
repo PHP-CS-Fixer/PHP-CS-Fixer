@@ -153,7 +153,8 @@ final class FunctionsAnalyzer
         $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
-        if (':' !== $tokens[$typeColonIndex]->getContent()) {
+
+        if (!$tokens[$typeColonIndex]->isGivenKind(CT::T_TYPE_COLON)) {
             return null;
         }
 
@@ -161,6 +162,7 @@ final class FunctionsAnalyzer
         $typeStartIndex = $tokens->getNextMeaningfulToken($typeColonIndex);
         $typeEndIndex = $typeStartIndex;
         $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';', [T_DOUBLE_ARROW]]);
+
         for ($i = $typeStartIndex; $i < $functionBodyStart; ++$i) {
             if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
                 continue;
