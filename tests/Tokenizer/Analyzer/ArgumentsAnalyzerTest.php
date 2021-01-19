@@ -62,6 +62,26 @@ final class ArgumentsAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @param string $code
+     * @param int    $openIndex
+     * @param int    $closeIndex
+     * @param array  $expected
+     *
+     * @requires PHP 8.0
+     * @dataProvider provideArgumentsInfo80Cases
+     */
+    public function testArgumentInfo80($code, $openIndex, $closeIndex, $expected)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new ArgumentsAnalyzer();
+
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex))
+        );
+    }
+
     public function provideArgumentsCases()
     {
         return [
@@ -162,6 +182,27 @@ final class ArgumentsAnalyzerTest extends TestCase
         ];
     }
 
+    public function provideArgumentsInfo80Cases()
+    {
+        foreach (['public', 'protected', 'private'] as $visibility) {
+            yield [
+                sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
+                13,
+                22,
+                new ArgumentAnalysis(
+                    '$param',
+                    18,
+                    'null',
+                    new TypeAnalysis(
+                        '?string',
+                        15,
+                        16
+                    )
+                ),
+            ];
+        }
+    }
+
     /**
      * @param string $code
      * @param int    $openIndex
@@ -188,6 +229,32 @@ final class ArgumentsAnalyzerTest extends TestCase
             ['<?php foo($a(1,2,3,4,5,),);', 2, 17, [3 => 15]],
             ['<?php foo($a(1,2,3,4,5,),);', 4, 15, [5 => 5, 7 => 7, 9 => 9, 11 => 11, 13 => 13]],
             ['<?php bar($a, $b , ) ;', 2, 10, [3 => 3, 5 => 7]],
+        ];
+    }
+
+    /**
+     * @param string $code
+     * @param int    $openIndex
+     * @param int    $closeIndex
+     *
+     * @requires PHP 8.0
+     * @dataProvider provideArguments80Cases
+     */
+    public function testArguments80($code, $openIndex, $closeIndex, array $arguments)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new ArgumentsAnalyzer();
+
+        static::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
+        static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
+    }
+
+    public function provideArguments80Cases()
+    {
+        return [
+            ['<?php class Foo { public function __construct(public ?string $param = null) {} }', 12, 23, [13 => 22]],
+            ['<?php class Foo { public function __construct(protected ?string $param = null) {} }', 12, 23, [13 => 22]],
+            ['<?php class Foo { public function __construct(private ?string $param = null) {} }', 12, 23, [13 => 22]],
         ];
     }
 }
