@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-18T23:49:43Z
+
+[![Coverage Status](https://coveralls.io/builds/36414621/badge)](https://coveralls.io/builds/36414621)
+
+Coverage increased (+0.003%) to 91.928% when pulling **c4c886958ae4dd8ae47be5cd17d09f695e22e02c on derrabus:bugfix/switch-match-default** into **51f38fe809da6af624e48318a2e40c6799829769 on FriendsOfPHP:2.17**.
