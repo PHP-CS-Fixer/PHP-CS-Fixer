@@ -404,13 +404,13 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @param string $expected
-     * @param string $input
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input)
+    public function testFix80($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -420,6 +420,18 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield [
             '<?php function foo(?string $param = null,) {}',
             '<?php function foo(string $param = null,) {}',
+        ];
+
+        yield [
+            '<?php class Foo {
+                public function __construct(
+                    public ?string $paramA = null,
+                    protected ?string $paramB = null,
+                    private ?string $paramC = null,
+                    ?string $paramD = null,
+                    $a = []
+                ) {}
+            }',
         ];
     }
 }

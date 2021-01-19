@@ -3,6 +3,44 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.0
+---------------------
+
+* feature #4943 Add PSR12 ruleset (julienfalque, keradus)
+* feature #5426 Update Symfony ruleset (keradus)
+* feature #5428 Add/Change PHP.MigrationSet to update array/list syntax to short one (keradus)
+* minor #5441 Allow execution under PHP 8 (keradus)
+
+Changelog for v2.17.4
+---------------------
+
+* bug #5379 PhpUnitMethodCasingFixer - Do not modify class name (localheinz)
+* bug #5404 NullableTypeTransformer - constructor property promotion support (Wirone)
+* bug #5433 PhpUnitTestCaseStaticMethodCallsFixer - fix for abstract static method (kubawerlos)
+* minor #5234 DX: Add Docker dev setup (julienfalque, keradus)
+* minor #5391 PhpdocOrderByValueFixer - Add additional annotations to sort (localheinz)
+* minor #5392 PhpdocScalarFixer - Fix description (localheinz)
+* minor #5397 NoExtraBlankLinesFixer - PHP8 throw support (SpacePossum)
+* minor #5399 Add PHP8 integration test (keradus)
+* minor #5405 TypeAlternationTransformer - add support for PHP8 (SpacePossum)
+* minor #5406 SingleSpaceAfterConstructFixer - Attributes, comments and PHPDoc support (SpacePossum)
+* minor #5407 TokensAnalyzer::getClassyElements - return trait imports (SpacePossum)
+* minor #5410 minors (SpacePossum)
+* minor #5411 bump year in LICENSE file (SpacePossum)
+* minor #5414 TypeAlternationTransformer - T_FN support (SpacePossum)
+* minor #5415 Forbid execution under PHP 8.0.0 (keradus)
+* minor #5416 Drop Travis CI (keradus)
+* minor #5419 CI: separate SCA checks to dedicated jobs (keradus)
+* minor #5420 DX: unblock PHPUnit 9.5 (keradus)
+* minor #5423 DX: PHPUnit - disable verbose by default (keradus)
+* minor #5425 Cleanup 3.0 todos (keradus)
+* minor #5427 Plan changing defaults for array_syntax and list_syntax in 3.0 release (keradus)
+* minor #5429 DX: Drop speedtrap PHPUnit listener (keradus)
+* minor #5432 Don't allow unserializing classes with a destructor (jderusse)
+* minor #5435 DX: PHPUnit - groom configuration of time limits (keradus)
+* minor #5439 VisibilityRequiredFixer - support type alternation for properties (keradus)
+* minor #5442 DX: FunctionsAnalyzerTest - add missing 7.0 requirement (keradus)
+
 Changelog for v2.17.3
 ---------------------
 

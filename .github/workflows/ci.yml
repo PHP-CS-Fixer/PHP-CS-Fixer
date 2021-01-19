@@ -53,7 +53,6 @@ jobs:
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
             composer-flags: '--ignore-platform-req=php' # as this is a version not yet officially supported by PHP CS Fixer
-            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'windows-latest'
             php-version: '7.4'
@@ -127,7 +126,6 @@ jobs:
         run: sed 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' phpunit.xml.dist > phpunit.xml
 
       - name: Run tests
-        continue-on-error: ${{ matrix.php-version == '8.0' }}
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}

@@ -15,7 +15,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\Constraint\TraversableContains;
+use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -40,9 +40,19 @@ final class CiConfigurationTest extends TestCase
             $supportedVersions[] = '5.6';
         }
 
-        for ($version = $supportedMinPhp; $version <= $supportedMaxPhp; $version += 0.1) {
-            $supportedVersions[] = sprintf('%.1f', $version);
+        if ($supportedMaxPhp >= 8) {
+            $supportedVersions = array_merge(
+                $supportedVersions,
+                self::generateMinorVersionsRange($supportedMinPhp, 7.4)
+            );
+
+            $supportedMinPhp = 8;
         }
+
+        $supportedVersions = array_merge(
+            $supportedVersions,
+            self::generateMinorVersionsRange($supportedMinPhp, $supportedMaxPhp)
+        );
 
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
 
@@ -56,7 +66,7 @@ final class CiConfigurationTest extends TestCase
     {
         $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
-        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
+        $expectedPhp = '7.4'; // can't run dev-tools on 8.0 yet; $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
             // last version of used PHP is snapshot. we should test against previous one, that is stable
@@ -74,36 +84,41 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
-    private static function ensureTraversableContainsIsAvailable()
+    private static function generateMinorVersionsRange($from, $to)
     {
-        if (!class_exists(TraversableContains::class)) {
-            static::markTestSkipped('TraversableContains not available.');
+        $range = [];
+
+        for ($version = $from; $version <= $to; $version += 0.1) {
+            $range[] = sprintf('%.1f', $version);
         }
 
-        try {
-            new TraversableContains('');
-        } catch (\Error $e) {
-            if (false === strpos($e->getMessage(), 'Cannot instantiate abstract class')) {
-                throw $e;
-            }
+        return $range;
+    }
 
-            static::markTestSkipped('TraversableContains not available.');
+    private static function ensureTraversableContainsIdenticalIsAvailable()
+    {
+        if (!class_exists(TraversableContainsIdentical::class)) {
+            static::markTestSkipped('TraversableContainsIdentical not available.');
         }
     }
 
     private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
     {
-        self::ensureTraversableContainsIsAvailable();
+        if ('8.0' === $lastSupportedVersion) {
+            return; // no further releases available yet
+        }
+
+        self::ensureTraversableContainsIdenticalIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
             // if `$lastsupportedVersion` is already a snapshot version
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion)),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion)),
             // if `$lastsupportedVersion` is not snapshot version, expect CI to run snapshot of next PHP version
-            new TraversableContains('nightly'),
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical('nightly'),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
-            new TraversableContains(sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContains(sprintf('%.1f', round($lastSupportedVersion + 1)))
+            new TraversableContainsIdentical(sprintf('%.1f', $lastSupportedVersion + 0.1)),
+            new TraversableContainsIdentical(sprintf('%.1f', round($lastSupportedVersion + 1)))
         ));
     }
 
@@ -115,11 +130,11 @@ final class CiConfigurationTest extends TestCase
             static::assertContains($expectedVersion, $ciVersions);
         }
 
-        self::ensureTraversableContainsIsAvailable();
+        self::ensureTraversableContainsIdenticalIsAvailable();
 
         static::assertThat($ciVersions, static::logicalOr(
-            new TraversableContains($lastSupportedVersion),
-            new TraversableContains(sprintf('%.1fsnapshot', $lastSupportedVersion))
+            new TraversableContainsIdentical($lastSupportedVersion),
+            new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion))
         ));
     }
 

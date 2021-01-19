@@ -67,6 +67,20 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+                switch ($a) {
+                    case ["foo" => "bar"]:
+                        break;
+                }
+                ',
+                '<?php
+                switch ($a) {
+                    case ["foo" => "bar"];
+                        break;
+                }
+                ',
+            ],
+            [
+                '<?php
                     switch ($a) {
                         case 42:
                             break;
@@ -256,6 +270,58 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                     case $b ? f(function () { return; }) : new class {public function A(){echo 1;}} ;
                         break;
                 }
+                ',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8
+     */
+    public function testFix80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        return [
+            'Simple match' => [
+                '<?php
+                    echo match ($a) {
+                        default => "foo",
+                    };
+                ',
+            ],
+            'Match in switch' => [
+                '<?php
+                    switch ($foo) {
+                        case "bar":
+                            echo match ($a) {
+                                default => "foo",
+                            };
+                            break;
+                    }
+                ',
+            ],
+            'Match in case value' => [
+                '<?php
+                    switch ($foo) {
+                        case match ($bar) {
+                            default => "foo",
+                        }: echo "It works!";
+                    }
+                ',
+                '<?php
+                    switch ($foo) {
+                        case match ($bar) {
+                            default => "foo",
+                        }; echo "It works!";
+                    }
                 ',
             ],
         ];
