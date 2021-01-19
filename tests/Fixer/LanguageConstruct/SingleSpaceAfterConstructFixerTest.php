@@ -3137,10 +3137,10 @@ baz(); }',
     /**
      * @dataProvider provideCommentsCases
      *
-     * @param string $expected
-     * @param string $input
+     * @param string      $expected
+     * @param null|string $input
      */
-    public function testComments($expected, $input)
+    public function testComments($expected, $input = null)
     {
         $this->fixer->configure([
             'constructs' => [
@@ -3170,6 +3170,15 @@ $a /** 1 */= /** 2 */1;
 $a = 3; # 3
 $a = 4; /** 4 */
 echo 1;
+',
+        ];
+
+        yield 'exceptions' => [
+            '<?php
+new Dummy(/* a */);
+new Dummy(/** b */);
+foo(/* c */);
+$arr = [/* empty */];
 ',
         ];
     }
