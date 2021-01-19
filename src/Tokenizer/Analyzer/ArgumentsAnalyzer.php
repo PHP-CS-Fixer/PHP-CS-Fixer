@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -112,7 +113,12 @@ final class ArgumentsAnalyzer
         for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isComment() || $token->isWhitespace() || $token->isGivenKind(T_ELLIPSIS) || $token->equals('&')) {
+            if (
+                $token->isComment()
+                || $token->isWhitespace()
+                || $token->isGivenKind([T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE])
+                || $token->equals('&')
+            ) {
                 continue;
             }
 
