@@ -22,10 +22,9 @@ final class PHP80MigrationSet extends AbstractRuleSetDescription
     public function getRules()
     {
         return [
-            '@PHP73Migration' => true,
+            '@PHP74Migration' => true,
             'clean_namespace' => true,
             'no_unset_cast' => true,
-            'normalize_index_brace' => true,
         ];
     }
 

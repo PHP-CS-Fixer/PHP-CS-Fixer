@@ -119,7 +119,7 @@ jobs:
 
       - name: Execute migration rules
         if: matrix.execute-migration-rules == 'yes'
-        run: php php-cs-fixer fix --rules @PHP73Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q
+        run: php php-cs-fixer fix --rules @PHP80Migration,@PHP80Migration:risky,blank_line_after_opening_tag,-list_syntax -q
 
       - name: Disable time limit for tests when collecting coverage
         if: matrix.calculate-code-coverage == 'yes'
@@ -143,7 +143,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FUTURE_MODE: 1
-        run: php php-cs-fixer --diff --dry-run -v fix
+        run: php php-cs-fixer fix --diff --dry-run -v
 
       - name: Execute deployment checks
         if: matrix.execute-deployment == 'yes'
