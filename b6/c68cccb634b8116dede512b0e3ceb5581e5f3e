@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-20T00:03:22Z
+
+[![Coverage Status](https://coveralls.io/builds/36445925/badge)](https://coveralls.io/builds/36445925)
+
+Coverage decreased (-0.009%) to 91.921% when pulling **e24e258c0ac6647541cf58734db6a8e0f5de3d25 on keradus:fix_5437** into **95f0b7c29ac0f1819503c6e233c92793e377d592 on FriendsOfPHP:2.17**.
