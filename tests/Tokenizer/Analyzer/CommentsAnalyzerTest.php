@@ -340,4 +340,31 @@ $bar;',
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
         ];
     }
+
+    /**
+     * @param string $code
+     *
+     * @dataProvider providePhpdocCandidatePhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testPhpdocCandidatePhp80($code)
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+    }
+
+    public function providePhpdocCandidatePhp80Cases()
+    {
+        return [
+            ['<?php
+/**
+ * @Annotation
+ */
+#[CustomAnnotationA]
+Class MyAnnotation3 {}'],
+        ];
+    }
 }
