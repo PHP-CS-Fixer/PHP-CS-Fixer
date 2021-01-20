@@ -22,8 +22,7 @@ final class PHP80MigrationRiskySet extends AbstractRuleSetDescription
     public function getRules()
     {
         return [
-            '@PHP71Migration:risky' => true,
-            'implode_call' => true,
+            '@PHP74Migration:risky' => true,
             'no_alias_functions' => [
                 'sets' => [
                     '@all',
