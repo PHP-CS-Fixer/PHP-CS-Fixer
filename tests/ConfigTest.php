@@ -223,7 +223,7 @@ final class ConfigTest extends TestCase
         static::assertSame('default', $config->getName());
         static::assertNull($config->getPhpExecutable());
         static::assertFalse($config->getRiskyAllowed());
-        static::assertSame(['@PSR2' => true], $config->getRules());
+        static::assertSame(['@PSR12' => true], $config->getRules());
         static::assertTrue($config->getUsingCache());
 
         $finder = $config->getFinder();
