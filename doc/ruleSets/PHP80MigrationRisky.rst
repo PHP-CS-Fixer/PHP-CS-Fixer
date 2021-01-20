@@ -7,8 +7,7 @@ Rules to improve code for PHP 8.0 compatibility. This set contains rules that ar
 Rules
 -----
 
-- `@PHP71Migration:risky <./PHP71MigrationRisky.rst>`_
-- `implode_call <./../rules/function_notation/implode_call.rst>`_
+- `@PHP74Migration:risky <./PHP74MigrationRisky.rst>`_
 - `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_
   config:
   ``['sets' => ['@all']]``

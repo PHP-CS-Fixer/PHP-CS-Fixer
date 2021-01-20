@@ -120,7 +120,7 @@ jobs:
 
       - name: Execute migration rules
         if: matrix.execute-migration-rules == 'yes'
-        run: php php-cs-fixer fix --rules @PHP73Migration,@PHP71Migration:risky,blank_line_after_opening_tag -q
+        run: php php-cs-fixer fix --rules @PHP80Migration,@PHP80Migration:risky,blank_line_after_opening_tag -q
 
       - name: Disable time limit for tests when collecting coverage
         if: matrix.calculate-code-coverage == 'yes'
