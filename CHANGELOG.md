@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.1
+---------------------
+
+* bug #5447 switch_case_semicolon_to_colon should skip match/default statements (derrabus)
+* bug #5453 SingleSpaceAfterConstructFixer - better handling of closing parenthesis and brace (keradus)
+* bug #5454 NullableTypeDeclarationForDefaultNullValueFixer - support property promotion via constructor (keradus)
+* bug #5455 PhpdocToCommentFixer - add support for attributes (keradus)
+* bug #5462 NullableTypeDeclarationForDefaultNullValueFixer - support union types (keradus)
+* minor #5444 Fix PHP version number in PHP54MigrationSet description (jdreesen, keradus)
+* minor #5445 DX: update usage of old TraversableContains in tests (keradus)
+* minor #5456 DX: Fix CiIntegrationTest (keradus)
+* minor #5457 CI: fix params order (keradus)
+* minor #5458 CI: fix migration workflow (keradus)
+* minor #5459 DX: cleanup PHP Migration rulesets (keradus)
+
 Changelog for v2.18.0
 ---------------------
 
@@ -10,6 +25,19 @@ Changelog for v2.18.0
 * feature #5426 Update Symfony ruleset (keradus)
 * feature #5428 Add/Change PHP.MigrationSet to update array/list syntax to short one (keradus)
 * minor #5441 Allow execution under PHP 8 (keradus)
+
+Changelog for v2.17.5
+---------------------
+
+* bug #5447 switch_case_semicolon_to_colon should skip match/default statements (derrabus)
+* bug #5453 SingleSpaceAfterConstructFixer - better handling of closing parenthesis and brace (keradus)
+* bug #5454 NullableTypeDeclarationForDefaultNullValueFixer - support property promotion via constructor (keradus)
+* bug #5455 PhpdocToCommentFixer - add support for attributes (keradus)
+* bug #5462 NullableTypeDeclarationForDefaultNullValueFixer - support union types (keradus)
+* minor #5445 DX: update usage of old TraversableContains in tests (keradus)
+* minor #5456 DX: Fix CiIntegrationTest (keradus)
+* minor #5457 CI: fix params order (keradus)
+* minor #5459 DX: cleanup PHP Migration rulesets (keradus)
 
 Changelog for v2.17.4
 ---------------------
