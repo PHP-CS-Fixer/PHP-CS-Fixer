@@ -417,12 +417,12 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
 
     public function provideFix80Cases()
     {
-        yield [
+        yield 'trailing comma' => [
             '<?php function foo(?string $param = null,) {}',
             '<?php function foo(string $param = null,) {}',
         ];
 
-        yield [
+        yield 'property promotion' => [
             '<?php class Foo {
                 public function __construct(
                     public ?string $paramA = null,
@@ -431,6 +431,14 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                     ?string $paramD = null,
                     $a = []
                 ) {}
+            }',
+        ];
+
+        yield 'don\'t change union types' => [
+            '<?php class Foo {
+                public function __construct(private int | null $bar = null, $baz = 1) {}
+                 public function aaa(int | string $bar = null, $baz = 1) {}
+                 public function bbb(int | null $bar = null, $baz = 1) {}
             }',
         ];
     }

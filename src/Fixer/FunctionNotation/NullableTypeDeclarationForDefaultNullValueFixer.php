@@ -126,11 +126,14 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     private function fixFunctionParameters(Tokens $tokens, array $arguments)
     {
         foreach (array_reverse($arguments) as $argumentInfo) {
-            // If the parameter doesn't have a type declaration or a default value null we can continue
             if (
+                // Skip, if the parameter
+                // - doesn't have a type declaration
                 !$argumentInfo->hasTypeAnalysis()
-                || !$argumentInfo->hasDefault()
-                || 'null' !== strtolower($argumentInfo->getDefault())
+                // type is a union
+                || false !== strpos($argumentInfo->getTypeAnalysis()->getName(), '|')
+                // - a default value is not null we can continue
+                || !$argumentInfo->hasDefault() || 'null' !== strtolower($argumentInfo->getDefault())
             ) {
                 continue;
             }
