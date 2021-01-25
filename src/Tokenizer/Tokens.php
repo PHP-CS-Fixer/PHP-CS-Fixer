@@ -895,31 +895,73 @@ class Tokens extends \SplFixedArray
     public function insertAt($index, $items)
     {
         $items = \is_array($items) || $items instanceof self ? $items : [$items];
-        $itemsCnt = \count($items);
 
-        if (0 === $itemsCnt) {
+        $this->insertSlices([$index => $items]);
+    }
+
+    /**
+     * Insert a slices or individual Tokens into multiple places in a single run.
+     *
+     * This approach is kind-of an experiment - it's proven to improve performance a lot for big files that needs plenty of new tickets to be inserted,
+     * like edge case example of 3.7h vs 4s (https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3996#issuecomment-455617637),
+     * yet at same time changing a logic of fixers in not-always easy way.
+     *
+     * To be discuss:
+     * - should we always aim to use this method?
+     * - should we deprecate `insertAt` method ?
+     *
+     * The `$slices` parameter is an assoc array, in which:
+     * - index: starting point for inserting of individual slice, with indexes being relatives to original array collection before any Token inserted
+     * - value under index: a slice of Tokens to be inserted
+     *
+     * @internal
+     *
+     * @param array<int, array<Token>|Token|Tokens> $slices
+     */
+    public function insertSlices(array $slices)
+    {
+        $itemsCount = 0;
+        foreach ($slices as $slice) {
+            $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
+            $itemsCount += \count($slice);
+        }
+
+        if (0 === $itemsCount) {
             return;
         }
 
         $oldSize = \count($this);
         $this->changed = true;
         $this->blockEndCache = [];
-        $this->setSize($oldSize + $itemsCnt);
+        $this->setSize($oldSize + $itemsCount);
+
+        krsort($slices);
+
+        $insertBound = $oldSize - 1;
 
         // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
         // that way we get around additional overhead this class adds with overridden offset* methods.
-        for ($i = $oldSize + $itemsCnt - 1; $i >= $index; --$i) {
-            $oldItem = parent::offsetExists($i - $itemsCnt) ? parent::offsetGet($i - $itemsCnt) : new Token('');
-            parent::offsetSet($i, $oldItem);
-        }
+        foreach ($slices as $index => $slice) {
+            $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
+            $sliceCount = \count($slice);
 
-        for ($i = 0; $i < $itemsCnt; ++$i) {
-            if ('' === $items[$i]->getContent()) {
-                throw new \InvalidArgumentException('Must not add empty token to collection.');
+            for ($i = $insertBound; $i >= $index; --$i) {
+                $oldItem = parent::offsetExists($i) ? parent::offsetGet($i) : new Token('');
+                parent::offsetSet($i + $itemsCount, $oldItem);
             }
 
-            $this->registerFoundToken($items[$i]);
-            parent::offsetSet($i + $index, $items[$i]);
+            $insertBound = $index - $sliceCount;
+            $itemsCount -= $sliceCount;
+
+            foreach ($slice as $indexItem => $item) {
+                if ('' === $item->getContent()) {
+                    throw new \InvalidArgumentException('Must not add empty token to collection.');
+                }
+
+                $this->registerFoundToken($item);
+                $newOffset = $index + $itemsCount + $indexItem;
+                parent::offsetSet($newOffset, $item);
+            }
         }
     }
 
