@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------
+
+by keradus at 2019-01-18T17:06:30Z
+
+why I believe this is a good idea?
+I pushed a fix for #3996 to this PR
+see the time difference without and with this PR:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3996#issuecomment-455617637
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-04-16T20:01:58Z
+
+@julienfalque , @SpacePossum , what do you think about the proposal in this PR? especially do we want to promote new method as new "best practice" or not?
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4250/files#diff-0ae0077906c99aaf35085e05c46cefd3R284
+
+> I think the issue is not related to the overall length, so all keys/values can be probably changed to single char like `0` (zero) or `''` (empty string).
+
+it can, i was just too lazy to modify example provided by original reporter.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-24T22:33:39Z
+
+> Is the name `insertSlices` fitting situation? Quite often (if not most times) we will use this to insert array of tokens. Wouldn't `insertMultiple` (or `insertMany`) better describe what the function is doing?
+
+for me, `insertMultiple`/`insertMany` is more fitting actual behaviour of `insertAt`, where we are pointing a single index, and adding multiple tokens to it:
+```php
+$tokens->insertAt(15, $tokensCollection)
+$tokens->insertAt(10, [$tokenA, $tokenB]);
+$tokens->insertAt(5, $tokenC);
+```
+
+I'm trying to express that we are inserting different slices to different indexes at single call:
+```php
+$tokens->insertSlices([
+    5 => $tokenC,
+    10 => [$tokenA, $tokenB],
+    15 => $tokensCollection,
+]);
+```
+
+-------------------
+
+we can always change the name later, as it's marked as internal
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-24T22:49:52Z
+
+[![Coverage Status](https://coveralls.io/builds/36555847/badge)](https://coveralls.io/builds/36555847)
+
+Coverage increased (+0.006%) to 91.929% when pulling **d1a962bcbaf591543d8f22883c6029581cf8cb19 on keradus:2.12_insert_multi** into **be542fb5db5b026b768b4ffe2f59f2268484a392 on FriendsOfPHP:2.18**.
