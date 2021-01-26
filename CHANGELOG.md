@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.2
+---------------------
+
+* bug #5466 Fix runtime check of PHP version (keradus)
+* minor #4250 POC Tokens::insertSlices (keradus)
+
 Changelog for v2.18.1
 ---------------------
 
