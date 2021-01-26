@@ -127,8 +127,13 @@ final class ConfigTest extends TestCase
             false
         );
 
-        static::assertCount(1, $items);
-        static::assertSame('somefile.php', $items[0]->getFilename());
+        static::assertCount(3, $items);
+        usort($items, function (\SplFileInfo $a, \SplFileInfo $b) {
+            return strcmp($a->getFilename(), $b->getFilename());
+        });
+        static::assertSame('.php_cs', $items[0]->getFilename());
+        static::assertSame('.php_cs.dist', $items[1]->getFilename());
+        static::assertSame('somefile.php', $items[2]->getFilename());
     }
 
     public function testThatCustomFinderWorks()
@@ -143,8 +148,13 @@ final class ConfigTest extends TestCase
             false
         );
 
-        static::assertCount(1, $items);
-        static::assertSame('somefile.php', $items[0]->getFilename());
+        static::assertCount(3, $items);
+        usort($items, function (\SplFileInfo $a, \SplFileInfo $b) {
+            return strcmp($a->getFilename(), $b->getFilename());
+        });
+        static::assertSame('.php_cs', $items[0]->getFilename());
+        static::assertSame('.php_cs.dist', $items[1]->getFilename());
+        static::assertSame('somefile.php', $items[2]->getFilename());
     }
 
     public function testThatCustomSymfonyFinderWorks()
@@ -159,8 +169,12 @@ final class ConfigTest extends TestCase
             false
         );
 
-        static::assertCount(1, $items);
+        static::assertCount(2, $items);
+        usort($items, function (\SplFileInfo $a, \SplFileInfo $b) {
+            return strcmp($a->getFilename(), $b->getFilename());
+        });
         static::assertSame('somefile.php', $items[0]->getFilename());
+        static::assertSame('somefile2.php.txt', $items[1]->getFilename());
     }
 
     public function testThatCacheFileHasDefaultValue()

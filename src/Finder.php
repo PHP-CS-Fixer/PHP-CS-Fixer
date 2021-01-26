@@ -27,6 +27,10 @@ class Finder extends BaseFinder
         $this
             ->files()
             ->name('*.php')
+            ->ignoreDotFiles(false)
+            ->notPath('~(^|/)\.(?!php_cs(\.dist)?(/|$)).+(/|$)~')
+            ->name('.php_cs')
+            ->name('.php_cs.dist')
             ->exclude('vendor')
         ;
     }

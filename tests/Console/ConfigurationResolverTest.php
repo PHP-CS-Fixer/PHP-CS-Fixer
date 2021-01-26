@@ -565,14 +565,14 @@ final class ConfigurationResolverTest extends TestCase
             ],
             'configured only by finder' => [
                 // don't override if the argument is empty
-                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
+                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/.php_cs', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
                 Finder::create()
                     ->in($dir),
                 [],
                 'override',
             ],
             'configured only by argument' => [
-                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
+                $cb(['a1.php', 'a2.php', 'b/b1.php', 'b/b2.php', 'b_b/b_b1.php', 'c/c1.php', 'c/d/cd1.php', 'd/.php_cs', 'd/d1.php', 'd/d2.php', 'd/e/de1.php', 'd/f/df1.php']),
                 Finder::create(),
                 [$dir],
                 'override',
