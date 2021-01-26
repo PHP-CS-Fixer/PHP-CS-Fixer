@@ -88,7 +88,7 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
                     throw new \RuntimeException("{$message}. This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                 }
 
-                @trigger_error($message, E_USER_DEPRECATED);
+                @trigger_error($message, \E_USER_DEPRECATED);
 
                 $options = [$this->root => $options];
             }

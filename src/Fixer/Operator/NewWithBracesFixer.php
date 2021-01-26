@@ -40,7 +40,7 @@ final class NewWithBracesFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_NEW);
+        return $tokens->isTokenKindFound(\T_NEW);
     }
 
     /**
@@ -70,25 +70,25 @@ final class NewWithBracesFixer extends AbstractFixer
                 '&',
                 '^',
                 '|',
-                [T_CLASS],
-                [T_IS_SMALLER_OR_EQUAL],
-                [T_IS_GREATER_OR_EQUAL],
-                [T_IS_EQUAL],
-                [T_IS_NOT_EQUAL],
-                [T_IS_IDENTICAL],
-                [T_IS_NOT_IDENTICAL],
-                [T_CLOSE_TAG],
-                [T_LOGICAL_AND],
-                [T_LOGICAL_OR],
-                [T_LOGICAL_XOR],
-                [T_BOOLEAN_AND],
-                [T_BOOLEAN_OR],
-                [T_SL],
-                [T_SR],
-                [T_INSTANCEOF],
-                [T_AS],
-                [T_DOUBLE_ARROW],
-                [T_POW],
+                [\T_CLASS],
+                [\T_IS_SMALLER_OR_EQUAL],
+                [\T_IS_GREATER_OR_EQUAL],
+                [\T_IS_EQUAL],
+                [\T_IS_NOT_EQUAL],
+                [\T_IS_IDENTICAL],
+                [\T_IS_NOT_IDENTICAL],
+                [\T_CLOSE_TAG],
+                [\T_LOGICAL_AND],
+                [\T_LOGICAL_OR],
+                [\T_LOGICAL_XOR],
+                [\T_BOOLEAN_AND],
+                [\T_BOOLEAN_OR],
+                [\T_SL],
+                [\T_SR],
+                [\T_INSTANCEOF],
+                [\T_AS],
+                [\T_DOUBLE_ARROW],
+                [\T_POW],
                 [CT::T_ARRAY_SQUARE_BRACE_OPEN],
                 [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
                 [CT::T_BRACE_CLASS_INSTANTIATION_OPEN],
@@ -96,14 +96,14 @@ final class NewWithBracesFixer extends AbstractFixer
             ];
 
             if (\defined('T_SPACESHIP')) {
-                $nextTokenKinds[] = [T_SPACESHIP];
+                $nextTokenKinds[] = [\T_SPACESHIP];
             }
         }
 
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_NEW)) {
+            if (!$token->isGivenKind(\T_NEW)) {
                 continue;
             }
 
@@ -111,7 +111,7 @@ final class NewWithBracesFixer extends AbstractFixer
             $nextToken = $tokens[$nextIndex];
 
             // new anonymous class definition
-            if ($nextToken->isGivenKind(T_CLASS)) {
+            if ($nextToken->isGivenKind(\T_CLASS)) {
                 if (!$tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals('(')) {
                     $this->insertBracesAfter($tokens, $nextIndex);
                 }
@@ -132,7 +132,7 @@ final class NewWithBracesFixer extends AbstractFixer
             }
 
             // new statement with () - nothing to do
-            if ($nextToken->equals('(') || $nextToken->isGivenKind(T_OBJECT_OPERATOR)) {
+            if ($nextToken->equals('(') || $nextToken->isGivenKind(\T_OBJECT_OPERATOR)) {
                 continue;
             }
 

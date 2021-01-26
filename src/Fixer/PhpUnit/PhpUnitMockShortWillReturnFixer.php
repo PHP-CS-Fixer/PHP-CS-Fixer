@@ -77,12 +77,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (!$tokens[$index]->isGivenKind(\T_OBJECT_OPERATOR)) {
                 continue;
             }
 
             $functionToReplaceIndex = $tokens->getNextMeaningfulToken($index);
-            if (!$tokens[$functionToReplaceIndex]->equals([T_STRING, 'will'], false)) {
+            if (!$tokens[$functionToReplaceIndex]->equals([\T_STRING, 'will'], false)) {
                 continue;
             }
 
@@ -94,15 +94,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $classReferenceIndex = $tokens->getNextMeaningfulToken($functionToReplaceOpeningBraceIndex);
             $objectOperatorIndex = $tokens->getNextMeaningfulToken($classReferenceIndex);
             if (
-                !($tokens[$classReferenceIndex]->equals([T_VARIABLE, '$this'], false) && $tokens[$objectOperatorIndex]->equals([T_OBJECT_OPERATOR, '->']))
-                && !($tokens[$classReferenceIndex]->equals([T_STRING, 'self'], false) && $tokens[$objectOperatorIndex]->equals([T_DOUBLE_COLON, '::']))
-                && !($tokens[$classReferenceIndex]->equals([T_STATIC, 'static'], false) && $tokens[$objectOperatorIndex]->equals([T_DOUBLE_COLON, '::']))
+                !($tokens[$classReferenceIndex]->equals([\T_VARIABLE, '$this'], false) && $tokens[$objectOperatorIndex]->equals([\T_OBJECT_OPERATOR, '->']))
+                && !($tokens[$classReferenceIndex]->equals([\T_STRING, 'self'], false) && $tokens[$objectOperatorIndex]->equals([\T_DOUBLE_COLON, '::']))
+                && !($tokens[$classReferenceIndex]->equals([\T_STATIC, 'static'], false) && $tokens[$objectOperatorIndex]->equals([\T_DOUBLE_COLON, '::']))
             ) {
                 continue;
             }
 
             $functionToRemoveIndex = $tokens->getNextMeaningfulToken($objectOperatorIndex);
-            if (!$tokens[$functionToRemoveIndex]->isGivenKind(T_STRING) || !\array_key_exists(strtolower($tokens[$functionToRemoveIndex]->getContent()), self::RETURN_METHODS_MAP)) {
+            if (!$tokens[$functionToRemoveIndex]->isGivenKind(\T_STRING) || !\array_key_exists(strtolower($tokens[$functionToRemoveIndex]->getContent()), self::RETURN_METHODS_MAP)) {
                 continue;
             }
 
@@ -113,7 +113,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingBraceIndex);
 
-            $tokens[$functionToReplaceIndex] = new Token([T_STRING, self::RETURN_METHODS_MAP[strtolower($tokens[$functionToRemoveIndex]->getContent())]]);
+            $tokens[$functionToReplaceIndex] = new Token([\T_STRING, self::RETURN_METHODS_MAP[strtolower($tokens[$functionToRemoveIndex]->getContent())]]);
             $tokens->clearTokenAndMergeSurroundingWhitespace($classReferenceIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($objectOperatorIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionToRemoveIndex);

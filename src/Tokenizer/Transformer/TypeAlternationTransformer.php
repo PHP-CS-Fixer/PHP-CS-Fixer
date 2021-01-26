@@ -54,7 +54,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$prevIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$prevIndex]->isGivenKind(\T_STRING)) {
             return;
         }
 
@@ -65,7 +65,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
                 return;
             }
 
-            if (!$tokens[$prevIndex]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+            if (!$tokens[$prevIndex]->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
                 break;
             }
         } while (true);
@@ -76,7 +76,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
         if ($prevToken->isGivenKind([
             CT::T_TYPE_COLON, // `|` is part of a function return type union `foo(): A|B`
             CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `| X | Y`
-            T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `|` is part of class property `var X|Y $a;`
+            \T_VAR, \T_PUBLIC, \T_PROTECTED, \T_PRIVATE, // `|` is part of class property `var X|Y $a;`
         ])) {
             $this->replaceToken($tokens, $index);
 
@@ -93,23 +93,23 @@ final class TypeAlternationTransformer extends AbstractTransformer
         $prePrevToken = $tokens[$prevPrevTokenIndex];
 
         if ($prePrevToken->isGivenKind([
-            T_CATCH, // `|` is part of catch `catch(X |`
-            T_FUNCTION, // `|` is part of an anonymous function variable `static function (X|Y`
+            \T_CATCH, // `|` is part of catch `catch(X |`
+            \T_FUNCTION, // `|` is part of an anonymous function variable `static function (X|Y`
         ])) {
             $this->replaceToken($tokens, $index);
 
             return;
         }
 
-        if (\PHP_VERSION_ID >= 70400 && $prePrevToken->isGivenKind(T_FN)) {
+        if (\PHP_VERSION_ID >= 70400 && $prePrevToken->isGivenKind(\T_FN)) {
             $this->replaceToken($tokens, $index); // `|` is part of an array function variable `fn(int|null`
 
             return;
         }
 
         if (
-            $prePrevToken->isGivenKind(T_STRING)
-            && $tokens[$tokens->getPrevMeaningfulToken($prevPrevTokenIndex)]->isGivenKind(T_FUNCTION)
+            $prePrevToken->isGivenKind(\T_STRING)
+            && $tokens[$tokens->getPrevMeaningfulToken($prevPrevTokenIndex)]->isGivenKind(\T_FUNCTION)
         ) {
             // `|` is part of function variable `function Foo (X|Y`
             $this->replaceToken($tokens, $index);

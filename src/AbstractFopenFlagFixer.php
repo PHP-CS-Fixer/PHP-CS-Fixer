@@ -27,7 +27,7 @@ abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_STRING, T_CONSTANT_ENCAPSED_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_STRING, \T_CONSTANT_ENCAPSED_STRING]);
     }
 
     /**

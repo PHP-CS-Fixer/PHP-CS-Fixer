@@ -28,7 +28,7 @@ abstract class AbstractFixerTestCase extends BaseAbstractFixerTestCase
                 'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
                 __CLASS__
             ),
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         parent::__construct($name, $data, $dataName);

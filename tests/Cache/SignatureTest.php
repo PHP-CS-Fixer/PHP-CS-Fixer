@@ -40,10 +40,10 @@ final class SignatureTest extends TestCase
 
     public function testConstructorSetsValues()
     {
-        $php = PHP_VERSION;
+        $php = \PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
-        $lineEnding = PHP_EOL;
+        $lineEnding = \PHP_EOL;
         $rules = [
             'foo',
             'bar',
@@ -77,7 +77,7 @@ final class SignatureTest extends TestCase
 
     public function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases()
     {
-        $php = PHP_VERSION;
+        $php = \PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
         $lineEnding = "\n";
@@ -116,10 +116,10 @@ final class SignatureTest extends TestCase
 
     public function testEqualsReturnsTrueIfValuesAreIdentical()
     {
-        $php = PHP_VERSION;
+        $php = \PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
-        $lineEnding = PHP_EOL;
+        $lineEnding = \PHP_EOL;
         $rules = [
             'foo',
             'bar',

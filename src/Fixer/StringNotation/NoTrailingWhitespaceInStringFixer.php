@@ -29,7 +29,7 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML]);
+        return $tokens->isAnyTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML]);
     }
 
     /**
@@ -66,11 +66,11 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
             /** @var Token $token */
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML])) {
+            if (!$token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML])) {
                 continue;
             }
 
-            $isInlineHtml = $token->isGivenKind(T_INLINE_HTML);
+            $isInlineHtml = $token->isGivenKind(\T_INLINE_HTML);
             $regex = $isInlineHtml && $last ? '/\h+(?=\R|$)/' : '/\h+(?=\R)/';
             $content = Preg::replace($regex, '', $token->getContent());
 
@@ -86,8 +86,8 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
 
             $prev = $index - 1;
 
-            if ($tokens[$prev]->equals([T_CLOSE_TAG, '?>']) && Preg::match('/^\R/', $content, $match)) {
-                $tokens[$prev] = new Token([T_CLOSE_TAG, $tokens[$prev]->getContent().$match[0]]);
+            if ($tokens[$prev]->equals([\T_CLOSE_TAG, '?>']) && Preg::match('/^\R/', $content, $match)) {
+                $tokens[$prev] = new Token([\T_CLOSE_TAG, $tokens[$prev]->getContent().$match[0]]);
                 $content = substr($content, \strlen($match[0]));
                 $content = false === $content ? '' : $content;
             }

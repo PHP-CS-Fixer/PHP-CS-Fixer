@@ -88,7 +88,7 @@ class SomeClass
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_FUNCTION) && (
+        return $tokens->isTokenKindFound(\T_FUNCTION) && (
             \count((new NamespacesAnalyzer())->getDeclarations($tokens))
             || \count((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens))
         );
@@ -101,7 +101,7 @@ class SomeClass
     {
         $lastIndex = $tokens->count() - 1;
         for ($index = $lastIndex; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 

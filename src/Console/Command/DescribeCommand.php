@@ -100,7 +100,7 @@ final class DescribeCommand extends Command
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity() && $output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
             $stdErr->writeln($this->getApplication()->getLongVersion());
-            $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+            $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', \PHP_VERSION));
         }
 
         $name = $input->getArgument('name');
@@ -283,8 +283,8 @@ final class DescribeCommand extends Command
                 $output->isDecorated(),
                 sprintf(
                     '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
-                    PHP_EOL,
-                    PHP_EOL
+                    \PHP_EOL,
+                    \PHP_EOL
                 )
             );
 

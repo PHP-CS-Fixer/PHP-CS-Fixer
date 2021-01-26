@@ -380,7 +380,7 @@ final class ProjectCodeTest extends TestCase
         $stringTokens = array_filter(
             $tokens->toArray(),
             static function (Token $token) {
-                return $token->isGivenKind(T_STRING);
+                return $token->isGivenKind(\T_STRING);
             }
         );
         $strings = array_map(
@@ -470,19 +470,19 @@ final class ProjectCodeTest extends TestCase
     public function testAllCodeContainSingleClassy($className)
     {
         $headerTypes = [
-            T_ABSTRACT,
-            T_AS,
-            T_COMMENT,
-            T_DECLARE,
-            T_DOC_COMMENT,
-            T_FINAL,
-            T_LNUMBER,
-            T_NAMESPACE,
-            T_NS_SEPARATOR,
-            T_OPEN_TAG,
-            T_STRING,
-            T_USE,
-            T_WHITESPACE,
+            \T_ABSTRACT,
+            \T_AS,
+            \T_COMMENT,
+            \T_DECLARE,
+            \T_DOC_COMMENT,
+            \T_FINAL,
+            \T_LNUMBER,
+            \T_NAMESPACE,
+            \T_NS_SEPARATOR,
+            \T_OPEN_TAG,
+            \T_STRING,
+            \T_USE,
+            \T_WHITESPACE,
         ];
 
         $rc = new \ReflectionClass($className);
@@ -663,7 +663,7 @@ final class ProjectCodeTest extends TestCase
         ));
 
         foreach ($tokens as $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
                 $docBlock = new DocBlock($token->getContent());
                 $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
 

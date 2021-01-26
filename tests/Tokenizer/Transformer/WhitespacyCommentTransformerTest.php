@@ -47,29 +47,29 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
             [
                 "<?php // foo\n    \$a = 1;",
                 [
-                    1 => [T_COMMENT, '// foo'],
-                    2 => [T_WHITESPACE, "\n    "],
+                    1 => [\T_COMMENT, '// foo'],
+                    2 => [\T_WHITESPACE, "\n    "],
                 ],
             ],
             [
                 "<?php // foo\n\n ",
                 [
-                    1 => [T_COMMENT, '// foo'],
-                    2 => [T_WHITESPACE, "\n\n "],
+                    1 => [\T_COMMENT, '// foo'],
+                    2 => [\T_WHITESPACE, "\n\n "],
                 ],
             ],
             [
                 "<?php // foo \r\n ",
                 [
-                    1 => [T_COMMENT, '// foo'],
-                    2 => [T_WHITESPACE, " \r\n "],
+                    1 => [\T_COMMENT, '// foo'],
+                    2 => [\T_WHITESPACE, " \r\n "],
                 ],
             ],
             [
                 '<?php /* foo1 */// foo2         ',
                 [
-                    1 => [T_COMMENT, '/* foo1 */'],
-                    2 => [T_COMMENT, '// foo2'],
+                    1 => [\T_COMMENT, '/* foo1 */'],
+                    2 => [\T_COMMENT, '// foo2'],
                 ],
             ],
         ];

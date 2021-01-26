@@ -78,7 +78,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -146,7 +146,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $currIndex = 0;
 
         while (null !== $currIndex) {
-            $currIndex = $tokens->getNextTokenOfKind($currIndex, [[T_STRING]]);
+            $currIndex = $tokens->getNextTokenOfKind($currIndex, [[\T_STRING]]);
 
             if (null === $currIndex) {
                 break;
@@ -169,12 +169,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             );
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
-            if ($tokens[$prevIndex]->isGivenKind(T_USE)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_USE)) {
                 $importedOriginalClassesMap[$originalClass] = true;
-            } elseif ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            } elseif ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-                if ($tokens[$prevIndex]->isGivenKind(T_USE)) {
+                if ($tokens[$prevIndex]->isGivenKind(\T_USE)) {
                     $importedOriginalClassesMap[$originalClass] = true;
                 }
             }
@@ -214,9 +214,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         $tokensArray = [];
         while (!empty($parts)) {
-            $tokensArray[] = new Token([T_STRING, array_shift($parts)]);
+            $tokensArray[] = new Token([\T_STRING, array_shift($parts)]);
             if (!empty($parts)) {
-                $tokensArray[] = new Token([T_NS_SEPARATOR, '\\']);
+                $tokensArray[] = new Token([\T_NS_SEPARATOR, '\\']);
             }
         }
 

@@ -39,7 +39,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$token->isGivenKind(T_ARRAY)) {
+        if (!$token->isGivenKind(\T_ARRAY)) {
             return;
         }
 

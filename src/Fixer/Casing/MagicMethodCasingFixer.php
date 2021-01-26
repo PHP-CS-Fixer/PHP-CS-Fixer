@@ -75,7 +75,7 @@ $foo->__INVOKE(1);
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING) && $tokens->isAnyTokenKindsFound([T_FUNCTION, T_OBJECT_OPERATOR, T_DOUBLE_COLON]);
+        return $tokens->isTokenKindFound(\T_STRING) && $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_OBJECT_OPERATOR, \T_DOUBLE_COLON]);
     }
 
     /**
@@ -108,7 +108,7 @@ $foo->__INVOKE(1);
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue; // wrong type
             }
 
@@ -160,7 +160,7 @@ $foo->__INVOKE(1);
     private function isFunctionSignature(Tokens $tokens, $index)
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
+        if (!$tokens[$prevIndex]->isGivenKind(\T_FUNCTION)) {
             return false; // not a method signature
         }
 
@@ -175,7 +175,7 @@ $foo->__INVOKE(1);
     private function isMethodCall(Tokens $tokens, $index)
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->equals([T_OBJECT_OPERATOR, '->'])) {
+        if (!$tokens[$prevIndex]->equals([\T_OBJECT_OPERATOR, '->'])) {
             return false; // not a "simple" method call
         }
 
@@ -190,7 +190,7 @@ $foo->__INVOKE(1);
     private function isStaticMethodCall(Tokens $tokens, $index)
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if (!$tokens[$prevIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             return false; // not a "simple" static method call
         }
 
@@ -223,6 +223,6 @@ $foo->__INVOKE(1);
      */
     private function setTokenToCorrectCasing(Tokens $tokens, $index, $nameInCorrectCasing)
     {
-        $tokens[$index] = new Token([T_STRING, $nameInCorrectCasing]);
+        $tokens[$index] = new Token([\T_STRING, $nameInCorrectCasing]);
     }
 }

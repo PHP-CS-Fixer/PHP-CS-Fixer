@@ -39,7 +39,7 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
+        return $tokens->isTokenKindFound(\T_OBJECT_OPERATOR);
     }
 
     /**
@@ -49,7 +49,7 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     {
         // [Structure] there should not be space before or after T_OBJECT_OPERATOR
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (!$token->isGivenKind(\T_OBJECT_OPERATOR)) {
                 continue;
             }
 

@@ -96,7 +96,7 @@ EOT
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity() && $output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
             $stdErr->writeln($this->getApplication()->getLongVersion());
-            $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+            $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', \PHP_VERSION));
         }
 
         if (!$this->toolInfo->isInstalledAsPhar()) {

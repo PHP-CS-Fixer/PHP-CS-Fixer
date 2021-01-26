@@ -145,7 +145,7 @@ class InvalidName {}
         $classyIndex = null;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 if (null !== $namespace) {
                     return;
                 }
@@ -155,7 +155,7 @@ class InvalidName {}
 
                 $namespace = trim($tokens->generatePartialCode($namespaceStartIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
-                if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NEW)) {
+                if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NEW)) {
                     continue;
                 }
 
@@ -175,7 +175,7 @@ class InvalidName {}
         $expectedClassyName = $this->calculateClassyName($file, $namespace, $classyName);
 
         if ($classyName !== $expectedClassyName) {
-            $tokens[$classyIndex] = new Token([T_STRING, $expectedClassyName]);
+            $tokens[$classyIndex] = new Token([\T_STRING, $expectedClassyName]);
         }
 
         if (null === $this->configuration['dir'] || null === $namespace) {

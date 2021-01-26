@@ -32,7 +32,7 @@ final class Tokens extends \SplFixedArray
      */
     public static function createFromDocComment(PhpToken $input, array $ignoredTags = [])
     {
-        if (!$input->isGivenKind(T_DOC_COMMENT)) {
+        if (!$input->isGivenKind(\T_DOC_COMMENT)) {
             throw new \InvalidArgumentException('Input must be a T_DOC_COMMENT token.');
         }
 

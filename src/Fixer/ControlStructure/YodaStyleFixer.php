@@ -177,7 +177,7 @@ return $foo === count($bar);
         $count = \count($tokens);
         while ($index < $count) {
             $token = $tokens[$index];
-            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            if ($token->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 ++$index;
 
                 continue;
@@ -203,7 +203,7 @@ return $foo === count($bar);
 
         $prev = $tokens->getPrevMeaningfulToken($index);
 
-        return $tokens[$prev]->isGivenKind(T_CLOSE_TAG) ? $tokens->getPrevMeaningfulToken($prev) : $prev;
+        return $tokens[$prev]->isGivenKind(\T_CLOSE_TAG) ? $tokens->getPrevMeaningfulToken($prev) : $prev;
     }
 
     /**
@@ -226,7 +226,7 @@ return $foo === count($bar);
 
         while (0 <= $index) {
             $token = $tokens[$index];
-            if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            if ($token->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 --$index;
 
                 continue;
@@ -435,7 +435,7 @@ return $foo === count($bar);
     private function isListStatement(Tokens $tokens, $index, $end)
     {
         for ($i = $index; $i <= $end; ++$i) {
-            if ($tokens[$i]->isGivenKind([T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+            if ($tokens[$i]->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
                 return true;
             }
         }
@@ -457,40 +457,40 @@ return $foo === count($bar);
 
         if (null === $tokens) {
             $tokens = [
-                T_AND_EQUAL,    // &=
-                T_BOOLEAN_AND,  // &&
-                T_BOOLEAN_OR,   // ||
-                T_CASE,         // case
-                T_CONCAT_EQUAL, // .=
-                T_DIV_EQUAL,    // /=
-                T_DOUBLE_ARROW, // =>
-                T_ECHO,         // echo
-                T_GOTO,         // goto
-                T_LOGICAL_AND,  // and
-                T_LOGICAL_OR,   // or
-                T_LOGICAL_XOR,  // xor
-                T_MINUS_EQUAL,  // -=
-                T_MOD_EQUAL,    // %=
-                T_MUL_EQUAL,    // *=
-                T_OPEN_TAG,     // <?php
-                T_OPEN_TAG_WITH_ECHO,
-                T_OR_EQUAL,     // |=
-                T_PLUS_EQUAL,   // +=
-                T_POW_EQUAL,    // **=
-                T_PRINT,        // print
-                T_RETURN,       // return
-                T_SL_EQUAL,     // <<=
-                T_SR_EQUAL,     // >>=
-                T_THROW,        // throw
-                T_XOR_EQUAL,    // ^=
+                \T_AND_EQUAL,    // &=
+                \T_BOOLEAN_AND,  // &&
+                \T_BOOLEAN_OR,   // ||
+                \T_CASE,         // case
+                \T_CONCAT_EQUAL, // .=
+                \T_DIV_EQUAL,    // /=
+                \T_DOUBLE_ARROW, // =>
+                \T_ECHO,         // echo
+                \T_GOTO,         // goto
+                \T_LOGICAL_AND,  // and
+                \T_LOGICAL_OR,   // or
+                \T_LOGICAL_XOR,  // xor
+                \T_MINUS_EQUAL,  // -=
+                \T_MOD_EQUAL,    // %=
+                \T_MUL_EQUAL,    // *=
+                \T_OPEN_TAG,     // <?php
+                \T_OPEN_TAG_WITH_ECHO,
+                \T_OR_EQUAL,     // |=
+                \T_PLUS_EQUAL,   // +=
+                \T_POW_EQUAL,    // **=
+                \T_PRINT,        // print
+                \T_RETURN,       // return
+                \T_SL_EQUAL,     // <<=
+                \T_SR_EQUAL,     // >>=
+                \T_THROW,        // throw
+                \T_XOR_EQUAL,    // ^=
             ];
 
             if (\defined('T_COALESCE')) {
-                $tokens[] = T_COALESCE; // ??
+                $tokens[] = \T_COALESCE; // ??
             }
 
             if (\defined('T_COALESCE_EQUAL')) {
-                $tokens[] = T_COALESCE_EQUAL; // ??=
+                $tokens[] = \T_COALESCE_EQUAL; // ??=
             }
         }
 
@@ -524,7 +524,7 @@ return $foo === count($bar);
         $tokenAnalyzer = new TokensAnalyzer($tokens);
 
         if ($start === $end) {
-            return $tokens[$start]->isGivenKind(T_VARIABLE);
+            return $tokens[$start]->isGivenKind(\T_VARIABLE);
         }
 
         if ($tokens[$start]->equals('(')) {
@@ -535,7 +535,7 @@ return $foo === count($bar);
             for ($index = $start; $index <= $end; ++$index) {
                 if (
                     $tokens[$index]->isCast()
-                    || $tokens[$index]->isGivenKind(T_INSTANCEOF)
+                    || $tokens[$index]->isGivenKind(\T_INSTANCEOF)
                     || $tokens[$index]->equals('!')
                     || $tokenAnalyzer->isBinaryOperator($index)
                 ) {
@@ -566,10 +566,10 @@ return $foo === count($bar);
 
             // check if this is the last token
             if ($index === $end) {
-                return $current->isGivenKind($expectString ? T_STRING : T_VARIABLE);
+                return $current->isGivenKind($expectString ? \T_STRING : \T_VARIABLE);
             }
 
-            if ($current->isGivenKind([T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+            if ($current->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
                 return false;
             }
 
@@ -577,28 +577,28 @@ return $foo === count($bar);
             $next = $tokens[$nextIndex];
 
             // self:: or ClassName::
-            if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_DOUBLE_COLON)) {
+            if ($current->isGivenKind(\T_STRING) && $next->isGivenKind(\T_DOUBLE_COLON)) {
                 $index = $tokens->getNextMeaningfulToken($nextIndex);
 
                 continue;
             }
 
             // \ClassName
-            if ($current->isGivenKind(T_NS_SEPARATOR) && $next->isGivenKind(T_STRING)) {
+            if ($current->isGivenKind(\T_NS_SEPARATOR) && $next->isGivenKind(\T_STRING)) {
                 $index = $nextIndex;
 
                 continue;
             }
 
             // ClassName\
-            if ($current->isGivenKind(T_STRING) && $next->isGivenKind(T_NS_SEPARATOR)) {
+            if ($current->isGivenKind(\T_STRING) && $next->isGivenKind(\T_NS_SEPARATOR)) {
                 $index = $nextIndex;
 
                 continue;
             }
 
             // $a-> or a-> (as in $b->a->c)
-            if ($current->isGivenKind([T_STRING, T_VARIABLE]) && $next->isGivenKind(T_OBJECT_OPERATOR)) {
+            if ($current->isGivenKind([\T_STRING, \T_VARIABLE]) && $next->isGivenKind(\T_OBJECT_OPERATOR)) {
                 $index = $tokens->getNextMeaningfulToken($nextIndex);
                 $expectString = true;
 
@@ -607,7 +607,7 @@ return $foo === count($bar);
 
             // $a[...], a[...] (as in $c->a[$b]), $a{...} or a{...} (as in $c->a{$b})
             if (
-                $current->isGivenKind($expectString ? T_STRING : T_VARIABLE)
+                $current->isGivenKind($expectString ? \T_STRING : \T_VARIABLE)
                 && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])
             ) {
                 $index = $tokens->findBlockEnd(
@@ -621,7 +621,7 @@ return $foo === count($bar);
 
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$index]->equalsAny([[T_OBJECT_OPERATOR, '->'], '[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])) {
+                if (!$tokens[$index]->equalsAny([[\T_OBJECT_OPERATOR, '->'], '[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])) {
                     return false;
                 }
 
@@ -632,7 +632,7 @@ return $foo === count($bar);
             }
 
             // $a(...) or $a->b(...)
-            if ($strict && $current->isGivenKind([T_STRING, T_VARIABLE]) && $next->equals('(')) {
+            if ($strict && $current->isGivenKind([\T_STRING, \T_VARIABLE]) && $next->equals('(')) {
                 return false;
             }
 
@@ -645,7 +645,7 @@ return $foo === count($bar);
 
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+                if (!$tokens[$index]->isGivenKind(\T_OBJECT_OPERATOR)) {
                     return false;
                 }
 
@@ -686,13 +686,13 @@ return $foo === count($bar);
                 return false;
             }
 
-            if ($token->isGivenKind([T_ARRAY,  CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($token->isGivenKind([\T_ARRAY,  CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $expectArrayOnly = true;
 
                 continue;
             }
 
-            if ($expectNumberOnly && !$token->isGivenKind([T_LNUMBER, T_DNUMBER])) {
+            if ($expectNumberOnly && !$token->isGivenKind([\T_LNUMBER, \T_DNUMBER])) {
                 return false;
             }
 
@@ -703,8 +703,8 @@ return $foo === count($bar);
             }
 
             if (
-                $token->isGivenKind([T_LNUMBER, T_DNUMBER, T_CONSTANT_ENCAPSED_STRING])
-                || $token->equalsAny([[T_STRING, 'true'], [T_STRING, 'false'], [T_STRING, 'null']])
+                $token->isGivenKind([\T_LNUMBER, \T_DNUMBER, \T_CONSTANT_ENCAPSED_STRING])
+                || $token->equalsAny([[\T_STRING, 'true'], [\T_STRING, 'false'], [\T_STRING, 'null']])
             ) {
                 $expectNothing = true;
 
@@ -724,23 +724,23 @@ return $foo === count($bar);
 
         if (null !== $this->configuration['equal']) {
             // `==`, `!=` and `<>`
-            $candidateTypes[T_IS_EQUAL] = $this->configuration['equal'];
-            $candidateTypes[T_IS_NOT_EQUAL] = $this->configuration['equal'];
+            $candidateTypes[\T_IS_EQUAL] = $this->configuration['equal'];
+            $candidateTypes[\T_IS_NOT_EQUAL] = $this->configuration['equal'];
         }
 
         if (null !== $this->configuration['identical']) {
             // `===` and `!==`
-            $candidateTypes[T_IS_IDENTICAL] = $this->configuration['identical'];
-            $candidateTypes[T_IS_NOT_IDENTICAL] = $this->configuration['identical'];
+            $candidateTypes[\T_IS_IDENTICAL] = $this->configuration['identical'];
+            $candidateTypes[\T_IS_NOT_IDENTICAL] = $this->configuration['identical'];
         }
 
         if (null !== $this->configuration['less_and_greater']) {
             // `<`, `<=`, `>` and `>=`
-            $candidateTypes[T_IS_SMALLER_OR_EQUAL] = $this->configuration['less_and_greater'];
-            $this->candidatesMap[T_IS_SMALLER_OR_EQUAL] = new Token([T_IS_GREATER_OR_EQUAL, '>=']);
+            $candidateTypes[\T_IS_SMALLER_OR_EQUAL] = $this->configuration['less_and_greater'];
+            $this->candidatesMap[\T_IS_SMALLER_OR_EQUAL] = new Token([\T_IS_GREATER_OR_EQUAL, '>=']);
 
-            $candidateTypes[T_IS_GREATER_OR_EQUAL] = $this->configuration['less_and_greater'];
-            $this->candidatesMap[T_IS_GREATER_OR_EQUAL] = new Token([T_IS_SMALLER_OR_EQUAL, '<=']);
+            $candidateTypes[\T_IS_GREATER_OR_EQUAL] = $this->configuration['less_and_greater'];
+            $this->candidatesMap[\T_IS_GREATER_OR_EQUAL] = new Token([\T_IS_SMALLER_OR_EQUAL, '<=']);
 
             $candidateTypes['<'] = $this->configuration['less_and_greater'];
             $this->candidatesMap['<'] = new Token('>');

@@ -35,9 +35,9 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
      * @var array<int, array<int, int|string>>
      */
     private $excludeFuncNames = [
-        [T_STRING, '__construct'],
-        [T_STRING, '__destruct'],
-        [T_STRING, '__clone'],
+        [\T_STRING, '__construct'],
+        [\T_STRING, '__destruct'],
+        [\T_STRING, '__clone'],
     ];
 
     /**
@@ -144,11 +144,11 @@ final class Foo {
      */
     public function isCandidate(Tokens $tokens)
     {
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(\T_FN)) {
             return true;
         }
 
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     /**
@@ -194,8 +194,8 @@ final class Foo {
 
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
             if (
-                !$tokens[$index]->isGivenKind(T_FUNCTION)
-                && (\PHP_VERSION_ID < 70400 || !$tokens[$index]->isGivenKind(T_FN))
+                !$tokens[$index]->isGivenKind(\T_FUNCTION)
+                && (\PHP_VERSION_ID < 70400 || !$tokens[$index]->isGivenKind(\T_FN))
             ) {
                 continue;
             }
@@ -312,13 +312,13 @@ final class Foo {
     {
         static $specialTypes = [
             'array' => [CT::T_ARRAY_TYPEHINT, 'array'],
-            'callable' => [T_CALLABLE, 'callable'],
-            'static' => [T_STATIC, 'static'],
+            'callable' => [\T_CALLABLE, 'callable'],
+            'static' => [\T_STATIC, 'static'],
         ];
 
         $newTokens = [
             new Token([CT::T_TYPE_COLON, ':']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_WHITESPACE, ' ']),
         ];
 
         if (true === $isNullable) {
@@ -332,7 +332,7 @@ final class Foo {
 
             if (isset($this->scalarTypes[$returnTypeUnqualified]) || isset($this->versionSpecificTypes[$returnTypeUnqualified])) {
                 // 'scalar's, 'void', 'iterable' and 'object' must be unqualified
-                $newTokens[] = new Token([T_STRING, $returnTypeUnqualified]);
+                $newTokens[] = new Token([\T_STRING, $returnTypeUnqualified]);
             } else {
                 foreach (explode('\\', $returnType) as $nsIndex => $value) {
                     if (0 === $nsIndex && '' === $value) {
@@ -340,10 +340,10 @@ final class Foo {
                     }
 
                     if (0 < $nsIndex) {
-                        $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+                        $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
                     }
 
-                    $newTokens[] = new Token([T_STRING, $value]);
+                    $newTokens[] = new Token([\T_STRING, $value]);
                 }
             }
         }
@@ -364,16 +364,16 @@ final class Foo {
         do {
             $index = $tokens->getPrevNonWhitespace($index);
         } while ($tokens[$index]->isGivenKind([
-            T_COMMENT,
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
+            \T_COMMENT,
+            \T_ABSTRACT,
+            \T_FINAL,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return [];
         }
 

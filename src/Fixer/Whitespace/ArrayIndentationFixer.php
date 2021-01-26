@@ -41,7 +41,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -70,7 +70,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
             if (
                 $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)
-                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
+                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
             ) {
                 $endIndex = $tokens->findBlockEnd(
                     $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
@@ -127,7 +127,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     );
                 }
 
-                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+                $tokens[$index] = new Token([\T_WHITESPACE, $content]);
 
                 continue;
             }
@@ -216,7 +216,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
     private function getPreviousNewlineTokenIndex(Tokens $tokens, $index)
     {
         while ($index > 0) {
-            $index = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE], [T_INLINE_HTML]]);
+            $index = $tokens->getPrevTokenOfKind($index, [[\T_WHITESPACE], [\T_INLINE_HTML]]);
 
             if (null === $index) {
                 break;
@@ -232,7 +232,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     private function isNewLineToken(Tokens $tokens, $index)
     {
-        if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+        if (!$tokens[$index]->isGivenKind([\T_WHITESPACE, \T_INLINE_HTML])) {
             return false;
         }
 
@@ -243,7 +243,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
     {
         $content = $tokens[$index]->getContent();
 
-        if (0 !== $index && $tokens[$index - 1]->equalsAny([[T_OPEN_TAG], [T_CLOSE_TAG]])) {
+        if (0 !== $index && $tokens[$index - 1]->equalsAny([[\T_OPEN_TAG], [\T_CLOSE_TAG]])) {
             $content = Preg::replace('/\S/', '', $tokens[$index - 1]->getContent()).$content;
         }
 

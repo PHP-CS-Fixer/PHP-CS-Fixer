@@ -42,7 +42,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurat
      */
     public function fixSpace(Tokens $tokens, $index)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
         $this->fixSpace2($tokens, $index);
     }
 
@@ -141,9 +141,9 @@ SAMPLE
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $expectedTokens = [T_LIST, T_FUNCTION, CT::T_USE_LAMBDA];
+        $expectedTokens = [\T_LIST, \T_FUNCTION, CT::T_USE_LAMBDA];
         if (\PHP_VERSION_ID >= 70400) {
-            $expectedTokens[] = T_FN;
+            $expectedTokens[] = \T_FN;
         }
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
@@ -166,7 +166,7 @@ SAMPLE
             if (
                 $isMultiline
                 && 'ensure_fully_multiline' === $this->configuration['on_multiline']
-                && !$meaningfulTokenBeforeParenthesis->isGivenKind(T_LIST)
+                && !$meaningfulTokenBeforeParenthesis->isGivenKind(\T_LIST)
             ) {
                 $this->ensureFunctionFullyMultiline($tokens, $index);
             }
@@ -321,7 +321,7 @@ SAMPLE
 
         $content = Preg::replace('/\R\h*/', '', $tokens[$index]->getContent());
         if ('' !== $content) {
-            $tokens[$index] = new Token([T_WHITESPACE, $content]);
+            $tokens[$index] = new Token([\T_WHITESPACE, $content]);
         } else {
             $tokens->clearAt($index);
         }
@@ -339,7 +339,7 @@ SAMPLE
         do {
             $prevWhitespaceTokenIndex = $tokens->getPrevTokenOfKind(
                 $searchIndex,
-                [[T_WHITESPACE]]
+                [[\T_WHITESPACE]]
             );
             $searchIndex = $prevWhitespaceTokenIndex;
         } while (null !== $prevWhitespaceTokenIndex
@@ -444,7 +444,7 @@ SAMPLE
 
             if (
                 !$tokens[$prevIndex]->equals(',') && !$tokens[$prevIndex]->isComment()
-                && ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
+                && ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(\T_END_HEREDOC))
             ) {
                 $tokens->clearAt($index - 1);
             }
@@ -470,13 +470,13 @@ SAMPLE
                 $newContent = ltrim($newContent, " \t");
             }
 
-            $tokens[$nextIndex] = new Token([T_WHITESPACE, '' === $newContent ? ' ' : $newContent]);
+            $tokens[$nextIndex] = new Token([\T_WHITESPACE, '' === $newContent ? ' ' : $newContent]);
 
             return;
         }
 
         if (!$this->isCommentLastLineToken($tokens, $index + 1)) {
-            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
         }
     }
 

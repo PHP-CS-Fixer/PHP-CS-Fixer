@@ -51,7 +51,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+        return $tokens->isAnyTokenKindsFound([\T_CASE, \T_DEFAULT]);
     }
 
     /**
@@ -60,7 +60,7 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
+            if (!$token->isGivenKind([\T_CASE, \T_DEFAULT])) {
                 continue;
             }
 

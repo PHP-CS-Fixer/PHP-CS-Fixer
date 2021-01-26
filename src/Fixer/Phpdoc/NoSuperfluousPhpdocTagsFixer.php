@@ -105,7 +105,7 @@ class Foo {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -121,7 +121,7 @@ class Foo {
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -139,9 +139,9 @@ class Foo {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
+            if ($token->isGivenKind(\T_FUNCTION)) {
                 $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
-            } elseif ($token->isGivenKind(T_VARIABLE)) {
+            } elseif ($token->isGivenKind(\T_VARIABLE)) {
                 $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
             }
 
@@ -150,7 +150,7 @@ class Foo {
             }
 
             if ($content !== $initialContent) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
             }
         }
     }
@@ -188,14 +188,14 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE])) {
+            if (null === $index || $tokens[$index]->isGivenKind([\T_FUNCTION, \T_CLASS, \T_INTERFACE])) {
                 return $index;
             }
-        } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
+        } while ($tokens[$index]->isGivenKind([\T_ABSTRACT, \T_FINAL, \T_STATIC, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC]));
 
         $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
-        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STRING, T_NS_SEPARATOR];
+        $kindsBeforeProperty = [\T_STATIC, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, \T_STRING, \T_NS_SEPARATOR];
 
         if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
             return null;
@@ -204,7 +204,7 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
@@ -270,7 +270,7 @@ class Foo {
 
         do {
             $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
+        } while ($tokens[$index]->isGivenKind([\T_STATIC, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC]));
 
         $propertyTypeInfo = $this->getPropertyTypeInfo($tokens, $index);
 
@@ -296,7 +296,7 @@ class Foo {
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_VARIABLE)) {
+            if (!$token->isGivenKind(\T_VARIABLE)) {
                 continue;
             }
 
@@ -316,7 +316,7 @@ class Foo {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
                 if (
                     $tokens[$nextIndex]->equals('=')
-                    && $tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals([T_STRING, 'null'])
+                    && $tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals([\T_STRING, 'null'])
                 ) {
                     $info['allows_null'] = true;
                 }
@@ -348,7 +348,7 @@ class Foo {
      */
     private function getPropertyTypeInfo(Tokens $tokens, $index)
     {
-        if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+        if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
             return [
                 'type' => null,
                 'allows_null' => true,
@@ -372,7 +372,7 @@ class Foo {
         }
 
         $type = '';
-        while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
+        while ($tokens[$index]->isGivenKind([\T_NS_SEPARATOR, \T_STRING, CT::T_ARRAY_TYPEHINT, \T_CALLABLE])) {
             $type .= $tokens[$index]->getContent();
 
             $index = $tokens->getNextMeaningfulToken($index);

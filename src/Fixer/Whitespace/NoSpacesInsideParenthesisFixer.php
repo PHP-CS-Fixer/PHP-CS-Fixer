@@ -76,7 +76,7 @@ function foo( \$bar, \$baz )
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             // ignore parenthesis for T_ARRAY
-            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
+            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ARRAY)) {
                 continue;
             }
 

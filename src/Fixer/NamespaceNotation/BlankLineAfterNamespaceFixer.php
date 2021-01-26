@@ -56,7 +56,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
     }
 
     /**
@@ -69,11 +69,11 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
         for ($index = $lastIndex; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_NAMESPACE)) {
+            if (!$token->isGivenKind(\T_NAMESPACE)) {
                 continue;
             }
 
-            $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', '{', [T_CLOSE_TAG]]);
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', '{', [\T_CLOSE_TAG]]);
             $semicolonToken = $tokens[$semicolonIndex];
 
             if (!$semicolonToken->equals(';')) {
@@ -139,6 +139,6 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
         $emptyLines = $isLastIndex ? $ending : $ending.$ending;
         $indent = 1 === Preg::match('/^.*\R( *)$/s', $currentContent, $matches) ? $matches[1] : '';
 
-        return new Token([T_WHITESPACE, $emptyLines.$indent]);
+        return new Token([\T_WHITESPACE, $emptyLines.$indent]);
     }
 }

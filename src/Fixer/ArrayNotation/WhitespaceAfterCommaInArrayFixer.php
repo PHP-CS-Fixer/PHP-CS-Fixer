@@ -40,7 +40,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -51,7 +51,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
         $tokensToInsert = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 continue;
             }
 
@@ -66,7 +66,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
             for ($i = $endIndex - 1; $i > $startIndex; --$i) {
                 $i = $this->skipNonArrayElements($i, $tokens);
                 if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
-                    $tokensToInsert[$i + 1] = new Token([T_WHITESPACE, ' ']);
+                    $tokensToInsert[$i + 1] = new Token([\T_WHITESPACE, ' ']);
                 }
             }
         }
@@ -92,7 +92,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$startIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 return $startIndex;
             }
         }

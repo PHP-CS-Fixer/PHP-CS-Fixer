@@ -61,15 +61,15 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             return false;
         }
 
-        if (!$tokens->isTokenKindFound(T_VARIABLE)) {
+        if (!$tokens->isTokenKindFound(\T_VARIABLE)) {
             return false;
         }
 
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(\T_FN)) {
             return true;
         }
 
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     /**
@@ -102,9 +102,9 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
-        $tokenKinds = [T_FUNCTION];
+        $tokenKinds = [\T_FUNCTION];
         if (\PHP_VERSION_ID >= 70400) {
-            $tokenKinds[] = T_FN;
+            $tokenKinds[] = \T_FN;
         }
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {

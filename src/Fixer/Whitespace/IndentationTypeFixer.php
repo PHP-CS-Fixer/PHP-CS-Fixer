@@ -61,7 +61,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT, \T_WHITESPACE]);
     }
 
     /**
@@ -143,7 +143,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             $newContent = substr($newContent, 1);
         }
 
-        return new Token([T_WHITESPACE, $newContent]);
+        return new Token([\T_WHITESPACE, $newContent]);
     }
 
     /**

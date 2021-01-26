@@ -44,19 +44,19 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         if (null === self::$availableFunctions) {
             self::$availableFunctions = [
                 'get_called_class' => [
-                    new Token([T_STATIC, 'static']),
-                    new Token([T_DOUBLE_COLON, '::']),
+                    new Token([\T_STATIC, 'static']),
+                    new Token([\T_DOUBLE_COLON, '::']),
                     new Token([CT::T_CLASS_CONSTANT, 'class']),
                 ],
-                'get_class' => [new Token([T_CLASS_C, '__CLASS__'])],
+                'get_class' => [new Token([\T_CLASS_C, '__CLASS__'])],
                 'get_class_this' => [
-                    new Token([T_STATIC, 'static']),
-                    new Token([T_DOUBLE_COLON, '::']),
+                    new Token([\T_STATIC, 'static']),
+                    new Token([\T_DOUBLE_COLON, '::']),
                     new Token([CT::T_CLASS_CONSTANT, 'class']),
                 ],
-                'php_sapi_name' => [new Token([T_STRING, 'PHP_SAPI'])],
-                'phpversion' => [new Token([T_STRING, 'PHP_VERSION'])],
-                'pi' => [new Token([T_STRING, 'M_PI'])],
+                'php_sapi_name' => [new Token([\T_STRING, 'PHP_SAPI'])],
+                'phpversion' => [new Token([\T_STRING, 'PHP_VERSION'])],
+                'pi' => [new Token([\T_STRING, 'M_PI'])],
             ];
         }
 
@@ -113,7 +113,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -178,17 +178,17 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
     private function fixFunctionCallToConstant(Tokens $tokens, $index, $braceOpenIndex, $braceCloseIndex, array $replacements)
     {
         for ($i = $braceCloseIndex; $i >= $braceOpenIndex; --$i) {
-            if ($tokens[$i]->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            if ($tokens[$i]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 continue;
             }
 
             $tokens->clearTokenAndMergeSurroundingWhitespace($i);
         }
 
-        if ($replacements[0]->isGivenKind([T_CLASS_C, T_STATIC])) {
+        if ($replacements[0]->isGivenKind([\T_CLASS_C, \T_STATIC])) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
-            if ($prevToken->isGivenKind(T_NS_SEPARATOR)) {
+            if ($prevToken->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->clearAt($prevIndex);
             }
         }
@@ -207,7 +207,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         FunctionsAnalyzer $functionAnalyzer,
         $index
     ) {
-        if (!$tokens[$index]->isGivenKind(T_STRING)) {
+        if (!$tokens[$index]->isGivenKind(\T_STRING)) {
             return null;
         }
 
@@ -268,11 +268,11 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
             $isThis = false;
 
             for ($i = $braceOpenIndex + 1; $i < $braceCloseIndex; ++$i) {
-                if ($tokens[$i]->equalsAny([[T_WHITESPACE], [T_COMMENT], [T_DOC_COMMENT], ')'])) {
+                if ($tokens[$i]->equalsAny([[\T_WHITESPACE], [\T_COMMENT], [\T_DOC_COMMENT], ')'])) {
                     continue;
                 }
 
-                if ($tokens[$i]->isGivenKind(T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
+                if ($tokens[$i]->isGivenKind(\T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
                     $isThis = true;
 
                     continue;

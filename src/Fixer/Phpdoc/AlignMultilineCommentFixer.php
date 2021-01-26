@@ -38,9 +38,9 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     {
         parent::configure($configuration);
 
-        $this->tokenKinds = [T_DOC_COMMENT];
+        $this->tokenKinds = [\T_DOC_COMMENT];
         if ('phpdocs_only' !== $this->configuration['comment_type']) {
-            $this->tokenKinds[] = T_COMMENT;
+            $this->tokenKinds[] = \T_COMMENT;
         }
     }
 
@@ -119,7 +119,7 @@ with a line not prefixed with asterisk
                 $whitespace = $tokens[$previousIndex]->getContent();
                 --$previousIndex;
             }
-            if ($tokens[$previousIndex]->isGivenKind(T_OPEN_TAG)) {
+            if ($tokens[$previousIndex]->isGivenKind(\T_OPEN_TAG)) {
                 $whitespace = Preg::replace('/\S/', '', $tokens[$previousIndex]->getContent()).$whitespace;
             }
 
@@ -127,7 +127,7 @@ with a line not prefixed with asterisk
                 continue;
             }
 
-            if ($token->isGivenKind(T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && 1 === Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
+            if ($token->isGivenKind(\T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && 1 === Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
                 continue;
             }
 
@@ -140,7 +140,7 @@ with a line not prefixed with asterisk
                 }
 
                 $line = ltrim($line);
-                if ($token->isGivenKind(T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
+                if ($token->isGivenKind(\T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
                     continue;
                 }
 

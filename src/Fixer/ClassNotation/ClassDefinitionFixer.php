@@ -264,13 +264,13 @@ interface Bar extends
 
         if ($tokens[$openIndex - 1]->isWhitespace()) {
             if (' ' !== $spacing || !$tokens[$tokens->getPrevNonWhitespace($openIndex - 1)]->isComment()) {
-                $tokens[$openIndex - 1] = new Token([T_WHITESPACE, $spacing]);
+                $tokens[$openIndex - 1] = new Token([\T_WHITESPACE, $spacing]);
             }
 
             return $openIndex;
         }
 
-        $tokens->insertAt($openIndex, new Token([T_WHITESPACE, $spacing]));
+        $tokens->insertAt($openIndex, new Token([\T_WHITESPACE, $spacing]));
 
         return $openIndex + 1;
     }
@@ -284,18 +284,18 @@ interface Bar extends
     {
         $openIndex = $tokens->getNextTokenOfKind($classyIndex, ['{']);
         $prev = $tokens->getPrevMeaningfulToken($classyIndex);
-        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classyIndex;
+        $startIndex = $tokens[$prev]->isGivenKind([\T_FINAL, \T_ABSTRACT]) ? $prev : $classyIndex;
 
         $extends = false;
         $implements = false;
         $anonymousClass = false;
 
-        if (!$tokens[$classyIndex]->isGivenKind(T_TRAIT)) {
-            $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
+        if (!$tokens[$classyIndex]->isGivenKind(\T_TRAIT)) {
+            $extends = $tokens->findGivenKind(\T_EXTENDS, $classyIndex, $openIndex);
             $extends = \count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
 
-            if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
-                $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
+            if (!$tokens[$classyIndex]->isGivenKind(\T_INTERFACE)) {
+                $implements = $tokens->findGivenKind(\T_IMPLEMENTS, $classyIndex, $openIndex);
                 $implements = \count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
                 $tokensAnalyzer = new TokensAnalyzer($tokens);
                 $anonymousClass = $tokensAnalyzer->isAnonymousClass($classyIndex);
@@ -322,7 +322,7 @@ interface Bar extends
     {
         $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
         ++$startIndex;
-        $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
+        $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [\T_IMPLEMENTS], [\T_EXTENDS]]);
         $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if ($tokens[$i]->equals(',')) {
@@ -355,7 +355,7 @@ interface Bar extends
                     if (!('#' === $content || '//' === substr($content, 0, 2))) {
                         $content = $tokens[$nextNonWhite]->getContent();
                         if (!('#' === $content || '//' === substr($content, 0, 2))) {
-                            $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                            $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
                         }
                     }
 
@@ -368,13 +368,13 @@ interface Bar extends
                     continue;
                 }
 
-                $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
 
                 continue;
             }
 
             if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
 
                 continue;
             }
@@ -384,11 +384,11 @@ interface Bar extends
             }
 
             if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && false === strpos($tokens[$i]->getContent(), "\n")) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
             }
 
             if (!$tokens[$i - 1]->isWhitespace() && !$tokens[$i - 1]->isComment()) {
-                $tokens->insertAt($i, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i, new Token([\T_WHITESPACE, ' ']));
             }
         }
     }
@@ -400,7 +400,7 @@ interface Bar extends
     private function makeClassyInheritancePartMultiLine(Tokens $tokens, $startIndex, $endIndex)
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
-            $previousInterfaceImplementingIndex = $tokens->getPrevTokenOfKind($i, [',', [T_IMPLEMENTS], [T_EXTENDS]]);
+            $previousInterfaceImplementingIndex = $tokens->getPrevTokenOfKind($i, [',', [\T_IMPLEMENTS], [\T_EXTENDS]]);
             $breakAtIndex = $tokens->getNextMeaningfulToken($previousInterfaceImplementingIndex);
             // make the part of a ',' or 'implements' single line
             $this->makeClassyDefinitionSingleLine(
@@ -422,11 +422,11 @@ interface Bar extends
             if (!$isOnOwnLine) {
                 if ($tokens[$breakAtIndex - 1]->isWhitespace()) {
                     $tokens[$breakAtIndex - 1] = new Token([
-                        T_WHITESPACE,
+                        \T_WHITESPACE,
                         $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent(),
                     ]);
                 } else {
-                    $tokens->insertAt($breakAtIndex, new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent()]));
+                    $tokens->insertAt($breakAtIndex, new Token([\T_WHITESPACE, $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent()]));
                 }
             }
 

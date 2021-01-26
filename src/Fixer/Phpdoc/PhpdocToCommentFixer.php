@@ -30,7 +30,7 @@ final class PhpdocToCommentFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -79,7 +79,7 @@ foreach($connections as $key => $sqlite) {
         $commentsAnalyzer = new CommentsAnalyzer();
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -91,7 +91,7 @@ foreach($connections as $key => $sqlite) {
                 continue;
             }
 
-            $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
+            $tokens[$index] = new Token([\T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
         }
     }
 }

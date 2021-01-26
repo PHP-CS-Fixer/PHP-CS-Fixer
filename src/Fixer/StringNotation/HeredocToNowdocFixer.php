@@ -59,7 +59,7 @@ EOF
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_START_HEREDOC);
+        return $tokens->isTokenKindFound(\T_START_HEREDOC);
     }
 
     /**
@@ -68,19 +68,19 @@ EOF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_START_HEREDOC) || false !== strpos($token->getContent(), "'")) {
+            if (!$token->isGivenKind(\T_START_HEREDOC) || false !== strpos($token->getContent(), "'")) {
                 continue;
             }
 
-            if ($tokens[$index + 1]->isGivenKind(T_END_HEREDOC)) {
+            if ($tokens[$index + 1]->isGivenKind(\T_END_HEREDOC)) {
                 $tokens[$index] = $this->convertToNowdoc($token);
 
                 continue;
             }
 
             if (
-                !$tokens[$index + 1]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)
-                || !$tokens[$index + 2]->isGivenKind(T_END_HEREDOC)
+                !$tokens[$index + 1]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)
+                || !$tokens[$index + 2]->isGivenKind(\T_END_HEREDOC)
             ) {
                 continue;
             }

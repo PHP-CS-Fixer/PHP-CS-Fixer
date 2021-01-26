@@ -181,7 +181,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
         $sequence = $tokens->findSequence(
             [
-                [T_STRING, $method],
+                [\T_STRING, $method],
                 '(',
             ],
             $index
@@ -210,7 +210,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
             return $sequenceIndexes[3];
         }
 
-        $tokens[$sequenceIndexes[0]] = new Token([T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
+        $tokens[$sequenceIndexes[0]] = new Token([\T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
         $tokens->clearRange($sequenceIndexes[2], $tokens->getNextNonWhitespace($sequenceIndexes[3]) - 1);
 
         return $sequenceIndexes[3];

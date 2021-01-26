@@ -53,7 +53,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -62,19 +62,19 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+                $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
 
                 continue;
             }
 
-            if ($token->isGivenKind(T_COMMENT)) {
+            if ($token->isGivenKind(\T_COMMENT)) {
                 if ('/*' === substr($token->getContent(), 0, 2)) {
-                    $tokens[$index] = new Token([T_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
+                    $tokens[$index] = new Token([\T_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
                 } elseif (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
                     $trimmedContent = ltrim($tokens[$index + 1]->getContent(), " \t");
                     if ('' !== $trimmedContent) {
-                        $tokens[$index + 1] = new Token([T_WHITESPACE, $trimmedContent]);
+                        $tokens[$index + 1] = new Token([\T_WHITESPACE, $trimmedContent]);
                     } else {
                         $tokens->clearAt($index + 1);
                     }

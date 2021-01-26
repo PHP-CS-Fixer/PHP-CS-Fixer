@@ -290,9 +290,9 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     private $conversionMap = [
-        self::CALL_TYPE_THIS => [[T_OBJECT_OPERATOR, '->'], [T_VARIABLE, '$this']],
-        self::CALL_TYPE_SELF => [[T_DOUBLE_COLON, '::'], [T_STRING, 'self']],
-        self::CALL_TYPE_STATIC => [[T_DOUBLE_COLON, '::'], [T_STATIC, 'static']],
+        self::CALL_TYPE_THIS => [[\T_OBJECT_OPERATOR, '->'], [\T_VARIABLE, '$this']],
+        self::CALL_TYPE_SELF => [[\T_DOUBLE_COLON, '::'], [\T_STRING, 'self']],
+        self::CALL_TYPE_STATIC => [[\T_DOUBLE_COLON, '::'], [\T_STATIC, 'static']],
     ];
 
     /**
@@ -396,7 +396,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             // skip anonymous classes
-            if ($tokens[$index]->isGivenKind(T_CLASS)) {
+            if ($tokens[$index]->isGivenKind(\T_CLASS)) {
                 $index = $this->findEndOfNextBlock($tokens, $index);
 
                 continue;
@@ -404,7 +404,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $callType = $this->configuration['call_type'];
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 // skip lambda
                 if ($analyzer->isLambda($index)) {
                     $index = $this->findEndOfNextBlock($tokens, $index);
@@ -423,7 +423,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING) || !isset($this->staticMethods[$tokens[$index]->getContent()])) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING) || !isset($this->staticMethods[$tokens[$index]->getContent()])) {
                 continue;
             }
 

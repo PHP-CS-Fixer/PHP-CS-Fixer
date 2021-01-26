@@ -158,7 +158,7 @@ final class FixCommand extends Command
         if (null !== $stdErr) {
             if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                 $stdErr->writeln($this->getApplication()->getLongVersion());
-                $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+                $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', \PHP_VERSION));
             }
 
             if (null !== $passedConfig && null !== $passedRules) {

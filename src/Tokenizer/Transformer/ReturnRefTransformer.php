@@ -39,9 +39,9 @@ final class ReturnRefTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        $prevKinds = [T_FUNCTION];
+        $prevKinds = [\T_FUNCTION];
         if (\PHP_VERSION_ID >= 70400) {
-            $prevKinds[] = T_FN;
+            $prevKinds[] = \T_FN;
         }
 
         if (

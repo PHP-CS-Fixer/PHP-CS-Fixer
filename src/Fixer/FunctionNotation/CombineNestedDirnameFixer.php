@@ -48,7 +48,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_STRING);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -123,7 +123,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      */
     private function getDirnameInfo(Tokens $tokens, $index, $firstArgumentEndIndex = null)
     {
-        if (!$tokens[$index]->equals([T_STRING, 'dirname'], false)) {
+        if (!$tokens[$index]->equals([\T_STRING, 'dirname'], false)) {
             return false;
         }
 
@@ -135,7 +135,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
 
         $prev = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prev]->isGivenKind(\T_NS_SEPARATOR)) {
             $info['indexes'][] = $prev;
         }
 
@@ -179,7 +179,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return $info;
         }
 
-        if (!$tokens[$next]->isGivenKind(T_LNUMBER)) {
+        if (!$tokens[$next]->isGivenKind(\T_LNUMBER)) {
             return false;
         }
 
@@ -217,7 +217,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             }
         }
 
-        $levelsToken = new Token([T_LNUMBER, (string) $levels]);
+        $levelsToken = new Token([\T_LNUMBER, (string) $levels]);
 
         if (isset($outerDirnameInfo['secondArgument'])) {
             $tokens[$outerDirnameInfo['secondArgument']] = $levelsToken;
@@ -225,7 +225,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $prev = $tokens->getPrevMeaningfulToken($outerDirnameInfo['end']);
             $items = [];
             if (!$tokens[$prev]->equals(',')) {
-                $items = [new Token(','), new Token([T_WHITESPACE, ' '])];
+                $items = [new Token(','), new Token([\T_WHITESPACE, ' '])];
             }
             $items[] = $levelsToken;
             $tokens->insertAt($outerDirnameInfo['end'], $items);

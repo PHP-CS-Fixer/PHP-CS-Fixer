@@ -103,9 +103,9 @@ if (count($x)) {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_DOC_COMMENT, T_NS_SEPARATOR, T_USE])
-            && $tokens->isTokenKindFound(T_NAMESPACE)
-            && (Tokens::isLegacyMode() || 1 === $tokens->countTokenKind(T_NAMESPACE))
+        return $tokens->isAnyTokenKindsFound([\T_DOC_COMMENT, \T_NS_SEPARATOR, \T_USE])
+            && $tokens->isTokenKindFound(\T_NAMESPACE)
+            && (Tokens::isLegacyMode() || 1 === $tokens->countTokenKind(\T_NAMESPACE))
             && $tokens->isMonolithicPhp();
     }
 
@@ -190,7 +190,7 @@ if (count($x)) {
                 continue;
             }
 
-            if (!$token->isGivenKind(T_CONST)) {
+            if (!$token->isGivenKind(\T_CONST)) {
                 continue;
             }
 
@@ -205,7 +205,7 @@ if (count($x)) {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -220,7 +220,7 @@ if (count($x)) {
             }
 
             $nsSeparatorIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$nsSeparatorIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if (!$tokens[$nsSeparatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 if (!isset($global[$name])) {
                     // found an unqualified constant invocation
                     // add it to the not importable names (already used)
@@ -231,7 +231,7 @@ if (count($x)) {
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($nsSeparatorIndex);
-            if ($tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, T_STRING])) {
+            if ($tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, \T_STRING])) {
                 continue;
             }
 
@@ -265,7 +265,7 @@ if (count($x)) {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -280,7 +280,7 @@ if (count($x)) {
             }
 
             $nsSeparatorIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$nsSeparatorIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if (!$tokens[$nsSeparatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 if (!isset($global[$name])) {
                     $other[$name] = true;
                 }
@@ -313,7 +313,7 @@ if (count($x)) {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
                 $docBlocks[$index] = new DocBlock($token->getContent());
 
                 $this->traverseDocBlockTypes($docBlocks[$index], static function ($type) use ($global, &$other) {
@@ -335,7 +335,7 @@ if (count($x)) {
 
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(T_STRING)) {
+            if ($tokens[$index]->isGivenKind(\T_STRING)) {
                 $other[strtolower($tokens[$index]->getContent())] = true;
             }
         }
@@ -347,7 +347,7 @@ if (count($x)) {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -362,7 +362,7 @@ if (count($x)) {
             }
 
             $nsSeparatorIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$nsSeparatorIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if (!$tokens[$nsSeparatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 if (!isset($global[$name])) {
                     $other[$name] = true;
                 }
@@ -370,7 +370,7 @@ if (count($x)) {
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($nsSeparatorIndex)]->isGivenKind([CT::T_NAMESPACE_OPERATOR, T_STRING])) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($nsSeparatorIndex)]->isGivenKind([CT::T_NAMESPACE_OPERATOR, \T_STRING])) {
                 continue;
             }
 
@@ -402,7 +402,7 @@ if (count($x)) {
             });
 
             if ($changed) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $docBlock->getContent()]);
             }
         }
 
@@ -432,7 +432,7 @@ if (count($x)) {
             if (!isset($global[$checkName])) {
                 $imports[$checkName] = $name;
             } elseif (\is_string($global[$checkName])) {
-                $tokens[$index] = new Token([T_STRING, $global[$checkName]]);
+                $tokens[$index] = new Token([\T_STRING, $global[$checkName]]);
             }
 
             $tokens->clearAt($tokens->getPrevMeaningfulToken($index));
@@ -457,26 +457,26 @@ if (count($x)) {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         if (!$tokens[$index]->isWhitespace() || false === strpos($tokens[$index]->getContent(), "\n")) {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, $lineEnding]));
         }
 
         foreach ($imports as $type => $typeImports) {
             foreach ($typeImports as $name) {
                 $items = [
-                    new Token([T_WHITESPACE, $lineEnding]),
-                    new Token([T_USE, 'use']),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, $lineEnding]),
+                    new Token([\T_USE, 'use']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ];
 
                 if ('const' === $type) {
                     $items[] = new Token([CT::T_CONST_IMPORT, 'const']);
-                    $items[] = new Token([T_WHITESPACE, ' ']);
+                    $items[] = new Token([\T_WHITESPACE, ' ']);
                 } elseif ('function' === $type) {
                     $items[] = new Token([CT::T_FUNCTION_IMPORT, 'function']);
-                    $items[] = new Token([T_WHITESPACE, ' ']);
+                    $items[] = new Token([\T_WHITESPACE, ' ']);
                 }
 
-                $items[] = new Token([T_STRING, $name]);
+                $items[] = new Token([\T_STRING, $name]);
                 $items[] = new Token(';');
 
                 $tokens->insertAt($index, $items);
@@ -506,7 +506,7 @@ if (count($x)) {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -514,7 +514,7 @@ if (count($x)) {
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -522,7 +522,7 @@ if (count($x)) {
                 continue;
             }
 
-            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+            $tokens->insertAt($index, new Token([\T_NS_SEPARATOR, '\\']));
         }
     }
 
@@ -548,7 +548,7 @@ if (count($x)) {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -556,7 +556,7 @@ if (count($x)) {
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -564,7 +564,7 @@ if (count($x)) {
                 continue;
             }
 
-            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+            $tokens->insertAt($index, new Token([\T_NS_SEPARATOR, '\\']));
         }
     }
 
@@ -573,7 +573,7 @@ if (count($x)) {
      */
     private function fullyQualifyClasses(Tokens $tokens, array $useDeclarations)
     {
-        if (!$tokens->isTokenKindFound(T_USE)) {
+        if (!$tokens->isTokenKindFound(\T_USE)) {
             return;
         }
 
@@ -590,7 +590,7 @@ if (count($x)) {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
                 $doc = new DocBlock($token->getContent());
 
                 $changed = $this->traverseDocBlockTypes($doc, static function ($type) use ($global) {
@@ -602,13 +602,13 @@ if (count($x)) {
                 });
 
                 if ($changed) {
-                    $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+                    $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
                 }
 
                 continue;
             }
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -616,7 +616,7 @@ if (count($x)) {
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -624,7 +624,7 @@ if (count($x)) {
                 continue;
             }
 
-            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+            $tokens->insertAt($index, new Token([\T_NS_SEPARATOR, '\\']));
         }
     }
 
@@ -671,7 +671,7 @@ if (count($x)) {
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
 
                 for ($index = $classStart; $index <= $classEnd; ++$index) {
-                    if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+                    if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                         continue;
                     }
 
@@ -695,7 +695,7 @@ if (count($x)) {
                 continue;
             }
 
-            if (!$token->isGivenKind(T_FUNCTION)) {
+            if (!$token->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -705,7 +705,7 @@ if (count($x)) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if ($tokens[$index]->isGivenKind(T_STRING)) {
+            if ($tokens[$index]->isGivenKind(\T_STRING)) {
                 yield $tokens[$index]->getContent();
             }
         }
@@ -727,7 +727,7 @@ if (count($x)) {
             foreach ($types as $i => $fullType) {
                 $newFullType = $fullType;
 
-                Preg::matchAll('/[\\\\\w]+/', $fullType, $matches, PREG_OFFSET_CAPTURE);
+                Preg::matchAll('/[\\\\\w]+/', $fullType, $matches, \PREG_OFFSET_CAPTURE);
 
                 foreach (array_reverse($matches[0]) as list($type, $offset)) {
                     $newType = $callback($type);

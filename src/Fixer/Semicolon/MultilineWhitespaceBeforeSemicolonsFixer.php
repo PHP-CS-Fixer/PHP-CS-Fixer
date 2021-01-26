@@ -168,7 +168,7 @@ function foo () {
             $lineEnding = $this->whitespacesConfig->getLineEnding();
 
             // appended new line to the last method call
-            $newline = new Token([T_WHITESPACE, $lineEnding.$indent]);
+            $newline = new Token([\T_WHITESPACE, $lineEnding.$indent]);
 
             // insert the new line with indented semicolon
             $tokens->insertAt($index, [$newline, new Token(';')]);
@@ -233,17 +233,17 @@ function foo () {
         }
 
         // method name
-        if (!$tokens[--$index]->isGivenKind(T_STRING)) {
+        if (!$tokens[--$index]->isGivenKind(\T_STRING)) {
             return null;
         }
 
         // -> or ::
-        if (!$tokens[--$index]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
+        if (!$tokens[--$index]->isGivenKind([\T_OBJECT_OPERATOR, \T_DOUBLE_COLON])) {
             return null;
         }
 
         // white space
-        if (!$tokens[--$index]->isGivenKind(T_WHITESPACE)) {
+        if (!$tokens[--$index]->isGivenKind(\T_WHITESPACE)) {
             return null;
         }
 
@@ -258,9 +258,9 @@ function foo () {
             }
 
             // must be the variable of the first call in the chain
-            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_RETURN, T_STRING]) && 0 === $closingBrackets) {
-                if ($tokens[--$index]->isGivenKind(T_WHITESPACE)
-                    || $tokens[$index]->isGivenKind(T_OPEN_TAG)) {
+            if ($tokens[$index]->isGivenKind([\T_VARIABLE, \T_RETURN, \T_STRING]) && 0 === $closingBrackets) {
+                if ($tokens[--$index]->isGivenKind(\T_WHITESPACE)
+                    || $tokens[$index]->isGivenKind(\T_OPEN_TAG)) {
                     return $this->getIndentAt($tokens, $index);
                 }
             }
@@ -291,7 +291,7 @@ function foo () {
             --$index;
         }
 
-        if ($tokens[$index]->isGivenKind(T_OPEN_TAG)) {
+        if ($tokens[$index]->isGivenKind(\T_OPEN_TAG)) {
             $content = $tokens[$index]->getContent().$content;
         }
 

@@ -113,7 +113,7 @@ $c = 3;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return $tokens->isTokenKindFound(\T_COMMENT);
     }
 
     /**
@@ -122,7 +122,7 @@ $c = 3;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isGivenKind(\T_COMMENT)) {
                 continue;
             }
 

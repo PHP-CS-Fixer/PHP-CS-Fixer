@@ -171,7 +171,7 @@ use Bar;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     /**
@@ -219,10 +219,10 @@ use Bar;
                 $prev = $tokens->getPrevMeaningfulToken($index);
                 if ($tokens[$prev]->equals(',')) {
                     $tokens[$prev] = new Token(';');
-                    $tokens->insertAt($prev + 1, new Token([T_USE, 'use']));
+                    $tokens->insertAt($prev + 1, new Token([\T_USE, 'use']));
 
                     if (!$tokens[$prev + 2]->isWhitespace()) {
-                        $tokens->insertAt($prev + 2, new Token([T_WHITESPACE, ' ']));
+                        $tokens->insertAt($prev + 2, new Token([\T_WHITESPACE, ' ']));
                     }
                 }
             }
@@ -347,8 +347,8 @@ use Bar;
         for ($i = \count($uses) - 1; $i >= 0; --$i) {
             $index = $uses[$i];
 
-            $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [T_WHITESPACE]);
-            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [T_CLOSE_TAG]]);
+            $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [\T_WHITESPACE]);
+            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
             $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
@@ -465,7 +465,7 @@ use Bar;
                     }
 
                     $namespaceTokens = [];
-                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [[','], [T_WHITESPACE]]);
+                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [[','], [\T_WHITESPACE]]);
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 

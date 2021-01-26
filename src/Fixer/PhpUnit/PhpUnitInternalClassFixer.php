@@ -79,7 +79,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
-        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         if (!$this->isAllowedByConfiguration($tokens, $classIndex)) {
             return;
@@ -102,11 +102,11 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     private function isAllowedByConfiguration(Tokens $tokens, $i)
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
-        if ($tokens[$typeIndex]->isGivenKind(T_FINAL)) {
+        if ($tokens[$typeIndex]->isGivenKind(\T_FINAL)) {
             return \in_array('final', $this->configuration['types'], true);
         }
 
-        if ($tokens[$typeIndex]->isGivenKind(T_ABSTRACT)) {
+        if ($tokens[$typeIndex]->isGivenKind(\T_ABSTRACT)) {
             return \in_array('abstract', $this->configuration['types'], true);
         }
 
@@ -118,8 +118,8 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
-            new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @internal".$lineEnd."{$originalIndent} */"]),
-            new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
+            new Token([\T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @internal".$lineEnd."{$originalIndent} */"]),
+            new Token([\T_WHITESPACE, $lineEnd.$originalIndent]),
         ];
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);
         $tokens->insertAt($index, $toInsert);
@@ -135,7 +135,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex);
         $lines = implode('', $lines);
 
-        $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+        $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
     }
 
     /**

@@ -89,7 +89,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
 
         for ($index = 0, $max = \count($tokens) - 1; $index < $max; ++$index) {
             if ($this->configuration['remove_in_empty_for_expressions']) {
-                if ($tokens[$index]->isGivenKind(T_FOR)) {
+                if ($tokens[$index]->isGivenKind(\T_FOR)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $insideForParenthesesUntil = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
@@ -109,12 +109,12 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
 
             if (!$tokens[$index + 1]->isWhitespace()) {
                 if (
-                    !$tokens[$index + 1]->equalsAny([')', [T_INLINE_HTML]]) && (
+                    !$tokens[$index + 1]->equalsAny([')', [\T_INLINE_HTML]]) && (
                         !$this->configuration['remove_in_empty_for_expressions']
                         || !$tokens[$index + 1]->equals(';')
                     )
                 ) {
-                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                    $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
                     ++$max;
                 }
 
@@ -133,12 +133,12 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurat
 
             if (
                 isset($tokens[$index + 2])
-                && !$tokens[$index + 1]->equals([T_WHITESPACE, ' '])
+                && !$tokens[$index + 1]->equals([\T_WHITESPACE, ' '])
                 && $tokens[$index + 1]->isWhitespace(" \t")
                 && !$tokens[$index + 2]->isComment()
                 && !$tokens[$index + 2]->equals(')')
             ) {
-                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index + 1] = new Token([\T_WHITESPACE, ' ']);
             }
         }
     }

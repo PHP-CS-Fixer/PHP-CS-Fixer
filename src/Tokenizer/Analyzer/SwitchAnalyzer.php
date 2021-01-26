@@ -30,7 +30,7 @@ final class SwitchAnalyzer
      */
     public function getSwitchAnalysis(Tokens $tokens, $switchIndex)
     {
-        if (!$tokens[$switchIndex]->isGivenKind(T_SWITCH)) {
+        if (!$tokens[$switchIndex]->isGivenKind(\T_SWITCH)) {
             throw new \InvalidArgumentException(sprintf('Index %d is not "switch".', $switchIndex));
         }
 
@@ -42,7 +42,7 @@ final class SwitchAnalyzer
         while ($index < $casesEndIndex) {
             $index = $this->getNextSameLevelToken($tokens, $index);
 
-            if (!$tokens[$index]->isGivenKind([T_CASE, T_DEFAULT])) {
+            if (!$tokens[$index]->isGivenKind([\T_CASE, \T_DEFAULT])) {
                 continue;
             }
 
@@ -86,7 +86,7 @@ final class SwitchAnalyzer
         while ($index < $tokens->count()) {
             $index = $this->getNextSameLevelToken($tokens, $index);
 
-            if ($tokens[$index]->isGivenKind(T_ENDSWITCH)) {
+            if ($tokens[$index]->isGivenKind(\T_ENDSWITCH)) {
                 break;
             }
         }
@@ -95,7 +95,7 @@ final class SwitchAnalyzer
 
         $afterEndswitchToken = $tokens[$afterEndswitchIndex];
 
-        return $afterEndswitchToken->equalsAny([';', [T_CLOSE_TAG]]) ? $afterEndswitchIndex : $index;
+        return $afterEndswitchToken->equalsAny([';', [\T_CLOSE_TAG]]) ? $afterEndswitchIndex : $index;
     }
 
     /**
@@ -125,7 +125,7 @@ final class SwitchAnalyzer
     {
         $index = $tokens->getNextMeaningfulToken($index);
 
-        if ($tokens[$index]->isGivenKind(T_SWITCH)) {
+        if ($tokens[$index]->isGivenKind(\T_SWITCH)) {
             return (new self())->getSwitchAnalysis($tokens, $index)->getCasesEnd();
         }
 

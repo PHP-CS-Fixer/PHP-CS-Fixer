@@ -166,7 +166,7 @@ final class SwitchAnalyzerTest extends TestCase
             1,
         ];
 
-        if (PHP_VERSION >= 70000) {
+        if (\PHP_VERSION >= 70000) {
             yield 'function with return type' => [
                 new SwitchAnalysis(7, 43, [new CaseAnalysis(12), new CaseAnalysis(36)]),
                 '<?php switch ($foo) { case 10: function foo($x): int {}; return true; case 100: return false; }',
@@ -174,7 +174,7 @@ final class SwitchAnalyzerTest extends TestCase
             ];
         }
 
-        if (PHP_VERSION >= 70100) {
+        if (\PHP_VERSION >= 70100) {
             yield 'function with nullable parameter' => [
                 new SwitchAnalysis(7, 43, [new CaseAnalysis(12), new CaseAnalysis(36)]),
                 '<?php switch ($foo) { case 10: function foo(?int $x) {}; return true; case 100: return false; }',

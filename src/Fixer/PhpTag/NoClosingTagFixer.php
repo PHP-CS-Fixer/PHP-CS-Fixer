@@ -41,7 +41,7 @@ final class NoClosingTagFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+        return $tokens->isTokenKindFound(\T_CLOSE_TAG);
     }
 
     /**
@@ -49,11 +49,11 @@ final class NoClosingTagFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        if (\count($tokens) < 2 || !$tokens->isMonolithicPhp() || !$tokens->isTokenKindFound(T_CLOSE_TAG)) {
+        if (\count($tokens) < 2 || !$tokens->isMonolithicPhp() || !$tokens->isTokenKindFound(\T_CLOSE_TAG)) {
             return;
         }
 
-        $closeTags = $tokens->findGivenKind(T_CLOSE_TAG);
+        $closeTags = $tokens->findGivenKind(\T_CLOSE_TAG);
         $index = key($closeTags);
 
         if (isset($tokens[$index - 1]) && $tokens[$index - 1]->isWhitespace()) {
@@ -62,7 +62,7 @@ final class NoClosingTagFixer extends AbstractFixer
         $tokens->clearAt($index);
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->equalsAny([';', '}', [T_OPEN_TAG]])) {
+        if (!$tokens[$prevIndex]->equalsAny([';', '}', [\T_OPEN_TAG]])) {
             $tokens->insertAt($prevIndex + 1, new Token(';'));
         }
     }

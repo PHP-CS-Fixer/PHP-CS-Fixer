@@ -28,7 +28,7 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -71,20 +71,20 @@ class Bar {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         static $forbiddenSuccessors = [
-            T_DOC_COMMENT,
-            T_COMMENT,
-            T_WHITESPACE,
-            T_RETURN,
-            T_THROW,
-            T_GOTO,
-            T_CONTINUE,
-            T_BREAK,
-            T_DECLARE,
-            T_USE,
+            \T_DOC_COMMENT,
+            \T_COMMENT,
+            \T_WHITESPACE,
+            \T_RETURN,
+            \T_THROW,
+            \T_GOTO,
+            \T_CONTINUE,
+            \T_BREAK,
+            \T_DECLARE,
+            \T_USE,
         ];
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
             // get the next non-whitespace token inc comments, provided
@@ -107,7 +107,7 @@ class Bar {}
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
-            $tokens[$index] = new Token([T_WHITESPACE, substr($content, strrpos($content, "\n"))]);
+            $tokens[$index] = new Token([\T_WHITESPACE, substr($content, strrpos($content, "\n"))]);
         }
     }
 }

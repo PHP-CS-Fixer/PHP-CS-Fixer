@@ -36,7 +36,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
      */
     public function isCandidate(PhpTokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
         $this->classyElements = $analyzer->getClassyElements();
 
         /** @var PhpToken $docCommentToken */
-        foreach ($phpTokens->findGivenKind(T_DOC_COMMENT) as $index => $docCommentToken) {
+        foreach ($phpTokens->findGivenKind(\T_DOC_COMMENT) as $index => $docCommentToken) {
             if (!$this->nextElementAcceptsDoctrineAnnotations($phpTokens, $index)) {
                 continue;
             }
@@ -59,7 +59,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                 $this->configuration['ignored_tags']
             );
             $this->fixAnnotations($tokens);
-            $phpTokens[$index] = new PhpToken([T_DOC_COMMENT, $tokens->getCode()]);
+            $phpTokens[$index] = new PhpToken([\T_DOC_COMMENT, $tokens->getCode()]);
         }
     }
 
@@ -207,13 +207,13 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             if (null === $index) {
                 return false;
             }
-        } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL]));
+        } while ($tokens[$index]->isGivenKind([\T_ABSTRACT, \T_FINAL]));
 
         if ($tokens[$index]->isClassy()) {
             return true;
         }
 
-        while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE])) {
+        while ($tokens[$index]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_NS_SEPARATOR, \T_STRING, CT::T_NULLABLE_TYPE])) {
             $index = $tokens->getNextMeaningfulToken($index);
         }
 

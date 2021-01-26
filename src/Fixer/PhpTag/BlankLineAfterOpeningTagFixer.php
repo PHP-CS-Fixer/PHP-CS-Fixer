@@ -51,7 +51,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        return $tokens->isTokenKindFound(\T_OPEN_TAG);
     }
 
     /**
@@ -62,7 +62,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
+        if (!$tokens[0]->isGivenKind(\T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
             return;
         }
 
@@ -89,9 +89,9 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
         if (false === strpos($tokens[1]->getContent(), "\n")) {
             if ($tokens[1]->isWhitespace()) {
-                $tokens[1] = new Token([T_WHITESPACE, $lineEnding.$tokens[1]->getContent()]);
+                $tokens[1] = new Token([\T_WHITESPACE, $lineEnding.$tokens[1]->getContent()]);
             } else {
-                $tokens->insertAt(1, new Token([T_WHITESPACE, $lineEnding]));
+                $tokens->insertAt(1, new Token([\T_WHITESPACE, $lineEnding]));
             }
         }
     }

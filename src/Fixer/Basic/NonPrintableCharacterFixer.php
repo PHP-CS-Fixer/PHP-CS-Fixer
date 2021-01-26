@@ -36,13 +36,13 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
     private $symbolsReplace;
 
     private static $tokens = [
-        T_STRING_VARNAME,
-        T_INLINE_HTML,
-        T_VARIABLE,
-        T_COMMENT,
-        T_ENCAPSED_AND_WHITESPACE,
-        T_CONSTANT_ENCAPSED_STRING,
-        T_DOC_COMMENT,
+        \T_STRING_VARNAME,
+        \T_INLINE_HTML,
+        \T_VARIABLE,
+        \T_COMMENT,
+        \T_ENCAPSED_AND_WHITESPACE,
+        \T_CONSTANT_ENCAPSED_STRING,
+        \T_DOC_COMMENT,
     ];
 
     public function __construct()
@@ -133,7 +133,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
 
             if (
                 $this->configuration['use_escape_sequences_in_strings']
-                && $token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE])
+                && $token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE])
             ) {
                 if (!Preg::match('/'.implode('|', array_keys($escapeSequences)).'/', $content)) {
                     continue;
@@ -143,11 +143,11 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 $stringTypeChanged = false;
                 $swapQuotes = false;
 
-                if ($previousToken->isGivenKind(T_START_HEREDOC)) {
+                if ($previousToken->isGivenKind(\T_START_HEREDOC)) {
                     $previousTokenContent = $previousToken->getContent();
 
                     if (false !== strpos($previousTokenContent, '\'')) {
-                        $tokens[$index - 1] = new Token([T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
+                        $tokens[$index - 1] = new Token([\T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
                         $stringTypeChanged = true;
                     }
                 } elseif ("'" === $content[0]) {

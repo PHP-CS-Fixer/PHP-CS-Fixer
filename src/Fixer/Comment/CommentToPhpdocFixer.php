@@ -40,7 +40,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return $tokens->isTokenKindFound(\T_COMMENT);
     }
 
     /**
@@ -116,7 +116,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
         for ($index = 0, $limit = \count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isGivenKind(\T_COMMENT)) {
                 continue;
             }
 
@@ -188,7 +188,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
             $message .= ' ';
         }
 
-        $tokens[$index] = new Token([T_DOC_COMMENT, '/**'.$message.'*/']);
+        $tokens[$index] = new Token([\T_DOC_COMMENT, '/**'.$message.'*/']);
     }
 
     /**
@@ -218,7 +218,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurationD
 
         $newContent .= $indent.' */';
 
-        $tokens->insertAt($startIndex, new Token([T_DOC_COMMENT, $newContent]));
+        $tokens->insertAt($startIndex, new Token([\T_DOC_COMMENT, $newContent]));
     }
 
     private function getMessage($content)

@@ -74,7 +74,7 @@ switch ($foo) {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+        return $tokens->isAnyTokenKindsFound([\T_CASE, \T_DEFAULT]);
     }
 
     /**
@@ -118,7 +118,7 @@ switch ($foo) {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($position = \count($tokens) - 1; $position >= 0; --$position) {
-            if ($tokens[$position]->isGivenKind([T_CASE, T_DEFAULT])) {
+            if ($tokens[$position]->isGivenKind([\T_CASE, \T_DEFAULT])) {
                 $this->fixCase($tokens, $position);
             }
         }
@@ -135,30 +135,30 @@ switch ($foo) {
         $caseColonIndex = $tokens->getNextTokenOfKind($casePosition, [':', ';']);
 
         for ($i = $caseColonIndex + 1, $max = \count($tokens); $i < $max; ++$i) {
-            if ($tokens[$i]->isGivenKind([T_SWITCH, T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_DO, T_FUNCTION, T_CLASS])) {
+            if ($tokens[$i]->isGivenKind([\T_SWITCH, \T_IF, \T_ELSE, \T_ELSEIF, \T_FOR, \T_FOREACH, \T_WHILE, \T_DO, \T_FUNCTION, \T_CLASS])) {
                 $empty = false;
                 $i = $this->getStructureEnd($tokens, $i);
 
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_BREAK, T_CONTINUE, T_RETURN, T_EXIT, T_GOTO])) {
+            if ($tokens[$i]->isGivenKind([\T_BREAK, \T_CONTINUE, \T_RETURN, \T_EXIT, \T_GOTO])) {
                 $fallThrough = false;
 
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_THROW])) {
+            if ($tokens[$i]->isGivenKind([\T_THROW])) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
-                if ($previousIndex === $caseColonIndex || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [T_OPEN_TAG]])) {
+                if ($previousIndex === $caseColonIndex || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [\T_OPEN_TAG]])) {
                     $fallThrough = false;
                 }
 
                 continue;
             }
 
-            if ($tokens[$i]->equals('}') || $tokens[$i]->isGivenKind(T_ENDSWITCH)) {
+            if ($tokens[$i]->equals('}') || $tokens[$i]->isGivenKind(\T_ENDSWITCH)) {
                 if (null !== $commentPosition) {
                     $this->removeComment($tokens, $commentPosition);
                 }
@@ -172,7 +172,7 @@ switch ($foo) {
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_CASE, T_DEFAULT])) {
+            if ($tokens[$i]->isGivenKind([\T_CASE, \T_DEFAULT])) {
                 if (!$empty && $fallThrough) {
                     if (null !== $commentPosition && $tokens->getPrevNonWhitespace($i) !== $commentPosition) {
                         $this->removeComment($tokens, $commentPosition);
@@ -197,7 +197,7 @@ switch ($foo) {
                 break;
             }
 
-            if (!$tokens[$i]->isGivenKind([T_COMMENT, T_WHITESPACE])) {
+            if (!$tokens[$i]->isGivenKind([\T_COMMENT, \T_WHITESPACE])) {
                 $empty = false;
             }
         }
@@ -227,9 +227,9 @@ switch ($foo) {
         $newlineToken = $tokens[$newlinePosition];
         $nbNewlines = substr_count($newlineToken->getContent(), $lineEnding);
 
-        if ($newlineToken->isGivenKind(T_OPEN_TAG) && Preg::match('/\R/', $newlineToken->getContent())) {
+        if ($newlineToken->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R/', $newlineToken->getContent())) {
             ++$nbNewlines;
-        } elseif ($tokens[$newlinePosition - 1]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
+        } elseif ($tokens[$newlinePosition - 1]->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
             ++$nbNewlines;
 
             if (!Preg::match('/\R/', $newlineToken->getContent())) {
@@ -242,10 +242,10 @@ switch ($foo) {
 
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $newlinePosition - 1);
             $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $matches[1].$lineEnding.$indent]);
-            $tokens->insertAt(++$newlinePosition, new Token([T_WHITESPACE, $matches[2]]));
+            $tokens->insertAt(++$newlinePosition, new Token([\T_WHITESPACE, $matches[2]]));
         }
 
-        $tokens->insertAt($newlinePosition, new Token([T_COMMENT, '// '.$this->configuration['comment_text']]));
+        $tokens->insertAt($newlinePosition, new Token([\T_COMMENT, '// '.$this->configuration['comment_text']]));
         $this->ensureNewLineAt($tokens, $newlinePosition);
     }
 
@@ -260,16 +260,16 @@ switch ($foo) {
         $content = $lineEnding.WhitespacesAnalyzer::detectIndent($tokens, $position);
         $whitespaceToken = $tokens[$position - 1];
 
-        if (!$whitespaceToken->isGivenKind(T_WHITESPACE)) {
-            if ($whitespaceToken->isGivenKind(T_OPEN_TAG)) {
+        if (!$whitespaceToken->isGivenKind(\T_WHITESPACE)) {
+            if ($whitespaceToken->isGivenKind(\T_OPEN_TAG)) {
                 $content = Preg::replace('/\R/', '', $content);
                 if (!Preg::match('/\R/', $whitespaceToken->getContent())) {
-                    $tokens[$position - 1] = new Token([T_OPEN_TAG, Preg::replace('/\s+$/', $lineEnding, $whitespaceToken->getContent())]);
+                    $tokens[$position - 1] = new Token([\T_OPEN_TAG, Preg::replace('/\s+$/', $lineEnding, $whitespaceToken->getContent())]);
                 }
             }
 
             if ('' !== $content) {
-                $tokens->insertAt($position, new Token([T_WHITESPACE, $content]));
+                $tokens->insertAt($position, new Token([\T_WHITESPACE, $content]));
 
                 return $position;
             }
@@ -277,12 +277,12 @@ switch ($foo) {
             return $position - 1;
         }
 
-        if ($tokens[$position - 2]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R/', $tokens[$position - 2]->getContent())) {
+        if ($tokens[$position - 2]->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R/', $tokens[$position - 2]->getContent())) {
             $content = Preg::replace('/^\R/', '', $content);
         }
 
         if (!Preg::match('/\R/', $whitespaceToken->getContent())) {
-            $tokens[$position - 1] = new Token([T_WHITESPACE, $content]);
+            $tokens[$position - 1] = new Token([\T_WHITESPACE, $content]);
         }
 
         return $position - 1;
@@ -293,7 +293,7 @@ switch ($foo) {
      */
     private function removeComment(Tokens $tokens, $commentPosition)
     {
-        if ($tokens[$tokens->getPrevNonWhitespace($commentPosition)]->isGivenKind(T_OPEN_TAG)) {
+        if ($tokens[$tokens->getPrevNonWhitespace($commentPosition)]->isGivenKind(\T_OPEN_TAG)) {
             $whitespacePosition = $commentPosition + 1;
             $regex = '/^\R\h*/';
         } else {
@@ -303,10 +303,10 @@ switch ($foo) {
 
         $whitespaceToken = $tokens[$whitespacePosition];
 
-        if ($whitespaceToken->isGivenKind(T_WHITESPACE)) {
+        if ($whitespaceToken->isGivenKind(\T_WHITESPACE)) {
             $content = Preg::replace($regex, '', $whitespaceToken->getContent());
             if ('' !== $content) {
-                $tokens[$whitespacePosition] = new Token([T_WHITESPACE, $content]);
+                $tokens[$whitespacePosition] = new Token([\T_WHITESPACE, $content]);
             } else {
                 $tokens->clearAt($whitespacePosition);
             }
@@ -324,12 +324,12 @@ switch ($foo) {
     {
         $initialToken = $tokens[$position];
 
-        if ($initialToken->isGivenKind([T_FOR, T_FOREACH, T_WHILE, T_IF, T_ELSEIF, T_SWITCH, T_FUNCTION])) {
+        if ($initialToken->isGivenKind([\T_FOR, \T_FOREACH, \T_WHILE, \T_IF, \T_ELSEIF, \T_SWITCH, \T_FUNCTION])) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])
             );
-        } elseif ($initialToken->isGivenKind(T_CLASS)) {
+        } elseif ($initialToken->isGivenKind(\T_CLASS)) {
             $openParenthesisPosition = $tokens->getNextMeaningfulToken($position);
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
                 $position = $tokens->findBlockEnd(
@@ -347,7 +347,7 @@ switch ($foo) {
 
         $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $position);
 
-        if ($initialToken->isGivenKind(T_DO)) {
+        if ($initialToken->isGivenKind(\T_DO)) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])

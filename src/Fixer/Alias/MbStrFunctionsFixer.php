@@ -95,7 +95,7 @@ $a = substr_count($a, $b);
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -123,7 +123,7 @@ $a = substr_count($a, $b);
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
 
-                $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
+                $tokens[$functionName] = new Token([\T_STRING, $functionReplacement['alternativeName']]);
             }
         }
     }

@@ -76,7 +76,7 @@ SAMPLE
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -120,7 +120,7 @@ SAMPLE
     {
         $startIndex = $index;
 
-        if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
+        if ($tokens[$startIndex]->isGivenKind(\T_ARRAY)) {
             $startIndex = $tokens->getNextTokenOfKind($startIndex, ['(']);
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
         } else {
@@ -133,7 +133,7 @@ SAMPLE
         // if there is some item between braces then add `,` after it
         if (
             $startIndex !== $beforeEndIndex && !$beforeEndToken->equals(',')
-            && ($this->configuration['after_heredoc'] || !$beforeEndToken->isGivenKind(T_END_HEREDOC))
+            && ($this->configuration['after_heredoc'] || !$beforeEndToken->isGivenKind(\T_END_HEREDOC))
         ) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));
 

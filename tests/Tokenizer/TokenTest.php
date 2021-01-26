@@ -47,10 +47,10 @@ final class TokenTest extends TestCase
             [['asd', 'asd']],
             [[null, 'asd']],
             [[new \stdClass(), 'asd']],
-            [[T_WHITESPACE, null]],
-            [[T_WHITESPACE, 123]],
-            [[T_WHITESPACE, '']],
-            [[T_WHITESPACE, new \stdClass()]],
+            [[\T_WHITESPACE, null]],
+            [[\T_WHITESPACE, 123]],
+            [[\T_WHITESPACE, '']],
+            [[\T_WHITESPACE, new \stdClass()]],
         ];
     }
 
@@ -97,13 +97,13 @@ final class TokenTest extends TestCase
         return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_ARRAY_CAST, '(array)', 1]), true],
-            [new Token([T_BOOL_CAST, '(bool)', 1]), true],
-            [new Token([T_DOUBLE_CAST, '(double)', 1]), true],
-            [new Token([T_INT_CAST, '(int)', 1]), true],
-            [new Token([T_OBJECT_CAST, '(object)', 1]), true],
-            [new Token([T_STRING_CAST, '(string)', 1]), true],
-            [new Token([T_UNSET_CAST, '(unset)', 1]), true],
+            [new Token([\T_ARRAY_CAST, '(array)', 1]), true],
+            [new Token([\T_BOOL_CAST, '(bool)', 1]), true],
+            [new Token([\T_DOUBLE_CAST, '(double)', 1]), true],
+            [new Token([\T_INT_CAST, '(int)', 1]), true],
+            [new Token([\T_OBJECT_CAST, '(object)', 1]), true],
+            [new Token([\T_STRING_CAST, '(string)', 1]), true],
+            [new Token([\T_UNSET_CAST, '(unset)', 1]), true],
         ];
     }
 
@@ -122,9 +122,9 @@ final class TokenTest extends TestCase
         return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_CLASS, 'class', 1]), true],
-            [new Token([T_INTERFACE, 'interface', 1]), true],
-            [new Token([T_TRAIT, 'trait', 1]), true],
+            [new Token([\T_CLASS, 'class', 1]), true],
+            [new Token([\T_INTERFACE, 'interface', 1]), true],
+            [new Token([\T_TRAIT, 'trait', 1]), true],
         ];
     }
 
@@ -143,8 +143,8 @@ final class TokenTest extends TestCase
         $tests = [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_COMMENT, '/* comment */', 1]), true],
-            [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
+            [new Token([\T_COMMENT, '/* comment */', 1]), true],
+            [new Token([\T_DOC_COMMENT, '/** docs */', 1]), true],
         ];
 
         foreach ($tests as $index => $test) {
@@ -152,7 +152,7 @@ final class TokenTest extends TestCase
         }
 
         if (\defined('T_ATTRIBUTE')) {
-            yield [new Token([T_ATTRIBUTE, '#[', 1]), false];
+            yield [new Token([\T_ATTRIBUTE, '#[', 1]), false];
         }
     }
 
@@ -168,7 +168,7 @@ final class TokenTest extends TestCase
         $emptyToken = new Token('');
         static::assertTrue($emptyToken->isEmpty());
 
-        $whitespaceToken = new Token([T_WHITESPACE, ' ']);
+        $whitespaceToken = new Token([\T_WHITESPACE, ' ']);
         static::assertFalse($whitespaceToken->isEmpty());
     }
 
@@ -177,17 +177,17 @@ final class TokenTest extends TestCase
         $braceToken = $this->getBraceToken();
         $foreachToken = $this->getForeachToken();
 
-        static::assertFalse($braceToken->isGivenKind(T_FOR));
-        static::assertFalse($braceToken->isGivenKind(T_FOREACH));
-        static::assertFalse($braceToken->isGivenKind([T_FOR]));
-        static::assertFalse($braceToken->isGivenKind([T_FOREACH]));
-        static::assertFalse($braceToken->isGivenKind([T_FOR, T_FOREACH]));
+        static::assertFalse($braceToken->isGivenKind(\T_FOR));
+        static::assertFalse($braceToken->isGivenKind(\T_FOREACH));
+        static::assertFalse($braceToken->isGivenKind([\T_FOR]));
+        static::assertFalse($braceToken->isGivenKind([\T_FOREACH]));
+        static::assertFalse($braceToken->isGivenKind([\T_FOR, \T_FOREACH]));
 
-        static::assertFalse($foreachToken->isGivenKind(T_FOR));
-        static::assertTrue($foreachToken->isGivenKind(T_FOREACH));
-        static::assertFalse($foreachToken->isGivenKind([T_FOR]));
-        static::assertTrue($foreachToken->isGivenKind([T_FOREACH]));
-        static::assertTrue($foreachToken->isGivenKind([T_FOR, T_FOREACH]));
+        static::assertFalse($foreachToken->isGivenKind(\T_FOR));
+        static::assertTrue($foreachToken->isGivenKind(\T_FOREACH));
+        static::assertFalse($foreachToken->isGivenKind([\T_FOR]));
+        static::assertTrue($foreachToken->isGivenKind([\T_FOREACH]));
+        static::assertTrue($foreachToken->isGivenKind([\T_FOR, \T_FOREACH]));
     }
 
     public function testIsKeywords()
@@ -215,14 +215,14 @@ final class TokenTest extends TestCase
     public function provideMagicConstantCases()
     {
         $cases = [
-            [T_CLASS_C, '__CLASS__'],
-            [T_DIR, '__DIR__'],
-            [T_FILE, '__FILE__'],
-            [T_FUNC_C, '__FUNCTION__'],
-            [T_LINE, '__LINE__'],
-            [T_METHOD_C, '__METHOD__'],
-            [T_NS_C, '__NAMESPACE__'],
-            [T_TRAIT_C, '__TRAIT__'],
+            [\T_CLASS_C, '__CLASS__'],
+            [\T_DIR, '__DIR__'],
+            [\T_FILE, '__FILE__'],
+            [\T_FUNC_C, '__FUNCTION__'],
+            [\T_LINE, '__LINE__'],
+            [\T_METHOD_C, '__METHOD__'],
+            [\T_NS_C, '__NAMESPACE__'],
+            [\T_TRAIT_C, '__TRAIT__'],
         ];
 
         foreach ($cases as $case) {
@@ -252,11 +252,11 @@ final class TokenTest extends TestCase
         return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_STRING, 'null', 1]), true],
-            [new Token([T_STRING, 'false', 1]), true],
-            [new Token([T_STRING, 'true', 1]), true],
-            [new Token([T_STRING, 'tRuE', 1]), true],
-            [new Token([T_STRING, 'TRUE', 1]), true],
+            [new Token([\T_STRING, 'null', 1]), true],
+            [new Token([\T_STRING, 'false', 1]), true],
+            [new Token([\T_STRING, 'true', 1]), true],
+            [new Token([\T_STRING, 'tRuE', 1]), true],
+            [new Token([\T_STRING, 'TRUE', 1]), true],
         ];
     }
 
@@ -284,11 +284,11 @@ final class TokenTest extends TestCase
             [new Token(' '), true],
             [new Token("\t "), true],
             [new Token("\t "), false, ' '],
-            [new Token([T_WHITESPACE, "\r", 1]), true],
-            [new Token([T_WHITESPACE, "\0", 1]), true],
-            [new Token([T_WHITESPACE, "\x0B", 1]), true],
-            [new Token([T_WHITESPACE, "\n", 1]), true],
-            [new Token([T_WHITESPACE, "\n", 1]), false, " \t"],
+            [new Token([\T_WHITESPACE, "\r", 1]), true],
+            [new Token([\T_WHITESPACE, "\0", 1]), true],
+            [new Token([\T_WHITESPACE, "\x0B", 1]), true],
+            [new Token([\T_WHITESPACE, "\n", 1]), true],
+            [new Token([\T_WHITESPACE, "\n", 1]), false, " \t"],
         ];
     }
 
@@ -316,7 +316,7 @@ final class TokenTest extends TestCase
     public function provideCreatingTokenCases()
     {
         return [
-            [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
+            [[\T_FOREACH, 'foreach'], \T_FOREACH, 'foreach', true],
             ['(', null, '(', false],
             [123, null, null, null, \InvalidArgumentException::class],
             [false, null, null, null, \InvalidArgumentException::class],
@@ -326,10 +326,10 @@ final class TokenTest extends TestCase
 
     public function testEqualsDefaultIsCaseSensitive()
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([\T_FUNCTION, 'function', 1]);
 
-        static::assertTrue($token->equals([T_FUNCTION, 'function']));
-        static::assertFalse($token->equals([T_FUNCTION, 'Function']));
+        static::assertTrue($token->equals([\T_FUNCTION, 'function']));
+        static::assertFalse($token->equals([\T_FUNCTION, 'Function']));
     }
 
     /**
@@ -347,7 +347,7 @@ final class TokenTest extends TestCase
     public function provideEqualsCases()
     {
         $brace = $this->getBraceToken();
-        $function = new Token([T_FUNCTION, 'function', 1]);
+        $function = new Token([\T_FUNCTION, 'function', 1]);
 
         return [
             [$brace, false, '!'],
@@ -357,35 +357,35 @@ final class TokenTest extends TestCase
             [$function, false, '('],
             [$function, false, '(', false],
 
-            [$function, false, [T_NAMESPACE]],
-            [$function, false, [T_NAMESPACE], false],
-            [$function, false, [T_VARIABLE, 'function']],
-            [$function, false, [T_VARIABLE, 'function'], false],
-            [$function, false, [T_VARIABLE, 'Function']],
-            [$function, false, [T_VARIABLE, 'Function'], false],
-            [$function, true, [T_FUNCTION]],
-            [$function, true, [T_FUNCTION], false],
-            [$function, true, [T_FUNCTION, 'function']],
-            [$function, true, [T_FUNCTION, 'function'], false],
-            [$function, false, [T_FUNCTION, 'Function']],
-            [$function, true, [T_FUNCTION, 'Function'], false],
-            [$function, false, [T_FUNCTION, 'junction'], false],
+            [$function, false, [\T_NAMESPACE]],
+            [$function, false, [\T_NAMESPACE], false],
+            [$function, false, [\T_VARIABLE, 'function']],
+            [$function, false, [\T_VARIABLE, 'function'], false],
+            [$function, false, [\T_VARIABLE, 'Function']],
+            [$function, false, [\T_VARIABLE, 'Function'], false],
+            [$function, true, [\T_FUNCTION]],
+            [$function, true, [\T_FUNCTION], false],
+            [$function, true, [\T_FUNCTION, 'function']],
+            [$function, true, [\T_FUNCTION, 'function'], false],
+            [$function, false, [\T_FUNCTION, 'Function']],
+            [$function, true, [\T_FUNCTION, 'Function'], false],
+            [$function, false, [\T_FUNCTION, 'junction'], false],
 
-            [$function, true, new Token([T_FUNCTION, 'function'])],
-            [$function, false, new Token([T_FUNCTION, 'Function'])],
-            [$function, true, new Token([T_FUNCTION, 'Function']), false],
+            [$function, true, new Token([\T_FUNCTION, 'function'])],
+            [$function, false, new Token([\T_FUNCTION, 'Function'])],
+            [$function, true, new Token([\T_FUNCTION, 'Function']), false],
 
             // if it is an array any additional field is checked too
-            [$function, false, [T_FUNCTION, 'function', 'unexpected']],
+            [$function, false, [\T_FUNCTION, 'function', 'unexpected']],
         ];
     }
 
     public function testEqualsAnyDefaultIsCaseSensitive()
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([\T_FUNCTION, 'function', 1]);
 
-        static::assertTrue($token->equalsAny([[T_FUNCTION, 'function']]));
-        static::assertFalse($token->equalsAny([[T_FUNCTION, 'Function']]));
+        static::assertTrue($token->equalsAny([[\T_FUNCTION, 'function']]));
+        static::assertFalse($token->equalsAny([[\T_FUNCTION, 'Function']]));
     }
 
     /**
@@ -396,7 +396,7 @@ final class TokenTest extends TestCase
      */
     public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([\T_FUNCTION, 'function', 1]);
 
         static::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
@@ -410,11 +410,11 @@ final class TokenTest extends TestCase
             [false, []],
             [false, [$brace]],
             [false, [$brace, $foreach]],
-            [true, [$brace, $foreach, [T_FUNCTION]]],
-            [true, [$brace, $foreach, [T_FUNCTION, 'function']]],
-            [false, [$brace, $foreach, [T_FUNCTION, 'Function']]],
-            [true, [$brace, $foreach, [T_FUNCTION, 'Function']], false],
-            [false, [[T_VARIABLE, 'junction'], [T_FUNCTION, 'junction']], false],
+            [true, [$brace, $foreach, [\T_FUNCTION]]],
+            [true, [$brace, $foreach, [\T_FUNCTION, 'function']]],
+            [false, [$brace, $foreach, [\T_FUNCTION, 'Function']]],
+            [true, [$brace, $foreach, [\T_FUNCTION, 'Function']], false],
+            [false, [[\T_VARIABLE, 'junction'], [\T_FUNCTION, 'junction']], false],
         ];
     }
 
@@ -455,7 +455,7 @@ final class TokenTest extends TestCase
      */
     public function testIsChanged()
     {
-        $token = new Token([T_WHITESPACE, ' ']);
+        $token = new Token([\T_WHITESPACE, ' ']);
         static::assertFalse($token->isChanged());
     }
 
@@ -479,7 +479,7 @@ final class TokenTest extends TestCase
             ],
             [
                 'T_CLASS',
-                T_CLASS,
+                \T_CLASS,
             ],
             [
                 'CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE',
@@ -501,7 +501,7 @@ final class TokenTest extends TestCase
     public function provideGetNameCases()
     {
         yield [
-            new Token([T_FUNCTION, 'function', 1]),
+            new Token([\T_FUNCTION, 'function', 1]),
             'T_FUNCTION',
         ];
 
@@ -527,9 +527,9 @@ final class TokenTest extends TestCase
     public function provideToArrayCases()
     {
         yield [
-            new Token([T_FUNCTION, 'function', 1]),
+            new Token([\T_FUNCTION, 'function', 1]),
             [
-                'id' => T_FUNCTION,
+                'id' => \T_FUNCTION,
                 'name' => 'T_FUNCTION',
                 'content' => 'function',
                 'isArray' => true,
@@ -577,7 +577,7 @@ final class TokenTest extends TestCase
 
     private function getForeachTokenPrototype()
     {
-        static $prototype = [T_FOREACH, 'foreach'];
+        static $prototype = [\T_FOREACH, 'foreach'];
 
         return $prototype;
     }

@@ -32,7 +32,7 @@ final class AccessibleObject
                 'The "%s" class is deprecated and will be removed in 3.0 version. Use "php-cs-fixer/accessible-object" package instead.',
                 __CLASS__
             ),
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         $this->object = $object;

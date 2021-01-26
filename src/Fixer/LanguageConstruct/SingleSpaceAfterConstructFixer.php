@@ -35,61 +35,61 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
      * @var array<string, null|int>
      */
     private static $tokenMap = [
-        'abstract' => T_ABSTRACT,
-        'as' => T_AS,
+        'abstract' => \T_ABSTRACT,
+        'as' => \T_AS,
         'attribute' => CT::T_ATTRIBUTE_CLOSE,
-        'break' => T_BREAK,
-        'case' => T_CASE,
-        'catch' => T_CATCH,
-        'class' => T_CLASS,
-        'clone' => T_CLONE,
-        'comment' => T_COMMENT,
-        'const' => T_CONST,
+        'break' => \T_BREAK,
+        'case' => \T_CASE,
+        'catch' => \T_CATCH,
+        'class' => \T_CLASS,
+        'clone' => \T_CLONE,
+        'comment' => \T_COMMENT,
+        'const' => \T_CONST,
         'const_import' => CT::T_CONST_IMPORT,
-        'continue' => T_CONTINUE,
-        'do' => T_DO,
-        'echo' => T_ECHO,
-        'else' => T_ELSE,
-        'elseif' => T_ELSEIF,
-        'extends' => T_EXTENDS,
-        'final' => T_FINAL,
-        'finally' => T_FINALLY,
-        'for' => T_FOR,
-        'foreach' => T_FOREACH,
-        'function' => T_FUNCTION,
+        'continue' => \T_CONTINUE,
+        'do' => \T_DO,
+        'echo' => \T_ECHO,
+        'else' => \T_ELSE,
+        'elseif' => \T_ELSEIF,
+        'extends' => \T_EXTENDS,
+        'final' => \T_FINAL,
+        'finally' => \T_FINALLY,
+        'for' => \T_FOR,
+        'foreach' => \T_FOREACH,
+        'function' => \T_FUNCTION,
         'function_import' => CT::T_FUNCTION_IMPORT,
-        'global' => T_GLOBAL,
-        'goto' => T_GOTO,
-        'if' => T_IF,
-        'implements' => T_IMPLEMENTS,
-        'include' => T_INCLUDE,
-        'include_once' => T_INCLUDE_ONCE,
-        'instanceof' => T_INSTANCEOF,
-        'insteadof' => T_INSTEADOF,
-        'interface' => T_INTERFACE,
+        'global' => \T_GLOBAL,
+        'goto' => \T_GOTO,
+        'if' => \T_IF,
+        'implements' => \T_IMPLEMENTS,
+        'include' => \T_INCLUDE,
+        'include_once' => \T_INCLUDE_ONCE,
+        'instanceof' => \T_INSTANCEOF,
+        'insteadof' => \T_INSTEADOF,
+        'interface' => \T_INTERFACE,
         'match' => null,
         'named_argument' => CT::T_NAMED_ARGUMENT_COLON,
-        'new' => T_NEW,
-        'open_tag_with_echo' => T_OPEN_TAG_WITH_ECHO,
-        'php_doc' => T_DOC_COMMENT,
-        'php_open' => T_OPEN_TAG,
-        'print' => T_PRINT,
-        'private' => T_PRIVATE,
-        'protected' => T_PROTECTED,
-        'public' => T_PUBLIC,
-        'require' => T_REQUIRE,
-        'require_once' => T_REQUIRE_ONCE,
-        'return' => T_RETURN,
-        'static' => T_STATIC,
-        'throw' => T_THROW,
-        'trait' => T_TRAIT,
-        'try' => T_TRY,
-        'use' => T_USE,
+        'new' => \T_NEW,
+        'open_tag_with_echo' => \T_OPEN_TAG_WITH_ECHO,
+        'php_doc' => \T_DOC_COMMENT,
+        'php_open' => \T_OPEN_TAG,
+        'print' => \T_PRINT,
+        'private' => \T_PRIVATE,
+        'protected' => \T_PROTECTED,
+        'public' => \T_PUBLIC,
+        'require' => \T_REQUIRE,
+        'require_once' => \T_REQUIRE_ONCE,
+        'return' => \T_RETURN,
+        'static' => \T_STATIC,
+        'throw' => \T_THROW,
+        'trait' => \T_TRAIT,
+        'try' => \T_TRY,
+        'use' => \T_USE,
         'use_lambda' => CT::T_USE_LAMBDA,
         'use_trait' => CT::T_USE_TRAIT,
-        'var' => T_VAR,
-        'while' => T_WHILE,
-        'yield' => T_YIELD,
+        'var' => \T_VAR,
+        'while' => \T_WHILE,
+        'yield' => \T_YIELD,
         'yield_from' => null,
     ];
 
@@ -106,11 +106,11 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         parent::configure($configuration);
 
         if (\defined('T_YIELD_FROM')) {
-            self::$tokenMap['yield_from'] = T_YIELD_FROM;
+            self::$tokenMap['yield_from'] = \T_YIELD_FROM;
         }
 
         if (\defined('T_MATCH')) {
-            self::$tokenMap['match'] = T_MATCH;
+            self::$tokenMap['match'] = \T_MATCH;
         }
 
         $this->fixTokenMap = [];
@@ -202,50 +202,50 @@ yield  from  baz();
             }
 
             if (
-                $token->isGivenKind(T_STATIC)
-                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([T_FUNCTION, T_VARIABLE])
+                $token->isGivenKind(\T_STATIC)
+                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([\T_FUNCTION, \T_VARIABLE])
             ) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_OPEN_TAG)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && false === strpos($token->getContent(), "\n")) {
+            if ($token->isGivenKind(\T_OPEN_TAG)) {
+                if ($tokens[$whitespaceTokenIndex]->equals([\T_WHITESPACE]) && false === strpos($token->getContent(), "\n")) {
                     $tokens->clearAt($whitespaceTokenIndex);
                 }
 
                 continue;
             }
 
-            if ($token->isGivenKind(T_CLASS) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
+            if ($token->isGivenKind(\T_CLASS) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
                 continue;
             }
 
-            if ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
+            if ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
+            if ($token->isGivenKind(\T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
                 continue;
             }
 
             if ($token->isComment() || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && false !== strpos($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->equals([\T_WHITESPACE]) && false !== strpos($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                     continue;
                 }
             }
 
-            if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE])) {
-                $tokens[$whitespaceTokenIndex] = new Token([T_WHITESPACE, ' ']);
+            if ($tokens[$whitespaceTokenIndex]->equals([\T_WHITESPACE])) {
+                $tokens[$whitespaceTokenIndex] = new Token([\T_WHITESPACE, ' ']);
             } else {
-                $tokens->insertAt($whitespaceTokenIndex, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($whitespaceTokenIndex, new Token([\T_WHITESPACE, ' ']));
             }
 
             if (
                 70000 <= \PHP_VERSION_ID
-                && $token->isGivenKind(T_YIELD_FROM)
+                && $token->isGivenKind(\T_YIELD_FROM)
                 && 'yield from' !== strtolower($token->getContent())
             ) {
-                $tokens[$index] = new Token([T_YIELD_FROM, Preg::replace(
+                $tokens[$index] = new Token([\T_YIELD_FROM, Preg::replace(
                     '/\s+/',
                     ' ',
                     $token->getContent()
@@ -276,7 +276,7 @@ yield  from  baz();
         $tokenFollowingReturn = $tokens[$index];
 
         if (
-            !$tokenFollowingReturn->isGivenKind(T_WHITESPACE)
+            !$tokenFollowingReturn->isGivenKind(\T_WHITESPACE)
             || false === strpos($tokenFollowingReturn->getContent(), "\n")
         ) {
             return false;
@@ -293,7 +293,7 @@ yield  from  baz();
                 ++$nestedCount;
             } elseif ($tokens[$index]->equals('}')) {
                 --$nestedCount;
-            } elseif (0 === $nestedCount && $tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
+            } elseif (0 === $nestedCount && $tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
                 break;
             }
         }

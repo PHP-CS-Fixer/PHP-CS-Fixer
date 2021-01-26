@@ -32,7 +32,7 @@ final class SingleLineThrowFixer extends AbstractFixer
     /**
      * @internal
      */
-    const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_OBJECT_OPERATOR], [T_DOUBLE_COLON]];
+    const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [\T_OBJECT_OPERATOR], [\T_DOUBLE_COLON]];
 
     /**
      * @internal
@@ -57,7 +57,7 @@ final class SingleLineThrowFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_THROW);
+        return $tokens->isTokenKindFound(\T_THROW);
     }
 
     /**
@@ -77,7 +77,7 @@ final class SingleLineThrowFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_THROW)) {
+            if (!$tokens[$index]->isGivenKind(\T_THROW)) {
                 continue;
             }
 
@@ -105,7 +105,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             $content = $tokens[$index]->getContent();
 
-            if ($tokens[$index]->isGivenKind(T_COMMENT)) {
+            if ($tokens[$index]->isGivenKind(\T_COMMENT)) {
                 if (0 === strpos($content, '//')) {
                     $content = '/*'.substr($content, 2).' */';
                     $tokens->clearAt($index + 1);
@@ -116,12 +116,12 @@ final class SingleLineThrowFixer extends AbstractFixer
                     $content = Preg::replace('/\R/', ' ', $content);
                 }
 
-                $tokens[$index] = new Token([T_COMMENT, $content]);
+                $tokens[$index] = new Token([\T_COMMENT, $content]);
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_WHITESPACE)) {
+            if (!$tokens[$index]->isGivenKind(\T_WHITESPACE)) {
                 continue;
             }
 
@@ -141,14 +141,14 @@ final class SingleLineThrowFixer extends AbstractFixer
 
             if (
                 $tokens[$nextIndex]->equalsAny(array_merge(self::REMOVE_WHITESPACE_AROUND_TOKENS, self::REMOVE_WHITESPACE_BEFORE_TOKENS))
-                && !$tokens[$prevIndex]->isGivenKind(T_FUNCTION)
+                && !$tokens[$prevIndex]->isGivenKind(\T_FUNCTION)
             ) {
                 $tokens->clearAt($index);
 
                 continue;
             }
 
-            $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+            $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
         }
     }
 }

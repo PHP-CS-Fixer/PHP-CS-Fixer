@@ -40,7 +40,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        return $tokens->isTokenKindFound(\T_OPEN_TAG);
     }
 
     /**
@@ -49,7 +49,7 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
+        if (!$tokens[0]->isGivenKind(\T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
             return;
         }
 
@@ -72,6 +72,6 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
             return;
         }
 
-        $tokens[0] = new Token([T_OPEN_TAG, rtrim($tokens[0]->getContent()).$this->whitespacesConfig->getLineEnding()]);
+        $tokens[0] = new Token([\T_OPEN_TAG, rtrim($tokens[0]->getContent()).$this->whitespacesConfig->getLineEnding()]);
     }
 }

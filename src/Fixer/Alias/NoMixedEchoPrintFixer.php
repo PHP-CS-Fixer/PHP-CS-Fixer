@@ -51,10 +51,10 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
         parent::configure($configuration);
 
         if ('echo' === $this->configuration['use']) {
-            $this->candidateTokenType = T_PRINT;
+            $this->candidateTokenType = \T_PRINT;
             $this->callBack = 'fixPrintToEcho';
         } else {
-            $this->candidateTokenType = T_ECHO;
+            $this->candidateTokenType = \T_ECHO;
             $this->callBack = 'fixEchoToPrint';
         }
     }
@@ -123,7 +123,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     private function fixEchoToPrint(Tokens $tokens, $index)
     {
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-        $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+        $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
         $canBeConverted = true;
 
         for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
@@ -143,7 +143,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
             return;
         }
 
-        $tokens[$index] = new Token([T_PRINT, 'print']);
+        $tokens[$index] = new Token([\T_PRINT, 'print']);
     }
 
     /**
@@ -153,10 +153,10 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+        if (!$prevToken->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
             return;
         }
 
-        $tokens[$index] = new Token([T_ECHO, 'echo']);
+        $tokens[$index] = new Token([\T_ECHO, 'echo']);
     }
 }

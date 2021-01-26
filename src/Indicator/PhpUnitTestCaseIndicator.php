@@ -22,7 +22,7 @@ final class PhpUnitTestCaseIndicator
 {
     public function isPhpUnitClass(Tokens $tokens, $index)
     {
-        if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+        if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
             throw new \LogicException(sprintf('No "T_CLASS" at given index %d, got "%s".', $index, $tokens[$index]->getName()));
         }
 
@@ -36,7 +36,7 @@ final class PhpUnitTestCaseIndicator
                 break; // end of class signature
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue; // not part of extends nor part of implements; so continue
             }
 
@@ -54,7 +54,7 @@ final class PhpUnitTestCaseIndicator
     public function findPhpUnitClasses(Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $tokens->offsetExists($index); --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isPhpUnitClass($tokens, $index)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$this->isPhpUnitClass($tokens, $index)) {
                 continue;
             }
 

@@ -25,4 +25,4 @@ if (isset($composerJson['extra']['branch-alias'])) {
     ];
 }
 
-file_put_contents(COMPOSER_JSON_FILE, json_encode($composerJson, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)."\n");
+file_put_contents(COMPOSER_JSON_FILE, json_encode($composerJson, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_PRETTY_PRINT)."\n");

@@ -27,7 +27,7 @@ final class NoUselessReturnFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]);
+        return $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_RETURN]);
     }
 
     /**
@@ -69,7 +69,7 @@ function example($b) {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_FUNCTION)) {
+            if (!$token->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -87,7 +87,7 @@ function example($b) {
     private function fixFunction(Tokens $tokens, $start, $end)
     {
         for ($index = $end; $index > $start; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_RETURN)) {
+            if (!$tokens[$index]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
@@ -101,7 +101,7 @@ function example($b) {
             }
 
             $previous = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$previous]->equalsAny([[T_ELSE], ')'])) {
+            if ($tokens[$previous]->equalsAny([[\T_ELSE], ')'])) {
                 continue;
             }
 

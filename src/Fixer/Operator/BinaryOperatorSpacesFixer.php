@@ -358,13 +358,13 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             if (self::ALIGN_SINGLE_SPACE_MINIMAL === $this->operators[$tokenContent]) {
-                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index + 1] = new Token([\T_WHITESPACE, ' ']);
             }
 
             return;
         }
 
-        $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+        $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
     }
 
     /**
@@ -376,20 +376,20 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
-                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index + 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
         }
 
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
             if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index - 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
         }
     }
 
@@ -423,11 +423,11 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     private function isEqualPartOfDeclareStatement(Tokens $tokens, $index)
     {
         $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_STRING)) {
+        if ($tokens[$prevMeaningfulIndex]->isGivenKind(\T_STRING)) {
             $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
             if ($tokens[$prevMeaningfulIndex]->equals('(')) {
                 $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
-                if ($tokens[$prevMeaningfulIndex]->isGivenKind(T_DECLARE)) {
+                if ($tokens[$prevMeaningfulIndex]->isGivenKind(\T_DECLARE)) {
                     return $prevMeaningfulIndex;
                 }
             }
@@ -525,7 +525,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             throw new InvalidFixerConfigurationException($this->getName(), "{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
         }
 
-        @trigger_error($message, E_USER_DEPRECATED);
+        @trigger_error($message, \E_USER_DEPRECATED);
 
         return $newConfig;
     }
@@ -559,7 +559,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
             if (self::ALIGN_SINGLE_SPACE === $alignStrategy || self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
                 if ('=>' === $tokenContent) {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ($tokens[$index]->isGivenKind(T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
+                        if ($tokens[$index]->isGivenKind(\T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
@@ -604,7 +604,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                 continue;
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
+            if ($token->isGivenKind(\T_FUNCTION)) {
                 ++$this->deepestLevel;
 
                 continue;
@@ -639,14 +639,14 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
+            if ($token->isGivenKind([\T_FOREACH, \T_FOR, \T_WHILE, \T_IF, \T_SWITCH])) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
-            if ($token->isGivenKind(T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
+            if ($token->isGivenKind(\T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
                 $index = $until;
@@ -666,17 +666,17 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                 continue;
             }
 
-            if ($token->isGivenKind(T_DOUBLE_ARROW)) { // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
+            if ($token->isGivenKind(\T_DOUBLE_ARROW)) { // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
                 $tokenContent = sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
                 $nextToken = $tokens[$index + 1];
                 if (!$nextToken->isWhitespace()) {
                     $tokenContent .= ' ';
                 } elseif ($nextToken->isWhitespace(" \t")) {
-                    $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+                    $tokens[$index + 1] = new Token([\T_WHITESPACE, ' ']);
                 }
 
-                $tokens[$index] = new Token([T_DOUBLE_ARROW, $tokenContent]);
+                $tokens[$index] = new Token([\T_DOUBLE_ARROW, $tokenContent]);
 
                 continue;
             }
@@ -694,8 +694,8 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                         break;
                     }
 
-                    if ($tokens[$i + 1]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
-                        $arrayStartIndex = $tokens[$i + 1]->isGivenKind(T_ARRAY)
+                    if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                        $arrayStartIndex = $tokens[$i + 1]->isGivenKind(\T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
                             : $i + 1
                         ;
@@ -736,7 +736,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
     {
         // fix white space after operator is not needed as BinaryOperatorSpacesFixer took care of this (if strategy is _not_ ALIGN)
         if (!$tokens[$index - 1]->isWhitespace()) {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
 
             return;
         }
@@ -747,7 +747,7 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 
         $content = $tokens[$index - 1]->getContent();
         if (' ' !== $content && false === strpos($content, "\n")) {
-            $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
+            $tokens[$index - 1] = new Token([\T_WHITESPACE, ' ']);
         }
     }
 

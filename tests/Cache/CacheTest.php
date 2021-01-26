@@ -163,7 +163,7 @@ final class CacheTest extends TestCase
 
         return [
             [new Signature(
-                PHP_VERSION,
+                \PHP_VERSION,
                 '2.0',
                 '  ',
                 "\r\n",
@@ -173,7 +173,7 @@ final class CacheTest extends TestCase
                 ]
             )],
             [new Signature(
-                PHP_VERSION,
+                \PHP_VERSION,
                 $toolInfo->getVersion(),
                 $config->getIndent(),
                 $config->getLineEnding(),
@@ -193,7 +193,7 @@ final class CacheTest extends TestCase
         $signature->getPhpVersion()->willReturn('7.1.0');
         $signature->getFixerVersion()->willReturn('2.2.0');
         $signature->getIndent()->willReturn('    ');
-        $signature->getLineEnding()->willReturn(PHP_EOL);
+        $signature->getLineEnding()->willReturn(\PHP_EOL);
         $signature->getRules()->willReturn([
             $invalidUtf8Sequence => true,
         ]);

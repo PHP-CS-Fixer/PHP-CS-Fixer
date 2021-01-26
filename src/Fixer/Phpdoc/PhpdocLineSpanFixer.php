@@ -64,7 +64,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -109,7 +109,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 $doc->makeSingleLine();
             }
 
-            $tokens->offsetSet($docIndex, new Token([T_DOC_COMMENT, $doc->getContent()]));
+            $tokens->offsetSet($docIndex, new Token([\T_DOC_COMMENT, $doc->getContent()]));
         }
     }
 
@@ -122,7 +122,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
-        return $tokens[$docBlockIndex]->isGivenKind(T_DOC_COMMENT);
+        return $tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT);
     }
 
     /**
@@ -135,16 +135,16 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         do {
             $index = $tokens->getPrevNonWhitespace($index);
         } while ($tokens[$index]->isGivenKind([
-            T_PUBLIC,
-            T_PROTECTED,
-            T_PRIVATE,
-            T_FINAL,
-            T_ABSTRACT,
-            T_COMMENT,
-            T_VAR,
-            T_STATIC,
-            T_STRING,
-            T_NS_SEPARATOR,
+            \T_PUBLIC,
+            \T_PROTECTED,
+            \T_PRIVATE,
+            \T_FINAL,
+            \T_ABSTRACT,
+            \T_COMMENT,
+            \T_VAR,
+            \T_STATIC,
+            \T_STRING,
+            \T_NS_SEPARATOR,
             CT::T_ARRAY_TYPEHINT,
             CT::T_NULLABLE_TYPE,
         ]));

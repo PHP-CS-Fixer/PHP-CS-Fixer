@@ -49,7 +49,7 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLOSE_TAG);
+        return $tokens->isTokenKindFound(\T_CLOSE_TAG);
     }
 
     /**
@@ -58,12 +58,12 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = \count($tokens) - 1; $index > 1; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLOSE_TAG)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
                 continue;
             }
 
             $prev = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prev]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+            if ($tokens[$prev]->equalsAny([';', '{', '}', ':', [\T_OPEN_TAG]])) {
                 continue;
             }
 

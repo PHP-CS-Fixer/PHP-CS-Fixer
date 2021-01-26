@@ -59,7 +59,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70000 && isset($tokens[0]) && $tokens[0]->isGivenKind(T_OPEN_TAG);
+        return \PHP_VERSION_ID >= 70000 && isset($tokens[0]) && $tokens[0]->isGivenKind(\T_OPEN_TAG);
     }
 
     /**
@@ -83,7 +83,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
             return;
         }
 
-        $sequenceLocation = $tokens->findSequence([[T_DECLARE, 'declare'], '(', [T_STRING, 'strict_types'], '=', [T_LNUMBER], ')'], $searchIndex, null, false);
+        $sequenceLocation = $tokens->findSequence([[\T_DECLARE, 'declare'], '(', [\T_STRING, 'strict_types'], '=', [\T_LNUMBER], ')'], $searchIndex, null, false);
         if (null === $sequenceLocation) {
             $this->insertSequence($tokens); // declaration not found, insert one
 
@@ -101,13 +101,13 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         /** @var int $index */
         /** @var Token $token */
         foreach ($sequence as $index => $token) {
-            if ($token->isGivenKind(T_STRING)) {
-                $tokens[$index] = new Token([T_STRING, strtolower($token->getContent())]);
+            if ($token->isGivenKind(\T_STRING)) {
+                $tokens[$index] = new Token([\T_STRING, strtolower($token->getContent())]);
 
                 continue;
             }
-            if ($token->isGivenKind(T_LNUMBER)) {
-                $tokens[$index] = new Token([T_LNUMBER, '1']);
+            if ($token->isGivenKind(\T_LNUMBER)) {
+                $tokens[$index] = new Token([\T_LNUMBER, '1']);
 
                 break;
             }
@@ -117,11 +117,11 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     private function insertSequence(Tokens $tokens)
     {
         $sequence = [
-            new Token([T_DECLARE, 'declare']),
+            new Token([\T_DECLARE, 'declare']),
             new Token('('),
-            new Token([T_STRING, 'strict_types']),
+            new Token([\T_STRING, 'strict_types']),
             new Token('='),
-            new Token([T_LNUMBER, '1']),
+            new Token([\T_LNUMBER, '1']),
             new Token(')'),
             new Token(';'),
         ];
@@ -141,12 +141,12 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         if (!$tokens[1 + $endIndex]->isWhitespace()) {
-            $tokens->insertAt(1 + $endIndex, new Token([T_WHITESPACE, $lineEnding]));
+            $tokens->insertAt(1 + $endIndex, new Token([\T_WHITESPACE, $lineEnding]));
 
             return;
         }
 
         $content = $tokens[1 + $endIndex]->getContent();
-        $tokens[1 + $endIndex] = new Token([T_WHITESPACE, $lineEnding.ltrim($content, " \t")]);
+        $tokens[1 + $endIndex] = new Token([\T_WHITESPACE, $lineEnding.ltrim($content, " \t")]);
     }
 }

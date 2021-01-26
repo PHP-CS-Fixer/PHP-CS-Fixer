@@ -141,7 +141,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
         ]);
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.4.*.
-Current PHP version: '.PHP_VERSION.'.
+Current PHP version: '.\PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
@@ -154,7 +154,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/').' by Fabien Potencier and Dariusz Ruminski',
-            preg_quote(sprintf('Runtime: PHP %s', PHP_VERSION), '/'),
+            preg_quote(sprintf('Runtime: PHP %s', \PHP_VERSION), '/'),
             preg_quote('Loaded config default from ".php_cs.dist".', '/'),
             \strlen($expectedResult3Files),
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')

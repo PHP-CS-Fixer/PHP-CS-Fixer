@@ -38,7 +38,7 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_LIST);
+        return $tokens->isTokenKindFound(\T_LIST);
     }
 
     /**
@@ -49,7 +49,7 @@ final class NoTrailingCommaInListCallFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_LIST)) {
+            if (!$token->isGivenKind(\T_LIST)) {
                 continue;
             }
 

@@ -67,7 +67,7 @@ EOF;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+        return $tokens->isTokenKindFound(\T_CONSTANT_ENCAPSED_STRING);
     }
 
     /**
@@ -76,7 +76,7 @@ EOF;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 
@@ -96,7 +96,7 @@ EOF;
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace(['\\"', '\\$', '\''], ['"', '$', '\\\''], $content);
-                $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\'']);
+                $tokens[$index] = new Token([\T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\'']);
             }
         }
     }

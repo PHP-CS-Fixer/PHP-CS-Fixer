@@ -64,7 +64,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
-        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         if ($this->isAbstractClass($tokens, $classIndex)) {
             return;
@@ -88,7 +88,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
 
-        return $tokens[$typeIndex]->isGivenKind(T_ABSTRACT);
+        return $tokens[$typeIndex]->isGivenKind(\T_ABSTRACT);
     }
 
     private function createDocBlock(Tokens $tokens, $docBlockIndex)
@@ -97,8 +97,8 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $group = $this->configuration['group'];
         $toInsert = [
-            new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @".$group.$lineEnd."{$originalIndent} */"]),
-            new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
+            new Token([\T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @".$group.$lineEnd."{$originalIndent} */"]),
+            new Token([\T_WHITESPACE, $lineEnd.$originalIndent]),
         ];
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);
         $tokens->insertAt($index, $toInsert);
@@ -114,7 +114,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         $lines = $this->addSizeAnnotation($doc, $tokens, $docBlockIndex);
         $lines = implode('', $lines);
 
-        $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+        $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
     }
 
     /**

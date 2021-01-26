@@ -101,6 +101,6 @@ final class NoShortBoolCastFixer extends AbstractFixer
             }
         }
 
-        $tokens->insertAt($start, new Token([T_BOOL_CAST, '(bool)']));
+        $tokens->insertAt($start, new Token([\T_BOOL_CAST, '(bool)']));
     }
 }

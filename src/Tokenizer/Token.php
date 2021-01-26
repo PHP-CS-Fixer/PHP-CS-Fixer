@@ -97,7 +97,7 @@ class Token
      */
     public static function getCastTokenKinds()
     {
-        static $castTokens = [T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST];
+        static $castTokens = [\T_ARRAY_CAST, \T_BOOL_CAST, \T_DOUBLE_CAST, \T_INT_CAST, \T_OBJECT_CAST, \T_STRING_CAST, \T_UNSET_CAST];
 
         return $castTokens;
     }
@@ -109,7 +109,7 @@ class Token
      */
     public static function getClassyTokenKinds()
     {
-        static $classTokens = [T_CLASS, T_TRAIT, T_INTERFACE];
+        static $classTokens = [\T_CLASS, \T_TRAIT, \T_INTERFACE];
 
         return $classTokens;
     }
@@ -123,7 +123,7 @@ class Token
      */
     public function clear()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
         Tokens::setLegacyMode(true);
 
         $this->content = '';
@@ -138,7 +138,7 @@ class Token
      */
     public function clearChanged()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
         Tokens::setLegacyMode(true);
 
         $this->changed = false;
@@ -397,7 +397,7 @@ class Token
      */
     public function isChanged()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
 
         return $this->changed;
     }
@@ -419,7 +419,7 @@ class Token
      */
     public function isComment()
     {
-        static $commentTokens = [T_COMMENT, T_DOC_COMMENT];
+        static $commentTokens = [\T_COMMENT, \T_DOC_COMMENT];
 
         return $this->isGivenKind($commentTokens);
     }
@@ -433,7 +433,7 @@ class Token
      */
     public function isEmpty()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
 
         return null === $this->id && ('' === $this->content || null === $this->content);
     }
@@ -501,7 +501,7 @@ class Token
             $whitespaces = " \t\n\r\0\x0B";
         }
 
-        if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
+        if ($this->isArray && !$this->isGivenKind(\T_WHITESPACE)) {
             return false;
         }
 
@@ -519,7 +519,7 @@ class Token
      */
     public function override($other)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
         Tokens::setLegacyMode(true);
 
         $prototype = $other instanceof self ? $other->getPrototype() : $other;
@@ -550,7 +550,7 @@ class Token
      */
     public function setContent($content)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', \E_USER_DEPRECATED);
         Tokens::setLegacyMode(true);
 
         if ($this->content === $content) {
@@ -562,7 +562,7 @@ class Token
 
         // setting empty content is clearing the token
         if ('' === $content) {
-            @trigger_error(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.', E_USER_DEPRECATED);
+            @trigger_error(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.', \E_USER_DEPRECATED);
             $this->id = null;
             $this->isArray = false;
         }

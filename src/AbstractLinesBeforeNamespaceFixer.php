@@ -44,7 +44,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
         for ($i = 1; $i <= 2; ++$i) {
             if (isset($tokens[$index - $i])) {
                 $token = $tokens[$index - $i];
-                if ($token->isGivenKind(T_OPEN_TAG)) {
+                if ($token->isGivenKind(\T_OPEN_TAG)) {
                     $openingToken = $token;
                     $openingTokenIndex = $index - $i;
                     $newlineInOpening = false !== strpos($token->getContent(), "\n");
@@ -54,7 +54,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
 
                     break;
                 }
-                if (false === $token->isGivenKind(T_WHITESPACE)) {
+                if (false === $token->isGivenKind(\T_WHITESPACE)) {
                     break;
                 }
                 $precedingNewlines += substr_count($token->getContent(), "\n");
@@ -75,7 +75,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             }
             // Remove new lines in opening token
             if ($newlineInOpening) {
-                $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
+                $tokens[$openingTokenIndex] = new Token([\T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
             }
 
             return;
@@ -87,7 +87,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
             // Use the configured line ending for the PHP opening tag
             $content = rtrim($openingToken->getContent());
             $newContent = $content.$lineEnding;
-            $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, $newContent]);
+            $tokens[$openingTokenIndex] = new Token([\T_OPEN_TAG, $newContent]);
             --$newlinesForWhitespaceToken;
         }
         if (0 === $newlinesForWhitespaceToken) {
@@ -101,10 +101,10 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
         }
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
-            $tokens[$previousIndex] = new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).substr($previous->getContent(), strrpos($previous->getContent(), "\n") + 1)]);
+            $tokens[$previousIndex] = new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).substr($previous->getContent(), strrpos($previous->getContent(), "\n") + 1)]);
         } else {
             // Add a new whitespace token
-            $tokens->insertAt($index, new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));
         }
     }
 }

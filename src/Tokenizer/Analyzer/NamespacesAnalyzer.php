@@ -30,7 +30,7 @@ final class NamespacesAnalyzer
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_NAMESPACE)) {
+            if (!$token->isGivenKind(\T_NAMESPACE)) {
                 continue;
             }
 
@@ -42,7 +42,7 @@ final class NamespacesAnalyzer
             if ($tokens[$declarationEndIndex]->equals('{')) {
                 $scopeEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $declarationEndIndex);
             } else {
-                $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[T_NAMESPACE]]);
+                $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[\T_NAMESPACE]]);
                 if (null === $scopeEndIndex) {
                     $scopeEndIndex = \count($tokens);
                 }

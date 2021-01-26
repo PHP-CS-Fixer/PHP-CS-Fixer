@@ -26,7 +26,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
      */
     final public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_STRING]);
     }
 
     final protected function applyFix(\SplFileInfo $file, Tokens $tokens)
@@ -53,7 +53,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     {
         do {
             $index = $tokens->getPrevNonWhitespace($index);
-        } while ($tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT]));
+        } while ($tokens[$index]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT]));
 
         return $index;
     }
@@ -65,6 +65,6 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
      */
     final protected function isPHPDoc(Tokens $tokens, $index)
     {
-        return $tokens[$index]->isGivenKind(T_DOC_COMMENT);
+        return $tokens[$index]->isGivenKind(\T_DOC_COMMENT);
     }
 }

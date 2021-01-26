@@ -50,11 +50,11 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
      */
     public function isCandidate(Tokens $tokens)
     {
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(\T_FN)) {
             return true;
         }
 
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     /**
@@ -110,26 +110,26 @@ $f = fn () => null;
             $token = $tokens[$index];
 
             if (
-                !$token->isGivenKind(T_FUNCTION)
-                && (\PHP_VERSION_ID < 70400 || !$token->isGivenKind(T_FN))
+                !$token->isGivenKind(\T_FUNCTION)
+                && (\PHP_VERSION_ID < 70400 || !$token->isGivenKind(\T_FN))
             ) {
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [\T_CLOSE_TAG]]);
             if (!$tokens[$startParenthesisIndex]->equals('(')) {
                 continue;
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{', [T_DOUBLE_ARROW]]);
+            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{', [\T_DOUBLE_ARROW]]);
 
             // fix single-line whitespace before { or =>
             // eg: `function foo(){}` => `function foo() {}`
             // eg: `function foo()   {}` => `function foo() {}`
             // eg: `fn()   =>` => `fn() =>`
             if (
-                $tokens[$startBraceIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])
+                $tokens[$startBraceIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])
                 && (
                     !$tokens[$startBraceIndex - 1]->isWhitespace()
                     || $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
@@ -180,7 +180,7 @@ $f = fn () => null;
 
             if ($isLambda) {
                 $prev = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$prev]->isGivenKind(T_STATIC)) {
+                if ($tokens[$prev]->isGivenKind(\T_STATIC)) {
                     // fix whitespace after T_STATIC
                     // eg: `$a = static     function(){};` => `$a = static function(){};`
                     $tokens->ensureWhitespaceAtIndex($prev + 1, 0, ' ');

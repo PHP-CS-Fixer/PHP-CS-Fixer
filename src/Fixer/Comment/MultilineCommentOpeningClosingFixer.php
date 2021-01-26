@@ -59,7 +59,7 @@ EOT
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -71,8 +71,8 @@ EOT
             $originalContent = $token->getContent();
 
             if (
-                !$token->isGivenKind(T_DOC_COMMENT)
-                && !($token->isGivenKind(T_COMMENT) && 0 === strpos($originalContent, '/*'))
+                !$token->isGivenKind(\T_DOC_COMMENT)
+                && !($token->isGivenKind(\T_COMMENT) && 0 === strpos($originalContent, '/*'))
             ) {
                 continue;
             }
@@ -80,7 +80,7 @@ EOT
             $newContent = $originalContent;
 
             // Fix opening
-            if ($token->isGivenKind(T_COMMENT)) {
+            if ($token->isGivenKind(\T_COMMENT)) {
                 $newContent = Preg::replace('/^\\/\\*{2,}(?!\\/)/', '/*', $newContent);
             }
 

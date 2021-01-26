@@ -110,8 +110,8 @@ final class ErrorOutput
                         $this->isDecorated,
                         sprintf(
                             '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
-                            PHP_EOL,
-                            PHP_EOL
+                            \PHP_EOL,
+                            \PHP_EOL
                         )
                     );
 

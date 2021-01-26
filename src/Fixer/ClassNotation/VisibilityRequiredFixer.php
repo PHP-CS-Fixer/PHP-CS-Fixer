@@ -97,7 +97,7 @@ class Sample
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
+        $propertyTypeDeclarationKinds = [\T_STRING, \T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             if (!\in_array($element['type'], $this->configuration['elements'], true)) {
@@ -113,16 +113,16 @@ class Sample
             $staticIndex = null;
             $typeIndex = null;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $expectedKinds = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
+            $expectedKinds = [\T_ABSTRACT, \T_FINAL, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_VAR];
 
             if ('property' === $element['type']) {
                 $expectedKinds = array_merge($expectedKinds, $propertyTypeDeclarationKinds);
             }
 
             while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {
-                if ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL])) {
+                if ($tokens[$prevIndex]->isGivenKind([\T_ABSTRACT, \T_FINAL])) {
                     $abstractFinalIndex = $prevIndex;
-                } elseif ($tokens[$prevIndex]->isGivenKind(T_STATIC)) {
+                } elseif ($tokens[$prevIndex]->isGivenKind(\T_STATIC)) {
                     $staticIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind($propertyTypeDeclarationKinds)) {
                     $typeIndex = $prevIndex;
@@ -150,10 +150,10 @@ class Sample
             }
 
             if (null === $visibilityIndex) {
-                $tokens->insertAt($index, [new Token([T_PUBLIC, 'public']), new Token([T_WHITESPACE, ' '])]);
+                $tokens->insertAt($index, [new Token([\T_PUBLIC, 'public']), new Token([\T_WHITESPACE, ' '])]);
             } else {
-                if ($tokens[$visibilityIndex]->isGivenKind(T_VAR)) {
-                    $tokens[$visibilityIndex] = new Token([T_PUBLIC, 'public']);
+                if ($tokens[$visibilityIndex]->isGivenKind(\T_VAR)) {
+                    $tokens[$visibilityIndex] = new Token([\T_PUBLIC, 'public']);
                 }
                 if ($this->isKeywordPlacedProperly($tokens, $visibilityIndex, $index)) {
                     $index = $visibilityIndex;
@@ -191,7 +191,7 @@ class Sample
      */
     private function moveTokenAndEnsureSingleSpaceFollows(Tokens $tokens, $fromIndex, $toIndex)
     {
-        $tokens->insertAt($toIndex, [$tokens[$fromIndex], new Token([T_WHITESPACE, ' '])]);
+        $tokens->insertAt($toIndex, [$tokens[$fromIndex], new Token([\T_WHITESPACE, ' '])]);
 
         $tokens->clearAt($fromIndex);
         if ($tokens[$fromIndex + 1]->isWhitespace()) {

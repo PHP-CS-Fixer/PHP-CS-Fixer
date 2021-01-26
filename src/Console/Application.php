@@ -45,7 +45,7 @@ final class Application extends BaseApplication
     public function __construct()
     {
         if (!getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+            error_reporting(\E_ALL & ~\E_DEPRECATED & ~\E_USER_DEPRECATED);
         }
 
         parent::__construct('PHP CS Fixer', self::VERSION);

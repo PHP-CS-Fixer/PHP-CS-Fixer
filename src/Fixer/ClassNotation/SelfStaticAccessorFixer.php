@@ -96,7 +96,7 @@ $a = new class() {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_STATIC]) && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
+        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_STATIC]) && $tokens->isAnyTokenKindsFound([\T_DOUBLE_COLON, \T_NEW, \T_INSTANCEOF]);
     }
 
     /**
@@ -116,17 +116,17 @@ $a = new class() {
     {
         $this->tokensAnalyzer = $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
+        $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         while (null !== $classIndex) {
             if (
-                $tokens[$tokens->getPrevMeaningfulToken($classIndex)]->isGivenKind(T_FINAL)
+                $tokens[$tokens->getPrevMeaningfulToken($classIndex)]->isGivenKind(\T_FINAL)
                 || $tokensAnalyzer->isAnonymousClass($classIndex)
             ) {
                 $classIndex = $this->fixClass($tokens, $classIndex);
             }
 
-            $classIndex = $tokens->getNextTokenOfKind($classIndex, [[T_CLASS]]);
+            $classIndex = $tokens->getNextTokenOfKind($classIndex, [[\T_CLASS]]);
         }
     }
 
@@ -155,7 +155,7 @@ $a = new class() {
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 // do not fix inside lambda
                 if ($this->tokensAnalyzer->isLambda($index)) {
                     // figure out where the lambda starts
@@ -163,7 +163,7 @@ $a = new class() {
                     $openCount = 1;
 
                     do {
-                        $index = $tokens->getNextTokenOfKind($index, ['}', '{', [T_CLASS]]);
+                        $index = $tokens->getNextTokenOfKind($index, ['}', '{', [\T_CLASS]]);
                         if ($tokens[$index]->equals('}')) {
                             --$openCount;
                         } elseif ($tokens[$index]->equals('{')) {
@@ -177,28 +177,28 @@ $a = new class() {
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind([T_NEW, T_INSTANCEOF])) {
+            if ($tokens[$index]->isGivenKind([\T_NEW, \T_INSTANCEOF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind(T_STATIC)) {
-                    $tokens[$index] = new Token([T_STRING, 'self']);
+                if ($tokens[$index]->isGivenKind(\T_STATIC)) {
+                    $tokens[$index] = new Token([\T_STRING, 'self']);
                 }
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STATIC)) {
+            if (!$tokens[$index]->isGivenKind(\T_STATIC)) {
                 continue;
             }
 
             $staticIndex = $index;
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+            if (!$tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
                 continue;
             }
 
-            $tokens[$staticIndex] = new Token([T_STRING, 'self']);
+            $tokens[$staticIndex] = new Token([\T_STRING, 'self']);
         }
 
         return $index;

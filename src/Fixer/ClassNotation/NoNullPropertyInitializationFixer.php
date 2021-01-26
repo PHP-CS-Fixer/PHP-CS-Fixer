@@ -46,7 +46,7 @@ class Foo {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT]) && $tokens->isAnyTokenKindsFound([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR]);
+        return $tokens->isAnyTokenKindsFound([\T_CLASS, \T_TRAIT]) && $tokens->isAnyTokenKindsFound([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_VAR]);
     }
 
     /**
@@ -55,14 +55,14 @@ class Foo {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR])) {
+            if (!$tokens[$index]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_VAR])) {
                 continue;
             }
 
             while (true) {
                 $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+                if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
                     break;
                 }
 
@@ -71,11 +71,11 @@ class Foo {
                 if ($tokens[$index]->equals('=')) {
                     $index = $tokens->getNextMeaningfulToken($index);
 
-                    if ($tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {
+                    if ($tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
                         $index = $tokens->getNextMeaningfulToken($index);
                     }
 
-                    if ($tokens[$index]->equals([T_STRING, 'null'], false)) {
+                    if ($tokens[$index]->equals([\T_STRING, 'null'], false)) {
                         for ($i = $varTokenIndex + 1; $i <= $index; ++$i) {
                             if (
                                 !($tokens[$i]->isWhitespace() && false !== strpos($tokens[$i]->getContent(), "\n"))

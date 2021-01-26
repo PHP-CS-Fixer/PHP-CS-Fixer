@@ -101,8 +101,8 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configuratio
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_IMPLEMENTS)
-            || $tokens->isAllTokenKindsFound([T_INTERFACE, T_EXTENDS]);
+        return $tokens->isTokenKindFound(\T_IMPLEMENTS)
+            || $tokens->isAllTokenKindsFound([\T_INTERFACE, \T_EXTENDS]);
     }
 
     /**
@@ -119,8 +119,8 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configuratio
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_IMPLEMENTS)) {
-                if (!$token->isGivenKind(T_EXTENDS)) {
+            if (!$token->isGivenKind(\T_IMPLEMENTS)) {
+                if (!$token->isGivenKind(\T_EXTENDS)) {
                     continue;
                 }
 
@@ -128,7 +128,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configuratio
                 $interfaceTokenIndex = $tokens->getPrevMeaningfulToken($nameTokenIndex);
                 $interfaceToken = $tokens[$interfaceTokenIndex];
 
-                if (!$interfaceToken->isGivenKind(T_INTERFACE)) {
+                if (!$interfaceToken->isGivenKind(\T_INTERFACE)) {
                     continue;
                 }
             }

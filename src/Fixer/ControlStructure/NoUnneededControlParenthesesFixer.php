@@ -30,13 +30,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     private static $loops = [
-        'break' => ['lookupTokens' => T_BREAK, 'neededSuccessors' => [';']],
-        'clone' => ['lookupTokens' => T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':']],
-        'continue' => ['lookupTokens' => T_CONTINUE, 'neededSuccessors' => [';']],
-        'echo_print' => ['lookupTokens' => [T_ECHO, T_PRINT], 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
-        'return' => ['lookupTokens' => T_RETURN, 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
-        'switch_case' => ['lookupTokens' => T_CASE, 'neededSuccessors' => [';', ':']],
-        'yield' => ['lookupTokens' => T_YIELD, 'neededSuccessors' => [';', ')']],
+        'break' => ['lookupTokens' => \T_BREAK, 'neededSuccessors' => [';']],
+        'clone' => ['lookupTokens' => \T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':']],
+        'continue' => ['lookupTokens' => \T_CONTINUE, 'neededSuccessors' => [';']],
+        'echo_print' => ['lookupTokens' => [\T_ECHO, \T_PRINT], 'neededSuccessors' => [';', [\T_CLOSE_TAG]]],
+        'return' => ['lookupTokens' => \T_RETURN, 'neededSuccessors' => [';', [\T_CLOSE_TAG]]],
+        'switch_case' => ['lookupTokens' => \T_CASE, 'neededSuccessors' => [';', ':']],
+        'yield' => ['lookupTokens' => \T_YIELD, 'neededSuccessors' => [';', ')']],
     ];
 
     /**
@@ -48,11 +48,11 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
         // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
         if (\defined('T_COALESCE')) {
-            self::$loops['clone']['forbiddenContents'][] = [T_COALESCE, '??'];
+            self::$loops['clone']['forbiddenContents'][] = [\T_COALESCE, '??'];
         }
 
         if (\defined('T_YIELD_FROM')) {
-            self::$loops['yield_from'] = ['lookupTokens' => T_YIELD_FROM, 'neededSuccessors' => [';', ')']];
+            self::$loops['yield_from'] = ['lookupTokens' => \T_YIELD_FROM, 'neededSuccessors' => [';', ')']];
         }
     }
 
@@ -162,7 +162,7 @@ yield(2);
                     $tokens->clearTokenAndMergeSurroundingWhitespace($blockStartIndex);
                 } else {
                     // Adds a space to prevent broken code like `return2`.
-                    $tokens[$blockStartIndex] = new Token([T_WHITESPACE, ' ']);
+                    $tokens[$blockStartIndex] = new Token([\T_WHITESPACE, ' ']);
                 }
 
                 $tokens->clearTokenAndMergeSurroundingWhitespace($blockEndIndex);

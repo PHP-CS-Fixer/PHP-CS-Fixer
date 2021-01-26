@@ -46,11 +46,11 @@ final class NameQualifiedTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if ($token->isGivenKind([T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
+        if ($token->isGivenKind([\T_NAME_QUALIFIED, \T_NAME_FULLY_QUALIFIED])) {
             return $this->transformQualified($tokens, $token, $index);
         }
 
-        if ($token->isGivenKind(T_NAME_RELATIVE)) {
+        if ($token->isGivenKind(\T_NAME_RELATIVE)) {
             return $this->transformRelative($tokens, $token, $index);
         }
     }
@@ -69,13 +69,13 @@ final class NameQualifiedTransformer extends AbstractTransformer
         $newTokens = [];
 
         if ('' === $parts[0]) {
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
             array_shift($parts);
         }
 
         foreach ($parts as $part) {
-            $newTokens[] = new Token([T_STRING, $part]);
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            $newTokens[] = new Token([\T_STRING, $part]);
+            $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
         }
 
         array_pop($newTokens);
@@ -87,13 +87,13 @@ final class NameQualifiedTransformer extends AbstractTransformer
     {
         $parts = explode('\\', $token->getContent());
         $newTokens = [
-            new Token([T_NAMESPACE, array_shift($parts)]),
-            new Token([T_NS_SEPARATOR, '\\']),
+            new Token([\T_NAMESPACE, array_shift($parts)]),
+            new Token([\T_NS_SEPARATOR, '\\']),
         ];
 
         foreach ($parts as $part) {
-            $newTokens[] = new Token([T_STRING, $part]);
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            $newTokens[] = new Token([\T_STRING, $part]);
+            $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
         }
 
         array_pop($newTokens);

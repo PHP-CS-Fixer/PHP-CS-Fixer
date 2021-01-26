@@ -84,15 +84,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             ++$counter;
             $visibility = $tokensAnalyzer->getMethodAttributes($i)['visibility'];
 
-            if (T_PUBLIC === $visibility) {
-                $index = $tokens->getPrevTokenOfKind($i, [[T_PUBLIC]]);
-                $tokens[$index] = new Token([T_PROTECTED, 'protected']);
+            if (\T_PUBLIC === $visibility) {
+                $index = $tokens->getPrevTokenOfKind($i, [[\T_PUBLIC]]);
+                $tokens[$index] = new Token([\T_PROTECTED, 'protected']);
 
                 continue;
             }
 
             if (null === $visibility) {
-                $tokens->insertAt($i, [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])]);
+                $tokens->insertAt($i, [new Token([\T_PROTECTED, 'protected']), new Token([\T_WHITESPACE, ' '])]);
             }
         }
     }
@@ -106,7 +106,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $isMethod = $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
+        $isMethod = $tokens[$index]->isGivenKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
         if (!$isMethod) {
             return false;
         }

@@ -124,7 +124,7 @@ final class OrderedTraitsFixer extends AbstractFixer
         for ($index = 0, $max = \count($use); $index < $max; ++$index) {
             $token = $use[$index];
 
-            if ($token->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+            if ($token->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
                 $name[] = $token;
 
                 if (null === $indexOfName) {
@@ -165,7 +165,7 @@ final class OrderedTraitsFixer extends AbstractFixer
                     break;
                 }
 
-                if ($token->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+                if ($token->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
                     $string .= $token->getContent();
                 }
             }

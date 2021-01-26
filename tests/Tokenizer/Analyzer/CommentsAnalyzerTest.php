@@ -227,7 +227,7 @@ $bar;',
     public function testPhpdocCandidate($code)
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
@@ -281,7 +281,7 @@ $bar;',
     public function testNotPhpdocCandidate($code)
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         static::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
@@ -328,7 +328,7 @@ $bar;',
     public function testPhpdocCandidatePhp74($code)
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
@@ -350,7 +350,7 @@ $bar;',
     public function testPhpdocCandidatePhp80($code)
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));

@@ -73,7 +73,7 @@ class Bar
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL]);
+        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_FINAL]);
     }
 
     public function isRisky()
@@ -88,13 +88,13 @@ class Bar
     {
         $tokensCount = \count($tokens);
         for ($index = 0; $index < $tokensCount; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
                 continue;
             }
 
             $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            $classIsFinal = $prevToken->isGivenKind(T_FINAL);
+            $classIsFinal = $prevToken->isGivenKind(\T_FINAL);
 
             $this->fixClass($tokens, $classOpen, $classIsFinal);
         }
@@ -134,7 +134,7 @@ class Bar
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FINAL)) {
+            if (!$tokens[$index]->isGivenKind(\T_FINAL)) {
                 continue;
             }
 
@@ -163,8 +163,8 @@ class Bar
         $index = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, [';', '{', '}']));
         $private = false;
 
-        while (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
-            if ($tokens[$index]->isGivenKind(T_PRIVATE)) {
+        while (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_PRIVATE)) {
                 $private = true;
             }
 

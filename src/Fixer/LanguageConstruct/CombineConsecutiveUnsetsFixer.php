@@ -50,7 +50,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_UNSET);
+        return $tokens->isTokenKindFound(\T_UNSET);
     }
 
     /**
@@ -59,7 +59,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_UNSET)) {
+            if (!$tokens[$index]->isGivenKind(\T_UNSET)) {
                 continue;
             }
 
@@ -81,7 +81,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             );
 
             if (!$tokens[$previousUnsetBraceEnd]->isWhitespace()) {
-                $tokens->insertAt($previousUnsetBraceEnd, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($previousUnsetBraceEnd, new Token([\T_WHITESPACE, ' ']));
                 ++$tokensAddCount;
             }
 
@@ -152,7 +152,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             return $index;
         }
 
-        if (!$tokens[$previousUnset]->isGivenKind(T_UNSET)) {
+        if (!$tokens[$previousUnset]->isGivenKind(\T_UNSET)) {
             return $previousUnset;
         }
 
@@ -176,7 +176,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
         $added = 0;
         for ($i = $start + 1; $i < $end; $i += 2) {
             if ($tokens[$i]->isWhitespace() && $tokens[$to + 1]->isWhitespace()) {
-                $tokens[$to + 1] = new Token([T_WHITESPACE, $tokens[$to + 1]->getContent().$tokens[$i]->getContent()]);
+                $tokens[$to + 1] = new Token([\T_WHITESPACE, $tokens[$to + 1]->getContent().$tokens[$i]->getContent()]);
             } else {
                 $tokens->insertAt(++$to, clone $tokens[$i]);
                 ++$end;

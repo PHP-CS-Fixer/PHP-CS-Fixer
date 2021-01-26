@@ -43,7 +43,7 @@ final class NoUselessSprintfFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -73,7 +73,7 @@ final class NoUselessSprintfFixer extends AbstractFixer
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -87,7 +87,7 @@ final class NoUselessSprintfFixer extends AbstractFixer
 
             $openParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
 
-            if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(T_ELLIPSIS)) {
+            if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(\T_ELLIPSIS)) {
                 continue;
             }
 
@@ -110,7 +110,7 @@ final class NoUselessSprintfFixer extends AbstractFixer
 
             $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevMeaningfulTokenIndex);
             }
         }

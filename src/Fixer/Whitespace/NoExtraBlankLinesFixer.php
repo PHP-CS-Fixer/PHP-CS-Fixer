@@ -82,31 +82,31 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configuratio
         parent::configure($configuration);
 
         static $reprToTokenMap = [
-            'break' => T_BREAK,
-            'case' => T_CASE,
-            'continue' => T_CONTINUE,
+            'break' => \T_BREAK,
+            'case' => \T_CASE,
+            'continue' => \T_CONTINUE,
             'curly_brace_block' => '{',
-            'default' => T_DEFAULT,
-            'extra' => T_WHITESPACE,
+            'default' => \T_DEFAULT,
+            'extra' => \T_WHITESPACE,
             'parenthesis_brace_block' => '(',
-            'return' => T_RETURN,
+            'return' => \T_RETURN,
             'square_brace_block' => CT::T_ARRAY_SQUARE_BRACE_OPEN,
-            'switch' => T_SWITCH,
-            'throw' => T_THROW,
-            'use' => T_USE,
+            'switch' => \T_SWITCH,
+            'throw' => \T_THROW,
+            'use' => \T_USE,
             'use_trait' => CT::T_USE_TRAIT,
         ];
 
         static $tokenKindCallbackMap = [
-            T_BREAK => 'fixAfterToken',
-            T_CASE => 'fixAfterToken',
-            T_CONTINUE => 'fixAfterToken',
-            T_DEFAULT => 'fixAfterToken',
-            T_RETURN => 'fixAfterToken',
-            T_SWITCH => 'fixAfterToken',
-            T_THROW => 'fixAfterThrowToken',
-            T_USE => 'removeBetweenUse',
-            T_WHITESPACE => 'removeMultipleBlankLines',
+            \T_BREAK => 'fixAfterToken',
+            \T_CASE => 'fixAfterToken',
+            \T_CONTINUE => 'fixAfterToken',
+            \T_DEFAULT => 'fixAfterToken',
+            \T_RETURN => 'fixAfterToken',
+            \T_SWITCH => 'fixAfterToken',
+            \T_THROW => 'fixAfterThrowToken',
+            \T_USE => 'removeBetweenUse',
+            \T_WHITESPACE => 'removeMultipleBlankLines',
             CT::T_USE_TRAIT => 'removeBetweenUse',
             CT::T_ARRAY_SQUARE_BRACE_OPEN => 'fixStructureOpenCloseIfMultiLine', // typeless '[' tokens should not be fixed (too rare)
         ];
@@ -325,7 +325,7 @@ switch($a) {
                                 throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                             }
 
-                            @trigger_error($message, E_USER_DEPRECATED);
+                            @trigger_error($message, \E_USER_DEPRECATED);
                             $token = 'use_trait';
 
                             break;
@@ -364,8 +364,8 @@ switch($a) {
 
     private function removeBetweenUse($index)
     {
-        $next = $this->tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
-        if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
+        $next = $this->tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
+        if (null === $next || $this->tokens[$next]->isGivenKind(\T_CLOSE_TAG)) {
             return;
         }
 
@@ -379,24 +379,24 @@ switch($a) {
 
     private function removeMultipleBlankLines($index)
     {
-        $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && 1 === Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
+        $expected = $this->tokens[$index - 1]->isGivenKind(\T_OPEN_TAG) && 1 === Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
-        $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $count = \count($parts);
 
         if ($count > $expected) {
-            $this->tokens[$index] = new Token([T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
+            $this->tokens[$index] = new Token([\T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
         }
     }
 
     private function fixAfterToken($index)
     {
         for ($i = $index - 1; $i > 0; --$i) {
-            if ($this->tokens[$i]->isGivenKind(T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
+            if ($this->tokens[$i]->isGivenKind(\T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
                 return;
             }
 
-            if ($this->tokens[$i]->isGivenKind(T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($i)) {
+            if ($this->tokens[$i]->isGivenKind(\T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($i)) {
                 return;
             }
 
@@ -410,7 +410,7 @@ switch($a) {
 
     private function fixAfterThrowToken($index)
     {
-        if ($this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+        if ($this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->equalsAny([';', '{', '}', ':', [\T_OPEN_TAG]])) {
             $this->fixAfterToken($index);
         }
     }
@@ -468,7 +468,7 @@ switch($a) {
                 $newContent = $ending;
             }
 
-            $this->tokens[$i] = new Token([T_WHITESPACE, $newContent]);
+            $this->tokens[$i] = new Token([\T_WHITESPACE, $newContent]);
         }
     }
 

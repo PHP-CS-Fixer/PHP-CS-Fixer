@@ -216,7 +216,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_VARIABLE, T_STRING]);
+        return $tokens->isAnyTokenKindsFound([\T_VARIABLE, \T_STRING]);
     }
 
     /**
@@ -225,7 +225,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_VARIABLE, T_STRING])) {
+            if (!$token->isGivenKind([\T_VARIABLE, \T_STRING])) {
                 continue;
             }
 

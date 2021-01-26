@@ -116,11 +116,11 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
     private function fixConcatenationToNoSpace(Tokens $tokens, $index)
     {
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || '/*' === substr($prevNonWhitespaceToken->getContent(), 0, 2)) {
+        if (!$prevNonWhitespaceToken->isGivenKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT]) || '/*' === substr($prevNonWhitespaceToken->getContent(), 0, 2)) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 
-        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT])) {
+        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT])) {
             $tokens->removeTrailingWhitespace($index, " \t");
         }
     }
@@ -143,7 +143,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
         $offsetIndex = $index + $offset;
 
         if (!$tokens[$offsetIndex]->isWhitespace()) {
-            $tokens->insertAt($index + (1 === $offset ?: 0), new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + (1 === $offset ?: 0), new Token([\T_WHITESPACE, ' ']));
 
             return;
         }
@@ -156,6 +156,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurationDefin
             return;
         }
 
-        $tokens[$offsetIndex] = new Token([T_WHITESPACE, ' ']);
+        $tokens[$offsetIndex] = new Token([\T_WHITESPACE, ' ']);
     }
 }

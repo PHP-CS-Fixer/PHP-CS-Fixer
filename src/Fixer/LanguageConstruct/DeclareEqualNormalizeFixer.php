@@ -71,7 +71,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DECLARE);
+        return $tokens->isTokenKindFound(\T_DECLARE);
     }
 
     /**
@@ -81,7 +81,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     {
         $callback = $this->callback;
         for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
+            if (!$tokens[$index]->isGivenKind(\T_DECLARE)) {
                 continue;
             }
 
@@ -111,18 +111,18 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     {
         if ($tokens[$index + 1]->isWhitespace()) {
             if (' ' !== $tokens[$index + 1]->getContent()) {
-                $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index + 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
         }
 
         if ($tokens[$index - 1]->isWhitespace()) {
             if (' ' !== $tokens[$index - 1]->getContent() && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index - 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
         }
     }
 

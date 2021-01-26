@@ -41,7 +41,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
     }
 
     /**
@@ -62,7 +62,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractLinesBeforeNames
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 $this->fixLinesBeforeNamespace($tokens, $index, 2, 2);
             }
         }

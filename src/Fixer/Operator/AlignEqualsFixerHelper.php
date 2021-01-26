@@ -32,7 +32,7 @@ final class AlignEqualsFixerHelper extends AbstractAlignFixerHelper
                 'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
                 __CLASS__
             ),
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
     }
 
@@ -50,7 +50,7 @@ final class AlignEqualsFixerHelper extends AbstractAlignFixerHelper
                 continue;
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
+            if ($token->isGivenKind(\T_FUNCTION)) {
                 ++$this->deepestLevel;
 
                 continue;

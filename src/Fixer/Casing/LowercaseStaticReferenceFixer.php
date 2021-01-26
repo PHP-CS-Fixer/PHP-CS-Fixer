@@ -70,13 +70,13 @@ class Foo extends Bar
 
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_STATIC, T_STRING]);
+        return $tokens->isAnyTokenKindsFound([\T_STATIC, \T_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
+            if (!$token->equalsAny([[\T_STRING, 'self'], [\T_STATIC, 'static'], [\T_STRING, 'parent']], false)) {
                 continue;
             }
 
@@ -86,16 +86,16 @@ class Foo extends Bar
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_NAMESPACE, T_NS_SEPARATOR, T_OBJECT_OPERATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC])) {
+            if ($tokens[$prevIndex]->isGivenKind([\T_CONST, \T_DOUBLE_COLON, \T_FUNCTION, \T_NAMESPACE, \T_NS_SEPARATOR, \T_OBJECT_OPERATOR, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC])) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->isGivenKind([T_FUNCTION, T_NS_SEPARATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC])) {
+            if ($tokens[$nextIndex]->isGivenKind([\T_FUNCTION, \T_NS_SEPARATOR, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC])) {
                 continue;
             }
 
-            if ('static' === $newContent && $tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
+            if ('static' === $newContent && $tokens[$nextIndex]->isGivenKind(\T_VARIABLE)) {
                 continue;
             }
 

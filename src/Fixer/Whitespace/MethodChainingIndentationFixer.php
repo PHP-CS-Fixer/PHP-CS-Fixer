@@ -53,7 +53,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_OBJECT_OPERATOR);
+        return $tokens->isTokenKindFound(\T_OBJECT_OPERATOR);
     }
 
     /**
@@ -64,12 +64,12 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (!$tokens[$index]->isGivenKind(\T_OBJECT_OPERATOR)) {
                 continue;
             }
 
             if ($this->canBeMovedToNextLine($index, $tokens)) {
-                $newline = new Token([T_WHITESPACE, $lineEnding]);
+                $newline = new Token([\T_WHITESPACE, $lineEnding]);
                 if ($tokens[$index - 1]->isWhitespace()) {
                     $tokens[$index - 1] = $newline;
                 } else {
@@ -85,7 +85,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
             $expectedIndent = $this->getExpectedIndentAt($tokens, $index);
             if ($currentIndent !== $expectedIndent) {
-                $tokens[$index - 1] = new Token([T_WHITESPACE, $lineEnding.$expectedIndent]);
+                $tokens[$index - 1] = new Token([\T_WHITESPACE, $lineEnding.$expectedIndent]);
             }
         }
     }
@@ -161,13 +161,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
     private function getIndentContentAt(Tokens $tokens, $index)
     {
-        if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+        if (!$tokens[$index]->isGivenKind([\T_WHITESPACE, \T_INLINE_HTML])) {
             return '';
         }
 
         $content = $tokens[$index]->getContent();
 
-        if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+        if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)) {
             $content = $tokens[$index - 1]->getContent().$content;
         }
 
@@ -186,7 +186,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     private function currentLineRequiresExtraIndentLevel(Tokens $tokens, $start, $end)
     {
-        if ($tokens[$start + 1]->isGivenKind(T_OBJECT_OPERATOR)) {
+        if ($tokens[$start + 1]->isGivenKind(\T_OBJECT_OPERATOR)) {
             return false;
         }
 

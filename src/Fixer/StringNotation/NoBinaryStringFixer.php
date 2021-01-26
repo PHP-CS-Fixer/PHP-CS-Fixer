@@ -28,7 +28,7 @@ final class NoBinaryStringFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_START_HEREDOC]);
+        return $tokens->isAnyTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_START_HEREDOC]);
     }
 
     /**
@@ -51,7 +51,7 @@ final class NoBinaryStringFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_START_HEREDOC])) {
+            if (!$token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_START_HEREDOC])) {
                 continue;
             }
 

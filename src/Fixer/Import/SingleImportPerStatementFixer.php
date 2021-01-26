@@ -56,7 +56,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     /**
@@ -68,7 +68,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         $uses = array_reverse($tokensAnalyzer->getImportUseIndexes());
 
         foreach ($uses as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+            $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
             if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
@@ -152,13 +152,13 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->equals([T_AS])) {
+                if ($tokens[$j]->equals([\T_AS])) {
                     $statement .= ' as ';
                     $i += 2;
-                } elseif ($tokens[$j]->equals([T_FUNCTION])) {
+                } elseif ($tokens[$j]->equals([\T_FUNCTION])) {
                     $statement = ' function'.$statement;
                     $i += 2;
-                } elseif ($tokens[$j]->equals([T_CONST])) {
+                } elseif ($tokens[$j]->equals([\T_CONST])) {
                     $statement = ' const'.$statement;
                     $i += 2;
                 }
@@ -219,18 +219,18 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
             $tokens[$i] = new Token(';');
             $i = $tokens->getNextMeaningfulToken($i);
-            $tokens->insertAt($i, new Token([T_USE, 'use']));
-            $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($i, new Token([\T_USE, 'use']));
+            $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
 
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $index);
             if ($tokens[$i - 1]->isWhitespace()) {
-                $tokens[$i - 1] = new Token([T_WHITESPACE, $ending.$indent]);
+                $tokens[$i - 1] = new Token([\T_WHITESPACE, $ending.$indent]);
 
                 continue;
             }
 
             if (false === strpos($tokens[$i - 1]->getContent(), "\n")) {
-                $tokens->insertAt($i, new Token([T_WHITESPACE, $ending.$indent]));
+                $tokens->insertAt($i, new Token([\T_WHITESPACE, $ending.$indent]));
             }
         }
     }

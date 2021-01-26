@@ -35,28 +35,28 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      * @var array
      */
     private static $tokenMap = [
-        'break' => T_BREAK,
-        'case' => T_CASE,
-        'continue' => T_CONTINUE,
-        'declare' => T_DECLARE,
-        'default' => T_DEFAULT,
-        'die' => T_EXIT, // TODO remove this alias 3.0, use `exit`
-        'do' => T_DO,
-        'exit' => T_EXIT,
-        'for' => T_FOR,
-        'foreach' => T_FOREACH,
-        'goto' => T_GOTO,
-        'if' => T_IF,
-        'include' => T_INCLUDE,
-        'include_once' => T_INCLUDE_ONCE,
-        'require' => T_REQUIRE,
-        'require_once' => T_REQUIRE_ONCE,
-        'return' => T_RETURN,
-        'switch' => T_SWITCH,
-        'throw' => T_THROW,
-        'try' => T_TRY,
-        'while' => T_WHILE,
-        'yield' => T_YIELD,
+        'break' => \T_BREAK,
+        'case' => \T_CASE,
+        'continue' => \T_CONTINUE,
+        'declare' => \T_DECLARE,
+        'default' => \T_DEFAULT,
+        'die' => \T_EXIT, // TODO remove this alias 3.0, use `exit`
+        'do' => \T_DO,
+        'exit' => \T_EXIT,
+        'for' => \T_FOR,
+        'foreach' => \T_FOREACH,
+        'goto' => \T_GOTO,
+        'if' => \T_IF,
+        'include' => \T_INCLUDE,
+        'include_once' => \T_INCLUDE_ONCE,
+        'require' => \T_REQUIRE,
+        'require_once' => \T_REQUIRE_ONCE,
+        'return' => \T_RETURN,
+        'switch' => \T_SWITCH,
+        'throw' => \T_THROW,
+        'try' => \T_TRY,
+        'while' => \T_WHILE,
+        'yield' => \T_YIELD,
     ];
 
     /**
@@ -73,7 +73,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 
         // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
         if (\defined('T_YIELD_FROM')) {
-            self::$tokenMap['yield_from'] = T_YIELD_FROM;
+            self::$tokenMap['yield_from'] = \T_YIELD_FROM;
         }
     }
 
@@ -88,7 +88,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 
         foreach ($this->configuration['statements'] as $key) {
             if ('die' === $key) {
-                @trigger_error('Option "die" is deprecated, use "exit" instead.', E_USER_DEPRECATED);
+                @trigger_error('Option "die" is deprecated, use "exit" instead.', \E_USER_DEPRECATED);
             }
 
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
@@ -286,7 +286,7 @@ if (true) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
+            if ($token->isGivenKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
@@ -366,12 +366,12 @@ if (true) {
             $newlinesCount = substr_count($prevToken->getContent(), "\n");
 
             if (0 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
             } elseif (1 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
             }
         } else {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, $lineEnding.$lineEnding]));
         }
     }
 }

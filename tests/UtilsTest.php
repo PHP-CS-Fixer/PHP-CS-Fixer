@@ -134,11 +134,11 @@ final class UtilsTest extends TestCase
     public function provideCalculateTrailingWhitespaceIndentCases()
     {
         return [
-            ['    ', [T_WHITESPACE, "\n\n    "]],
-            [' ', [T_WHITESPACE, "\r\n\r\r\r "]],
-            ["\t", [T_WHITESPACE, "\r\n\t"]],
-            ['', [T_WHITESPACE, "\t\n\r"]],
-            ['', [T_WHITESPACE, "\n"]],
+            ['    ', [\T_WHITESPACE, "\n\n    "]],
+            [' ', [\T_WHITESPACE, "\r\n\r\r\r "]],
+            ["\t", [\T_WHITESPACE, "\r\n\t"]],
+            ['', [\T_WHITESPACE, "\t\n\r"]],
+            ['', [\T_WHITESPACE, "\n"]],
             ['', ''],
         ];
     }
@@ -148,7 +148,7 @@ final class UtilsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
-        $token = new Token([T_STRING, 'foo']);
+        $token = new Token([\T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }
@@ -267,19 +267,19 @@ final class UtilsTest extends TestCase
     {
         return [
             [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
+                \JSON_HEX_TAG | \JSON_HEX_QUOT,
                 ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
             ],
             [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
+                \JSON_HEX_TAG | \JSON_HEX_QUOT,
                 ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
             ],
             [
-                JSON_HEX_TAG,
+                \JSON_HEX_TAG,
                 ['JSON_HEX_TAG'],
             ],
             [
-                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
+                \JSON_HEX_TAG | \JSON_HEX_QUOT | \JSON_HEX_AMP | \JSON_HEX_APOS,
                 ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
             ],
             [

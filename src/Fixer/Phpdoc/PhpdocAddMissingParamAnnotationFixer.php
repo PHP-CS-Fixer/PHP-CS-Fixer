@@ -91,7 +91,7 @@ function f9(string $foo, $bar, $baz) {}
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -104,7 +104,7 @@ function f9(string $foo, $bar, $baz) {}
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -127,18 +127,18 @@ function f9(string $foo, $bar, $baz) {}
             }
 
             while ($tokens[$index]->isGivenKind([
-                T_ABSTRACT,
-                T_FINAL,
-                T_PRIVATE,
-                T_PROTECTED,
-                T_PUBLIC,
-                T_STATIC,
-                T_VAR,
+                \T_ABSTRACT,
+                \T_FINAL,
+                \T_PRIVATE,
+                \T_PROTECTED,
+                \T_PUBLIC,
+                \T_STATIC,
+                \T_VAR,
             ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -207,7 +207,7 @@ function f9(string $foo, $bar, $baz) {}
                 $newLines
             );
 
-            $tokens[$mainIndex] = new Token([T_DOC_COMMENT, implode('', $lines)]);
+            $tokens[$mainIndex] = new Token([\T_DOC_COMMENT, implode('', $lines)]);
         }
     }
 
@@ -247,7 +247,7 @@ function f9(string $foo, $bar, $baz) {}
                 continue;
             }
 
-            if ($token->isGivenKind(T_VARIABLE)) {
+            if ($token->isGivenKind(\T_VARIABLE)) {
                 $sawName = true;
                 $info['name'] = $token->getContent();
 
@@ -261,7 +261,7 @@ function f9(string $foo, $bar, $baz) {}
             if ($sawName) {
                 $info['default'] .= $token->getContent();
             } elseif ('&' !== $token->getContent()) {
-                if ($token->isGivenKind(T_ELLIPSIS)) {
+                if ($token->isGivenKind(\T_ELLIPSIS)) {
                     if ('' === $info['type']) {
                         $info['type'] = 'array';
                     } else {

@@ -34,12 +34,12 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configuratio
     /**
      * @internal
      */
-    const BOOLEAN_OPERATORS = [[T_BOOLEAN_AND], [T_BOOLEAN_OR], [T_LOGICAL_AND], [T_LOGICAL_OR], [T_LOGICAL_XOR]];
+    const BOOLEAN_OPERATORS = [[\T_BOOLEAN_AND], [\T_BOOLEAN_OR], [\T_LOGICAL_AND], [\T_LOGICAL_OR], [\T_LOGICAL_XOR]];
 
     /**
      * @internal
      */
-    const NON_BOOLEAN_OPERATORS = ['%', '&', '*', '+', '-', '.', '/', ':', '<', '=', '>', '?', '^', '|', [T_AND_EQUAL], [T_CONCAT_EQUAL], [T_DIV_EQUAL], [T_DOUBLE_ARROW], [T_IS_EQUAL], [T_IS_GREATER_OR_EQUAL], [T_IS_IDENTICAL], [T_IS_NOT_EQUAL], [T_IS_NOT_IDENTICAL], [T_IS_SMALLER_OR_EQUAL], [T_MINUS_EQUAL], [T_MOD_EQUAL], [T_MUL_EQUAL], [T_OBJECT_OPERATOR], [T_OR_EQUAL], [T_PAAMAYIM_NEKUDOTAYIM], [T_PLUS_EQUAL], [T_POW], [T_POW_EQUAL], [T_SL], [T_SL_EQUAL], [T_SR], [T_SR_EQUAL], [T_XOR_EQUAL]];
+    const NON_BOOLEAN_OPERATORS = ['%', '&', '*', '+', '-', '.', '/', ':', '<', '=', '>', '?', '^', '|', [\T_AND_EQUAL], [\T_CONCAT_EQUAL], [\T_DIV_EQUAL], [\T_DOUBLE_ARROW], [\T_IS_EQUAL], [\T_IS_GREATER_OR_EQUAL], [\T_IS_IDENTICAL], [\T_IS_NOT_EQUAL], [\T_IS_NOT_IDENTICAL], [\T_IS_SMALLER_OR_EQUAL], [\T_MINUS_EQUAL], [\T_MOD_EQUAL], [\T_MUL_EQUAL], [\T_OBJECT_OPERATOR], [\T_OR_EQUAL], [\T_PAAMAYIM_NEKUDOTAYIM], [\T_PLUS_EQUAL], [\T_POW], [\T_POW_EQUAL], [\T_SL], [\T_SL_EQUAL], [\T_SR], [\T_SR_EQUAL], [\T_XOR_EQUAL]];
 
     /**
      * @var string
@@ -106,8 +106,8 @@ function foo() {
         if (!$this->configuration['only_booleans']) {
             $this->operators = array_merge($this->operators, self::NON_BOOLEAN_OPERATORS);
             if (\PHP_VERSION_ID >= 70000) {
-                $this->operators[] = [T_COALESCE];
-                $this->operators[] = [T_SPACESHIP];
+                $this->operators[] = [\T_COALESCE];
+                $this->operators[] = [\T_SPACESHIP];
             }
         }
         $this->position = $this->configuration['position'];
@@ -174,7 +174,7 @@ function foo() {
     {
         $indices = [];
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(T_SWITCH)) {
+            if ($tokens[$index]->isGivenKind(\T_SWITCH)) {
                 $indices = array_merge($indices, $this->getCasesColonsForSwitch($tokens, $index));
             }
         }
@@ -245,7 +245,7 @@ function foo() {
                 $isWhitespaceBefore = $tokens[$prevIndex]->isWhitespace();
                 $inserts = $this->getReplacementsAndClear($tokens, $operatorIndices, -1);
                 if ($isWhitespaceBefore) {
-                    $inserts[] = new Token([T_WHITESPACE, ' ']);
+                    $inserts[] = new Token([\T_WHITESPACE, ' ']);
                 }
                 $tokens->insertAt($nextIndex, $inserts);
 
@@ -270,7 +270,7 @@ function foo() {
                 $isWhitespaceAfter = $tokens[$nextIndex]->isWhitespace();
                 $inserts = $this->getReplacementsAndClear($tokens, $operatorIndices, 1);
                 if ($isWhitespaceAfter) {
-                    array_unshift($inserts, new Token([T_WHITESPACE, ' ']));
+                    array_unshift($inserts, new Token([\T_WHITESPACE, ' ']));
                 }
                 $tokens->insertAt($prevIndex + 1, $inserts);
 

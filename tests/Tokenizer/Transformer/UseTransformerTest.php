@@ -36,7 +36,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_USE,
+                \T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
             ]
@@ -49,7 +49,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             [
                 '<?php use Foo;',
                 [
-                    1 => T_USE,
+                    1 => \T_USE,
                 ],
             ],
             [
@@ -67,7 +67,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             [
                 '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
                 [
-                    6 => T_USE,
+                    6 => \T_USE,
                     17 => CT::T_USE_TRAIT,
                     42 => CT::T_USE_LAMBDA,
                 ],
@@ -85,13 +85,13 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                         echo 123;
                     }',
                 [
-                    30 => T_USE,
+                    30 => \T_USE,
                 ],
             ],
             [
                 '<?php use Foo; $a = Bar::class;',
                 [
-                    1 => T_USE,
+                    1 => \T_USE,
                 ],
             ],
         ];
@@ -110,7 +110,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_USE,
+                \T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
             ]
@@ -166,7 +166,7 @@ $a = new class(
             $source,
             $expectedTokens,
             [
-                T_USE,
+                \T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
             ]
@@ -183,9 +183,9 @@ use function D;
 use C\{D,E,};
 ',
                 [
-                    1 => T_USE,
-                    11 => T_USE,
-                    18 => T_USE,
+                    1 => \T_USE,
+                    11 => \T_USE,
+                    18 => \T_USE,
                 ],
             ],
         ];

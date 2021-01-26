@@ -70,7 +70,7 @@ EOT
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOLLAR_OPEN_CURLY_BRACES);
+        return $tokens->isTokenKindFound(\T_DOLLAR_OPEN_CURLY_BRACES);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
@@ -78,13 +78,13 @@ EOT
         for ($index = \count($tokens) - 3; $index > 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
+            if (!$token->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
                 continue;
             }
 
             $varnameToken = $tokens[$index + 1];
 
-            if (!$varnameToken->isGivenKind(T_STRING_VARNAME)) {
+            if (!$varnameToken->isGivenKind(\T_STRING_VARNAME)) {
                 continue;
             }
 
@@ -99,13 +99,13 @@ EOT
 
             if ('$' === substr($stringContent, -1) && '\\$' !== substr($stringContent, -2)) {
                 $newContent = substr($stringContent, 0, -1).'\\$';
-                $tokenOfStringBeforeToken = new Token([T_ENCAPSED_AND_WHITESPACE, $newContent]);
+                $tokenOfStringBeforeToken = new Token([\T_ENCAPSED_AND_WHITESPACE, $newContent]);
             }
 
             $tokens->overrideRange($index - 1, $index + 2, [
                 $tokenOfStringBeforeToken,
-                new Token([T_CURLY_OPEN, '{']),
-                new Token([T_VARIABLE, '$'.$varnameToken->getContent()]),
+                new Token([\T_CURLY_OPEN, '{']),
+                new Token([\T_VARIABLE, '$'.$varnameToken->getContent()]),
                 new Token([CT::T_CURLY_CLOSE, '}']),
             ]);
         }

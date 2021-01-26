@@ -271,7 +271,7 @@ abstract class AbstractFixerTestCase extends TestCase
         $reflection = new \ReflectionClass($this->fixer);
         $tokens = Tokens::fromCode(file_get_contents($reflection->getFileName()));
 
-        $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
+        $sequences = $this->findAllTokenSequences($tokens, [[\T_VARIABLE, '$tokens'], [\T_OBJECT_OPERATOR], [\T_STRING]]);
 
         $usedMethods = array_unique(array_map(function (array $sequence) {
             $last = end($sequence);

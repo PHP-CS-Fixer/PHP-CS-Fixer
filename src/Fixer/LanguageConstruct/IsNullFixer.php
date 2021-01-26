@@ -57,7 +57,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -73,7 +73,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
+        static $sequenceNeeded = [[\T_STRING, 'is_null'], '('];
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         $currIndex = 0;
@@ -103,7 +103,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
 
             // handle function references with namespaces
-            if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($prevTokenIndex);
                 $tokens->clearAt($prevTokenIndex);
 
@@ -134,7 +134,7 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
             // edge cases: is_null() followed/preceded by ==, ===, !=, !==, <>
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
-            $parentOperations = [T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL];
+            $parentOperations = [\T_IS_EQUAL, \T_IS_NOT_EQUAL, \T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL];
             $wrapIntoParentheses = $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
             // possible trailing comma removed
@@ -156,10 +156,10 @@ final class IsNullFixer extends AbstractFixer implements ConfigurationDefinition
 
             // sequence which we'll use as a replacement
             $replacement = [
-                new Token([T_STRING, 'null']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token($isInvertedNullCheck ? [T_IS_NOT_IDENTICAL, '!=='] : [T_IS_IDENTICAL, '===']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_STRING, 'null']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token($isInvertedNullCheck ? [\T_IS_NOT_IDENTICAL, '!=='] : [\T_IS_IDENTICAL, '===']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
 
             if (true === $this->configuration['use_yoda_style']) {

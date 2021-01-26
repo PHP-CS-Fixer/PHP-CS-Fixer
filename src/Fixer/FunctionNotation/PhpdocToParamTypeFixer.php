@@ -38,8 +38,8 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
      * @var array{int, string}[]
      */
     private $excludeFuncNames = [
-        [T_STRING, '__clone'],
-        [T_STRING, '__destruct'],
+        [\T_STRING, '__clone'],
+        [\T_STRING, '__destruct'],
     ];
 
     /**
@@ -89,7 +89,7 @@ function my_foo($bar)
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= self::MINIMUM_PHP_VERSION && $tokens->isTokenKindFound(T_FUNCTION);
+        return \PHP_VERSION_ID >= self::MINIMUM_PHP_VERSION && $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     /**
@@ -117,7 +117,7 @@ function my_foo($bar)
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -276,16 +276,16 @@ function my_foo($bar)
         do {
             $index = $tokens->getPrevNonWhitespace($index);
         } while ($tokens[$index]->isGivenKind([
-            T_COMMENT,
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
+            \T_COMMENT,
+            \T_ABSTRACT,
+            \T_FINAL,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return [];
         }
 
@@ -302,8 +302,8 @@ function my_foo($bar)
      */
     private function findCorrectVariable(Tokens $tokens, $index, $paramTypeAnnotation)
     {
-        $nextFunction = $tokens->getNextTokenOfKind($index, [[T_FUNCTION]]);
-        $variableIndex = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
+        $nextFunction = $tokens->getNextTokenOfKind($index, [[\T_FUNCTION]]);
+        $variableIndex = $tokens->getNextTokenOfKind($index, [[\T_VARIABLE]]);
 
         if (\is_int($nextFunction) && $variableIndex > $nextFunction) {
             return null;
@@ -331,7 +331,7 @@ function my_foo($bar)
      */
     private function hasParamTypeHint(Tokens $tokens, $index)
     {
-        return $tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, T_CALLABLE, CT::T_NULLABLE_TYPE]);
+        return $tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, \T_CALLABLE, CT::T_NULLABLE_TYPE]);
     }
 
     /**
@@ -366,21 +366,21 @@ function my_foo($bar)
         if (true === $hasIterable && true === $hasArray) {
             $newTokens[] = new Token([CT::T_ARRAY_TYPEHINT, 'array']);
         } elseif (true === $hasIterable) {
-            $newTokens[] = new Token([T_STRING, 'iterable']);
+            $newTokens[] = new Token([\T_STRING, 'iterable']);
         } elseif (true === $hasArray) {
             $newTokens[] = new Token([CT::T_ARRAY_TYPEHINT, 'array']);
         } elseif (true === $hasString) {
-            $newTokens[] = new Token([T_STRING, 'string']);
+            $newTokens[] = new Token([\T_STRING, 'string']);
         } elseif (true === $hasInt) {
-            $newTokens[] = new Token([T_STRING, 'int']);
+            $newTokens[] = new Token([\T_STRING, 'int']);
         } elseif (true === $hasFloat) {
-            $newTokens[] = new Token([T_STRING, 'float']);
+            $newTokens[] = new Token([\T_STRING, 'float']);
         } elseif (true === $hasBool) {
-            $newTokens[] = new Token([T_STRING, 'bool']);
+            $newTokens[] = new Token([\T_STRING, 'bool']);
         } elseif (true === $hasCallable) {
-            $newTokens[] = new Token([T_CALLABLE, 'callable']);
+            $newTokens[] = new Token([\T_CALLABLE, 'callable']);
         } elseif (true === $hasObject) {
-            $newTokens[] = new Token([T_STRING, 'object']);
+            $newTokens[] = new Token([\T_STRING, 'object']);
         }
 
         if ('' !== $paramType && [] !== $newTokens) {
@@ -393,16 +393,16 @@ function my_foo($bar)
             }
 
             if (0 < $nsIndex) {
-                $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+                $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
             }
-            $newTokens[] = new Token([T_STRING, $value]);
+            $newTokens[] = new Token([\T_STRING, $value]);
         }
 
         if (true === $hasNull) {
             array_unshift($newTokens, new Token([CT::T_NULLABLE_TYPE, '?']));
         }
 
-        $newTokens[] = new Token([T_WHITESPACE, ' ']);
+        $newTokens[] = new Token([\T_WHITESPACE, ' ']);
         $tokens->insertAt($index, $newTokens);
     }
 }

@@ -131,7 +131,7 @@ namespace Foo {
      */
     private function isOverComplete(Tokens $tokens, $index)
     {
-        static $include = ['{', '}', [T_OPEN_TAG], ':', ';'];
+        static $include = ['{', '}', [\T_OPEN_TAG], ':', ';'];
 
         return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny($include);
     }
@@ -139,21 +139,21 @@ namespace Foo {
     private function clearIfIsOverCompleteNamespaceBlock(Tokens $tokens)
     {
         if (Tokens::isLegacyMode()) {
-            $index = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
-            $secondNamespaceIndex = $tokens->getNextTokenOfKind($index, [[T_NAMESPACE]]);
+            $index = $tokens->getNextTokenOfKind(0, [[\T_NAMESPACE]]);
+            $secondNamespaceIndex = $tokens->getNextTokenOfKind($index, [[\T_NAMESPACE]]);
 
             if (null !== $secondNamespaceIndex) {
                 return;
             }
-        } elseif (1 !== $tokens->countTokenKind(T_NAMESPACE)) {
+        } elseif (1 !== $tokens->countTokenKind(\T_NAMESPACE)) {
             return; // fast check, we never fix if multiple namespaces are defined
         }
 
-        $index = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_NAMESPACE]]);
 
         do {
             $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR]));
+        } while ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR]));
 
         if (!$tokens[$index]->equals('{')) {
             return; // `;`
@@ -162,7 +162,7 @@ namespace Foo {
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         $afterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
-        if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {
+        if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(\T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {
             return;
         }
 

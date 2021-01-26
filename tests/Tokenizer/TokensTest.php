@@ -90,43 +90,43 @@ final class TokensTest extends TestCase
                 '<?php $x = 2;',
                 null,
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$y'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$y'],
                 ],
             ],
             [
                 '<?php $x = 3;',
                 [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
+                    0 => new Token([\T_OPEN_TAG, '<?php ']),
+                    1 => new Token([\T_VARIABLE, '$x']),
                 ],
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$x'],
                 ],
             ],
             [
                 '<?php $x = 4;',
                 [
                     3 => new Token('='),
-                    5 => new Token([T_LNUMBER, '4']),
+                    5 => new Token([\T_LNUMBER, '4']),
                     6 => new Token(';'),
                 ],
                 [
                     '=',
-                    [T_LNUMBER, '4'],
+                    [\T_LNUMBER, '4'],
                     ';',
                 ],
             ],
             [
                 '<?php $x = 5;',
                 [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
+                    0 => new Token([\T_OPEN_TAG, '<?php ']),
+                    1 => new Token([\T_VARIABLE, '$x']),
                 ],
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$x'],
                 ],
                 0,
             ],
@@ -134,8 +134,8 @@ final class TokensTest extends TestCase
                 '<?php $x = 6;',
                 null,
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$x'],
                 ],
                 1,
             ],
@@ -143,12 +143,12 @@ final class TokensTest extends TestCase
                 '<?php $x = 7;',
                 [
                     3 => new Token('='),
-                    5 => new Token([T_LNUMBER, '7']),
+                    5 => new Token([\T_LNUMBER, '7']),
                     6 => new Token(';'),
                 ],
                 [
                     '=',
-                    [T_LNUMBER, '7'],
+                    [\T_LNUMBER, '7'],
                     ';',
                 ],
                 3,
@@ -159,7 +159,7 @@ final class TokensTest extends TestCase
                 null,
                 [
                     '=',
-                    [T_LNUMBER, '8'],
+                    [\T_LNUMBER, '8'],
                     ';',
                 ],
                 4,
@@ -170,7 +170,7 @@ final class TokensTest extends TestCase
                 null,
                 [
                     '=',
-                    [T_LNUMBER, '9'],
+                    [\T_LNUMBER, '9'],
                     ';',
                 ],
                 3,
@@ -179,12 +179,12 @@ final class TokensTest extends TestCase
             [
                 '<?php $x = 10;',
                 [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
+                    0 => new Token([\T_OPEN_TAG, '<?php ']),
+                    1 => new Token([\T_VARIABLE, '$x']),
                 ],
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$x'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$x'],
                 ],
                 0,
                 1,
@@ -194,8 +194,8 @@ final class TokensTest extends TestCase
                 '<?php $x = 11;',
                 null,
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$X'],
                 ],
                 0,
                 1,
@@ -205,8 +205,8 @@ final class TokensTest extends TestCase
                 '<?php $x = 12;',
                 null,
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$X'],
                 ],
                 0,
                 1,
@@ -215,12 +215,12 @@ final class TokensTest extends TestCase
             [
                 '<?php $x = 13;',
                 [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
+                    0 => new Token([\T_OPEN_TAG, '<?php ']),
+                    1 => new Token([\T_VARIABLE, '$x']),
                 ],
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$X'],
                 ],
                 0,
                 1,
@@ -229,12 +229,12 @@ final class TokensTest extends TestCase
             [
                 '<?php $x = 14;',
                 [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
+                    0 => new Token([\T_OPEN_TAG, '<?php ']),
+                    1 => new Token([\T_VARIABLE, '$x']),
                 ],
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$X'],
                 ],
                 0,
                 1,
@@ -243,12 +243,12 @@ final class TokensTest extends TestCase
             [
                 '<?php $x = 15;',
                 [
-                    0 => new Token([T_OPEN_TAG, '<?php ']),
-                    1 => new Token([T_VARIABLE, '$x']),
+                    0 => new Token([\T_OPEN_TAG, '<?php ']),
+                    1 => new Token([\T_VARIABLE, '$x']),
                 ],
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$X'],
                 ],
                 0,
                 1,
@@ -258,8 +258,8 @@ final class TokensTest extends TestCase
                 '<?php $x = 16;',
                 null,
                 [
-                    [T_OPEN_TAG],
-                    [T_VARIABLE, '$X'],
+                    [\T_OPEN_TAG],
+                    [\T_VARIABLE, '$X'],
                 ],
                 0,
                 1,
@@ -269,7 +269,7 @@ final class TokensTest extends TestCase
                 '<?php $x = 17;',
                 null,
                 [
-                    [T_VARIABLE, '$X'],
+                    [\T_VARIABLE, '$X'],
                     '=',
                 ],
                 0,
@@ -300,11 +300,11 @@ final class TokensTest extends TestCase
             ['Invalid sequence.', []],
             [
                 'Non-meaningful token at position: "0".',
-                [[T_WHITESPACE, '   ']],
+                [[\T_WHITESPACE, '   ']],
             ],
             [
                 'Non-meaningful token at position: "1".',
-                ['{', [T_COMMENT, '// Foo'], '}'],
+                ['{', [\T_COMMENT, '// Foo'], '}'],
             ],
             [
                 'Non-meaningful (empty) token at position: "2".',
@@ -336,11 +336,11 @@ class FooBar
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(T_PUBLIC));
+        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(\T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
-        $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $newPublicIndexes = array_keys($tokens->findGivenKind(\T_PUBLIC));
         static::assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
@@ -450,17 +450,17 @@ EOF;
 
         $tokens = Tokens::fromCode($code);
 
-        static::assertTrue($tokens->isTokenKindFound(T_CLASS));
-        static::assertTrue($tokens->isTokenKindFound(T_RETURN));
-        static::assertFalse($tokens->isTokenKindFound(T_INTERFACE));
-        static::assertFalse($tokens->isTokenKindFound(T_ARRAY));
+        static::assertTrue($tokens->isTokenKindFound(\T_CLASS));
+        static::assertTrue($tokens->isTokenKindFound(\T_RETURN));
+        static::assertFalse($tokens->isTokenKindFound(\T_INTERFACE));
+        static::assertFalse($tokens->isTokenKindFound(\T_ARRAY));
 
-        static::assertTrue($tokens->isAllTokenKindsFound([T_CLASS, T_RETURN]));
-        static::assertFalse($tokens->isAllTokenKindsFound([T_CLASS, T_INTERFACE]));
+        static::assertTrue($tokens->isAllTokenKindsFound([\T_CLASS, \T_RETURN]));
+        static::assertFalse($tokens->isAllTokenKindsFound([\T_CLASS, \T_INTERFACE]));
 
-        static::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_RETURN]));
-        static::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]));
-        static::assertFalse($tokens->isAnyTokenKindsFound([T_INTERFACE, T_ARRAY]));
+        static::assertTrue($tokens->isAnyTokenKindsFound([\T_CLASS, \T_RETURN]));
+        static::assertTrue($tokens->isAnyTokenKindsFound([\T_CLASS, \T_INTERFACE]));
+        static::assertFalse($tokens->isAnyTokenKindsFound([\T_INTERFACE, \T_ARRAY]));
     }
 
     public function testFindGivenKind()
@@ -482,39 +482,39 @@ class FooBar
 PHP;
         $tokens = Tokens::fromCode($source);
         /** @var Token[] $found */
-        $found = $tokens->findGivenKind(T_CLASS);
+        $found = $tokens->findGivenKind(\T_CLASS);
         static::assertIsArray($found);
         static::assertCount(1, $found);
         static::assertArrayHasKey(1, $found);
-        static::assertSame(T_CLASS, $found[1]->getId());
+        static::assertSame(\T_CLASS, $found[1]->getId());
 
         /** @var array $found */
-        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION]);
         static::assertCount(2, $found);
-        static::assertArrayHasKey(T_CLASS, $found);
-        static::assertIsArray($found[T_CLASS]);
-        static::assertCount(1, $found[T_CLASS]);
-        static::assertArrayHasKey(1, $found[T_CLASS]);
-        static::assertSame(T_CLASS, $found[T_CLASS][1]->getId());
+        static::assertArrayHasKey(\T_CLASS, $found);
+        static::assertIsArray($found[\T_CLASS]);
+        static::assertCount(1, $found[\T_CLASS]);
+        static::assertArrayHasKey(1, $found[\T_CLASS]);
+        static::assertSame(\T_CLASS, $found[\T_CLASS][1]->getId());
 
-        static::assertArrayHasKey(T_FUNCTION, $found);
-        static::assertIsArray($found[T_FUNCTION]);
-        static::assertCount(2, $found[T_FUNCTION]);
-        static::assertArrayHasKey(9, $found[T_FUNCTION]);
-        static::assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
-        static::assertArrayHasKey(26, $found[T_FUNCTION]);
-        static::assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
+        static::assertArrayHasKey(\T_FUNCTION, $found);
+        static::assertIsArray($found[\T_FUNCTION]);
+        static::assertCount(2, $found[\T_FUNCTION]);
+        static::assertArrayHasKey(9, $found[\T_FUNCTION]);
+        static::assertSame(\T_FUNCTION, $found[\T_FUNCTION][9]->getId());
+        static::assertArrayHasKey(26, $found[\T_FUNCTION]);
+        static::assertSame(\T_FUNCTION, $found[\T_FUNCTION][26]->getId());
 
         // test offset and limits of the search
-        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 10);
-        static::assertCount(0, $found[T_CLASS]);
-        static::assertCount(1, $found[T_FUNCTION]);
-        static::assertArrayHasKey(26, $found[T_FUNCTION]);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION], 10);
+        static::assertCount(0, $found[\T_CLASS]);
+        static::assertCount(1, $found[\T_FUNCTION]);
+        static::assertArrayHasKey(26, $found[\T_FUNCTION]);
 
-        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 2, 10);
-        static::assertCount(0, $found[T_CLASS]);
-        static::assertCount(1, $found[T_FUNCTION]);
-        static::assertArrayHasKey(9, $found[T_FUNCTION]);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION], 2, 10);
+        static::assertCount(0, $found[\T_CLASS]);
+        static::assertCount(1, $found[\T_FUNCTION]);
+        static::assertArrayHasKey(9, $found[\T_FUNCTION]);
     }
 
     /**
@@ -541,10 +541,10 @@ PHP;
                 '<?php if($a){}else{}',
                 [7, 8, 9],
                 [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_IF, 'if']),
+                    new Token([\T_OPEN_TAG, '<?php ']),
+                    new Token([\T_IF, 'if']),
                     new Token('('),
-                    new Token([T_VARIABLE, '$a']),
+                    new Token([\T_VARIABLE, '$a']),
                     new Token(')'),
                     new Token('{'),
                     new Token('}'),
@@ -558,10 +558,10 @@ PHP;
                 [2],
                 [
                     // <?php $a /**/;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_VARIABLE, '$a']),
+                    new Token([\T_OPEN_TAG, '<?php ']),
+                    new Token([\T_VARIABLE, '$a']),
                     $clearToken,
-                    new Token([T_COMMENT, '/**/']),
+                    new Token([\T_COMMENT, '/**/']),
                     new Token(';'),
                 ],
             ],
@@ -570,9 +570,9 @@ PHP;
                 [3],
                 [
                     // <?php ;  ;
-                    new Token([T_OPEN_TAG, '<?php ']),
+                    new Token([\T_OPEN_TAG, '<?php ']),
                     new Token(';'),
-                    new Token([T_WHITESPACE, '  ']),
+                    new Token([\T_WHITESPACE, '  ']),
                     $clearToken,
                     $clearToken,
                     new Token(';'),
@@ -583,11 +583,11 @@ PHP;
                 [1, 5],
                 [
                     // <?php  ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_OPEN_TAG, '<?php ']),
+                    new Token([\T_WHITESPACE, ' ']),
                     $clearToken,
                     new Token(';'),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                     $clearToken,
                 ],
             ],
@@ -596,8 +596,8 @@ PHP;
                 [1, 3],
                 [
                     // <?php   ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_WHITESPACE, '  ']),
+                    new Token([\T_OPEN_TAG, '<?php ']),
+                    new Token([\T_WHITESPACE, '  ']),
                     $clearToken,
                     $clearToken,
                     $clearToken,
@@ -609,11 +609,11 @@ PHP;
                 [1],
                 [
                     // <?php  ; ;
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_OPEN_TAG, '<?php ']),
+                    new Token([\T_WHITESPACE, ' ']),
                     $clearToken,
                     new Token(';'),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                     new Token(';'),
                 ],
             ],
@@ -664,23 +664,23 @@ PHP;
                 35, 1, 34, [';'],
             ],
             [
-                14, 1, 0, [[T_RETURN]],
+                14, 1, 0, [[\T_RETURN]],
             ],
             [
-                32, 1, 14, [[T_RETURN]],
+                32, 1, 14, [[\T_RETURN]],
             ],
             [
-                6, 1, 0, [[T_RETURN], [T_FUNCTION]],
+                6, 1, 0, [[\T_RETURN], [\T_FUNCTION]],
             ],
             // find previous cases
             [
-                14, -1, 32, [[T_RETURN], [T_FUNCTION]],
+                14, -1, 32, [[\T_RETURN], [\T_FUNCTION]],
             ],
             [
-                6, -1, 7, [[T_FUNCTION]],
+                6, -1, 7, [[\T_FUNCTION]],
             ],
             [
-                null, -1, 6, [[T_FUNCTION]],
+                null, -1, 6, [[\T_FUNCTION]],
             ],
         ];
     }
@@ -833,7 +833,7 @@ PHP;
         $tokens = Tokens::fromCode($code);
 
         static::assertCount(0, $tokens);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        static::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
     }
 
     public function testEmptyTokensMultiple()
@@ -843,14 +843,14 @@ PHP;
         $tokens = Tokens::fromCode($code);
         static::assertFalse($tokens->isChanged());
 
-        $tokens->insertAt(0, new Token([T_WHITESPACE, ' ']));
+        $tokens->insertAt(0, new Token([\T_WHITESPACE, ' ']));
         static::assertCount(1, $tokens);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        static::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
         static::assertTrue($tokens->isChanged());
 
         $tokens2 = Tokens::fromCode($code);
         static::assertCount(0, $tokens2);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        static::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
     }
 
     public function testFromArray()
@@ -860,15 +860,15 @@ PHP;
         $tokens1 = Tokens::fromCode($code);
         $tokens2 = Tokens::fromArray($tokens1->toArray());
 
-        static::assertTrue($tokens1->isTokenKindFound(T_OPEN_TAG));
-        static::assertTrue($tokens2->isTokenKindFound(T_OPEN_TAG));
+        static::assertTrue($tokens1->isTokenKindFound(\T_OPEN_TAG));
+        static::assertTrue($tokens2->isTokenKindFound(\T_OPEN_TAG));
         static::assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
     }
 
     public function testFromArrayEmpty()
     {
         $tokens = Tokens::fromArray([]);
-        static::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        static::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
     }
 
     /**
@@ -888,7 +888,7 @@ PHP;
         return [
             [new Token(''), true],
             [new Token('('), false],
-            [new Token([T_WHITESPACE, ' ']), false],
+            [new Token([\T_WHITESPACE, ' ']), false],
         ];
     }
 
@@ -899,8 +899,8 @@ PHP;
 
         $tokensClone = clone $tokens;
 
-        static::assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
-        static::assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
+        static::assertTrue($tokens->isTokenKindFound(\T_OPEN_TAG));
+        static::assertTrue($tokensClone->isTokenKindFound(\T_OPEN_TAG));
 
         $count = \count($tokens);
         static::assertCount($count, $tokensClone);
@@ -1059,14 +1059,14 @@ echo $a;',
             }';
 
         $tokens = Tokens::fromCode(sprintf($template, ''));
-        $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);
+        $commentIndex = $tokens->getNextTokenOfKind(0, [[\T_COMMENT]]);
 
         $tokens->insertAt(
             $commentIndex,
             [
-                new Token([T_PRIVATE, 'private']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_VARIABLE, '$name']),
+                new Token([\T_PRIVATE, 'private']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_VARIABLE, '$name']),
                 new Token(';'),
             ]
         );
@@ -1280,14 +1280,14 @@ $bar;',
     public function testOverrideRangeTokens()
     {
         $expected = [
-            new Token([T_OPEN_TAG, '<?php ']),
-            new Token([T_FUNCTION, 'function']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_STRING, 'foo']),
+            new Token([\T_OPEN_TAG, '<?php ']),
+            new Token([\T_FUNCTION, 'function']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_STRING, 'foo']),
             new Token('('),
-            new Token([T_ARRAY, 'array']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_VARIABLE, '$bar']),
+            new Token([\T_ARRAY, 'array']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_VARIABLE, '$bar']),
             new Token(')'),
             new Token('{'),
             new Token('}'),
@@ -1295,7 +1295,7 @@ $bar;',
         $code = '<?php function foo(array $bar){}';
         $indexStart = 5;
         $indexEnd = 5;
-        $items = Tokens::fromArray([new Token([T_ARRAY, 'array'])]);
+        $items = Tokens::fromArray([new Token([\T_ARRAY, 'array'])]);
 
         $tokens = Tokens::fromCode($code);
         $tokens->overrideRange($indexStart, $indexEnd, $items);
@@ -1327,14 +1327,14 @@ $bar;',
 
         yield 'override different tokens but same content' => [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_FUNCTION, 'function']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_STRING, 'foo']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_FUNCTION, 'function']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_STRING, 'foo']),
                 new Token('('),
-                new Token([T_ARRAY, 'array']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_VARIABLE, '$bar']),
+                new Token([\T_ARRAY, 'array']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_VARIABLE, '$bar']),
                 new Token(')'),
                 new Token('{'),
                 new Token('}'),
@@ -1342,74 +1342,74 @@ $bar;',
             '<?php function foo(array $bar){}',
             5,
             5,
-            [new Token([T_ARRAY, 'array'])],
+            [new Token([\T_ARRAY, 'array'])],
         ];
 
         yield 'add more item than in range' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
             ],
             "<?php\n#comment",
             1,
             1,
             [
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
             ],
         ];
 
         yield [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '#comment1']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test 1']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '#comment5']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '#comment6']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '#comment1']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test 1']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '#comment5']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '#comment6']),
             ],
             "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6",
             3,
             7,
             [
-                new Token([T_COMMENT, '// test 1']),
+                new Token([\T_COMMENT, '// test 1']),
             ],
         ];
 
         yield [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '// test']),
             ],
             "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6\n#comment7",
             1,
             13,
             [
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_COMMENT, '// test']),
             ],
         ];
 
         yield [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '// test']),
             ],
             "<?php\n#comment",
             1,
             1,
             [
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_COMMENT, '// test']),
             ],
         ];
     }
@@ -1421,8 +1421,8 @@ $bar;',
 
         $tokens = Tokens::fromArray(
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_STRING, 'Foo']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_STRING, 'Foo']),
                 new Token(';'),
             ]
         );

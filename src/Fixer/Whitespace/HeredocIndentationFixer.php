@@ -83,7 +83,7 @@ SAMPLE
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70300 && $tokens->isTokenKindFound(T_START_HEREDOC);
+        return \PHP_VERSION_ID >= 70300 && $tokens->isTokenKindFound(\T_START_HEREDOC);
     }
 
     /**
@@ -102,12 +102,12 @@ SAMPLE
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_END_HEREDOC)) {
+            if (!$tokens[$index]->isGivenKind(\T_END_HEREDOC)) {
                 continue;
             }
 
             $end = $index;
-            $index = $tokens->getPrevTokenOfKind($index, [[T_START_HEREDOC]]);
+            $index = $tokens->getPrevTokenOfKind($index, [[\T_START_HEREDOC]]);
 
             $this->fixIndentation($tokens, $index, $end);
         }
@@ -130,14 +130,14 @@ SAMPLE
         $currentIndentLength = \strlen($currentIndent);
 
         $content = $indent.substr($tokens[$end]->getContent(), $currentIndentLength);
-        $tokens[$end] = new Token([T_END_HEREDOC, $content]);
+        $tokens[$end] = new Token([\T_END_HEREDOC, $content]);
 
         if ($end === $start + 1) {
             return;
         }
 
         for ($index = $end - 1, $last = true; $index > $start; --$index, $last = false) {
-            if (!$tokens[$index]->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_WHITESPACE])) {
+            if (!$tokens[$index]->isGivenKind([\T_ENCAPSED_AND_WHITESPACE, \T_WHITESPACE])) {
                 continue;
             }
 
@@ -155,8 +155,8 @@ SAMPLE
 
         ++$index;
 
-        if (!$tokens[$index]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
-            $tokens->insertAt($index, new Token([T_ENCAPSED_AND_WHITESPACE, $indent]));
+        if (!$tokens[$index]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
+            $tokens->insertAt($index, new Token([\T_ENCAPSED_AND_WHITESPACE, $indent]));
 
             return;
         }
@@ -169,7 +169,7 @@ SAMPLE
             $content = Preg::replace('/^(?!'.$currentIndent.')\h+/', '', $content);
         }
 
-        $tokens[$index] = new Token([T_ENCAPSED_AND_WHITESPACE, $content]);
+        $tokens[$index] = new Token([\T_ENCAPSED_AND_WHITESPACE, $content]);
     }
 
     /**
@@ -180,13 +180,13 @@ SAMPLE
     private function getIndentAt(Tokens $tokens, $index)
     {
         for (; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML, T_OPEN_TAG])) {
+            if (!$tokens[$index]->isGivenKind([\T_WHITESPACE, \T_INLINE_HTML, \T_OPEN_TAG])) {
                 continue;
             }
 
             $content = $tokens[$index]->getContent();
 
-            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+            if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)) {
                 $content = $tokens[$index - 1]->getContent().$content;
             }
 

@@ -65,7 +65,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         $excludedIndices = [];
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_SWITCH)) {
+            if ($token->isGivenKind(\T_SWITCH)) {
                 $excludedIndices = array_merge($excludedIndices, $this->getColonIndicesForSwitch($tokens, $index));
 
                 continue;
@@ -136,7 +136,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         }
 
         $closeParenthesisIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$closeParenthesisIndex]->isGivenKind(T_ELSE)) {
+        if ($tokens[$closeParenthesisIndex]->isGivenKind(\T_ELSE)) {
             return true;
         }
         if (!$tokens[$closeParenthesisIndex]->equals(')')) {
@@ -147,7 +147,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
 
         $alternativeControlStructureIndex = $tokens->getPrevMeaningfulToken($openParenthesisIndex);
 
-        return $tokens[$alternativeControlStructureIndex]->isGivenKind([T_DECLARE, T_ELSEIF, T_FOR, T_FOREACH, T_IF, T_SWITCH, T_WHILE]);
+        return $tokens[$alternativeControlStructureIndex]->isGivenKind([\T_DECLARE, \T_ELSEIF, \T_FOR, \T_FOREACH, \T_IF, \T_SWITCH, \T_WHILE]);
     }
 
     /**
@@ -176,13 +176,13 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 false === strpos($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
-                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
             }
 
             return;
         }
 
         $index += $after ? 0 : 1;
-        $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+        $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
     }
 }

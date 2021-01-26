@@ -87,7 +87,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isTokenKindFound(\T_CLASS);
     }
 
     /**
@@ -104,7 +104,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isClassCandidate($tokens, $index)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$this->isClassCandidate($tokens, $index)) {
                 continue;
             }
 
@@ -112,8 +112,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
             $tokens->insertAt(
                 $index,
                 [
-                    new Token([T_FINAL, 'final']),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_FINAL, 'final']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ]
             );
         }
@@ -189,13 +189,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
      */
     private function isClassCandidate(Tokens $tokens, $index)
     {
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL, T_NEW])) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([\T_ABSTRACT, \T_FINAL, \T_NEW])) {
             return false; // ignore class; it is abstract or already final
         }
 
         $docToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
-        if (!$docToken->isGivenKind(T_DOC_COMMENT)) {
+        if (!$docToken->isGivenKind(\T_DOC_COMMENT)) {
             return $this->configuration['consider_absent_docblock_as_internal_class'];
         }
 

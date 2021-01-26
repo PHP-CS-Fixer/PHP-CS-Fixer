@@ -297,7 +297,7 @@ class Example
      */
     private function getElements(Tokens $tokens, $startIndex)
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION];
+        static $elementTokenKinds = [CT::T_USE_TRAIT, \T_CONST, \T_VARIABLE, \T_FUNCTION];
 
         ++$startIndex;
         $elements = [];
@@ -318,19 +318,19 @@ class Example
                     return $elements;
                 }
 
-                if ($token->isGivenKind(T_ABSTRACT)) {
+                if ($token->isGivenKind(\T_ABSTRACT)) {
                     $element['abstract'] = true;
 
                     continue;
                 }
 
-                if ($token->isGivenKind(T_STATIC)) {
+                if ($token->isGivenKind(\T_STATIC)) {
                     $element['static'] = true;
 
                     continue;
                 }
 
-                if ($token->isGivenKind([T_PROTECTED, T_PRIVATE])) {
+                if ($token->isGivenKind([\T_PROTECTED, \T_PRIVATE])) {
                     $element['visibility'] = strtolower($token->getContent());
 
                     continue;
@@ -377,34 +377,34 @@ class Example
             return 'use_trait';
         }
 
-        if ($token->isGivenKind(T_CONST)) {
+        if ($token->isGivenKind(\T_CONST)) {
             return 'constant';
         }
 
-        if ($token->isGivenKind(T_VARIABLE)) {
+        if ($token->isGivenKind(\T_VARIABLE)) {
             return 'property';
         }
 
         $nameToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if ($nameToken->equals([T_STRING, '__construct'], false)) {
+        if ($nameToken->equals([\T_STRING, '__construct'], false)) {
             return 'construct';
         }
 
-        if ($nameToken->equals([T_STRING, '__destruct'], false)) {
+        if ($nameToken->equals([\T_STRING, '__destruct'], false)) {
             return 'destruct';
         }
 
         if (
             $nameToken->equalsAny([
-                [T_STRING, 'setUpBeforeClass'],
-                [T_STRING, 'doSetUpBeforeClass'],
-                [T_STRING, 'tearDownAfterClass'],
-                [T_STRING, 'doTearDownAfterClass'],
-                [T_STRING, 'setUp'],
-                [T_STRING, 'doSetUp'],
-                [T_STRING, 'tearDown'],
-                [T_STRING, 'doTearDown'],
+                [\T_STRING, 'setUpBeforeClass'],
+                [\T_STRING, 'doSetUpBeforeClass'],
+                [\T_STRING, 'tearDownAfterClass'],
+                [\T_STRING, 'doTearDownAfterClass'],
+                [\T_STRING, 'setUp'],
+                [\T_STRING, 'doSetUp'],
+                [\T_STRING, 'tearDown'],
+                [\T_STRING, 'doTearDown'],
             ], false)
         ) {
             return ['phpunit', strtolower($nameToken->getContent())];

@@ -63,7 +63,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky()
@@ -80,7 +80,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->equalsAny([[T_STRING, 'call_user_func'], [T_STRING, 'call_user_func_array']], false)) {
+            if (!$tokens[$index]->equalsAny([[\T_STRING, 'call_user_func'], [\T_STRING, 'call_user_func_array']], false)) {
                 continue;
             }
 
@@ -112,7 +112,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         /** @var Token $firstArgToken */
         $firstArgToken = $tokens[$firstArgIndex];
 
-        if ($firstArgToken->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+        if ($firstArgToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgIndex);
             if (!$tokens[$afterFirstArgIndex]->equalsAny([',', ')'])) {
                 return; // first argument is an expression like `call_user_func("foo"."bar", ...)`, not supported!
@@ -125,7 +125,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             $newCallTokens->clearEmptyTokens();
 
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgIndex);
-        } elseif ($firstArgToken->isGivenKind([T_FUNCTION, T_STATIC])) {
+        } elseif ($firstArgToken->isGivenKind([\T_FUNCTION, \T_STATIC])) {
             if (\PHP_VERSION_ID >= 70000) {
                 $firstArgEndIndex = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_CURLY_BRACE,
@@ -137,7 +137,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
                 $newCallTokens->insertAt(0, new Token('('));
                 $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgEndIndex);
             }
-        } elseif ($firstArgToken->isGivenKind(T_VARIABLE)) {
+        } elseif ($firstArgToken->isGivenKind(\T_VARIABLE)) {
             $firstArgEndIndex = reset($arguments);
 
             // check if the same variable is used multiple times and if so do not fix
@@ -160,7 +160,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             $complex = false;
 
             for ($newCallIndex = \count($newCallTokens) - 1; $newCallIndex >= 0; --$newCallIndex) {
-                if ($newCallTokens[$newCallIndex]->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_VARIABLE])) {
+                if ($newCallTokens[$newCallIndex]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT, \T_VARIABLE])) {
                     continue;
                 }
 
@@ -202,11 +202,11 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $afterFirstArgToken = $tokens[$afterFirstArgIndex];
 
         if ($afterFirstArgToken->equals(',')) {
-            $useEllipsis = $tokens[$callIndex]->equals([T_STRING, 'call_user_func_array']);
+            $useEllipsis = $tokens[$callIndex]->equals([\T_STRING, 'call_user_func_array']);
 
             if ($useEllipsis) {
                 $secondArgIndex = $tokens->getNextMeaningfulToken($afterFirstArgIndex);
-                $tokens->insertAt($secondArgIndex, new Token([T_ELLIPSIS, '...']));
+                $tokens->insertAt($secondArgIndex, new Token([\T_ELLIPSIS, '...']));
             }
 
             $tokens->clearAt($afterFirstArgIndex);
@@ -217,7 +217,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
         $prevIndex = $tokens->getPrevMeaningfulToken($callIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
         }
     }

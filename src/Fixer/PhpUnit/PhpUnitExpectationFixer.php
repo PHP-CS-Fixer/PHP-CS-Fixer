@@ -184,9 +184,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $oldMethodSequence = [
-            new Token([T_VARIABLE, '$this']),
-            new Token([T_OBJECT_OPERATOR, '->']),
-            [T_STRING],
+            new Token([\T_VARIABLE, '$this']),
+            new Token([\T_OBJECT_OPERATOR, '->']),
+            [\T_STRING],
         ];
 
         for ($index = $startIndex; $startIndex < $endIndex; ++$index) {
@@ -228,7 +228,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     $afterParamIndicatorIndex = $tokens->getNextMeaningfulToken($paramIndicatorIndex);
 
                     if (
-                        $tokens[$paramIndicatorIndex]->equals([T_STRING, 'null'], false)
+                        $tokens[$paramIndicatorIndex]->equals([\T_STRING, 'null'], false)
                         && $tokens[$afterParamIndicatorIndex]->equals(')')
                     ) {
                         if ($tokens[$argBefore + 1]->isWhitespace()) {
@@ -243,10 +243,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
                 $isMultilineWhitespace = $isMultilineWhitespace || ($tokens[$argStart]->isWhitespace() && !$tokens[$argStart]->isWhitespace(" \t"));
                 $tokensOverrideArgStart = [
-                    new Token([T_WHITESPACE, $indent]),
-                    new Token([T_VARIABLE, '$this']),
-                    new Token([T_OBJECT_OPERATOR, '->']),
-                    new Token([T_STRING, $argumentsReplacements[$cnt]]),
+                    new Token([\T_WHITESPACE, $indent]),
+                    new Token([\T_VARIABLE, '$this']),
+                    new Token([\T_OBJECT_OPERATOR, '->']),
+                    new Token([\T_STRING, $argumentsReplacements[$cnt]]),
                     new Token('('),
                 ];
                 $tokensOverrideArgBefore = [
@@ -255,8 +255,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ];
 
                 if ($isMultilineWhitespace) {
-                    $tokensOverrideArgStart[] = new Token([T_WHITESPACE, $indent.$this->whitespacesConfig->getIndent()]);
-                    array_unshift($tokensOverrideArgBefore, new Token([T_WHITESPACE, $indent]));
+                    $tokensOverrideArgStart[] = new Token([\T_WHITESPACE, $indent.$this->whitespacesConfig->getIndent()]);
+                    array_unshift($tokensOverrideArgBefore, new Token([\T_WHITESPACE, $indent]));
                 }
 
                 if ($tokens[$argStart]->isWhitespace()) {
@@ -272,7 +272,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             if ('expectExceptionMessageRegExp' === $tokens[$index]->getContent()) {
                 $methodName = $this->methodMap[$tokens[$index]->getContent()];
             }
-            $tokens[$index] = new Token([T_STRING, $methodName]);
+            $tokens[$index] = new Token([\T_STRING, $methodName]);
         }
     }
 }

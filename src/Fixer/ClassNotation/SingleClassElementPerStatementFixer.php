@@ -131,7 +131,7 @@ final class Example
             $repeatToken = $tokens[$repeatIndex];
 
             if ($tokensAnalyzer->isArray($repeatIndex)) {
-                if ($repeatToken->isGivenKind(T_ARRAY)) {
+                if ($repeatToken->isGivenKind(\T_ARRAY)) {
                     $repeatIndex = $tokens->getNextTokenOfKind($repeatIndex, ['(']);
                     $repeatIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $repeatIndex);
                 } else {
@@ -200,7 +200,7 @@ final class Example
             }
 
             if (null !== $divisionContent && '' !== $divisionContent) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, $divisionContent]));
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, $divisionContent]));
             }
 
             // collect modifiers
@@ -219,9 +219,9 @@ final class Example
     private function getModifiersSequences(Tokens $tokens, $type, $startIndex, $endIndex)
     {
         if ('property' === $type) {
-            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
+            $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_STATIC, \T_VAR, \T_STRING, \T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
         } else {
-            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
+            $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_CONST];
         }
 
         $sequence = [];

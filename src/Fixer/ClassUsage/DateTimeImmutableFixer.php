@@ -41,7 +41,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -63,13 +63,13 @@ final class DateTimeImmutableFixer extends AbstractFixer
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 $isInNamespace = true;
 
                 continue;
             }
 
-            if ($token->isGivenKind(T_USE) && $isInNamespace) {
+            if ($token->isGivenKind(\T_USE) && $isInNamespace) {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
                 if ('datetime' !== strtolower($tokens[$nextIndex]->getContent())) {
                     continue;
@@ -84,7 +84,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -109,9 +109,9 @@ final class DateTimeImmutableFixer extends AbstractFixer
     private function fixClassUsage(Tokens $tokens, $index, $isInNamespace, $isImported)
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
-        if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if ($tokens[$nextIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-            if ($tokens[$nextNextIndex]->isGivenKind(T_STRING)) {
+            if ($tokens[$nextNextIndex]->isGivenKind(\T_STRING)) {
                 $nextNextNextIndex = $tokens->getNextMeaningfulToken($nextNextIndex);
                 if (!$tokens[$nextNextNextIndex]->equals('(')) {
                     return;
@@ -123,19 +123,19 @@ final class DateTimeImmutableFixer extends AbstractFixer
         $isUsedWithLeadingBackslash = false; // e.g. new \DateTime();
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (!$tokens[$prevPrevIndex]->isGivenKind(T_STRING)) {
+            if (!$tokens[$prevPrevIndex]->isGivenKind(\T_STRING)) {
                 $isUsedWithLeadingBackslash = true;
             }
-        } elseif (!$tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_OBJECT_OPERATOR])) {
+        } elseif (!$tokens[$prevIndex]->isGivenKind([\T_DOUBLE_COLON, \T_OBJECT_OPERATOR])) {
             $isUsedAlone = true;
         }
 
         if ($isUsedWithLeadingBackslash || $isUsedAlone && ($isInNamespace && $isImported || !$isInNamespace)) {
-            $tokens[$index] = new Token([T_STRING, \DateTimeImmutable::class]);
+            $tokens[$index] = new Token([\T_STRING, \DateTimeImmutable::class]);
             if ($isInNamespace && $isUsedAlone) {
-                $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+                $tokens->insertAt($index, new Token([\T_NS_SEPARATOR, '\\']));
             }
         }
     }
@@ -147,16 +147,16 @@ final class DateTimeImmutableFixer extends AbstractFixer
     private function fixFunctionUsage(Tokens $tokens, $index, $replacement)
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR])) {
+        if ($tokens[$prevIndex]->isGivenKind([\T_DOUBLE_COLON, \T_NEW, \T_OBJECT_OPERATOR])) {
             return;
         }
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if ($tokens[$prevPrevIndex]->isGivenKind([T_NEW, T_STRING])) {
+            if ($tokens[$prevPrevIndex]->isGivenKind([\T_NEW, \T_STRING])) {
                 return;
             }
         }
 
-        $tokens[$index] = new Token([T_STRING, $replacement]);
+        $tokens[$index] = new Token([\T_STRING, $replacement]);
     }
 }

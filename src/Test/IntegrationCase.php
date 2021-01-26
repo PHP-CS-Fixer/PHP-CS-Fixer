@@ -60,7 +60,7 @@ final class IntegrationCase
                 'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
                 __CLASS__
             ),
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
     }
 
@@ -126,7 +126,7 @@ final class IntegrationCase
                 'The "%s" method is deprecated. You should stop using it, as it will be removed in 3.0 version.',
                 __METHOD__
             ),
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         $settings = $this->base->getSettings();

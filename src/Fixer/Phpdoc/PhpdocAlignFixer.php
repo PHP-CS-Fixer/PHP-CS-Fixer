@@ -165,7 +165,7 @@ EOF;
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -174,7 +174,7 @@ EOF;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -183,7 +183,7 @@ EOF;
             $this->fixDocBlock($docBlock);
             $newContent = $docBlock->getContent();
             if ($newContent !== $content) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $newContent]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $newContent]);
             }
         }
     }

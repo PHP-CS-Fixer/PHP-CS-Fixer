@@ -83,7 +83,7 @@ class RuleSet implements RuleSetInterface
      */
     public static function create(array $set = [])
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.', \E_USER_DEPRECATED);
 
         return new self($set);
     }
@@ -93,7 +93,7 @@ class RuleSet implements RuleSetInterface
      */
     public function getSetDefinitionNames()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.', \E_USER_DEPRECATED);
 
         return RuleSets::getSetDefinitionNames();
     }

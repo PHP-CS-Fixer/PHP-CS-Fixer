@@ -48,7 +48,7 @@ final class GroupImportFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_USE);
+        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(\T_USE);
     }
 
     /**
@@ -111,7 +111,7 @@ final class GroupImportFixer extends AbstractFixer
             $index = $useDeclaration->getStartIndex();
             $endIndex = $useDeclaration->getEndIndex();
 
-            $useStatementTokens = [T_USE, T_WHITESPACE, T_STRING, T_NS_SEPARATOR, T_AS, CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
+            $useStatementTokens = [\T_USE, \T_WHITESPACE, \T_STRING, \T_NS_SEPARATOR, \T_AS, CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
 
             while ($index !== $endIndex) {
                 if ($tokens[$index]->isGivenKind($useStatementTokens)) {
@@ -127,7 +127,7 @@ final class GroupImportFixer extends AbstractFixer
 
             ++$index;
 
-            if (isset($tokens[$index]) && $tokens[$index]->isGivenKind(T_WHITESPACE)) {
+            if (isset($tokens[$index]) && $tokens[$index]->isGivenKind(\T_WHITESPACE)) {
                 $tokens->clearAt($index);
             }
         }
@@ -141,7 +141,7 @@ final class GroupImportFixer extends AbstractFixer
         $currentNamespace = '';
         $insertIndex = \array_slice($statements, -1)[0]->getEndIndex();
 
-        while ($tokens[$insertIndex]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+        while ($tokens[$insertIndex]->isGivenKind([\T_COMMENT, \T_DOC_COMMENT])) {
             ++$insertIndex;
         }
 
@@ -158,7 +158,7 @@ final class GroupImportFixer extends AbstractFixer
             } else {
                 $newTokens = [
                     new Token(','),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ];
 
                 if ($useDeclaration->isAliased()) {
@@ -169,12 +169,12 @@ final class GroupImportFixer extends AbstractFixer
                     $insertIndex += $this->insertToGroupUseWithAlias($tokens, $insertIndex + 1, $useDeclaration);
                 }
 
-                $newTokens[] = new Token([T_STRING, $useDeclaration->getShortName()]);
+                $newTokens[] = new Token([\T_STRING, $useDeclaration->getShortName()]);
 
                 if (!isset($statements[$index + 1]) || $this->getNamespaceNameWithSlash($statements[$index + 1]) !== $currentNamespace) {
                     $newTokens[] = new Token([CT::T_GROUP_IMPORT_BRACE_CLOSE, '}']);
                     $newTokens[] = new Token(';');
-                    $newTokens[] = new Token([T_WHITESPACE, "\n"]);
+                    $newTokens[] = new Token([\T_WHITESPACE, "\n"]);
                 }
 
                 $tokens->insertAt($insertIndex + 1, $newTokens);
@@ -201,10 +201,10 @@ final class GroupImportFixer extends AbstractFixer
     private function insertToGroupUseWithAlias(Tokens $tokens, $insertIndex, NamespaceUseAnalysis $useDeclaration)
     {
         $newTokens = [
-            new Token([T_STRING, substr($useDeclaration->getFullName(), strripos($useDeclaration->getFullName(), '\\') + 1)]),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_AS, 'as']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_STRING, substr($useDeclaration->getFullName(), strripos($useDeclaration->getFullName(), '\\') + 1)]),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_AS, 'as']),
+            new Token([\T_WHITESPACE, ' ']),
         ];
 
         $tokens->insertAt($insertIndex, $newTokens);
@@ -229,8 +229,8 @@ final class GroupImportFixer extends AbstractFixer
         }
 
         $newTokens = [
-            new Token([T_USE, 'use']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_USE, 'use']),
+            new Token([\T_WHITESPACE, ' ']),
         ];
 
         if ($useDeclaration->isFunction() || $useDeclaration->isConstant()) {
@@ -239,14 +239,14 @@ final class GroupImportFixer extends AbstractFixer
                 : [CT::T_CONST_IMPORT, 'const'];
 
             $newTokens[] = new Token($importStatementParams);
-            $newTokens[] = new Token([T_WHITESPACE, ' ']);
+            $newTokens[] = new Token([\T_WHITESPACE, ' ']);
         }
 
         $namespaceParts = array_filter(explode('\\', $currentNamespace));
 
         foreach ($namespaceParts as $part) {
-            $newTokens[] = new Token([T_STRING, $part]);
-            $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            $newTokens[] = new Token([\T_STRING, $part]);
+            $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
         }
 
         $newTokens[] = new Token([CT::T_GROUP_IMPORT_BRACE_OPEN, '{']);
@@ -263,7 +263,7 @@ final class GroupImportFixer extends AbstractFixer
             $insertIndex += $inserted;
         }
 
-        $tokens->insertAt($insertIndex + 1, new Token([T_STRING, $useDeclaration->getShortName()]));
+        $tokens->insertAt($insertIndex + 1, new Token([\T_STRING, $useDeclaration->getShortName()]));
         ++$insertedTokens;
 
         return $insertedTokens;

@@ -710,7 +710,7 @@ $a = new class implements
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        static::assertTrue($tokens[$expected['start']]->isGivenKind([T_IMPLEMENTS, T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        static::assertTrue($tokens[$expected['start']]->isGivenKind([\T_IMPLEMENTS, \T_EXTENDS]), sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
         $method = new \ReflectionMethod($this->fixer, 'getClassyInheritanceInfo');
         $method->setAccessible(true);
 

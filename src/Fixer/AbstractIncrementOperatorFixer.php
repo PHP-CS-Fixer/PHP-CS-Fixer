@@ -33,7 +33,7 @@ abstract class AbstractIncrementOperatorFixer extends AbstractFixer
                 $index = $tokens->findBlockStart($blockType['type'], $index);
                 $token = $tokens[$index];
             }
-        } while (!$token->equalsAny(['$', [T_VARIABLE]]));
+        } while (!$token->equalsAny(['$', [\T_VARIABLE]]));
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
         $prevToken = $tokens[$prevIndex];
@@ -42,17 +42,17 @@ abstract class AbstractIncrementOperatorFixer extends AbstractFixer
             return $this->findStart($tokens, $index);
         }
 
-        if ($prevToken->isGivenKind(T_OBJECT_OPERATOR)) {
+        if ($prevToken->isGivenKind(\T_OBJECT_OPERATOR)) {
             return $this->findStart($tokens, $prevIndex);
         }
 
-        if ($prevToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+        if ($prevToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (!$tokens[$prevPrevIndex]->isGivenKind([T_STATIC, T_STRING])) {
+            if (!$tokens[$prevPrevIndex]->isGivenKind([\T_STATIC, \T_STRING])) {
                 return $this->findStart($tokens, $prevIndex);
             }
 
-            $index = $tokens->getTokenNotOfKindsSibling($prevIndex, -1, [T_NS_SEPARATOR, T_STATIC, T_STRING]);
+            $index = $tokens->getTokenNotOfKindsSibling($prevIndex, -1, [\T_NS_SEPARATOR, \T_STATIC, \T_STRING]);
             $index = $tokens->getNextMeaningfulToken($index);
         }
 

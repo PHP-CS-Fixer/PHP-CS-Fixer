@@ -65,7 +65,7 @@ final class Sample
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL, T_PROTECTED]);
+        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_FINAL, \T_PROTECTED]);
     }
 
     /**
@@ -75,7 +75,7 @@ final class Sample
     {
         $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
         for ($index = 0; $index < $end; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
                 continue;
             }
 
@@ -103,11 +103,11 @@ final class Sample
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_PROTECTED)) {
+            if (!$tokens[$index]->isGivenKind(\T_PROTECTED)) {
                 continue;
             }
 
-            $tokens[$index] = new Token([T_PRIVATE, 'private']);
+            $tokens[$index] = new Token([\T_PRIVATE, 'private']);
         }
     }
 
@@ -123,12 +123,12 @@ final class Sample
     private function skipClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
-        if (!$prevToken->isGivenKind(T_FINAL)) {
+        if (!$prevToken->isGivenKind(\T_FINAL)) {
             return true;
         }
 
         for ($index = $classIndex; $index < $classOpenIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_EXTENDS)) {
+            if ($tokens[$index]->isGivenKind(\T_EXTENDS)) {
                 return true;
             }
         }

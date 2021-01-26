@@ -46,7 +46,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         $end = null === $end ? $tokens->count() : $end;
 
         // find raw sequence which we can analyse for context
-        $candidateSequence = [[T_STRING, $functionNameToSearch], '('];
+        $candidateSequence = [[\T_STRING, $functionNameToSearch], '('];
         $matches = $tokens->findSequence($candidateSequence, $start, $end, false);
         if (null === $matches) {
             // not found, simply return without further attempts

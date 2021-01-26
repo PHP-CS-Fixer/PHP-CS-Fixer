@@ -62,11 +62,11 @@ final class NullableTypeTransformer extends AbstractTransformer
             [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
             [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
             [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
-            [T_PRIVATE],
-            [T_PROTECTED],
-            [T_PUBLIC],
-            [T_VAR],
-            [T_STATIC],
+            [\T_PRIVATE],
+            [\T_PROTECTED],
+            [\T_PUBLIC],
+            [\T_VAR],
+            [\T_STATIC],
         ])) {
             $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }

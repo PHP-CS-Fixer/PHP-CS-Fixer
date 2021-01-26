@@ -43,15 +43,15 @@ final class ImportTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$token->isGivenKind([T_CONST, T_FUNCTION])) {
+        if (!$token->isGivenKind([\T_CONST, \T_FUNCTION])) {
             return;
         }
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if ($prevToken->isGivenKind(T_USE)) {
+        if ($prevToken->isGivenKind(\T_USE)) {
             $tokens[$index] = new Token([
-                $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
+                $token->isGivenKind(\T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
                 $token->getContent(),
             ]);
         }

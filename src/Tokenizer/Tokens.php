@@ -278,7 +278,7 @@ class Tokens extends \SplFixedArray
 
         if (\defined('T_ATTRIBUTE')) {
             $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
-                'start' => [T_ATTRIBUTE, '#['],
+                'start' => [\T_ATTRIBUTE, '#['],
                 'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
             ];
         }
@@ -397,9 +397,9 @@ class Tokens extends \SplFixedArray
         $removeLastCommentLine = static function (self $tokens, $index, $indexOffset, $whitespace) {
             $token = $tokens[$index];
 
-            if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
+            if (1 === $indexOffset && $token->isGivenKind(\T_OPEN_TAG)) {
                 if (0 === strpos($whitespace, "\r\n")) {
-                    $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
+                    $tokens[$index] = new Token([\T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
                     return \strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                         ? substr($whitespace, 2)
@@ -407,7 +407,7 @@ class Tokens extends \SplFixedArray
                     ;
                 }
 
-                $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
+                $tokens[$index] = new Token([\T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
 
                 return \strlen($whitespace) > 1 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
                     ? substr($whitespace, 1)
@@ -424,7 +424,7 @@ class Tokens extends \SplFixedArray
             if ('' === $whitespace) {
                 $this->clearAt($index);
             } else {
-                $this[$index] = new Token([T_WHITESPACE, $whitespace]);
+                $this[$index] = new Token([\T_WHITESPACE, $whitespace]);
             }
 
             return false;
@@ -438,7 +438,7 @@ class Tokens extends \SplFixedArray
 
         $this->insertAt(
             $index + $indexOffset,
-            [new Token([T_WHITESPACE, $whitespace])]
+            [new Token([\T_WHITESPACE, $whitespace])]
         );
 
         return true;
@@ -455,9 +455,9 @@ class Tokens extends \SplFixedArray
     {
         if (3 === \func_num_args()) {
             if ($findEnd) {
-                @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.', E_USER_DEPRECATED);
+                @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.', \E_USER_DEPRECATED);
             } else {
-                @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.', E_USER_DEPRECATED);
+                @trigger_error('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.', \E_USER_DEPRECATED);
             }
         }
 
@@ -726,7 +726,7 @@ class Tokens extends \SplFixedArray
         return $this->getTokenNotOfKindsSibling(
             $index,
             $direction,
-            [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]
+            [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT]
         );
     }
 
@@ -803,7 +803,7 @@ class Tokens extends \SplFixedArray
             return null;
         }
 
-        $nonMeaningFullKind = [T_COMMENT, T_DOC_COMMENT, T_WHITESPACE];
+        $nonMeaningFullKind = [\T_COMMENT, \T_DOC_COMMENT, \T_WHITESPACE];
 
         // make sure the sequence content is "meaningful"
         foreach ($sequence as $key => $token) {
@@ -1014,7 +1014,7 @@ class Tokens extends \SplFixedArray
      */
     public function overrideAt($index, $token)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use offsetSet instead.', E_USER_DEPRECATED);
+        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use offsetSet instead.', \E_USER_DEPRECATED);
         self::$isLegacyMode = true;
 
         $this[$index]->override($token);
@@ -1093,7 +1093,7 @@ class Tokens extends \SplFixedArray
         $this->setSize(0);
 
         $tokens = \defined('TOKEN_PARSE')
-            ? token_get_all($code, TOKEN_PARSE)
+            ? token_get_all($code, \TOKEN_PARSE)
             : token_get_all($code);
 
         $this->setSize(\count($tokens));
@@ -1229,12 +1229,12 @@ class Tokens extends \SplFixedArray
 
         if (self::isLegacyMode()) {
             // If code is not monolithic there is a great chance that first or last token is `T_INLINE_HTML`:
-            if ($this[0]->isGivenKind(T_INLINE_HTML) || $this[$size - 1]->isGivenKind(T_INLINE_HTML)) {
+            if ($this[0]->isGivenKind(\T_INLINE_HTML) || $this[$size - 1]->isGivenKind(\T_INLINE_HTML)) {
                 return false;
             }
 
             for ($index = 1; $index < $size; ++$index) {
-                if ($this[$index]->isGivenKind([T_INLINE_HTML, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO])) {
+                if ($this[$index]->isGivenKind([\T_INLINE_HTML, \T_OPEN_TAG, \T_OPEN_TAG_WITH_ECHO])) {
                     return false;
                 }
             }
@@ -1242,11 +1242,11 @@ class Tokens extends \SplFixedArray
             return true;
         }
 
-        if ($this->isTokenKindFound(T_INLINE_HTML)) {
+        if ($this->isTokenKindFound(\T_INLINE_HTML)) {
             return false;
         }
 
-        return 1 >= ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
+        return 1 >= ($this->countTokenKind(\T_OPEN_TAG) + $this->countTokenKind(\T_OPEN_TAG_WITH_ECHO));
     }
 
     /**
@@ -1272,12 +1272,12 @@ class Tokens extends \SplFixedArray
     public function hasAlternativeSyntax()
     {
         return $this->isAnyTokenKindsFound([
-            T_ENDDECLARE,
-            T_ENDFOR,
-            T_ENDFOREACH,
-            T_ENDIF,
-            T_ENDSWITCH,
-            T_ENDWHILE,
+            \T_ENDDECLARE,
+            \T_ENDFOR,
+            \T_ENDFOREACH,
+            \T_ENDIF,
+            \T_ENDSWITCH,
+            \T_ENDWHILE,
         ]);
     }
 
@@ -1302,9 +1302,9 @@ class Tokens extends \SplFixedArray
         $prevIndex = $this->getNonEmptySibling($index, -1);
 
         if ($this[$prevIndex]->isWhitespace()) {
-            $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
+            $this[$prevIndex] = new Token([\T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
         } elseif ($this->isEmptyAt($prevIndex + 1)) {
-            $this[$prevIndex + 1] = new Token([T_WHITESPACE, $this[$nextIndex]->getContent()]);
+            $this[$prevIndex + 1] = new Token([\T_WHITESPACE, $this[$nextIndex]->getContent()]);
         }
 
         $this->clearAt($nextIndex);
@@ -1386,13 +1386,13 @@ class Tokens extends \SplFixedArray
 
             // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
             if (isset($this[$whitespaceIndex - 1]) && $this[$whitespaceIndex - 1]->isComment() && '/*' !== substr($this[$whitespaceIndex - 1]->getContent(), 0, 2)) {
-                list($emptyString, $newContent, $whitespacesToCheck) = Preg::split('/^(\R)/', $this[$whitespaceIndex]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+                list($emptyString, $newContent, $whitespacesToCheck) = Preg::split('/^(\R)/', $this[$whitespaceIndex]->getContent(), -1, \PREG_SPLIT_DELIM_CAPTURE);
 
                 if ('' === $whitespacesToCheck) {
                     return;
                 }
 
-                $tokenToCheck = new Token([T_WHITESPACE, $whitespacesToCheck]);
+                $tokenToCheck = new Token([\T_WHITESPACE, $whitespacesToCheck]);
             }
 
             if (!$tokenToCheck->isWhitespace($whitespaces)) {
@@ -1402,7 +1402,7 @@ class Tokens extends \SplFixedArray
             if ('' === $newContent) {
                 $this->clearAt($whitespaceIndex);
             } else {
-                $this[$whitespaceIndex] = new Token([T_WHITESPACE, $newContent]);
+                $this[$whitespaceIndex] = new Token([\T_WHITESPACE, $newContent]);
             }
         }
     }

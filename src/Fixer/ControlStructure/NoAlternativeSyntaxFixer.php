@@ -101,7 +101,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     private function fixOpenCloseControls($index, Token $token, Tokens $tokens)
     {
-        if ($token->isGivenKind([T_IF, T_FOREACH, T_WHILE, T_FOR, T_SWITCH, T_DECLARE])) {
+        if ($token->isGivenKind([\T_IF, \T_FOREACH, \T_WHILE, \T_FOR, \T_SWITCH, \T_DECLARE])) {
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
             $afterParenthesisIndex = $tokens->getNextMeaningfulToken($closeIndex);
@@ -114,20 +114,20 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
             $items = [];
 
             if (!$tokens[$afterParenthesisIndex - 1]->isWhitespace()) {
-                $items[] = new Token([T_WHITESPACE, ' ']);
+                $items[] = new Token([\T_WHITESPACE, ' ']);
             }
 
             $items[] = new Token('{');
 
             if (!$tokens[$afterParenthesisIndex + 1]->isWhitespace()) {
-                $items[] = new Token([T_WHITESPACE, ' ']);
+                $items[] = new Token([\T_WHITESPACE, ' ']);
             }
 
             $tokens->clearAt($afterParenthesisIndex);
             $tokens->insertAt($afterParenthesisIndex, $items);
         }
 
-        if (!$token->isGivenKind([T_ENDIF, T_ENDFOREACH, T_ENDWHILE, T_ENDFOR, T_ENDSWITCH, T_ENDDECLARE])) {
+        if (!$token->isGivenKind([\T_ENDIF, \T_ENDFOREACH, \T_ENDWHILE, \T_ENDFOR, \T_ENDSWITCH, \T_ENDDECLARE])) {
             return;
         }
 
@@ -149,7 +149,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     private function fixElse($index, Token $token, Tokens $tokens)
     {
-        if (!$token->isGivenKind(T_ELSE)) {
+        if (!$token->isGivenKind(\T_ELSE)) {
             return;
         }
 
@@ -160,7 +160,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
             return;
         }
 
-        $this->addBraces($tokens, new Token([T_ELSE, 'else']), $index, $tokenAfterElseIndex);
+        $this->addBraces($tokens, new Token([\T_ELSE, 'else']), $index, $tokenAfterElseIndex);
     }
 
     /**
@@ -172,7 +172,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     private function fixElseif($index, Token $token, Tokens $tokens)
     {
-        if (!$token->isGivenKind(T_ELSEIF)) {
+        if (!$token->isGivenKind(\T_ELSEIF)) {
             return;
         }
 
@@ -184,7 +184,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
             return;
         }
 
-        $this->addBraces($tokens, new Token([T_ELSEIF, 'elseif']), $index, $tokenAfterParenthesisIndex);
+        $this->addBraces($tokens, new Token([\T_ELSEIF, 'elseif']), $index, $tokenAfterParenthesisIndex);
     }
 
     /**
@@ -199,12 +199,12 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     {
         $items = [
             new Token('}'),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_WHITESPACE, ' ']),
             $token,
         ];
 
         if (!$tokens[$index + 1]->isWhitespace()) {
-            $items[] = new Token([T_WHITESPACE, ' ']);
+            $items[] = new Token([\T_WHITESPACE, ' ']);
         }
 
         $tokens->clearAt($index);
@@ -219,7 +219,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
         $items = [new Token('{')];
 
         if (!$tokens[$colonIndex + 1]->isWhitespace()) {
-            $items[] = new Token([T_WHITESPACE, ' ']);
+            $items[] = new Token([\T_WHITESPACE, ' ']);
         }
 
         $tokens->clearAt($colonIndex);

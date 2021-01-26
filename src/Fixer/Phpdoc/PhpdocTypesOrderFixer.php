@@ -100,7 +100,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -123,7 +123,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -151,7 +151,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
                 }, $line->getContent()));
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 
@@ -212,7 +212,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
     private function sortJoinedTypes($types)
     {
         $types = array_filter(
-            Preg::split('/([^|<]+(?:<.*>)?)/', $types, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
+            Preg::split('/([^|<]+(?:<.*>)?)/', $types, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY),
             static function ($value) {
                 return '|' !== $value;
             }

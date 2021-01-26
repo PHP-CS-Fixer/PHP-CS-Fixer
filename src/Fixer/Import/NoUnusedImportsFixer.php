@@ -55,7 +55,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     /**
@@ -134,18 +134,18 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_STRING)) {
+            if ($token->isGivenKind(\T_STRING)) {
                 $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-                if ($prevMeaningfulToken->isGivenKind(T_NAMESPACE)) {
-                    $index = $tokens->getNextTokenOfKind($index, [';', '{', [T_CLOSE_TAG]]);
+                if ($prevMeaningfulToken->isGivenKind(\T_NAMESPACE)) {
+                    $index = $tokens->getNextTokenOfKind($index, [';', '{', [\T_CLOSE_TAG]]);
 
                     continue;
                 }
 
                 if (
                     0 === strcasecmp($shortName, $token->getContent())
-                    && !$prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR, T_DOUBLE_COLON])
+                    && !$prevMeaningfulToken->isGivenKind([\T_NS_SEPARATOR, \T_CONST, \T_OBJECT_OPERATOR, \T_DOUBLE_COLON])
                 ) {
                     return true;
                 }
@@ -183,7 +183,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             $prevIndex = $tokens->getPrevNonWhitespace($index);
             if ($tokens[$prevIndex]->isComment()) {
                 $content = $tokens[$index]->getContent();
-                $tokens[$index] = new Token([T_WHITESPACE, substr($content, strrpos($content, "\n"))]); // preserve indent only
+                $tokens[$index] = new Token([\T_WHITESPACE, substr($content, strrpos($content, "\n"))]); // preserve indent only
             } else {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
@@ -204,7 +204,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             if ('' === $content) {
                 $tokens->clearAt($prevIndex);
             } else {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, $content]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, $content]);
             }
 
             $prevToken = $tokens[$prevIndex];
@@ -230,7 +230,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             );
 
             if ('' !== $content) {
-                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
+                $tokens[$nextIndex] = new Token([\T_WHITESPACE, $content]);
             } else {
                 $tokens->clearAt($nextIndex);
             }
@@ -242,7 +242,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             $content = $prevToken->getContent().$nextToken->getContent();
 
             if ('' !== $content) {
-                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
+                $tokens[$nextIndex] = new Token([\T_WHITESPACE, $content]);
             } else {
                 $tokens->clearAt($nextIndex);
             }

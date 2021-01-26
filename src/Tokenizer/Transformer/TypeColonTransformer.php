@@ -64,15 +64,15 @@ final class TypeColonTransformer extends AbstractTransformer
         $prevToken = $tokens[$prevIndex];
 
         // if this could be a function name we need to take one more step
-        if ($prevToken->isGivenKind(T_STRING)) {
+        if ($prevToken->isGivenKind(\T_STRING)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
             $prevToken = $tokens[$prevIndex];
         }
 
-        $prevKinds = [T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA];
+        $prevKinds = [\T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA];
 
         if (\PHP_VERSION_ID >= 70400) {
-            $prevKinds[] = T_FN;
+            $prevKinds[] = \T_FN;
         }
 
         if ($prevToken->isGivenKind($prevKinds)) {

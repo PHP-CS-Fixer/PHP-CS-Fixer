@@ -126,7 +126,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_STRING]);
     }
 
     /**
@@ -135,7 +135,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 if (\PHP_VERSION_ID >= 70000) {
                     $this->fixFunctionReturnType($tokens, $index);
                 }

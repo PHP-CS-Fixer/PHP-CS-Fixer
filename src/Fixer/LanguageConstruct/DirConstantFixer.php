@@ -41,7 +41,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_FILE);
+        return $tokens->isTokenKindFound(\T_FILE);
     }
 
     /**
@@ -81,21 +81,21 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             }
 
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
-            if (!$fileCandidateRight->isGivenKind(T_FILE)) {
+            if (!$fileCandidateRight->isGivenKind(\T_FILE)) {
                 continue;
             }
 
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
 
-            if (!$fileCandidateLeft->isGivenKind(T_FILE)) {
+            if (!$fileCandidateLeft->isGivenKind(\T_FILE)) {
                 continue;
             }
 
             // get rid of root namespace when it used
             $namespaceCandidateIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
             $namespaceCandidate = $tokens[$namespaceCandidateIndex];
-            if ($namespaceCandidate->isGivenKind(T_NS_SEPARATOR)) {
+            if ($namespaceCandidate->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
                 $tokens->clearAt($namespaceCandidateIndex);
             }
@@ -124,7 +124,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $tokens->clearTokenAndMergeSurroundingWhitespace($openParenthesis);
 
             // replace constant and remove function name
-            $tokens[$fileCandidateLeftIndex] = new Token([T_DIR, '__DIR__']);
+            $tokens[$fileCandidateLeftIndex] = new Token([\T_DIR, '__DIR__']);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionNameIndex);
         }
     }

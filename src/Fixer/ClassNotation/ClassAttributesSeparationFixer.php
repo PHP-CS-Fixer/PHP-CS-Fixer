@@ -162,7 +162,7 @@ class Sample
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
             }
 
-            if ('method' === $element['type'] && !$tokens[$class]->isGivenKind(T_INTERFACE)) {
+            if ('method' === $element['type'] && !$tokens[$class]->isGivenKind(\T_INTERFACE)) {
                 // method of class or trait
                 $attributes = $tokensAnalyzer->getMethodAttributes($index);
 
@@ -194,7 +194,7 @@ class Sample
                     $deprecated = array_intersect($values, self::SUPPORTED_TYPES);
                     if (\count($deprecated) > 0) {
                         $message = 'A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.';
-                        @trigger_error($message, E_USER_DEPRECATED);
+                        @trigger_error($message, \E_USER_DEPRECATED);
 
                         return array_fill_keys($deprecated, self::SPACING_ONE);
                     }
@@ -266,7 +266,7 @@ class Sample
             $nextNotWhite = $tokens->getNextNonWhitespace($nextNotWhite);
         }
 
-        if ($tokens[$nextNotWhite]->isGivenKind(T_FUNCTION)) {
+        if ($tokens[$nextNotWhite]->isGivenKind(\T_FUNCTION)) {
             $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, 2);
 
             return;
@@ -304,7 +304,7 @@ class Sample
      */
     private function fixSpaceAboveClassElement(Tokens $tokens, $classStartIndex, $elementIndex, $spacing)
     {
-        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
+        static $methodAttr = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_ABSTRACT, \T_FINAL, \T_STATIC, \T_STRING, \T_NS_SEPARATOR, \T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
 
         $nonWhiteAbove = null;
 
@@ -322,7 +322,7 @@ class Sample
         }
 
         // deal with comments above a element
-        if ($tokens[$nonWhiteAbove]->isGivenKind(T_COMMENT)) {
+        if ($tokens[$nonWhiteAbove]->isGivenKind(\T_COMMENT)) {
             if (1 === $firstElementAttributeIndex - $nonWhiteAbove) {
                 // no white space found between comment and element start
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
@@ -358,7 +358,7 @@ class Sample
         }
 
         // deal with element with a PHPDoc above it
-        if ($tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
+        if ($tokens[$nonWhiteAbove]->isGivenKind(\T_DOC_COMMENT)) {
             // there should be one linebreak between the element and the PHPDoc above it
             $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
 
@@ -399,7 +399,7 @@ class Sample
         $numbOfWhiteTokens = $endIndex - $startIndex;
 
         if (0 === $numbOfWhiteTokens) {
-            $tokens->insertAt($startIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
+            $tokens->insertAt($startIndex, new Token([\T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
 
             return;
         }
@@ -412,7 +412,7 @@ class Sample
 
         if ($lineBreakCount < $reqLineCount) {
             $tokens[$startIndex] = new Token([
-                T_WHITESPACE,
+                \T_WHITESPACE,
                 str_repeat($lineEnding, $reqLineCount - $lineBreakCount).$tokens[$startIndex]->getContent(),
             ]);
 
@@ -422,7 +422,7 @@ class Sample
         // $lineCount = > $reqLineCount : check the one Token case first since this one will be true most of the time
         if (1 === $numbOfWhiteTokens) {
             $tokens[$startIndex] = new Token([
-                T_WHITESPACE,
+                \T_WHITESPACE,
                 Preg::replace('/\r\n|\n/', '', $tokens[$startIndex]->getContent(), $lineBreakCount - $reqLineCount),
             ]);
 
@@ -437,7 +437,7 @@ class Sample
 
             if ($tokenLineCount > 0) {
                 $tokens[$i] = new Token([
-                    T_WHITESPACE,
+                    \T_WHITESPACE,
                     Preg::replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
                 ]);
                 $toReplaceCount -= $tokenLineCount;

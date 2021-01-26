@@ -98,7 +98,7 @@ class Sample
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \count($tokens) > 10 && $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
+        return \count($tokens) > 10 && $tokens->isTokenKindFound(\T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([\T_CLASS, \T_INTERFACE]);
     }
 
     /**
@@ -180,7 +180,7 @@ class Sample
      */
     private function fixMethod(Tokens $tokens, $index)
     {
-        static $methodModifiers = [T_STATIC, T_FINAL, T_ABSTRACT, T_PRIVATE, T_PROTECTED, T_PUBLIC];
+        static $methodModifiers = [\T_STATIC, \T_FINAL, \T_ABSTRACT, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC];
 
         // find PHPDoc of method (if any)
         do {
@@ -193,7 +193,7 @@ class Sample
         } while (true);
 
         $docIndex = $tokens->getPrevNonWhitespace($index);
-        if (!$tokens[$docIndex]->isGivenKind(T_DOC_COMMENT)) {
+        if (!$tokens[$docIndex]->isGivenKind(\T_DOC_COMMENT)) {
             return;
         }
 
@@ -223,6 +223,6 @@ class Sample
         }
 
         $returnsBlock->setTypes($newTypes);
-        $tokens[$docIndex] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
+        $tokens[$docIndex] = new Token([\T_DOC_COMMENT, $docBlock->getContent()]);
     }
 }

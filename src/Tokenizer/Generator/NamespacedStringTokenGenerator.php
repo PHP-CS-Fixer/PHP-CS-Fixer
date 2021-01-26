@@ -32,9 +32,9 @@ final class NamespacedStringTokenGenerator
         $parts = explode('\\', $input);
 
         foreach ($parts as $index => $part) {
-            $tokens[] = new Token([T_STRING, $part]);
+            $tokens[] = new Token([\T_STRING, $part]);
             if ($index !== \count($parts) - 1) {
-                $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
+                $tokens[] = new Token([\T_NS_SEPARATOR, '\\']);
             }
         }
 

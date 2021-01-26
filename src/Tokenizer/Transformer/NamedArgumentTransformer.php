@@ -54,7 +54,7 @@ final class NamedArgumentTransformer extends AbstractTransformer
 
         $stringIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$stringIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$stringIndex]->isGivenKind(\T_STRING)) {
             return;
         }
 

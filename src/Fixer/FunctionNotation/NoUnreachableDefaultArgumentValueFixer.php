@@ -59,11 +59,11 @@ function example($foo = "two words", $bar) {}
      */
     public function isCandidate(Tokens $tokens)
     {
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
+        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(\T_FN)) {
             return true;
         }
 
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     /**
@@ -81,8 +81,8 @@ function example($foo = "two words", $bar) {}
     {
         for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
             if (
-                !$tokens[$i]->isGivenKind(T_FUNCTION)
-                && (\PHP_VERSION_ID < 70400 || !$tokens[$i]->isGivenKind(T_FN))
+                !$tokens[$i]->isGivenKind(\T_FUNCTION)
+                && (\PHP_VERSION_ID < 70400 || !$tokens[$i]->isGivenKind(\T_FN))
             ) {
                 continue;
             }
@@ -109,7 +109,7 @@ function example($foo = "two words", $bar) {}
         for ($i = $lastArgumentIndex; $i > $startIndex; --$i) {
             $token = $tokens[$i];
 
-            if ($token->isGivenKind(T_VARIABLE)) {
+            if ($token->isGivenKind(\T_VARIABLE)) {
                 $lastArgumentIndex = $i;
 
                 continue;
@@ -142,7 +142,7 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
-            if ($token->isGivenKind(T_VARIABLE) && !$this->isEllipsis($tokens, $i)) {
+            if ($token->isGivenKind(\T_VARIABLE) && !$this->isEllipsis($tokens, $i)) {
                 return $i;
             }
         }
@@ -157,7 +157,7 @@ function example($foo = "two words", $bar) {}
      */
     private function isEllipsis(Tokens $tokens, $variableIndex)
     {
-        return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->isGivenKind(T_ELLIPSIS);
+        return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->isGivenKind(\T_ELLIPSIS);
     }
 
     /**
@@ -182,14 +182,14 @@ function example($foo = "two words", $bar) {}
     {
         $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if (!$nextToken->equals([T_STRING, 'null'], false)) {
+        if (!$nextToken->equals([\T_STRING, 'null'], false)) {
             return false;
         }
 
         $variableIndex = $tokens->getPrevMeaningfulToken($index);
 
-        $searchTokens = [',', '(', [T_STRING], [CT::T_ARRAY_TYPEHINT], [T_CALLABLE]];
-        $typehintKinds = [T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE];
+        $searchTokens = [',', '(', [\T_STRING], [CT::T_ARRAY_TYPEHINT], [\T_CALLABLE]];
+        $typehintKinds = [\T_STRING, CT::T_ARRAY_TYPEHINT, \T_CALLABLE];
 
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 

@@ -65,7 +65,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
-        $prevDocCommentIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_DOC_COMMENT]]);
+        $prevDocCommentIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_DOC_COMMENT]]);
 
         if (null !== $prevDocCommentIndex) {
             $startIndex = $prevDocCommentIndex;
@@ -81,8 +81,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     private function fixPhpUnitClass(Tokens $tokens, $startIndex, $endIndex)
     {
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replace(
+            if ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+                $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace(
                     '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(?!(?:self|static)::)(\w.*)$~m',
                     '$1\\\\$2',
                     $tokens[$index]->getContent()

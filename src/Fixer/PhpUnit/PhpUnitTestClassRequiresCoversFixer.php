@@ -55,23 +55,23 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
-        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
         $prevIndex = $tokens->getPrevMeaningfulToken($classIndex);
 
         // don't add `@covers` annotation for abstract base classes
-        if ($tokens[$prevIndex]->isGivenKind(T_ABSTRACT)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_ABSTRACT)) {
             return;
         }
 
-        $index = $tokens[$prevIndex]->isGivenKind(T_FINAL) ? $prevIndex : $classIndex;
+        $index = $tokens[$prevIndex]->isGivenKind(\T_FINAL) ? $prevIndex : $classIndex;
 
-        $indent = $tokens[$index - 1]->isGivenKind(T_WHITESPACE)
+        $indent = $tokens[$index - 1]->isGivenKind(\T_WHITESPACE)
             ? Preg::replace('/^.*\R*/', '', $tokens[$index - 1]->getContent())
             : '';
 
         $prevIndex = $tokens->getPrevNonWhitespace($index);
 
-        if ($tokens[$prevIndex]->isGivenKind(T_DOC_COMMENT)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_DOC_COMMENT)) {
             $docIndex = $prevIndex;
             $docContent = $tokens[$docIndex]->getContent();
 
@@ -93,19 +93,19 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         } else {
             $docIndex = $index;
             $tokens->insertAt($docIndex, [
-                new Token([T_DOC_COMMENT, sprintf('/**%s%s */', $this->whitespacesConfig->getLineEnding(), $indent)]),
-                new Token([T_WHITESPACE, sprintf('%s%s', $this->whitespacesConfig->getLineEnding(), $indent)]),
+                new Token([\T_DOC_COMMENT, sprintf('/**%s%s */', $this->whitespacesConfig->getLineEnding(), $indent)]),
+                new Token([\T_WHITESPACE, sprintf('%s%s', $this->whitespacesConfig->getLineEnding(), $indent)]),
             ]);
 
-            if (!$tokens[$docIndex - 1]->isGivenKind(T_WHITESPACE)) {
+            if (!$tokens[$docIndex - 1]->isGivenKind(\T_WHITESPACE)) {
                 $extraNewLines = $this->whitespacesConfig->getLineEnding();
 
-                if (!$tokens[$docIndex - 1]->isGivenKind(T_OPEN_TAG)) {
+                if (!$tokens[$docIndex - 1]->isGivenKind(\T_OPEN_TAG)) {
                     $extraNewLines .= $this->whitespacesConfig->getLineEnding();
                 }
 
                 $tokens->insertAt($docIndex, [
-                    new Token([T_WHITESPACE, $extraNewLines.$indent]),
+                    new Token([\T_WHITESPACE, $extraNewLines.$indent]),
                 ]);
                 ++$docIndex;
             }
@@ -127,6 +127,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $tokens[$docIndex] = new Token([T_DOC_COMMENT, implode('', $lines)]);
+        $tokens[$docIndex] = new Token([\T_DOC_COMMENT, implode('', $lines)]);
     }
 }

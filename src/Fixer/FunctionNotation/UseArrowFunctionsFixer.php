@@ -56,7 +56,7 @@ SAMPLE
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70400 && $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]);
+        return \PHP_VERSION_ID >= 70400 && $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_RETURN]);
     }
 
     /**
@@ -75,7 +75,7 @@ SAMPLE
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION) || !$analyzer->isLambda($index)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
 
@@ -105,7 +105,7 @@ SAMPLE
             if ($tokens[$next]->isGivenKind(CT::T_USE_LAMBDA)) {
                 $useStart = $next;
 
-                if ($tokens[$useStart - 1]->isGivenKind(T_WHITESPACE)) {
+                if ($tokens[$useStart - 1]->isGivenKind(\T_WHITESPACE)) {
                     --$useStart;
                 }
 
@@ -130,11 +130,11 @@ SAMPLE
             $braceOpen = $tokens[$next]->equals('{') ? $next : $tokens->getNextTokenOfKind($next, ['{']);
             $return = $braceOpen + 1;
 
-            if ($tokens[$return]->isGivenKind(T_WHITESPACE)) {
+            if ($tokens[$return]->isGivenKind(\T_WHITESPACE)) {
                 ++$return;
             }
 
-            if (!$tokens[$return]->isGivenKind(T_RETURN)) {
+            if (!$tokens[$return]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
@@ -151,7 +151,7 @@ SAMPLE
 
             $braceClose = $semicolon + 1;
 
-            if ($tokens[$braceClose]->isGivenKind(T_WHITESPACE)) {
+            if ($tokens[$braceClose]->isGivenKind(\T_WHITESPACE)) {
                 ++$braceClose;
             }
 
@@ -203,12 +203,12 @@ SAMPLE
 
         $tokens->clearRange($braceOpen + 1, $return);
 
-        $tokens[$braceOpen] = new Token([T_DOUBLE_ARROW, '=>']);
+        $tokens[$braceOpen] = new Token([\T_DOUBLE_ARROW, '=>']);
 
         if ($useStart) {
             $tokens->clearRange($useStart, $useEnd);
         }
 
-        $tokens[$index] = new Token([T_FN, 'fn']);
+        $tokens[$index] = new Token([\T_FN, 'fn']);
     }
 }

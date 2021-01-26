@@ -122,7 +122,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             if ($this->hasTestPrefix($functionName) && !$this->hasProperTestAnnotation($tokens, $i)) {
                 $newFunctionName = $this->removeTestPrefix($functionName);
-                $tokens[$functionNameIndex] = new Token([T_STRING, $newFunctionName]);
+                $tokens[$functionNameIndex] = new Token([\T_STRING, $newFunctionName]);
             }
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $i);
@@ -132,7 +132,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 $lines = $this->addTestAnnotation($lines, $tokens, $docBlockIndex);
                 $lines = implode('', $lines);
 
-                $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+                $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
             } else {
                 // Create a new docblock if it didn't have one before;
                 $this->createDocBlock($tokens, $docBlockIndex);
@@ -160,7 +160,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $lines = $this->updateDocBlock($tokens, $docBlockIndex);
             $lines = implode('', $lines);
-            $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+            $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
 
             $functionNameIndex = $tokens->getNextMeaningfulToken($i);
             $functionName = $tokens[$functionNameIndex]->getContent();
@@ -170,7 +170,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             }
 
             $newFunctionName = $this->addTestPrefix($functionName);
-            $tokens[$functionNameIndex] = new Token([T_STRING, $newFunctionName]);
+            $tokens[$functionNameIndex] = new Token([\T_STRING, $newFunctionName]);
         }
     }
 
@@ -212,7 +212,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        return $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
+        return $tokens[$index]->isGivenKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
     }
 
     /**
@@ -276,8 +276,8 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
-            new Token([T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @test".$lineEnd."{$originalIndent} */"]),
-            new Token([T_WHITESPACE, $lineEnd.$originalIndent]),
+            new Token([\T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @test".$lineEnd."{$originalIndent} */"]),
+            new Token([\T_WHITESPACE, $lineEnd.$originalIndent]),
         ];
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);
         $tokens->insertAt($index, $toInsert);

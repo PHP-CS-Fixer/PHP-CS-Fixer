@@ -61,7 +61,7 @@ class DocBlocks
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -70,7 +70,7 @@ class DocBlocks
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -86,8 +86,8 @@ class DocBlocks
 
             // ignore inline docblocks
             if (
-                $prevToken->isGivenKind(T_OPEN_TAG)
-                || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
+                $prevToken->isGivenKind(\T_OPEN_TAG)
+                || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(\T_OPEN_TAG))
                 || $prevToken->equalsAny([';', ',', '{', '('])
             ) {
                 continue;
@@ -109,7 +109,7 @@ class DocBlocks
                 $tokens->clearAt($prevIndex);
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent(), $indent)]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $this->fixDocBlock($token->getContent(), $indent)]);
         }
     }
 

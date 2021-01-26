@@ -81,7 +81,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -114,14 +114,14 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
 
-                $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
+                $tokens[$functionName] = new Token([\T_STRING, $functionReplacement['alternativeName']]);
 
                 if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
                     $tokens->insertAt($currIndex + 1, [
-                        new Token([T_LNUMBER, '0']),
+                        new Token([\T_LNUMBER, '0']),
                         new Token(','),
-                        new Token([T_WHITESPACE, ' ']),
-                        new Token([T_STRING, 'getrandmax']),
+                        new Token([\T_WHITESPACE, ' ']),
+                        new Token([\T_STRING, 'getrandmax']),
                         new Token('('),
                         new Token(')'),
                     ]);

@@ -62,7 +62,7 @@ final class VoidReturnFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(T_FUNCTION);
+        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     /**
@@ -80,13 +80,13 @@ final class VoidReturnFixer extends AbstractFixer
     {
         // These cause syntax errors.
         static $excludeFuncNames = [
-            [T_STRING, '__construct'],
-            [T_STRING, '__destruct'],
-            [T_STRING, '__clone'],
+            [\T_STRING, '__construct'],
+            [\T_STRING, '__destruct'],
+            [\T_STRING, '__clone'],
         ];
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -188,9 +188,9 @@ final class VoidReturnFixer extends AbstractFixer
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if (
                 // skip anonymous classes
-                ($tokens[$i]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
+                ($tokens[$i]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
                  // skip lambda functions
-                || ($tokens[$i]->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i))
+                || ($tokens[$i]->isGivenKind(\T_FUNCTION) && $tokensAnalyzer->isLambda($i))
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
@@ -198,11 +198,11 @@ final class VoidReturnFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_YIELD, T_YIELD_FROM])) {
+            if ($tokens[$i]->isGivenKind([\T_YIELD, \T_YIELD_FROM])) {
                 return false; // Generators cannot return void.
             }
 
-            if (!$tokens[$i]->isGivenKind(T_RETURN)) {
+            if (!$tokens[$i]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
@@ -223,8 +223,8 @@ final class VoidReturnFixer extends AbstractFixer
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $tokens->insertAt($endFuncIndex + 1, [
             new Token([CT::T_TYPE_COLON, ':']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_STRING, 'void']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_STRING, 'void']),
         ]);
     }
 
@@ -240,15 +240,15 @@ final class VoidReturnFixer extends AbstractFixer
         do {
             $index = $tokens->getPrevNonWhitespace($index);
         } while ($tokens[$index]->isGivenKind([
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
+            \T_ABSTRACT,
+            \T_FINAL,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return [];
         }
 

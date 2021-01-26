@@ -168,9 +168,9 @@ final class CiConfigurationTest extends TestCase
     {
         $tokens = Tokens::fromCode(file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
-            [T_STRING, 'PHP_VERSION_ID'],
-            [T_IS_GREATER_OR_EQUAL],
-            [T_LNUMBER],
+            [\T_STRING, 'PHP_VERSION_ID'],
+            [\T_IS_GREATER_OR_EQUAL],
+            [\T_LNUMBER],
         ]);
 
         if (null === $sequence) {
@@ -186,9 +186,9 @@ final class CiConfigurationTest extends TestCase
     {
         $tokens = Tokens::fromCode(file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
-            [T_STRING, 'PHP_VERSION_ID'],
+            [\T_STRING, 'PHP_VERSION_ID'],
             '<',
-            [T_LNUMBER],
+            [\T_LNUMBER],
         ]);
 
         if (null === $sequence) {

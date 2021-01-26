@@ -99,7 +99,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $methodAfter = self::$assertionMap[$methodBefore];
 
             for ($index = $startIndex; $index < $endIndex; ++$index) {
-                $methodIndex = $tokens->getNextTokenOfKind($index, [[T_STRING, $methodBefore]]);
+                $methodIndex = $tokens->getNextTokenOfKind($index, [[\T_STRING, $methodBefore]]);
 
                 if (null === $methodIndex) {
                     break;
@@ -117,7 +117,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 );
 
                 if (2 === $argumentsCount || 3 === $argumentsCount) {
-                    $tokens[$methodIndex] = new Token([T_STRING, $methodAfter]);
+                    $tokens[$methodIndex] = new Token([\T_STRING, $methodAfter]);
                 }
 
                 $index = $methodIndex;

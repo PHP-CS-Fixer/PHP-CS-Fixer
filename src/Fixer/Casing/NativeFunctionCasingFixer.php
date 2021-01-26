@@ -50,7 +50,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -66,7 +66,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             // test if we are at a function all
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -78,14 +78,14 @@ final class NativeFunctionCasingFixer extends AbstractFixer
             }
 
             $functionNamePrefix = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionNamePrefix]->isGivenKind([T_DOUBLE_COLON, T_NEW, T_OBJECT_OPERATOR, T_FUNCTION, CT::T_RETURN_REF])) {
+            if ($tokens[$functionNamePrefix]->isGivenKind([\T_DOUBLE_COLON, \T_NEW, \T_OBJECT_OPERATOR, \T_FUNCTION, CT::T_RETURN_REF])) {
                 continue;
             }
 
-            if ($tokens[$functionNamePrefix]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$functionNamePrefix]->isGivenKind(\T_NS_SEPARATOR)) {
                 // skip if the call is to a constructor or to a function in a namespace other than the default
                 $prev = $tokens->getPrevMeaningfulToken($functionNamePrefix);
-                if ($tokens[$prev]->isGivenKind([T_STRING, T_NEW])) {
+                if ($tokens[$prev]->isGivenKind([\T_STRING, \T_NEW])) {
                     continue;
                 }
             }
@@ -96,7 +96,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token([T_STRING, $nativeFunctionNames[$lower]]);
+            $tokens[$index] = new Token([\T_STRING, $nativeFunctionNames[$lower]]);
             $index = $next;
         }
     }

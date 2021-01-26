@@ -64,7 +64,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
         $argumentFlagIndex = null;
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            if ($tokens[$i]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 continue;
             }
 
@@ -76,7 +76,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
         }
 
         // check if second argument is candidate
-        if (null === $argumentFlagIndex || !$tokens[$argumentFlagIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+        if (null === $argumentFlagIndex || !$tokens[$argumentFlagIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             return;
         }
 
@@ -108,7 +108,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
         $newContent = $binPrefix.$contentQuote.$mode.$contentQuote;
 
         if ($content !== $newContent) {
-            $tokens[$argumentFlagIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, $newContent]);
+            $tokens[$argumentFlagIndex] = new Token([\T_CONSTANT_ENCAPSED_STRING, $newContent]);
         }
     }
 }

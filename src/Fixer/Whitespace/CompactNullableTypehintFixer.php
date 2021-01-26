@@ -56,9 +56,9 @@ final class CompactNullableTypehintFixer extends AbstractFixer
     {
         static $typehintKinds = [
             CT::T_ARRAY_TYPEHINT,
-            T_CALLABLE,
-            T_NS_SEPARATOR,
-            T_STRING,
+            \T_CALLABLE,
+            \T_NS_SEPARATOR,
+            \T_STRING,
         ];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {

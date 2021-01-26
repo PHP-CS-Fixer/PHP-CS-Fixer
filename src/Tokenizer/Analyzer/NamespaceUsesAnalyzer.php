@@ -41,7 +41,7 @@ final class NamespaceUsesAnalyzer
         $uses = [];
 
         foreach ($useIndexes as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+            $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
             $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
             if ($analysis) {
                 $uses[] = $analysis;
@@ -77,18 +77,18 @@ final class NamespaceUsesAnalyzer
                 $type = NamespaceUseAnalysis::TYPE_CONSTANT;
             }
 
-            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(T_USE)) {
+            if ($token->isWhitespace() || $token->isComment() || $token->isGivenKind(\T_USE)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_STRING)) {
+            if ($token->isGivenKind(\T_STRING)) {
                 $shortName = $token->getContent();
                 if (!$aliased) {
                     $fullName .= $shortName;
                 }
-            } elseif ($token->isGivenKind(T_NS_SEPARATOR)) {
+            } elseif ($token->isGivenKind(\T_NS_SEPARATOR)) {
                 $fullName .= $token->getContent();
-            } elseif ($token->isGivenKind(T_AS)) {
+            } elseif ($token->isGivenKind(\T_AS)) {
                 $aliased = true;
             }
         }

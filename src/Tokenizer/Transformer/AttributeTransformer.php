@@ -46,7 +46,7 @@ final class AttributeTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, $index)
     {
-        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
             return;
         }
 

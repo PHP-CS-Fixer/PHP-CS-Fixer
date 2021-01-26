@@ -201,7 +201,7 @@ final class ConfigurationResolver
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($cacheFile),
                     new Signature(
-                        PHP_VERSION,
+                        \PHP_VERSION,
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
@@ -452,7 +452,7 @@ final class ConfigurationResolver
                         throw new \InvalidArgumentException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                     }
 
-                    @trigger_error($message, E_USER_DEPRECATED);
+                    @trigger_error($message, \E_USER_DEPRECATED);
                 }
 
                 $this->progress = $progressType;
@@ -603,7 +603,7 @@ final class ConfigurationResolver
         } elseif (!is_file($path[0])) {
             $configDir = $path[0];
         } else {
-            $dirName = pathinfo($path[0], PATHINFO_DIRNAME);
+            $dirName = pathinfo($path[0], \PATHINFO_DIRNAME);
             $configDir = $dirName ?: $path[0];
         }
 
@@ -702,7 +702,7 @@ final class ConfigurationResolver
 
         if ('{' === $rules[0]) {
             $rules = json_decode($rules, true);
-            if (JSON_ERROR_NONE !== json_last_error()) {
+            if (\JSON_ERROR_NONE !== json_last_error()) {
                 throw new InvalidConfigurationException(sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
             }
 
@@ -792,7 +792,7 @@ final class ConfigurationResolver
                     throw new \RuntimeException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
                 }
 
-                @trigger_error($message, E_USER_DEPRECATED);
+                @trigger_error($message, \E_USER_DEPRECATED);
             }
         }
     }
@@ -944,7 +944,7 @@ final class ConfigurationResolver
             throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
         }
 
-        @trigger_error($message, E_USER_DEPRECATED);
+        @trigger_error($message, \E_USER_DEPRECATED);
 
         return false;
     }
