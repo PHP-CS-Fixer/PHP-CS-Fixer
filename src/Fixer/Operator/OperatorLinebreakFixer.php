@@ -51,6 +51,8 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configuratio
      */
     private $operators = [];
 
+    private $ignoredOperators = [];
+
     /**
      * {@inheritdoc}
      */
@@ -74,8 +76,41 @@ function foo() {
 ',
                     ['position' => 'end']
                 ),
+                new CodeSample(
+                    '<?php
+function foo() {
+    $bar->$baz
+        ->commit();
+
+    return $bar
+        || $baz;
+}
+',
+                    ['ignored_operators' => ['->']]
+                ),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_booleans', 'whether to limit operators to only boolean ones'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('position', 'whether to place operators at the beginning or at the end of the line'))
+                ->setAllowedValues(['beginning', 'end'])
+                ->setDefault($this->position)
+                ->getOption(),
+            (new FixerOptionBuilder('ignored_operators', 'Which operators to ignore'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -84,7 +119,6 @@ function foo() {
     public function configure(array $configuration = null)
     {
         parent::configure($configuration);
-
         $this->operators = self::BOOLEAN_OPERATORS;
         if (!$this->configuration['only_booleans']) {
             $this->operators = array_merge($this->operators, self::NON_BOOLEAN_OPERATORS);
@@ -94,6 +128,7 @@ function foo() {
             }
         }
         $this->position = $this->configuration['position'];
+        $this->ignoredOperators = $this->configuration['ignored_operators'];
     }
 
     /**
@@ -118,6 +153,10 @@ function foo() {
                 ->setAllowedValues(['beginning', 'end'])
                 ->setDefault($this->position)
                 ->getOption(),
+            (new FixerOptionBuilder('ignored_operators', 'Which operators to ignore'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
         ]);
     }
 
@@ -136,6 +175,10 @@ function foo() {
             --$index;
 
             if (!$tokens[$index]->equalsAny($this->operators, false)) {
+                continue;
+            }
+
+            if (\in_array($tokens[$index]->getContent(), $this->ignoredOperators, true)) {
                 continue;
             }
 

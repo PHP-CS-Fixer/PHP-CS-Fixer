@@ -190,6 +190,114 @@ return $foo
                 prepare_value:
                 $objectsPool[$value] = [$id = \count($objectsPool)];
         '];
+
+        yield 'handle ignored operator with -> at the beginning' => [
+            '<?php
+class ClassA
+{
+    public function foo($bar, $baz)
+    {
+        $a = $bar
+            || $baz;
+        return $this;
+    }
+
+    public function bar()
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return $this;
+    }
+}
+$class = new ClassA();
+$res = $class->foo()->
+    bar()->
+    baz();
+',
+            '<?php
+class ClassA
+{
+    public function foo($bar, $baz)
+    {
+        $a = $bar ||
+            $baz;
+        return $this;
+    }
+
+    public function bar()
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return $this;
+    }
+}
+$class = new ClassA();
+$res = $class->foo()->
+    bar()->
+    baz();
+',
+            ['ignored_operators' => ['->']],
+        ];
+
+        yield 'handle ignored operator with -> at the end' => [
+            '<?php
+class ClassA
+{
+    public function foo($bar, $baz)
+    {
+        $a = $bar
+            || $baz;
+        return $this;
+    }
+
+    public function bar()
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return $this;
+    }
+}
+$class = new ClassA();
+$res = $class->foo()
+    ->bar()
+    ->baz();
+',
+            '<?php
+class ClassA
+{
+    public function foo($bar, $baz)
+    {
+        $a = $bar ||
+            $baz;
+        return $this;
+    }
+
+    public function bar()
+    {
+        return $this;
+    }
+
+    public function baz()
+    {
+        return $this;
+    }
+}
+$class = new ClassA();
+$res = $class->foo()
+    ->bar()
+    ->baz();
+',
+            ['ignored_operators' => ['->']],
+        ];
     }
 
     /**
