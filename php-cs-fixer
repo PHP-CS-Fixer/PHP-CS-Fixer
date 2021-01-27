@@ -35,8 +35,6 @@ if (defined('HHVM_VERSION_ID')) {
     if (defined('PHP_VERSION_ID') && \PHP_VERSION_ID === 80000) {
         fwrite(STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
         fwrite(STDERR, "Update PHP version to unblock execution.\n");
-
-        exit(1);
     }
 
     if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {
