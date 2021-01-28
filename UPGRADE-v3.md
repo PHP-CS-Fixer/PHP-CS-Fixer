@@ -8,8 +8,8 @@ CLI options
 
 | 2.x              | 3.0             | Description                                     | Note                                   |
 | ---------------- | --------------- | ----------------------------------------------- | -------------------------------------- |
-| --diff-format    | --diff-format   | Type of differ                                  | Allowed value `sbd` was removed,       |
-|                  |                 |                                                 | new default is `udiff`                 |
+| --diff-format    |                 | Type of differ                                  | Option was removed, all diffs are now  |
+|                  |                 |                                                 | `udiff`                                |
 | --show-progress  | --show-progress | Type of progress indicator                      | Allowed values were modified:          |
 |                  |                 |                                                 | `run-in` and `estimating` was removed, |
 |                  |                 |                                                 | `estimating-max` was removed to `dots` |
