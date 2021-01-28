@@ -86,19 +86,13 @@ Rule | Option | Old value | New value
 `function_to_constant` | `functions` | `['get_class', 'php_sapi_name', 'phpversion', 'pi']` | `['get_called_class', 'get_class', 'php_sapi_name', 'phpversion', 'pi']`
 `method_argument_space` | `on_multiline` | `'ignore'` | `'ensure_fully_multiline'`
 `native_constant_invocation` | `strict` | `false` | `true`
-`native_function_casing` | `include` | `@internal` | `@compiler_optimized`
-`native_function_invocation` | `include` | `@internal` | `@compiler_optimized`
+`native_function_casing` | `include` | `'@internal'` | `'@compiler_optimized'`
+`native_function_invocation` | `include` | `'@internal'` | `'@compiler_optimized'`
 `native_function_invocation` | `strict` | `false` | `true`
 `non_printable_character` | `use_escape_sequences_in_strings` | `false` | `true` (when running on PHP 7.0 and up)
-`php_unit_dedicate_assert` | `target` | `5.0` | `newest`
+`php_unit_dedicate_assert` | `target` | `'5.0'` | `'newest'`
 `phpdoc_align` | `tags` | `['param', 'return', 'throws', 'type', 'var']` | `['method', 'param', 'property', 'return', 'throws', 'type', 'var']`
 `phpdoc_scalar` | `types` | `['boolean', 'double', 'integer', 'real', 'str']` | `['boolean', 'callback', 'double', 'integer', 'real', 'str']`
-
-### Updated rule sets
-
-- `@PHPUnit50MigrationRiskySet`
-- `@SymfonyRiskySet`
-- `@SymfonySet`
 
 ### Removed rule sets
 
