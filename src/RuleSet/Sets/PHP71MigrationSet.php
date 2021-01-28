@@ -23,7 +23,7 @@ final class PHP71MigrationSet extends AbstractRuleSetDescription
     {
         return [
             '@PHP70Migration' => true,
-            'list_syntax' => ['syntax' => 'short'],
+            'list_syntax' => true,
             'visibility_required' => [
                 'elements' => [
                     'const',

@@ -54,13 +54,13 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         return new FixerDefinition(
             'PHP arrays should be declared using the configured syntax.',
             [
-                new CodeSample(
-                    "<?php\n[1,2];\n"
-                ),
                 new VersionSpecificCodeSample(
                     "<?php\narray(1,2);\n",
-                    new VersionSpecification(50400),
-                    ['syntax' => 'short']
+                    new VersionSpecification(50400)
+                ),
+                new CodeSample(
+                    "<?php\n[1,2];\n",
+                    ['syntax' => 'long']
                 ),
             ]
         );
@@ -105,7 +105,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` array syntax.'))
                 ->setAllowedValues(['long', 'short'])
-                ->setDefault('long') // TODO @3.0 change to short
+                ->setDefault('short')
                 ->getOption(),
         ]);
     }

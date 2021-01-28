@@ -54,13 +54,13 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
             'List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\n[\$sample] = \$array;\n",
+                    "<?php\nlist(\$sample) = \$array;\n",
                     new VersionSpecification(70100)
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nlist(\$sample) = \$array;\n",
+                    "<?php\n[\$sample] = \$array;\n",
                     new VersionSpecification(70100),
-                    ['syntax' => 'short']
+                    ['syntax' => 'long']
                 ),
             ]
         );
@@ -108,7 +108,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('syntax', 'Whether to use the `long` or `short` `list` syntax.'))
                 ->setAllowedValues(['long', 'short'])
-                ->setDefault('long') // TODO @3.0 change to short
+                ->setDefault('short')
                 ->getOption(),
         ]);
     }
