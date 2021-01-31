@@ -22,7 +22,7 @@ final class PHP54MigrationSet extends AbstractRuleSetDescription
     public function getRules()
     {
         return [
-            'array_syntax' => ['syntax' => 'short'],
+            'array_syntax' => true,
         ];
     }
 

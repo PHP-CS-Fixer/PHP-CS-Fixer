@@ -29,7 +29,7 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([]);
         $this->doTest(
-            '<?php $a = list($a, $b) = $a; list($b) = $a;',
+            '<?php $a = [$a, $b] = $a; [$b] = $a;',
             '<?php $a = list($a, $b) = $a; [$b] = $a;'
         );
     }

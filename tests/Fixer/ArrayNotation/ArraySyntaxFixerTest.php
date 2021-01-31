@@ -37,8 +37,8 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     {
         $this->fixer->configure([]);
         $this->doTest(
-            '<?php $a = array(); $b = array();',
-            '<?php $a = array(); $b = [];'
+            '<?php $a = []; $b = [];',
+            '<?php $a = []; $b = array();'
         );
     }
 
