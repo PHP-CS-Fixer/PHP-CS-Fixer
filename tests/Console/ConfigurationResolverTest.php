@@ -20,7 +20,6 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Tests\Fixtures\DeprecatedFixer;
-use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -1022,7 +1021,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $options = $definition->getOptions();
         static::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'diff-format', 'format', 'stop-on-violation', 'show-progress'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -1035,7 +1034,6 @@ final class ConfigurationResolverTest extends TestCase
             'rules' => 'php_unit_construct',
             'using-cache' => 'no',
             'diff' => true,
-            'diff-format' => 'udiff',
             'format' => 'json',
             'stop-on-violation' => true,
         ]);
@@ -1053,38 +1051,16 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @param string           $expected
      * @param null|bool|string $diffConfig
-     * @param null|string      $differConfig
      *
      * @dataProvider provideDifferCases
      */
-    public function testResolveDiffer($expected, $diffConfig, $differConfig = null)
+    public function testResolveDiffer($expected, $diffConfig)
     {
         $resolver = $this->createConfigurationResolver([
             'diff' => $diffConfig,
-            'diff-format' => $differConfig,
         ]);
 
         static::assertInstanceOf($expected, $resolver->getDiffer());
-    }
-
-    public function testCustomDiffer()
-    {
-        $resolver = $this->createConfigurationResolver([
-            'diff-format' => FakeDiffer::class,
-        ]);
-
-        static::assertInstanceOf(FakeDiffer::class, $resolver->getDiffer());
-    }
-
-    public function testCustomDifferMustBeAString()
-    {
-        $resolver = $this->createConfigurationResolver([
-            'diff-format' => new FakeDiffer(),
-        ]);
-
-        $this->expectExceptionMessage('"diff-format" must be a string, "object" given');
-
-        $resolver->getDiffer();
     }
 
     public function provideDifferCases()
@@ -1102,34 +1078,7 @@ final class ConfigurationResolverTest extends TestCase
                 \PhpCsFixer\Differ\UnifiedDiffer::class,
                 true,
             ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                true,
-                'udiff',
-            ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                false,
-                'udiff',
-            ],
-            [
-                \PhpCsFixer\Differ\UnifiedDiffer::class,
-                null,
-                'udiff',
-            ],
         ];
-    }
-
-    public function testResolveUnknownDiffer()
-    {
-        $resolver = $this->createConfigurationResolver([
-            'diff-format' => 'XXX',
-        ]);
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('#^"diff\-format" must be any of "null", "udiff", got "XXX"\.$#');
-
-        $resolver->getDiffer();
     }
 
     public function testResolveConfigFileOverridesDefault()

@@ -119,7 +119,6 @@ final class ConfigurationResolver
         'cache-file' => null,
         'config' => null,
         'diff' => null,
-        'diff-format' => null,
         'dry-run' => null,
         'format' => null,
         'path' => [],
@@ -265,38 +264,10 @@ final class ConfigurationResolver
     public function getDiffer()
     {
         if (null === $this->differ) {
-            $mapper = [
-                'null' => static function () { return new NullDiffer(); },
-                'udiff' => static function () { return new UnifiedDiffer(); },
-            ];
-
-            if (!$this->options['diff']) {
-                $defaultOption = 'null';
+            if ($this->options['diff']) {
+                $this->differ = new UnifiedDiffer();
             } else {
-                $defaultOption = 'udiff';
-            }
-
-            $option = isset($this->options['diff-format'])
-                ? $this->options['diff-format']
-                : $defaultOption;
-
-            if (!\is_string($option)) {
-                throw new InvalidConfigurationException(sprintf(
-                    '"diff-format" must be a string, "%s" given.',
-                    \gettype($option)
-                ));
-            }
-
-            if (is_subclass_of($option, DifferInterface::class)) {
-                $this->differ = new $option();
-            } elseif (!isset($mapper[$option])) {
-                throw new InvalidConfigurationException(sprintf(
-                    '"diff-format" must be any of "%s", got "%s".',
-                    implode('", "', array_keys($mapper)),
-                    $option
-                ));
-            } else {
-                $this->differ = $mapper[$option]();
+                $this->differ = new NullDiffer();
             }
         }
 
