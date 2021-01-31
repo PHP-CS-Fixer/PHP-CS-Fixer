@@ -14,6 +14,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
@@ -64,10 +65,6 @@ abstract class AbstractTransformerTestCase extends TestCase
         static::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\AbstractTransformer::getCustomTokens is deprecated and will be removed in 3.0.
-     */
     public function testGetCustomTokens()
     {
         $name = $this->transformer->getName();
@@ -120,7 +117,8 @@ abstract class AbstractTransformerTestCase extends TestCase
     protected function doTest($source, array $expectedTokens = [], array $observedKindsOrPrototypes = [])
     {
         Tokens::clearCache();
-        $tokens = Tokens::fromCode($source);
+        $tokens = new TokensWithObservedTransformers();
+        $tokens->setCode($source);
 
         static::assertSame(
             \count($expectedTokens),
@@ -135,6 +133,35 @@ abstract class AbstractTransformerTestCase extends TestCase
             ),
             'Number of expected tokens does not match actual token count.'
         );
+
+        $customTokensOfTransformer = $this->transformer->getCustomTokens();
+        $transformerName = $this->transformer->getName();
+
+        foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
+            foreach ($modificationsOfTransformer as $modification) {
+                if ($appliedTransformerName === $transformerName) {
+                    static::assertContains(
+                        $modification,
+                        $customTokensOfTransformer,
+                        sprintf(
+                            'Transformation into "%s" must be allowed in self-documentation of the Transformer, currently allowed custom tokens are: %s',
+                            Token::getNameForId($modification),
+                            implode(', ', array_map(function ($ct) { return Token::getNameForId($ct); }, $customTokensOfTransformer))
+                        )
+                    );
+                } else {
+                    static::assertNotContains(
+                        $modification,
+                        $customTokensOfTransformer,
+                        sprintf(
+                            'Transformation into "%s" must NOT be applied by other Transformer than "%s".',
+                            Token::getNameForId($modification),
+                            $transformerName
+                        )
+                    );
+                }
+            }
+        }
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {

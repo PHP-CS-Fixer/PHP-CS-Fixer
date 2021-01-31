@@ -88,7 +88,7 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [CT::T_USE_TRAIT, CT::T_USE_LAMBDA];
     }

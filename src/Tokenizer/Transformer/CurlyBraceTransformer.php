@@ -61,7 +61,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [
             CT::T_CURLY_CLOSE,

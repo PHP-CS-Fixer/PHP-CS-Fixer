@@ -43,15 +43,5 @@ abstract class AbstractTransformer implements TransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
-    {
-        @trigger_error(sprintf('%s is deprecated and will be removed in 3.0.', __METHOD__), E_USER_DEPRECATED);
-
-        return $this->getDeprecatedCustomTokens();
-    }
-
-    /**
-     * @return int[]
-     */
-    abstract protected function getDeprecatedCustomTokens();
+    abstract public function getCustomTokens();
 }

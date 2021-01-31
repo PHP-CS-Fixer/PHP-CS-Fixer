@@ -71,6 +71,7 @@
             "tests/Test/IntegrationCaseFactoryInterface.php",
             "tests/Test/InternalIntegrationCaseFactory.php",
             "tests/Test/IsIdenticalConstraint.php",
+            "tests/Test/TokensWithObservedTransformers.php",
             "tests/TestCase.php"
         ]
     },

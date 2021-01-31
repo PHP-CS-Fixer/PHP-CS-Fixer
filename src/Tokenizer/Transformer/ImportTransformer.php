@@ -60,7 +60,7 @@ final class ImportTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
     }

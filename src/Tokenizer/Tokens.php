@@ -276,6 +276,7 @@ class Tokens extends \SplFixedArray
             ],
         ];
 
+        // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_ATTRIBUTE')) {
             $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
                 'start' => [T_ATTRIBUTE, '#['],
@@ -1092,7 +1093,7 @@ class Tokens extends \SplFixedArray
         // clear memory
         $this->setSize(0);
 
-        $tokens = \defined('TOKEN_PARSE')
+        $tokens = \defined('TOKEN_PARSE') // @TODO: drop condition when PHP 7.0+ is required
             ? token_get_all($code, TOKEN_PARSE)
             : token_get_all($code);
 
@@ -1102,8 +1103,7 @@ class Tokens extends \SplFixedArray
             $this[$index] = new Token($token);
         }
 
-        $transformers = Transformers::create();
-        $transformers->transform($this);
+        $this->applyTransformers();
 
         $this->foundTokenKinds = [];
 
@@ -1368,6 +1368,15 @@ class Tokens extends \SplFixedArray
         $this->warnPhp8SplFixerArrayChange(__METHOD__);
 
         return parent::valid();
+    }
+
+    /**
+     * @internal
+     */
+    protected function applyTransformers()
+    {
+        $transformers = Transformers::create();
+        $transformers->transform($this);
     }
 
     private function warnPhp8SplFixerArrayChange($method)
