@@ -63,6 +63,7 @@ Rule | Option | Change
 `binary_operator_spaces`                 | `align_double_arrow`                         | option was removed, use `operators` instead
 `binary_operator_spaces`                 | `align_equals`                               | option was removed use `operators` instead
 `blank_line_before_statement`            | `statements: die`                            | option `die` was removed from `statements`, use `exit` instead
+`class_attributes_separation`            | `elements`                                   | option does no longer accept flat array as a value, use map instead
 `class_definition`                       | `multiLineExtendsEachSingleLine`             | option was renamed to  `multi_line_extends_each_single_line`
 `class_definition`                       | `singleItemSingleLine`                       | option was renamed to  `single_item_single_line`
 `class_definition`                       | `singleLine`                                 | option was renamed to  `single_line`
