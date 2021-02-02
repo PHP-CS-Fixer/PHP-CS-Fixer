@@ -25,7 +25,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Make sure there is one blank line above and below class elements.
@@ -190,17 +189,6 @@ class Sample
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `none|one` values.'))
-                ->setNormalizer(static function (Options $options, $values) {
-                    $deprecated = array_intersect($values, self::SUPPORTED_TYPES);
-                    if (\count($deprecated) > 0) {
-                        $message = 'A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.';
-                        @trigger_error($message, E_USER_DEPRECATED);
-
-                        return array_fill_keys($deprecated, self::SPACING_ONE);
-                    }
-
-                    return $values;
-                })
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function ($option) {
                     $deprecated = array_intersect($option, self::SUPPORTED_TYPES);
