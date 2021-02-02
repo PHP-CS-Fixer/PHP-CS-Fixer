@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-26T12:41:04Z
+
+[![Coverage Status](https://coveralls.io/builds/36600825/badge)](https://coveralls.io/builds/36600825)
+
+Coverage remained the same at 91.929% when pulling **4429dc7fa7b40f157754deebb809a7f4b816f897 on mvorisek:no_fail_fast** into **ea98c014c1bc2f94fdb672346b63252bc66b18ab on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-01-29T16:02:12Z
+
+@keradus let's merge this
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-02-02T08:27:44Z
+
+@mvorisek , no need to be pushy.
+this is one of topics we are discussing in core team.
