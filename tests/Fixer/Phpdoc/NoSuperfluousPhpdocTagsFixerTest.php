@@ -1698,4 +1698,38 @@ class Foo {
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80($expected, $input = null, array $config = [])
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp80Cases()
+    {
+        return [
+            'static return' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo): static {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @return static
+     */
+    public function foo($foo): static {}
+}',
+            ],
+        ];
+    }
 }
