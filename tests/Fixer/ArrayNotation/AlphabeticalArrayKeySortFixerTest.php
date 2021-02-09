@@ -19,18 +19,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\Comment\RemoveCommentsFixer
  */
-final class AlphabeticalArraySortFixerTest extends AbstractFixerTestCase
+final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string|null $input
-     * @param array $config
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFixCases
      */
     public function testFix($expected, $input = null, array $config = [])
     {
-        if (count($config) !== 0) {
+        if (0 !== \count($config)) {
             $this->fixer->configure($config);
         }
 
