@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @author Abdurrahman Uymaz <abdurrahman.uymaz@mobian.global>
  * @author Lars Grevelink <lars.grevelink@mobian.global>
  */
 final class AlphabeticalArraySortFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
