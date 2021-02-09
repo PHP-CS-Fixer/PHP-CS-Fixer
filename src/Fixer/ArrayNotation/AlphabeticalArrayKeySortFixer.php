@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -297,6 +298,6 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
             return true;
         }
 
-        return !preg_match('/^(\'|").+(\'|")$/i', $value);
+        return !Preg::match('/^(\'|").+(\'|")$/i', $value);
     }
 }
