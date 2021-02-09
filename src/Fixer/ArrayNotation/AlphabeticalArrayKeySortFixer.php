@@ -56,6 +56,14 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
+    public function isRisky()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens)
     {
         return $tokens->isTokenKindFound(T_ARRAY) || $tokens->isTokenKindFound(CT::T_ARRAY_SQUARE_BRACE_OPEN);
