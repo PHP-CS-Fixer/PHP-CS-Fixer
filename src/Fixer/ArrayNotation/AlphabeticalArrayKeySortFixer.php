@@ -172,9 +172,12 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Calculation sorting score base on configuration.
      *
+     * @param string $a
+     * @param string $b
+     *
      * @return int
      */
-    protected function sortByKey(string $a, string $b)
+    protected function sortByKey($a, $b)
     {
         $sortMode = $this->configuration['sort_special_key_mode'];
 
@@ -198,9 +201,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Get the key and the end position index.
      *
+     * @param int $startIndex
+     *
      * @return array
      */
-    private function getKeyAndEndPosition(Tokens $clonedTokens, int $startIndex)
+    private function getKeyAndEndPosition(Tokens $clonedTokens, $startIndex)
     {
         $prevItemEndIndex = $clonedTokens->getPrevMeaningfulToken($clonedTokens->getPrevMeaningfulToken($startIndex));
         $prevItemEndToken = $clonedTokens[$prevItemEndIndex];
@@ -256,9 +261,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Sort nested array tokens and return the end index.
      *
+     * @param int $index
+     *
      * @return int
      */
-    private function sortNestedTokens(Tokens $clonedTokens, int $index)
+    private function sortNestedTokens(Tokens $clonedTokens, $index)
     {
         list($nestedTokenStartIndex, $nestedTokenEndIndex) = $this->getArrayIndexes($clonedTokens, $index);
 
@@ -278,9 +285,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Get start and end index of an array.
      *
+     * @param int $startIndex
+     *
      * @return array
      */
-    private function getArrayIndexes(Tokens $tokens, int $startIndex)
+    private function getArrayIndexes(Tokens $tokens, $startIndex)
     {
         if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
             $startParentheses = $tokens->getNextTokenOfKind($startIndex, ['(']);
@@ -298,9 +307,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Checks if the token represents a special key.
      *
+     * @param string $value
+     *
      * @return bool
      */
-    private function isSpecialKey(string $value)
+    private function isSpecialKey($value)
     {
         $tokens = Tokens::fromCode($value);
 
