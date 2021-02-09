@@ -159,6 +159,8 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     }
 
     /**
+     * Calculation sorting score base on configuration.
+     *
      * @return int
      */
     protected function sortByKey(string $a, string $b)
@@ -299,6 +301,11 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         ];
     }
 
+    /**
+     * Checks if the token represents a special key.
+     *
+     * @return bool
+     */
     private function isSpecialKey(string $value)
     {
         $tokens = Tokens::fromCode($value);
