@@ -4,6 +4,10 @@ Rule ``alphabetical_array_key_sort``
 
 Sorts keyed array by alphabetical order.
 
+.. warning:: Using this rule is risky.
+
+   Risky when the order of the array has an impact on the code execution.
+
 Configuration
 -------------
 
