@@ -49,7 +49,9 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     "<?php\n\$sample = array('b' => '2', 'a' => '1', foo() => 'bar', 'd' => '5');\n",
                     ['sort_special_key_mode' => 'special_case_on_top']
                 ),
-            ]
+            ],
+            null,
+            'Risky when the order of the array has an impact on the code execution.'
         );
     }
 
