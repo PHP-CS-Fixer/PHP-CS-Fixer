@@ -17,7 +17,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\RemoveCommentsFixer
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\AlphabeticalArrayKeySortFixer
  */
 final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
 {
