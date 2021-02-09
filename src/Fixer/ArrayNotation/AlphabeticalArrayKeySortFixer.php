@@ -145,11 +145,10 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
                     }
                 }
 
-                $sortedContentKeys = array_keys($content);
+                $contentKeys = array_keys($content);
+                $sortedContentKeys = $this->sortContentKeys($contentKeys);
 
-                usort($sortedContentKeys, [$this, 'sortByKey']);
-
-                $sorting = array_combine(array_keys($content), $sortedContentKeys);
+                $sorting = array_combine($contentKeys, $sortedContentKeys);
 
                 if (0 === \count($content)) {
                     $tokens->overrideRange(0, $tokens->count() - 1, $clonedTokens);
@@ -172,30 +171,34 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
     /**
      * Calculation sorting score base on configuration.
      *
-     * @param string $a
-     * @param string $b
-     *
-     * @return int
+     * @return array
      */
-    protected function sortByKey($a, $b)
+    protected function sortContentKeys(array $contentKeys)
     {
         $sortMode = $this->configuration['sort_special_key_mode'];
+        $specialSortDirection = ('special_case_on_top' === $sortMode) ? -1 : 1;
 
-        $aIsSpecial = $this->isSpecialKey($a);
-        $bIsSpecial = $this->isSpecialKey($b);
+        usort($contentKeys, function ($a, $b) use ($contentKeys, $specialSortDirection) {
+            $aIsSpecial = $this->isSpecialKey($a);
+            $bIsSpecial = $this->isSpecialKey($b);
 
-        // We do not want to sort special keys in any way.
-        if ($aIsSpecial && $bIsSpecial) {
-            return 0;
-        }
+            if ($aIsSpecial && $bIsSpecial) {
+                // We want to ensure that "special keys" keep their previous order among eachother
+                return array_search($a, $contentKeys) - array_search($b, $contentKeys);
+            }
 
-        if ($aIsSpecial || $bIsSpecial) {
-            $sortOrder = ('special_case_on_top' === $sortMode) ? -1 : 1;
+            if ($aIsSpecial) {
+                return $specialSortDirection;
+            }
 
-            return $aIsSpecial ? $sortOrder : -$sortOrder;
-        }
+            if ($bIsSpecial) {
+                return -$specialSortDirection;
+            }
 
-        return strcmp($a, $b);
+            return strcmp($a, $b);
+        });
+
+        return $contentKeys;
     }
 
     /**
