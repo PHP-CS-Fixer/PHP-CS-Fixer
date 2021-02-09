@@ -170,32 +170,15 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
         $aIsSpecial = $this->isSpecialKey($a);
         $bIsSpecial = $this->isSpecialKey($b);
 
-        if ('special_case_on_top' === $sortMode) {
-            if ($aIsSpecial && $bIsSpecial) {
-                return 0;
-            }
-
-            if ($aIsSpecial) {
-                return -1;
-            }
-
-            if ($bIsSpecial) {
-                return 1;
-            }
+        // We do not want to sort special keys in any way.
+        if ($aIsSpecial && $bIsSpecial) {
+            return 0;
         }
 
-        if ('special_case_on_bottom' === $sortMode) {
-            if ($aIsSpecial && $bIsSpecial) {
-                return 0;
-            }
+        if ($aIsSpecial || $bIsSpecial) {
+            $sortOrder = ('special_case_on_top' === $sortMode) ? -1 : 1;
 
-            if ($aIsSpecial) {
-                return 1;
-            }
-
-            if ($bIsSpecial) {
-                return -1;
-            }
+            return $aIsSpecial ? $sortOrder : -$sortOrder;
         }
 
         return strcmp($a, $b);
