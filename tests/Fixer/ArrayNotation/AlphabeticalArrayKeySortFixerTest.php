@@ -233,7 +233,7 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
     public function provideFixPhp70Cases()
     {
         return [
-             [
+            [
                 '<?php [
                     "b" => 2,
                     things()() => Arr::get($something, $else) . Arr::get($different, $things),

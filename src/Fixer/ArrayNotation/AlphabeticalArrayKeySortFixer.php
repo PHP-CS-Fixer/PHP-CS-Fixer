@@ -184,7 +184,7 @@ final class AlphabeticalArrayKeySortFixer extends AbstractFixer implements Confi
 
             if ($aIsSpecial && $bIsSpecial) {
                 // We want to ensure that "special keys" keep their previous order among eachother
-                return array_search($a, $contentKeys) - array_search($b, $contentKeys);
+                return array_search($a, $contentKeys, true) - array_search($b, $contentKeys, true);
             }
 
             if ($aIsSpecial) {
