@@ -86,18 +86,6 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
                 ],
             ],
             [
-                '<?php [
-                    "b" => 2,
-                    things()() => Arr::get($something, $else) . Arr::get($different, $things),
-                    Arr::get($something, $else) . Arr::get($different, $things) => 1,
-                ];',
-                '<?php [
-                    things()() => Arr::get($something, $else) . Arr::get($different, $things),
-                    "b" => 2,
-                    Arr::get($something, $else) . Arr::get($different, $things) => 1,
-                ];',
-            ],
-            [
                 '<?php array("a" => "value2", "b" => "value3", "c" => "value1");',
                 '<?php array("c" => "value1", "a" => "value2", "b" => "value3");',
             ],
@@ -225,6 +213,36 @@ final class AlphabeticalArrayKeySortFixerTest extends AbstractFixerTestCase
 
                     // insert comment here.
                     "a" => $date->copy()->addDays(60)->setTime(12, 0, 0)->toDateTimeString(),
+                ];',
+            ],
+        ];
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixPhp70Cases
+     * @requires PHP 7.0
+     */
+    public function testFixPhp70($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp70Cases()
+    {
+        return [
+             [
+                '<?php [
+                    "b" => 2,
+                    things()() => Arr::get($something, $else) . Arr::get($different, $things),
+                    Arr::get($something, $else) . Arr::get($different, $things) => 1,
+                ];',
+                '<?php [
+                    things()() => Arr::get($something, $else) . Arr::get($different, $things),
+                    "b" => 2,
+                    Arr::get($something, $else) . Arr::get($different, $things) => 1,
                 ];',
             ],
         ];
