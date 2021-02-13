@@ -140,7 +140,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
             $argumentTypeInfo = $argumentInfo->getTypeAnalysis();
             if (true === $this->configuration['use_nullable_type_declaration']) {
-                if (!$argumentTypeInfo->isNullable()) {
+                if (!$argumentTypeInfo->isNullable() && 'mixed' !== $argumentTypeInfo->getName()) {
                     $tokens->insertAt($argumentTypeInfo->getStartIndex(), new Token([CT::T_NULLABLE_TYPE, '?']));
                 }
             } else {
