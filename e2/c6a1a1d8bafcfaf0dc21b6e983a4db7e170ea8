@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-31T22:11:32Z
+
+[![Coverage Status](https://coveralls.io/builds/36732126/badge)](https://coveralls.io/builds/36732126)
+
+Coverage remained the same at 91.929% when pulling **f12caa27ffab6ee4d647c9c47e6751d814b08892 on keradus:2.18_fix5483** into **ea98c014c1bc2f94fdb672346b63252bc66b18ab on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-02-02T20:35:03Z
+
+I believe we should not touch it, as if we would, we would make someone else code harder to migrate to PHP8.
+Usage of future-reserved words, while possible on lower PHP engines, is discouraged.
