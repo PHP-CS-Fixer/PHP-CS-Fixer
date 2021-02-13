@@ -88,6 +88,8 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield ['<?php function foo(...$param) {}'];
         yield ['<?php function foo(array ...$param) {}'];
         yield ['<?php function foo(?array ...$param) {}'];
+
+        yield ['<?php function foo(mixed $param = null) {}'];
     }
 
     /**
