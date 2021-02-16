@@ -95,6 +95,7 @@ final class NewWithBracesFixer extends AbstractFixer
                 [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
             ];
 
+            // @TODO: drop condition when PHP 7.0+ is required
             if (\defined('T_SPACESHIP')) {
                 $nextTokenKinds[] = [T_SPACESHIP];
             }
