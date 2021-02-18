@@ -134,6 +134,7 @@ final class TokenTest extends TestCase
             yield $index => $test;
         }
 
+        // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_ATTRIBUTE')) {
             yield [new Token([T_ATTRIBUTE, '#[', 1]), false];
         }
