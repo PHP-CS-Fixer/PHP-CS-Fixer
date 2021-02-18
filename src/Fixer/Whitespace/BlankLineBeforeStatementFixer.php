@@ -71,7 +71,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     {
         parent::__construct();
 
-        // To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
+        // @TODO: To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
         if (\defined('T_YIELD_FROM')) {
             self::$tokenMap['yield_from'] = T_YIELD_FROM;
         }
