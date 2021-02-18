@@ -560,14 +560,17 @@ final class TokensAnalyzer
                 CT::T_TYPE_ALTERNATION => true, // |
             ];
 
+            // @TODO: drop condition when PHP 7.0+ is required
             if (\defined('T_SPACESHIP')) {
                 $arrayOperators[T_SPACESHIP] = true; // <=>
             }
 
+            // @TODO: drop condition when PHP 7.0+ is required
             if (\defined('T_COALESCE')) {
                 $arrayOperators[T_COALESCE] = true;  // ??
             }
 
+            // @TODO: drop condition when PHP 7.4+ is required
             if (\defined('T_COALESCE_EQUAL')) {
                 $arrayOperators[T_COALESCE_EQUAL] = true;  // ??=
             }
