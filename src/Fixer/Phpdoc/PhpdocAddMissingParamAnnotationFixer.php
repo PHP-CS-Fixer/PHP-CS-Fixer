@@ -130,6 +130,7 @@ function f9(string $foo, $bar, $baz) {}
             // Step back to check comment at next iteration
             if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                 --$index;
+
                 continue;
             }
 
