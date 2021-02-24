@@ -91,7 +91,7 @@ function f9(string $foo, $bar, $baz) {}
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isAllTokenKindsFound([T_DOC_COMMENT, T_FUNCTION]);
     }
 
     /**
@@ -114,16 +114,23 @@ function f9(string $foo, $bar, $baz) {}
                 continue;
             }
 
-            // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
-            if (false === strpos($tokenContent, "\n")) {
+            // Optionally, ignore one-line PhpDoc's like `/** foo */`, as there is no place to put new annotations
+            if ($this->configuration['skip_inline_phpdocs'] && false === strpos($tokenContent, "\n")) {
                 continue;
             }
 
             $mainIndex = $index;
-            $index = $tokens->getNextMeaningfulToken($index);
+            // Use instead of `getNextMeaningfulToken` to keep previous DocBlock
+            $index = $tokens->getNextNonWhitespace($index);
 
             if (null === $index) {
                 return;
+            }
+
+            // Step back to check comment at next iteration
+            if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                $index--;
+                continue;
             }
 
             while ($tokens[$index]->isGivenKind([
@@ -133,12 +140,17 @@ function f9(string $foo, $bar, $baz) {}
                 T_PROTECTED,
                 T_PUBLIC,
                 T_STATIC,
-                T_VAR,
+                T_RETURN
             ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            $tokenKinds = [T_FUNCTION];
+            // To fix PhpDoc of closures/arrow functions in most used case: `return function(int $x){...};`
+            if (PHP_VERSION_ID >= 70400) {
+                $tokenKinds[] = T_FN;
+            }
+            if (!$tokens[$index]->isGivenKind($tokenKinds)) {
                 continue;
             }
 
@@ -187,8 +199,8 @@ function f9(string $foo, $bar, $baz) {}
             foreach ($arguments as $argument) {
                 $type = $argument['type'] ?: 'mixed';
 
-                if ('?' !== $type[0] && 'null' === strtolower($argument['default'])) {
-                    $type = 'null|'.$type;
+                if ('mixed' !== $type && ('?' === $type[0] || 'null' === strtolower($argument['default']))) {
+                    $type = ltrim($type, '?') . '|null';
                 }
 
                 $newLines[] = new Line(sprintf(
@@ -218,6 +230,10 @@ function f9(string $foo, $bar, $baz) {}
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('only_untyped', 'Whether to add missing `@param` annotations for untyped parameters only.'))
+                ->setDefault(true)
+                ->setAllowedTypes(['bool'])
+                ->getOption(),
+            (new FixerOptionBuilder('skip_inline_phpdocs', 'Ignore one-line PhpDocs like as `/** foo */`.'))
                 ->setDefault(true)
                 ->setAllowedTypes(['bool'])
                 ->getOption(),
