@@ -129,7 +129,7 @@ function f9(string $foo, $bar, $baz) {}
 
             // Step back to check comment at next iteration
             if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-                $index--;
+                --$index;
                 continue;
             }
 
@@ -140,14 +140,14 @@ function f9(string $foo, $bar, $baz) {}
                 T_PROTECTED,
                 T_PUBLIC,
                 T_STATIC,
-                T_RETURN
+                T_RETURN,
             ])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
             $tokenKinds = [T_FUNCTION];
             // To fix PhpDoc of closures/arrow functions in most used case: `return function(int $x){...};`
-            if (PHP_VERSION_ID >= 70400) {
+            if (\PHP_VERSION_ID >= 70400) {
                 $tokenKinds[] = T_FN;
             }
             if (!$tokens[$index]->isGivenKind($tokenKinds)) {
@@ -200,7 +200,7 @@ function f9(string $foo, $bar, $baz) {}
                 $type = $argument['type'] ?: 'mixed';
 
                 if ('mixed' !== $type && ('?' === $type[0] || 'null' === strtolower($argument['default']))) {
-                    $type = ltrim($type, '?') . '|null';
+                    $type = ltrim($type, '?').'|null';
                 }
 
                 $newLines[] = new Line(sprintf(
