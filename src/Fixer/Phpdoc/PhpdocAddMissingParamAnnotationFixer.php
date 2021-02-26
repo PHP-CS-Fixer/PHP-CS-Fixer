@@ -23,6 +23,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -100,6 +101,7 @@ function f9(string $foo, $bar, $baz) {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
+        $commentsAnalyzer = new CommentsAnalyzer();
 
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
@@ -116,6 +118,13 @@ function f9(string $foo, $bar, $baz) {}
 
             // Optionally, ignore one-line PhpDoc's like `/** foo */`, as there is no place to put new annotations
             if ($this->configuration['skip_inline_phpdocs'] && false === strpos($tokenContent, "\n")) {
+                continue;
+            }
+
+            if (
+                $commentsAnalyzer->isHeaderComment($tokens, $index)
+                || !$commentsAnalyzer->isBeforeStructuralElement($tokens, $index)
+            ) {
                 continue;
             }
 
@@ -201,7 +210,7 @@ function f9(string $foo, $bar, $baz) {}
                 $type = $argument['type'] ?: 'mixed';
 
                 if ('mixed' !== $type && ('?' === $type[0] || 'null' === strtolower($argument['default']))) {
-                    $type = ltrim($type, '?').'|null';
+                    $type = 'null|'.ltrim($type, '?');
                 }
 
                 $newLines[] = new Line(sprintf(
