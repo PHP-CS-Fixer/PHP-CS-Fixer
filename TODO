@@ -1,4 +1,4 @@
-- [ ] bump min version in entry file
+- [x] bump min version in entry file
 - [x] bump min version in composer.json
 - [ ] drop legacy lib version support in composer.json
 - [x] apply php 7.1 migration sets
