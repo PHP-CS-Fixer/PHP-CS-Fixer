@@ -178,7 +178,7 @@ final class PregTest extends TestCase
      * @dataProvider provideCommonCases
      * @dataProvider provideArrayOfPatternsCases
      */
-    public function testReplace(string $pattern, string $subject): void
+    public function testReplace($pattern, $subject): void
     {
         $expectedResult = preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
@@ -201,7 +201,7 @@ final class PregTest extends TestCase
      * @dataProvider provideCommonCases
      * @dataProvider provideArrayOfPatternsCases
      */
-    public function testReplaceCallback(string $pattern, string $subject): void
+    public function testReplaceCallback($pattern, $subject): void
     {
         $callback = static function (array $x) { return implode('-', $x); };
 

@@ -2,10 +2,10 @@
 - [x] bump min version in composer.json
 - [ ] drop legacy lib version support in composer.json
 - [x] apply php 7.1 migration sets
-- [x] add missing strong typing for input parameters in public classes/interfaces -  apply experimental rule
-- [ ] add missing strong typing for input parameters in public classes/interfaces - manually
-- [x] add missing strong typing for return types in public classes/interfaces - apply experimental rule
-- [ ] add missing strong typing for return types in public classes/interfaces - manually
+- [x] add missing strong typing for input parameters in public/protected classes/interfaces -  apply experimental rule
+- [x] add missing strong typing for input parameters in public/protected classes/interfaces - manually
+- [x] add missing strong typing for return types in public/protected classes/interfaces - apply experimental rule
+- [x] add missing strong typing for return types in public/protected classes/interfaces - manually
 - [ ] consider running phpdoc_to_param_type,phpdoc_to_return_type on CI
 - [ ] consider changing "public const" to "private const", when needed
 - [ ] search for TODOs in code
