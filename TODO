@@ -11,4 +11,4 @@
 - [ ] search for TODOs in code
 - [ ] consider using PHPUnit84MigrationRiskySet
 - [ ] drop <7.1 from CI
-- [ ] drop old PHP in Docker
+- [x] drop old PHP in Docker
