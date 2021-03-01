@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,12 +28,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideEchoToPrintFixCases
      */
-    public function testFixEchoToPrint($expected, $input = null)
+    public function testFixEchoToPrint(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'print']);
 
@@ -140,12 +139,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePrintToEchoFixCases
      */
-    public function testFixPrintToEcho($expected, $input = null)
+    public function testFixPrintToEcho(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'echo']);
 
@@ -274,7 +270,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testDefaultConfig()
+    public function testDefaultConfig(): void
     {
         $this->fixer->configure([]);
 
@@ -283,11 +279,8 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideWrongConfigCases
-     *
-     * @param mixed  $wrongConfig
-     * @param string $expectedMessage
      */
-    public function testWrongConfig($wrongConfig, $expectedMessage)
+    public function testWrongConfig(array $wrongConfig, string $expectedMessage): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedMessage);
@@ -317,7 +310,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    private static function assertCandidateTokenType($expected, AbstractFixer $fixer)
+    private static function assertCandidateTokenType($expected, AbstractFixer $fixer): void
     {
         $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
         $reflectionProperty->setAccessible(true);

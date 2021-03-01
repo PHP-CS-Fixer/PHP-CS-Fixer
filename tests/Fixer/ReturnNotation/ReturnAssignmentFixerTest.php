@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,8 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixNestedFunctionsCases
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testFixNestedFunctions($expected, $input)
+    public function testFixNestedFunctions(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -188,11 +187,8 @@ function B($b0, $b1, $b2)
 
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testFix($expected, $input)
+    public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -456,11 +452,8 @@ var names are case insensitive */ return $a   ;}
     /**
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testFix70($expected, $input)
+    public function testFix70(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -489,10 +482,8 @@ var names are case insensitive */ return $a   ;}
 
     /**
      * @dataProvider provideDoNotFixCases
-     *
-     * @param string $expected
      */
-    public function testDoNotFix($expected)
+    public function testDoNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -816,11 +807,8 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
 
     /**
      * @dataProvider provideRepetitiveFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testRepetitiveFix($expected, $input = null)
+    public function testRepetitiveFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

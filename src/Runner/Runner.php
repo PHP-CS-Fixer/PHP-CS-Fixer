@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -109,10 +111,7 @@ final class Runner
         $this->stopOnViolation = $stopOnViolation;
     }
 
-    /**
-     * @return array
-     */
-    public function fix()
+    public function fix(): array
     {
         $changed = [];
 
@@ -135,7 +134,7 @@ final class Runner
             Tokens::clearCache();
 
             if ($fixInfo) {
-                $name = $this->directory->getRelativePathTo($file);
+                $name = $this->directory->getRelativePathTo($file->__toString());
                 $changed[$name] = $fixInfo;
 
                 if ($this->stopOnViolation) {
@@ -147,7 +146,7 @@ final class Runner
         return $changed;
     }
 
-    private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult)
+    private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
         $name = $file->getPathname();
 
@@ -161,7 +160,7 @@ final class Runner
 
             $this->errorsManager->report(new Error(Error::TYPE_INVALID, $name, $e));
 
-            return;
+            return null;
         }
 
         $old = FileReader::createSingleton()->read($file->getRealPath());
@@ -196,7 +195,7 @@ final class Runner
         } catch (\Exception $e) {
             $this->processException($name, $e);
 
-            return;
+            return null;
         } catch (\ParseError $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
@@ -205,11 +204,11 @@ final class Runner
 
             $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e));
 
-            return;
+            return null;
         } catch (\Throwable $e) {
             $this->processException($name, $e);
 
-            return;
+            return null;
         }
 
         $fixInfo = null;
@@ -239,7 +238,7 @@ final class Runner
 
                 $this->errorsManager->report(new Error(Error::TYPE_LINT, $name, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
 
-                return;
+                return null;
             }
 
             if (!$this->isDryRun) {
@@ -297,11 +296,8 @@ final class Runner
 
     /**
      * Process an exception that occurred.
-     *
-     * @param string     $name
-     * @param \Throwable $e
      */
-    private function processException($name, $e)
+    private function processException(string $name, \Throwable $e): void
     {
         $this->dispatchEvent(
             FixerFileProcessedEvent::NAME,
@@ -311,10 +307,7 @@ final class Runner
         $this->errorsManager->report(new Error(Error::TYPE_EXCEPTION, $name, $e));
     }
 
-    /**
-     * @param string $name
-     */
-    private function dispatchEvent($name, Event $event)
+    private function dispatchEvent(string $name, Event $event): void
     {
         if (null === $this->eventDispatcher) {
             return;

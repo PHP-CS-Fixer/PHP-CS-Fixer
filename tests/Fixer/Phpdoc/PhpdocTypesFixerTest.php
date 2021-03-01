@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 {
-    public function testWindowsLinebreaks()
+    public function testWindowsLinebreaks(): void
     {
         $this->doTest(
             "<?php /**\r\n * @param string|string[] \$bar\r\n *\r\n * @return int[]\r\n */\r\n",
@@ -33,7 +35,7 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function testConversion()
+    public function testConversion(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -57,7 +59,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testArrayStuff()
+    public function testArrayStuff(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -81,7 +83,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testNestedArrayStuff()
+    public function testNestedArrayStuff(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -99,7 +101,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMixedAndVoid()
+    public function testMixedAndVoid(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -123,7 +125,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testIterableFix()
+    public function testIterableFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -147,7 +149,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMethodAndPropertyFix()
+    public function testMethodAndPropertyFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -174,7 +176,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testThrows()
+    public function testThrows(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -195,7 +197,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testInlineDoc()
+    public function testInlineDoc(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -226,7 +228,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithConfig()
+    public function testWithConfig(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -252,7 +254,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWrongConfig()
+    public function testWrongConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');

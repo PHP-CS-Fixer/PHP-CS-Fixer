@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,13 +30,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
-     * @param bool   $isFunctionIndex
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideIsGlobalFunctionCallCases
      */
-    public function testIsGlobalFunctionCall($isFunctionIndex, $code, $index)
+    public function testIsGlobalFunctionCall(bool $isFunctionIndex, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -290,14 +288,10 @@ final class FunctionsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param bool   $isFunctionIndex
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideIsGlobalFunctionCallPhp70Cases
      * @requires PHP 7.0
      */
-    public function testIsGlobalFunctionCallPhp70($isFunctionIndex, $code, $index)
+    public function testIsGlobalFunctionCallPhp70(bool $isFunctionIndex, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -323,14 +317,10 @@ A();
     }
 
     /**
-     * @param bool   $isFunctionIndex
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideIsGlobalFunctionCallPhp74Cases
      * @requires PHP 7.4
      */
-    public function testIsGlobalFunctionCallPhp74($isFunctionIndex, $code, $index)
+    public function testIsGlobalFunctionCallPhp74(bool $isFunctionIndex, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -348,13 +338,12 @@ A();
     }
 
     /**
-     * @param int[]  $globalFunctionIndexes
-     * @param string $code
+     * @param int[] $globalFunctionIndexes
      *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      * @requires PHP 8.0
      */
-    public function testIsGlobalFunctionCallPhp80(array $globalFunctionIndexes, $code)
+    public function testIsGlobalFunctionCallPhp80(array $globalFunctionIndexes, string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -378,13 +367,9 @@ A();
     }
 
     /**
-     * @param string $code
-     * @param int    $methodIndex
-     * @param array  $expected
-     *
      * @dataProvider provideFunctionsWithArgumentsCases
      */
-    public function testFunctionArgumentInfo($code, $methodIndex, $expected)
+    public function testFunctionArgumentInfo(string $code, int $methodIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -393,13 +378,11 @@ A();
     }
 
     /**
-     * @param string $code
-     * @param int    $methodIndex
-     * @param array  $expected
+     * @param ?array $expected
      *
      * @dataProvider provideFunctionsWithReturnTypeCases
      */
-    public function testFunctionReturnTypeInfo($code, $methodIndex, $expected)
+    public function testFunctionReturnTypeInfo(string $code, int $methodIndex, ?array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -409,14 +392,10 @@ A();
     }
 
     /**
-     * @param string $code
-     * @param int    $methodIndex
-     * @param array  $expected
-     *
      * @dataProvider provideFunctionsWithReturnTypePhp70Cases
      * @requires PHP 7.0
      */
-    public function testFunctionReturnTypeInfoPhp70($code, $methodIndex, $expected)
+    public function testFunctionReturnTypeInfoPhp70(string $code, int $methodIndex, TypeAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -546,14 +525,10 @@ A();
     }
 
     /**
-     * @param string $code
-     * @param int    $methodIndex
-     * @param array  $expected
-     *
      * @dataProvider provideFunctionsWithArgumentsPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFunctionArgumentInfoPhp74($code, $methodIndex, $expected)
+    public function testFunctionArgumentInfoPhp74(string $code, int $methodIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -666,14 +641,12 @@ A();
     }
 
     /**
-     * @param string $code
-     * @param int    $methodIndex
-     * @param array  $expected
+     * @param ?TypeAnalysis $expected
      *
      * @dataProvider provideFunctionsWithReturnTypePhp74Cases
      * @requires PHP 7.4
      */
-    public function testFunctionReturnTypeInfoPhp74($code, $methodIndex, $expected)
+    public function testFunctionReturnTypeInfoPhp74(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -696,13 +669,9 @@ A();
     }
 
     /**
-     * @param bool   $isTheSameClassCall
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideIsTheSameClassCallCases
      */
-    public function testIsTheSameClassCall($isTheSameClassCall, $code, $index)
+    public function testIsTheSameClassCall(bool $isTheSameClassCall, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
@@ -766,14 +735,10 @@ A();
     }
 
     /**
-     * @param string $code
-     * @param int    $methodIndex
-     * @param array  $expected
-     *
      * @dataProvider provideFunctionsWithArgumentsPhp80Cases
      * @requires PHP 8.0
      */
-    public function testFunctionArgumentInfoPhp80($code, $methodIndex, $expected)
+    public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,7 +31,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideDefaultConfigurationTestCases
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
         $this->doTest($expected, $input);
@@ -61,7 +63,7 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestCases
      */
-    public function testFix($expected, $input = null, array $configuration = [])
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure(['replacements' => $configuration]);
         $this->doTest($expected, $input);
@@ -79,12 +81,9 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideGeneratedFixCases
      */
-    public function testGeneratedFix($expected, $input)
+    public function testGeneratedFix(string $expected, string $input): void
     {
         $config = ['replacements' => [$input => $expected]];
         $this->fixer->configure($config);
@@ -141,11 +140,9 @@ class F
     }
 
     /**
-     * @param string $message
-     *
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfiguration(array $configuration, $message)
+    public function testInvalidConfiguration(array $configuration, string $message): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
@@ -172,7 +169,7 @@ class F
     /**
      * @requires PHP 7.0
      */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php

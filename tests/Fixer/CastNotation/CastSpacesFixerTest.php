@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigMissingKey()
+    public function testInvalidConfigMissingKey(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[cast_spaces\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
@@ -29,7 +31,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['a' => 1]);
     }
 
-    public function testInvalidConfigValue()
+    public function testInvalidConfigValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[cast_spaces\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "single"\.$#');
@@ -38,23 +40,17 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCastsCases
      */
-    public function testFixCastsWithDefaultConfiguration($expected, $input = null)
+    public function testFixCastsWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCastsCases
      */
-    public function testFixCastsSingleSpace($expected, $input = null)
+    public function testFixCastsSingleSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['space' => 'single']);
         $this->doTest($expected, $input);
@@ -116,12 +112,9 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideNoneSpaceFixCases
      */
-    public function testFixCastsNoneSpace($expected, $input = null)
+    public function testFixCastsNoneSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['space' => 'none']);
         $this->doTest($expected, $input);

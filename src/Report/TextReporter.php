@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ final class TextReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return 'txt';
     }
@@ -32,7 +34,7 @@ final class TextReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportSummary $reportSummary)
+    public function generate(ReportSummary $reportSummary): string
     {
         $output = '';
 
@@ -52,12 +54,7 @@ final class TextReporter implements ReporterInterface
         return $output.$this->getFooter($reportSummary->getTime(), $reportSummary->getMemory(), $reportSummary->isDryRun());
     }
 
-    /**
-     * @param bool $isDecoratedOutput
-     *
-     * @return string
-     */
-    private function getAppliedFixers($isDecoratedOutput, array $fixResult)
+    private function getAppliedFixers(bool $isDecoratedOutput, array $fixResult): string
     {
         return sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
@@ -65,12 +62,7 @@ final class TextReporter implements ReporterInterface
         );
     }
 
-    /**
-     * @param bool $isDecoratedOutput
-     *
-     * @return string
-     */
-    private function getDiff($isDecoratedOutput, array $fixResult)
+    private function getDiff(bool $isDecoratedOutput, array $fixResult): string
     {
         if (empty($fixResult['diff'])) {
             return '';
@@ -85,14 +77,7 @@ final class TextReporter implements ReporterInterface
         return PHP_EOL.$diffFormatter->format($fixResult['diff']).PHP_EOL;
     }
 
-    /**
-     * @param int  $time
-     * @param int  $memory
-     * @param bool $isDryRun
-     *
-     * @return string
-     */
-    private function getFooter($time, $memory, $isDryRun)
+    private function getFooter(int $time, int $memory, bool $isDryRun): string
     {
         if (0 === $time || 0 === $memory) {
             return '';

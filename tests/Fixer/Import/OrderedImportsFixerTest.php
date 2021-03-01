@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,7 +24,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    public function testFix(): void
     {
         $expected = <<<'EOF'
 The normal
@@ -107,7 +109,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithMultipleNamespace()
+    public function testFixWithMultipleNamespace(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -230,7 +232,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithComment()
+    public function testFixWithComment(): void
     {
         $expected = <<<'EOF'
 The normal
@@ -315,7 +317,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithTraits()
+    public function testWithTraits(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -390,7 +392,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithTraitImports()
+    public function testFixWithTraitImports(): void
     {
         $expected = <<<'EOF'
 The normal
@@ -481,7 +483,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithDifferentCases()
+    public function testFixWithDifferentCases(): void
     {
         $expected = <<<'EOF'
 The normal
@@ -520,7 +522,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithoutUses()
+    public function testWithoutUses(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -532,7 +534,7 @@ EOF
         $this->doTest($expected);
     }
 
-    public function testOrderWithTrailingDigit()
+    public function testOrderWithTrailingDigit(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -567,7 +569,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testCodeWithImportsOnly()
+    public function testCodeWithImportsOnly(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -586,7 +588,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testCodeWithCloseTag()
+    public function testCodeWithCloseTag(): void
     {
         $this->doTest(
             '<?php
@@ -598,7 +600,7 @@ EOF;
         );
     }
 
-    public function testCodeWithComments()
+    public function testCodeWithComments(): void
     {
         $this->doTest(
             '<?php
@@ -613,7 +615,7 @@ EOF;
     /**
      * @requires PHP <8.0
      */
-    public function testCodeWithCommentsAndMultiLine()
+    public function testCodeWithCommentsAndMultiLine(): void
     {
         $this->doTest(
             '<?php
@@ -634,13 +636,10 @@ B#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, array $config = [])
+    public function testFix70(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
@@ -973,7 +972,7 @@ use A\A1;
         ];
     }
 
-    public function testUnknownOrderTypes()
+    public function testUnknownOrderTypes(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Unknown sort types "foo", "bar".');
@@ -990,7 +989,7 @@ use A\A1;
     |--------------------------------------------------------------------------
     */
 
-    public function testInvalidOrderTypesSize()
+    public function testInvalidOrderTypesSize(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "function".');
@@ -1001,7 +1000,7 @@ use A\A1;
         ]);
     }
 
-    public function testInvalidOrderType()
+    public function testInvalidOrderType(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[ordered_imports] Invalid configuration: Missing sort type "class".');
@@ -1014,10 +1013,8 @@ use A\A1;
 
     /**
      * @dataProvider provideInvalidSortAlgorithmCases
-     *
-     * @param string $expectedValue
      */
-    public function testInvalidSortAlgorithm(array $configuration, $expectedValue)
+    public function testInvalidSortAlgorithm(array $configuration, string $expectedValue): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
@@ -1055,7 +1052,7 @@ use A\A1;
         ];
     }
 
-    public function testFixByLength()
+    public function testFixByLength(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1145,7 +1142,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithSameLength()
+    public function testByLengthFixWithSameLength(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1203,7 +1200,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithMultipleNamespace()
+    public function testByLengthFixWithMultipleNamespace(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1331,7 +1328,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithComment()
+    public function testByLengthFixWithComment(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1421,7 +1418,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLength()
+    public function testByLength(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1501,7 +1498,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithTraitImports()
+    public function testByLengthFixWithTraitImports(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1597,7 +1594,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthFixWithDifferentCases()
+    public function testByLengthFixWithDifferentCases(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1641,7 +1638,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthOrderWithTrailingDigit()
+    public function testByLengthOrderWithTrailingDigit(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1681,7 +1678,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthCodeWithImportsOnly()
+    public function testByLengthCodeWithImportsOnly(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1705,7 +1702,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testByLengthWithoutUses()
+    public function testByLengthWithoutUses(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1723,13 +1720,10 @@ EOF
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70ByLengthCases
      * @requires PHP 7.0
      */
-    public function testFix70ByLength($expected, $input = null)
+    public function testFix70ByLength(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1792,11 +1786,8 @@ use const ZZZ;
     /**
      * @dataProvider provideFix70TypesOrderAndLengthCases
      * @requires PHP 7.0
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix70TypesOrderAndLength($expected, $input = null)
+    public function testFix70TypesOrderAndLength(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1852,11 +1843,9 @@ use function some\f\{fn_c, fn_d, fn_e};
      * @dataProvider provideFix70TypesOrderAndAlphabetCases
      * @requires PHP 7.0
      *
-     * @param string      $expected
-     * @param null|string $input
-     * @param string[]    $importOrder
+     * @param string[] $importOrder
      */
-    public function testFix70TypesOrderAndAlphabet($expected, $input = null, array $importOrder = null)
+    public function testFix70TypesOrderAndAlphabet(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -1923,11 +1912,9 @@ use function some\a\{fn_a, fn_b};
      * @dataProvider provideFix70TypesOrderAndNoneCases
      * @requires PHP 7.0
      *
-     * @param string        $expected
-     * @param null|string   $input
      * @param null|string[] $importOrder
      */
-    public function testFix70TypesOrderAndNone($expected, $input = null, array $importOrder = null)
+    public function testFix70TypesOrderAndNone(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
@@ -1991,13 +1978,10 @@ use function some\a\{fn_a, fn_b};
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input = null, array $config = [])
+    public function testFix72(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
@@ -2095,7 +2079,7 @@ use Foo\{
         ];
     }
 
-    public function testFixByNone()
+    public function testFixByNone(): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_NONE,

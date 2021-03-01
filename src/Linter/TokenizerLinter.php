@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -38,7 +40,7 @@ final class TokenizerLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function isAsync()
+    public function isAsync(): bool
     {
         return false;
     }
@@ -46,7 +48,7 @@ final class TokenizerLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function lintFile($path)
+    public function lintFile(string $path): LintingResultInterface
     {
         return $this->lintSource(FileReader::createSingleton()->read($path));
     }
@@ -54,7 +56,7 @@ final class TokenizerLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function lintSource($source)
+    public function lintSource(string $source): LintingResultInterface
     {
         try {
             // To lint, we will parse the source into Tokens.

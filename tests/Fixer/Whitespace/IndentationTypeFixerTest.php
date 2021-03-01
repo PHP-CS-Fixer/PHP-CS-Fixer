@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -225,12 +224,9 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
@@ -302,12 +298,9 @@ function myFunction() {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesReversedCases
      */
-    public function testMessyWhitespacesReversed($expected, $input = null)
+    public function testMessyWhitespacesReversed(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
 
@@ -318,20 +311,17 @@ function myFunction() {
     {
         return array_filter(
             $this->provideMessyWhitespacesCases(),
-            static function ($key) {
-                return !\is_string($key) || false === strpos($key, 'mix indentation');
+            static function (string $key) {
+                return false === strpos($key, 'mix indentation');
             },
             ARRAY_FILTER_USE_KEY
         );
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDoubleSpaceIndentCases
      */
-    public function testDoubleSpaceIndent($expected, $input = null)
+    public function testDoubleSpaceIndent(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('  '));
 

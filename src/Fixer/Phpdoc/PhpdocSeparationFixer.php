@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,6 +20,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -29,7 +32,7 @@ final class PhpdocSeparationFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Annotations in PHPDoc should be grouped together so that annotations of the same type immediately follow each other, and annotations of a different type are separated by a single blank line.',
@@ -58,7 +61,7 @@ function fnc($foo, $bar) {}
      * Must run before PhpdocAlignFixer.
      * Must run after CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocOrderFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -3;
     }
@@ -66,7 +69,7 @@ function fnc($foo, $bar) {}
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -74,7 +77,7 @@ function fnc($foo, $bar) {}
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -92,7 +95,7 @@ function fnc($foo, $bar) {}
     /**
      * Make sure the description is separated from the annotations.
      */
-    private function fixDescription(DocBlock $doc)
+    private function fixDescription(DocBlock $doc): void
     {
         foreach ($doc->getLines() as $index => $line) {
             if ($line->containsATag()) {
@@ -113,10 +116,8 @@ function fnc($foo, $bar) {}
 
     /**
      * Make sure the annotations are correctly separated.
-     *
-     * @return string
      */
-    private function fixAnnotations(DocBlock $doc)
+    private function fixAnnotations(DocBlock $doc): string
     {
         foreach ($doc->getAnnotations() as $index => $annotation) {
             $next = $doc->getAnnotation($index + 1);
@@ -140,7 +141,7 @@ function fnc($foo, $bar) {}
     /**
      * Force the given annotations to immediately follow each other.
      */
-    private function ensureAreTogether(DocBlock $doc, Annotation $first, Annotation $second)
+    private function ensureAreTogether(DocBlock $doc, Annotation $first, Annotation $second): void
     {
         $pos = $first->getEnd();
         $final = $second->getStart();
@@ -153,7 +154,7 @@ function fnc($foo, $bar) {}
     /**
      * Force the given annotations to have one empty line between each other.
      */
-    private function ensureAreSeparate(DocBlock $doc, Annotation $first, Annotation $second)
+    private function ensureAreSeparate(DocBlock $doc, Annotation $first, Annotation $second): void
     {
         $pos = $first->getEnd();
         $final = $second->getStart() - 1;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -25,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleTraitInsertPerStatementFixer extends AbstractFixer
 {
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Each trait `use` must be done as single statement.',
@@ -47,17 +50,17 @@ final class Example
      *
      * Must run before BracesFixer, SpaceAfterSemicolonFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 1;
     }
 
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(CT::T_USE_TRAIT);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 1 < $index; --$index) {
             if ($tokens[$index]->isGivenKind(CT::T_USE_TRAIT)) {
@@ -70,10 +73,9 @@ final class Example
     }
 
     /**
-     * @param int   $useTraitIndex
-     * @param int[] $candidates    ',' indexes to fix
+     * @param int[] $candidates ',' indexes to fix
      */
-    private function fixTraitUse(Tokens $tokens, $useTraitIndex, array $candidates)
+    private function fixTraitUse(Tokens $tokens, int $useTraitIndex, array $candidates): void
     {
         foreach ($candidates as $commaIndex) {
             $inserts = [
@@ -96,11 +98,9 @@ final class Example
     }
 
     /**
-     * @param int $index
-     *
      * @return int[]
      */
-    private function getCandidates(Tokens $tokens, $index)
+    private function getCandidates(Tokens $tokens, int $index): array
     {
         $indexes = [];
         $index = $tokens->getNextTokenOfKind($index, [',', ';', '{']);

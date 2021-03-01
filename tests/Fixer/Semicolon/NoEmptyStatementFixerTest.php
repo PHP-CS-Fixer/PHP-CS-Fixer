@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideNoEmptyStatementsCases
      */
-    public function testNoEmptyStatements($expected, $input = null)
+    public function testNoEmptyStatements(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -432,13 +431,10 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP7Cases
      * @requires PHP 7.0
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFixPHP7(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -527,12 +523,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideCasesWithShortOpenTagCases
      */
-    public function testCasesWithShortOpenTag($expected, $input = null)
+    public function testCasesWithShortOpenTag(string $expected, ?string $input = null): void
     {
         if (!ini_get('short_open_tag')) {
             static::markTestSkipped('No short tag tests possible.');
@@ -552,12 +545,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixMultipleSemicolonsCases
      */
-    public function testFixMultipleSemicolons($expected, $input = null)
+    public function testFixMultipleSemicolons(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

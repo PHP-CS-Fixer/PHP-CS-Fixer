@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,12 +31,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMultiLineWhitespaceFixCases
      */
-    public function testFixMultiLineWhitespace($expected, $input = null)
+    public function testFixMultiLineWhitespace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
         $this->doTest($expected, $input);
@@ -203,12 +202,9 @@ self
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesMultiLineWhitespaceFixCases
      */
-    public function testMessyWhitespacesMultiLineWhitespace($expected, $input = null)
+    public function testMessyWhitespacesMultiLineWhitespace(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE]);
@@ -226,12 +222,9 @@ self
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideSemicolonForChainedCallsFixCases
      */
-    public function testSemicolonForChainedCallsFix($expected, $input = null)
+    public function testSemicolonForChainedCallsFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
         $this->doTest($expected, $input);
@@ -849,12 +842,9 @@ Service
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesSemicolonForChainedCallsFixCases
      */
-    public function testMessyWhitespacesSemicolonForChainedCalls($expected, $input = null)
+    public function testMessyWhitespacesSemicolonForChainedCalls(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
@@ -881,13 +871,10 @@ Service
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
         $this->doTest($expected, $input);

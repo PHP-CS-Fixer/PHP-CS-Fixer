@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ abstract class AbstractLinterTestCase extends TestCase
 {
     abstract public function testIsAsync();
 
-    public function testLintingAfterTokenManipulation()
+    public function testLintingAfterTokenManipulation(): void
     {
         $linter = $this->createLinter();
 
@@ -38,29 +40,25 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @param string      $file
-     * @param null|string $errorMessage
-     *
      * @dataProvider provideLintFileCases
      */
-    public function testLintFile($file, $errorMessage = null)
+    public function testLintFile(string $file, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
             $this->expectException(\PhpCsFixer\Linter\LintingException::class);
             $this->expectExceptionMessage($errorMessage);
+        } else {
+            $this->expectNotToPerformAssertions();
         }
 
         $linter = $this->createLinter();
-
-        static::assertNull($linter->lintFile($file)->check());
+        $linter->lintFile($file)->check();
     }
 
     /**
-     * @return array
-     *
      * @medium
      */
-    public function provideLintFileCases()
+    public function provideLintFileCases(): array
     {
         return [
             [
@@ -78,27 +76,22 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @param string      $source
-     * @param null|string $errorMessage
-     *
      * @dataProvider provideLintSourceCases
      */
-    public function testLintSource($source, $errorMessage = null)
+    public function testLintSource(string $source, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
             $this->expectException(\PhpCsFixer\Linter\LintingException::class);
             $this->expectExceptionMessage($errorMessage);
+        } else {
+            $this->expectNotToPerformAssertions();
         }
 
         $linter = $this->createLinter();
-
-        static::assertNull($linter->lintSource($source)->check());
+        $linter->lintSource($source)->check();
     }
 
-    /**
-     * @return array
-     */
-    public function provideLintSourceCases()
+    public function provideLintSourceCases(): array
     {
         return [
             [
@@ -116,8 +109,5 @@ abstract class AbstractLinterTestCase extends TestCase
         ];
     }
 
-    /**
-     * @return LinterInterface
-     */
-    abstract protected function createLinter();
+    abstract protected function createLinter(): LinterInterface;
 }

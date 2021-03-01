@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -33,7 +35,7 @@ final class ImportTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
         return 50600;
     }
@@ -41,7 +43,7 @@ final class ImportTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind([T_CONST, T_FUNCTION])) {
             return;
@@ -60,7 +62,7 @@ final class ImportTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
+    public function getCustomTokens(): array
     {
         return [CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
     }

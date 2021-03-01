@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,7 +31,7 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class FixerConfigurationResolverTest extends TestCase
 {
-    public function testWithoutOptions()
+    public function testWithoutOptions(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Options cannot be empty.');
@@ -37,7 +39,7 @@ final class FixerConfigurationResolverTest extends TestCase
         new FixerConfigurationResolver([]);
     }
 
-    public function testWithDuplicatesOptions()
+    public function testWithDuplicatesOptions(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "foo" option is defined multiple times.');
@@ -48,7 +50,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
     }
 
-    public function testWithDuplicateAliasOptions()
+    public function testWithDuplicateAliasOptions(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('The "foo" option is defined multiple times.');
@@ -59,7 +61,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
     }
 
-    public function testGetOptions()
+    public function testGetOptions(): void
     {
         $options = [
             new FixerOption('foo', 'Bar.'),
@@ -70,7 +72,7 @@ final class FixerConfigurationResolverTest extends TestCase
         static::assertSame($options, $configuration->getOptions());
     }
 
-    public function testResolve()
+    public function testResolve(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
@@ -81,7 +83,7 @@ final class FixerConfigurationResolverTest extends TestCase
         );
     }
 
-    public function testResolveWithMissingRequiredOption()
+    public function testResolveWithMissingRequiredOption(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.'),
@@ -91,7 +93,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration->resolve([]);
     }
 
-    public function testResolveWithDefault()
+    public function testResolveWithDefault(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', false, 'baz'),
@@ -103,7 +105,7 @@ final class FixerConfigurationResolverTest extends TestCase
         );
     }
 
-    public function testResolveWithAllowedTypes()
+    public function testResolveWithAllowedTypes(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, ['int']),
@@ -118,7 +120,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration->resolve(['foo' => '1']);
     }
 
-    public function testResolveWithAllowedValues()
+    public function testResolveWithAllowedValues(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, [true, false]),
@@ -133,7 +135,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration->resolve(['foo' => 1]);
     }
 
-    public function testResolveWithAllowedValuesSubset()
+    public function testResolveWithAllowedValuesSubset(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, [new AllowedValueSubset(['foo', 'bar'])]),
@@ -148,7 +150,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration->resolve(['foo' => ['baz']]);
     }
 
-    public function testResolveWithUndefinedOption()
+    public function testResolveWithUndefinedOption(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('bar', 'Bar.'),
@@ -158,7 +160,7 @@ final class FixerConfigurationResolverTest extends TestCase
         $configuration->resolve(['foo' => 'foooo']);
     }
 
-    public function testResolveWithNormalizers()
+    public function testResolveWithNormalizers(): void
     {
         $configuration = new FixerConfigurationResolver([
             new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) {
@@ -173,7 +175,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         $exception = new InvalidOptionsException('');
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) use ($exception) {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value) use ($exception): void {
                 throw $exception;
             }),
         ]);
@@ -188,7 +190,7 @@ final class FixerConfigurationResolverTest extends TestCase
         static::assertSame($exception, $caught);
     }
 
-    public function testResolveWithAliasedDuplicateConfig()
+    public function testResolveWithAliasedDuplicateConfig(): void
     {
         $configuration = new FixerConfigurationResolver([
             new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
@@ -206,7 +208,7 @@ final class FixerConfigurationResolverTest extends TestCase
     /**
      * @expectedDeprecation Option "baz" is deprecated, use "bar" instead.
      */
-    public function testResolveWithDeprecatedAlias()
+    public function testResolveWithDeprecatedAlias(): void
     {
         $configuration = new FixerConfigurationResolver([
             new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),

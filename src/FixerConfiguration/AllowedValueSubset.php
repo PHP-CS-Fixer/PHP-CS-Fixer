@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,10 +30,8 @@ final class AllowedValueSubset
      * Checks whether the given values are a subset of the allowed ones.
      *
      * @param mixed $values the value to validate
-     *
-     * @return bool
      */
-    public function __invoke($values)
+    public function __invoke($values): bool
     {
         if (!\is_array($values)) {
             return false;
@@ -46,7 +46,7 @@ final class AllowedValueSubset
         return true;
     }
 
-    public function getAllowedValues()
+    public function getAllowedValues(): ?array
     {
         return $this->allowedValues;
     }

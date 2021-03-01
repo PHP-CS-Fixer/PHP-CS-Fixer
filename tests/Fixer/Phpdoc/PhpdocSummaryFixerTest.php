@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 {
-    public function testFixWithTrailingSpace()
+    public function testFixWithTrailingSpace(): void
     {
         $expected = '<?php
 /**
@@ -38,7 +40,7 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function testFix()
+    public function testFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -59,7 +61,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithPeriod()
+    public function testWithPeriod(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -71,7 +73,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithQuestionMark()
+    public function testWithQuestionMark(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -83,7 +85,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithExclamationMark()
+    public function testWithExclamationMark(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -95,7 +97,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithInvertedQuestionMark()
+    public function testWithInvertedQuestionMark(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -107,7 +109,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithInvertedExclamationMark()
+    public function testWithInvertedExclamationMark(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -119,7 +121,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithUnicodeQuestionMark()
+    public function testWithUnicodeQuestionMark(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -131,7 +133,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithUnicodeExclamationMark()
+    public function testWithUnicodeExclamationMark(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -143,7 +145,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testWithJapanesePeriod()
+    public function testWithJapanesePeriod(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -155,7 +157,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testFixIncBlank()
+    public function testFixIncBlank(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -178,7 +180,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixMultiline()
+    public function testFixMultiline(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -201,7 +203,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithTags()
+    public function testWithTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -230,7 +232,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithLongDescription()
+    public function testWithLongDescription(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -261,7 +263,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testCrazyMultiLineComments()
+    public function testCrazyMultiLineComments(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -344,7 +346,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithNoDescription()
+    public function testWithNoDescription(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -358,11 +360,9 @@ EOF;
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideInheritDocCases
      */
-    public function testWithInheritDoc($expected)
+    public function testWithInheritDoc(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -387,7 +387,7 @@ EOF;
         ];
     }
 
-    public function testEmptyDocBlock()
+    public function testEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -401,12 +401,9 @@ EOF;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 

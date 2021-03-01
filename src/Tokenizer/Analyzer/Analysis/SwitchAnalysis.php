@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -35,29 +37,21 @@ final class SwitchAnalysis
     private $cases = [];
 
     /**
-     * @param int            $casesStart
-     * @param int            $casesEnd
      * @param CaseAnalysis[] $cases
      */
-    public function __construct($casesStart, $casesEnd, array $cases)
+    public function __construct(int $casesStart, int $casesEnd, array $cases)
     {
         $this->casesStart = $casesStart;
         $this->casesEnd = $casesEnd;
         $this->cases = $cases;
     }
 
-    /**
-     * @return int
-     */
-    public function getCasesStart()
+    public function getCasesStart(): int
     {
         return $this->casesStart;
     }
 
-    /**
-     * @return int
-     */
-    public function getCasesEnd()
+    public function getCasesEnd(): int
     {
         return $this->casesEnd;
     }
@@ -65,7 +59,7 @@ final class SwitchAnalysis
     /**
      * @return CaseAnalysis[]
      */
-    public function getCases()
+    public function getCases(): array
     {
         return $this->cases;
     }

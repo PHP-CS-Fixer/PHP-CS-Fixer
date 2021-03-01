@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    public function testFix(): void
     {
         $this->doTest('<?php
 /** @param EngineInterface $templating
@@ -52,7 +54,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixMoreTags()
+    public function testFixMoreTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -88,7 +90,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixSpreadOut()
+    public function testFixSpreadOut(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -135,7 +137,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testMultiLineComments()
+    public function testMultiLineComments(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -175,7 +177,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testCrazyMultiLineComments()
+    public function testCrazyMultiLineComments(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -219,7 +221,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testDoctrineExample()
+    public function testDoctrineExample(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -260,7 +262,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testSymfonyExample()
+    public function testSymfonyExample(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -316,7 +318,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testDeprecatedAndSeeTags()
+    public function testDeprecatedAndSeeTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -358,7 +360,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPropertyTags()
+    public function testPropertyTags(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -388,7 +390,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testClassDocBlock()
+    public function testClassDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -440,7 +442,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testPoorAlignment()
+    public function testPoorAlignment(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -483,7 +485,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotMoveUnknownAnnotations()
+    public function testDoNotMoveUnknownAnnotations(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -524,12 +526,9 @@ EOF;
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideInheritDocCases
      */
-    public function testInheritDoc($expected, $input)
+    public function testInheritDoc(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -574,7 +573,7 @@ EOF;
         ];
     }
 
-    public function testEmptyDocBlock()
+    public function testEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -587,7 +586,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLargerEmptyDocBlock()
+    public function testLargerEmptyDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -603,7 +602,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testOneLineDocBlock()
+    public function testOneLineDocBlock(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -615,7 +614,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testMessyWhitespaces()
+    public function testMessyWhitespaces(): void
     {
         $expected = "<?php\t/**\r\n\t * @param string \$text\r\n\t *\r\n\t * @return string\r\n\t */";
         $input = "<?php\t/**\r\n\t * @param string \$text\r\n\t * @return string\r\n\t */";
@@ -623,7 +622,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testWithSpacing()
+    public function testWithSpacing(): void
     {
         $expected = '<?php
     /**

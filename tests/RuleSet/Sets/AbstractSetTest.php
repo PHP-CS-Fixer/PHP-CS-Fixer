@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractSetTest extends TestCase
 {
-    public function testSet()
+    public function testSet(): void
     {
         $set = self::getSet();
         static::assertTrue($set instanceof RuleSetDescriptionInterface);
@@ -58,17 +60,13 @@ abstract class AbstractSetTest extends TestCase
         }
     }
 
-    private static function assertSanityString($string)
+    private static function assertSanityString(string $string): void
     {
-        static::assertIsString($string);
         static::assertSame(trim($string), $string);
         static::assertNotSame('', $string);
     }
 
-    /**
-     * @return RuleSetDescriptionInterface
-     */
-    private static function getSet()
+    private static function getSet(): RuleSetDescriptionInterface
     {
         $setClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
 

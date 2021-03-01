@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,12 +25,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -838,12 +837,9 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithTabsCases
      */
-    public function testFixWithTabs($expected, $input = null)
+    public function testFixWithTabs(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
         $this->doTest($expected, $input);
@@ -892,13 +888,10 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input = null)
+    public function testFixPhp74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -943,7 +936,7 @@ INPUT
         return array_merge($cases, $longSyntaxCases);
     }
 
-    private function toLongArraySyntax($php)
+    private function toLongArraySyntax(string $php)
     {
         return strtr($php, [
             '[' => 'array(',

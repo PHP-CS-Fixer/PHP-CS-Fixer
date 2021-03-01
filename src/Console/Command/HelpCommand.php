@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -45,10 +47,8 @@ final class HelpCommand extends BaseHelpCommand
 
     /**
      * Returns help-copy suitable for console output.
-     *
-     * @return string
      */
-    public static function getHelpCopy()
+    public static function getHelpCopy(): string
     {
         $template =
             <<<'EOF'
@@ -302,7 +302,7 @@ EOF
                 self::getLatestReleaseVersionFromChangeLog()
             ),
             '%%%CI_INTEGRATION%%%' => implode("\n", array_map(
-                static function ($line) { return '    $ '.$line; },
+                static function (string $line) { return '    $ '.$line; },
                 \array_slice(file(__DIR__.'/../../../ci-integration.sh', FILE_IGNORE_NEW_LINES), 3)
             )),
             '%%%FIXERS_DETAILS%%%' => self::getFixersHelp(),
@@ -311,10 +311,8 @@ EOF
 
     /**
      * @param mixed $value
-     *
-     * @return string
      */
-    public static function toString($value)
+    public static function toString($value): string
     {
         return \is_array($value)
             ? static::arrayToString($value)
@@ -324,10 +322,8 @@ EOF
 
     /**
      * Returns the allowed values of the given option that can be converted to a string.
-     *
-     * @return null|array
      */
-    public static function getDisplayableAllowedValues(FixerOptionInterface $option)
+    public static function getDisplayableAllowedValues(FixerOptionInterface $option): ?array
     {
         $allowed = $option->getAllowedValues();
 
@@ -361,10 +357,8 @@ EOF
 
     /**
      * @throws \RuntimeException when failing to parse the change log file
-     *
-     * @return string
      */
-    public static function getLatestReleaseVersionFromChangeLog()
+    public static function getLatestReleaseVersionFromChangeLog(): string
     {
         static $version = null;
 
@@ -408,25 +402,19 @@ EOF
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $output->getFormatter()->setStyle('url', new OutputFormatterStyle('blue'));
     }
 
-    /**
-     * @return null|string
-     */
-    private static function getChangeLogFile()
+    private static function getChangeLogFile(): ?string
     {
         $changelogFile = __DIR__.'/../../../CHANGELOG.md';
 
         return is_file($changelogFile) ? $changelogFile : null;
     }
 
-    /**
-     * @return string
-     */
-    private static function getFixersHelp()
+    private static function getFixersHelp(): string
     {
         $help = '';
         $fixerFactory = new FixerFactory();
@@ -446,7 +434,7 @@ EOF
             $ruleSets[$setName] = new RuleSet([$setName => true]);
         }
 
-        $getSetsWithRule = static function ($rule) use ($ruleSets) {
+        $getSetsWithRule = static function (string $rule) use ($ruleSets) {
             $sets = [];
 
             foreach ($ruleSets as $setName => $ruleSet) {
@@ -520,7 +508,7 @@ EOF
                             }
                         } else {
                             $allowed = array_map(
-                                static function ($type) {
+                                static function (string $type) {
                                     return '<comment>'.$type.'</comment>';
                                 },
                                 $option->getAllowedTypes()
@@ -575,12 +563,9 @@ EOF
     /**
      * Wraps a string to the given number of characters, ignoring style tags.
      *
-     * @param string $string
-     * @param int    $width
-     *
      * @return string[]
      */
-    private static function wordwrap($string, $width)
+    private static function wordwrap(string $string, int $width): array
     {
         $result = [];
         $currentLine = 0;
@@ -600,27 +585,22 @@ EOF
             $lineLength += $wordLength;
         }
 
-        return array_map(static function ($line) {
+        return array_map(static function (array $line) {
             return implode(' ', $line);
         }, $result);
     }
 
     /**
      * @param mixed $value
-     *
-     * @return string
      */
-    private static function scalarToString($value)
+    private static function scalarToString($value): string
     {
         $str = var_export($value, true);
 
         return Preg::replace('/\bNULL\b/', 'null', $str);
     }
 
-    /**
-     * @return string
-     */
-    private static function arrayToString(array $value)
+    private static function arrayToString(array $value): string
     {
         if (0 === \count($value)) {
             return '[]';
@@ -643,10 +623,7 @@ EOF
         return substr($str, 0, -2).']';
     }
 
-    /**
-     * @return bool
-     */
-    private static function isHash(array $array)
+    private static function isHash(array $array): bool
     {
         $i = 0;
 

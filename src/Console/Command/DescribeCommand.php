@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -77,7 +79,7 @@ final class DescribeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDefinition(
@@ -92,7 +94,7 @@ final class DescribeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity() && $output instanceof ConsoleOutputInterface) {
             $stdErr = $output->getErrorOutput();
@@ -130,10 +132,7 @@ final class DescribeCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $name
-     */
-    private function describeRule(OutputInterface $output, $name)
+    private function describeRule(OutputInterface $output, string $name): void
     {
         $fixers = $this->getFixers();
 
@@ -201,7 +200,7 @@ final class DescribeCommand extends Command
                     }
                 } else {
                     $allowed = array_map(
-                        static function ($type) {
+                        static function (string $type) {
                             return '<comment>'.$type.'</comment>';
                         },
                         $option->getAllowedTypes()
@@ -302,10 +301,7 @@ final class DescribeCommand extends Command
         }
     }
 
-    /**
-     * @param string $name
-     */
-    private function describeSet(OutputInterface $output, $name)
+    private function describeSet(OutputInterface $output, string $name): void
     {
         if (!\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
@@ -357,7 +353,7 @@ final class DescribeCommand extends Command
     /**
      * @return array<string, FixerInterface>
      */
-    private function getFixers()
+    private function getFixers(): array
     {
         if (null !== $this->fixers) {
             return $this->fixers;
@@ -378,7 +374,7 @@ final class DescribeCommand extends Command
     /**
      * @return string[]
      */
-    private function getSetNames()
+    private function getSetNames(): array
     {
         if (null !== $this->setNames) {
             return $this->setNames;
@@ -392,7 +388,7 @@ final class DescribeCommand extends Command
     /**
      * @param string $type 'rule'|'set'
      */
-    private function describeList(OutputInterface $output, $type)
+    private function describeList(OutputInterface $output, string $type): void
     {
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
             $describe = [
@@ -415,12 +411,7 @@ final class DescribeCommand extends Command
         }
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private function replaceRstLinks($content)
+    private function replaceRstLinks(string $content): string
     {
         return Preg::replaceCallback(
             '/(`[^<]+<[^>]+>`_)/',

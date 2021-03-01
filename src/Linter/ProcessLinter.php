@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -47,7 +49,7 @@ final class ProcessLinter implements LinterInterface
     /**
      * @param null|string $executable PHP executable, null for autodetection
      */
-    public function __construct($executable = null)
+    public function __construct(?string $executable = null)
     {
         if (null === $executable) {
             $executableFinder = new PhpExecutableFinder();
@@ -87,7 +89,7 @@ final class ProcessLinter implements LinterInterface
      * This class is not intended to be serialized,
      * and cannot be deserialized (see __wakeup method).
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
@@ -98,7 +100,7 @@ final class ProcessLinter implements LinterInterface
      *
      * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
@@ -106,7 +108,7 @@ final class ProcessLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function isAsync()
+    public function isAsync(): bool
     {
         return true;
     }
@@ -114,7 +116,7 @@ final class ProcessLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function lintFile($path)
+    public function lintFile(string $path): LintingResultInterface
     {
         return new ProcessLintingResult($this->createProcessForFile($path), $path);
     }
@@ -122,17 +124,15 @@ final class ProcessLinter implements LinterInterface
     /**
      * {@inheritdoc}
      */
-    public function lintSource($source)
+    public function lintSource(string $source): LintingResultInterface
     {
         return new ProcessLintingResult($this->createProcessForSource($source), $this->temporaryFile);
     }
 
     /**
      * @param string $path path to file
-     *
-     * @return Process
      */
-    private function createProcessForFile($path)
+    private function createProcessForFile(string $path): Process
     {
         // in case php://stdin
         if (!is_file($path)) {
@@ -150,10 +150,8 @@ final class ProcessLinter implements LinterInterface
      * Create process that lint PHP code.
      *
      * @param string $source code
-     *
-     * @return Process
      */
-    private function createProcessForSource($source)
+    private function createProcessForSource(string $source): Process
     {
         if (null === $this->temporaryFile) {
             $this->temporaryFile = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');

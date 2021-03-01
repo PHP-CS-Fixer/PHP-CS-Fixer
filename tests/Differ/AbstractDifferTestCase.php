@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,7 +23,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractDifferTestCase extends TestCase
 {
-    final public function testIsDiffer()
+    final public function testIsDiffer(): void
     {
         $className = preg_replace(
             '/Test$/',

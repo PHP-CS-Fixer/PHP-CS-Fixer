@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix(array $configuration, $expected, $input)
+    public function testFix(array $configuration, string $expected, string $input): void
     {
         $this->fixer->configure($configuration);
 
@@ -550,7 +549,7 @@ declare(strict_types=1) ?>',
         ];
     }
 
-    public function testDefaultConfiguration()
+    public function testDefaultConfiguration(): void
     {
         $this->fixer->configure(['header' => 'a']);
         $this->doTest(
@@ -567,12 +566,9 @@ echo 1;'
     }
 
     /**
-     * @param null|array $configuration
-     * @param string     $exceptionMessage
-     *
      * @dataProvider provideMisconfigurationCases
      */
-    public function testMisconfiguration($configuration, $exceptionMessage)
+    public function testMisconfiguration(?array $configuration, string $exceptionMessage): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[header_comment\\] {$exceptionMessage}$#");
@@ -620,13 +616,9 @@ echo 1;'
     }
 
     /**
-     * @param string $expected
-     * @param string $header
-     * @param string $type
-     *
      * @dataProvider provideHeaderGenerationCases
      */
-    public function testHeaderGeneration($expected, $header, $type)
+    public function testHeaderGeneration(string $expected, string $header, string $type): void
     {
         $this->fixer->configure([
             'header' => $header,
@@ -664,11 +656,9 @@ echo 1;'
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideDoNotTouchCases
      */
-    public function testDoNotTouch($expected)
+    public function testDoNotTouch(string $expected): void
     {
         $this->fixer->configure([
             'header' => '',
@@ -690,7 +680,7 @@ echo 1;'
         ];
     }
 
-    public function testWithoutConfiguration()
+    public function testWithoutConfiguration(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
 
@@ -698,12 +688,9 @@ echo 1;'
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(array $configuration, $expected, $input = null)
+    public function testMessyWhitespaces(array $configuration, string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($configuration);
@@ -727,7 +714,7 @@ echo 1;'
         ];
     }
 
-    public function testConfigurationUpdatedWithWhitespsacesConfig()
+    public function testConfigurationUpdatedWithWhitespsacesConfig(): void
     {
         $this->fixer->configure(['header' => 'Foo']);
 
@@ -758,7 +745,7 @@ echo 1;'
         );
     }
 
-    public function testInvalidHeaderConfiguration()
+    public function testInvalidHeaderConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');

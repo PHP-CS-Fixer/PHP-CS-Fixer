@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,18 +24,13 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // should be run before NoWhitespaceInBlankLineFixer, NoExtraBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
         return 25;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    protected function isSuperfluousElse(Tokens $tokens, $index)
+    protected function isSuperfluousElse(Tokens $tokens, int $index): bool
     {
         $previousBlockStart = $index;
 
@@ -104,7 +101,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      *
      * @return int[]
      */
-    private function getPreviousBlock(Tokens $tokens, $index)
+    private function getPreviousBlock(Tokens $tokens, int $index): array
     {
         $close = $previous = $tokens->getPrevMeaningfulToken($index);
         // short 'if' detection
@@ -126,10 +123,8 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     /**
      * @param int $index           Index of the token to check
      * @param int $lowerLimitIndex Lower limit index. Since the token to check will always be in a conditional we must stop checking at this index
-     *
-     * @return bool
      */
-    private function isInConditional(Tokens $tokens, $index, $lowerLimitIndex)
+    private function isInConditional(Tokens $tokens, int $index, int $lowerLimitIndex): bool
     {
         $candidateIndex = $tokens->getPrevTokenOfKind($index, [')', ';', ':']);
         if ($tokens[$candidateIndex]->equals(':')) {
@@ -155,12 +150,9 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
      * without {}. Assumes not passing the last `;`/close tag of the statement, not
      * out of range index, etc.
      *
-     * @param int $index           Index of the token to check
-     * @param int $lowerLimitIndex
-     *
-     * @return bool
+     * @param int $index Index of the token to check
      */
-    private function isInConditionWithoutBraces(Tokens $tokens, $index, $lowerLimitIndex)
+    private function isInConditionWithoutBraces(Tokens $tokens, int $index, int $lowerLimitIndex): bool
     {
         do {
             if ($tokens[$index]->isComment() || $tokens[$index]->isWhitespace()) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,12 +28,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHPCloseTagCases
      */
-    public function testCloseTagCases($expected, $input = null)
+    public function testCloseTagCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -129,12 +128,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixIfElseIfElseCases
      */
-    public function testFixIfElseIfElse($expected, $input = null)
+    public function testFixIfElseIfElse(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -256,12 +252,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixIfElseCases
      */
-    public function testFixIfElse($expected, $input = null)
+    public function testFixIfElse(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -321,12 +314,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixNestedIfCases
      */
-    public function testFixNestedIf($expected, $input = null)
+    public function testFixNestedIf(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -362,12 +352,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixEmptyElseCases
      */
-    public function testFixEmptyElse($expected, $input = null)
+    public function testFixEmptyElse(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -457,11 +444,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideNegativeCases
      */
-    public function testNegativeCases($expected)
+    public function testNegativeCases(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -660,12 +645,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string $source
-     * @param int    $index
-     *
      * @dataProvider provideBlockDetectionCases
      */
-    public function testBlockDetection(array $expected, $source, $index)
+    public function testBlockDetection(array $expected, string $source, int $index): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -719,12 +701,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideConditionsWithoutBracesCases
      */
-    public function testConditionsWithoutBraces($expected, $input = null)
+    public function testConditionsWithoutBraces(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -819,12 +798,11 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string           $input
      * @param array<int, bool> $indexes
      *
      * @dataProvider provideIsInConditionWithoutBracesCases
      */
-    public function testIsInConditionWithoutBraces($indexes, $input)
+    public function testIsInConditionWithoutBraces(array $indexes, string $input): void
     {
         $reflection = new \ReflectionObject($this->fixer);
         $method = $reflection->getMethod('isInConditionWithoutBraces');
@@ -994,12 +972,9 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @return array<array<string>>
      */
-    private function generateCases($expected, $input = null)
+    private function generateCases(string $expected, ?string $input = null)
     {
         $cases = [];
 

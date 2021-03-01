@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -36,10 +38,7 @@ final class ProcessLintingResult implements LintingResultInterface
      */
     private $path;
 
-    /**
-     * @param null|string $path
-     */
-    public function __construct(Process $process, $path = null)
+    public function __construct(Process $process, ?string $path = null)
     {
         $this->process = $process;
         $this->path = $path;
@@ -48,7 +47,7 @@ final class ProcessLintingResult implements LintingResultInterface
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check(): void
     {
         if (!$this->isSuccessful()) {
             // on some systems stderr is used, but on others, it's not
@@ -56,7 +55,7 @@ final class ProcessLintingResult implements LintingResultInterface
         }
     }
 
-    private function getProcessErrorMessage()
+    private function getProcessErrorMessage(): string
     {
         $output = strtok(ltrim($this->process->getErrorOutput() ?: $this->process->getOutput()), "\n");
 
@@ -86,7 +85,7 @@ final class ProcessLintingResult implements LintingResultInterface
         return sprintf('%s.', $output);
     }
 
-    private function isSuccessful()
+    private function isSuccessful(): bool
     {
         if (null === $this->isSuccessful) {
             $this->process->wait();

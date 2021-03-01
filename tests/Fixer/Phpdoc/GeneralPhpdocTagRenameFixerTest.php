@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,12 +25,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = null)
+    public function testFix(string $expected, ?string $input = null, array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -201,7 +200,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testConfigureWithInvalidOption()
+    public function testConfigureWithInvalidOption(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "replacements" with value true is expected to be of type "array", but is of type ".*ool.*"\.$/');
@@ -211,7 +210,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    public function testConfigureWithUnknownOption()
+    public function testConfigureWithUnknownOption(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[general_phpdoc_tag_rename\] Invalid configuration: The option "foo" does not exist\. (Known|Defined) options are: "case_sensitive", "fix_annotation", "fix_inline", "replacements"\.$/');
@@ -222,12 +221,9 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param bool   $caseSensitive
-     * @param string $expectedMessage
-     *
      * @dataProvider provideConfigureWithInvalidReplacementsCases
      */
-    public function testConfigureWithInvalidReplacements(array $replacements, $caseSensitive, $expectedMessage)
+    public function testConfigureWithInvalidReplacements(array $replacements, bool $caseSensitive, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(sprintf(

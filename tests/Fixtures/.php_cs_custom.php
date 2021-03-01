@@ -26,7 +26,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getCacheFile()
+    public function getCacheFile(): ?string
     {
         return null;
     }
@@ -34,7 +34,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomFixers()
+    public function getCustomFixers(): array
     {
         return array();
     }
@@ -42,7 +42,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getFinder()
+    public function getFinder(): iterable
     {
         return array(__FILE__);
     }
@@ -50,7 +50,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return 'txt';
     }
@@ -58,7 +58,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getHideProgress()
+    public function getHideProgress(): bool
     {
         return false;
     }
@@ -66,7 +66,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndent()
+    public function getIndent(): string
     {
         return '  ';
     }
@@ -74,7 +74,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getLineEnding()
+    public function getLineEnding(): string
     {
         return "\n";
     }
@@ -82,7 +82,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'custom_config_test';
     }
@@ -90,7 +90,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getPhpExecutable()
+    public function getPhpExecutable(): ?string
     {
         return null;
     }
@@ -98,7 +98,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getRiskyAllowed()
+    public function getRiskyAllowed(): bool
     {
         return true;
     }
@@ -106,7 +106,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules()
+    public function getRules(): array
     {
         return array('concat_space' => array('spacing' => 'none'));
     }
@@ -114,7 +114,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsingCache()
+    public function getUsingCache(): bool
     {
         return false;
     }
@@ -122,14 +122,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function registerCustomFixers($fixers)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCacheFile($cacheFile)
+    public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         return $this;
     }
@@ -137,7 +130,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setFinder($finder)
+    public function setCacheFile(string $cacheFile): ConfigInterface
     {
         return $this;
     }
@@ -145,7 +138,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setFormat($format)
+    public function setFinder(iterable $finder): ConfigInterface
     {
         return $this;
     }
@@ -153,7 +146,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setHideProgress($hideProgress)
+    public function setFormat(string $format): ConfigInterface
     {
         return $this;
     }
@@ -161,7 +154,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setIndent($indent)
+    public function setHideProgress(bool $hideProgress): ConfigInterface
     {
         return $this;
     }
@@ -169,7 +162,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setLineEnding($lineEnding)
+    public function setIndent(string $indent): ConfigInterface
     {
         return $this;
     }
@@ -177,7 +170,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setPhpExecutable($phpExecutable)
+    public function setLineEnding(string $lineEnding): ConfigInterface
     {
         return $this;
     }
@@ -185,7 +178,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setRiskyAllowed($isRiskyAllowed)
+    public function setPhpExecutable(?string $phpExecutable): ConfigInterface
     {
         return $this;
     }
@@ -193,7 +186,7 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setRules(array $rules)
+    public function setRiskyAllowed(bool $isRiskyAllowed): ConfigInterface
     {
         return $this;
     }
@@ -201,7 +194,15 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function setUsingCache($usingCache)
+    public function setRules(array $rules): ConfigInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUsingCache(bool $usingCache): ConfigInterface
     {
         return $this;
     }

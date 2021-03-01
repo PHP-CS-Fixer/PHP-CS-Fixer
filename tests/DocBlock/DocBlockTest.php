@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -45,7 +47,7 @@ final class DocBlockTest extends TestCase
      * @return void
      */';
 
-    public function testContent()
+    public function testContent(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -53,14 +55,14 @@ final class DocBlockTest extends TestCase
         static::assertSame(self::$sample, (string) $doc);
     }
 
-    public function testEmptyContent()
+    public function testEmptyContent(): void
     {
         $doc = new DocBlock('');
 
         static::assertSame('', $doc->getContent());
     }
 
-    public function testGetLines()
+    public function testGetLines(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -75,7 +77,7 @@ final class DocBlockTest extends TestCase
         static::assertEmpty($doc->getLine(15));
     }
 
-    public function testGetAnnotations()
+    public function testGetAnnotations(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -90,7 +92,7 @@ final class DocBlockTest extends TestCase
         static::assertEmpty($doc->getAnnotation(5));
     }
 
-    public function testGetAnnotationsOfTypeParam()
+    public function testGetAnnotationsOfTypeParam(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -112,7 +114,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($third, $annotations[2]->getContent());
     }
 
-    public function testGetAnnotationsOfTypeThrows()
+    public function testGetAnnotationsOfTypeThrows(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -129,7 +131,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($content, $annotations[0]->getContent());
     }
 
-    public function testGetAnnotationsOfTypeReturn()
+    public function testGetAnnotationsOfTypeReturn(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -144,7 +146,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($content, $annotations[0]->getContent());
     }
 
-    public function testGetAnnotationsOfTypeFoo()
+    public function testGetAnnotationsOfTypeFoo(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -154,7 +156,7 @@ final class DocBlockTest extends TestCase
         static::assertCount(0, $annotations);
     }
 
-    public function testIsMultiLIne()
+    public function testIsMultiLIne(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -163,13 +165,8 @@ final class DocBlockTest extends TestCase
 
     /**
      * @dataProvider provideDocBlocksToConvertToMultiLineCases
-     *
-     * @param string $inputDocBlock
-     * @param string $outputDocBlock
-     * @param mixed  $indent
-     * @param mixed  $newLine
      */
-    public function testMakeMultiLIne($inputDocBlock, $outputDocBlock = null, $indent = '', $newLine = "\n")
+    public function testMakeMultiLIne(string $inputDocBlock, string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeMultiLine($indent, $newLine);
@@ -214,10 +211,9 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideDocBlocksToConvertToSingleLineCases
      *
-     * @param string $inputDocBlock
      * @param string $outputDocBlock
      */
-    public function testMakeSingleLine($inputDocBlock, $outputDocBlock = null)
+    public function testMakeSingleLine(string $inputDocBlock, string $outputDocBlock = null): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeSingleLine();

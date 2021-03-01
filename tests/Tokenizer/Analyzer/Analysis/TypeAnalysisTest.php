@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,13 +27,13 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  */
 final class TypeAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis()
+    public function testStartEndTokenAwareAnalysis(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
         static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
     }
 
-    public function testName()
+    public function testName(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
         static::assertSame('string', $analysis->getName());
@@ -42,13 +44,13 @@ final class TypeAnalysisTest extends TestCase
         static::assertTrue($analysis->isNullable());
     }
 
-    public function testStartIndex()
+    public function testStartIndex(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
         static::assertSame(1, $analysis->getStartIndex());
     }
 
-    public function testEndIndex()
+    public function testEndIndex(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
         static::assertSame(2, $analysis->getEndIndex());
@@ -56,11 +58,8 @@ final class TypeAnalysisTest extends TestCase
 
     /**
      * @dataProvider provideReservedCases
-     *
-     * @param mixed $type
-     * @param mixed $expected
      */
-    public function testReserved($type, $expected)
+    public function testReserved(string $type, bool $expected): void
     {
         $analysis = new TypeAnalysis($type, 1, 2);
         static::assertSame($expected, $analysis->isReservedType());

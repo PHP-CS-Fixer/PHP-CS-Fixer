@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,13 +31,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class TextDiffTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param string $format
-     * @param bool   $isDecorated
-     *
      * @dataProvider provideDiffReportingCases
      */
-    public function testDiffReportingDecorated($expected, $format, $isDecorated)
+    public function testDiffReportingDecorated(string $expected, string $format, bool $isDecorated): void
     {
         $command = new FixCommand(new ToolInfo());
         $commandTester = new CommandTester($command);
@@ -90,7 +88,7 @@ TEST;
     /**
      * Test to make sure @see TextDiffTest::provideDiffReportingCases covers all formats.
      */
-    public function testAllFormatsCovered()
+    public function testAllFormatsCovered(): void
     {
         $factory = ReporterFactory::create();
         $formats = $factory->registerBuiltInReporters()->getFormats();

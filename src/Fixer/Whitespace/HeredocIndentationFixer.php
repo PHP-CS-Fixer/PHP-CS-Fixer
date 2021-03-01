@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,8 +18,10 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
@@ -32,7 +36,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.',
@@ -81,7 +85,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return \PHP_VERSION_ID >= 70300 && $tokens->isTokenKindFound(T_START_HEREDOC);
     }
@@ -89,7 +93,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('indentation', 'Whether the indentation should be the same as in the start token line or one level more.'))
@@ -99,7 +103,7 @@ SAMPLE
         ]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             if (!$tokens[$index]->isGivenKind(T_END_HEREDOC)) {
@@ -113,11 +117,7 @@ SAMPLE
         }
     }
 
-    /**
-     * @param int $start
-     * @param int $end
-     */
-    private function fixIndentation(Tokens $tokens, $start, $end)
+    private function fixIndentation(Tokens $tokens, int $start, int $end): void
     {
         $indent = $this->getIndentAt($tokens, $start);
 
@@ -172,12 +172,7 @@ SAMPLE
         $tokens[$index] = new Token([T_ENCAPSED_AND_WHITESPACE, $content]);
     }
 
-    /**
-     * @param int $index
-     *
-     * @return string
-     */
-    private function getIndentAt(Tokens $tokens, $index)
+    private function getIndentAt(Tokens $tokens, int $index): string
     {
         for (; $index >= 0; --$index) {
             if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML, T_OPEN_TAG])) {

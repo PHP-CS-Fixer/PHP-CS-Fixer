@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,8 +19,10 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
@@ -78,7 +82,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.',
@@ -142,7 +146,7 @@ final class Foo {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
             return true;
@@ -157,7 +161,7 @@ final class Foo {
      * Must run before FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer, ReturnTypeDeclarationFixer.
      * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 13;
     }
@@ -165,7 +169,7 @@ final class Foo {
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -173,7 +177,7 @@ final class Foo {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('scalar_types', 'Fix also scalar types; may have unexpected behaviour due to PHP bad type coercion system.'))
@@ -186,7 +190,7 @@ final class Foo {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if (\PHP_VERSION_ID >= 80000) {
             unset($this->skippedTypes['mixed']);
@@ -292,10 +296,8 @@ final class Foo {
      * Determine whether the function already has a return type hint.
      *
      * @param int $index The index of the end of the function definition line, EG at { or ;
-     *
-     * @return bool
      */
-    private function hasReturnTypeHint(Tokens $tokens, $index)
+    private function hasReturnTypeHint(Tokens $tokens, int $index): bool
     {
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $nextIndex = $tokens->getNextMeaningfulToken($endFuncIndex);
@@ -304,11 +306,9 @@ final class Foo {
     }
 
     /**
-     * @param int    $index      The index of the end of the function definition line, EG at { or ;
-     * @param bool   $isNullable
-     * @param string $returnType
+     * @param int $index The index of the end of the function definition line, EG at { or ;
      */
-    private function fixFunctionDefinition(Tokens $tokens, $index, $isNullable, $returnType)
+    private function fixFunctionDefinition(Tokens $tokens, int $index, bool $isNullable, string $returnType): void
     {
         static $specialTypes = [
             'array' => [CT::T_ARRAY_TYPEHINT, 'array'],
@@ -359,7 +359,7 @@ final class Foo {
      *
      * @return Annotation[]
      */
-    private function findReturnAnnotations(Tokens $tokens, $index)
+    private function findReturnAnnotations(Tokens $tokens, int $index): array
     {
         do {
             $index = $tokens->getPrevNonWhitespace($index);

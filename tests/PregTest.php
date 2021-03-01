@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\PregException;
  */
 final class PregTest extends TestCase
 {
-    public function testMatchFailing()
+    public function testMatchFailing(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::match(): Invalid PCRE pattern ""');
@@ -33,12 +35,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string $pattern
-     * @param string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testMatch($pattern, $subject)
+    public function testMatch(string $pattern, string $subject): void
     {
         $expectedResult = preg_match($pattern, $subject, $expectedMatches);
         $actualResult = Preg::match($pattern, $subject, $actualMatches);
@@ -65,13 +64,8 @@ final class PregTest extends TestCase
 
     /**
      * @dataProvider providePatternValidationCases
-     *
-     * @param string      $pattern
-     * @param null|int    $expected
-     * @param null|string $expectedException
-     * @param null|string $expectedMessage
      */
-    public function testPatternValidation($pattern, $expected = null, $expectedException = null, $expectedMessage = null)
+    public function testPatternValidation(string $pattern, ?int $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
         $setup = function () use ($expectedException, $expectedMessage) {
             $i = 0;
@@ -110,13 +104,8 @@ final class PregTest extends TestCase
 
     /**
      * @dataProvider providePatternValidationCases
-     *
-     * @param string      $pattern
-     * @param null|int    $expected
-     * @param null|string $expectedException
-     * @param null|string $expectedMessage
      */
-    public function testPatternsValidation($pattern, $expected = null, $expectedException = null, $expectedMessage = null)
+    public function testPatternsValidation(string $pattern, ?int $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
         $setup = function () use ($expectedException, $expectedMessage) {
             $i = 0;
@@ -154,7 +143,7 @@ final class PregTest extends TestCase
         }
     }
 
-    public function testMatchAllFailing()
+    public function testMatchAllFailing(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::matchAll(): Invalid PCRE pattern ""');
@@ -163,12 +152,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string $pattern
-     * @param string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testMatchAll($pattern, $subject)
+    public function testMatchAll(string $pattern, string $subject): void
     {
         $expectedResult = preg_match_all($pattern, $subject, $expectedMatches);
         $actualResult = Preg::matchAll($pattern, $subject, $actualMatches);
@@ -177,7 +163,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedMatches, $actualMatches);
     }
 
-    public function testReplaceFailing()
+    public function testReplaceFailing(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessageMatches('~\Q\Preg::replace()\E: Invalid PCRE pattern "": \(code: \d+\) [^(]+ \(version: \d+~');
@@ -186,13 +172,13 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string $pattern
-     * @param string $subject
+     * @param string|string[] $pattern
+     * @param string|string[] $subject
      *
      * @dataProvider provideCommonCases
      * @dataProvider provideArrayOfPatternsCases
      */
-    public function testReplace($pattern, $subject)
+    public function testReplace($pattern, $subject): void
     {
         $expectedResult = preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
@@ -200,7 +186,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedResult, $actualResult);
     }
 
-    public function testReplaceCallbackFailing()
+    public function testReplaceCallbackFailing(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::replaceCallback(): Invalid PCRE pattern ""');
@@ -209,13 +195,13 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string $pattern
-     * @param string $subject
+     * @param string|string[] $pattern
+     * @param string|string[] $subject
      *
      * @dataProvider provideCommonCases
      * @dataProvider provideArrayOfPatternsCases
      */
-    public function testReplaceCallback($pattern, $subject)
+    public function testReplaceCallback($pattern, $subject): void
     {
         $callback = static function (array $x) { return implode('-', $x); };
 
@@ -244,7 +230,7 @@ final class PregTest extends TestCase
         ];
     }
 
-    public function testSplitFailing()
+    public function testSplitFailing(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::split(): Invalid PCRE pattern ""');
@@ -253,12 +239,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string $pattern
-     * @param string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testSplit($pattern, $subject)
+    public function testSplit(string $pattern, string $subject): void
     {
         $expectedResult = preg_split($pattern, $subject);
         $actualResult = Preg::split($pattern, $subject);
@@ -266,7 +249,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedResult, $actualResult);
     }
 
-    public function testCorrectnessForUtf8String()
+    public function testCorrectnessForUtf8String(): void
     {
         $pattern = '/./';
         $subject = 'àbc';
@@ -278,7 +261,7 @@ final class PregTest extends TestCase
         static::assertNotSame(['à'], $functionMatches);
     }
 
-    public function testCorrectnessForNonUtf8String()
+    public function testCorrectnessForNonUtf8String(): void
     {
         $pattern = '/./u';
         $subject = \chr(224).'bc';

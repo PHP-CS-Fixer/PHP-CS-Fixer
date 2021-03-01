@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class VersionSpecificationTest extends TestCase
 {
-    public function testConstructorRequiresEitherMinimumOrMaximum()
+    public function testConstructorRequiresEitherMinimumOrMaximum(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -33,10 +35,8 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideInvalidVersionCases
-     *
-     * @param mixed $minimum
      */
-    public function testConstructorRejectsInvalidMinimum($minimum)
+    public function testConstructorRejectsInvalidMinimum(int $minimum): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -45,10 +45,8 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideInvalidVersionCases
-     *
-     * @param mixed $maximum
      */
-    public function testConstructorRejectsInvalidMaximum($maximum)
+    public function testConstructorRejectsInvalidMaximum(int $maximum): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -58,23 +56,15 @@ final class VersionSpecificationTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidVersionCases()
+    public function provideInvalidVersionCases(): array
     {
         return [
             'negative' => [-1],
             'zero' => [0],
-            'float' => [3.14],
-            'string' => ['foo'],
-            'integerish' => ['9000'],
-            'array' => [[]],
-            'object' => [new \stdClass()],
         ];
     }
 
-    public function testConstructorRejectsMaximumLessThanMinimum()
+    public function testConstructorRejectsMaximumLessThanMinimum(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -86,12 +76,8 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsTrueCases
-     *
-     * @param null|int $minimum
-     * @param null|int $maximum
-     * @param int      $actual
      */
-    public function testIsSatisfiedByReturnsTrue($minimum, $maximum, $actual)
+    public function testIsSatisfiedByReturnsTrue(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
@@ -101,10 +87,7 @@ final class VersionSpecificationTest extends TestCase
         static::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsSatisfiedByReturnsTrueCases()
+    public function provideIsSatisfiedByReturnsTrueCases(): array
     {
         return [
             'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID],
@@ -116,12 +99,8 @@ final class VersionSpecificationTest extends TestCase
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsFalseCases
-     *
-     * @param null|int $minimum
-     * @param null|int $maximum
-     * @param int      $actual
      */
-    public function testIsSatisfiedByReturnsFalse($minimum, $maximum, $actual)
+    public function testIsSatisfiedByReturnsFalse(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
@@ -131,10 +110,7 @@ final class VersionSpecificationTest extends TestCase
         static::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsSatisfiedByReturnsFalseCases()
+    public function provideIsSatisfiedByReturnsFalseCases(): array
     {
         return [
             'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1],

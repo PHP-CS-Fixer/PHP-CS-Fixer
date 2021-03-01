@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ErrorsManagerTest extends TestCase
 {
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $errorsManager = new ErrorsManager();
 
@@ -33,7 +35,7 @@ final class ErrorsManagerTest extends TestCase
         static::assertEmpty($errorsManager->getLintErrors());
     }
 
-    public function testThatCanReportAndRetrieveInvalidErrors()
+    public function testThatCanReportAndRetrieveInvalidErrors(): void
     {
         $error = new Error(
             Error::TYPE_INVALID,
@@ -56,7 +58,7 @@ final class ErrorsManagerTest extends TestCase
         static::assertCount(0, $errorsManager->getLintErrors());
     }
 
-    public function testThatCanReportAndRetrieveExceptionErrors()
+    public function testThatCanReportAndRetrieveExceptionErrors(): void
     {
         $error = new Error(
             Error::TYPE_EXCEPTION,
@@ -79,7 +81,7 @@ final class ErrorsManagerTest extends TestCase
         static::assertCount(0, $errorsManager->getLintErrors());
     }
 
-    public function testThatCanReportAndRetrieveInvalidFileErrors()
+    public function testThatCanReportAndRetrieveInvalidFileErrors(): void
     {
         $error = new Error(
             Error::TYPE_LINT,

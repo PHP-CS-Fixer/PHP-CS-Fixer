@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -298,7 +302,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         $codeSample = '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
@@ -328,7 +332,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      *
      * Must run before SelfStaticAccessorFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -336,7 +340,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -344,7 +348,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $thisFixer = $this;
 
@@ -356,14 +360,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function ($option) use ($thisFixer) {
+                ->setAllowedValues([static function (array $option) use ($thisFixer) {
                     foreach ($option as $method => $value) {
                         if (!isset($thisFixer->staticMethods[$method])) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "methods" key, expected any of "%s", got "%s".',
                                     implode('", "', array_keys($thisFixer->staticMethods)),
-                                    \is_object($method) ? \get_class($method) : \gettype($method).'#'.$method
+                                    \gettype($method).'#'.$method
                                 )
                             );
                         }
@@ -390,7 +394,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $analyzer = new TokensAnalyzer($tokens);
 
@@ -451,14 +455,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @param int    $index
-     * @param int    $referenceIndex
-     * @param string $callType
-     *
-     * @return bool
-     */
-    private function needsConversion(Tokens $tokens, $index, $referenceIndex, $callType)
+    private function needsConversion(Tokens $tokens, int $index, int $referenceIndex, string $callType): bool
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
@@ -466,12 +463,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             && !$tokens[$referenceIndex]->equals($this->conversionMap[$callType][1], false);
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function findEndOfNextBlock(Tokens $tokens, $index)
+    private function findEndOfNextBlock(Tokens $tokens, int $index): int
     {
         $nextIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 

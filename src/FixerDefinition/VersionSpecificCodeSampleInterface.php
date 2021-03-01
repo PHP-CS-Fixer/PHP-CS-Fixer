@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,10 +19,5 @@ namespace PhpCsFixer\FixerDefinition;
  */
 interface VersionSpecificCodeSampleInterface extends CodeSampleInterface
 {
-    /**
-     * @param int $version
-     *
-     * @return bool
-     */
-    public function isSuitableFor($version);
+    public function isSuitableFor(int $version): bool;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -47,7 +50,7 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'All `public` methods of `abstract` classes should be `final`.',
@@ -72,7 +75,7 @@ abstract class AbstractMachine
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_ABSTRACT, T_PUBLIC, T_FUNCTION]);
     }
@@ -80,7 +83,7 @@ abstract class AbstractMachine
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -88,7 +91,7 @@ abstract class AbstractMachine
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
 
@@ -105,11 +108,7 @@ abstract class AbstractMachine
         }
     }
 
-    /**
-     * @param int $classOpenIndex
-     * @param int $classCloseIndex
-     */
-    private function fixClass(Tokens $tokens, $classOpenIndex, $classCloseIndex)
+    private function fixClass(Tokens $tokens, int $classOpenIndex, int $classCloseIndex): void
     {
         for ($index = $classCloseIndex - 1; $index > $classOpenIndex; --$index) {
             // skip method contents

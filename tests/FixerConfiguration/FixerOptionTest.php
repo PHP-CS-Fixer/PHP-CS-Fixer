@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,19 +24,19 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class FixerOptionTest extends TestCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $option = new FixerOption('foo', 'Bar.');
         static::assertSame('foo', $option->getName());
     }
 
-    public function testGetDescription()
+    public function testGetDescription(): void
     {
         $option = new FixerOption('foo', 'Bar.');
         static::assertSame('Bar.', $option->getDescription());
     }
 
-    public function testHasDefault()
+    public function testHasDefault(): void
     {
         $option = new FixerOption('foo', 'Bar.');
         static::assertFalse($option->hasDefault());
@@ -43,13 +45,13 @@ final class FixerOptionTest extends TestCase
         static::assertTrue($option->hasDefault());
     }
 
-    public function testGetDefault()
+    public function testGetDefault(): void
     {
         $option = new FixerOption('foo', 'Bar.', false, 'baz');
         static::assertSame('baz', $option->getDefault());
     }
 
-    public function testGetUndefinedDefault()
+    public function testGetUndefinedDefault(): void
     {
         $option = new FixerOption('foo', 'Bar.');
 
@@ -58,7 +60,7 @@ final class FixerOptionTest extends TestCase
         $option->getDefault();
     }
 
-    public function testGetAllowedTypes()
+    public function testGetAllowedTypes(): void
     {
         $option = new FixerOption('foo', 'Bar.');
         static::assertNull($option->getAllowedTypes());
@@ -70,7 +72,7 @@ final class FixerOptionTest extends TestCase
         static::assertSame(['bool', 'string'], $option->getAllowedTypes());
     }
 
-    public function testGetAllowedValues()
+    public function testGetAllowedValues(): void
     {
         $option = new FixerOption('foo', 'Bar.');
         static::assertNull($option->getAllowedValues());
@@ -81,7 +83,7 @@ final class FixerOptionTest extends TestCase
         $option = new FixerOption('foo', 'Bar.', true, null, null, ['baz', 'qux']);
         static::assertSame(['baz', 'qux'], $option->getAllowedValues());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, [static function () {}]);
+        $option = new FixerOption('foo', 'Bar.', true, null, null, [static function (): void {}]);
         $allowedTypes = $option->getAllowedValues();
         static::assertIsArray($allowedTypes);
         static::assertCount(1, $allowedTypes);
@@ -89,16 +91,16 @@ final class FixerOptionTest extends TestCase
         static::assertInstanceOf(\Closure::class, $allowedTypes[0]);
     }
 
-    public function testGetNormalizers()
+    public function testGetNormalizers(): void
     {
         $option = new FixerOption('foo', 'Bar.');
         static::assertNull($option->getNormalizer());
 
-        $option = new FixerOption('foo', 'Bar.', true, null, null, null, static function () {});
+        $option = new FixerOption('foo', 'Bar.', true, null, null, null, static function (): void {});
         static::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
-    public function testRequiredWithDefaultValue()
+    public function testRequiredWithDefaultValue(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Required options cannot have a default value.');

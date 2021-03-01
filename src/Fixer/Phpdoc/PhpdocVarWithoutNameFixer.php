@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,6 +19,7 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -30,7 +33,7 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             '`@var` and `@type` annotations of classy properties should not contain the name.',
@@ -57,7 +60,7 @@ final class Foo
      * Must run before PhpdocAlignFixer.
      * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -65,7 +68,7 @@ final class Foo
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
@@ -73,7 +76,7 @@ final class Foo
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -111,7 +114,7 @@ final class Foo
         }
     }
 
-    private function fixLine(Line $line)
+    private function fixLine(Line $line): void
     {
         $content = $line->getContent();
 
@@ -125,7 +128,7 @@ final class Foo
     /**
      * @return Line[]
      */
-    private function getFirstLevelLines(DocBlock $docBlock)
+    private function getFirstLevelLines(DocBlock $docBlock): array
     {
         $nested = 0;
         $lines = $docBlock->getLines();

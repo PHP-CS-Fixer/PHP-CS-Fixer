@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -259,7 +258,7 @@ echo 1;
      *
      * @dataProvider provideCommentBlockCases
      */
-    public function testGetCommentBlock($source, $startIndex, $endIndex, $isEmpty)
+    public function testGetCommentBlock(string $source, int $startIndex, int $endIndex, bool $isEmpty): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);

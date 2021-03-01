@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,14 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|int    $versionSpecificFix
-     * @param null|array  $config
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $versionSpecificFix = null, $config = null)
+    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, ?array $config = null): void
     {
         if (
             (null !== $input && \PHP_VERSION_ID < 70000)

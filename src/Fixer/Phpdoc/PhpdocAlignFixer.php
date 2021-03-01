@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,9 +20,11 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -83,7 +87,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -119,7 +123,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
 <?php
@@ -148,7 +152,7 @@ EOF;
      *
      * Must run after CommentToPhpdocFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAnnotationWithoutDotFixer, PhpdocIndentFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocScalarFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToCommentFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesFixer, PhpdocTypesFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         /*
          * Should be run after all other docblock fixers. This because they
@@ -163,7 +167,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -171,7 +175,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -191,7 +195,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $tags = new FixerOptionBuilder('tags', 'The tags that should be aligned.');
         $tags
@@ -218,7 +222,7 @@ EOF;
         return new FixerConfigurationResolver([$tags->getOption(), $align->getOption()]);
     }
 
-    private function fixDocBlock(DocBlock $docBlock)
+    private function fixDocBlock(DocBlock $docBlock): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -328,12 +332,9 @@ EOF;
     }
 
     /**
-     * @param string $line
-     * @param bool   $matchCommentOnly
-     *
      * @return null|array<string, null|string>
      */
-    private function getMatches($line, $matchCommentOnly = false)
+    private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
         if (Preg::match($this->regex, $line, $matches)) {
             if (!empty($matches['tag2'])) {
@@ -366,13 +367,7 @@ EOF;
         return null;
     }
 
-    /**
-     * @param int $verticalAlignIndent
-     * @param int $leftAlignIndent
-     *
-     * @return string
-     */
-    private function getIndent($verticalAlignIndent, $leftAlignIndent = 1)
+    private function getIndent(int $verticalAlignIndent, int $leftAlignIndent = 1): string
     {
         $indent = self::ALIGN_VERTICAL === $this->align ? $verticalAlignIndent : $leftAlignIndent;
 
@@ -381,11 +376,8 @@ EOF;
 
     /**
      * @param array[] $items
-     * @param int     $index
-     *
-     * @return int
      */
-    private function getLeftAlignedDescriptionIndent(array $items, $index)
+    private function getLeftAlignedDescriptionIndent(array $items, int $index): int
     {
         if (self::ALIGN_LEFT !== $this->align) {
             return 0;
@@ -414,12 +406,8 @@ EOF;
 
     /**
      * Get indent for sentence.
-     *
-     * @param null|string $sentence
-     *
-     * @return int
      */
-    private function getSentenceIndent($sentence)
+    private function getSentenceIndent(?string $sentence): int
     {
         if (null === $sentence) {
             return 0;

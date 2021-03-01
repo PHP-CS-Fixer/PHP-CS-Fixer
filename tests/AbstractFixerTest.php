@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class AbstractFixerTest extends TestCase
 {
-    public function testConfigureUnconfigurable()
+    public function testConfigureUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
@@ -35,7 +37,7 @@ final class AbstractFixerTest extends TestCase
         $fixer->configure(['foo' => 'bar']);
     }
 
-    public function testGetConfigurationDefinitionUnconfigurable()
+    public function testGetConfigurationDefinitionUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
@@ -45,7 +47,7 @@ final class AbstractFixerTest extends TestCase
         $fixer->getConfigurationDefinition();
     }
 
-    public function testCreateConfigurationDefinitionUnconfigurable()
+    public function testCreateConfigurationDefinitionUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
@@ -55,7 +57,7 @@ final class AbstractFixerTest extends TestCase
         $fixer->doSomethingWithCreateConfigDefinition();
     }
 
-    public function testSetWhitespacesConfigUnconfigurable()
+    public function testSetWhitespacesConfigUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 

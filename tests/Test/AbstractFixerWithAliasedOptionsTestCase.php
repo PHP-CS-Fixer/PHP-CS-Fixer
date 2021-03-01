@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,14 +30,14 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
      */
     private $fixerWithAliasedConfig;
 
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
         $this->fixerWithAliasedConfig = null;
     }
 
-    protected function doTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function doTest(string $expected, ?string $input = null, ?\SplFileInfo $file = null): void
     {
         parent::doTest($expected, $input, $file);
 
@@ -57,7 +59,7 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
         }
     }
 
-    protected function configureFixerWithAliasedOptions(array $configuration)
+    protected function configureFixerWithAliasedOptions(array $configuration): void
     {
         if (!$this->fixer instanceof ConfigurableFixerInterface) {
             throw new \LogicException('Fixer is not configurable.');

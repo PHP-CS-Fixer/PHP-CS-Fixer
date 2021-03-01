@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,10 +32,8 @@ final class TokensAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider provideGetClassyElementsCases
-     *
-     * @param string $source
      */
-    public function testGetClassyElements(array $expectedElements, $source)
+    public function testGetClassyElements(array $expectedElements, string $source): void
     {
         $tokens = Tokens::fromCode($source);
 
@@ -195,7 +195,7 @@ PHP
     /**
      * @requires PHP 7.4
      */
-    public function testGetClassyElementsWithNullableProperties()
+    public function testGetClassyElementsWithNullableProperties(): void
     {
         $source = <<<'PHP'
 <?php
@@ -239,7 +239,7 @@ PHP;
         );
     }
 
-    public function testGetClassyElementsWithAnonymousClass()
+    public function testGetClassyElementsWithAnonymousClass(): void
     {
         $source = <<<'PHP'
 <?php
@@ -303,7 +303,7 @@ PHP;
         );
     }
 
-    public function testGetClassyElementsWithMultipleAnonymousClass()
+    public function testGetClassyElementsWithMultipleAnonymousClass(): void
     {
         $source = <<<'PHP'
 <?php class A0
@@ -449,7 +449,7 @@ PHP;
     /**
      * @requires PHP 7.4
      */
-    public function testGetClassyElements74()
+    public function testGetClassyElements74(): void
     {
         $source = <<<'PHP'
 <?php
@@ -488,11 +488,9 @@ PHP;
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsAnonymousClassCases
      */
-    public function testIsAnonymousClass($source, array $expected)
+    public function testIsAnonymousClass(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -532,11 +530,9 @@ PHP;
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsLambdaCases
      */
-    public function testIsLambda($source, array $expected)
+    public function testIsLambda(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -583,12 +579,10 @@ preg_replace_callback(
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsLambda70Cases
      * @requires PHP 7.0
      */
-    public function testIsLambda70($source, array $expected)
+    public function testIsLambda70(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -618,12 +612,10 @@ preg_replace_callback(
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsLambda74Cases
      * @requires PHP 7.4
      */
-    public function testIsLambda74($source, array $expected)
+    public function testIsLambda74(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -647,12 +639,10 @@ preg_replace_callback(
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsLambda71Cases
      * @requires PHP 7.1
      */
-    public function testIsLambda71($source, array $expected)
+    public function testIsLambda71(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -703,12 +693,10 @@ preg_replace_callback(
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsLambda80Cases
      * @requires PHP 8.0
      */
-    public function testIsLambda80($source, array $expected)
+    public function testIsLambda80(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -753,7 +741,7 @@ $a(1,2);',
         ];
     }
 
-    public function testIsLambdaInvalid()
+    public function testIsLambdaInvalid(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('No T_FUNCTION or T_FN at given index 0, got "T_OPEN_TAG".');
@@ -763,11 +751,9 @@ $a(1,2);',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsConstantInvocationCases
      */
-    public function testIsConstantInvocation($source, array $expected)
+    public function testIsConstantInvocation(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -935,12 +921,10 @@ $a(1,2);',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsConstantInvocation70Cases
      * @requires PHP 7.0
      */
-    public function testIsConstantInvocation70($source, array $expected)
+    public function testIsConstantInvocation70(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -964,12 +948,10 @@ $a(1,2);',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsConstantInvocation71Cases
      * @requires PHP 7.1
      */
-    public function testIsConstantInvocation71($source, array $expected)
+    public function testIsConstantInvocation71(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1012,7 +994,7 @@ $a(1,2);',
         ];
     }
 
-    public function testIsConstantInvocationInvalid()
+    public function testIsConstantInvocationInvalid(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('No T_STRING at given index 0, got "T_OPEN_TAG".');
@@ -1022,11 +1004,9 @@ $a(1,2);',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsUnarySuccessorOperatorCases
      */
-    public function testIsUnarySuccessorOperator($source, array $expected)
+    public function testIsUnarySuccessorOperator(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1082,11 +1062,9 @@ $a(1,2);',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
-    public function testIsUnaryPredecessorOperator($source, array $expected)
+    public function testIsUnaryPredecessorOperator(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1166,11 +1144,9 @@ $a(1,2);',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsBinaryOperatorCases
      */
-    public function testIsBinaryOperator($source, array $expected)
+    public function testIsBinaryOperator(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1322,12 +1298,10 @@ $b;',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsBinaryOperator70Cases
      * @requires PHP 7.0
      */
-    public function testIsBinaryOperator70($source, array $expected)
+    public function testIsBinaryOperator70(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1355,13 +1329,9 @@ $b;',
     }
 
     /**
-     * @param string $source
-     * @param int    $tokenIndex
-     * @param bool   $isMultiLineArray
-     *
      * @dataProvider provideIsArrayCases
      */
-    public function testIsArray($source, $tokenIndex, $isMultiLineArray = false)
+    public function testIsArray(string $source, int $tokenIndex, bool $isMultiLineArray = false): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1432,13 +1402,12 @@ $b;',
     }
 
     /**
-     * @param string $source
-     * @param int[]  $tokenIndexes
+     * @param int[] $tokenIndexes
      *
      * @dataProvider provideIsArray71Cases
      * @requires PHP 7.1
      */
-    public function testIsArray71($source, $tokenIndexes)
+    public function testIsArray71(string $source, array $tokenIndexes): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1470,12 +1439,10 @@ $b;',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsBinaryOperator71Cases
      * @requires PHP 7.1
      */
-    public function testIsBinaryOperator71($source, array $expected)
+    public function testIsBinaryOperator71(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1499,12 +1466,10 @@ $b;',
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideIsBinaryOperator74Cases
      * @requires PHP 7.4
      */
-    public function testIsBinaryOperator74($source, array $expected)
+    public function testIsBinaryOperator74(string $source, array $expected): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -1528,12 +1493,9 @@ $b;',
     }
 
     /**
-     * @param string $source
-     * @param int    $tokenIndex
-     *
      * @dataProvider provideArrayExceptionsCases
      */
-    public function testIsNotArray($source, $tokenIndex)
+    public function testIsNotArray(string $source, int $tokenIndex): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1541,12 +1503,9 @@ $b;',
     }
 
     /**
-     * @param string $source
-     * @param int    $tokenIndex
-     *
      * @dataProvider provideArrayExceptionsCases
      */
-    public function testIsMultiLineArrayException($source, $tokenIndex)
+    public function testIsMultiLineArrayException(string $source, int $tokenIndex): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -1566,12 +1525,9 @@ $b;',
     }
 
     /**
-     * @param string $source
-     * @param int    $index
-     *
      * @dataProvider provideGetFunctionPropertiesCases
      */
-    public function testGetFunctionProperties($source, $index, array $expected)
+    public function testGetFunctionProperties(string $source, int $index, array $expected): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1637,7 +1593,7 @@ class TestClass {
         return $cases;
     }
 
-    public function testIsWhilePartOfDoWhile()
+    public function testIsWhilePartOfDoWhile(): void
     {
         $source =
 <<<'SRC'
@@ -1713,12 +1669,9 @@ SRC;
     }
 
     /**
-     * @param string $input
-     * @param bool   $perNamespace
-     *
      * @dataProvider provideGetImportUseIndexesCases
      */
-    public function testGetImportUseIndexes(array $expected, $input, $perNamespace = false)
+    public function testGetImportUseIndexes(array $expected, string $input, bool $perNamespace = false): void
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1788,13 +1741,10 @@ EOF
     }
 
     /**
-     * @param string $input
-     * @param bool   $perNamespace
-     *
      * @dataProvider provideGetImportUseIndexesPHP70Cases
      * @requires PHP 7.0
      */
-    public function testGetImportUseIndexesPHP70(array $expected, $input, $perNamespace = false)
+    public function testGetImportUseIndexesPHP70(array $expected, string $input, bool $perNamespace = false): void
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1825,13 +1775,10 @@ use const some\a\{ConstA, ConstB, ConstC};
     }
 
     /**
-     * @param string $input
-     * @param bool   $perNamespace
-     *
      * @dataProvider provideGetImportUseIndexesPHP72Cases
      * @requires PHP 7.2
      */
-    public function testGetImportUseIndexesPHP72(array $expected, $input, $perNamespace = false)
+    public function testGetImportUseIndexesPHP72(array $expected, string $input, bool $perNamespace = false): void
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -1861,7 +1808,7 @@ use const some\a\{ConstA, ConstB, ConstC,};
         ];
     }
 
-    public function testGetClassyElementsWithMultipleNestedAnonymousClass()
+    public function testGetClassyElementsWithMultipleNestedAnonymousClass(): void
     {
         $source = '<?php
 class MyTestWithAnonymousClass extends TestCase
@@ -1939,13 +1886,9 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @param bool   $expected
-     * @param string $source
-     * @param int    $index
-     *
      * @dataProvider provideIsSuperGlobalCases
      */
-    public function testIsSuperGlobal($expected, $source, $index)
+    public function testIsSuperGlobal(bool $expected, string $source, int $index): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);

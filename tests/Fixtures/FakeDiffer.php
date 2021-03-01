@@ -24,7 +24,7 @@ final class FakeDiffer implements DifferInterface
      */
     public $passedFile;
 
-    public function diff($old, $new, \SplFileInfo $file = null)
+    public function diff(string $old, string $new, \SplFileInfo $file = null): string
     {
         $this->passedFile = $file;
 

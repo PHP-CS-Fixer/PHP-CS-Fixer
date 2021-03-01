@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,12 +28,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -211,13 +210,10 @@ use X ?><?php new X(); // run before white space around semicolon',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null)
+    public function test70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -268,7 +264,7 @@ use Foo\
     /**
      * @requires PHP 7.0
      */
-    public function testMessyComments()
+    public function testMessyComments(): void
     {
         if (\PHP_VERSION_ID >= 80000) {
             static::markTestSkipped('PHP < 8.0 is required.');
@@ -289,12 +285,9 @@ use D\{
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
@@ -312,13 +305,10 @@ use D\{
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input)
+    public function testFix72(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -344,7 +334,7 @@ use G\{H,I/*1*/,/*2*/};
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80()
+    public function testFixPrePHP80(): void
     {
         if (\PHP_VERSION_ID < 70000) {
             static::markTestSkipped('PHP > 7.0 && < 8.0 is required.');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
@@ -30,7 +33,7 @@ final class RegularCallableCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Callables must be called without using `call_user_func*` when possible.',
@@ -61,12 +64,12 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
 
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -74,7 +77,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
@@ -100,10 +103,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
     }
 
-    /**
-     * @param int $index
-     */
-    private function processCall(Tokens $tokens, $index, array $arguments)
+    private function processCall(Tokens $tokens, int $index, array $arguments): void
     {
         $firstArgIndex = $tokens->getNextMeaningfulToken(
             $tokens->getNextMeaningfulToken($index)
@@ -189,14 +189,9 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
     }
 
-    /**
-     * @param int $callIndex
-     * @param int $firstArgStartIndex
-     * @param int $firstArgEndIndex
-     */
-    private function replaceCallUserFuncWithCallback(Tokens $tokens, $callIndex, Tokens $newCallTokens, $firstArgStartIndex, $firstArgEndIndex)
+    private function replaceCallUserFuncWithCallback(Tokens $tokens, int $callIndex, Tokens $newCallTokens, int $firstArgStartIndex, int $firstArgEndIndex): void
     {
-        $tokens->clearRange($firstArgStartIndex, $firstArgEndIndex); // FRS end?
+        $tokens->clearRange($firstArgStartIndex, $firstArgEndIndex);
 
         $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgEndIndex);
         $afterFirstArgToken = $tokens[$afterFirstArgIndex];
@@ -222,7 +217,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
     }
 
-    private function getTokensSubcollection(Tokens $tokens, $indexStart, $indexEnd)
+    private function getTokensSubcollection(Tokens $tokens, int $indexStart, int $indexEnd): Tokens
     {
         $size = $indexEnd - $indexStart + 1;
         $subcollection = new Tokens($size);

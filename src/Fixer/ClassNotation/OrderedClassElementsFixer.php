@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,9 +18,11 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -97,7 +101,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -142,7 +146,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
@@ -150,7 +154,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Orders the elements of classes/interfaces/traits.',
@@ -220,7 +224,7 @@ class Example
      * Must run before ClassAttributesSeparationFixer, NoBlankLinesAfterClassOpeningFixer, SpaceAfterSemicolonFixer.
      * Must run after NoPhp4ConstructorFixer, ProtectedToPrivateFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 65;
     }
@@ -228,7 +232,7 @@ class Example
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
             if (!$tokens[$i]->isClassy()) {
@@ -256,7 +260,7 @@ class Example
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
@@ -287,11 +291,9 @@ class Example
     }
 
     /**
-     * @param int $startIndex
-     *
      * @return array[]
      */
-    private function getElements(Tokens $tokens, $startIndex)
+    private function getElements(Tokens $tokens, int $startIndex): array
     {
         static $elementTokenKinds = [CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION];
 
@@ -361,11 +363,9 @@ class Example
     }
 
     /**
-     * @param int $index
-     *
      * @return array|string type or array of type and name
      */
-    private function detectElementType(Tokens $tokens, $index)
+    private function detectElementType(Tokens $tokens, int $index)
     {
         $token = $tokens[$index];
 
@@ -413,12 +413,7 @@ class Example
         return 'method';
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function findElementEnd(Tokens $tokens, $index)
+    private function findElementEnd(Tokens $tokens, int $index): int
     {
         $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
@@ -438,7 +433,7 @@ class Example
      *
      * @return array[]
      */
-    private function sortElements(array $elements)
+    private function sortElements(array $elements): array
     {
         static $phpunitPositions = [
             'setupbeforeclass' => 1,
@@ -492,7 +487,7 @@ class Example
         return $elements;
     }
 
-    private function sortGroupElements(array $a, array $b)
+    private function sortGroupElements(array $a, array $b): int
     {
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
@@ -504,11 +499,9 @@ class Example
     }
 
     /**
-     * @param int     $startIndex
-     * @param int     $endIndex
      * @param array[] $elements
      */
-    private function sortTokens(Tokens $tokens, $startIndex, $endIndex, array $elements)
+    private function sortTokens(Tokens $tokens, int $startIndex, int $endIndex, array $elements): void
     {
         $replaceTokens = [];
 

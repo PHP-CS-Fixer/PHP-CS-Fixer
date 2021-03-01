@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ final class NamespacesAnalyzer
     /**
      * @return NamespaceAnalysis[]
      */
-    public function getDeclarations(Tokens $tokens)
+    public function getDeclarations(Tokens $tokens): array
     {
         $namespaces = [];
 

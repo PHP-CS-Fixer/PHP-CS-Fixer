@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -116,12 +118,9 @@ final class LineTest extends TestCase
     ];
 
     /**
-     * @param int    $pos
-     * @param string $content
-     *
      * @dataProvider provideLinesCases
      */
-    public function testPosAndContent($pos, $content)
+    public function testPosAndContent(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
@@ -131,11 +130,9 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @param int $pos
-     *
      * @dataProvider provideLinesCases
      */
-    public function testStartOrEndPos($pos)
+    public function testStartOrEndPos(int $pos): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
@@ -156,12 +153,9 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @param int  $pos
-     * @param bool $useful
-     *
      * @dataProvider provideLinesWithUsefulCases
      */
-    public function testUseful($pos, $useful)
+    public function testUseful(int $pos, bool $useful): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
@@ -181,12 +175,9 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @param int  $pos
-     * @param bool $tag
-     *
      * @dataProvider provideLinesWithTagCases
      */
-    public function testTag($pos, $tag)
+    public function testTag(int $pos, bool $tag): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
@@ -205,7 +196,7 @@ final class LineTest extends TestCase
         return $cases;
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $line = new Line("     * @param \$foo Hi!\n");
 

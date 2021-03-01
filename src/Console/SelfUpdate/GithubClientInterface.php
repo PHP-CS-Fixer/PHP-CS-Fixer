@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,8 +19,5 @@ namespace PhpCsFixer\Console\SelfUpdate;
  */
 interface GithubClientInterface
 {
-    /**
-     * @return array
-     */
-    public function getTags();
+    public function getTags(): array;
 }

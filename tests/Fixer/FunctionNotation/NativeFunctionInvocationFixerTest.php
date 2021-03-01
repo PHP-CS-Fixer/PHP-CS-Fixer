@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsUnknownConfigurationKey()
+    public function testConfigureRejectsUnknownConfigurationKey(): void
     {
         $key = 'foo';
 
@@ -45,7 +47,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidConfigurationElement($element)
+    public function testConfigureRejectsInvalidConfigurationElement($element): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
@@ -60,10 +62,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidConfigurationElementCases()
+    public function provideInvalidConfigurationElementCases(): array
     {
         return [
             'null' => [null],
@@ -78,17 +77,15 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string[]    $include
-     * @param null|string $expectedExceptionClass
-     * @param null|string $expectedExceptionMessage
+     * @param string[] $include
      *
      * @dataProvider provideConfigureIncludeSetsCases
      */
     public function testConfigureIncludeSets(
         array $include,
-        $expectedExceptionClass = null,
-        $expectedExceptionMessage = null
-    ) {
+        ?string $expectedExceptionClass = null,
+        ?string $expectedExceptionMessage = null
+    ): void {
         if (null !== $expectedExceptionClass) {
             $this->expectException($expectedExceptionClass);
             $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));
@@ -120,7 +117,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testConfigureResetsExclude()
+    public function testConfigureResetsExclude(): void
     {
         $this->fixer->configure([
             'exclude' => [
@@ -169,19 +166,13 @@ PHP;
 
     /**
      * @dataProvider provideFixWithDefaultConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDefaultConfigurationCases()
+    public function provideFixWithDefaultConfigurationCases(): array
     {
         return [
             [
@@ -265,11 +256,8 @@ strlen($foo);
 
     /**
      * @dataProvider provideFixWithConfiguredExcludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredExclude($expected, $input = null)
+    public function testFixWithConfiguredExclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'exclude' => [
@@ -280,10 +268,7 @@ strlen($foo);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredExcludeCases()
+    public function provideFixWithConfiguredExcludeCases(): array
     {
         return [
             [
@@ -309,12 +294,8 @@ class Foo
 
     /**
      * @dataProvider provideFixWithNamespaceConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     * @param string      $scope
      */
-    public function testFixWithNamespaceConfiguration($expected, $input = null, $scope = 'namespaced')
+    public function testFixWithNamespaceConfiguration(string $expected, ?string $input = null, string $scope = 'namespaced'): void
     {
         $this->fixer->configure(['scope' => $scope]);
         $this->doTest($expected, $input);
@@ -481,11 +462,8 @@ namespace {
 
     /**
      * @dataProvider provideFixWithConfiguredIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredInclude($expected, $input = null, array $configuration = [])
+    public function testFixWithConfiguredInclude(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 
@@ -613,7 +591,7 @@ namespace {
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php $name = \get_class($foo, );',
@@ -624,7 +602,7 @@ namespace {
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80()
+    public function testFixPrePHP80(): void
     {
         $this->doTest(
             '<?php

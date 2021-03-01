@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -34,7 +36,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      * @dataProvider provideProcessCases
      * @requires PHP 8.0
      */
-    public function testProcess(array $expected, array $input = null)
+    public function testProcess(array $expected, array $input = null): void
     {
         $expectedTokens = Tokens::fromArray($expected);
         $tokens = null === $input
@@ -154,11 +156,10 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
     /**
      * @param Token[] $expected
-     * @param string  $source
      *
      * @dataProvider providePriorityCases
      */
-    public function testPriority(array $expected, $source)
+    public function testPriority(array $expected, string $source): void
     {
         self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
     }

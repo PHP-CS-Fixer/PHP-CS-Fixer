@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,7 +32,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
 {
     public static $fixtureDir;
 
-    public static function doSetUpBeforeClass()
+    public static function doSetUpBeforeClass(): void
     {
         parent::doSetUpBeforeClass();
 
@@ -62,14 +64,14 @@ final class CiIntegrationTest extends AbstractSmokeTest
         }
     }
 
-    public static function doTearDownAfterClass()
+    public static function doTearDownAfterClass(): void
     {
         parent::doTearDownAfterClass();
 
         self::executeCommand('rm -rf .git');
     }
 
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
@@ -82,21 +84,19 @@ final class CiIntegrationTest extends AbstractSmokeTest
     }
 
     /**
-     * @param string   $branchName
      * @param string[] $caseCommands
      * @param string[] $expectedResult1Lines
      * @param string[] $expectedResult2Lines
-     * @param string   $expectedResult3FilesLine
      *
      * @dataProvider provideIntegrationCases
      */
     public function testIntegration(
-        $branchName,
+        string $branchName,
         array $caseCommands,
         array $expectedResult1Lines,
         array $expectedResult2Lines,
-        $expectedResult3FilesLine
-    ) {
+        string $expectedResult3FilesLine
+    ): void {
         self::executeScript(array_merge(
             [
                 "git checkout -b {$branchName} -q",
@@ -267,7 +267,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
         ];
     }
 
-    private static function executeCommand($command)
+    private static function executeCommand(string $command)
     {
         return CommandExecutor::create($command, self::$fixtureDir)->getResult();
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\JsonReporter;
+use PhpCsFixer\Report\ReporterInterface;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -24,7 +27,7 @@ use PhpCsFixer\Report\JsonReporter;
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return <<<'JSON'
 {
@@ -41,7 +44,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 JSON;
     }
 
-    protected function createWithDiffReport()
+    protected function createWithDiffReport(): string
     {
         return <<<'JSON'
 {
@@ -59,7 +62,7 @@ JSON;
 JSON;
     }
 
-    protected function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport(): string
     {
         return <<<'JSON'
 {
@@ -77,7 +80,7 @@ JSON;
 JSON;
     }
 
-    protected function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport(): string
     {
         return <<<'JSON'
 {
@@ -94,7 +97,7 @@ JSON;
 JSON;
     }
 
-    protected function createComplexReport()
+    protected function createComplexReport(): string
     {
         return <<<'JSON'
 {
@@ -118,17 +121,17 @@ JSON;
 JSON;
     }
 
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new JsonReporter();
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'json';
     }
 
-    protected function createNoErrorReport()
+    protected function createNoErrorReport(): string
     {
         return <<<'JSON'
 {
@@ -142,16 +145,13 @@ JSON;
 JSON;
     }
 
-    protected function assertFormat($expected, $input)
+    protected function assertFormat(string $expected, string $input): void
     {
         static::assertJsonSchema($input);
         static::assertJsonStringEqualsJsonString($expected, $input);
     }
 
-    /**
-     * @param string $json
-     */
-    private static function assertJsonSchema($json)
+    private static function assertJsonSchema(string $json): void
     {
         $jsonPath = __DIR__.'/../../doc/report-schema/schema.json';
 

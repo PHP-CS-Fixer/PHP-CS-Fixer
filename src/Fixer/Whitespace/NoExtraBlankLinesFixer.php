@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,9 +19,11 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -74,7 +78,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -122,7 +126,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Removes extra blank lines and/or blank lines following configuration.',
@@ -277,7 +281,7 @@ switch($a) {
      * Must run before BlankLineBeforeStatementFixer.
      * Must run after CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -20;
     }
@@ -285,7 +289,7 @@ switch($a) {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
@@ -293,7 +297,7 @@ switch($a) {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokens = $tokens;
         $this->tokensAnalyzer = new TokensAnalyzer($this->tokens);
@@ -305,7 +309,7 @@ switch($a) {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tokens', 'List of tokens to fix.'))
@@ -316,7 +320,7 @@ switch($a) {
         ]);
     }
 
-    private function fixByToken(Token $token, $index)
+    private function fixByToken(Token $token, int $index): void
     {
         foreach ($this->tokenKindCallbackMap as $kind => $callback) {
             if (!$token->isGivenKind($kind)) {
@@ -339,7 +343,7 @@ switch($a) {
         }
     }
 
-    private function removeBetweenUse($index)
+    private function removeBetweenUse(int $index): void
     {
         $next = $this->tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
         if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
@@ -354,7 +358,7 @@ switch($a) {
         $this->removeEmptyLinesAfterLineWithTokenAt($next);
     }
 
-    private function removeMultipleBlankLines($index)
+    private function removeMultipleBlankLines(int $index): void
     {
         $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && 1 === Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
@@ -366,7 +370,7 @@ switch($a) {
         }
     }
 
-    private function fixAfterToken($index)
+    private function fixAfterToken(int $index): void
     {
         for ($i = $index - 1; $i > 0; --$i) {
             if ($this->tokens[$i]->isGivenKind(T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
@@ -385,7 +389,7 @@ switch($a) {
         $this->removeEmptyLinesAfterLineWithTokenAt($index);
     }
 
-    private function fixAfterThrowToken($index)
+    private function fixAfterThrowToken(int $index): void
     {
         if ($this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
             $this->fixAfterToken($index);
@@ -398,7 +402,7 @@ switch($a) {
      *
      * @param int $index body start
      */
-    private function fixStructureOpenCloseIfMultiLine($index)
+    private function fixStructureOpenCloseIfMultiLine(int $index): void
     {
         $blockTypeInfo = Tokens::detectBlockType($this->tokens[$index]);
         $bodyEnd = $this->tokens->findBlockEnd($blockTypeInfo['type'], $index);
@@ -413,7 +417,7 @@ switch($a) {
         }
     }
 
-    private function removeEmptyLinesAfterLineWithTokenAt($index)
+    private function removeEmptyLinesAfterLineWithTokenAt(int $index): void
     {
         // find the line break
         $tokenCount = \count($this->tokens);
@@ -449,13 +453,7 @@ switch($a) {
         }
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return bool
-     */
-    private function containsLinebreak($startIndex, $endIndex)
+    private function containsLinebreak(int $startIndex, int $endIndex): bool
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
             if (Preg::match('/\R/', $this->tokens[$i]->getContent())) {

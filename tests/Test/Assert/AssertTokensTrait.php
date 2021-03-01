@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 trait AssertTokensTrait
 {
-    private static function assertTokens(Tokens $expectedTokens, Tokens $inputTokens)
+    private static function assertTokens(Tokens $expectedTokens, Tokens $inputTokens): void
     {
         foreach ($expectedTokens as $index => $expectedToken) {
             if (!isset($inputTokens[$index])) {

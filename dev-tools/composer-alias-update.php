@@ -5,12 +5,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 const COMPOSER_JSON_FILE = __DIR__.'/../composer.json';
 
-/**
- * @param string $version
- *
- * @return string
- */
-function convertAppVersionToAliasedVersion($version)
+function convertAppVersionToAliasedVersion(string $version): string
 {
     $parts = explode('.', $version, 3);
 

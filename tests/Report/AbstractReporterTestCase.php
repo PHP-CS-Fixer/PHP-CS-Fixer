@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,21 +30,21 @@ abstract class AbstractReporterTestCase extends TestCase
      */
     protected $reporter;
 
-    protected function doSetUp()
+    protected function doSetUp(): void
     {
         parent::doSetUp();
 
         $this->reporter = $this->createReporter();
     }
 
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
         $this->reporter = null;
     }
 
-    final public function testGetFormat()
+    final public function testGetFormat(): void
     {
         static::assertSame(
             $this->getFormat(),
@@ -51,21 +53,16 @@ abstract class AbstractReporterTestCase extends TestCase
     }
 
     /**
-     * @param string $expectedReport
-     *
      * @dataProvider provideGenerateCases
      */
-    final public function testGenerate($expectedReport, ReportSummary $reportSummary)
+    final public function testGenerate(string $expectedReport, ReportSummary $reportSummary): void
     {
         $actualReport = $this->reporter->generate($reportSummary);
 
         $this->assertFormat($expectedReport, $actualReport);
     }
 
-    /**
-     * @return array
-     */
-    final public function provideGenerateCases()
+    final public function provideGenerateCases(): array
     {
         return [
             'no errors' => [
@@ -163,49 +160,21 @@ abstract class AbstractReporterTestCase extends TestCase
         ];
     }
 
-    /**
-     * @return ReporterInterface
-     */
-    abstract protected function createReporter();
+    abstract protected function createReporter(): ReporterInterface;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFormat();
+    abstract protected function getFormat(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function createNoErrorReport();
+    abstract protected function createNoErrorReport(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function createSimpleReport();
+    abstract protected function createSimpleReport(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function createWithDiffReport();
+    abstract protected function createWithDiffReport(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function createWithAppliedFixersReport();
+    abstract protected function createWithAppliedFixersReport(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function createWithTimeAndMemoryReport();
+    abstract protected function createWithTimeAndMemoryReport(): string;
 
-    /**
-     * @return string
-     */
-    abstract protected function createComplexReport();
+    abstract protected function createComplexReport(): string;
 
-    /**
-     * @param string $expected
-     * @param string $input
-     */
-    abstract protected function assertFormat($expected, $input);
+    abstract protected function assertFormat(string $expected, string $input);
 }

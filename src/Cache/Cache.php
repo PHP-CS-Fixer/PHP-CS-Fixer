@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -34,17 +36,17 @@ final class Cache implements CacheInterface
         $this->signature = $signature;
     }
 
-    public function getSignature()
+    public function getSignature(): SignatureInterface
     {
         return $this->signature;
     }
 
-    public function has($file)
+    public function has(string $file): bool
     {
         return \array_key_exists($file, $this->hashes);
     }
 
-    public function get($file)
+    public function get(string $file): ?int
     {
         if (!$this->has($file)) {
             return null;
@@ -53,17 +55,17 @@ final class Cache implements CacheInterface
         return $this->hashes[$file];
     }
 
-    public function set($file, $hash)
+    public function set(string $file, int $hash): void
     {
         $this->hashes[$file] = $hash;
     }
 
-    public function clear($file)
+    public function clear(string $file): void
     {
         unset($this->hashes[$file]);
     }
 
-    public function toJson()
+    public function toJson(): string
     {
         $json = json_encode([
             'php' => $this->getSignature()->getPhpVersion(),
@@ -85,13 +87,11 @@ final class Cache implements CacheInterface
     }
 
     /**
-     * @param string $json
-     *
      * @throws \InvalidArgumentException
      *
      * @return Cache
      */
-    public static function fromJson($json)
+    public static function fromJson(string $json): self
     {
         $data = json_decode($json, true);
 

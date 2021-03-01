@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,23 +26,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDocblocksCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTraitsCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixTraits(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -574,13 +570,10 @@ trait DocBlocks
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -604,13 +597,10 @@ $session = new Session();
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix71(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -652,13 +642,10 @@ $first = true;// needed because by default first docblock is never fixed.
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -715,13 +702,10 @@ $first = true;// needed because by default first docblock is never fixed.
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input = null)
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

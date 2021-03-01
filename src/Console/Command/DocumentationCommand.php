@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -34,14 +36,14 @@ final class DocumentationCommand extends Command
      */
     private $generator;
 
-    public function __construct($name = null)
+    public function __construct(?string $name = null)
     {
         parent::__construct($name);
 
         $this->generator = new DocumentationGenerator();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setAliases(['doc'])
@@ -49,7 +51,7 @@ final class DocumentationCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerBuiltInFixers();
@@ -63,7 +65,7 @@ final class DocumentationCommand extends Command
         return 0;
     }
 
-    private function generateFixersDocs(array $fixers)
+    private function generateFixersDocs(array $fixers): void
     {
         $filesystem = new Filesystem();
 
@@ -97,7 +99,7 @@ final class DocumentationCommand extends Command
         }
     }
 
-    private function generateRuleSetsDocs(array $fixers)
+    private function generateRuleSetsDocs(array $fixers): void
     {
         $filesystem = new Filesystem();
 

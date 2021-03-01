@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,24 +27,18 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ConstantCaseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideLowerGeneratedCases
      */
-    public function testFixLowerGeneratedCases($expected, $input = null)
+    public function testFixLowerGeneratedCases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['case' => 'lower']);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideUpperGeneratedCases
      */
-    public function testFixUpperGeneratedCases($expected, $input = null)
+    public function testFixUpperGeneratedCases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['case' => 'upper']);
         $this->doTest($expected, $input);
@@ -95,12 +91,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -166,12 +159,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix56Cases
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP <7.0
      */
-    public function testFix56($expected, $input = null)
+    public function testFix56(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

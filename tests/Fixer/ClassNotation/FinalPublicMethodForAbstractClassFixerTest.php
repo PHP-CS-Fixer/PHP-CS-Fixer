@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,7 +31,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -108,7 +110,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -132,7 +134,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input = null)
+    public function testFix72(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -150,10 +152,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         ];
     }
 
-    /**
-     * @return string
-     */
-    private function getClassElementStubs()
+    private function getClassElementStubs(): string
     {
         return '
             public $a1;

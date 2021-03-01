@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -28,7 +31,7 @@ final class ImplodeCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Function `implode` must be called with 2 arguments in the documented order.',
@@ -44,7 +47,7 @@ final class ImplodeCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -52,7 +55,7 @@ final class ImplodeCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
@@ -63,7 +66,7 @@ final class ImplodeCallFixer extends AbstractFixer
      * Must run before MethodArgumentSpaceFixer.
      * Must run after NoAliasFunctionsFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -1;
     }
@@ -71,7 +74,7 @@ final class ImplodeCallFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
@@ -128,11 +131,9 @@ final class ImplodeCallFixer extends AbstractFixer
     }
 
     /**
-     * @param int $functionNameIndex
-     *
      * @return array<int, int> In the format: startIndex => endIndex
      */
-    private function getArgumentIndices(Tokens $tokens, $functionNameIndex)
+    private function getArgumentIndices(Tokens $tokens, int $functionNameIndex): array
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 

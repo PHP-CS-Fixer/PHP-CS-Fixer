@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ class TokensWithObservedTransformers extends Tokens
     public $currentTransformer;
     public $observedModificationsPerTransformer = [];
 
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
         if (null !== $this->currentTransformer) {
             $this->observedModificationsPerTransformer[$this->currentTransformer][] = $this->extractTokenKind($newval);
@@ -36,7 +38,7 @@ class TokensWithObservedTransformers extends Tokens
     /**
      * @internal
      */
-    protected function applyTransformers()
+    protected function applyTransformers(): void
     {
         $this->observedModificationsPerTransformer = [];
 

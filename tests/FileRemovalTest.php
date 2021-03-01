@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -35,7 +37,7 @@ final class FileRemovalTest extends TestCase
      */
     private static $removeFilesOnTearDown = true;
 
-    public static function doTearDownAfterClass()
+    public static function doTearDownAfterClass(): void
     {
         if (self::$removeFilesOnTearDown) {
             @unlink(sys_get_temp_dir().'/cs_fixer_foo.php');
@@ -47,7 +49,7 @@ final class FileRemovalTest extends TestCase
      * @runInSeparateProcess
      * @doesNotPerformAssertions
      */
-    public function testShutdownRemovesObservedFilesSetup()
+    public function testShutdownRemovesObservedFilesSetup(): void
     {
         self::$removeFilesOnTearDown = false;
 
@@ -65,13 +67,13 @@ final class FileRemovalTest extends TestCase
     /**
      * @depends testShutdownRemovesObservedFilesSetup
      */
-    public function testShutdownRemovesObservedFiles()
+    public function testShutdownRemovesObservedFiles(): void
     {
         static::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');
         static::assertFileExists(sys_get_temp_dir().'/cs_fixer_bar.php');
     }
 
-    public function testCleanRemovesObservedFiles()
+    public function testCleanRemovesObservedFiles(): void
     {
         $fs = $this->getMockFileSystem();
 
@@ -87,7 +89,7 @@ final class FileRemovalTest extends TestCase
         static::assertFileExists($fs->url().'/bar.php');
     }
 
-    public function testDestructRemovesObservedFiles()
+    public function testDestructRemovesObservedFiles(): void
     {
         $fs = $this->getMockFileSystem();
 
@@ -103,7 +105,7 @@ final class FileRemovalTest extends TestCase
         static::assertFileExists($fs->url().'/bar.php');
     }
 
-    public function testDeleteObservedFile()
+    public function testDeleteObservedFile(): void
     {
         $fs = $this->getMockFileSystem();
 
@@ -118,7 +120,7 @@ final class FileRemovalTest extends TestCase
         static::assertFileExists($fs->url().'/baz.php');
     }
 
-    public function testDeleteNonObservedFile()
+    public function testDeleteNonObservedFile(): void
     {
         $fs = $this->getMockFileSystem();
 

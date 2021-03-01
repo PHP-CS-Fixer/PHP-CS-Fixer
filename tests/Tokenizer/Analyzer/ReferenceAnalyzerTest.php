@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,14 +27,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ReferenceAnalyzerTest extends TestCase
 {
-    public function testNonAmpersand()
+    public function testNonAmpersand(): void
     {
         $analyzer = new ReferenceAnalyzer();
 
         static::assertFalse($analyzer->isReference(Tokens::fromCode('<?php $foo;$bar;$baz;'), 3));
     }
 
-    public function testReferenceAndNonReferenceTogether()
+    public function testReferenceAndNonReferenceTogether(): void
     {
         $analyzer = new ReferenceAnalyzer();
 
@@ -44,10 +46,8 @@ final class ReferenceAnalyzerTest extends TestCase
 
     /**
      * @dataProvider provideReferenceCases
-     *
-     * @param mixed $code
      */
-    public function testReference($code)
+    public function testReference(string $code): void
     {
         $this->doTestCode(true, $code);
     }
@@ -82,10 +82,8 @@ class Foo {
 
     /**
      * @dataProvider provideNonReferenceCases
-     *
-     * @param mixed $code
      */
-    public function testNonReference($code)
+    public function testNonReference(string $code): void
     {
         $this->doTestCode(false, $code);
     }
@@ -120,7 +118,7 @@ class Foo {
         }
     }
 
-    private function doTestCode($expected, $code)
+    private function doTestCode(bool $expected, string $code): void
     {
         $analyzer = new ReferenceAnalyzer();
 

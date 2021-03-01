@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,7 +34,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $controlStatement
      */
-    public function testConfigureRejectsInvalidControlStatement($controlStatement)
+    public function testConfigureRejectsInvalidControlStatement($controlStatement): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
@@ -41,10 +43,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidControlStatementCases()
+    public function provideInvalidControlStatementCases(): array
     {
         return [
             'null' => [null],
@@ -60,22 +59,16 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixWithReturnCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixWithBreakCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithBreak($expected, $input = null)
+    public function testFixWithBreak(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['break'],
@@ -84,10 +77,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithBreakCases()
+    public function provideFixWithBreakCases(): array
     {
         return [
             [
@@ -176,11 +166,8 @@ while (true) {
 
     /**
      * @dataProvider provideFixWithCaseCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithCase($expected, $input = null)
+    public function testFixWithCase(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['case'],
@@ -189,10 +176,7 @@ while (true) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithCaseCases()
+    public function provideFixWithCaseCases(): array
     {
         return [
             [
@@ -217,11 +201,8 @@ switch ($a) {
 
     /**
      * @dataProvider provideFixWithContinueCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithContinue($expected, $input = null)
+    public function testFixWithContinue(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['continue'],
@@ -230,10 +211,7 @@ switch ($a) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithContinueCases()
+    public function provideFixWithContinueCases(): array
     {
         return [
             [
@@ -315,11 +293,8 @@ while (true) {
 
     /**
      * @dataProvider provideFixWithDeclareCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDeclare($expected, $input = null)
+    public function testFixWithDeclare(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['declare'],
@@ -328,10 +303,7 @@ while (true) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDeclareCases()
+    public function provideFixWithDeclareCases(): array
     {
         return [
             [
@@ -358,11 +330,8 @@ declare(ticks=1);',
 
     /**
      * @dataProvider provideFixWithDefaultCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefault($expected, $input = null)
+    public function testFixWithDefault(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['default'],
@@ -371,10 +340,7 @@ declare(ticks=1);',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDefaultCases()
+    public function provideFixWithDefaultCases(): array
     {
         return [
             [
@@ -399,11 +365,8 @@ switch ($a) {
 
     /**
      * @dataProvider provideFixWithDoCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDo($expected, $input = null)
+    public function testFixWithDo(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['do'],
@@ -412,10 +375,7 @@ switch ($a) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDoCases()
+    public function provideFixWithDoCases(): array
     {
         return [
             [
@@ -439,11 +399,8 @@ do {
 
     /**
      * @dataProvider provideFixWithExitCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithExit($expected, $input = null)
+    public function testFixWithExit(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['exit'],
@@ -452,10 +409,7 @@ do {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithExitCases()
+    public function provideFixWithExitCases(): array
     {
         return [
             [
@@ -501,11 +455,8 @@ if ($foo === $bar) {
 
     /**
      * @dataProvider provideFixWithForCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithFor($expected, $input = null)
+    public function testFixWithFor(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['for'],
@@ -533,11 +484,8 @@ if ($foo === $bar) {
 
     /**
      * @dataProvider provideFixWithGotoCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithGoto($expected, $input = null)
+    public function testFixWithGoto(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['goto'],
@@ -546,10 +494,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithGotoCases()
+    public function provideFixWithGotoCases(): array
     {
         return [
             [
@@ -592,11 +537,8 @@ if ($foo === $bar) {
 
     /**
      * @dataProvider provideFixWithIfCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithIf($expected, $input = null)
+    public function testFixWithIf(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['if'],
@@ -605,10 +547,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithIfCases()
+    public function provideFixWithIfCases(): array
     {
         return [
             [
@@ -645,11 +584,8 @@ if ($foo) { }',
 
     /**
      * @dataProvider provideFixWithForEachCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithForEach($expected, $input = null)
+    public function testFixWithForEach(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['foreach'],
@@ -677,11 +613,8 @@ if ($foo) { }',
 
     /**
      * @dataProvider provideFixWithIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithInclude($expected, $input = null)
+    public function testFixWithInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['include'],
@@ -690,10 +623,7 @@ if ($foo) { }',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithIncludeCases()
+    public function provideFixWithIncludeCases(): array
     {
         return [
             [
@@ -714,11 +644,8 @@ include "foo.php";',
 
     /**
      * @dataProvider provideFixWithIncludeOnceCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithIncludeOnce($expected, $input = null)
+    public function testFixWithIncludeOnce(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['include_once'],
@@ -727,10 +654,7 @@ include "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithIncludeOnceCases()
+    public function provideFixWithIncludeOnceCases(): array
     {
         return [
             [
@@ -751,11 +675,8 @@ include_once "foo.php";',
 
     /**
      * @dataProvider provideFixWithRequireCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithRequire($expected, $input = null)
+    public function testFixWithRequire(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['require'],
@@ -764,10 +685,7 @@ include_once "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithRequireCases()
+    public function provideFixWithRequireCases(): array
     {
         return [
             [
@@ -788,11 +706,8 @@ require "foo.php";',
 
     /**
      * @dataProvider provideFixWithRequireOnceCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithRequireOnce($expected, $input = null)
+    public function testFixWithRequireOnce(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['require_once'],
@@ -801,10 +716,7 @@ require "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithRequireOnceCases()
+    public function provideFixWithRequireOnceCases(): array
     {
         return [
             [
@@ -825,11 +737,8 @@ require_once "foo.php";',
 
     /**
      * @dataProvider provideFixWithReturnCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithReturn($expected, $input = null)
+    public function testFixWithReturn(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['return'],
@@ -838,10 +747,7 @@ require_once "foo.php";',
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithReturnCases()
+    public function provideFixWithReturnCases(): array
     {
         return [
             [
@@ -975,21 +881,15 @@ function foo()
 
     /**
      * @dataProvider provideFixWithReturnAndMessyWhitespacesCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithReturnAndMessyWhitespaces($expected, $input = null)
+    public function testFixWithReturnAndMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithReturnAndMessyWhitespacesCases()
+    public function provideFixWithReturnAndMessyWhitespacesCases(): array
     {
         return [
             [
@@ -1009,11 +909,8 @@ function foo()
 
     /**
      * @dataProvider provideFixWithSwitchCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithSwitch($expected, $input = null)
+    public function testFixWithSwitch(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['switch'],
@@ -1022,10 +919,7 @@ function foo()
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithSwitchCases()
+    public function provideFixWithSwitchCases(): array
     {
         return [
             [
@@ -1055,11 +949,8 @@ switch ($foo) {
 
     /**
      * @dataProvider provideFixWithThrowCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithThrow($expected, $input = null)
+    public function testFixWithThrow(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['throw'],
@@ -1068,10 +959,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithThrowCases()
+    public function provideFixWithThrowCases(): array
     {
         return [
             [
@@ -1098,11 +986,8 @@ if (false) {
 
     /**
      * @dataProvider provideFixWithTryCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithTry($expected, $input = null)
+    public function testFixWithTry(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['try'],
@@ -1111,10 +996,7 @@ if (false) {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithTryCases()
+    public function provideFixWithTryCases(): array
     {
         return [
             [
@@ -1147,11 +1029,8 @@ try {
 
     /**
      * @dataProvider provideFixWithWhileCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithWhile($expected, $input = null)
+    public function testFixWithWhile(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['while'],
@@ -1160,10 +1039,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithWhileCases()
+    public function provideFixWithWhileCases(): array
     {
         return [
             [
@@ -1209,11 +1085,8 @@ do {
 
     /**
      * @dataProvider provideFixWithYieldCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithYield($expected, $input = null)
+    public function testFixWithYield(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['yield'],
@@ -1333,13 +1206,10 @@ function foo() {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithYieldFromCases
      * @requires PHP 7.0
      */
-    public function testFixWithYieldFrom($expected, $input = null)
+    public function testFixWithYieldFrom(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'statements' => ['yield_from'],
@@ -1403,11 +1273,9 @@ function foo() {
     /**
      * @dataProvider provideFixWithMultipleConfigStatementsCases
      *
-     * @param string[]    $statements
-     * @param string      $expected
-     * @param null|string $input
+     * @param string[] $statements
      */
-    public function testFixWithMultipleConfigStatements(array $statements, $expected, $input = null)
+    public function testFixWithMultipleConfigStatements(array $statements, string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['statements' => $statements]);
 

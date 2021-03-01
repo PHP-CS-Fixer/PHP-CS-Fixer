@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use Keradus\CliExecutor\CommandExecutor;
  */
 final class StdinTest extends AbstractSmokeTest
 {
-    public function testFixingStdin()
+    public function testFixingStdin(): void
     {
         $cwd = __DIR__.'/../..';
 
@@ -61,12 +63,7 @@ final class StdinTest extends AbstractSmokeTest
         );
     }
 
-    /**
-     * @param string $output
-     *
-     * @return string
-     */
-    private function unifyFooter($output)
+    private function unifyFooter(string $output): string
     {
         return preg_replace(
             '/Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',

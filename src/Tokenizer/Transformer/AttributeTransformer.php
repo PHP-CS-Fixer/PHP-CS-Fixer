@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,7 +29,7 @@ final class AttributeTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // must run before all other transformers that might touch attributes
         return 200;
@@ -36,7 +38,7 @@ final class AttributeTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
         return 80000;
     }
@@ -44,7 +46,7 @@ final class AttributeTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
             return;
@@ -68,7 +70,7 @@ final class AttributeTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
+    public function getCustomTokens(): array
     {
         return [
             CT::T_ATTRIBUTE_CLOSE,

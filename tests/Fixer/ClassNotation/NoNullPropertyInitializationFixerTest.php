@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -142,13 +141,10 @@ null;#13
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.0
      * @dataProvider providePhp70Cases
      */
-    public function testFixPhp70($expected, $input = null)
+    public function testFixPhp70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -172,13 +168,10 @@ null;#13
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.1
      * @dataProvider providePhp71Cases
      */
-    public function testFixPhp71($expected, $input = null)
+    public function testFixPhp71(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -193,13 +186,10 @@ null;#13
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -218,14 +208,11 @@ null;#13
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPrePHP80Cases
      *
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80($expected, $input = null)
+    public function testFixPrePHP80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -246,7 +233,7 @@ null;#13
     /**
      * @requires PHP 8.0
      */
-    public function testFixPhp80()
+    public function testFixPhp80(): void
     {
         $this->doTest('<?php
 class Point {

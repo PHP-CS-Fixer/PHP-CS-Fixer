@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -54,11 +56,7 @@ final class FixerOptionBuilder
      */
     private $deprecationMessage;
 
-    /**
-     * @param string $name
-     * @param string $description
-     */
-    public function __construct($name, $description)
+    public function __construct(string $name, string $description)
     {
         $this->name = $name;
         $this->description = $description;
@@ -69,7 +67,7 @@ final class FixerOptionBuilder
      *
      * @return $this
      */
-    public function setDefault($default)
+    public function setDefault($default): self
     {
         $this->default = $default;
         $this->isRequired = false;
@@ -82,7 +80,7 @@ final class FixerOptionBuilder
      *
      * @return $this
      */
-    public function setAllowedTypes(array $allowedTypes)
+    public function setAllowedTypes(array $allowedTypes): self
     {
         $this->allowedTypes = $allowedTypes;
 
@@ -92,7 +90,7 @@ final class FixerOptionBuilder
     /**
      * @return $this
      */
-    public function setAllowedValues(array $allowedValues)
+    public function setAllowedValues(array $allowedValues): self
     {
         $this->allowedValues = $allowedValues;
 
@@ -102,7 +100,7 @@ final class FixerOptionBuilder
     /**
      * @return $this
      */
-    public function setNormalizer(\Closure $normalizer)
+    public function setNormalizer(\Closure $normalizer): self
     {
         $this->normalizer = $normalizer;
 
@@ -110,21 +108,16 @@ final class FixerOptionBuilder
     }
 
     /**
-     * @param null|string $deprecationMessage
-     *
      * @return $this
      */
-    public function setDeprecationMessage($deprecationMessage)
+    public function setDeprecationMessage(?string $deprecationMessage): self
     {
         $this->deprecationMessage = $deprecationMessage;
 
         return $this;
     }
 
-    /**
-     * @return FixerOptionInterface
-     */
-    public function getOption()
+    public function getOption(): FixerOptionInterface
     {
         $option = new FixerOption(
             $this->name,

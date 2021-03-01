@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,12 +29,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamespacesAnalyzerTest extends TestCase
 {
     /**
-     * @param string $code
-     * @param array  $expected
-     *
      * @dataProvider provideNamespacesCases
      */
-    public function testNamespaces($code, $expected)
+    public function testNamespaces(string $code, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespacesAnalyzer();

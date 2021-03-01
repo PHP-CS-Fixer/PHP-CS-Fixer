@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -45,7 +47,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLatestVersion()
+    public function getLatestVersion(): string
     {
         $this->retrieveAvailableVersions();
 
@@ -55,7 +57,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLatestVersionOfMajor($majorVersion)
+    public function getLatestVersionOfMajor(int $majorVersion): ?string
     {
         $this->retrieveAvailableVersions();
 
@@ -73,7 +75,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function compareVersions($versionA, $versionB)
+    public function compareVersions(string $versionA, string $versionB): int
     {
         $versionA = $this->versionParser->normalize($versionA);
         $versionB = $this->versionParser->normalize($versionB);
@@ -89,7 +91,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
         return 0;
     }
 
-    private function retrieveAvailableVersions()
+    private function retrieveAvailableVersions(): void
     {
         if (null !== $this->availableVersions) {
             return;

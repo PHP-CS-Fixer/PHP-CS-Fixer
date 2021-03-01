@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,9 +18,11 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -34,7 +38,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There must be a comment when fall-through is intentional in a non-empty case body.',
@@ -72,7 +76,7 @@ switch ($foo) {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
     }
@@ -82,7 +86,7 @@ switch ($foo) {
      *
      * Must run after NoUselessElseFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -90,13 +94,13 @@ switch ($foo) {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('comment_text', 'The text to use in the added comment and to detect it.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([
-                    static function ($value) {
+                    static function (string $value) {
                         if (\is_string($value) && Preg::match('/\R/', $value)) {
                             throw new InvalidOptionsException('The comment text must not contain new lines.');
                         }
@@ -115,7 +119,7 @@ switch ($foo) {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($position = \count($tokens) - 1; $position >= 0; --$position) {
             if ($tokens[$position]->isGivenKind([T_CASE, T_DEFAULT])) {
@@ -124,10 +128,7 @@ switch ($foo) {
         }
     }
 
-    /**
-     * @param int $casePosition
-     */
-    private function fixCase(Tokens $tokens, $casePosition)
+    private function fixCase(Tokens $tokens, int $casePosition): void
     {
         $empty = true;
         $fallThrough = true;
@@ -203,10 +204,7 @@ switch ($foo) {
         }
     }
 
-    /**
-     * @return bool
-     */
-    private function isNoBreakComment(Token $token)
+    private function isNoBreakComment(Token $token): bool
     {
         if (!$token->isComment()) {
             return false;
@@ -217,10 +215,7 @@ switch ($foo) {
         return 1 === Preg::match("~^((//|#)\\s*{$text}\\s*)|(/\\*\\*?\\s*{$text}\\s*\\*/)$~i", $token->getContent());
     }
 
-    /**
-     * @param int $casePosition
-     */
-    private function insertCommentAt(Tokens $tokens, $casePosition)
+    private function insertCommentAt(Tokens $tokens, int $casePosition): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $newlinePosition = $this->ensureNewLineAt($tokens, $casePosition);
@@ -250,11 +245,9 @@ switch ($foo) {
     }
 
     /**
-     * @param int $position
-     *
      * @return int The newline token position
      */
-    private function ensureNewLineAt(Tokens $tokens, $position)
+    private function ensureNewLineAt(Tokens $tokens, int $position): int
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         $content = $lineEnding.WhitespacesAnalyzer::detectIndent($tokens, $position);
@@ -288,10 +281,7 @@ switch ($foo) {
         return $position - 1;
     }
 
-    /**
-     * @param int $commentPosition
-     */
-    private function removeComment(Tokens $tokens, $commentPosition)
+    private function removeComment(Tokens $tokens, int $commentPosition): void
     {
         if ($tokens[$tokens->getPrevNonWhitespace($commentPosition)]->isGivenKind(T_OPEN_TAG)) {
             $whitespacePosition = $commentPosition + 1;
@@ -315,12 +305,7 @@ switch ($foo) {
         $tokens->clearTokenAndMergeSurroundingWhitespace($commentPosition);
     }
 
-    /**
-     * @param int $position
-     *
-     * @return int
-     */
-    private function getStructureEnd(Tokens $tokens, $position)
+    private function getStructureEnd(Tokens $tokens, int $position): int
     {
         $initialToken = $tokens[$position];
 

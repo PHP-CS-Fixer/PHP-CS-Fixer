@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -41,13 +43,7 @@ final class PhpUnitTargetVersion
     {
     }
 
-    /**
-     * @param string $candidate
-     * @param string $target
-     *
-     * @return bool
-     */
-    public static function fulfills($candidate, $target)
+    public static function fulfills(string $candidate, string $target): bool
     {
         if (self::VERSION_NEWEST === $target) {
             throw new \LogicException(sprintf('Parameter `target` shall not be provided as "%s", determine proper target for tested PHPUnit feature instead.', self::VERSION_NEWEST));

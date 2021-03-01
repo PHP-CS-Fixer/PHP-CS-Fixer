@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,39 +29,30 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     use ExpectDeprecationTrait;
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      * @dataProvider provideFixDeprecatedCases
      * @requires PHP < 7.4
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixDeprecatedCases
      * @requires PHP 7.4
      * @group legacy
      */
-    public function testFix74Deprecated($expected, $input = null)
+    public function testFix74Deprecated(string $expected, ?string $input = null): void
     {
         if (\PHP_VERSION_ID >= 80000) {
             static::markTestSkipped('PHP < 8.0 is required.');
@@ -90,7 +83,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
         return $this->createCasesFor('real');
     }
 
-    private function createCasesFor($type)
+    private function createCasesFor(string $type)
     {
         yield [
             sprintf('<?php $b= (%s)$d;', $type),

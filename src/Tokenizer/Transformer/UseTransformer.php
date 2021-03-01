@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -31,7 +33,7 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // Should run after CurlyBraceTransformer and before TypeColonTransformer
         return -5;
@@ -40,7 +42,7 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
         return 50300;
     }
@@ -48,7 +50,7 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind(T_USE) && $this->isUseForLambda($tokens, $index)) {
             $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
@@ -88,19 +90,15 @@ final class UseTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
+    public function getCustomTokens(): array
     {
         return [CT::T_USE_TRAIT, CT::T_USE_LAMBDA];
     }
 
     /**
      * Check if token under given index is `use` statement for lambda function.
-     *
-     * @param int $index
-     *
-     * @return bool
      */
-    private function isUseForLambda(Tokens $tokens, $index)
+    private function isUseForLambda(Tokens $tokens, int $index): bool
     {
         $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 

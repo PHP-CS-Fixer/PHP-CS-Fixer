@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FopenFlagsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input, array $config = [])
+    public function testFix(string $expected, string $input, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -103,11 +102,9 @@ final class FopenFlagsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideDoNotFixCases
      */
-    public function testDoNotFix($expected)
+    public function testDoNotFix(string $expected): void
     {
         $this->doTest($expected);
         $this->fixer->configure(['b_mode' => false]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'It does not change doc blocks if not needed' => [
@@ -430,10 +426,9 @@ class Bar
      * @requires PHP 7.1
      * @dataProvider provideFix71Cases
      *
-     * @param string $expected
      * @param string $input
      */
-    public function testFix71($expected, $input = null, array $config = [])
+    public function testFix71(string $expected, string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -478,10 +473,9 @@ class Foo
      * @requires PHP 7.4
      * @dataProvider provideFixPhp74Cases
      *
-     * @param string $expected
      * @param string $input
      */
-    public function testFixPhp74($expected, $input = null, array $config = [])
+    public function testFixPhp74(string $expected, string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);

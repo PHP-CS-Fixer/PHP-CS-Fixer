@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -63,15 +65,7 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
      */
     private $type;
 
-    /**
-     * @param string $fullName
-     * @param string $shortName
-     * @param bool   $isAliased
-     * @param int    $startIndex
-     * @param int    $endIndex
-     * @param int    $type
-     */
-    public function __construct($fullName, $shortName, $isAliased, $startIndex, $endIndex, $type)
+    public function __construct(string $fullName, string $shortName, bool $isAliased, int $startIndex, int $endIndex, int $type)
     {
         $this->fullName = $fullName;
         $this->shortName = $shortName;
@@ -81,66 +75,42 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         $this->type = $type;
     }
 
-    /**
-     * @return string
-     */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->fullName;
     }
 
-    /**
-     * @return string
-     */
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->shortName;
     }
 
-    /**
-     * @return bool
-     */
-    public function isAliased()
+    public function isAliased(): bool
     {
         return $this->isAliased;
     }
 
-    /**
-     * @return int
-     */
-    public function getStartIndex()
+    public function getStartIndex(): int
     {
         return $this->startIndex;
     }
 
-    /**
-     * @return int
-     */
-    public function getEndIndex()
+    public function getEndIndex(): int
     {
         return $this->endIndex;
     }
 
-    /**
-     * @return bool
-     */
-    public function isClass()
+    public function isClass(): bool
     {
         return self::TYPE_CLASS === $this->type;
     }
 
-    /**
-     * @return bool
-     */
-    public function isFunction()
+    public function isFunction(): bool
     {
         return self::TYPE_FUNCTION === $this->type;
     }
 
-    /**
-     * @return bool
-     */
-    public function isConstant()
+    public function isConstant(): bool
     {
         return self::TYPE_CONSTANT === $this->type;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsUnknownConfigurationKey()
+    public function testConfigureRejectsUnknownConfigurationKey(): void
     {
         $key = 'foo';
 
@@ -40,7 +42,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidExcludeConfigurationElement($element)
+    public function testConfigureRejectsInvalidExcludeConfigurationElement($element): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
@@ -60,7 +62,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidIncludeConfigurationElement($element)
+    public function testConfigureRejectsInvalidIncludeConfigurationElement($element): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
@@ -75,10 +77,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidConfigurationElementCases()
+    public function provideInvalidConfigurationElementCases(): array
     {
         return [
             'null' => [null],
@@ -92,7 +91,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testConfigureResetsExclude()
+    public function testConfigureResetsExclude(): void
     {
         $this->fixer->configure([
             'exclude' => [
@@ -112,19 +111,13 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixWithDefaultConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDefaultConfigurationCases()
+    public function provideFixWithDefaultConfigurationCases(): array
     {
         return [
             ['<?php var_dump(NULL, FALSE, TRUE, 1);'],
@@ -176,19 +169,14 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix70WithDefaultConfigurationCases
      *
-     * @param string      $expected
-     * @param null|string $input
      * @requires PHP 7.0
      */
-    public function testFix70WithDefaultConfiguration($expected, $input = null)
+    public function testFix70WithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix70WithDefaultConfigurationCases()
+    public function provideFix70WithDefaultConfigurationCases(): array
     {
         return [
             ['<?php function foo(): M_PI {}'],
@@ -199,19 +187,14 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix71WithDefaultConfigurationCases
      *
-     * @param string      $expected
-     * @param null|string $input
      * @requires PHP 7.1
      */
-    public function testFix71WithDefaultConfiguration($expected, $input = null)
+    public function testFix71WithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix71WithDefaultConfigurationCases()
+    public function provideFix71WithDefaultConfigurationCases(): array
     {
         return [
             [
@@ -233,11 +216,8 @@ try {
 
     /**
      * @dataProvider provideFixWithConfiguredCustomIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredCustomInclude($expected, $input = null)
+    public function testFixWithConfiguredCustomInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'include' => [
@@ -248,10 +228,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredCustomIncludeCases()
+    public function provideFixWithConfiguredCustomIncludeCases(): array
     {
         return [
             [
@@ -267,11 +244,8 @@ try {
 
     /**
      * @dataProvider provideFixWithConfiguredOnlyIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredOnlyInclude($expected, $input = null)
+    public function testFixWithConfiguredOnlyInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'fix_built_in' => false,
@@ -283,10 +257,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredOnlyIncludeCases()
+    public function provideFixWithConfiguredOnlyIncludeCases(): array
     {
         return [
             [
@@ -302,11 +273,8 @@ try {
 
     /**
      * @dataProvider provideFixWithConfiguredExcludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredExclude($expected, $input = null)
+    public function testFixWithConfiguredExclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'exclude' => [
@@ -317,10 +285,7 @@ try {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredExcludeCases()
+    public function provideFixWithConfiguredExcludeCases(): array
     {
         return [
             [
@@ -334,7 +299,7 @@ try {
         ];
     }
 
-    public function testNullTrueFalseAreCaseInsensitive()
+    public function testNullTrueFalseAreCaseInsensitive(): void
     {
         $this->fixer->configure([
             'fix_built_in' => false,
@@ -386,7 +351,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotIncludeUserConstantsUnlessExplicitlyListed()
+    public function testDoNotIncludeUserConstantsUnlessExplicitlyListed(): void
     {
         $uniqueConstantName = uniqid(self::class);
         $uniqueConstantName = preg_replace('/\W+/', '_', $uniqueConstantName);
@@ -427,7 +392,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNotFixImportedConstants()
+    public function testDoNotFixImportedConstants(): void
     {
         $this->fixer->configure([
             'fix_built_in' => false,
@@ -469,7 +434,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testFixScopedOnly()
+    public function testFixScopedOnly(): void
     {
         $this->fixer->configure(['scope' => 'namespaced']);
 
@@ -498,7 +463,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function testFixScopedOnlyNoNamespace()
+    public function testFixScopedOnlyNoNamespace(): void
     {
         $this->fixer->configure(['scope' => 'namespaced']);
 
@@ -511,7 +476,7 @@ EOT;
         $this->doTest($expected);
     }
 
-    public function testFixStrictOption()
+    public function testFixStrictOption(): void
     {
         $this->fixer->configure(['strict' => true]);
 
@@ -532,7 +497,7 @@ EOT;
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80()
+    public function testFixPrePHP80(): void
     {
         $this->doTest(
             '<?php

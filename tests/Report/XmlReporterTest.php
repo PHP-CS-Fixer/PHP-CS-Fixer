@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
+use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\Report\XmlReporter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -31,21 +34,21 @@ final class XmlReporterTest extends AbstractReporterTestCase
      */
     private static $xsd;
 
-    public static function doSetUpBeforeClass()
+    public static function doSetUpBeforeClass(): void
     {
         parent::doSetUpBeforeClass();
 
         self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/xml.xsd');
     }
 
-    public static function doTearDownAfterClass()
+    public static function doTearDownAfterClass(): void
     {
         parent::doTearDownAfterClass();
 
         self::$xsd = null;
     }
 
-    protected function createNoErrorReport()
+    protected function createNoErrorReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -55,7 +58,7 @@ final class XmlReporterTest extends AbstractReporterTestCase
 XML;
     }
 
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -67,7 +70,7 @@ XML;
 XML;
     }
 
-    protected function createWithDiffReport()
+    protected function createWithDiffReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -81,7 +84,7 @@ XML;
 XML;
     }
 
-    protected function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -98,7 +101,7 @@ XML;
 XML;
     }
 
-    protected function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -114,7 +117,7 @@ XML;
 XML;
     }
 
-    protected function createComplexReport()
+    protected function createComplexReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -142,17 +145,17 @@ XML;
 XML;
     }
 
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new XmlReporter();
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'xml';
     }
 
-    protected function assertFormat($expected, $input)
+    protected function assertFormat(string $expected, string $input): void
     {
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);

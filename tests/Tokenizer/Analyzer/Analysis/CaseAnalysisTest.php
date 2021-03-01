@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,7 +24,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
  */
 final class CaseAnalysisTest extends TestCase
 {
-    public function testColonIndex()
+    public function testColonIndex(): void
     {
         $analysis = new CaseAnalysis(20);
         static::assertSame(20, $analysis->getColonIndex());

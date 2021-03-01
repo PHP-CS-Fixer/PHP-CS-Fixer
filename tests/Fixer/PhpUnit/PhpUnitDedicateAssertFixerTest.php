@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -228,11 +227,9 @@ $a#
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideNotFixCases
      */
-    public function testNotFix($expected)
+    public function testNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -260,7 +257,7 @@ $a#
         ];
     }
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
@@ -269,12 +266,9 @@ $a#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestAssertCountCases
      */
-    public function testAssertCount($expected, $input = null)
+    public function testAssertCount(string $expected, ?string $input = null): void
     {
         if (null === $input) {
             $expected = sprintf($expected, 'count');
@@ -286,12 +280,9 @@ $a#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestAssertCountCases
      */
-    public function testAssertCountFromSizeOf($expected, $input = null)
+    public function testAssertCountFromSizeOf(string $expected, ?string $input = null): void
     {
         if (null === $input) {
             $expected = sprintf($expected, 'sizeof');
@@ -422,12 +413,9 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideTestAssertCountCasingCases
      */
-    public function testAssertCountCasing($expected, $input)
+    public function testAssertCountCasing(string $expected, string $input): void
     {
         $expected = sprintf($expected, 'count');
         $input = sprintf($input, 'COUNT');
@@ -436,12 +424,9 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideTestAssertCountCasingCases
      */
-    public function testAssertCountFromSizeOfCasing($expected, $input)
+    public function testAssertCountFromSizeOfCasing(string $expected, string $input): void
     {
         $expected = sprintf($expected, 'sizeof');
         $input = sprintf($input, 'SIZEOF');
@@ -464,13 +449,10 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -509,12 +491,7 @@ $a# 5
         ];
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private static function generateTest($content)
+    private static function generateTest(string $content): string
     {
         return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }

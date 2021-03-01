@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,7 +30,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RuleSetsTest extends TestCase
 {
-    public function testGetSetDefinitionNames()
+    public function testGetSetDefinitionNames(): void
     {
         static::assertSame(
             array_keys(RuleSets::getSetDefinitions()),
@@ -36,7 +38,7 @@ final class RuleSetsTest extends TestCase
         );
     }
 
-    public function testGetSetDefinitions()
+    public function testGetSetDefinitions(): void
     {
         $sets = RuleSets::getSetDefinitions();
 
@@ -48,7 +50,7 @@ final class RuleSetsTest extends TestCase
         }
     }
 
-    public function testGetUnknownSetDefinition()
+    public function testGetUnknownSetDefinition(): void
     {
         $name = 'Unknown';
         $this->expectException(\InvalidArgumentException::class);
@@ -59,10 +61,8 @@ final class RuleSetsTest extends TestCase
 
     /**
      * @dataProvider provideSetDefinitionNameCases
-     *
-     * @param string $setDefinitionName
      */
-    public function testHasIntegrationTest($setDefinitionName)
+    public function testHasIntegrationTest(string $setDefinitionName): void
     {
         $setsWithoutTests = [
             '@PHP56Migration',
@@ -107,21 +107,16 @@ Integration of %s.
 
     /**
      * @dataProvider provideSetDefinitionNameCases
-     *
-     * @param mixed $setName
      */
-    public function testBuildInSetDefinitionNames($setName)
+    public function testBuildInSetDefinitionNames(string $setName): void
     {
-        static::assertIsString($setName);
         static::assertSame('@', substr($setName, 0, 1));
     }
 
     /**
      * @dataProvider provideSetDefinitionNameCases
-     *
-     * @param string $setDefinitionName
      */
-    public function testSetDefinitionsAreSorted($setDefinitionName)
+    public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
         $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
         $sortedSetDefinition = $setDefinition;
@@ -133,7 +128,7 @@ Integration of %s.
         ));
     }
 
-    public function testSetDefinitionsItselfIsSorted()
+    public function testSetDefinitionsItselfIsSorted(): void
     {
         $setDefinition = array_keys(RuleSets::getSetDefinitions());
         $sortedSetDefinition = $setDefinition;
@@ -142,24 +137,19 @@ Integration of %s.
         static::assertSame($sortedSetDefinition, $setDefinition);
     }
 
-    /**
-     * @return array
-     */
-    public function provideSetDefinitionNameCases()
+    public function provideSetDefinitionNameCases(): array
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        return array_map(static function ($setDefinitionName) {
+        return array_map(static function (string $setDefinitionName) {
             return [$setDefinitionName];
         }, $setDefinitionNames);
     }
 
     /**
      * @dataProvider providePHPUnitMigrationSetDefinitionNameCases
-     *
-     * @param string $setName
      */
-    public function testPHPUnitMigrationTargetVersions($setName)
+    public function testPHPUnitMigrationTargetVersions(string $setName): void
     {
         $ruleSet = new RuleSet([$setName => true]);
 
@@ -173,25 +163,20 @@ Integration of %s.
     /**
      * @return string[][]
      */
-    public function providePHPUnitMigrationSetDefinitionNameCases()
+    public function providePHPUnitMigrationSetDefinitionNameCases(): array
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function ($setDefinitionName) {
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function (string $setDefinitionName) {
             return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
         });
 
-        return array_map(static function ($setDefinitionName) {
+        return array_map(static function (string $setDefinitionName) {
             return [$setDefinitionName];
         }, $setDefinitionPHPUnitMigrationNames);
     }
 
-    /**
-     * @param string $setName
-     * @param string $ruleName
-     * @param string $actualTargetVersion
-     */
-    private static function assertPHPUnitVersionIsLargestAllowed($setName, $ruleName, $actualTargetVersion)
+    private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
     {
         $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d)(\d)Migration:risky$/', '$1.$2', $setName);
 
@@ -211,7 +196,7 @@ Integration of %s.
 
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            static function ($version) use ($maximumVersionForRuleset) {
+            static function (string $version) use ($maximumVersionForRuleset) {
                 return strcmp($maximumVersionForRuleset, $version) >= 0;
             }
         );
@@ -241,15 +226,12 @@ Integration of %s.
      *
      * Sometimes keys are all string, sometimes they are integers - we need to account for that.
      */
-    private function sort(array &$data)
+    private function sort(array &$data): void
     {
         $this->doSort($data, '');
     }
 
-    /**
-     * @param string $path
-     */
-    private function doSort(array &$data, $path)
+    private function doSort(array &$data, string $path): void
     {
         if ('ordered_imports.imports_order' === $path) { // order matters
             return;
@@ -273,10 +255,7 @@ Integration of %s.
         }
     }
 
-    /**
-     * @return bool
-     */
-    private function allInteger(array $values)
+    private function allInteger(array $values): bool
     {
         foreach ($values as $value) {
             if (!\is_int($value)) {
@@ -287,12 +266,7 @@ Integration of %s.
         return true;
     }
 
-    /**
-     * @param string $ruleName
-     *
-     * @return string
-     */
-    private function getDefaultPHPUnitTargetOfRule($ruleName)
+    private function getDefaultPHPUnitTargetOfRule(string $ruleName): string
     {
         $targetVersion = null;
         $fixer = self::getFixerByName($ruleName);
@@ -312,12 +286,7 @@ Integration of %s.
         return $targetVersion;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return AbstractFixer
-     */
-    private static function getFixerByName($name)
+    private static function getFixerByName(string $name): AbstractFixer
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();

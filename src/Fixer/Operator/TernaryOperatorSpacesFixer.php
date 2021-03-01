@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
@@ -29,7 +32,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Standardize spaces around ternary operator.',
@@ -42,7 +45,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
      *
      * Must run after ArraySyntaxFixer, ListSyntaxFixer, TernaryToElvisOperatorFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -50,7 +53,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound(['?', ':']);
     }
@@ -58,7 +61,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
         $ternaryOperatorIndices = [];
@@ -124,12 +127,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function belongsToAlternativeSyntax(Tokens $tokens, $index)
+    private function belongsToAlternativeSyntax(Tokens $tokens, int $index): bool
     {
         if (!$tokens[$index]->equals(':')) {
             return false;
@@ -151,11 +149,9 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     }
 
     /**
-     * @param int $switchIndex
-     *
      * @return int[]
      */
-    private function getColonIndicesForSwitch(Tokens $tokens, $switchIndex)
+    private function getColonIndicesForSwitch(Tokens $tokens, int $switchIndex): array
     {
         return array_map(
             static function (CaseAnalysis $caseAnalysis) {
@@ -165,11 +161,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
         );
     }
 
-    /**
-     * @param int  $index
-     * @param bool $after
-     */
-    private function ensureWhitespaceExistence(Tokens $tokens, $index, $after)
+    private function ensureWhitespaceExistence(Tokens $tokens, int $index, bool $after): void
     {
         if ($tokens[$index]->isWhitespace()) {
             if (

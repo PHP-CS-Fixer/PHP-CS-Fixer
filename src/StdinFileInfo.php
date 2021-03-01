@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,44 +25,44 @@ final class StdinFileInfo extends \SplFileInfo
     {
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getRealPath();
     }
 
-    public function getRealPath()
+    public function getRealPath(): string
     {
         // So file_get_contents & friends will work.
         // Warning - this stream is not seekable, so `file_get_contents` will work only once! Consider using `FileReader`.
         return 'php://stdin';
     }
 
-    public function getATime()
+    public function getATime(): int
     {
         return 0;
     }
 
-    public function getBasename($suffix = null)
+    public function getBasename($suffix = null): string
     {
         return $this->getFilename();
     }
 
-    public function getCTime()
+    public function getCTime(): int
     {
         return 0;
     }
 
-    public function getExtension()
+    public function getExtension(): string
     {
         return '.php';
     }
 
-    public function getFileInfo($className = null)
+    public function getFileInfo($className = null): \SplFileInfo
     {
         throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
-    public function getFilename()
+    public function getFilename(): string
     {
         /*
          * Useful so fixers depending on PHP-only files still work.
@@ -72,101 +74,101 @@ final class StdinFileInfo extends \SplFileInfo
         return 'stdin.php';
     }
 
-    public function getGroup()
+    public function getGroup(): int
     {
         return 0;
     }
 
-    public function getInode()
+    public function getInode(): int
     {
         return 0;
     }
 
-    public function getLinkTarget()
+    public function getLinkTarget(): string
     {
         return '';
     }
 
-    public function getMTime()
+    public function getMTime(): int
     {
         return 0;
     }
 
-    public function getOwner()
+    public function getOwner(): int
     {
         return 0;
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return '';
     }
 
-    public function getPathInfo($className = null)
+    public function getPathInfo($className = null): \SplFileInfo
     {
         throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
-    public function getPathname()
+    public function getPathname(): string
     {
         return $this->getFilename();
     }
 
-    public function getPerms()
+    public function getPerms(): int
     {
         return 0;
     }
 
-    public function getSize()
+    public function getSize(): int
     {
         return 0;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'file';
     }
 
-    public function isDir()
+    public function isDir(): bool
     {
         return false;
     }
 
-    public function isExecutable()
+    public function isExecutable(): bool
     {
         return false;
     }
 
-    public function isFile()
+    public function isFile(): bool
     {
         return true;
     }
 
-    public function isLink()
+    public function isLink(): bool
     {
         return false;
     }
 
-    public function isReadable()
+    public function isReadable(): bool
     {
         return true;
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
         return false;
     }
 
-    public function openFile($openMode = 'r', $useIncludePath = false, $context = null)
+    public function openFile($openMode = 'r', $useIncludePath = false, $context = null): \SplFileObject
     {
         throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
-    public function setFileClass($className = null)
+    public function setFileClass($className = null): void
     {
     }
 
-    public function setInfoClass($className = null)
+    public function setInfoClass($className = null): void
     {
     }
 }

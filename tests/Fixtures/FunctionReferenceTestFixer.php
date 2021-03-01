@@ -13,26 +13,27 @@
 namespace PhpCsFixer\Tests\Fixtures;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class FunctionReferenceTestFixer extends AbstractFunctionReferenceFixer
 {
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function findTest($functionNameToSearch, Tokens $tokens, $start = 0, $end = null)
+    public function findTest(string $functionNameToSearch, Tokens $tokens, int $start = 0, ?int $end = null): ?array
     {
         return parent::find($functionNameToSearch, $tokens, $start, $end);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         throw new \BadMethodCallException('Not implemented.');
     }

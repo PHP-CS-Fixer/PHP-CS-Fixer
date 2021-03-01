@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,12 +25,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -238,13 +237,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input)
+    public function testFix70(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -282,12 +278,10 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected)
+    public function testFix80(string $expected): void
     {
         $this->doTest($expected);
     }

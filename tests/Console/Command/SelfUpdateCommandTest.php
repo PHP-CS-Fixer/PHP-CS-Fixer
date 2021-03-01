@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -36,7 +38,7 @@ final class SelfUpdateCommandTest extends TestCase
      */
     private $root;
 
-    protected function doSetUp()
+    protected function doSetUp(): void
     {
         parent::doSetUp();
 
@@ -48,7 +50,7 @@ final class SelfUpdateCommandTest extends TestCase
         file_put_contents("{$this->root->url()}/{$this->getNewMajorVersion()}.phar", 'New major version of PHP CS Fixer.');
     }
 
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
@@ -62,11 +64,9 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @param string $name
-     *
      * @dataProvider provideCommandNameCases
      */
-    public function testCommandName($name)
+    public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
             $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
@@ -89,22 +89,18 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @param string $latestVersion
-     * @param string $latestMinorVersion
-     * @param bool   $decorated
-     * @param string $expectedFileContents
-     * @param string $expectedDisplay
+     * @param ?string $latestMinorVersion
      *
      * @dataProvider provideExecuteCases
      */
     public function testExecute(
-        $latestVersion,
-        $latestMinorVersion,
+        string $latestVersion,
+        ?string $latestMinorVersion,
         array $input,
-        $decorated,
-        $expectedFileContents,
-        $expectedDisplay
-    ) {
+        bool $decorated,
+        string $expectedFileContents,
+        string $expectedDisplay
+    ): void {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $versionChecker->getLatestVersion()->willReturn($latestVersion);
@@ -230,18 +226,14 @@ OUTPUT;
     }
 
     /**
-     * @param string $latestVersionSuccess
-     * @param string $latestMinorVersionSuccess
-     * @param bool   $decorated
-     *
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
     public function testExecuteWhenNotAbleToGetLatestVersions(
-        $latestVersionSuccess,
-        $latestMinorVersionSuccess,
+        bool $latestVersionSuccess,
+        bool $latestMinorVersionSuccess,
         array $input,
-        $decorated
-    ) {
+        bool $decorated
+    ): void {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $newMajorVersion = $this->getNewMajorVersion();
@@ -305,11 +297,9 @@ OUTPUT;
     }
 
     /**
-     * @param bool $decorated
-     *
      * @dataProvider provideExecuteWhenNotInstalledAsPharCases
      */
-    public function testExecuteWhenNotInstalledAsPhar(array $input, $decorated)
+    public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
             $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
@@ -357,14 +347,14 @@ OUTPUT;
         return $commandTester;
     }
 
-    private function assertDisplay($expectedDisplay, CommandTester $commandTester)
+    private function assertDisplay(string $expectedDisplay, CommandTester $commandTester): void
     {
         if (!$commandTester->getOutput()->isDecorated()) {
             $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
         // TODO drop preg_replace() usage when symfony/console is bumped
-        $cleanDisplay = function ($display) {
+        $cleanDisplay = function (string $display) {
             return preg_replace("/\033\\[39(;49)?m/", "\033[0m", $display);
         };
 
@@ -374,7 +364,7 @@ OUTPUT;
         );
     }
 
-    private function createToolInfo($isInstalledAsPhar = true)
+    private function createToolInfo(bool $isInstalledAsPhar = true)
     {
         $root = $this->root;
 

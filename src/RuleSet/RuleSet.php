@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -52,7 +54,7 @@ final class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public function hasRule($rule)
+    public function hasRule(string $rule): bool
     {
         return \array_key_exists($rule, $this->rules);
     }
@@ -60,7 +62,7 @@ final class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getRuleConfiguration($rule)
+    public function getRuleConfiguration(string $rule): ?array
     {
         if (!$this->hasRule($rule)) {
             throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
@@ -76,7 +78,7 @@ final class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -86,7 +88,7 @@ final class RuleSet implements RuleSetInterface
      *
      * @return $this
      */
-    private function resolveSet(array $rules)
+    private function resolveSet(array $rules): self
     {
         $resolvedRules = [];
 
@@ -117,13 +119,8 @@ final class RuleSet implements RuleSetInterface
      *
      * If set value is false then disable all fixers in set,
      * if not then get value from set item.
-     *
-     * @param string $setName
-     * @param bool   $setValue
-     *
-     * @return array
      */
-    private function resolveSubset($setName, $setValue)
+    private function resolveSubset(string $setName, bool $setValue): array
     {
         $rules = RuleSets::getSetDefinition($setName)->getRules();
 

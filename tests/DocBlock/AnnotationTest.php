@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -84,12 +86,9 @@ final class AnnotationTest extends TestCase
     private static $tags = ['param', 'param', 'param', 'throws', 'return'];
 
     /**
-     * @param int    $index
-     * @param string $content
-     *
      * @dataProvider provideGetContentCases
      */
-    public function testGetContent($index, $content)
+    public function testGetContent(int $index, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -110,12 +109,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int $index
-     * @param int $start
-     *
      * @dataProvider provideStartCases
      */
-    public function testStart($index, $start)
+    public function testStart(int $index, int $start): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -135,12 +131,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int $index
-     * @param int $end
-     *
      * @dataProvider provideEndCases
      */
-    public function testEnd($index, $end)
+    public function testEnd(int $index, int $end): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -160,12 +153,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int    $index
-     * @param string $tag
-     *
      * @dataProvider provideGetTagCases
      */
-    public function testGetTag($index, $tag)
+    public function testGetTag(int $index, string $tag): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -185,13 +175,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int $index
-     * @param int $start
-     * @param int $end
-     *
      * @dataProvider provideRemoveCases
      */
-    public function testRemove($index, $start, $end)
+    public function testRemove(int $index, int $start, int $end): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -214,12 +200,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideRemoveEdgeCasesCases
      */
-    public function testRemoveEdgeCases($expected, $input)
+    public function testRemoveEdgeCases(string $expected, string $input): void
     {
         $doc = new DocBlock($input);
         $annotation = $doc->getAnnotation(0);
@@ -266,12 +249,11 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param string   $input
      * @param string[] $expected
      *
      * @dataProvider provideTypeParsingCases
      */
-    public function testTypeParsing($input, array $expected)
+    public function testTypeParsing(string $input, array $expected): void
     {
         $tag = new Annotation([new Line($input)]);
 
@@ -383,12 +365,10 @@ final class AnnotationTest extends TestCase
     /**
      * @param string[] $expected
      * @param string[] $new
-     * @param string   $input
-     * @param string   $output
      *
      * @dataProvider provideTypesCases
      */
-    public function testTypes($expected, $new, $input, $output)
+    public function testTypes(array $expected, array $new, string $input, string $output): void
     {
         $line = new Line($input);
         $tag = new Annotation([$line]);
@@ -416,11 +396,10 @@ final class AnnotationTest extends TestCase
 
     /**
      * @param string[] $expected
-     * @param string   $input
      *
      * @dataProvider provideNormalizedTypesCases
      */
-    public function testNormalizedTypes($expected, $input)
+    public function testNormalizedTypes(array $expected, string $input): void
     {
         $line = new Line($input);
         $tag = new Annotation([$line]);
@@ -437,7 +416,7 @@ final class AnnotationTest extends TestCase
         ];
     }
 
-    public function testGetTypesOnBadTag()
+    public function testGetTypesOnBadTag(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('This tag does not support types');
@@ -447,7 +426,7 @@ final class AnnotationTest extends TestCase
         $tag->getTypes();
     }
 
-    public function testSetTypesOnBadTag()
+    public function testSetTypesOnBadTag(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('This tag does not support types');
@@ -457,7 +436,7 @@ final class AnnotationTest extends TestCase
         $tag->setTypes(['string']);
     }
 
-    public function testGetTagsWithTypes()
+    public function testGetTagsWithTypes(): void
     {
         $tags = Annotation::getTagsWithTypes();
         static::assertIsArray($tags);

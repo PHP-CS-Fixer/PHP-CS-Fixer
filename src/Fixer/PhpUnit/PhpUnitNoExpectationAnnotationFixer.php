@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -18,9 +20,11 @@ use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -40,7 +44,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration = null): void
     {
         parent::configure($configuration);
 
@@ -50,7 +54,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Usages of `@expectedException*` annotations MUST be replaced by `->setExpectedException*` methods.',
@@ -107,7 +111,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      *
      * Must run before NoEmptyPhpdocFixer, PhpUnitExpectationFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 10;
     }
@@ -115,7 +119,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -123,7 +127,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
@@ -141,7 +145,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -222,10 +226,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @return string
-     */
-    private function extractContentFromAnnotation(Annotation $annotation)
+    private function extractContentFromAnnotation(Annotation $annotation): string
     {
         $tag = $annotation->getTag()->getName();
 
@@ -242,7 +243,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return rtrim($content);
     }
 
-    private function annotationsToParamList(array $annotations)
+    private function annotationsToParamList(array $annotations): array
     {
         $params = [];
         $exceptionClass = ltrim($annotations['expectedException'], '\\');

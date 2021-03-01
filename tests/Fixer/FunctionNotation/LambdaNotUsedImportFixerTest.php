@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input)
+    public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -108,13 +107,10 @@ $f = function() use ($a) { return function() use ($a) { return function() use ($
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.0
      * @dataProvider providePhp70Cases
      */
-    public function testFixPhp70($expected, $input = null)
+    public function testFixPhp70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -136,11 +132,9 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideDoNotFixCases
      */
-    public function testDoNotFix($expected)
+    public function testDoNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -218,13 +212,10 @@ $foo();
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input)
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

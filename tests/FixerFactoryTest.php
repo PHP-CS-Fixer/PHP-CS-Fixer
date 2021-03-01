@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,7 +29,7 @@ use stdClass;
  */
 final class FixerFactoryTest extends TestCase
 {
-    public function testInterfaceIsFluent()
+    public function testInterfaceIsFluent(): void
     {
         $factory = new FixerFactory();
 
@@ -56,7 +58,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @covers \PhpCsFixer\FixerFactory::create
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $factory = FixerFactory::create();
 
@@ -66,7 +68,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @covers \PhpCsFixer\FixerFactory::registerBuiltInFixers
      */
-    public function testRegisterBuiltInFixers()
+    public function testRegisterBuiltInFixers(): void
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -77,7 +79,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @covers \PhpCsFixer\FixerFactory::getFixers
      */
-    public function testThatFixersAreSorted()
+    public function testThatFixersAreSorted(): void
     {
         $factory = new FixerFactory();
         $fxs = [
@@ -100,7 +102,7 @@ final class FixerFactoryTest extends TestCase
      * @covers \PhpCsFixer\FixerFactory::registerCustomFixers
      * @covers \PhpCsFixer\FixerFactory::registerFixer
      */
-    public function testThatCanRegisterAndGetFixers()
+    public function testThatCanRegisterAndGetFixers(): void
     {
         $factory = new FixerFactory();
 
@@ -119,7 +121,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @covers \PhpCsFixer\FixerFactory::registerFixer
      */
-    public function testRegisterFixerWithOccupiedName()
+    public function testRegisterFixerWithOccupiedName(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Fixer named "non_unique_name" is already registered.');
@@ -135,7 +137,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @covers \PhpCsFixer\FixerFactory::useRuleSet
      */
-    public function testUseRuleSet()
+    public function testUseRuleSet(): void
     {
         $factory = FixerFactory::create()
             ->registerBuiltInFixers()
@@ -155,7 +157,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @covers \PhpCsFixer\FixerFactory::useRuleSet
      */
-    public function testUseRuleSetWithNonExistingRule()
+    public function testUseRuleSetWithNonExistingRule(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.');
@@ -169,7 +171,7 @@ final class FixerFactoryTest extends TestCase
         static::assertSame('strict_comparison', $fixers[0]->getName());
     }
 
-    public function testHasRule()
+    public function testHasRule(): void
     {
         $factory = new FixerFactory();
 
@@ -185,7 +187,7 @@ final class FixerFactoryTest extends TestCase
         static::assertFalse($factory->hasRule('dummy'), 'Should not have dummy fixer');
     }
 
-    public function testHasRuleWithChangedRuleSet()
+    public function testHasRuleWithChangedRuleSet(): void
     {
         $factory = new FixerFactory();
 
@@ -205,7 +207,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider provideConflictingFixersCases
      */
-    public function testConflictingFixers(RuleSet $ruleSet)
+    public function testConflictingFixers(RuleSet $ruleSet): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessageMatches('#^Rule contains conflicting fixers:\n#');
@@ -221,7 +223,7 @@ final class FixerFactoryTest extends TestCase
         ];
     }
 
-    public function testNoDoubleConflictReporting()
+    public function testNoDoubleConflictReporting(): void
     {
         $factory = new FixerFactory();
         $method = new \ReflectionMethod($factory, 'generateConflictMessage');
@@ -245,7 +247,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function testSetWhitespacesConfig()
+    public function testSetWhitespacesConfig(): void
     {
         $factory = new FixerFactory();
         $config = new WhitespacesFixerConfig();
@@ -259,7 +261,7 @@ final class FixerFactoryTest extends TestCase
         $factory->setWhitespacesConfig($config);
     }
 
-    public function testRegisterFixerInvalidName()
+    public function testRegisterFixerInvalidName(): void
     {
         $factory = new FixerFactory();
 
@@ -271,7 +273,7 @@ final class FixerFactoryTest extends TestCase
         $factory->registerFixer($fixer, false);
     }
 
-    public function testConfigureNonConfigurableFixer()
+    public function testConfigureNonConfigurableFixer(): void
     {
         $factory = new FixerFactory();
 
@@ -295,7 +297,7 @@ final class FixerFactoryTest extends TestCase
      *
      * @dataProvider provideConfigureFixerWithNonArrayCases
      */
-    public function testConfigureFixerWithNonArray($value)
+    public function testConfigureFixerWithNonArray($value): void
     {
         $factory = new FixerFactory();
 
@@ -326,7 +328,7 @@ final class FixerFactoryTest extends TestCase
         ];
     }
 
-    public function testConfigurableFixerIsConfigured()
+    public function testConfigurableFixerIsConfigured(): void
     {
         $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
         $fixer->getName()->willReturn('foo');
@@ -341,7 +343,7 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
-    private function createFixerDouble($name, $priority = 0)
+    private function createFixerDouble(string $name, int $priority = 0)
     {
         $fixer = $this->prophesize(\PhpCsFixer\Fixer\FixerInterface::class);
         $fixer->getName()->willReturn($name);

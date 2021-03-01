@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ final class NamespaceUsesAnalyzer
     /**
      * @return NamespaceUseAnalysis[]
      */
-    public function getDeclarationsFromTokens(Tokens $tokens)
+    public function getDeclarationsFromTokens(Tokens $tokens): array
     {
         $tokenAnalyzer = new TokensAnalyzer($tokens);
         $useIndexes = $tokenAnalyzer->getImportUseIndexes();
@@ -36,7 +38,7 @@ final class NamespaceUsesAnalyzer
     /**
      * @return NamespaceUseAnalysis[]
      */
-    private function getDeclarations(Tokens $tokens, array $useIndexes)
+    private function getDeclarations(Tokens $tokens, array $useIndexes): array
     {
         $uses = [];
 
@@ -51,13 +53,7 @@ final class NamespaceUsesAnalyzer
         return $uses;
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     *
-     * @return null|NamespaceUseAnalysis
-     */
-    private function parseDeclaration(Tokens $tokens, $startIndex, $endIndex)
+    private function parseDeclaration(Tokens $tokens, int $startIndex, int $endIndex): ?NamespaceUseAnalysis
     {
         $fullName = $shortName = '';
         $aliased = false;

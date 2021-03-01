@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -47,22 +49,20 @@ final class ProjectCodeTest extends TestCase
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
     ];
 
-    public function testThatClassesWithoutTestsVarIsProper()
+    public function testThatClassesWithoutTestsVarIsProper(): void
     {
         $unknownClasses = array_filter(
             self::$classesWithoutTests,
-            static function ($class) { return !class_exists($class) && !trait_exists($class); }
+            static function (string $class) { return !class_exists($class) && !trait_exists($class); }
         );
 
         static::assertSame([], $unknownClasses);
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider provideSrcConcreteClassCases
      */
-    public function testThatSrcClassHaveTestClass($className)
+    public function testThatSrcClassHaveTestClass(string $className): void
     {
         $testClassName = 'PhpCsFixer\\Tests'.substr($className, 10).'Test';
 
@@ -76,11 +76,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider provideSrcClassesNotAbuseInterfacesCases
      */
-    public function testThatSrcClassesNotAbuseInterfaces($className)
+    public function testThatSrcClassesNotAbuseInterfaces(string $className): void
     {
         $rc = new \ReflectionClass($className);
 
@@ -121,7 +119,7 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static function ($item) {
+                implode("\n", array_map(static function (string $item) {
                     return " * {$item}";
                 }, $extraMethods))
             )
@@ -129,11 +127,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider provideSrcClassCases
      */
-    public function testThatSrcClassesNotExposeProperties($className)
+    public function testThatSrcClassesNotExposeProperties(string $className): void
     {
         $rc = new \ReflectionClass($className);
 
@@ -179,7 +175,7 @@ final class ProjectCodeTest extends TestCase
             sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static function ($item) {
+                implode("\n", array_map(static function (string $item) {
                     return " * {$item}";
                 }, $extraProps))
             )
@@ -188,10 +184,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testThatTestClassesAreTraitOrAbstractOrFinal($testClassName)
+    public function testThatTestClassesAreTraitOrAbstractOrFinal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
 
@@ -203,10 +197,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testThatTestClassesAreInternal($testClassName)
+    public function testThatTestClassesAreInternal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
         $doc = new DocBlock($rc->getDocComment());
@@ -219,10 +211,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testThatPublicMethodsAreCorrectlyNamed($testClassName)
+    public function testThatPublicMethodsAreCorrectlyNamed(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
@@ -248,10 +238,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testThatDataProvidersAreCorrectlyNamed($testClassName)
+    public function testThatDataProvidersAreCorrectlyNamed(string $testClassName): void
     {
         $usedDataProviderMethodNames = $this->getUsedDataProviderMethodNames($testClassName);
 
@@ -272,10 +260,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testThatDataProvidersAreUsed($testClassName)
+    public function testThatDataProvidersAreUsed(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
@@ -304,10 +290,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testThatTestClassCoversAreCorrect($testClassName)
+    public function testThatTestClassCoversAreCorrect(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
@@ -347,10 +331,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideClassesWherePregFunctionsAreForbiddenCases
-     *
-     * @param string $className
      */
-    public function testThereIsNoPregFunctionUsedDirectly($className)
+    public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
         $rc = new \ReflectionClass($className);
         $tokens = Tokens::fromCode(file_get_contents($rc->getFileName()));
@@ -379,10 +361,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideTestClassCases
-     *
-     * @param string $testClassName
      */
-    public function testExpectedInputOrder($testClassName)
+    public function testExpectedInputOrder(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
 
@@ -441,10 +421,8 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
-     *
-     * @param string $className
      */
-    public function testAllCodeContainSingleClassy($className)
+    public function testAllCodeContainSingleClassy(string $className): void
     {
         $headerTypes = [
             T_ABSTRACT,
@@ -497,7 +475,7 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcClassCases()
     {
         return array_map(
-            static function ($item) {
+            static function (string $item) {
                 return [$item];
             },
             $this->getSrcClasses()
@@ -507,10 +485,10 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcClassesNotAbuseInterfacesCases()
     {
         return array_map(
-            static function ($item) {
+            static function (string $item) {
                 return [$item];
             },
-            array_filter($this->getSrcClasses(), static function ($className) {
+            array_filter($this->getSrcClasses(), static function (string $className) {
                 $rc = new \ReflectionClass($className);
 
                 $doc = false !== $rc->getDocComment()
@@ -553,10 +531,10 @@ final class ProjectCodeTest extends TestCase
     public function provideSrcConcreteClassCases()
     {
         return array_map(
-            static function ($item) { return [$item]; },
+            static function (string $item) { return [$item]; },
             array_filter(
                 $this->getSrcClasses(),
-                static function ($className) {
+                static function (string $className) {
                     $rc = new \ReflectionClass($className);
 
                     return !$rc->isAbstract() && !$rc->isInterface();
@@ -568,7 +546,7 @@ final class ProjectCodeTest extends TestCase
     public function provideTestClassCases()
     {
         return array_map(
-            static function ($item) {
+            static function (string $item) {
                 return [$item];
             },
             $this->getTestClasses()
@@ -578,12 +556,12 @@ final class ProjectCodeTest extends TestCase
     public function provideClassesWherePregFunctionsAreForbiddenCases()
     {
         return array_map(
-            static function ($item) {
+            static function (string $item) {
                 return [$item];
             },
             array_filter(
                 $this->getSrcClasses(),
-                static function ($className) {
+                static function (string $className) {
                     return Preg::class !== $className;
                 }
             )
@@ -591,11 +569,9 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @param string $className
-     *
      * @dataProvider providePhpUnitFixerExtendsAbstractPhpUnitFixerCases
      */
-    public function testPhpUnitFixerExtendsAbstractPhpUnitFixer($className)
+    public function testPhpUnitFixerExtendsAbstractPhpUnitFixer(string $className): void
     {
         $reflection = new \ReflectionClass($className);
 
@@ -625,7 +601,7 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
-    private function getUsedDataProviderMethodNames($testClassName)
+    private function getUsedDataProviderMethodNames(string $testClassName)
     {
         $dataProviderMethodNames = [];
         $tokens = Tokens::fromCode(file_get_contents(
@@ -712,7 +688,7 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        $classes = array_filter($classes, static function ($class) {
+        $classes = array_filter($classes, static function (string $class): bool {
             return is_subclass_of($class, TestCase::class);
         });
 
@@ -724,7 +700,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @return string[]
      */
-    private function getPublicMethodNames(\ReflectionClass $rc)
+    private function getPublicMethodNames(\ReflectionClass $rc): array
     {
         return array_map(
             static function (\ReflectionMethod $rm) {

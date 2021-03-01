@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,9 +18,11 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
@@ -101,7 +105,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration = null): void
     {
         parent::configure($configuration);
 
@@ -132,7 +136,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Ensures a single space after language constructs.',
@@ -173,7 +177,7 @@ yield  from  baz();
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(array_values($this->fixTokenMap)) && !$tokens->hasAlternativeSyntax();
     }
@@ -181,7 +185,7 @@ yield  from  baz();
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokenKinds = array_values($this->fixTokenMap);
 
@@ -251,7 +255,7 @@ yield  from  baz();
         }
     }
 
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('constructs', 'List of constructs which must be followed by a single space.'))
@@ -262,12 +266,7 @@ yield  from  baz();
         ]);
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function isMultiLineReturn(Tokens $tokens, $index)
+    private function isMultiLineReturn(Tokens $tokens, int $index): bool
     {
         ++$index;
         $tokenFollowingReturn = $tokens[$index];
@@ -298,12 +297,7 @@ yield  from  baz();
         return false;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function isMultilineExtendsOrImplementsWithMoreThanOneAncestor(Tokens $tokens, $index)
+    private function isMultilineExtendsOrImplementsWithMoreThanOneAncestor(Tokens $tokens, int $index): bool
     {
         $hasMoreThanOneAncestor = false;
 

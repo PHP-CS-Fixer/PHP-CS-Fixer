@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,13 +27,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param int    $expected
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideCommentBlockStartDetectionCases
      */
-    public function testCommentBlockStartDetection($expected, $code, $index)
+    public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($code);
@@ -124,12 +122,9 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixClassesCases
      */
-    public function testFixClasses($expected, $input = null)
+    public function testFixClasses(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -726,12 +721,9 @@ public function B1(); // allowed comment
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixTraitsCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixTraits(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -823,12 +815,9 @@ trait SomeReturnInfo {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixInterfaceCases
      */
-    public function testFixInterface($expected, $input = null)
+    public function testFixInterface(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -909,12 +898,9 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
@@ -936,12 +922,9 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideConfigCases
      */
-    public function testWithConfig($expected, $input = null, array $config = [])
+    public function testWithConfig(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1079,13 +1062,10 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1151,13 +1131,10 @@ private $d = 123;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix71(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],
@@ -1199,13 +1176,10 @@ private $d = 123;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1248,13 +1222,10 @@ private $d = 123;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp80Cases
      * @requires PHP 8.0
      */
-    public function testFixPhp80($expected, $input = null)
+    public function testFixPhp80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

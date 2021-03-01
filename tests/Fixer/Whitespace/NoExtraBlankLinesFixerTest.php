@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -94,7 +96,7 @@ EOF;
      *
      * @dataProvider provideWithConfigCases
      */
-    public function testWithConfig(array $lineNumberRemoved, array $config)
+    public function testWithConfig(array $lineNumberRemoved, array $config): void
     {
         $this->fixer->configure(['tokens' => $config]);
 
@@ -144,7 +146,7 @@ EOF;
         return $tests;
     }
 
-    public function testFix()
+    public function testFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -164,7 +166,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithManyEmptyLines()
+    public function testFixWithManyEmptyLines(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -188,7 +190,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithHeredoc()
+    public function testFixWithHeredoc(): void
     {
         $expected = '
 <?php
@@ -204,7 +206,7 @@ TEXT;
         $this->doTest($expected);
     }
 
-    public function testFixWithNowdoc()
+    public function testFixWithNowdoc(): void
     {
         $expected = '
 <?php
@@ -220,7 +222,7 @@ TEXT;
         $this->doTest($expected);
     }
 
-    public function testFixWithEncapsulatedNowdoc()
+    public function testFixWithEncapsulatedNowdoc(): void
     {
         $expected = '
 <?php
@@ -242,7 +244,7 @@ TEXT;
         $this->doTest($expected);
     }
 
-    public function testFixWithMultilineString()
+    public function testFixWithMultilineString(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -255,7 +257,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testFixWithTrickyMultilineStrings()
+    public function testFixWithTrickyMultilineStrings(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -297,7 +299,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithCommentWithQuote()
+    public function testFixWithCommentWithQuote(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -324,7 +326,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixWithTrailingInlineBlock()
+    public function testFixWithTrailingInlineBlock(): void
     {
         $expected = "
 <?php
@@ -353,12 +355,9 @@ EOF;
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideCommentCases
      */
-    public function testFixWithComments($expected, $input)
+    public function testFixWithComments(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -410,12 +409,9 @@ EOF
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideLineBreakCases
      */
-    public function testFixWithLineBreaks($expected, $input = null)
+    public function testFixWithLineBreaks(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -459,7 +455,7 @@ $b = 1;
         ];
     }
 
-    public function testWrongConfig()
+    public function testWrongConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[no_extra_blank_lines\] Invalid configuration: The option "tokens" .*\.$/');
@@ -468,12 +464,9 @@ $b = 1;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideBetweenUseCases
      */
-    public function testBetweenUse($expected, $input = null)
+    public function testBetweenUse(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected, $input);
@@ -525,7 +518,7 @@ $b = 1;
         ];
     }
 
-    public function testRemoveLinesBetweenUseStatements()
+    public function testRemoveLinesBetweenUseStatements(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -575,13 +568,10 @@ EOF
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideRemoveLinesBetweenUseStatements70Cases
      * @requires PHP 7.0
      */
-    public function testRemoveLinesBetweenUseStatements70($expected, $input = null)
+    public function testRemoveLinesBetweenUseStatements70(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected, $input);
@@ -608,11 +598,9 @@ use const some\a\{ConstA, ConstB, ConstC};
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideWithoutUsesCases
      */
-    public function testWithoutUses($expected)
+    public function testWithoutUses(string $expected): void
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected);
@@ -643,11 +631,8 @@ $a = new Qux();',
 
     /**
      * @dataProvider provideRemoveBetweenUseTraitsCases
-     *
-     * @param string $expected
-     * @param string $input
      */
-    public function testRemoveBetweenUseTraits($expected, $input)
+    public function testRemoveBetweenUseTraits(string $expected, string $input): void
     {
         $this->fixer->configure(['tokens' => ['use_trait']]);
 
@@ -752,12 +737,9 @@ class Foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideOneAndInLineCases
      */
-    public function testOneOrInLineCases($expected, $input = null)
+    public function testOneOrInLineCases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => [
             'break',
@@ -802,13 +784,10 @@ class Foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideOneAndInLine70Cases
      * @requires PHP 7.0
      */
-    public function testOneOrInLine70Cases($expected, $input = null)
+    public function testOneOrInLine70Cases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => [
             'break',
@@ -833,12 +812,9 @@ class Foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideBraceCases
      */
-    public function testBraces(array $config, $expected, $input = null)
+    public function testBraces(array $config, string $expected, ?string $input = null): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -933,12 +909,9 @@ class Foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(array $config, $expected, $input = null)
+    public function testMessyWhitespaces(array $config, string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($config);
@@ -973,12 +946,9 @@ class Foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideSwitchCases
      */
-    public function testInSwitchStatement(array $config, $expected, $input = null)
+    public function testInSwitchStatement(array $config, string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => $config]);
         $this->doTest($expected, $input);
@@ -1100,7 +1070,7 @@ class Foo
         ];
     }
 
-    public function testRemovingEmptyLinesAfterOpenTag()
+    public function testRemovingEmptyLinesAfterOpenTag(): void
     {
         $this->doTest(
             '<?php
@@ -1114,13 +1084,10 @@ class Foo {}'
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input = null)
+    public function testFix72(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected, $input);
@@ -1160,12 +1127,10 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected)
+    public function testFix80(string $expected): void
     {
         $this->fixer->configure(['tokens' => ['throw']]);
 
@@ -1194,7 +1159,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         ];
     }
 
-    private function removeLinesFromString($input, array $lineNumbers)
+    private function removeLinesFromString(string $input, array $lineNumbers)
     {
         sort($lineNumbers);
         $lines = explode("\n", $input);
