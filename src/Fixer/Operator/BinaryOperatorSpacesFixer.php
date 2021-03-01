@@ -34,33 +34,33 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @internal
      */
-    const SINGLE_SPACE = 'single_space';
+    public const SINGLE_SPACE = 'single_space';
 
     /**
      * @internal
      */
-    const NO_SPACE = 'no_space';
+    public const NO_SPACE = 'no_space';
 
     /**
      * @internal
      */
-    const ALIGN = 'align';
+    public const ALIGN = 'align';
 
     /**
      * @internal
      */
-    const ALIGN_SINGLE_SPACE = 'align_single_space';
+    public const ALIGN_SINGLE_SPACE = 'align_single_space';
 
     /**
      * @internal
      */
-    const ALIGN_SINGLE_SPACE_MINIMAL = 'align_single_space_minimal';
+    public const ALIGN_SINGLE_SPACE_MINIMAL = 'align_single_space_minimal';
 
     /**
      * @internal
      * @const Placeholder used as anchor for right alignment.
      */
-    const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
+    public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
      * Keep track of the deepest level ever achieved while
@@ -471,16 +471,6 @@ $array = [
             } else {
                 $operators[$operator] = $value;
             }
-        }
-
-        // @TODO: drop condition when PHP 7.0+ is required
-        if (!\defined('T_SPACESHIP')) {
-            unset($operators['<=>']);
-        }
-
-        // @TODO: drop condition when PHP 7.0+ is required
-        if (!\defined('T_COALESCE')) {
-            unset($operators['??']);
         }
 
         // @TODO: drop condition when PHP 7.4+ is required

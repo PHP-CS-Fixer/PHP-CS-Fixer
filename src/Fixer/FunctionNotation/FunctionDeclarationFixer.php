@@ -34,12 +34,12 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
     /**
      * @internal
      */
-    const SPACING_NONE = 'none';
+    public const SPACING_NONE = 'none';
 
     /**
      * @internal
      */
-    const SPACING_ONE = 'one';
+    public const SPACING_ONE = 'one';
 
     private $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
 

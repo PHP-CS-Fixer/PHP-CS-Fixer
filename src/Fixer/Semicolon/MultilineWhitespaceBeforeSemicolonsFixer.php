@@ -32,12 +32,12 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
     /**
      * @internal
      */
-    const STRATEGY_NO_MULTI_LINE = 'no_multi_line';
+    public const STRATEGY_NO_MULTI_LINE = 'no_multi_line';
 
     /**
      * @internal
      */
-    const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
+    public const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
 
     /**
      * {@inheritdoc}

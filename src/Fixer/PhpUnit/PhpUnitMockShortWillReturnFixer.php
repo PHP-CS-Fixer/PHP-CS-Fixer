@@ -27,7 +27,7 @@ final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
     /**
      * @internal
      */
-    const RETURN_METHODS_MAP = [
+    public const RETURN_METHODS_MAP = [
         'returnargument' => 'willReturnArgument',
         'returncallback' => 'willReturnCallback',
         'returnself' => 'willReturnSelf',

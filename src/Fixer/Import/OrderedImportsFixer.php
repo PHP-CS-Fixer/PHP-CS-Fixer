@@ -40,29 +40,29 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     /**
      * @internal
      */
-    const IMPORT_TYPE_CLASS = 'class';
+    public const IMPORT_TYPE_CLASS = 'class';
 
     /**
      * @internal
      */
-    const IMPORT_TYPE_CONST = 'const';
+    public const IMPORT_TYPE_CONST = 'const';
 
     /**
      * @internal
      */
-    const IMPORT_TYPE_FUNCTION = 'function';
+    public const IMPORT_TYPE_FUNCTION = 'function';
 
     /**
      * @internal
      */
-    const SORT_ALPHA = 'alpha';
+    public const SORT_ALPHA = 'alpha';
 
     /**
      * @internal
      */
-    const SORT_LENGTH = 'length';
+    public const SORT_LENGTH = 'length';
 
-    const SORT_NONE = 'none';
+    public const SORT_NONE = 'none';
 
     /**
      * Array of supported sort types in configuration.

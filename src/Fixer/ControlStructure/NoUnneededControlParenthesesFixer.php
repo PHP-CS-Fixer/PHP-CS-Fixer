@@ -31,12 +31,13 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 {
     private static $loops = [
         'break' => ['lookupTokens' => T_BREAK, 'neededSuccessors' => [';']],
-        'clone' => ['lookupTokens' => T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':']],
+        'clone' => ['lookupTokens' => T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':', [T_COALESCE, '??']]],
         'continue' => ['lookupTokens' => T_CONTINUE, 'neededSuccessors' => [';']],
         'echo_print' => ['lookupTokens' => [T_ECHO, T_PRINT], 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
         'return' => ['lookupTokens' => T_RETURN, 'neededSuccessors' => [';', [T_CLOSE_TAG]]],
         'switch_case' => ['lookupTokens' => T_CASE, 'neededSuccessors' => [';', ':']],
         'yield' => ['lookupTokens' => T_YIELD, 'neededSuccessors' => [';', ')']],
+        'yield_from' => ['lookupTokens' => T_YIELD_FROM, 'neededSuccessors' => [';', ')']],
     ];
 
     /**
@@ -45,16 +46,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     public function __construct()
     {
         parent::__construct();
-
-        // @TODO: To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
-        if (\defined('T_COALESCE')) {
-            self::$loops['clone']['forbiddenContents'][] = [T_COALESCE, '??'];
-        }
-
-        // @TODO: To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
-        if (\defined('T_YIELD_FROM')) {
-            self::$loops['yield_from'] = ['lookupTokens' => T_YIELD_FROM, 'neededSuccessors' => [';', ')']];
-        }
     }
 
     /**

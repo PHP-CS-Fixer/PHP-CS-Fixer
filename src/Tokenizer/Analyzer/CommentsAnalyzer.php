@@ -25,9 +25,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CommentsAnalyzer
 {
-    const TYPE_HASH = 1;
-    const TYPE_DOUBLE_SLASH = 2;
-    const TYPE_SLASH_ASTERISK = 3;
+    public const TYPE_HASH = 1;
+    public const TYPE_DOUBLE_SLASH = 2;
+    public const TYPE_SLASH_ASTERISK = 3;
 
     /**
      * @param int $index

@@ -27,7 +27,7 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
     /**
      * @internal
      */
-    const EXPRESSION_END_TOKENS = [
+    public const EXPRESSION_END_TOKENS = [
         ';',
         ')',
         ']',

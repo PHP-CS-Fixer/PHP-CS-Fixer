@@ -53,8 +53,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigurationResolver
 {
-    const PATH_MODE_OVERRIDE = 'override';
-    const PATH_MODE_INTERSECTION = 'intersection';
+    public const PATH_MODE_OVERRIDE = 'override';
+    public const PATH_MODE_INTERSECTION = 'intersection';
 
     /**
      * @var null|bool

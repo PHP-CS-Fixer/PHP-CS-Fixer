@@ -16,7 +16,7 @@ The structural elements to fix (PHP >= 7.1 required for ``const``).
 
 Allowed values: a subset of ``['property', 'method', 'const']``
 
-Default value: ``['property', 'method']``
+Default value: ``['property', 'method', 'const']``
 
 Examples
 --------

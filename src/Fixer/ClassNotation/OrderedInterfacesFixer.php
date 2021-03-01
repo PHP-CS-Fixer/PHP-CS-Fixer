@@ -27,22 +27,22 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class OrderedInterfacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @internal */
-    const OPTION_DIRECTION = 'direction';
+    public const OPTION_DIRECTION = 'direction';
 
     /** @internal */
-    const OPTION_ORDER = 'order';
+    public const OPTION_ORDER = 'order';
 
     /** @internal */
-    const DIRECTION_ASCEND = 'ascend';
+    public const DIRECTION_ASCEND = 'ascend';
 
     /** @internal */
-    const DIRECTION_DESCEND = 'descend';
+    public const DIRECTION_DESCEND = 'descend';
 
     /** @internal */
-    const ORDER_ALPHA = 'alpha';
+    public const ORDER_ALPHA = 'alpha';
 
     /** @internal */
-    const ORDER_LENGTH = 'length';
+    public const ORDER_LENGTH = 'length';
 
     /**
      * Array of supported directions in configuration.

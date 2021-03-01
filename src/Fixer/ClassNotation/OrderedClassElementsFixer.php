@@ -29,10 +29,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @internal */
-    const SORT_ALPHA = 'alpha';
+    public const SORT_ALPHA = 'alpha';
 
     /** @internal */
-    const SORT_NONE = 'none';
+    public const SORT_NONE = 'none';
 
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)

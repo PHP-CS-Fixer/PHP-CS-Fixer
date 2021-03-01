@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  */
 final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 {
-    const TYPE_CLASS = 1;
-    const TYPE_FUNCTION = 2;
-    const TYPE_CONSTANT = 3;
+    public const TYPE_CLASS = 1;
+    public const TYPE_FUNCTION = 2;
+    public const TYPE_CONSTANT = 3;
 
     /**
      * The fully qualified use namespace.
