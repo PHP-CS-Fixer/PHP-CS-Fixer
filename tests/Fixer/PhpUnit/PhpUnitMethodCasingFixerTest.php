@@ -38,8 +38,8 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param mixed      $camelExpected
-     * @param null|mixed $camelInput
+     * @param string      $camelExpected
+     * @param null|string $camelInput
      */
     public function testFixToSnakeCase($camelExpected, $camelInput = null)
     {

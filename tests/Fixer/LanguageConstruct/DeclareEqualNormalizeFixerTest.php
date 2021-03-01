@@ -26,7 +26,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @param string $expected
-     * @param string $input
+     * @param null|string $input
      *
      * @dataProvider provideFixCases
      */

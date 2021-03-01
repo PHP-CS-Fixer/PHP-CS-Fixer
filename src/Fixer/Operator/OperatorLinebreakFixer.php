@@ -81,23 +81,6 @@ function foo() {
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationDefinition()
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('only_booleans', 'whether to limit operators to only boolean ones'))
-                ->setAllowedTypes(['bool'])
-                ->setDefault(false)
-                ->getOption(),
-            (new FixerOptionBuilder('position', 'whether to place operators at the beginning or at the end of the line'))
-                ->setAllowedValues(['beginning', 'end'])
-                ->setDefault($this->position)
-                ->getOption(),
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration = null)
     {
         parent::configure($configuration);
@@ -119,6 +102,23 @@ function foo() {
     public function isCandidate(Tokens $tokens)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('only_booleans', 'whether to limit operators to only boolean ones'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
+            (new FixerOptionBuilder('position', 'whether to place operators at the beginning or at the end of the line'))
+                ->setAllowedValues(['beginning', 'end'])
+                ->setDefault($this->position)
+                ->getOption(),
+        ]);
     }
 
     /**

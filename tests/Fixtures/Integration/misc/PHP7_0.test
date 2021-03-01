@@ -3,7 +3,8 @@ PHP 7.0 test.
 --RULESET--
 {
     "@Symfony": true,
-    "ordered_imports": true
+    "ordered_imports": true,
+    "random_api_migration": true
 }
 --REQUIREMENTS--
 {"php": 70000}
@@ -61,7 +62,6 @@ class Foo implements FooInterface
         echo $a ?? $b;
 
         // new random generator
-        // TODO: on 2.x line add random_api_migration usage
         echo mt_rand(0, 1);
 
         // uniform variable syntax
@@ -169,8 +169,7 @@ class Foo implements FooInterface
         echo $a??$b;
 
         // new random generator
-        // TODO: on 2.x line add random_api_migration usage
-        echo mt_rand(0, 1);
+        echo rand(0, 1);
 
         // uniform variable syntax
         $a = array('b' => 'c');

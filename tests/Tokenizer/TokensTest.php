@@ -46,11 +46,11 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param string     $source
-     * @param Token[]    $sequence
-     * @param int        $start
-     * @param null|int   $end
-     * @param array|bool $caseSensitive
+     * @param string          $source
+     * @param Token[]         $sequence
+     * @param int             $start
+     * @param null|int        $end
+     * @param null|array|bool $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -210,7 +210,7 @@ final class TokensTest extends TestCase
                 ],
                 0,
                 1,
-                [1, true],
+                [1 => true],
             ],
             [
                 '<?php $x = 13;',
@@ -238,7 +238,7 @@ final class TokensTest extends TestCase
                 ],
                 0,
                 1,
-                [1, false],
+                [1 => false],
             ],
             [
                 '<?php $x = 15;',
@@ -621,7 +621,7 @@ PHP;
     }
 
     /**
-     * @param int  $expectedIndex
+     * @param ?int $expectedIndex
      * @param int  $direction
      * @param int  $index
      * @param bool $caseSensitive
@@ -1225,9 +1225,9 @@ $bar;',
     }
 
     /**
-     * @param null|int $expected
-     * @param string   $code
-     * @param int      $index
+     * @param null|array $expected
+     * @param string     $code
+     * @param int        $index
      *
      * @dataProvider provideDetectBlockTypeCases
      */

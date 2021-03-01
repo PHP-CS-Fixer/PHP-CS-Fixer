@@ -26,8 +26,8 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testFix($expected, $input = null)
     {
@@ -106,8 +106,8 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      *
-     * @param mixed      $expected
-     * @param null|mixed $input
+     * @param string      $expected
+     * @param null|string $input
      */
     public function testFix74($expected, $input = null)
     {
