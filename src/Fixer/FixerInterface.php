@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer;
 
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

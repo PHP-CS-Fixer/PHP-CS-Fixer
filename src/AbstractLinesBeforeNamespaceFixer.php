@@ -17,6 +17,8 @@ namespace PhpCsFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * This abstract fixer is responsible for ensuring that a certain number of

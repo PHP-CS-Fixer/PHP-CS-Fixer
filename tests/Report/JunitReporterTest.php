@@ -18,6 +18,7 @@ use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use PhpCsFixer\Report\JunitReporter;
 use PhpCsFixer\Report\ReporterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use PhpCsFixer\Report\ReporterInterface;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>

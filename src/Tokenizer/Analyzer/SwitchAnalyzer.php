@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>

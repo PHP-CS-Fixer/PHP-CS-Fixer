@@ -16,6 +16,8 @@ namespace PhpCsFixer\Fixer;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 abstract class AbstractIncrementOperatorFixer extends AbstractFixer
 {

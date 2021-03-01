@@ -29,6 +29,8 @@ use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>

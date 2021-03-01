@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @author SpacePossum

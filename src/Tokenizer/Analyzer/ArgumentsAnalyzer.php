@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>

@@ -18,6 +18,8 @@ use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * Transform `class` class' constant from T_CLASS into CT::T_CLASS_CONSTANT.
