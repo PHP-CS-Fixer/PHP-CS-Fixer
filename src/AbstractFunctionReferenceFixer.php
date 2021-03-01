@@ -16,8 +16,6 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @internal

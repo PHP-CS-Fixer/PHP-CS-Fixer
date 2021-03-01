@@ -18,8 +18,6 @@ use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * Transform `?` operator into CT::T_NULLABLE_TYPE in `function foo(?Bar $b) {}`.

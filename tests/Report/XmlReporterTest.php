@@ -13,7 +13,6 @@ declare(strict_types=1);
  */
 
 namespace PhpCsFixer\Tests\Report;
-use PhpCsFixer\Report\ReporterInterface;
 
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use PhpCsFixer\Report\ReporterInterface;

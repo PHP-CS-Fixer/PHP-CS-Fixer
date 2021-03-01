@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tokenizer\Transformer;
 use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * Move trailing whitespaces from comments and docs into following T_WHITESPACE token.

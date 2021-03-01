@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console;
 
-use Symfony\Component\Finder\Finder as BaseFinder;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
