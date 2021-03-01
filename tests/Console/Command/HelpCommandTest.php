@@ -57,7 +57,7 @@ final class HelpCommandTest extends TestCase
      *
      * @dataProvider provideGetDisplayableAllowedValuesCases
      */
-    public function testGetDisplayableAllowedValues($expected, FixerOptionInterface $input): void
+    public function testGetDisplayableAllowedValues(?string $expected, FixerOptionInterface $input): void
     {
         static::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
     }
