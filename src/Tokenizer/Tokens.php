@@ -1221,13 +1221,6 @@ class Tokens extends \SplFixedArray
         $transformers->transform($this);
     }
 
-    private function warnPhp8SplFixerArrayChange($method)
-    {
-        if (80000 <= \PHP_VERSION_ID) {
-            throw new \BadMethodCallException(sprintf('"%s" has been removed on PHP8, use ::getIterator() in place.', $method));
-        }
-    }
-
     private function removeWhitespaceSafely($index, $direction, $whitespaces = null)
     {
         $whitespaceIndex = $this->getNonEmptySibling($index, $direction);
