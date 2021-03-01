@@ -1,0 +1,14 @@
+- [ ] bump min version in entry file
+- [ ] bump min version in composer.json
+- [ ] drop legacy lib version support in composer.json
+- [ ] apply php 7.1 migration sets
+- [ ] add missing strong typing for input parameters in public classes/interfaces -  apply experimental rule
+- [ ] add missing strong typing for input parameters in public classes/interfaces - manually
+- [ ] add missing strong typing for return types in public classes/interfaces - apply experimental rule
+- [ ] add missing strong typing for return types in public classes/interfaces - manually
+- [ ] consider running phpdoc_to_param_type,phpdoc_to_return_type on CI
+- [ ] consider changing "public const" to "private const", when needed
+- [ ] search for TODOs in code
+- [ ] consider using PHPUnit84MigrationRiskySet
+- [ ] drop <7.1 from CI
+- [ ] drop old PHP in Docker
