@@ -19,7 +19,6 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Event\Event;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFileProcessedEvent;
@@ -29,6 +28,7 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
