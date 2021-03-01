@@ -1,5 +1,5 @@
 - [ ] bump min version in entry file
-- [ ] bump min version in composer.json
+- [x] bump min version in composer.json
 - [ ] drop legacy lib version support in composer.json
 - [x] apply php 7.1 migration sets
 - [x] add missing strong typing for input parameters in public classes/interfaces -  apply experimental rule
