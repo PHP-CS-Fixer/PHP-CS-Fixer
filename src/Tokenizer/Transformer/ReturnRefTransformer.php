@@ -55,7 +55,7 @@ final class ReturnRefTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [CT::T_RETURN_REF];
     }

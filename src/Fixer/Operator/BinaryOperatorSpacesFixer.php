@@ -216,6 +216,42 @@ $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 ',
                     ['operators' => ['|' => 'no_space']]
                 ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo"            =>   1,
+    "baaaaaaaaaaar"  =>  11,
+];
+',
+                    ['operators' => ['=>' => 'single_space']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+];
+',
+                    ['operators' => ['=>' => 'align']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+];
+',
+                    ['operators' => ['=>' => 'align_single_space']]
+                ),
+                new CodeSample(
+                    '<?php
+$array = [
+    "foo" => 12,
+    "baaaaaaaaaaar"  => 13,
+];
+',
+                    ['operators' => ['=>' => 'align_single_space_minimal']]
+                ),
             ]
         );
     }

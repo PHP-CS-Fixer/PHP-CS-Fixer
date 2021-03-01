@@ -137,6 +137,76 @@ With configuration: ``['operators' => ['|' => 'no_space']]``.
    -$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
    +$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION|JSON_PRETTY_PRINT);
 
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'single_space']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,5 +1,5 @@
+    <?php
+    $array = [
+   -    "foo"            =>   1,
+   -    "baaaaaaaaaaar"  =>  11,
+   +    "foo" => 1,
+   +    "baaaaaaaaaaar" => 11,
+    ];
+
+Example #7
+~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'align']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,5 +1,5 @@
+    <?php
+    $array = [
+   -    "foo" => 12,
+   +    "foo"            => 12,
+        "baaaaaaaaaaar"  => 13,
+    ];
+
+Example #8
+~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'align_single_space']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,5 +1,5 @@
+    <?php
+    $array = [
+   -    "foo" => 12,
+   +    "foo"            => 12,
+        "baaaaaaaaaaar"  => 13,
+    ];
+
+Example #9
+~~~~~~~~~~
+
+With configuration: ``['operators' => ['=>' => 'align_single_space_minimal']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,5 +1,5 @@
+    <?php
+    $array = [
+   -    "foo" => 12,
+   -    "baaaaaaaaaaar"  => 13,
+   +    "foo"           => 12,
+   +    "baaaaaaaaaaar" => 13,
+    ];
+
 Rule sets
 ---------
 

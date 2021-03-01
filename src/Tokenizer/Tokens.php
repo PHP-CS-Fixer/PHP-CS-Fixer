@@ -1103,8 +1103,7 @@ class Tokens extends \SplFixedArray
             $this[$index] = new Token($token);
         }
 
-        $transformers = Transformers::create();
-        $transformers->transform($this);
+        $this->applyTransformers();
 
         $this->foundTokenKinds = [];
 
@@ -1369,6 +1368,15 @@ class Tokens extends \SplFixedArray
         $this->warnPhp8SplFixerArrayChange(__METHOD__);
 
         return parent::valid();
+    }
+
+    /**
+     * @internal
+     */
+    protected function applyTransformers()
+    {
+        $transformers = Transformers::create();
+        $transformers->transform($this);
     }
 
     private function warnPhp8SplFixerArrayChange($method)

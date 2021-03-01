@@ -67,7 +67,7 @@ final class ConstructorPromotionTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [
             CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,

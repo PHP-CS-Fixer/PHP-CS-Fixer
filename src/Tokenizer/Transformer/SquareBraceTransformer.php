@@ -70,7 +70,7 @@ final class SquareBraceTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [
             CT::T_ARRAY_SQUARE_BRACE_OPEN,
