@@ -219,6 +219,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'skip mixed nullable types' => [
                 '<?php /** @return null|Foo|Bar */ function my_foo() {}',
             ],
+            'skip primitive or array types' => [
+                '<?php /** @return string|string[] */ function my_foo() {}',
+            ],
             'skip generics' => [
                 '<?php /** @return array<int, bool> */ function my_foo() {}',
             ],
