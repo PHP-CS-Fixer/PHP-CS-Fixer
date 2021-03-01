@@ -10,5 +10,5 @@
 - [ ] consider changing "public const" to "private const", when needed
 - [ ] search for TODOs in code
 - [ ] consider using PHPUnit84MigrationRiskySet
-- [ ] drop <7.1 from CI
+- [x] drop <7.1 from CI
 - [x] drop old PHP in Docker
