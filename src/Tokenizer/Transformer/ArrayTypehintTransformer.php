@@ -54,7 +54,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [CT::T_ARRAY_TYPEHINT];
     }

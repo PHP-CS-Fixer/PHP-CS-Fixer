@@ -64,7 +64,7 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [];
     }

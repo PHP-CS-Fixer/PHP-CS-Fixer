@@ -25,8 +25,10 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @extends \SplFixedArray<Token>
+ *
+ * @final
  */
-final class Tokens extends \SplFixedArray
+class Tokens extends \SplFixedArray
 {
     const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
     const BLOCK_TYPE_CURLY_BRACE = 2;
@@ -1022,8 +1024,7 @@ final class Tokens extends \SplFixedArray
             $this[$index] = new Token($token);
         }
 
-        $transformers = Transformers::create();
-        $transformers->transform($this);
+        $this->applyTransformers();
 
         $this->foundTokenKinds = [];
 
@@ -1209,6 +1210,15 @@ final class Tokens extends \SplFixedArray
         }
 
         $this->clearAt($nextIndex);
+    }
+
+    /**
+     * @internal
+     */
+    protected function applyTransformers()
+    {
+        $transformers = Transformers::create();
+        $transformers->transform($this);
     }
 
     private function warnPhp8SplFixerArrayChange($method)
