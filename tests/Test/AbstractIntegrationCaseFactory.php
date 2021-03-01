@@ -77,7 +77,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--CONFIG--' block of a '.test' file.
      *
-     * @param string $config
+     * @param ?string $config
      *
      * @return array
      */
@@ -108,7 +108,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--REQUIREMENTS--' block of a '.test' file and determines requirements.
      *
-     * @param string $config
+     * @param ?string $config
      *
      * @return array
      */
@@ -155,7 +155,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @param string $config
+     * @param ?string $config
      *
      * @return array
      */

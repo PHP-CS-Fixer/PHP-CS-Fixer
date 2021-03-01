@@ -12,6 +12,8 @@
 
 namespace PhpCsFixer\RuleSet;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+
 /**
  * Set of rules to be used by fixer.
  *
@@ -40,6 +42,10 @@ class RuleSet implements RuleSetInterface
         foreach ($set as $key => $value) {
             if (\is_int($key)) {
                 throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
+            }
+
+            if (true !== $value && false !== $value && !\is_array($value)) {
+                throw new InvalidFixerConfigurationException($key, 'Configuration must be an array and may not be empty.');
             }
         }
 

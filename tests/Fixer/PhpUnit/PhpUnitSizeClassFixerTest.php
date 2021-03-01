@@ -26,9 +26,9 @@ final class PhpUnitSizeClassFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @param string     $expected
-     * @param null|mixed $input
-     * @param array      $config
+     * @param string      $expected
+     * @param null|string $input
+     * @param array       $config
      */
     public function testFix($expected, $input = null, $config = [])
     {
