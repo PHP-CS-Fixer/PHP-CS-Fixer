@@ -121,7 +121,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [CT::T_TYPE_ALTERNATION];
     }

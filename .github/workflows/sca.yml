@@ -114,5 +114,6 @@ jobs:
             grep -v tests/Test/IntegrationCaseFactoryInterface.php |
             grep -v tests/Test/InternalIntegrationCaseFactory.php |
             grep -v tests/Test/IsIdenticalConstraint.php |
+            grep -v tests/Test/TokensWithObservedTransformers.php |
             grep -v tests/TestCase.php \
           && (echo "UNKNOWN FILES DETECTED" && exit 1) || echo "NO UNKNOWN FILES"

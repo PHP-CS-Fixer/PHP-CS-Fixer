@@ -83,7 +83,7 @@ final class TypeColonTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    protected function getDeprecatedCustomTokens()
+    public function getCustomTokens()
     {
         return [CT::T_TYPE_COLON];
     }

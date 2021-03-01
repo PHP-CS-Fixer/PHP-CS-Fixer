@@ -32,10 +32,6 @@ final class AbstractTransformerTest extends TestCase
         static::assertSame('foo', $transformer->getName());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\AbstractTransformer::getCustomTokens is deprecated and will be removed in 3.0.
-     */
     public function testCustomTokens()
     {
         $transformer = new FooTransformer();
