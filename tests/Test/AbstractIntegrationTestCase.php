@@ -23,6 +23,7 @@ use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
+use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -62,8 +63,6 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
-    use IsIdenticalConstraint;
-
     /**
      * @var null|LinterInterface
      */
@@ -257,7 +256,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $fixedInputCode = file_get_contents($tmpFile);
         static::assertThat(
             $fixedInputCode,
-            self::createIsIdenticalStringConstraint($expected),
+            new IsIdenticalString($expected),
             sprintf(
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),

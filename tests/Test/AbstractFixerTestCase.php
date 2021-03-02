@@ -27,6 +27,7 @@ use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
+use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Preg;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
@@ -42,7 +43,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
-    use IsIdenticalConstraint;
 
     /**
      * @var null|LinterInterface
@@ -422,7 +422,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             static::assertThat(
                 $tokens->generateCode(),
-                self::createIsIdenticalStringConstraint($expected),
+                new IsIdenticalString($expected),
                 'Code build on input code must match expected code.'
             );
             static::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
@@ -454,7 +454,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         static::assertThat(
             $tokens->generateCode(),
-            self::createIsIdenticalStringConstraint($expected),
+            new IsIdenticalString($expected),
             'Code build on expected code must not change.'
         );
         static::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
