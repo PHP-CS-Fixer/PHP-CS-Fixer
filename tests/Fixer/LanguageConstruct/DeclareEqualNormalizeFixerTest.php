@@ -25,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
+     * @param string      $expected
      * @param null|string $input
      *
      * @dataProvider provideFixCases
