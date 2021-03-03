@@ -74,7 +74,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
             $input = str_replace("\n", "\r\n", $input);
         }
 
-        return $this->testFix(
+        $this->testFix(
             str_replace("\n", "\r\n", $expected),
             $input,
             $configuration

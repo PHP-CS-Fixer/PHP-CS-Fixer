@@ -258,13 +258,18 @@ class Tokens extends \SplFixedArray
      * Set new size of collection.
      *
      * @param int $size
+     *
+     * @return bool
      */
     public function setSize($size)
     {
         if ($this->getSize() !== $size) {
             $this->changed = true;
-            parent::setSize($size);
+
+            return parent::setSize($size);
         }
+
+        return true;
     }
 
     /**
