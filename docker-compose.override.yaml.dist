@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  php-5.6: &php
+  php-7.1: &php
     build:
       args:
         DOCKER_USER_ID: 1000 # replace with your user id (most likely 1000)
@@ -11,10 +11,6 @@ services:
       # Required for Docker Linux until natively supported.
       # See https://github.com/docker/for-linux/issues/264
       host.docker.internal: 172.17.0.1
-  php-7.0:
-    <<: *php
-  php-7.1:
-    <<: *php
   php-7.2:
     <<: *php
   php-7.3:

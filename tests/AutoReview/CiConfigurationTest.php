@@ -35,11 +35,6 @@ final class CiConfigurationTest extends TestCase
         $supportedMinPhp = (float) $this->getMinPhpVersionFromEntryFile();
         $supportedMaxPhp = (float) $this->getMaxPhpVersionFromEntryFile();
 
-        if ($supportedMinPhp < 7) {
-            $supportedMinPhp = 7;
-            $supportedVersions[] = '5.6';
-        }
-
         if ($supportedMaxPhp >= 8) {
             $supportedVersions = array_merge(
                 $supportedVersions,

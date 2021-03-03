@@ -24,10 +24,10 @@ if (defined('HHVM_VERSION_ID')) {
 } elseif (
     !defined('PHP_VERSION_ID')
     || \PHP_VERSION_ID === 80000
-    || \PHP_VERSION_ID < 50600
+    || \PHP_VERSION_ID < 70100
     || \PHP_VERSION_ID >= 80100
 ) {
-    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 8.0.*.\n");
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.1.0 and maximum version of PHP 8.0.*.\n");
     fwrite(STDERR, 'Current PHP version: '.PHP_VERSION.".\n");
 
     if (defined('PHP_VERSION_ID') && \PHP_VERSION_ID === 80000) {
