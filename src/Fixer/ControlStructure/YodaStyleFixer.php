@@ -483,12 +483,8 @@ return $foo === count($bar);
                 T_SR_EQUAL,     // >>=
                 T_THROW,        // throw
                 T_XOR_EQUAL,    // ^=
+                T_COALESCE,     // ??
             ];
-
-            // @TODO: drop condition when PHP 7.0+ is required
-            if (\defined('T_COALESCE')) {
-                $tokens[] = T_COALESCE; // ??
-            }
 
             // @TODO: drop condition when PHP 7.4+ is required
             if (\defined('T_COALESCE_EQUAL')) {

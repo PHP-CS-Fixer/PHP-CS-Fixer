@@ -28,9 +28,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    const OPTION_MUTE_DEPRECATION_ERROR = 'mute_deprecation_error';
-    const OPTION_NOISE_REMAINING_USAGES = 'noise_remaining_usages';
-    const OPTION_NOISE_REMAINING_USAGES_EXCLUDE = 'noise_remaining_usages_exclude';
+    public const OPTION_MUTE_DEPRECATION_ERROR = 'mute_deprecation_error';
+    public const OPTION_NOISE_REMAINING_USAGES = 'noise_remaining_usages';
+    public const OPTION_NOISE_REMAINING_USAGES_EXCLUDE = 'noise_remaining_usages_exclude';
 
     /**
      * {@inheritdoc}

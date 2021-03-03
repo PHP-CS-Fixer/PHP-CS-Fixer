@@ -31,12 +31,12 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
     /**
      * @internal
      */
-    const STYLE_PRE = 'pre';
+    public const STYLE_PRE = 'pre';
 
     /**
      * @internal
      */
-    const STYLE_POST = 'post';
+    public const STYLE_POST = 'post';
 
     /**
      * {@inheritdoc}

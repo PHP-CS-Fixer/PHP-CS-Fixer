@@ -37,12 +37,12 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * @internal
      */
-    const ALIGN_LEFT = 'left';
+    public const ALIGN_LEFT = 'left';
 
     /**
      * @internal
      */
-    const ALIGN_VERTICAL = 'vertical';
+    public const ALIGN_VERTICAL = 'vertical';
 
     /**
      * @var string

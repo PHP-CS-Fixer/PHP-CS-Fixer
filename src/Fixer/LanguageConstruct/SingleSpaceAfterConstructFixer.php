@@ -90,7 +90,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'var' => T_VAR,
         'while' => T_WHILE,
         'yield' => T_YIELD,
-        'yield_from' => null,
+        'yield_from' => T_YIELD_FROM,
     ];
 
     /**
@@ -104,11 +104,6 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     public function configure(array $configuration = null)
     {
         parent::configure($configuration);
-
-        // @TODO: drop condition when PHP 7.0+ is required
-        if (\defined('T_YIELD_FROM')) {
-            self::$tokenMap['yield_from'] = T_YIELD_FROM;
-        }
 
         // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_MATCH')) {

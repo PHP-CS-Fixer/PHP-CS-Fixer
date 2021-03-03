@@ -29,7 +29,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * @internal
      */
-    const INSIDE_CAST_SPACE_REPLACE_MAP = [
+    public const INSIDE_CAST_SPACE_REPLACE_MAP = [
         ' ' => '',
         "\t" => '',
         "\n" => '',

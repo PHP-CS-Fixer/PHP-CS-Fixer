@@ -29,10 +29,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
     /** @internal */
-    const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
+    public const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*(?<array>\[\])*$/';
 
     /** @internal */
-    const MINIMUM_PHP_VERSION = 70000;
+    public const MINIMUM_PHP_VERSION = 70000;
 
     /**
      * @var array{int, string}[]

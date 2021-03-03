@@ -20,11 +20,11 @@ namespace PhpCsFixer\Console\Command;
 final class FixCommandExitStatusCalculator
 {
     // Exit status 1 is reserved for environment constraints not matched.
-    const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
-    const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
-    const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
-    const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
-    const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
+    public const EXIT_STATUS_FLAG_HAS_INVALID_FILES = 4;
+    public const EXIT_STATUS_FLAG_HAS_CHANGED_FILES = 8;
+    public const EXIT_STATUS_FLAG_HAS_INVALID_CONFIG = 16;
+    public const EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG = 32;
+    public const EXIT_STATUS_FLAG_EXCEPTION_IN_APP = 64;
 
     /**
      * @param bool $isDryRun

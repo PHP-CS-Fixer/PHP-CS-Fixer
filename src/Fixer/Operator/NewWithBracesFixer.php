@@ -89,16 +89,12 @@ final class NewWithBracesFixer extends AbstractFixer
                 [T_AS],
                 [T_DOUBLE_ARROW],
                 [T_POW],
+                [T_SPACESHIP],
                 [CT::T_ARRAY_SQUARE_BRACE_OPEN],
                 [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
                 [CT::T_BRACE_CLASS_INSTANTIATION_OPEN],
                 [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
             ];
-
-            // @TODO: drop condition when PHP 7.0+ is required
-            if (\defined('T_SPACESHIP')) {
-                $nextTokenKinds[] = [T_SPACESHIP];
-            }
         }
 
         for ($index = $tokens->count() - 3; $index > 0; --$index) {

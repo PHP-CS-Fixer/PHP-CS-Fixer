@@ -32,17 +32,17 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     /**
      * @internal
      */
-    const CALL_TYPE_THIS = 'this';
+    public const CALL_TYPE_THIS = 'this';
 
     /**
      * @internal
      */
-    const CALL_TYPE_SELF = 'self';
+    public const CALL_TYPE_SELF = 'self';
 
     /**
      * @internal
      */
-    const CALL_TYPE_STATIC = 'static';
+    public const CALL_TYPE_STATIC = 'static';
 
     private $allowedValues = [
         self::CALL_TYPE_THIS => true,

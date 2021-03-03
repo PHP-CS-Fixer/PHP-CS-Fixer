@@ -4,7 +4,8 @@ PHP 7.0 test.
 {
     "@Symfony": true,
     "ordered_imports": true,
-    "random_api_migration": true
+    "random_api_migration": true,
+    "visibility_required": {"elements": ["property", "method"]}
 }
 --REQUIREMENTS--
 {"php": 70000}

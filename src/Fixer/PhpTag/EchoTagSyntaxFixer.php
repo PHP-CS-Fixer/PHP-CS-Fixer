@@ -27,34 +27,34 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @internal */
-    const OPTION_FORMAT = 'format';
+    public const OPTION_FORMAT = 'format';
 
     /** @internal */
-    const OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY = 'shorten_simple_statements_only';
+    public const OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY = 'shorten_simple_statements_only';
 
     /** @internal */
-    const OPTION_LONG_FUNCTION = 'long_function';
+    public const OPTION_LONG_FUNCTION = 'long_function';
 
     /** @internal */
-    const FORMAT_SHORT = 'short';
+    public const FORMAT_SHORT = 'short';
 
     /** @internal */
-    const FORMAT_LONG = 'long';
+    public const FORMAT_LONG = 'long';
 
     /** @internal */
-    const LONG_FUNCTION_ECHO = 'echo';
+    public const LONG_FUNCTION_ECHO = 'echo';
 
     /** @internal */
-    const LONG_FUNCTION_PRINT = 'print';
+    public const LONG_FUNCTION_PRINT = 'print';
 
     /** @internal */
-    const SUPPORTED_FORMAT_OPTIONS = [
+    public const SUPPORTED_FORMAT_OPTIONS = [
         self::FORMAT_LONG,
         self::FORMAT_SHORT,
     ];
 
     /** @internal */
-    const SUPPORTED_LONGFUNCTION_OPTIONS = [
+    public const SUPPORTED_LONGFUNCTION_OPTIONS = [
         self::LONG_FUNCTION_ECHO,
         self::LONG_FUNCTION_PRINT,
     ];

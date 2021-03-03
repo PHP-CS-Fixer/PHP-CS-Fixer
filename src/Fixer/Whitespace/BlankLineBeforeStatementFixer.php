@@ -56,6 +56,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'try' => T_TRY,
         'while' => T_WHILE,
         'yield' => T_YIELD,
+        'yield_from' => T_YIELD_FROM,
     ];
 
     /**
@@ -69,11 +70,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     public function __construct()
     {
         parent::__construct();
-
-        // @TODO: To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
-        if (\defined('T_YIELD_FROM')) {
-            self::$tokenMap['yield_from'] = T_YIELD_FROM;
-        }
     }
 
     /**

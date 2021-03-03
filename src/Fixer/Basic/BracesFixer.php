@@ -36,12 +36,12 @@ final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterf
     /**
      * @internal
      */
-    const LINE_NEXT = 'next';
+    public const LINE_NEXT = 'next';
 
     /**
      * @internal
      */
-    const LINE_SAME = 'same';
+    public const LINE_SAME = 'same';
 
     /**
      * {@inheritdoc}

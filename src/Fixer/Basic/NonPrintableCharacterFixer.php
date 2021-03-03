@@ -104,7 +104,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('use_escape_sequences_in_strings', 'Whether characters should be replaced with escape sequences in strings.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(\PHP_VERSION_ID >= 70000) // @TODO 3.0 replace with `true` when changing PHP requirement to 7+
+                ->setDefault(true)
                 ->setNormalizer(static function (Options $options, $value) {
                     if (\PHP_VERSION_ID < 70000 && $value) {
                         throw new InvalidOptionsForEnvException('Escape sequences require PHP 7.0+.');

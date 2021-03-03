@@ -27,17 +27,17 @@ final class SingleLineThrowFixer extends AbstractFixer
     /**
      * @internal
      */
-    const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
+    public const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
 
     /**
      * @internal
      */
-    const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_OBJECT_OPERATOR], [T_DOUBLE_COLON]];
+    public const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_OBJECT_OPERATOR], [T_DOUBLE_COLON]];
 
     /**
      * @internal
      */
-    const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
+    public const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
 
     /**
      * {@inheritdoc}
