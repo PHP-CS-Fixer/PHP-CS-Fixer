@@ -281,7 +281,7 @@ final class Runner
                         sprintf('Failed to write file "%s", "%s".', $fileName, $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
-                        $file
+                        $fileName
                     );
                 }
             }

@@ -359,14 +359,14 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     }
 
     /**
-     * @param Line []$line
+     * @param Line[] $lines
      *
      * @return string
      */
-    private function getSingleLineDocBlockEntry($line)
+    private function getSingleLineDocBlockEntry(array $lines)
     {
-        $line = $line[0];
-        $line = str_replace('*/', '', $line);
+        $line = $lines[0];
+        $line = str_replace('*/', '', $line->getContent());
         $line = trim($line);
         $line = str_split($line);
         $i = \count($line);

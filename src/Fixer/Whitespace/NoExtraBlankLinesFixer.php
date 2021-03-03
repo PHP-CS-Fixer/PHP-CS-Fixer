@@ -374,7 +374,7 @@ switch($a) {
             return;
         }
 
-        return $this->removeEmptyLinesAfterLineWithTokenAt($next);
+        $this->removeEmptyLinesAfterLineWithTokenAt($next);
     }
 
     private function removeMultipleBlankLines($index)
