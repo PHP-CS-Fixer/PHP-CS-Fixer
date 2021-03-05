@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Event\Event;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
@@ -107,18 +106,12 @@ final class ProjectCodeTest extends TestCase
             'setWhitespacesConfig', // due to AbstractFixer::setWhitespacesConfig
         ];
 
-        // @TODO: 3.0 should be removed
-        $exceptionMethodsPerClass = [
-            \PhpCsFixer\Event\Event::class => ['stopPropagation'],
-        ];
-
         $definedMethods = $this->getPublicMethodNames($rc);
 
         $extraMethods = array_diff(
             $definedMethods,
             $allowedMethods,
-            $exceptionMethods,
-            isset($exceptionMethodsPerClass[$className]) ? $exceptionMethodsPerClass[$className] : []
+            $exceptionMethods
         );
 
         sort($extraMethods);
@@ -472,7 +465,6 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($className);
         $file = $rc->getFileName();
         $tokens = Tokens::fromCode(file_get_contents($file));
-        $isEvent = Event::class === $rc->getName(); // remove this exception when no longer needed
         $classyIndex = null;
 
         static::assertTrue($tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds()), sprintf('File "%s" should contains a classy.', $file));
@@ -484,7 +476,7 @@ final class ProjectCodeTest extends TestCase
                 break;
             }
 
-            if (!$token->isGivenKind($headerTypes) && !$token->equalsAny([';', '=', '(', ')']) && !$isEvent) {
+            if (!$token->isGivenKind($headerTypes) && !$token->equalsAny([';', '=', '(', ')'])) {
                 static::fail(sprintf('File "%s" should only contains single classy, found "%s" @ %d.', $file, $token->toJson(), $index));
             }
         }
@@ -499,11 +491,7 @@ final class ProjectCodeTest extends TestCase
 
         $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
 
-        if ($isEvent) {
-            static::assertNotNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should not only contains a single classy.', $file));
-        } else {
-            static::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should only contains a single classy.', $file));
-        }
+        static::assertNull($tokens->getNextNonWhitespace($classyEndIndex), sprintf('File "%s" should only contains a single classy.', $file));
     }
 
     public function provideSrcClassCases()
