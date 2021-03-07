@@ -16,7 +16,6 @@ namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\Report\TextReporter;
-use PhpCsFixer\Report\ReporterInterface;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
