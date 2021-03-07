@@ -32,16 +32,16 @@ abstract class AbstractTransformerTestCase extends TestCase
      */
     protected $transformer;
 
-    protected function doSetUp(): void
+    protected function setUp(): void
     {
-        parent::doSetUp();
+        parent::setUp();
 
         $this->transformer = $this->createTransformer();
     }
 
-    protected function doTearDown(): void
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         $this->transformer = null;
     }

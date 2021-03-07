@@ -37,7 +37,7 @@ final class FileRemovalTest extends TestCase
      */
     private static $removeFilesOnTearDown = true;
 
-    public static function doTearDownAfterClass(): void
+    public static function tearDownAfterClass(): void
     {
         if (self::$removeFilesOnTearDown) {
             @unlink(sys_get_temp_dir().'/cs_fixer_foo.php');

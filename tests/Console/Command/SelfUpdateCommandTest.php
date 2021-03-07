@@ -38,9 +38,9 @@ final class SelfUpdateCommandTest extends TestCase
      */
     private $root;
 
-    protected function doSetUp(): void
+    protected function setUp(): void
     {
-        parent::doSetUp();
+        parent::setUp();
 
         $this->root = vfsStream::setup();
 
@@ -50,9 +50,9 @@ final class SelfUpdateCommandTest extends TestCase
         file_put_contents("{$this->root->url()}/{$this->getNewMajorVersion()}.phar", 'New major version of PHP CS Fixer.');
     }
 
-    protected function doTearDown(): void
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         $this->root = null;
 

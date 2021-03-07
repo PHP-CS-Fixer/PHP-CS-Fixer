@@ -43,7 +43,6 @@
         "phpunit/phpunit": "^7.5.20 || ^8.5.14 || ^9.5",
         "phpunitgoodpractices/polyfill": "^1.5",
         "phpunitgoodpractices/traits": "^1.9.1",
-        "sanmai/phpunit-legacy-adapter": "^6.4 || ^8.2.1",
         "symfony/phpunit-bridge": "^5.2.4",
         "symfony/yaml": "^4.4.20 || ^5.0"
     },
