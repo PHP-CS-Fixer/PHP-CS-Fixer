@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,26 +32,26 @@ abstract class AbstractTransformerTestCase extends TestCase
      */
     protected $transformer;
 
-    protected function doSetUp()
+    protected function doSetUp(): void
     {
         parent::doSetUp();
 
         $this->transformer = $this->createTransformer();
     }
 
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
         $this->transformer = null;
     }
 
-    public function testGetPriority()
+    public function testGetPriority(): void
     {
         static::assertIsInt($this->transformer->getPriority(), $this->transformer->getName());
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $name = $this->transformer->getName();
 
@@ -57,7 +59,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         static::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
     }
 
-    public function testGetCustomTokens()
+    public function testGetCustomTokens(): void
     {
         $name = $this->transformer->getName();
         $customTokens = $this->transformer->getCustomTokens();
@@ -69,7 +71,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         }
     }
 
-    public function testGetRequiredPhpVersionId()
+    public function testGetRequiredPhpVersionId(): void
     {
         $name = $this->transformer->getName();
         $requiredPhpVersionId = $this->transformer->getRequiredPhpVersionId();
@@ -78,7 +80,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         static::assertGreaterThanOrEqual(50000, $requiredPhpVersionId, $name);
     }
 
-    public function testTransformersIsFinal()
+    public function testTransformersIsFinal(): void
     {
         $transformerRef = new \ReflectionClass($this->transformer);
 
@@ -88,7 +90,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         );
     }
 
-    public function testTransformDoesNotChangeSimpleCode()
+    public function testTransformDoesNotChangeSimpleCode(): void
     {
         if (\PHP_VERSION_ID < $this->transformer->getRequiredPhpVersionId()) {
             $this->addToAssertionCount(1);
@@ -106,7 +108,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         static::assertFalse($tokens->isChanged());
     }
 
-    protected function doTest($source, array $expectedTokens = [], array $observedKindsOrPrototypes = [])
+    protected function doTest(string $source, array $expectedTokens = [], array $observedKindsOrPrototypes = []): void
     {
         Tokens::clearCache();
         $tokens = new TokensWithObservedTransformers();
@@ -176,10 +178,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         }
     }
 
-    /**
-     * @return int
-     */
-    private function countTokenPrototypes(Tokens $tokens, array $prototypes)
+    private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {
         $count = 0;
 
@@ -192,10 +191,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         return $count;
     }
 
-    /**
-     * @return TransformerInterface
-     */
-    private function createTransformer()
+    private function createTransformer(): TransformerInterface
     {
         $transformerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
 

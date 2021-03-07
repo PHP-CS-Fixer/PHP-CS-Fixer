@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ final class GroupImportFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP <7.0
      */
-    public function testDoNotFix()
+    public function testDoNotFix(): void
     {
         $expected = '<?php
 
@@ -41,13 +43,10 @@ use Foo\Test;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      * @requires PHP 7.0
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => false,
@@ -40,12 +39,9 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithoutEscapeSequences($expected, $input = null)
+    public function testFixWithoutEscapeSequences(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => false,
@@ -112,13 +108,10 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithEscapeSequencesInStringsCases
      * @requires PHP 7.0
      */
-    public function testFixWithEscapeSequencesInStrings($expected, $input = null)
+    public function testFixWithEscapeSequencesInStrings(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'use_escape_sequences_in_strings' => true,
@@ -306,7 +299,7 @@ INPUT
     /**
      * @requires PHP <7.0
      */
-    public function testFixWithEscapeSequencesInStringsLowerThanPhp70()
+    public function testFixWithEscapeSequencesInStringsLowerThanPhp70(): void
     {
         $this->expectException(InvalidForEnvFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[non_printable_character\] Invalid configuration for env: Escape sequences require PHP 7\.0\+\.$/');

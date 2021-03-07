@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureDefaultToNull()
+    public function testConfigureDefaultToNull(): void
     {
         $defaultConfig = [
             'multi_line_extends_each_single_line' => false,
@@ -51,7 +53,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 7.0
      */
-    public function testFixingAnonymousClasses($expected, $input, array $config = [])
+    public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {
         $this->fixer->configure($config);
 
@@ -64,7 +66,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideClassesCases
      */
-    public function testFixingClasses($expected, $input)
+    public function testFixingClasses(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
@@ -78,7 +80,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideClassesWithConfigCases
      */
-    public function testFixingClassesWithConfig($expected, $input, array $config)
+    public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
 
@@ -91,7 +93,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInterfacesCases
      */
-    public function testFixingInterfaces($expected, $input)
+    public function testFixingInterfaces(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
@@ -104,14 +106,14 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTraitsCases
      */
-    public function testFixingTraits($expected, $input)
+    public function testFixingTraits(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
-    public function testInvalidConfigurationKey()
+    public function testInvalidConfigurationKey(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
@@ -122,7 +124,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $fixer->configure(['a' => false]);
     }
 
-    public function testInvalidConfigurationValueType()
+    public function testInvalidConfigurationValueType(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
@@ -386,7 +388,7 @@ TestInterface3, /**/     TestInterface4   ,
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
-    public function testClassyDefinitionInfo($source, array $expected)
+    public function testClassyDefinitionInfo(string $source, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -470,23 +472,21 @@ TestInterface3, /**/     TestInterface4   ,
 
     /**
      * @param string $source PHP source code
-     * @param string $label
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
-    public function testClassyInheritanceInfo($source, $label, array $expected)
+    public function testClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
     /**
      * @param string $source PHP source code
-     * @param string $label
      *
      * @requires PHP 7.0
      * @dataProvider provideClassyInheritanceInfo7Cases
      */
-    public function testClassyInheritanceInfo7($source, $label, array $expected)
+    public function testClassyInheritanceInfo7(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
@@ -605,13 +605,10 @@ namespace {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP7Cases
      * @requires PHP 7.0
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFixPHP7(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
 
@@ -655,12 +652,9 @@ $a = new class implements
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure([]);
@@ -678,7 +672,7 @@ $a = new class implements
         ];
     }
 
-    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer)
+    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
     {
         $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
         $reflectionProperty->setAccessible(true);
@@ -686,7 +680,7 @@ $a = new class implements
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
-    private function doTestClassyInheritanceInfo($source, $label, array $expected)
+    private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -699,7 +693,7 @@ $a = new class implements
         static::assertSame($expected, $result);
     }
 
-    private function provideClassyCases($classy)
+    private function provideClassyCases(string $classy)
     {
         return [
             [
@@ -767,7 +761,7 @@ namespace {
         ];
     }
 
-    private function provideClassyExtendingCases($classy)
+    private function provideClassyExtendingCases(string $classy)
     {
         return [
             [

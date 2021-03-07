@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -92,13 +91,10 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70Fix($expected, $input = null)
+    public function test70Fix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -141,13 +137,10 @@ final class Foo
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function test74Fix($expected, $input = null)
+    public function test74Fix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -168,7 +161,7 @@ final class Foo
         ];
     }
 
-    private function getAttributesAndMethods($original)
+    private function getAttributesAndMethods(bool $original)
     {
         $attributesAndMethodsOriginal = '
 public $v1;

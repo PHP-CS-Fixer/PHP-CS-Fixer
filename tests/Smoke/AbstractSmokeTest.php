@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 abstract class AbstractSmokeTest extends TestCase
 {
-    protected static function markTestSkippedOrFail($message)
+    protected static function markTestSkippedOrFail(string $message): void
     {
         if (getenv('PHP_CS_FIXER_TEST_ALLOW_SKIPPING_SMOKE_TESTS')) {
             static::markTestSkipped($message);

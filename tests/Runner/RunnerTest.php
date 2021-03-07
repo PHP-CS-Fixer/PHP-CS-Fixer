@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -36,7 +38,7 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatFixSuccessfully()
+    public function testThatFixSuccessfully(): void
     {
         $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $linterProphecy
@@ -106,7 +108,7 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatFixInvalidFileReportsToErrorManager()
+    public function testThatFixInvalidFileReportsToErrorManager(): void
     {
         $errorsManager = new ErrorsManager();
 
@@ -145,7 +147,7 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatDiffedFileIsPassedToDiffer()
+    public function testThatDiffedFileIsPassedToDiffer(): void
     {
         $spy = new FakeDiffer();
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';

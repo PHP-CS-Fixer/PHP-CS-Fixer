@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,7 +34,7 @@ final class DocumentationTest extends TestCase
     /**
      * @dataProvider provideFixerCases
      */
-    public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer)
+    public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
         $generator = new DocumentationGenerator();
 
@@ -94,7 +96,7 @@ final class DocumentationTest extends TestCase
         return $cases;
     }
 
-    public function testFixersDocumentationIndexFileIsUpToDate()
+    public function testFixersDocumentationIndexFileIsUpToDate(): void
     {
         $generator = new DocumentationGenerator();
 
@@ -107,7 +109,7 @@ final class DocumentationTest extends TestCase
     /**
      * @requires PHP 7.4
      */
-    public function testFixersDocumentationDirectoryHasNoExtraFiles()
+    public function testFixersDocumentationDirectoryHasNoExtraFiles(): void
     {
         $generator = new DocumentationGenerator();
 
@@ -120,7 +122,7 @@ final class DocumentationTest extends TestCase
     /**
      * @requires PHP 7.4
      */
-    public function testRuleSetsDocumentationIsUpToDate()
+    public function testRuleSetsDocumentationIsUpToDate(): void
     {
         $fixers = $this->getFixers();
         $generator = new DocumentationGenerator();
@@ -148,7 +150,7 @@ final class DocumentationTest extends TestCase
     /**
      * @requires PHP 7.4
      */
-    public function testRuleSetsDocumentationDirectoryHasNoExtraFiles()
+    public function testRuleSetsDocumentationDirectoryHasNoExtraFiles(): void
     {
         $generator = new DocumentationGenerator();
 
@@ -158,7 +160,7 @@ final class DocumentationTest extends TestCase
         );
     }
 
-    private static function assertFileEqualsString($expectedString, $actualFilePath, $message = '')
+    private static function assertFileEqualsString(string $expectedString, string $actualFilePath, string $message = ''): void
     {
         static::assertFileExists($actualFilePath, $message);
         static::assertSame($expectedString, file_get_contents($actualFilePath), $message);

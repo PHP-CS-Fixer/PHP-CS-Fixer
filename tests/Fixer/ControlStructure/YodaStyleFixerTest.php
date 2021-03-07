@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class YodaStyleFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $extraConfig = [])
+    public function testFix(string $expected, ?string $input = null, array $extraConfig = []): void
     {
         $this->fixer->configure(['equal' => true, 'identical' => true] + $extraConfig);
         $this->doTest($expected, $input);
@@ -39,12 +38,9 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
     /**
      * Test with the inverse config.
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixInverse($expected, $input = null, array $extraConfig = [])
+    public function testFixInverse(string $expected, ?string $input = null, array $extraConfig = []): void
     {
         $this->fixer->configure(['equal' => false, 'identical' => false] + $extraConfig);
 
@@ -670,12 +666,9 @@ $a#4
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideLessGreaterCases
      */
-    public function testFixLessGreater($expected, $input)
+    public function testFixLessGreater(string $expected, string $input): void
     {
         $this->fixer->configure(['less_and_greater' => true]);
         $this->doTest($expected, $input);
@@ -684,12 +677,9 @@ $a#4
     /**
      * Test with the inverse config.
      *
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideLessGreaterCases
      */
-    public function testFixLessGreaterInverse($expected, $input)
+    public function testFixLessGreaterInverse(string $expected, string $input): void
     {
         $this->fixer->configure(['less_and_greater' => false]);
         $this->doTest($input, $expected);
@@ -713,7 +703,7 @@ $a#4
         ];
     }
 
-    public function testComplexConfiguration()
+    public function testComplexConfiguration(): void
     {
         $this->fixer->configure([
             'equal' => null,
@@ -736,11 +726,9 @@ $a#4
     }
 
     /**
-     * @param string $expectedMessage
-     *
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfig(array $config, $expectedMessage)
+    public function testInvalidConfig(array $config, string $expectedMessage): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[{$this->fixer->getName()}\\] {$expectedMessage}$#");
@@ -748,10 +736,7 @@ $a#4
         $this->fixer->configure($config);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidConfigurationCases()
+    public function provideInvalidConfigurationCases(): array
     {
         return [
             [['equal' => 2], 'Invalid configuration: The option "equal" with value 2 is expected to be of type "bool" or "null", but is of type "(int|integer)"\.'],
@@ -759,19 +744,16 @@ $a#4
         ];
     }
 
-    public function testDefinition()
+    public function testDefinition(): void
     {
         static::assertInstanceOf(\PhpCsFixer\FixerDefinition\FixerDefinitionInterface::class, $this->fixer->getDefinition());
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP70Cases
      * @requires PHP 7.0
      */
-    public function testPHP70Cases($expected, $input = null)
+    public function testPHP70Cases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['equal' => true, 'identical' => true]);
         $this->doTest($expected, $input);
@@ -780,13 +762,10 @@ $a#4
     /**
      * Test with the inverse config.
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP70Cases
      * @requires PHP 7.0
      */
-    public function testPHP70CasesInverse($expected, $input = null)
+    public function testPHP70CasesInverse(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['equal' => false, 'identical' => false]);
 
@@ -825,13 +804,10 @@ function a() {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
-    public function testPHP71Cases($expected, $input = null)
+    public function testPHP71Cases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['equal' => true, 'identical' => true]);
         $this->doTest($expected, $input);
@@ -840,13 +816,10 @@ function a() {
     /**
      * Test with the inverse config.
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
-    public function testPHP71CasesInverse($expected, $input = null)
+    public function testPHP71CasesInverse(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['equal' => false, 'identical' => false]);
 
@@ -902,11 +875,9 @@ function a() {
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideFixWithConfigCases
      */
-    public function testWithConfig(array $config, $expected)
+    public function testWithConfig(array $config, string $expected): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected);
@@ -944,13 +915,10 @@ while (2 !== $b = array_pop($c));
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input)
+    public function testFixPhp74(string $expected, ?string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -966,13 +934,10 @@ while (2 !== $b = array_pop($c));
     /**
      * Test with the inverse config.
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP74Cases
      * @requires PHP 7.4
      */
-    public function testPHP74CasesInverse($expected, $input = null, array $configuration = null)
+    public function testPHP74CasesInverse(string $expected, ?string $input = null, array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -999,14 +964,11 @@ while (2 !== $b = array_pop($c));
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPrePHP80Cases
      *
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80($expected, $input = null)
+    public function testFixPrePHP80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1038,13 +1000,10 @@ while (2 !== $b = array_pop($c));
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input)
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

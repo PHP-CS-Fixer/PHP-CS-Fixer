@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -365,13 +364,10 @@ class Baz {}
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -448,12 +444,9 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
@@ -475,13 +468,10 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input = null)
+    public function testFix72(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -31,7 +33,7 @@ final class TransformerTest extends TestCase
     /**
      * @dataProvider provideTransformerPriorityCases
      */
-    public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second)
+    public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second): void
     {
         static::assertLessThan(
             $first->getPriority(),
@@ -43,7 +45,7 @@ final class TransformerTest extends TestCase
     /**
      * @dataProvider provideTransformerCases
      */
-    public function testTransformerPriorityIsListed(TransformerInterface $transformer)
+    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
     {
         $priority = $transformer->getPriority();
 
@@ -94,7 +96,7 @@ final class TransformerTest extends TestCase
     /**
      * @return TransformerInterface[]
      */
-    public function provideTransformerCases()
+    public function provideTransformerCases(): array
     {
         static $transformersArray = null;
 

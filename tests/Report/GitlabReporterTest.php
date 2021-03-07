@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests\Report;
 
 use PhpCsFixer\Report\GitlabReporter;
+use PhpCsFixer\Report\ReporterInterface;
 
 /**
  * @author Hans-Christian Otto <c.otto@suora.com>
@@ -22,28 +25,22 @@ use PhpCsFixer\Report\GitlabReporter;
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
 {
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new GitlabReporter();
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'gitlab';
     }
 
-    /**
-     * @return string
-     */
-    protected function createNoErrorReport()
+    protected function createNoErrorReport(): string
     {
         return '[]';
     }
 
-    /**
-     * @return string
-     */
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return <<<'JSON'
             [{
@@ -59,18 +56,12 @@ final class GitlabReporterTest extends AbstractReporterTestCase
 JSON;
     }
 
-    /**
-     * @return string
-     */
-    protected function createWithDiffReport()
+    protected function createWithDiffReport(): string
     {
         return $this->createSimpleReport();
     }
 
-    /**
-     * @return string
-     */
-    protected function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport(): string
     {
         return <<<'JSON'
             [{
@@ -95,18 +86,12 @@ JSON;
 JSON;
     }
 
-    /**
-     * @return string
-     */
-    protected function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport(): string
     {
         return $this->createSimpleReport();
     }
 
-    /**
-     * @return string
-     */
-    protected function createComplexReport()
+    protected function createComplexReport(): string
     {
         return <<<'JSON'
             [{
@@ -140,7 +125,7 @@ JSON;
 JSON;
     }
 
-    protected function assertFormat($expected, $input)
+    protected function assertFormat(string $expected, string $input): void
     {
         static::assertJsonStringEqualsJsonString($expected, $input);
     }

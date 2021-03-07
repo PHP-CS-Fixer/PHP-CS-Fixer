@@ -24,21 +24,22 @@ final class FooTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
+    {
+        return 50000;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomTokens()
+    public function getCustomTokens(): array
     {
         return [];
     }

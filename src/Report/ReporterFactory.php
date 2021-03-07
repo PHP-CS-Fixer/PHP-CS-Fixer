@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,12 @@ final class ReporterFactory
     /** @var ReporterInterface[] */
     private $reporters = [];
 
-    public static function create()
+    public static function create(): self
     {
         return new self();
     }
 
-    public function registerBuiltInReporters()
+    public function registerBuiltInReporters(): self
     {
         /** @var null|string[] $builtInReporters */
         static $builtInReporters;
@@ -60,7 +62,7 @@ final class ReporterFactory
     /**
      * @return $this
      */
-    public function registerReporter(ReporterInterface $reporter)
+    public function registerReporter(ReporterInterface $reporter): self
     {
         $format = $reporter->getFormat();
 
@@ -76,7 +78,7 @@ final class ReporterFactory
     /**
      * @return string[]
      */
-    public function getFormats()
+    public function getFormats(): array
     {
         $formats = array_keys($this->reporters);
         sort($formats);
@@ -84,12 +86,7 @@ final class ReporterFactory
         return $formats;
     }
 
-    /**
-     * @param string $format
-     *
-     * @return ReporterInterface
-     */
-    public function getReporter($format)
+    public function getReporter(string $format): ReporterInterface
     {
         if (!isset($this->reporters[$format])) {
             throw new \UnexpectedValueException(sprintf('Reporter for format "%s" is not registered.', $format));

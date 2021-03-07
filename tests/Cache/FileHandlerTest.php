@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,7 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class FileHandlerTest extends TestCase
 {
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
@@ -38,7 +40,7 @@ final class FileHandlerTest extends TestCase
         }
     }
 
-    public function testImplementsHandlerInterface()
+    public function testImplementsHandlerInterface(): void
     {
         $file = $this->getFile();
 
@@ -47,7 +49,7 @@ final class FileHandlerTest extends TestCase
         static::assertInstanceOf(\PhpCsFixer\Cache\FileHandlerInterface::class, $handler);
     }
 
-    public function testConstructorSetsFile()
+    public function testConstructorSetsFile(): void
     {
         $file = $this->getFile();
 
@@ -56,7 +58,7 @@ final class FileHandlerTest extends TestCase
         static::assertSame($file, $handler->getFile());
     }
 
-    public function testReadReturnsNullIfFileDoesNotExist()
+    public function testReadReturnsNullIfFileDoesNotExist(): void
     {
         $file = $this->getFile();
 
@@ -65,7 +67,7 @@ final class FileHandlerTest extends TestCase
         static::assertNull($handler->read());
     }
 
-    public function testReadReturnsNullIfContentCanNotBeDeserialized()
+    public function testReadReturnsNullIfContentCanNotBeDeserialized(): void
     {
         $file = $this->getFile();
 
@@ -76,7 +78,7 @@ final class FileHandlerTest extends TestCase
         static::assertNull($handler->read());
     }
 
-    public function testReadReturnsCache()
+    public function testReadReturnsCache(): void
     {
         $file = $this->getFile();
 
@@ -94,7 +96,7 @@ final class FileHandlerTest extends TestCase
         static::assertTrue($cached->getSignature()->equals($signature));
     }
 
-    public function testWriteThrowsIOExceptionIfFileCanNotBeWritten()
+    public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
     {
         $file = __DIR__.'/non-existent-directory/.php_cs.cache';
 
@@ -111,7 +113,7 @@ final class FileHandlerTest extends TestCase
         $handler->write($cache);
     }
 
-    public function testWriteWritesCache()
+    public function testWriteWritesCache(): void
     {
         $file = $this->getFile();
 
@@ -128,7 +130,7 @@ final class FileHandlerTest extends TestCase
         static::assertSame($cache->toJson(), $actualCacheJson);
     }
 
-    public function testWriteCacheToDirectory()
+    public function testWriteCacheToDirectory(): void
     {
         $dir = __DIR__.'/../Fixtures/cache-file-handler';
 
@@ -143,7 +145,7 @@ final class FileHandlerTest extends TestCase
         $handler->write(new Cache($this->createSignature()));
     }
 
-    public function testWriteCacheToNonWriteableFile()
+    public function testWriteCacheToNonWriteableFile(): void
     {
         $file = __DIR__.'/../Fixtures/cache-file-handler/cache-file';
         if (is_writable($file)) {
@@ -161,7 +163,7 @@ final class FileHandlerTest extends TestCase
         $handler->write(new Cache($this->createSignature()));
     }
 
-    public function testWriteCacheFilePermissions()
+    public function testWriteCacheFilePermissions(): void
     {
         $file = __DIR__.'/../Fixtures/cache-file-handler/rw_cache.test';
         @unlink($file);
@@ -179,18 +181,12 @@ final class FileHandlerTest extends TestCase
         @unlink($file);
     }
 
-    /**
-     * @return string
-     */
-    private function getFile()
+    private function getFile(): string
     {
         return __DIR__.'/.php_cs.cache';
     }
 
-    /**
-     * @return SignatureInterface
-     */
-    private function createSignature()
+    private function createSignature(): SignatureInterface
     {
         return new Signature(
             PHP_VERSION,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,13 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class TypeShortNameResolverTest extends TestCase
 {
     /**
-     * @param string $code
-     * @param string $type
-     * @param string $expected
-     *
      * @dataProvider provideResolverCases
      */
-    public function testResolver($code, $type, $expected)
+    public function testResolver(string $code, string $type, string $expected): void
     {
         $resolver = new TypeShortNameResolver();
         $tokens = Tokens::fromCode($code);

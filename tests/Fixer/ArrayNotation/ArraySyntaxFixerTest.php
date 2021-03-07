@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    public function testInvalidConfiguration(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. Defined options are: "syntax"\.$#');
@@ -33,7 +35,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['a' => 1]);
     }
 
-    public function testFixWithDefaultConfiguration()
+    public function testFixWithDefaultConfiguration(): void
     {
         $this->fixer->configure([]);
         $this->doTest(
@@ -43,12 +45,9 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideLongSyntaxCases
      */
-    public function testFixLongSyntax($expected, $input = null)
+    public function testFixLongSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'long']);
         $this->doTest($expected, $input);
@@ -82,12 +81,9 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideShortSyntaxCases
      */
-    public function testFixShortSyntax($expected, $input = null)
+    public function testFixShortSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'short']);
         $this->doTest($expected, $input);

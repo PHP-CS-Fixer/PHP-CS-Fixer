@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -34,10 +36,8 @@ final class ShortDescription
     /**
      * Get the line index of the line containing the end of the short
      * description, if present.
-     *
-     * @return null|int
      */
-    public function getEnd()
+    public function getEnd(): ?int
     {
         $reachedContent = false;
 

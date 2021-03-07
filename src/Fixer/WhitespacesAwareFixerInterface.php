@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,5 +21,5 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 interface WhitespacesAwareFixerInterface extends FixerInterface
 {
-    public function setWhitespacesConfig(WhitespacesFixerConfig $config);
+    public function setWhitespacesConfig(WhitespacesFixerConfig $config): void;
 }

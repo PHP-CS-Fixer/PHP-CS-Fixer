@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -51,7 +55,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         $types = [];
 
@@ -66,7 +70,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Removes unneeded parentheses around control statements.',
@@ -105,7 +109,7 @@ yield(2);
      *
      * Must run before NoTrailingWhitespaceFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 30;
     }
@@ -113,7 +117,7 @@ yield(2);
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         // Checks if specific statements are set and uses them in this case.
         $loops = array_intersect_key(self::$loops, array_flip($this->configuration['statements']));
@@ -165,7 +169,7 @@ yield(2);
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of control statements to fix.'))

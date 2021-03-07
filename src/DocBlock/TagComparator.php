@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -36,10 +38,8 @@ final class TagComparator
 
     /**
      * Should the given tags be kept together, or kept apart?
-     *
-     * @return bool
      */
-    public static function shouldBeTogether(Tag $first, Tag $second)
+    public static function shouldBeTogether(Tag $first, Tag $second): bool
     {
         $firstName = $first->getName();
         $secondName = $second->getName();

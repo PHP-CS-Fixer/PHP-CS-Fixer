@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,8 @@ final class OperatorLinebreakFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null, array $configuration = null)
+    public function testFix(string $expected, ?string $input = null, array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -195,12 +194,9 @@ return $foo
     /**
      * @dataProvider provideFix71Cases
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires     PHP 7.1
      */
-    public function testFix71($expected, $input = null, array $configuration = null)
+    public function testFix71(string $expected, ?string $input = null, array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);

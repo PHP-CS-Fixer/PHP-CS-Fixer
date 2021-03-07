@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      * @requires PHP 8.0
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
@@ -85,11 +85,9 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideDoNotChangeCases
      */
-    public function testDoNotChange($source)
+    public function testDoNotChange(string $source): void
     {
         static::assertNotChange($source);
     }
@@ -138,12 +136,10 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideDoNotChange70Cases
      * @requires PHP 7.0
      */
-    public function testDoNotChange70($source)
+    public function testDoNotChange70(string $source): void
     {
         static::assertNotChange($source);
     }
@@ -153,10 +149,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         yield 'return type' => ['<?php function foo(): array { return []; }'];
     }
 
-    /**
-     * @param string $source
-     */
-    private static function assertNotChange($source)
+    private static function assertNotChange(string $source): void
     {
         Tokens::clearCache();
 

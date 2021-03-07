@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,7 +31,7 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -139,7 +141,7 @@ abstract class class4 {}
      *
      * @dataProvider provideFixWithConfigCases
      */
-    public function testFixWithConfig($expected, $input, array $config)
+    public function testFixWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -269,7 +271,7 @@ class B{}
      * @requires PHP 7.0
      * @dataProvider provideAnonymousClassesCases
      */
-    public function testAnonymousClassesCases($expected, $input = null)
+    public function testAnonymousClassesCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -285,7 +287,7 @@ $a = new class (){};',
         ];
     }
 
-    public function testConfigureSameAnnotationInBothLists()
+    public function testConfigureSameAnnotationInBothLists(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(

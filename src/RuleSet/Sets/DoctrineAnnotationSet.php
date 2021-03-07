@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,7 +21,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  */
 final class DoctrineAnnotationSet extends AbstractRuleSetDescription
 {
-    public function getRules()
+    public function getRules(): array
     {
         return [
             'doctrine_annotation_array_assignment' => [
@@ -33,7 +35,7 @@ final class DoctrineAnnotationSet extends AbstractRuleSetDescription
         ];
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Rules covering Doctrine annotations with configuration based on examples found in `Doctrine Annotation documentation <http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html>`_ and `Symfony documentation <http://symfony.com/doc/master/bundles/SensioFrameworkExtraBundle/annotations/routing.html>`_.';
     }

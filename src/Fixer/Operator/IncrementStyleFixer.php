@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\Fixer\AbstractIncrementOperatorFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -41,7 +45,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Pre- or post-increment and decrement operators should be used if possible.',
@@ -60,7 +64,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
      *
      * Must run after StandardizeIncrementFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -68,7 +72,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_INC, T_DEC]);
     }
@@ -76,7 +80,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('style', 'Whether to use pre- or post-increment and decrement operators.'))
@@ -89,7 +93,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -130,12 +134,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
         }
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function findEnd(Tokens $tokens, $index)
+    private function findEnd(Tokens $tokens, int $index): int
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         $nextToken = $tokens[$nextIndex];

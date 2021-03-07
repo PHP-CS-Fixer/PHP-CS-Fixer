@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,43 +27,43 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
  */
 final class NamespaceAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis()
+    public function testStartEndTokenAwareAnalysis(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
     }
 
-    public function testFullName()
+    public function testFullName(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame('Full\NamespaceName', $analysis->getFullName());
     }
 
-    public function testShortName()
+    public function testShortName(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame('NamespaceName', $analysis->getShortName());
     }
 
-    public function testStartIndex()
+    public function testStartIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame(1, $analysis->getStartIndex());
     }
 
-    public function testEndIndex()
+    public function testEndIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame(2, $analysis->getEndIndex());
     }
 
-    public function testScopeStartIndex()
+    public function testScopeStartIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame(1, $analysis->getScopeStartIndex());
     }
 
-    public function testScopeEndIndex()
+    public function testScopeEndIndex(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame(10, $analysis->getScopeEndIndex());

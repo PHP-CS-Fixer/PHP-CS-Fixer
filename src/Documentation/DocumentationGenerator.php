@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -55,28 +57,20 @@ final class DocumentationGenerator
         $this->path = \dirname(__DIR__, 2).'/doc';
     }
 
-    /**
-     * @return string
-     */
-    public function getFixersDocumentationDirectoryPath()
+    public function getFixersDocumentationDirectoryPath(): string
     {
         return $this->path.'/rules';
     }
 
-    /**
-     * @return string
-     */
-    public function getFixersDocumentationIndexFilePath()
+    public function getFixersDocumentationIndexFilePath(): string
     {
         return $this->getFixersDocumentationDirectoryPath().'/index.rst';
     }
 
     /**
      * @param AbstractFixer[] $fixers
-     *
-     * @return string
      */
-    public function generateFixersDocumentationIndex(array $fixers)
+    public function generateFixersDocumentationIndex(array $fixers): string
     {
         $overrideGroups = [
             'PhpUnit' => 'PHPUnit',
@@ -138,10 +132,7 @@ RST;
         return "{$documentation}\n";
     }
 
-    /**
-     * @return string
-     */
-    public function getFixerDocumentationFilePath(FixerInterface $fixer)
+    public function getFixerDocumentationFilePath(FixerInterface $fixer): string
     {
         return $this->getFixersDocumentationDirectoryPath().'/'.Preg::replaceCallback(
             '/^.*\\\\(.+)\\\\(.+)Fixer$/',
@@ -152,10 +143,7 @@ RST;
         ).'.rst';
     }
 
-    /**
-     * @return string
-     */
-    public function getFixerDocumentationFileRelativePath(FixerInterface $fixer)
+    public function getFixerDocumentationFileRelativePath(FixerInterface $fixer): string
     {
         return Preg::replace(
             '#^'.preg_quote($this->getFixersDocumentationDirectoryPath(), '#').'/#',
@@ -164,10 +152,7 @@ RST;
         );
     }
 
-    /**
-     * @return string
-     */
-    public function generateFixerDocumentation(FixerInterface $fixer)
+    public function generateFixerDocumentation(FixerInterface $fixer): string
     {
         $name = $fixer->getName();
         $title = "Rule ``{$name}``";
@@ -354,28 +339,20 @@ RST;
         return "{$doc}\n";
     }
 
-    /**
-     * @return string
-     */
-    public function getRuleSetsDocumentationDirectoryPath()
+    public function getRuleSetsDocumentationDirectoryPath(): string
     {
         return $this->path.'/ruleSets';
     }
 
-    /**
-     * @return string
-     */
-    public function getRuleSetsDocumentationIndexFilePath()
+    public function getRuleSetsDocumentationIndexFilePath(): string
     {
         return $this->getRuleSetsDocumentationDirectoryPath().'/index.rst';
     }
 
     /**
      * @param AbstractFixer[] $fixers
-     *
-     * @return string
      */
-    public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers)
+    public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers): string
     {
         $fixerNames = [];
         foreach ($fixers as $fixer) {
@@ -422,20 +399,12 @@ RST;
         return $doc."\n";
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    public function getRuleSetsDocumentationFilePath($name)
+    public function getRuleSetsDocumentationFilePath(string $name): string
     {
         return $this->getRuleSetsDocumentationDirectoryPath().'/'.str_replace(':risky', 'Risky', ucfirst(substr($name, 1))).'.rst';
     }
 
-    /**
-     * @return string
-     */
-    public function generateRuleSetsDocumentationIndex(array $setDefinitions)
+    public function generateRuleSetsDocumentationIndex(array $setDefinitions): string
     {
         $documentation = <<<'RST'
 ===========================
@@ -450,13 +419,7 @@ RST;
         return $documentation."\n";
     }
 
-    /**
-     * @param int    $sampleNumber
-     * @param string $ruleName
-     *
-     * @return string
-     */
-    private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, $sampleNumber, $ruleName)
+    private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, int $sampleNumber, string $ruleName): string
     {
         if ($sample instanceof VersionSpecificCodeSampleInterface && !$sample->isSuitableFor(\PHP_VERSION_ID)) {
             $existingFile = @file_get_contents($this->getFixerDocumentationFilePath($fixer));
@@ -512,13 +475,7 @@ RST;
 RST;
     }
 
-    /**
-     * @param string $string
-     * @param int    $indent
-     *
-     * @return string
-     */
-    private function toRst($string, $indent = 0)
+    private function toRst(string $string, int $indent = 0): string
     {
         $string = wordwrap(Preg::replace('/(?<!`)(`.*?`)(?!`)/', '`$1`', $string), 80 - $indent);
 
@@ -529,13 +486,7 @@ RST;
         return $string;
     }
 
-    /**
-     * @param string $string
-     * @param int    $indent
-     *
-     * @return string
-     */
-    private function indent($string, $indent)
+    private function indent(string $string, int $indent): string
     {
         return Preg::replace('/(\n)(?!\n|$)/', '$1'.str_repeat(' ', $indent), $string);
     }

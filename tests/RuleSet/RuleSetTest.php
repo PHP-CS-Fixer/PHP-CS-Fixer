@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,13 +34,11 @@ use PhpCsFixer\Tests\TestCase;
 final class RuleSetTest extends TestCase
 {
     /**
-     * @param string     $ruleName
-     * @param string     $setName
      * @param array|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testIfAllRulesInSetsExists($setName, $ruleName, $ruleConfig)
+    public function testIfAllRulesInSetsExists(string $setName, string $ruleName, $ruleConfig): void
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -66,13 +66,11 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param string     $setName
-     * @param string     $ruleName
      * @param array|bool $ruleConfig
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testThatDefaultConfigIsNotPassed($setName, $ruleName, $ruleConfig)
+    public function testThatDefaultConfigIsNotPassed(string $setName, string $ruleName, $ruleConfig): void
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -103,12 +101,9 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param string $ruleName
-     * @param string $setName
-     *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testThatThereIsNoDeprecatedFixerInRuleSet($setName, $ruleName)
+    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -136,7 +131,7 @@ final class RuleSetTest extends TestCase
         return $cases;
     }
 
-    public function testGetBuildInSetDefinitionNames()
+    public function testGetBuildInSetDefinitionNames(): void
     {
         $setNames = RuleSets::getSetDefinitionNames();
 
@@ -144,7 +139,7 @@ final class RuleSetTest extends TestCase
         static::assertNotEmpty($setNames);
     }
 
-    public function testResolveRulesWithInvalidSet()
+    public function testResolveRulesWithInvalidSet(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Set "@foo" does not exist.');
@@ -152,7 +147,7 @@ final class RuleSetTest extends TestCase
         new RuleSet(['@foo' => true]);
     }
 
-    public function testResolveRulesWithMissingRuleValue()
+    public function testResolveRulesWithMissingRuleValue(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing value for "braces" rule/set.');
@@ -160,7 +155,7 @@ final class RuleSetTest extends TestCase
         new RuleSet(['braces']);
     }
 
-    public function testResolveRulesWithSet()
+    public function testResolveRulesWithSet(): void
     {
         $ruleSet = new RuleSet([
             '@PSR1' => true,
@@ -181,7 +176,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function testResolveRulesWithNestedSet()
+    public function testResolveRulesWithNestedSet(): void
     {
         $ruleSet = new RuleSet([
             '@PSR2' => true,
@@ -221,7 +216,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function testResolveRulesWithDisabledSet()
+    public function testResolveRulesWithDisabledSet(): void
     {
         $ruleSet = new RuleSet([
             '@PSR2' => true,
@@ -261,11 +256,9 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param bool $safe
-     *
      * @dataProvider provideSafeSetCases
      */
-    public function testRiskyRulesInSet(array $set, $safe)
+    public function testRiskyRulesInSet(array $set, bool $safe): void
     {
         try {
             $fixers = FixerFactory::create()
@@ -317,7 +310,7 @@ final class RuleSetTest extends TestCase
         return $sets;
     }
 
-    public function testInvalidConfigNestedSets()
+    public function testInvalidConfigNestedSets(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessageMatches('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
@@ -327,7 +320,7 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function testGetMissingRuleConfiguration()
+    public function testGetMissingRuleConfiguration(): void
     {
         $ruleSet = new RuleSet();
 
@@ -337,7 +330,7 @@ final class RuleSetTest extends TestCase
         $ruleSet->getRuleConfiguration('_not_exists');
     }
 
-    public function testDuplicateRuleConfigurationInSetDefinitions()
+    public function testDuplicateRuleConfigurationInSetDefinitions(): void
     {
         $resolvedSets = [];
         $setDefinitions = RuleSets::getSetDefinitions();
@@ -392,11 +385,9 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param string $version
-     *
      * @dataProvider providePhpUnitTargetVersionHasSetCases
      */
-    public function testPhpUnitTargetVersionHasSet($version)
+    public function testPhpUnitTargetVersionHasSet(string $version): void
     {
         static::assertContains(
             sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
@@ -415,7 +406,7 @@ final class RuleSetTest extends TestCase
         }
     }
 
-    private function findInSets(array $sets, $ruleName, $config)
+    private function findInSets(array $sets, string $ruleName, $config)
     {
         $duplicates = [];
 
@@ -440,7 +431,12 @@ final class RuleSetTest extends TestCase
         return $duplicates;
     }
 
-    private function expendSet($setDefinitions, $resolvedSets, $setName, $setValue)
+    /**
+     * @param array|string $setValue
+     *
+     * @return mixed
+     */
+    private function expendSet(array $setDefinitions, array $resolvedSets, string $setName, $setValue)
     {
         $rules = $setDefinitions[$setName]->getRules();
 
@@ -457,7 +453,7 @@ final class RuleSetTest extends TestCase
         return $resolvedSets[$setName];
     }
 
-    private static function assertSameRules(array $expected, array $actual, $message = '')
+    private static function assertSameRules(array $expected, array $actual, string $message = ''): void
     {
         ksort($expected);
         ksort($actual);

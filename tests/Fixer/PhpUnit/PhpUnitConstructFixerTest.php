@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['assertions' => [
             'assertEquals',
@@ -114,7 +113,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 
         array_walk(
             $cases,
-            static function (&$case) {
+            static function (&$case): void {
                 $case[0] = static::generateTest($case[0]);
 
                 if (isset($case[1])) {
@@ -149,7 +148,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[php_unit_construct\] Invalid configuration: The option "assertions" .*\.$/');
@@ -158,13 +157,10 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -183,13 +179,13 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testEmptyAssertions()
+    public function testEmptyAssertions(): void
     {
         $this->fixer->configure(['assertions' => []]);
         $this->doTest(self::generateTest('$this->assertSame(null, $a);'));
     }
 
-    private function generateCases($expectedTemplate, $inputTemplate)
+    private function generateCases(string $expectedTemplate, string $inputTemplate)
     {
         $cases = [];
         $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];
@@ -205,12 +201,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         return $cases;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private static function generateTest($content)
+    private static function generateTest(string $content): string
     {
         return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ListSyntaxFixerTest extends AbstractFixerTestCase
 {
-    public function testFixWithDefaultConfiguration()
+    public function testFixWithDefaultConfiguration(): void
     {
         $this->fixer->configure([]);
         $this->doTest(
@@ -35,24 +37,18 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideToLongCases
      */
-    public function testFixToLongSyntax($expected, $input = null)
+    public function testFixToLongSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'long']);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideToShortCases
      */
-    public function testFixToShortSyntax($expected, $input = null)
+    public function testFixToShortSyntax(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'short']);
         $this->doTest($expected, $input);
@@ -179,26 +175,20 @@ $a;#
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.2
      * @dataProvider providePhp72Cases
      */
-    public function testFixToShortSyntaxPhp72($expected, $input)
+    public function testFixToShortSyntaxPhp72(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'short']);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     *
      * @requires PHP 7.2
      * @dataProvider providePhp72Cases
      */
-    public function testFixToLongSyntaxPhp72($input, $expected)
+    public function testFixToLongSyntaxPhp72(string $input, string $expected): void
     {
         $this->fixer->configure(['syntax' => 'long']);
         $this->doTest($expected, $input);
@@ -215,26 +205,20 @@ $a;#
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider providePhp73Cases
      */
-    public function testFixToShortSyntaxPhp73($expected, $input)
+    public function testFixToShortSyntaxPhp73(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'short']);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     *
      * @requires PHP 7.3
      * @dataProvider providePhp73Cases
      */
-    public function testFixToLongSyntaxPhp73($input, $expected)
+    public function testFixToLongSyntaxPhp73(string $input, string $expected): void
     {
         $this->fixer->configure(['syntax' => 'long']);
         $this->doTest($expected, $input);

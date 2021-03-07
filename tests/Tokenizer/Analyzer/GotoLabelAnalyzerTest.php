@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class GotoLabelAnalyzerTest extends TestCase
 {
     /**
-     * @param string $source
-     * @param int[]  $expectedTrue
+     * @param int[] $expectedTrue
      *
      * @dataProvider provideIsClassyInvocationCases
      */
-    public function testGotoLabelAnalyzerTest($source, array $expectedTrue)
+    public function testGotoLabelAnalyzerTest(string $source, array $expectedTrue): void
     {
         $tokens = Tokens::fromCode($source);
         $analyzer = new GotoLabelAnalyzer();

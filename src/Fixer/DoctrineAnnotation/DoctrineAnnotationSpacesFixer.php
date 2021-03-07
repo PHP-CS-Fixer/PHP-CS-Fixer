@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,9 +19,11 @@ use PhpCsFixer\AbstractDoctrineAnnotationFixer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 
 /**
@@ -30,7 +34,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Fixes spaces in Doctrine annotations.',
@@ -52,7 +56,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
      *
      * Must run after DoctrineAnnotationArrayAssignmentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -60,7 +64,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver(array_merge(
             parent::createConfigurationDefinition()->getOptions(),
@@ -104,7 +108,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     /**
      * {@inheritdoc}
      */
-    protected function fixAnnotations(Tokens $tokens)
+    protected function fixAnnotations(Tokens $tokens): void
     {
         if ($this->configuration['around_parentheses']) {
             $this->fixSpacesAroundParentheses($tokens);
@@ -126,7 +130,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    private function fixSpacesAroundParentheses(Tokens $tokens)
+    private function fixSpacesAroundParentheses(Tokens $tokens): void
     {
         $inAnnotationUntilIndex = null;
 
@@ -175,7 +179,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    private function fixSpacesAroundCommas(Tokens $tokens)
+    private function fixSpacesAroundCommas(Tokens $tokens): void
     {
         $inAnnotationUntilIndex = null;
 
@@ -214,7 +218,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    private function fixAroundAssignments(Tokens $tokens)
+    private function fixAroundAssignments(Tokens $tokens): void
     {
         $beforeArguments = $this->configuration['before_argument_assignments'];
         $afterArguments = $this->configuration['after_argument_assignments'];
@@ -267,30 +271,17 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param int       $index
-     * @param null|bool $insert
-     */
-    private function updateSpacesAfter(Tokens $tokens, $index, $insert)
+    private function updateSpacesAfter(Tokens $tokens, int $index, ?bool $insert): void
     {
         $this->updateSpacesAt($tokens, $index + 1, $index + 1, $insert);
     }
 
-    /**
-     * @param int       $index
-     * @param null|bool $insert
-     */
-    private function updateSpacesBefore(Tokens $tokens, $index, $insert)
+    private function updateSpacesBefore(Tokens $tokens, int $index, ?bool $insert): void
     {
         $this->updateSpacesAt($tokens, $index - 1, $index, $insert);
     }
 
-    /**
-     * @param int       $index
-     * @param int       $insertIndex
-     * @param null|bool $insert
-     */
-    private function updateSpacesAt(Tokens $tokens, $index, $insertIndex, $insert)
+    private function updateSpacesAt(Tokens $tokens, int $index, int $insertIndex, ?bool $insert): void
     {
         if (null === $insert) {
             return;

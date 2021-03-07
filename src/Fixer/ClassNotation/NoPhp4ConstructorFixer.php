@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -27,7 +30,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Convert PHP4-style constructors to `__construct`.',
@@ -51,7 +54,7 @@ class Foo
      *
      * Must run before OrderedClassElementsFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 75;
     }
@@ -59,7 +62,7 @@ class Foo
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_CLASS);
     }
@@ -67,7 +70,7 @@ class Foo
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -75,7 +78,7 @@ class Foo
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $classes = array_keys($tokens->findGivenKind(T_CLASS));
@@ -137,7 +140,7 @@ class Foo
      * @param int    $classStart the class start index
      * @param int    $classEnd   the class end index
      */
-    private function fixConstructor(Tokens $tokens, $className, $classStart, $classEnd)
+    private function fixConstructor(Tokens $tokens, string $className, int $classStart, int $classEnd): void
     {
         $php4 = $this->findFunction($tokens, $className, $classStart, $classEnd);
 
@@ -193,7 +196,7 @@ class Foo
      * @param int    $classStart the class start index
      * @param int    $classEnd   the class end index
      */
-    private function fixParent(Tokens $tokens, $classStart, $classEnd)
+    private function fixParent(Tokens $tokens, int $classStart, int $classEnd): void
     {
         // check calls to the parent constructor
         foreach ($tokens->findGivenKind(T_EXTENDS) as $index => $token) {
@@ -254,7 +257,7 @@ class Foo
      * @param int    $start  the PHP4 constructor body start
      * @param int    $end    the PHP4 constructor body end
      */
-    private function fixInfiniteRecursion(Tokens $tokens, $start, $end)
+    private function fixInfiniteRecursion(Tokens $tokens, int $start, int $end): void
     {
         $seq = [
             [T_VARIABLE, '$this'],
@@ -287,7 +290,7 @@ class Foo
      *
      * @return array an array containing the sequence and case sensitiveness [ 0 => $seq, 1 => $case ]
      */
-    private function getWrapperMethodSequence(Tokens $tokens, $method, $startIndex, $bodyIndex)
+    private function getWrapperMethodSequence(Tokens $tokens, string $method, int $startIndex, int $bodyIndex): array
     {
         // initialise sequence as { $this->{$method}(
         $seq = [
@@ -344,7 +347,7 @@ class Foo
      *     - modifiers (array): The modifiers as array keys and their index as
      *       the values, e.g. array(T_PUBLIC => 10)
      */
-    private function findFunction(Tokens $tokens, $name, $startIndex, $endIndex)
+    private function findFunction(Tokens $tokens, string $name, int $startIndex, int $endIndex): ?array
     {
         $function = $tokens->findSequence([
             [T_FUNCTION],

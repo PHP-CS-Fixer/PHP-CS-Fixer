@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,13 +29,9 @@ use PhpCsFixer\Tests\TestCase;
 final class TagComparatorTest extends TestCase
 {
     /**
-     * @param string $first
-     * @param string $second
-     * @param bool   $expected
-     *
      * @dataProvider provideComparatorCases
      */
-    public function testComparatorTogether($first, $second, $expected)
+    public function testComparatorTogether(string $first, string $second, bool $expected): void
     {
         $tag1 = new Tag(new Line('* @'.$first));
         $tag2 = new Tag(new Line('* @'.$second));

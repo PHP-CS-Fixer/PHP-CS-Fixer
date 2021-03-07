@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\CastNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -41,7 +45,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'A single space or none should be between cast and variable.',
@@ -66,7 +70,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
      *
      * Must run after NoShortBoolCastFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -10;
     }
@@ -74,7 +78,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getCastTokenKinds());
     }
@@ -82,7 +86,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isCast()) {
@@ -117,7 +121,7 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('space', 'spacing to apply between cast and variable.'))

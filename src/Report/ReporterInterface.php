@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,15 +19,10 @@ namespace PhpCsFixer\Report;
  */
 interface ReporterInterface
 {
-    /**
-     * @return string
-     */
-    public function getFormat();
+    public function getFormat(): string;
 
     /**
      * Process changed files array. Returns generated report.
-     *
-     * @return string
      */
-    public function generate(ReportSummary $reportSummary);
+    public function generate(ReportSummary $reportSummary): string;
 }

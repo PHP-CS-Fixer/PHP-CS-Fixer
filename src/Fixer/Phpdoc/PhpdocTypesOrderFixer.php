@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,9 +19,11 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -30,7 +34,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Sorts PHPDoc types.',
@@ -90,7 +94,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
      * Must run before PhpdocAlignFixer.
      * Must run after CommentToPhpdocFixer, PhpdocAnnotationWithoutDotFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -98,7 +102,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -106,7 +110,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sort_algorithm', 'The sorting algorithm to apply.'))
@@ -120,7 +124,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
         ]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
@@ -160,7 +164,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
      *
      * @return string[]
      */
-    private function sortTypes(array $types)
+    private function sortTypes(array $types): array
     {
         foreach ($types as $index => $type) {
             $types[$index] = Preg::replaceCallback('/^([^<]+)<(?:([\w\|]+?)(,\s*))?(.*)>$/', function (array $matches) {
@@ -171,8 +175,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
         if ('alpha' === $this->configuration['sort_algorithm']) {
             $types = Utils::stableSort(
                 $types,
-                static function ($type) { return $type; },
-                static function ($typeA, $typeB) {
+                static function (string $type) { return $type; },
+                static function (string $typeA, string $typeB) {
                     $regexp = '/^\\??\\\?/';
 
                     return strcasecmp(
@@ -204,16 +208,11 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
         return $types;
     }
 
-    /**
-     * @param string $types
-     *
-     * @return string
-     */
-    private function sortJoinedTypes($types)
+    private function sortJoinedTypes(string $types): string
     {
         $types = array_filter(
             Preg::split('/([^|<]+(?:<.*>)?)/', $types, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
-            static function ($value) {
+            static function (string $value) {
                 return '|' !== $value;
             }
         );

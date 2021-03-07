@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -154,13 +153,11 @@ abstract class A
     }
 
     /**
-     * @param string                  $expected
-     * @param string                  $input
      * @param array<string, string[]> $configuration
      *
      * @dataProvider provideFixWithConfigurationCases
      */
-    public function testFixWithConfiguration($expected, $input, array $configuration)
+    public function testFixWithConfiguration(string $expected, string $input, array $configuration): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);

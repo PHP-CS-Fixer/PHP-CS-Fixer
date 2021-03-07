@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -31,12 +33,9 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     protected $fixer;
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = [])
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $indent = '    ';
         $lineEnding = "\n";
@@ -63,12 +62,9 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithDifferentLineEndings($expected, $input = null, array $configuration = [])
+    public function testFixWithDifferentLineEndings(string $expected, ?string $input = null, array $configuration = []): void
     {
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
@@ -848,12 +844,9 @@ $example = function () use ($message1,$message2) {
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix56Cases
      */
-    public function testFix56($expected, $input)
+    public function testFix56(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -869,13 +862,10 @@ $example = function () use ($message1,$message2) {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix73Cases
      * @requires PHP 7.3
      */
-    public function testFix73($expected, $input = null, array $config = [])
+    public function testFix73(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -944,13 +934,10 @@ functionCall(
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null, array $config = [])
+    public function testFix74(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);

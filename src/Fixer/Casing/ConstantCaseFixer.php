@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\Casing;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -39,19 +43,19 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration = null): void
     {
         parent::configure($configuration);
 
         if ('lower' === $this->configuration['case']) {
-            $this->fixFunction = static function ($token) {
-                return strtolower($token);
+            $this->fixFunction = static function (string $content) {
+                return strtolower($content);
             };
         }
 
         if ('upper' === $this->configuration['case']) {
-            $this->fixFunction = static function ($token) {
-                return strtoupper($token);
+            $this->fixFunction = static function (string $content) {
+                return strtoupper($content);
             };
         }
     }
@@ -59,7 +63,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'The PHP constants `true`, `false`, and `null` MUST be written using the correct casing.',
@@ -73,7 +77,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
@@ -81,7 +85,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('case', 'Whether to use the `upper` or `lower` case syntax.'))
@@ -94,7 +98,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $fixFunction = $this->fixFunction;
 
@@ -112,12 +116,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         }
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function isNeighbourAccepted(Tokens $tokens, $index)
+    private function isNeighbourAccepted(Tokens $tokens, int $index): bool
     {
         static $forbiddenTokens = [
             T_AS,

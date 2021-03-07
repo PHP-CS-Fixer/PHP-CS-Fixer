@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,15 +27,12 @@ use Symfony\Component\Console\Output\BufferedOutput;
 final class ProcessOutputTest extends TestCase
 {
     /**
-     * @param string $expectedOutput
-     * @param int    $width
-     *
      * @dataProvider provideProcessProgressOutputCases
      */
-    public function testProcessProgressOutput(array $statuses, $expectedOutput, $width)
+    public function testProcessProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
         $nbFiles = 0;
-        $this->foreachStatus($statuses, static function ($status) use (&$nbFiles) {
+        $this->foreachStatus($statuses, static function (int $status) use (&$nbFiles): void {
             ++$nbFiles;
         });
 
@@ -44,7 +43,7 @@ final class ProcessOutputTest extends TestCase
             $nbFiles
         );
 
-        $this->foreachStatus($statuses, static function ($status) use ($processOutput) {
+        $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
             $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
         });
 
@@ -177,7 +176,7 @@ final class ProcessOutputTest extends TestCase
         ];
     }
 
-    private function foreachStatus(array $statuses, \Closure $action)
+    private function foreachStatus(array $statuses, \Closure $action): void
     {
         foreach ($statuses as $status) {
             $multiplier = isset($status[1]) ? $status[1] : 1;

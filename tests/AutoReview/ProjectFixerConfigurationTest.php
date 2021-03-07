@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,7 +30,7 @@ use PhpCsFixer\ToolInfo;
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $config = $this->loadConfig();
 
@@ -47,17 +49,14 @@ final class ProjectFixerConfigurationTest extends TestCase
         $resolver->getFixers();
     }
 
-    public function testRuleDefinedAlpha()
+    public function testRuleDefinedAlpha(): void
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
         static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
     }
 
-    /**
-     * @return Config
-     */
-    private function loadConfig()
+    private function loadConfig(): Config
     {
         return require __DIR__.'/../../.php_cs.dist';
     }

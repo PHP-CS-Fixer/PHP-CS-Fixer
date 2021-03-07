@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -62,21 +64,15 @@ final class IntegrationCase
      */
     private $title;
 
-    /**
-     * @param string      $fileName
-     * @param string      $title
-     * @param string      $expectedCode
-     * @param null|string $inputCode
-     */
     public function __construct(
-        $fileName,
-        $title,
+        string $fileName,
+        string $title,
         array $settings,
         array $requirements,
         array $config,
         RuleSet $ruleset,
-        $expectedCode,
-        $inputCode
+        string $expectedCode,
+        ?string $inputCode
     ) {
         $this->fileName = $fileName;
         $this->title = $title;
@@ -114,11 +110,9 @@ final class IntegrationCase
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      */
-    public function getRequirement($name)
+    public function getRequirement(string $name)
     {
         if (!\array_key_exists($name, $this->requirements)) {
             throw new \InvalidArgumentException(sprintf(

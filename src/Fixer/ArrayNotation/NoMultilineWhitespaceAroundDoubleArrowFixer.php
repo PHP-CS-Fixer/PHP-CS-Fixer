@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ArrayNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -28,7 +31,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Operator `=>` should not be surrounded by multi-line whitespaces.',
@@ -41,7 +44,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
      *
      * Must run before BinaryOperatorSpacesFixer, TrailingCommaInMultilineArrayFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 1;
     }
@@ -49,7 +52,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOUBLE_ARROW);
     }
@@ -57,7 +60,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOUBLE_ARROW)) {
@@ -72,10 +75,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $index
-     */
-    private function fixWhitespace(Tokens $tokens, $index)
+    private function fixWhitespace(Tokens $tokens, int $index): void
     {
         $token = $tokens[$index];
 

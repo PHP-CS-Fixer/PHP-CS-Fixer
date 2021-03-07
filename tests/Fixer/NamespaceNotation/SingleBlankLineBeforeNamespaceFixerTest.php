@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,11 +29,8 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null, WhitespacesFixerConfig $whitespaces = null)
+    public function testFix(string $expected, ?string $input = null, WhitespacesFixerConfig $whitespaces = null): void
     {
         if (null !== $whitespaces) {
             $this->fixer->setWhitespacesConfig($whitespaces);
@@ -39,10 +38,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ["<?php\n\nnamespace X;"],
@@ -61,7 +57,7 @@ final class SingleBlankLineBeforeNamespaceFixerTest extends AbstractFixerTestCas
         ];
     }
 
-    public function testFixExampleWithCommentTooMuch()
+    public function testFixExampleWithCommentTooMuch(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -99,7 +95,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixExampleWithCommentTooLittle()
+    public function testFixExampleWithCommentTooLittle(): void
     {
         $expected = <<<'EOF'
 <?php

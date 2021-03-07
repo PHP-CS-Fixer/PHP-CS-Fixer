@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\PhpTag;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -62,7 +66,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         $sample = <<<'EOT'
 <?=1?>
@@ -91,7 +95,7 @@ EOT
      *
      * Must run before NoMixedEchoPrintFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -99,7 +103,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
             return $tokens->isAnyTokenKindsFound([T_ECHO, T_PRINT]);
@@ -111,7 +115,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(self::OPTION_FORMAT, 'The desired language construct.'))
@@ -132,7 +136,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
             $this->longToShort($tokens);
@@ -141,7 +145,7 @@ EOT
         }
     }
 
-    private function longToShort(Tokens $tokens)
+    private function longToShort(Tokens $tokens): void
     {
         $skipWhenComplexCode = $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY];
         $count = $tokens->count();
@@ -175,7 +179,7 @@ EOT
         }
     }
 
-    private function shortToLong(Tokens $tokens)
+    private function shortToLong(Tokens $tokens): void
     {
         if (self::LONG_FUNCTION_PRINT === $this->configuration[self::OPTION_LONG_FUNCTION]) {
             $echoToken = [T_PRINT, 'print'];
@@ -210,15 +214,11 @@ EOT
      * This is done by a very quick test: if the tag contains non-whitespace tokens after
      * a semicolon, we consider it as "complex".
      *
-     * @param int $index
-     *
-     * @return bool
-     *
      * @example `<?php echo 1 ?>` is false (not complex)
      * @example `<?php echo 'hello' . 'world'; ?>` is false (not "complex")
      * @example `<?php echo 2; $set = 3 ?>` is true ("complex")
      */
-    private function isComplexCode(Tokens $tokens, $index)
+    private function isComplexCode(Tokens $tokens, int $index): bool
     {
         $semicolonFound = false;
 
@@ -242,12 +242,9 @@ EOT
     /**
      * Builds the list of tokens that replace a long echo sequence.
      *
-     * @param int $openTagIndex
-     * @param int $echoTagIndex
-     *
      * @return Token[]
      */
-    private function buildLongToShortTokens(Tokens $tokens, $openTagIndex, $echoTagIndex)
+    private function buildLongToShortTokens(Tokens $tokens, int $openTagIndex, int $echoTagIndex): array
     {
         $result = [new Token([T_OPEN_TAG_WITH_ECHO, '<?='])];
 

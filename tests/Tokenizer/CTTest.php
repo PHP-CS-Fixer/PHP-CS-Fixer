@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,40 +26,34 @@ use PhpCsFixer\Tokenizer\CT;
  */
 final class CTTest extends TestCase
 {
-    public function testUniqueValues()
+    public function testUniqueValues(): void
     {
         $constants = $this->getConstants();
         static::assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
     }
 
     /**
-     * @param string $name
-     * @param int    $value
-     *
      * @dataProvider provideConstantsCases
      */
-    public function testHas($name, $value)
+    public function testHas(string $name, int $value): void
     {
         static::assertTrue(CT::has($value));
     }
 
-    public function testHasNotExists()
+    public function testHasNotExists(): void
     {
         static::assertFalse(CT::has(123));
     }
 
     /**
-     * @param string $name
-     * @param int    $value
-     *
      * @dataProvider provideConstantsCases
      */
-    public function testGetName($name, $value)
+    public function testGetName(string $name, int $value): void
     {
         static::assertSame('CT::'.$name, CT::getName($value));
     }
 
-    public function testGetNameNotExists()
+    public function testGetNameNotExists(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No custom token was found for "123".');
@@ -66,12 +62,9 @@ final class CTTest extends TestCase
     }
 
     /**
-     * @param string $name
-     * @param int    $value
-     *
      * @dataProvider provideConstantsCases
      */
-    public function testConstants($name, $value)
+    public function testConstants(string $name, int $value): void
     {
         static::assertGreaterThan(10000, $value);
         static::assertFalse(\defined($name), 'The CT name must not use native T_* name.');

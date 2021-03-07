@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,7 +21,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  */
 final class PSR12Set extends AbstractRuleSetDescription
 {
-    public function getRules()
+    public function getRules(): array
     {
         return [
             '@PSR2' => true,
@@ -63,7 +65,7 @@ final class PSR12Set extends AbstractRuleSetDescription
         ];
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Rules that follow `PSR-12 <https://www.php-fig.org/psr/psr-12/>`_ standard.';
     }

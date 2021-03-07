@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,7 +29,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Replace control structure alternative syntax to use braces.',
@@ -50,7 +53,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->hasAlternativeSyntax();
     }
@@ -60,7 +63,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      *
      * Must run before BracesFixer, ElseifFixer, NoSuperfluousElseifFixer, NoUselessElseFixer, SwitchContinueToBreakFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 26;
     }
@@ -68,7 +71,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
@@ -78,7 +81,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
         }
     }
 
-    private function findParenthesisEnd(Tokens $tokens, $structureTokenIndex)
+    private function findParenthesisEnd(Tokens $tokens, int $structureTokenIndex): int
     {
         $nextIndex = $tokens->getNextMeaningfulToken($structureTokenIndex);
         $nextToken = $tokens[$nextIndex];
@@ -99,7 +102,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      * @param Token  $token  the token being processed
      * @param Tokens $tokens the collection of tokens
      */
-    private function fixOpenCloseControls($index, Token $token, Tokens $tokens)
+    private function fixOpenCloseControls(int $index, Token $token, Tokens $tokens): void
     {
         if ($token->isGivenKind([T_IF, T_FOREACH, T_WHILE, T_FOR, T_SWITCH, T_DECLARE])) {
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
@@ -147,7 +150,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      * @param Token  $token  the token being processed
      * @param Tokens $tokens the collection of tokens
      */
-    private function fixElse($index, Token $token, Tokens $tokens)
+    private function fixElse(int $index, Token $token, Tokens $tokens): void
     {
         if (!$token->isGivenKind(T_ELSE)) {
             return;
@@ -170,7 +173,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      * @param Token  $token  the token being processed
      * @param Tokens $tokens the collection of tokens
      */
-    private function fixElseif($index, Token $token, Tokens $tokens)
+    private function fixElseif(int $index, Token $token, Tokens $tokens): void
     {
         if (!$token->isGivenKind(T_ELSEIF)) {
             return;
@@ -195,7 +198,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      * @param int    $index      the current token index
      * @param int    $colonIndex the index of the colon
      */
-    private function addBraces(Tokens $tokens, Token $token, $index, $colonIndex)
+    private function addBraces(Tokens $tokens, Token $token, int $index, int $colonIndex): void
     {
         $items = [
             new Token('}'),

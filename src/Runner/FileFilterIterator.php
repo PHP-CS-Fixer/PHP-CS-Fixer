@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -55,7 +57,7 @@ final class FileFilterIterator extends \FilterIterator
         $this->cacheManager = $cacheManager;
     }
 
-    public function accept()
+    public function accept(): bool
     {
         $file = $this->current();
         if (!$file instanceof \SplFileInfo) {
@@ -99,10 +101,7 @@ final class FileFilterIterator extends \FilterIterator
         return true;
     }
 
-    /**
-     * @param string $name
-     */
-    private function dispatchEvent($name, Event $event)
+    private function dispatchEvent(string $name, Event $event): void
     {
         if (null === $this->eventDispatcher) {
             return;

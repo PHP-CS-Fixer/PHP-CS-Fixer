@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -63,11 +65,7 @@ final class ProcessOutput implements ProcessOutputInterface
      */
     private $symbolsPerLine;
 
-    /**
-     * @param int $width
-     * @param int $nbFiles
-     */
-    public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, $width, $nbFiles)
+    public function __construct(OutputInterface $output, EventDispatcherInterface $dispatcher, int $width, int $nbFiles)
     {
         $this->output = $output;
         $this->eventDispatcher = $dispatcher;
@@ -89,7 +87,7 @@ final class ProcessOutput implements ProcessOutputInterface
      * This class is not intended to be serialized,
      * and cannot be deserialized (see __wakeup method).
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
@@ -100,12 +98,12 @@ final class ProcessOutput implements ProcessOutputInterface
      *
      * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
      */
-    public function __wakeup()
+    public function __wakeup(): void
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
     }
 
-    public function onFixerFileProcessed(FixerFileProcessedEvent $event)
+    public function onFixerFileProcessed(FixerFileProcessedEvent $event): void
     {
         $status = self::$eventStatusMap[$event->getStatus()];
         $this->output->write($this->output->isDecorated() ? sprintf($status['format'], $status['symbol']) : $status['symbol']);
@@ -130,7 +128,7 @@ final class ProcessOutput implements ProcessOutputInterface
         }
     }
 
-    public function printLegend()
+    public function printLegend(): void
     {
         $symbols = [];
 

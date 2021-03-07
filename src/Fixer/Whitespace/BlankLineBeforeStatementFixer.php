@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,9 +19,11 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -75,7 +79,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -91,7 +95,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'An empty line feed must precede any configured statement.',
@@ -250,7 +254,7 @@ if (true) {
      *
      * Must run after NoExtraBlankLinesFixer, NoUselessReturnFixer, ReturnAssignmentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -21;
     }
@@ -258,7 +262,7 @@ if (true) {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound($this->fixTokenMap);
     }
@@ -266,7 +270,7 @@ if (true) {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
 
@@ -294,7 +298,7 @@ if (true) {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $allowed = self::$tokenMap;
         $allowed['yield_from'] = true; // TODO remove this when update to PHP7.0
@@ -318,12 +322,7 @@ if (true) {
         ]);
     }
 
-    /**
-     * @param int $prevNonWhitespace
-     *
-     * @return bool
-     */
-    private function shouldAddBlankLine(Tokens $tokens, $prevNonWhitespace)
+    private function shouldAddBlankLine(Tokens $tokens, int $prevNonWhitespace): bool
     {
         $prevNonWhitespaceToken = $tokens[$prevNonWhitespace];
 
@@ -344,10 +343,7 @@ if (true) {
         return $prevNonWhitespaceToken->equalsAny([';', '}']);
     }
 
-    /**
-     * @param int $index
-     */
-    private function insertBlankLine(Tokens $tokens, $index)
+    private function insertBlankLine(Tokens $tokens, int $index): void
     {
         $prevIndex = $index - 1;
         $prevToken = $tokens[$prevIndex];

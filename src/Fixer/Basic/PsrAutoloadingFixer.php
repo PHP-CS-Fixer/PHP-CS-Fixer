@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\Basic;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Token;
@@ -35,7 +39,7 @@ final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFix
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
@@ -64,7 +68,7 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
@@ -72,7 +76,7 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -80,7 +84,7 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -10;
     }
@@ -88,7 +92,7 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
-    public function supports(\SplFileInfo $file)
+    public function supports(\SplFileInfo $file): bool
     {
         if ($file instanceof StdinFileInfo) {
             return false;
@@ -122,7 +126,7 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('dir', 'If provided, the directory where the project code is placed.'))
@@ -135,7 +139,7 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $namespace = null;
         $namespaceStartIndex = null;
@@ -207,13 +211,7 @@ class InvalidName {}
         }
     }
 
-    /**
-     * @param null|string $namespace
-     * @param string      $currentName
-     *
-     * @return string
-     */
-    private function calculateClassyName(\SplFileInfo $file, $namespace, $currentName)
+    private function calculateClassyName(\SplFileInfo $file, ?string $namespace, string $currentName): string
     {
         $name = $file->getBasename('.php');
 
@@ -236,12 +234,7 @@ class InvalidName {}
         return $name;
     }
 
-    /**
-     * @param null|string $namespace
-     *
-     * @return string
-     */
-    private function calculateMaxNamespace(\SplFileInfo $file, $namespace)
+    private function calculateMaxNamespace(\SplFileInfo $file, ?string $namespace): string
     {
         if (null === $this->configuration['dir']) {
             $root = \dirname($file->getRealPath());

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -33,10 +35,7 @@ final class FileReader
      */
     private $stdinContent;
 
-    /**
-     * @return self
-     */
-    public static function createSingleton()
+    public static function createSingleton(): self
     {
         if (null === self::$instance) {
             self::$instance = new self();
@@ -45,12 +44,7 @@ final class FileReader
         return self::$instance;
     }
 
-    /**
-     * @param string $filePath
-     *
-     * @return string
-     */
-    public function read($filePath)
+    public function read(string $filePath): string
     {
         if ('php://stdin' === $filePath) {
             if (null === $this->stdinContent) {
@@ -63,12 +57,7 @@ final class FileReader
         return $this->readRaw($filePath);
     }
 
-    /**
-     * @param string $realPath
-     *
-     * @return string
-     */
-    private function readRaw($realPath)
+    private function readRaw(string $realPath): string
     {
         $content = @file_get_contents($realPath);
 

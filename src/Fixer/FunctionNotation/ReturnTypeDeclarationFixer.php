@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,8 +17,10 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
@@ -31,7 +35,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         $versionSpecification = new VersionSpecification(70000);
 
@@ -62,7 +66,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      *
      * Must run after PhpdocToReturnTypeFixer, VoidReturnFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -17;
     }
@@ -70,7 +74,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
     }
@@ -78,7 +82,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $oneSpaceBefore = 'one' === $this->configuration['space_before'];
 
@@ -121,7 +125,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('space_before', 'Spacing to apply before colon.'))

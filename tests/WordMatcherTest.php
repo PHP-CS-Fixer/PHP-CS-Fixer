@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,21 +26,15 @@ use PhpCsFixer\WordMatcher;
 final class WordMatcherTest extends TestCase
 {
     /**
-     * @param null|string $expected
-     * @param string      $needle
-     *
      * @dataProvider provideMatchCases
      */
-    public function testMatch($expected, $needle, array $candidates)
+    public function testMatch(?string $expected, string $needle, array $candidates): void
     {
         $matcher = new WordMatcher($candidates);
         static::assertSame($expected, $matcher->match($needle));
     }
 
-    /**
-     * @return array
-     */
-    public function provideMatchCases()
+    public function provideMatchCases(): array
     {
         return [
             [

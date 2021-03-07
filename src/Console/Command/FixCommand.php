@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -85,7 +87,7 @@ final class FixCommand extends Command
      *
      * Override here to only generate the help copy when used.
      */
-    public function getHelp()
+    public function getHelp(): string
     {
         return HelpCommand::getHelpCopy();
     }
@@ -93,7 +95,7 @@ final class FixCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDefinition(
@@ -119,7 +121,7 @@ final class FixCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $verbosity = $output->getVerbosity();
 

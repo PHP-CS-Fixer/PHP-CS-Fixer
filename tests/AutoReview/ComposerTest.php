@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ComposerTest extends TestCase
 {
-    public function testBranchAlias()
+    public function testBranchAlias(): void
     {
         $composerJson = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
 
@@ -42,12 +44,7 @@ final class ComposerTest extends TestCase
         );
     }
 
-    /**
-     * @param string $version
-     *
-     * @return string
-     */
-    private function convertAppVersionToAliasedVersion($version)
+    private function convertAppVersionToAliasedVersion(string $version): string
     {
         $parts = explode('.', $version, 3);
 

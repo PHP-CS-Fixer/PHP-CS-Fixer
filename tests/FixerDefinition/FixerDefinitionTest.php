@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,14 +25,14 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class FixerDefinitionTest extends TestCase
 {
-    public function testGetSummary()
+    public function testGetSummary(): void
     {
         $definition = new FixerDefinition('Foo', []);
 
         static::assertSame('Foo', $definition->getSummary());
     }
 
-    public function testGetCodeSamples()
+    public function testGetCodeSamples(): void
     {
         $samples = [
             $this->prophesize(CodeSampleInterface::class)->reveal(),
@@ -42,7 +44,7 @@ final class FixerDefinitionTest extends TestCase
         static::assertSame($samples, $definition->getCodeSamples());
     }
 
-    public function testGetDescription()
+    public function testGetDescription(): void
     {
         $definition = new FixerDefinition('', []);
 
@@ -53,7 +55,7 @@ final class FixerDefinitionTest extends TestCase
         static::assertSame('Foo', $definition->getDescription());
     }
 
-    public function testGetRiskyDescription()
+    public function testGetRiskyDescription(): void
     {
         $definition = new FixerDefinition('', []);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,7 +32,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     /**
      * @param iterable<FixerOptionInterface> $options
      */
-    public function __construct($options)
+    public function __construct(iterable $options)
     {
         foreach ($options as $option) {
             $this->addOption($option);
@@ -44,7 +46,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -52,7 +54,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     /**
      * {@inheritdoc}
      */
-    public function resolve(array $options)
+    public function resolve(array $options): array
     {
         $resolver = new OptionsResolver();
 
@@ -84,7 +86,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             if (null !== $allowedValues) {
                 foreach ($allowedValues as &$allowedValue) {
                     if (\is_object($allowedValue) && \is_callable($allowedValue)) {
-                        $allowedValue = static function ($values) use ($allowedValue) {
+                        $allowedValue = static function (/* mixed */ $values) use ($allowedValue) {
                             return $allowedValue($values);
                         };
                     }
@@ -112,7 +114,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
      *
      * @return $this
      */
-    private function addOption(FixerOptionInterface $option)
+    private function addOption(FixerOptionInterface $option): self
     {
         $name = $option->getName();
 

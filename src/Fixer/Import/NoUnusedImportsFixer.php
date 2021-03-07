@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Import;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
@@ -31,7 +34,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Unused `use` statements must be removed.',
@@ -45,7 +48,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
      * Must run before BlankLineAfterNamespaceFixer, NoExtraBlankLinesFixer, NoLeadingImportSlashFixer, SingleLineAfterImportsFixer.
      * Must run after ClassKeywordRemoveFixer, GlobalNamespaceImportFixer, PhpUnitFqcnAnnotationFixer, SingleImportPerStatementFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -10;
     }
@@ -53,7 +56,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_USE);
     }
@@ -61,7 +64,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $useDeclarations = (new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens);
 
@@ -98,11 +101,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     /**
      * @param array<int, int> $ignoredIndexes
-     * @param string          $shortName
-     *
-     * @return bool
      */
-    private function isImportUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, $shortName)
+    private function isImportUsed(Tokens $tokens, NamespaceAnalysis $namespace, array $ignoredIndexes, string $shortName): bool
     {
         $namespaceEndIndex = $namespace->getScopeEndIndex();
         for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
@@ -146,7 +146,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         return false;
     }
 
-    private function removeUseDeclaration(Tokens $tokens, NamespaceUseAnalysis $useDeclaration)
+    private function removeUseDeclaration(Tokens $tokens, NamespaceUseAnalysis $useDeclaration): void
     {
         for ($index = $useDeclaration->getEndIndex() - 1; $index >= $useDeclaration->getStartIndex(); --$index) {
             if ($tokens[$index]->isComment()) {
@@ -231,7 +231,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
     }
 
-    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, NamespaceAnalysis $namespaceDeclaration)
+    private function removeUsesInSameNamespace(Tokens $tokens, array $useDeclarations, NamespaceAnalysis $namespaceDeclaration): void
     {
         $namespace = $namespaceDeclaration->getFullName();
         $nsLength = \strlen($namespace.'\\');

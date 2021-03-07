@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -33,7 +35,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
-    public function testCamelCaseToUnderscore($expected, $input = null)
+    public function testCamelCaseToUnderscore(string $expected, string $input = null): void
     {
         if (null !== $input) {
             static::assertSame($expected, Utils::camelCaseToUnderscore($input));
@@ -42,10 +44,7 @@ final class UtilsTest extends TestCase
         static::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
-    /**
-     * @return array
-     */
-    public function provideCamelCaseToUnderscoreCases()
+    public function provideCamelCaseToUnderscoreCases(): array
     {
         return [
             [
@@ -95,13 +94,9 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param int $expected
-     * @param int $left
-     * @param int $right
-     *
      * @dataProvider provideCmpIntCases
      */
-    public function testCmpInt($expected, $left, $right)
+    public function testCmpInt(int $expected, int $left, int $right): void
     {
         static::assertSame($expected, Utils::cmpInt($left, $right));
     }
@@ -119,12 +114,11 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param string       $spaces
-     * @param array|string $input  token prototype
+     * @param array|string $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
-    public function testCalculateTrailingWhitespaceIndent($spaces, $input)
+    public function testCalculateTrailingWhitespaceIndent(string $spaces, $input): void
     {
         $token = new Token($input);
 
@@ -143,7 +137,7 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    public function testCalculateTrailingWhitespaceIndentFail()
+    public function testCalculateTrailingWhitespaceIndentFail(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
@@ -161,7 +155,7 @@ final class UtilsTest extends TestCase
         array $elements,
         callable $getComparableValueCallback,
         callable $compareValuesCallback
-    ) {
+    ): void {
         static::assertSame(
             $expected,
             Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
@@ -198,7 +192,7 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    public function testSortFixers()
+    public function testSortFixers(): void
     {
         $fixers = [
             $this->createFixerDouble('f1', 0),
@@ -218,7 +212,7 @@ final class UtilsTest extends TestCase
         );
     }
 
-    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray()
+    public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -227,10 +221,8 @@ final class UtilsTest extends TestCase
 
     /**
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
-     *
-     * @param string $joined
      */
-    public function testNaturalLanguageJoinWithBackticks($joined, array $names)
+    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
     {
         static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
@@ -254,11 +246,9 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param int $expected
-     *
      * @dataProvider provideCalculateBitmaskCases
      */
-    public function testCalculateBitmask($expected, array $options)
+    public function testCalculateBitmask(int $expected, array $options): void
     {
         static::assertSame($expected, Utils::calculateBitmask($options));
     }
@@ -289,7 +279,7 @@ final class UtilsTest extends TestCase
         ];
     }
 
-    private function createFixerDouble($name, $priority)
+    private function createFixerDouble(string $name, int $priority)
     {
         $fixer = $this->prophesize(FixerInterface::class);
         $fixer->getName()->willReturn($name);

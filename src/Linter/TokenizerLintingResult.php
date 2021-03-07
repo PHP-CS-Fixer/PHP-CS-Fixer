@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,7 +34,7 @@ final class TokenizerLintingResult implements LintingResultInterface
     /**
      * {@inheritdoc}
      */
-    public function check()
+    public function check(): void
     {
         if (null !== $this->error) {
             throw new LintingException(
@@ -43,7 +45,7 @@ final class TokenizerLintingResult implements LintingResultInterface
         }
     }
 
-    private function getMessagePrefix()
+    private function getMessagePrefix(): string
     {
         return $this->error instanceof \ParseError ? 'Parse error' : 'Fatal error';
     }

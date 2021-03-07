@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,10 +31,8 @@ final class DescribeCommandTest extends TestCase
 {
     /**
      * @dataProvider provideDescribeCommandCases
-     *
-     * @param string $fixerName
      */
-    public function testDescribeCommand(FixerFactory $factory, $fixerName)
+    public function testDescribeCommand(FixerFactory $factory, string $fixerName): void
     {
         $command = new DescribeCommand($factory);
 

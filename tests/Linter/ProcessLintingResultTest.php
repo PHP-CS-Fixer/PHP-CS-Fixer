@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,7 +29,7 @@ final class ProcessLintingResultTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testCheckOK()
+    public function testCheckOK(): void
     {
         $process = $this->prophesize();
         $process->willExtend(\Symfony\Component\Process\Process::class);
@@ -46,7 +48,7 @@ final class ProcessLintingResultTest extends TestCase
         $result->check();
     }
 
-    public function testCheckFail()
+    public function testCheckFail(): void
     {
         $process = $this->prophesize();
         $process->willExtend(\Symfony\Component\Process\Process::class);

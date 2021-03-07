@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,9 +17,11 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -28,7 +32,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer implements Configur
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'A `final` class must not have `final` methods and `private` methods must not be `final`.',
@@ -71,12 +75,12 @@ class Bar
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL]);
     }
 
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -84,7 +88,7 @@ class Bar
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensCount = \count($tokens);
         for ($index = 0; $index < $tokensCount; ++$index) {
@@ -103,7 +107,7 @@ class Bar
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('private_methods', 'Private methods of non-`final` classes must not be declared `final`.'))
@@ -113,11 +117,7 @@ class Bar
         ]);
     }
 
-    /**
-     * @param int  $classOpenIndex
-     * @param bool $classIsFinal
-     */
-    private function fixClass(Tokens $tokens, $classOpenIndex, $classIsFinal)
+    private function fixClass(Tokens $tokens, int $classOpenIndex, bool $classIsFinal): void
     {
         $tokensCount = \count($tokens);
 
@@ -152,13 +152,7 @@ class Bar
         }
     }
 
-    /**
-     * @param int $index
-     * @param int $classOpenIndex
-     *
-     * @return bool
-     */
-    private function isPrivateMethodOtherThanConstructor(Tokens $tokens, $index, $classOpenIndex)
+    private function isPrivateMethodOtherThanConstructor(Tokens $tokens, int $index, int $classOpenIndex): bool
     {
         $index = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, [';', '{', '}']));
         $private = false;

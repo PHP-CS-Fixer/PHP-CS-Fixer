@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,12 +25,9 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
 final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixAllCases
      */
-    public function testFixAll($expected, $input = null)
+    public function testFixAll(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
 
@@ -46,12 +45,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixAllCases
      */
-    public function testFixAllWithDifferentLineEnding($expected, $input = null)
+    public function testFixAllWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -61,10 +57,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAll($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixAllCases()
+    public function provideFixAllCases(): array
     {
         $cases = $this->createTestCases([
             ['
@@ -338,12 +331,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixAroundParenthesesOnlyCases
      */
-    public function testFixAroundParenthesesOnly($expected, $input = null)
+    public function testFixAroundParenthesesOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_commas' => false,
@@ -370,12 +360,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixAroundParenthesesOnlyCases
      */
-    public function testFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixAroundParenthesesOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -385,10 +372,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundParenthesesOnly($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixAroundParenthesesOnlyCases()
+    public function provideFixAroundParenthesesOnlyCases(): array
     {
         return $this->createTestCases([
             ['
@@ -601,12 +585,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixAroundCommasOnlyCases
      */
-    public function testFixAroundCommasOnly($expected, $input = null)
+    public function testFixAroundCommasOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -633,12 +614,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixAroundCommasOnlyCases
      */
-    public function testFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixAroundCommasOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -648,10 +626,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
         $this->testFixAroundCommasOnly($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixAroundCommasOnlyCases()
+    public function provideFixAroundCommasOnlyCases(): array
     {
         return $this->createTestCases([
             ['
@@ -887,12 +862,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceBeforeArgumentAssignmentOnlyCases
      */
-    public function testFixWithSpaceBeforeArgumentAssignmentOnly($expected, $input = null)
+    public function testFixWithSpaceBeforeArgumentAssignmentOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -908,12 +880,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceBeforeArgumentAssignmentOnlyCases
      */
-    public function testFixWithSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -941,12 +910,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
      */
-    public function testFixWithoutSpaceBeforeArgumentAssignmentOnly($expected, $input = null)
+    public function testFixWithoutSpaceBeforeArgumentAssignmentOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -962,12 +928,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases
      */
-    public function testFixWithoutSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithoutSpaceBeforeArgumentAssignmentOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -995,12 +958,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceAfterArgumentAssignmentOnlyCases
      */
-    public function testFixWithSpaceAfterArgumentAssignmentOnly($expected, $input = null)
+    public function testFixWithSpaceAfterArgumentAssignmentOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1016,12 +976,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceAfterArgumentAssignmentOnlyCases
      */
-    public function testFixWithSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1049,12 +1006,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases
      */
-    public function testFixWithoutSpaceAfterArgumentAssignmentOnly($expected, $input = null)
+    public function testFixWithoutSpaceAfterArgumentAssignmentOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1070,12 +1024,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases
      */
-    public function testFixWithoutSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithoutSpaceAfterArgumentAssignmentOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1103,12 +1054,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithSpaceBeforeArrayAssignmentEqualOnly($expected, $input = null)
+    public function testFixWithSpaceBeforeArrayAssignmentEqualOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1124,12 +1072,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1157,12 +1102,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnly($expected, $input = null)
+    public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1178,12 +1120,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithoutSpaceBeforeArrayAssignmentEqualOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1211,12 +1150,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithSpaceAfterArrayAssignmentEqualOnly($expected, $input = null)
+    public function testFixWithSpaceAfterArrayAssignmentEqualOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1232,12 +1168,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1265,12 +1198,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithoutSpaceAfterArrayAssignmentEqualOnly($expected, $input = null)
+    public function testFixWithoutSpaceAfterArrayAssignmentEqualOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1286,12 +1216,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases
      */
-    public function testFixWithoutSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithoutSpaceAfterArrayAssignmentEqualOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1319,12 +1246,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases
      */
-    public function testFixWithSpaceBeforeArrayAssignmentColonOnly($expected, $input = null)
+    public function testFixWithSpaceBeforeArrayAssignmentColonOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1340,12 +1264,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases
      */
-    public function testFixWithSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1373,12 +1294,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
      */
-    public function testFixWithoutSpaceBeforeArrayAssignmentColonOnly($expected, $input = null)
+    public function testFixWithoutSpaceBeforeArrayAssignmentColonOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1394,12 +1312,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases
      */
-    public function testFixWithoutSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithoutSpaceBeforeArrayAssignmentColonOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1427,12 +1342,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceAfterArrayAssignmentColonOnlyCases
      */
-    public function testFixWithSpaceAfterArrayAssignmentColonOnly($expected, $input = null)
+    public function testFixWithSpaceAfterArrayAssignmentColonOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1448,12 +1360,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithSpaceAfterArrayAssignmentColonOnlyCases
      */
-    public function testFixWithSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1481,12 +1390,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
      */
-    public function testFixWithoutSpaceAfterArrayAssignmentColonOnly($expected, $input = null)
+    public function testFixWithoutSpaceAfterArrayAssignmentColonOnly(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'around_parentheses' => false,
@@ -1502,12 +1408,9 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases
      */
-    public function testFixWithoutSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithoutSpaceAfterArrayAssignmentColonOnlyWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
@@ -1535,12 +1438,10 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string $element
-     *
      * @requires PHP 7.4
      * @dataProvider provideElementDiscoveringCases
      */
-    public function testElementDiscovering($element)
+    public function testElementDiscovering(string $element): void
     {
         $this->doTest(
             sprintf('<?php

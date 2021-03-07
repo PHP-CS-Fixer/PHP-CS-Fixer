@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -28,7 +31,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'A case should be followed by a colon and not a semicolon.',
@@ -52,7 +55,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
      *
      * Must run after NoEmptyStatementFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -60,7 +63,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
     }
@@ -68,7 +71,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind(T_CASE)) {
@@ -80,10 +83,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $index
-     */
-    protected function fixSwitchCase(Tokens $tokens, $index)
+    protected function fixSwitchCase(Tokens $tokens, int $index): void
     {
         $ternariesCount = 0;
         do {
@@ -114,10 +114,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $index
-     */
-    protected function fixSwitchDefault(Tokens $tokens, $index)
+    protected function fixSwitchDefault(Tokens $tokens, int $index): void
     {
         do {
             if ($tokens[$index]->equalsAny([':', ';', [T_DOUBLE_ARROW]])) {

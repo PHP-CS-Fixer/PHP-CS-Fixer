@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,28 +26,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoSpacesAroundOffsetFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideInsideCases
      */
-    public function testFixSpaceInsideOffset($expected, $input = null)
+    public function testFixSpaceInsideOffset(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideOutsideCases
      */
-    public function testFixSpaceOutsideOffset($expected, $input = null)
+    public function testFixSpaceOutsideOffset(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function testLeaveNewLinesAlone()
+    public function testLeaveNewLinesAlone(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -68,12 +64,9 @@ EOF;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideCommentCases
      */
-    public function testCommentsCases($expected, $input = null)
+    public function testCommentsCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -101,7 +94,7 @@ $a = $b[ # z
         ];
     }
 
-    public function testLeaveComplexString()
+    public function testLeaveComplexString(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -111,7 +104,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctions()
+    public function testLeaveFunctions(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -303,12 +296,9 @@ $var = $arr[0][     0
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, $expected, $input)
+    public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
     {
         $this->fixer->configure(['positions' => $configuration]);
         $this->doTest($expected, $input);
@@ -370,7 +360,7 @@ EOT
         }
     }
 
-    public function testWrongConfig()
+    public function testWrongConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
@@ -379,13 +369,10 @@ EOT
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
-    public function testPHP71(array $configuration, $expected, $input)
+    public function testPHP71(array $configuration, string $expected, string $input): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);

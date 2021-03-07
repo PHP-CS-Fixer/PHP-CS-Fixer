@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,22 +27,16 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixVarCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixVar($expected, $input = null)
+    public function testFixVar(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixVarCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixType($expected, $input = null)
+    public function testFixType(string $expected, ?string $input = null): void
     {
         $expected = str_replace('@var', '@type', $expected);
         if (null !== $input) {
@@ -392,11 +388,8 @@ class Foo{}
     /**
      * @requires PHP 7.0
      * @dataProvider provideFixVar70Cases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixVar70($expected, $input = null)
+    public function testFixVar70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

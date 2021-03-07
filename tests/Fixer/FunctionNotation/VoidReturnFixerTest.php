@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,11 +28,8 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -219,11 +218,8 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixPhp74($expected, $input = null)
+    public function testFixPhp74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

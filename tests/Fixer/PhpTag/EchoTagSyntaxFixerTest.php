@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,13 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param bool        $shortenSimpleStatementsOnly
-     *
      * @dataProvider provideLongToShortFormatCases
      */
-    public function testLongToShortFormat($expected, $input = null, $shortenSimpleStatementsOnly = true)
+    public function testLongToShortFormat(string $expected, ?string $input = null, bool $shortenSimpleStatementsOnly = true): void
     {
         $this->fixer->configure(['format' => 'short', 'shorten_simple_statements_only' => $shortenSimpleStatementsOnly]);
         $this->doTest($expected, $input);
@@ -94,13 +92,9 @@ EOT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param string      $function
-     *
      * @dataProvider provideShortToLongFormatCases
      */
-    public function testShortToLongFormat($expected, $input, $function)
+    public function testShortToLongFormat(string $expected, ?string $input, string $function): void
     {
         $this->fixer->configure(['format' => 'long', 'long_function' => $function]);
         $this->doTest($expected, $input);

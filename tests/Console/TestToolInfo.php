@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -20,32 +22,32 @@ use PhpCsFixer\ToolInfoInterface;
  */
 final class TestToolInfo implements ToolInfoInterface
 {
-    public function getComposerInstallationDetails()
+    public function getComposerInstallationDetails(): array
     {
         throw new \BadMethodCallException();
     }
 
-    public function getComposerVersion()
+    public function getComposerVersion(): string
     {
         throw new \BadMethodCallException();
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return Application::VERSION;
     }
 
-    public function isInstalledAsPhar()
+    public function isInstalledAsPhar(): bool
     {
         return true;
     }
 
-    public function isInstalledByComposer()
+    public function isInstalledByComposer(): bool
     {
         throw new \BadMethodCallException();
     }
 
-    public function getPharDownloadUri($version)
+    public function getPharDownloadUri(string $version): string
     {
         throw new \BadMethodCallException();
     }

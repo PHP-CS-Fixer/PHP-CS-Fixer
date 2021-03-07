@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,9 +21,11 @@ use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -34,7 +38,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'All PHPUnit test cases should have `@small`, `@medium` or `@large` annotation to enable run time limits.',
@@ -49,7 +53,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('group', 'Define a specific group to be used in case no group is already in use'))
@@ -62,7 +66,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     /**
      * {@inheritdoc}
      */
-    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
 
@@ -79,19 +83,14 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         }
     }
 
-    /**
-     * @param int $i
-     *
-     * @return bool
-     */
-    private function isAbstractClass(Tokens $tokens, $i)
+    private function isAbstractClass(Tokens $tokens, int $i): bool
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
 
         return $tokens[$typeIndex]->isGivenKind(T_ABSTRACT);
     }
 
-    private function createDocBlock(Tokens $tokens, $docBlockIndex)
+    private function createDocBlock(Tokens $tokens, int $docBlockIndex): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
@@ -104,7 +103,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         $tokens->insertAt($index, $toInsert);
     }
 
-    private function updateDocBlockIfNeeded(Tokens $tokens, $docBlockIndex)
+    private function updateDocBlockIfNeeded(Tokens $tokens, int $docBlockIndex): void
     {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         if (!empty($this->filterDocBlock($doc))) {
@@ -118,11 +117,9 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     }
 
     /**
-     * @param int $docBlockIndex
-     *
      * @return Line[]
      */
-    private function addSizeAnnotation(DocBlock $docBlock, Tokens $tokens, $docBlockIndex)
+    private function addSizeAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex): array
     {
         $lines = $docBlock->getLines();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
@@ -133,12 +130,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         return $lines;
     }
 
-    /**
-     * @param int $docBlockIndex
-     *
-     * @return DocBlock
-     */
-    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, $docBlockIndex)
+    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, int $docBlockIndex): DocBlock
     {
         $lines = $doc->getLines();
         if (1 === \count($lines) && empty($this->filterDocBlock($doc))) {
@@ -154,11 +146,10 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
      * Take a one line doc block, and turn it into a multi line doc block.
      *
      * @param Line[] $lines
-     * @param int    $docBlockIndex
      *
      * @return Line[]
      */
-    private function splitUpDocBlock($lines, Tokens $tokens, $docBlockIndex)
+    private function splitUpDocBlock(array $lines, Tokens $tokens, int $docBlockIndex): array
     {
         $lineContent = $this->getSingleLineDocBlockEntry($lines);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
@@ -172,14 +163,14 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     }
 
     /**
-     * @param Line|Line[]|string $line
+     * @todo check whether it's doable to use \PhpCsFixer\DocBlock\DocBlock::getSingleLineDocBlockEntry instead
      *
-     * @return string
+     * @param Line[] $lines
      */
-    private function getSingleLineDocBlockEntry($line)
+    private function getSingleLineDocBlockEntry(array $lines): string
     {
-        $line = $line[0];
-        $line = str_replace('*/', '', $line);
+        $line = $lines[0];
+        $line = str_replace('*/', '', $line->getContent());
         $line = trim($line);
         $line = str_split($line);
         $i = \count($line);
@@ -197,7 +188,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     /**
      * @return Annotation[][]
      */
-    private function filterDocBlock(DocBlock $doc)
+    private function filterDocBlock(DocBlock $doc): array
     {
         return array_filter([
             $doc->getAnnotationsOfType('small'),

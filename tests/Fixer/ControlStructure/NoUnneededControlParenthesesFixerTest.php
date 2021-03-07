@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,7 +29,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {
     private static $defaultStatements;
 
-    public static function doSetUpBeforeClass()
+    public static function doSetUpBeforeClass(): void
     {
         parent::doSetUpBeforeClass();
 
@@ -42,26 +44,18 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $fixStatement = null)
+    public function testFix(string $expected, ?string $input = null, ?string $fixStatement = null): void
     {
         $this->fixerTest($expected, $input, $fixStatement);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, $fixStatement = null)
+    public function testFix70(string $expected, ?string $input = null, ?string $fixStatement = null): void
     {
         $this->fixerTest($expected, $input, $fixStatement);
     }
@@ -450,13 +444,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixYieldFromCases
      * @requires PHP 7.0
      */
-    public function testFixYieldFrom($expected, $input = null)
+    public function testFixYieldFrom(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['statements' => ['yield_from']]);
         $this->doTest($expected, $input);
@@ -514,13 +505,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     * @param bool        $legacy
-     */
-    private function fixerTest($expected, $input = null, $fixStatement = null, $legacy = false)
+    private function fixerTest(string $expected, ?string $input = null, ?string $fixStatement = null, bool $legacy = false): void
     {
         // Default config. Fixes all statements.
         $this->doTest($expected, $input);

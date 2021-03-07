@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input, array $config)
+    public function testFix(string $expected, ?string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -92,11 +91,9 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expectedMessage
-     *
      * @dataProvider provideInvalidConfigCases
      */
-    public function testInvalidConfig(array $config, $expectedMessage)
+    public function testInvalidConfig(array $config, string $expectedMessage): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage));

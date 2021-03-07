@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use Prophecy\Prophecy;
  */
 final class VersionSpecificCodeSampleTest extends TestCase
 {
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $code = '<php echo $foo;';
         $configuration = [
@@ -43,7 +45,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         static::assertSame($configuration, $codeSample->getConfiguration());
     }
 
-    public function testConfigurationDefaultsToNull()
+    public function testConfigurationDefaultsToNull(): void
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
@@ -55,11 +57,8 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
     /**
      * @dataProvider provideIsSuitableForVersionUsesVersionSpecificationCases
-     *
-     * @param int  $version
-     * @param bool $isSatisfied
      */
-    public function testIsSuitableForUsesVersionSpecification($version, $isSatisfied)
+    public function testIsSuitableForUsesVersionSpecification(int $version, bool $isSatisfied): void
     {
         $versionSpecification = $this->createVersionSpecificationMock();
 
@@ -76,10 +75,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         static::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
     }
 
-    /**
-     * @return array
-     */
-    public function provideIsSuitableForVersionUsesVersionSpecificationCases()
+    public function provideIsSuitableForVersionUsesVersionSpecificationCases(): array
     {
         return [
             'is-satisfied' => [\PHP_VERSION_ID, true],

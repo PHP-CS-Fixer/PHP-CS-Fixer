@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Report;
 
+use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\Report\TextReporter;
 
 /**
@@ -24,13 +27,13 @@ use PhpCsFixer\Report\TextReporter;
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {
-    protected function createNoErrorReport()
+    protected function createNoErrorReport(): string
     {
         return <<<'TEXT'
 TEXT;
     }
 
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return str_replace(
             "\n",
@@ -42,7 +45,7 @@ TEXT
         );
     }
 
-    protected function createWithDiffReport()
+    protected function createWithDiffReport(): string
     {
         return str_replace(
             "\n",
@@ -58,7 +61,7 @@ TEXT
         );
     }
 
-    protected function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport(): string
     {
         return str_replace(
             "\n",
@@ -70,7 +73,7 @@ TEXT
         );
     }
 
-    protected function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport(): string
     {
         return str_replace(
             "\n",
@@ -84,7 +87,7 @@ TEXT
         );
     }
 
-    protected function createComplexReport()
+    protected function createComplexReport(): string
     {
         return str_replace(
             "\n",
@@ -107,17 +110,17 @@ TEXT
         );
     }
 
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new TextReporter();
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'txt';
     }
 
-    protected function assertFormat($expected, $input)
+    protected function assertFormat(string $expected, string $input): void
     {
         static::assertSame($expected, $input);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,14 +31,9 @@ use Symfony\Component\Console\Output\StreamOutput;
 final class ErrorOutputTest extends TestCase
 {
     /**
-     * @param int    $verbosityLevel
-     * @param int    $lineNumber
-     * @param int    $exceptionLineNumber
-     * @param string $process
-     *
      * @dataProvider provideTestCases
      */
-    public function testErrorOutput(Error $error, $verbosityLevel, $lineNumber, $exceptionLineNumber, $process)
+    public function testErrorOutput(Error $error, int $verbosityLevel, int $lineNumber, int $exceptionLineNumber, string $process): void
     {
         $source = $error->getSource();
 
@@ -100,7 +97,7 @@ Files that were not fixed due to errors reported during %s:
         ];
     }
 
-    public function testLintingExceptionOutputsAppliedFixersAndDiff()
+    public function testLintingExceptionOutputsAppliedFixersAndDiff(): void
     {
         $fixerName = uniqid('braces_');
         $diffSpecificContext = uniqid('added_');
@@ -143,12 +140,7 @@ EOT;
         static::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
-    /**
-     * @param int $verbosityLevel
-     *
-     * @return StreamOutput
-     */
-    private function createStreamOutput($verbosityLevel)
+    private function createStreamOutput(int $verbosityLevel): StreamOutput
     {
         $output = new StreamOutput(fopen('php://memory', 'w', false));
         $output->setDecorated(false);
@@ -157,12 +149,7 @@ EOT;
         return $output;
     }
 
-    /**
-     * @param StreamOutput $output
-     *
-     * @return string
-     */
-    private function readFullStreamOutput($output)
+    private function readFullStreamOutput(StreamOutput $output): string
     {
         rewind($output->getStream());
         $displayed = stream_get_contents($output->getStream());

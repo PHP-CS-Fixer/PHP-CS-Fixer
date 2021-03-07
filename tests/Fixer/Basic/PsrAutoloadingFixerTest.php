@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,13 +29,9 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     /**
      * This is new test method, to replace old one one day.
      *
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $dir
-     *
      * @dataProvider provideFixNewCases
      */
-    public function testFixNew($expected, $input = null, $dir = null)
+    public function testFixNew(string $expected, ?string $input = null, ?string $dir = null): void
     {
         if (null !== $dir) {
             $this->fixer->configure(['dir' => $dir]);
@@ -154,15 +152,10 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string            $expected
-     * @param null|string       $input
-     * @param null|\SplFileInfo $file
-     * @param null|string       $dir
-     *
      * @dataProvider provideFixCases
      * @dataProvider provideIgnoredCases
      */
-    public function testFix($expected, $input = null, $file = null, $dir = null)
+    public function testFix(string $expected, ?string $input = null, ?\SplFileInfo $file = null, ?string $dir = null): void
     {
         if (null === $file) {
             $file = $this->getTestFile(__FILE__);
@@ -401,13 +394,10 @@ class Bar {}',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires     PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input, $this->getTestFile(__FILE__));
     }

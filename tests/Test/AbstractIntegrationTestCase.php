@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -73,7 +75,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     private static $fileRemoval;
 
-    public static function doSetUpBeforeClass()
+    public static function doSetUpBeforeClass(): void
     {
         parent::doSetUpBeforeClass();
 
@@ -91,7 +93,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
     }
 
-    public static function doTearDownAfterClass()
+    public static function doTearDownAfterClass(): void
     {
         parent::doTearDownAfterClass();
 
@@ -101,14 +103,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
         self::$fileRemoval = null;
     }
 
-    protected function doSetUp()
+    protected function doSetUp(): void
     {
         parent::doSetUp();
 
         $this->linter = $this->getLinter();
     }
 
-    protected function doTearDown()
+    protected function doTearDown(): void
     {
         parent::doTearDown();
 
@@ -121,7 +123,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * @see doTest()
      * @large
      */
-    public function testIntegration(IntegrationCase $case)
+    public function testIntegration(IntegrationCase $case): void
     {
         $this->doTest($case);
     }
@@ -131,7 +133,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @return IntegrationCase[][]
      */
-    public function provideIntegrationCases()
+    public function provideIntegrationCases(): array
     {
         $dir = static::getFixturesDir();
         $fixturesDir = realpath($dir);
@@ -157,30 +159,23 @@ abstract class AbstractIntegrationTestCase extends TestCase
         return $tests;
     }
 
-    /**
-     * @return IntegrationCaseFactoryInterface
-     */
-    protected static function createIntegrationCaseFactory()
+    protected static function createIntegrationCaseFactory(): IntegrationCaseFactoryInterface
     {
         return new IntegrationCaseFactory();
     }
 
     /**
      * Returns the full path to directory which contains the tests.
-     *
-     * @return string
      */
-    protected static function getFixturesDir()
+    protected static function getFixturesDir(): string
     {
         throw new \BadMethodCallException('Method "getFixturesDir" must be overridden by the extending class.');
     }
 
     /**
      * Returns the full path to the temporary file where the test will write to.
-     *
-     * @return string
      */
-    protected static function getTempFile()
+    protected static function getTempFile(): string
     {
         throw new \BadMethodCallException('Method "getTempFile" must be overridden by the extending class.');
     }
@@ -192,7 +187,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
      * configured with the given fixers. The result is compared with the expected output.
      * It checks if no errors were reported during the fixing.
      */
-    protected function doTest(IntegrationCase $case)
+    protected function doTest(IntegrationCase $case): void
     {
         if (\PHP_VERSION_ID < $case->getRequirement('php')) {
             static::markTestSkipped(sprintf('PHP %d (or later) is required for "%s", current "%d".', $case->getRequirement('php'), $case->getFileName(), \PHP_VERSION_ID));
@@ -304,11 +299,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         );
     }
 
-    /**
-     * @param string $fixedInputCode
-     * @param string $fixedInputCodeWithReversedFixers
-     */
-    protected static function assertRevertedOrderFixing(IntegrationCase $case, $fixedInputCode, $fixedInputCodeWithReversedFixers)
+    protected static function assertRevertedOrderFixing(IntegrationCase $case, string $fixedInputCode, string $fixedInputCodeWithReversedFixers): void
     {
         // If output is different depends on rules order - we need to verify that the rules are ordered by priority.
         // If not, any order is valid.
@@ -332,7 +323,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     /**
      * @return FixerInterface[]
      */
-    private static function createFixers(IntegrationCase $case)
+    private static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
 
@@ -348,10 +339,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
     /**
      * @param Error[] $errors
-     *
-     * @return string
      */
-    private function implodeErrors(array $errors)
+    private function implodeErrors(array $errors): string
     {
         $errorStr = '';
         foreach ($errors as $error) {
@@ -362,10 +351,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         return $errorStr;
     }
 
-    /**
-     * @return LinterInterface
-     */
-    private function getLinter()
+    private function getLinter(): LinterInterface
     {
         static $linter = null;
 

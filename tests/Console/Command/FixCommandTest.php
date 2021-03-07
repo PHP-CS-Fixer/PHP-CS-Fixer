@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class FixCommandTest extends TestCase
 {
-    public function testEmptyRulesValue()
+    public function testEmptyRulesValue(): void
     {
         $this->expectException(
             \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
@@ -40,7 +42,7 @@ final class FixCommandTest extends TestCase
         );
     }
 
-    public function testEmptyFormatValue()
+    public function testEmptyFormatValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessage('Expected "yes" or "no" for option "using-cache", got "not today".');
@@ -55,10 +57,7 @@ final class FixCommandTest extends TestCase
         $cmdTester->getStatusCode();
     }
 
-    /**
-     * @return CommandTester
-     */
-    private function doTestExecute(array $arguments)
+    private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();
         $application->add(new FixCommand(new ToolInfo()));

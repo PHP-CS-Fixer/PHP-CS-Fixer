@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,9 +19,11 @@ use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
@@ -33,7 +37,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Removes `@param`, `@return` and `@var` tags that don\'t provide any useful information.',
@@ -95,7 +99,7 @@ class Foo {
      * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer, VoidReturnFixer.
      * Must run after CommentToPhpdocFixer, FullyQualifiedStrictTypesFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToReturnTypeFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 6;
     }
@@ -103,7 +107,7 @@ class Foo {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -111,7 +115,7 @@ class Foo {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $namespaceUseAnalyzer = new NamespaceUsesAnalyzer();
 
@@ -158,7 +162,7 @@ class Foo {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('allow_mixed', 'Whether type `mixed` without description is allowed (`true`) or considered superfluous (`false`)'))
@@ -176,12 +180,7 @@ class Foo {
         ]);
     }
 
-    /**
-     * @param int $docCommentIndex
-     *
-     * @return null|int
-     */
-    private function findDocumentedElement(Tokens $tokens, $docCommentIndex)
+    private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?int
     {
         $index = $docCommentIndex;
 
@@ -212,13 +211,7 @@ class Foo {
         return null;
     }
 
-    /**
-     * @param string $content
-     * @param int    $functionIndex
-     *
-     * @return string
-     */
-    private function fixFunctionDocComment($content, Tokens $tokens, $functionIndex, array $shortNames)
+    private function fixFunctionDocComment(string $content, Tokens $tokens, int $functionIndex, array $shortNames): string
     {
         $docBlock = new DocBlock($content);
 
@@ -259,12 +252,9 @@ class Foo {
     }
 
     /**
-     * @param string $content
-     * @param int    $index   Index of the DocComment token
-     *
-     * @return string
+     * @param int $index Index of the DocComment token
      */
-    private function fixPropertyDocComment($content, Tokens $tokens, $index, array $shortNames)
+    private function fixPropertyDocComment(string $content, Tokens $tokens, int $index, array $shortNames): string
     {
         $docBlock = new DocBlock($content);
 
@@ -284,12 +274,9 @@ class Foo {
     }
 
     /**
-     * @param int $start
-     * @param int $end
-     *
      * @return array<string, array>
      */
-    private function getArgumentsInfo(Tokens $tokens, $start, $end)
+    private function getArgumentsInfo(Tokens $tokens, int $start, int $end): array
     {
         $argumentsInfo = [];
 
@@ -328,7 +315,7 @@ class Foo {
         return $argumentsInfo;
     }
 
-    private function getReturnTypeInfo(Tokens $tokens, $closingParenthesisIndex)
+    private function getReturnTypeInfo(Tokens $tokens, int $closingParenthesisIndex): array
     {
         $colonIndex = $tokens->getNextMeaningfulToken($closingParenthesisIndex);
         if ($tokens[$colonIndex]->isGivenKind(CT::T_TYPE_COLON)) {
@@ -343,10 +330,8 @@ class Foo {
 
     /**
      * @param int $index The index of the first token of the type hint
-     *
-     * @return array
      */
-    private function getPropertyTypeInfo(Tokens $tokens, $index)
+    private function getPropertyTypeInfo(Tokens $tokens, int $index): array
     {
         if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
             return [
@@ -360,10 +345,8 @@ class Foo {
 
     /**
      * @param int $index The index of the first token of the type hint
-     *
-     * @return array
      */
-    private function parseTypeHint(Tokens $tokens, $index)
+    private function parseTypeHint(Tokens $tokens, int $index): array
     {
         $allowsNull = false;
         if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
@@ -386,10 +369,8 @@ class Foo {
 
     /**
      * @param array<string, string> $symbolShortNames
-     *
-     * @return bool
      */
-    private function annotationIsSuperfluous(Annotation $annotation, array $info, array $symbolShortNames)
+    private function annotationIsSuperfluous(Annotation $annotation, array $info, array $symbolShortNames): bool
     {
         if ('param' === $annotation->getTag()->getName()) {
             $regex = '/@param\s+(?:\S|\s(?!\$))++\s\$\S+\s+\S/';
@@ -432,10 +413,10 @@ class Foo {
      *
      * @return array The normalized types
      */
-    private function toComparableNames(array $types, array $symbolShortNames)
+    private function toComparableNames(array $types, array $symbolShortNames): array
     {
         $normalized = array_map(
-            static function ($type) use ($symbolShortNames) {
+            static function (string $type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
                 if (isset($symbolShortNames[$type])) {
@@ -452,12 +433,7 @@ class Foo {
         return $normalized;
     }
 
-    /**
-     * @param string $docComment
-     *
-     * @return string
-     */
-    private function removeSuperfluousInheritDoc($docComment)
+    private function removeSuperfluousInheritDoc(string $docComment): string
     {
         return Preg::replace('~
             # $1: before @inheritDoc tag

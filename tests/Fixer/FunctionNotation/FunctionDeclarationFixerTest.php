@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 {
     private static $configurationClosureSpacingNone = ['closure_function_spacing' => 'none'];
 
-    public function testInvalidConfigurationClosureFunctionSpacing()
+    public function testInvalidConfigurationClosureFunctionSpacing(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
@@ -37,12 +39,9 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = [])
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 
@@ -358,13 +357,10 @@ foo#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function test70($expected, $input = null, array $configuration = [])
+    public function test70(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 
@@ -384,13 +380,10 @@ foo#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function test74($expected, $input = null, array $configuration = [])
+    public function test74(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 
@@ -459,13 +452,10 @@ foo#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp80Cases
      * @requires PHP 8.0
      */
-    public function testFixPhp80($expected, $input = null, array $configuration = [])
+    public function testFixPhp80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 

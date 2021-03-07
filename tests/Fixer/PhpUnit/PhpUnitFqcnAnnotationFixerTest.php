@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {
-    public function testFix()
+    public function testFix(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -77,7 +79,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testIgnoringNonPhpUnitClass()
+    public function testIgnoringNonPhpUnitClass(): void
     {
         $this->doTest('
 <?php

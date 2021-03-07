@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input)
+    public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -169,12 +168,9 @@ class Foo extends Bar
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDoNotFixCases
      */
-    public function testDoNotFix($expected, $input = null)
+    public function testDoNotFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -247,7 +243,7 @@ function __Tostring() {}',
     /**
      * @requires PHP 7.0
      */
-    public function testFixPHP7()
+    public function testFixPHP7(): void
     {
         $this->doTest(
             '<?php
@@ -348,7 +344,7 @@ function __Tostring() {}',
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php $foo->__invoke(1, );',

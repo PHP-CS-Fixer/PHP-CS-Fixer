@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\PregException;
  */
 final class PregExceptionTest extends TestCase
 {
-    public function testIsRuntimeException()
+    public function testIsRuntimeException(): void
     {
         $exception = new PregException();
 

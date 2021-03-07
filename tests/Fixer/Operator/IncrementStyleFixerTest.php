@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,24 +28,18 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class IncrementStyleFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPreIncrementCases
      */
-    public function testFixPreIncrement($expected, $input = null)
+    public function testFixPreIncrement(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['style' => 'pre']);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPostIncrementCases
      */
-    public function testFixPostIncrement($expected, $input = null)
+    public function testFixPostIncrement(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['style' => 'post']);
         $this->doTest($expected, $input);

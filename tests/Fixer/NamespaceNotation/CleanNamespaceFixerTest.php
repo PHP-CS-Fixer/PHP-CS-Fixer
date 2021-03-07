@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,13 +24,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP <8.0
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input)
+    public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

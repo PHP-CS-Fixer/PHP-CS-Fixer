@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -135,10 +137,8 @@ final class Annotation
 
     /**
      * Get the string representation of object.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getContent();
     }
@@ -148,37 +148,31 @@ final class Annotation
      *
      * @return string[]
      */
-    public static function getTagsWithTypes()
+    public static function getTagsWithTypes(): array
     {
         return self::$tags;
     }
 
     /**
      * Get the start position of this annotation.
-     *
-     * @return int
      */
-    public function getStart()
+    public function getStart(): int
     {
         return $this->start;
     }
 
     /**
      * Get the end position of this annotation.
-     *
-     * @return int
      */
-    public function getEnd()
+    public function getEnd(): int
     {
         return $this->end;
     }
 
     /**
      * Get the associated tag.
-     *
-     * @return Tag
      */
-    public function getTag()
+    public function getTag(): Tag
     {
         if (null === $this->tag) {
             $this->tag = new Tag($this->lines[0]);
@@ -192,7 +186,7 @@ final class Annotation
      *
      * @return string[]
      */
-    public function getTypes()
+    public function getTypes(): array
     {
         if (null === $this->types) {
             $this->types = [];
@@ -219,7 +213,7 @@ final class Annotation
      *
      * @param string[] $types
      */
-    public function setTypes(array $types)
+    public function setTypes(array $types): void
     {
         $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
 
@@ -233,9 +227,9 @@ final class Annotation
      *
      * @return string[]
      */
-    public function getNormalizedTypes()
+    public function getNormalizedTypes(): array
     {
-        $normalized = array_map(static function ($type) {
+        $normalized = array_map(static function (string $type) {
             return strtolower($type);
         }, $this->getTypes());
 
@@ -247,7 +241,7 @@ final class Annotation
     /**
      * Remove this annotation by removing all its lines.
      */
-    public function remove()
+    public function remove(): void
     {
         foreach ($this->lines as $line) {
             if ($line->isTheStart() && $line->isTheEnd()) {
@@ -274,15 +268,13 @@ final class Annotation
 
     /**
      * Get the annotation content.
-     *
-     * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return implode('', $this->lines);
     }
 
-    public function supportTypes()
+    public function supportTypes(): bool
     {
         return \in_array($this->getTag()->getName(), self::$tags, true);
     }
@@ -291,10 +283,8 @@ final class Annotation
      * Get the current types content.
      *
      * Be careful modifying the underlying line as that won't flush the cache.
-     *
-     * @return string
      */
-    private function getTypesContent()
+    private function getTypesContent(): string
     {
         if (null === $this->typesContent) {
             $name = $this->getTag()->getName();
@@ -317,7 +307,7 @@ final class Annotation
         return $this->typesContent;
     }
 
-    private function clearCache()
+    private function clearCache(): void
     {
         $this->types = null;
         $this->typesContent = null;

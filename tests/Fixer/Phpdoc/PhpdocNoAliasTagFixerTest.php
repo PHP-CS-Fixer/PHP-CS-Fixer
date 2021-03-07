@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigCase1()
+    public function testInvalidConfigCase1(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace must be a string\.$#');
@@ -33,7 +35,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['replacements' => [1 => 'abc']]);
     }
 
-    public function testInvalidConfigCase2()
+    public function testInvalidConfigCase2(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag to replace to from "a" must be a string\.$#');
@@ -41,7 +43,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['replacements' => ['a' => null]]);
     }
 
-    public function testInvalidConfigCase3()
+    public function testInvalidConfigCase3(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Tag "see" cannot be replaced by invalid tag "link\*\/"\.$#');
@@ -49,7 +51,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['replacements' => ['see' => 'link*/']]);
     }
 
-    public function testInvalidConfigCase4()
+    public function testInvalidConfigCase4(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "link" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#');
@@ -61,7 +63,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         ]]);
     }
 
-    public function testInvalidConfigCase5()
+    public function testInvalidConfigCase5(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "b" to tag "see", as the tag "see" is configured to be replaced to "link"\.$#');
@@ -73,7 +75,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         ]]);
     }
 
-    public function testInvalidConfigCase6()
+    public function testInvalidConfigCase6(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[phpdoc_no_alias_tag\] Invalid configuration: Cannot change tag "see" to tag "link", as the tag "link" is configured to be replaced to "b"\.$#');
@@ -85,12 +87,9 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePropertyCases
      */
-    public function testPropertyFix($expected, $input = null)
+    public function testPropertyFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['replacements' => [
             'property-read' => 'property',
@@ -127,12 +126,9 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTypeToVarCases
      */
-    public function testTypeToVarFix($expected, $input = null)
+    public function testTypeToVarFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['replacements' => [
             'type' => 'var',
@@ -188,12 +184,9 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideVarToTypeCases
      */
-    public function testVarToTypeFix($expected, $input = null)
+    public function testVarToTypeFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['replacements' => [
             'var' => 'type',
@@ -248,7 +241,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testLinkToSee()
+    public function testLinkToSee(): void
     {
         $this->fixer->configure(['replacements' => [
             'link' => 'see',
@@ -261,12 +254,9 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDefaultConfigCases
      */
-    public function testDefaultConfig($expected, $input = null)
+    public function testDefaultConfig(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

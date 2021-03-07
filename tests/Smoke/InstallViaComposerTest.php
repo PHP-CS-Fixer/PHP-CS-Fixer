@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -39,7 +41,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         'vendor/bin/php-cs-fixer fix --help',
     ];
 
-    public static function doSetUpBeforeClass()
+    public static function doSetUpBeforeClass(): void
     {
         parent::doSetUpBeforeClass();
 
@@ -66,7 +68,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         }
     }
 
-    public function testInstallationViaPathIsPossible()
+    public function testInstallationViaPathIsPossible(): void
     {
         $fs = new Filesystem();
 
@@ -97,7 +99,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     }
 
     // test that respects `export-ignore` from `.gitattributes` file
-    public function testInstallationViaArtifactIsPossible()
+    public function testInstallationViaArtifactIsPossible(): void
     {
         // Composer Artifact Repository requires `zip` extension
         if (!\extension_loaded('zip')) {
@@ -162,7 +164,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         $fs->remove($tmpArtifactPath);
     }
 
-    private static function assertCommandsWork(array $commands, $cwd)
+    private static function assertCommandsWork(array $commands, string $cwd): void
     {
         foreach ($commands as $command) {
             static::assertSame(0, CommandExecutor::create($command, $cwd)->getResult()->getCode());

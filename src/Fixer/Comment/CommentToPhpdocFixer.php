@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,9 +18,11 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -38,7 +42,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_COMMENT);
     }
@@ -46,7 +50,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -56,7 +60,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
      *
      * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // Should be run before all other PHPDoc fixers
         return 26;
@@ -65,7 +69,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Comments with annotation should be docblock when used on structural elements.',
@@ -81,12 +85,12 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration = null): void
     {
         parent::configure($configuration);
 
         $this->ignoredTags = array_map(
-            static function ($tag) {
+            static function (string $tag) {
                 return strtolower($tag);
             },
             $this->configuration['ignored_tags']
@@ -96,7 +100,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('ignored_tags', 'List of ignored tags'))
@@ -109,7 +113,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $commentsAnalyzer = new CommentsAnalyzer();
 
@@ -140,14 +144,12 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
 
     /**
      * @param int[] $indices
-     *
-     * @return bool
      */
-    private function isCommentCandidate(Tokens $tokens, array $indices)
+    private function isCommentCandidate(Tokens $tokens, array $indices): bool
     {
         return array_reduce(
             $indices,
-            function ($carry, $index) use ($tokens) {
+            function (bool $carry, int $index) use ($tokens) {
                 if ($carry) {
                     return true;
                 }
@@ -164,7 +166,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @param int[] $indices
      */
-    private function fixComment(Tokens $tokens, $indices)
+    private function fixComment(Tokens $tokens, array $indices): void
     {
         if (1 === \count($indices)) {
             $this->fixCommentSingleLine($tokens, reset($indices));
@@ -173,10 +175,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         }
     }
 
-    /**
-     * @param int $index
-     */
-    private function fixCommentSingleLine(Tokens $tokens, $index)
+    private function fixCommentSingleLine(Tokens $tokens, int $index): void
     {
         $message = $this->getMessage($tokens[$index]->getContent());
 
@@ -194,7 +193,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @param int[] $indices
      */
-    private function fixCommentMultiLine(Tokens $tokens, array $indices)
+    private function fixCommentMultiLine(Tokens $tokens, array $indices): void
     {
         $startIndex = reset($indices);
         $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$startIndex - 1]);
@@ -221,7 +220,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         $tokens->insertAt($startIndex, new Token([T_DOC_COMMENT, $newContent]));
     }
 
-    private function getMessage($content)
+    private function getMessage(string $content): string
     {
         if (0 === strpos($content, '#')) {
             return substr($content, 1);

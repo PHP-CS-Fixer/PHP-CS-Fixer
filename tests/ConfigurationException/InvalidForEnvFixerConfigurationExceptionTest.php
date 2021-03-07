@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
 {
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $fixerName = 'hal';
         $message = 'I cannot do that, Andreas!';

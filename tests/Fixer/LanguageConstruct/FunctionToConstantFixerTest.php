@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FunctionToConstantFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
@@ -247,7 +246,7 @@ get_called_class#1
     /**
      * @dataProvider provideInvalidConfigurationKeysCases
      */
-    public function testInvalidConfigurationKeys(array $config)
+    public function testInvalidConfigurationKeys(array $config): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "functions" with value array is invalid\.$#');
@@ -264,7 +263,7 @@ get_called_class#1
         ];
     }
 
-    public function testInvalidConfigurationValue()
+    public function testInvalidConfigurationValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[function_to_constant\] Invalid configuration: The option "0" does not exist\. Defined options are: "functions"\.$#');

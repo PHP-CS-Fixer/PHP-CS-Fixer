@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,7 +31,7 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 final class FixerFactoryTest extends TestCase
 {
-    public function testFixersPriorityEdgeFixers()
+    public function testFixersPriorityEdgeFixers(): void
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -44,7 +46,7 @@ final class FixerFactoryTest extends TestCase
      * @dataProvider provideFixersPriorityCases
      * @dataProvider provideFixersPrioritySpecialPhpdocCases
      */
-    public function testFixersPriority(FixerInterface $first, FixerInterface $second)
+    public function testFixersPriority(FixerInterface $first, FixerInterface $second): void
     {
         static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
     }
@@ -300,7 +302,7 @@ final class FixerFactoryTest extends TestCase
 
         $docFixerNames = array_filter(
             array_keys($fixers),
-            static function ($name) {
+            static function (string $name) {
                 return false !== strpos($name, 'phpdoc');
             }
         );
@@ -328,7 +330,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider provideFixersPriorityPairsHaveIntegrationTestCases
      */
-    public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second)
+    public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second): void
     {
         $integrationTestName = $this->generateIntegrationTestName($first, $second);
         $file = $this->getIntegrationPriorityDirectory().$integrationTestName;
@@ -388,7 +390,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function testPriorityIntegrationDirectoryOnlyContainsFiles()
+    public function testPriorityIntegrationDirectoryOnlyContainsFiles(): void
     {
         foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
             if ($candidate->isDot()) {
@@ -403,10 +405,8 @@ final class FixerFactoryTest extends TestCase
 
     /**
      * @dataProvider provideIntegrationTestFilesCases
-     *
-     * @param string $fileName
      */
-    public function testPriorityIntegrationTestFilesAreListedPriorityCases($fileName)
+    public function testPriorityIntegrationTestFilesAreListedPriorityCases(string $fileName): void
     {
         static $priorityCases;
 
@@ -456,7 +456,7 @@ final class FixerFactoryTest extends TestCase
         return $fileNames;
     }
 
-    public function testProvideFixersPriorityCasesAreSorted()
+    public function testProvideFixersPriorityCasesAreSorted(): void
     {
         $cases = $this->provideFixersPriorityCases();
         $sorted = $cases;
@@ -499,7 +499,7 @@ final class FixerFactoryTest extends TestCase
         }
     }
 
-    public function testFixerPriorityComment()
+    public function testFixerPriorityComment(): void
     {
         $cases = array_merge(
             $this->provideFixersPriorityCases(),
@@ -586,18 +586,12 @@ final class FixerFactoryTest extends TestCase
         }
     }
 
-    /**
-     * @return string
-     */
-    private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
+    private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second): string
     {
         return "{$first->getName()},{$second->getName()}.test";
     }
 
-    /**
-     * @return string
-     */
-    private function getIntegrationPriorityDirectory()
+    private function getIntegrationPriorityDirectory(): string
     {
         return __DIR__.'/../Fixtures/Integration/priority/';
     }

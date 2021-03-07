@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -57,10 +59,7 @@ final class Application extends BaseApplication
         ));
     }
 
-    /**
-     * @return int
-     */
-    public static function getMajorVersion()
+    public static function getMajorVersion(): int
     {
         return (int) explode('.', self::VERSION)[0];
     }
@@ -68,7 +67,7 @@ final class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output): int
     {
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
@@ -89,7 +88,7 @@ final class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function getLongVersion()
+    public function getLongVersion(): string
     {
         $version = sprintf(
             '%s <info>%s</info> by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>',
@@ -109,7 +108,7 @@ final class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         return [new HelpCommand(), new ListCommand()];
     }

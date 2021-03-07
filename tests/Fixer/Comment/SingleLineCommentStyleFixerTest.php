@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
@@ -32,12 +34,9 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideAsteriskCases
      */
-    public function testAsterisk($expected, $input = null)
+    public function testAsterisk(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_types' => ['asterisk']]);
         $this->doTest($expected, $input);
@@ -218,12 +217,9 @@ second line*/',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideHashCases
      */
-    public function testHashCases($expected, $input = null)
+    public function testHashCases(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_types' => ['hash']]);
         $this->doTest($expected, $input);
@@ -291,12 +287,9 @@ second line*/',
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideAllCases
      */
-    public function testAllCases($expected, $input = null)
+    public function testAllCases(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

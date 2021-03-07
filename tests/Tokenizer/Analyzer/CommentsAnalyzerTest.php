@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CommentsAnalyzerTest extends TestCase
 {
-    public function testWhenNotPointingToComment()
+    public function testWhenNotPointingToComment(): void
     {
         $analyzer = new CommentsAnalyzer();
         $tokens = Tokens::fromCode('<?php $no; $comment; $here;');
@@ -38,13 +40,9 @@ final class CommentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string     $code
-     * @param int        $index
-     * @param null|array $borders
-     *
      * @dataProvider provideCommentsCases
      */
-    public function testComments($code, $index, $borders)
+    public function testComments(string $code, int $index, ?array $borders): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
@@ -148,7 +146,7 @@ $bar;',
         ];
     }
 
-    public function testHeaderCommentAcceptsOnlyComments()
+    public function testHeaderCommentAcceptsOnlyComments(): void
     {
         $tokens = Tokens::fromCode('<?php 1; 2; 3;');
         $analyzer = new CommentsAnalyzer();
@@ -159,12 +157,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideHeaderCommentCases
      */
-    public function testHeaderComment($code, $index)
+    public function testHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
@@ -184,12 +179,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideNotHeaderCommentCases
      */
-    public function testNotHeaderComment($code, $index)
+    public function testNotHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new CommentsAnalyzer();
@@ -209,7 +201,7 @@ $bar;',
         ];
     }
 
-    public function testPhpdocCandidateAcceptsOnlyComments()
+    public function testPhpdocCandidateAcceptsOnlyComments(): void
     {
         $tokens = Tokens::fromCode('<?php 1; 2; 3;');
         $analyzer = new CommentsAnalyzer();
@@ -220,11 +212,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider providePhpdocCandidateCases
      */
-    public function testPhpdocCandidate($code)
+    public function testPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
@@ -274,11 +264,9 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider provideNotPhpdocCandidateCases
      */
-    public function testNotPhpdocCandidate($code)
+    public function testNotPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
@@ -300,7 +288,7 @@ $bar;',
     /**
      * @requires PHP 7.1
      */
-    public function testPhpdocCandidate71()
+    public function testPhpdocCandidate71(): void
     {
         $tokens = Tokens::fromCode('<?php /* @var int $x */ [$x] = [2];');
         $analyzer = new CommentsAnalyzer();
@@ -311,7 +299,7 @@ $bar;',
     /**
      * @requires PHP 7.1
      */
-    public function testNotPhpdocCandidate71()
+    public function testNotPhpdocCandidate71(): void
     {
         $tokens = Tokens::fromCode('<?php /* @var int $a */ [$b] = [2];');
         $analyzer = new CommentsAnalyzer();
@@ -320,12 +308,10 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider providePhpdocCandidatePhp74Cases
      * @requires PHP 7.4
      */
-    public function testPhpdocCandidatePhp74($code)
+    public function testPhpdocCandidatePhp74(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
@@ -342,12 +328,10 @@ $bar;',
     }
 
     /**
-     * @param string $code
-     *
      * @dataProvider providePhpdocCandidatePhp80Cases
      * @requires PHP 8.0
      */
-    public function testPhpdocCandidatePhp80($code)
+    public function testPhpdocCandidatePhp80(string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);

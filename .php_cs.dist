@@ -15,7 +15,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->append([
         __DIR__.'/dev-tools/doc.php',
-        __DIR__.'/php-cs-fixer',
+        // __DIR__.'/php-cs-fixer', disabled, as we want to be able to run bootstrap file even on lower PHP version, to show nice message
     ])
 ;
 
@@ -23,12 +23,11 @@ $config = new PhpCsFixer\Config();
 $config
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PHP56Migration:risky' => true,
+        '@PHP71Migration:risky' => true,
         '@PHPUnit75Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'header_comment' => ['header' => $header],
-        'list_syntax' => ['syntax' => 'long'],
     ])
     ->setFinder($finder)
 ;

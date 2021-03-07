@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class NewVersionCheckerTest extends TestCase
 {
-    public function testGetLatestVersion()
+    public function testGetLatestVersion(): void
     {
         $checker = new NewVersionChecker($this->createGithubClientStub());
 
@@ -31,12 +33,9 @@ final class NewVersionCheckerTest extends TestCase
     }
 
     /**
-     * @param int         $majorVersion
-     * @param null|string $expectedVersion
-     *
      * @dataProvider provideLatestVersionOfMajorCases
      */
-    public function testGetLatestVersionOfMajor($majorVersion, $expectedVersion)
+    public function testGetLatestVersionOfMajor(int $majorVersion, ?string $expectedVersion): void
     {
         $checker = new NewVersionChecker($this->createGithubClientStub());
 
@@ -53,13 +52,9 @@ final class NewVersionCheckerTest extends TestCase
     }
 
     /**
-     * @param string $versionA
-     * @param string $versionB
-     * @param int    $expectedResult
-     *
      * @dataProvider provideCompareVersionsCases
      */
-    public function testCompareVersions($versionA, $versionB, $expectedResult)
+    public function testCompareVersions(string $versionA, string $versionB, int $expectedResult): void
     {
         $checker = new NewVersionChecker($this->createGithubClientStub());
 
