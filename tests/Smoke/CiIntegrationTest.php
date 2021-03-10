@@ -32,9 +32,9 @@ final class CiIntegrationTest extends AbstractSmokeTest
 {
     public static $fixtureDir;
 
-    public static function doSetUpBeforeClass(): void
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         self::$fixtureDir = __DIR__.'/../Fixtures/ci-integration';
 
@@ -64,16 +64,16 @@ final class CiIntegrationTest extends AbstractSmokeTest
         }
     }
 
-    public static function doTearDownAfterClass(): void
+    public static function tearDownAfterClass(): void
     {
-        parent::doTearDownAfterClass();
+        parent::tearDownAfterClass();
 
         self::executeCommand('rm -rf .git');
     }
 
-    protected function doTearDown(): void
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         self::executeScript([
             'git reset . -q',

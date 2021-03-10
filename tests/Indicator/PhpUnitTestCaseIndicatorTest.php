@@ -31,18 +31,18 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
      */
     private $indicator;
 
-    protected function doSetUp(): void
+    protected function setUp(): void
     {
         $this->indicator = new PhpUnitTestCaseIndicator();
 
-        parent::doSetUp();
+        parent::setUp();
     }
 
-    protected function doTearDown(): void
+    protected function tearDown(): void
     {
         $this->indicator = null;
 
-        parent::doTearDown();
+        parent::tearDown();
     }
 
     /**

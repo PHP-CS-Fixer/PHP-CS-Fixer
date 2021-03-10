@@ -27,9 +27,9 @@ use PhpCsFixer\Tests\Fixtures\Test\FileReaderTest\StdinFakeStream;
  */
 final class FileReaderTest extends TestCase
 {
-    public static function doTearDownAfterClass(): void
+    public static function tearDownAfterClass(): void
     {
-        parent::doTearDownAfterClass();
+        parent::tearDownAfterClass();
 
         // testReadStdinCaches registers a stream wrapper for php so we can mock
         // php://stdin. Restore the original stream wrapper after this class so

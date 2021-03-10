@@ -41,9 +41,9 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         'vendor/bin/php-cs-fixer fix --help',
     ];
 
-    public static function doSetUpBeforeClass(): void
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         if ('\\' === \DIRECTORY_SEPARATOR) {
             static::markTestIncomplete('This test is broken on Windows');

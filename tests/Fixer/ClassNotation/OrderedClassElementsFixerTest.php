@@ -140,17 +140,13 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 
     public static function setUpBeforeClass() {}
 
-    public static function teardownafterclass() {
+    public static function tearDownAfterclass() {
     } /* multiline
     comment */
 
     protected function setUp() {}
 
-    protected function doSetUp() {}
-
     protected function tearDown() {}
-
-    protected function doTearDown() {}
 
     abstract public function foo1($a, $b = 1);
 
@@ -197,11 +193,9 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 
     abstract public function foo1($a, $b = 1);
 
+    protected function setUp() {}
+
     protected function tearDown() {}
-
-    protected function doSetUp() {}
-
-    protected function doTearDown() {}
 
     public function __clone() {}
 
@@ -233,7 +227,7 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 
     const C2 = 2;
 
-    public static function teardownafterclass() {
+    public static function tearDownAfterclass() {
     } /* multiline
     comment */
 
@@ -244,8 +238,6 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     private function foo5()
     {
     } // end foo5
-
-    protected function setUp() {}
 
     protected function __construct()
     {

@@ -75,9 +75,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
      */
     private static $fileRemoval;
 
-    public static function doSetUpBeforeClass(): void
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         $tmpFile = static::getTempFile();
         self::$fileRemoval = new FileRemoval();
@@ -93,9 +93,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
     }
 
-    public static function doTearDownAfterClass(): void
+    public static function tearDownAfterClass(): void
     {
-        parent::doTearDownAfterClass();
+        parent::tearDownAfterClass();
 
         $tmpFile = static::getTempFile();
 
@@ -103,16 +103,16 @@ abstract class AbstractIntegrationTestCase extends TestCase
         self::$fileRemoval = null;
     }
 
-    protected function doSetUp(): void
+    protected function setUp(): void
     {
-        parent::doSetUp();
+        parent::setUp();
 
         $this->linter = $this->getLinter();
     }
 
-    protected function doTearDown(): void
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         $this->linter = null;
     }

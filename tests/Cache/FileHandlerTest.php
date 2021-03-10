@@ -29,9 +29,9 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class FileHandlerTest extends TestCase
 {
-    protected function doTearDown(): void
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         $file = $this->getFile();
 

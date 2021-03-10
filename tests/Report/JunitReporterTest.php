@@ -38,16 +38,16 @@ final class JunitReporterTest extends AbstractReporterTestCase
      */
     private static $xsd;
 
-    public static function doSetUpBeforeClass(): void
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/junit-10.xsd');
     }
 
-    public static function doTearDownAfterClass(): void
+    public static function tearDownAfterClass(): void
     {
-        parent::doTearDownAfterClass();
+        parent::tearDownAfterClass();
 
         self::$xsd = null;
     }
