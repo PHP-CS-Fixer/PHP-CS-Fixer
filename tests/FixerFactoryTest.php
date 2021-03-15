@@ -308,7 +308,7 @@ final class FixerFactoryTest extends TestCase
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
         );
         $this->expectExceptionMessage(
-            '[foo] Configuration must be an array and may not be empty.'
+            '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
         );
 
         $factory->useRuleSet(new RuleSet([
