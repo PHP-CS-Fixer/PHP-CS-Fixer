@@ -38,13 +38,31 @@ final class RuleSet implements RuleSetInterface
 
     public function __construct(array $set = [])
     {
-        foreach ($set as $key => $value) {
-            if (\is_int($key)) {
+        foreach ($set as $name => $value) {
+            if ('' === $name) {
+                throw new \InvalidArgumentException('Rule/set name must not be empty.');
+            }
+
+            if (\is_int($name)) {
                 throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
             }
 
             if (true !== $value && false !== $value && !\is_array($value)) {
-                throw new InvalidFixerConfigurationException($key, 'Configuration must be an array and may not be empty.');
+                // @TODO drop me on 3.0
+                if (null === $value) {
+                    $messageForNullIssue = 'To disable the rule, use "FALSE" instead of "NULL".';
+                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+                        throw new InvalidFixerConfigurationException($name, $messageForNullIssue);
+                    }
+
+                    @trigger_error($messageForNullIssue, E_USER_DEPRECATED);
+
+                    continue;
+                }
+
+                $message = '@' === $name[0] ? 'Set must be enabled (true) or disabled (false). Other values are not allowed.' : 'Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.';
+
+                throw new InvalidFixerConfigurationException($name, $message);
             }
         }
 
