@@ -48,19 +48,11 @@ final class RuleSet implements RuleSetInterface
             }
 
             if (true !== $value && false !== $value && !\is_array($value)) {
-                // @TODO drop me on 3.0
-                if (null === $value) {
-                    $messageForNullIssue = 'To disable the rule, use "FALSE" instead of "NULL".';
-                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        throw new InvalidFixerConfigurationException($name, $messageForNullIssue);
-                    }
-
-                    @trigger_error($messageForNullIssue, E_USER_DEPRECATED);
-
-                    continue;
-                }
-
                 $message = '@' === $name[0] ? 'Set must be enabled (true) or disabled (false). Other values are not allowed.' : 'Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.';
+
+                if (null === $value) {
+                    $message .= ' To disable the '.('@' === $name[0] ? 'set' : 'rule').', use "FALSE" instead of "NULL".';
+                }
 
                 throw new InvalidFixerConfigurationException($name, $message);
             }
