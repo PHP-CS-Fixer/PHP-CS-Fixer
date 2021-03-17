@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-17T16:19:33Z
+
+[![Coverage Status](https://coveralls.io/builds/38025861/badge)](https://coveralls.io/builds/38025861)
+
+Coverage remained the same at 91.863% when pulling **754d53e65945a72d0814b2ffacb5448883eae10a on kubawerlos:fix_ClassAttributesSeparationFixer** into **d46a3ef38e78691ae010537752524a26f712bf6f on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-17T18:59:43Z
+
+Shuold I rebase to make fabbot happy?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-17T19:00:19Z
+
+no, i will squash
