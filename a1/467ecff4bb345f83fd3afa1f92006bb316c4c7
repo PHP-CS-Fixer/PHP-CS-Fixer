@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-17T18:48:35Z
+
+[![Coverage Status](https://coveralls.io/builds/38024691/badge)](https://coveralls.io/builds/38024691)
+
+Coverage increased (+0.0004%) to 91.864% when pulling **ca36da50c7453133bf4f2f9a0e481314e84f5372 on keradus:2.18_function_declaration,method_argument_space** into **c4b84e08d1c1342010e5656c9f1361aab5b375ba on FriendsOfPHP:2.18**.
