@@ -1416,7 +1416,7 @@ class User3
 }',
         ];
 
-        yield [
+        yield 'constructor property promotion' => [
             '<?php
             class Foo {
                 private array $foo;
@@ -1438,6 +1438,26 @@ class User3
                     protected float $y = 0.0,
                     private float $z = 0.0,
                 ) {}
+            }',
+        ];
+
+        yield 'typed properties' => [
+            '<?php
+            class Foo {
+                private static int | float | null $a;
+
+                private static int | float | null $b;
+
+                private int | float | null $c;
+
+                private int | float | null $d;
+            }',
+            '<?php
+            class Foo {
+                private static int | float | null $a;
+                private static int | float | null $b;
+                private int | float | null $c;
+                private int | float | null $d;
             }',
         ];
     }
