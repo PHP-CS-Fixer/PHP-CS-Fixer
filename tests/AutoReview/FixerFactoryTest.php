@@ -102,6 +102,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['final_internal_class'], $fixers['protected_to_private']],
             [$fixers['final_internal_class'], $fixers['self_static_accessor']],
             [$fixers['fully_qualified_strict_types'], $fixers['no_superfluous_phpdoc_tags']],
+            [$fixers['function_declaration'], $fixers['method_argument_space']],
             [$fixers['function_to_constant'], $fixers['native_function_casing']],
             [$fixers['function_to_constant'], $fixers['no_extra_blank_lines']],
             [$fixers['function_to_constant'], $fixers['no_singleline_whitespace_before_semicolons']],
