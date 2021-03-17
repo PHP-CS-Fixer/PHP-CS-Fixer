@@ -1,0 +1,215 @@
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-20T23:41:25Z
+
+I see plenty changes of `getPriority` methods for Fixers that are not Phpdoc*/Braces/LineEnding, without any reasoning added for those changes (keep in mind that when we do non-0 prio, we put a comment why - and those comments were either not added in your PR, or not updated while update of prio)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2018-11-20T23:42:13Z
+
+@keradus the answer to all your "why" is because of all the existing priorities. See the graph I mentioned, see all defined priorities, and see that all tests still pass.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-20T23:45:34Z
+
+>  See the graph I mentioned, see all defined priorities, and see that all tests still pass.
+
+half of priorities are not covered with i-tests, eg even the one you are just saying you are fixing in this PR:
+> AlignMultilineComment should run before every PhpdocFixer
+
+You added a priority relation between `AlignMultilineComment` and `Phpdoc*Fixer`s, but you did not added integration tests for that.
+
+For that, I'm not happy to change a priority without adding comment with reasoning and integration test for it.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-20T23:46:57Z
+
+Priority is one of the most tricky part of this tool. Maybe let's try to split this PR into atomic pieces, eg for what I understand, `LineEnding and Braces` can be extracted to separated PR.
+Smaller PRs, easier to review & manual QA, easier to spot code changes that shall not be done or are missing tests.
+
+---------------------------------------------------------------------------
+
+by keradus at 2018-11-28T01:09:54Z
+
+> > Smaller PRs
+
+> This really is not that big of a PR...
+
+You say this PR is small in terms of diff size. Indeed, it is.
+Yet, I'm saying this PR is huge in terms of complexity, impact and potential risk.
+
+Don't get me wrong - your work here is super nice, simply part of the code you are touching is super fragile, and any mistake here has big consequences.
+And it's not trivial to validate if the changes are good or not. "small diff" you say? few lines to read, hard to understand the changes, impact impossible to predict, especially with missing tests.
+
+And well, outcome of it is clear, nobody wants to review it (don't worry, I don't want to sound harsh here, this PR is on my watchlist and won't get forgotten for sure (even if I can't spend as much time with it as I would like to)), as nobody can say "it's safe to release this PR" - I'm trying to ask you for changes, that would make us more safe to release it.
+
+-------------------------
+
+> > I see plenty changes of getPriority methods for Fixers that are not Phpdoc*/Braces/LineEnding, without any reasoning added for those changes
+
+> As I mentioned before, it's a cascading change (again, see the graph, which visualises all current defined relations).
+
+and for that, as it's all-in-one, hard to see out of the box which change in code is related to what change we want to accomplish.
+
+> > half of priorities are not covered with i-tests
+
+> So we should write them. Please don't let that stop existing PRs that try to fix priority-problems.
+> (...)
+> Yes, sorry, none of the "special phpdoc cases" have integration tests as far as I could see.
+
+So, if some legacy code has no tests, it's not an excuse to not create tests for new code/scenarios.
+I'm not asking you to add in this PR tests for existing-not-covered cases.
+I'm asking you to add them for new priority relation cases you are adding.
+You added changes in "special cases" - `provideFixersPrioritySpecialPhpdocCases` https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/56557496da75f1feec1e12377c500f7a9b4688c2/tests/AutoReview/FixerFactoryTest.php#L219 . Those are that legacy cases without proper testing, and those are ignored in our test guard: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/56557496da75f1feec1e12377c500f7a9b4688c2/tests/AutoReview/FixerFactoryTest.php#L310 .
+We shall not add more tests that are not covered by the guard.
+
+> > For that, I'm not happy to change a priority without adding comment with reasoning and integration test for it.
+
+> The comment is there though. I could link to the issue as well. The reasoning I hope is clear to you: It fixes the `*`s of docblocks, they could be missing. And while that still is a valid docblock, there are fixers that won't run (correctly) in that case.
+
+The comment part, especially after `I will boyscout these` (kudos :) ), is good part of the changes.
+Lack of integration tests for newly configured priority relationship, is not.
+
+> > Maybe let's try to split this PR into atomic pieces, eg for what I understand, LineEnding and Braces can be extracted to separated PR.
+
+> In theory yes, however that would block the current PR which needs to change those priorities, that's why it was found in the first place, and needed to be fixed as well.
+
+I prefer to merge multiple small, easy and safe PRs, one after another, steps by steps, instead of having one problematic, long-living PR.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-01-07T21:53:22Z
+
+I pulled out the `LineEnding and Braces` part into #4245 together with the added comments.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-07T20:54:27Z
+
+@dmvdbrugge #4245 was merged, can you please rebase this PR?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2019-10-10T16:49:15Z
+
+@julienfalque rebase done, had to work in a "new" (since a year ago) fixer, but all seems good again.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-24T00:21:36Z
+
+( i rebase to re-trigger the CIs with newest changes )
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-12-18T13:25:41Z
+
+Hi @dmvdbrugge ,
+
+>AlignMultilineComment should run before every PhpdocFixer
+
+where does this come from? I would like to write the priority integration test so we can move forward with this PR :)
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-23T22:57:55Z
+
+Hi @SpacePossum
+
+> > AlignMultilineComment should run before every PhpdocFixer
+>
+> where does this come from? I would like to write the priority integration test so we can move forward with this PR :)
+
+See the issue linked in the PR description: #3879 and the issue that issue also refers to: #3857 both issues that you've been involved in (more than a year ago, so I get it if you don't remember 😉)
+
+_**edit:** and sorry for the late reply, been a bit demotivated to work on this project lately..._
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-24T15:00:08Z
+
+Both linked issues are about PHPDoc's AFAIK. This PR also states that the LineEndingFixer must run after the BracesFixer, I cannot see the priority issue, I cannot find it in the linked issues, this is a big part of why some PR's take a long time to get merged, because I don't merge PR's without tests especially if I don't understand the need for the change.
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-24T15:52:56Z
+
+"LineEnding and Braces" has been pulled out and is merged (by you) already. This PR is (since that) purely about phpdoc.
+
+_**edit:** and thus the linked issues make sense_
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-24T16:00:20Z
+
+so this is outdated? https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/4085/files#diff-b4335f803c5a32ac9837972e11e4ddafR58
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-24T16:04:22Z
+
+No it's not. The pulled-out code places the priority, but because Braces already ran at -25 there was no need to add a number for LineEnding. However, because this PR puts Braces at +34, LineEnding needs to change with it. (To still run before it, keeping the priority.)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-01-24T16:15:21Z
+
+ok, so why is Braces changed to 34 as it is not a PHPDoc fixer?
+
+---------------------------------------------------------------------------
+
+by dmvdbrugge at 2020-01-24T16:17:01Z
+
+It might be a lot to ask, but please read the entire discussion in this PR again, because all is explained already. TLDR: the required change is the title (AlignMultilineComment before the Phpdoc*), all other changes is to keep priority correct. See the graphs.
+
+---------------------------------------------------------------------------
+
+by keradus at 2020-04-10T16:45:45Z
+
+a lot of integration tests were already added to cover some of those missing priority cases.
+would you mind rebase and see what is still missing to cover with tests, @dmvdbrugge ?
+i know it's a lot to ask, no need to rush on it ;)
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-10T20:56:55Z
+
+I let myself integrate the integration test into the PR, with having the actual test proving the changes are solving the issue, I'm feeling much more comfortable merging this.
+
+I synced the branch (ignore the merge commit and fabbot complain, I gonna squash it during merging anyway) and put milestone back.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-10T21:09:26Z
+
+[![Coverage Status](https://coveralls.io/builds/38026359/badge)](https://coveralls.io/builds/38026359)
+
+Coverage remained the same at 91.864% when pulling **98ce7bff9f2be23e0c03e5b373e5922342498133 on dmvdbrugge:3879-AlignMultiline-before-Phpdoc** into **a1467ecff4bb345f83fd3afa1f92006bb316c4c7 on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-17T09:23:53Z
+
+@kubawerlos , i believe we should aim to drop numbers and have relations, like @SpacePossum described here: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5078#issuecomment-683424449
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-17T18:09:19Z
+
+The failure we see in the test for PHP8 build is caused by not-known-before fixers relation between `method_argument_space` and `function_declaration`, and as we were not aware about the relation, we did not have explicit test for it.
+Now, we accidentally discovered it with PHP8 integration test.
+
+Having all relations discovered and documented with dedicated test is almost impossible, and changing the priorities like in this PR is putting us at risk to introduce such issues.
+This time we were lucky that one of the test, even when not designed for it, discovered the problem.
+
+FYI @dmvdbrugge @julienfalque @SpacePossum @kubawerlos
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-17T18:29:46Z
+
+Trying to solve above issue in #5552 ,
+then we should unblock this PR
