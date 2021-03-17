@@ -61,7 +61,7 @@ final class NoUselessSprintfFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 27;
+        return 42;
     }
 
     /**

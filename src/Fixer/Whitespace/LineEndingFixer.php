@@ -59,7 +59,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
      */
     public function getPriority()
     {
-        return 0;
+        return 40;
     }
 
     /**
