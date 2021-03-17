@@ -294,16 +294,19 @@ final class FixerFactoryTest extends TestCase
 
         $cases = [];
 
-        // prepare bulk tests for phpdoc fixers to test that:
-        // * `comment_to_phpdoc` is first
-        // * `phpdoc_to_comment` is second
-        // * `phpdoc_indent` is third
-        // * `phpdoc_types` is fourth
-        // * `phpdoc_scalar` is fifth
+        // Prepare bulk tests for phpdoc fixers to test that:
+        // * `align_multiline_comment` is first
+        // * `comment_to_phpdoc` is second
+        // * `phpdoc_to_comment` is third
+        // * `phpdoc_indent` is fourth
+        // * `phpdoc_types` is fifth
+        // * `phpdoc_scalar` is sixth
         // * `phpdoc_align` is last
+        // Add these cases in test-order instead of alphabetical
+        $cases[] = [$fixers['align_multiline_comment'], $fixers['comment_to_phpdoc']];
         $cases[] = [$fixers['comment_to_phpdoc'], $fixers['phpdoc_to_comment']];
-        $cases[] = [$fixers['phpdoc_indent'], $fixers['phpdoc_types']];
         $cases[] = [$fixers['phpdoc_to_comment'], $fixers['phpdoc_indent']];
+        $cases[] = [$fixers['phpdoc_indent'], $fixers['phpdoc_types']];
         $cases[] = [$fixers['phpdoc_types'], $fixers['phpdoc_scalar']];
 
         $docFixerNames = array_filter(
@@ -315,6 +318,7 @@ final class FixerFactoryTest extends TestCase
 
         foreach ($docFixerNames as $docFixerName) {
             if (!\in_array($docFixerName, ['comment_to_phpdoc', 'phpdoc_to_comment', 'phpdoc_indent', 'phpdoc_types', 'phpdoc_scalar'], true)) {
+                $cases[] = [$fixers['align_multiline_comment'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['comment_to_phpdoc'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_indent'], $fixers[$docFixerName]];
                 $cases[] = [$fixers['phpdoc_to_comment'], $fixers[$docFixerName]];

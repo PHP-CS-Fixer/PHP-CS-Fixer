@@ -155,7 +155,7 @@ final class Foo {
      * {@inheritdoc}
      *
      * Must run before FullyQualifiedStrictTypesFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer, ReturnTypeDeclarationFixer.
-     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {

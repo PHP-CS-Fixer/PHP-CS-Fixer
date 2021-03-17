@@ -39,7 +39,7 @@ $foo = 2 + 2;
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority()
     {

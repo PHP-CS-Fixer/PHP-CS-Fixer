@@ -47,7 +47,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        return 26;
+        return 40;
     }
 
     /**

@@ -25,7 +25,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     public function getPriority()
     {
         // should be run before NoWhitespaceInBlankLineFixer, NoExtraBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
-        return 25;
+        return 39;
     }
 
     /**
