@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-01-24T10:11:56Z
+
+[![Coverage Status](https://coveralls.io/builds/37528199/badge)](https://coveralls.io/builds/37528199)
+
+Coverage increased (+0.001%) to 91.931% when pulling **fe56d6ea05d437ae80e0768c6716b3276b390c02 on HypeMC:native-function-invocation-attributes** into **ea98c014c1bc2f94fdb672346b63252bc66b18ab on FriendsOfPHP:2.18**.
