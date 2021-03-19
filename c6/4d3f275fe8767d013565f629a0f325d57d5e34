@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-16T23:10:40Z
+
+[![Coverage Status](https://coveralls.io/builds/38007728/badge)](https://coveralls.io/builds/38007728)
+
+Coverage decreased (-0.02%) to 91.844% when pulling **d56f076d542e1646613087a5161e05692cb45418 on jrmajor:fix-nullable-types-cpp** into **c4b84e08d1c1342010e5656c9f1361aab5b375ba on FriendsOfPHP:2.18**.
