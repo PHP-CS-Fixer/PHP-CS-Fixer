@@ -65,7 +65,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 26;
+        return 42;
     }
 
     /**

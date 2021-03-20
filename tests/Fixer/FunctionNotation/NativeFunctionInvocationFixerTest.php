@@ -623,4 +623,19 @@ echo strlen($a);
 '
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFixWithAttributesAndStrict(): void
+    {
+        $this->testFixWithConfiguredInclude(
+            '<?php
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class Foo {}
+',
+            null,
+            ['strict' => true]
+        );
+    }
 }

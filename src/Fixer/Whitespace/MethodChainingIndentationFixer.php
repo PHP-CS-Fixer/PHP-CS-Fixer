@@ -48,7 +48,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
      */
     public function getPriority(): int
     {
-        return -29;
+        return 34;
     }
 
     /**

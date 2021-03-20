@@ -47,7 +47,7 @@ final class ElseifFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return 0;
+        return 40;
     }
 
     /**

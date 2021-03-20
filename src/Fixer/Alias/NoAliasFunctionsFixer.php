@@ -182,7 +182,7 @@ mbereg_search_getregs();
      */
     public function getPriority(): int
     {
-        return 0;
+        return 40;
     }
 
     /**

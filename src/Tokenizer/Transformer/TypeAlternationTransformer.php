@@ -76,9 +76,9 @@ final class TypeAlternationTransformer extends AbstractTransformer
         $prevToken = $tokens[$prevIndex];
 
         if ($prevToken->isGivenKind([
-            CT::T_TYPE_COLON, // `|` is part of a function return type union `foo(): A|B`
-            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `| X | Y`
-            T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `|` is part of class property `var X|Y $a;`
+            CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): A`
+            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X | Y`
+            T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var $a;`, `private $a` or `public static $a`
         ])) {
             $this->replaceToken($tokens, $index);
 

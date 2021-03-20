@@ -209,5 +209,20 @@ class Number
                 73 => CT::T_TYPE_ALTERNATION,
             ],
         ];
+
+        yield 'typed static properties' => [
+            '<?php
+            class Foo {
+                private static int | null $bar;
+
+                private static int | float | string | null $baz;
+            }',
+            [
+                14 => CT::T_TYPE_ALTERNATION,
+                27 => CT::T_TYPE_ALTERNATION,
+                31 => CT::T_TYPE_ALTERNATION,
+                35 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
     }
 }

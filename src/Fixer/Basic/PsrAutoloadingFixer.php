@@ -68,6 +68,18 @@ class InvalidName {}
     /**
      * {@inheritdoc}
      */
+    public function configure(array $configuration = null): void
+    {
+        parent::configure($configuration);
+
+        if (null !== $this->configuration['dir']) {
+            $this->configuration['dir'] = realpath($this->configuration['dir']);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
@@ -141,6 +153,10 @@ class InvalidName {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        if (null !== $this->configuration['dir'] && 0 !== strpos($file->getRealPath(), $this->configuration['dir'])) {
+            return;
+        }
+
         $namespace = null;
         $namespaceStartIndex = null;
         $namespaceEndIndex = null;

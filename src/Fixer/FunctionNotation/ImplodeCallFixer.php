@@ -68,7 +68,7 @@ final class ImplodeCallFixer extends AbstractFixer
      */
     public function getPriority(): int
     {
-        return -1;
+        return 37;
     }
 
     /**

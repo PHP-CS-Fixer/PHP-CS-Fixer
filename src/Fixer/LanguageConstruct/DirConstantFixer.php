@@ -54,7 +54,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
      */
     public function getPriority(): int
     {
-        return 4;
+        return 40;
     }
 
     /**

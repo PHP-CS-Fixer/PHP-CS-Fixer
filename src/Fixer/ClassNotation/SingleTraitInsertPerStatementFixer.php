@@ -52,7 +52,7 @@ final class Example
      */
     public function getPriority(): int
     {
-        return 1;
+        return 36;
     }
 
     public function isCandidate(Tokens $tokens): bool

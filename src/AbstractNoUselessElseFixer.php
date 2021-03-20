@@ -27,7 +27,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
     public function getPriority(): int
     {
         // should be run before NoWhitespaceInBlankLineFixer, NoExtraBlankLinesFixer, BracesFixer and after NoEmptyStatementFixer.
-        return 25;
+        return 39;
     }
 
     protected function isSuperfluousElse(Tokens $tokens, int $index): bool

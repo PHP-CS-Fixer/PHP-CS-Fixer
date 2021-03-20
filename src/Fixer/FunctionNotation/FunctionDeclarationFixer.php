@@ -105,6 +105,16 @@ $f = fn () => null;
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before MethodArgumentSpaceFixer.
+     */
+    public function getPriority(): int
+    {
+        return 31;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {

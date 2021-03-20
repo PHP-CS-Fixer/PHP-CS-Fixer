@@ -69,7 +69,7 @@ namespace Foo {
      */
     public function getPriority(): int
     {
-        return 26;
+        return 40;
     }
 
     /**

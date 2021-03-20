@@ -101,6 +101,12 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
             __DIR__.'/../..',
         ];
 
+        yield 'configured directory (other directory)' => [
+            '<?php namespace Basic; class Foobar {}',
+            null,
+            __DIR__.'/../../Test',
+        ];
+
         yield 'multiple classy elements in file' => [
             '<?php interface Foo {} class Bar {}',
         ];
