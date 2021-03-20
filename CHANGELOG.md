@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.4
+---------------------
+
+* bug #4085 Priority: AlignMultilineComment should run before every PhpdocFixer (dmvdbrugge)
+* bug #5421 PsrAutoloadingFixer - Fix PSR autoloading outside configured directory (kelunik, keradus)
+* bug #5464 NativeFunctionInvocationFixer - PHP 8 attributes (HypeMC, keradus)
+* bug #5548 NullableTypeDeclarationForDefaultNullValueFixer - fix handling promoted properties (jrmajor, keradus)
+* bug #5550 TypeAlternationTransformer - fix for typed static properties (kubawerlos)
+* bug #5551 ClassAttributesSeparationFixer - fix for properties with type alternation (kubawerlos, keradus)
+* bug #5552 DX: test relation between function_declaration and method_argument_space (keradus)
+* minor #5540 DX: RuleSet - convert null handling to soft-warning (keradus)
+* minor #5545 DX: update checkbashisms (keradus)
+
 Changelog for v2.18.3
 ---------------------
 
