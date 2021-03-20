@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-03-10T10:34:12Z
+
+Thanks for the PR as bug fix :+1:
+
+Maybe we should validate that the configured directory exists or at least check the result of the `realpath` call?
+I think we can also call the realpath just one time for each run (so not for each file that is processed).
+
+---------------------------------------------------------------------------
+
+by clxmstaab at 2021-03-12T09:01:47Z
+
+should/will this PR als fix https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5537 ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-12T19:28:03Z
+
+@clxmstaab no,
+reason in https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5537#issuecomment-796668065
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-19T13:46:46Z
+
+[![Coverage Status](https://coveralls.io/builds/38087425/badge)](https://coveralls.io/builds/38087425)
+
+Coverage increased (+0.003%) to 91.849% when pulling **5d2d99da48ab694ed01600aa97bebba22513eeb3 on kelunik:fix-psr-autoloading** into **d3aaf70b1c4e8aab183ecf37959a96332d41848c on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-19T14:01:48Z
+
+I let myself to apply suggestion of @SpacePossum
