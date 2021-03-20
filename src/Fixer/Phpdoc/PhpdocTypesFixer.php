@@ -76,7 +76,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null): void
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 

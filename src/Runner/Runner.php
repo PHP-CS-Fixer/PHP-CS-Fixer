@@ -91,12 +91,12 @@ final class Runner
         $finder,
         array $fixers,
         DifferInterface $differ,
-        EventDispatcherInterface $eventDispatcher = null,
+        ?EventDispatcherInterface $eventDispatcher,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
         $isDryRun,
         CacheManagerInterface $cacheManager,
-        DirectoryInterface $directory = null,
+        ?DirectoryInterface $directory = null,
         $stopOnViolation = false
     ) {
         $this->finder = $finder;

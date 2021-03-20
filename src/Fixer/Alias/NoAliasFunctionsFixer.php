@@ -99,7 +99,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         'gmmktime' => ['time', 0],
     ];
 
-    public function configure(array $configuration = null): void
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 

@@ -705,7 +705,7 @@ class Tokens extends \SplFixedArray
      *
      * @return null|array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
-    public function findSequence(array $sequence, int $start = 0, int $end = null, $caseSensitive = true): ?array
+    public function findSequence(array $sequence, int $start = 0, ?int $end = null, $caseSensitive = true): ?array
     {
         $sequenceCount = \count($sequence);
         if (0 === $sequenceCount) {
