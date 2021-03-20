@@ -55,7 +55,7 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
         return parent::getPriority();
     }
 
-    public function configure(array $configuration = null): void
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 

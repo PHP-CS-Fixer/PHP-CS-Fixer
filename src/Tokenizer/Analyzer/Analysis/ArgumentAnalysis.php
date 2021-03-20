@@ -43,11 +43,11 @@ final class ArgumentAnalysis
     /**
      * The type analysis of the argument.
      *
-     * @var null|TypeAnalysis
+     * @var ?TypeAnalysis
      */
     private $typeAnalysis;
 
-    public function __construct(string $name, int $nameIndex, ?string $default, TypeAnalysis $typeAnalysis = null)
+    public function __construct(string $name, int $nameIndex, ?string $default, ?TypeAnalysis $typeAnalysis = null)
     {
         $this->name = $name;
         $this->nameIndex = $nameIndex;

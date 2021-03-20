@@ -22,5 +22,5 @@ interface DifferInterface
     /**
      * Create diff.
      */
-    public function diff(string $old, string $new, \SplFileInfo $file = null): string;
+    public function diff(string $old, string $new, ?\SplFileInfo $file = null): string;
 }

@@ -160,7 +160,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
         $this->fixArgumentType($tokens, $this->functionsAnalyzer->getFunctionReturnType($tokens, $index));
     }
 
-    private function fixArgumentType(Tokens $tokens, TypeAnalysis $type = null): void
+    private function fixArgumentType(Tokens $tokens, ?TypeAnalysis $type = null): void
     {
         if (null === $type) {
             return;

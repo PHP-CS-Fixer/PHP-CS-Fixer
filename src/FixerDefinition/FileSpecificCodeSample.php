@@ -34,7 +34,7 @@ final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
     public function __construct(
         string $code,
         \SplFileInfo $splFileInfo,
-        array $configuration = null
+        ?array $configuration = null
     ) {
         $this->codeSample = new CodeSample($code, $configuration);
         $this->splFileInfo = $splFileInfo;

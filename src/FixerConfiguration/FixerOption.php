@@ -60,9 +60,9 @@ final class FixerOption implements FixerOptionInterface
         string $description,
         bool $isRequired = true,
         $default = null,
-        array $allowedTypes = null,
-        array $allowedValues = null,
-        \Closure $normalizer = null
+        ?array $allowedTypes = null,
+        ?array $allowedValues = null,
+        ?\Closure $normalizer = null
     ) {
         if ($isRequired && null !== $default) {
             throw new \LogicException('Required options cannot have a default value.');
