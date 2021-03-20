@@ -406,25 +406,52 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
+     * @param null|string $expected
+     * @param string      $input
      *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input = null)
+    public function testFix80($input, $expected = null)
     {
+        if (null === $expected) {
+            $this->doTest($input);
+        } else {
+            $this->doTest($expected, $input);
+        }
+    }
+
+    /**
+     * @param null|string $input
+     * @param string      $expected
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFixInverse80($expected, $input = null)
+    {
+        $this->fixer->configure(['use_nullable_type_declaration' => false]);
+
         $this->doTest($expected, $input);
     }
 
     public function provideFix80Cases()
     {
         yield 'trailing comma' => [
-            '<?php function foo(?string $param = null,) {}',
             '<?php function foo(string $param = null,) {}',
+            '<?php function foo(?string $param = null,) {}',
         ];
 
         yield 'property promotion' => [
+            '<?php class Foo {
+                public function __construct(
+                    public ?string $paramA = null,
+                    protected ?string $paramB = null,
+                    private ?string $paramC = null,
+                    string $paramD = null,
+                    $a = []
+                ) {}
+            }',
             '<?php class Foo {
                 public function __construct(
                     public ?string $paramA = null,

@@ -139,6 +139,22 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             }
 
             $argumentTypeInfo = $argumentInfo->getTypeAnalysis();
+
+            if (
+                \PHP_VERSION_ID >= 80000
+                && false === $this->configuration['use_nullable_type_declaration']
+            ) {
+                $visibility = $tokens[$tokens->getPrevMeaningfulToken($argumentTypeInfo->getStartIndex())];
+
+                if ($visibility->isGivenKind([
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+                ])) {
+                    continue;
+                }
+            }
+
             if (true === $this->configuration['use_nullable_type_declaration']) {
                 if (!$argumentTypeInfo->isNullable() && 'mixed' !== $argumentTypeInfo->getName()) {
                     $tokens->insertAt($argumentTypeInfo->getStartIndex(), new Token([CT::T_NULLABLE_TYPE, '?']));
