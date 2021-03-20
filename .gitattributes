@@ -2,6 +2,7 @@
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
 /dev-tools/ export-ignore
+/doc/ export-ignore
 /docker/ export-ignore
 /docker-compose.yaml export-ignore
 /docker-compose.override.yaml.dist export-ignore
