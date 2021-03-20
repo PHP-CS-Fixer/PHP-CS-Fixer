@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-02-03T05:38:40Z
+
+[![Coverage Status](https://coveralls.io/builds/36817049/badge)](https://coveralls.io/builds/36817049)
+
+Coverage remained the same at 92.819% when pulling **ce0e975c7506d62fa521d7c3e6f39f6b044fea32 on szepeviktor:patch-1** into **d172836ce7819423fb259b3d75929424706b11f9 on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-03-10T10:41:48Z
+
+Thanks for the suggestion!
+
+I think shipping the docs could be handy for people so would like to keep those in. These could be excluded from the `phar` release, but I'm not sure these are in there.
+
+---------------------------------------------------------------------------
+
+by szepeviktor at 2021-03-10T11:10:10Z
+
+> I think shipping the docs could be handy for people
+
+Your right. But those could take up 0.1% of downloads.
+e.g. production installations do not need that for sure
+
+I leave it up to you.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-19T11:20:11Z
+
+docs are out of phar. i would move them away from composer export too.
+if one looks for docs, they can go to repo/page/run `describe` command
+
+and docs are like 1.3MB
+
+so, it's 1:1 between core team for now.
+@julienfalque @kubawerlos @localheinz , any opinion?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-03-19T11:46:05Z
+
+I'm +0, happy to go either direction
+
+---------------------------------------------------------------------------
+
+by szepeviktor at 2021-03-19T12:08:22Z
+
+I'm glad that you are not -0
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-19T21:46:41Z
+
+I'm for removing the docs from dist, but isn't breaking links in `README.rst` a problem?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-20T14:55:44Z
+
+I'm eager to take that risk and see how many folks would complain, if any
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-20T15:51:12Z
+
+I prepared https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.github.io/pull/5 to unblock this PR
