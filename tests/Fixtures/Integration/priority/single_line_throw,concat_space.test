@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: concat_space,single_line_throw.
+Integration of fixers: single_line_throw,concat_space.
 --RULESET--
 {"concat_space": {"spacing": "none"}, "single_line_throw": true}
 --EXPECT--

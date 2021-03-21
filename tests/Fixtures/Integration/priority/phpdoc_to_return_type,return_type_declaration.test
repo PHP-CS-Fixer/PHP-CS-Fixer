@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: return_type_declaration,phpdoc_to_return_type.
+Integration of fixers: phpdoc_to_return_type,return_type_declaration.
 --RULESET--
 {"return_type_declaration": {"space_before": "one"}, "phpdoc_to_return_type": true}
 --REQUIREMENTS--

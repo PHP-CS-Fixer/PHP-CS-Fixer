@@ -447,7 +447,7 @@ final class FixerFactoryTest extends TestCase
         $fixerName2 = $matches[2];
 
         static::assertTrue(
-            isset($priorityCases[$fixerName1][$fixerName2]) || isset($priorityCases[$fixerName2][$fixerName1]),
+            isset($priorityCases[$fixerName1][$fixerName2]),
             sprintf('Missing priority test entry for file "%s".', $fileName)
         );
     }

@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: no_mixed_echo_print,no_short_echo_tag.
+Integration of fixers: no_short_echo_tag,no_mixed_echo_print.
 --RULESET--
 {"no_mixed_echo_print": {"use":"print"}, "no_short_echo_tag": true}
 --EXPECT--

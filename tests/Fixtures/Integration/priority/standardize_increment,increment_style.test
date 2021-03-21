@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: increment_style,standardize_increment.
+Integration of fixers: standardize_increment,increment_style.
 --RULESET--
 {"increment_style": {"style": "post"}, "standardize_increment": true}
 --EXPECT--
