@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-21T16:30:17Z
+
+[![Coverage Status](https://coveralls.io/builds/38117062/badge)](https://coveralls.io/builds/38117062)
+
+Coverage increased (+0.0004%) to 91.849% when pulling **4e7704234f1ef90fabd82729cc178fc35008537b on kubawerlos:fix_SingleSpaceAfterConstructFixer_must_run_before_BracesFixer** into **c40975866e753a724377af50de9148a36be9179e on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by kbond at 2021-03-22T13:21:20Z
+
+After upgrading to 2.18.4, `function_declaration` (space `one`) is no longer working - will this fix that as well?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-22T14:19:39Z
+
+@kbond I'm afraid no, can you report an issue with some sample code?
