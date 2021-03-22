@@ -28,8 +28,9 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideDocblocksCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -546,6 +547,136 @@ echo 123;
 /** @var ClassLoader $loader */
 $loader = require __DIR__.\'/../vendor/autoload.php\';
 ',
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            null,
+            ['ignored_tags' => ['todo']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @fix-me Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @fix-me Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['fix-me']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* @todoNot Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @TODO Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** @todoNot Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @TODO Do not convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
+        ];
+
+        $cases[] = [
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/**
+ * @deprecated This tag is not in the list but the next one is
+ * @todo This should be a PHPDoc as the tag is on "ignored_tags" list
+ */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Convert this */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/**
+ * @deprecated This tag is not in the list but the next one is
+ * @todo This should be a PHPDoc as the tag is on "ignored_tags" list
+ */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}',
+            ['ignored_tags' => ['todo']],
         ];
 
         return $cases;
