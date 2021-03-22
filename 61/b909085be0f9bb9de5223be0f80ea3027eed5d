@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-22T09:51:54Z
+
+[![Coverage Status](https://coveralls.io/builds/38145021/badge)](https://coveralls.io/builds/38145021)
+
+Coverage increased (+0.0004%) to 91.849% when pulling **01d34da200fb7df6307fa4a9a9fce24a6c5570ad on Daeroni:fix-class-definiton-braces** into **d617223de64edd15c97fc5497f908742707e3203 on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-22T14:31:36Z
+
+Thanks for PR, @Daeroni !
+Would you mind to rebase ?
