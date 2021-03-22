@@ -268,6 +268,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['single_import_per_statement'], $fixers['space_after_semicolon']],
             [$fixers['single_line_throw'], $fixers['concat_space']],
             [$fixers['single_space_after_construct'], $fixers['braces']],
+            [$fixers['single_space_after_construct'], $fixers['function_declaration']],
             [$fixers['single_trait_insert_per_statement'], $fixers['braces']],
             [$fixers['single_trait_insert_per_statement'], $fixers['space_after_semicolon']],
             [$fixers['standardize_increment'], $fixers['increment_style']],
