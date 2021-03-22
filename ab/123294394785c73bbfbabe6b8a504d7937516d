@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-21T09:01:13Z
+
+[![Coverage Status](https://coveralls.io/builds/38113905/badge)](https://coveralls.io/builds/38113905)
+
+Coverage remained the same at 91.896% when pulling **50ad1189d7b5f0708c770f0cf429e3379f32ae40 on kubawerlos:visibility-required-only-for-poperties-and-methods-in-psr2** into **9064f84898219d78d85263194016ab1a567199ec on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-03-21T19:42:46Z
+
+Why not for class constants as well?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-21T20:39:17Z
+
+Because that's what is required in [PSR2](https://www.php-fig.org/psr/psr-2/):
+
+> Visibility MUST be declared on all properties and methods;
+
+ and always was that way in `v2` line, `v3` has different default value and that introduced the bug.
