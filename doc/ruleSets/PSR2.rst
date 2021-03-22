@@ -35,3 +35,5 @@ Rules
 - `switch_case_semicolon_to_colon <./../rules/control_structure/switch_case_semicolon_to_colon.rst>`_
 - `switch_case_space <./../rules/control_structure/switch_case_space.rst>`_
 - `visibility_required <./../rules/class_notation/visibility_required.rst>`_
+  config:
+  ``['elements' => ['method', 'property']]``

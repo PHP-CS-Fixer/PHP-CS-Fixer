@@ -8,6 +8,8 @@ use OtherVendor\OtherPackage\BazClass;
 
 class Foo extends Bar implements FooInterfaceA
 {
+    const SOME_CONST = 42;
+
     public $aaa = 1;
     public $bbb = 2;
 
