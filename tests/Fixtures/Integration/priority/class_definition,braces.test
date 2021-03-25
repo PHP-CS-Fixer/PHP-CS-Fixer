@@ -8,8 +8,15 @@ Integration of fixers: class_definition,braces.
 class Foo {
 }
 
+class Bar {
+}
+
 --INPUT--
 <?php
 
 class Foo{
+}
+
+class Bar
+{
 }
