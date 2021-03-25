@@ -195,11 +195,6 @@ class Sample
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `none|one` values.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option) {
-                    $deprecated = array_intersect($option, self::SUPPORTED_TYPES);
-                    if (\count($deprecated) > 0) {
-                        $option = array_fill_keys($deprecated, self::SPACING_ONE);
-                    }
-
                     foreach ($option as $type => $spacing) {
                         if (!\in_array($type, self::SUPPORTED_TYPES, true)) {
                             throw new InvalidOptionsException(
