@@ -53,7 +53,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionyTokenKinds(), [T_STRING]));
+        return $tokens->isAnyTokenKindsFound(array_merge($this->getFunctionTokenKinds(), [T_STRING]));
     }
 
     /**
@@ -61,7 +61,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
-        $functionyTokens = $this->getFunctionyTokenKinds();
+        $functionyTokens = $this->getFunctionTokenKinds();
         $languageConstructionTokens = $this->getLanguageConstructionTokenKinds();
         $braceTypes = $this->getBraceAfterVariableKinds();
 
@@ -141,7 +141,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      *
      * @return int[] Token names
      */
-    private function getFunctionyTokenKinds()
+    private function getFunctionTokenKinds()
     {
         static $tokens = [
             T_ARRAY,
@@ -159,6 +159,10 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_UNSET,
             T_VARIABLE,
         ];
+        
+        if (!defined('T_FN')) {
+            $tokens[] = T_FN;
+        }
 
         return $tokens;
     }
