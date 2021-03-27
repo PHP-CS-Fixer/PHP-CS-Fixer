@@ -160,7 +160,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_VARIABLE,
         ];
 
-        if (!\defined('T_FN')) {
+        if (\PHP_VERSION_ID >= 70400 && \defined('T_FN')) {
             $tokens[] = T_FN;
         }
 
