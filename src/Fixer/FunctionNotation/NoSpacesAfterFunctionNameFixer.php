@@ -159,7 +159,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             T_UNSET,
             T_VARIABLE,
         ];
-        
+
         if (!\defined('T_FN')) {
             $tokens[] = T_FN;
         }
