@@ -46,7 +46,7 @@ class Foo {
     var ?Foo\Bar $qux;
 }
 // https://wiki.php.net/rfc/arrow_functions_v2
-$foo = fn ($v) => (string) $v;
+$foo = fn($v) => (string) $v;
 
 --INPUT--
 <?php
