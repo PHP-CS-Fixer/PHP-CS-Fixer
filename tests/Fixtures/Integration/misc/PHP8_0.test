@@ -112,7 +112,7 @@ class T_Mixed
 if (1) {
     foo() ?? throw new \Exception();
     $a = $condition && throw new Exception();
-    $callable = fn () => throw new Exception();
+    $callable = fn() => throw new Exception();
     $value = $falsableValue ?: throw new InvalidArgumentException();
 }
 
