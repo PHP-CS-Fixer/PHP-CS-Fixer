@@ -298,6 +298,36 @@ $res = $class->foo()
 ',
             ['ignored_operators' => ['->']],
         ];
+
+        yield 'handle ignored operator with And at the end' => [
+            '<?php
+                function foo($a, $b, $c)
+                {
+                    $a = $b
+                        || $c;
+
+                    $x = $a
+                     and $b
+                     AND $c;
+
+                    return $x;
+                }
+',
+            '<?php
+                function foo($a, $b, $c)
+                {
+                    $a = $b ||
+                        $c;
+
+                    $x = $a and
+                     $b
+                     AND $c;
+
+                    return $x;
+                }
+',
+            ['ignored_operators' => ['And']],
+        ];
     }
 
     /**
