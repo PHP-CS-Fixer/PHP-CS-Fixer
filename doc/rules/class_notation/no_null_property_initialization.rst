@@ -15,7 +15,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     class Foo {
    -    public $foo = null;

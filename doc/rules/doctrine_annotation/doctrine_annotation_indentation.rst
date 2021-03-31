@@ -37,7 +37,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     /**
    - *  @Foo(
@@ -58,7 +57,6 @@ With configuration: ``['indent_mixed_lines' => true]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
     /**
    - *  @Foo({@Bar,

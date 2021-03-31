@@ -20,7 +20,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,10 +2,10 @@
+    <?php
     class Sample
     {
         const BAZ = 1;

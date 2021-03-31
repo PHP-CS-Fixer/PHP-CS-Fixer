@@ -37,7 +37,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @Foo()
@@ -54,7 +53,6 @@ With configuration: ``['syntax' => 'with_braces']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @Foo

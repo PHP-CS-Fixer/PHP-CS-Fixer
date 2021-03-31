@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -$a = array('sample',  );
    +$a = array('sample');

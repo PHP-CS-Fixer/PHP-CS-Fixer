@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,6 @@
     <?php
     function A() {
         echo 1;
@@ -45,7 +44,7 @@ With configuration: ``['statements' => ['break']]``.
 
    --- Original
    +++ New
-   @@ -2,7 +2,8 @@
+    <?php
     switch ($foo) {
         case 42:
             $bar->process();
@@ -64,7 +63,7 @@ With configuration: ``['statements' => ['continue']]``.
 
    --- Original
    +++ New
-   @@ -2,6 +2,7 @@
+    <?php
     foreach ($foo as $bar) {
         if ($bar->isTired()) {
             $bar->sleep();
@@ -82,7 +81,6 @@ With configuration: ``['statements' => ['do']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,6 @@
     <?php
     $i = 0;
    +
@@ -99,7 +97,8 @@ With configuration: ``['statements' => ['exit']]``.
 
    --- Original
    +++ New
-   @@ -3,5 +3,6 @@
+    <?php
+    if ($foo === false) {
         exit(0);
     } else {
         $bar = 9000;
@@ -116,7 +115,10 @@ With configuration: ``['statements' => ['goto']]``.
 
    --- Original
    +++ New
-   @@ -5,5 +5,6 @@
+    <?php
+    a:
+
+    if ($foo === false) {
         goto a;
     } else {
         $bar = 9000;
@@ -133,7 +135,6 @@ With configuration: ``['statements' => ['if']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,6 @@
     <?php
     $a = 9000;
    +
@@ -150,7 +151,7 @@ With configuration: ``['statements' => ['return']]``.
 
    --- Original
    +++ New
-   @@ -2,5 +2,6 @@
+    <?php
 
     if (true) {
         $foo = $bar;
@@ -167,7 +168,6 @@ With configuration: ``['statements' => ['switch']]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,7 @@
     <?php
     $a = 9000;
    +
@@ -185,7 +185,6 @@ With configuration: ``['statements' => ['throw']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,6 @@
     <?php
     if (null === $a) {
         $foo->bar();
@@ -202,7 +201,6 @@ With configuration: ``['statements' => ['try']]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,8 @@
     <?php
     $a = 9000;
    +
@@ -221,7 +219,7 @@ With configuration: ``['statements' => ['yield']]``.
 
    --- Original
    +++ New
-   @@ -2,5 +2,6 @@
+    <?php
 
     if (true) {
         $foo = $bar;

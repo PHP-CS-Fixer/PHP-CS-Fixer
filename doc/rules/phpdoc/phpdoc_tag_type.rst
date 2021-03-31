@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * {@api}
@@ -44,7 +43,6 @@ With configuration: ``['tags' => ['inheritdoc' => 'inline']]``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @inheritdoc

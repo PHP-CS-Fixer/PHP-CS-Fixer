@@ -51,6 +51,7 @@ final class DocumentationGenerator
     public function __construct()
     {
         $this->differ = new Differ(new UnifiedDiffOutputBuilder([
+            'contextLines' => 1024, // number large enough to have all lines in diff
             'fromFile' => 'Original',
             'toFile' => 'New',
         ]));
@@ -514,6 +515,7 @@ RST;
         $fixer->fix($file, $tokens);
 
         $diff = $this->differ->diff($old, $tokens->generateCode());
+        $diff = Preg::replace('/@@[ \+\-\d,]+@@\n/', '', $diff);
         $diff = Preg::replace('/\r/', '^M', $diff);
         $diff = Preg::replace('/^ $/m', '', $diff);
         $diff = Preg::replace('/\n$/', '', $diff);

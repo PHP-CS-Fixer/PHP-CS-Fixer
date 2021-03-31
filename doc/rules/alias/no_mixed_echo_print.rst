@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php print 'example';
    +<?php echo 'example';
 
@@ -41,7 +40,6 @@ With configuration: ``['use' => 'print']``.
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php echo('example');
    +<?php print('example');
 

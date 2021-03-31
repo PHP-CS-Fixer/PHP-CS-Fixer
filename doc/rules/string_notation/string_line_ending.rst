@@ -19,7 +19,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
    -<?php $a = 'my^M
    +<?php $a = 'my
     multi

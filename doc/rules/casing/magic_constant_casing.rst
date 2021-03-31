@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -echo __dir__;
    +echo __DIR__;

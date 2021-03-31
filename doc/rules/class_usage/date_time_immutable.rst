@@ -19,7 +19,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -new DateTime();
    +new DateTimeImmutable();

@@ -52,7 +52,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -trigger_error('Warning.', E_USER_DEPRECATED);
    +@trigger_error('Warning.', E_USER_DEPRECATED);
@@ -66,7 +65,6 @@ With configuration: ``['noise_remaining_usages' => true]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -@mkdir($dir);
    -@unlink($path);
@@ -82,7 +80,6 @@ With configuration: ``['noise_remaining_usages' => true, 'noise_remaining_usages
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -@mkdir($dir);
    +mkdir($dir);

@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
     /**
    - * @param STRING|String[] $bar
@@ -47,7 +46,6 @@ With configuration: ``['groups' => ['simple', 'alias']]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
     /**
    - * @param BOOL $foo

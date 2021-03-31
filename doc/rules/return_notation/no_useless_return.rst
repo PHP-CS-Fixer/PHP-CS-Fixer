@@ -14,7 +14,8 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,5 +3,5 @@
+    <?php
+    function example($b) {
         if ($b) {
             return;
         }

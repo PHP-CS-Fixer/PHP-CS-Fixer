@@ -30,7 +30,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    -$a = "My name is $name !";
    -$b = "I live in $state->country !";

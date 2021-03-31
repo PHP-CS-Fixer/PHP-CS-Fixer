@@ -37,7 +37,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @param string|null $bar
@@ -53,7 +52,6 @@ With configuration: ``['null_adjustment' => 'always_last']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @param null|string $bar
@@ -69,7 +67,6 @@ With configuration: ``['sort_algorithm' => 'alpha']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @param null|string|int|\Foo $bar
@@ -85,7 +82,6 @@ With configuration: ``['sort_algorithm' => 'alpha', 'null_adjustment' => 'always
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @param null|string|int|\Foo $bar
@@ -101,7 +97,6 @@ With configuration: ``['sort_algorithm' => 'alpha', 'null_adjustment' => 'none']
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @param null|string|int|\Foo $bar

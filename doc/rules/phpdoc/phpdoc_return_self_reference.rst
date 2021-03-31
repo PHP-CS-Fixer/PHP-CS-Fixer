@@ -29,7 +29,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,7 +2,7 @@
+    <?php
     class Sample
     {
         /**
@@ -38,13 +38,18 @@ Example #1
          */
         public function test1()
         {
-   @@ -10,5 +10,5 @@
+            return $this;
         }
 
         /**
    -     * @return $self
    +     * @return self
          */
+        public function test2()
+        {
+            return $this;
+        }
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -55,7 +60,7 @@ With configuration: ``['replacements' => ['this' => 'self']]``.
 
    --- Original
    +++ New
-   @@ -2,7 +2,7 @@
+    <?php
     class Sample
     {
         /**
@@ -64,6 +69,17 @@ With configuration: ``['replacements' => ['this' => 'self']]``.
          */
         public function test1()
         {
+            return $this;
+        }
+
+        /**
+         * @return $self
+         */
+        public function test2()
+        {
+            return $this;
+        }
+    }
 
 Rule sets
 ---------

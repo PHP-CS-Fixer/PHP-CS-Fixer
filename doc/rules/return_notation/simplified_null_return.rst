@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php return null;
    +<?php return;
 
@@ -25,7 +24,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -function foo() { return null; }
    +function foo() { return; }

@@ -44,7 +44,8 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,8 +3,8 @@
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testMe()
         {
@@ -65,7 +66,9 @@ With configuration: ``['call_type' => 'this']``.
 
    --- Original
    +++ New
-   @@ -4,7 +4,7 @@
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
         public function testMe()
         {
             $this->assertSame(1, 2);

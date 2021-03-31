@@ -32,7 +32,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,5 +2,4 @@
+    <?php
 
     $foo = array("foo");
 
@@ -48,7 +48,9 @@ With configuration: ``['tokens' => ['break']]``.
 
    --- Original
    +++ New
-   @@ -4,7 +4,6 @@
+    <?php
+
+    switch ($foo) {
         case 41:
             echo "foo";
             break;
@@ -66,7 +68,8 @@ With configuration: ``['tokens' => ['continue']]``.
 
    --- Original
    +++ New
-   @@ -3,6 +3,5 @@
+    <?php
+
     for ($i = 0; $i < 9000; ++$i) {
         if (true) {
             continue;
@@ -83,7 +86,6 @@ With configuration: ``['tokens' => ['curly_brace_block']]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,5 @@
     <?php
 
     for ($i = 0; $i < 9000; ++$i) {
@@ -101,7 +103,7 @@ With configuration: ``['tokens' => ['extra']]``.
 
    --- Original
    +++ New
-   @@ -2,5 +2,4 @@
+    <?php
 
     $foo = array("foo");
 
@@ -117,7 +119,6 @@ With configuration: ``['tokens' => ['parenthesis_brace_block']]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,5 @@
     <?php
 
     $foo = array(
@@ -135,7 +136,8 @@ With configuration: ``['tokens' => ['return']]``.
 
    --- Original
    +++ New
-   @@ -3,5 +3,4 @@
+    <?php
+
     function foo($bar)
     {
         return $bar;
@@ -151,7 +153,6 @@ With configuration: ``['tokens' => ['square_brace_block']]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,5 @@
     <?php
 
     $foo = [
@@ -169,7 +170,8 @@ With configuration: ``['tokens' => ['throw']]``.
 
    --- Original
    +++ New
-   @@ -3,5 +3,4 @@
+    <?php
+
     function foo($bar)
     {
         throw new \Exception("Hello!");
@@ -185,7 +187,8 @@ With configuration: ``['tokens' => ['use']]``.
 
    --- Original
    +++ New
-   @@ -3,9 +3,8 @@
+    <?php
+
     namespace Foo;
 
     use Bar\Baz;
@@ -205,7 +208,8 @@ With configuration: ``['tokens' => ['use_trait']]``.
 
    --- Original
    +++ New
-   @@ -3,6 +3,5 @@
+    <?php
+
     class Foo
     {
         use Bar;
@@ -222,7 +226,6 @@ With configuration: ``['tokens' => ['switch', 'case', 'default']]``.
 
    --- Original
    +++ New
-   @@ -1,9 +1,6 @@
     <?php
     switch($a) {
    -

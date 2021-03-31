@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     class Bar {
    -    public function Foo(CALLABLE $bar)
@@ -31,7 +30,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -function Foo(INT $a): Bool
    +function Foo(int $a): bool
@@ -46,7 +44,6 @@ Example #3
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -function Foo(Iterable $a): VOID
    +function Foo(iterable $a): void
@@ -61,7 +58,6 @@ Example #4
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -function Foo(Object $a)
    +function Foo(object $a)
