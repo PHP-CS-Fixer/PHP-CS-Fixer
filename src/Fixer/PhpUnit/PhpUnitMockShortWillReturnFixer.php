@@ -15,6 +15,7 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -76,8 +77,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (!$tokens[$index]->isObjectOperator()) {
                 continue;
             }
 
@@ -93,16 +96,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $classReferenceIndex = $tokens->getNextMeaningfulToken($functionToReplaceOpeningBraceIndex);
             $objectOperatorIndex = $tokens->getNextMeaningfulToken($classReferenceIndex);
-            if (
-                !($tokens[$classReferenceIndex]->equals([T_VARIABLE, '$this'], false) && $tokens[$objectOperatorIndex]->equals([T_OBJECT_OPERATOR, '->']))
-                && !($tokens[$classReferenceIndex]->equals([T_STRING, 'self'], false) && $tokens[$objectOperatorIndex]->equals([T_DOUBLE_COLON, '::']))
-                && !($tokens[$classReferenceIndex]->equals([T_STATIC, 'static'], false) && $tokens[$objectOperatorIndex]->equals([T_DOUBLE_COLON, '::']))
-            ) {
+            $functionToRemoveIndex = $tokens->getNextMeaningfulToken($objectOperatorIndex);
+
+            if (!$functionsAnalyzer->isTheSameClassCall($tokens, $functionToRemoveIndex)) {
                 continue;
             }
 
-            $functionToRemoveIndex = $tokens->getNextMeaningfulToken($objectOperatorIndex);
-            if (!$tokens[$functionToRemoveIndex]->isGivenKind(T_STRING) || !\array_key_exists(strtolower($tokens[$functionToRemoveIndex]->getContent()), self::RETURN_METHODS_MAP)) {
+            if (!\array_key_exists(strtolower($tokens[$functionToRemoveIndex]->getContent()), self::RETURN_METHODS_MAP)) {
                 continue;
             }
 

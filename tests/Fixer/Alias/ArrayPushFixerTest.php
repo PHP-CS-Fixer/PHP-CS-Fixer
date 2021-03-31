@@ -255,5 +255,11 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 '<?php array_push($a5{1*3}[2+1], $b7{2+1});',
             ];
         }
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield [
+                '<?php array_push($b?->c[2], $b19);',
+            ];
+        }
     }
 }

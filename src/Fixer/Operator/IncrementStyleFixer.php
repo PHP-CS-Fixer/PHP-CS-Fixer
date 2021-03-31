@@ -161,7 +161,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
             $nextToken = $tokens[$nextIndex];
         }
 
-        if ($nextToken->isGivenKind(T_OBJECT_OPERATOR)) {
+        if ($nextToken->isObjectOperator()) {
             return $this->findEnd($tokens, $nextIndex);
         }
 

@@ -355,4 +355,15 @@ function __Tostring() {}',
             '<?php $foo->__INVOKE(1, );'
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80()
+    {
+        $this->doTest(
+            '<?php $foo?->__invoke(1, );',
+            '<?php $foo?->__INVOKE(1, );'
+        );
+    }
 }

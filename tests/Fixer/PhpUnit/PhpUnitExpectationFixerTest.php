@@ -469,4 +469,35 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80()
+    {
+        $this->doTest(
+            '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this?->expectException("RuntimeException");
+            $this->expectExceptionMessage("message");
+            $this->expectExceptionCode(123);
+            zzz();
+        }
+    }',
+            '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this?->setExpectedException("RuntimeException", "message", 123);
+            zzz();
+        }
+    }'
+        );
+    }
 }

@@ -115,6 +115,25 @@ class Token
     }
 
     /**
+     * Get object operator tokens kinds: T_OBJECT_OPERATOR and (if available) T_NULLSAFE_OBJECT_OPERATOR.
+     *
+     * @return int[]
+     */
+    public static function getObjectOperatorKinds()
+    {
+        static $objectOperators = null;
+
+        if (null === $objectOperators) {
+            $objectOperators = [T_OBJECT_OPERATOR];
+            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
+                $objectOperators[] = T_NULLSAFE_OBJECT_OPERATOR;
+            }
+        }
+
+        return $objectOperators;
+    }
+
+    /**
      * Clear token at given index.
      *
      * Clearing means override token by empty string.
@@ -422,6 +441,16 @@ class Token
         static $commentTokens = [T_COMMENT, T_DOC_COMMENT];
 
         return $this->isGivenKind($commentTokens);
+    }
+
+    /**
+     * Check if token is one of object operator tokens: T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR.
+     *
+     * @return bool
+     */
+    public function isObjectOperator()
+    {
+        return $this->isGivenKind(self::getObjectOperatorKinds());
     }
 
     /**

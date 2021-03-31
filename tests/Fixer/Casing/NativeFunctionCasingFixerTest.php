@@ -188,4 +188,12 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80()
+    {
+        $this->doTest('<?php $a?->STRTOLOWER(1,);');
+    }
 }

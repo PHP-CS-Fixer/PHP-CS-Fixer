@@ -214,4 +214,45 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideProcess80Cases
+     * @requires PHP 8.0
+     */
+    public function testProcess80($source, array $expectedTokens = [])
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_CURLY_OPEN,
+                CT::T_CURLY_CLOSE,
+                T_DOLLAR_OPEN_CURLY_BRACES,
+                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
+                CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                CT::T_DYNAMIC_VAR_BRACE_OPEN,
+                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                CT::T_GROUP_IMPORT_BRACE_OPEN,
+                CT::T_GROUP_IMPORT_BRACE_CLOSE,
+            ]
+        );
+    }
+
+    public static function provideProcess80Cases()
+    {
+        return [
+            'dynamic property brace open/close' => [
+                '<?php $foo?->{$bar};',
+                [
+                    3 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                    5 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                ],
+            ],
+        ];
+    }
 }

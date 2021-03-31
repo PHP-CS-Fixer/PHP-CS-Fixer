@@ -276,4 +276,25 @@ class FooTest extends TestCase {
 }'
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80()
+    {
+        $this->doTest(
+            '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $someMock?->method("someMethod")?->willReturn(10);
+    }
+}',
+            '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $someMock?->method("someMethod")?->will($this?->returnValue(10));
+    }
+}'
+        );
+    }
 }
