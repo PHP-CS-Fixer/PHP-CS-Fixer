@@ -252,6 +252,40 @@ $foo
 ->setEmailConfirmationCode("123456",    );
 ',
             ],
+            [
+                '<?php
+
+                $obj = (new Foo)
+                    ->setBar((new Bar)
+                        ->baz());
+',
+                '<?php
+
+                $obj = (new Foo)
+        ->setBar((new Bar)
+                            ->baz());
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("bar", function ($baz) {
+                        return $baz
+                            ->on("table1", "table2");
+                    })
+                    ->where("a", "b");
+',
+                '<?php
+
+                $obj
+        ->foo("bar", function ($baz) {
+                        return $baz
+                                    ->on("table1", "table2");
+                    })
+                ->where("a", "b");
+',
+            ],
         ];
     }
 
@@ -270,6 +304,145 @@ $foo
             [
                 "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\t->setPassword('233434')\r\n\t->setEmailConfirmed(false)\r\n\t->setEmailConfirmationCode('123456')\r\n\t->setHashsalt('1234')\r\n\t->setTncAccepted(true);",
                 "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
+            ],
+        ];
+    }
+
+    /**
+     * @requires PHP 7.3
+     */
+    public function testFix73(): void
+    {
+        $this->doTest(
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+        ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+        ->setEmailConfirmationCode("123456",    );
+',
+            '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+
+     ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+->setEmailConfirmationCode("123456",    );
+'
+        );
+    }
+
+    /**
+     * @param string $expected
+     * @param string|null $input
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases(): array
+    {
+        return [
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn ($bar) => $bar
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn ($bar) => $bar
+        ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn (string $bar) => otherFunc($bar)
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn (string $bar) => otherFunc($bar)
+                            ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn (SomeClass $bar) => $bar
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn (SomeClass $bar) => $bar
+        ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->foo("baz", fn (?AnotherClass $bar) => $bar
+                        ->baz("foobar"))
+                    ->baz();
+',
+                '<?php
+
+                $obj
+                                        ->foo("baz", fn (?AnotherClass $bar) => $bar
+        ->baz("foobar"))
+                                ->baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+        /*buahaha*/
+                    ->foo("baz", fn ($bar) => $bar
+                        ->baz/*buahaha*/("foobar"))
+                    ->/**buahaha*/baz();
+',
+                '<?php
+
+                $obj
+        /*buahaha*/                                ->foo("baz", fn ($bar) => $bar
+        ->baz/*buahaha*/("foobar"))
+                                ->/**buahaha*/baz();
+',
+            ],
+            [
+                '<?php
+
+                $obj
+                    ->      foo("baz", fn ($bar) => $bar
+                        ->baz              ("foobar"))
+                    ->       baz  ();
+',
+                '<?php
+
+                $obj
+                                        ->      foo("baz", fn ($bar) => $bar
+        ->baz              ("foobar"))
+                                ->       baz  ();
+',
             ],
         ];
     }
