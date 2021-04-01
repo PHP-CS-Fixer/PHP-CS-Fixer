@@ -1105,7 +1105,7 @@ class Tokens extends \SplFixedArray
         $this->setSize(\count($tokens));
 
         foreach ($tokens as $index => $token) {
-            $this[$index] = new Token($token);
+            $this[$index] = new Token(\is_array($token) ? [$token[0], $token[1]] : $token);
         }
 
         $this->applyTransformers();

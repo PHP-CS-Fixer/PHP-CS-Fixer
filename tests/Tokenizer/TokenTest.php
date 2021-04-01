@@ -97,13 +97,13 @@ final class TokenTest extends TestCase
         return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_ARRAY_CAST, '(array)', 1]), true],
-            [new Token([T_BOOL_CAST, '(bool)', 1]), true],
-            [new Token([T_DOUBLE_CAST, '(double)', 1]), true],
-            [new Token([T_INT_CAST, '(int)', 1]), true],
-            [new Token([T_OBJECT_CAST, '(object)', 1]), true],
-            [new Token([T_STRING_CAST, '(string)', 1]), true],
-            [new Token([T_UNSET_CAST, '(unset)', 1]), true],
+            [new Token([T_ARRAY_CAST, '(array)']), true],
+            [new Token([T_BOOL_CAST, '(bool)']), true],
+            [new Token([T_DOUBLE_CAST, '(double)']), true],
+            [new Token([T_INT_CAST, '(int)']), true],
+            [new Token([T_OBJECT_CAST, '(object)']), true],
+            [new Token([T_STRING_CAST, '(string)']), true],
+            [new Token([T_UNSET_CAST, '(unset)']), true],
         ];
     }
 
@@ -122,9 +122,9 @@ final class TokenTest extends TestCase
         return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_CLASS, 'class', 1]), true],
-            [new Token([T_INTERFACE, 'interface', 1]), true],
-            [new Token([T_TRAIT, 'trait', 1]), true],
+            [new Token([T_CLASS, 'class']), true],
+            [new Token([T_INTERFACE, 'interface']), true],
+            [new Token([T_TRAIT, 'trait']), true],
         ];
     }
 
@@ -143,8 +143,8 @@ final class TokenTest extends TestCase
         $tests = [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_COMMENT, '/* comment */', 1]), true],
-            [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
+            [new Token([T_COMMENT, '/* comment */']), true],
+            [new Token([T_DOC_COMMENT, '/** docs */']), true],
         ];
 
         foreach ($tests as $index => $test) {
@@ -153,7 +153,7 @@ final class TokenTest extends TestCase
 
         // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_ATTRIBUTE')) {
-            yield [new Token([T_ATTRIBUTE, '#[', 1]), false];
+            yield [new Token([T_ATTRIBUTE, '#[']), false];
         }
     }
 
@@ -253,11 +253,11 @@ final class TokenTest extends TestCase
         return [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
-            [new Token([T_STRING, 'null', 1]), true],
-            [new Token([T_STRING, 'false', 1]), true],
-            [new Token([T_STRING, 'true', 1]), true],
-            [new Token([T_STRING, 'tRuE', 1]), true],
-            [new Token([T_STRING, 'TRUE', 1]), true],
+            [new Token([T_STRING, 'null']), true],
+            [new Token([T_STRING, 'false']), true],
+            [new Token([T_STRING, 'true']), true],
+            [new Token([T_STRING, 'tRuE']), true],
+            [new Token([T_STRING, 'TRUE']), true],
         ];
     }
 
@@ -285,11 +285,11 @@ final class TokenTest extends TestCase
             [new Token(' '), true],
             [new Token("\t "), true],
             [new Token("\t "), false, ' '],
-            [new Token([T_WHITESPACE, "\r", 1]), true],
-            [new Token([T_WHITESPACE, "\0", 1]), true],
-            [new Token([T_WHITESPACE, "\x0B", 1]), true],
-            [new Token([T_WHITESPACE, "\n", 1]), true],
-            [new Token([T_WHITESPACE, "\n", 1]), false, " \t"],
+            [new Token([T_WHITESPACE, "\r"]), true],
+            [new Token([T_WHITESPACE, "\0"]), true],
+            [new Token([T_WHITESPACE, "\x0B"]), true],
+            [new Token([T_WHITESPACE, "\n"]), true],
+            [new Token([T_WHITESPACE, "\n"]), false, " \t"],
         ];
     }
 
@@ -320,6 +320,7 @@ final class TokenTest extends TestCase
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
             ['(', null, '(', false],
             [123, null, null, null, \InvalidArgumentException::class],
+            [[T_IF, 'if', 1], null, null, null, \InvalidArgumentException::class],
             [false, null, null, null, \InvalidArgumentException::class],
             [null, null, null, null, \InvalidArgumentException::class],
         ];
@@ -327,7 +328,7 @@ final class TokenTest extends TestCase
 
     public function testEqualsDefaultIsCaseSensitive()
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([T_FUNCTION, 'function']);
 
         static::assertTrue($token->equals([T_FUNCTION, 'function']));
         static::assertFalse($token->equals([T_FUNCTION, 'Function']));
@@ -348,7 +349,7 @@ final class TokenTest extends TestCase
     public function provideEqualsCases()
     {
         $brace = $this->getBraceToken();
-        $function = new Token([T_FUNCTION, 'function', 1]);
+        $function = new Token([T_FUNCTION, 'function']);
 
         return [
             [$brace, false, '!'],
@@ -383,7 +384,7 @@ final class TokenTest extends TestCase
 
     public function testEqualsAnyDefaultIsCaseSensitive()
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([T_FUNCTION, 'function']);
 
         static::assertTrue($token->equalsAny([[T_FUNCTION, 'function']]));
         static::assertFalse($token->equalsAny([[T_FUNCTION, 'Function']]));
@@ -397,7 +398,7 @@ final class TokenTest extends TestCase
      */
     public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([T_FUNCTION, 'function']);
 
         static::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
@@ -502,7 +503,7 @@ final class TokenTest extends TestCase
     public function provideGetNameCases()
     {
         yield [
-            new Token([T_FUNCTION, 'function', 1]),
+            new Token([T_FUNCTION, 'function']),
             'T_FUNCTION',
         ];
 
@@ -528,7 +529,7 @@ final class TokenTest extends TestCase
     public function provideToArrayCases()
     {
         yield [
-            new Token([T_FUNCTION, 'function', 1]),
+            new Token([T_FUNCTION, 'function']),
             [
                 'id' => T_FUNCTION,
                 'name' => 'T_FUNCTION',

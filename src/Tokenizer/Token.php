@@ -56,6 +56,10 @@ class Token
     public function __construct($token)
     {
         if (\is_array($token)) {
+            if (2 !== \count($token)) {
+                throw new \InvalidArgumentException(sprintf('Array passed must have exactly 2 elements, %d found.', \count($token)));
+            }
+
             if (!\is_int($token[0])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Id must be an int, got "%s".',
