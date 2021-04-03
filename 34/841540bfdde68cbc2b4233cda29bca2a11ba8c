@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-25T19:40:19Z
+
+[![Coverage Status](https://coveralls.io/builds/38258147/badge)](https://coveralls.io/builds/38258147)
+
+Coverage remained the same at 91.849% when pulling **66e8a0fec3830480f75f85be65e80551fb82df7c on kubawerlos:extend_priority_test_for_class_definition_vs_braces** into **61b909085be0f9bb9de5223be0f80ea3027eed5d on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-02T20:54:46Z
+
+@kubawerlos , should we close #5566 with merge of this PR?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-02T21:39:09Z
+
+@keradus well, the simple answer is no, as this is only extending test to make it more explicit, so the other issue is already fixed or won't be fixed by this. Let me take a look at the other issue.
+
+EDIT: I remember now, this one is to show that the issue reported there was actually solved, so I guess it makes sense if merging this will close #5566.
