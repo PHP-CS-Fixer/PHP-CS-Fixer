@@ -106,3 +106,24 @@ With configuration: ``['header' => 'Made with love.', 'comment_type' => 'comment
     namespace A\B;
 
     echo 1;
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['header' => '']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   @@ -1,10 +1,6 @@
+    <?php
+    declare(strict_types=1);
+
+   -/*
+   - * Comment is not wanted here.
+   - */
+   -
+    namespace A\B;
+
+    echo 1;
