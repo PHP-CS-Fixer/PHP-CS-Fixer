@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-22T19:08:51Z
+
+[![Coverage Status](https://coveralls.io/builds/38150043/badge)](https://coveralls.io/builds/38150043)
+
+Coverage remained the same at 91.849% when pulling **eb3f1c1f31a5deb92cdd3dad72dbaaf76b5582f1 on kubawerlos:dx_add_test_to_make_sure_SingleSpaceAfterConstructFixer_runs_before_FunctionDeclarationFixer** into **61b909085be0f9bb9de5223be0f80ea3027eed5d on FriendsOfPHP:2.18**.
