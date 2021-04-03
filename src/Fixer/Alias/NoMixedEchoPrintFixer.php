@@ -153,7 +153,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements Configuration
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+        if (!$prevToken->equalsAny([';', '{', '}', ')', [T_OPEN_TAG], [T_ELSE]])) {
             return;
         }
 
