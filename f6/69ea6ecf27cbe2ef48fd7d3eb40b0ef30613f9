@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-21T10:23:20Z
+
+[![Coverage Status](https://coveralls.io/builds/38144774/badge)](https://coveralls.io/builds/38144774)
+
+Coverage remained the same at 91.849% when pulling **d17bc1616ce5022383b4fc782ad3ae7660420254 on kubawerlos:fix_no_mixed_echo_print** into **c40975866e753a724377af50de9148a36be9179e on FriendsOfPHP:2.18**.
