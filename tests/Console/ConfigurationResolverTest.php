@@ -205,7 +205,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']]);
 
         static::assertSame($dir.\DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
-        static::assertInstanceOf('Test1Config', $resolver->getConfig());
+        static::assertInstanceOf(\Test1Config::class, $resolver->getConfig());
     }
 
     public function testResolveConfigFileSpecified()
@@ -215,7 +215,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(['config' => $file]);
 
         static::assertSame($file, $resolver->getConfigFile());
-        static::assertInstanceOf('Test4Config', $resolver->getConfig());
+        static::assertInstanceOf(\Test4Config::class, $resolver->getConfig());
     }
 
     /**
