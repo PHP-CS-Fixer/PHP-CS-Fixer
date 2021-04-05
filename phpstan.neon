@@ -60,4 +60,8 @@ parameters:
             message: '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
             path: src/Tokenizer/Tokens.php
 
+        - # https://github.com/phpstan/phpstan/issues/4808
+            message: '/^Access to private property \$ignore of parent class Symfony\\Component\\Finder\\Finder\.$/'
+            path: src/Finder.php
+
     tipsOfTheDay: false
