@@ -219,6 +219,36 @@ use Foo\{Bar, Baz};
 use Foo\Bar;use Foo\Baz;\DontTouch::me();
 ',
             ],
+            [
+                '<?php
+
+use Foo\{Bar, Baz};
+use ReflectionClass;
+use ReflectionMethod;
+',
+                '<?php
+
+use Foo\Bar;
+use Foo\Baz;
+use ReflectionClass;
+use ReflectionMethod;
+',
+            ],
+            [
+                '<?php
+
+use Foo\{Bar, Baz};
+use \ReflectionClass;
+use \ReflectionMethod;
+',
+                '<?php
+
+use Foo\Bar;
+use Foo\Baz;
+use \ReflectionClass;
+use \ReflectionMethod;
+',
+            ],
         ];
 
         foreach ($tests as $index => $test) {

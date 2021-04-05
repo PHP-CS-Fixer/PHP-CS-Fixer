@@ -188,7 +188,12 @@ final class GroupImportFixer extends AbstractFixer
      */
     private function getNamespaceNameWithSlash(NamespaceUseAnalysis $useDeclaration)
     {
-        return substr($useDeclaration->getFullName(), 0, strripos($useDeclaration->getFullName(), '\\') + 1);
+        $position = strrpos($useDeclaration->getFullName(), '\\');
+        if (false === $position || 0 === $position) {
+            return $useDeclaration->getFullName();
+        }
+
+        return substr($useDeclaration->getFullName(), 0, $position + 1);
     }
 
     /**
