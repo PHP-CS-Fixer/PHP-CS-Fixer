@@ -13,7 +13,6 @@
 namespace PhpCsFixer;
 
 use Symfony\Component\Finder\Finder as BaseFinder;
-use Symfony\Component\Finder\Iterator\LazyIterator;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -30,16 +29,25 @@ class Finder extends BaseFinder
             ->name('*.php')
             ->exclude('vendor')
         ;
+    }
 
+    public function getIterator()
+    {
         // add config files even if dot files are ignored
-        if (class_exists(LazyIterator::class)) { // LazyIterator class is available since Symfony 4.4 (which requires PHP 7+)
-            $this->append(new \IteratorIterator(new LazyIterator(function () {
-                $iterator = clone $this;
-                $iterator->ignoreDotFiles(false);
-                $iterator->name('~^\.php_cs(?:\..+)?$~is');
+        $configFilenameRegex = '\.php_cs(?:\..+)?';
+        $this->name('~^'.$configFilenameRegex.'$~is');
 
-                return $iterator;
-            })));
+        $fx = \Closure::bind(function () { // rebound function can be called without assigment as of PHP 7
+            return $this->ignore & static::IGNORE_DOT_FILES;
+        }, $this, parent::class);
+        $isDotFilesIgnored = $fx();
+        if ($isDotFilesIgnored) {
+            $this
+                ->ignoreDotFiles(false)
+                ->notPath('~(?:^|/)(?!'.$configFilenameRegex.'(?:/|$))\..*(?:/|$)~')
+            ;
         }
+
+        return parent::getIterator();
     }
 }
