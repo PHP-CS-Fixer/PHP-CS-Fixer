@@ -94,10 +94,11 @@ final class RuleSetTest extends TestCase
             $defaultConfig[$option->getName()] = $option->getDefault();
         }
 
-        ksort($defaultConfig);
-        ksort($ruleConfig);
-
-        static::assertNotSame($defaultConfig, $ruleConfig, sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName));
+        static::assertNotSame(
+            $this->sortNestedArray($defaultConfig),
+            $this->sortNestedArray($ruleConfig),
+            sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
+        );
     }
 
     /**
@@ -404,6 +405,25 @@ final class RuleSetTest extends TestCase
             }
             yield [$constant];
         }
+    }
+
+    private function sortNestedArray(array $array)
+    {
+        foreach ($array as $key => $element) {
+            if (!\is_array($element)) {
+                continue;
+            }
+            $array[$key] = $this->sortNestedArray($element);
+        }
+
+        // sort by key if associative, by values otherwise
+        if (array_keys($array) === range(0, \count($array) - 1)) {
+            sort($array);
+        } else {
+            ksort($array);
+        }
+
+        return $array;
     }
 
     private function findInSets(array $sets, string $ruleName, $config)
