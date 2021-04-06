@@ -3,6 +3,24 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.0.0-beta.2
+---------------------------
+
+* bug #5560 PSR2: require visibility only for properties and methods (kubawerlos)
+* bug #5561 NoMixedEchoPrintFixer: fix for conditions without curly brackets (kubawerlos)
+* bug #5563 Priority fix: SingleSpaceAfterConstructFixer must run before BracesFixer (kubawerlos)
+* bug #5567 Fix order of BracesFixer and ClassDefinitionFixer (Daeroni)
+* bug #5576 ClassAttributesSeparationFixer: do not allow using v2 config (kubawerlos)
+* bug #5596 NullableTypeTransformer - fix for attributes (kubawerlos, jrmajor)
+* bug #5598 GroupImportFixer - fix breaking code when fixing root classes (Leprechaunz)
+* minor #5555 DX: further typing improvements (keradus)
+* minor #5562 Fix table row rendering for default values of array_syntax and list_syntax (derrabus)
+* minor #5571 DX: add test to make sure SingleSpaceAfterConstructFixer runs before FunctionDeclarationFixer (kubawerlos)
+* minor #5577 Extend priority test for "class_definition" vs "braces" (kubawerlos)
+* minor #5585 DX: make doc examples prettier (kubawerlos)
+* minor #5590 Docs: HeaderCommentFixer - document example how to remove header comment (keradus)
+* minor #5602 DX: regenerate docs (keradus)
+
 Changelog for v3.0.0-beta.1
 ---------------------------
 
