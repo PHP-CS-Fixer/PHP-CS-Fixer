@@ -67,6 +67,20 @@ Changelog for v3.0.0-beta.1
 * minor #5532 Apply PHP 7.1 typing (keradus)
 * minor #5541 RuleSet - disallow null usage to disable the rule (keradus)
 
+Changelog for v2.18.5
+---------------------
+
+* bug #5561 NoMixedEchoPrintFixer: fix for conditions without curly brackets (kubawerlos)
+* bug #5563 Priority fix: SingleSpaceAfterConstructFixer must run before BracesFixer (kubawerlos)
+* bug #5567 Fix order of BracesFixer and ClassDefinitionFixer (Daeroni)
+* bug #5596 NullableTypeTransformer - fix for attributes (kubawerlos, jrmajor)
+* bug #5598 GroupImportFixer - fix breaking code when fixing root classes (Leprechaunz)
+* minor #5571 DX: add test to make sure SingleSpaceAfterConstructFixer runs before FunctionDeclarationFixer (kubawerlos)
+* minor #5577 Extend priority test for "class_definition" vs "braces" (kubawerlos)
+* minor #5585 DX: make doc examples prettier (kubawerlos)
+* minor #5590 Docs: HeaderCommentFixer - document example how to remove header comment (keradus)
+* minor #5602 DX: regenerate docs (keradus)
+
 Changelog for v2.18.4
 ---------------------
 
