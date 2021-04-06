@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     class Foo
     {
@@ -31,7 +30,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -$foo->__INVOKE(1);
    +$foo->__invoke(1);

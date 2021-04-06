@@ -43,7 +43,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,12 +2,11 @@
+    <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -68,7 +68,7 @@ With configuration: ``['target' => '3.2']``.
 
    --- Original
    +++ New
-   @@ -2,11 +2,11 @@
+    <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         /**
@@ -81,6 +81,16 @@ With configuration: ``['target' => '3.2']``.
    +
             bbb();
         }
+
+        /**
+         * @expectedException FooException
+         * @expectedExceptionMessageRegExp /foo.*$/
+         */
+        function testCcc()
+        {
+            ccc();
+        }
+    }
 
 Rule sets
 ---------

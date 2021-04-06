@@ -46,7 +46,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,6 @@
     <?php
 
     namespace Foo;
@@ -64,7 +63,6 @@ With configuration: ``['import_classes' => true, 'import_constants' => true, 'im
 
    --- Original
    +++ New
-   @@ -1,9 +1,12 @@
     <?php
 
     namespace Foo;
@@ -91,7 +89,11 @@ With configuration: ``['import_classes' => false, 'import_constants' => false, '
 
    --- Original
    +++ New
-   @@ -6,8 +6,8 @@
+    <?php
+
+    namespace Foo;
+
+    use DateTimeImmutable;
     use function count;
     use const M_PI;
 

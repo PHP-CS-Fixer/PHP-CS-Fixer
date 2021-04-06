@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1,3 @@
    -<?php  namespace A {}
    +<?php
    +
@@ -27,7 +26,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,4 +1,3 @@
     <?php
 
    -

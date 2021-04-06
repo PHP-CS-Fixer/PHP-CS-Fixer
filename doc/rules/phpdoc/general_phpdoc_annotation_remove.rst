@@ -28,7 +28,6 @@ With configuration: ``['annotations' => ['author']]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,5 @@
     <?php
     /**
      * @internal
@@ -45,7 +44,6 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
 
    --- Original
    +++ New
-   @@ -1,8 +1,6 @@
     <?php
     /**
      * @author John Doe

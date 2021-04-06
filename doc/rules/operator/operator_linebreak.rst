@@ -38,7 +38,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     function foo() {
    -    return $bar ||
@@ -56,7 +55,6 @@ With configuration: ``['position' => 'end']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     function foo() {
    -    return $bar

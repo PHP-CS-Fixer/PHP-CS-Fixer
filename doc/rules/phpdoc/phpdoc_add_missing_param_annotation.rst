@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,8 @@
     <?php
     /**
      * @param int $bar
@@ -47,7 +46,6 @@ With configuration: ``['only_untyped' => true]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,8 @@
     <?php
     /**
      * @param int $bar
@@ -66,7 +64,6 @@ With configuration: ``['only_untyped' => false]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,9 @@
     <?php
     /**
      * @param int $bar

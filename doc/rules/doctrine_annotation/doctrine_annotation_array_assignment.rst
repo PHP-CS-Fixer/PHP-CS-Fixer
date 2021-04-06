@@ -37,7 +37,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @Foo({bar : "baz"})
@@ -54,7 +53,6 @@ With configuration: ``['operator' => ':']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @Foo({bar = "baz"})

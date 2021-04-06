@@ -18,7 +18,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -array_push($x, $y);
    +$x[] = $y;

@@ -18,7 +18,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,13 +1,13 @@
     <?php
    -$a = strlen($a);
    -$a = strpos($a, $b);

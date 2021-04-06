@@ -132,7 +132,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,15 +1,15 @@
     <?php
     /**
    - * @Foo ( )
@@ -161,7 +160,6 @@ With configuration: ``['after_array_assignments_equals' => false, 'before_array_
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @Foo(foo = "foo", bar = {"foo":"foo", "bar"="bar"})

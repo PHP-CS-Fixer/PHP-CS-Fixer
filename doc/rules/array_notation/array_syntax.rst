@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -[1,2];
    +array(1,2);
@@ -42,7 +41,6 @@ With configuration: ``['syntax' => 'short']``.
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -array(1,2);
    +[1,2];

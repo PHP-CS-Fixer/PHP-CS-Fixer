@@ -16,7 +16,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,13 +1,13 @@
     <?php
 
    -/******

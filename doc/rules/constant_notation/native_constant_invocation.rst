@@ -72,7 +72,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);
    +<?php var_dump(\PHP_VERSION, \M_PI, MY_CUSTOM_PI);
 
@@ -85,7 +84,6 @@ With configuration: ``['scope' => 'namespaced']``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     namespace space1 {
    -    echo PHP_VERSION;
@@ -104,7 +102,6 @@ With configuration: ``['include' => ['MY_CUSTOM_PI']]``.
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);
    +<?php var_dump(\PHP_VERSION, \M_PI, \MY_CUSTOM_PI);
 
@@ -117,7 +114,6 @@ With configuration: ``['fix_built_in' => false, 'include' => ['MY_CUSTOM_PI']]``
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);
    +<?php var_dump(PHP_VERSION, M_PI, \MY_CUSTOM_PI);
 
@@ -130,7 +126,6 @@ With configuration: ``['exclude' => ['M_PI']]``.
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);
    +<?php var_dump(\PHP_VERSION, M_PI, MY_CUSTOM_PI);
 

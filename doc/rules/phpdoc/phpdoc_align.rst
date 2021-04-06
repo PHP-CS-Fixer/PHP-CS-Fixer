@@ -38,7 +38,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,8 +1,8 @@
     <?php
     /**
    - * @param  EngineInterface $templating
@@ -62,7 +61,6 @@ With configuration: ``['align' => 'vertical']``.
 
    --- Original
    +++ New
-   @@ -1,8 +1,8 @@
     <?php
     /**
    - * @param  EngineInterface $templating
@@ -86,7 +84,6 @@ With configuration: ``['align' => 'left']``.
 
    --- Original
    +++ New
-   @@ -1,8 +1,8 @@
     <?php
     /**
    - * @param  EngineInterface $templating
