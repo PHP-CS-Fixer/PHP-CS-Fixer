@@ -112,6 +112,7 @@ final class FixCommand extends Command
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                     new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
+                    new InputOption('diff-format', '', InputOption::VALUE_OPTIONAL, 'Ignored option. Always equals to "udiff".'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
