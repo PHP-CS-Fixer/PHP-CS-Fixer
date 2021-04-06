@@ -52,7 +52,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,6 +2,6 @@
+    <?php
     /**
      * @internal
      */
@@ -70,7 +70,7 @@ With configuration: ``['annotation_include' => ['@Custom'], 'annotation_exclude'
 
    --- Original
    +++ New
-   @@ -2,7 +2,7 @@
+    <?php
     /**
      * @CUSTOM
      */
@@ -79,6 +79,9 @@ With configuration: ``['annotation_include' => ['@Custom'], 'annotation_exclude'
 
     /**
      * @CUSTOM
+     * @not-fix
+     */
+    class B{}
 
 Rule sets
 ---------

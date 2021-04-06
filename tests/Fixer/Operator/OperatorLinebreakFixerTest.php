@@ -28,7 +28,7 @@ final class OperatorLinebreakFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $configuration = null): void
+    public function testFix(string $expected, ?string $input = null, ?array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);
@@ -196,7 +196,7 @@ return $foo
      *
      * @requires     PHP 7.1
      */
-    public function testFix71(string $expected, ?string $input = null, array $configuration = null): void
+    public function testFix71(string $expected, ?string $input = null, ?array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);

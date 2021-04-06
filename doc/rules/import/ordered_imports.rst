@@ -38,7 +38,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -use Z; use A;
    +use A; use Z;
@@ -52,7 +51,6 @@ With configuration: ``['sort_algorithm' => 'length']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    +use Bar;
    +use Acme;
@@ -71,7 +69,6 @@ Example #3
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    +use AAA;
    +use const AAB;
@@ -88,7 +85,6 @@ With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const'
 
    --- Original
    +++ New
-   @@ -1,10 +1,10 @@
     <?php
    +use const BBB;
     use const AAAA;
@@ -112,7 +108,6 @@ With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const',
 
    --- Original
    +++ New
-   @@ -1,10 +1,10 @@
     <?php
    +use const AAAA;
     use const BBB;
@@ -136,7 +131,7 @@ With configuration: ``['sort_algorithm' => 'none', 'imports_order' => ['const', 
 
    --- Original
    +++ New
-   @@ -2,9 +2,9 @@
+    <?php
     use const BBB;
     use const AAAA;
 

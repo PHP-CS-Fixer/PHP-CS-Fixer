@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,4 @@
     <?php
    -use Foo, Sample, Sample\Sample as Sample2;
    +use Foo;

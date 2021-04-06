@@ -43,7 +43,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null): void
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 

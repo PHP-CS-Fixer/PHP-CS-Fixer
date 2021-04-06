@@ -107,7 +107,7 @@ interface Bar extends
      */
     public function getPriority(): int
     {
-        return 0;
+        return 36;
     }
 
     /**

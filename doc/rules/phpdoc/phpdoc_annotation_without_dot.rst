@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @param string $bar Some string.

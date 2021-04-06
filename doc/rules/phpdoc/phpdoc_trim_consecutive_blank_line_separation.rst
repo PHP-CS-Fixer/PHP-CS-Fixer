@@ -14,7 +14,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,15 +2,12 @@
+    <?php
     /**
      * Summary.
      *
@@ -30,6 +30,7 @@ Example #1
      *
      * @dataProvider provideFixCases
      */
+    function fnc($foo) {}
 
 Rule sets
 ---------

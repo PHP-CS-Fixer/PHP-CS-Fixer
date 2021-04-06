@@ -64,7 +64,7 @@ final class DescribeCommand extends Command
      */
     private $fixers;
 
-    public function __construct(FixerFactory $fixerFactory = null)
+    public function __construct(?FixerFactory $fixerFactory = null)
     {
         parent::__construct();
 

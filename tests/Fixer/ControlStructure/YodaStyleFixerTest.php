@@ -937,7 +937,7 @@ while (2 !== $b = array_pop($c));
      * @dataProvider providePHP74Cases
      * @requires PHP 7.4
      */
-    public function testPHP74CasesInverse(string $expected, ?string $input = null, array $configuration = null): void
+    public function testPHP74CasesInverse(string $expected, ?string $input = null, ?array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);

@@ -15,7 +15,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,8 @@
     <?php
    +
    +/**
@@ -24,6 +23,10 @@ Example #1
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testSomeTest()
+        {
+            $this->assertSame(a(), b());
+        }
+    }
 
 Rule sets
 ---------

@@ -32,7 +32,7 @@ final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterf
     public function __construct(
         string $code,
         VersionSpecificationInterface $versionSpecification,
-        array $configuration = null
+        ?array $configuration = null
     ) {
         $this->codeSample = new CodeSample($code, $configuration);
         $this->versionSpecification = $versionSpecification;

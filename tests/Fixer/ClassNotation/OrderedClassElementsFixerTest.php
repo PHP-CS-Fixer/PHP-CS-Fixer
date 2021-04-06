@@ -1249,7 +1249,7 @@ EOT
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74(string $expected, ?string $input = null, array $configuration = null): void
+    public function testFix74(string $expected, ?string $input = null, ?array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);

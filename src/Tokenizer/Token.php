@@ -438,7 +438,7 @@ final class Token
     /**
      * @param null|string[] $options JSON encode option
      */
-    public function toJson(array $options = null): string
+    public function toJson(?array $options = null): string
     {
         static $defaultOptions = null;
 

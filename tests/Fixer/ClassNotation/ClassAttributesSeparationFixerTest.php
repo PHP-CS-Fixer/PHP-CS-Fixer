@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -26,6 +27,22 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @dataProvider provideInvalidElementsCases
+     */
+    public function testInvalidElements(array $elements): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->fixer->configure(['elements' => $elements]);
+    }
+
+    public static function provideInvalidElementsCases(): iterable
+    {
+        yield 'numeric keys' => [['method', 'property']];
+        yield 'wrong key name' => [['methods' => 'one']];
+        yield 'wrong key value' => [['method' => 'two']];
+    }
+
     /**
      * @dataProvider provideCommentBlockStartDetectionCases
      */

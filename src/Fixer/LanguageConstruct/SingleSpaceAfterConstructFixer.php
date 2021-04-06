@@ -105,7 +105,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null): void
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -172,6 +172,16 @@ yield  from  baz();
                 ),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before BracesFixer, FunctionDeclarationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 36;
     }
 
     /**

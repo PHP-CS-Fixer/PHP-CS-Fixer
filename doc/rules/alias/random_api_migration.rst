@@ -33,7 +33,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    -$a = getrandmax();
    -$a = rand($b, $c);
@@ -51,7 +50,6 @@ With configuration: ``['replacements' => ['getrandmax' => 'mt_getrandmax']]``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    -$a = getrandmax();
    +$a = mt_getrandmax();
@@ -67,7 +65,6 @@ With configuration: ``['replacements' => ['rand' => 'random_int']]``.
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php $a = rand($b, $c);
    +<?php $a = random_int($b, $c);
 

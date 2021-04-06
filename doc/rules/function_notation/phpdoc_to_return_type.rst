@@ -38,7 +38,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
     /** @return \My\Bar */
@@ -55,7 +54,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
     /** @return void */
@@ -72,7 +70,6 @@ Example #3
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
     /** @return object */
@@ -89,7 +86,6 @@ With configuration: ``['scalar_types' => false]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /** @return Foo */
    -function foo() {}
@@ -106,7 +102,8 @@ Example #5
 
    --- Original
    +++ New
-   @@ -3,7 +3,7 @@
+    <?php
+    final class Foo {
         /**
          * @return static
          */

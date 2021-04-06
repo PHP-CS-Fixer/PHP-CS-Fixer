@@ -49,7 +49,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,8 +1,6 @@
     <?php
     class Foo {
         /**
@@ -68,7 +67,6 @@ With configuration: ``['allow_mixed' => true]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,6 @@
     <?php
     class Foo {
         /**
@@ -76,6 +74,7 @@ With configuration: ``['allow_mixed' => true]``.
          * @param mixed $baz
          */
         public function doFoo(Bar $bar, $baz) {}
+    }
 
 Example #3
 ~~~~~~~~~~
@@ -86,7 +85,6 @@ Example #3
 
    --- Original
    +++ New
-   @@ -1,10 +1,7 @@
     <?php
     class Foo {
         /**
@@ -107,7 +105,6 @@ With configuration: ``['remove_inheritdoc' => true]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     class Foo {
         /**
@@ -126,7 +123,6 @@ With configuration: ``['allow_unused_params' => true]``.
 
    --- Original
    +++ New
-   @@ -1,8 +1,6 @@
     <?php
     class Foo {
         /**
@@ -135,6 +131,7 @@ With configuration: ``['allow_unused_params' => true]``.
          * @param string|int|null $qux
          */
         public function doFoo(Bar $bar, $baz /*, $qux = null */) {}
+    }
 
 Rule sets
 ---------

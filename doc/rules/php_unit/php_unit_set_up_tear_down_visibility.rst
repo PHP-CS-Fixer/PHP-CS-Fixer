@@ -20,7 +20,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,12 +2,12 @@
+    <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
         private $hello;
@@ -35,6 +35,7 @@ Example #1
         {
             $this->hello = null;
         }
+    }
 
 Rule sets
 ---------

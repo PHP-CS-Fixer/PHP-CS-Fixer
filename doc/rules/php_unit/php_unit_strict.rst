@@ -33,7 +33,8 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,9 +3,9 @@
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testSomeTest()
         {
@@ -57,7 +58,10 @@ With configuration: ``['assertions' => ['assertEquals']]``.
 
    --- Original
    +++ New
-   @@ -5,7 +5,7 @@
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testSomeTest()
         {
             $this->assertAttributeEquals(a(), b());
             $this->assertAttributeNotEquals(a(), b());

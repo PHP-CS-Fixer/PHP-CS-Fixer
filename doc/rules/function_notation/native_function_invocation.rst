@@ -61,7 +61,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,7 +2,7 @@
+    <?php
 
     function baz($options)
     {
@@ -69,6 +69,9 @@ Example #1
    +    if (!\array_key_exists("foo", $options)) {
             throw new \InvalidArgumentException();
         }
+
+        return json_encode($options);
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -79,7 +82,7 @@ With configuration: ``['exclude' => ['json_encode']]``.
 
    --- Original
    +++ New
-   @@ -2,7 +2,7 @@
+    <?php
 
     function baz($options)
     {
@@ -87,6 +90,9 @@ With configuration: ``['exclude' => ['json_encode']]``.
    +    if (!\array_key_exists("foo", $options)) {
             throw new \InvalidArgumentException();
         }
+
+        return json_encode($options);
+    }
 
 Example #3
 ~~~~~~~~~~
@@ -97,7 +103,6 @@ With configuration: ``['scope' => 'all']``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     namespace space1 {
    -    echo count([1]);
@@ -117,7 +122,6 @@ With configuration: ``['scope' => 'namespaced']``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
     namespace space1 {
    -    echo count([1]);
@@ -125,6 +129,7 @@ With configuration: ``['scope' => 'namespaced']``.
     }
     namespace {
         echo count([1]);
+    }
 
 Example #5
 ~~~~~~~~~~
@@ -135,7 +140,6 @@ With configuration: ``['include' => ['myGlobalFunction']]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -myGlobalFunction();
    +\myGlobalFunction();
@@ -150,7 +154,6 @@ With configuration: ``['include' => ['@all']]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -myGlobalFunction();
    -count();
@@ -166,7 +169,6 @@ With configuration: ``['include' => ['@internal']]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
     myGlobalFunction();
    -count();
@@ -181,7 +183,6 @@ With configuration: ``['include' => ['@compiler_optimized']]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
     $a .= str_repeat($a, 4);
    -$c = get_class($d);

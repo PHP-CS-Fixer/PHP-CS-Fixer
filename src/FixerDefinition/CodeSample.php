@@ -29,7 +29,7 @@ final class CodeSample implements CodeSampleInterface
      */
     private $configuration;
 
-    public function __construct(string $code, array $configuration = null)
+    public function __construct(string $code, ?array $configuration = null)
     {
         $this->code = $code;
         $this->configuration = $configuration;

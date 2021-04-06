@@ -29,6 +29,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideEchoToPrintFixCases
+     * @dataProvider provideEchoToPrintFixNewCases
      */
     public function testFixEchoToPrint(string $expected, ?string $input = null): void
     {
@@ -129,17 +130,24 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 ',
             ],
             [
-                "<div><?php print 'foo' ?></div>",
-                "<div><?php echo 'foo' ?></div>",
-            ],
-            [
                 '<?=$foo?>',
             ],
         ];
     }
 
+    public static function provideEchoToPrintFixNewCases()
+    {
+        foreach (self::getCodeSnippetsToConvertBothWays() as $name => $codeSnippet) {
+            yield [
+                sprintf($codeSnippet, 'print'),
+                sprintf($codeSnippet, 'echo'),
+            ];
+        }
+    }
+
     /**
      * @dataProvider providePrintToEchoFixCases
+     * @dataProvider providePrintToEchoFixNewCases
      */
     public function testFixPrintToEcho(string $expected, ?string $input = null): void
     {
@@ -263,11 +271,17 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
                 print "bar";
                 ',
             ],
-            [
-                "<div><?php echo 'foo' ?></div>",
-                "<div><?php print 'foo' ?></div>",
-            ],
         ];
+    }
+
+    public static function providePrintToEchoFixNewCases()
+    {
+        foreach (self::getCodeSnippetsToConvertBothWays() as $name => $codeSnippet) {
+            yield [
+                sprintf($codeSnippet, 'echo'),
+                sprintf($codeSnippet, 'print'),
+            ];
+        }
     }
 
     public function testDefaultConfig(): void
@@ -316,5 +330,26 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $reflectionProperty->setAccessible(true);
 
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
+    }
+
+    private static function getCodeSnippetsToConvertBothWays()
+    {
+        yield 'inside of HTML' => '<div><?php %1$s "foo" ?></div>';
+
+        yield 'foreach without curly brackets' => '<?php
+            %1$s "There will be foos: ";
+            foreach ($foos as $foo)
+                %1$s $foo;
+            %1$s "End of foos";
+        ';
+
+        yield 'if and else without curly brackets' => '<?php
+            if ($foo)
+                %1$s "One";
+            elseif ($bar)
+                %1$s "Two";
+            else
+                %1$s "Three";
+        ';
     }
 }
