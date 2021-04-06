@@ -26,6 +26,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -319,13 +320,10 @@ switch($a) {
                 ->setNormalizer(static function (Options $options, $tokens) use ($that) {
                     foreach ($tokens as &$token) {
                         if ('useTrait' === $token) {
-                            $message = "Token \"useTrait\" in option \"tokens\" for rule \"{$that->getName()}\" is deprecated and will be removed in 3.0, use \"use_trait\" instead.";
-
-                            if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                                throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-                            }
-
-                            @trigger_error($message, E_USER_DEPRECATED);
+                            Utils::triggerDeprecation(
+                                "Token \"useTrait\" in option \"tokens\" for rule \"{$that->getName()}\" is deprecated and will be removed in 3.0, use \"use_trait\" instead.",
+                                InvalidConfigurationException::class
+                            );
                             $token = 'use_trait';
 
                             break;

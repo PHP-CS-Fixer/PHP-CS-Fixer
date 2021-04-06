@@ -182,4 +182,19 @@ final class Utils
 
         return $last;
     }
+
+    /**
+     * Handle triggering deprecation error.
+     *
+     * @param string $message
+     * @param string $exceptionClass
+     */
+    public static function triggerDeprecation($message, $exceptionClass = \RuntimeException::class)
+    {
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new $exceptionClass("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+        }
+
+        @trigger_error($message, E_USER_DEPRECATED);
+    }
 }
