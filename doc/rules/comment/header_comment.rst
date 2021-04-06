@@ -117,7 +117,6 @@ With configuration: ``['header' => '']``.
 
    --- Original
    +++ New
-   @@ -1,10 +1,6 @@
     <?php
     declare(strict_types=1);
 
