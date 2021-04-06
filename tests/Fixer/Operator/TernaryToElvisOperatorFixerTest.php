@@ -517,6 +517,10 @@ EOT
 
 function test(#[TestAttribute] ?User $user) {}
 '],
+            ['<?php
+
+function test(#[TestAttribute] ?User $user = null) {}
+'],
         ];
     }
 }
