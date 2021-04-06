@@ -55,7 +55,6 @@ With configuration: ``['header' => 'Made with love.']``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,10 @@
     <?php
     declare(strict_types=1);
 
@@ -76,7 +75,6 @@ With configuration: ``['header' => 'Made with love.', 'comment_type' => 'PHPDoc'
 
    --- Original
    +++ New
-   @@ -1,4 +1,8 @@
     <?php
    +/**
    + * Made with love.
@@ -85,6 +83,8 @@ With configuration: ``['header' => 'Made with love.', 'comment_type' => 'PHPDoc'
     declare(strict_types=1);
 
     namespace A\B;
+
+    echo 1;
 
 Example #3
 ~~~~~~~~~~
@@ -95,7 +95,6 @@ With configuration: ``['header' => 'Made with love.', 'comment_type' => 'comment
 
    --- Original
    +++ New
-   @@ -1,6 +1,10 @@
     <?php
     declare(strict_types=1);
 
@@ -116,7 +115,6 @@ With configuration: ``['header' => '']``.
 
    --- Original
    +++ New
-   @@ -1,10 +1,6 @@
     <?php
     declare(strict_types=1);
 

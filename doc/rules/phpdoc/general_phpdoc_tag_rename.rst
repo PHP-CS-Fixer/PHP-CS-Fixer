@@ -55,7 +55,6 @@ With configuration: ``['replacements' => ['inheritDocs' => 'inheritDoc']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @inheritDocs
@@ -73,7 +72,6 @@ With configuration: ``['replacements' => ['inheritDocs' => 'inheritDoc'], 'fix_a
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
      * @inheritDocs
@@ -90,7 +88,6 @@ With configuration: ``['replacements' => ['inheritDocs' => 'inheritDoc'], 'fix_i
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @inheritDocs
@@ -107,7 +104,6 @@ With configuration: ``['replacements' => ['inheritDocs' => 'inheritDoc'], 'case_
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
    - * @inheritDocs

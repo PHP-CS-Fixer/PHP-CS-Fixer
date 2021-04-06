@@ -494,4 +494,29 @@ EOT
             ],
         ];
     }
+
+    /**
+     * @param string $input
+     *
+     * @dataProvider provideDoNotFix80Cases
+     * @requires PHP 8.0
+     */
+    public function test80DoNotFix($input): void
+    {
+        $this->doTest($input);
+    }
+
+    public function provideDoNotFix80Cases()
+    {
+        return [
+            ['<?php
+
+function test(#[TestAttribute] ?User $user) {}
+'],
+            ['<?php
+
+function test(#[TestAttribute] ?User $user = null) {}
+'],
+        ];
+    }
 }

@@ -19,7 +19,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
 
    -if ($a == "foo" and ($b == "bar" or $c == "baz")) {

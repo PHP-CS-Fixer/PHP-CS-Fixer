@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,2 @@
     <?php
    -use Foo\Bar;
    -use Foo\Baz;

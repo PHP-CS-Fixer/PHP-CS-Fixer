@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,9 +1,9 @@
     <?php
     /**
      * @property string $foo
@@ -40,6 +39,7 @@ Example #1
      */
     final class Example
     {
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -50,7 +50,8 @@ With configuration: ``['replacements' => ['link' => 'website']]``.
 
    --- Original
    +++ New
-   @@ -3,7 +3,7 @@
+    <?php
+    /**
      * @property string $foo
      * @property-read string $bar
      *
@@ -59,6 +60,7 @@ With configuration: ``['replacements' => ['link' => 'website']]``.
      */
     final class Example
     {
+    }
 
 Rule sets
 ---------

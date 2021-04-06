@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -/** {@inheritdoc} */
    +/** */
@@ -29,7 +28,7 @@ Example #2
 
    --- Original
    +++ New
-   @@ -2,7 +2,7 @@
+    <?php
     class Sample
     {
         /**
@@ -38,6 +37,8 @@ Example #2
          */
         public function Test()
         {
+        }
+    }
 
 Rule sets
 ---------

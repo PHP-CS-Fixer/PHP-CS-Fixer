@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,2 @@
     <?php
    -throw new Exception(
    -    'Error.',

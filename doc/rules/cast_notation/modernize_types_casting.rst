@@ -20,7 +20,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
    -    $a = intval($b);
    -    $a = floatval($b);

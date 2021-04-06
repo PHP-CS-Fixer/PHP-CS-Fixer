@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,6 @@
     <?php
     final class Sample
     {
@@ -22,6 +21,7 @@ Example #1
         protected function foo()
         {
         }
+    }
 
 Rule sets
 ---------

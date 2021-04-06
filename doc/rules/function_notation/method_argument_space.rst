@@ -50,7 +50,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample($a=10,$b=20,$c=30) {}
    -sample(1,  2);
@@ -66,7 +65,6 @@ With configuration: ``['keep_multiple_spaces_after_comma' => false]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample($a=10,$b=20,$c=30) {}
    -sample(1,  2);
@@ -82,7 +80,6 @@ With configuration: ``['keep_multiple_spaces_after_comma' => true]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample($a=10,$b=20,$c=30) {}
    +function sample($a=10, $b=20, $c=30) {}
@@ -97,7 +94,6 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,10 @@
     <?php
    -function sample($a=10,
    -    $b=20,$c=30) {}
@@ -122,7 +118,6 @@ With configuration: ``['on_multiline' => 'ensure_single_line']``.
 
    --- Original
    +++ New
-   @@ -1,10 +1,3 @@
     <?php
    -function sample(
    -    $a=10,
@@ -145,7 +140,6 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'keep_multipl
 
    --- Original
    +++ New
-   @@ -1,7 +1,12 @@
     <?php
    -function sample($a=10,
    -    $b=20,$c=30) {}
@@ -172,7 +166,6 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'keep_multipl
 
    --- Original
    +++ New
-   @@ -1,7 +1,12 @@
     <?php
    -function sample($a=10,
    -    $b=20,$c=30) {}
@@ -201,7 +194,7 @@ With configuration: ``['after_heredoc' => true]``.
 
    --- Original
    +++ New
-   @@ -2,7 +2,6 @@
+    <?php
     sample(
         <<<EOD
             foo

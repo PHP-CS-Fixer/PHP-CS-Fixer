@@ -23,7 +23,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
     /** @param string $bar */
@@ -38,7 +37,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
     /** @param string|null $bar */

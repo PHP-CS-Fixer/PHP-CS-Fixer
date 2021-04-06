@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,6 +1,8 @@
     <?php
     final class Example
     {
@@ -49,7 +48,7 @@ With configuration: ``['elements' => ['property']]``.
 
    --- Original
    +++ New
-   @@ -2,5 +2,6 @@
+    <?php
     final class Example
     {
         const FOO_1 = 1, FOO_2 = 2;

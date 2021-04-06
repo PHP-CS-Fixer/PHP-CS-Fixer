@@ -35,7 +35,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,5 @@
     <?php
    +/**
    + * @small
@@ -51,7 +50,6 @@ With configuration: ``['group' => 'medium']``.
 
    --- Original
    +++ New
-   @@ -1,2 +1,5 @@
     <?php
    +/**
    + * @medium

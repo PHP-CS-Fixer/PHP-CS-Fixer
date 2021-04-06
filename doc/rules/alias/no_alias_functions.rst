@@ -34,7 +34,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,22 +1,22 @@
     <?php
    -$a = chop($b);
    -close($b);
@@ -87,7 +86,6 @@ With configuration: ``['sets' => ['@mbreg']]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
     $a = is_double($b);
    -mbereg_search_getregs();

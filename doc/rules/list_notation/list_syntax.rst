@@ -29,7 +29,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -list($sample) = $array;
    +[$sample] = $array;
@@ -43,7 +42,6 @@ With configuration: ``['syntax' => 'long']``.
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -[$sample] = $array;
    +list($sample) = $array;

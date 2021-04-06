@@ -30,7 +30,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,10 +1,10 @@
     <?php
     class Sample
     {
@@ -54,7 +53,6 @@ With configuration: ``['elements' => ['const']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     class Sample
     {

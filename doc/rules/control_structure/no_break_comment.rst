@@ -35,7 +35,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,9 +2,9 @@
+    <?php
     switch ($foo) {
         case 1:
             foo();
@@ -46,6 +46,7 @@ Example #1
             break;
         case 3:
             baz();
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -56,7 +57,7 @@ With configuration: ``['comment_text' => 'some comment']``.
 
    --- Original
    +++ New
-   @@ -2,6 +2,7 @@
+    <?php
     switch ($foo) {
         case 1:
             foo();

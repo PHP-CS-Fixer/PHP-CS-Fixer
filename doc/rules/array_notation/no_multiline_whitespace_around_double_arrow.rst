@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,2 @@
     <?php
    -$a = array(1
    -

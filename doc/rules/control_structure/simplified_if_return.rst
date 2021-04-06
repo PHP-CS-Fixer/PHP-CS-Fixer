@@ -15,7 +15,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -if ($foo) { return true; } return false;
    +return (bool) ($foo)      ;

@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample(array$a)
    +function sample(array $a)
@@ -27,7 +26,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample(array  $a)
    +function sample(array $a)

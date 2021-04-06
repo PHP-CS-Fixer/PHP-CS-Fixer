@@ -15,7 +15,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -require ('sample.php');
    -echo (test (3));

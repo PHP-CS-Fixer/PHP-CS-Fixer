@@ -31,7 +31,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
         /**
    -            * This is a DOC Comment
@@ -52,7 +51,6 @@ With configuration: ``['comment_type' => 'phpdocs_like']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
         /*
    -            * This is a doc-like multiline comment
@@ -69,7 +67,6 @@ With configuration: ``['comment_type' => 'all_multiline']``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
         /*
    -            * This is a doc-like multiline comment

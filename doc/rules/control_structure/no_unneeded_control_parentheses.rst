@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,9 +1,9 @@
     <?php
    -while ($x) { while ($y) { break (2); } }
    -clone($a);
@@ -56,7 +55,6 @@ With configuration: ``['statements' => ['break', 'continue']]``.
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
    -while ($x) { while ($y) { break (2); } }
    +while ($x) { while ($y) { break 2; } }
@@ -66,6 +64,8 @@ With configuration: ``['statements' => ['break', 'continue']]``.
     echo("foo");
     print("foo");
     return (1 + 2);
+    switch ($a) { case($x); }
+    yield(2);
 
 Rule sets
 ---------

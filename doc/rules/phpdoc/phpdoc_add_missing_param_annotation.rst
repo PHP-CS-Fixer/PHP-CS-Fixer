@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,6 +1,7 @@
     <?php
     /**
      * @param int $bar
@@ -36,6 +35,7 @@ Example #1
      *
      * @return void
      */
+    function f9(string $foo, $bar, $baz) {}
 
 Example #2
 ~~~~~~~~~~
@@ -46,7 +46,6 @@ With configuration: ``['only_untyped' => true]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,7 @@
     <?php
     /**
      * @param int $bar
@@ -54,6 +53,7 @@ With configuration: ``['only_untyped' => true]``.
      *
      * @return void
      */
+    function f9(string $foo, $bar, $baz) {}
 
 Example #3
 ~~~~~~~~~~
@@ -64,7 +64,6 @@ With configuration: ``['only_untyped' => false]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,8 @@
     <?php
     /**
      * @param int $bar
@@ -73,6 +72,7 @@ With configuration: ``['only_untyped' => false]``.
      *
      * @return void
      */
+    function f9(string $foo, $bar, $baz) {}
 
 Rule sets
 ---------

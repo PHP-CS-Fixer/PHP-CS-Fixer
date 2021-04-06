@@ -43,7 +43,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
    -final class ExampleA implements Gamma, Alpha, Beta {}
@@ -61,7 +60,6 @@ With configuration: ``['direction' => 'descend']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
    -final class ExampleA implements Gamma, Alpha, Beta {}
@@ -79,7 +77,6 @@ With configuration: ``['order' => 'length']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
    -final class ExampleA implements MuchLonger, Short, Longer {}
@@ -97,7 +94,6 @@ With configuration: ``['order' => 'length', 'direction' => 'descend']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
 
    -final class ExampleA implements MuchLonger, Short, Longer {}
