@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-05T21:29:53Z
+
+@Leprechaunz you don't want to add that test in integration tests, but in `GroupImportFixerTest`.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-05T21:42:26Z
+
+[![Coverage Status](https://coveralls.io/builds/38570934/badge)](https://coveralls.io/builds/38570934)
+
+Coverage increased (+0.001%) to 91.852% when pulling **2849fa97e2b8173c08d1213b48806dc21dd1b7b2 on Leprechaunz:fix-group-import** into **9bf2760ce9d2218cc127cb4106e9ddfedca4eb3a on FriendsOfPHP:2.18**.
