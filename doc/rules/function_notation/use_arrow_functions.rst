@@ -19,7 +19,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,2 @@
     <?php
    -foo(function ($a) use ($b) {
    -    return $a + $b;

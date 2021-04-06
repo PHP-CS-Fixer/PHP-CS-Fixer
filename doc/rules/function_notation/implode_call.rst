@@ -18,7 +18,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -implode($pieces, '');
    +implode('', $pieces);
@@ -30,7 +29,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -implode($pieces);
    +implode('', $pieces);

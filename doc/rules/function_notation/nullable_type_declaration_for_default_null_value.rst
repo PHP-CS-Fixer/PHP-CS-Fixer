@@ -35,7 +35,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample(string $str = null)
    +function sample(?string $str = null)
@@ -50,7 +49,6 @@ With configuration: ``['use_nullable_type_declaration' => false]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -function sample(?string $str = null)
    +function sample(string $str = null)

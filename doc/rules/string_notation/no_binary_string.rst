@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php $a = b'foo';
    +<?php $a = 'foo';
 
@@ -25,7 +24,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
    -<?php $a = b<<<EOT
    +<?php $a = <<<EOT
     foo

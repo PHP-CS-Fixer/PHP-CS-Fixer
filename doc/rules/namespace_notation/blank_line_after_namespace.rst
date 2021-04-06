@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,4 @@
     <?php
     namespace Sample\Sample;
 
@@ -28,7 +27,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,3 +1,4 @@
     <?php
     namespace Sample\Sample;
    +

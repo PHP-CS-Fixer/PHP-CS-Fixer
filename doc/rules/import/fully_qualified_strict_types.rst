@@ -15,7 +15,9 @@ Example #1
 
    --- Original
    +++ New
-   @@ -4,7 +4,7 @@
+    <?php
+
+    use Foo\Bar;
 
     class SomeClass
     {
@@ -32,7 +34,10 @@ Example #2
 
    --- Original
    +++ New
-   @@ -5,7 +5,7 @@
+    <?php
+
+    use Foo\Bar;
+    use Foo\Bar\Baz;
 
     class SomeClass
     {

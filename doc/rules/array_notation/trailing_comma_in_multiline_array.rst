@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     array(
         1,
@@ -45,7 +44,8 @@ With configuration: ``['after_heredoc' => true]``.
 
    --- Original
    +++ New
-   @@ -3,5 +3,5 @@
+    <?php
+        $x = [
             'foo',
             <<<EOD
                 bar

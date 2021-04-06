@@ -33,7 +33,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,12 +1,12 @@
     <?php
     final class Foo
     {
@@ -60,12 +59,16 @@ With configuration: ``['private_methods' => false]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     final class Foo
     {
    -    final private function baz() {}
    +    private function baz() {}
+    }
+
+    class Bar
+    {
+        final private function bar1() {}
     }
 
 Rule sets

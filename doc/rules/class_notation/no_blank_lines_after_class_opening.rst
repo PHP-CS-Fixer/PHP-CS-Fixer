@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,8 +1,7 @@
     <?php
     final class Sample
     {

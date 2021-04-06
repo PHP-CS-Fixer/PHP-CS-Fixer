@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -$bar = ( string )  $a;
    -$foo = (int)$b;
@@ -44,7 +43,6 @@ With configuration: ``['space' => 'single']``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -$bar = ( string )  $a;
    -$foo = (int)$b;
@@ -60,7 +58,6 @@ With configuration: ``['space' => 'none']``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -$bar = ( string )  $a;
    -$foo = (int) $b;

@@ -34,7 +34,8 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,9 +3,9 @@
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
         {
@@ -57,7 +58,8 @@ With configuration: ``['target' => '5.4']``.
 
    --- Original
    +++ New
-   @@ -3,7 +3,7 @@
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
     {
         public function testFoo()
         {

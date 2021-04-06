@@ -29,7 +29,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
         $a = <<<EOD
    -abc
@@ -48,7 +47,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
         $a = <<<'EOD'
    -abc
@@ -67,7 +65,6 @@ With configuration: ``['indentation' => 'same_as_start']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
         $a = <<<'EOD'
    -abc

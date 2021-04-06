@@ -62,6 +62,7 @@ final class NullableTypeTransformer extends AbstractTransformer
             [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
             [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
             [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
+            [CT::T_ATTRIBUTE_CLOSE],
             [T_PRIVATE],
             [T_PROTECTED],
             [T_PUBLIC],

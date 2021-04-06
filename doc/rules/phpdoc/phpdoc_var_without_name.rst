@@ -15,7 +15,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,12 +2,12 @@
+    <?php
     final class Foo
     {
         /**

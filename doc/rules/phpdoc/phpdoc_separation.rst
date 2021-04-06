@@ -16,7 +16,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,11 +1,12 @@
     <?php
     /**
      * Description.

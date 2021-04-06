@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
 
    -$a = "sample";
@@ -44,7 +43,6 @@ With configuration: ``['strings_containing_single_quote_chars' => true]``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
 
    -$a = "sample";
