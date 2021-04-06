@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-05T20:59:11Z
+
+[![Coverage Status](https://coveralls.io/builds/38568150/badge)](https://coveralls.io/builds/38568150)
+
+Coverage increased (+0.0004%) to 91.851% when pulling **86f5b391e5e11fbab1b5beefff8d3e737052ea2a on kubawerlos:fix_NullableTypeTransformer** into **9bf2760ce9d2218cc127cb4106e9ddfedca4eb3a on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by OskarStark at 2021-04-06T06:54:21Z
+
+It looks like this does not fix my case.
+
+It works well without a default value, but that's the case before this fix too 🤔
+
+Can you extend your test case like proposed in my comment?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-06T14:39:20Z
+
+@OskarStark added, since in https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/5533 you haven't added a config I can only guess, let's go with this one and verify if you still have the issue.
+
+Might be another bug lurking at us.
+
+---------------------------------------------------------------------------
+
+by OskarStark at 2021-04-06T16:08:16Z
+
+Yes
