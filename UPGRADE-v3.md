@@ -8,6 +8,8 @@ Rename of files
 
 | 2.x              | 3.0                      | Description                            |
 | ---------------- | ------------------------ | -------------------------------------- |
+| `.php_cs`        | `.php-cs-fixer.php`      | Configuration file (local)             |
+| `.php_cs.dist`   | `.php-cs-fixer.dist.php` | Configuration file (to be distributed) |
 | `.php_cs.cache`  | `.php-cs-fixer.cache`    | Cache file                             |
 
 CLI options
