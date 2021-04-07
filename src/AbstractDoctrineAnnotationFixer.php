@@ -184,6 +184,12 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                     'enduml',
                     'startuml',
 
+                    // Psalm
+                    'psalm',
+
+                    // PHPStan
+                    'phpstan',
+
                     // other
                     'fix',
                     'FIXME',
