@@ -227,6 +227,17 @@ final class ConfigurationResolver
                     continue;
                 }
 
+                $configFileBasename = basename($configFile);
+                $deprecatedConfigs = [
+                    '.php_cs' => '.php-cs-fixer.php',
+                    '.php_cs.dist' => '.php-cs-fixer.dist.php',
+                ];
+
+                if (isset($deprecatedConfigs[$configFileBasename])) {
+                    $message = "Configuration file `{$configFileBasename}` is deprecated, rename to `{$deprecatedConfigs[$configFileBasename]}`.";
+                    Utils::triggerDeprecation($message, InvalidConfigurationException::class);
+                }
+
                 $config = self::separatedContextLessInclude($configFile);
 
                 // verify that the config has an instance of Config
@@ -605,13 +616,17 @@ final class ConfigurationResolver
         }
 
         $candidates = [
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs',
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist',
+            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
+            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
         ];
 
         if ($configDir !== $this->cwd) {
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs';
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
 
         return $candidates;
