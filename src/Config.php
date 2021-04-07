@@ -23,7 +23,7 @@ use PhpCsFixer\Fixer\FixerInterface;
  */
 class Config implements ConfigInterface
 {
-    private $cacheFile = '.php_cs.cache';
+    private $cacheFile = '.php-cs-fixer.cache';
     private $customFixers = [];
     private $finder;
     private $format = 'txt';

@@ -98,7 +98,7 @@ final class FileHandlerTest extends TestCase
 
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
     {
-        $file = __DIR__.'/non-existent-directory/.php_cs.cache';
+        $file = __DIR__.'/non-existent-directory/.php-cs-fixer.cache';
 
         $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
@@ -183,7 +183,7 @@ final class FileHandlerTest extends TestCase
 
     private function getFile(): string
     {
-        return __DIR__.'/.php_cs.cache';
+        return __DIR__.'/.php-cs-fixer.cache';
     }
 
     private function createSignature(): SignatureInterface

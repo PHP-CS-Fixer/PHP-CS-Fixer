@@ -263,7 +263,7 @@ Cache file can be specified via `--cache-file` option or config file:
 
     $config = new Config();
 
-    return $config->setCacheFile(__DIR__.'/.php_cs.cache');
+    return $config->setCacheFile(__DIR__.'/.php-cs-fixer.cache');
 
     ?>
 

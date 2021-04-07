@@ -3,6 +3,13 @@ UPGRADE GUIDE FROM 2.x to 3.0
 
 This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 
+Rename of files
+---------------
+
+| 2.x              | 3.0                      | Description                            |
+| ---------------- | ------------------------ | -------------------------------------- |
+| `.php_cs.cache`  | `.php-cs-fixer.cache`    | Cache file                             |
+
 CLI options
 -----------
 
