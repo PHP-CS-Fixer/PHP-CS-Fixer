@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2021-03-20T16:43:35Z
+
+I'm not sure why we were not using it before
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-20T16:59:16Z
+
+[![Coverage Status](https://coveralls.io/builds/38109039/badge)](https://coveralls.io/builds/38109039)
+
+Coverage remained the same at 91.849% when pulling **3d3d72d46b1fe0a2d1a3336b60b23afb84c4a776 on keradus:2.18_int_tmp** into **c40975866e753a724377af50de9148a36be9179e on FriendsOfPHP:2.18**.
