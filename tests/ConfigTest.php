@@ -289,10 +289,10 @@ final class ConfigTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Config::create is deprecated since 2.17 and will be removed in 3.0.
      */
     public function testDeprecatedConstructor()
     {
+        $this->expectDeprecation('PhpCsFixer\\Config::create is deprecated since 2.17 and will be removed in 3.0.');
         Config::create();
     }
 }

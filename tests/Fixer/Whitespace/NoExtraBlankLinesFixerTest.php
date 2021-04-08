@@ -91,10 +91,10 @@ EOF;
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
     public function testLegacyConfigNull()
     {
+        $this->expectDeprecation('Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.');
         $this->fixer->configure(null);
 
         $this->doTest($this->removeLinesFromString($this->template, [23, 24]), $this->template);
@@ -105,10 +105,10 @@ EOF;
      *
      * @group legacy
      * @dataProvider provideWithConfigCases
-     * @expectedDeprecation Passing "tokens" at the root of the configuration for rule "no_extra_blank_lines" is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.
      */
     public function testLegacyWithConfig(array $lineNumberRemoved, array $config)
     {
+        $this->expectDeprecation('Passing "tokens" at the root of the configuration for rule "no_extra_blank_lines" is deprecated and will not be supported in 3.0, use "tokens" => array(...) option instead.');
         $this->fixer->configure($config);
 
         $this->doTest($this->removeLinesFromString($this->template, $lineNumberRemoved), $this->template);
@@ -778,10 +778,10 @@ class Foo
 
     /**
      * @group legacy
-     * @expectedDeprecation Token "useTrait" in option "tokens" for rule "no_extra_blank_lines" is deprecated and will be removed in 3.0, use "use_trait" instead.
      */
     public function testRemoveBetweenUseTraitsDeprecatedToken()
     {
+        $this->expectDeprecation('Token "useTrait" in option "tokens" for rule "no_extra_blank_lines" is deprecated and will be removed in 3.0, use "use_trait" instead.');
         $this->fixer->configure(['tokens' => ['useTrait']]);
         $this->doTest(
             '<?php

@@ -28,11 +28,11 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAllCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAll($expected, $input = null)
     {
+        $this->expectDeprecation('Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.');
+        $this->expectDeprecation('Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.');
         $this->doTest($expected, $input);
 
         $this->fixer->configure([
@@ -73,8 +73,6 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAllCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAllWithDifferentLineEnding($expected, $input = null)
     {
@@ -384,11 +382,11 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundParenthesesOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundParenthesesOnly($expected, $input = null)
     {
+        $this->expectDeprecation('Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.');
+        $this->expectDeprecation('Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.');
         $this->fixer->configure([
             'around_commas' => false,
             'around_argument_assignments' => false,
@@ -443,8 +441,6 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundParenthesesOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundParenthesesOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -693,11 +689,11 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundCommasOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundCommasOnly($expected, $input = null)
     {
+        $this->expectDeprecation('Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.');
+        $this->expectDeprecation('Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.');
         $this->fixer->configure([
             'around_parentheses' => false,
             'around_argument_assignments' => false,
@@ -752,11 +748,11 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundCommasOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundCommasOnlyWithDifferentLineEnding($expected, $input = null)
     {
+        $this->expectDeprecation('Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.');
+        $this->expectDeprecation('Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.');
         $expected = str_replace("\n", "\r\n", $expected);
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
@@ -1025,11 +1021,11 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArgumentAssignmentsOnly($expected, $input = null)
     {
+        $this->expectDeprecation('Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.');
+        $this->expectDeprecation('Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.');
         $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
@@ -1052,8 +1048,6 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArgumentAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArgumentAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {
@@ -1301,11 +1295,11 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArrayAssignmentsOnly($expected, $input = null)
     {
+        $this->expectDeprecation('Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.');
+        $this->expectDeprecation('Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.');
         $this->fixer->configure([
             'around_parentheses' => false,
             'around_commas' => false,
@@ -1328,8 +1322,6 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixAroundArrayAssignmentsOnlyCases
      * @group legacy
-     * @expectedDeprecation Option "around_argument_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_argument_assignments" and "after_argument_assignments" instead.
-     * @expectedDeprecation Option "around_array_assignments" for rule "doctrine_annotation_spaces" is deprecated and will be removed in version 3.0. Use options "before_array_assignments_equals", "after_array_assignments_equals", "before_array_assignments_colon" and "after_array_assignments_colon" instead.
      */
     public function testLegacyFixAroundArrayAssignmentsOnlyWithDifferentLineEnding($expected, $input = null)
     {

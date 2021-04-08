@@ -1073,19 +1073,19 @@ $fn = fn(
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
      */
     public function testLegacyFixSpace()
     {
+        $this->expectDeprecation('PhpCsFixer\\Fixer\\FunctionNotation\\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.');
         $this->fixer->fixSpace(Tokens::fromCode('<?php xyz("", "", "", "");'), 1);
     }
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "ensure_fully_multiline" for rule "method_argument_space" is deprecated and will be removed in version 3.0. Use option "on_multiline" instead.
      */
     public function testDeprecatedEnsureFullyMultilineOption()
     {
+        $this->expectDeprecation('Option "ensure_fully_multiline" for rule "method_argument_space" is deprecated and will be removed in version 3.0. Use option "on_multiline" instead.');
         $this->fixer->configure([
             'ensure_fully_multiline' => true,
         ]);

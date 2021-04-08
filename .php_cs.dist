@@ -27,6 +27,7 @@ $config
         '@PHPUnit75Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
+        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']],
         'header_comment' => ['header' => $header],
         'list_syntax' => ['syntax' => 'long'],
     ])

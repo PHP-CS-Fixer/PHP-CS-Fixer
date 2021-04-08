@@ -28,10 +28,10 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
 {
     /**
      * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
     public function testLegacyConfigureDefaultToNull()
     {
+        $this->expectDeprecation('Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.');
         $defaultConfig = [
             'multi_line_extends_each_single_line' => false,
             'single_item_single_line' => false,
