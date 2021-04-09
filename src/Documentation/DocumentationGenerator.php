@@ -16,8 +16,7 @@ namespace PhpCsFixer\Documentation;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
-use PhpCsFixer\Diff\Differ;
-use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
+use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -41,7 +40,7 @@ use PhpCsFixer\Utils;
 final class DocumentationGenerator
 {
     /**
-     * @var Differ
+     * @var FullDiffer
      */
     private $differ;
 
@@ -49,11 +48,7 @@ final class DocumentationGenerator
 
     public function __construct()
     {
-        $this->differ = new Differ(new StrictUnifiedDiffOutputBuilder([
-            'contextLines' => 1024, // number large enough to have all lines in diff
-            'fromFile' => 'Original',
-            'toFile' => 'New',
-        ]));
+        $this->differ = new FullDiffer();
 
         $this->path = \dirname(__DIR__, 2).'/doc';
     }
