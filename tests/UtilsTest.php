@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Utils;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,6 +30,8 @@ use PhpCsFixer\Utils;
  */
 final class UtilsTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @param string $expected Camel case string
      * @param string $input    Input string
@@ -277,6 +280,28 @@ final class UtilsTest extends TestCase
                 [],
             ],
         ];
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testTriggerDeprecationWhenFutureModeIsOff(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
+
+        $this->expectDeprecation('The message');
+
+        Utils::triggerDeprecation('The message', \DomainException::class);
+    }
+
+    public function testTriggerDeprecationWhenFutureModeIsOn(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('The message');
+
+        Utils::triggerDeprecation('The message', \DomainException::class);
     }
 
     private function createFixerDouble(string $name, int $priority)
