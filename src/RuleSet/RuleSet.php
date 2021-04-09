@@ -13,6 +13,7 @@
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Utils;
 
 /**
  * Set of rules to be used by fixer.
@@ -51,12 +52,10 @@ class RuleSet implements RuleSetInterface
             if (true !== $value && false !== $value && !\is_array($value)) {
                 // @TODO drop me on 3.0
                 if (null === $value) {
-                    $messageForNullIssue = 'To disable the rule, use "FALSE" instead of "NULL".';
-                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        throw new InvalidFixerConfigurationException($name, $messageForNullIssue);
-                    }
-
-                    @trigger_error($messageForNullIssue, E_USER_DEPRECATED);
+                    Utils::triggerDeprecation(
+                        'To disable the rule, use "FALSE" instead of "NULL".',
+                        InvalidFixerConfigurationException::class
+                    );
 
                     continue;
                 }
@@ -107,7 +106,7 @@ class RuleSet implements RuleSetInterface
      */
     public static function create(array $set = [])
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.');
 
         return new self($set);
     }
@@ -117,7 +116,7 @@ class RuleSet implements RuleSetInterface
      */
     public function getSetDefinitionNames()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.');
 
         return RuleSets::getSetDefinitionNames();
     }

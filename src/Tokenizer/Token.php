@@ -123,7 +123,7 @@ class Token
      */
     public function clear()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0.');
         Tokens::setLegacyMode(true);
 
         $this->content = '';
@@ -138,7 +138,7 @@ class Token
      */
     public function clearChanged()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0.');
         Tokens::setLegacyMode(true);
 
         $this->changed = false;
@@ -397,7 +397,7 @@ class Token
      */
     public function isChanged()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0.');
 
         return $this->changed;
     }
@@ -433,7 +433,7 @@ class Token
      */
     public function isEmpty()
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0.');
 
         return null === $this->id && ('' === $this->content || null === $this->content);
     }
@@ -519,7 +519,7 @@ class Token
      */
     public function override($other)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0.');
         Tokens::setLegacyMode(true);
 
         $prototype = $other instanceof self ? $other->getPrototype() : $other;
@@ -550,7 +550,7 @@ class Token
      */
     public function setContent($content)
     {
-        @trigger_error(__METHOD__.' is deprecated and will be removed in 3.0.', E_USER_DEPRECATED);
+        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0.');
         Tokens::setLegacyMode(true);
 
         if ($this->content === $content) {
@@ -562,7 +562,7 @@ class Token
 
         // setting empty content is clearing the token
         if ('' === $content) {
-            @trigger_error(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.', E_USER_DEPRECATED);
+            Utils::triggerDeprecation(__METHOD__.' shall not be used to clear token, use Tokens::clearAt instead.');
             $this->id = null;
             $this->isArray = false;
         }
