@@ -32,6 +32,18 @@ final class UtilsTest extends TestCase
 {
     use ExpectDeprecationTrait;
 
+    private $originalValueOfFutureMode;
+
+    protected function setUp(): void
+    {
+        $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
+    }
+
+    protected function tearDown(): void
+    {
+        putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
+    }
+
     /**
      * @param string $expected Camel case string
      * @param string $input    Input string
