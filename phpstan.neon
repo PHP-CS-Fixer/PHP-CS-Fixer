@@ -32,5 +32,8 @@ parameters:
         -
             message: '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
             path: src/Tokenizer/Tokens.php
+        -
+            message: '/^Class Test\dConfig not found.$/'
+            path: tests/Console/ConfigurationResolverTest.php
 
     tipsOfTheDay: false
