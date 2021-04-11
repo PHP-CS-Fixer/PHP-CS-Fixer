@@ -819,6 +819,11 @@ class Foo
             T_SWITCH,
         ];
 
+        // @TODO: drop condition when PHP 8.0+ is required
+        if (\defined('T_MATCH')) {
+            $tokens['match'] = T_MATCH;
+        }
+
         return $tokens;
     }
 

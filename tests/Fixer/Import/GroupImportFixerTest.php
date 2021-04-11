@@ -249,6 +249,49 @@ use \ReflectionClass;
 use \ReflectionMethod;
 ',
             ],
+            [
+                '<?php
+
+use Framework\Support\{Arr, Collection};
+use Framework\Database\ORM\{Model, SoftDeletes};
+use Framework\Notifications\{Notifiable, Notification};
+use Framework\Support\Facades\{DB, Log};
+use Framework\Database\ORM\Relations\{BelongsTo, HasOne};
+use Framework\Database\Query\JoinClause;
+',
+                '<?php
+
+use Framework\Database\ORM\Model;
+use Framework\Database\ORM\Relations\BelongsTo;
+use Framework\Database\ORM\Relations\HasOne;
+use Framework\Database\ORM\SoftDeletes;
+use Framework\Database\Query\JoinClause;
+use Framework\Notifications\Notifiable;
+use Framework\Notifications\Notification;
+use Framework\Support\Arr;
+use Framework\Support\Collection;
+use Framework\Support\Facades\DB;
+use Framework\Support\Facades\Log;
+',
+            ],
+            [
+                '<?php
+
+use Framework\Baz\Class6;
+use Framework\Bar\{Class3, Class4, Class5};
+use Framework\Foo\{Class1, Class2, Class7};
+',
+                '<?php
+
+use Framework\Foo\Class1;
+use Framework\Foo\Class2;
+use Framework\Bar\Class3;
+use Framework\Bar\Class4;
+use Framework\Bar\Class5;
+use Framework\Baz\Class6;
+use Framework\Foo\Class7;
+',
+            ],
         ];
 
         foreach ($tests as $index => $test) {

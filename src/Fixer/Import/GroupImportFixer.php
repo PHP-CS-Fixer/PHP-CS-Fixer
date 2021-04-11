@@ -97,7 +97,12 @@ final class GroupImportFixer extends AbstractFixer
             return \in_array($namespaceName, $sameNamespaces, true);
         });
 
-        sort($sameNamespaceAnalysis);
+        usort($sameNamespaceAnalysis, function (NamespaceUseAnalysis $a, NamespaceUseAnalysis $b) {
+            $namespaceA = $this->getNamespaceNameWithSlash($a);
+            $namespaceB = $this->getNamespaceNameWithSlash($b);
+
+            return \strlen($namespaceA) - \strlen($namespaceB) ?: strcmp($a->getFullName(), $b->getFullName());
+        });
 
         return $sameNamespaceAnalysis;
     }
