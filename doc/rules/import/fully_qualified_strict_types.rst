@@ -34,7 +34,14 @@ Example #1
 
     use Foo\Bar;
     use Foo\Bar\Baz;
+    use Foo\Bar\Bam;
 
+    /**
+   - * @see \Foo\Bar\Baz
+   - * @see \Foo\Bar\Bam
+   + * @see Baz
+   + * @see Bam
+     */
     class SomeClass
     {
    -    public function doX(\Foo\Bar $foo): \Foo\Bar\Baz

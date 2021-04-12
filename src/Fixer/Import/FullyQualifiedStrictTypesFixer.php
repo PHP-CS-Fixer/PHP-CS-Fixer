@@ -22,6 +22,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
@@ -31,6 +32,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
+ * @author Tomas Jadrny <developer@tomasjadrny.cz>
+ * @author Greg Korba <greg@codito.dev>
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -44,7 +47,12 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
 use Foo\Bar;
 use Foo\Bar\Baz;
+use Foo\Bar\Bam;
 
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ */
 class SomeClass
 {
     public function doX(\Foo\Bar $foo): \Foo\Bar\Baz
@@ -86,7 +94,7 @@ class SomeClass
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_DOC_COMMENT]);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -119,6 +127,10 @@ class SomeClass
                 if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                     $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
                 }
+
+                if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+                    $this->fixPhpDoc($tokens, $index, $uses, $namespaceName);
+                }
             }
         }
     }
@@ -148,6 +160,28 @@ class SomeClass
     /**
      * @param array<string, string> $uses
      */
+    private function fixPhpDoc(Tokens $tokens, int $index, array $uses, string $namespaceName): void
+    {
+        $phpDoc = $tokens[$index];
+        $phpDocContent = $phpDoc->getContent();
+        Preg::matchAll('#@([^\s]+)\s+([^\s]+)#', $phpDocContent, $matches);
+
+        if ([] !== $matches) {
+            foreach ($matches[2] as $typeName) {
+                $shortTokens = $this->determineShortType($typeName, $uses, $namespaceName);
+
+                if (null !== $shortTokens) {
+                    $phpDocContent = str_replace($typeName, $shortTokens[0]->getContent(), $phpDocContent);
+                }
+            }
+
+            $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContent]);
+        }
+    }
+
+    /**
+     * @param array<string, string> $uses
+     */
     private function replaceByShortType(Tokens $tokens, TypeAnalysis $type, array $uses, string $namespaceName): void
     {
         $typeStartIndex = $type->getStartIndex();
@@ -156,7 +190,6 @@ class SomeClass
             $typeStartIndex = $tokens->getNextMeaningfulToken($typeStartIndex);
         }
 
-        $namespaceNameLength = \strlen($namespaceName);
         $types = $this->getTypes($tokens, $typeStartIndex, $type->getEndIndex());
 
         foreach ($types as $typeName => [$startIndex, $endIndex]) {
@@ -164,60 +197,76 @@ class SomeClass
                 return;
             }
 
-            $withLeadingBackslash = str_starts_with($typeName, '\\');
-            if ($withLeadingBackslash) {
-                $typeName = substr($typeName, 1);
-            }
-            $typeNameLower = strtolower($typeName);
+            $shortType = $this->determineShortType($typeName, $uses, $namespaceName);
 
-            if (isset($uses[$typeNameLower]) && ($withLeadingBackslash || '' === $namespaceName)) {
-                // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
-                $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($uses[$typeNameLower]));
-
-                continue;
-            }
-
-            if ('' === $namespaceName) {
-                foreach ($uses as $useShortName) {
-                    if (strtolower($useShortName) === $typeNameLower) {
-                        continue 2;
-                    }
-                }
-
-                // if we are in the global namespace and the type is not imported,
-                // we enforce/remove leading backslash (depending on the configuration)
-                if (true === $this->configuration['leading_backslash_in_global_namespace']) {
-                    if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {
-                        $tokens->overrideRange(
-                            $startIndex,
-                            $endIndex,
-                            $this->namespacedStringToTokens($typeName, true)
-                        );
-                    }
-                } else {
-                    $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeName));
-                }
-            } elseif (!str_contains($typeName, '\\')) {
-                // If we're NOT in the global namespace, there's no related import,
-                // AND used type is from global namespace, then it can't be shortened.
-                continue;
-            } elseif ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName.'\\')) {
-                // if the type starts with namespace and the type is not the same as the namespace it can be shortened
-                $typeNameShort = substr($typeName, $namespaceNameLength + 1);
-
-                // if short names are the same, but long one are different then it cannot be shortened
-                foreach ($uses as $useLongName => $useShortName) {
-                    if (
-                        strtolower($typeNameShort) === strtolower($useShortName)
-                        && strtolower($typeName) !== strtolower($useLongName)
-                    ) {
-                        continue 2;
-                    }
-                }
-
-                $tokens->overrideRange($startIndex, $endIndex, $this->namespacedStringToTokens($typeNameShort));
+            if (null !== $shortType) {
+                $tokens->overrideRange($startIndex, $endIndex, $shortType);
             }
         }
+    }
+
+    /**
+     * Determines short type based on FQCN, current namespace and imports (`use` declarations).
+     *
+     * @param array<string, string> $uses
+     *
+     * @return null|Token[]
+     */
+    private function determineShortType(string $typeName, array $uses, string $namespaceName): ?array
+    {
+        $withLeadingBackslash = str_starts_with($typeName, '\\');
+        if ($withLeadingBackslash) {
+            $typeName = substr($typeName, 1);
+        }
+        $typeNameLower = strtolower($typeName);
+        $namespaceNameLength = \strlen($namespaceName);
+
+        if (isset($uses[$typeNameLower]) && ($withLeadingBackslash || '' === $namespaceName)) {
+            // if the type without leading "\" equals any of the full "uses" long names, it can be replaced with the short one
+            return $this->namespacedStringToTokens($uses[$typeNameLower]);
+        }
+
+        if ('' === $namespaceName) {
+            // if we are in the global namespace and the type is not imported the leading '\' can be removed (TODO nice config candidate)
+            foreach ($uses as $useShortName) {
+                if (strtolower($useShortName) === $typeNameLower) {
+                    return null;
+                }
+            }
+
+            // if we are in the global namespace and the type is not imported,
+            // we enforce/remove leading backslash (depending on the configuration)
+            if (true === $this->configuration['leading_backslash_in_global_namespace']) {
+                if (!$withLeadingBackslash && !isset($uses[$typeNameLower])) {
+                    return $this->namespacedStringToTokens($typeName, true);
+                }
+            } else {
+                return $this->namespacedStringToTokens($typeName);
+            }
+        }
+        if (!str_contains($typeName, '\\')) {
+            // If we're NOT in the global namespace, there's no related import,
+            // AND used type is from global namespace, then it can't be shortened.
+            return null;
+        }
+        if ($typeNameLower !== $namespaceName && str_starts_with($typeNameLower, $namespaceName.'\\')) {
+            // if the type starts with namespace and the type is not the same as the namespace it can be shortened
+            $typeNameShort = substr($typeName, $namespaceNameLength + 1);
+
+            // if short names are the same, but long one are different then it cannot be shortened
+            foreach ($uses as $useLongName => $useShortName) {
+                if (
+                    strtolower($typeNameShort) === strtolower($useShortName)
+                    && strtolower($typeName) !== strtolower($useLongName)
+                ) {
+                    return null;
+                }
+            }
+
+            return $this->namespacedStringToTokens($typeNameShort);
+        }
+
+        return null;
     }
 
     /**
