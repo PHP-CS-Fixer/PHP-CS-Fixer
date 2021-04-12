@@ -41,6 +41,8 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @ORM\Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping; /** @Mapping\Entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM; /** @ORM\Mapping\Entity */ class MyEntity {}'],
+            ['<?php /** @Document */ class MyDocument {}'],
+            ['<?php use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM; /** @ODM\Document */ class MyEntity {}'],
             ['<?php /** @entity */ class MyEntity {}'],
             ['<?php use Doctrine\ORM\Mapping as ORM; /** @orm\entity */ class MyEntity {}'],
             ['<?php abstract class MyAbstract {}'],

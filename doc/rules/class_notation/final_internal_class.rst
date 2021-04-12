@@ -33,7 +33,7 @@ of the white list ones are used as well. (case insensitive)
 
 Allowed types: ``array``
 
-Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity']``
+Default value: ``['@final', '@Entity', '@ORM\\Entity', '@ORM\\Mapping\\Entity', '@Mapping\\Entity', '@Document', '@ODM\\Document']``
 
 ``consider_absent_docblock_as_internal_class``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
