@@ -153,7 +153,7 @@ Cache file can be specified via ``--cache-file`` option or config file:
     <?php
 
     $config = new PhpCsFixer\Config();
-    return $config->setCacheFile(__DIR__.'/.php_cs.cache');
+    return $config->setCacheFile(__DIR__.'/.php-cs-fixer.cache');
 
 Using PHP CS Fixer on CI
 ------------------------

@@ -1135,8 +1135,8 @@ final class ConfigurationResolverTest extends TestCase
     {
         return [
             [null, '/my/path/my/file', 'path/my/file'],
-            ['/my/path2/dir/.php_cs.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
-            ['dir/.php_cs.cache', '/my/path/dir/dir3/file', 'dir3/file'],
+            ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
+            ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'],
         ];
     }
 

@@ -169,7 +169,7 @@ final class ConfigTest extends TestCase
     {
         $config = new Config();
 
-        static::assertSame('.php_cs.cache', $config->getCacheFile());
+        static::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
     }
 
     public function testThatCacheFileCanBeMutated(): void
@@ -206,7 +206,7 @@ final class ConfigTest extends TestCase
     {
         $config = new Config();
 
-        static::assertSame('.php_cs.cache', $config->getCacheFile());
+        static::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
         static::assertSame([], $config->getCustomFixers());
         static::assertSame('txt', $config->getFormat());
         static::assertFalse($config->getHideProgress());
