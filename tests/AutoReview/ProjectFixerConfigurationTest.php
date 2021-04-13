@@ -51,7 +51,7 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
         sort($rulesSorted);
-        static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php_cs.dist` of this project.');
+        static::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php-cs-fixer.dist.php` of this project.');
     }
 
     /**
@@ -59,6 +59,6 @@ final class ProjectFixerConfigurationTest extends TestCase
      */
     private function loadConfig()
     {
-        return require __DIR__.'/../../.php_cs.dist';
+        return require __DIR__.'/../../.php-cs-fixer.dist.php';
     }
 }
