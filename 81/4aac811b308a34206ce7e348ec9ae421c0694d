@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-07T19:23:47Z
+
+[![Coverage Status](https://coveralls.io/builds/38769877/badge)](https://coveralls.io/builds/38769877)
+
+Coverage increased (+0.005%) to 91.962% when pulling **0cef634bca0e56587442f999fd4194d987b958ee on keradus:restrict_config_filename_usage** into **3ac438ab96b91b3c3c4aef8630cc33c74e1bd1fb on FriendsOfPHP:3.0**.
