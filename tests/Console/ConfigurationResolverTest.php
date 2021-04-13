@@ -166,13 +166,13 @@ final class ConfigurationResolverTest extends TestCase
 
         $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']]);
 
-        static::assertSame($dir.\DIRECTORY_SEPARATOR.'.php_cs.dist', $resolver->getConfigFile());
+        static::assertSame($dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php', $resolver->getConfigFile());
         static::assertInstanceOf(\Test1Config::class, $resolver->getConfig());
     }
 
     public function testResolveConfigFileSpecified(): void
     {
-        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php_cs';
+        $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php-cs-fixer.php';
 
         $resolver = $this->createConfigurationResolver(['config' => $file]);
 
@@ -201,28 +201,28 @@ final class ConfigurationResolverTest extends TestCase
 
         return [
             [
-                $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
                 'Test1Config',
                 $dirBase.'case_1',
             ],
             [
-                $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php_cs',
+                $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
                 'Test2Config',
                 $dirBase.'case_2',
             ],
             [
-                $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php_cs',
+                $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
                 'Test3Config',
                 $dirBase.'case_3',
             ],
             [
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
                 'Test6Config',
                 $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
                 $dirBase.'case_6',
             ],
             [
-                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php_cs.dist',
+                $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
                 'Test6Config',
                 $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
                 $dirBase.'case_6',
@@ -234,7 +234,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessageMatches(
-            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php_cs\.dist" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
+            '#^The config file: ".+[\/\\\]Fixtures[\/\\\]ConfigurationResolverConfigFile[\/\\\]case_5[\/\\\]\.php-cs-fixer\.dist\.php" does not return a "PhpCsFixer\\\ConfigInterface" instance\. Got: "string"\.$#'
         );
 
         $dirBase = $this->getFixtureDir();
@@ -263,7 +263,7 @@ final class ConfigurationResolverTest extends TestCase
 
         $dirBase = $this->getFixtureDir();
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php']]);
+        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php']]);
 
         $resolver->getConfig();
     }
@@ -273,8 +273,8 @@ final class ConfigurationResolverTest extends TestCase
         $dirBase = $this->getFixtureDir();
 
         $resolver = $this->createConfigurationResolver([
-            'config' => $dirBase.'case_1/.php_cs.dist',
-            'path' => [$dirBase.'case_1/.php_cs.dist', $dirBase.'case_1/foo.php'],
+            'config' => $dirBase.'case_1/.php-cs-fixer.dist.php',
+            'path' => [$dirBase.'case_1/.php-cs-fixer.dist.php', $dirBase.'case_1/foo.php'],
         ]);
 
         static::assertInstanceOf(\PhpCsFixer\Console\ConfigurationResolver::class, $resolver);
@@ -593,56 +593,56 @@ final class ConfigurationResolverTest extends TestCase
                 null,
                 [$dir.'/d/d1.php', $dir.'/d/d2.php'],
                 'override',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, intersected with multiple files' => [
                 $cb(['d/d1.php', 'd/d2.php']),
                 null,
                 [$dir.'/d/d1.php', $dir.'/d/d2.php'],
                 'intersection',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, overridden by non-existing dir' => [
                 new \LogicException(),
                 null,
                 [$dir.'/d/fff'],
                 'override',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, intersected with non-existing dir' => [
                 new \LogicException(),
                 null,
                 [$dir.'/d/fff'],
                 'intersection',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, overridden by non-existing file' => [
                 new \LogicException(),
                 null,
                 [$dir.'/d/fff.php'],
                 'override',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, intersected with non-existing file' => [
                 new \LogicException(),
                 null,
                 [$dir.'/d/fff.php'],
                 'intersection',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, overridden by multiple files and dirs' => [
                 $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
                 null,
                 [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
                 'override',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
             'configured by config file, intersected with multiple files and dirs' => [
                 $cb(['d/d1.php', 'd/e/de1.php', 'd/f/df1.php']),
                 null,
                 [$dir.'/d/d1.php', $dir.'/d/e', $dir.'/d/f/'],
                 'intersection',
-                $dir.'/d/.php_cs',
+                $dir.'/d/.php-cs-fixer.php',
             ],
         ];
     }
@@ -669,13 +669,13 @@ final class ConfigurationResolverTest extends TestCase
         return [
             [
                 [
-                    'config' => $root.'/.php_cs.dist',
+                    'config' => $root.'/.php-cs-fixer.dist.php',
                 ],
                 false,
             ],
             [
                 [
-                    'config' => $root.'/.php_cs.dist',
+                    'config' => $root.'/.php-cs-fixer.dist.php',
                     'path' => [$root.'/src'],
                 ],
                 true,
@@ -692,7 +692,7 @@ final class ConfigurationResolverTest extends TestCase
             ],
             [
                 [
-                    'config' => $root.'/.php_cs.dist',
+                    'config' => $root.'/.php-cs-fixer.dist.php',
                     'path' => [$root.'/src'],
                     'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
                 ],
@@ -701,7 +701,7 @@ final class ConfigurationResolverTest extends TestCase
             // scenario when loaded config is not setting custom finder
             [
                 [
-                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php_cs.dist',
+                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_3/.php-cs-fixer.dist.php',
                     'path' => [$root.'/src'],
                 ],
                 false,
@@ -709,7 +709,7 @@ final class ConfigurationResolverTest extends TestCase
             // scenario when loaded config contains not fully defined finder
             [
                 [
-                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php_cs',
+                    'config' => $root.'/tests/Fixtures/ConfigurationResolverConfigFile/case_9/.php-cs-fixer.php',
                     'path' => [$root.'/src'],
                 ],
                 false,
@@ -1062,7 +1062,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_8';
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'.php_cs']]);
+        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php']]);
 
         static::assertTrue($resolver->getRiskyAllowed());
         static::assertSame(['php_unit_construct' => true], $resolver->getRules());

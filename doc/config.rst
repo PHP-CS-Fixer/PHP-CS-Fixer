@@ -3,14 +3,14 @@ Config file
 ===========
 
 Instead of using command line options to customize rules and rule sets, you can save the
-project configuration in a ``.php_cs.dist`` file in the root directory of your project.
+project configuration in a ``.php-cs-fixer.dist.php`` file in the root directory of your project.
 The file must return an instance of `PhpCsFixer\\ConfigInterface <../src/ConfigInterface.php>`_
 which lets you configure the rules, the files and directories that
-need to be analyzed. You may also create ``.php_cs`` file, which is
+need to be analyzed. You may also create ``.php-cs-fixer.php`` file, which is
 the local configuration that will be used instead of the project configuration. It
 is a good practice to add that file into your ``.gitignore`` file.
 With the ``--config`` option you can specify the path to the
-``.php_cs`` file.
+``.php-cs-fixer.php`` file.
 
 The example below will add two rules to the default list of PSR2 set rules:
 
