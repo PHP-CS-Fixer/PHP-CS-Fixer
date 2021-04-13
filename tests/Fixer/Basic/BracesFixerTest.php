@@ -5423,7 +5423,7 @@ if ($a) foreach ($b as $c): ?>
      *
      * @dataProvider provideFix80Cases
      */
-    public function testFix80($expected, $input): voild
+    public function testFix80($expected, $input): void
     {
         $this->doTest($expected, $input);
     }

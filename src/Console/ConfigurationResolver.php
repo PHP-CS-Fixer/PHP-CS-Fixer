@@ -223,8 +223,7 @@ final class ConfigurationResolver
                 ];
 
                 if (isset($deprecatedConfigs[$configFileBasename])) {
-                    $message = "Configuration file `{$configFileBasename}` is deprecated, rename to `{$deprecatedConfigs[$configFileBasename]}`.";
-                    Utils::triggerDeprecation($message, InvalidConfigurationException::class);
+                    throw new InvalidConfigurationException("Configuration file `{$configFileBasename}` is outdated, rename to `{$deprecatedConfigs[$configFileBasename]}`.");
                 }
 
                 $this->config = self::separatedContextLessInclude($configFile);
