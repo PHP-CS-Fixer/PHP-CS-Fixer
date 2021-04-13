@@ -90,11 +90,11 @@ final class Application extends BaseApplication
      */
     public function getLongVersion(): string
     {
-        $version = sprintf(
-            '%s <info>%s</info> by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>',
+        $version = implode('', [
             parent::getLongVersion(),
-            self::VERSION_CODENAME
-        );
+            self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '',
+            ' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>',
+        ]);
 
         $commit = '@git-commit@';
 
