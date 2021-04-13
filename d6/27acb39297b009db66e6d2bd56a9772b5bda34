@@ -1,0 +1,120 @@
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-04-07T17:01:48Z
+
+I propose `.php_cs.php` and `.php_cs.local.php`
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-07T18:25:04Z
+
+`dist` is common pattern for other tools, let's not introducing something new
+`php_cs` was constantly confused with CodeSniffer, let's get rid of that once and for all
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-07T19:12:50Z
+
+[![Coverage Status](https://coveralls.io/builds/38745168/badge)](https://coveralls.io/builds/38745168)
+
+Coverage decreased (-0.007%) to 91.883% when pulling **1dd9a5f076e4ed0ce08f5d577f97ec5fc703a163 on keradus:new_config_format** into **81a5c170f26c870f1f32661d1b47c39421f433b8 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-04-07T20:02:49Z
+
+But `.local.` can be much easily ignored in `.gitignore`, `.php_cs` (or new equivalent) has priority over `dist`, but this name is very often not ignored thus not helpful. Let's think big and set the new standard 🚀 🍾
+
+Example of universal & easily understandable `.gitignore` with good naming:
+
+```
+local
+*.local
+*.local.*
+cache
+*.cache
+*.cache.*
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-04-08T12:20:00Z
+
+Do we actually need to support having a "dist" file though? I never saw a valid use case and still fail to imagine one.
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-04-08T12:30:37Z
+
+>
+>
+> Do we actually need to support having a "dist" file though? I never saw a valid use case and still fail to imagine one.
+
+That is the case. We should be simple filename (without `dist`) and optionally support one prioritized name for local override.
+
+See my suggestion: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5609/files#r609648455
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-04-08T12:38:32Z
+
+> That is the case.
+
+Please elaborate :)
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-04-08T12:44:44Z
+
+>
+>
+> > That is the case.
+>
+> Please elaborate :)
+
+see above, `dist` was used to support local override, but naming is not optimal and thus requires this explanation :) Therefore I think https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5609/files#r609648455 is better and allow also more generic exclude, see https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5607#issuecomment-815204086
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-04-08T12:51:36Z
+
+I know it allows local override, but why is that needed? The point of this tool is to enforce consistent code style between multiple code contributors. When would one need to diverge from that locally (i.e. apply a different code style)?
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-04-08T12:58:36Z
+
+>
+>
+> I know it allows local override, but why is that needed? The point of this tool is to enforce consistent code style between multiple code contributors. When would one need to diverge from that locally (i.e. apply a different code style)?
+
+I belive to support one DEFAULT local/prioritized name, ie. one name that does not have to be specified explicitly to override the config.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-08T16:06:15Z
+
+@julienfalque , i know you are not in favour of multiple config files approach ;)
+
+what is `dist` for: https://stackoverflow.com/a/44764078
+don't like dist, don't use it ;) https://github.com/symfony/recipes/issues/41#issuecomment-298343132
+
+---------------------------------------------------------------------------
+
+by KacerCZ at 2021-04-09T11:35:38Z
+
+@mvorisek Use of `dist` (short from 'distribute') configurations is common in PHP tools. I don't think it is good idea to change this pattern unless you want to change it in all other tools also.
+
+@julienfalque My typical use case for local and `dist` config is introduction of new rules to project.
+Repository contains only `dist` configuration and CI uses it to check code.
+My local configuration is copy of `dist` with one or more rules enabled.
+So when I modify code it allows me to fix more errors.
+I don't have time to fix all errors at once (specially risky rules).
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-04-09T11:37:16Z
+
+> want to change it in all other tools also
+
+I would be happy to do so witch CS Fixer taking the lead :)
