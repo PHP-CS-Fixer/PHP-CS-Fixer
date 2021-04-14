@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-31T22:57:17Z
+
+[![Coverage Status](https://coveralls.io/builds/38473256/badge)](https://coveralls.io/builds/38473256)
+
+Coverage increased (+0.007%) to 91.857% when pulling **91b5d1055311f4b6765cc768705f8d124e8c2282 on kubawerlos:support_nullsafe_object_operator** into **61b909085be0f9bb9de5223be0f80ea3027eed5d on FriendsOfPHP:2.18**.
