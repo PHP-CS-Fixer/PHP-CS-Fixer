@@ -73,13 +73,16 @@ final class NamespaceUseAnalysisTest extends TestCase
         static::assertTrue($class->isClass());
         static::assertFalse($class->isFunction());
         static::assertFalse($class->isConstant());
+        static::assertSame(NamespaceUseAnalysis::TYPE_CLASS, $class->getType());
 
         static::assertFalse($function->isClass());
         static::assertTrue($function->isFunction());
         static::assertFalse($function->isConstant());
+        static::assertSame(NamespaceUseAnalysis::TYPE_FUNCTION, $function->getType());
 
         static::assertFalse($constant->isClass());
         static::assertFalse($constant->isFunction());
         static::assertTrue($constant->isConstant());
+        static::assertSame(NamespaceUseAnalysis::TYPE_CONSTANT, $constant->getType());
     }
 }
