@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-11T00:12:06Z
+
+[![Coverage Status](https://coveralls.io/builds/38727389/badge)](https://coveralls.io/builds/38727389)
+
+Coverage increased (+0.003%) to 91.853% when pulling **d74483b4d642dba569c80d69cb7ca10994f16be3 on Leprechaunz:group-import-mixing-types** into **524b57de7be82121fb51c49abf8a1648cafe258c on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-11T18:13:23Z
+
+Hey @Leprechaunz, can you resolve conflict by rebasing the PR, please?
+
+---------------------------------------------------------------------------
+
+by Leprechaunz at 2021-04-12T11:22:40Z
+
+@keradus resolved conflicts ✅
