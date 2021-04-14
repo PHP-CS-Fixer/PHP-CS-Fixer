@@ -292,6 +292,19 @@ use Framework\Baz\Class6;
 use Framework\Foo\Class7;
 ',
             ],
+            [
+                '<?php
+
+use function Foo\baz;
+use Foo\{Bar, Baz};
+',
+                '<?php
+
+use Foo\Bar;
+use function Foo\baz;
+use Foo\Baz;
+',
+            ],
         ];
 
         foreach ($tests as $index => $test) {

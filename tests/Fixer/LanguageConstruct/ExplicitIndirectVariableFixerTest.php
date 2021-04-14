@@ -70,4 +70,30 @@ $foo
             ],
         ];
     }
+
+    /**
+     * @param mixed $expected
+     * @param mixed $input
+     *
+     * @dataProvider provideTestFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideTestFix80Cases()
+    {
+        return [
+            [
+                '<?php echo $foo?->{$bar}["baz"];',
+                '<?php echo $foo?->$bar["baz"];',
+            ],
+            [
+                '<?php echo $foo?->{$bar}["baz"]();',
+                '<?php echo $foo?->$bar["baz"]();',
+            ],
+        ];
+    }
 }

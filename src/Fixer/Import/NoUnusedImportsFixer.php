@@ -145,7 +145,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
                 if (
                     0 === strcasecmp($shortName, $token->getContent())
-                    && !$prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_CONST, T_OBJECT_OPERATOR, T_DOUBLE_COLON])
+                    && !$prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_CONST, T_DOUBLE_COLON])
+                    && !$prevMeaningfulToken->isObjectOperator()
                 ) {
                     return true;
                 }

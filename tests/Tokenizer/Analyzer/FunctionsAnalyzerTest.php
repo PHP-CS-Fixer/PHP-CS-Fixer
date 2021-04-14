@@ -385,6 +385,11 @@ class Foo {}
 ',
             3,
         ];
+        yield [
+            false,
+            '<?php $x?->count();',
+            3,
+        ];
     }
 
     /**
@@ -773,6 +778,14 @@ class Foo {}
             sprintf($template, 'Bar::'),
             24,
         ];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield [
+                true,
+                sprintf($template, '$this?->'),
+                24,
+            ];
+        }
     }
 
     /**

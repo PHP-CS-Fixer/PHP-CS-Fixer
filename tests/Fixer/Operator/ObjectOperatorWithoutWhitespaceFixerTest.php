@@ -78,4 +78,29 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases()
+    {
+        yield [
+            '<?php $object?->method();',
+            '<?php $object?->   method();',
+        ];
+
+        yield [
+            '<?php $object?->method();',
+            '<?php $object   ?->   method();',
+        ];
+    }
 }

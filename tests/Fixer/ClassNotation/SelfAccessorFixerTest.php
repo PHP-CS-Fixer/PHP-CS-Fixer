@@ -228,5 +228,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         yield [
             '<?php class Foo { function bar() { $x instanceof (Foo()); } }',
         ];
+
+        yield [
+            '<?php class Foo { protected $foo; function bar() { return $this?->foo::find(2); } }',
+        ];
     }
 }

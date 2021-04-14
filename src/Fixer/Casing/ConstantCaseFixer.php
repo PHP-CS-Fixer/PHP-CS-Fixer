@@ -119,24 +119,30 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurationDefi
      */
     private function isNeighbourAccepted(Tokens $tokens, $index)
     {
-        static $forbiddenTokens = [
-            T_AS,
-            T_CLASS,
-            T_CONST,
-            T_EXTENDS,
-            T_IMPLEMENTS,
-            T_INSTANCEOF,
-            T_INSTEADOF,
-            T_INTERFACE,
-            T_NEW,
-            T_NS_SEPARATOR,
-            T_OBJECT_OPERATOR,
-            T_PAAMAYIM_NEKUDOTAYIM,
-            T_TRAIT,
-            T_USE,
-            CT::T_USE_TRAIT,
-            CT::T_USE_LAMBDA,
-        ];
+        static $forbiddenTokens = null;
+
+        if (null === $forbiddenTokens) {
+            $forbiddenTokens = array_merge(
+                [
+                    T_AS,
+                    T_CLASS,
+                    T_CONST,
+                    T_EXTENDS,
+                    T_IMPLEMENTS,
+                    T_INSTANCEOF,
+                    T_INSTEADOF,
+                    T_INTERFACE,
+                    T_NEW,
+                    T_NS_SEPARATOR,
+                    T_PAAMAYIM_NEKUDOTAYIM,
+                    T_TRAIT,
+                    T_USE,
+                    CT::T_USE_TRAIT,
+                    CT::T_USE_LAMBDA,
+                ],
+                Token::getObjectOperatorKinds()
+            );
+        }
 
         $token = $tokens[$index];
 

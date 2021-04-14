@@ -1174,5 +1174,95 @@ class Foo
 }
 EOF
         ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public function __construct()
+    {
+    }
+}',
+            '<?php
+class Foo
+{
+    public function Foo()
+    {
+    }
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public function __construct()
+    {
+        $this?->__construct();
+    }
+}',
+            '<?php
+class Foo
+{
+    public function Foo()
+    {
+        $this?->__construct();
+    }
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo extends Bar
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+}',
+            '<?php
+class Foo extends Bar
+{
+    public function Foo()
+    {
+        $this?->Bar();
+    }
+}',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    /**
+     * Constructor
+     */
+    public function __construct($bar = 1, $baz = null)
+    {
+        var_dump(1);
+    }
+}
+',
+            '<?php
+class Foo
+{
+    /**
+     * Constructor
+     */
+    public function __construct($bar = 1, $baz = null)
+    {
+        var_dump(1);
+    }
+
+    /**
+     * PHP-4 Constructor
+     */
+    function Foo($bar = 1, $baz = null)
+    {
+        $this?->__construct($bar, $baz);
+    }
+}
+',
+        ];
     }
 }

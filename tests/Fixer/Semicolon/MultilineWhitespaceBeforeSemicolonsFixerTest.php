@@ -906,4 +906,27 @@ Service
             ],
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80()
+    {
+        $this->fixer->configure(['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]);
+        $this->doTest(
+            '<?php
+
+                $foo?->method1()
+                    ?->method2()
+                    ?->method3()
+                ;
+                ',
+            '<?php
+
+                $foo?->method1()
+                    ?->method2()
+                    ?->method3();
+                '
+        );
+    }
 }

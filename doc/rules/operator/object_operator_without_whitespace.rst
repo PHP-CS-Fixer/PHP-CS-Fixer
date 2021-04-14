@@ -2,7 +2,7 @@
 Rule ``object_operator_without_whitespace``
 ===========================================
 
-There should not be space before or after object ``T_OBJECT_OPERATOR`` ``->``.
+There should not be space before or after object operators ``->`` and ``?->``.
 
 Examples
 --------
