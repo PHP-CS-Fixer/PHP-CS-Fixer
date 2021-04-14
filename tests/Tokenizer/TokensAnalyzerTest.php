@@ -1004,6 +1004,23 @@ $a(1,2);',
     }
 
     /**
+     * @requires PHP 8.0
+     */
+    public function testIsConstantInvocationForNullSafeObjectOperator(): void
+    {
+        $tokens = Tokens::fromCode('<?php $a?->b?->c;');
+
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_STRING)) {
+                continue;
+            }
+            static::assertFalse($tokensAnalyzer->isConstantInvocation($index));
+        }
+    }
+
+    /**
      * @dataProvider provideIsUnarySuccessorOperatorCases
      */
     public function testIsUnarySuccessorOperator(string $source, array $expected): void

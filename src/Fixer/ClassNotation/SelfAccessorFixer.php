@@ -148,7 +148,7 @@ class Sample
                 }
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classStartIndex)];
             }
-            if ($prevToken->isGivenKind([T_OBJECT_OPERATOR, T_STRING])) {
+            if ($prevToken->isGivenKind(T_STRING) || $prevToken->isObjectOperator()) {
                 continue;
             }
 

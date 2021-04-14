@@ -1178,4 +1178,26 @@ use /**/A\B/**/;
 '
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->doTest(
+            '<?php
+
+
+$x = $foo?->bar;
+$y = foo?->bar();
+',
+            '<?php
+
+use Foo\Bar;
+
+$x = $foo?->bar;
+$y = foo?->bar();
+'
+        );
+    }
 }

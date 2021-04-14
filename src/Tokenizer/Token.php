@@ -117,6 +117,25 @@ final class Token
     }
 
     /**
+     * Get object operator tokens kinds: T_OBJECT_OPERATOR and (if available) T_NULLSAFE_OBJECT_OPERATOR.
+     *
+     * @return int[]
+     */
+    public static function getObjectOperatorKinds(): array
+    {
+        static $objectOperators = null;
+
+        if (null === $objectOperators) {
+            $objectOperators = [T_OBJECT_OPERATOR];
+            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
+                $objectOperators[] = T_NULLSAFE_OBJECT_OPERATOR;
+            }
+        }
+
+        return $objectOperators;
+    }
+
+    /**
      * Check if token is equals to given one.
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
@@ -362,6 +381,14 @@ final class Token
         static $commentTokens = [T_COMMENT, T_DOC_COMMENT];
 
         return $this->isGivenKind($commentTokens);
+    }
+
+    /**
+     * Check if token is one of object operator tokens: T_OBJECT_OPERATOR or T_NULLSAFE_OBJECT_OPERATOR.
+     */
+    public function isObjectOperator(): bool
+    {
+        return $this->isGivenKind(self::getObjectOperatorKinds());
     }
 
     /**

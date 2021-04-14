@@ -100,6 +100,11 @@ final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
         return $this->endIndex;
     }
 
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
     public function isClass(): bool
     {
         return self::TYPE_CLASS === $this->type;

@@ -242,5 +242,16 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
 1
 );",
         ];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield [
+                '<?php throw $this?->getExceptionFactory()?->createAnException("Foo");',
+                '<?php throw $this
+                    ?->getExceptionFactory()
+                    ?->createAnException(
+                    "Foo"
+                );',
+            ];
+        }
     }
 }

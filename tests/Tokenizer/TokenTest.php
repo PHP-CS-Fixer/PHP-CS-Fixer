@@ -136,6 +136,33 @@ final class TokenTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider provideIsObjectOperatorCases
+     */
+    public function testIsObjectOperator(Token $token, bool $isObjectOperator): void
+    {
+        static::assertSame($isObjectOperator, $token->isObjectOperator());
+    }
+
+    public function provideIsObjectOperatorCases()
+    {
+        $tests = [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token([T_COMMENT, '/* comment */']), false],
+            [new Token([T_DOUBLE_COLON, '::']), false],
+            [new Token([T_OBJECT_OPERATOR, '->']), true],
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
+            yield [new Token([T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
+        }
+    }
+
     public function testIsGivenKind(): void
     {
         $braceToken = $this->getBraceToken();

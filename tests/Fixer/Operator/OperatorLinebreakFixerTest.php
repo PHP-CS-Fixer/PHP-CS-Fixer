@@ -477,7 +477,7 @@ switch ($foo) {
             ',
         ];
 
-        $operator = [
+        $operators = [
             '+', '-', '*', '/', '%', '**', // Arithmetic
             '+=', '-=', '*=', '/=', '%=', '**=', // Arithmetic assignment
             '=', // Assignment
@@ -491,11 +491,15 @@ switch ($foo) {
         ];
 
         if (\PHP_VERSION_ID >= 70000) {
-            $operator[] = '??';
-            $operator[] = '<=>';
+            $operators[] = '??';
+            $operators[] = '<=>';
         }
 
-        foreach ($operator as $operator) {
+        if (\PHP_VERSION_ID >= 80000) {
+            $operators[] = '?->';
+        }
+
+        foreach ($operators as $operator) {
             yield sprintf('handle %s operator', $operator) => [
                 sprintf('<?php
                     $foo
