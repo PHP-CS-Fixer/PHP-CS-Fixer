@@ -1,4 +1,4 @@
-/.php_cs
+/.php-cs-fixer.php
 /.phpunit.result.cache
 /box.json
 /composer.lock

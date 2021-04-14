@@ -5414,4 +5414,30 @@ if ($a) foreach ($b as $c): ?>
 <?php endforeach; ?>',
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     *
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80($expected, $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        yield 'match' => [
+            '<?php echo match ($x) {
+    1, 2 => "Same for 1 and 2",
+};',
+            '<?php echo match($x)
+{
+    1, 2 => "Same for 1 and 2",
+};',
+        ];
+    }
 }

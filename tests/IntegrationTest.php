@@ -44,7 +44,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
      */
     protected static function getTempFile(): string
     {
-        return self::getFixturesDir().\DIRECTORY_SEPARATOR.'.tmp.php';
+        return tempnam(sys_get_temp_dir(), 'PHP-CS-Fixer');
     }
 
     protected static function createIntegrationCaseFactory(): IntegrationCaseFactoryInterface

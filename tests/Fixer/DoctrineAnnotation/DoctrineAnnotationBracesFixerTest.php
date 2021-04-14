@@ -249,6 +249,14 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @enduml
  * @startuml
  *
+ * // Psalm
+ * @psalm
+ * @psalm-param
+ *
+ * // PHPStan
+ * @phpstan
+ * @phpstan-param
+ *
  * // other
  * @fix
  * @FIXME
@@ -514,6 +522,15 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * // PlantUML
  * @enduml()
  * @startuml()
+ *
+ * // Psalm
+ * @psalm()
+ * @psalm-param()
+ *
+ * // PHPStan
+ * @phpstan()
+ * @psalm-param()
+ *
  *
  * // other
  * @fix()

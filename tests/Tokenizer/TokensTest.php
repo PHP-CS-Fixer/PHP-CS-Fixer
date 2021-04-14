@@ -777,6 +777,32 @@ PHP;
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
+    public function testFindBlockEndCalledMultipleTimes(): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php foo(1, 2);');
+
+        static::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
+
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7);
+    }
+
+    public function testFindBlockStartEdgeCalledMultipleTimes(): void
+    {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php foo(1, 2);');
+
+        static::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "end"\.$/');
+
+        $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2);
+    }
+
     public function testEmptyTokens(): void
     {
         $code = '';

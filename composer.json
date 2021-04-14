@@ -18,7 +18,7 @@
         "ext-json": "*",
         "ext-tokenizer": "*",
         "composer/semver": "^3.2",
-        "composer/xdebug-handler": "^1.4",
+        "composer/xdebug-handler": "^2.0",
         "doctrine/annotations": "^1.12",
         "php-cs-fixer/diff": "^2.0",
         "symfony/console": "^4.4.20 || ^5.1.3",
