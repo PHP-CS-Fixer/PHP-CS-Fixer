@@ -941,7 +941,7 @@ class ezcReflectionMethod extends ReflectionMethod {
     /**
      * @dataProvider provideConfigCases
      */
-    public function testWithConfig(string $expected, ?string $input = null, array $config = []): void
+    public function testWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1075,6 +1075,75 @@ class ezcReflectionMethod extends ReflectionMethod {
                 ',
                 ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_NONE]],
             ],
+            [
+                '<?php
+                    class A
+                    {
+                        private $x;
+                        private $y;
+
+                        final function f1() {}
+
+                        final function f2() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        private $x;
+                        private $y;
+                        final function f1() {}
+                        final function f2() {}
+                     }
+                ',
+                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+                        const BAR = 2;
+
+                        function f1() {}
+
+                        function f2() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+                        const BAR = 2;
+                        function f1() {}
+                        function f2() {}
+                     }
+                ',
+                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+                        const BAR = 2;
+
+                        public function f1() {}
+
+                        public function f2() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+                        const BAR = 2;
+                        public function f1() {}
+                        public function f2() {}
+                     }
+                ',
+                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+            ],
         ];
     }
 
@@ -1151,7 +1220,7 @@ private $d = 123;
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71(string $expected, ?string $input = null): void
+    public function testFix71(string $expected, string $input): void
     {
         $this->fixer->configure([
             'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],

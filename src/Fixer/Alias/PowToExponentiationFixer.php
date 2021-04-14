@@ -178,11 +178,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
     private function isParenthesisNeeded(Tokens $tokens, int $argumentStartIndex, int $argumentEndIndex): bool
     {
-        static $allowedKinds = [
-            T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_OBJECT_OPERATOR, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
-            T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
-            CT::T_NAMESPACE_OPERATOR,
-        ];
+        static $allowedKinds = null;
+
+        if (null === $allowedKinds) {
+            $allowedKinds = $this->getAllowedKinds();
+        }
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
             if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens->isEmptyAt($i)) {
@@ -214,5 +214,20 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         }
 
         return false;
+    }
+
+    /**
+     * @return int[]
+     */
+    private function getAllowedKinds()
+    {
+        return array_merge(
+            [
+                T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
+                T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
+                CT::T_NAMESPACE_OPERATOR,
+            ],
+            Token::getObjectOperatorKinds()
+        );
     }
 }

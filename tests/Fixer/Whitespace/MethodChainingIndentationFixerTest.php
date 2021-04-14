@@ -280,4 +280,28 @@ $foo
 '
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->doTest(
+            '<?php
+
+    $user?->setEmail("voff.web@gmail.com")
+        ?->setPassword("233434")
+        ?->setEmailConfirmed(false)
+        ?->setEmailConfirmationCode("123456");
+',
+            '<?php
+
+    $user?->setEmail("voff.web@gmail.com")
+
+     ?->setPassword("233434")
+        ?->setEmailConfirmed(false)
+?->setEmailConfirmationCode("123456");
+'
+        );
+    }
 }

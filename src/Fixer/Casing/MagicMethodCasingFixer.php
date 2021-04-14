@@ -78,7 +78,7 @@ $foo->__INVOKE(1);
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING) && $tokens->isAnyTokenKindsFound([T_FUNCTION, T_OBJECT_OPERATOR, T_DOUBLE_COLON]);
+        return $tokens->isTokenKindFound(T_STRING) && $tokens->isAnyTokenKindsFound(array_merge([T_FUNCTION, T_DOUBLE_COLON], Token::getObjectOperatorKinds()));
     }
 
     /**
@@ -168,7 +168,7 @@ $foo->__INVOKE(1);
     private function isMethodCall(Tokens $tokens, int $index): bool
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->equals([T_OBJECT_OPERATOR, '->'])) {
+        if (!$tokens[$prevIndex]->isObjectOperator()) {
             return false; // not a "simple" method call
         }
 

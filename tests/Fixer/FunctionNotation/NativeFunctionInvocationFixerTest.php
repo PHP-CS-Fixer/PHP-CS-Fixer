@@ -638,4 +638,12 @@ class Foo {}
             ['strict' => true]
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFixWithNullSafeObjectOperator(): void
+    {
+        $this->doTest('<?php $x?->count();');
+    }
 }

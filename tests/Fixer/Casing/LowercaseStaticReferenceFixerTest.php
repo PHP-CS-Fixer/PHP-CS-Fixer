@@ -210,4 +210,12 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80(): void
+    {
+        $this->doTest('<?php $foo?->Self();');
+    }
 }
