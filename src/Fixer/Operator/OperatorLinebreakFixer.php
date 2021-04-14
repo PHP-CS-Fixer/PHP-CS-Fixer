@@ -37,11 +37,6 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configuratio
     const BOOLEAN_OPERATORS = [[T_BOOLEAN_AND], [T_BOOLEAN_OR], [T_LOGICAL_AND], [T_LOGICAL_OR], [T_LOGICAL_XOR]];
 
     /**
-     * @internal
-     */
-    const NON_BOOLEAN_OPERATORS = ['%', '&', '*', '+', '-', '.', '/', ':', '<', '=', '>', '?', '^', '|', [T_AND_EQUAL], [T_CONCAT_EQUAL], [T_DIV_EQUAL], [T_DOUBLE_ARROW], [T_IS_EQUAL], [T_IS_GREATER_OR_EQUAL], [T_IS_IDENTICAL], [T_IS_NOT_EQUAL], [T_IS_NOT_IDENTICAL], [T_IS_SMALLER_OR_EQUAL], [T_MINUS_EQUAL], [T_MOD_EQUAL], [T_MUL_EQUAL], [T_OBJECT_OPERATOR], [T_OR_EQUAL], [T_PAAMAYIM_NEKUDOTAYIM], [T_PLUS_EQUAL], [T_POW], [T_POW_EQUAL], [T_SL], [T_SL_EQUAL], [T_SR], [T_SR_EQUAL], [T_XOR_EQUAL]];
-
-    /**
      * @var string
      */
     private $position = 'beginning';
@@ -87,7 +82,7 @@ function foo() {
 
         $this->operators = self::BOOLEAN_OPERATORS;
         if (!$this->configuration['only_booleans']) {
-            $this->operators = array_merge($this->operators, self::NON_BOOLEAN_OPERATORS);
+            $this->operators = array_merge($this->operators, self::getNonBooleanOperators());
             if (\PHP_VERSION_ID >= 70000) {
                 $this->operators[] = [T_COALESCE];
                 $this->operators[] = [T_SPACESHIP];
@@ -316,5 +311,19 @@ function foo() {
         }
 
         return false;
+    }
+
+    private static function getNonBooleanOperators()
+    {
+        return array_merge(
+            [
+                '%', '&', '*', '+', '-', '.', '/', ':', '<', '=', '>', '?', '^', '|',
+                [T_AND_EQUAL], [T_CONCAT_EQUAL], [T_DIV_EQUAL], [T_DOUBLE_ARROW], [T_IS_EQUAL], [T_IS_GREATER_OR_EQUAL],
+                [T_IS_IDENTICAL], [T_IS_NOT_EQUAL], [T_IS_NOT_IDENTICAL], [T_IS_SMALLER_OR_EQUAL], [T_MINUS_EQUAL],
+                [T_MOD_EQUAL], [T_MUL_EQUAL], [T_OR_EQUAL], [T_PAAMAYIM_NEKUDOTAYIM], [T_PLUS_EQUAL], [T_POW],
+                [T_POW_EQUAL], [T_SL], [T_SL_EQUAL], [T_SR], [T_SR_EQUAL], [T_XOR_EQUAL],
+            ],
+            array_map(function ($id) { return [$id]; }, Token::getObjectOperatorKinds())
+        );
     }
 }

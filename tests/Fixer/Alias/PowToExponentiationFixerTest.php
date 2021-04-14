@@ -314,4 +314,26 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 8.0
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases()
+    {
+        return [
+            [
+                '<?php echo $a[2^3+1]?->test(1,2)** $b[2+$c];',
+                '<?php echo pow($a[2^3+1]?->test(1,2), $b[2+$c]);',
+            ],
+        ];
+    }
 }

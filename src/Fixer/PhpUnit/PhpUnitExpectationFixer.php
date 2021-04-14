@@ -181,11 +181,23 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
     {
+        foreach (Token::getObjectOperatorKinds() as $objectOperator) {
+            $this->applyPhpUnitClassFixWithObjectOperator($tokens, $startIndex, $endIndex, $objectOperator);
+        }
+    }
+
+    /**
+     * @param int $startIndex
+     * @param int $endIndex
+     * @param int $objectOperator
+     */
+    private function applyPhpUnitClassFixWithObjectOperator(Tokens $tokens, $startIndex, $endIndex, $objectOperator)
+    {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $oldMethodSequence = [
-            new Token([T_VARIABLE, '$this']),
-            new Token([T_OBJECT_OPERATOR, '->']),
+            [T_VARIABLE, '$this'],
+            [$objectOperator],
             [T_STRING],
         ];
 

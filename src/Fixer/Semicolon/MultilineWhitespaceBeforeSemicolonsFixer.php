@@ -237,8 +237,8 @@ function foo () {
             return null;
         }
 
-        // -> or ::
-        if (!$tokens[--$index]->isGivenKind([T_OBJECT_OPERATOR, T_DOUBLE_COLON])) {
+        // ->, ?-> or ::
+        if (!$tokens[--$index]->isObjectOperator() && !$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
             return null;
         }
 

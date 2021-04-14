@@ -164,25 +164,31 @@ class Foo
         }
 
         // does the PHP4-constructor only call $this->__construct($args, ...)?
-        list($seq, $case) = $this->getWrapperMethodSequence($tokens, '__construct', $php4['startIndex'], $php4['bodyIndex']);
-        if (null !== $tokens->findSequence($seq, $php4['bodyIndex'] - 1, $php4['endIndex'], $case)) {
-            // good, delete it!
-            for ($i = $php4['startIndex']; $i <= $php4['endIndex']; ++$i) {
-                $tokens->clearAt($i);
-            }
+        list($sequences, $case) = $this->getWrapperMethodSequence($tokens, '__construct', $php4['startIndex'], $php4['bodyIndex']);
+        foreach ($sequences as $seq) {
+            if (null !== $tokens->findSequence($seq, $php4['bodyIndex'] - 1, $php4['endIndex'], $case)) {
+                // good, delete it!
+                for ($i = $php4['startIndex']; $i <= $php4['endIndex']; ++$i) {
+                    $tokens->clearAt($i);
+                }
 
-            return;
+                return;
+            }
         }
 
         // does __construct only call the PHP4-constructor (with the same args)?
-        list($seq, $case) = $this->getWrapperMethodSequence($tokens, $className, $php4['startIndex'], $php4['bodyIndex']);
-        if (null !== $tokens->findSequence($seq, $php5['bodyIndex'] - 1, $php5['endIndex'], $case)) {
-            // that was a weird choice, but we can safely delete it and...
-            for ($i = $php5['startIndex']; $i <= $php5['endIndex']; ++$i) {
-                $tokens->clearAt($i);
+        list($sequences, $case) = $this->getWrapperMethodSequence($tokens, $className, $php4['startIndex'], $php4['bodyIndex']);
+        foreach ($sequences as $seq) {
+            if (null !== $tokens->findSequence($seq, $php5['bodyIndex'] - 1, $php5['endIndex'], $case)) {
+                // that was a weird choice, but we can safely delete it and...
+                for ($i = $php5['startIndex']; $i <= $php5['endIndex']; ++$i) {
+                    $tokens->clearAt($i);
+                }
+                // rename the PHP4 one to __construct
+                $tokens[$php4['nameIndex']] = new Token([T_STRING, '__construct']);
+
+                return;
             }
-            // rename the PHP4 one to __construct
-            $tokens[$php4['nameIndex']] = new Token([T_STRING, '__construct']);
         }
     }
 
@@ -220,28 +226,30 @@ class Foo
                 }
             }
 
-            // using $this->ParentClassName()
-            $parentSeq = $tokens->findSequence([
-                [T_VARIABLE, '$this'],
-                [T_OBJECT_OPERATOR],
-                [T_STRING, $parentClass],
-                '(',
-            ], $classStart, $classEnd, [2 => false]);
+            foreach (Token::getObjectOperatorKinds() as $objectOperatorKind) {
+                // using $this->ParentClassName()
+                $parentSeq = $tokens->findSequence([
+                    [T_VARIABLE, '$this'],
+                    [$objectOperatorKind],
+                    [T_STRING, $parentClass],
+                    '(',
+                ], $classStart, $classEnd, [2 => false]);
 
-            if (null !== $parentSeq) {
-                // we only need indexes
-                $parentSeq = array_keys($parentSeq);
+                if (null !== $parentSeq) {
+                    // we only need indexes
+                    $parentSeq = array_keys($parentSeq);
 
-                // replace call with parent::__construct()
-                $tokens[$parentSeq[0]] = new Token([
-                    T_STRING,
-                    'parent',
-                ]);
-                $tokens[$parentSeq[1]] = new Token([
-                    T_DOUBLE_COLON,
-                    '::',
-                ]);
-                $tokens[$parentSeq[2]] = new Token([T_STRING, '__construct']);
+                    // replace call with parent::__construct()
+                    $tokens[$parentSeq[0]] = new Token([
+                        T_STRING,
+                        'parent',
+                    ]);
+                    $tokens[$parentSeq[1]] = new Token([
+                        T_DOUBLE_COLON,
+                        '::',
+                    ]);
+                    $tokens[$parentSeq[2]] = new Token([T_STRING, '__construct']);
+                }
             }
         }
     }
@@ -256,23 +264,25 @@ class Foo
      */
     private function fixInfiniteRecursion(Tokens $tokens, $start, $end)
     {
-        $seq = [
-            [T_VARIABLE, '$this'],
-            [T_OBJECT_OPERATOR],
-            [T_STRING, '__construct'],
-        ];
+        foreach (Token::getObjectOperatorKinds() as $objectOperatorKind) {
+            $seq = [
+                [T_VARIABLE, '$this'],
+                [$objectOperatorKind],
+                [T_STRING, '__construct'],
+            ];
 
-        while (true) {
-            $callSeq = $tokens->findSequence($seq, $start, $end, [2 => false]);
+            while (true) {
+                $callSeq = $tokens->findSequence($seq, $start, $end, [2 => false]);
 
-            if (null === $callSeq) {
-                return;
+                if (null === $callSeq) {
+                    return;
+                }
+
+                $callSeq = array_keys($callSeq);
+
+                $tokens[$callSeq[0]] = new Token([T_STRING, 'parent']);
+                $tokens[$callSeq[1]] = new Token([T_DOUBLE_COLON, '::']);
             }
-
-            $callSeq = array_keys($callSeq);
-
-            $tokens[$callSeq[0]] = new Token([T_STRING, 'parent']);
-            $tokens[$callSeq[1]] = new Token([T_DOUBLE_COLON, '::']);
         }
     }
 
@@ -289,42 +299,47 @@ class Foo
      */
     private function getWrapperMethodSequence(Tokens $tokens, $method, $startIndex, $bodyIndex)
     {
-        // initialise sequence as { $this->{$method}(
-        $seq = [
-            '{',
-            [T_VARIABLE, '$this'],
-            [T_OBJECT_OPERATOR],
-            [T_STRING, $method],
-            '(',
-        ];
-        $case = [3 => false];
+        $sequences = [];
 
-        // parse method parameters, if any
-        $index = $startIndex;
-        while (true) {
-            // find the next variable name
-            $index = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
+        foreach (Token::getObjectOperatorKinds() as $objectOperatorKind) {
+            // initialise sequence as { $this->{$method}(
+            $seq = [
+                '{',
+                [T_VARIABLE, '$this'],
+                [$objectOperatorKind],
+                [T_STRING, $method],
+                '(',
+            ];
 
-            if (null === $index || $index >= $bodyIndex) {
-                // we've reached the body already
-                break;
+            // parse method parameters, if any
+            $index = $startIndex;
+            while (true) {
+                // find the next variable name
+                $index = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
+
+                if (null === $index || $index >= $bodyIndex) {
+                    // we've reached the body already
+                    break;
+                }
+
+                // append a comma if it's not the first variable
+                if (\count($seq) > 5) {
+                    $seq[] = ',';
+                }
+
+                // append variable name to the sequence
+                $seq[] = [T_VARIABLE, $tokens[$index]->getContent()];
             }
 
-            // append a comma if it's not the first variable
-            if (\count($seq) > 5) {
-                $seq[] = ',';
-            }
+            // almost done, close the sequence with ); }
+            $seq[] = ')';
+            $seq[] = ';';
+            $seq[] = '}';
 
-            // append variable name to the sequence
-            $seq[] = [T_VARIABLE, $tokens[$index]->getContent()];
+            $sequences[] = $seq;
         }
 
-        // almost done, close the sequence with ); }
-        $seq[] = ')';
-        $seq[] = ';';
-        $seq[] = '}';
-
-        return [$seq, $case];
+        return [$sequences,  [3 => false]];
     }
 
     /**

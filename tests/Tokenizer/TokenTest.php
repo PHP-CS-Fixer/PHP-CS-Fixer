@@ -158,6 +158,35 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @param bool $isObjectOperator
+     *
+     * @dataProvider provideIsObjectOperatorCases
+     */
+    public function testIsObjectOperator(Token $token, $isObjectOperator)
+    {
+        static::assertSame($isObjectOperator, $token->isObjectOperator());
+    }
+
+    public function provideIsObjectOperatorCases()
+    {
+        $tests = [
+            [$this->getBraceToken(), false],
+            [$this->getForeachToken(), false],
+            [new Token([T_COMMENT, '/* comment */']), false],
+            [new Token([T_DOUBLE_COLON, '::']), false],
+            [new Token([T_OBJECT_OPERATOR, '->']), true],
+        ];
+
+        foreach ($tests as $index => $test) {
+            yield $index => $test;
+        }
+
+        if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
+            yield [new Token([T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
+        }
+    }
+
+    /**
      * @group legacy
      * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
      */
