@@ -2,17 +2,17 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in([
-        __DIR__.'/needs-fixing/'
+        __DIR__.'/needs-fixing/',
     ])
     ->exclude([
-        __DIR__.'/excluded/'
+        __DIR__.'/excluded/',
     ])
 ;
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(false)
     ->setRules([
-            '@Symfony' => true,
+        '@Symfony' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
