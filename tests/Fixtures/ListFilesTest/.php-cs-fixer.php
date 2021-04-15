@@ -9,7 +9,7 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-$config = PhpCsFixer\Config();
+$config = new PhpCsFixer\Config();
 return $config
     ->setUsingCache(false)
     ->setRules([
