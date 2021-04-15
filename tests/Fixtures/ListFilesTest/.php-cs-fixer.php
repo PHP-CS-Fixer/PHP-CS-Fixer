@@ -9,7 +9,8 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-return PhpCsFixer\Config::create()
+$config = PhpCsFixer\Config();
+return $config
     ->setUsingCache(false)
     ->setRules([
         '@Symfony' => true,
