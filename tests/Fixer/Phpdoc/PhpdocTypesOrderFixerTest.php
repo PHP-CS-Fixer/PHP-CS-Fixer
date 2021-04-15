@@ -145,6 +145,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @method void bar(null|string $delimiter = \',<br/>\') */',
                 '<?php /** @method void bar(string|null $delimiter = \',<br/>\') */',
             ],
+            [
+                '<?php /** @var array<array<int, int>, OutputInterface> */',
+            ],
         ];
     }
 
