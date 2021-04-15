@@ -2,6 +2,9 @@
 Usage
 =====
 
+The ``fix`` command
+-------------------
+
 The ``fix`` command tries to fix as much coding standards
 problems as possible on a given file or files in a given directory and its subdirectories:
 
@@ -120,6 +123,33 @@ fixed but without actually modifying them:
 
 By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
 mechanism should be used.
+
+The ``list-files`` command
+--------------------------
+
+The ``list-files`` command will list all files which need fixing.
+
+.. code-block:: console
+
+    $ php php-cs-fixer.phar list-files
+
+The ``--config`` option can be used, like in the ``fix``  command, to tell from which path a config file should be loaded
+
+.. code-block:: console
+
+    $ php php-cs-fixer.phar list-files --config=.php_cs.dist
+
+The output is build in a form that its easy to use in combination with ``xargs`` command in a linux pipe.
+This can be useful e.g. in situations where the caching might mechanism not available (CI, Docker) and distributing
+fixing across several processes might speedup the process.
+
+.. code-block:: console
+
+    $ php php-cs-fixer.phar list-files | xargs -n 10 -P 8 php-cs-fixer fix
+
+* `-n` defines how many files a single subprocess process
+* `-P` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
+
 
 Rule descriptions
 -----------------
