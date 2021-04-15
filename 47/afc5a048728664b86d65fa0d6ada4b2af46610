@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-14T19:05:16Z
+
+[![Coverage Status](https://coveralls.io/builds/38816888/badge)](https://coveralls.io/builds/38816888)
+
+Coverage remained the same at 91.864% when pulling **25b5e03f53577c32028101e9a0597e13e72d0b4b on keradus:2.18_phpstan** into **a503acef49cfc8875ac3d39ffb7da83317800b55 on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-14T19:16:25Z
+
+What about using `@phpstan-ignore-line` in other places, especially those we know PHPStan did not understood?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-15T09:28:57Z
+
+this place is tricky, because the error is different depends on branch (CODENAME is always empty or always provided)
+for other places, I'm fine with both approaches. maybe a +0 for single file with exclusions, as it's showing the amount of "issues" we have
