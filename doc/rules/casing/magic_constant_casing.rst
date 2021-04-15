@@ -2,6 +2,8 @@
 Rule ``magic_constant_casing``
 ==============================
 
+`src <../../../src/Fixer/Casing/MagicConstantCasingFixer.php>`_
+
 Magic constants should be referred to using the correct casing.
 
 Examples

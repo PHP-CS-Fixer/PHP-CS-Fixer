@@ -2,6 +2,8 @@
 Rule ``line_ending``
 ====================
 
+`src <../../../src/Fixer/Whitespace/LineEndingFixer.php>`_
+
 All PHP files must use same line ending.
 
 Examples

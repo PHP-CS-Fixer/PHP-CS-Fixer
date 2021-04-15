@@ -2,6 +2,8 @@
 Rule ``no_unset_on_property``
 =============================
 
+`src <../../../src/Fixer/LanguageConstruct/NoUnsetOnPropertyFixer.php>`_
+
 Properties should be set to ``null`` instead of using ``unset``.
 
 .. warning:: Using this rule is risky.

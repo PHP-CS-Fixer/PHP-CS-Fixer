@@ -2,6 +2,8 @@
 Rule ``general_phpdoc_annotation_remove``
 =========================================
 
+`src <../../../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
+
 Configured annotations should be omitted from PHPDoc.
 
 Configuration

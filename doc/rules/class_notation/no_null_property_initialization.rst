@@ -2,6 +2,8 @@
 Rule ``no_null_property_initialization``
 ========================================
 
+`src <../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php>`_
+
 Properties MUST not be explicitly initialized with ``null`` except when they
 have a type declaration (PHP 7.4).
 

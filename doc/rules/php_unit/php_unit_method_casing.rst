@@ -2,6 +2,8 @@
 Rule ``php_unit_method_casing``
 ===============================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php>`_
+
 Enforce camel (or snake) case for PHPUnit test methods, following configuration.
 
 Configuration

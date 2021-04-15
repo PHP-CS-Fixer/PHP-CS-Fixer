@@ -2,6 +2,8 @@
 Rule ``php_unit_mock_short_will_return``
 ========================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitMockShortWillReturnFixer.php>`_
+
 Usage of PHPUnit's mock e.g. ``->will($this->returnValue(..))`` must be replaced
 by its shorter equivalent such as ``->willReturn(...)``.
 

@@ -2,6 +2,8 @@
 Rule ``native_function_casing``
 ===============================
 
+`src <../../../src/Fixer/Casing/NativeFunctionCasingFixer.php>`_
+
 Function defined by PHP should be called using the correct casing.
 
 Examples

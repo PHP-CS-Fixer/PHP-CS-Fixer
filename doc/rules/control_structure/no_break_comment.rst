@@ -2,6 +2,8 @@
 Rule ``no_break_comment``
 =========================
 
+`src <../../../src/Fixer/ControlStructure/NoBreakCommentFixer.php>`_
+
 There must be a comment when fall-through is intentional in a non-empty case
 body.
 

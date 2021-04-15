@@ -2,6 +2,8 @@
 Rule ``php_unit_no_expectation_annotation``
 ===========================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php>`_
+
 Usages of ``@expectedException*`` annotations MUST be replaced by
 ``->setExpectedException*`` methods.
 

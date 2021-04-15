@@ -2,6 +2,8 @@
 Rule ``ordered_imports``
 ========================
 
+`src <../../../src/Fixer/Import/OrderedImportsFixer.php>`_
+
 Ordering ``use`` statements.
 
 Configuration

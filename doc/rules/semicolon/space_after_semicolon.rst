@@ -2,6 +2,8 @@
 Rule ``space_after_semicolon``
 ==============================
 
+`src <../../../src/Fixer/Semicolon/SpaceAfterSemicolonFixer.php>`_
+
 Fix whitespace after a semicolon.
 
 Configuration

@@ -2,6 +2,8 @@
 Rule ``no_trailing_comma_in_list_call``
 =======================================
 
+`src <../../../src/Fixer/ControlStructure/NoTrailingCommaInListCallFixer.php>`_
+
 Remove trailing commas in list function calls.
 
 Examples

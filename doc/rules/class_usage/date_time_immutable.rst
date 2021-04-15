@@ -2,6 +2,8 @@
 Rule ``date_time_immutable``
 ============================
 
+`src <../../../src/Fixer/ClassUsage/DateTimeImmutableFixer.php>`_
+
 Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
 
 .. warning:: Using this rule is risky.

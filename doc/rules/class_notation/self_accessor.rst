@@ -2,6 +2,8 @@
 Rule ``self_accessor``
 ======================
 
+`src <../../../src/Fixer/ClassNotation/SelfAccessorFixer.php>`_
+
 Inside class or interface element ``self`` should be preferred to the class name
 itself.
 

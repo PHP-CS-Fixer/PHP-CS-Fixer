@@ -2,6 +2,8 @@
 Rule ``method_argument_space``
 ==============================
 
+`src <../../../src/Fixer/FunctionNotation/MethodArgumentSpaceFixer.php>`_
+
 In method arguments and method call, there MUST NOT be a space before each comma
 and there MUST be one space after each comma. Argument lists MAY be split across
 multiple lines, where each subsequent line is indented once. When doing so, the

@@ -2,6 +2,8 @@
 Rule ``clean_namespace``
 ========================
 
+`src <../../../src/Fixer/NamespaceNotation/CleanNamespaceFixer.php>`_
+
 Namespace must not contain spacing, comments or PHPDoc.
 
 Examples

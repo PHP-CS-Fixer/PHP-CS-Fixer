@@ -2,6 +2,8 @@
 Rule ``pow_to_exponentiation``
 ==============================
 
+`src <../../../src/Fixer/Alias/PowToExponentiationFixer.php>`_
+
 Converts ``pow`` to the ``**`` operator.
 
 .. warning:: Using this rule is risky.

@@ -2,6 +2,8 @@
 Rule ``not_operator_with_successor_space``
 ==========================================
 
+`src <../../../src/Fixer/Operator/NotOperatorWithSuccessorSpaceFixer.php>`_
+
 Logical NOT operators (``!``) should have one trailing whitespace.
 
 Examples

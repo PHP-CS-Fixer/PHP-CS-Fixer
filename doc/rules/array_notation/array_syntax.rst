@@ -2,6 +2,8 @@
 Rule ``array_syntax``
 =====================
 
+`src <../../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_
+
 PHP arrays should be declared using the configured syntax.
 
 Configuration

@@ -2,6 +2,8 @@
 Rule ``visibility_required``
 ============================
 
+`src <../../../src/Fixer/ClassNotation/VisibilityRequiredFixer.php>`_
+
 Visibility MUST be declared on all properties and methods; ``abstract`` and
 ``final`` MUST be declared before the visibility; ``static`` MUST be declared
 after the visibility.

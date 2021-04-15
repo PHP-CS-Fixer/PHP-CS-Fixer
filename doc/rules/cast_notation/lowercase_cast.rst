@@ -2,6 +2,8 @@
 Rule ``lowercase_cast``
 =======================
 
+`src <../../../src/Fixer/CastNotation/LowercaseCastFixer.php>`_
+
 Cast should be written in lower case.
 
 Examples

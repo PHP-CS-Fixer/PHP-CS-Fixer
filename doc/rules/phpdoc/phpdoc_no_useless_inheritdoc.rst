@@ -2,6 +2,8 @@
 Rule ``phpdoc_no_useless_inheritdoc``
 =====================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php>`_
+
 Classy that does not inherit must not have ``@inheritdoc`` tags.
 
 Examples

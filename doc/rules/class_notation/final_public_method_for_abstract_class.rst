@@ -2,6 +2,8 @@
 Rule ``final_public_method_for_abstract_class``
 ===============================================
 
+`src <../../../src/Fixer/ClassNotation/FinalPublicMethodForAbstractClassFixer.php>`_
+
 All ``public`` methods of ``abstract`` classes should be ``final``.
 
 Description

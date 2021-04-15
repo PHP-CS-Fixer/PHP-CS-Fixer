@@ -2,6 +2,8 @@
 Rule ``phpdoc_types_order``
 ===========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php>`_
+
 Sorts PHPDoc types.
 
 Configuration

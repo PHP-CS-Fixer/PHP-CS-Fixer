@@ -2,6 +2,8 @@
 Rule ``phpdoc_return_self_reference``
 =====================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php>`_
+
 The type of ``@return`` annotations of methods returning a reference to itself
 must the configured one.
 

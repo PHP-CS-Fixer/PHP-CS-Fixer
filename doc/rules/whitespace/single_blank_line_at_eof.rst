@@ -2,6 +2,8 @@
 Rule ``single_blank_line_at_eof``
 =================================
 
+`src <../../../src/Fixer/Whitespace/SingleBlankLineAtEofFixer.php>`_
+
 A PHP file without end tag must always end with a single empty line feed.
 
 Examples

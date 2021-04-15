@@ -2,6 +2,8 @@
 Rule ``single_line_comment_style``
 ==================================
 
+`src <../../../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
+
 Single-line comments and multi-line comments with only one line of actual
 content should use the ``//`` syntax.
 

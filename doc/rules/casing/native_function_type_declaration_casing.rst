@@ -2,6 +2,8 @@
 Rule ``native_function_type_declaration_casing``
 ================================================
 
+`src <../../../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
+
 Native type hints for functions should use the correct case.
 
 Examples

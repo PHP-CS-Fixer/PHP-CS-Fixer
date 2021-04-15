@@ -2,6 +2,8 @@
 Rule ``no_blank_lines_after_phpdoc``
 ====================================
 
+`src <../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php>`_
+
 There should not be blank lines between docblock and the documented element.
 
 Examples

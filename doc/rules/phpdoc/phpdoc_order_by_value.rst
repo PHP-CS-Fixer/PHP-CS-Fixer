@@ -2,6 +2,8 @@
 Rule ``phpdoc_order_by_value``
 ==============================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocOrderByValueFixer.php>`_
+
 Order phpdoc tags by value.
 
 Configuration

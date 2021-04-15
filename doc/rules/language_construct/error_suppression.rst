@@ -2,6 +2,8 @@
 Rule ``error_suppression``
 ==========================
 
+`src <../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
+
 Error control operator should be added to deprecation notices and/or removed
 from other cases.
 

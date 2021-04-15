@@ -2,6 +2,8 @@
 Rule ``single_import_per_statement``
 ====================================
 
+`src <../../../src/Fixer/Import/SingleImportPerStatementFixer.php>`_
+
 There MUST be one use keyword per declaration.
 
 Examples

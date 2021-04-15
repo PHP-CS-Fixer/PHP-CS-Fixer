@@ -2,6 +2,8 @@
 Rule ``implode_call``
 =====================
 
+`src <../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
+
 Function ``implode`` must be called with 2 arguments in the documented order.
 
 .. warning:: Using this rule is risky.

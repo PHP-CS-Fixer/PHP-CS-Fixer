@@ -2,6 +2,8 @@
 Rule ``fopen_flag_order``
 =========================
 
+`src <../../../src/Fixer/FunctionNotation/FopenFlagOrderFixer.php>`_
+
 Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
 
 .. warning:: Using this rule is risky.

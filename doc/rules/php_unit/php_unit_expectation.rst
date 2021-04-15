@@ -2,6 +2,8 @@
 Rule ``php_unit_expectation``
 =============================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
+
 Usages of ``->setExpectedException*`` methods MUST be replaced by
 ``->expectException*`` methods.
 

@@ -2,6 +2,8 @@
 Rule ``lowercase_constants``
 ============================
 
+`src <../../../src/Fixer/Casing/LowercaseConstantsFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``constant_case`` instead.

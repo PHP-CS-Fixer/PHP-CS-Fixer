@@ -2,6 +2,8 @@
 Rule ``no_trailing_whitespace_in_string``
 =========================================
 
+`src <../../../src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php>`_
+
 There must be no trailing whitespace in strings.
 
 .. warning:: Using this rule is risky.

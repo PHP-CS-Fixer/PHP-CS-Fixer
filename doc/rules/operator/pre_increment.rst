@@ -2,6 +2,8 @@
 Rule ``pre_increment``
 ======================
 
+`src <../../../src/Fixer/Operator/PreIncrementFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``increment_style`` instead.

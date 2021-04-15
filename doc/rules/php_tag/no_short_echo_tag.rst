@@ -2,6 +2,8 @@
 Rule ``no_short_echo_tag``
 ==========================
 
+`src <../../../src/Fixer/PhpTag/NoShortEchoTagFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``echo_tag_syntax`` instead.

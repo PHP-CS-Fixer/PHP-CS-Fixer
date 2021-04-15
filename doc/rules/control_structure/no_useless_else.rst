@@ -2,6 +2,8 @@
 Rule ``no_useless_else``
 ========================
 
+`src <../../../src/Fixer/ControlStructure/NoUselessElseFixer.php>`_
+
 There should not be useless ``else`` cases.
 
 Examples

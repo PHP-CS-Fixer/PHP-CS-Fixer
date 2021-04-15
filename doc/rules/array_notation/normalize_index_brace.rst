@@ -2,6 +2,8 @@
 Rule ``normalize_index_brace``
 ==============================
 
+`src <../../../src/Fixer/ArrayNotation/NormalizeIndexBraceFixer.php>`_
+
 Array index should always be written by using square braces.
 
 Examples

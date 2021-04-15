@@ -2,6 +2,8 @@
 Rule ``ordered_class_elements``
 ===============================
 
+`src <../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_
+
 Orders the elements of classes/interfaces/traits.
 
 Configuration

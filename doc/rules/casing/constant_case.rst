@@ -2,6 +2,8 @@
 Rule ``constant_case``
 ======================
 
+`src <../../../src/Fixer/Casing/ConstantCaseFixer.php>`_
+
 The PHP constants ``true``, ``false``, and ``null`` MUST be written using the
 correct casing.
 

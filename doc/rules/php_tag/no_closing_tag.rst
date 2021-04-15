@@ -2,6 +2,8 @@
 Rule ``no_closing_tag``
 =======================
 
+`src <../../../src/Fixer/PhpTag/NoClosingTagFixer.php>`_
+
 The closing ``?>`` tag MUST be omitted from files containing only PHP.
 
 Examples

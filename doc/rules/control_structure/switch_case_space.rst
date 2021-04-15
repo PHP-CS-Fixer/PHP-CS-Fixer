@@ -2,6 +2,8 @@
 Rule ``switch_case_space``
 ==========================
 
+`src <../../../src/Fixer/ControlStructure/SwitchCaseSpaceFixer.php>`_
+
 Removes extra spaces between colon and case value.
 
 Examples

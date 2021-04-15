@@ -2,6 +2,8 @@
 Rule ``no_trailing_comma_in_singleline_array``
 ==============================================
 
+`src <../../../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_
+
 PHP single-line arrays should not have trailing comma.
 
 Examples

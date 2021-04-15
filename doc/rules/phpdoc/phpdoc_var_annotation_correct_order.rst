@@ -2,6 +2,8 @@
 Rule ``phpdoc_var_annotation_correct_order``
 ============================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocVarAnnotationCorrectOrderFixer.php>`_
+
 ``@var`` and ``@type`` annotations must have type and name in the correct order.
 
 Examples

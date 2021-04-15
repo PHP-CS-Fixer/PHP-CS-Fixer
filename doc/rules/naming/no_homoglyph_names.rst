@@ -2,6 +2,8 @@
 Rule ``no_homoglyph_names``
 ===========================
 
+`src <../../../src/Fixer/Naming/NoHomoglyphNamesFixer.php>`_
+
 Replace accidental usage of homoglyphs (non ascii characters) in names.
 
 .. warning:: Using this rule is risky.

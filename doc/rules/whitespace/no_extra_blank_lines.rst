@@ -2,6 +2,8 @@
 Rule ``no_extra_blank_lines``
 =============================
 
+`src <../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
+
 Removes extra blank lines and/or blank lines following configuration.
 
 Configuration

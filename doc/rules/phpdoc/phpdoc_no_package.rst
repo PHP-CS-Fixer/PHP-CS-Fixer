@@ -2,6 +2,8 @@
 Rule ``phpdoc_no_package``
 ==========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocNoPackageFixer.php>`_
+
 ``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``phpdoc_tag_type``
 ========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php>`_
+
 Forces PHPDoc tags to be either regular annotations or inline.
 
 Configuration

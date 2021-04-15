@@ -2,6 +2,8 @@
 Rule ``unary_operator_spaces``
 ==============================
 
+`src <../../../src/Fixer/Operator/UnaryOperatorSpacesFixer.php>`_
+
 Unary operators should be placed adjacent to their operands.
 
 Examples

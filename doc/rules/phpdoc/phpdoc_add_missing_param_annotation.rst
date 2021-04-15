@@ -2,6 +2,8 @@
 Rule ``phpdoc_add_missing_param_annotation``
 ============================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php>`_
+
 PHPDoc should contain ``@param`` for all params.
 
 Configuration

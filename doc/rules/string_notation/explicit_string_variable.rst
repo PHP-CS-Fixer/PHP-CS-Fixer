@@ -2,6 +2,8 @@
 Rule ``explicit_string_variable``
 =================================
 
+`src <../../../src/Fixer/StringNotation/ExplicitStringVariableFixer.php>`_
+
 Converts implicit variables into explicit ones in double-quoted strings or
 heredoc syntax.
 

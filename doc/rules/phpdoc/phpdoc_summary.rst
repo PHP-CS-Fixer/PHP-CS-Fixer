@@ -2,6 +2,8 @@
 Rule ``phpdoc_summary``
 =======================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocSummaryFixer.php>`_
+
 PHPDoc summary should end in either a full stop, exclamation mark, or question
 mark.
 

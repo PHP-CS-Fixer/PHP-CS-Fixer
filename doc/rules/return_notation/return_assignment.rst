@@ -2,6 +2,8 @@
 Rule ``return_assignment``
 ==========================
 
+`src <../../../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php>`_
+
 Local, dynamic and directly referenced variables should not be assigned and
 directly returned by a function or method.
 

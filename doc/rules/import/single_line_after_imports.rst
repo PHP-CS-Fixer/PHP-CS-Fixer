@@ -2,6 +2,8 @@
 Rule ``single_line_after_imports``
 ==================================
 
+`src <../../../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+
 Each namespace use MUST go on its own line and there MUST be one blank line
 after the use statements block.
 

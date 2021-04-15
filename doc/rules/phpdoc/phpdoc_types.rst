@@ -2,6 +2,8 @@
 Rule ``phpdoc_types``
 =====================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_
+
 The correct case must be used for standard PHP types in PHPDoc.
 
 Configuration

@@ -2,6 +2,8 @@
 Rule ``string_line_ending``
 ===========================
 
+`src <../../../src/Fixer/StringNotation/StringLineEndingFixer.php>`_
+
 All multi-line strings must use correct line ending.
 
 .. warning:: Using this rule is risky.

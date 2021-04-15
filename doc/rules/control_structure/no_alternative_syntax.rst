@@ -2,6 +2,8 @@
 Rule ``no_alternative_syntax``
 ==============================
 
+`src <../../../src/Fixer/ControlStructure/NoAlternativeSyntaxFixer.php>`_
+
 Replace control structure alternative syntax to use braces.
 
 Examples

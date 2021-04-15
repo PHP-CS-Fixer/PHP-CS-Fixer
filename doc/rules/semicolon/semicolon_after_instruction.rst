@@ -2,6 +2,8 @@
 Rule ``semicolon_after_instruction``
 ====================================
 
+`src <../../../src/Fixer/Semicolon/SemicolonAfterInstructionFixer.php>`_
+
 Instructions must be terminated with a semicolon.
 
 Examples

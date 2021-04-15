@@ -2,6 +2,8 @@
 Rule ``single_space_after_construct``
 =====================================
 
+`src <../../../src/Fixer/LanguageConstruct/SingleSpaceAfterConstructFixer.php>`_
+
 Ensures a single space after language constructs.
 
 Configuration

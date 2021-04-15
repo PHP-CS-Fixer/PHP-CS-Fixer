@@ -2,6 +2,8 @@
 Rule ``braces``
 ===============
 
+`src <../../../src/Fixer/Basic/BracesFixer.php>`_
+
 The body of each structure MUST be enclosed by braces. Braces should be properly
 placed. Body of braces should be properly indented.
 

@@ -2,6 +2,8 @@
 Rule ``no_leading_import_slash``
 ================================
 
+`src <../../../src/Fixer/Import/NoLeadingImportSlashFixer.php>`_
+
 Remove leading slashes in ``use`` clauses.
 
 Examples

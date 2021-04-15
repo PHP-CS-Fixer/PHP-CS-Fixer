@@ -2,6 +2,8 @@
 Rule ``phpdoc_align``
 =====================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocAlignFixer.php>`_
+
 All items of the given phpdoc tags must be either left-aligned or (by default)
 aligned vertically.
 

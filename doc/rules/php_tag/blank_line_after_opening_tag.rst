@@ -2,6 +2,8 @@
 Rule ``blank_line_after_opening_tag``
 =====================================
 
+`src <../../../src/Fixer/PhpTag/BlankLineAfterOpeningTagFixer.php>`_
+
 Ensure there is no code on the same line as the PHP open tag and it is followed
 by a blank line.
 

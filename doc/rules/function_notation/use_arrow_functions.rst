@@ -2,6 +2,8 @@
 Rule ``use_arrow_functions``
 ============================
 
+`src <../../../src/Fixer/FunctionNotation/UseArrowFunctionsFixer.php>`_
+
 Anonymous functions with one-liner return statement must use arrow functions.
 
 .. warning:: Using this rule is risky.

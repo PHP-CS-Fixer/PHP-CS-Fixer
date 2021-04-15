@@ -2,6 +2,8 @@
 Rule ``final_static_access``
 ============================
 
+`src <../../../src/Fixer/ClassNotation/FinalStaticAccessFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``self_static_accessor`` instead.

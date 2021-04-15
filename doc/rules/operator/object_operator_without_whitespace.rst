@@ -2,6 +2,8 @@
 Rule ``object_operator_without_whitespace``
 ===========================================
 
+`src <../../../src/Fixer/Operator/ObjectOperatorWithoutWhitespaceFixer.php>`_
+
 There should not be space before or after object operators ``->`` and ``?->``.
 
 Examples

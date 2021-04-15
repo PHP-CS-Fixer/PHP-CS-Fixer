@@ -71,6 +71,17 @@ final class DocumentationGenerator
     }
 
     /**
+     * @return string
+     */
+    public function makeRelativePathToDoc(string $absolutePath, int $docDepth)
+    {
+        $rootPath = \dirname($this->getFixersDocumentationDirectoryPath(), 2);
+        $relativePath = str_repeat('../', 1 + $docDepth).preg_replace('~^' . preg_quote(str_replace('\\', '/', $rootPath), '~') . '/?~', '', str_replace('\\', '/', $absolutePath)); // @TODO
+
+        return $relativePath;
+    }
+
+    /**
      * @param AbstractFixer[] $fixers
      *
      * @return string
@@ -173,6 +184,9 @@ RST;
         $titleLine = str_repeat('=', \strlen($title));
 
         $doc = "{$titleLine}\n{$title}\n{$titleLine}";
+
+        $srcPath = (new \ReflectionClass($fixer))->getFileName();
+        $doc .= "\n\n`src <{$this->makeRelativePathToDoc($srcPath, 2)}>`_";
 
         if ($fixer instanceof DeprecatedFixerInterface) {
             $doc .= "\n\n.. warning:: This rule is deprecated and will be removed on next major version.";

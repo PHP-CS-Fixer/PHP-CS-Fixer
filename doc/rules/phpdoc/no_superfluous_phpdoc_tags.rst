@@ -2,6 +2,8 @@
 Rule ``no_superfluous_phpdoc_tags``
 ===================================
 
+`src <../../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php>`_
+
 Removes ``@param``, ``@return`` and ``@var`` tags that don't provide any useful
 information.
 

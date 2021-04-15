@@ -2,6 +2,8 @@
 Rule ``switch_continue_to_break``
 =================================
 
+`src <../../../src/Fixer/ControlStructure/SwitchContinueToBreakFixer.php>`_
+
 Switch case must not be ended with ``continue`` but with ``break``.
 
 Examples

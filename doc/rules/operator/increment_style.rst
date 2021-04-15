@@ -2,6 +2,8 @@
 Rule ``increment_style``
 ========================
 
+`src <../../../src/Fixer/Operator/IncrementStyleFixer.php>`_
+
 Pre- or post-increment and decrement operators should be used if possible.
 
 Configuration

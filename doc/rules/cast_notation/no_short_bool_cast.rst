@@ -2,6 +2,8 @@
 Rule ``no_short_bool_cast``
 ===========================
 
+`src <../../../src/Fixer/CastNotation/NoShortBoolCastFixer.php>`_
+
 Short cast ``bool`` using double exclamation mark should not be used.
 
 Examples

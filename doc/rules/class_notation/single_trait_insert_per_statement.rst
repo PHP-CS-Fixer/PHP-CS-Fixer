@@ -2,6 +2,8 @@
 Rule ``single_trait_insert_per_statement``
 ==========================================
 
+`src <../../../src/Fixer/ClassNotation/SingleTraitInsertPerStatementFixer.php>`_
+
 Each trait ``use`` must be done as single statement.
 
 Examples

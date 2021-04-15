@@ -2,6 +2,8 @@
 Rule ``no_trailing_whitespace``
 ===============================
 
+`src <../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php>`_
+
 Remove trailing whitespace at the end of non-blank lines.
 
 Examples

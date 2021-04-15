@@ -2,6 +2,8 @@
 Rule ``standardize_not_equals``
 ===============================
 
+`src <../../../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_
+
 Replace all ``<>`` with ``!=``.
 
 Examples

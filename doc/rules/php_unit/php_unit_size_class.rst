@@ -2,6 +2,8 @@
 Rule ``php_unit_size_class``
 ============================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php>`_
+
 All PHPUnit test cases should have ``@small``, ``@medium`` or ``@large``
 annotation to enable run time limits.
 

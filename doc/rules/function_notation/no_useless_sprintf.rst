@@ -2,6 +2,8 @@
 Rule ``no_useless_sprintf``
 ===========================
 
+`src <../../../src/Fixer/FunctionNotation/NoUselessSprintfFixer.php>`_
+
 There must be no ``sprintf`` calls with only the first argument.
 
 .. warning:: Using this rule is risky.

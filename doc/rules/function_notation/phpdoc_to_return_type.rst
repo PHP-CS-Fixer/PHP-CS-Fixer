@@ -2,6 +2,8 @@
 Rule ``phpdoc_to_return_type``
 ==============================
 
+`src <../../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php>`_
+
 EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts
 accordingly the function signature. Requires PHP >= 7.0.
 

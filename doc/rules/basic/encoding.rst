@@ -2,6 +2,8 @@
 Rule ``encoding``
 =================
 
+`src <../../../src/Fixer/Basic/EncodingFixer.php>`_
+
 PHP code MUST use only UTF-8 without BOM (remove BOM).
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``final_class``
 ====================
 
+`src <../../../src/Fixer/ClassNotation/FinalClassFixer.php>`_
+
 All classes must be final, except abstract ones and Doctrine entities.
 
 Description

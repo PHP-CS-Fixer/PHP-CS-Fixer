@@ -2,6 +2,8 @@
 Rule ``set_type_to_cast``
 =========================
 
+`src <../../../src/Fixer/Alias/SetTypeToCastFixer.php>`_
+
 Cast shall be used, not ``settype``.
 
 .. warning:: Using this rule is risky.

@@ -2,6 +2,8 @@
 Rule ``no_php4_constructor``
 ============================
 
+`src <../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_
+
 Convert PHP4-style constructors to ``__construct``.
 
 .. warning:: Using this rule is risky.

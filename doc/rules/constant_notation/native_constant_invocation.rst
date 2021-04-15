@@ -2,6 +2,8 @@
 Rule ``native_constant_invocation``
 ===================================
 
+`src <../../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_
+
 Add leading ``\`` before constant invocation of internal constant to speed up
 resolving. Constant name match is case-sensitive, except for ``null``, ``false``
 and ``true``.

@@ -2,6 +2,8 @@
 Rule ``method_separation``
 ==========================
 
+`src <../../../src/Fixer/ClassNotation/MethodSeparationFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``class_attributes_separation`` instead.

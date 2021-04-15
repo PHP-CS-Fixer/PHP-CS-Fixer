@@ -2,6 +2,8 @@
 Rule ``php_unit_dedicate_assert``
 =================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
+
 PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should be
 used over ``assertTrue``.
 

@@ -2,6 +2,8 @@
 Rule ``phpdoc_no_access``
 =========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocNoAccessFixer.php>`_
+
 ``@access`` annotations should be omitted from PHPDoc.
 
 Examples

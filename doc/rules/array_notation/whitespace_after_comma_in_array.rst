@@ -2,6 +2,8 @@
 Rule ``whitespace_after_comma_in_array``
 ========================================
 
+`src <../../../src/Fixer/ArrayNotation/WhitespaceAfterCommaInArrayFixer.php>`_
+
 In array declaration, there MUST be a whitespace after each comma.
 
 Examples

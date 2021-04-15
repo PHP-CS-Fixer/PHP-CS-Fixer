@@ -2,6 +2,8 @@
 Rule ``non_printable_character``
 ================================
 
+`src <../../../src/Fixer/Basic/NonPrintableCharacterFixer.php>`_
+
 Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible
 unicode symbols.
 

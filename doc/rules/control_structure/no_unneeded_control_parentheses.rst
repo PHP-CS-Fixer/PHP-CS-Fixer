@@ -2,6 +2,8 @@
 Rule ``no_unneeded_control_parentheses``
 ========================================
 
+`src <../../../src/Fixer/ControlStructure/NoUnneededControlParenthesesFixer.php>`_
+
 Removes unneeded parentheses around control statements.
 
 Configuration

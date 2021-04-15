@@ -2,6 +2,8 @@
 Rule ``short_scalar_cast``
 ==========================
 
+`src <../../../src/Fixer/CastNotation/ShortScalarCastFixer.php>`_
+
 Cast ``(boolean)`` and ``(integer)`` should be written as ``(bool)`` and
 ``(int)``, ``(double)`` and ``(real)`` as ``(float)``, ``(binary)`` as
 ``(string)``.

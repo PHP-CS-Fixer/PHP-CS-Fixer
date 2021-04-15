@@ -2,6 +2,8 @@
 Rule ``trim_array_spaces``
 ==========================
 
+`src <../../../src/Fixer/ArrayNotation/TrimArraySpacesFixer.php>`_
+
 Arrays should be formatted like function/method arguments, without leading or
 trailing single line space.
 

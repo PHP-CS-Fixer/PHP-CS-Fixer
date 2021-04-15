@@ -2,6 +2,8 @@
 Rule ``no_unused_imports``
 ==========================
 
+`src <../../../src/Fixer/Import/NoUnusedImportsFixer.php>`_
+
 Unused ``use`` statements must be removed.
 
 Examples

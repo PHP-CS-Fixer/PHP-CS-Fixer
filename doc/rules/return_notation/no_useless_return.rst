@@ -2,6 +2,8 @@
 Rule ``no_useless_return``
 ==========================
 
+`src <../../../src/Fixer/ReturnNotation/NoUselessReturnFixer.php>`_
+
 There should not be an empty ``return`` statement at the end of a function.
 
 Examples

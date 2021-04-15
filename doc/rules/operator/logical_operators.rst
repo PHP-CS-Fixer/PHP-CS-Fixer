@@ -2,6 +2,8 @@
 Rule ``logical_operators``
 ==========================
 
+`src <../../../src/Fixer/Operator/LogicalOperatorsFixer.php>`_
+
 Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 
 .. warning:: Using this rule is risky.

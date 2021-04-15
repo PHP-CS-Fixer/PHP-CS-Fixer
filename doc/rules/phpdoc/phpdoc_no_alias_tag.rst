@@ -2,6 +2,8 @@
 Rule ``phpdoc_no_alias_tag``
 ============================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_
+
 No alias PHPDoc tags should be used.
 
 Configuration

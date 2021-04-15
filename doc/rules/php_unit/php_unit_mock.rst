@@ -2,6 +2,8 @@
 Rule ``php_unit_mock``
 ======================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitMockFixer.php>`_
+
 Usages of ``->getMock`` and ``->getMockWithoutInvokingTheOriginalConstructor``
 methods MUST be replaced by ``->createMock`` or ``->createPartialMock`` methods.
 

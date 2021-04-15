@@ -2,6 +2,8 @@
 Rule ``native_function_invocation``
 ===================================
 
+`src <../../../src/Fixer/FunctionNotation/NativeFunctionInvocationFixer.php>`_
+
 Add leading ``\`` before function invocation to speed up resolving.
 
 .. warning:: Using this rule is risky.

@@ -2,6 +2,8 @@
 Rule ``no_spaces_around_offset``
 ================================
 
+`src <../../../src/Fixer/Whitespace/NoSpacesAroundOffsetFixer.php>`_
+
 There MUST NOT be spaces around offset braces.
 
 Configuration

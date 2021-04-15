@@ -2,6 +2,8 @@
 Rule ``declare_strict_types``
 =============================
 
+`src <../../../src/Fixer/Strict/DeclareStrictTypesFixer.php>`_
+
 Force strict types declaration in all files. Requires PHP >= 7.0.
 
 .. warning:: Using this rule is risky.

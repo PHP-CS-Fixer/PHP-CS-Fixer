@@ -2,6 +2,8 @@
 Rule ``phpdoc_trim_consecutive_blank_line_separation``
 ======================================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocTrimConsecutiveBlankLineSeparationFixer.php>`_
+
 Removes extra blank lines after summary and after description in PHPDoc.
 
 Examples

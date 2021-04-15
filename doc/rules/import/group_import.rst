@@ -2,6 +2,8 @@
 Rule ``group_import``
 =====================
 
+`src <../../../src/Fixer/Import/GroupImportFixer.php>`_
+
 There MUST be group use for the same namespaces.
 
 Examples

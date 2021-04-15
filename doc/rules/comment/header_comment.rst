@@ -2,6 +2,8 @@
 Rule ``header_comment``
 =======================
 
+`src <../../../src/Fixer/Comment/HeaderCommentFixer.php>`_
+
 Add, replace or remove header comment.
 
 Configuration

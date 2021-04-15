@@ -2,6 +2,8 @@
 Rule ``no_alias_functions``
 ===========================
 
+`src <../../../src/Fixer/Alias/NoAliasFunctionsFixer.php>`_
+
 Master functions shall be used instead of aliases.
 
 .. warning:: Using this rule is risky.

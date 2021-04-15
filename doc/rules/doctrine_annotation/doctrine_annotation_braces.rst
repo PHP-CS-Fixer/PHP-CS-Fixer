@@ -2,6 +2,8 @@
 Rule ``doctrine_annotation_braces``
 ===================================
 
+`src <../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationBracesFixer.php>`_
+
 Doctrine annotations without arguments must use the configured syntax.
 
 Configuration

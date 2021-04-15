@@ -2,6 +2,8 @@
 Rule ``no_unneeded_final_method``
 =================================
 
+`src <../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
+
 A ``final`` class must not have ``final`` methods and ``private`` methods must
 not be ``final``.
 

@@ -2,6 +2,8 @@
 Rule ``no_binary_string``
 =========================
 
+`src <../../../src/Fixer/StringNotation/NoBinaryStringFixer.php>`_
+
 There should not be a binary flag before strings.
 
 Examples

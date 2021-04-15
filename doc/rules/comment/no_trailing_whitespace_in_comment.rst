@@ -2,6 +2,8 @@
 Rule ``no_trailing_whitespace_in_comment``
 ==========================================
 
+`src <../../../src/Fixer/Comment/NoTrailingWhitespaceInCommentFixer.php>`_
+
 There MUST be no trailing spaces inside comment or PHPDoc.
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``concat_space``
 =====================
 
+`src <../../../src/Fixer/Operator/ConcatSpaceFixer.php>`_
+
 Concatenation should be spaced according configuration.
 
 Configuration

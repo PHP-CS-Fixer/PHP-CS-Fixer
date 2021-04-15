@@ -2,6 +2,8 @@
 Rule ``cast_spaces``
 ====================
 
+`src <../../../src/Fixer/CastNotation/CastSpacesFixer.php>`_
+
 A single space or none should be between cast and variable.
 
 Configuration

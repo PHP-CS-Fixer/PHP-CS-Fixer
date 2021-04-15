@@ -2,6 +2,8 @@
 Rule ``function_typehint_space``
 ================================
 
+`src <../../../src/Fixer/FunctionNotation/FunctionTypehintSpaceFixer.php>`_
+
 Ensure single space between function's argument and its typehint.
 
 Examples

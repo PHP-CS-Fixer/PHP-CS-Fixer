@@ -2,6 +2,8 @@
 Rule ``method_chaining_indentation``
 ====================================
 
+`src <../../../src/Fixer/Whitespace/MethodChainingIndentationFixer.php>`_
+
 Method chaining MUST be properly indented. Method chaining with different levels
 of indentation is not supported.
 

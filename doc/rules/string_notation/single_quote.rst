@@ -2,6 +2,8 @@
 Rule ``single_quote``
 =====================
 
+`src <../../../src/Fixer/StringNotation/SingleQuoteFixer.php>`_
+
 Convert double quotes to single quotes for simple strings.
 
 Configuration

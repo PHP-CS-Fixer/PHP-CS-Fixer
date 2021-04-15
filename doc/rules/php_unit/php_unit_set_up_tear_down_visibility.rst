@@ -2,6 +2,8 @@
 Rule ``php_unit_set_up_tear_down_visibility``
 =============================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitSetUpTearDownVisibilityFixer.php>`_
+
 Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
 PHPUnit to ``protected``, to match the PHPUnit TestCase.
 

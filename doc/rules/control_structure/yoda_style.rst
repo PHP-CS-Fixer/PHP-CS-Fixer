@@ -2,6 +2,8 @@
 Rule ``yoda_style``
 ===================
 
+`src <../../../src/Fixer/ControlStructure/YodaStyleFixer.php>`_
+
 Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false,
 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions
 (``null``) based on configuration.

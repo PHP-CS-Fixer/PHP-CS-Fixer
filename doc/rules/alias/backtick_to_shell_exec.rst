@@ -2,6 +2,8 @@
 Rule ``backtick_to_shell_exec``
 ===============================
 
+`src <../../../src/Fixer/Alias/BacktickToShellExecFixer.php>`_
+
 Converts backtick operators to ``shell_exec`` calls.
 
 Description

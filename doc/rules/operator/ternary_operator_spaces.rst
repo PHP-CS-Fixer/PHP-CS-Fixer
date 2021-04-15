@@ -2,6 +2,8 @@
 Rule ``ternary_operator_spaces``
 ================================
 
+`src <../../../src/Fixer/Operator/TernaryOperatorSpacesFixer.php>`_
+
 Standardize spaces around ternary operator.
 
 Examples

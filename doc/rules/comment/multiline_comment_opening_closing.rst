@@ -2,6 +2,8 @@
 Rule ``multiline_comment_opening_closing``
 ==========================================
 
+`src <../../../src/Fixer/Comment/MultilineCommentOpeningClosingFixer.php>`_
+
 DocBlocks must start with two asterisks, multiline comments must start with a
 single asterisk, after the opening slash. Both must end with a single asterisk
 before the closing slash.

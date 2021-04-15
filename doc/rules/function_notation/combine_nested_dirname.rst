@@ -2,6 +2,8 @@
 Rule ``combine_nested_dirname``
 ===============================
 
+`src <../../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php>`_
+
 Replace multiple nested calls of ``dirname`` by only one call with second
 ``$level`` parameter. Requires PHP >= 7.0.
 

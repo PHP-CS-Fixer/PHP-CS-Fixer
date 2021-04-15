@@ -2,6 +2,8 @@
 Rule ``silenced_deprecation_error``
 ===================================
 
+`src <../../../src/Fixer/LanguageConstruct/SilencedDeprecationErrorFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``error_suppression`` instead.

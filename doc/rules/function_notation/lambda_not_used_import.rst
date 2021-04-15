@@ -2,6 +2,8 @@
 Rule ``lambda_not_used_import``
 ===============================
 
+`src <../../../src/Fixer/FunctionNotation/LambdaNotUsedImportFixer.php>`_
+
 Lambda must not import variables it doesn't use.
 
 Examples

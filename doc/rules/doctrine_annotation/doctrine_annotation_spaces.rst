@@ -2,6 +2,8 @@
 Rule ``doctrine_annotation_spaces``
 ===================================
 
+`src <../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationSpacesFixer.php>`_
+
 Fixes spaces in Doctrine annotations.
 
 Description

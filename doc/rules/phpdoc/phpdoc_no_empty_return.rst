@@ -2,6 +2,8 @@
 Rule ``phpdoc_no_empty_return``
 ===============================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_
+
 ``@return void`` and ``@return null`` annotations should be omitted from PHPDoc.
 
 Examples

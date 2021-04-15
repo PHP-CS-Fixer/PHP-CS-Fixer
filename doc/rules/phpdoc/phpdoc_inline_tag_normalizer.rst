@@ -2,6 +2,8 @@
 Rule ``phpdoc_inline_tag_normalizer``
 =====================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php>`_
+
 Fixes PHPDoc inline tags.
 
 Configuration

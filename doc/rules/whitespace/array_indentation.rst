@@ -2,6 +2,8 @@
 Rule ``array_indentation``
 ==========================
 
+`src <../../../src/Fixer/Whitespace/ArrayIndentationFixer.php>`_
+
 Each element of an array must be indented exactly once.
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``heredoc_to_nowdoc``
 ==========================
 
+`src <../../../src/Fixer/StringNotation/HeredocToNowdocFixer.php>`_
+
 Convert ``heredoc`` to ``nowdoc`` where possible.
 
 Examples

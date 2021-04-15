@@ -2,6 +2,8 @@
 Rule ``static_lambda``
 ======================
 
+`src <../../../src/Fixer/FunctionNotation/StaticLambdaFixer.php>`_
+
 Lambdas not (indirect) referencing ``$this`` must be declared ``static``.
 
 .. warning:: Using this rule is risky.

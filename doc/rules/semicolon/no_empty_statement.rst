@@ -2,6 +2,8 @@
 Rule ``no_empty_statement``
 ===========================
 
+`src <../../../src/Fixer/Semicolon/NoEmptyStatementFixer.php>`_
+
 Remove useless (semicolon) statements.
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``regular_callable_call``
 ==============================
 
+`src <../../../src/Fixer/FunctionNotation/RegularCallableCallFixer.php>`_
+
 Callables must be called without using ``call_user_func*`` when possible.
 
 .. warning:: Using this rule is risky.

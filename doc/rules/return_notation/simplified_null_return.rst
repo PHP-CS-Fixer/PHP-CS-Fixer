@@ -2,6 +2,8 @@
 Rule ``simplified_null_return``
 ===============================
 
+`src <../../../src/Fixer/ReturnNotation/SimplifiedNullReturnFixer.php>`_
+
 A return statement wishing to return ``void`` should not return ``null``.
 
 Examples

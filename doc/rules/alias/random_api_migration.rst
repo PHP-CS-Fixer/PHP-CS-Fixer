@@ -2,6 +2,8 @@
 Rule ``random_api_migration``
 =============================
 
+`src <../../../src/Fixer/Alias/RandomApiMigrationFixer.php>`_
+
 Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
 analogs.
 

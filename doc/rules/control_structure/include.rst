@@ -2,6 +2,8 @@
 Rule ``include``
 ================
 
+`src <../../../src/Fixer/ControlStructure/IncludeFixer.php>`_
+
 Include/Require and file path should be divided with a single space. File path
 should not be placed under brackets.
 

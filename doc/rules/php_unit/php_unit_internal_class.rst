@@ -2,6 +2,8 @@
 Rule ``php_unit_internal_class``
 ================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitInternalClassFixer.php>`_
+
 All PHPUnit test classes should be marked as internal.
 
 Configuration

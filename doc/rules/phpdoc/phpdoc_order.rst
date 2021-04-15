@@ -2,6 +2,8 @@
 Rule ``phpdoc_order``
 =====================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocOrderFixer.php>`_
+
 Annotations in PHPDoc should be ordered so that ``@param`` annotations come
 first, then ``@throws`` annotations, then ``@return`` annotations.
 

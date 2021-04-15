@@ -2,6 +2,8 @@
 Rule ``ordered_traits``
 =======================
 
+`src <../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php>`_
+
 Trait ``use`` statements must be sorted alphabetically.
 
 .. warning:: Using this rule is risky.

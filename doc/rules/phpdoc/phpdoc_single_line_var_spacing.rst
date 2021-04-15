@@ -2,6 +2,8 @@
 Rule ``phpdoc_single_line_var_spacing``
 =======================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php>`_
+
 Single line ``@var`` PHPDoc should have proper spacing.
 
 Examples

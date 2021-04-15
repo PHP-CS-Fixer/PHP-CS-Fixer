@@ -2,6 +2,8 @@
 Rule ``fully_qualified_strict_types``
 =====================================
 
+`src <../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php>`_
+
 Transforms imported FQCN parameters and return types in function arguments to
 short version.
 

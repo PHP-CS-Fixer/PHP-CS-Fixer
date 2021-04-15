@@ -2,6 +2,8 @@
 Rule ``global_namespace_import``
 ================================
 
+`src <../../../src/Fixer/Import/GlobalNamespaceImportFixer.php>`_
+
 Imports or fully qualifies global classes/functions/constants.
 
 Configuration

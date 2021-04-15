@@ -2,6 +2,8 @@
 Rule ``operator_linebreak``
 ===========================
 
+`src <../../../src/Fixer/Operator/OperatorLinebreakFixer.php>`_
+
 Operators - when multiline - must always be at the beginning or at the end of
 the line.
 

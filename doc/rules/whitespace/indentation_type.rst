@@ -2,6 +2,8 @@
 Rule ``indentation_type``
 =========================
 
+`src <../../../src/Fixer/Whitespace/IndentationTypeFixer.php>`_
+
 Code MUST use configured indentation type.
 
 Examples

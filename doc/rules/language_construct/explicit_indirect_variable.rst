@@ -2,6 +2,8 @@
 Rule ``explicit_indirect_variable``
 ===================================
 
+`src <../../../src/Fixer/LanguageConstruct/ExplicitIndirectVariableFixer.php>`_
+
 Add curly braces to indirect variables to make them clear to understand.
 Requires PHP >= 7.0.
 

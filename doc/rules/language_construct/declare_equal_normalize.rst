@@ -2,6 +2,8 @@
 Rule ``declare_equal_normalize``
 ================================
 
+`src <../../../src/Fixer/LanguageConstruct/DeclareEqualNormalizeFixer.php>`_
+
 Equal sign in declare statement should be surrounded by spaces or not following
 configuration.
 

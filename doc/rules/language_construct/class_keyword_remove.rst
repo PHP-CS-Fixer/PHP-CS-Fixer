@@ -2,6 +2,8 @@
 Rule ``class_keyword_remove``
 =============================
 
+`src <../../../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
+
 Converts ``::class`` keywords to FQCN strings.
 
 Examples

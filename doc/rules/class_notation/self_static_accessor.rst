@@ -2,6 +2,8 @@
 Rule ``self_static_accessor``
 =============================
 
+`src <../../../src/Fixer/ClassNotation/SelfStaticAccessorFixer.php>`_
+
 Inside a ``final`` class or anonymous class ``self`` should be preferred to
 ``static``.
 

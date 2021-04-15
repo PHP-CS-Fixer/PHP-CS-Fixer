@@ -2,6 +2,8 @@
 Rule ``heredoc_indentation``
 ============================
 
+`src <../../../src/Fixer/Whitespace/HeredocIndentationFixer.php>`_
+
 Heredoc/nowdoc content must be properly indented. Requires PHP >= 7.3.
 
 Configuration

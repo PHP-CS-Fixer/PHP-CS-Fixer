@@ -2,6 +2,8 @@
 Rule ``class_definition``
 =========================
 
+`src <../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
+
 Whitespace around the keywords of a class, trait or interfaces definition should
 be one space.
 

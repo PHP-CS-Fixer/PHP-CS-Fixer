@@ -2,6 +2,8 @@
 Rule ``combine_consecutive_unsets``
 ===================================
 
+`src <../../../src/Fixer/LanguageConstruct/CombineConsecutiveUnsetsFixer.php>`_
+
 Calling ``unset`` on multiple items should be done in one call.
 
 Examples

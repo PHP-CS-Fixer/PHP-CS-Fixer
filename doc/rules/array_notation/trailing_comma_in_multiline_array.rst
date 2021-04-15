@@ -2,6 +2,8 @@
 Rule ``trailing_comma_in_multiline_array``
 ==========================================
 
+`src <../../../src/Fixer/ArrayNotation/TrailingCommaInMultilineArrayFixer.php>`_
+
 PHP multi-line arrays should have a trailing comma.
 
 Configuration

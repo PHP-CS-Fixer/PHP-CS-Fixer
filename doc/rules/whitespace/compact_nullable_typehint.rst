@@ -2,6 +2,8 @@
 Rule ``compact_nullable_typehint``
 ==================================
 
+`src <../../../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+
 Remove extra spaces in a nullable typehint.
 
 Description

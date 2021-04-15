@@ -2,6 +2,8 @@
 Rule ``no_blank_lines_after_class_opening``
 ===========================================
 
+`src <../../../src/Fixer/ClassNotation/NoBlankLinesAfterClassOpeningFixer.php>`_
+
 There should be no empty lines after class opening brace.
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``mb_str_functions``
 =========================
 
+`src <../../../src/Fixer/Alias/MbStrFunctionsFixer.php>`_
+
 Replace non multibyte-safe functions with corresponding mb function.
 
 .. warning:: Using this rule is risky.

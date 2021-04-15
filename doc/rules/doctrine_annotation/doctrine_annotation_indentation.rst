@@ -2,6 +2,8 @@
 Rule ``doctrine_annotation_indentation``
 ========================================
 
+`src <../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php>`_
+
 Doctrine annotations must be indented with four spaces.
 
 Configuration

@@ -2,6 +2,8 @@
 Rule ``php_unit_test_class_requires_covers``
 ============================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixer.php>`_
+
 Adds a default ``@coversNothing`` annotation to PHPUnit test classes that have
 no ``@covers*`` annotation.
 

@@ -2,6 +2,8 @@
 Rule ``no_multiline_whitespace_around_double_arrow``
 ====================================================
 
+`src <../../../src/Fixer/ArrayNotation/NoMultilineWhitespaceAroundDoubleArrowFixer.php>`_
+
 Operator ``=>`` should not be surrounded by multi-line whitespaces.
 
 Examples

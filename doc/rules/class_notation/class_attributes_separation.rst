@@ -2,6 +2,8 @@
 Rule ``class_attributes_separation``
 ====================================
 
+`src <../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
+
 Class, trait and interface elements must be separated with one or none blank
 line.
 

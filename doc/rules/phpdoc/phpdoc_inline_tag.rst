@@ -2,6 +2,8 @@
 Rule ``phpdoc_inline_tag``
 ==========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocInlineTagFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``general_phpdoc_tag_rename``,

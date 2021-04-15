@@ -2,6 +2,8 @@
 Rule ``ternary_to_null_coalescing``
 ===================================
 
+`src <../../../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
+
 Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
 
 Examples

@@ -2,6 +2,8 @@
 Rule ``simple_to_complex_string_variable``
 ==========================================
 
+`src <../../../src/Fixer/StringNotation/SimpleToComplexStringVariableFixer.php>`_
+
 Converts explicit variables in double-quoted strings and heredoc syntax from
 simple to complex format (``${`` to ``{$``).
 

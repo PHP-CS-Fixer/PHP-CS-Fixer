@@ -2,6 +2,8 @@
 Rule ``echo_tag_syntax``
 ========================
 
+`src <../../../src/Fixer/PhpTag/EchoTagSyntaxFixer.php>`_
+
 Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print``
 syntax, or vice-versa.
 

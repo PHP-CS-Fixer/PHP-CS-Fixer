@@ -2,6 +2,8 @@
 Rule ``full_opening_tag``
 =========================
 
+`src <../../../src/Fixer/PhpTag/FullOpeningTagFixer.php>`_
+
 PHP code must use the long ``<?php`` tags or short-echo ``<?=`` tags and not
 other tag variations.
 

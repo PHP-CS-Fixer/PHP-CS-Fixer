@@ -2,6 +2,8 @@
 Rule ``phpdoc_to_comment``
 ==========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php>`_
+
 Docblocks should only be used on structural elements.
 
 Examples

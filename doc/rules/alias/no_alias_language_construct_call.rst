@@ -2,6 +2,8 @@
 Rule ``no_alias_language_construct_call``
 =========================================
 
+`src <../../../src/Fixer/Alias/NoAliasLanguageConstructCallFixer.php>`_
+
 Master language constructs shall be used instead of aliases.
 
 Examples

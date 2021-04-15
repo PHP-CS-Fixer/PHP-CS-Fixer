@@ -2,6 +2,8 @@
 Rule ``comment_to_phpdoc``
 ==========================
 
+`src <../../../src/Fixer/Comment/CommentToPhpdocFixer.php>`_
+
 Comments with annotation should be docblock when used on structural elements.
 
 .. warning:: Using this rule is risky.

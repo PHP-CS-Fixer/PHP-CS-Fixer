@@ -2,6 +2,8 @@
 Rule ``ternary_to_elvis_operator``
 ==================================
 
+`src <../../../src/Fixer/Operator/TernaryToElvisOperatorFixer.php>`_
+
 Use the Elvis operator ``?:`` where possible.
 
 .. warning:: Using this rule is risky.

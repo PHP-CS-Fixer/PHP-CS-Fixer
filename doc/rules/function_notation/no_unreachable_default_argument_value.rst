@@ -2,6 +2,8 @@
 Rule ``no_unreachable_default_argument_value``
 ==============================================
 
+`src <../../../src/Fixer/FunctionNotation/NoUnreachableDefaultArgumentValueFixer.php>`_
+
 In function arguments there must not be arguments with default values before
 non-default ones.
 

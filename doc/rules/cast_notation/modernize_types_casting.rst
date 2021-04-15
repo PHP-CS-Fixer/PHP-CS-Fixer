@@ -2,6 +2,8 @@
 Rule ``modernize_types_casting``
 ================================
 
+`src <../../../src/Fixer/CastNotation/ModernizeTypesCastingFixer.php>`_
+
 Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
 function calls with according type casting operator.
 

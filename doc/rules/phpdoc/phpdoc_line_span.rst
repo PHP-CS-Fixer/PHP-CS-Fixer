@@ -2,6 +2,8 @@
 Rule ``phpdoc_line_span``
 =========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocLineSpanFixer.php>`_
+
 Changes doc blocks from single to multi line, or reversed. Works for class
 constants, properties and methods only.
 

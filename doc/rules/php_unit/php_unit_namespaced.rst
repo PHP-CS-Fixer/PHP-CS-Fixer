@@ -2,6 +2,8 @@
 Rule ``php_unit_namespaced``
 ============================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
+
 PHPUnit classes MUST be used in namespaced version, e.g.
 ``\PHPUnit\Framework\TestCase`` instead of ``\PHPUnit_Framework_TestCase``.
 

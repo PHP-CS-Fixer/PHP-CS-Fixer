@@ -2,6 +2,8 @@
 Rule ``function_to_constant``
 =============================
 
+`src <../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php>`_
+
 Replace core functions calls returning constants with the constants.
 
 .. warning:: Using this rule is risky.

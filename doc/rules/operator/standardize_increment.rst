@@ -2,6 +2,8 @@
 Rule ``standardize_increment``
 ==============================
 
+`src <../../../src/Fixer/Operator/StandardizeIncrementFixer.php>`_
+
 Increment and decrement operators should be used if possible.
 
 Examples

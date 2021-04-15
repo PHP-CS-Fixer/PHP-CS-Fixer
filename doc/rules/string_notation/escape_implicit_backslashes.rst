@@ -2,6 +2,8 @@
 Rule ``escape_implicit_backslashes``
 ====================================
 
+`src <../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
+
 Escape implicit backslashes in strings and heredocs to ease the understanding of
 which are special chars interpreted by PHP and which not.
 

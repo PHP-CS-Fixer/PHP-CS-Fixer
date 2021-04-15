@@ -2,6 +2,8 @@
 Rule ``lowercase_keywords``
 ===========================
 
+`src <../../../src/Fixer/Casing/LowercaseKeywordsFixer.php>`_
+
 PHP keywords MUST be in lower case.
 
 Examples

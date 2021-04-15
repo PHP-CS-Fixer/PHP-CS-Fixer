@@ -2,6 +2,8 @@
 Rule ``ordered_interfaces``
 ===========================
 
+`src <../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
+
 Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 
 .. warning:: Using this rule is risky.

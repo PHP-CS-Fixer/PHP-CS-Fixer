@@ -2,6 +2,8 @@
 Rule ``combine_consecutive_issets``
 ===================================
 
+`src <../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php>`_
+
 Using ``isset($var) &&`` multiple times should be done in one call.
 
 Examples

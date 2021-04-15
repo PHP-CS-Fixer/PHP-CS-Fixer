@@ -2,6 +2,8 @@
 Rule ``php_unit_dedicate_assert_internal_type``
 ===============================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php>`_
+
 PHPUnit assertions like ``assertIsArray`` should be used over
 ``assertInternalType``.
 

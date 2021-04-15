@@ -2,6 +2,8 @@
 Rule ``switch_case_semicolon_to_colon``
 =======================================
 
+`src <../../../src/Fixer/ControlStructure/SwitchCaseSemicolonToColonFixer.php>`_
+
 A case should be followed by a colon and not a semicolon.
 
 Examples

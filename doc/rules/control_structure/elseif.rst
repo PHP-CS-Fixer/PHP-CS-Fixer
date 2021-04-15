@@ -2,6 +2,8 @@
 Rule ``elseif``
 ===============
 
+`src <../../../src/Fixer/ControlStructure/ElseifFixer.php>`_
+
 The keyword ``elseif`` should be used instead of ``else if`` so that all control
 keywords look like single words.
 

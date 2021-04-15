@@ -2,6 +2,8 @@
 Rule ``php_unit_test_annotation``
 =================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php>`_
+
 Adds or removes @test annotations from tests, following configuration.
 
 .. warning:: Using this rule is risky.

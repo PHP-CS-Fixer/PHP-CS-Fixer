@@ -2,6 +2,8 @@
 Rule ``single_line_throw``
 ==========================
 
+`src <../../../src/Fixer/FunctionNotation/SingleLineThrowFixer.php>`_
+
 Throwing exception must be done in single line.
 
 Examples

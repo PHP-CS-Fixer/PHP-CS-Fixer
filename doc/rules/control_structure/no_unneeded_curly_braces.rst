@@ -2,6 +2,8 @@
 Rule ``no_unneeded_curly_braces``
 =================================
 
+`src <../../../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
+
 Removes unneeded curly braces that are superfluous and aren't part of a control
 structure's body.
 

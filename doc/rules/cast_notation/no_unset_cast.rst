@@ -2,6 +2,8 @@
 Rule ``no_unset_cast``
 ======================
 
+`src <../../../src/Fixer/CastNotation/NoUnsetCastFixer.php>`_
+
 Variables must be set ``null`` instead of using ``(unset)`` casting.
 
 Examples

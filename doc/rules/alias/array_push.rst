@@ -2,6 +2,8 @@
 Rule ``array_push``
 ===================
 
+`src <../../../src/Fixer/Alias/ArrayPushFixer.php>`_
+
 Converts simple usages of ``array_push($x, $y);`` to ``$x[] = $y;``.
 
 .. warning:: Using this rule is risky.

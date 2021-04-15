@@ -2,6 +2,8 @@
 Rule ``no_extra_consecutive_blank_lines``
 =========================================
 
+`src <../../../src/Fixer/Whitespace/NoExtraConsecutiveBlankLinesFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``no_extra_blank_lines`` instead.

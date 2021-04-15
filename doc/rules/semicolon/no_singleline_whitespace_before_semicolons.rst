@@ -2,6 +2,8 @@
 Rule ``no_singleline_whitespace_before_semicolons``
 ===================================================
 
+`src <../../../src/Fixer/Semicolon/NoSinglelineWhitespaceBeforeSemicolonsFixer.php>`_
+
 Single-line whitespace before closing semicolon are prohibited.
 
 Examples

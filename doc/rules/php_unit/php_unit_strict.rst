@@ -2,6 +2,8 @@
 Rule ``php_unit_strict``
 ========================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitStrictFixer.php>`_
+
 PHPUnit methods like ``assertSame`` should be used instead of ``assertEquals``.
 
 .. warning:: Using this rule is risky.

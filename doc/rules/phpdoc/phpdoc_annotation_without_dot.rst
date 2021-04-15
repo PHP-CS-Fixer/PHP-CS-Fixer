@@ -2,6 +2,8 @@
 Rule ``phpdoc_annotation_without_dot``
 ======================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php>`_
+
 PHPDoc annotation descriptions should not be a sentence.
 
 Examples

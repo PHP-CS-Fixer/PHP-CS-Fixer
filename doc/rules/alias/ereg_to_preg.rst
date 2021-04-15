@@ -2,6 +2,8 @@
 Rule ``ereg_to_preg``
 =====================
 
+`src <../../../src/Fixer/Alias/EregToPregFixer.php>`_
+
 Replace deprecated ``ereg`` regular expression functions with ``preg``.
 
 .. warning:: Using this rule is risky.

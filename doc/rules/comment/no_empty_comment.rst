@@ -2,6 +2,8 @@
 Rule ``no_empty_comment``
 =========================
 
+`src <../../../src/Fixer/Comment/NoEmptyCommentFixer.php>`_
+
 There should not be any empty comments.
 
 Examples

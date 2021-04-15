@@ -2,6 +2,8 @@
 Rule ``fopen_flags``
 ====================
 
+`src <../../../src/Fixer/FunctionNotation/FopenFlagsFixer.php>`_
+
 The flags in ``fopen`` calls must omit ``t``, and ``b`` must be omitted or
 included consistently.
 

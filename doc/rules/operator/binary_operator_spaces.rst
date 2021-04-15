@@ -2,6 +2,8 @@
 Rule ``binary_operator_spaces``
 ===============================
 
+`src <../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php>`_
+
 Binary operators should be surrounded by space as configured.
 
 Configuration

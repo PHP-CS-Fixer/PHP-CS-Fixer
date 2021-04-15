@@ -2,6 +2,8 @@
 Rule ``single_class_element_per_statement``
 ===========================================
 
+`src <../../../src/Fixer/ClassNotation/SingleClassElementPerStatementFixer.php>`_
+
 There MUST NOT be more than one property or constant declared per statement.
 
 Configuration

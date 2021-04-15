@@ -2,6 +2,8 @@
 Rule ``blank_line_before_return``
 =================================
 
+`src <../../../src/Fixer/ReturnNotation/BlankLineBeforeReturnFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``blank_line_before_statement`` instead.

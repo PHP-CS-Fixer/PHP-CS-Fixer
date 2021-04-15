@@ -2,6 +2,8 @@
 Rule ``phpdoc_indent``
 ======================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocIndentFixer.php>`_
+
 Docblocks should have the same indentation as the documented subject.
 
 Examples

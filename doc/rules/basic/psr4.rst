@@ -2,6 +2,8 @@
 Rule ``psr4``
 =============
 
+`src <../../../src/Fixer/Basic/Psr4Fixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``psr_autoloading`` instead.

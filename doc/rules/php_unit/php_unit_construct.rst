@@ -2,6 +2,8 @@
 Rule ``php_unit_construct``
 ===========================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php>`_
+
 PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be
 written with dedicated method like ``->assertTrue($foo)``.
 

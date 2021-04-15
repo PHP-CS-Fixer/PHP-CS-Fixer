@@ -2,6 +2,8 @@
 Rule ``blank_line_after_namespace``
 ===================================
 
+`src <../../../src/Fixer/NamespaceNotation/BlankLineAfterNamespaceFixer.php>`_
+
 There MUST be one blank line after the namespace declaration.
 
 Examples

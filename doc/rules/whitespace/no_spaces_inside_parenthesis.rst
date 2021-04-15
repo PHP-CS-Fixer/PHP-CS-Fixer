@@ -2,6 +2,8 @@
 Rule ``no_spaces_inside_parenthesis``
 =====================================
 
+`src <../../../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
+
 There MUST NOT be a space after the opening parenthesis. There MUST NOT be a
 space before the closing parenthesis.
 

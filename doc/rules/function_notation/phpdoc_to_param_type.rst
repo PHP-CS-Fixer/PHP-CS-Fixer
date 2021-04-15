@@ -2,6 +2,8 @@
 Rule ``phpdoc_to_param_type``
 =============================
 
+`src <../../../src/Fixer/FunctionNotation/PhpdocToParamTypeFixer.php>`_
+
 EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts
 accordingly the function signature. Requires PHP >= 7.0.
 

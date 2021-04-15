@@ -2,6 +2,8 @@
 Rule ``php_unit_ordered_covers``
 ================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitOrderedCoversFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``phpdoc_order_by_value`` instead.

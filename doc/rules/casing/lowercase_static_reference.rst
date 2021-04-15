@@ -2,6 +2,8 @@
 Rule ``lowercase_static_reference``
 ===================================
 
+`src <../../../src/Fixer/Casing/LowercaseStaticReferenceFixer.php>`_
+
 Class static references ``self``, ``static`` and ``parent`` MUST be in lower
 case.
 

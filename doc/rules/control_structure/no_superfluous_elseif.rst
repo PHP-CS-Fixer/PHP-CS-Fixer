@@ -2,6 +2,8 @@
 Rule ``no_superfluous_elseif``
 ==============================
 
+`src <../../../src/Fixer/ControlStructure/NoSuperfluousElseifFixer.php>`_
+
 Replaces superfluous ``elseif`` with ``if``.
 
 Examples

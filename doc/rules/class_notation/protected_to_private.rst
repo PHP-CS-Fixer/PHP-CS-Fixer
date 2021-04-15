@@ -2,6 +2,8 @@
 Rule ``protected_to_private``
 =============================
 
+`src <../../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php>`_
+
 Converts ``protected`` variables and methods to ``private`` where possible.
 
 Examples

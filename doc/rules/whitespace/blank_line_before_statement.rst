@@ -2,6 +2,8 @@
 Rule ``blank_line_before_statement``
 ====================================
 
+`src <../../../src/Fixer/Whitespace/BlankLineBeforeStatementFixer.php>`_
+
 An empty line feed must precede any configured statement.
 
 Configuration

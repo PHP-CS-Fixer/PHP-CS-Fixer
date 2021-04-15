@@ -2,6 +2,8 @@
 Rule ``linebreak_after_opening_tag``
 ====================================
 
+`src <../../../src/Fixer/PhpTag/LinebreakAfterOpeningTagFixer.php>`_
+
 Ensure there is no code on the same line as the PHP open tag.
 
 Examples

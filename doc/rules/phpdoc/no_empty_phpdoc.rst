@@ -2,6 +2,8 @@
 Rule ``no_empty_phpdoc``
 ========================
 
+`src <../../../src/Fixer/Phpdoc/NoEmptyPhpdocFixer.php>`_
+
 There should not be empty PHPDoc blocks.
 
 Examples

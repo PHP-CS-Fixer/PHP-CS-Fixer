@@ -2,6 +2,8 @@
 Rule ``phpdoc_var_without_name``
 ================================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocVarWithoutNameFixer.php>`_
+
 ``@var`` and ``@type`` annotations of classy properties should not contain the
 name.
 

@@ -2,6 +2,8 @@
 Rule ``function_declaration``
 =============================
 
+`src <../../../src/Fixer/FunctionNotation/FunctionDeclarationFixer.php>`_
+
 Spaces should be properly placed in a function declaration.
 
 Configuration

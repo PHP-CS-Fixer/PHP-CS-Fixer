@@ -2,6 +2,8 @@
 Rule ``simplified_if_return``
 =============================
 
+`src <../../../src/Fixer/ControlStructure/SimplifiedIfReturnFixer.php>`_
+
 Simplify ``if`` control structures that return the boolean result of their
 condition.
 

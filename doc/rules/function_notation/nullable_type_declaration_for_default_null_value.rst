@@ -2,6 +2,8 @@
 Rule ``nullable_type_declaration_for_default_null_value``
 =========================================================
 
+`src <../../../src/Fixer/FunctionNotation/NullableTypeDeclarationForDefaultNullValueFixer.php>`_
+
 Adds or removes ``?`` before type declarations for parameters with a default
 ``null`` value.
 

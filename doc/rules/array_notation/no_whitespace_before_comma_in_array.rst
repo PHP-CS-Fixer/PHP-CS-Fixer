@@ -2,6 +2,8 @@
 Rule ``no_whitespace_before_comma_in_array``
 ============================================
 
+`src <../../../src/Fixer/ArrayNotation/NoWhitespaceBeforeCommaInArrayFixer.php>`_
+
 In array declaration, there MUST NOT be a whitespace before each comma.
 
 Configuration

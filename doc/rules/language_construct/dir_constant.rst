@@ -2,6 +2,8 @@
 Rule ``dir_constant``
 =====================
 
+`src <../../../src/Fixer/LanguageConstruct/DirConstantFixer.php>`_
+
 Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__`` constant.
 
 .. warning:: Using this rule is risky.

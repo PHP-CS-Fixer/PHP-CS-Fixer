@@ -2,6 +2,8 @@
 Rule ``final_internal_class``
 =============================
 
+`src <../../../src/Fixer/ClassNotation/FinalInternalClassFixer.php>`_
+
 Internal classes should be ``final``.
 
 .. warning:: Using this rule is risky.

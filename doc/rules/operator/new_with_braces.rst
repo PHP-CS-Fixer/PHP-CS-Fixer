@@ -2,6 +2,8 @@
 Rule ``new_with_braces``
 ========================
 
+`src <../../../src/Fixer/Operator/NewWithBracesFixer.php>`_
+
 All instances created with new keyword must be followed by braces.
 
 Examples

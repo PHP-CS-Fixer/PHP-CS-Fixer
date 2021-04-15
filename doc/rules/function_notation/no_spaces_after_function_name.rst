@@ -2,6 +2,8 @@
 Rule ``no_spaces_after_function_name``
 ======================================
 
+`src <../../../src/Fixer/FunctionNotation/NoSpacesAfterFunctionNameFixer.php>`_
+
 When making a method or function call, there MUST NOT be a space between the
 method or function name and the opening parenthesis.
 

@@ -2,6 +2,8 @@
 Rule ``no_multiline_whitespace_before_semicolons``
 ==================================================
 
+`src <../../../src/Fixer/Semicolon/NoMultilineWhitespaceBeforeSemicolonsFixer.php>`_
+
 .. warning:: This rule is deprecated and will be removed on next major version.
 
    You should use ``multiline_whitespace_before_semicolons`` instead.

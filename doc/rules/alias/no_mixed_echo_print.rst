@@ -2,6 +2,8 @@
 Rule ``no_mixed_echo_print``
 ============================
 
+`src <../../../src/Fixer/Alias/NoMixedEchoPrintFixer.php>`_
+
 Either language construct ``print`` or ``echo`` should be used.
 
 Configuration

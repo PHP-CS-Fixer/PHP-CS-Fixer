@@ -2,6 +2,8 @@
 Rule ``strict_comparison``
 ==========================
 
+`src <../../../src/Fixer/Strict/StrictComparisonFixer.php>`_
+
 Comparisons should be strict.
 
 .. warning:: Using this rule is risky.

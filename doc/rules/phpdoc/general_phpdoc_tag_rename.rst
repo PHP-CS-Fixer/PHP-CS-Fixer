@@ -2,6 +2,8 @@
 Rule ``general_phpdoc_tag_rename``
 ==================================
 
+`src <../../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_
+
 Renames PHPDoc tags.
 
 Configuration

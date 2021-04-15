@@ -2,6 +2,8 @@
 Rule ``strict_param``
 =====================
 
+`src <../../../src/Fixer/Strict/StrictParamFixer.php>`_
+
 Functions should be used with ``$strict`` param set to ``true``.
 
 Description

@@ -2,6 +2,8 @@
 Rule ``doctrine_annotation_array_assignment``
 =============================================
 
+`src <../../../src/Fixer/DoctrineAnnotation/DoctrineAnnotationArrayAssignmentFixer.php>`_
+
 Doctrine annotations must use configured operator for assignment in arrays.
 
 Configuration

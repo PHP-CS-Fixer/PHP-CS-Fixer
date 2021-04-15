@@ -2,6 +2,8 @@
 Rule ``php_unit_test_case_static_method_calls``
 ===============================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php>`_
+
 Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same
 type, either ``$this->``, ``self::`` or ``static::``.
 

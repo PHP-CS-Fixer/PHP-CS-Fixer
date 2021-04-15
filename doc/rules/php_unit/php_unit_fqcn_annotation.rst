@@ -2,6 +2,8 @@
 Rule ``php_unit_fqcn_annotation``
 =================================
 
+`src <../../../src/Fixer/PhpUnit/PhpUnitFqcnAnnotationFixer.php>`_
+
 PHPUnit annotations should be a FQCNs including a root namespace.
 
 Examples

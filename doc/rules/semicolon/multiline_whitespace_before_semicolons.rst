@@ -2,6 +2,8 @@
 Rule ``multiline_whitespace_before_semicolons``
 ===============================================
 
+`src <../../../src/Fixer/Semicolon/MultilineWhitespaceBeforeSemicolonsFixer.php>`_
+
 Forbid multi-line whitespace before the closing semicolon or move the semicolon
 to the new line for chained calls.
 

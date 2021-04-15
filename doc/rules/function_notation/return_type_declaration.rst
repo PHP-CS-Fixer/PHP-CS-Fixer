@@ -2,6 +2,8 @@
 Rule ``return_type_declaration``
 ================================
 
+`src <../../../src/Fixer/FunctionNotation/ReturnTypeDeclarationFixer.php>`_
+
 There should be one or no space before colon, and one space after it in return
 type declarations, according to configuration.
 

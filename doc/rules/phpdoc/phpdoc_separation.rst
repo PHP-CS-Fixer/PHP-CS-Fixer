@@ -2,6 +2,8 @@
 Rule ``phpdoc_separation``
 ==========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php>`_
+
 Annotations in PHPDoc should be grouped together so that annotations of the same
 type immediately follow each other, and annotations of a different type are
 separated by a single blank line.

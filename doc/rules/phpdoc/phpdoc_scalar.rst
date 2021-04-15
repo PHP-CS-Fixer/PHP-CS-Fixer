@@ -2,6 +2,8 @@
 Rule ``phpdoc_scalar``
 ======================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocScalarFixer.php>`_
+
 Scalar types should always be written in the same form. ``int`` not ``integer``,
 ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 

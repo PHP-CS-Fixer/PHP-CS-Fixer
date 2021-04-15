@@ -2,6 +2,8 @@
 Rule ``magic_method_casing``
 ============================
 
+`src <../../../src/Fixer/Casing/MagicMethodCasingFixer.php>`_
+
 Magic method definitions and calls must be using the correct casing.
 
 Examples

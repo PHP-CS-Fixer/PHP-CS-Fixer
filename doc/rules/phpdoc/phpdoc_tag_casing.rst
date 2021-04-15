@@ -2,6 +2,8 @@
 Rule ``phpdoc_tag_casing``
 ==========================
 
+`src <../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php>`_
+
 Fixes casing of PHPDoc tags.
 
 Configuration

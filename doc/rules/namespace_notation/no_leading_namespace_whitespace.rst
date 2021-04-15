@@ -2,6 +2,8 @@
 Rule ``no_leading_namespace_whitespace``
 ========================================
 
+`src <../../../src/Fixer/NamespaceNotation/NoLeadingNamespaceWhitespaceFixer.php>`_
+
 The namespace declaration line shouldn't contain leading whitespace.
 
 Examples

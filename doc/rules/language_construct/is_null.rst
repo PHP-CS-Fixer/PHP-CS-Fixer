@@ -2,6 +2,8 @@
 Rule ``is_null``
 ================
 
+`src <../../../src/Fixer/LanguageConstruct/IsNullFixer.php>`_
+
 Replaces ``is_null($var)`` expression with ``null === $var``.
 
 .. warning:: Using this rule is risky.
