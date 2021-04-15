@@ -2,9 +2,10 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in([
-        __DIR__
+        __DIR__.'/needs-fixing/'
     ])
     ->exclude([
+        __DIR__.'/excluded/'
     ])
 ;
 
