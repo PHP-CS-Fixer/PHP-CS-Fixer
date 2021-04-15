@@ -20,7 +20,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo as sfSplFileInfo;
+use SplFileInfo;
 
 /**
  * @author Markus Staab <markus.staab@redaxo.org>
@@ -30,7 +31,6 @@ use Symfony\Component\Finder\SplFileInfo;
 final class ListFilesCommand extends Command
 {
     protected static $defaultName = 'list-files';
-
 
     /**
      * @var ConfigInterface
@@ -58,7 +58,7 @@ final class ListFilesCommand extends Command
         $this
             ->setDefinition(
                 [
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
+                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 ]
             )
             ->setDescription('List all files beeing fixed by the given config.')
@@ -80,10 +80,16 @@ final class ListFilesCommand extends Command
 
         $finder = $resolver->getFinder();
 
-        /** @var SplFileInfo $file */
+        /** @var SplFileInfo|sfSplFileInfo $file */
         foreach ($finder as $file) {
-            if ($file->isFile()) {
-                $output->writeln(escapeshellarg($file->getRelativePathname()));
+            if ($file instanceof sfSplFileInfo) {
+                if ($file->isFile()) {
+                    $output->writeln(escapeshellarg($file->getRelativePathname()));
+                }
+            } else if ($file instanceof SplFileInfo) {
+                if ($file->isFile()) {
+                    $output->writeln(escapeshellarg($file->getPathname()));
+                }
             }
         }
 
