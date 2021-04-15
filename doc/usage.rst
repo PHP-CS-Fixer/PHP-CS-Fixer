@@ -133,7 +133,7 @@ The ``list-files`` command will list all files which need fixing.
 
     $ php php-cs-fixer.phar list-files
 
-The ``--config`` option can be used, like in the ``fix``  command, to tell from which path a config file should be loaded
+The ``--config`` option can be used, like in the ``fix`` command, to tell from which path a config file should be loaded.
 
 .. code-block:: console
 
