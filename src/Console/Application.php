@@ -97,7 +97,7 @@ final class Application extends BaseApplication
     {
         $version = implode('', [
             parent::getLongVersion(),
-            self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '',
+            self::VERSION_CODENAME ? sprintf(' <info>%s</info>', self::VERSION_CODENAME) : '', // @phpstan-ignore-line to avoid `Ternary operator condition is always true|false.`
             ' by <comment>Fabien Potencier</comment> and <comment>Dariusz Ruminski</comment>',
         ]);
 
