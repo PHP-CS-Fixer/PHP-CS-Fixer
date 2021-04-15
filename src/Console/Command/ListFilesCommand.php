@@ -20,7 +20,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\SplFileInfo as sfSplFileInfo;
 use SplFileInfo;
 
 /**
@@ -68,6 +67,7 @@ final class ListFilesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $passedConfig = $input->getOption('config');
+        $cwd = getcwd();
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
@@ -80,16 +80,11 @@ final class ListFilesCommand extends Command
 
         $finder = $resolver->getFinder();
 
-        /** @var SplFileInfo|sfSplFileInfo $file */
+        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
-            if ($file instanceof sfSplFileInfo) {
-                if ($file->isFile()) {
-                    $output->writeln(escapeshellarg($file->getRelativePathname()));
-                }
-            } else if ($file instanceof SplFileInfo) {
-                if ($file->isFile()) {
-                    $output->writeln(escapeshellarg($file->getPathname()));
-                }
+            if ($file->isFile()) {
+                $relativePath = str_replace($cwd, '.', $file->getPathname());
+                $output->writeln(escapeshellarg($relativePath));
             }
         }
 

@@ -30,7 +30,7 @@ final class ListFilesCommandTest extends TestCase
         $commandTester = $this->doTestExecute([
             '--config' => __DIR__ . '/../../Fixtures/ListFilesTest/.php-cs-fixer.php'
         ]);
-        $this->assertSame(escapeshellarg('needs-fixing/needs-fixing.php').PHP_EOL, $commandTester->getDisplay());
+        $this->assertSame(escapeshellarg('./tests/Fixtures/ListFilesTest/needs-fixing/needs-fixing.php').PHP_EOL, $commandTester->getDisplay());
     }
 
     /**
