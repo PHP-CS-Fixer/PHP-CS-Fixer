@@ -84,6 +84,9 @@ final class ListFilesCommand extends Command
         foreach ($finder as $file) {
             if ($file->isFile()) {
                 $relativePath = str_replace($cwd, '.', $file->getPathname());
+                // unify directory separators across operating system
+                $relativePath = str_replace('/', \DIRECTORY_SEPARATOR, $relativePath);
+
                 $output->writeln(escapeshellarg($relativePath));
             }
         }
