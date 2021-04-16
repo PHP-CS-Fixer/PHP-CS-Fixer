@@ -10,8 +10,6 @@
  * with this source code in the file LICENSE.
  */
 
-// HARD copy of .php-cs-fixer.dist.php file for fabbot.io compatibility for PHP CS Fixer v2
-
 $header = <<<'EOF'
 This file is part of PHP CS Fixer.
 
