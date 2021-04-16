@@ -28,14 +28,14 @@ final class ListFilesCommandTest extends TestCase
     public function testListWithConfig()
     {
         $commandTester = $this->doTestExecute([
-            '--config' => __DIR__ . '/../../Fixtures/ListFilesTest/.php-cs-fixer.php'
+            '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.php',
         ]);
 
         $expectedPath = './tests/Fixtures/ListFilesTest/needs-fixing/needs-fixing.php';
         // make the test also work on windows
-        $expectedPath = str_replace('/', DIRECTORY_SEPARATOR, $expectedPath);
+        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
-        $this->assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+        static::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
     }
 
     /**
