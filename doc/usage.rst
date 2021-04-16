@@ -143,7 +143,7 @@ The output is build in a form that its easy to use in combination with ``xargs``
 This can be useful e.g. in situations where the caching might mechanism not available (CI, Docker) and distributing
 fixing across several processes might speedup the process.
 
-Note: You need to pass the config to the ``fix`` command, in order to make it work with several files beeing passed by ``list-files``.
+Note: You need to pass the config to the ``fix`` command, in order to make it work with several files being passed by ``list-files``.
 
 .. code-block:: console
 
