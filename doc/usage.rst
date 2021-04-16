@@ -143,9 +143,11 @@ The output is build in a form that its easy to use in combination with ``xargs``
 This can be useful e.g. in situations where the caching might mechanism not available (CI, Docker) and distributing
 fixing across several processes might speedup the process.
 
+Note: You need to pass the config to the ``fix`` command, in order to make it work with several files beeing passed by ``list-files``.
+
 .. code-block:: console
 
-    $ php php-cs-fixer.phar list-files | xargs -n 10 -P 8 php-cs-fixer fix
+    $ php php-cs-fixer.phar list-files --config=.php_cs.dist | xargs -n 10 -P 8 php-cs-fixer fix --config=.php_cs.dist
 
 * `-n` defines how many files a single subprocess process
 * `-P` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
