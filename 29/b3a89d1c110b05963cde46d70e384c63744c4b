@@ -1,0 +1,34 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-12T18:16:05Z
+
+[![Coverage Status](https://coveralls.io/builds/38841457/badge)](https://coveralls.io/builds/38841457)
+
+Coverage remained the same at 91.864% when pulling **1beaa54d134a3a6edcb210f29b5b42a1b2c582ad on ossinkine:exclude-final-doctrine-document** into **a503acef49cfc8875ac3d39ffb7da83317800b55 on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-12T20:46:38Z
+
+would you mind to share reasoning for a person who is not using Doctrine daily?
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2021-04-13T07:39:22Z
+
+Doctrine has two object mapping packages: ORM for relational DB and ODM document-oriented DB.
+ORM works with entities, ODM works with documents.
+Both can't be final because they can be proxied (will be created proxy classes extends them).
+Since FinalClassFixer already excluded entities, I assumed it would be logical to also exclude documents.
+
+---------------------------------------------------------------------------
+
+by Ocramius at 2021-04-13T16:03:19Z
+
+`@Document` seems a bit generic: shouldn't it be `@ODM\Document`?
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2021-04-14T08:02:57Z
+
+Added `@ODM\Document`
