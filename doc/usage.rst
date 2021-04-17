@@ -140,7 +140,7 @@ The ``--config`` option can be used, like in the ``fix`` command, to tell from w
     $ php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php
 
 The output is build in a form that its easy to use in combination with ``xargs`` command in a linux pipe.
-This can be useful e.g. in situations where the caching might mechanism not available (CI, Docker) and distributing
+This can be useful e.g. in situations where the caching mechanism might not be available (CI, Docker) and distribute
 fixing across several processes might speedup the process.
 
 Note: You need to pass the config to the ``fix`` command, in order to make it work with several files being passed by ``list-files``.
