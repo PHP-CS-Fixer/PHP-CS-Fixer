@@ -90,7 +90,7 @@ final class ToolInfo implements ToolInfoInterface
     public function isInstalledByComposer()
     {
         if (null === $this->isInstalledByComposer) {
-            $this->isInstalledByComposer = !$this->isInstalledAsPhar() && file_exists($this->getComposerInstalledFile());
+            $this->isInstalledByComposer = !$this->isInstalledAsPhar() && @file_exists($this->getComposerInstalledFile());
         }
 
         return $this->isInstalledByComposer;
