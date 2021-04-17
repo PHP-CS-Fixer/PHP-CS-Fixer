@@ -15,6 +15,7 @@ namespace PhpCsFixer\Console;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
+use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
@@ -52,8 +53,10 @@ final class Application extends BaseApplication
 
         $this->toolInfo = new ToolInfo();
 
+        // in alphabetical order
         $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
+        $this->add(new ListFilesCommand($this->toolInfo));
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
