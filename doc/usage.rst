@@ -137,7 +137,7 @@ The ``--config`` option can be used, like in the ``fix`` command, to tell from w
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar list-files --config=.php_cs.dist
+    $ php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php
 
 The output is build in a form that its easy to use in combination with ``xargs`` command in a linux pipe.
 This can be useful e.g. in situations where the caching might mechanism not available (CI, Docker) and distributing
