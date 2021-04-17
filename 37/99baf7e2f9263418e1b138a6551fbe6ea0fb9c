@@ -1,0 +1,118 @@
+---------------------------------------------------------------------------
+
+by keradus at 2020-12-24T10:05:40Z
+
+> in which the php-cs-fixer builtin caching mechanism doesn't work (e.g. because git does use the correct file modification stamps on clone or the CI build is running within a readonly environment)
+
+Just a note, Cache mechanism relies on checksum of file, not it's timestamp, so this is not the case.
+Indeed, if you have readonly mechanism, then you cannot use the cache easily
+
+---------------------------------------------------------------------------
+
+by mfn at 2020-12-24T22:00:29Z
+
+One use-case which wasn't mentioned, in which actually triggered my curiosity in finding a solution speed up non-cached runs: changing the rules.
+
+Doesn't sound like much, but: if you consider a large code base where, as I demonstrated in https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4024#issuecomment-750004737 , a run takes 1m40s: that's no found to _try out rules_ and analyze the impact. In fact I was going through lots-o-rules and couldn't bear it after 2 or 3 changes, so I came up with this hack with xargs, because ~30s is acceptable.
+
+Thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-08T23:25:29Z
+
+@clxmstaab , please ping me if you would need another round of review!
+eager to merge this feature when it's ready ;)
+
+---------------------------------------------------------------------------
+
+by mfn at 2021-01-09T18:57:09Z
+
+> If for supporting it all it takes is the new command as is + additional the cache check
+…
+
+> maybe we should have a switch to filter-out files that do not require a fixing (based on cache) ?
+…
+
+My modest feedback: I would like to see _this PR_ focus only on that one feature: return the list of files as it would be found by the finder.
+
+Let the connection to the cache be a follow-up change, if it's strongly desired.
+
+The feature will be useful "as is" and it keeps the scope / review process easier.
+
+My 2c.
+
+---------------------------------------------------------------------------
+
+by clxmstaab at 2021-01-23T07:49:30Z
+
+any feedback on the current status @keradus ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-13T22:02:28Z
+
+looking good, just some minors in CodeReview, CI should be fixed, and I'm really curious about that relative path
+
+---------------------------------------------------------------------------
+
+by clxmstaab at 2021-04-15T10:09:10Z
+
+first - thanks for your feedback @keradus - appreciate that!
+
+I think this should be good to go.
+
+the github actions are pretty slow right now, so the results will show whether I am right.
+the static analysis errors looks unrelated to me.
+
+> does the `sfFinder` sometimes return a `\SplFileInfo` and sometimes a `Symfony\Component\Finder\SplFileInfo`?
+> (`getRelativePathname` is only defined on the symfony-SplFileInfo class)
+
+I did some path gymnastics and I think this resolved the Problem. the new version works with what is available in `\SplFileInfo`, and thats ok for the `sfSplFileInfo` because it `extends \SplFileInfo`.
+
+feedback welcome.
+
+---------------------------------------------------------------------------
+
+by clxmstaab at 2021-04-15T10:29:49Z
+
+looking at CI, it looks to me that the errors are unrelated
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-15T12:08:51Z
+
+> looking at CI, it looks to me that the errors are unrelated
+
+i merged the [fix](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5629), can you rebase to prove it was only related to it?
+(eg that one deprecation i found looks actually related to PR)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-15T15:56:45Z
+
+[![Coverage Status](https://coveralls.io/builds/38904284/badge)](https://coveralls.io/builds/38904284)
+
+Coverage increased (+0.01%) to 91.906% when pulling **81753b456fc73bc810d105c250bc59f37e07e2e1 on clxmstaab:list-files-cmd** into **72dd15d4d836707d8f1d9a135e8351ce46739241 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by clxmstaab at 2021-04-16T07:24:45Z
+
+> i merged the [fix](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5629), can you rebase to prove it was only related to it?
+
+it seems this works now, thx
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-16T08:22:56Z
+
+as I was afraid, after the fix for main branch was merged, this PR is still red - Windows failing, 5.6 failing, fabbot failing. can you take a look?
+
+---------------------------------------------------------------------------
+
+by clxmstaab at 2021-04-16T12:03:42Z
+
+fixed the windows builds, thx for the headsup.
+
+the macos buid failure seems unrelated
