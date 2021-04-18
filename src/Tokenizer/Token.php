@@ -462,26 +462,9 @@ final class Token
         ];
     }
 
-    /**
-     * @param null|string[] $options JSON encode option
-     */
-    public function toJson(?array $options = null): string
+    public function toJson(): string
     {
-        if (null !== $options) {
-            Utils::triggerDeprecation(sprintf('Arguments of "%s()" is deprecated since 2.19 and will be removed in 3.0.', __METHOD__));
-        }
-
-        static $defaultOptions = null;
-
-        if (null === $options) {
-            if (null === $defaultOptions) {
-                $defaultOptions = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
-            }
-
-            $options = $defaultOptions;
-        } else {
-            $options = Utils::calculateBitmask($options);
-        }
+        $options = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
 
         $jsonResult = json_encode($this->toArray(), $options);
 
