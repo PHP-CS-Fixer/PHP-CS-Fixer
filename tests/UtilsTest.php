@@ -261,40 +261,6 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCalculateBitmaskCases
-     */
-    public function testCalculateBitmask(int $expected, array $options): void
-    {
-        static::assertSame($expected, Utils::calculateBitmask($options));
-    }
-
-    public function provideCalculateBitmaskCases()
-    {
-        return [
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT'],
-            ],
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'NON_EXISTENT_CONST'],
-            ],
-            [
-                JSON_HEX_TAG,
-                ['JSON_HEX_TAG'],
-            ],
-            [
-                JSON_HEX_TAG | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_APOS,
-                ['JSON_HEX_TAG', 'JSON_HEX_QUOT', 'JSON_HEX_AMP', 'JSON_HEX_APOS'],
-            ],
-            [
-                0,
-                [],
-            ],
-        ];
-    }
-
-    /**
      * @group legacy
      */
     public function testTriggerDeprecationWhenFutureModeIsOff(): void
