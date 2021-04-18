@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-18T18:55:29Z
+
+How's that? I've added default value to `$config` there.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-18T19:26:40Z
+
+[![Coverage Status](https://coveralls.io/builds/38914808/badge)](https://coveralls.io/builds/38914808)
+
+Coverage remained the same at 91.972% when pulling **e9cdb51ec8fcb11b2e25373807f82d9c81faa8c9 on keradus:3.0_fix** into **be0ca0f9bd102bb2bb4b41f69e2397cd75b5df3e on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-18T19:35:49Z
+
+Merging https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5646 will fix the build.
