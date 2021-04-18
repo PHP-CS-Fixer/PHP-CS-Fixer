@@ -261,7 +261,7 @@ final class RuleSetTest extends TestCase
     public function testRiskyRulesInSet(array $set, bool $safe): void
     {
         try {
-            $fixers = FixerFactory::create()
+            $fixers = (new FixerFactory())
                 ->registerBuiltInFixers()
                 ->useRuleSet(new RuleSet($set))
                 ->getFixers()

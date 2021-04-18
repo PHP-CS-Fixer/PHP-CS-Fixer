@@ -57,14 +57,6 @@ final class FixerFactory
         $this->nameValidator = new FixerNameValidator();
     }
 
-    /**
-     * Create instance.
-     */
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function setWhitespacesConfig(WhitespacesFixerConfig $config): self
     {
         foreach ($this->fixers as $fixer) {

@@ -56,16 +56,6 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @covers \PhpCsFixer\FixerFactory::create
-     */
-    public function testCreate(): void
-    {
-        $factory = FixerFactory::create();
-
-        static::assertInstanceOf(\PhpCsFixer\FixerFactory::class, $factory);
-    }
-
-    /**
      * @covers \PhpCsFixer\FixerFactory::registerBuiltInFixers
      */
     public function testRegisterBuiltInFixers(): void
@@ -139,13 +129,13 @@ final class FixerFactoryTest extends TestCase
      */
     public function testUseRuleSet(): void
     {
-        $factory = FixerFactory::create()
+        $factory = (new FixerFactory())
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet([]))
         ;
         static::assertCount(0, $factory->getFixers());
 
-        $factory = FixerFactory::create()
+        $factory = (new FixerFactory())
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet(['strict_comparison' => true, 'blank_line_before_statement' => false]))
         ;
@@ -162,7 +152,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Rule "non_existing_rule" does not exist.');
 
-        $factory = FixerFactory::create()
+        $factory = (new FixerFactory())
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet(['non_existing_rule' => true]))
         ;
@@ -212,7 +202,8 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessageMatches('#^Rule contains conflicting fixers:\n#');
 
-        FixerFactory::create()->registerBuiltInFixers()->useRuleSet($ruleSet);
+        (new FixerFactory())
+            ->registerBuiltInFixers()->useRuleSet($ruleSet);
     }
 
     public function provideConflictingFixersCases()
