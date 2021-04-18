@@ -92,7 +92,7 @@ TEST;
      */
     public function testAllFormatsCovered()
     {
-        $factory = ReporterFactory::create();
+        $factory = new ReporterFactory();
         $formats = $factory->registerBuiltInReporters()->getFormats();
         sort($formats);
 

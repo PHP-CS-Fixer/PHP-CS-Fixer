@@ -40,7 +40,7 @@ class TokensWithObservedTransformers extends Tokens
     {
         $this->observedModificationsPerTransformer = [];
 
-        $transformers = Transformers::create();
+        $transformers = Transformers::createSingleton();
         foreach (AccessibleObject::create($transformers)->items as $transformer) {
             $this->currentTransformer = $transformer->getName();
             $this->observedModificationsPerTransformer[$this->currentTransformer] = [];

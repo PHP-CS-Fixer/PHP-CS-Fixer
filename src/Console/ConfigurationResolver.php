@@ -470,7 +470,7 @@ final class ConfigurationResolver
     public function getReporter()
     {
         if (null === $this->reporter) {
-            $reporterFactory = ReporterFactory::create();
+            $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
             $format = $this->getFormat();
