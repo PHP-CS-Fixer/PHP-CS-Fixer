@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-18T19:02:50Z
+
+[![Coverage Status](https://coveralls.io/builds/38914734/badge)](https://coveralls.io/builds/38914734)
+
+Coverage remained the same at 91.902% when pulling **1e48c07f45b5674d0e04803ab48984353ceb946e on kubawerlos:cleanup_YodaStyleFixerTest** into **e89da2d52bc171bab70c203b92a21ecba9de89ec on FriendsOfPHP:2.18**.
