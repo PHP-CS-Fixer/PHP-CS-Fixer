@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: binary_operator_spaces,array_indentation.
+Integration of fixers: array_indentation,binary_operator_spaces.
 --RULESET--
 {"binary_operator_spaces": {"default": "align_single_space"}, "array_indentation": true}
 --EXPECT--
