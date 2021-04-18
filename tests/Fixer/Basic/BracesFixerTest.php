@@ -408,6 +408,29 @@ final class BracesFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php
+    class Foo {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        ) {
+        }
+    }',
+                '<?php
+    class Foo
+    {
+        public function bar(
+            FooInterface $foo,
+            BarInterface $bar,
+            array $data = []
+        )
+        {
+        }
+    }',
+                self::$configurationOopPositionSameLine,
+            ],
+            [
+                '<?php
     if (1) {
         self::${$key} = $val;
         self::${$type}[$rule] = $pattern;
