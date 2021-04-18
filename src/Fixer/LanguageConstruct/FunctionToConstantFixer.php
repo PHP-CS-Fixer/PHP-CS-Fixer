@@ -206,7 +206,8 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         Tokens $tokens,
         FunctionsAnalyzer $functionAnalyzer,
         $index
-    ) {
+    )
+    {
         if (!$tokens[$index]->isGivenKind(T_STRING)) {
             return null;
         }
@@ -248,7 +249,8 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurati
         Tokens $tokens,
         FunctionsAnalyzer $functionAnalyzer,
         $index
-    ) {
+    )
+    {
         if (!isset($this->functionsFixMap['get_class']) && !isset($this->functionsFixMap['get_class_this'])) {
             return null;
         }

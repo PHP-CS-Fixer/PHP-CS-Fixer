@@ -360,7 +360,8 @@ function my_foo($bar)
         $hasBool,
         $hasCallable,
         $hasObject
-    ) {
+    )
+    {
         $newTokens = [];
 
         if (true === $hasIterable && true === $hasArray) {

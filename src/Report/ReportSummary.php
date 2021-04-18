@@ -63,7 +63,8 @@ final class ReportSummary
         $addAppliedFixers,
         $isDryRun,
         $isDecoratedOutput
-    ) {
+    )
+    {
         $this->changed = $changed;
         $this->time = $time;
         $this->memory = $memory;

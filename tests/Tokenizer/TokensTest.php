@@ -61,7 +61,8 @@ final class TokensTest extends TestCase
         $start = 0,
         $end = null,
         $caseSensitive = true
-    ) {
+    )
+    {
         $tokens = Tokens::fromCode($source);
 
         static::assertEqualsTokensArray(
@@ -634,7 +635,8 @@ PHP;
         $index,
         array $findTokens,
         $caseSensitive = true
-    ) {
+    )
+    {
         $source =
             '<?php
                 $a = function ($b) {

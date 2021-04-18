@@ -187,7 +187,8 @@ settype($bar, "null");
         $commaIndex,
         $secondArgumentStart,
         $closeParenthesisIndex
-    ) {
+    )
+    {
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeParenthesisIndex);
         $prevIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
         if ($tokens[$prevIndex]->equals(',')) {
@@ -209,7 +210,8 @@ settype($bar, "null");
         $functionNameIndex,
         Token $argumentToken,
         Token $castToken
-    ) {
+    )
+    {
         $tokens->insertAt(
             $functionNameIndex,
             [
@@ -233,7 +235,8 @@ settype($bar, "null");
         Tokens $tokens,
         $functionNameIndex,
         Token $argumentToken
-    ) {
+    )
+    {
         $tokens->insertAt(
             $functionNameIndex,
             [

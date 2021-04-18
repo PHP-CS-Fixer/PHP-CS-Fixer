@@ -44,7 +44,8 @@ final class FileFilterIterator extends \FilterIterator
         \Traversable $iterator,
         EventDispatcherInterface $eventDispatcher = null,
         CacheManagerInterface $cacheManager
-    ) {
+    )
+    {
         if (!$iterator instanceof \Iterator) {
             $iterator = new \IteratorIterator($iterator);
         }

@@ -44,7 +44,8 @@ final class IntegrationCase
         RuleSet $ruleset,
         $expectedCode,
         $inputCode
-    ) {
+    )
+    {
         $this->base = new BaseIntegrationCase(
             $fileName,
             $title,

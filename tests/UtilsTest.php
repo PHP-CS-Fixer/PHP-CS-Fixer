@@ -161,7 +161,8 @@ final class UtilsTest extends TestCase
         array $elements,
         callable $getComparableValueCallback,
         callable $compareValuesCallback
-    ) {
+    )
+    {
         static::assertSame(
             $expected,
             Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)

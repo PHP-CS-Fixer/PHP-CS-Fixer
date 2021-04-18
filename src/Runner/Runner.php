@@ -96,7 +96,8 @@ final class Runner
         CacheManagerInterface $cacheManager,
         DirectoryInterface $directory = null,
         $stopOnViolation = false
-    ) {
+    )
+    {
         $this->finder = $finder;
         $this->fixers = $fixers;
         $this->differ = $differ;

@@ -54,7 +54,8 @@ final class SelfUpdateCommand extends Command
         NewVersionCheckerInterface $versionChecker,
         ToolInfoInterface $toolInfo,
         PharCheckerInterface $pharChecker
-    ) {
+    )
+    {
         parent::__construct();
 
         $this->versionChecker = $versionChecker;

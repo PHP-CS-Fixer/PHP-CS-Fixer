@@ -104,7 +104,8 @@ final class SelfUpdateCommandTest extends TestCase
         $decorated,
         $expectedFileContents,
         $expectedDisplay
-    ) {
+    )
+    {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $versionChecker->getLatestVersion()->willReturn($latestVersion);
@@ -241,7 +242,8 @@ OUTPUT;
         $latestMinorVersionSuccess,
         array $input,
         $decorated
-    ) {
+    )
+    {
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $newMajorVersion = $this->getNewMajorVersion();

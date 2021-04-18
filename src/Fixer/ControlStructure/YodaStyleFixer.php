@@ -318,7 +318,8 @@ return $foo === count($bar);
         $compareOperatorIndex,
         $startRight,
         $endRight
-    ) {
+    )
+    {
         $type = $tokens[$compareOperatorIndex]->getId();
         $content = $tokens[$compareOperatorIndex]->getContent();
         if (\array_key_exists($type, $this->candidatesMap)) {

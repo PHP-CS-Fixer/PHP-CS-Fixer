@@ -63,7 +63,8 @@ final class FileCacheManager implements CacheManagerInterface
         SignatureInterface $signature,
         $isDryRun = false,
         DirectoryInterface $cacheDirectory = null
-    ) {
+    )
+    {
         $this->handler = $handler;
         $this->signature = $signature;
         $this->isDryRun = $isDryRun;

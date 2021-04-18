@@ -77,7 +77,8 @@ final class FileLintingIteratorTest extends TestCase
         FileLintingIterator $fileLintingIterator,
         \SplFileInfo $file,
         LintingResultInterface $lintingResultInterface
-    ) {
+    )
+    {
         $iterations = 0;
 
         foreach ($fileLintingIterator as $lintedFile) {

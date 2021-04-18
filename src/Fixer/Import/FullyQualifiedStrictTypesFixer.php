@@ -147,7 +147,8 @@ class SomeClass
     private function detectAndReplaceTypeWithShortType(
         Tokens $tokens,
         TypeAnalysis $type
-    ) {
+    )
+    {
         if ($type->isReservedType()) {
             return;
         }

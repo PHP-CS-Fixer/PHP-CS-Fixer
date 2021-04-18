@@ -88,7 +88,8 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         array $include,
         $expectedExceptionClass = null,
         $expectedExceptionMessage = null
-    ) {
+    )
+    {
         if (null !== $expectedExceptionClass) {
             $this->expectException($expectedExceptionClass);
             $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));

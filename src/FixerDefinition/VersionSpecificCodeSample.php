@@ -34,7 +34,8 @@ final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterf
         $code,
         VersionSpecificationInterface $versionSpecification,
         array $configuration = null
-    ) {
+    )
+    {
         $this->codeSample = new CodeSample($code, $configuration);
         $this->versionSpecification = $versionSpecification;
     }

@@ -36,7 +36,8 @@ final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
         $code,
         \SplFileInfo $splFileInfo,
         array $configuration = null
-    ) {
+    )
+    {
         $this->codeSample = new CodeSample($code, $configuration);
         $this->splFileInfo = $splFileInfo;
     }

@@ -96,7 +96,8 @@ final class CiIntegrationTest extends AbstractSmokeTest
         array $expectedResult1Lines,
         array $expectedResult2Lines,
         $expectedResult3Files
-    ) {
+    )
+    {
         self::executeScript(array_merge(
             [
                 "git checkout -b {$branchName} -q",

@@ -157,7 +157,8 @@ final class ConfigurationResolver
         array $options,
         $cwd,
         ToolInfoInterface $toolInfo
-    ) {
+    )
+    {
         $this->cwd = $cwd;
         $this->defaultConfig = $config;
         $this->toolInfo = $toolInfo;

@@ -77,7 +77,8 @@ final class IntegrationCase
         RuleSet $ruleset,
         $expectedCode,
         $inputCode
-    ) {
+    )
+    {
         $this->fileName = $fileName;
         $this->title = $title;
         $this->settings = $settings;
