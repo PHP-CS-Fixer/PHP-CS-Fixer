@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-17T20:28:09Z
+
+[![Coverage Status](https://coveralls.io/builds/38907325/badge)](https://coveralls.io/builds/38907325)
+
+Coverage remained the same at 91.906% when pulling **1ba9de8f4f58fb6a9fc35cce7f2f3ba4bb57da12 on staabm:patch-3** into **3799baf7e2f9263418e1b138a6551fbe6ea0fb9c on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-18T06:39:29Z
+
+@staabm can you target `2.18` branch?
+
+---------------------------------------------------------------------------
+
+by staabm at 2021-04-18T06:50:49Z
+
+The typos do not exist in 2.x because its docs from a new feature merged recently
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5390
