@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-18T15:52:47Z
+
+[![Coverage Status](https://coveralls.io/builds/38913338/badge)](https://coveralls.io/builds/38913338)
+
+Coverage remained the same at 91.864% when pulling **56c5e8681e7ab2ce50546f758862b708d9648d43 on keradus:phpunit_cleanup** into **c990a133647c80da7b82a47c021c79e6b2c12fcc on FriendsOfPHP:2.18**.
