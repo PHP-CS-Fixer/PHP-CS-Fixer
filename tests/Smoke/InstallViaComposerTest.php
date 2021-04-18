@@ -14,7 +14,6 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
-use PhpCsFixer\Utils;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -89,7 +88,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
 
         file_put_contents(
             $tmpPath.'/composer.json',
-            json_encode($initialComposerFileState, Utils::calculateBitmask(['JSON_PRETTY_PRINT']))
+            json_encode($initialComposerFileState, JSON_PRETTY_PRINT)
         );
 
         static::assertCommandsWork($this->stepsToVerifyInstallation, $tmpPath);
@@ -131,7 +130,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
 
         file_put_contents(
             $tmpPath.'/composer.json',
-            json_encode($initialComposerFileState, Utils::calculateBitmask(['JSON_PRETTY_PRINT']))
+            json_encode($initialComposerFileState, JSON_PRETTY_PRINT)
         );
 
         $cwd = __DIR__.'/../..';
