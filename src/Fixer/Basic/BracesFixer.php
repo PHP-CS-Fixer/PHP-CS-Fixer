@@ -594,7 +594,7 @@ class Foo
                 }
 
                 if (
-                    !$isAnonymousClass
+                    !$isAnonymousClass && (!$token->isGivenKind(T_FUNCTION) || $tokensAnalyzer->isLambda($index))
                     && $tokens[$closingParenthesisIndex - 1]->isWhitespace()
                     && false !== strpos($tokens[$closingParenthesisIndex - 1]->getContent(), "\n")
                 ) {

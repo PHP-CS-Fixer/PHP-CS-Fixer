@@ -153,7 +153,8 @@ final class BracesFixerTest extends AbstractFixerTestCase
             FooInterface $foo,
             BarInterface $bar,
             array $data = []
-        ) {
+        )
+        {
         }
     }',
                 '<?php
@@ -3664,19 +3665,11 @@ class Foo
         public static function bar(
             $baz,
             $boo
-        ) {
-        }
-    }',
-                '<?php
-    class Foo
-    {
-        public static function bar(
-            $baz,
-            $boo
         )
         {
         }
     }',
+                null,
                 self::$configurationCtrlStructPositionNextLine,
             ],
             [
@@ -4194,6 +4187,23 @@ if (1) {
 
     function a() {
     }
+                ',
+            ],
+            [
+                '<?php
+    function test(
+        int $foo
+    ): string
+    {
+        echo $foo;
+    };
+                ',
+                '<?php
+    function test(
+        int $foo
+    ): string {
+        echo $foo;
+    };
                 ',
             ],
             [
