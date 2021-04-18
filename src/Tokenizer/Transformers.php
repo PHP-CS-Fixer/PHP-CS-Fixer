@@ -47,7 +47,7 @@ final class Transformers
     /**
      * @return Transformers
      */
-    public static function create()
+    public static function createSingleton()
     {
         static $instance = null;
 

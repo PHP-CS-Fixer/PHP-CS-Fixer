@@ -619,18 +619,7 @@ class Token
             Utils::triggerDeprecation(sprintf('Arguments of "%s()" is deprecated since 2.19 and will be removed in 3.0.', __METHOD__));
         }
 
-        static $defaultOptions = null;
-
-        if (null === $options) {
-            if (null === $defaultOptions) {
-                $defaultOptions = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
-            }
-
-            $options = $defaultOptions;
-        } else {
-            $options = Utils::calculateBitmask($options);
-        }
-
+        $options = $options ? Utils::calculateBitmask($options) : (JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
         $jsonResult = json_encode($this->toArray(), $options);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
