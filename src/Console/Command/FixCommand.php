@@ -18,8 +18,8 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
@@ -98,7 +98,7 @@ final class FixCommand extends Command
             ->setDefinition(
                 [
                     new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
-                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', 'override'),
+                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', ConfigurationResolver::PATH_MODE_OVERRIDE),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php_cs file.'),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),

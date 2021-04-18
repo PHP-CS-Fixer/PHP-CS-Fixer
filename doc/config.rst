@@ -71,6 +71,3 @@ configure them in your config file.
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
-
-By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
-mechanism should be used.

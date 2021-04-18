@@ -10,9 +10,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
-use PhpCsFixer\Report\ReporterFactory;
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -20,7 +20,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\ReporterFactory
+ * @covers \PhpCsFixer\Console\Report\FixReport\ReporterFactory
  */
 final class ReporterFactoryTest extends TestCase
 {
@@ -106,7 +106,7 @@ final class ReporterFactoryTest extends TestCase
 
     private function createReporterDouble($format)
     {
-        $reporter = $this->prophesize(\PhpCsFixer\Report\ReporterInterface::class);
+        $reporter = $this->prophesize(\PhpCsFixer\Console\Report\FixReport\ReporterInterface::class);
         $reporter->getFormat()->willReturn($format);
 
         return $reporter->reveal();
