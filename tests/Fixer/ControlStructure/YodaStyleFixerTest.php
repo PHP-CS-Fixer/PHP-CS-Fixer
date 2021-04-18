@@ -1035,8 +1035,8 @@ if ($a = $obj instanceof (foo()) === true) {
 
         yield [
             '<?php return $this->myObject1?->{$index}+$b === "";',
-            //null,
-            //['equal' => true, 'identical' => true]
+            null,
+            ['equal' => true, 'identical' => true],
         ];
     }
 }
