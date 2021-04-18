@@ -615,6 +615,10 @@ class Token
      */
     public function toJson(array $options = null)
     {
+        if (null !== $options) {
+            Utils::triggerDeprecation(sprintf('Arguments of "%s()" is deprecated since 2.19 and will be removed in 3.0.', __METHOD__));
+        }
+
         static $defaultOptions = null;
 
         if (null === $options) {
