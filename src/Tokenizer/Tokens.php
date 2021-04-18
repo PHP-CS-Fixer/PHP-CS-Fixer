@@ -1389,7 +1389,7 @@ class Tokens extends \SplFixedArray
      */
     protected function applyTransformers()
     {
-        $transformers = Transformers::create();
+        $transformers = Transformers::createSingleton();
         $transformers->transform($this);
     }
 
