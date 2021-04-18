@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Preg;
-use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.
@@ -1135,12 +1134,6 @@ class Tokens extends \SplFixedArray
 
     public function toJson()
     {
-        static $options = null;
-
-        if (null === $options) {
-            $options = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
-        }
-
         $output = new \SplFixedArray(\count($this));
 
         foreach ($this as $index => $token) {
@@ -1151,7 +1144,7 @@ class Tokens extends \SplFixedArray
             $this->rewind();
         }
 
-        return json_encode($output, $options);
+        return json_encode($output, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
     }
 
     /**
