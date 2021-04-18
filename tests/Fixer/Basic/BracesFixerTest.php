@@ -4208,6 +4208,19 @@ if (1) {
             ],
             [
                 '<?php
+    class A
+    {
+        function test(
+            int $foo
+        ): string
+        {
+            echo $foo;
+        }
+    }
+                ',
+            ],
+            [
+                '<?php
     class Something
     {
         public function sth(): string
