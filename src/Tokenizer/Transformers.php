@@ -46,7 +46,7 @@ final class Transformers
         });
     }
 
-    public static function create(): self
+    public static function createSingleton(): self
     {
         static $instance = null;
 

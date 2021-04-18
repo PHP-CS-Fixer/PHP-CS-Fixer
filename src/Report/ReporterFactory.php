@@ -27,11 +27,6 @@ final class ReporterFactory
     /** @var ReporterInterface[] */
     private $reporters = [];
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function registerBuiltInReporters(): self
     {
         /** @var null|string[] $builtInReporters */

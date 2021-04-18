@@ -26,13 +26,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ReporterFactoryTest extends TestCase
 {
-    public function testCreate(): void
-    {
-        $factory = ReporterFactory::create();
-
-        static::assertInstanceOf(\PhpCsFixer\Report\ReporterFactory::class, $factory);
-    }
-
     public function testInterfaceIsFluent(): void
     {
         $builder = new ReporterFactory();

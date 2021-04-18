@@ -153,11 +153,16 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
         $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
         $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
 
+        /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
+        $aboutSubpattern = Application::VERSION_CODENAME
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/').' by Fabien Potencier and Dariusz Ruminski'
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' by Fabien Potencier and Dariusz Ruminski';
+
         $pattern = sprintf(
             '/^(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
-            'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/').' by Fabien Potencier and Dariusz Ruminski',
+            $aboutSubpattern,
             preg_quote(sprintf('Runtime: PHP %s', PHP_VERSION), '/'),
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),

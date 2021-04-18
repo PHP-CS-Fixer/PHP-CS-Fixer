@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
@@ -26,7 +27,7 @@ final class PHPUnit75MigrationRiskySet extends AbstractRuleSetDescription
         return [
             '@PHPUnit60Migration:risky' => true,
             'php_unit_dedicate_assert_internal_type' => [
-                'target' => '7.5',
+                'target' => PhpUnitTargetVersion::VERSION_7_5,
             ],
         ];
     }
