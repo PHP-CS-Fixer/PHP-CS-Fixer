@@ -10,10 +10,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
-use PhpCsFixer\Report\ReporterInterface;
-use PhpCsFixer\Report\ReportSummary;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**

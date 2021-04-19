@@ -10,10 +10,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Report;
+namespace PhpCsFixer\Console\Report\FixReport;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
+ *
+ * @internal
  */
 interface ReporterInterface
 {
