@@ -27,24 +27,6 @@ use PhpCsFixer\Tokenizer\Token;
 final class Utils
 {
     /**
-     * Calculate a bitmask for given constant names.
-     *
-     * @param string[] $options constant names
-     */
-    public static function calculateBitmask(array $options): int
-    {
-        $bitmask = 0;
-
-        foreach ($options as $optionName) {
-            if (\defined($optionName)) {
-                $bitmask |= \constant($optionName);
-            }
-        }
-
-        return $bitmask;
-    }
-
-    /**
      * Converts a camel cased string to a snake cased string.
      */
     public static function camelCaseToUnderscore(string $string): string
