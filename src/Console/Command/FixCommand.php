@@ -150,9 +150,6 @@ The <comment>--dry-run</comment> flag will run the fixer without making changes 
 
 The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
 
-* <comment>null</comment>: no diff;
-* <comment>udiff</comment>: unified diff format.
-
 The <comment>--allow-risky</comment> option (pass `yes` or `no`) allows you to set whether risky rules may run. Default value is taken from config file.
 A rule is considered risky if it could change code behaviour. By default no risky rules are run.
 
@@ -166,11 +163,6 @@ The <comment>--show-progress</comment> option allows you to choose the way proce
 If the option is not provided, it defaults to <comment>dots</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
     <info>$ php %command.full_name% --verbose --show-progress=dots</info>
-
-The <comment>--dry-run</comment> option displays the files that need to be
-fixed but without actually modifying them:
-
-    <info>$ php %command.full_name% /path/to/code --dry-run</info>
 
 By using <command>--using-cache</command> option with `yes` or `no` you can set if the caching
 mechanism should be used.
