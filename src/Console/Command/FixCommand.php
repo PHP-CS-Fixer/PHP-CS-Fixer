@@ -21,8 +21,8 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
@@ -104,10 +104,12 @@ to merge paths from the config file and from the argument:
 
 The <comment>--format</comment> option for the output format. Supported formats are `txt` (default one), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
 
-NOTE: the output for the following formats are generated in accordance with XML schemas
+NOTE: the output for the following formats are generated in accordance with schemas
 
-* `checkstyle` follows the common `"checkstyle" xml schema </doc/report-schema/checkstyle.xsd>`_
-* `junit` follows the `JUnit xml schema from Jenkins </doc/report-schema/junit-10.xsd>`_
+* `checkstyle` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
+* `json` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
+* `junit` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
+* `xml` follows the `own XML schema </doc/schemas/fix/xml.xsd>`_
 
 The <comment>--quiet</comment> Do not output any message.
 
@@ -124,7 +126,7 @@ project:
 
     <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
 
-By default the PSR12 rules are used.
+By default the PSR-12 rules are used.
 
 The <comment>--rules</comment> option lets you choose the exact rules to
 apply (the rule names must be separated by a comma):
@@ -209,7 +211,7 @@ EOF
             ->setDefinition(
                 [
                     new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
-                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', 'override'),
+                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', ConfigurationResolver::PATH_MODE_OVERRIDE),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),

@@ -12,11 +12,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
-use PhpCsFixer\Report\CheckstyleReporter;
-use PhpCsFixer\Report\ReporterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -24,7 +24,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\CheckstyleReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\CheckstyleReporter
  */
 final class CheckstyleReporterTest extends AbstractReporterTestCase
 {
@@ -37,7 +37,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/checkstyle.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/checkstyle.xsd');
     }
 
     public static function tearDownAfterClass(): void

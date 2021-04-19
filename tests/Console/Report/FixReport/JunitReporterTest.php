@@ -12,11 +12,11 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Report\FixReport\JunitReporter;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
-use PhpCsFixer\Report\JunitReporter;
-use PhpCsFixer\Report\ReporterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -25,7 +25,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\JunitReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\JunitReporter
  */
 final class JunitReporterTest extends AbstractReporterTestCase
 {
@@ -42,7 +42,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
     {
         parent::setUpBeforeClass();
 
-        self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/junit-10.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/junit-10.xsd');
     }
 
     public static function tearDownAfterClass(): void

@@ -12,9 +12,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
-use PhpCsFixer\Report\ReportSummary;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -22,7 +22,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\ReportSummary
+ * @covers \PhpCsFixer\Console\Report\FixReport\ReportSummary
  */
 final class ReportSummaryTest extends TestCase
 {
