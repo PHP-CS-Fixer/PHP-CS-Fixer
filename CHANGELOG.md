@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.6
+---------------------
+
+* bug #5586 Add support for nullsafe object operator ("?->") (kubawerlos)
+* bug #5597 Tokens - fix for checking block edges  (kubawerlos)
+* bug #5604 Custom annotations @type changed into @var (Leprechaunz)
+* bug #5606 DoctrineAnnotationBracesFixer false positive (Leprechaunz)
+* bug #5610 BracesFixer - fix braces of match expression (Leprechaunz)
+* bug #5615 GroupImportFixer severely broken (Leprechaunz)
+* bug #5617 ClassAttributesSeparationFixer - fix for using visibility for class elements (kubawerlos)
+* bug #5618 GroupImportFixer - fix removal of import type when mixing multiple types (Leprechaunz)
+* bug #5622 Exclude Doctrine documents from final fixer (ossinkine)
+* bug #5630 PhpdocTypesOrderFixer - handle complex keys (Leprechaunz)
+* minor #5554 DX: use tmp file in sys_temp_dir for integration tests (keradus)
+* minor #5564 DX: make integration tests matching entries in FixerFactoryTest (kubawerlos)
+* minor #5603 DX: DocumentationGenerator - no need to re-configure Differ (keradus)
+* minor #5612 DX: use ::class whenever possible (kubawerlos)
+* minor #5619 DX: allow XDebugHandler v2 (keradus)
+* minor #5623 DX: when displaying app version, don't put extra space if there is no CODENAME available (keradus)
+* minor #5626 DX: update PHPStan and way of ignoring flickering PHPStan exception (keradus)
+* minor #5629 DX: fix CiIntegrationTest (keradus)
+* minor #5636 DX: remove 'create' method in internal classes (keradus)
+* minor #5637 DX: do not calculate bitmap via helper anymore (keradus)
+* minor #5639 Move fix reports (classes and schemas) (keradus)
+* minor #5640 DX: use constants for PHPUnit version (keradus)
+* minor #5646 Cleanup YodaStyleFixerTest (kubawerlos)
+
 Changelog for v2.18.5
 ---------------------
 
