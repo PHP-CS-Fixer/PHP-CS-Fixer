@@ -12,16 +12,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
-use PhpCsFixer\Report\GitlabReporter;
-use PhpCsFixer\Report\ReporterInterface;
+use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 
 /**
  * @author Hans-Christian Otto <c.otto@suora.com>
  *
  * @internal
- * @covers \PhpCsFixer\Report\GitlabReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\GitlabReporter
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
 {

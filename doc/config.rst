@@ -26,7 +26,7 @@ The example below will add two rules to the default list of PSR2 set rules:
 
     $config = new PhpCsFixer\Config();
     return $config->setRules([
-            '@PSR2' => true,
+            '@PSR12' => true,
             'strict_param' => true,
             'array_syntax' => ['syntax' => 'short'],
         ])
@@ -71,6 +71,3 @@ configure them in your config file.
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
-
-By using ``--using-cache`` option with ``yes`` or ``no`` you can set if the caching
-mechanism should be used.

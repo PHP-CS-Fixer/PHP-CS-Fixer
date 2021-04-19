@@ -12,10 +12,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
-use PhpCsFixer\Report\JsonReporter;
-use PhpCsFixer\Report\ReporterInterface;
+use PhpCsFixer\Console\Report\FixReport\JsonReporter;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -23,7 +23,7 @@ use PhpCsFixer\Report\ReporterInterface;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\JsonReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\JsonReporter
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {
@@ -153,7 +153,7 @@ JSON;
 
     private static function assertJsonSchema(string $json): void
     {
-        $jsonPath = __DIR__.'/../../doc/report-schema/schema.json';
+        $jsonPath = __DIR__.'/../../../../doc/schemas/fix/schema.json';
 
         $data = json_decode($json);
 

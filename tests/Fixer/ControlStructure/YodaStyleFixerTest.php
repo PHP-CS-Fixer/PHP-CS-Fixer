@@ -1003,7 +1003,7 @@ while (2 !== $b = array_pop($c));
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input, array $config): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1035,8 +1035,8 @@ if ($a = $obj instanceof (foo()) === true) {
 
         yield [
             '<?php return $this->myObject1?->{$index}+$b === "";',
-            //null,
-            //['equal' => true, 'identical' => true]
+            null,
+            ['equal' => true, 'identical' => true],
         ];
     }
 }

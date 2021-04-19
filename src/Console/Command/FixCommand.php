@@ -21,8 +21,8 @@ use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Console\Output\ProcessOutput;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\Report\ReportSummary;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
@@ -89,7 +89,109 @@ final class FixCommand extends Command
      */
     public function getHelp(): string
     {
-        return HelpCommand::getHelpCopy();
+        return <<<'EOF'
+The <info>%command.name%</info> command tries to fix as much coding standards
+problems as possible on a given file or files in a given directory and its subdirectories:
+
+    <info>$ php %command.full_name% /path/to/dir</info>
+    <info>$ php %command.full_name% /path/to/file</info>
+
+By default <comment>--path-mode</comment> is set to `override`, which means, that if you specify the path to a file or a directory via
+command arguments, then the paths provided to a `Finder` in config file will be ignored. You can use <comment>--path-mode=intersection</comment>
+to merge paths from the config file and from the argument:
+
+    <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
+
+The <comment>--format</comment> option for the output format. Supported formats are `txt` (default one), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+
+NOTE: the output for the following formats are generated in accordance with schemas
+
+* `checkstyle` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
+* `json` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
+* `junit` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
+* `xml` follows the `own XML schema </doc/schemas/fix/xml.xsd>`_
+
+The <comment>--quiet</comment> Do not output any message.
+
+The <comment>--verbose</comment> option will show the applied rules. When using the `txt` format it will also display progress notifications.
+
+NOTE: if there is an error like "errors reported during linting after fixing", you can use this to be even more verbose for debugging purpose
+
+* `-v`: verbose
+* `-vv`: very verbose
+* `-vvv`: debug
+
+The <comment>--rules</comment> option limits the rules to apply to the
+project:
+
+    <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
+
+By default the PSR-12 rules are used.
+
+The <comment>--rules</comment> option lets you choose the exact rules to
+apply (the rule names must be separated by a comma):
+
+    <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
+
+You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
+using <comment>-name_of_fixer</comment>:
+
+    <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
+
+When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
+
+    <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
+
+Complete configuration for rules can be supplied using a `json` formatted string.
+
+    <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
+
+The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
+
+The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
+
+The <comment>--allow-risky</comment> option (pass `yes` or `no`) allows you to set whether risky rules may run. Default value is taken from config file.
+A rule is considered risky if it could change code behaviour. By default no risky rules are run.
+
+The <comment>--stop-on-violation</comment> flag stops the execution upon first file that needs to be fixed.
+
+The <comment>--show-progress</comment> option allows you to choose the way process progress is rendered:
+
+* <comment>none</comment>: disables progress output;
+* <comment>dots</comment>: multiline progress output with number of files and percentage on each line.
+
+If the option is not provided, it defaults to <comment>dots</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
+
+    <info>$ php %command.full_name% --verbose --show-progress=dots</info>
+
+By using <command>--using-cache</command> option with `yes` or `no` you can set if the caching
+mechanism should be used.
+
+The command can also read from standard input, in which case it won't
+automatically fix anything:
+
+    <info>$ cat foo.php | php %command.full_name% --diff -</info>
+
+Finally, if you don't need BC kept on CLI level, you might use `PHP_CS_FIXER_FUTURE_MODE` to start using options that
+would be default in next MAJOR release and to forbid using deprecated configuration:
+
+    <info>$ PHP_CS_FIXER_FUTURE_MODE=1 php %command.full_name% -v --diff</info>
+
+Exit code
+---------
+
+Exit code of the fix command is built using following bit flags:
+
+*  0 - OK.
+*  1 - General error (or PHP minimal requirement not matched).
+*  4 - Some files have invalid syntax (only in dry-run mode).
+*  8 - Some files need fixing (only in dry-run mode).
+* 16 - Configuration error of the application.
+* 32 - Configuration error of a Fixer.
+* 64 - Exception raised within the application.
+
+EOF
+            ;
     }
 
     /**
@@ -101,7 +203,7 @@ final class FixCommand extends Command
             ->setDefinition(
                 [
                     new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
-                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', 'override'),
+                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', ConfigurationResolver::PATH_MODE_OVERRIDE),
                     new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
                     new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                     new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),

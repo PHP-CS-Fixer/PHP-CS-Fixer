@@ -12,10 +12,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
-use PhpCsFixer\Report\ReporterInterface;
-use PhpCsFixer\Report\TextReporter;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
+use PhpCsFixer\Console\Report\FixReport\TextReporter;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -23,7 +23,7 @@ use PhpCsFixer\Report\TextReporter;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\TextReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\TextReporter
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {
