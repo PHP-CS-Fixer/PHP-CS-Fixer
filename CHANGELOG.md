@@ -3,6 +3,49 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.0.0-rc.1
+-------------------------
+
+* bug #5586 Add support for nullsafe object operator ("?->") (kubawerlos)
+* bug #5597 Tokens - fix for checking block edges  (kubawerlos)
+* bug #5604 Custom annotations @type changed into @var (Leprechaunz)
+* bug #5606 DoctrineAnnotationBracesFixer false positive (Leprechaunz)
+* bug #5610 BracesFixer - fix braces of match expression (Leprechaunz)
+* bug #5615 GroupImportFixer severely broken (Leprechaunz)
+* bug #5617 ClassAttributesSeparationFixer - fix for using visibility for class elements (kubawerlos)
+* bug #5618 GroupImportFixer - fix removal of import type when mixing multiple types (Leprechaunz)
+* bug #5622 Exclude Doctrine documents from final fixer (ossinkine)
+* bug #5630 PhpdocTypesOrderFixer - handle complex keys (Leprechaunz)
+* feature #5390 feature #4024 added a `list-files` command (clxmstaab, keradus)
+* minor #5554 DX: use tmp file in sys_temp_dir for integration tests (keradus)
+* minor #5564 DX: make integration tests matching entries in FixerFactoryTest (kubawerlos)
+* minor #5601 Always stop when "PHP_CS_FIXER_FUTURE_MODE" is used (kubawerlos)
+* minor #5603 DX: DocumentationGenerator - no need to re-configure Differ (keradus)
+* minor #5607 DX: new config filename (keradus)
+* minor #5608 DX: new cache filename (keradus)
+* minor #5609 Forbid old config filename usage (keradus)
+* minor #5612 DX: use ::class whenever possible (kubawerlos)
+* minor #5613 DX: UtilsTest - add missing teardown (keradus)
+* minor #5619 DX: allow XDebugHandler v2 (keradus)
+* minor #5623 DX: when displaying app version, don't put extra space if there is no CODENAME available (keradus)
+* minor #5626 DX: update PHPStan and way of ignoring flickering PHPStan exception (keradus)
+* minor #5629 DX: fix CiIntegrationTest (keradus)
+* minor #5631 DX: config deduplication (keradus)
+* minor #5633 fix typos (staabm)
+* minor #5636 DX: remove 'create' method in internal classes (keradus)
+* minor #5637 DX: do not calculate bitmap via helper anymore (keradus)
+* minor #5638 DX: remove Utils::calculateBitmask (keradus)
+* minor #5639 Move fix reports (classes and schemas) (keradus)
+* minor #5640 DX: use constants for PHPUnit version (keradus)
+* minor #5641 DX: use constants for PHPUnit version on 3.0 line (keradus)
+* minor #5642 Deprecate parameter of Token::toJson() (keradus)
+* minor #5643 FixCommand - simplify help (keradus)
+* minor #5644 Token::toJson() - remove parameter (keradus)
+* minor #5645 DX: YodaStyleFixerTest - fix CI (keradus)
+* minor #5646 Cleanup YodaStyleFixerTest (kubawerlos)
+* minor #5649 DX: YodaStyleFixerTest - fix 8.0 compat (keradus)
+* minor #5650 DX: FixCommand - drop outdated/duplicated docs (keradus)
+
 Changelog for v3.0.0-beta.2
 ---------------------------
 
