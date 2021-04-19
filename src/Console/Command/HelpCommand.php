@@ -67,10 +67,12 @@ to merge paths from the config file and from the argument:
 
 The <comment>--format</comment> option for the output format. Supported formats are `txt` (default one), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
 
-NOTE: the output for the following formats are generated in accordance with XML schemas
+NOTE: the output for the following formats are generated in accordance with schemas
 
-* `checkstyle` follows the common `"checkstyle" xml schema </doc/report-schema/checkstyle.xsd>`_
-* `junit` follows the `JUnit xml schema from Jenkins </doc/report-schema/junit-10.xsd>`_
+* `checkstyle` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
+* `json` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
+* `junit` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
+* `xml` follows the `own XML schema </doc/schemas/fix/xml.xsd>`_
 
 The <comment>--quiet</comment> Do not output any message.
 

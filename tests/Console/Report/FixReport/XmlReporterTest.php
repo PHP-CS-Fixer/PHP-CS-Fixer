@@ -10,10 +10,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Report\FixReport\XmlReporter;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
-use PhpCsFixer\Report\XmlReporter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\XmlReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\XmlReporter
  */
 final class XmlReporterTest extends AbstractReporterTestCase
 {
@@ -35,7 +35,7 @@ final class XmlReporterTest extends AbstractReporterTestCase
     {
         parent::doSetUpBeforeClass();
 
-        self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/xml.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/xml.xsd');
     }
 
     public static function doTearDownAfterClass()

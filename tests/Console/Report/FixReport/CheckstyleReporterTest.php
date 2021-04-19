@@ -10,10 +10,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Report;
+namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
-use PhpCsFixer\Report\CheckstyleReporter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @internal
  *
- * @covers \PhpCsFixer\Report\CheckstyleReporter
+ * @covers \PhpCsFixer\Console\Report\FixReport\CheckstyleReporter
  */
 final class CheckstyleReporterTest extends AbstractReporterTestCase
 {
@@ -34,7 +34,7 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
 
     public static function doSetUpBeforeClass()
     {
-        self::$xsd = file_get_contents(__DIR__.'/../../doc/report-schema/checkstyle.xsd');
+        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/checkstyle.xsd');
     }
 
     public static function doTearDownAfterClass()
