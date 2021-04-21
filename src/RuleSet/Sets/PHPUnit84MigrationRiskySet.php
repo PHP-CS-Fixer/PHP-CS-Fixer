@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
@@ -25,7 +26,7 @@ final class PHPUnit84MigrationRiskySet extends AbstractRuleSetDescription
             '@PHPUnit60Migration:risky' => true,
             '@PHPUnit75Migration:risky' => true,
             'php_unit_expectation' => [
-                'target' => '8.4',
+                'target' => PhpUnitTargetVersion::VERSION_8_4,
             ],
         ];
     }

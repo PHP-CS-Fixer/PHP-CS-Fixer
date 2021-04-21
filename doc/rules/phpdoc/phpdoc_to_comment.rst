@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
     $first = true;// needed because by default first docblock is never fixed.
 

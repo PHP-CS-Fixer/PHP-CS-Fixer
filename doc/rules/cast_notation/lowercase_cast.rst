@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,14 +1,14 @@
     <?php
    -    $a = (BOOLEAN) $b;
    -    $a = (BOOL) $b;
@@ -50,7 +49,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,13 +1,13 @@
     <?php
    -    $a = (BOOLEAN) $b;
    -    $a = (BOOL) $b;

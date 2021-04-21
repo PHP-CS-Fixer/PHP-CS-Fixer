@@ -2,7 +2,7 @@
 Rule ``object_operator_without_whitespace``
 ===========================================
 
-There should not be space before or after object ``T_OBJECT_OPERATOR`` ``->``.
+There should not be space before or after object operators ``->`` and ``?->``.
 
 Examples
 --------
@@ -14,7 +14,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php $a  ->  b;
    +<?php $a->b;
 

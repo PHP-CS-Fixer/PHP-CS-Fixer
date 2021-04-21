@@ -30,7 +30,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,4 @@
     <?php
     function foo () {
    -    return 1 + 2
@@ -47,7 +46,6 @@ With configuration: ``['strategy' => 'new_line_for_chained_calls']``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,6 @@
     <?php
                             $this->method1()
                                 ->method2()

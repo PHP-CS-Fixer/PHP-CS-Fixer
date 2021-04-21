@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_short_echo_tag,no_mixed_echo_print.
+--RULESET--
+{"no_mixed_echo_print": {"use":"print"}, "no_short_echo_tag": true}
+--EXPECT--
+<div><?php print "test" ?></div>
+
+--INPUT--
+<div><?= "test" ?></div>

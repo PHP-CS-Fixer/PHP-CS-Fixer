@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\RuleSet\Sets;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
@@ -24,7 +25,7 @@ final class PHPUnit55MigrationRiskySet extends AbstractRuleSetDescription
         return [
             '@PHPUnit54Migration:risky' => true,
             'php_unit_mock' => [
-                'target' => '5.5',
+                'target' => PhpUnitTargetVersion::VERSION_5_5,
             ],
         ];
     }

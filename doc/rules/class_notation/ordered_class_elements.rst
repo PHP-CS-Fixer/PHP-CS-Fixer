@@ -39,7 +39,10 @@ Example #1
 
    --- Original
    +++ New
-   @@ -5,26 +5,26 @@
+    <?php
+    final class Example
+    {
+        use BarTrait;
         use BazTrait;
         const C1 = 1;
         const C2 = 2;
@@ -85,7 +88,6 @@ With configuration: ``['order' => ['method_private', 'method_public']]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
     class Example
     {
@@ -103,7 +105,6 @@ With configuration: ``['order' => ['method_public'], 'sort_algorithm' => 'alpha'
 
    --- Original
    +++ New
-   @@ -1,8 +1,8 @@
     <?php
     class Example
     {

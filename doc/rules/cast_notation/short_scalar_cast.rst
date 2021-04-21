@@ -16,7 +16,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,7 +1,7 @@
     <?php
    -$a = (boolean) $b;
    -$a = (integer) $b;
@@ -37,7 +36,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
    -$a = (boolean) $b;
    -$a = (integer) $b;

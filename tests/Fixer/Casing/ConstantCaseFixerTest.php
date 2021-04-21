@@ -197,4 +197,23 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases()
+    {
+        return [
+            ['<?php class Foo { public function Bar() { return $this?->False; } }'],
+        ];
+    }
 }

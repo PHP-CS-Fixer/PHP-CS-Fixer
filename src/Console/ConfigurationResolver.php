@@ -21,6 +21,8 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\SebastianBergmannDiffer;
@@ -31,8 +33,6 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Report\ReporterFactory;
-use PhpCsFixer\Report\ReporterInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
@@ -225,6 +225,17 @@ final class ConfigurationResolver
             foreach ($this->computeConfigFiles() as $configFile) {
                 if (!file_exists($configFile)) {
                     continue;
+                }
+
+                $configFileBasename = basename($configFile);
+                $deprecatedConfigs = [
+                    '.php_cs' => '.php-cs-fixer.php',
+                    '.php_cs.dist' => '.php-cs-fixer.dist.php',
+                ];
+
+                if (isset($deprecatedConfigs[$configFileBasename])) {
+                    $message = "Configuration file `{$configFileBasename}` is deprecated, rename to `{$deprecatedConfigs[$configFileBasename]}`.";
+                    Utils::triggerDeprecation($message, InvalidConfigurationException::class);
                 }
 
                 $config = self::separatedContextLessInclude($configFile);
@@ -446,13 +457,10 @@ final class ConfigurationResolver
                         implode('", "', $progressTypes)
                     ));
                 } elseif (\in_array($progressType, ['estimating', 'estimating-max', 'run-in'], true)) {
-                    $message = 'Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.';
-
-                    if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                        throw new \InvalidArgumentException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-                    }
-
-                    @trigger_error($message, E_USER_DEPRECATED);
+                    Utils::triggerDeprecation(
+                        'Passing `estimating`, `estimating-max` or `run-in` is deprecated and will not be supported in 3.0, use `none` or `dots` instead.',
+                        \InvalidArgumentException::class
+                    );
                 }
 
                 $this->progress = $progressType;
@@ -470,7 +478,7 @@ final class ConfigurationResolver
     public function getReporter()
     {
         if (null === $this->reporter) {
-            $reporterFactory = ReporterFactory::create();
+            $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
             $format = $this->getFormat();
@@ -608,13 +616,17 @@ final class ConfigurationResolver
         }
 
         $candidates = [
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs',
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist',
+            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
+            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
         ];
 
         if ($configDir !== $this->cwd) {
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs';
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
+            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
 
         return $candidates;
@@ -786,13 +798,7 @@ final class ConfigurationResolver
                     ? sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
                     : sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
 
-                $message = "Rule \"{$fixerName}\" is deprecated{$messageEnd}";
-
-                if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-                    throw new \RuntimeException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-                }
-
-                @trigger_error($message, E_USER_DEPRECATED);
+                Utils::triggerDeprecation("Rule \"{$fixerName}\" is deprecated{$messageEnd}");
             }
         }
     }
@@ -938,13 +944,10 @@ final class ConfigurationResolver
             return false;
         }
 
-        $message = sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value);
-
-        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new InvalidConfigurationException("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-        }
-
-        @trigger_error($message, E_USER_DEPRECATED);
+        Utils::triggerDeprecation(
+            sprintf('Expected "yes" or "no" for option "%s", other values are deprecated and support will be removed in 3.0. Got "%s", this implicitly set the option to "false".', $optionName, $value),
+            InvalidConfigurationException::class
+        );
 
         return false;
     }

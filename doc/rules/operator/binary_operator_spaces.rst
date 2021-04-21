@@ -60,7 +60,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -$a= 1  + $b^ $d !==  $e or   $f;
    +$a = 1 + $b ^ $d !== $e or $f;
@@ -74,7 +73,6 @@ With configuration: ``['operators' => ['=' => 'align', 'xor' => null]]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
     $aa=  1;
    -$b=2;
@@ -93,7 +91,6 @@ With configuration: ``['operators' => ['+=' => 'align_single_space']]``.
 
    --- Original
    +++ New
-   @@ -1,6 +1,6 @@
     <?php
    -$a = $b +=$c;
    -$d = $ee+=$f;
@@ -114,7 +111,6 @@ With configuration: ``['operators' => ['===' => 'align_single_space_minimal']]``
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    -$a = $b===$c;
    -$d = $f   ===  $g;
@@ -132,7 +128,6 @@ With configuration: ``['operators' => ['|' => 'no_space']]``.
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
    +$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION|JSON_PRETTY_PRINT);
@@ -146,7 +141,6 @@ With configuration: ``['operators' => ['=>' => 'single_space']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     $array = [
    -    "foo"            =>   1,
@@ -164,7 +158,6 @@ With configuration: ``['operators' => ['=>' => 'align']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     $array = [
    -    "foo" => 12,
@@ -181,7 +174,6 @@ With configuration: ``['operators' => ['=>' => 'align_single_space']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     $array = [
    -    "foo" => 12,
@@ -198,7 +190,6 @@ With configuration: ``['operators' => ['=>' => 'align_single_space_minimal']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     $array = [
    -    "foo" => 12,

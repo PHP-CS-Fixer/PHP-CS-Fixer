@@ -44,7 +44,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,6 +2,6 @@
+    <?php
     class Test extends \PhpUnit\FrameWork\TestCase
     {
         /**
@@ -63,7 +63,6 @@ With configuration: ``['style' => 'annotation']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,7 @@
     <?php
     class Test extends \PhpUnit\FrameWork\TestCase
     {

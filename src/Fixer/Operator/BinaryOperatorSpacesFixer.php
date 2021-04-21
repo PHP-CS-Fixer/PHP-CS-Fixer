@@ -25,6 +25,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -554,17 +555,14 @@ $array = [
             }
         }
 
-        $message = sprintf(
-            'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
-            HelpCommand::toString($newConfig),
-            HelpCommand::toString($configuration)
+        Utils::triggerDeprecation(
+            sprintf(
+                'Given configuration is deprecated and will be removed in 3.0. Use configuration %s as replacement for %s.',
+                HelpCommand::toString($newConfig),
+                HelpCommand::toString($configuration)
+            ),
+            InvalidFixerConfigurationException::class
         );
-
-        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new InvalidFixerConfigurationException($this->getName(), "{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
-        }
-
-        @trigger_error($message, E_USER_DEPRECATED);
 
         return $newConfig;
     }

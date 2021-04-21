@@ -94,7 +94,7 @@ final class ConfigTest extends TestCase
 
     public function testCustomConfig()
     {
-        $customConfigFile = __DIR__.'/Fixtures/.php_cs_custom.php';
+        $customConfigFile = __DIR__.'/Fixtures/.php-cs-fixer.custom.php';
 
         $application = new Application();
         $application->add(new FixCommand(new ToolInfo()));

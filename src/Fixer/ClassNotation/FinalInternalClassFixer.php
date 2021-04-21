@@ -169,6 +169,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
                     '@ORM\Entity',
                     '@ORM\Mapping\Entity',
                     '@Mapping\Entity',
+                    '@Document',
+                    '@ODM\Document',
                 ])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),

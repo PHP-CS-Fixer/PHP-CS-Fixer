@@ -20,7 +20,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -$plain = `ls -lah`;
    -$withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;

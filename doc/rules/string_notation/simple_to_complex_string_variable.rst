@@ -21,7 +21,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
     $name = 'World';
    -echo "Hello ${name}!";
@@ -34,7 +33,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     $name = 'World';
     echo <<<TEST

@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
     /**
    - * @inheritdoc
@@ -44,7 +43,6 @@ With configuration: ``['tags' => ['foo']]``.
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
     /**
      * @inheritdoc

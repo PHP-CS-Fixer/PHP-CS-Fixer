@@ -15,13 +15,22 @@ Example #1
 
    --- Original
    +++ New
-   @@ -5,6 +5,6 @@
+    <?php
+    final class Sample
+    {
+        private static $A = 1;
 
         public function getBar()
         {
    -        return static::class.static::test().static::$A;
    +        return self::class.self::test().self::$A;
         }
+
+        private static function test()
+        {
+            return 'test';
+        }
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -30,7 +39,8 @@ Example #2
 
    --- Original
    +++ New
-   @@ -3,6 +3,6 @@
+    <?php
+    final class Foo
     {
         public function bar()
         {
@@ -46,7 +56,8 @@ Example #3
 
    --- Original
    +++ New
-   @@ -3,6 +3,6 @@
+    <?php
+    final class Foo
     {
         public function isBar()
         {
@@ -62,7 +73,7 @@ Example #4
 
    --- Original
    +++ New
-   @@ -2,6 +2,6 @@
+    <?php
     $a = new class() {
         public function getBar()
         {

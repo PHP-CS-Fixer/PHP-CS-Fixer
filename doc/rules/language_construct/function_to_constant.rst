@@ -32,7 +32,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,12 +1,12 @@
     <?php
    -echo phpversion();
    -echo pi();
@@ -59,14 +58,12 @@ With configuration: ``['functions' => ['get_called_class', 'get_class_this', 'ph
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -echo phpversion();
    +echo PHP_VERSION;
     echo pi();
     class Foo
     {
-   @@ -6,7 +6,7 @@
         public function Bar()
         {
             echo get_class();

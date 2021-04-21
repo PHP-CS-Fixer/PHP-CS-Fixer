@@ -58,7 +58,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    -    if ($a === null) {
    +    if (null === $a) {
@@ -74,7 +73,6 @@ With configuration: ``['equal' => true, 'identical' => false, 'less_and_greater'
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?php
    -    $b = $c != 1;  // equal
    -    $a = 1 === $b; // identical
@@ -91,7 +89,6 @@ With configuration: ``['always_move_variable' => true]``.
 
    --- Original
    +++ New
-   @@ -1,2 +1,2 @@
     <?php
    -return $foo === count($bar);
    +return count($bar) === $foo;
@@ -105,7 +102,6 @@ With configuration: ``['equal' => false, 'identical' => false, 'less_and_greater
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
         // Enforce non-Yoda style.
    -    if (null === $a) {

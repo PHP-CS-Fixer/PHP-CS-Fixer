@@ -360,5 +360,12 @@ $foo = "B";
 
 $a = new ($foo."ar");',
         ];
+
+        yield [
+            '<?php
+                    $bar1 = new $foo[0]?->bar();
+                    $bar2 = new $foo[0][1]?->bar();
+                ',
+        ];
     }
 }

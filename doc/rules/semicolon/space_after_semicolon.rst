@@ -28,7 +28,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,5 +1,5 @@
     <?php
    -                        sample();     $test = 1;
    -                        sample();$test = 2;
@@ -47,7 +46,6 @@ With configuration: ``['remove_in_empty_for_expressions' => true]``.
 
    --- Original
    +++ New
-   @@ -1,3 +1,3 @@
     <?php
    -for ($i = 0; ; ++$i) {
    +for ($i = 0;; ++$i) {

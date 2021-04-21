@@ -163,7 +163,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements Configuration
     private function sortTypes(array $types)
     {
         foreach ($types as $index => $type) {
-            $types[$index] = Preg::replaceCallback('/^([^<]+)<(?:([\w\|]+?)(,\s*))?(.*)>$/', function (array $matches) {
+            $types[$index] = Preg::replaceCallback('/^([^<]+)<(?:([\w\|]+?|<?.*>)(,\s*))?(.*)>$/', function (array $matches) {
                 return $matches[1].'<'.$this->sortJoinedTypes($matches[2]).$matches[3].$this->sortJoinedTypes($matches[4]).'>';
             }, $type);
         }

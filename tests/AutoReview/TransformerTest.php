@@ -99,7 +99,7 @@ final class TransformerTest extends TestCase
         static $transformersArray = null;
 
         if (null === $transformersArray) {
-            $transformers = Transformers::create();
+            $transformers = Transformers::createSingleton();
             $reflection = new \ReflectionObject($transformers);
             $builtInTransformers = $reflection->getMethod('findBuiltInTransformers');
             $builtInTransformers->setAccessible(true);

@@ -126,7 +126,7 @@ class Foo
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, ElseifFixer, LineEndingFixer, MethodSeparationFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleTraitInsertPerStatementFixer.
+     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, LineEndingFixer, MethodSeparationFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority()
     {
@@ -818,6 +818,11 @@ class Foo
             T_CATCH,
             T_SWITCH,
         ];
+
+        // @TODO: drop condition when PHP 8.0+ is required
+        if (\defined('T_MATCH')) {
+            $tokens['match'] = T_MATCH;
+        }
 
         return $tokens;
     }

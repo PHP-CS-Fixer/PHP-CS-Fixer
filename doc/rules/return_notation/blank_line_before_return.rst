@@ -18,7 +18,7 @@ Example #1
 
    --- Original
    +++ New
-   @@ -2,5 +2,6 @@
+    <?php
     function A()
     {
         echo 1;

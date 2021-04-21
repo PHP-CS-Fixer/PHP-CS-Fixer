@@ -99,7 +99,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (!$tokens[$index]->isObjectOperator()) {
                 continue;
             }
 

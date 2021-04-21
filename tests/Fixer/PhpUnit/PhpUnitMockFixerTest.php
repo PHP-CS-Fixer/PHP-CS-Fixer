@@ -149,4 +149,29 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
     }'
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFix80()
+    {
+        $this->doTest(
+            '<?php
+    class FooTest extends TestCase
+    {
+        public function testFoo()
+        {
+            $this?->createMock("Foo");
+        }
+    }',
+            '<?php
+    class FooTest extends TestCase
+    {
+        public function testFoo()
+        {
+            $this?->getMock("Foo");
+        }
+    }'
+        );
+    }
 }

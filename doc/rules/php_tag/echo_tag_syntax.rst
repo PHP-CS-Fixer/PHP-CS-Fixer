@@ -47,7 +47,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
    -<?=1?>
    +<?php echo 1?>
     <?php print '2' . '3'; ?>
@@ -63,7 +62,6 @@ With configuration: ``['format' => 'long']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
    -<?=1?>
    +<?php echo 1?>
     <?php print '2' . '3'; ?>
@@ -79,7 +77,6 @@ With configuration: ``['format' => 'long', 'long_function' => 'print']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
    -<?=1?>
    +<?php print 1?>
     <?php print '2' . '3'; ?>
@@ -95,7 +92,6 @@ With configuration: ``['format' => 'short']``.
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?=1?>
    -<?php print '2' . '3'; ?>
    -<?php /* comment */ echo '2' . '3'; ?>
@@ -112,7 +108,6 @@ With configuration: ``['format' => 'short', 'shorten_simple_statements_only' => 
 
    --- Original
    +++ New
-   @@ -1,4 +1,4 @@
     <?=1?>
    -<?php print '2' . '3'; ?>
    -<?php /* comment */ echo '2' . '3'; ?>

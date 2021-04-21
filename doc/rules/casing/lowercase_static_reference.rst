@@ -15,7 +15,8 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,16 +3,16 @@
+    <?php
+    class Foo extends Bar
     {
         public function baz1()
         {
@@ -43,7 +44,6 @@ Example #2
 
    --- Original
    +++ New
-   @@ -1,8 +1,8 @@
     <?php
     class Foo extends Bar
     {

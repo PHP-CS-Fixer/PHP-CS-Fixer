@@ -18,7 +18,6 @@ Example #1
 
    --- Original
    +++ New
-   @@ -1 +1 @@
    -<?php $x = ereg('[A-Z]');
    +<?php $x = preg_match('/[A-Z]/D');
 

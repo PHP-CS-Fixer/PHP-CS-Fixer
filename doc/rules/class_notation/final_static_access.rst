@@ -18,7 +18,8 @@ Example #1
 
    --- Original
    +++ New
-   @@ -3,6 +3,6 @@
+    <?php
+    final class Sample
     {
         public function getFoo()
         {

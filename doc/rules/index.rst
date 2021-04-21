@@ -354,7 +354,7 @@ Operator
 - `not_operator_with_successor_space <./operator/not_operator_with_successor_space.rst>`_
     Logical NOT operators (``!``) should have one trailing whitespace.
 - `object_operator_without_whitespace <./operator/object_operator_without_whitespace.rst>`_
-    There should not be space before or after object ``T_OBJECT_OPERATOR`` ``->``.
+    There should not be space before or after object operators ``->`` and ``?->``.
 - `operator_linebreak <./operator/operator_linebreak.rst>`_
     Operators - when multiline - must always be at the beginning or at the end of the line.
 - `pre_increment <./operator/pre_increment.rst>`_ *(deprecated)*
