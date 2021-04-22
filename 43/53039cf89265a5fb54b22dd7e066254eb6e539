@@ -1,0 +1,41 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-05T13:40:51Z
+
+[![Coverage Status](https://coveralls.io/builds/38915408/badge)](https://coveralls.io/builds/38915408)
+
+Coverage remained the same at 91.902% when pulling **23f4f2985d9c115546f9dd35c5a6abff5b70d903 on kubawerlos:fix_SingleLineThrowFixer** into **dd17ef91f55013bd7917e5d2efb56a56b206a99b on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2021-04-05T14:45:40Z
+
+I can't review the logic as I'm not into php-cs-fixer much but I think the target is nice, thanks for working on this!
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-05T14:50:34Z
+
+@nicolas-grekas I am interested on your opinion from a user perspective - what should happen to this code:
+```
+throw
+    new class()
+        extends Exception
+        {
+            protected $message = "Custom message";
+        }
+     ;
+```
+
+Fully single line:
+```
+throw new class() extends Exception { protected $message = "Custom message"; };
+```
+or without class body:
+```
+throw new class() extends Exception
+        {
+            protected $message = "Custom message";
+        };
+```
+?
