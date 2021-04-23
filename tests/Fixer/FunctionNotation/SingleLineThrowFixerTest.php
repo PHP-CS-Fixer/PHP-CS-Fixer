@@ -246,7 +246,8 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
 
         if (\PHP_VERSION_ID >= 70000) {
             yield [
-                '<?php throw new class() extends Exception {
+                '<?php throw new class() extends Exception
+                {
                     protected $message = "Custom message";
                 }
             ;',
@@ -260,7 +261,8 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
             ];
 
             yield [
-                '<?php throw new class extends Exception {
+                '<?php throw new class extends Exception
+                {
                     protected $message = "Custom message";
                 }
             ;',
@@ -283,6 +285,14 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     "Foo"
                 );',
             ];
+
+            yield ['<?php
+                match ($number) {
+                    1 => $function->one(),
+                    2 => $function->two(),
+                    default => throw new \NotOneOrTwo()
+                };
+            '];
         }
     }
 }
