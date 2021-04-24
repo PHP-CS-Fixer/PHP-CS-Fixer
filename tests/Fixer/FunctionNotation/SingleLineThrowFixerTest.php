@@ -46,20 +46,20 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     "Foo"
                 );'];
 
-        yield ['<?php throw new Exception("Foo", 0);'];
+        yield ['<?php throw new Exception("Foo.", 0);'];
 
         yield [
-            '<?php throw new Exception("Foo", 0);',
+            '<?php throw new Exception("Foo.", 0);',
             '<?php throw new Exception(
-                "Foo",
+                "Foo.",
                 0
             );',
         ];
 
         yield [
-            '<?php throw new Exception("Foo" . "Bar");',
+            '<?php throw new Exception("Foo." . "Bar");',
             '<?php throw new Exception(
-                "Foo"
+                "Foo."
                 .
                 "Bar"
             );',
@@ -75,24 +75,24 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw new Exception(sprintf("Error with number %s", 42));',
+            '<?php throw new Exception(sprintf(\'Error with number "%s".\', 42));',
             '<?php throw new Exception(sprintf(
-                "Error with number %s",
+                \'Error with number "%s".\',
                 42
             ));',
         ];
 
         yield [
-            '<?php throw new SomeVendor\\Exception("Foo");',
+            '<?php throw new SomeVendor\\Exception("Foo.");',
             '<?php throw new SomeVendor\\Exception(
-                "Foo"
+                "Foo."
             );',
         ];
 
         yield [
-            '<?php throw new \SomeVendor\\Exception("Foo");',
+            '<?php throw new \SomeVendor\\Exception("Foo.");',
             '<?php throw new \SomeVendor\\Exception(
-                "Foo"
+                "Foo."
             );',
         ];
 
@@ -141,21 +141,21 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw new Exception("Foo", 0);',
+            '<?php throw new Exception("Foo.", 0);',
             '<?php throw
                 new
                     Exception
                         (
-                            "Foo"
+                            "Foo."
                                 ,
                             0
                         );',
         ];
 
         yield [
-            '<?php throw new $exceptionName("Foo");',
+            '<?php throw new $exceptionName("Foo.");',
             '<?php throw new $exceptionName(
-                "Foo"
+                "Foo."
             );',
         ];
 
@@ -167,15 +167,15 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw clone $exceptionName("Foo");',
+            '<?php throw clone $exceptionName("Foo.");',
             '<?php throw clone $exceptionName(
-                "Foo"
+                "Foo."
             );',
         ];
 
         yield [
-            '<?php throw new WeirdException("Foo", -20, "An elephant", 1, 2, 3, 4, 5, 6, 7, 8);',
-            '<?php throw new WeirdException("Foo", -20, "An elephant",
+            '<?php throw new WeirdException("Foo.", -20, "An elephant", 1, 2, 3, 4, 5, 6, 7, 8);',
+            '<?php throw new WeirdException("Foo.", -20, "An elephant",
 
                 1,
         2,
@@ -186,20 +186,20 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         yield [
             '<?php
                 if ($foo) {
-                    throw new Exception("It is foo", 1);
+                    throw new Exception("It is foo.", 1);
                 } else {
-                    throw new \Exception("It is not foo", 0);
+                    throw new \Exception("It is not foo.", 0);
                 }
             ',
             '<?php
                 if ($foo) {
                     throw new Exception(
-                        "It is foo",
+                        "It is foo.",
                         1
                     );
                 } else {
                     throw new \Exception(
-                        "It is not foo", 0
+                        "It is not foo.", 0
                     );
                 }
             ',
@@ -238,11 +238,41 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            "<?php throw new Exception('a'. 1);",
-            "<?php throw new Exception('a'.
+            "<?php throw new Exception('Message.'. 1);",
+            "<?php throw new Exception('Message.'.
 1
 );",
         ];
+
+        if (\PHP_VERSION_ID >= 70000) {
+            yield [
+                '<?php throw new class() extends Exception {
+                    protected $message = "Custom message";
+                }
+            ;',
+                '<?php throw
+                new class()
+                extends Exception
+                {
+                    protected $message = "Custom message";
+                }
+            ;',
+            ];
+
+            yield [
+                '<?php throw new class extends Exception {
+                    protected $message = "Custom message";
+                }
+            ;',
+                '<?php throw
+                new class
+                extends Exception
+                {
+                    protected $message = "Custom message";
+                }
+            ;',
+            ];
+        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield [
