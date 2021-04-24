@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,9 +25,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class BracesFixerTest extends AbstractFixerTestCase
 {
-    private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => 'same'];
-    private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => 'next'];
-    private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => 'next'];
+    private static $configurationOopPositionSameLine = ['position_after_functions_and_oop_constructs' => BracesFixer::LINE_SAME];
+    private static $configurationCtrlStructPositionNextLine = ['position_after_control_structures' => BracesFixer::LINE_NEXT];
+    private static $configurationAnonymousPositionNextLine = ['position_after_anonymous_constructs' => BracesFixer::LINE_NEXT];
 
     public function testInvalidConfigurationClassyConstructs()
     {

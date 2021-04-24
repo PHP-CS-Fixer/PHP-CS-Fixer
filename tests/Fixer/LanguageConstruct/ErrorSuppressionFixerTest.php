@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\Fixer\LanguageConstruct\ErrorSuppressionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -56,7 +57,7 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
             [
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
                 null,
-                ['mute_deprecation_error' => false],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => false],
             ],
             [
                 '<?php @\trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); ?>',
@@ -87,32 +88,32 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); mkdir("dir"); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
             ],
             [
                 '<?php $foo->isBar(); ?>',
                 '<?php @$foo->isBar(); ?>',
-                ['noise_remaining_usages' => true],
+                [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
             ],
             [
                 '<?php Foo::isBar(); ?>',
                 '<?php @Foo::isBar(); ?>',
-                ['noise_remaining_usages' => true],
+                [ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true],
             ],
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['mkdir']],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
             ],
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); unlink($path); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @mkdir("dir"); @unlink($path); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['mkdir']],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['mkdir']],
             ],
             [
                 '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
-                ['mute_deprecation_error' => true, 'noise_remaining_usages' => true, 'noise_remaining_usages_exclude' => ['trigger_error']],
+                [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['trigger_error']],
             ],
         ];
 
