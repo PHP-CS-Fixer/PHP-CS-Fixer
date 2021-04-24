@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -76,7 +77,7 @@ echo 1;',
                     'header' => 'tmp',
                     'location' => 'after_declare_strict',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 declare(strict_types=1);
@@ -120,7 +121,7 @@ echo 1;',
             [
                 [
                     'header' => 'new',
-                    'comment_type' => 'comment',
+                    'comment_type' => HeaderCommentFixer::HEADER_COMMENT,
                 ],
                 '<?php
 
@@ -135,7 +136,7 @@ echo 1;',
             [
                 [
                     'header' => 'new',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -150,7 +151,7 @@ echo 1;',
             [
                 [
                     'header' => 'def',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -189,7 +190,7 @@ echo 1;',
             [
                 [
                     'header' => 'abc',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -304,7 +305,7 @@ echo \'x\';',
                     'header' => 'foo',
                     'location' => 'after_open',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 /**
@@ -332,7 +333,7 @@ echo 1;',
                     'header' => 'foo',
                     'location' => 'after_open',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 /**
@@ -425,7 +426,7 @@ class Foo {}',
             [
                 [
                     'header' => 'tmp',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -447,7 +448,7 @@ class Foo {}',
             [
                 [
                     'header' => 'tmp',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -663,14 +664,14 @@ echo 1;'
  * a
  */',
                 'a',
-                'comment',
+                HeaderCommentFixer::HEADER_COMMENT,
             ],
             [
                 '/**
  * a
  */',
                 'a',
-                'PHPDoc',
+                HeaderCommentFixer::HEADER_PHPDOC,
             ],
         ];
     }
@@ -731,7 +732,7 @@ echo 1;'
                     'header' => 'whitemess',
                     'location' => 'after_declare_strict',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
                 "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
@@ -777,7 +778,7 @@ echo 1;'
 
         $this->fixer->configure([
             'header' => '/** test */',
-            'comment_type' => 'PHPDoc',
+            'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
         ]);
     }
 }

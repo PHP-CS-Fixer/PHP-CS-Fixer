@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\IncrementStyleFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -33,7 +34,7 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
      */
     public function testFixPreIncrement($expected, $input = null)
     {
-        $this->fixer->configure(['style' => 'pre']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_PRE]);
         $this->doTest($expected, $input);
     }
 
@@ -45,7 +46,7 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
      */
     public function testFixPostIncrement($expected, $input = null)
     {
-        $this->fixer->configure(['style' => 'post']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_POST]);
         $this->doTest($expected, $input);
     }
 
