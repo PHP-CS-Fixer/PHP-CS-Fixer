@@ -26,20 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoEmptyCommentFixer extends AbstractFixer
 {
-    /**
-     * @internal
-     */
-    public const TYPE_HASH = 1;
+    private const TYPE_HASH = 1;
 
-    /**
-     * @internal
-     */
-    public const TYPE_DOUBLE_SLASH = 2;
+    private const TYPE_DOUBLE_SLASH = 2;
 
-    /**
-     * @internal
-     */
-    public const TYPE_SLASH_ASTERISK = 3;
+    private const TYPE_SLASH_ASTERISK = 3;
 
     /**
      * {@inheritdoc}

@@ -27,25 +27,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleLineThrowFixer extends AbstractFixer
 {
-    /**
-     * @internal
-     */
-    public const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
-
-    /**
-     * @internal
-     */
-    public const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
-
-    /**
-     * @internal
-     */
-    public const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
-
-    /**
-     * @internal
-     */
-    public const THROW_END_TOKENS = [';', '(', '{', '}'];
+    private const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
+    private const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
+    private const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
+    private const THROW_END_TOKENS = [';', '(', '{', '}'];
 
     /**
      * {@inheritdoc}

@@ -66,6 +66,9 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      */
     public const SORT_LENGTH = 'length';
 
+    /**
+     * @internal
+     */
     public const SORT_NONE = 'none';
 
     /**

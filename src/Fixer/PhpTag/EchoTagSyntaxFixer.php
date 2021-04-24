@@ -51,14 +51,12 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
     /** @internal */
     public const LONG_FUNCTION_PRINT = 'print';
 
-    /** @internal */
-    public const SUPPORTED_FORMAT_OPTIONS = [
+    private const SUPPORTED_FORMAT_OPTIONS = [
         self::FORMAT_LONG,
         self::FORMAT_SHORT,
     ];
 
-    /** @internal */
-    public const SUPPORTED_LONGFUNCTION_OPTIONS = [
+    private const SUPPORTED_LONGFUNCTION_OPTIONS = [
         self::LONG_FUNCTION_ECHO,
         self::LONG_FUNCTION_PRINT,
     ];

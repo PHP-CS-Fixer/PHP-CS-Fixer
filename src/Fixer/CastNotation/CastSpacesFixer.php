@@ -30,10 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @internal
-     */
-    public const INSIDE_CAST_SPACE_REPLACE_MAP = [
+    private const INSIDE_CAST_SPACE_REPLACE_MAP = [
         ' ' => '',
         "\t" => '',
         "\n" => '',

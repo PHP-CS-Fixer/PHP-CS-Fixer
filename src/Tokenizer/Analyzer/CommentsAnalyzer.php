@@ -27,9 +27,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class CommentsAnalyzer
 {
-    public const TYPE_HASH = 1;
-    public const TYPE_DOUBLE_SLASH = 2;
-    public const TYPE_SLASH_ASTERISK = 3;
+    private const TYPE_HASH = 1;
+    private const TYPE_DOUBLE_SLASH = 2;
+    private const TYPE_SLASH_ASTERISK = 3;
 
     public function isHeaderComment(Tokens $tokens, int $index): bool
     {

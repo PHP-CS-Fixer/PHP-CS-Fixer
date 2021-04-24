@@ -27,15 +27,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class TernaryToElvisOperatorFixer extends AbstractFixer
 {
     /**
-     * @internal
-     *
      * Lower precedence and other valid preceding tokens.
      *
      * Ordered by most common types first.
      *
      * @var array
      */
-    public const VALID_BEFORE_ENDTYPES = [
+    private const VALID_BEFORE_ENDTYPES = [
         '=',
         [T_OPEN_TAG],
         [T_OPEN_TAG_WITH_ECHO],
