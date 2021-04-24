@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -404,7 +405,7 @@ class Foo
 EOT
             ],
             [
-                ['sort_algorithm' => 'alpha'],
+                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
                 <<<'EOT'
 <?php
 
@@ -983,7 +984,7 @@ EOT
                         'method_public',
                         'method_private',
                     ],
-                    'sort_algorithm' => 'alpha',
+                    'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
                 ],
                 <<<'EOT'
 <?php
@@ -1039,7 +1040,7 @@ EOT
                         'method_protected',
                         'method_private',
                     ],
-                    'sort_algorithm' => 'alpha',
+                    'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
                 ],
                 <<<'EOT'
 <?php
@@ -1149,7 +1150,7 @@ EOT
                         'method_protected_abstract',
                         'method_private',
                     ],
-                    'sort_algorithm' => 'alpha',
+                    'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
                 ],
                 <<<'EOT'
 <?php
@@ -1292,7 +1293,7 @@ EOT
                 public ?int $foo;
             }',
             [
-                'sort_algorithm' => 'alpha',
+                'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA,
             ],
         ];
     }
@@ -1316,7 +1317,7 @@ class TestClass
     public function %s(){}
     public function %s(){}
 }';
-        $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => 'alpha']);
+        $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA]);
 
         $this->doTest(
             sprintf($template, $methodName2, $methodName1),

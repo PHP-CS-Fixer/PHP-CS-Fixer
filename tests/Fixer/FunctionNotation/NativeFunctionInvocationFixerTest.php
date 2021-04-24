@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -102,8 +103,8 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         return [
             [['foo', 'bar']],
-            [['@all']],
-            [['@all', 'bar']],
+            [[NativeFunctionInvocationFixer::SET_ALL]],
+            [[NativeFunctionInvocationFixer::SET_ALL, 'bar']],
             [
                 ['@xxx'],
                 InvalidFixerConfigurationException::class,
@@ -487,7 +488,7 @@ namespace {
                     not_me();
                 ',
                 [
-                    'include' => ['@internal', 'some_other'],
+                    'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
                     'exclude' => ['strlen'],
                 ],
             ],
@@ -505,7 +506,7 @@ namespace {
                     me_as_well();
                 ',
                 [
-                    'include' => ['@all'],
+                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
                 ],
             ],
             'include @compiler_optimized' => [
@@ -528,7 +529,7 @@ namespace {
                     $e = intval($f);
                 ',
                 [
-                    'include' => ['@compiler_optimized'],
+                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                 ],
             ],
             [
@@ -559,7 +560,7 @@ namespace {
                 ',
                 null,
                 [
-                    'include' => ['@all'],
+                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
                 ],
             ],
         ];
@@ -581,7 +582,7 @@ namespace {
                         $c = intval($d);
                     ',
                 [
-                    'include' => ['@compiler_optimized'],
+                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                     'strict' => true,
                 ],
             ];

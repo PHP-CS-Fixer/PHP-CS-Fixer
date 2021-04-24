@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -26,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 {
-    private static $configurationClosureSpacingNone = ['closure_function_spacing' => 'none'];
+    private static $configurationClosureSpacingNone = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE];
 
     public function testInvalidConfigurationClosureFunctionSpacing(): void
     {

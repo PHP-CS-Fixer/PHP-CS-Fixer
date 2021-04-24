@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -57,7 +58,7 @@ EOF;
 
     public function testFixLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['param'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -119,7 +120,7 @@ EOF;
 
     public function testFixPartiallyUntypedLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['param'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -195,7 +196,7 @@ EOF;
 
     public function testFixMultiLineDescLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['param', 'property', 'method'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['param', 'property', 'method'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -287,7 +288,7 @@ EOF;
 
     public function testFixMultiLineDescWithThrowsLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['param', 'return', 'throws'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['param', 'return', 'throws'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -493,7 +494,7 @@ EOF;
 
     public function testFixTestLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['param'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -734,7 +735,7 @@ EOF;
 
     public function testDifferentIndentationLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['param', 'return'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['param', 'return'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -1019,7 +1020,7 @@ EOF;
 
     public function testAlignsMethodWithoutParametersLeftAlign(): void
     {
-        $this->fixer->configure(['tags' => ['method', 'property'], 'align' => 'left']);
+        $this->fixer->configure(['tags' => ['method', 'property'], 'align' => PhpdocAlignFixer::ALIGN_LEFT]);
 
         $expected = <<<'EOF'
 <?php
@@ -1194,7 +1195,7 @@ final class Sample
 ',
             ],
             [
-                ['tags' => ['param'], 'align' => 'left'],
+                ['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_LEFT],
                 '<?php
 final class Sample
 {

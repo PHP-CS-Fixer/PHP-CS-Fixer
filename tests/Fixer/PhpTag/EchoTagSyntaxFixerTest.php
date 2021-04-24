@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
+use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -30,7 +31,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
      */
     public function testLongToShortFormat(string $expected, ?string $input = null, bool $shortenSimpleStatementsOnly = true): void
     {
-        $this->fixer->configure(['format' => 'short', 'shorten_simple_statements_only' => $shortenSimpleStatementsOnly]);
+        $this->fixer->configure([EchoTagSyntaxFixer::OPTION_FORMAT => EchoTagSyntaxFixer::FORMAT_SHORT, EchoTagSyntaxFixer::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY => $shortenSimpleStatementsOnly]);
         $this->doTest($expected, $input);
     }
 
@@ -96,7 +97,7 @@ EOT
      */
     public function testShortToLongFormat(string $expected, ?string $input, string $function): void
     {
-        $this->fixer->configure(['format' => 'long', 'long_function' => $function]);
+        $this->fixer->configure([EchoTagSyntaxFixer::OPTION_FORMAT => EchoTagSyntaxFixer::FORMAT_LONG, EchoTagSyntaxFixer::OPTION_LONG_FUNCTION => $function]);
         $this->doTest($expected, $input);
     }
 
@@ -114,7 +115,7 @@ EOT
             ['<?php <fn> foo();', '<?=foo();'],
         ];
         $result = [];
-        foreach (['echo', 'print'] as $fn) {
+        foreach ([EchoTagSyntaxFixer::LONG_FUNCTION_ECHO, EchoTagSyntaxFixer::LONG_FUNCTION_PRINT] as $fn) {
             foreach ($cases as $case) {
                 $result[] = [str_replace('<fn>', $fn, $case[0]), str_replace('<fn>', $fn, $case[1]), $fn];
             }
