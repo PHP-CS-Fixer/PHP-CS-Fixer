@@ -38,6 +38,11 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /** @internal */
     public const SORT_NONE = 'none';
 
+    private const SUPPORTED_SORT_ALGORITHMS = [
+        self::SORT_NONE,
+        self::SORT_ALPHA,
+    ];
+
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
      */
@@ -81,16 +86,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'destruct' => null,
         'magic' => null,
         'phpunit' => null,
-    ];
-
-    /**
-     * Array of supported sort algorithms in configuration.
-     *
-     * @var string[]
-     */
-    private $supportedSortAlgorithms = [
-        self::SORT_NONE,
-        self::SORT_ALPHA,
     ];
 
     /**
@@ -212,7 +207,7 @@ class Example
     public function C(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => 'alpha']
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
             ]
         );
@@ -284,7 +279,7 @@ class Example
                 ])
                 ->getOption(),
             (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'))
-                ->setAllowedValues($this->supportedSortAlgorithms)
+                ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
         ]);

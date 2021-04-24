@@ -45,7 +45,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
      */
     public const SPACING_ONE = 'one';
 
-    private $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
+    private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
 
     private $singleLineWhitespaceOptions = " \t";
 
@@ -212,7 +212,7 @@ $f = fn () => null;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('closure_function_spacing', 'Spacing to use before open parenthesis for closures.'))
                 ->setDefault(self::SPACING_ONE)
-                ->setAllowedValues($this->supportedSpacings)
+                ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),
         ]);
     }

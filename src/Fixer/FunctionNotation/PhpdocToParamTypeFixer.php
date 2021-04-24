@@ -40,7 +40,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     /**
      * @var array{int, string}[]
      */
-    private $excludeFuncNames = [
+    private const EXCLUDE_FUNC_NAMES = [
         [T_STRING, '__clone'],
         [T_STRING, '__destruct'],
     ];
@@ -48,7 +48,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     /**
      * @var array<string, true>
      */
-    private $skippedTypes = [
+    private const SKIPPED_TYPES = [
         'mixed' => true,
         'resource' => true,
         'static' => true,
@@ -125,7 +125,7 @@ function my_foo($bar)
             }
 
             $funcName = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$funcName]->equalsAny($this->excludeFuncNames, false)) {
+            if ($tokens[$funcName]->equalsAny(self::EXCLUDE_FUNC_NAMES, false)) {
                 continue;
             }
 
@@ -139,7 +139,7 @@ function my_foo($bar)
                 $types = array_values($paramTypeAnnotation->getTypes());
                 $paramType = current($types);
 
-                if (isset($this->skippedTypes[$paramType])) {
+                if (isset(self::SKIPPED_TYPES[$paramType])) {
                     continue;
                 }
 

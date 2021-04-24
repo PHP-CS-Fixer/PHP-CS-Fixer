@@ -73,14 +73,14 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
      *
      * @var string[]
      */
-    private $supportedSortTypes = [self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION];
+    private const SUPPORTED_SORT_TYPES = [self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION];
 
     /**
      * Array of supported sort algorithms in configuration.
      *
      * @var string[]
      */
-    private $supportedSortAlgorithms = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
+    private const SUPPORTED_SORT_ALGORITHMS = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
 
     /**
      * {@inheritdoc}
@@ -252,11 +252,11 @@ use Bar;
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $supportedSortTypes = $this->supportedSortTypes;
+        $supportedSortTypes = self::SUPPORTED_SORT_TYPES;
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sort_algorithm', 'whether the statements should be sorted alphabetically or by length, or not sorted'))
-                ->setAllowedValues($this->supportedSortAlgorithms)
+                ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_ALPHA)
                 ->getOption(),
             (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))

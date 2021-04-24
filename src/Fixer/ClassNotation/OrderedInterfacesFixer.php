@@ -53,7 +53,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
      *
      * @var string[]
      */
-    private $supportedDirectionOptions = [
+    private const SUPPORTED_DIRECTION_OPTIONS = [
         self::DIRECTION_ASCEND,
         self::DIRECTION_DESCEND,
     ];
@@ -63,7 +63,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
      *
      * @var string[]
      */
-    private $supportedOrderOptions = [
+    private const SUPPORTED_ORDER_OPTIONS = [
         self::ORDER_ALPHA,
         self::ORDER_LENGTH,
     ];
@@ -223,11 +223,11 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(self::OPTION_ORDER, 'How the interfaces should be ordered'))
-                ->setAllowedValues($this->supportedOrderOptions)
+                ->setAllowedValues(self::SUPPORTED_ORDER_OPTIONS)
                 ->setDefault(self::ORDER_ALPHA)
                 ->getOption(),
             (new FixerOptionBuilder(self::OPTION_DIRECTION, 'Which direction the interfaces should be ordered'))
-                ->setAllowedValues($this->supportedDirectionOptions)
+                ->setAllowedValues(self::SUPPORTED_DIRECTION_OPTIONS)
                 ->setDefault(self::DIRECTION_ASCEND)
                 ->getOption(),
         ]);
