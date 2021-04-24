@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-21T19:33:41Z
+
+[![Coverage Status](https://coveralls.io/builds/39079720/badge)](https://coveralls.io/builds/39079720)
+
+Coverage remained the same at 91.902% when pulling **b11b6b17fce29fb6052cd84f6be78ab5b0b7aea5 on kubawerlos:fix_SingleLineThrowFixer_match** into **4353039cf89265a5fb54b22dd7e066254eb6e539 on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by lyrixx at 2021-04-23T14:08:06Z
+
+LGTM. Thanks 💛
