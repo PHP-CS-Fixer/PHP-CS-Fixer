@@ -49,15 +49,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
      */
     public const SPACING_ONE = 'one';
 
-    /**
-     * @internal
-     */
-    public const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
-
-    /**
-     * @internal
-     */
-    public const SUPPORTED_TYPES = ['const', 'method', 'property'];
+    private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
+    private const SUPPORTED_TYPES = ['const', 'method', 'property'];
 
     /**
      * @var array<string, string>
