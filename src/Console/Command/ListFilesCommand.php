@@ -76,7 +76,7 @@ final class ListFilesCommand extends Command
             [
                 'config' => $passedConfig,
             ],
-            getcwd(),
+            $cwd,
             $this->toolInfo
         );
 

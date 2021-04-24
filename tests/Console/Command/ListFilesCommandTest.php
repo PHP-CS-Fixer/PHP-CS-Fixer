@@ -37,6 +37,7 @@ final class ListFilesCommandTest extends TestCase
         // make the test also work on windows
         $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
+        static::assertSame(0, $commandTester->getStatusCode());
         static::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
     }
 

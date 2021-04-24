@@ -43,6 +43,11 @@ final class SingleLineThrowFixer extends AbstractFixer
     public const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
 
     /**
+     * @internal
+     */
+    public const THROW_END_TOKENS = [';', '(', '{', '}'];
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition(): FixerDefinitionInterface
@@ -66,12 +71,12 @@ final class SingleLineThrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before ConcatSpaceFixer.
+     * Must run before BracesFixer, ConcatSpaceFixer.
      */
     public function getPriority(): int
     {
         // must be fun before ConcatSpaceFixer
-        return 1;
+        return 36;
     }
 
     /**
@@ -84,18 +89,15 @@ final class SingleLineThrowFixer extends AbstractFixer
                 continue;
             }
 
-            /** @var int $openingBraceCandidateIndex */
-            $openingBraceCandidateIndex = $tokens->getNextTokenOfKind($index, [';', '(']);
+            /** @var int $endCandidateIndex */
+            $endCandidateIndex = $tokens->getNextTokenOfKind($index, self::THROW_END_TOKENS);
 
-            while ($tokens[$openingBraceCandidateIndex]->equals('(')) {
-                /** @var int $closingBraceIndex */
-                $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingBraceCandidateIndex);
-
-                /** @var int $openingBraceCandidateIndex */
-                $openingBraceCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, [';', '(']);
+            while ($tokens[$endCandidateIndex]->equals('(')) {
+                $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endCandidateIndex);
+                $endCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, self::THROW_END_TOKENS);
             }
 
-            $this->trimNewLines($tokens, $index, $openingBraceCandidateIndex);
+            $this->trimNewLines($tokens, $index, $tokens->getPrevMeaningfulToken($endCandidateIndex));
         }
     }
 
