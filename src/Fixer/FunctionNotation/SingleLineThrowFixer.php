@@ -40,6 +40,11 @@ final class SingleLineThrowFixer extends AbstractFixer
     const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
 
     /**
+     * @internal
+     */
+    const THROW_END_TOKENS = [';', '(', '{', '}'];
+
+    /**
      * {@inheritdoc}
      */
     public function getDefinition()
@@ -82,14 +87,14 @@ final class SingleLineThrowFixer extends AbstractFixer
             }
 
             /** @var int $endCandidateIndex */
-            $endCandidateIndex = $tokens->getNextTokenOfKind($index, [';', '(', '{']);
+            $endCandidateIndex = $tokens->getNextTokenOfKind($index, self::THROW_END_TOKENS);
 
             while ($tokens[$endCandidateIndex]->equals('(')) {
                 $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endCandidateIndex);
-                $endCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, [';', '(', '{']);
+                $endCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, self::THROW_END_TOKENS);
             }
 
-            $this->trimNewLines($tokens, $index, $endCandidateIndex);
+            $this->trimNewLines($tokens, $index, $tokens->getPrevMeaningfulToken($endCandidateIndex));
         }
     }
 
