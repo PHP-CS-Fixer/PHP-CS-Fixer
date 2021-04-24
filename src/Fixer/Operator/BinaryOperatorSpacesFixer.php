@@ -67,36 +67,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
-     * Keep track of the deepest level ever achieved while
-     * parsing the code. Used later to replace alignment
-     * placeholders with spaces.
-     *
-     * @var int
-     */
-    private $deepestLevel;
-
-    /**
-     * Level counter of the current nest level.
-     * So one level alignments are not mixed with
-     * other level ones.
-     *
-     * @var int
-     */
-    private $currentLevel;
-
-    private static $allowedValues = [
-        self::ALIGN,
-        self::ALIGN_SINGLE_SPACE,
-        self::ALIGN_SINGLE_SPACE_MINIMAL,
-        self::SINGLE_SPACE,
-        self::NO_SPACE,
-        null,
-    ];
-
-    /**
      * @var string[]
      */
-    private static $supportedOperators = [
+    private const SUPPORTED_OPERATORS = [
         '=',
         '*',
         '/',
@@ -139,6 +112,33 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         '<=>',
         '??',
         '??=',
+    ];
+
+    /**
+     * Keep track of the deepest level ever achieved while
+     * parsing the code. Used later to replace alignment
+     * placeholders with spaces.
+     *
+     * @var int
+     */
+    private $deepestLevel;
+
+    /**
+     * Level counter of the current nest level.
+     * So one level alignments are not mixed with
+     * other level ones.
+     *
+     * @var int
+     */
+    private $currentLevel;
+
+    private static $allowedValues = [
+        self::ALIGN,
+        self::ALIGN_SINGLE_SPACE,
+        self::ALIGN_SINGLE_SPACE_MINIMAL,
+        self::SINGLE_SPACE,
+        self::NO_SPACE,
+        null,
     ];
 
     /**
@@ -316,11 +316,11 @@ $array = [
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option) {
                     foreach ($option as $operator => $value) {
-                        if (!\in_array($operator, self::$supportedOperators, true)) {
+                        if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "operators" key, expected any of "%s", got "%s".',
-                                    implode('", "', self::$supportedOperators),
+                                    implode('", "', self::SUPPORTED_OPERATORS),
                                     \gettype($operator).'#'.$operator
                                 )
                             );
@@ -453,7 +453,7 @@ $array = [
         $operators = [];
 
         if (null !== $this->configuration['default']) {
-            foreach (self::$supportedOperators as $operator) {
+            foreach (self::SUPPORTED_OPERATORS as $operator) {
                 $operators[$operator] = $this->configuration['default'];
             }
         }

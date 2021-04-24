@@ -48,6 +48,27 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
      */
     public const ALIGN_VERTICAL = 'vertical';
 
+    private const ALIGNABLE_TAGS = [
+        'param',
+        'property',
+        'property-read',
+        'property-write',
+        'return',
+        'throws',
+        'type',
+        'var',
+        'method',
+    ];
+
+    private const TAGS_WITH_NAME = [
+        'param',
+        'property',
+    ];
+
+    private const TAGS_WITH_METHOD_SIGNATURE = [
+        'method',
+    ];
+
     /**
      * @var string
      */
@@ -63,27 +84,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private $align;
 
-    private static $alignableTags = [
-        'param',
-        'property',
-        'property-read',
-        'property-write',
-        'return',
-        'throws',
-        'type',
-        'var',
-        'method',
-    ];
-
-    private static $tagsWithName = [
-        'param',
-        'property',
-    ];
-
-    private static $tagsWithMethodSignature = [
-        'method',
-    ];
-
     /**
      * {@inheritdoc}
      */
@@ -91,8 +91,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     {
         parent::configure($configuration);
 
-        $tagsWithNameToAlign = array_intersect($this->configuration['tags'], self::$tagsWithName);
-        $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::$tagsWithMethodSignature);
+        $tagsWithNameToAlign = array_intersect($this->configuration['tags'], self::TAGS_WITH_NAME);
+        $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::TAGS_WITH_METHOD_SIGNATURE);
         $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
         $types = [];
 
@@ -200,7 +200,7 @@ EOF;
         $tags = new FixerOptionBuilder('tags', 'The tags that should be aligned.');
         $tags
             ->setAllowedTypes(['array'])
-            ->setAllowedValues([new AllowedValueSubset(self::$alignableTags)])
+            ->setAllowedValues([new AllowedValueSubset(self::ALIGNABLE_TAGS)])
             ->setDefault([
                 'method',
                 'param',
@@ -278,7 +278,7 @@ EOF;
 
                     $extraIndent = 2;
 
-                    if (\in_array($currTag, self::$tagsWithName, true) || \in_array($currTag, self::$tagsWithMethodSignature, true)) {
+                    if (\in_array($currTag, self::TAGS_WITH_NAME, true) || \in_array($currTag, self::TAGS_WITH_METHOD_SIGNATURE, true)) {
                         $extraIndent = 3;
                     }
 
