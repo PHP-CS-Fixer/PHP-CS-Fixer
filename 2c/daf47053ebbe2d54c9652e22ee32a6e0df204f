@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-18T14:12:42Z
+
+[![Coverage Status](https://coveralls.io/builds/38940040/badge)](https://coveralls.io/builds/38940040)
+
+Coverage decreased (-0.04%) to 91.897% when pulling **515fb741ef6f5b454e990a7421d964bdb5ce7cc0 on keradus:list-sets** into **5eaa06b4eabc667e821f5fa9fee4e35d7f4eac69 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-18T19:06:15Z
+
+Why did the coverage dropped?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-18T19:30:25Z
+
+no clue
+
+---------------------------------------------------------------------------
+
+by MaXal at 2021-04-23T12:54:19Z
+
+Thank you a lot for your work! The result works great! I choose to implement a parser based on `txt` format since it's much easier to parse.
+![image](https://user-images.githubusercontent.com/266747/115873867-c16f6800-a443-11eb-8014-2215527840e8.png)
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-24T16:48:01Z
+
+Thanks for the feedback, @MaXal !
+In that case, I gonna merge the PR as-is.
+
+Please, be warned that for JSON, the result is well-specified and you can rely on [schema](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/515fb741ef6f5b454e990a7421d964bdb5ce7cc0/doc/schemas/list-sets/schema.json) under BC promise. For txt output, the format of message can be modified at any PHP CS Fixer update.
