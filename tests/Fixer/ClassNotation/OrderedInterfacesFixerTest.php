@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -145,7 +146,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixAlphaDescend($expected, $input = null)
     {
-        $this->fixer->configure(['direction' => 'descend']);
+        $this->fixer->configure([OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND]);
         $this->doTest($expected, $input);
     }
 
@@ -174,7 +175,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
      */
     public function testFixLength($expected, $input = null)
     {
-        $this->fixer->configure(['order' => 'length']);
+        $this->fixer->configure([OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH]);
         $this->doTest($expected, $input);
     }
 
@@ -218,8 +219,8 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
     public function testFixLengthDescend($expected, $input = null)
     {
         $this->fixer->configure([
-            'order' => 'length',
-            'direction' => 'descend',
+            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+            OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
         ]);
         $this->doTest($expected, $input);
     }
