@@ -13,30 +13,40 @@
 namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Application;
-use PhpCsFixer\Console\Command\ListFilesCommand;
+use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\ListFilesCommand
+ * @covers \PhpCsFixer\Console\Command\ListSetsCommand
  */
-final class ListFilesCommandTest extends TestCase
+final class ListSetsCommandTest extends TestCase
 {
-    public function testListWithConfig()
+    public function testListWithTxtFormat()
     {
         $commandTester = $this->doTestExecute([
-            '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.php',
+            '--format' => 'txt',
         ]);
 
-        $expectedPath = './tests/Fixtures/ListFilesTest/needs-fixing/needs-fixing.php';
-        // make the test also work on windows
-        $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
+        $resultRaw = $commandTester->getDisplay();
 
+        $expectedResultStart = ' 1) @DoctrineAnnotation'.PHP_EOL.'      Rules covering Doctrine annotations';
+        static::assertStringStartsWith($expectedResultStart, $resultRaw);
         static::assertSame(0, $commandTester->getStatusCode());
-        static::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+    }
+
+    public function testListWithJsonFormat()
+    {
+        $commandTester = $this->doTestExecute([
+            '--format' => 'json',
+        ]);
+
+        $resultRaw = $commandTester->getDisplay();
+
+        static::assertJson($resultRaw);
+        static::assertSame(0, $commandTester->getStatusCode());
     }
 
     /**
@@ -45,9 +55,9 @@ final class ListFilesCommandTest extends TestCase
     private function doTestExecute(array $arguments)
     {
         $application = new Application();
-        $application->add(new ListFilesCommand(new ToolInfo()));
+        $application->add(new ListSetsCommand());
 
-        $command = $application->find('list-files');
+        $command = $application->find('list-sets');
         $commandTester = new CommandTester($command);
 
         $commandTester->execute($arguments);
