@@ -18,7 +18,8 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `|` operator into CT::T_TYPE_ALTERNATION in `} catch (ExceptionType1 | ExceptionType2 $e) {`.
+ * Transform `|` operator into CT::T_TYPE_ALTERNATION in `function foo(Type1 | Type2 $x) {`
+ *                                                    or `} catch (ExceptionType1 | ExceptionType2 $e) {`.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -31,7 +32,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
      */
     public function getPriority()
     {
-        // needs to run after TypeColonTransformer
+        // needs to run after ArrayTypehintTransformer and TypeColonTransformer
         return -15;
     }
 
@@ -54,7 +55,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$prevIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$prevIndex]->isGivenKind([T_STRING, CT::T_ARRAY_TYPEHINT])) {
             return;
         }
 
