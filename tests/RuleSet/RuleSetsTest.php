@@ -323,6 +323,18 @@ Integration of %s.
         $factory->registerBuiltInFixers();
         $factory->useRuleSet(new RuleSet([$name => true]));
 
-        return current($factory->getFixers());
+        $fixers = $factory->getFixers();
+
+        if (empty($fixers)) {
+            throw new \RuntimeException('FixerFactory unexpectedly returned empty array.');
+        }
+
+        $fixer = current($fixers);
+
+        if (!$fixer instanceof AbstractFixer) {
+            throw new \RuntimeException(sprintf('Fixer class for "%s" rule does not extend "%s".', $name, AbstractFixer::class));
+        }
+
+        return $fixer;
     }
 }
