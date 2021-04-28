@@ -184,6 +184,22 @@ final class ArgumentsAnalyzerTest extends TestCase
 
     public function provideArgumentsInfo80Cases()
     {
+        yield [
+            '<?php function foo(#[AnAttribute] ?string $param = null) {}',
+            5,
+            16,
+            new ArgumentAnalysis(
+                '$param',
+                12,
+                'null',
+                new TypeAnalysis(
+                    '?string',
+                    9,
+                    10
+                )
+            ),
+        ];
+
         foreach (['public', 'protected', 'private'] as $visibility) {
             yield [
                 sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
