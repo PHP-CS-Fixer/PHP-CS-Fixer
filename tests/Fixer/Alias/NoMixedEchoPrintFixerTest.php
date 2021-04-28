@@ -290,10 +290,10 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
     public function testLegacyDefaultConfig()
     {
+        $this->expectDeprecation('Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.');
         $this->fixer->configure(null);
 
         static::assertCandidateTokenType(T_PRINT, $this->fixer);

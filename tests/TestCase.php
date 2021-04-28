@@ -20,6 +20,7 @@ use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
 use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait;
 use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 // we check single, example DEV dependency - if it's there, we have the dev dependencies, if not, we are using PHP-CS-Fixer as library and trying to use internal TestCase...
 if (trait_exists(ProphesizeOnlyInterfaceTrait::class)) {
@@ -52,6 +53,7 @@ if (trait_exists(ProphesizeOnlyInterfaceTrait::class)) {
     abstract class TestCase extends InterimTestCase
     {
         use ExpectationViaCodeOverAnnotationTrait;
+        use ExpectDeprecationTrait;
         use ExpectOverSetExceptionTrait;
         use IdentityOverEqualityTrait;
         use PolyfillTrait;

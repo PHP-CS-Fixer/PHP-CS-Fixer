@@ -622,10 +622,10 @@ echo Foo::A, Foo::B;
      *
      * @group legacy
      * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration for rule "single_class_element_per_statement" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
      */
     public function testLegacyFixWithConfiguration(array $configuration, $expected)
     {
+        $this->expectDeprecation('Passing "elements" at the root of the configuration for rule "single_class_element_per_statement" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.');
         static $input = <<<'EOT'
 <?php
 

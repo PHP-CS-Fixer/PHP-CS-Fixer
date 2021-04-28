@@ -984,13 +984,13 @@ class Test extends \PhpUnit\FrameWork\TestCase
     /**
      * @dataProvider provideFixLegacyCaseOptionCases
      * @group legacy
-     * @expectedDeprecation Option "case" for rule "php_unit_test_annotation" is deprecated and will be removed in version 3.0. Use "php_unit_method_casing" fixer instead.
      *
      * @param string      $expected
      * @param null|string $input
      */
     public function testFixLegacyCaseOption($expected, $input = null, array $config = [])
     {
+        $this->expectDeprecation('Option "case" for rule "php_unit_test_annotation" is deprecated and will be removed in version 3.0. Use "php_unit_method_casing" fixer instead.');
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }

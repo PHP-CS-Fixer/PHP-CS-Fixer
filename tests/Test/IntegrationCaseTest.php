@@ -25,10 +25,10 @@ final class IntegrationCaseTest extends TestCase
 {
     /**
      * @group legacy
-     * @expectedDeprecation The "PhpCsFixer\Test\IntegrationCase::shouldCheckPriority" method is deprecated. You should stop using it, as it will be removed in 3.0 version.
      */
     public function testLegacyShouldCheckPriority()
     {
+        $this->expectDeprecation('The "PhpCsFixer\Test\IntegrationCase::shouldCheckPriority" method is deprecated. You should stop using it, as it will be removed in 3.0 version.');
         $integrationCase = new LegacyIntegrationCase(
             'foo',
             'Foo',

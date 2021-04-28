@@ -42,10 +42,10 @@ final class FixCommandTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Expected "yes" or "no" for option "using-cache", other values are deprecated and support will be removed in 3.0. Got "not today", this implicitly set the option to "false".
      */
     public function testEmptyFormatValue()
     {
+        $this->expectDeprecation('Expected "yes" or "no" for option "using-cache", other values are deprecated and support will be removed in 3.0. Got "not today", this implicitly set the option to "false".');
         $cmdTester = $this->doTestExecute(
             [
                 '--using-cache' => 'not today',

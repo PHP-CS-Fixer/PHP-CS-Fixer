@@ -399,7 +399,6 @@ switch ($a) {
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "die" is deprecated, use "exit" instead.
      *
      * @dataProvider provideFixWithDieCases
      *
@@ -408,6 +407,7 @@ switch ($a) {
      */
     public function testFixWithDie($expected, $input = null)
     {
+        $this->expectDeprecation('Option "die" is deprecated, use "exit" instead.');
         $this->fixer->configure([
             'statements' => ['die'],
         ]);

@@ -35,10 +35,10 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      */
     public function testConfigurationWrongValue()
     {
+        $this->expectDeprecation('Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.');
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[is_null\] Invalid configuration: The option "use_yoda_style" with value -1 is expected to be of type "bool", but is of type "(int|integer)"\.$#');
         $this->fixer->configure(['use_yoda_style' => -1]);
@@ -46,10 +46,10 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      */
     public function testCorrectConfiguration()
     {
+        $this->expectDeprecation('Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.');
         $this->fixer->configure(['use_yoda_style' => false]);
 
         $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');
@@ -246,7 +246,6 @@ FIXED;
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.
      *
      * @dataProvider provideNonYodaFixCases
      *
@@ -255,6 +254,7 @@ FIXED;
      */
     public function testNonYodaFix($expected, $input)
     {
+        $this->expectDeprecation('Option "use_yoda_style" for rule "is_null" is deprecated and will be removed in version 3.0. Use "yoda_style" fixer instead.');
         $this->fixer->configure(['use_yoda_style' => false]);
         $this->doTest($expected, $input);
     }

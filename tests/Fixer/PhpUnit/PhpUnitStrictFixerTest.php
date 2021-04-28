@@ -29,10 +29,10 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_strict" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null)
     {
+        $this->expectDeprecation('Passing "assertions" at the root of the configuration for rule "php_unit_strict" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.');
         $this->fixer->configure(array_keys($this->getMethodsMap()));
         $this->doTest($expected, $input);
     }

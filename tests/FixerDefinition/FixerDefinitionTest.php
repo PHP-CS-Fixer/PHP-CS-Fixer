@@ -55,10 +55,10 @@ final class FixerDefinitionTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
      */
     public function testGetConfigurationDescription()
     {
+        $this->expectDeprecation('PhpCsFixer\\FixerDefinition\\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.');
         $definition = new FixerDefinition('', []);
 
         static::assertNull($definition->getConfigurationDescription());
@@ -74,11 +74,11 @@ final class FixerDefinitionTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Argument #5 of FixerDefinition::__construct() is deprecated and will be removed in 3.0.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
      */
     public function testGetDefaultConfiguration()
     {
+        $this->expectDeprecation('PhpCsFixer\\FixerDefinition\\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.');
+        $this->expectDeprecation('Argument #5 of FixerDefinition::__construct() is deprecated and will be removed in 3.0.');
         $definition = new FixerDefinition('', []);
 
         static::assertNull($definition->getDefaultConfiguration());
@@ -101,10 +101,10 @@ final class FixerDefinitionTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.
      */
     public function testLegacyGetRiskyDescription()
     {
+        $this->expectDeprecation('Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.');
         $definition = new FixerDefinition('', [], null, null, null, 'Foo');
 
         static::assertSame('Foo', $definition->getRiskyDescription());

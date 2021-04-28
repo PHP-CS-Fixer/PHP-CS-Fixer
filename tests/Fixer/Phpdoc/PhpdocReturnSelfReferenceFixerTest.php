@@ -29,10 +29,10 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideDefaultConfigurationTestCases
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
     public function testLegacyFixWithDefaultConfiguration($expected, $input = null)
     {
+        $this->expectDeprecation('Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.');
         $this->fixer->configure(null);
         $this->doTest($expected, $input);
     }
@@ -75,10 +75,10 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideTestCases
-     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "phpdoc_return_self_reference" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null, array $configuration = [])
     {
+        $this->expectDeprecation('Passing "replacements" at the root of the configuration for rule "phpdoc_return_self_reference" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.');
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }

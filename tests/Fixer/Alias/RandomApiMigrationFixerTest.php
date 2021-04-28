@@ -42,10 +42,10 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "replacements" at the root of the configuration for rule "random_api_migration" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.
      */
     public function testLegacyConfigure()
     {
+        $this->expectDeprecation('Passing "replacements" at the root of the configuration for rule "random_api_migration" is deprecated and will not be supported in 3.0, use "replacements" => array(...) option instead.');
         $this->fixer->configure(['rand' => 'random_int']);
 
         $reflectionProperty = new \ReflectionProperty($this->fixer, 'configuration');

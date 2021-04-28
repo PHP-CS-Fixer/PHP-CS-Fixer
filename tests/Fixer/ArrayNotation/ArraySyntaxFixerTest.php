@@ -35,10 +35,10 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
     public function testLegacyFixWithDefaultConfiguration()
     {
+        $this->expectDeprecation('Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.');
         $this->fixer->configure(null);
         $this->doTest(
             '<?php $a = array(); $b = array();',

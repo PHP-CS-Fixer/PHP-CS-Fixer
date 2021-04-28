@@ -35,10 +35,10 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "foo" at the root of the configuration for rule "bar" is deprecated and will not be supported in 3.0, use "foo" => array(...) option instead.
      */
     public function testResolveWithMappedRoot()
     {
+        $this->expectDeprecation('Passing "foo" at the root of the configuration for rule "bar" is deprecated and will not be supported in 3.0, use "foo" => array(...) option instead.');
         $options = [new FixerOption('foo', 'Bar.')];
         $configuration = new FixerConfigurationResolverRootless('foo', $options, 'bar');
 
