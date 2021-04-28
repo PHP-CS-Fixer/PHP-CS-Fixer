@@ -522,6 +522,62 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider provideSrcClassCases
+     *
+     * @param string $className
+     */
+    public function testInheritdocIsNotAbused($className)
+    {
+        $rc = new \ReflectionClass($className);
+
+        $allowedMethods = array_map(
+            function (\ReflectionClass $interface) {
+                return $this->getPublicMethodNames($interface);
+            },
+            $rc->getInterfaces()
+        );
+
+        if (\count($allowedMethods)) {
+            $allowedMethods = array_merge(...array_values($allowedMethods));
+        }
+
+        $parentClass = $rc;
+        while (false !== $parentClass = $parentClass->getParentClass()) {
+            foreach ($parentClass->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method) {
+                $allowedMethods[] = $method->getName();
+            }
+        }
+
+        $allowedMethods = array_unique($allowedMethods);
+
+        $methodsWithInheritdoc = array_filter(
+            $rc->getMethods(),
+            static function (\ReflectionMethod $rm) {
+                return false !== $rm->getDocComment() && stripos($rm->getDocComment(), '@inheritdoc');
+            }
+        );
+        $methodsWithInheritdoc = array_map(
+            static function (\ReflectionMethod $rm) {
+                return $rm->getName();
+            },
+            $methodsWithInheritdoc
+        );
+
+        $extraMethods = array_diff($methodsWithInheritdoc, $allowedMethods);
+
+        static::assertEmpty(
+            $extraMethods,
+            sprintf(
+                "Class '%s' should not have methods with '@inheritdoc' in PHPDoc that are not inheriting PHPDoc.\nViolations:\n%s",
+                $className,
+                implode("\n", array_map(static function ($item) {
+                    return " * {$item}";
+                }, $extraMethods))
+            )
+        );
+    }
+
     public function provideSrcClassCases()
     {
         return array_map(
