@@ -22,9 +22,6 @@ parameters:
             message: '/^Else branch is unreachable because previous condition is always true\.$/'
             path: src/Event/Event.php
         -
-            message: '/^Strict comparison using !== between ''@git-commit@'' and ''@git-commit@'' will always evaluate to false\.$/'
-            path: src/Console/Application.php
-        -
             message: '/^Result of && is always false\.$/'
             path: src/Config.php
         -
@@ -34,18 +31,11 @@ parameters:
             message: '/^Else branch is unreachable because ternary operator condition is always true\.$/'
             paths:
                 - src/Config.php
-                - src/Tokenizer/Token.php
         -
             message: '/^Parameter #1 \$function of function register_shutdown_function expects callable\(\): void, array\(\$this\(PhpCsFixer\\FileRemoval\), ''clean''\) given\.$/'
             path: src/FileRemoval.php
-        - # https://github.com/phpstan/phpstan/issues/1215
-            message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
-            path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
         -
             message: '/^Constant T_ATTRIBUTE not found\.$/'
             path: src/Tokenizer/Transformer/AttributeTransformer.php
-        -
-            message: '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
-            path: src/Tokenizer/Tokens.php
 
     tipsOfTheDay: false

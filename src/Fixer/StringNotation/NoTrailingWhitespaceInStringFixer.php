@@ -89,7 +89,7 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
             if ($tokens[$prev]->equals([T_CLOSE_TAG, '?>']) && Preg::match('/^\R/', $content, $match)) {
                 $tokens[$prev] = new Token([T_CLOSE_TAG, $tokens[$prev]->getContent().$match[0]]);
                 $content = substr($content, \strlen($match[0]));
-                $content = false === $content ? '' : $content;
+                $content = false === $content ? '' : $content; // @phpstan-ignore-line due to https://github.com/phpstan/phpstan/issues/1215 , awaiting PHP8 as min requirement of Fixer
             }
 
             $this->updateContent($tokens, $index, $content);

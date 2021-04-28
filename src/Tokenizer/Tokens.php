@@ -386,7 +386,7 @@ class Tokens extends \SplFixedArray
 
         for ($count = $index; $index < $limit; ++$index) {
             if (!$this->isEmptyAt($index)) {
-                $this[$count++] = $this[$index];
+                $this[$count++] = $this[$index]; // @phpstan-ignore-line as we know that index exists
             }
         }
 
