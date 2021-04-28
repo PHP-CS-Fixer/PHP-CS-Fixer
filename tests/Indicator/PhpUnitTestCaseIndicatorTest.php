@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitTestCaseIndicatorTest extends TestCase
 {
     /**
-     * @var PhpUnitTestCaseIndicator
+     * @var null|PhpUnitTestCaseIndicator
      */
     private $indicator;
 
