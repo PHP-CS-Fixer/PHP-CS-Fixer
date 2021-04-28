@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-25T08:07:24Z
+
+[![Coverage Status](https://coveralls.io/builds/39104957/badge)](https://coveralls.io/builds/39104957)
+
+Coverage remained the same at 91.902% when pulling **7d32ab2048ce890dc46bf1e247ade837ac0a02db on kubawerlos:dx_phpstan_exceptions_for_tests** into **c2f6aa3d9780dcdd03c95eb956b0f1c15ea50eba on FriendsOfPHP:2.18**.
