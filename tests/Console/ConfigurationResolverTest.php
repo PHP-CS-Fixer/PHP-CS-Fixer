@@ -1109,10 +1109,10 @@ final class ConfigurationResolverTest extends TestCase
      * @dataProvider provideDeprecatedFixerConfiguredCases
      *
      * @group legacy
-     * @expectedDeprecation Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.
      */
     public function testDeprecatedFixerConfigured($ruleConfig): void
     {
+        $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
         $fixer = new DeprecatedFixer();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);

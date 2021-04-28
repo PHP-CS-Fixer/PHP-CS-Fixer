@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author SpacePossum
@@ -26,8 +25,6 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @dataProvider provideFixCases
      * @dataProvider provideFixDeprecatedCases

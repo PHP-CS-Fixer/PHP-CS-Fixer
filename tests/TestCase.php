@@ -22,6 +22,7 @@ use PHPUnitGoodPractices\Traits\IdentityOverEqualityTrait;
 use PHPUnitGoodPractices\Traits\ProphecyOverMockObjectTrait;
 use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 // To ensure compatibility for different PHPUnit versions, we may need to inject the ProphecyTrait, if it's present.
 if (trait_exists(ProphecyTrait::class)) {
@@ -53,6 +54,7 @@ if (trait_exists(ProphecyTrait::class)) {
 abstract class TestCase extends InterimTestCase
 {
     use ExpectationViaCodeOverAnnotationTrait;
+    use ExpectDeprecationTrait;
     use ExpectOverSetExceptionTrait;
     use IdentityOverEqualityTrait;
     use PolyfillTrait;
