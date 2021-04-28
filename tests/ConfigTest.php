@@ -193,7 +193,7 @@ final class ConfigTest extends TestCase
         $this->expectExceptionMessageMatches('/^Argument must be an array or a Traversable, got "\w+"\.$/');
 
         $config = new Config();
-        $config->registerCustomFixers('foo');
+        $config->registerCustomFixers('foo'); // @phpstan-ignore-line to avoid `expects iterable<PhpCsFixer\Fixer\FixerInterface>, string given`
     }
 
     /**
@@ -259,7 +259,7 @@ final class ConfigTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Argument must be an array or a Traversable, got "integer"\.$/');
 
-        $config->setFinder(123);
+        $config->setFinder(123); // @phpstan-ignore-line to avoid `expects iterable<string>, int given`
     }
 
     /**

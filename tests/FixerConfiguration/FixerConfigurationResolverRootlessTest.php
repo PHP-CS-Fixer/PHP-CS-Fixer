@@ -44,6 +44,6 @@ final class FixerConfigurationResolverRootlessTest extends TestCase
 
         static::assertSame($options, $configuration->getOptions());
 
-        $configuration->resolve(['baz', 'qux']);
+        $configuration->resolve(['baz' => 'qux']);
     }
 }
