@@ -87,6 +87,7 @@ class Token
         } else {
             throw new \InvalidArgumentException(sprintf(
                 'Cannot recognize input value as valid Token prototype, got "%s".',
+                // @phpstan-ignore-next-line due to lack of strong typing of method parameter
                 \is_object($token) ? \get_class($token) : \gettype($token)
             ));
         }
