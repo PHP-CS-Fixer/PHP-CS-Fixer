@@ -167,7 +167,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']]);
 
         static::assertSame($dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php', $resolver->getConfigFile());
-        static::assertInstanceOf(\Test1Config::class, $resolver->getConfig());
+        static::assertInstanceOf(\Test1Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test1Config not found.`
     }
 
     public function testResolveConfigFileSpecified(): void
@@ -177,7 +177,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(['config' => $file]);
 
         static::assertSame($file, $resolver->getConfigFile());
-        static::assertInstanceOf(\Test4Config::class, $resolver->getConfig());
+        static::assertInstanceOf(\Test4Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test4Config not found.`
     }
 
     /**
