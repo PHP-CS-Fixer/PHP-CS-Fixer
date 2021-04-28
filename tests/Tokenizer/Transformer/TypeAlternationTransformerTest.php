@@ -226,5 +226,29 @@ class Number
                 35 => CT::T_TYPE_ALTERNATION,
             ],
         ];
+
+        yield 'array as first element of types' => [
+            '<?php function foo(array|bool|null $foo) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'array as middle element of types' => [
+            '<?php function foo(null|array|bool $foo) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'array as last element of types' => [
+            '<?php function foo(null|bool|array $foo) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
     }
 }

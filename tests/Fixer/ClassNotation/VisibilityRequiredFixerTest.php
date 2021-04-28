@@ -849,5 +849,18 @@ AB# <- this is the name
         yield [
             '<?php class Foo { private int | /* or empty */ null $foo; }',
         ];
+
+        yield [
+            '<?php class Foo { private array|null $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { private null|array $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static null|array $foo; }',
+            '<?php class Foo { static null|array $foo; }',
+        ];
     }
 }
