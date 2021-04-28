@@ -13,20 +13,6 @@ parameters:
     ignoreErrors:
         - '/^Constant T_NAME_(RELATIVE|FULLY_QUALIFIED|QUALIFIED) not found\.$/'
         -
-            message: '/^Strict comparison using !== between ''@git-commit@'' and ''@git-commit@'' will always evaluate to false\.$/'
-            path: src/Console/Application.php
-        -
-            message: '/^Else branch is unreachable because ternary operator condition is always true\.$/'
-            paths:
-                - src/Tokenizer/Token.php
-        - # https://github.com/phpstan/phpstan/issues/1215
-            message: '/^Strict comparison using === between false and string will always evaluate to false\.$/'
-            path: src/Fixer/StringNotation/NoTrailingWhitespaceInStringFixer.php
-        -
             message: '/^Constant T_ATTRIBUTE not found\.$/'
             path: src/Tokenizer/Transformer/AttributeTransformer.php
-        -
-            message: '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
-            path: src/Tokenizer/Tokens.php
-
     tipsOfTheDay: false
