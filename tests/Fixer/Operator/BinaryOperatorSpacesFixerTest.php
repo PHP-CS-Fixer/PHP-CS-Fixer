@@ -816,10 +816,10 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
      */
     public function testWrongConfigOldDeprecated()
     {
+        $this->expectDeprecation("Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].");
         $this->fixer->configure([
             'align_equals' => true,
             'align_double_arrow' => false,
@@ -828,10 +828,10 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
      */
     public function testWrongConfigOldDeprecated2()
     {
+        $this->expectDeprecation("Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].");
         $this->fixer->configure([
             'align_equals' => true,
             'align_double_arrow' => null,
@@ -840,10 +840,10 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated3()
     {
+        $this->expectDeprecation("Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].");
         $this->fixer->configure([
             'align_equals' => null,
             'align_double_arrow' => true,
@@ -852,10 +852,10 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated4()
     {
+        $this->expectDeprecation("Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].");
         $this->fixer->configure([
             'align_equals' => false,
             'align_double_arrow' => true,
@@ -864,10 +864,10 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated5()
     {
+        $this->expectDeprecation("Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].");
         $this->fixer->configure([
             'align_equals' => true,
             'align_double_arrow' => true,

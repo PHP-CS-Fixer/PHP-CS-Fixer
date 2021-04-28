@@ -42,10 +42,10 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideTestFixLegacyCases
      * @group legacy
-     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
      */
     public function testFixLegacy($expected, $input = null)
     {
+        $this->expectDeprecation('Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.');
         $defaultFunctions = [
             'array_key_exists',
             'empty',
@@ -303,10 +303,10 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration for rule "php_unit_dedicate_assert" is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
      */
     public function testLegacyConfig()
     {
+        $this->expectDeprecation('Passing "functions" at the root of the configuration for rule "php_unit_dedicate_assert" is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.');
         $this->fixer->configure(['file_exists']);
         $this->doTest(
             self::generateTest('
@@ -322,10 +322,10 @@ $a#
 
     /**
      * @group legacy
-     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
      */
     public function testConfig()
     {
+        $this->expectDeprecation('Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.');
         $this->fixer->configure(['functions' => ['file_exists']]);
         $this->doTest(
             self::generateTest('

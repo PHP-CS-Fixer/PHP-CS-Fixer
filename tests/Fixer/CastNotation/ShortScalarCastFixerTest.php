@@ -13,7 +13,6 @@
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author SpacePossum
@@ -24,8 +23,6 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  */
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @param string      $expected
      * @param null|string $input

@@ -56,10 +56,10 @@ final class TokenTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
      */
     public function testClear()
     {
+        $this->expectDeprecation('PhpCsFixer\\Tokenizer\\Token::clear is deprecated and will be removed in 3.0.');
         $token = $this->getForeachToken();
         $token->clear();
 
@@ -188,10 +188,10 @@ final class TokenTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
      */
     public function testIsEmpty()
     {
+        $this->expectDeprecation('PhpCsFixer\\Tokenizer\\Token::isEmpty is deprecated and will be removed in 3.0.');
         $braceToken = $this->getBraceToken();
         static::assertFalse($braceToken->isEmpty());
 
@@ -481,10 +481,10 @@ final class TokenTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isChanged is deprecated and will be removed in 3.0.
      */
     public function testIsChanged()
     {
+        $this->expectDeprecation('PhpCsFixer\\Tokenizer\\Token::isChanged is deprecated and will be removed in 3.0.');
         $token = new Token([T_WHITESPACE, ' ']);
         static::assertFalse($token->isChanged());
     }

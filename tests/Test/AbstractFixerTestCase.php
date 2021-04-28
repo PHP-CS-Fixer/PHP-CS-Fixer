@@ -219,11 +219,11 @@ abstract class AbstractFixerTestCase extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
      */
     final public function testLegacyFixerDefinitions()
     {
+        $this->expectDeprecation('PhpCsFixer\\FixerDefinition\\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.');
+        $this->expectDeprecation('PhpCsFixer\\FixerDefinition\\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.');
         $definition = $this->fixer->getDefinition();
 
         static::assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $this->fixer->getName()));

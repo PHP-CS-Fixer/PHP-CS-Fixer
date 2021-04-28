@@ -60,10 +60,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideFixCases
-     * @expectedDeprecation Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      */
     public function testLegacyFix($expected, $input = null, $fixStatement = null)
     {
+        $this->expectDeprecation('Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.');
         $this->fixerTest($expected, $input, $fixStatement, true);
     }
 
@@ -87,11 +87,11 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @group legacy
      * @dataProvider provideFix70Cases
-     * @expectedDeprecation Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
      * @requires PHP 7.0
      */
     public function testLegacyFix70($expected, $input = null, $fixStatement = null)
     {
+        $this->expectDeprecation('Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.');
         $this->fixerTest($expected, $input, $fixStatement, true);
     }
 

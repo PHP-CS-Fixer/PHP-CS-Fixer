@@ -569,10 +569,10 @@ echo 1;'
 
     /**
      * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
      */
     public function testLegacyMisconfiguration()
     {
+        $this->expectDeprecation('Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.');
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[header_comment] Missing required configuration: The required option "header" is missing.');
 

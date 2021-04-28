@@ -1153,10 +1153,10 @@ class ezcReflectionMethod extends ReflectionMethod {
      *
      * @dataProvider provideDeprecatedConfigCases
      * @group legacy
-     * @expectedDeprecation A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.
      */
     public function testWithDeprecatedConfig($expected, $input = null, array $config = [])
     {
+        $this->expectDeprecation('A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.');
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
