@@ -1,0 +1,24 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-28T13:09:51Z
+
+[![Coverage Status](https://coveralls.io/builds/39229801/badge)](https://coveralls.io/builds/39229801)
+
+Coverage decreased (-0.009%) to 91.892% when pulling **1a82c78c982cb55df1b526b54e0ad89e26765a4b on kubawerlos:fix_NullableTypeDeclarationForDefaultNullValueFixer** into **0e5b74046284b2a06f634e557737160435d6cab1 on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-28T13:43:26Z
+
+@keradus @julienfalque @SpacePossum @localheinz should we extend `Tokens::getNextMeaningfulToken` to skip PHP 8 attributes as it this case `ArgumentsAnalyzer` includes it into the type and creates `<?php function foo(?#[AnAttribute] string $param = null) {}` which is invalid syntax?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-28T18:06:14Z
+
+attributes are meaningful.
+we also fix their content, eg
+```diff
+-#[MyAttribute(array("key" => "value"))]
++#[MyAttribute(['key' => 'value'])]
+```
