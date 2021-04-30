@@ -160,9 +160,6 @@ abstract class AbstractFixer implements FixerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         if (!$this instanceof ConfigurableFixerInterface) {
