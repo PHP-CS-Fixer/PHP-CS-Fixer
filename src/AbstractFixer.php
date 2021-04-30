@@ -170,7 +170,7 @@ abstract class AbstractFixer implements FixerInterface, DefinedFixerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return FixerConfigurationResolverInterface
      */
     public function getConfigurationDefinition()
     {
