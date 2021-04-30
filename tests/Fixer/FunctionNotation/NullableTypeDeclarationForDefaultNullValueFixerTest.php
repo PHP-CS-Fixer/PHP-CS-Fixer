@@ -470,5 +470,23 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                  public function bbb(int | null $bar = null, $baz = 1) {}
             }',
         ];
+
+        yield 'attribute' => [
+            '<?php function foo(#[AnAttribute] string $param = null) {}',
+            '<?php function foo(#[AnAttribute] ?string $param = null) {}',
+        ];
+
+        yield 'attributes' => [
+            '<?php function foo(
+                #[AnAttribute] string $a = null,
+                #[AnAttribute] string $b = null,
+                #[AnAttribute] string $c = null
+            ) {}',
+            '<?php function foo(
+                #[AnAttribute] ?string $a = null,
+                #[AnAttribute] ?string $b = null,
+                #[AnAttribute] ?string $c = null
+            ) {}',
+        ];
     }
 }
