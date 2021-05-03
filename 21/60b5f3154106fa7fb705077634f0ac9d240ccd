@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-03T18:01:17Z
+
+[![Coverage Status](https://coveralls.io/builds/39314090/badge)](https://coveralls.io/builds/39314090)
+
+Coverage decreased (-0.002%) to 92.456% when pulling **a28d17981727fe2a2884142c8516ff35cae34170 on kubawerlos:remove_TrailingCommaInMultilineArrayFixer** into **7b84f6d2f363386258dedb1a219a6d91b58d895b on FriendsOfPHP:3.0**.
