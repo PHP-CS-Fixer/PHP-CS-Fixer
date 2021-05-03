@@ -15,6 +15,6 @@ Rules
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
   config:
   ``['after_heredoc' => true]``
-- `trailing_comma_in_multiline_array <./../rules/array_notation/trailing_comma_in_multiline_array.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
   config:
   ``['after_heredoc' => true]``

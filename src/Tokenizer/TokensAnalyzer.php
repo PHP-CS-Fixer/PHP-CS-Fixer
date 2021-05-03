@@ -146,10 +146,23 @@ final class TokensAnalyzer
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
-        $endIndex = $tokens[$index]->equals('(')
-            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
-            : $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index)
-        ;
+        return $this->isBlockMultiline($tokens, $index);
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return bool
+     */
+    public function isBlockMultiline(Tokens $tokens, $index)
+    {
+        $blockType = Tokens::detectBlockType($tokens[$index]);
+
+        if (null === $blockType || !$blockType['isStart']) {
+            throw new \InvalidArgumentException(sprintf('Not an block start at given index %d.', $index));
+        }
+
+        $endIndex = $tokens->findBlockEnd($blockType['type'], $index);
 
         for (++$index; $index < $endIndex; ++$index) {
             $token = $tokens[$index];

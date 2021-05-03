@@ -39,7 +39,7 @@ Array Notation
     In array declaration, there MUST NOT be a whitespace before each comma.
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
     Array index should always be written by using square braces.
-- `trailing_comma_in_multiline_array <./array_notation/trailing_comma_in_multiline_array.rst>`_
+- `trailing_comma_in_multiline_array <./array_notation/trailing_comma_in_multiline_array.rst>`_ *(deprecated)*
     PHP multi-line arrays should have a trailing comma.
 - `trim_array_spaces <./array_notation/trim_array_spaces.rst>`_
     Arrays should be formatted like function/method arguments, without leading or trailing single line space.
@@ -201,6 +201,8 @@ Control Structure
     Removes extra spaces between colon and case value.
 - `switch_continue_to_break <./control_structure/switch_continue_to_break.rst>`_
     Switch case must not be ended with ``continue`` but with ``break``.
+- `trailing_comma_in_multiline <./control_structure/trailing_comma_in_multiline.rst>`_
+    Multi-line arrays, arguments list and parameters list must have a trailing comma.
 - `yoda_style <./control_structure/yoda_style.rst>`_
     Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.
 
