@@ -139,8 +139,8 @@ function bar($foo) {}
 
                 list($paramType, $isNullable) = $typeInfo;
 
-                $startIndex = $tokens->getNextTokenOfKind($index, ['(']) + 1;
-                $variableIndex = $this->findCorrectVariable($tokens, $startIndex - 1, $paramTypeAnnotation);
+                $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
+                $variableIndex = $this->findCorrectVariable($tokens, $startIndex, $paramTypeAnnotation);
 
                 if (null === $variableIndex) {
                     continue;
@@ -168,30 +168,27 @@ function bar($foo) {}
     }
 
     /**
-     * @param int        $index
+     * @param int        $startIndex
      * @param Annotation $paramTypeAnnotation
      *
      * @return null|int
      */
-    private function findCorrectVariable(Tokens $tokens, $index, $paramTypeAnnotation)
+    private function findCorrectVariable(Tokens $tokens, $startIndex, $paramTypeAnnotation)
     {
-        $nextFunction = $tokens->getNextTokenOfKind($index, [[T_FUNCTION]]);
-        $variableIndex = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
 
-        if (\is_int($nextFunction) && $variableIndex > $nextFunction) {
-            return null;
+        for ($index = $startIndex + 1; $index < $endIndex; ++$index) {
+            if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+                continue;
+            }
+
+            $variableName = $tokens[$index]->getContent();
+            if ($paramTypeAnnotation->getVariableName() === $variableName) {
+                return $index;
+            }
         }
 
-        if (!isset($tokens[$variableIndex])) {
-            return null;
-        }
-
-        $variableToken = $tokens[$variableIndex]->getContent();
-        if ($paramTypeAnnotation->getVariableName() === $variableToken) {
-            return $variableIndex;
-        }
-
-        return $this->findCorrectVariable($tokens, $index + 1, $paramTypeAnnotation);
+        return null;
     }
 
     /**
