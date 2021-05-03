@@ -22,6 +22,7 @@ use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\PharChecker;
 use PhpCsFixer\ToolInfo;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -83,16 +84,39 @@ final class Application extends BaseApplication
             ? $output->getErrorOutput()
             : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
         ;
+
         if (null !== $stdErr) {
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            foreach ($warningsDetector->getWarnings() as $warning) {
-                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+            $warnings = $warningsDetector->getWarnings();
+
+            if ($warnings) {
+                foreach ($warnings as $warning) {
+                    $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+                }
+                $stdErr->writeln('');
             }
         }
 
-        return parent::doRun($input, $output);
+        $result = parent::doRun($input, $output);
+
+        if (
+            null !== $stdErr
+            && $output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
+        ) {
+            $triggeredDeprecations = array_unique(Utils::getTriggeredDeprecations());
+            sort($triggeredDeprecations);
+            if ($triggeredDeprecations) {
+                $stdErr->writeln('');
+                $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use:</>' : 'Detected deprecations in use:');
+                foreach ($triggeredDeprecations as $deprecation) {
+                    $stdErr->writeln(sprintf('- %s', $deprecation));
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
