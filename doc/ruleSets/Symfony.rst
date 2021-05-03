@@ -117,7 +117,7 @@ Rules
 - `standardize_increment <./../rules/operator/standardize_increment.rst>`_
 - `standardize_not_equals <./../rules/operator/standardize_not_equals.rst>`_
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
-- `trailing_comma_in_multiline_array <./../rules/array_notation/trailing_comma_in_multiline_array.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `visibility_required <./../rules/class_notation/visibility_required.rst>`_

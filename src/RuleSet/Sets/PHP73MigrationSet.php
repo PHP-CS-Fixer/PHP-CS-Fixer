@@ -28,7 +28,7 @@ final class PHP73MigrationSet extends AbstractRuleSetDescription
             'heredoc_indentation' => true,
             'method_argument_space' => ['after_heredoc' => true],
             'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],
-            'trailing_comma_in_multiline_array' => ['after_heredoc' => true],
+            'trailing_comma_in_multiline' => ['after_heredoc' => true],
         ];
     }
 

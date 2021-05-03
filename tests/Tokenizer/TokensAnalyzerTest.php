@@ -1541,6 +1541,64 @@ $b;',
         ];
     }
 
+    public function testIsBlockMultilineException(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $tokens = Tokens::fromCode('<?php foo(1, 2, 3);');
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $tokensAnalyzer->isBlockMultiline($tokens, 1);
+    }
+
+    /**
+     * @param bool   $isBlockMultiline
+     * @param string $source
+     * @param int    $tokenIndex
+     *
+     * @dataProvider provideIsBlockMultilineCases
+     */
+    public function testIsBlockMultiline($isBlockMultiline, $source, $tokenIndex): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        static::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
+    }
+
+    public static function provideIsBlockMultilineCases()
+    {
+        yield [
+            false,
+            '<?php foo(1, 2, 3);',
+            2,
+        ];
+
+        yield [
+            true,
+            '<?php foo(1,
+                2,
+                3
+            );',
+            2,
+        ];
+
+        yield [
+            false,
+            '<?php foo(1, "Multi
+                string", 2, 3);',
+            2,
+        ];
+
+        yield [
+            false,
+            '<?php foo(1, havingNestedBlockThatIsMultilineDoesNotMakeTheMainBlockMultiline(
+                    "a",
+                    "b"
+                ), 2, 3);',
+            2,
+        ];
+    }
+
     /**
      * @dataProvider provideGetFunctionPropertiesCases
      */
