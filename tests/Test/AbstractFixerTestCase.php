@@ -283,6 +283,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 'php_unit_test_annotation',
                 'php_unit_test_class_requires_covers',
                 'phpdoc_to_param_type',
+                'phpdoc_to_property_type',
                 'phpdoc_to_return_type',
                 'random_api_migration',
                 'semicolon_after_instruction',

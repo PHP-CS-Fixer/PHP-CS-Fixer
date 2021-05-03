@@ -31,7 +31,13 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      */
     public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = []): void
     {
-        if (null !== $input && null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix) {
+        if (
+            null !== $input
+            && (
+                \PHP_VERSION_ID < 70000
+                || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            )
+        ) {
             $expected = $input;
             $input = null;
         }

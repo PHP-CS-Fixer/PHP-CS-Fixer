@@ -11,7 +11,7 @@ accordingly the function signature. Requires PHP >= 7.0.
    promise. [2] ``@return`` annotation is mandatory for the fixer to make
    changes, signatures of methods without it (no docblock, inheritdocs) will not
    be fixed. [3] Manual actions are required if inherited signatures are not
-   properly documented. [4] ``@inheritdocs`` support is under construction.
+   properly documented.
 
 Configuration
 -------------

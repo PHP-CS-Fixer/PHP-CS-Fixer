@@ -237,6 +237,8 @@ Function Notation
     Adds or removes ``?`` before type declarations for parameters with a default ``null`` value.
 - `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*
     EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
+- `phpdoc_to_property_type <./function_notation/phpdoc_to_property_type.rst>`_ *(risky)*
+    EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
 - `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
     EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
