@@ -33,7 +33,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      */
     public function testFix($expected, $input = null, $versionSpecificFix = null, array $config = [])
     {
-        if (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix) {
+        if (null !== $input && null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix) {
             $expected = $input;
             $input = null;
         }
@@ -219,7 +219,8 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'skip mixed nullable types' => [
                 '<?php /** @return null|Foo|Bar */ function my_foo() {}',
             ],
-            'skip generics' => [
+            'generics' => [
+                '<?php /** @return array<int, bool> */ function my_foo(): array {}',
                 '<?php /** @return array<int, bool> */ function my_foo() {}',
             ],
             'array of types' => [
@@ -255,6 +256,75 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         } // comment 3
                     }
                 ',
+            ],
+            'array and traversable' => [
+                '<?php /** @return array|Traversable */ function my_foo(): iterable {}',
+                '<?php /** @return array|Traversable */ function my_foo() {}',
+                70100,
+            ],
+            'array and traversable with leading slash' => [
+                '<?php /** @return array|\Traversable */ function my_foo(): iterable {}',
+                '<?php /** @return array|\Traversable */ function my_foo() {}',
+                70100,
+            ],
+            'array and traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @return array|Traversable */
+                     function my_foo() {}
+                ',
+            ],
+            'array and traversable with leading slash in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @return array|\Traversable */
+                     function my_foo(): iterable {}
+                ',
+                '<?php
+                     namespace App;
+                     /** @return array|\Traversable */
+                     function my_foo() {}
+                ',
+                70100,
+            ],
+            'array and imported traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @return array|Traversable */
+                     function my_foo(): iterable {}
+                ',
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @return array|Traversable */
+                     function my_foo() {}
+                ',
+                70100,
+            ],
+            'array and object aliased as traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Foo as Traversable;
+                     /** @return array|Traversable */
+                     function my_foo() {}
+                ',
+                null,
+                70100,
+            ],
+            'array of object and traversable' => [
+                '<?php /** @return Foo[]|Traversable */ function my_foo(): iterable {}',
+                '<?php /** @return Foo[]|Traversable */ function my_foo() {}',
+                70100,
+            ],
+            'array of object and iterable' => [
+                '<?php /** @return Foo[]|iterable */ function my_foo(): iterable {}',
+                '<?php /** @return Foo[]|iterable */ function my_foo() {}',
+                70100,
+            ],
+            'array of string and array of int' => [
+                '<?php /** @return string[]|int[] */ function my_foo(): array {}',
+                '<?php /** @return string[]|int[] */ function my_foo() {}',
             ],
         ];
 

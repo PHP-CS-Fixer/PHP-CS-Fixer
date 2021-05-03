@@ -34,8 +34,11 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
     public function testFix($expected, $input = null, $versionSpecificFix = null, $config = null)
     {
         if (
-            (null !== $input && \PHP_VERSION_ID < 70000)
-            || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            null !== $input
+            && (
+                \PHP_VERSION_ID < 70000
+                || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
+            )
         ) {
             $expected = $input;
             $input = null;
@@ -221,7 +224,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
-            'static is skipped' => [
+            'report static as self' => [
+                '<?php
+                    class Foo {
+                        /** @param static $foo */ function my_foo(self $foo) {}
+                    }
+                ',
                 '<?php
                     class Foo {
                         /** @param static $foo */ function my_foo($foo) {}
@@ -303,7 +311,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 70100,
             ],
             'array and iterable param' => [
-                '<?php /** @param Foo[]|iterable $foo */ function my_foo(array $foo) {}',
+                '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
                 '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
                 70100,
             ],
@@ -317,10 +325,12 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @param null|object $foo */ function my_foo($foo) {}',
                 70200,
             ],
-            'generics with single type is not supported' => [
+            'generics with single type' => [
+                '<?php /** @param array<foo> $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param array<foo> $foo */ function my_foo($foo) {}',
             ],
-            'generics with multiple types are not supported' => [
+            'generics with multiple types' => [
+                '<?php /** @param array<int, string> $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param array<int, string> $foo */ function my_foo($foo) {}',
             ],
             'stop searching last token' => [
@@ -337,6 +347,81 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             ],
             'void as type in phpdoc' => [
                 '<?php /** @param void $bar */ function foo($bar) {}',
+            ],
+            'array and traversable' => [
+                '<?php /** @param array|Traversable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param array|Traversable $foo */ function my_foo($foo) {}',
+                70100,
+            ],
+            'array and traversable with leading slash' => [
+                '<?php /** @param array|\Traversable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param array|\Traversable $foo */ function my_foo($foo) {}',
+                70100,
+            ],
+            'array and traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @param array|Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+            ],
+            'array and traversable with leading slash in a namespace' => [
+                '<?php
+                     namespace App;
+                     /** @param array|\Traversable $foo */
+                     function my_foo(iterable $foo) {}
+                ',
+                '<?php
+                     namespace App;
+                     /** @param array|\Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+                70100,
+            ],
+            'array and imported traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @param array|Traversable $foo */
+                     function my_foo(iterable $foo) {}
+                ',
+                '<?php
+                     namespace App;
+                     use Traversable;
+                     /** @param array|Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+                70100,
+            ],
+            'array and object aliased as traversable in a namespace' => [
+                '<?php
+                     namespace App;
+                     use Foo as Traversable;
+                     /** @param array|Traversable $foo */
+                     function my_foo($foo) {}
+                ',
+                null,
+                70100,
+            ],
+            'array of object and traversable' => [
+                '<?php /** @param Foo[]|Traversable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param Foo[]|Traversable $foo */ function my_foo($foo) {}',
+                70100,
+            ],
+            'array of object and iterable' => [
+                '<?php /** @param Foo[]|iterable $foo */ function my_foo(iterable $foo) {}',
+                '<?php /** @param Foo[]|iterable $foo */ function my_foo($foo) {}',
+                70100,
+            ],
+            'array of string and array of int' => [
+                '<?php /** @param string[]|int[] $foo */ function my_foo(array $foo) {}',
+                '<?php /** @param string[]|int[] $foo */ function my_foo($foo) {}',
+            ],
+            'do not fix scalar types when configured as such' => [
+                '<?php /** @param int $foo */ function my_foo($foo) {}',
+                null,
+                null,
+                ['scalar_types' => false],
             ],
         ];
     }

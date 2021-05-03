@@ -12,6 +12,7 @@
 
 namespace PhpCsFixer\Tokenizer\Analyzer;
 
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -31,6 +32,22 @@ final class NamespaceUsesAnalyzer
         $useIndexes = $tokenAnalyzer->getImportUseIndexes();
 
         return $this->getDeclarations($tokens, $useIndexes);
+    }
+
+    /**
+     * @return NamespaceUseAnalysis[]
+     */
+    public function getDeclarationsInNamespace(Tokens $tokens, NamespaceAnalysis $namespace)
+    {
+        $namespaceUses = [];
+
+        foreach ($this->getDeclarationsFromTokens($tokens) as $namespaceUse) {
+            if ($namespaceUse->getStartIndex() >= $namespace->getScopeStartIndex() && $namespaceUse->getStartIndex() <= $namespace->getScopeEndIndex()) {
+                $namespaceUses[] = $namespaceUse;
+            }
+        }
+
+        return $namespaceUses;
     }
 
     /**

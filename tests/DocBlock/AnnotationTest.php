@@ -15,7 +15,10 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -465,5 +468,56 @@ final class AnnotationTest extends TestCase
             static::assertIsString($tag);
             static::assertNotEmpty($tag);
         }
+    }
+
+    /**
+     * @param Line[]                 $lines
+     * @param null|NamespaceAnalysis $namespace
+     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param null|string            $expectedCommonType
+     *
+     * @dataProvider provideTypeExpressionCases
+     */
+    public function testGetTypeExpression(array $lines, $namespace, array $namespaceUses, $expectedCommonType)
+    {
+        $annotation = new Annotation($lines, $namespace, $namespaceUses);
+        $result = $annotation->getTypeExpression();
+
+        static::assertInstanceOf(TypeExpression::class, $result);
+        static::assertSame($expectedCommonType, $result->getCommonType());
+    }
+
+    public function provideTypeExpressionCases()
+    {
+        $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
+        $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
+
+        yield [[new Line('* @param array|Traversable $foo')], null, [], 'iterable'];
+        yield [[new Line('* @param array|Traversable $foo')], $appNamespace, [], null];
+        yield [[new Line('* @param array|Traversable $foo')], $appNamespace, [$useTraversable], 'iterable'];
+    }
+
+    /**
+     * @param Line[]      $lines
+     * @param null|string $expectedVariableName
+     *
+     * @dataProvider provideGetVariableCases
+     */
+    public function testGetVariableName(array $lines, $expectedVariableName)
+    {
+        $annotation = new Annotation($lines);
+        static::assertSame($expectedVariableName, $annotation->getVariableName());
+    }
+
+    public function provideGetVariableCases()
+    {
+        yield [[new Line('* @param int $foo')], '$foo'];
+        yield [[new Line('* @param int $foo some description')], '$foo'];
+        yield [[new Line('/** @param int $foo*/')], '$foo'];
+        yield [[new Line('* @param int')], null];
+        yield [[new Line('* @var int $foo')], '$foo'];
+        yield [[new Line('* @var int $foo some description')], '$foo'];
+        yield [[new Line('/** @var int $foo*/')], '$foo'];
+        yield [[new Line('* @var int')], null];
     }
 }

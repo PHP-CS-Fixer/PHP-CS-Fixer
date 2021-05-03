@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -37,7 +38,10 @@ final class NamespaceUsesAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespaceUsesAnalyzer();
 
-        static::assertSame(serialize($expected), serialize($analyzer->getDeclarationsFromTokens($tokens)));
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getDeclarationsFromTokens($tokens))
+        );
     }
 
     public function provideNamespaceUsesCases()
@@ -150,6 +154,72 @@ final class NamespaceUsesAnalyzerTest extends TestCase
             // use some\namespace\{ClassA, ClassB, ClassC as C};
             // use function some\namespace\{fn_a, fn_b, fn_c};
             // use const some\namespace\{ConstA, ConstB, ConstC};
+        ];
+    }
+
+    /**
+     * @param string                 $code
+     * @param NamespaceUseAnalysis[] $expected
+     *
+     * @dataProvider provideGetDeclarationsInNamespaceCases
+     */
+    public function testGetDeclarationsInNamespace($code, NamespaceAnalysis $namespace, array $expected)
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new NamespaceUsesAnalyzer();
+
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getDeclarationsInNamespace($tokens, $namespace))
+        );
+    }
+
+    public function provideGetDeclarationsInNamespaceCases()
+    {
+        return [
+            [
+                '<?php
+                namespace Foo;
+                use Bar;
+                use Baz;',
+                new NamespaceAnalysis('Foo', 'Foo', 2, 5, 2, 15),
+                [
+                    new NamespaceUseAnalysis('Bar', 'Bar', false, 7, 10, NamespaceUseAnalysis::TYPE_CLASS),
+                    new NamespaceUseAnalysis('Baz', 'Baz', false, 12, 15, NamespaceUseAnalysis::TYPE_CLASS),
+                ],
+            ],
+            [
+                '<?php
+                namespace Foo1 {
+                    use Bar1;
+                    use Baz1;
+                }
+                namespace Foo2 {
+                    use Bar2;
+                    use Baz2;
+                }',
+                new NamespaceAnalysis('Foo1', 'Foo1', 2, 4, 2, 18),
+                [
+                    new NamespaceUseAnalysis('Bar1', 'Bar1', false, 8, 11, NamespaceUseAnalysis::TYPE_CLASS),
+                    new NamespaceUseAnalysis('Baz1', 'Baz1', false, 13, 16, NamespaceUseAnalysis::TYPE_CLASS),
+                ],
+            ],
+            [
+                '<?php
+                namespace Foo1 {
+                    use Bar1;
+                    use Baz1;
+                }
+                namespace Foo2 {
+                    use Bar2;
+                    use Baz2;
+                }',
+                new NamespaceAnalysis('Foo2', 'Foo2', 20, 22, 20, 36),
+                [
+                    new NamespaceUseAnalysis('Bar2', 'Bar2', false, 26, 29, NamespaceUseAnalysis::TYPE_CLASS),
+                    new NamespaceUseAnalysis('Baz2', 'Baz2', false, 31, 34, NamespaceUseAnalysis::TYPE_CLASS),
+                ],
+            ],
         ];
     }
 }
