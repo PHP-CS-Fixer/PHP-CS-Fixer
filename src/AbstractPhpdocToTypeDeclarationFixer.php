@@ -87,14 +87,11 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     }
 
     /**
-     * Find all the annotations of given type in the function's PHPDoc comment.
+     * @param int $index The index of the function token
      *
-     * @param string $name
-     * @param int    $index The index of the function token
-     *
-     * @return Annotation[]
+     * @return null|int
      */
-    protected function findAnnotations($name, Tokens $tokens, $index)
+    protected function findFunctionDocComment(Tokens $tokens, $index)
     {
         do {
             $index = $tokens->getPrevNonWhitespace($index);
@@ -108,18 +105,29 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             T_STATIC,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
-            return [];
+        if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+            return $index;
         }
 
+        return null;
+    }
+
+    /**
+     * @param string $name
+     * @param int    $docCommentIndex
+     *
+     * @return Annotation[]
+     */
+    protected function getAnnotationsFromDocComment($name, Tokens $tokens, $docCommentIndex)
+    {
         $namespacesAnalyzer = new NamespacesAnalyzer();
-        $namespace = $namespacesAnalyzer->getNamespaceAt($tokens, $index);
+        $namespace = $namespacesAnalyzer->getNamespaceAt($tokens, $docCommentIndex);
 
         $namespaceUsesAnalyzer = new NamespaceUsesAnalyzer();
         $namespaceUses = $namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace);
 
         $doc = new DocBlock(
-            $tokens[$index]->getContent(),
+            $tokens[$docCommentIndex]->getContent(),
             $namespace,
             $namespaceUses
         );

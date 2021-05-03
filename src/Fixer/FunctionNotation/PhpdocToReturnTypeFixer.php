@@ -103,7 +103,7 @@ final class Foo {
                 ),
             ],
             null,
-            'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented. [4] `@inheritdocs` support is under construction.'
+            'This rule is EXPERIMENTAL and [1] is not covered with backward compatibility promise. [2] `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. [3] Manual actions are required if inherited signatures are not properly documented.'
         );
     }
 
@@ -158,8 +158,12 @@ final class Foo {
                 continue;
             }
 
-            $returnTypeAnnotation = $this->findAnnotations('return', $tokens, $index);
+            $docCommentIndex = $this->findFunctionDocComment($tokens, $index);
+            if (null === $docCommentIndex) {
+                continue;
+            }
 
+            $returnTypeAnnotation = $this->getAnnotationsFromDocComment('return', $tokens, $docCommentIndex);
             if (1 !== \count($returnTypeAnnotation)) {
                 continue;
             }

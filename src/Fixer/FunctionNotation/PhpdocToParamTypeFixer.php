@@ -124,9 +124,13 @@ function bar($foo) {}
                 continue;
             }
 
-            $paramTypeAnnotations = $this->findAnnotations('param', $tokens, $index);
+            $docCommentIndex = $this->findFunctionDocComment($tokens, $index);
 
-            foreach ($paramTypeAnnotations as $paramTypeAnnotation) {
+            if (null === $docCommentIndex) {
+                continue;
+            }
+
+            foreach ($this->getAnnotationsFromDocComment('param', $tokens, $docCommentIndex) as $paramTypeAnnotation) {
                 $typeInfo = $this->getCommonTypeFromAnnotation($paramTypeAnnotation, false);
 
                 if (null === $typeInfo) {
