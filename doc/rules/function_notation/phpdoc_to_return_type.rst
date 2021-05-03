@@ -87,6 +87,7 @@ With configuration: ``['scalar_types' => false]``.
    --- Original
    +++ New
     <?php
+
     /** @return Foo */
    -function foo() {}
    +function foo(): Foo {}

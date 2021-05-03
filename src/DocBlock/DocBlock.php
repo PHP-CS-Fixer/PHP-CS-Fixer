@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\DocBlock;
 
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
  * This class represents a docblock.
@@ -42,13 +44,23 @@ final class DocBlock
     private $annotations;
 
     /**
-     * Create a new docblock instance.
+     * @var null|NamespaceAnalysis
      */
-    public function __construct(string $content)
+    private $namespace;
+
+    /**
+     * @var NamespaceUseAnalysis[]
+     */
+    private $namespaceUses;
+
+    public function __construct(string $content, ?NamespaceAnalysis $namespace = null, array $namespaceUses = [])
     {
         foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $line) {
             $this->lines[] = new Line($line);
         }
+
+        $this->namespace = $namespace;
+        $this->namespaceUses = $namespaceUses;
     }
 
     /**
@@ -95,7 +107,7 @@ final class DocBlock
             if ($this->lines[$index]->containsATag()) {
                 // get all the lines that make up the annotation
                 $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
-                $annotation = new Annotation($lines);
+                $annotation = new Annotation($lines, $this->namespace, $this->namespaceUses);
                 // move the index to the end of the annotation to avoid
                 // checking it again because we know the lines inside the
                 // current annotation cannot be part of another annotation
