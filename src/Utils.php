@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Token;
  */
 final class Utils
 {
+    private static $deprecations = [];
+
     /**
      * Converts a camel cased string to a snake cased string.
      */
@@ -161,6 +163,12 @@ final class Utils
             throw new $exceptionClass("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
         }
 
+        self::$deprecations[] = $message;
         @trigger_error($message, E_USER_DEPRECATED);
+    }
+
+    public static function getTriggeredDeprecations(): array
+    {
+        return self::$deprecations;
     }
 }
