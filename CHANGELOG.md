@@ -3,6 +3,24 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.18.7
+---------------------
+
+* bug #5593 SingleLineThrowFixer - fix handling anonymous classes (kubawerlos)
+* bug #5654 SingleLineThrowFixer - fix for match expression (kubawerlos)
+* bug #5660 TypeAlternationTransformer - fix for "array" type in type alternation (kubawerlos)
+* bug #5665 NullableTypeDeclarationForDefaultNullValueFixer - fix for nullable with attribute (kubawerlos)
+* bug #5670 PhpUnitNamespacedFixer - do not try to fix constant (kubawerlos)
+* bug #5671 PhpdocToParamTypeFixer - do not change function call (kubawerlos)
+* bug #5673 GroupImportFixer - Fix failing case (julienfalque)
+* minor #4591 Refactor conversion of PHPDoc to type declarations (julienfalque, keradus)
+* minor #5611 DX: use method expectDeprecation from Symfony Bridge instead of annotation (kubawerlos)
+* minor #5658 DX: use constants in tests for Fixer configuration (keradus)
+* minor #5661 DX: remove PHPStan exceptions for "tests" from phpstan.neon (kubawerlos)
+* minor #5662 Change wording from "merge" to "intersect" (jschaedl)
+* minor #5663 DX: do not abuse "inheritdoc" tag (kubawerlos)
+* minor #5664 DX: code grooming (keradus)
+
 Changelog for v2.18.6
 ---------------------
 
