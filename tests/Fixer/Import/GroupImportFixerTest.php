@@ -54,15 +54,14 @@ use Foo\Test;
 
     public function provideFixCases()
     {
-        $tests = [
-            [
-                '<?php
+        yield [
+            '<?php
 
 namespace Test;
 
 use Foo\{Bar, Baz, Test};
 ',
-                '<?php
+            '<?php
 
 namespace Test;
 
@@ -70,118 +69,127 @@ use Foo\Bar;
 use Foo\Baz;
 use Foo\Test;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use App\First;
 use Test\Second;
 use Foo\{Bar, Baz};
 ',
-                '<?php
+            '<?php
 
 use App\First;
 use Foo\Bar;
 use Test\Second;
 use Foo\Baz;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use App\{First, Second};
 use Foo\{Bar, Baz};
 ',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use Foo\Baz;
 use App\First;
 use App\Second;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use App\{First, Second};
 use Foo\{Bar, Baz};
 ',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use App\First;
 use Foo\Baz;
 use App\Second;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use Foo\{Bar as Test, Baz};
 use App;
 ',
-                '<?php
+            '<?php
 
 use Foo\Bar as Test;
 use Foo\Baz;
 use App;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use App\Repository\{Customer as Client, Profile, User};
 ',
-                '<?php
+            '<?php
 
 use App\Repository\User;
 use App\Repository\Profile;
 use App\Repository\Customer as Client;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use function Foo\{Bar, Baz, Test as Alias};
 ',
-                '<?php
+            '<?php
 
 use function Foo\Bar;
 use function Foo\Baz;
 use function Foo\Test as Alias;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use const Some\Place\{A, B, C as D};
 ',
-                '<?php
+            '<?php
 
 use const Some\Place\A;
 use const Some\Place\B;
 use const Some\Place\C as D;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\Bar;
 use Foo\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings\{One, Two};
 ',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings\One;
 use Foo\Baz\Lorem\Ipsum\Lets\Write\Some\More\Strings\Two;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\Baz\John\Smith\Junior;
 use Foo\{Bar, Baz};
 use Foo\Baz\John\{Doe, Smith};
 use Foo\Baz\Johnny\{DoeSecond, SmithSecond};
 ',
-                '<?php
+            '<?php
 use Foo\Bar;
 use Foo\Baz;
 use Foo\Baz\John\Doe;
@@ -190,67 +198,73 @@ use Foo\Baz\John\Smith\Junior;
 use Foo\Baz\Johnny\DoeSecond;
 use Foo\Baz\Johnny\SmithSecond;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use PhpCsFixer\Tokenizer\{AbstractTransformer, CT, Token, Tokens};
 ',
-                '<?php
+            '<?php
 use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\{Bar, Baz};
 ',
-                '<?php
+            '<?php
 use Foo\Bar;use Foo\Baz;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 use Foo\{Bar, Baz};
 \DontTouch::me();
 ',
-                '<?php
+            '<?php
 use Foo\Bar;use Foo\Baz;\DontTouch::me();
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use Foo\{Bar, Baz};
 use ReflectionClass;
 use ReflectionMethod;
 ',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use Foo\Baz;
 use ReflectionClass;
 use ReflectionMethod;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use Foo\{Bar, Baz};
 use \ReflectionClass;
 use \ReflectionMethod;
 ',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use Foo\Baz;
 use \ReflectionClass;
 use \ReflectionMethod;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use Framework\Support\{Arr, Collection};
 use Framework\Database\ORM\{Model, SoftDeletes};
@@ -259,7 +273,7 @@ use Framework\Support\Facades\{DB, Log};
 use Framework\Database\ORM\Relations\{BelongsTo, HasOne};
 use Framework\Database\Query\JoinClause;
 ',
-                '<?php
+            '<?php
 
 use Framework\Database\ORM\Model;
 use Framework\Database\ORM\Relations\BelongsTo;
@@ -273,15 +287,16 @@ use Framework\Support\Collection;
 use Framework\Support\Facades\DB;
 use Framework\Support\Facades\Log;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use Framework\Baz\Class6;
 use Framework\Bar\{Class3, Class4, Class5};
 use Framework\Foo\{Class1, Class2, Class7};
 ',
-                '<?php
+            '<?php
 
 use Framework\Foo\Class1;
 use Framework\Foo\Class2;
@@ -291,25 +306,41 @@ use Framework\Bar\Class5;
 use Framework\Baz\Class6;
 use Framework\Foo\Class7;
 ',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 
 use function Foo\baz;
 use Foo\{Bar, Baz};
 ',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use function Foo\baz;
 use Foo\Baz;
 ',
-            ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
+        yield [
+            '<?php
+
+use Foo\{D, E};
+use function Foo\{a, b};
+use Foo\Bar\Baz\{A, B};
+use Foo\Bar\C;
+',
+            '<?php
+
+use Foo\Bar\Baz\A;
+use Foo\Bar\Baz\B;
+use Foo\Bar\C;
+use Foo\D;
+use Foo\E;
+use function Foo\a;
+use function Foo\b;
+',
+        ];
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

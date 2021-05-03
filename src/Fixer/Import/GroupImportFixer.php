@@ -144,18 +144,10 @@ final class GroupImportFixer extends AbstractFixer
     private function addGroupUseStatements(array $statements, Tokens $tokens)
     {
         $currentUseDeclaration = null;
-        $insertIndex = \array_slice($statements, -1)[0]->getEndIndex();
-
-        while ($tokens[$insertIndex]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
-            ++$insertIndex;
-        }
+        $insertIndex = \array_slice($statements, -1)[0]->getEndIndex() + 1;
 
         foreach ($statements as $index => $useDeclaration) {
             if ($this->areDeclarationsDifferent($currentUseDeclaration, $useDeclaration)) {
-                if ($index > 1) {
-                    ++$insertIndex;
-                }
-
                 $currentUseDeclaration = $useDeclaration;
                 $insertIndex += $this->createNewGroup(
                     $tokens,
@@ -170,11 +162,11 @@ final class GroupImportFixer extends AbstractFixer
                 ];
 
                 if ($useDeclaration->isAliased()) {
-                    $tokens->insertAt($insertIndex + 1, $newTokens);
+                    $tokens->insertAt($insertIndex, $newTokens);
                     $insertIndex += \count($newTokens);
                     $newTokens = [];
 
-                    $insertIndex += $this->insertToGroupUseWithAlias($tokens, $insertIndex + 1, $useDeclaration);
+                    $insertIndex += $this->insertToGroupUseWithAlias($tokens, $insertIndex, $useDeclaration);
                 }
 
                 $newTokens[] = new Token([T_STRING, $useDeclaration->getShortName()]);
@@ -185,7 +177,7 @@ final class GroupImportFixer extends AbstractFixer
                     $newTokens[] = new Token([T_WHITESPACE, "\n"]);
                 }
 
-                $tokens->insertAt($insertIndex + 1, $newTokens);
+                $tokens->insertAt($insertIndex, $newTokens);
                 $insertIndex += \count($newTokens);
             }
         }
@@ -222,7 +214,7 @@ final class GroupImportFixer extends AbstractFixer
 
         $tokens->insertAt($insertIndex, $newTokens);
 
-        return \count($newTokens);
+        return \count($newTokens) + 1;
     }
 
     /**
@@ -276,7 +268,7 @@ final class GroupImportFixer extends AbstractFixer
             $insertIndex += $inserted;
         }
 
-        $tokens->insertAt($insertIndex + 1, new Token([T_STRING, $useDeclaration->getShortName()]));
+        $tokens->insertAt($insertIndex, new Token([T_STRING, $useDeclaration->getShortName()]));
         ++$insertedTokens;
 
         return $insertedTokens;
