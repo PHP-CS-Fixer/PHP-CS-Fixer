@@ -420,6 +420,22 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 null,
                 ['scalar_types' => false],
             ],
+            'do not fix function call' => [
+                '<?php
+                    /** @param string $foo */
+                    function bar($notFoo) {
+                        return baz($foo);
+                    }
+                ',
+            ],
+            'do not fix function call when no parameter' => [
+                '<?php
+                    /** @param string $foo */
+                    function bar() {
+                        return baz($foo);
+                    }
+                ',
+            ],
         ];
     }
 }
