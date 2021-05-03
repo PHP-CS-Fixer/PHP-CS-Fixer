@@ -235,6 +235,13 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
                     echo \PHPUnit_Runner_Version::id();
                     ',
             ],
+            [
+                '<?php
+                final class MyTest extends TestCase
+                {
+                    const PHPUNIT_FOO = "foo";
+                }',
+            ],
         ];
     }
 
