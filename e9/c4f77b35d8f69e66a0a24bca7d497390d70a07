@@ -1,0 +1,137 @@
+---------------------------------------------------------------------------
+
+by erickskrauch at 2019-02-22T22:51:10Z
+
+@SpacePossum any news about merging this?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-04-01T11:17:42Z
+
+Thanks for opening this PR!
+
+I'm not sure if merging the fixer for array declaring and function calling is a good idea.
+On your own points:
+1 - sounds ok to me
+2 - sounds ok to me
+3 - see below
+4 - see below
+5 - for later
+
+please add this test
+
+```php
+<?php
+while(
+(
+(
+$a
+)
+)
+) {}
+```
+
+---------------------------------------------------------------------------
+
+by Wojciechem at 2019-06-28T12:04:38Z
+
+I'd highly appreciate this feature - what's the status, can I help?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-06-28T15:45:50Z
+
+@Wojciechem you can make a review - e.g. proposing more test case and different naming/description if you think some would fit better.
+
+---------------------------------------------------------------------------
+
+by kunicmarko20 at 2019-08-22T09:52:30Z
+
+btw, I don't see any test case for method calls, something like:
+
+```
+$obj->method(
+    1,
+    2,
+);
+```
+
+---------------------------------------------------------------------------
+
+by kunicmarko20 at 2019-08-22T10:41:02Z
+
+@kubawerlos what do you think about this being 2 separate fixers? I would love to help with this
+
+---------------------------------------------------------------------------
+
+by erickskrauch at 2019-08-22T11:38:37Z
+
+I think it should be a separate fixer: it requires a minimum version of PHP 7.3.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T14:53:05Z
+
+> it requires a minimum version of PHP 7.3.
+
+@erickskrauch only the options `function_calls` and `after_heredoc` requires PHP 7.3.
+
+---------------------------------------------------------------------------
+
+by grachevko at 2020-09-30T09:01:18Z
+
+any news?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-02T21:54:28Z
+
+@grachevko I guess it's waiting for review, so don't hesitate with doing it 😃
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-31T19:48:36Z
+
+Good work. I think another obvious thing to support is for function definitions as well as calls (incuding closures), and also unifying with the list stuff?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-31T20:57:52Z
+
+`@PHP73Migration` ruleset needs updating, and also `tests/Fixtures/Integration/misc/PHP7_4.test`.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-12-07T21:07:58Z
+
+Friendly ping @kubawerlos.
+
+---------------------------------------------------------------------------
+
+by artursvonda at 2021-02-26T15:24:02Z
+
+Bump! Would love to see this as well. Let me know if I can help.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-21T10:44:40Z
+
+What is the direction this should go? Single fixer with options for arrays, functions calls and function declarations or seperate fixer for each?
+
+Ping @keradus, @SpacePossum, @julienfalque, @localheinz
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-28T10:22:49Z
+
+it's a shame we didn't managed to get conclusion in over a year.
+
+@kubawerlos , can I ask you to rebase this PR and ensure CI is green? to get this PR finally merged, let's have this feature in a single fixer.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-30T22:19:13Z
+
+[![Coverage Status](https://coveralls.io/builds/39279901/badge)](https://coveralls.io/builds/39279901)
+
+Coverage increased (+0.01%) to 91.9% when pulling **00cf5ba305c278674078f5e81bc89a56bc4575ea on kubawerlos:add-multiline-trailing-comma** into **3d7e47c642457df4b49b78583071e648d790526a on FriendsOfPHP:master**.
