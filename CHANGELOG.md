@@ -3,6 +3,22 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.19.0
+---------------------
+
+* feature #4238 TrailingCommaInMultilineFixer - introduction (kubawerlos)
+* feature #4592 PhpdocToPropertyTypeFixer - introduction (julienfalque)
+* feature #5390 feature #4024 added a `list-files` command (clxmstaab, keradus)
+* feature #5635 Add list-sets command (keradus)
+* feature #5674 UX: Display deprecations to end-user (keradus)
+* minor #5601 Always stop when "PHP_CS_FIXER_FUTURE_MODE" is used (kubawerlos)
+* minor #5607 DX: new config filename (keradus)
+* minor #5613 DX: UtilsTest - add missing teardown (keradus)
+* minor #5631 DX: config deduplication (keradus)
+* minor #5633 fix typos (staabm)
+* minor #5642 Deprecate parameter of Token::toJson() (keradus)
+* minor #5672 DX: do not test deprecated fixer (kubawerlos)
+
 Changelog for v2.18.7
 ---------------------
 
