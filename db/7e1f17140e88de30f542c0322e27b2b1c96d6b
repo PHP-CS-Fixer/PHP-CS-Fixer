@@ -1,0 +1,237 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-10-23T18:51:46Z
+
+Could we instead of abstract fixers introduce - as @SpacePossum suggested one day - a namespace of manipulators?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-23T19:10:32Z
+
+Not sure what you mean exactly?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2019-10-23T19:29:16Z
+
+Similarly like we have `Tokenizer` we can create `Manipulator` and store there classes to be called by `PhpdocToParamTypeFixer` and `PhpdocToReturnTypeFixer`.
+
+`AbstractPhpdocToTypeDeclarationFixer` ~does not have any property~ has properties that all are in practice constants, thus the class is set of functions that do stuff for the fixers, similar as all [analyzers](https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.15.3/src/Tokenizer/Analyzer).
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-10-23T19:38:58Z
+
+Indeed, some parts of the new abstract class could probably be extracted to some "analyzer" class, but some are quite specific to these fixers. I'll have a closer look shortly.
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-24T00:58:30Z
+
+as this PR is also fixing a bugfix from 2.16 line, shouldn't it actually target 2.16.x as well ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-24T10:22:56Z
+
+This PR also introduces new public API in non-internal code (`DocBlock`) so it should be released in a new minor version according to SemVer. Though these new API are more of an detail of this refactoring than an actual new feature, so I'm fine merging this into 2.16. What do you prefer?
+
+---------------------------------------------------------------------------
+
+by keradus at 2019-11-24T12:41:42Z
+
+so, you created a bugfix+feature in single PR?
+can we backport bugfix only to 2.15?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-24T12:56:23Z
+
+Well, at the time I created the PR, 2.16 was not released yet so targeting branch master was fine.
+
+The initial purpose of this PR was to refactor things to ease maintenance. While working on it, I noticed it made implementing parts of #4511 easy. When I noticed it also fixes #4605, the work on this PR was already finished. I only added the test cases, which passed without further work. I'm not sure fixing those bugs without leveraging this refactoring is easy. I'll give it a try.
+
+Edit: actually tests from #4605 needed extra work, didn't remember :)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2019-11-24T13:30:01Z
+
+Tests fixed in #4605.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-25T10:39:31Z
+
+This PR looks good, even if the 2nd follow-up PR to add a new fixer is not merged.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-07T22:16:23Z
+
+There are merge conflicts. This needs to be rebased, again. 😿
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-07T22:43:35Z
+
+In fact, it looks like https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5092 kinda broke some of the sharing...
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-07T22:44:28Z
+
+Though I guess we can regard adding the config stuff back in as a new feature.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-07T22:44:33Z
+
+// cc @SpacePossum
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-07T22:48:29Z
+
+NB, we will also need to add an example showing the scalar types config in use (for the tests to pass when merged up to 2.16). Something like:
+
+```php
+                new VersionSpecificCodeSample(
+                    '<?php
+
+/**
+ * @param Foo    $foo
+ * @param string $bar
+ */
+function my_foo($foo, $bar)
+{}
+',
+                    new VersionSpecification(70000),
+                    ['scalar_types' => false]
+                ),
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-08-08T07:31:57Z
+
+Rebased.
+
+This PR now reverts removal of option `scalar_types` from #5092. I don't think the option is a much useful feature but the actual issue was that it was not used. Since this is a documented option, if we want to change/remove it, we should deprecate it first.
+
+To avoid having a release that removes the option then a subsequent one that introduces it again, I suggest we include this in the upcoming 2.16.x release.
+
+> we will also need to add an example showing the scalar types config in use
+
+Added.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-13T14:54:33Z
+
+Ping @SpacePossum. Can this be merged now?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-25T00:17:39Z
+
+Looks like there are merge conflicts now. // cc @julienfalque
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-10-29T11:01:25Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-21T21:00:24Z
+
+Gah, conflicts again. NB This PR looks great to me @SpacePossum. Would be good to get this merged to avoid repeated merge conflicts.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-21T22:35:05Z
+
+Oh, this PR also needs updating to support the mixed type. // cc @SpacePossum
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-21T22:40:49Z
+
+Would something like this do:
+
+<img width="668" alt="image" src="https://user-images.githubusercontent.com/2829600/99889173-6cd48080-2c4a-11eb-870f-dfa9c86744ed.png">
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-11-22T14:42:20Z
+
+I rebased this PR to fix the conflict but did not apply any extra change. Let's merge this first and work on PHP 8 compatibility separately please.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-23T09:32:18Z
+
+The reason I suggest that change is because support for mixed was added a few days ago, so this PR should not now break it.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-11-23T09:33:21Z
+
+I think the php 8 tests now fail after this pr, but were passing before.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-11-23T17:11:36Z
+
+@GrahamCampbell My bad, I didn't notice this was already supported on upstream branch, fixed as you suggested.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-12-07T21:04:56Z
+
+Needs rebasing again, against 2.17.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-12-08T07:41:40Z
+
+Actually, if I remember correctly, all "new features" are marked `@internal until 2.18` (should it be 3.0?) so it can still be merged into 2.16.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-12-08T16:27:49Z
+
+I think 2.17 is the right place for this PR.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-12-08T18:36:33Z
+
+Why?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-12-08T19:11:31Z
+
+Because it adds new features, and 2.16 should only be getting bug fixes?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-12-09T07:59:30Z
+
+The PR:
+* adds `scalar_types` option to `phpdoc_to_param_type` rule, but actually this is a revert of #5092 which can be considered a BC break
+* adds new APIs that are marked `@internal` for now
+* improves an existing fixer, which is something we use to merge in lower branches.
+
+So IMO everything can be merged in 2.16. What do you think @SpacePossum @keradus @kubawerlos?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-30T14:12:03Z
+
+[![Coverage Status](https://coveralls.io/builds/39262898/badge)](https://coveralls.io/builds/39262898)
+
+Coverage decreased (-0.3%) to 91.563% when pulling **2994b0bfaeabb0e3f9a0c94f669b3bd4aea43485 on julienfalque:types-expression-class** into **4961df42d34b3a666458d36988d32095006801b9 on FriendsOfPHP:2.18**.
