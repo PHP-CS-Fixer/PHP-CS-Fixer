@@ -1,0 +1,169 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-03-19T11:01:08Z
+
+:+1:  looking very nice :)
+
+some minors I found;
+the fixer crashes on abstract function like;
+>abstract public function getFoo(): string;
+
+which seems to be because;
+```
+            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                $index = $tokens->getNextTokenOfKind($index, ['{']);
+```
+
+secondly, when there are a of candidate the fixer doesn't catch them all in the first run. Test sample;
+
+```php
+<?php
+
+class ActivityLog
+{
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $id1;
+
+    /**
+     * @var string
+     */
+    private $id2;
+
+    /**
+     * @var int
+     */
+    private $id3;
+
+    /**
+     * @var string
+     */
+    private $id4;
+
+    /**
+     * @var string
+     */
+    private $id5;
+
+    /**
+     * @var string
+     */
+    private $id6;
+
+    /**
+     * @var string
+     */
+    private $id7;
+
+    /**
+     * @var int
+     */
+    private $id8;
+
+    /**
+     * @var string
+     */
+    private $id9;
+
+    /**
+     * @var int|null
+     */
+    private $id410;
+}
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-03-20T07:46:08Z
+
+Thanks for the test cases, I fixed them :)
+
+---------------------------------------------------------------------------
+
+by duxthefux at 2020-04-21T19:32:55Z
+
++1 on that. Any estimation on when this can be merged?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-24T15:30:39Z
+
+@julienfalque can you split this PR to one adding new fixers and 2nd (targeted to 2.15) with refactoring of `DocBlock` classes?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-24T17:39:05Z
+
+@kubawerlos Is #4591 what you want (this PR depends on it)? It currently targets 2.16 though.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-04-25T12:25:58Z
+
+@julienfalque yes, it is. Shame on me.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T19:17:36Z
+
+Sorry for the conflicts @julienfalque - can you solve them? I believe thee review would be quite straightforward here.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-07-24T16:49:57Z
+
+Rebased #4591 and here, please review :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-25T10:38:30Z
+
+I'd actually question if this belongs in php-cs-fixer. It's more a job for a refactoring tool like Rector, rather than a code style fixing tool.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-07-25T12:57:06Z
+
+> I'd actually question if this belongs in php-cs-fixer. It's more a job for a refactoring tool like Rector, rather than a code style fixing tool.
+
+We already to a lot of refactoring in PHP-CS-Fixer. Moreover, PHP_CodeSniffer already does it: https://github.com/slevomat/coding-standard/blob/master/SlevomatCodingStandard/Sniffs/TypeHints/PropertyTypeHintSniff.php#L260-L296
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-07-25T13:11:49Z
+
+I don't think we need to add more. It only adds more upgrading work every time a new version of PHP comes out.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-07-25T13:18:34Z
+
+I understand your point: it would be good for maintenance to have a fixer tool decoupled from PHP version, and maybe other one (like Rector) for the upgrade path.
+
+But we are a bit late for such approach, aren't we?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-09T10:50:00Z
+
+@julienfalque please rebase and after that RTM :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-09T10:51:05Z
+
+@SpacePossum #4591 should be merged first.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-03T17:50:44Z
+
+[![Coverage Status](https://coveralls.io/builds/39315003/badge)](https://coveralls.io/builds/39315003)
+
+Coverage increased (+0.02%) to 91.596% when pulling **7f0cbc505b468847ec30e3801a5f9ae1d82840a3 on julienfalque:phpdoc-to-property-type-fixer** into **24e93912dc055a693a81ff53cbde0ede0123253c on FriendsOfPHP:master**.
