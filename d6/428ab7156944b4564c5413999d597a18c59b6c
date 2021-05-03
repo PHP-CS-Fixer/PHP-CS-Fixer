@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-03T21:05:51Z
+
+[![Coverage Status](https://coveralls.io/builds/39318716/badge)](https://coveralls.io/builds/39318716)
+
+Coverage decreased (-0.002%) to 91.561% when pulling **2b1e42ee3e17f0d126594cd4ff0f88dd4e89639d on julienfalque:fix-group-import** into **db7e1f17140e88de30f542c0322e27b2b1c96d6b on FriendsOfPHP:2.18**.
