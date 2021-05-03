@@ -39,8 +39,6 @@ Array Notation
     In array declaration, there MUST NOT be a whitespace before each comma.
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
     Array index should always be written by using square braces.
-- `trailing_comma_in_multiline_array <./array_notation/trailing_comma_in_multiline_array.rst>`_ *(deprecated)*
-    PHP multi-line arrays should have a trailing comma.
 - `trim_array_spaces <./array_notation/trim_array_spaces.rst>`_
     Arrays should be formatted like function/method arguments, without leading or trailing single line space.
 - `whitespace_after_comma_in_array <./array_notation/whitespace_after_comma_in_array.rst>`_

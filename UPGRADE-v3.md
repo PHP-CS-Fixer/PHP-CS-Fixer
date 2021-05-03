@@ -46,6 +46,7 @@ Old name | New name | Note
 `psr0`                                          | `psr_autoloading`                                                                 | use configuration `['dir' => x ]`
 `psr4`                                          | `psr_autoloading`                                                                 |
 `silenced_deprecation_error`                    | `error_suppression`                                                               |
+`trailing_comma_in_multiline_array`             | `trailing_comma_in_multiline`                                                     | use configuration `['elements' => ['arrays']]`
 
 ### Removed rootless configuration
 
