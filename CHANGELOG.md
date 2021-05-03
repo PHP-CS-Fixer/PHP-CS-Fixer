@@ -3,6 +3,40 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.19.0
+---------------------
+
+* feature #4238 TrailingCommaInMultilineFixer - introduction (kubawerlos)
+* feature #4592 PhpdocToPropertyTypeFixer - introduction (julienfalque)
+* feature #5390 feature #4024 added a `list-files` command (clxmstaab, keradus)
+* feature #5635 Add list-sets command (keradus)
+* feature #5674 UX: Display deprecations to end-user (keradus)
+* minor #5601 Always stop when "PHP_CS_FIXER_FUTURE_MODE" is used (kubawerlos)
+* minor #5607 DX: new config filename (keradus)
+* minor #5613 DX: UtilsTest - add missing teardown (keradus)
+* minor #5631 DX: config deduplication (keradus)
+* minor #5633 fix typos (staabm)
+* minor #5642 Deprecate parameter of Token::toJson() (keradus)
+* minor #5672 DX: do not test deprecated fixer (kubawerlos)
+
+Changelog for v2.18.7
+---------------------
+
+* bug #5593 SingleLineThrowFixer - fix handling anonymous classes (kubawerlos)
+* bug #5654 SingleLineThrowFixer - fix for match expression (kubawerlos)
+* bug #5660 TypeAlternationTransformer - fix for "array" type in type alternation (kubawerlos)
+* bug #5665 NullableTypeDeclarationForDefaultNullValueFixer - fix for nullable with attribute (kubawerlos)
+* bug #5670 PhpUnitNamespacedFixer - do not try to fix constant (kubawerlos)
+* bug #5671 PhpdocToParamTypeFixer - do not change function call (kubawerlos)
+* bug #5673 GroupImportFixer - Fix failing case (julienfalque)
+* minor #4591 Refactor conversion of PHPDoc to type declarations (julienfalque, keradus)
+* minor #5611 DX: use method expectDeprecation from Symfony Bridge instead of annotation (kubawerlos)
+* minor #5658 DX: use constants in tests for Fixer configuration (keradus)
+* minor #5661 DX: remove PHPStan exceptions for "tests" from phpstan.neon (kubawerlos)
+* minor #5662 Change wording from "merge" to "intersect" (jschaedl)
+* minor #5663 DX: do not abuse "inheritdoc" tag (kubawerlos)
+* minor #5664 DX: code grooming (keradus)
+
 Changelog for v2.18.6
 ---------------------
 
