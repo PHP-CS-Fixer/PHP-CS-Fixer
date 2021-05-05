@@ -394,6 +394,14 @@ final class TokensAnalyzer
             }
         }
 
+        // check for non-capturing catches
+        if ($this->tokens[$prevIndex]->equals('(')) {
+            $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+            if ($this->tokens[$prevPrevIndex]->isGivenKind(T_CATCH)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
