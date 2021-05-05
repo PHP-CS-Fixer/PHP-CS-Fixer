@@ -37,12 +37,6 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'with calculating code coverage'
-            calculate-code-coverage: 'yes'
-            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
             job-description: 'with deployment'
             execute-deployment: 'yes'
 
@@ -53,7 +47,9 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
-            composer-flags: '--ignore-platform-req=php' # as this is a version not yet officially supported by PHP CS Fixer
+            job-description: 'with calculating code coverage'
+            calculate-code-coverage: 'yes'
+            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
 
           - operating-system: 'windows-latest'
             php-version: '7.4'
