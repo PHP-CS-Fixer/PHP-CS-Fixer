@@ -553,4 +553,18 @@ echo M_PI;
 '
         );
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testFixPhp80()
+    {
+        $this->fixer->configure(['strict' => true]);
+        $this->doTest(
+            '<?php
+            try {
+            } catch (\Exception) {
+            }'
+        );
+    }
 }
