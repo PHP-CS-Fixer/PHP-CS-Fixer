@@ -105,8 +105,7 @@ final class Application extends BaseApplication
             null !== $stdErr
             && $output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
         ) {
-            $triggeredDeprecations = array_unique(Utils::getTriggeredDeprecations());
-            sort($triggeredDeprecations);
+            $triggeredDeprecations = Utils::getTriggeredDeprecations();
             if ($triggeredDeprecations) {
                 $stdErr->writeln('');
                 $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use:</>' : 'Detected deprecations in use:');
