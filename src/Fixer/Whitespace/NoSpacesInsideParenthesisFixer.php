@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @deprecated in favor of SpacesInsideParenthesis fixer
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.6, ¶5.
  *
  * @author Marc Aubé
