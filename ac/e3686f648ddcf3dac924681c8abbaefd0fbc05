@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-05-11T11:08:00Z
+
+@keradus any idea about the note?
+> For some reasons, progress is correctly displayed with txt (default) format, but when dots progress optin is specified, the Legend line in the output is on a different place - why, please explain.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-05-11T21:42:17Z
+
+sorry @mvorisek , I failed to reproduce
+
+![Screenshot from 2021-05-11 23-41-51](https://user-images.githubusercontent.com/2716794/117888525-7dd58480-b2b2-11eb-896a-233f03665c2a.png)
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-05-11T21:49:19Z
+
+see https://github.com/atk4/core/runs/2554188961?check_suite_focus=true and https://github.com/atk4/core/runs/2554072849?check_suite_focus=true
+
+in these examples it is even swapped. I think the output consists of stdout and stderr and due buffering the outputs are not atomic
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-05-11T21:56:05Z
+
+if you consider it worth time investing, please investigate and raise a fix-PR
+for me, it looks like non-significant glitch that we can spend time better than fixing it, but I'm open to merge the fix if provided ;)
