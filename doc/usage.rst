@@ -88,7 +88,7 @@ The ``--show-progress`` option allows you to choose the way process progress is 
 * ``none``: disables progress output;
 * ``dots``: same as ``estimating`` but using all terminal columns instead of default 80.
 
-If the option is not provided, it defaults to ``run-in`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
+If the option is not provided, it defaults to ``dots`` unless a config file that disables output is used, in which case it defaults to ``none``. This option has no effect if the verbosity of the command is less than ``verbose``.
 
 .. code-block:: console
 
