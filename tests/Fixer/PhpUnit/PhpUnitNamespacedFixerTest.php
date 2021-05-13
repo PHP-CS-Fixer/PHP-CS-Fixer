@@ -241,6 +241,13 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
                     const PHPUNIT_FOO = "foo";
                 }',
             ],
+            [
+                '<?php
+                final class MyTest extends TestCase
+                {
+                    const FOO = Bar::PHPUNIT_FOO;
+                }',
+            ],
         ];
     }
 

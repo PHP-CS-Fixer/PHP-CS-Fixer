@@ -26,6 +26,9 @@ use PhpCsFixer\Tokenizer\Token;
  */
 final class Utils
 {
+    /**
+     * @var array<string,true>
+     */
     private static $deprecations = [];
 
     /**
@@ -163,12 +166,15 @@ final class Utils
             throw new $exceptionClass("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
         }
 
-        self::$deprecations[] = $message;
+        self::$deprecations[$message] = true;
         @trigger_error($message, E_USER_DEPRECATED);
     }
 
     public static function getTriggeredDeprecations(): array
     {
-        return self::$deprecations;
+        $triggeredDeprecations = array_keys(self::$deprecations);
+        sort($triggeredDeprecations);
+
+        return $triggeredDeprecations;
     }
 }

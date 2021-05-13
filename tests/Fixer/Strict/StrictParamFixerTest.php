@@ -43,6 +43,12 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
     in_array(1, $a, $useStrict);',
             ],
             [
+                '<?php class Foo
+                {
+                    public function in_array($needle, $haystack) {}
+                }',
+            ],
+            [
                 '<?php
     in_array(1, $a, true);',
                 '<?php
