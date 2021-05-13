@@ -17,6 +17,7 @@
     convertWarningsToExceptions="true"
     defaultTimeLimit="10"
     enforceTimeLimit="true"
+    failOnRisky="true"
     failOnWarning="true"
     processIsolation="false"
     stopOnFailure="false"
