@@ -25,8 +25,8 @@ The ``--format`` option for the output format. Supported formats are ``txt`` (de
 
 NOTE: the output for the following formats are generated in accordance with schemas
 
-* ``checkstyle` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
-* ``json` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
+* ``checkstyle`` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
+* ``json`` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
 * ``junit`` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
 * ``xml`` follows the `own XML schema </doc/schemas/fix/xml.xsd>`_
 
@@ -36,9 +36,9 @@ The ``--verbose`` option will show the applied rules. When using the ``txt`` for
 
 NOTE: if there is an error like "errors reported during linting after fixing", you can use this to be even more verbose for debugging purpose
 
-* `-v`: verbose
-* `-vv`: very verbose
-* `-vvv`: debug
+* ``-v``: verbose
+* ``-vv``: very verbose
+* ``-vvv``: debug
 
 The ``--rules`` option limits the rules to apply to the
 project:
@@ -81,7 +81,7 @@ The ``--diff`` flag can be used to let the fixer output all the changes it makes
 The ``--diff-format`` option allows to specify in which format the fixer should output the changes it makes:
 
 * ``udiff``: unified diff format;
-* ``sbd``: Sebastianbergmann/diff format (default when using `--diff` without specifying `diff-format`).
+* ``sbd``: Sebastianbergmann/diff format (default when using ``--diff`` without specifying ``diff-format``).
 
 The ``--allow-risky`` option (pass ``yes`` or ``no``) allows you to set whether risky rules may run. Default value is taken from config file.
 A rule is considered risky if it could change code behaviour. By default no risky rules are run.
@@ -151,8 +151,8 @@ Note: You need to pass the config to the ``fix`` command, in order to make it wo
 
     $ php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 10 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
 
-* `-n` defines how many files a single subprocess process
-* `-P` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
+* ``-n`` defines how many files a single subprocess process
+* ``-P`` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
 
 
 Rule descriptions
