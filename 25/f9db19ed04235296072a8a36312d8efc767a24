@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-07T10:12:52Z
+
+[![Coverage Status](https://coveralls.io/builds/39449066/badge)](https://coveralls.io/builds/39449066)
+
+Coverage increased (+0.002%) to 91.532% when pulling **cfc28fd32c441ba6533971be8bcbda4932d15c91 on localheinz:fix/phpdoc-tag-type** into **714e1922c6c598c8d032f166fdfbe86217e43bfd on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-07T11:11:35Z
+
+Fixed :)
