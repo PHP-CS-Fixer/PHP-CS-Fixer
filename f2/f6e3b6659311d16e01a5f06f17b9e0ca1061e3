@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------
+
+by PetrHeinz at 2021-05-06T07:06:53Z
+
+Running `array_search` for every trigger of deprecation message might be inefficient as it's O(n).
+
+Maybe using a key for ensuring the uniqueness would be better as it's O(1), but it would introduce a change of meaning into `Utils::$deprecations`:
+
+```diff
+    /**
+     * Handle triggering deprecation error.
+     *
+     * @param string $message
+     * @param string $exceptionClass
+     */
+    public static function triggerDeprecation($message, $exceptionClass = \RuntimeException::class)
+    {
+        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+            throw new $exceptionClass("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+        }
+
+-       if (false === array_search($message, self::$deprecations, true)) {
+-           self::$deprecations[] = $message;
+-       }
++       self::$deprecations[$message] = true;
+        @trigger_error($message, E_USER_DEPRECATED);
+    }
+
+    public static function getTriggeredDeprecations()
+    {
+-       return self::$deprecations;
++       return array_keys(self::$deprecations);
+    }
+```
+
+Not sure which approach is preferable for this project, so I'm just putting it there...
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-05-06T11:16:08Z
+
+I like the proposal with assyc array. shitty we don't have native Set support
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-05-06T11:17:10Z
+
+maybe just sort the array in `getTriggeredDeprecations` too
+
+---------------------------------------------------------------------------
+
+by PetrHeinz at 2021-05-06T17:55:44Z
+
+@keradus Sure thing, done in a034c9ba2
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-07T10:17:12Z
+
+[![Coverage Status](https://coveralls.io/builds/39449208/badge)](https://coveralls.io/builds/39449208)
+
+Coverage decreased (-0.005%) to 91.525% when pulling **a034c9ba2d1f42f6e11d5267e29c2487981e1648 on PetrHeinz:patch-1** into **714e1922c6c598c8d032f166fdfbe86217e43bfd on FriendsOfPHP:2.19**.
