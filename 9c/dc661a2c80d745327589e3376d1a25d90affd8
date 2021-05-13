@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-07T15:57:14Z
+
+[![Coverage Status](https://coveralls.io/builds/39460820/badge)](https://coveralls.io/builds/39460820)
+
+Coverage increased (+0.001%) to 91.531% when pulling **3ed5c6d18dde111ceeda7d311f11b70811bcfdd1 on kubawerlos:fix_DateTimeImmutableFixer** into **714e1922c6c598c8d032f166fdfbe86217e43bfd on FriendsOfPHP:2.19**.
