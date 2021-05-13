@@ -345,6 +345,12 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
  *
  */',
             ],
+            [
+                '<?php
+/**
+ * @return array{0: float, 1: int}
+ */',
+            ],
         ];
     }
 
