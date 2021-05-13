@@ -91,6 +91,11 @@ final class DateTimeImmutableFixer extends AbstractFixer
                 continue;
             }
 
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            if ($tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
+                continue;
+            }
+
             $lowercaseContent = strtolower($token->getContent());
 
             if ('datetime' === $lowercaseContent) {

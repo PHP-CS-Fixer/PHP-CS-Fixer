@@ -1069,6 +1069,20 @@ class Foo {
     public function foo($foo) {}
 }',
             ],
+            'with constant values as type' => [
+                '<?php
+class Foo {
+    /**
+     * @var Bar::A|Bar::B|Baz::*|null
+     */
+    private $foo;
+
+    /**
+     * @var 1|\'a\'|\'b\'
+     */
+    private $bar;
+}',
+            ],
         ];
     }
 

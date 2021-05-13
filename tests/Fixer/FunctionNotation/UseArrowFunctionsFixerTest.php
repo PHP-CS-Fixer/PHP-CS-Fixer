@@ -176,6 +176,18 @@ EXPECTED
     };
 EXPECTED
             ],
+            [
+                '<?php $testDummy = fn () => null;',
+                '<?php $testDummy = function () { return; };',
+            ],
+            [
+                '<?php $testDummy = fn () => null ;',
+                '<?php $testDummy = function () { return ; };',
+            ],
+            [
+                '<?php $testDummy = fn () => null/* foo */;',
+                '<?php $testDummy = function () { return/* foo */; };',
+            ],
         ];
     }
 }

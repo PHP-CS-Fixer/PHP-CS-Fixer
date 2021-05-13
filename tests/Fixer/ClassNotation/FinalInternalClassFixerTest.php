@@ -131,6 +131,14 @@ class class3
 abstract class class4 {}
 ',
             ],
+            [
+                '<?php
+                    /**
+                     * @ annotation_with_space_after_at_sign
+                     */
+                    class A {}
+',
+            ],
         ];
     }
 

@@ -144,6 +144,15 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
                 '<?php new Foo\date_create();',
             ],
             [
+                '<?php class Foo { public function datetime() {} }',
+            ],
+            [
+                '<?php class Foo { public function date_create() {} }',
+            ],
+            [
+                '<?php namespace Foo; use DateTime; class Bar { public function datetime() {} }',
+            ],
+            [
                 '<?php
                 namespace Foo;
                 use DateTime\Bar;

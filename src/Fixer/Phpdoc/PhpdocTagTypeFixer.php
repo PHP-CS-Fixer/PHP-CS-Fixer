@@ -33,6 +33,16 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const TAG_REGEX = '/^(?:
+        (?<tag>
+            (?:@(?<tag_name>.+?)(?:\s.+)?)
+        )
+        |
+        {(?<inlined_tag>
+            (?:@(?<inlined_tag_name>.+?)(?:\s.+)?)
+        )}
+    )$/x';
+
     /**
      * {@inheritdoc}
      */
@@ -101,23 +111,31 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
             );
 
             for ($i = 1, $max = \count($parts) - 1; $i < $max; $i += 2) {
-                if (!Preg::match('/^{?(@(.*?)(?:\s[^}]*)?)}?$/', $parts[$i], $matches)) {
+                if (!Preg::match(self::TAG_REGEX, $parts[$i], $matches)) {
                     continue;
                 }
 
-                $tag = strtolower($matches[2]);
-                if (!isset($this->configuration['tags'][$tag])) {
+                if ('' !== $matches['tag']) {
+                    $tag = $matches['tag'];
+                    $tagName = $matches['tag_name'];
+                } else {
+                    $tag = $matches['inlined_tag'];
+                    $tagName = $matches['inlined_tag_name'];
+                }
+
+                $tagName = strtolower($tagName);
+                if (!isset($this->configuration['tags'][$tagName])) {
                     continue;
                 }
 
-                if ('inline' === $this->configuration['tags'][$tag]) {
-                    $parts[$i] = '{'.$matches[1].'}';
+                if ('inline' === $this->configuration['tags'][$tagName]) {
+                    $parts[$i] = '{'.$tag.'}';
 
                     continue;
                 }
 
                 if (!$this->tagIsSurroundedByText($parts, $i)) {
-                    $parts[$i] = $matches[1];
+                    $parts[$i] = $tag;
                 }
             }
 
