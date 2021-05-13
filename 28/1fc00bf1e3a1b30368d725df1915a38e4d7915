@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-04T21:36:38Z
+
+[![Coverage Status](https://coveralls.io/builds/39355902/badge)](https://coveralls.io/builds/39355902)
+
+Coverage remained the same at 91.53% when pulling **f25246a9ebc168abc825a132e576c79b6688a5c5 on kubawerlos:fix_RegularCallableCallFixer** into **714e1922c6c598c8d032f166fdfbe86217e43bfd on FriendsOfPHP:2.19**.
