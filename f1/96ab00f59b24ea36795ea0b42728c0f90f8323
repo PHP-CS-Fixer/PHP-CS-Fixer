@@ -1,0 +1,195 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-12T22:01:50Z
+
+I've worked a bit more on this and made several improvements. Now this PR adds support for:
+* spaces around `|`, e.g.: `A | B`
+* class constants, e.g. `Foo::BAR_*`
+* scalar constants, e.g. `'a' | 'b'`
+* types containing a `-`, e.g. `class-string`
+* intersection types, e.g. `A & B`
+* object-like arrays, e.g.: `array{a: bool, b?: string}`
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-04-15T05:48:25Z
+
+> * spaces around `|`, e.g.: `A | B`
+> * class constants, e.g. `Foo::BAR_*`
+> * scalar constants, e.g. `'a' | 'b'`
+> * types containing a `-`, e.g. `class-string`
+> * intersection types, e.g. `A & B`
+> * object-like arrays, e.g.: `array{a: bool, b?: string}`
+
+I'm sorry @keradus to ping you, but [`v2.16.2 Yellow Bird`](https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/tag/v2.16.2) kinda broke almost every project I'm aware of, since these notations are now widespread due to static analysis tools.
+
+Hope to see a release with this bugfix as soon as possible :cry:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-04-15T06:26:16Z
+
+@Slamdunk Note that the actual fix for the unexpected removal of annotations is #4915. This PR will rather unlock enhancements in e.g. `phpdoc_to_return_type`.
+
+---------------------------------------------------------------------------
+
+by Slamdunk at 2020-04-15T06:59:30Z
+
+Yup, sorry
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T14:28:54Z
+
+@julienfalque can we add tests from https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5049 here?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-07-12T15:23:10Z
+
+> after gitter talk
+
+Didn't get a notification for this review being dismissed. What was the talk about?
+
+> @julienfalque can we add tests from #5049 here?
+
+Sure thing. Are you allowed to push on my branch? Otherwise I'll cherry-pick your commit.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-07-12T15:54:37Z
+
+@julienfalque No, I cannot, please cherry-pick.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-08-02T09:23:38Z
+
+@kubawerlos I cherry-picked your work and changed it a bit to solve conflicts and add support for [`Closure` syntax](https://psalm.dev/docs/annotating_code/type_syntax/callable_types/).
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2020-08-02T10:02:06Z
+
+Is there support for brackets in types. Like `array{0: (string|null|(callable(): void)), 1: string`. Or `(callable(Foo): string)|null`.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-08-03T08:16:11Z
+
+I don't think this is supported but since it might be more complicated than adding support for a specific type syntax, I would suggest merging this PR first.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-20T15:09:22Z
+
+@Slamdunk @Nyholm @SpacePossum @keradus is anything stops us from having this one merged?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-21T09:28:06Z
+
+shouldn't this pass as well as types never have spacing attached?
+
+```php
+            [
+                '/** @param   array  <  int   , callable  (  string  )  :   bool  > $function',
+                ['array<int, callable(string): bool>'],
+            ],
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-22T08:33:48Z
+
+@SpacePossum You mean to add support for whitespace anywhere?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-22T11:43:05Z
+
+indeed, I don't see why the spacing would matter when extracting the type info
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-22T13:00:33Z
+
+Using whitespaces is not a widespread practice but it should not be complicated to add support for it. I'll try to do it shortly.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-22T15:40:42Z
+
+:+1:   it will saves the trouble of figuring out all the possible priority issues with fixers that clean up the spacing
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-22T19:27:44Z
+
+Test case added. Though whitespaces are not stripped from the result because the type is parsed as a whole.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-22T19:44:01Z
+
+Is the "type" `"   int  "` not exactly the same as "type" `"int"` ? Especially as the type `"   int  "` can never exist within PHP, same with class names that cannot contain pending or trialing spacing.  I'm not sure why we would extract these differently but maybe I'm missing the use case here.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-22T20:15:21Z
+
+Not sure what you mean. The regex just extracts the type definition as-is, without changing anything to it. Those whitespaces have no special meaning, they are not part of a type, e.g. there is no `" int "` but `"int"` + whitespaces.
+
+Removing the whitespaces would prevent, e.g. a fixer to know the original syntax in order to change it.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-23T07:21:21Z
+
+@kubawerlos @julienfalque RTM than? can someone run this code on the some other code bases like SF/Twig/Doctrine for example to see if all goes well?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-26T16:24:02Z
+
+and one more request, can some look into https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5095/files to see if the issue there is no longer present in this PR?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2020-10-26T17:37:17Z
+
+> and one more request, can some look into https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5095/files to see if the issue there is no longer present in this PR?
+
+Can't we merge this and update the other one and we will all see?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2020-10-26T18:59:11Z
+
+I prefer to resolve both PR's here as 5095 hasn't got any comments what so ever and I don't want it to sit there forever
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-10-29T07:44:26Z
+
+@SpacePossum I tried applying changes from #5095 and all tests were green. I approved #5095, we can merge them separately IMO.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-30T13:44:53Z
+
+[![Coverage Status](https://coveralls.io/builds/39321568/badge)](https://coveralls.io/builds/39321568)
+
+Coverage increased (+0.0009%) to 91.53% when pulling **636b476366320cf52cb8523c6804ab44b50274ad on julienfalque:phpdoc-psalm-types** into **714e1922c6c598c8d032f166fdfbe86217e43bfd on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-05-03T19:56:36Z
+
+can you rebase, @julienfalque ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-03T22:05:12Z
+
+Done.
