@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-04T15:01:43Z
+
+[![Coverage Status](https://coveralls.io/builds/39352204/badge)](https://coveralls.io/builds/39352204)
+
+Coverage remained the same at 91.53% when pulling **044085770833a028791f1a2f272122d77480a2ee on kubawerlos:fix_PhpUnitNamespacedFixer** into **714e1922c6c598c8d032f166fdfbe86217e43bfd on FriendsOfPHP:2.19**.
