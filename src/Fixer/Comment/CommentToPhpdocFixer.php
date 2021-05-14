@@ -209,7 +209,11 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
             if (false !== strpos($tokens[$index]->getContent(), '*/')) {
                 return;
             }
-            $newContent .= $indent.' *'.$this->getMessage($tokens[$index]->getContent()).$this->whitespacesConfig->getLineEnding();
+            $message = $this->getMessage($tokens[$index]->getContent());
+            if ('' !== trim(substr($message, 0, 1))) {
+                $message = ' '.$message;
+            }
+            $newContent .= $indent.' *'.$message.$this->whitespacesConfig->getLineEnding();
         }
 
         for ($index = $startIndex; $index <= $count; ++$index) {

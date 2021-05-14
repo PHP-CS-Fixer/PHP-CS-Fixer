@@ -19,6 +19,7 @@ do
     git checkout "$BRANCH" > /dev/null 2>&1 &&
     git reset --hard > /dev/null 2>&1 &&
     printf '%s' "$BRANCH"
+    composer update -q
     (for _ in $(seq 1 10); do php php-cs-fixer fix --dry-run 2> /dev/null ; done) | grep -i seconds | awk '
     {
         total += $5;

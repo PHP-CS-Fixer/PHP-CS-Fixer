@@ -310,6 +310,30 @@ EOT
                 ,
                 ['ignored_tags' => ['todo']],
             ],
+            [
+                '<?php // header
+                /** /@foo */
+                namespace Foo\Bar;
+',
+                '<?php // header
+                ///@foo
+                namespace Foo\Bar;
+',
+            ],
+            [
+                '<?php // header
+                /**
+                 * / @foo
+                 * / @bar
+                 */
+                namespace Foo\Bar;
+',
+                '<?php // header
+                /// @foo
+                /// @bar
+                namespace Foo\Bar;
+',
+            ],
         ];
     }
 }

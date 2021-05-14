@@ -157,7 +157,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
-            if ($tokens[$prevIndex]->isGivenKind(T_CONST)) {
+            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON])) {
                 continue;
             }
 

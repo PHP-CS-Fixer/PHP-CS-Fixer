@@ -362,6 +362,106 @@ final class AnnotationTest extends TestCase
                 " * @return int\r\n",
                 ['int'],
             ],
+            [
+                '/** @var Collection<Foo<Bar>, Foo<Baz>>',
+                ['Collection<Foo<Bar>, Foo<Baz>>'],
+            ],
+            [
+                '/** @var int | string',
+                ['int', 'string'],
+            ],
+            [
+                '/** @var Foo::*',
+                ['Foo::*'],
+            ],
+            [
+                '/** @var Foo::A',
+                ['Foo::A'],
+            ],
+            [
+                '/** @var Foo::A|Foo::B',
+                ['Foo::A', 'Foo::B'],
+            ],
+            [
+                '/** @var Foo::A*',
+                ['Foo::A*'],
+            ],
+            [
+                '/** @var array<Foo::A*>|null',
+                ['array<Foo::A*>', 'null'],
+            ],
+            [
+                '/** @var null|true|false|1|1.5|\'a\'|"b"',
+                ['null', 'true', 'false', '1', '1.5', "'a'", '"b"'],
+            ],
+            [
+                '/** @param int | "a" | A<B<C, D>, E<F::*|G[]>> $foo */',
+                ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>'],
+            ],
+            [
+                '/** @var class-string<Foo> */',
+                ['class-string<Foo>'],
+            ],
+            [
+                '/** @var A&B */',
+                ['A&B'],
+            ],
+            [
+                '/** @var A & B */',
+                ['A & B'],
+            ],
+            [
+                '/** @var array{1: bool, 2: bool} */',
+                ['array{1: bool, 2: bool}'],
+            ],
+            [
+                '/** @var array{a: int|string, b?: bool} */',
+                ['array{a: int|string, b?: bool}'],
+            ],
+            [
+                '/** @var array{\'a\': "a", "b"?: \'b\'} */',
+                ['array{\'a\': "a", "b"?: \'b\'}'],
+            ],
+            [
+                '/** @var array { a : int | string , b ? : A<B, C> } */',
+                ['array { a : int | string , b ? : A<B, C> }'],
+            ],
+            [
+                '/** @param callable(string) $function',
+                ['callable(string)'],
+            ],
+            [
+                '/** @param callable(string): bool $function',
+                ['callable(string): bool'],
+            ],
+            [
+                '/** @param callable(array<int, string>, array<int, Foo>): bool $function',
+                ['callable(array<int, string>, array<int, Foo>): bool'],
+            ],
+            [
+                '/** @param array<int, callable(string): bool> $function',
+                ['array<int, callable(string): bool>'],
+            ],
+            [
+                '/** @param callable(string): callable(int) $function',
+                ['callable(string): callable(int)'],
+            ],
+            [
+                '/** @param callable(string) : callable(int) : bool $function',
+                ['callable(string) : callable(int) : bool'],
+            ],
+            [
+                '* @param TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null $x',
+                ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null'],
+            ],
+            [
+                '/** @param Closure(string) $function',
+                ['Closure(string)'],
+            ],
+            [
+                '/** @param   array  <  int   , callable  (  string  )  :   bool  > $function',
+                ['array  <  int   , callable  (  string  )  :   bool  >'],
+            ],
         ];
     }
 

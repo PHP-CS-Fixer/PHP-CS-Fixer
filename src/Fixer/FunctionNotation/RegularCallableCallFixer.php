@@ -118,7 +118,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
                 return; // first argument is an expression like `call_user_func("foo"."bar", ...)`, not supported!
             }
 
-            $newCallTokens = Tokens::fromCode('<?php '.substr($firstArgToken->getContent(), 1, -1).'();');
+            $newCallTokens = Tokens::fromCode('<?php '.substr(str_replace('\\\\', '\\', $firstArgToken->getContent()), 1, -1).'();');
             $newCallTokensSize = $newCallTokens->count();
             $newCallTokens->clearAt(0);
             $newCallTokens->clearRange($newCallTokensSize - 3, $newCallTokensSize - 1);
