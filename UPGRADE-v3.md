@@ -23,7 +23,7 @@ CLI options
 |                  |                 |                                                 | `udiff`                                |
 | --show-progress  | --show-progress | Type of progress indicator                      | Allowed values were modified:          |
 |                  |                 |                                                 | `run-in` and `estimating` was removed, |
-|                  |                 |                                                 | `estimating-max` was removed to `dots` |
+|                  |                 |                                                 | `estimating-max` was renamed to `dots` |
 | --rules          | --rules         | Default value changed from @PSR2 to @PSR12      |                                        |
 | --config --rules |                 |                                                 | No longer allowed to pass both         |
 
