@@ -41,7 +41,7 @@ jobs:
             execute-deployment: 'yes'
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
+            php-version: '8.0'
             job-description: 'with migration rules'
             execute-migration-rules: 'yes' # should be checked on highest supported PHP version
 
