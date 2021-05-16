@@ -14,6 +14,7 @@ regarding custom rules names: they must match the pattern
 Then register your custom fixers and enable them in the config file:
 
 .. code-block:: php
+
     <?php
     // ...
     return (new PhpCsFixer\Config())
@@ -28,6 +29,7 @@ Then register your custom fixers and enable them in the config file:
             'YourVendorName/custome_rule_2' => true,
         ])
     ;
+
 There are several interfaces that your fixers can also implement if needed:
 
 * `PhpCsFixer\\Fixer\\DefinedFixerInterface <./src/Fixer/DefinedFixerInterface.php>`_: allows to describe what the fixer does in details;
