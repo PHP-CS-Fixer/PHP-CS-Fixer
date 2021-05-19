@@ -998,6 +998,10 @@ $a(1,2);',
                 '<?php try {} catch (\Exception) {}',
                 [10 => false],
             ];
+            yield [
+                '<?php try {} catch (Foo | Bar) {}',
+                [9 => false, 13 => false],
+            ];
         }
     }
 

@@ -395,6 +395,9 @@ final class TokensAnalyzer
         }
 
         // check for non-capturing catches
+        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_TYPE_ALTERNATION, T_STRING])) {
+            $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+        }
         if ($this->tokens[$prevIndex]->equals('(')) {
             $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
             if ($this->tokens[$prevPrevIndex]->isGivenKind(T_CATCH)) {
