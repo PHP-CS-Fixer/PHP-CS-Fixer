@@ -769,23 +769,7 @@ $a(1,2);',
      */
     public function testIsConstantInvocation($source, array $expected)
     {
-        $tokens = Tokens::fromCode($source);
-
-        static::assertCount(
-            $tokens->countTokenKind(T_STRING),
-            $expected,
-            'All T_STRING tokens must be tested'
-        );
-
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame(
-                $expectedValue,
-                $tokensAnalyzer->isConstantInvocation($index),
-                sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
-            );
-        }
+        $this->doIsConstantInvocationTest($source, $expected);
     }
 
     public function provideIsConstantInvocationCases()
@@ -1003,6 +987,30 @@ $a(1,2);',
                 [9 => false, 13 => false],
             ];
         }
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideIsConstantInvocationPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsConstantInvocationPhp80($source, array $expected)
+    {
+        $this->doIsConstantInvocationTest($source, $expected);
+    }
+
+    public function provideIsConstantInvocationPhp80Cases()
+    {
+        yield [
+            '<?php #[Foo] function foo() {}',
+            [2 => false, 7 => false],
+        ];
+
+        yield [
+            '<?php #[Foo()] function foo() {}',
+            [2 => false, 9 => false],
+        ];
     }
 
     public function testIsConstantInvocationInvalid()
@@ -2046,5 +2054,29 @@ class MyTestWithAnonymousClass extends TestCase
         }
 
         return $cases;
+    }
+
+    /**
+     * @param string $source
+     */
+    private function doIsConstantInvocationTest($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+
+        static::assertCount(
+            $tokens->countTokenKind(T_STRING),
+            $expected,
+            'All T_STRING tokens must be tested'
+        );
+
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame(
+                $expectedValue,
+                $tokensAnalyzer->isConstantInvocation($index),
+                sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+            );
+        }
     }
 }

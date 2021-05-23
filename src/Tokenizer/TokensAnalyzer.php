@@ -383,6 +383,14 @@ final class TokensAnalyzer
             }
         }
 
+        // check for attribute: `#[Foo]`
+        if (
+            \defined('T_ATTRIBUTE') // @TODO: drop condition when PHP 8.0+ is required
+            && $this->tokens[$prevIndex]->isGivenKind(T_ATTRIBUTE)
+        ) {
+            return false;
+        }
+
         // check for goto label
         if ($this->tokens[$nextIndex]->equals(':')) {
             if (null === $this->gotoLabelAnalyzer) {
