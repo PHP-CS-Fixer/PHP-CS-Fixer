@@ -29,7 +29,7 @@ in a dedicated `composer.json` file in your project, for example in the
 
 ```console
 $ mkdir --parents tools/php-cs-fixer
-$ composer require --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
+$ composer require --dev --working-dir=tools/php-cs-fixer friendsofphp/php-cs-fixer
 ```
 
 For more details and other installation methods, see
