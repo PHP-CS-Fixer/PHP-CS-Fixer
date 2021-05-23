@@ -469,9 +469,9 @@ class Tokens extends \SplFixedArray
     {
         if (3 === \func_num_args()) {
             if ($findEnd) {
-                Utils::triggerDeprecation('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.');
+                Utils::triggerDeprecation(new \RuntimeException('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, you can safely drop the argument.'));
             } else {
-                Utils::triggerDeprecation('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.');
+                Utils::triggerDeprecation(new \RuntimeException('Argument #3 of Tokens::findBlockEnd is deprecated and will be removed in 3.0, use Tokens::findBlockStart instead.'));
             }
         }
 
@@ -1029,7 +1029,7 @@ class Tokens extends \SplFixedArray
      */
     public function overrideAt($index, $token)
     {
-        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use offsetSet instead.');
+        Utils::triggerDeprecation(new \RuntimeException(__METHOD__.' is deprecated and will be removed in 3.0, use offsetSet instead.'));
         self::$isLegacyMode = true;
 
         $this[$index]->override($token);

@@ -52,10 +52,10 @@ class RuleSet implements RuleSetInterface
             if (true !== $value && false !== $value && !\is_array($value)) {
                 // @TODO drop me on 3.0
                 if (null === $value) {
-                    Utils::triggerDeprecation(
-                        'To disable the rule, use "FALSE" instead of "NULL".',
-                        InvalidFixerConfigurationException::class
-                    );
+                    Utils::triggerDeprecation(new InvalidFixerConfigurationException(
+                        $name,
+                        'To disable the rule, use "FALSE" instead of "NULL".'
+                    ));
 
                     continue;
                 }
@@ -106,7 +106,7 @@ class RuleSet implements RuleSetInterface
      */
     public static function create(array $set = [])
     {
-        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.');
+        Utils::triggerDeprecation(new \RuntimeException(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.'));
 
         return new self($set);
     }
@@ -116,7 +116,7 @@ class RuleSet implements RuleSetInterface
      */
     public function getSetDefinitionNames()
     {
-        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.');
+        Utils::triggerDeprecation(new \RuntimeException(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.'));
 
         return RuleSets::getSetDefinitionNames();
     }

@@ -29,12 +29,12 @@ final class AccessibleObject
      */
     public function __construct($object)
     {
-        Utils::triggerDeprecation(
+        Utils::triggerDeprecation(new \RuntimeException(
             sprintf(
                 'The "%s" class is deprecated and will be removed in 3.0 version. Use "php-cs-fixer/accessible-object" package instead.',
                 __CLASS__
             )
-        );
+        ));
 
         $this->object = $object;
         $this->reflection = new \ReflectionClass($object);

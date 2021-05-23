@@ -84,7 +84,9 @@ final class FixerConfigurationResolverRootless implements FixerConfigurationReso
             $passedNames = array_keys($options);
 
             if (!empty(array_diff($passedNames, $names))) {
-                Utils::triggerDeprecation("Passing \"{$this->root}\" at the root of the configuration for rule \"{$this->fixerName}\" is deprecated and will not be supported in 3.0, use \"{$this->root}\" => array(...) option instead.");
+                Utils::triggerDeprecation(new \RuntimeException(
+                    "Passing \"{$this->root}\" at the root of the configuration for rule \"{$this->fixerName}\" is deprecated and will not be supported in 3.0, use \"{$this->root}\" => array(...) option instead."
+                ));
 
                 $options = [$this->root => $options];
             }

@@ -43,9 +43,9 @@ final class FixerDefinition implements FixerDefinitionInterface
         $riskyDescription = null
     ) {
         if (6 === \func_num_args()) {
-            Utils::triggerDeprecation('Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.');
+            Utils::triggerDeprecation(new \RuntimeException('Arguments #5 and #6 of FixerDefinition::__construct() are deprecated and will be removed in 3.0, use argument #4 instead.'));
         } elseif (5 === \func_num_args()) {
-            Utils::triggerDeprecation('Argument #5 of FixerDefinition::__construct() is deprecated and will be removed in 3.0.');
+            Utils::triggerDeprecation(new \RuntimeException('Argument #5 of FixerDefinition::__construct() is deprecated and will be removed in 3.0.'));
         } else {
             $riskyDescription = $configurationDescription;
             $configurationDescription = null;
@@ -71,14 +71,20 @@ final class FixerDefinition implements FixerDefinitionInterface
 
     public function getConfigurationDescription()
     {
-        Utils::triggerDeprecation(sprintf('%s is deprecated and will be removed in 3.0.', __METHOD__));
+        Utils::triggerDeprecation(new \RuntimeException(sprintf(
+            '%s is deprecated and will be removed in 3.0.',
+            __METHOD__
+        )));
 
         return $this->configurationDescription;
     }
 
     public function getDefaultConfiguration()
     {
-        Utils::triggerDeprecation(sprintf('%s is deprecated and will be removed in 3.0.', __METHOD__));
+        Utils::triggerDeprecation(new \RuntimeException(sprintf(
+            '%s is deprecated and will be removed in 3.0.',
+            __METHOD__
+        )));
 
         return $this->defaultConfiguration;
     }

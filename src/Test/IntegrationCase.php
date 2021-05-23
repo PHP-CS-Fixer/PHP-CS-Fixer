@@ -57,7 +57,10 @@ final class IntegrationCase
             $inputCode
         );
 
-        Utils::triggerDeprecation(sprintf('The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.', __CLASS__));
+        Utils::triggerDeprecation(new \RuntimeException(sprintf(
+            'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
+            __CLASS__
+        )));
     }
 
     public function hasInputCode()
@@ -117,7 +120,10 @@ final class IntegrationCase
      */
     public function shouldCheckPriority()
     {
-        Utils::triggerDeprecation(sprintf('The "%s" method is deprecated. You should stop using it, as it will be removed in 3.0 version.', __METHOD__));
+        Utils::triggerDeprecation(new \RuntimeException(sprintf(
+            'The "%s" method is deprecated. You should stop using it, as it will be removed in 3.0 version.',
+            __METHOD__
+        )));
 
         $settings = $this->base->getSettings();
 

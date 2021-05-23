@@ -194,7 +194,9 @@ class Sample
                 ->setNormalizer(static function (Options $options, $values) {
                     $deprecated = array_intersect($values, self::SUPPORTED_TYPES);
                     if (\count($deprecated) > 0) {
-                        Utils::triggerDeprecation('A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.');
+                        Utils::triggerDeprecation(new \RuntimeException(
+                            'A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.'
+                        ));
 
                         return array_fill_keys($deprecated, self::SPACING_ONE);
                     }
