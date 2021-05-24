@@ -565,3 +565,5 @@ Whitespace
     Remove trailing whitespace at the end of blank lines.
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
     A PHP file without end tag must always end with a single empty line feed.
+- `types_spaces <./whitespace/types_spaces.rst>`_
+    A single space or none should be around union type operator.
