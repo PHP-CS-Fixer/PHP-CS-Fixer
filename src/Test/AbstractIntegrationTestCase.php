@@ -24,12 +24,12 @@ abstract class AbstractIntegrationTestCase extends BaseAbstractIntegrationTestCa
 {
     public function __construct($name = null, array $data = [], $dataName = '')
     {
-        Utils::triggerDeprecation(
+        Utils::triggerDeprecation(new \RuntimeException(
             sprintf(
                 'The "%s" class is deprecated. You should stop using it, as it will be removed in 3.0 version.',
                 __CLASS__
             )
-        );
+        ));
 
         parent::__construct($name, $data, $dataName);
     }

@@ -320,10 +320,9 @@ switch($a) {
                 ->setNormalizer(static function (Options $options, $tokens) use ($that) {
                     foreach ($tokens as &$token) {
                         if ('useTrait' === $token) {
-                            Utils::triggerDeprecation(
-                                "Token \"useTrait\" in option \"tokens\" for rule \"{$that->getName()}\" is deprecated and will be removed in 3.0, use \"use_trait\" instead.",
-                                InvalidConfigurationException::class
-                            );
+                            Utils::triggerDeprecation(new InvalidConfigurationException(
+                                "Token \"useTrait\" in option \"tokens\" for rule \"{$that->getName()}\" is deprecated and will be removed in 3.0, use \"use_trait\" instead."
+                            ));
                             $token = 'use_trait';
 
                             break;

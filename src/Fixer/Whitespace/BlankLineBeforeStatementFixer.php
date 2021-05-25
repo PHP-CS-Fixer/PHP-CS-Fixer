@@ -89,7 +89,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
 
         foreach ($this->configuration['statements'] as $key) {
             if ('die' === $key) {
-                Utils::triggerDeprecation('Option "die" is deprecated, use "exit" instead.');
+                Utils::triggerDeprecation(new \RuntimeException('Option "die" is deprecated, use "exit" instead.'));
             }
 
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
