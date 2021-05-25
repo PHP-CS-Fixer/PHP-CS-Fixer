@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-05-22T08:57:50Z
+
+Hi and thanks for you PR!
+
+It seems the current listing layout was done on purpose by @keradus so I don't think we need to change it :)
+
+---------------------------------------------------------------------------
+
+by exussum12 at 2021-05-22T09:00:05Z
+
+The spacing makes this not get picked up correctly. I re made the PR as I targeted 3. If you merge this pr github will correctly identify the licence
+
+---------------------------------------------------------------------------
+
+by exussum12 at 2021-05-22T09:01:14Z
+
+See https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5716
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-05-22T09:03:29Z
+
+sorry just saw it :+1:
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-22T09:19:49Z
+
+[![Coverage Status](https://coveralls.io/builds/39915707/badge)](https://coveralls.io/builds/39915707)
+
+Coverage remained the same at 91.549% when pulling **68ba302a52c4e53e8e9e59d201c9a9d5a055365c on exussum12:patch-2** into **f196ab00f59b24ea36795ea0b42728c0f90f8323 on FriendsOfPHP:2.19**.
