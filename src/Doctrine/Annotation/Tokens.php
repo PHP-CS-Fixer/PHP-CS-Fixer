@@ -41,6 +41,7 @@ final class Tokens extends \SplFixedArray
         $content = $input->getContent();
         $ignoredTextPosition = 0;
         $currentPosition = 0;
+        $token = null;
         while (false !== $nextAtPosition = strpos($content, '@', $currentPosition)) {
             if (0 !== $nextAtPosition && !Preg::match('/\s/', $content[$nextAtPosition - 1])) {
                 $currentPosition = $nextAtPosition + 1;
@@ -288,7 +289,7 @@ final class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         if (!isset($this[$index])) {
-            throw new \OutOfBoundsException(sprintf('Index %s is invalid or does not exist.', $index));
+            throw new \OutOfBoundsException(sprintf('Index "%s" is invalid or does not exist.', $index));
         }
 
         $max = \count($this) - 1;

@@ -33,6 +33,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var null|int
+     */
     private $candidateTokenKind;
 
     /**

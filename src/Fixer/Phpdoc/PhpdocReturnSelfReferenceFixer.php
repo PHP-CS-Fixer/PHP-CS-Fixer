@@ -34,6 +34,9 @@ use Symfony\Component\OptionsResolver\Options;
  */
 final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var string[]
+     */
     private static $toTypes = [
         '$this',
         'static',

@@ -305,7 +305,7 @@ function foo() {
         return false;
     }
 
-    private static function getNonBooleanOperators()
+    private static function getNonBooleanOperators(): array
     {
         return array_merge(
             [

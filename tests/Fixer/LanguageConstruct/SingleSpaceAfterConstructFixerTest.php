@@ -3009,6 +3009,76 @@ $arr = [/* empty */];
     }
 
     /**
+     * @dataProvider provideWithNamespaceCases
+     */
+    public function testWithNamespace(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'constructs' => [
+                'namespace',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWithNamespaceCases(): iterable
+    {
+        yield 'simple' => [
+            '<?php
+namespace Foo;
+namespace Bar;',
+            '<?php
+namespace    Foo;
+namespace    Bar;',
+        ];
+
+        yield 'simple with newlines' => [
+            '<?php
+namespace Foo;
+namespace Bar;',
+            '<?php
+namespace
+Foo;
+namespace
+Bar;',
+        ];
+
+        yield 'braces' => [
+            '<?php
+namespace Foo {}
+namespace Bar {}',
+            '<?php
+namespace    Foo {}
+namespace    Bar {}',
+        ];
+
+        yield 'braces with newlines' => [
+            '<?php
+namespace Foo {}
+namespace Bar {}',
+            '<?php
+namespace
+Foo {}
+namespace
+Bar {}',
+        ];
+
+        yield 'with // comment' => [
+            '<?php
+namespace // comment
+Foo;',
+        ];
+
+        yield 'with /* comment */' => [
+            '<?php
+namespace /* comment */ Foo;',
+            '<?php
+namespace/* comment */ Foo;',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */

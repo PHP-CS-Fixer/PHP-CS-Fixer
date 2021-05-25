@@ -48,13 +48,13 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
         parent::configure($configuration);
 
         if ('lower' === $this->configuration['case']) {
-            $this->fixFunction = static function (string $content) {
+            $this->fixFunction = static function (string $content): string {
                 return strtolower($content);
             };
         }
 
         if ('upper' === $this->configuration['case']) {
-            $this->fixFunction = static function (string $content) {
+            $this->fixFunction = static function (string $content): string {
                 return strtoupper($content);
             };
         }

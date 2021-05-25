@@ -66,29 +66,19 @@ Rule sets
 The rule is part of the following rule sets:
 
 @PHP71Migration
-  Using the `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
-
-  ``['elements' => ['const', 'method', 'property']]``
+  Using the `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
 @PHP73Migration
-  Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
-
-  ``['elements' => ['const', 'method', 'property']]``
+  Using the `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
 @PHP74Migration
-  Using the `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
-
-  ``['elements' => ['const', 'method', 'property']]``
+  Using the `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
 @PHP80Migration
-  Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
-
-  ``['elements' => ['const', 'method', 'property']]``
+  Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
 @PSR12
-  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:
-
-  ``['elements' => ['const', 'method', 'property']]``
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``visibility_required`` rule with the default config.
 
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``visibility_required`` rule with the config below:

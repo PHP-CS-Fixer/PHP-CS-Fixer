@@ -108,14 +108,14 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     /**
      * {@inheritdoc}
      */
-    protected function fixAnnotations(Tokens $tokens): void
+    protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         if ($this->configuration['around_parentheses']) {
-            $this->fixSpacesAroundParentheses($tokens);
+            $this->fixSpacesAroundParentheses($doctrineAnnotationTokens);
         }
 
         if ($this->configuration['around_commas']) {
-            $this->fixSpacesAroundCommas($tokens);
+            $this->fixSpacesAroundCommas($doctrineAnnotationTokens);
         }
 
         if (
@@ -126,7 +126,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             || null !== $this->configuration['before_array_assignments_colon']
             || null !== $this->configuration['after_array_assignments_colon']
         ) {
-            $this->fixAroundAssignments($tokens);
+            $this->fixAroundAssignments($doctrineAnnotationTokens);
         }
     }
 
