@@ -47,6 +47,9 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
 
     private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
 
+    /**
+     * @var string
+     */
     private $singleLineWhitespaceOptions = " \t";
 
     /**

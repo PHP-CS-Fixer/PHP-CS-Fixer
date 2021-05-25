@@ -31,6 +31,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var null|string
+     */
     private $fixCallback;
 
     /**

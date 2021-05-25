@@ -44,6 +44,9 @@ final class DocumentationGenerator
      */
     private $differ;
 
+    /**
+     * @var string
+     */
     private $path;
 
     public function __construct()

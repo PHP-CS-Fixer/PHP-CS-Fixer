@@ -134,15 +134,49 @@ final class ConfigurationResolver
     ];
 
     private $cacheFile;
+
+    /**
+     * @var null|CacheManagerInterface
+     */
     private $cacheManager;
+
+    /**
+     * @var null|DifferInterface
+     */
     private $differ;
+
+    /**
+     * @var null|Directory
+     */
     private $directory;
+
+    /**
+     * @var null|iterable
+     */
     private $finder;
+
     private $format;
+
+    /**
+     * @var null|Linter
+     */
     private $linter;
+
     private $path;
+
+    /**
+     * @var null|string
+     */
     private $progress;
+
+    /**
+     * @var null|RuleSet
+     */
     private $ruleSet;
+
+    /**
+     * @var null|bool
+     */
     private $usingCache;
 
     /**
