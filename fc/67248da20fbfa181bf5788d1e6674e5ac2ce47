@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-21T08:39:40Z
+
+[![Coverage Status](https://coveralls.io/builds/39957293/badge)](https://coveralls.io/builds/39957293)
+
+Coverage remained the same at 91.549% when pulling **e5e0bd9ed8ba4c82745474d16e534a9f73cb5289 on julienfalque:single-space-after-namespace** into **f196ab00f59b24ea36795ea0b42728c0f90f8323 on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-05-23T17:44:33Z
+
+Isn't changing the default a breaking change?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-24T17:44:41Z
+
+> Isn't changing the default a breaking change?
+
+This already happened (e.g. #5406) but I would say it's fine here: it's part of the initial intent of this rule but was overlooked. So this PR is a an enhancement/bugfix rather than a new feature.
