@@ -269,17 +269,23 @@ final class UtilsTest extends TestCase
 
         $this->expectDeprecation('The message');
 
-        Utils::triggerDeprecation('The message', \DomainException::class);
+        Utils::triggerDeprecation(new \DomainException('The message'));
     }
 
     public function testTriggerDeprecationWhenFutureModeIsOn(): void
     {
         putenv('PHP_CS_FIXER_FUTURE_MODE=1');
 
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('The message');
+        $exception = new \DomainException('The message');
+        $futureModeException = null;
 
-        Utils::triggerDeprecation('The message', \DomainException::class);
+        try {
+            Utils::triggerDeprecation($exception);
+        } catch (\Exception $futureModeException) {
+        }
+
+        static::assertInstanceOf(\RuntimeException::class, $futureModeException);
+        static::assertSame($exception, $futureModeException->getPrevious());
     }
 
     private function createFixerDouble(string $name, int $priority)

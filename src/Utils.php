@@ -160,11 +160,17 @@ final class Utils
     /**
      * Handle triggering deprecation error.
      */
-    public static function triggerDeprecation(string $message, string $exceptionClass = \RuntimeException::class): void
+    public static function triggerDeprecation(\Exception $futureException)
     {
         if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            throw new $exceptionClass("{$message} This check was performed as `PHP_CS_FIXER_FUTURE_MODE` env var is set.");
+            throw new \RuntimeException(
+                'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
+                0,
+                $futureException
+            );
         }
+
+        $message = $futureException->getMessage();
 
         self::$deprecations[$message] = true;
         @trigger_error($message, E_USER_DEPRECATED);
