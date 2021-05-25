@@ -3184,6 +3184,79 @@ $arr = [/* empty */];
     }
 
     /**
+     * @dataProvider provideWithNamespaceCases
+     *
+     * @param string      $expected
+     * @param null|string $input
+     */
+    public function testWithNamespace($expected, $input = null)
+    {
+        $this->fixer->configure([
+            'constructs' => [
+                'namespace',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideWithNamespaceCases()
+    {
+        yield 'simple' => [
+            '<?php
+namespace Foo;
+namespace Bar;',
+            '<?php
+namespace    Foo;
+namespace    Bar;',
+        ];
+
+        yield 'simple with newlines' => [
+            '<?php
+namespace Foo;
+namespace Bar;',
+            '<?php
+namespace
+Foo;
+namespace
+Bar;',
+        ];
+
+        yield 'braces' => [
+            '<?php
+namespace Foo {}
+namespace Bar {}',
+            '<?php
+namespace    Foo {}
+namespace    Bar {}',
+        ];
+
+        yield 'braces with newlines' => [
+            '<?php
+namespace Foo {}
+namespace Bar {}',
+            '<?php
+namespace
+Foo {}
+namespace
+Bar {}',
+        ];
+
+        yield 'with // comment' => [
+            '<?php
+namespace // comment
+Foo;',
+        ];
+
+        yield 'with /* comment */' => [
+            '<?php
+namespace /* comment */ Foo;',
+            '<?php
+namespace/* comment */ Foo;',
+        ];
+    }
+
+    /**
      * @param string $input
      * @param string $expected
      *
