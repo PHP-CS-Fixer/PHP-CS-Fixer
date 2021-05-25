@@ -29,6 +29,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ListFilesCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'list-files';
 
     /**

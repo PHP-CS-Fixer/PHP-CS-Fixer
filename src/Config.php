@@ -21,17 +21,64 @@ use PhpCsFixer\Fixer\FixerInterface;
  */
 class Config implements ConfigInterface
 {
+    /**
+     * @var string
+     */
     private $cacheFile = '.php_cs.cache';
+
+    /**
+     * @var FixerInterface[]
+     */
     private $customFixers = [];
+
+    /**
+     * @var null|iterable
+     */
     private $finder;
+
+    /**
+     * @var string
+     */
     private $format = 'txt';
+
+    /**
+     * @var bool
+     */
     private $hideProgress = false;
+
+    /**
+     * @var string
+     */
     private $indent = '    ';
+
+    /**
+     * @var bool
+     */
     private $isRiskyAllowed = false;
+
+    /**
+     * @var string
+     */
     private $lineEnding = "\n";
+
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var null|string
+     */
     private $phpExecutable;
+
+    /**
+     * @var array
+     */
     private $rules = ['@PSR2' => true];
+
+    /**
+     * @var bool
+     */
     private $usingCache = true;
 
     public function __construct($name = 'default')

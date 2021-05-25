@@ -43,6 +43,9 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurat
 
     private $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE];
 
+    /**
+     * @var string
+     */
     private $singleLineWhitespaceOptions = " \t";
 
     /**
