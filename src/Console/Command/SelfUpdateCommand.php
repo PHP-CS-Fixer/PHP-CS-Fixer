@@ -33,6 +33,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class SelfUpdateCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'self-update';
 
     /**
