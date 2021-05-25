@@ -203,7 +203,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         ;
     }
 
-    private function cleanComment(string $comment)
+    private function cleanComment(string $comment): string
     {
         $comment = Preg::replace('/^\/\*\*|\*\/$/', '', $comment);
 

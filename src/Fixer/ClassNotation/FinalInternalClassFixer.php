@@ -127,7 +127,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $annotationsAsserts = [static function (array $values) {
+        $annotationsAsserts = [static function (array $values): bool {
             foreach ($values as $value) {
                 if (!\is_string($value) || '' === $value) {
                     return false;
@@ -137,7 +137,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return true;
         }];
 
-        $annotationsNormalizer = static function (Options $options, array $value) {
+        $annotationsNormalizer = static function (Options $options, array $value): array {
             $newValue = [];
             foreach ($value as $key) {
                 if ('@' === $key[0]) {

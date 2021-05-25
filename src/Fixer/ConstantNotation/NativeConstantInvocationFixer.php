@@ -201,7 +201,7 @@ namespace {
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $constantChecker = static function (array $value) {
+        $constantChecker = static function (array $value): bool {
             foreach ($value as $constantName) {
                 if (!\is_string($constantName) || '' === trim($constantName) || trim($constantName) !== $constantName) {
                     throw new InvalidOptionsException(sprintf(

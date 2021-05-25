@@ -219,7 +219,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     /**
      * @return int[]
      */
-    private function getAllowedKinds()
+    private function getAllowedKinds(): array
     {
         return array_merge(
             [

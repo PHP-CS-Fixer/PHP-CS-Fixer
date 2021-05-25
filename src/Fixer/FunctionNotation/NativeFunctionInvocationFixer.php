@@ -406,7 +406,7 @@ $c = get_class($d);
      *
      * @return array<string, true> all function names lower cased
      */
-    private function normalizeFunctionNames(array $functionNames)
+    private function normalizeFunctionNames(array $functionNames): array
     {
         foreach ($functionNames as $index => $functionName) {
             $functionNames[strtolower($functionName)] = true;

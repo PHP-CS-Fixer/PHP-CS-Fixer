@@ -160,7 +160,7 @@ final class Utils
     /**
      * Handle triggering deprecation error.
      */
-    public static function triggerDeprecation(\Exception $futureException)
+    public static function triggerDeprecation(\Exception $futureException): void
     {
         if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
             throw new \RuntimeException(

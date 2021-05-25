@@ -209,7 +209,7 @@ final class TypeExpression
         return false;
     }
 
-    private function getParentType($type1, $type2)
+    private function getParentType(string $type1, string $type2): ?string
     {
         $types = [
             $this->normalize($type1),
