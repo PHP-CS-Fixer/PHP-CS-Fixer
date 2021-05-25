@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-23T15:56:18Z
+
+[![Coverage Status](https://coveralls.io/builds/39928845/badge)](https://coveralls.io/builds/39928845)
+
+Coverage increased (+0.01%) to 91.563% when pulling **6f74ce3694c995b9eb05f1b057f87a9287032d48 on julienfalque:fix-deprecation-to-exception** into **f196ab00f59b24ea36795ea0b42728c0f90f8323 on FriendsOfPHP:2.19**.
