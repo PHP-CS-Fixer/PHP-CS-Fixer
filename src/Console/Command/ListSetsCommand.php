@@ -74,8 +74,6 @@ final class ListSetsCommand extends Command
 
     /**
      * @param string $format
-     *
-     * @return ReporterInterface
      */
     private function resolveReporterWithFactory($format, ReporterFactory $factory): ReporterInterface
     {

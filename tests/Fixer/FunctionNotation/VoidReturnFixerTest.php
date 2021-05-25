@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Mark Nielsen
@@ -237,5 +238,49 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 '<?php fn($a) => var_dump($a);',
             ],
         ];
+    }
+
+    /**
+     * Test if magic method is handled without causing syntax error.
+     *
+     * @dataProvider provideMethodWillNotCauseSyntaxErrorCases
+     */
+    public function testMethodWillNotCauseSyntaxError(string $method, int $arguments = 0, bool $static = false): void
+    {
+        $tokens = Tokens::fromCode(sprintf(
+            '<?php class Test { public%s function %s(%s) {} }',
+            $static ? ' static' : '',
+            $method,
+            implode(',', array_map(
+                function ($n) { return sprintf('$x%d', $n); },
+                array_keys(array_fill(0, $arguments, true))
+            ))
+        ));
+
+        $this->fixer->fix($this->getTestFile(), $tokens);
+
+        static::assertNull($this->lintSource($tokens->generateCode()));
+    }
+
+    public static function provideMethodWillNotCauseSyntaxErrorCases(): iterable
+    {
+        // List: https://www.php.net/manual/en/language.oop5.magic.php
+        yield ['__construct'];
+        yield ['__destruct'];
+        yield ['__call', 2];
+        yield ['__callStatic', 2, true];
+        yield ['__get', 1];
+        yield ['__set', 2];
+        yield ['__isset', 1];
+        yield ['__unset', 1];
+        yield ['__sleep'];
+        yield ['__wakeup'];
+        yield ['__serialize'];
+        yield ['__unserialize', 1];
+        yield ['__toString'];
+        yield ['__invoke'];
+        yield ['__set_state', 1, true];
+        yield ['__clone'];
+        yield ['__debugInfo'];
     }
 }
