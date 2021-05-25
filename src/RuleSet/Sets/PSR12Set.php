@@ -55,13 +55,7 @@ final class PSR12Set extends AbstractRuleSetDescription
             'single_blank_line_before_namespace' => true,
             'single_trait_insert_per_statement' => true,
             'ternary_operator_spaces' => true,
-            'visibility_required' => [
-                'elements' => [
-                    'const',
-                    'method',
-                    'property',
-                ],
-            ],
+            'visibility_required' => true,
         ];
     }
 
