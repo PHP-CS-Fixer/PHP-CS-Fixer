@@ -691,7 +691,7 @@ final class ConfigurationResolver
                     ? sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
                     : sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
 
-                Utils::triggerDeprecation("Rule \"{$fixerName}\" is deprecated{$messageEnd}");
+                Utils::triggerDeprecation(new \RuntimeException("Rule \"{$fixerName}\" is deprecated{$messageEnd}"));
             }
         }
     }
