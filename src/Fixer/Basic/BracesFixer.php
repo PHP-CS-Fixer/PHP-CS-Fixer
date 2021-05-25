@@ -493,7 +493,7 @@ class Foo
                             $whitespace = $nextWhitespace.$this->whitespacesConfig->getLineEnding().$indent;
 
                             if (!$nextNonWhitespaceNestToken->equals('}')) {
-                                $determineIsIndentableBlockContent = static function (int $contentIndex) use ($tokens) {
+                                $determineIsIndentableBlockContent = static function (int $contentIndex) use ($tokens): bool {
                                     if (!$tokens[$contentIndex]->isComment()) {
                                         return true;
                                     }

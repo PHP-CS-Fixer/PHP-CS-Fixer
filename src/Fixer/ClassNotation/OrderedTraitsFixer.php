@@ -160,7 +160,7 @@ final class OrderedTraitsFixer extends AbstractFixer
         /**
          * @return string
          */
-        $toTraitName = static function (Tokens $use) {
+        $toTraitName = static function (Tokens $use): string {
             $string = '';
 
             foreach ($use as $token) {
