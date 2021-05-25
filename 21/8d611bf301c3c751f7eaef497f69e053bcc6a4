@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-15T16:18:34Z
+
+[![Coverage Status](https://coveralls.io/builds/39759707/badge)](https://coveralls.io/builds/39759707)
+
+Coverage remained the same at 91.549% when pulling **5f05194c8e82d547e45e51b6b4dc31bec5c8f750 on kubawerlos:fix_VoidReturnFixer** into **f196ab00f59b24ea36795ea0b42728c0f90f8323 on FriendsOfPHP:2.19**.
