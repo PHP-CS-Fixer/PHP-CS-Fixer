@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\OrderedInterfacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -25,11 +28,8 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixAlphaCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixAlpha($expected, $input = null)
+    public function testFixAlpha(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -90,11 +90,8 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP 7.0
      * @dataProvider provideFixAlpha70Cases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixAlpha70($expected, $input = null)
+    public function testFixAlpha70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -139,13 +136,10 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixAlphaDescendCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixAlphaDescend($expected, $input = null)
+    public function testFixAlphaDescend(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['direction' => 'descend']);
+        $this->fixer->configure([OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND]);
         $this->doTest($expected, $input);
     }
 
@@ -168,13 +162,10 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixLengthCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixLength($expected, $input = null)
+    public function testFixLength(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['order' => 'length']);
+        $this->fixer->configure([OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH]);
         $this->doTest($expected, $input);
     }
 
@@ -211,15 +202,12 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixLengthDescendCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixLengthDescend($expected, $input = null)
+    public function testFixLengthDescend(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
-            'order' => 'length',
-            'direction' => 'descend',
+            OrderedInterfacesFixer::OPTION_ORDER => OrderedInterfacesFixer::ORDER_LENGTH,
+            OrderedInterfacesFixer::OPTION_DIRECTION => OrderedInterfacesFixer::DIRECTION_DESCEND,
         ]);
         $this->doTest($expected, $input);
     }

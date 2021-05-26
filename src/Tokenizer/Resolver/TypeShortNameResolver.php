@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,12 +28,8 @@ final class TypeShortNameResolver
     /**
      * This method will resolve the shortName of a FQCN if possible or otherwise return the inserted type name.
      * E.g.: use Foo\Bar => "Bar".
-     *
-     * @param string $typeName
-     *
-     * @return string
      */
-    public function resolve(Tokens $tokens, $typeName)
+    public function resolve(Tokens $tokens, string $typeName): string
     {
         // First match explicit imports:
         $useMap = $this->getUseMapFromTokens($tokens);
@@ -71,7 +69,7 @@ final class TypeShortNameResolver
     /**
      * @return array<string, string> A list of all FQN namespaces in the file with the short name as key
      */
-    private function getNamespacesFromTokens(Tokens $tokens)
+    private function getNamespacesFromTokens(Tokens $tokens): array
     {
         return array_map(static function (NamespaceAnalysis $info) {
             return $info->getFullName();
@@ -81,7 +79,7 @@ final class TypeShortNameResolver
     /**
      * @return array<string, string> A list of all FQN use statements in the file with the short name as key
      */
-    private function getUseMapFromTokens(Tokens $tokens)
+    private function getUseMapFromTokens(Tokens $tokens): array
     {
         $map = [];
 

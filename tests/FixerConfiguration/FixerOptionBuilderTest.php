@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,38 +26,38 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class FixerOptionBuilderTest extends TestCase
 {
-    public function testSetDefault()
+    public function testSetDefault(): void
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
         static::assertSame($builder, $builder->setDefault('baz'));
     }
 
-    public function testSetAllowedTypes()
+    public function testSetAllowedTypes(): void
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
         static::assertSame($builder, $builder->setAllowedTypes(['bool']));
     }
 
-    public function testSetAllowedValues()
+    public function testSetAllowedValues(): void
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
         static::assertSame($builder, $builder->setAllowedValues(['baz']));
     }
 
-    public function testSetNormalizer()
+    public function testSetNormalizer(): void
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
-        static::assertSame($builder, $builder->setNormalizer(static function () {}));
+        static::assertSame($builder, $builder->setNormalizer(static function (): void {}));
     }
 
-    public function testGetOption()
+    public function testGetOption(): void
     {
         $builder = new FixerOptionBuilder('foo', 'Bar.');
         $regularOption = $builder
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(static function () {})
+            ->setNormalizer(static function (): void {})
             ->getOption()
         ;
 
@@ -65,7 +67,7 @@ final class FixerOptionBuilderTest extends TestCase
             ->setDefault('baz')
             ->setAllowedTypes(['bool'])
             ->setAllowedValues([true, false])
-            ->setNormalizer(static function () {})
+            ->setNormalizer(static function (): void {})
             ->setDeprecationMessage('Deprecation message')
             ->getOption()
         ;

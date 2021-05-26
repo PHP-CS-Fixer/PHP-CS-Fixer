@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,21 +25,15 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
 final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithBracesCases
      */
-    public function testFixWithBraces($expected, $input = null)
+    public function testFixWithBraces(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'with_braces']);
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithBracesCases()
+    public function provideFixWithBracesCases(): array
     {
         $cases = $this->createTestCases([
             ['
@@ -284,12 +280,9 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithoutBracesCases
      */
-    public function testFixWithoutBraces($expected, $input = null)
+    public function testFixWithoutBraces(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
 
@@ -297,10 +290,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithoutBracesCases()
+    public function provideFixWithoutBracesCases(): array
     {
         $cases = $this->createTestCases([
             ['

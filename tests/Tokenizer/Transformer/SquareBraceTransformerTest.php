@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,13 +32,11 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @requires PHP 7.1
      *
-     * @param string $source
-     * @param int[]  $inspectIndexes
-     * @param bool   $expected
+     * @param int[] $inspectIndexes
      *
      * @dataProvider provideIsShortArrayCases
      */
-    public function testIsShortArray($source, $inspectIndexes, $expected)
+    public function testIsShortArray(string $source, array $inspectIndexes, bool $expected): void
     {
         $transformer = new SquareBraceTransformer();
         $reflection = new \ReflectionObject($transformer);
@@ -82,11 +82,9 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -235,13 +233,12 @@ class Test
     }
 
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess71Cases
      * @requires PHP 7.1
      */
-    public function testProcess71($source, array $expectedTokens)
+    public function testProcess71(string $source, array $expectedTokens): void
     {
         $this->doTest(
             $source,
@@ -354,13 +351,12 @@ class Test
     }
 
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess72Cases
      * @requires PHP 7.2
      */
-    public function testProcess72($source, array $expectedTokens)
+    public function testProcess72(string $source, array $expectedTokens): void
     {
         $this->doTest(
             $source,

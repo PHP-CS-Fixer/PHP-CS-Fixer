@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\IncrementStyleFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -26,26 +29,20 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class IncrementStyleFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPreIncrementCases
      */
-    public function testFixPreIncrement($expected, $input = null)
+    public function testFixPreIncrement(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['style' => 'pre']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_PRE]);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPostIncrementCases
      */
-    public function testFixPostIncrement($expected, $input = null)
+    public function testFixPostIncrement(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure(['style' => 'post']);
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_POST]);
         $this->doTest($expected, $input);
     }
 

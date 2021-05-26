@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestCase
 {
-    public function testFixerContainsAllPhpunitStaticMethodsInItsList()
+    public function testFixerContainsAllPhpunitStaticMethodsInItsList(): void
     {
         $assertionRefClass = new \ReflectionClass(TestCase::class);
         $updatedStaticMethodsList = $assertionRefClass->getMethods(\ReflectionMethod::IS_PUBLIC);
@@ -44,7 +46,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         static::assertSame([], $missingMethods, sprintf('The following static methods from "%s" are missing from "%s::$staticMethods"', TestCase::class, PhpUnitTestCaseStaticMethodCallsFixer::class));
     }
 
-    public function testWrongConfigTypeForMethodsKey()
+    public function testWrongConfigTypeForMethodsKey(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/Unexpected "methods" key, expected any of ".*", got "integer#123"\.$/');
@@ -52,7 +54,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         $this->fixer->configure(['methods' => [123 => 1]]);
     }
 
-    public function testWrongConfigTypeForMethodsValue()
+    public function testWrongConfigTypeForMethodsValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/Unexpected value for method "assertSame", expected any of ".*", got "integer#123"\.$/');
@@ -61,12 +63,9 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -486,7 +485,7 @@ EOF
     /**
      * @requires PHP 7.0
      */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php

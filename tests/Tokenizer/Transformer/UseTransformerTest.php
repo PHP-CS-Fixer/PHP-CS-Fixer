@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,11 @@ use PhpCsFixer\Tokenizer\CT;
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens index => kind
      *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -98,13 +99,12 @@ final class UseTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens index => kind
      *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($source, array $expectedTokens = [])
+    public function testFix70(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -154,13 +154,12 @@ $a = new class(
     }
 
     /**
-     * @param string          $source
      * @param array<int, int> $expectedTokens index => kind
      *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($source, array $expectedTokens = [])
+    public function testFix72(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,23 +26,17 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class NoBreakCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFixWithExplicitDefaultConfiguration($expected, $input = null)
+    public function testFixWithExplicitDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'comment_text' => 'no break',
@@ -894,13 +890,10 @@ switch ($f) {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixPhp70Cases
      * @requires PHP 7.0
      */
-    public function testFixPhp70($expected, $input = null)
+    public function testFixPhp70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1007,12 +1000,9 @@ switch($a) {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixWithDifferentCommentTextCases
      */
-    public function testFixWithDifferentCommentText($expected, $input = null)
+    public function testFixWithDifferentCommentText(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'comment_text' => 'fall-through case!',
@@ -1024,7 +1014,7 @@ switch($a) {
     {
         $cases = $this->provideTestFixCases();
 
-        $replaceCommentText = static function ($php) {
+        $replaceCommentText = static function (string $php) {
             return strtr($php, [
                 'No break' => 'Fall-through case!',
                 'no break' => 'fall-through case!',
@@ -1071,12 +1061,9 @@ switch ($foo) {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixWithDifferentLineEndingCases
      */
-    public function testFixWithDifferentLineEnding($expected, $input = null)
+    public function testFixWithDifferentLineEnding(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
         $this->doTest($expected, $input);
@@ -1097,7 +1084,7 @@ switch ($foo) {
         return $cases;
     }
 
-    public function testFixWithCommentTextWithSpecialRegexpCharacters()
+    public function testFixWithCommentTextWithSpecialRegexpCharacters(): void
     {
         $this->fixer->configure([
             'comment_text' => '~***(//[No break here.]\\\\)***~',
@@ -1128,7 +1115,7 @@ switch ($foo) {
         );
     }
 
-    public function testFixWithCommentTextWithTrailingSpaces()
+    public function testFixWithCommentTextWithTrailingSpaces(): void
     {
         $this->fixer->configure([
             'comment_text' => 'no break     ',
@@ -1154,11 +1141,9 @@ switch ($foo) {
     }
 
     /**
-     * @param string $text
-     *
      * @dataProvider provideFixWithCommentTextContainingNewLinesCases
      */
-    public function testFixWithCommentTextContainingNewLines($text)
+    public function testFixWithCommentTextContainingNewLines(string $text): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[no_break_comment\] Invalid configuration: The comment text must not contain new lines\.$/');
@@ -1177,7 +1162,7 @@ switch ($foo) {
         ];
     }
 
-    public function testConfigureWithInvalidOptions()
+    public function testConfigureWithInvalidOptions(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[no_break_comment\] Invalid configuration: The option "foo" does not exist\. Defined options are: "comment_text"\.$/');
@@ -1186,13 +1171,10 @@ switch ($foo) {
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input)
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

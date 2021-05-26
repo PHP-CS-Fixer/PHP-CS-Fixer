@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,19 +27,19 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
  */
 final class SwitchAnalysisTest extends TestCase
 {
-    public function testCasesStart()
+    public function testCasesStart(): void
     {
         $analysis = new SwitchAnalysis(10, 20, []);
         static::assertSame(10, $analysis->getCasesStart());
     }
 
-    public function testCasesEnd()
+    public function testCasesEnd(): void
     {
         $analysis = new SwitchAnalysis(10, 20, []);
         static::assertSame(20, $analysis->getCasesEnd());
     }
 
-    public function testCases()
+    public function testCases(): void
     {
         $cases = [new CaseAnalysis(12), new CaseAnalysis(16)];
 

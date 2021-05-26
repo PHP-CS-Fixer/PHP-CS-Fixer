@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,13 +17,15 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -29,12 +33,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gert de Pagter <BackEndTea@gmail.com>
  */
-final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface, ConfigurationDefinitionFixerInterface
+final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'All PHPUnit test classes should be marked as internal.',
@@ -53,7 +57,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
      *
      * Must run before FinalInternalClassFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 68;
     }
@@ -61,7 +65,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $types = ['normal', 'final', 'abstract'];
 
@@ -77,7 +81,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     /**
      * {@inheritdoc}
      */
-    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
 
@@ -94,12 +98,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         }
     }
 
-    /**
-     * @param int $i
-     *
-     * @return bool
-     */
-    private function isAllowedByConfiguration(Tokens $tokens, $i)
+    private function isAllowedByConfiguration(Tokens $tokens, int $i): bool
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
         if ($tokens[$typeIndex]->isGivenKind(T_FINAL)) {
@@ -113,7 +112,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         return \in_array('normal', $this->configuration['types'], true);
     }
 
-    private function createDocBlock(Tokens $tokens, $docBlockIndex)
+    private function createDocBlock(Tokens $tokens, int $docBlockIndex): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
@@ -125,7 +124,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         $tokens->insertAt($index, $toInsert);
     }
 
-    private function updateDocBlockIfNeeded(Tokens $tokens, $docBlockIndex)
+    private function updateDocBlockIfNeeded(Tokens $tokens, int $docBlockIndex): void
     {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
         if (!empty($doc->getAnnotationsOfType('internal'))) {
@@ -139,11 +138,9 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
     }
 
     /**
-     * @param int $docBlockIndex
-     *
      * @return Line[]
      */
-    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, $docBlockIndex)
+    private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex): array
     {
         $lines = $docBlock->getLines();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
@@ -153,12 +150,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         return $lines;
     }
 
-    /**
-     * @param int $docBlockIndex
-     *
-     * @return DocBlock
-     */
-    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, $docBlockIndex)
+    private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, int $docBlockIndex): DocBlock
     {
         $lines = $doc->getLines();
         if (1 === \count($lines) && empty($doc->getAnnotationsOfType('internal'))) {

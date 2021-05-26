@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,35 +21,18 @@ namespace PhpCsFixer\Cache;
  */
 interface SignatureInterface
 {
-    /**
-     * @return string
-     */
-    public function getPhpVersion();
+    public function getPhpVersion(): string;
 
-    /**
-     * @return string
-     */
-    public function getFixerVersion();
+    public function getFixerVersion(): string;
 
-    /**
-     * @return string
-     */
-    public function getIndent();
+    public function getIndent(): string;
 
-    /**
-     * @return string
-     */
-    public function getLineEnding();
+    public function getLineEnding(): string;
 
-    /**
-     * @return array
-     */
-    public function getRules();
+    public function getRules(): array;
 
     /**
      * @param SignatureInterface $signature
-     *
-     * @return bool
      */
-    public function equals(self $signature);
+    public function equals(self $signature): bool;
 }

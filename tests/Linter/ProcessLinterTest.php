@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
 
 /**
@@ -24,7 +27,7 @@ use PhpCsFixer\Linter\ProcessLinter;
  */
 final class ProcessLinterTest extends AbstractLinterTestCase
 {
-    public function testIsAsync()
+    public function testIsAsync(): void
     {
         static::assertTrue($this->createLinter()->isAsync());
     }
@@ -32,7 +35,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
     /**
      * {@inheritdoc}
      */
-    protected function createLinter()
+    protected function createLinter(): LinterInterface
     {
         return new ProcessLinter();
     }

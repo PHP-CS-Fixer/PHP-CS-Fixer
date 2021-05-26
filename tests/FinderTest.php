@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -21,7 +23,7 @@ use PhpCsFixer\Finder;
  */
 final class FinderTest extends TestCase
 {
-    public function testThatDefaultFinderDoesNotSpecifyAnyDirectory()
+    public function testThatDefaultFinderDoesNotSpecifyAnyDirectory(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessageMatches('/^You must call (?:the in\(\) method)|(?:one of in\(\) or append\(\)) methods before iterating over a Finder\.$/');

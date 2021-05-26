@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,22 +28,16 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixToCamelCase($expected, $input = null)
+    public function testFixToCamelCase(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $camelExpected
-     * @param null|string $camelInput
      */
-    public function testFixToSnakeCase($camelExpected, $camelInput = null)
+    public function testFixToSnakeCase(string $camelExpected, ?string $camelInput = null): void
     {
         if (null === $camelInput) {
             $expected = $camelExpected;
@@ -55,10 +51,7 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'skip non phpunit methods' => [

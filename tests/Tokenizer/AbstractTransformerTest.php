@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AbstractTransformerTest extends TestCase
 {
-    public function testNameAndPriorityDefault()
+    public function testNameAndPriorityDefault(): void
     {
         $transformer = new FooTransformer();
 
@@ -32,7 +34,7 @@ final class AbstractTransformerTest extends TestCase
         static::assertSame('foo', $transformer->getName());
     }
 
-    public function testCustomTokens()
+    public function testCustomTokens(): void
     {
         $transformer = new FooTransformer();
 

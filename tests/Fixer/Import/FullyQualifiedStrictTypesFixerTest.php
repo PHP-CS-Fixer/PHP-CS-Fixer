@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,11 +29,8 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      * @requires PHP 7.0
      *
      * @dataProvider provideCodeWithReturnTypesCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testCodeWithReturnTypes($expected, $input = null)
+    public function testCodeWithReturnTypes(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -40,22 +39,16 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      * @requires PHP 7.1
      *
      * @dataProvider provideCodeWithReturnTypesCasesWithNullableCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testCodeWithReturnTypesWithNullable($expected, $input = null)
+    public function testCodeWithReturnTypesWithNullable(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
      * @dataProvider provideCodeWithoutReturnTypesCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testCodeWithoutReturnTypes($expected, $input = null)
+    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ConcatSpaceFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfigMissingKey()
+    public function testInvalidConfigMissingKey(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[concat_space\] Invalid configuration: The option "a" does not exist\. Defined options are: "spacing"\.$#');
@@ -32,7 +34,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['a' => 1]);
     }
 
-    public function testInvalidConfigValue()
+    public function testInvalidConfigValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[concat_space\] Invalid configuration: The option "spacing" with value "tabs" is invalid\. Accepted values are: "one", "none"\.$#');
@@ -41,12 +43,9 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithoutSpaceCases
      */
-    public function testFixWithoutSpace($expected, $input = null)
+    public function testFixWithoutSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['spacing' => 'none']);
         $this->doTest($expected, $input);
@@ -143,12 +142,9 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithSpaceCases
      */
-    public function testFixWithSpace($expected, $input = null)
+    public function testFixWithSpace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['spacing' => 'one']);
         $this->doTest($expected, $input);

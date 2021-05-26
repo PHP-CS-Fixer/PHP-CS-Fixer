@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ final class JunitReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return 'junit';
     }
@@ -33,7 +35,7 @@ final class JunitReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportSummary $reportSummary)
+    public function generate(ReportSummary $reportSummary): string
     {
         if (!\extension_loaded('dom')) {
             throw new \RuntimeException('Cannot generate report! `ext-dom` is not available!');
@@ -66,7 +68,7 @@ final class JunitReporter implements ReporterInterface
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
     }
 
-    private function createSuccessTestCase(\DOMDocument $dom, \DOMElement $testsuite)
+    private function createSuccessTestCase(\DOMDocument $dom, \DOMElement $testsuite): void
     {
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('name', 'All OK');
@@ -79,7 +81,7 @@ final class JunitReporter implements ReporterInterface
         $testsuite->setAttribute('errors', '0');
     }
 
-    private function createFailedTestCases(\DOMDocument $dom, \DOMElement $testsuite, ReportSummary $reportSummary)
+    private function createFailedTestCases(\DOMDocument $dom, \DOMElement $testsuite, ReportSummary $reportSummary): void
     {
         $assertionsCount = 0;
         foreach ($reportSummary->getChanged() as $file => $fixResult) {
@@ -99,13 +101,7 @@ final class JunitReporter implements ReporterInterface
         $testsuite->setAttribute('errors', '0');
     }
 
-    /**
-     * @param string $file
-     * @param bool   $shouldAddAppliedFixers
-     *
-     * @return \DOMElement
-     */
-    private function createFailedTestCase(\DOMDocument $dom, $file, array $fixResult, $shouldAddAppliedFixers)
+    private function createFailedTestCase(\DOMDocument $dom, string $file, array $fixResult, bool $shouldAddAppliedFixers): \DOMElement
     {
         $appliedFixersCount = \count($fixResult['appliedFixers']);
 

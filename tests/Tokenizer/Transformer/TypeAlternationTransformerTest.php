@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,10 @@ use PhpCsFixer\Tokenizer\CT;
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      * @requires PHP 7.1
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -84,12 +84,10 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcess80Cases
      * @requires PHP 8.0
      */
-    public function testProcess80($source, array $expectedTokens)
+    public function testProcess80(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
@@ -224,6 +222,30 @@ class Number
                 27 => CT::T_TYPE_ALTERNATION,
                 31 => CT::T_TYPE_ALTERNATION,
                 35 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'array as first element of types' => [
+            '<?php function foo(array|bool|null $foo) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'array as middle element of types' => [
+            '<?php function foo(null|array|bool $foo) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'array as last element of types' => [
+            '<?php function foo(null|bool|array $foo) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                8 => CT::T_TYPE_ALTERNATION,
             ],
         ];
     }

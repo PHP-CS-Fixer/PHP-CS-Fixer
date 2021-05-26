@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,11 +31,10 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
     /**
      * Make sure # of line breaks prefixing namespace is within given range.
      *
-     * @param int $index
      * @param int $expectedMin min. # of line breaks
      * @param int $expectedMax max. # of line breaks
      */
-    protected function fixLinesBeforeNamespace(Tokens $tokens, $index, $expectedMin, $expectedMax)
+    protected function fixLinesBeforeNamespace(Tokens $tokens, int $index, int $expectedMin, int $expectedMax): void
     {
         // Let's determine the total numbers of new lines before the namespace
         // and the opening token

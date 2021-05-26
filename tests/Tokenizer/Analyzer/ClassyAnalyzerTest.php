@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ClassyAnalyzerTest extends TestCase
 {
     /**
-     * @param string           $source
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocationCases
      */
-    public function testIsClassyInvocation($source, array $expected)
+    public function testIsClassyInvocation(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
     }
@@ -105,13 +106,12 @@ final class ClassyAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string           $source
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocation70Cases
      * @requires PHP 7.0
      */
-    public function testIsClassyInvocation70($source, array $expected)
+    public function testIsClassyInvocation70(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
     }
@@ -142,13 +142,12 @@ final class ClassyAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string           $source
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocation71Cases
      * @requires PHP 7.1
      */
-    public function testIsClassyInvocation71($source, array $expected)
+    public function testIsClassyInvocation71(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
     }
@@ -176,13 +175,12 @@ final class ClassyAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string           $source
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsClassyInvocation80Cases
      * @requires PHP 8.0
      */
-    public function testIsClassyInvocation80($source, array $expected)
+    public function testIsClassyInvocation80(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
     }
@@ -210,7 +208,7 @@ final class ClassyAnalyzerTest extends TestCase
         ];
     }
 
-    private static function assertClassyInvocation($source, array $expected)
+    private static function assertClassyInvocation(string $source, array $expected): void
     {
         $tokens = Tokens::fromCode($source);
         $analyzer = new ClassyAnalyzer();

@@ -10,6 +10,6 @@
  * with this source code in the file LICENSE.
  */
 
-// @TODO 3.0: make this file the only distributed config file and remove `.php_cs.dist` file.
+// @TODO 3.x: make this file the only distributed config file and remove `.php_cs.dist` file.
 
-return require ".php_cs.dist";
+return require '.php_cs.dist';

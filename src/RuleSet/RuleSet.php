@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,6 @@
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Utils;
 
 /**
  * Set of rules to be used by fixer.
@@ -22,11 +23,8 @@ use PhpCsFixer\Utils;
  * @author SpacePossum
  *
  * @internal
- * @final
- *
- * TODO on 3.0 make final after PhpCsFixer\RuleSet has been removed
  */
-class RuleSet implements RuleSetInterface
+final class RuleSet implements RuleSetInterface
 {
     /**
      * Group of rules generated from input set.
@@ -50,17 +48,11 @@ class RuleSet implements RuleSetInterface
             }
 
             if (true !== $value && false !== $value && !\is_array($value)) {
-                // @TODO drop me on 3.0
-                if (null === $value) {
-                    Utils::triggerDeprecation(
-                        'To disable the rule, use "FALSE" instead of "NULL".',
-                        InvalidFixerConfigurationException::class
-                    );
-
-                    continue;
-                }
-
                 $message = '@' === $name[0] ? 'Set must be enabled (true) or disabled (false). Other values are not allowed.' : 'Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.';
+
+                if (null === $value) {
+                    $message .= ' To disable the '.('@' === $name[0] ? 'set' : 'rule').', use "FALSE" instead of "NULL".';
+                }
 
                 throw new InvalidFixerConfigurationException($name, $message);
             }
@@ -72,7 +64,7 @@ class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public function hasRule($rule)
+    public function hasRule(string $rule): bool
     {
         return \array_key_exists($rule, $this->rules);
     }
@@ -80,7 +72,7 @@ class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getRuleConfiguration($rule)
+    public function getRuleConfiguration(string $rule): ?array
     {
         if (!$this->hasRule($rule)) {
             throw new \InvalidArgumentException(sprintf('Rule "%s" is not in the set.', $rule));
@@ -96,29 +88,9 @@ class RuleSet implements RuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
-    }
-
-    /**
-     * @deprecated will be removed in 3.0 Use the constructor.
-     */
-    public static function create(array $set = [])
-    {
-        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use the constructor.');
-
-        return new self($set);
-    }
-
-    /**
-     * @deprecated will be removed in 3.0 Use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames
-     */
-    public function getSetDefinitionNames()
-    {
-        Utils::triggerDeprecation(__METHOD__.' is deprecated and will be removed in 3.0, use PhpCsFixer\RuleSet\RuleSets::getSetDefinitionNames.');
-
-        return RuleSets::getSetDefinitionNames();
     }
 
     /**
@@ -126,7 +98,7 @@ class RuleSet implements RuleSetInterface
      *
      * @return $this
      */
-    private function resolveSet(array $rules)
+    private function resolveSet(array $rules): self
     {
         $resolvedRules = [];
 
@@ -157,13 +129,8 @@ class RuleSet implements RuleSetInterface
      *
      * If set value is false then disable all fixers in set,
      * if not then get value from set item.
-     *
-     * @param string $setName
-     * @param bool   $setValue
-     *
-     * @return array
      */
-    private function resolveSubset($setName, $setValue)
+    private function resolveSubset(string $setName, bool $setValue): array
     {
         $rules = RuleSets::getSetDefinition($setName)->getRules();
 

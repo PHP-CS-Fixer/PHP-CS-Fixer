@@ -29,7 +29,7 @@ native functions), ``@all`` (all global functions) and ``@compiler_optimized``
 
 Allowed types: ``array``
 
-Default value: ``['@internal']``
+Default value: ``['@compiler_optimized']``
 
 ``scope``
 ~~~~~~~~~
@@ -47,7 +47,7 @@ Whether leading ``\`` of function call not meant to have it should be removed.
 
 Allowed types: ``bool``
 
-Default value: ``false``
+Default value: ``true``
 
 Examples
 --------
@@ -70,8 +70,7 @@ Example #1
             throw new \InvalidArgumentException();
         }
 
-   -    return json_encode($options);
-   +    return \json_encode($options);
+        return json_encode($options);
     }
 
 Example #2

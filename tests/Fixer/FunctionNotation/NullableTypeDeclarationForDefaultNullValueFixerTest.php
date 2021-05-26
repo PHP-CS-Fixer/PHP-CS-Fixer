@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,11 +28,9 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     /**
      * @requires PHP 7.1
      *
-     * @param string $expected
-     *
      * @dataProvider provideDoNotFixCases
      */
-    public function testDoNotFix($expected)
+    public function testDoNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -93,13 +93,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     *
      * @dataProvider provideFixCases
      * @dataProvider provideNonInverseOnlyFixCases
      */
-    public function testFix($input, $expected)
+    public function testFix(string $input, string $expected): void
     {
         if (\PHP_VERSION_ID < 70100) {
             $this->doTest($input);
@@ -111,13 +108,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     /**
      * @requires PHP 7.1
      *
-     * @param string $input
-     * @param string $expected
-     *
      * @dataProvider provideFixCases
      * @dataProvider provideInverseOnlyFixCases
      */
-    public function testFixInverse($expected, $input)
+    public function testFixInverse(string $expected, string $input): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
 
@@ -343,25 +337,19 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($input, $expected)
+    public function testFixPhp74(string $input, string $expected): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $input
-     * @param string $expected
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixInversePhp74($expected, $input)
+    public function testFixInversePhp74(string $expected, string $input): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
 
@@ -406,13 +394,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @param null|string $expected
-     * @param string      $input
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($input, $expected = null)
+    public function testFix80(string $input, ?string $expected = null): void
     {
         if (null === $expected) {
             $this->doTest($input);
@@ -422,13 +407,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     }
 
     /**
-     * @param null|string $input
-     * @param string      $expected
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFixInverse80($expected, $input = null)
+    public function testFixInverse80(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
 
@@ -469,6 +451,24 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                  public function aaa(int | string $bar = null, $baz = 1) {}
                  public function bbb(int | null $bar = null, $baz = 1) {}
             }',
+        ];
+
+        yield 'attribute' => [
+            '<?php function foo(#[AnAttribute] string $param = null) {}',
+            '<?php function foo(#[AnAttribute] ?string $param = null) {}',
+        ];
+
+        yield 'attributes' => [
+            '<?php function foo(
+                #[AnAttribute] string $a = null,
+                #[AnAttribute] string $b = null,
+                #[AnAttribute] string $c = null
+            ) {}',
+            '<?php function foo(
+                #[AnAttribute] ?string $a = null,
+                #[AnAttribute] ?string $b = null,
+                #[AnAttribute] ?string $c = null
+            ) {}',
         ];
     }
 }

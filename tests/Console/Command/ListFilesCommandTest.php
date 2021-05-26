@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ListFilesCommandTest extends TestCase
 {
-    public function testListWithConfig()
+    public function testListWithConfig(): void
     {
         $commandTester = $this->doTestExecute([
             '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.php',
@@ -35,13 +37,11 @@ final class ListFilesCommandTest extends TestCase
         // make the test also work on windows
         $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
+        static::assertSame(0, $commandTester->getStatusCode());
         static::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
     }
 
-    /**
-     * @return CommandTester
-     */
-    private function doTestExecute(array $arguments)
+    private function doTestExecute(array $arguments): CommandTester
     {
         $application = new Application();
         $application->add(new ListFilesCommand(new ToolInfo()));

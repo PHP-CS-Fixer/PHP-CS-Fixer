@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,12 +16,14 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -29,12 +33,12 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Gert de Pagter <BackEndTea@gmail.com>
  */
-final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurationDefinitionFixerInterface
+final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.',
@@ -54,7 +58,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
      * Must run before PhpdocAlignFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -62,7 +66,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
@@ -70,7 +74,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('const', 'Whether const blocks should be single or multi line'))
@@ -88,7 +92,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         ]);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
 
@@ -113,24 +117,14 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         }
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    private function hasDocBlock(Tokens $tokens, $index)
+    private function hasDocBlock(Tokens $tokens, int $index): bool
     {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         return $tokens[$docBlockIndex]->isGivenKind(T_DOC_COMMENT);
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function getDocBlockIndex(Tokens $tokens, $index)
+    private function getDocBlockIndex(Tokens $tokens, int $index): int
     {
         do {
             $index = $tokens->getPrevNonWhitespace($index);

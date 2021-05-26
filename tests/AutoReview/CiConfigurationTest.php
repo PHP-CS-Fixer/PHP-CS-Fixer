@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,16 +31,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class CiConfigurationTest extends TestCase
 {
-    public function testTestJobsRunOnEachPhp()
+    public function testTestJobsRunOnEachPhp(): void
     {
         $supportedVersions = [];
         $supportedMinPhp = (float) $this->getMinPhpVersionFromEntryFile();
         $supportedMaxPhp = (float) $this->getMaxPhpVersionFromEntryFile();
-
-        if ($supportedMinPhp < 7) {
-            $supportedMinPhp = 7;
-            $supportedVersions[] = '5.6';
-        }
 
         if ($supportedMaxPhp >= 8) {
             $supportedVersions = array_merge(
@@ -62,7 +59,7 @@ final class CiConfigurationTest extends TestCase
         self::assertUpcomingPhpVersionIsCoveredByCiJob(end($supportedVersions), $ciVersions);
     }
 
-    public function testDeploymentJobsRunOnLatestStablePhpThatIsSupportedByTool()
+    public function testDeploymentJobsRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
         $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
@@ -84,7 +81,7 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
-    private static function generateMinorVersionsRange($from, $to)
+    private static function generateMinorVersionsRange(float $from, float $to)
     {
         $range = [];
 
@@ -95,14 +92,14 @@ final class CiConfigurationTest extends TestCase
         return $range;
     }
 
-    private static function ensureTraversableContainsIdenticalIsAvailable()
+    private static function ensureTraversableContainsIdenticalIsAvailable(): void
     {
         if (!class_exists(TraversableContainsIdentical::class)) {
             static::markTestSkipped('TraversableContainsIdentical not available.');
         }
     }
 
-    private static function assertUpcomingPhpVersionIsCoveredByCiJob($lastSupportedVersion, array $ciVersions)
+    private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
         if ('8.0' === $lastSupportedVersion) {
             return; // no further releases available yet
@@ -118,11 +115,11 @@ final class CiConfigurationTest extends TestCase
             new TraversableContainsIdentical(sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
             new TraversableContainsIdentical(sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContainsIdentical(sprintf('%.1f', round($lastSupportedVersion + 1)))
+            new TraversableContainsIdentical(sprintf('%.1f', round($lastSupportedVersion + 1.0)))
         ));
     }
 
-    private static function assertSupportedPhpVersionsAreCoveredByCiJobs(array $supportedVersions, array $ciVersions)
+    private static function assertSupportedPhpVersionsAreCoveredByCiJobs(array $supportedVersions, array $ciVersions): void
     {
         $lastSupportedVersion = array_pop($supportedVersions);
 
@@ -140,7 +137,7 @@ final class CiConfigurationTest extends TestCase
 
     private function getAllPhpVersionsUsedByCiForDeployments()
     {
-        $jobs = array_filter($this->getGitHubJobs(), function ($job) {
+        $jobs = array_filter($this->getGitHubJobs(), function (array $job) {
             return isset($job['execute-deployment']) && 'yes' === $job['execute-deployment'];
         });
 
@@ -154,7 +151,7 @@ final class CiConfigurationTest extends TestCase
         return $this->getPhpVersionsUsedByGitHub();
     }
 
-    private function convertPhpVerIdToNiceVer($verId)
+    private function convertPhpVerIdToNiceVer(string $verId)
     {
         $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
         if (1 !== $matchResult) {

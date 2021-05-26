@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -29,7 +31,7 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 final class FixerFactoryTest extends TestCase
 {
-    public function testFixersPriorityEdgeFixers()
+    public function testFixersPriorityEdgeFixers(): void
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -44,7 +46,7 @@ final class FixerFactoryTest extends TestCase
      * @dataProvider provideFixersPriorityCases
      * @dataProvider provideFixersPrioritySpecialPhpdocCases
      */
-    public function testFixersPriority(FixerInterface $first, FixerInterface $second)
+    public function testFixersPriority(FixerInterface $first, FixerInterface $second): void
     {
         static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
     }
@@ -99,7 +101,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
             [$fixers['escape_implicit_backslashes'], $fixers['single_quote']],
             [$fixers['explicit_string_variable'], $fixers['simple_to_complex_string_variable']],
-            [$fixers['final_internal_class'], $fixers['final_static_access']],
             [$fixers['final_internal_class'], $fixers['protected_to_private']],
             [$fixers['final_internal_class'], $fixers['self_static_accessor']],
             [$fixers['fully_qualified_strict_types'], $fixers['no_superfluous_phpdoc_tags']],
@@ -127,8 +128,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['method_argument_space'], $fixers['array_indentation']],
             [$fixers['method_chaining_indentation'], $fixers['array_indentation']],
             [$fixers['method_chaining_indentation'], $fixers['method_argument_space']],
-            [$fixers['method_separation'], $fixers['braces']],
-            [$fixers['method_separation'], $fixers['indentation_type']],
             [$fixers['multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']],
             [$fixers['native_constant_invocation'], $fixers['global_namespace_import']],
             [$fixers['native_function_invocation'], $fixers['global_namespace_import']],
@@ -162,10 +161,9 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_extra_blank_lines'], $fixers['blank_line_before_statement']],
             [$fixers['no_leading_import_slash'], $fixers['ordered_imports']],
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']],
-            [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline_array']],
+            [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline']],
             [$fixers['no_php4_constructor'], $fixers['ordered_class_elements']],
             [$fixers['no_short_bool_cast'], $fixers['cast_spaces']],
-            [$fixers['no_short_echo_tag'], $fixers['no_mixed_echo_print']],
             [$fixers['no_spaces_after_function_name'], $fixers['function_to_constant']],
             [$fixers['no_spaces_inside_parenthesis'], $fixers['function_to_constant']],
             [$fixers['no_superfluous_elseif'], $fixers['simplified_if_return']],
@@ -190,7 +188,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_else'], $fixers['no_useless_return']],
             [$fixers['no_useless_else'], $fixers['no_whitespace_in_blank_line']],
             [$fixers['no_useless_else'], $fixers['simplified_if_return']],
-            [$fixers['no_useless_return'], $fixers['blank_line_before_return']],
             [$fixers['no_useless_return'], $fixers['blank_line_before_statement']],
             [$fixers['no_useless_return'], $fixers['no_extra_blank_lines']],
             [$fixers['no_useless_return'], $fixers['no_whitespace_in_blank_line']],
@@ -202,7 +199,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_useless_sprintf'], $fixers['no_spaces_inside_parenthesis']],
             [$fixers['nullable_type_declaration_for_default_null_value'], $fixers['no_unreachable_default_argument_value']],
             [$fixers['ordered_class_elements'], $fixers['class_attributes_separation']],
-            [$fixers['ordered_class_elements'], $fixers['method_separation']],
             [$fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']],
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']],
             [$fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']],
@@ -215,7 +211,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['php_unit_test_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['php_unit_test_annotation'], $fixers['php_unit_method_casing']],
             [$fixers['php_unit_test_annotation'], $fixers['phpdoc_trim']],
-            [$fixers['php_unit_test_case_static_method_calls'], $fixers['final_static_access']],
             [$fixers['php_unit_test_case_static_method_calls'], $fixers['self_static_accessor']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['no_empty_phpdoc']],
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['no_superfluous_phpdoc_tags']],
@@ -256,7 +251,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['protected_to_private'], $fixers['ordered_class_elements']],
             [$fixers['return_assignment'], $fixers['blank_line_before_statement']],
             [$fixers['semicolon_after_instruction'], $fixers['simplified_if_return']],
-            [$fixers['simplified_if_return'], $fixers['no_multiline_whitespace_before_semicolons']],
+            [$fixers['simplified_if_return'], $fixers['multiline_whitespace_before_semicolons']],
             [$fixers['simplified_if_return'], $fixers['no_singleline_whitespace_before_semicolons']],
             [$fixers['simplified_null_return'], $fixers['no_useless_return']],
             [$fixers['simplified_null_return'], $fixers['void_return']],
@@ -266,6 +261,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['single_import_per_statement'], $fixers['no_singleline_whitespace_before_semicolons']],
             [$fixers['single_import_per_statement'], $fixers['no_unused_imports']],
             [$fixers['single_import_per_statement'], $fixers['space_after_semicolon']],
+            [$fixers['single_line_throw'], $fixers['braces']],
             [$fixers['single_line_throw'], $fixers['concat_space']],
             [$fixers['single_space_after_construct'], $fixers['braces']],
             [$fixers['single_space_after_construct'], $fixers['function_declaration']],
@@ -314,7 +310,7 @@ final class FixerFactoryTest extends TestCase
 
         $docFixerNames = array_filter(
             array_keys($fixers),
-            static function ($name) {
+            static function (string $name) {
                 return false !== strpos($name, 'phpdoc');
             }
         );
@@ -343,7 +339,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider provideFixersPriorityPairsHaveIntegrationTestCases
      */
-    public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second)
+    public function testFixersPriorityPairsHaveIntegrationTest(FixerInterface $first, FixerInterface $second): void
     {
         $integrationTestName = $this->generateIntegrationTestName($first, $second);
         $file = $this->getIntegrationPriorityDirectory().$integrationTestName;
@@ -403,7 +399,7 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function testPriorityIntegrationDirectoryOnlyContainsFiles()
+    public function testPriorityIntegrationDirectoryOnlyContainsFiles(): void
     {
         foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
             if ($candidate->isDot()) {
@@ -418,10 +414,8 @@ final class FixerFactoryTest extends TestCase
 
     /**
      * @dataProvider provideIntegrationTestFilesCases
-     *
-     * @param string $fileName
      */
-    public function testPriorityIntegrationTestFilesAreListedPriorityCases($fileName)
+    public function testPriorityIntegrationTestFilesAreListedPriorityCases(string $fileName): void
     {
         static $priorityCases;
 
@@ -471,7 +465,7 @@ final class FixerFactoryTest extends TestCase
         return $fileNames;
     }
 
-    public function testProvideFixersPriorityCasesAreSorted()
+    public function testProvideFixersPriorityCasesAreSorted(): void
     {
         $cases = $this->provideFixersPriorityCases();
         $sorted = $cases;
@@ -514,7 +508,7 @@ final class FixerFactoryTest extends TestCase
         }
     }
 
-    public function testFixerPriorityComment()
+    public function testFixerPriorityComment(): void
     {
         $cases = array_merge(
             $this->provideFixersPriorityCases(),
@@ -601,18 +595,12 @@ final class FixerFactoryTest extends TestCase
         }
     }
 
-    /**
-     * @return string
-     */
-    private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second)
+    private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second): string
     {
         return "{$first->getName()},{$second->getName()}.test";
     }
 
-    /**
-     * @return string
-     */
-    private function getIntegrationPriorityDirectory()
+    private function getIntegrationPriorityDirectory(): string
     {
         return __DIR__.'/../Fixtures/Integration/priority/';
     }

@@ -13,8 +13,6 @@ Configuration
 whether the statements should be sorted alphabetically or by length, or not
 sorted
 
-.. note:: The previous name of this option was ``sortAlgorithm`` but it is now deprecated and will be removed on next major version.
-
 Allowed values: ``'alpha'``, ``'length'``, ``'none'``
 
 Default value: ``'alpha'``
@@ -23,8 +21,6 @@ Default value: ``'alpha'``
 ~~~~~~~~~~~~~~~~~
 
 Defines the order of import types.
-
-.. note:: The previous name of this option was ``importsOrder`` but it is now deprecated and will be removed on next major version.
 
 Allowed types: ``array``, ``null``
 

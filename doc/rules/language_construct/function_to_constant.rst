@@ -18,7 +18,7 @@ List of function names to fix.
 
 Allowed values: a subset of ``['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']``
 
-Default value: ``['get_class', 'php_sapi_name', 'phpversion', 'pi']``
+Default value: ``['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']``
 
 Examples
 --------
@@ -44,8 +44,9 @@ Example #1
         public function Bar()
         {
    -        echo get_class();
+   -        echo get_called_class();
    +        echo __CLASS__;
-            echo get_called_class();
+   +        echo static::class;
         }
     }
 
@@ -80,11 +81,7 @@ Rule sets
 The rule is part of the following rule sets:
 
 @PhpCsFixer:risky
-  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``function_to_constant`` rule with the config below:
-
-  ``['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']]``
+  Using the `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ rule set will enable the ``function_to_constant`` rule with the default config.
 
 @Symfony:risky
-  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``function_to_constant`` rule with the config below:
-
-  ``['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']]``
+  Using the `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ rule set will enable the ``function_to_constant`` rule with the default config.

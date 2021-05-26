@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,31 +27,28 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitTestCaseIndicatorTest extends TestCase
 {
     /**
-     * @var PhpUnitTestCaseIndicator
+     * @var null|PhpUnitTestCaseIndicator
      */
     private $indicator;
 
-    protected function doSetUp()
+    protected function setUp(): void
     {
         $this->indicator = new PhpUnitTestCaseIndicator();
 
-        parent::doSetUp();
+        parent::setUp();
     }
 
-    protected function doTearDown()
+    protected function tearDown(): void
     {
         $this->indicator = null;
 
-        parent::doTearDown();
+        parent::tearDown();
     }
 
     /**
-     * @param bool $expected
-     * @param int  $index
-     *
      * @dataProvider provideIsPhpUnitClassCases
      */
-    public function testIsPhpUnitClass($expected, Tokens $tokens, $index)
+    public function testIsPhpUnitClass(bool $expected, Tokens $tokens, int $index): void
     {
         static::assertSame($expected, $this->indicator->isPhpUnitClass($tokens, $index));
     }
@@ -121,7 +120,7 @@ class Foo implements TestInterface, SomethingElse
         ];
     }
 
-    public function testThrowsExceptionIfNotClass()
+    public function testThrowsExceptionIfNotClass(): void
     {
         $tokens = Tokens::fromCode('<?php echo 1;');
 
@@ -133,11 +132,10 @@ class Foo implements TestInterface, SomethingElse
 
     /**
      * @param array<int,int> $expectedIndexes
-     * @param string         $code
      *
      * @dataProvider provideFindPhpUnitClassesCases
      */
-    public function testFindPhpUnitClasses(array $expectedIndexes, $code)
+    public function testFindPhpUnitClasses(array $expectedIndexes, string $code): void
     {
         $tokens = Tokens::fromCode($code);
 

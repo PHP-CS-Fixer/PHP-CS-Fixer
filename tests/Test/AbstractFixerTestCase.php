@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,9 +16,7 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\Fixer\DefinedFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -28,13 +28,13 @@ use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
+use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Preg;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use Prophecy\Argument;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -44,7 +44,6 @@ use Prophecy\Argument;
 abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
-    use IsIdenticalConstraint;
 
     /**
      * @var null|LinterInterface
@@ -67,31 +66,23 @@ abstract class AbstractFixerTestCase extends TestCase
         'general_phpdoc_tag_rename' => true,
     ];
 
-    protected function doSetUp()
+    protected function setUp(): void
     {
-        parent::doSetUp();
+        parent::setUp();
 
         $this->linter = $this->getLinter();
         $this->fixer = $this->createFixer();
-
-        // @todo remove at 3.0 together with env var itself
-        if (getenv('PHP_CS_FIXER_TEST_USE_LEGACY_TOKENIZER')) {
-            Tokens::setLegacyMode(true);
-        }
     }
 
-    protected function doTearDown()
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         $this->linter = null;
         $this->fixer = null;
-
-        // @todo remove at 3.0
-        Tokens::setLegacyMode(false);
     }
 
-    final public function testIsRisky()
+    final public function testIsRisky(): void
     {
         static::assertIsBool($this->fixer->isRisky(), sprintf('Return type for ::isRisky of "%s" is invalid.', $this->fixer->getName()));
 
@@ -114,13 +105,11 @@ abstract class AbstractFixerTestCase extends TestCase
         );
     }
 
-    final public function testFixerDefinitions()
+    final public function testFixerDefinitions(): void
     {
-        static::assertInstanceOf(DefinedFixerInterface::class, $this->fixer);
-
         $fixerName = $this->fixer->getName();
         $definition = $this->fixer->getDefinition();
-        $fixerIsConfigurable = $this->fixer instanceof ConfigurationDefinitionFixerInterface;
+        $fixerIsConfigurable = $this->fixer instanceof ConfigurableFixerInterface;
 
         self::assertValidDescription($fixerName, 'summary', $definition->getSummary());
 
@@ -194,19 +183,8 @@ abstract class AbstractFixerTestCase extends TestCase
                 static::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
 
-            // It may only shrink, never add anything to it.
-            $fixerNamesWithKnownMissingSamplesWithConfig = [ // @TODO 3.0 - remove this
-                'is_null', // has only one option which is deprecated
-            ];
-
             if (\count($configSamplesProvided) < 2) {
-                if (\in_array($fixerName, $fixerNamesWithKnownMissingSamplesWithConfig, true)) {
-                    static::markTestIncomplete(sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options, please help and add it.', $fixerName));
-                }
-
                 static::fail(sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options.', $fixerName));
-            } elseif (\in_array($fixerName, $fixerNamesWithKnownMissingSamplesWithConfig, true)) {
-                static::fail(sprintf('[%s] Invalid listed as missing code samples, please update the list.', $fixerName));
             }
 
             $options = $this->fixer->getConfigurationDefinition()->getOptions();
@@ -217,20 +195,7 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getConfigurationDescription is deprecated and will be removed in 3.0.
-     * @expectedDeprecation PhpCsFixer\FixerDefinition\FixerDefinition::getDefaultConfiguration is deprecated and will be removed in 3.0.
-     */
-    final public function testLegacyFixerDefinitions()
-    {
-        $definition = $this->fixer->getDefinition();
-
-        static::assertNull($definition->getConfigurationDescription(), sprintf('[%s] No configuration description expected.', $this->fixer->getName()));
-        static::assertNull($definition->getDefaultConfiguration(), sprintf('[%s] No default configuration expected.', $this->fixer->getName()));
-    }
-
-    final public function testFixersAreFinal()
+    final public function testFixersAreFinal(): void
     {
         $reflection = new \ReflectionClass($this->fixer);
 
@@ -240,12 +205,7 @@ abstract class AbstractFixerTestCase extends TestCase
         );
     }
 
-    final public function testFixersAreDefined()
-    {
-        static::assertInstanceOf(DefinedFixerInterface::class, $this->fixer);
-    }
-
-    final public function testDeprecatedFixersHaveCorrectSummary()
+    final public function testDeprecatedFixersHaveCorrectSummary(): void
     {
         $reflection = new \ReflectionClass($this->fixer);
         $comment = $reflection->getDocComment();
@@ -266,7 +226,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * Blur filter that find candidate fixer for performance optimization to use only `insertSlices` instead of multiple `insertAt` if there is no other collection manipulation.
      */
-    public function testFixerUseInsertSlicesWhenOnlyInsertionsArePerformed()
+    public function testFixerUseInsertSlicesWhenOnlyInsertionsArePerformed(): void
     {
         $reflection = new \ReflectionClass($this->fixer);
         $tokens = Tokens::fromCode(file_get_contents($reflection->getFileName()));
@@ -286,7 +246,7 @@ abstract class AbstractFixerTestCase extends TestCase
             return;
         }
 
-        $usedMethods = array_filter($usedMethods, function ($method) {
+        $usedMethods = array_filter($usedMethods, function (string $method) {
             return 0 === Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
         });
 
@@ -323,6 +283,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 'php_unit_test_annotation',
                 'php_unit_test_class_requires_covers',
                 'phpdoc_to_param_type',
+                'phpdoc_to_property_type',
                 'phpdoc_to_return_type',
                 'random_api_migration',
                 'semicolon_after_instruction',
@@ -339,9 +300,9 @@ abstract class AbstractFixerTestCase extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    final public function testFixerConfigurationDefinitions()
+    final public function testFixerConfigurationDefinitions(): void
     {
-        if (!$this->fixer instanceof ConfigurationDefinitionFixerInterface) {
+        if (!$this->fixer instanceof ConfigurableFixerInterface) {
             $this->addToAssertionCount(1); // not applied to the fixer without configuration
 
             return;
@@ -375,46 +336,14 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
-    final public function testFixersReturnTypes()
-    {
-        $tokens = Tokens::fromCode('<?php ');
-        $emptyTokens = new Tokens();
-
-        static::assertIsInt($this->fixer->getPriority(), sprintf('Return type for ::getPriority of "%s" is invalid.', $this->fixer->getName()));
-        static::assertIsBool($this->fixer->supports(new \SplFileInfo(__FILE__)), sprintf('Return type for ::supports of "%s" is invalid.', $this->fixer->getName()));
-
-        static::assertIsBool($this->fixer->isCandidate($emptyTokens), sprintf('Return type for ::isCandidate with empty tokens of "%s" is invalid.', $this->fixer->getName()));
-        static::assertFalse($emptyTokens->isChanged());
-
-        static::assertIsBool($this->fixer->isCandidate($tokens), sprintf('Return type for ::isCandidate of "%s" is invalid.', $this->fixer->getName()));
-        static::assertFalse($tokens->isChanged());
-
-        if ($this->fixer instanceof HeaderCommentFixer) {
-            $this->fixer->configure(['header' => 'a']);
-        }
-
-        static::assertNull($this->fixer->fix(new \SplFileInfo(__FILE__), $emptyTokens), sprintf('Return type for ::fix with empty tokens of "%s" is invalid.', $this->fixer->getName()));
-        static::assertFalse($emptyTokens->isChanged());
-
-        static::assertNull($this->fixer->fix(new \SplFileInfo(__FILE__), $tokens), sprintf('Return type for ::fix of "%s" is invalid.', $this->fixer->getName()));
-    }
-
-    /**
-     * @return AbstractFixer
-     */
-    protected function createFixer()
+    protected function createFixer(): AbstractFixer
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\\Tests(\\\\.+)Test$/', '$1$2', static::class);
 
         return new $fixerClassName();
     }
 
-    /**
-     * @param string $filename
-     *
-     * @return \SplFileInfo
-     */
-    protected function getTestFile($filename = __FILE__)
+    protected function getTestFile(string $filename = __FILE__): \SplFileInfo
     {
         static $files = [];
 
@@ -439,7 +368,7 @@ abstract class AbstractFixerTestCase extends TestCase
      * @param null|string       $input    The fixer input, or null if it should intentionally be equal to the output
      * @param null|\SplFileInfo $file     The file to fix, or null if unneeded
      */
-    protected function doTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function doTest(string $expected, ?string $input = null, ?\SplFileInfo $file = null): void
     {
         if ($expected === $input) {
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
@@ -457,13 +386,12 @@ abstract class AbstractFixerTestCase extends TestCase
             if ($fileIsSupported) {
                 static::assertTrue($this->fixer->isCandidate($tokens), 'Fixer must be a candidate for input code.');
                 static::assertFalse($tokens->isChanged(), 'Fixer must not touch Tokens on candidate check.');
-                $fixResult = $this->fixer->fix($file, $tokens);
-                static::assertNull($fixResult, '->fix method must return null.');
+                $this->fixer->fix($file, $tokens);
             }
 
             static::assertThat(
                 $tokens->generateCode(),
-                self::createIsIdenticalStringConstraint($expected),
+                new IsIdenticalString($expected),
                 'Code build on input code must match expected code.'
             );
             static::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
@@ -489,24 +417,18 @@ abstract class AbstractFixerTestCase extends TestCase
         $tokens = Tokens::fromCode($expected);
 
         if ($fileIsSupported) {
-            $fixResult = $this->fixer->fix($file, $tokens);
-            static::assertNull($fixResult, '->fix method must return null.');
+            $this->fixer->fix($file, $tokens);
         }
 
         static::assertThat(
             $tokens->generateCode(),
-            self::createIsIdenticalStringConstraint($expected),
+            new IsIdenticalString($expected),
             'Code build on expected code must not change.'
         );
         static::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
-    /**
-     * @param string $source
-     *
-     * @return null|string
-     */
-    protected function lintSource($source)
+    protected function lintSource(string $source): ?string
     {
         try {
             $this->linter->lintSource($source)->check();
@@ -517,40 +439,21 @@ abstract class AbstractFixerTestCase extends TestCase
         return null;
     }
 
-    /**
-     * @return LinterInterface
-     */
-    private function getLinter()
+    private function getLinter(): LinterInterface
     {
         static $linter = null;
 
         if (null === $linter) {
-            if (getenv('SKIP_LINT_TEST_CASES')) {
-                $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
-                $linterProphecy
-                    ->lintSource(Argument::type('string'))
-                    ->willReturn($this->prophesize(\PhpCsFixer\Linter\LintingResultInterface::class)->reveal())
-                ;
-
-                $linter = $linterProphecy->reveal();
-            } else {
-                $linter = new CachingLinter(
-                    getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
-                );
-            }
+            $linter = new CachingLinter(
+                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+            );
         }
 
         return $linter;
     }
 
-    /**
-     * @param string $fixerName
-     * @param string $descriptionType
-     * @param mixed  $description
-     */
-    private static function assertValidDescription($fixerName, $descriptionType, $description)
+    private static function assertValidDescription(string $fixerName, string $descriptionType, string $description): void
     {
-        static::assertIsString($description);
         static::assertMatchesRegularExpression('/^[A-Z`][^"]+\.$/', $description, sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
         static::assertStringNotContainsString('phpdocs', $description, sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
         static::assertCorrectCasing($description, 'PHPDoc', sprintf('[%s] `PHPDoc` must be in correct casing in %s.', $fixerName, $descriptionType));
@@ -558,12 +461,7 @@ abstract class AbstractFixerTestCase extends TestCase
         static::assertFalse(strpos($descriptionType, '``'), sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 
-    /**
-     * @param string $needle
-     * @param string $haystack
-     * @param string $message
-     */
-    private static function assertCorrectCasing($needle, $haystack, $message)
+    private static function assertCorrectCasing(string $needle, string $haystack, string $message): void
     {
         static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }

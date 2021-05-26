@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,12 +15,13 @@
 namespace PhpCsFixer\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurationDefinitionFixerInterface
+final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     private static $fixMap = [
         'array_key_exists' => ['assertArrayNotHasKey', 'assertArrayHasKey'],
@@ -63,15 +66,9 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
-
-        if (isset($this->configuration['functions'])) {
-            $this->functions = $this->configuration['functions'];
-
-            return;
-        }
 
         // assertions added in 3.0: assertArrayNotHasKey assertArrayHasKey assertFileNotExists assertFileExists assertNotNull, assertNull
         $this->functions = [
@@ -123,7 +120,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -131,7 +128,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'PHPUnit assertions like `assertInternalType`, `assertFileExists`, should be used over `assertTrue`.',
@@ -174,7 +171,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      * Must run before PhpUnitDedicateAssertInternalTypeFixer.
      * Must run after NoAliasFunctionsFixer, PhpUnitConstructFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -15;
     }
@@ -182,7 +179,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex)
+    protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         foreach ($this->getPreviousAssertCall($tokens, $startIndex, $endIndex) as $assertCall) {
             // test and fix for assertTrue/False to dedicated asserts
@@ -208,43 +205,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $values = [
-            'array_key_exists',
-            'empty',
-            'file_exists',
-            'is_array',
-            'is_bool',
-            'is_callable',
-            'is_double',
-            'is_float',
-            'is_infinite',
-            'is_int',
-            'is_integer',
-            'is_long',
-            'is_nan',
-            'is_null',
-            'is_numeric',
-            'is_object',
-            'is_real',
-            'is_resource',
-            'is_scalar',
-            'is_string',
-        ];
-
-        sort($values);
-
-        return new FixerConfigurationResolverRootless('functions', [
-            (new FixerOptionBuilder('functions', 'List of assertions to fix (overrides `target`).'))
-                ->setAllowedTypes(['null', 'array'])
-                ->setAllowedValues([
-                    null,
-                    new AllowedValueSubset($values),
-                ])
-                ->setDefault(null)
-                ->setDeprecationMessage('Use option `target` instead.')
-                ->getOption(),
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('target', 'Target version of PHPUnit.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([
@@ -254,12 +217,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     PhpUnitTargetVersion::VERSION_5_6,
                     PhpUnitTargetVersion::VERSION_NEWEST,
                 ])
-                ->setDefault(PhpUnitTargetVersion::VERSION_5_0) // @TODO 3.x: change to `VERSION_NEWEST`
+                ->setDefault(PhpUnitTargetVersion::VERSION_NEWEST)
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
-    private function fixAssertTrueFalse(Tokens $tokens, array $assertCall)
+    private function fixAssertTrueFalse(Tokens $tokens, array $assertCall): void
     {
         $testDefaultNamespaceTokenIndex = false;
         $testIndex = $tokens->getNextMeaningfulToken($assertCall['openBraceIndex']);
@@ -323,7 +286,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    private function fixAssertSameEquals(Tokens $tokens, array $assertCall)
+    private function fixAssertSameEquals(Tokens $tokens, array $assertCall): void
     {
         // @ $this->/self::assertEquals/Same([$nextIndex])
         $expectedIndex = $tokens->getNextMeaningfulToken($assertCall['openBraceIndex']);
@@ -387,11 +350,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    private function getPreviousAssertCall(Tokens $tokens, $startIndex, $endIndex)
+    private function getPreviousAssertCall(Tokens $tokens, int $startIndex, int $endIndex): iterable
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
 
@@ -428,11 +387,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param false|int $callNSIndex
-     * @param int       $callIndex
-     * @param int       $openIndex
-     * @param int       $closeIndex
      */
-    private function removeFunctionCall(Tokens $tokens, $callNSIndex, $callIndex, $openIndex, $closeIndex)
+    private function removeFunctionCall(Tokens $tokens, $callNSIndex, int $callIndex, int $openIndex, int $closeIndex): void
     {
         $tokens->clearTokenAndMergeSurroundingWhitespace($callIndex);
         if (false !== $callNSIndex) {

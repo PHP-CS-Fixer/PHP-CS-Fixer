@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,6 @@
 namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
-use PhpCsFixer\Preg;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,7 +28,7 @@ use PhpCsFixer\Preg;
  */
 final class StdinTest extends AbstractSmokeTest
 {
-    public function testFixingStdin()
+    public function testFixingStdin(): void
     {
         $cwd = __DIR__.'/../..';
 
@@ -46,23 +47,23 @@ final class StdinTest extends AbstractSmokeTest
         );
         static::assertSame($expectedError, $stdinResult->getError());
 
+        $fileResult = $this->unifyFooter($fileResult->getOutput());
+
+        $file = realpath($cwd).'/'.$inputFile;
+        $path = str_replace('/', \DIRECTORY_SEPARATOR, $file);
+        $fileResult = str_replace("\n--- ".$path."\n", "\n--- php://stdin\n", $fileResult);
+        $fileResult = str_replace("\n+++ ".$path."\n", "\n+++ php://stdin\n", $fileResult);
+
         $path = str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile);
+        $fileResult = str_replace($path, 'php://stdin', $fileResult);
+
         static::assertSame(
-            Preg::replace(
-                '#/?'.preg_quote($path, '#').'#',
-                'php://stdin',
-                $this->unifyFooter($fileResult->getOutput())
-            ),
+            $fileResult,
             $this->unifyFooter($stdinResult->getOutput())
         );
     }
 
-    /**
-     * @param string $output
-     *
-     * @return string
-     */
-    private function unifyFooter($output)
+    private function unifyFooter(string $output): string
     {
         return preg_replace(
             '/Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',

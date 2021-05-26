@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ReportSummaryTest extends TestCase
 {
-    public function testReportSummary()
+    public function testReportSummary(): void
     {
         $changed = ['', 5];
         $time = time();

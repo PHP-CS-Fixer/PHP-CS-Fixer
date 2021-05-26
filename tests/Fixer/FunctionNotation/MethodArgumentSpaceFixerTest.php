@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,7 +16,6 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -32,12 +33,9 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     protected $fixer;
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $configuration = [])
+    public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $indent = '    ';
         $lineEnding = "\n";
@@ -64,12 +62,9 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithDifferentLineEndings($expected, $input = null, array $configuration = [])
+    public function testFixWithDifferentLineEndings(string $expected, ?string $input = null, array $configuration = []): void
     {
         if (null !== $input) {
             $input = str_replace("\n", "\r\n", $input);
@@ -167,12 +162,6 @@ $var2 = some_function(
                 "<?php xyz(\$a=10 , \$b=20 ,\t \$c=30);",
                 ['keep_multiple_spaces_after_comma' => true],
             ],
-            'test method call with \n not affected' => [
-                "<?php xyz(\$a=10, \$b=20,\n                    \$c=30);",
-            ],
-            'test method call with \r\n not affected' => [
-                "<?php xyz(\$a=10, \$b=20,\r\n                    \$c=30);",
-            ],
             'test method call with multiple spaces (II)' => [
                 '<?php xyz($a=10, $b=20, $this->foo(), $c=30);',
                 '<?php xyz($a=10,$b=20 ,         $this->foo() ,$c=30);',
@@ -225,76 +214,21 @@ list(
                 '<?php xyz($a=10,    /*comment1*/ $b=2000,/*comment2*/ $c=30);',
                 ['keep_multiple_spaces_after_comma' => true],
             ],
-            'must keep align comments' => [
-                '<?php function xyz(
-                    $a=10,      //comment1
-                    $b=20,      //comment2
-                    $c=30) {
-                }',
-            ],
-            'must keep align comments (2)' => [
-                '<?php function xyz(
-                    $a=10,  //comment1
-                    $b=2000,//comment2
-                    $c=30) {
-                }',
-            ],
-            'multiline comments also must be ignored (I)' => [
-                '<?php function xyz(
-                    $a=10,  /* comment1a
-                               comment1b
-                            */
-                    $b=2000,/* comment2a
-                        comment 2b
-                        comment 2c */
-                    $c=30) {
-                }',
-            ],
-            'multiline comments also must be ignored (II)' => [
-                '<?php
-                    function xyz(
-                        $a=10, /* multiline comment
-                                 not at the end of line
-                                */ $b=2000,
-                        $a2=10 /* multiline comment
-                                 not at the end of line
-                                */ , $b2=2000,
-                        $c=30) {
-                    }',
-                '<?php
-                    function xyz(
-                        $a=10, /* multiline comment
-                                 not at the end of line
-                                */ $b=2000,
-                        $a2=10 /* multiline comment
-                                 not at the end of line
-                                */ ,$b2=2000,
-                        $c=30) {
-                    }',
-            ],
-            'multi line testing method arguments' => [
-                '<?php function xyz(
-                    $a=10,
-                    $b=20,
-                    $c=30) {
-                }',
-                '<?php function xyz(
-                    $a=10 ,
-                    $b=20,
-                    $c=30) {
-                }',
-            ],
             'multi line testing method call' => [
-                '<?php xyz(
+                '<?php if (1) {
+                xyz(
                     $a=10,
                     $b=20,
                     $c=30
-                    );',
-                '<?php xyz(
+                );
+                }',
+                '<?php if (1) {
+                xyz(
                     $a=10 ,
                     $b=20,
                     $c=30
-                    );',
+                );
+                }',
             ],
             'skip arrays but replace arg methods' => [
                 '<?php fnc(1, array(2, func2(6, 7) ,4), 5);',
@@ -323,7 +257,7 @@ list(
     ',
             ],
             'don\'t change HEREDOC and NOWDOC' => [
-                "<?php
+                "<?php if (1) {
     \$this->foo(
         <<<EOTXTa
     heredoc
@@ -335,7 +269,7 @@ EOTXTb
         ,
         'foo'
     );
-",
+}",
             ],
             'with_random_comments on_multiline:ignore' => [
                 '<?php xyz#
@@ -372,11 +306,6 @@ $a#
 );',
                 ['on_multiline' => 'ensure_fully_multiline'],
             ],
-            'keep_multiple_spaces_after_comma_with_newlines' => [
-                "<?php xyz(\$a=10,\n\$b=20);",
-                "<?php xyz(\$a=10,   \n\$b=20);",
-                ['keep_multiple_spaces_after_comma' => true],
-            ],
             'test half-multiline function becomes fully-multiline' => [
                 <<<'EXPECTED'
 <?php
@@ -395,7 +324,6 @@ functionCall(
 );
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test wrongly formatted half-multiline function becomes fully-multiline' => [
                 '<?php
@@ -407,7 +335,6 @@ f(
                 '<?php
 f(1,2,
 3);',
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'function calls with here doc cannot be anything but multiline' => [
                 <<<'EXPECTED'
@@ -431,7 +358,6 @@ TEXT
 );
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test barely multiline function with blank lines becomes fully-multiline' => [
                 <<<'EXPECTED'
@@ -450,7 +376,6 @@ functionCall('a', 'b',
     'c');
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test indentation is preserved' => [
                 <<<'EXPECTED'
@@ -474,7 +399,6 @@ if (true) {
 }
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test multiline array arguments do not trigger multiline' => [
                 <<<'EXPECTED'
@@ -486,8 +410,6 @@ defraculate(1, array(
 ), 42);
 EXPECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test multiline function arguments do not trigger multiline' => [
                 <<<'EXPECTED'
@@ -497,8 +419,6 @@ defraculate(1, function () {
 }, 42);
 EXPECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation after opening parenthesis' => [
                 <<<'EXPECTED'
@@ -516,7 +436,6 @@ defraculate(
     1, 2, 3);
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation after opening parenthesis, indented with two spaces' => [
                 <<<'EXPECTED'
@@ -534,7 +453,6 @@ defraculate(
   1, 2, 3);
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation after opening parenthesis, indented with tabs' => [
                 <<<'EXPECTED'
@@ -552,7 +470,6 @@ defraculate(
 	1, 2, 3);
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation before closing parenthesis' => [
                 <<<'EXPECTED'
@@ -570,7 +487,6 @@ defraculate(1, 2, 3
 );
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test violation before closing parenthesis in nested call' => [
                 <<<'EXPECTED'
@@ -588,7 +504,6 @@ getSchwifty('rick', defraculate(1, 2, 3
 ), 'morty');
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test with comment between arguments' => [
                 <<<'EXPECTED'
@@ -608,7 +523,6 @@ functionCall(
 );
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test with deeply nested arguments' => [
                 <<<'EXPECTED'
@@ -643,7 +557,6 @@ foo('a',
     ]);
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'multiline string argument' => [
                 <<<'UNAFFECTED'
@@ -655,8 +568,6 @@ class FooClass
 }', $comment, false);
 UNAFFECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'arrays with whitespace inside' => [
                 <<<'UNAFFECTED'
@@ -669,8 +580,6 @@ $a = array (        1,
 2);
 UNAFFECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test code that should not be affected (because not a function nor a method)' => [
                 <<<'UNAFFECTED'
@@ -682,8 +591,6 @@ if (true &&
 }
 UNAFFECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test ungodly code' => [
                 <<<'EXPECTED'
@@ -724,7 +631,6 @@ $c1,$d1) {
 };
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test list' => [
                 <<<'UNAFFECTED'
@@ -741,8 +647,6 @@ array(1,
 );
 UNAFFECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test function argument with multiline echo in it' => [
                 <<<'UNAFFECTED'
@@ -753,8 +657,6 @@ call_user_func(function ($arguments) {
 }, $argv);
 UNAFFECTED
                 ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'test function argument with oneline echo in it' => [
                 <<<'EXPECTED'
@@ -775,7 +677,6 @@ call_user_func(function ($arguments) {
 $argv);
 INPUT
                 ,
-                ['on_multiline' => 'ensure_fully_multiline'],
             ],
             'ensure_single_line' => [
                 <<<'EXPECTED'
@@ -943,12 +844,9 @@ $example = function () use ($message1,$message2) {
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix56Cases
      */
-    public function testFix56($expected, $input)
+    public function testFix56(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -964,13 +862,10 @@ $example = function () use ($message1,$message2) {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix73Cases
      * @requires PHP 7.3
      */
-    public function testFix73($expected, $input = null, array $config = [])
+    public function testFix73(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1039,13 +934,10 @@ functionCall(
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null, array $config = [])
+    public function testFix74(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1069,44 +961,5 @@ $fn = fn(
                 ],
             ],
         ];
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::fixSpace is deprecated and will be removed in 3.0.
-     */
-    public function testLegacyFixSpace()
-    {
-        $this->fixer->fixSpace(Tokens::fromCode('<?php xyz("", "", "", "");'), 1);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "ensure_fully_multiline" for rule "method_argument_space" is deprecated and will be removed in version 3.0. Use option "on_multiline" instead.
-     */
-    public function testDeprecatedEnsureFullyMultilineOption()
-    {
-        $this->fixer->configure([
-            'ensure_fully_multiline' => true,
-        ]);
-
-        $expected = <<<'EXPECTED'
-<?php
-functionCall(
-    'a',
-    'b',
-    'c'
-);
-EXPECTED;
-
-        $input = <<<'INPUT'
-<?php
-functionCall(
-    'a', 'b',
-    'c'
-);
-INPUT;
-
-        $this->doTest($expected, $input);
     }
 }

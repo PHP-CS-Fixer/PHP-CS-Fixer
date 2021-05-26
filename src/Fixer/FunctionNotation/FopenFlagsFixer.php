@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,23 +15,25 @@
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFopenFlagFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author SpacePossum
  */
-final class FopenFlagsFixer extends AbstractFopenFlagFixer implements ConfigurationDefinitionFixerInterface
+final class FopenFlagsFixer extends AbstractFopenFlagFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'The flags in `fopen` calls must omit `t`, and `b` must be omitted or included consistently.',
@@ -45,7 +49,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('b_mode', 'The `b` flag must be used (`true`) or omitted (`false`).'))
@@ -55,11 +59,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurat
         ]);
     }
 
-    /**
-     * @param int $argumentStartIndex
-     * @param int $argumentEndIndex
-     */
-    protected function fixFopenFlagToken(Tokens $tokens, $argumentStartIndex, $argumentEndIndex)
+    protected function fixFopenFlagToken(Tokens $tokens, int $argumentStartIndex, int $argumentEndIndex): void
     {
         $argumentFlagIndex = null;
 

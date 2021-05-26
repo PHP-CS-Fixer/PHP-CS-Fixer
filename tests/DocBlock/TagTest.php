@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,13 +28,9 @@ use PhpCsFixer\Tests\TestCase;
 final class TagTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param string $new
-     * @param string $input
-     *
      * @dataProvider provideNameCases
      */
-    public function testName($expected, $new, $input)
+    public function testName(string $expected, string $new, string $input): void
     {
         $tag = new Tag(new Line($input));
 
@@ -65,12 +63,9 @@ final class TagTest extends TestCase
     }
 
     /**
-     * @param bool   $expected
-     * @param string $input
-     *
      * @dataProvider provideValidCases
      */
-    public function testValid($expected, $input)
+    public function testValid(bool $expected, string $input): void
     {
         $tag = new Tag(new Line($input));
 

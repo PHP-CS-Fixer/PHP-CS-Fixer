@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,7 +14,6 @@
 
 namespace PhpCsFixer\Tests\Console\Command;
 
-use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
@@ -26,12 +27,11 @@ use PhpCsFixer\Tests\TestCase;
 final class HelpCommandTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param mixed  $input
+     * @param mixed $input
      *
      * @dataProvider provideToStringCases
      */
-    public function testToString($expected, $input)
+    public function testToString(string $expected, $input): void
     {
         static::assertSame($expected, HelpCommand::toString($input));
     }
@@ -52,11 +52,11 @@ final class HelpCommandTest extends TestCase
     }
 
     /**
-     * @param null|string $expected
+     * @param null|mixed $expected
      *
      * @dataProvider provideGetDisplayableAllowedValuesCases
      */
-    public function testGetDisplayableAllowedValues($expected, FixerOptionInterface $input)
+    public function testGetDisplayableAllowedValues($expected, FixerOptionInterface $input): void
     {
         static::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
     }
@@ -65,21 +65,7 @@ final class HelpCommandTest extends TestCase
     {
         yield [null, new FixerOption('foo', 'bar', false, null, ['int'], [])];
         yield [['A', 'B', 'x', 'z'], new FixerOption('foo', 'bar', false, null, ['string'], ['z', 'x', 'B', 'A'])];
-        yield [[0, 3, 9], new FixerOption('foo', 'bar', false, null, ['int'], [0, 3, 9, static function () {}])];
+        yield [[0, 3, 9], new FixerOption('foo', 'bar', false, null, ['int'], [0, 3, 9, static function (): void {}])];
         yield [null, new FixerOption('foo', 'bar')];
-    }
-
-    public function testGetLatestReleaseVersionFromChangeLog()
-    {
-        $helpVersion = HelpCommand::getLatestReleaseVersionFromChangeLog();
-        $appVersion = Application::VERSION;
-        static::assertTrue(
-            version_compare($helpVersion, $appVersion, '<='),
-            sprintf(
-                'Expected version from change log "%s" <= as application version "%s".',
-                $helpVersion,
-                $appVersion
-            )
-        );
     }
 }

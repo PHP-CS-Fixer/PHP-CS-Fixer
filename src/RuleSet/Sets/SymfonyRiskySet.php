@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,7 +21,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  */
 final class SymfonyRiskySet extends AbstractRuleSetDescription
 {
-    public function getRules()
+    public function getRules(): array
     {
         $rules = [
             '@PHP56Migration:risky' => true,
@@ -33,16 +35,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'fopen_flags' => [
                 'b_mode' => false,
             ],
-            'function_to_constant' => [
-                'functions' => [
-                    'get_called_class',
-                    'get_class',
-                    'get_class_this',
-                    'php_sapi_name',
-                    'phpversion',
-                    'pi',
-                ],
-            ],
+            'function_to_constant' => true,
             'implode_call' => true,
             'is_null' => true,
             'logical_operators' => true,
@@ -74,17 +67,12 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'ternary_to_elvis_operator' => true,
         ];
 
-        $rules['non_printable_character'] = \PHP_VERSION_ID < 70000
-            ? true
-            : ['use_escape_sequences_in_strings' => true]
-        ;
-
         ksort($rules);
 
         return $rules;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.';
     }

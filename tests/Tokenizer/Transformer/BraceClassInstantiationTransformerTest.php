@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,9 @@ use PhpCsFixer\Tokenizer\CT;
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcess(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
@@ -304,13 +304,12 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param string             $source
      * @param array<int, string> $expectedTokens
      * @param string[]           $observedKinds
      *
      * @dataProvider provideProcessPhp70Cases
      */
-    public function testProcessPhp70($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcessPhp70(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
@@ -352,14 +351,13 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param string             $source
      * @param array<int, string> $expectedTokens
      * @param string[]           $observedKinds
      *
      * @dataProvider provideProcessPhp74Cases
      * @requires PHP 7.4
      */
-    public function testProcessPhp74($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcessPhp74(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
@@ -388,14 +386,13 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param string             $source
      * @param array<int, string> $expectedTokens
      * @param string[]           $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      * @requires PHP 8.0
      */
-    public function testProcessPhp80($source, array $expectedTokens, array $observedKinds = [])
+    public function testProcessPhp80(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,

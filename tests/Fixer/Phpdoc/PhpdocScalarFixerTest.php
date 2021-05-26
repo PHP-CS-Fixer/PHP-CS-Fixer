@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocScalarFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -56,7 +55,7 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
             /**
              * @method int foo()
              * @property int $foo
-             * @property callback $foo
+             * @property callable $foo
              * @property-read bool $bar
              * @property-write float $baz
              */

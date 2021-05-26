@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: strict_param,native_function_invocation.
 --RULESET--
-{"strict_param": true, "native_function_invocation": true}
+{"strict_param": true, "native_function_invocation": {"include": ["@internal"]}}
 --EXPECT--
 <?php
 

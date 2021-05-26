@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -24,25 +27,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SingleLineThrowFixer extends AbstractFixer
 {
-    /**
-     * @internal
-     */
-    const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
-
-    /**
-     * @internal
-     */
-    const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
-
-    /**
-     * @internal
-     */
-    const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
+    private const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
+    private const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
+    private const REMOVE_WHITESPACE_BEFORE_TOKENS = [')',  ']', ',', ';'];
+    private const THROW_END_TOKENS = [';', '(', '{', '}'];
 
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Throwing exception must be done in single line.',
@@ -55,7 +48,7 @@ final class SingleLineThrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_THROW);
     }
@@ -63,44 +56,37 @@ final class SingleLineThrowFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before ConcatSpaceFixer.
+     * Must run before BracesFixer, ConcatSpaceFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // must be fun before ConcatSpaceFixer
-        return 1;
+        return 36;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if (!$tokens[$index]->isGivenKind(T_THROW)) {
                 continue;
             }
 
-            /** @var int $openingBraceCandidateIndex */
-            $openingBraceCandidateIndex = $tokens->getNextTokenOfKind($index, [';', '(']);
+            /** @var int $endCandidateIndex */
+            $endCandidateIndex = $tokens->getNextTokenOfKind($index, self::THROW_END_TOKENS);
 
-            while ($tokens[$openingBraceCandidateIndex]->equals('(')) {
-                /** @var int $closingBraceIndex */
-                $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingBraceCandidateIndex);
-
-                /** @var int $openingBraceCandidateIndex */
-                $openingBraceCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, [';', '(']);
+            while ($tokens[$endCandidateIndex]->equals('(')) {
+                $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endCandidateIndex);
+                $endCandidateIndex = $tokens->getNextTokenOfKind($closingBraceIndex, self::THROW_END_TOKENS);
             }
 
-            $this->trimNewLines($tokens, $index, $openingBraceCandidateIndex);
+            $this->trimNewLines($tokens, $index, $tokens->getPrevMeaningfulToken($endCandidateIndex));
         }
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    private function trimNewLines(Tokens $tokens, $startIndex, $endIndex)
+    private function trimNewLines(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             $content = $tokens[$index]->getContent();

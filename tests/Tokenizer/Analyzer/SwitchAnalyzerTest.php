@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SwitchAnalyzerTest extends TestCase
 {
-    public function testForNotSwitch()
+    public function testForNotSwitch(): void
     {
         $analyzer = new SwitchAnalyzer();
 
@@ -39,11 +41,8 @@ final class SwitchAnalyzerTest extends TestCase
 
     /**
      * @dataProvider provideGettingSwitchAnalysisCases
-     *
-     * @param mixed $code
-     * @param mixed $index
      */
-    public function testGettingSwitchAnalysis(SwitchAnalysis $expected, $code, $index)
+    public function testGettingSwitchAnalysis(SwitchAnalysis $expected, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new SwitchAnalyzer();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -32,7 +34,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigTest extends TestCase
 {
-    public function testConfigRulesUsingSeparateMethod()
+    public function testConfigRulesUsingSeparateMethod(): void
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
@@ -53,7 +55,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    public function testConfigRulesUsingJsonMethod()
+    public function testConfigRulesUsingJsonMethod(): void
     {
         $config = new Config();
         $configResolver = new ConfigurationResolver(
@@ -76,7 +78,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    public function testConfigRulesUsingInvalidJson()
+    public function testConfigRulesUsingInvalidJson(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
 
@@ -92,7 +94,7 @@ final class ConfigTest extends TestCase
         $configResolver->getRules();
     }
 
-    public function testCustomConfig()
+    public function testCustomConfig(): void
     {
         $customConfigFile = __DIR__.'/Fixtures/.php-cs-fixer.custom.php';
 
@@ -118,7 +120,7 @@ final class ConfigTest extends TestCase
         );
     }
 
-    public function testThatFinderWorksWithDirSetOnConfig()
+    public function testThatFinderWorksWithDirSetOnConfig(): void
     {
         $config = new Config();
 
@@ -131,7 +133,7 @@ final class ConfigTest extends TestCase
         static::assertSame('somefile.php', $items[0]->getFilename());
     }
 
-    public function testThatCustomFinderWorks()
+    public function testThatCustomFinderWorks(): void
     {
         $finder = new Finder();
         $finder->in(__DIR__.'/Fixtures/FinderDirectory');
@@ -147,7 +149,7 @@ final class ConfigTest extends TestCase
         static::assertSame('somefile.php', $items[0]->getFilename());
     }
 
-    public function testThatCustomSymfonyFinderWorks()
+    public function testThatCustomSymfonyFinderWorks(): void
     {
         $finder = new SymfonyFinder();
         $finder->in(__DIR__.'/Fixtures/FinderDirectory');
@@ -163,14 +165,14 @@ final class ConfigTest extends TestCase
         static::assertSame('somefile.php', $items[0]->getFilename());
     }
 
-    public function testThatCacheFileHasDefaultValue()
+    public function testThatCacheFileHasDefaultValue(): void
     {
         $config = new Config();
 
-        static::assertSame('.php_cs.cache', $config->getCacheFile());
+        static::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
     }
 
-    public function testThatCacheFileCanBeMutated()
+    public function testThatCacheFileCanBeMutated(): void
     {
         $cacheFile = 'some-directory/some.file';
 
@@ -180,29 +182,19 @@ final class ConfigTest extends TestCase
         static::assertSame($cacheFile, $config->getCacheFile());
     }
 
-    public function testThatMutatorHasFluentInterface()
+    public function testThatMutatorHasFluentInterface(): void
     {
         $config = new Config();
 
         static::assertSame($config, $config->setCacheFile('some-directory/some.file'));
     }
 
-    public function testRegisterCustomFixersWithInvalidArgument()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/^Argument must be an array or a Traversable, got "\w+"\.$/');
-
-        $config = new Config();
-        $config->registerCustomFixers('foo');
-    }
-
     /**
      * @param FixerInterface[] $expected
-     * @param iterable         $suite
      *
      * @dataProvider provideRegisterCustomFixersCases
      */
-    public function testRegisterCustomFixers(array $expected, $suite)
+    public function testRegisterCustomFixers(array $expected, iterable $suite): void
     {
         $config = new Config();
         $config->registerCustomFixers($suite);
@@ -210,11 +202,11 @@ final class ConfigTest extends TestCase
         static::assertSame($expected, $config->getCustomFixers());
     }
 
-    public function testConfigDefault()
+    public function testConfigDefault(): void
     {
         $config = new Config();
 
-        static::assertSame('.php_cs.cache', $config->getCacheFile());
+        static::assertSame('.php-cs-fixer.cache', $config->getCacheFile());
         static::assertSame([], $config->getCustomFixers());
         static::assertSame('txt', $config->getFormat());
         static::assertFalse($config->getHideProgress());
@@ -223,7 +215,7 @@ final class ConfigTest extends TestCase
         static::assertSame('default', $config->getName());
         static::assertNull($config->getPhpExecutable());
         static::assertFalse($config->getRiskyAllowed());
-        static::assertSame(['@PSR2' => true], $config->getRules());
+        static::assertSame(['@PSR12' => true], $config->getRules());
         static::assertTrue($config->getUsingCache());
 
         $finder = $config->getFinder();
@@ -252,20 +244,7 @@ final class ConfigTest extends TestCase
         static::assertFalse($config->getUsingCache());
     }
 
-    public function testSetInvalidFinder()
-    {
-        $config = new Config();
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/^Argument must be an array or a Traversable, got "integer"\.$/');
-
-        $config->setFinder(123);
-    }
-
-    /**
-     * @return array
-     */
-    public function provideRegisterCustomFixersCases()
+    public function provideRegisterCustomFixersCases(): array
     {
         $fixers = [
             new NoWhitespaceBeforeCommaInArrayFixer(),
@@ -278,21 +257,12 @@ final class ConfigTest extends TestCase
         ];
     }
 
-    public function testConfigConstructorWithName()
+    public function testConfigConstructorWithName(): void
     {
         $anonymousConfig = new Config();
         $namedConfig = new Config('foo');
 
         static::assertSame($anonymousConfig->getName(), 'default');
         static::assertSame($namedConfig->getName(), 'foo');
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Config::create is deprecated since 2.17 and will be removed in 3.0.
-     */
-    public function testDeprecatedConstructor()
-    {
-        Config::create();
     }
 }

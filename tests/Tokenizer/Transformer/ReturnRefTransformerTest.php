@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,11 +27,9 @@ use PhpCsFixer\Tokenizer\CT;
 final class ReturnRefTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      */
-    public function testProcess($source, array $expectedTokens = [])
+    public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
@@ -59,12 +59,10 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessPhp74Cases
      * @requires PHP 7.4
      */
-    public function testProcessPhp74($source, array $expectedTokens = [])
+    public function testProcessPhp74(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,

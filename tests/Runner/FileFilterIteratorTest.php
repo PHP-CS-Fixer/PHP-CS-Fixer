@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,13 +29,11 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class FileFilterIteratorTest extends TestCase
 {
     /**
-     * @param int $repeat
-     *
      * @testWith [1]
      *           [2]
      *           [3]
      */
-    public function testAccept($repeat)
+    public function testAccept(int $repeat): void
     {
         $file = __FILE__;
         $content = file_get_contents($file);
@@ -42,7 +42,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            static function ($event) use (&$events) {
+            static function (FixerFileProcessedEvent $event) use (&$events): void {
                 $events[] = $event;
             }
         );
@@ -66,7 +66,7 @@ final class FileFilterIteratorTest extends TestCase
         static::assertSame($fileInfo, reset($files));
     }
 
-    public function testEmitSkipEventWhenCacheNeedFixingFalse()
+    public function testEmitSkipEventWhenCacheNeedFixingFalse(): void
     {
         $file = __FILE__;
         $content = file_get_contents($file);
@@ -75,7 +75,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            static function ($event) use (&$events) {
+            static function (FixerFileProcessedEvent $event) use (&$events): void {
                 $events[] = $event;
             }
         );
@@ -99,7 +99,7 @@ final class FileFilterIteratorTest extends TestCase
         static::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
-    public function testIgnoreEmptyFile()
+    public function testIgnoreEmptyFile(): void
     {
         $file = __DIR__.'/../Fixtures/empty.php';
         $content = file_get_contents($file);
@@ -108,7 +108,7 @@ final class FileFilterIteratorTest extends TestCase
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            static function ($event) use (&$events) {
+            static function (FixerFileProcessedEvent $event) use (&$events): void {
                 $events[] = $event;
             }
         );
@@ -132,12 +132,12 @@ final class FileFilterIteratorTest extends TestCase
         static::assertSame(FixerFileProcessedEvent::STATUS_SKIPPED, $event->getStatus());
     }
 
-    public function testIgnore()
+    public function testIgnore(): void
     {
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(
             FixerFileProcessedEvent::NAME,
-            static function () {
+            static function (): void {
                 throw new \Exception('No event expected.');
             }
         );
@@ -154,7 +154,7 @@ final class FileFilterIteratorTest extends TestCase
         static::assertCount(0, $filter);
     }
 
-    public function testWithoutDispatcher()
+    public function testWithoutDispatcher(): void
     {
         $file = __FILE__;
         $content = file_get_contents($file);
@@ -171,7 +171,7 @@ final class FileFilterIteratorTest extends TestCase
         static::assertCount(0, $filter);
     }
 
-    public function testInvalidIterator()
+    public function testInvalidIterator(): void
     {
         $filter = new FileFilterIterator(
             new \ArrayIterator([__FILE__]),
@@ -192,7 +192,7 @@ final class FileFilterIteratorTest extends TestCase
     /**
      * @requires OS Linux|Darwin
      */
-    public function testFileIsAcceptedAfterFilteredAsSymlink()
+    public function testFileIsAcceptedAfterFilteredAsSymlink(): void
     {
         $link = __DIR__.'/../Fixtures/Test/FileFilterIteratorTest/FileFilterIteratorTest.php.link';
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,10 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
  * @author Graham Campbell <graham@alt-three.com>
@@ -84,12 +89,9 @@ final class AnnotationTest extends TestCase
     private static $tags = ['param', 'param', 'param', 'throws', 'return'];
 
     /**
-     * @param int    $index
-     * @param string $content
-     *
      * @dataProvider provideGetContentCases
      */
-    public function testGetContent($index, $content)
+    public function testGetContent(int $index, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -110,12 +112,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int $index
-     * @param int $start
-     *
      * @dataProvider provideStartCases
      */
-    public function testStart($index, $start)
+    public function testStart(int $index, int $start): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -135,12 +134,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int $index
-     * @param int $end
-     *
      * @dataProvider provideEndCases
      */
-    public function testEnd($index, $end)
+    public function testEnd(int $index, int $end): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -160,12 +156,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int    $index
-     * @param string $tag
-     *
      * @dataProvider provideGetTagCases
      */
-    public function testGetTag($index, $tag)
+    public function testGetTag(int $index, string $tag): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -185,13 +178,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param int $index
-     * @param int $start
-     * @param int $end
-     *
      * @dataProvider provideRemoveCases
      */
-    public function testRemove($index, $start, $end)
+    public function testRemove(int $index, int $start, int $end): void
     {
         $doc = new DocBlock(self::$sample);
         $annotation = $doc->getAnnotation($index);
@@ -214,12 +203,9 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideRemoveEdgeCasesCases
      */
-    public function testRemoveEdgeCases($expected, $input)
+    public function testRemoveEdgeCases(string $expected, string $input): void
     {
         $doc = new DocBlock($input);
         $annotation = $doc->getAnnotation(0);
@@ -266,12 +252,11 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param string   $input
      * @param string[] $expected
      *
      * @dataProvider provideTypeParsingCases
      */
-    public function testTypeParsing($input, array $expected)
+    public function testTypeParsing(string $input, array $expected): void
     {
         $tag = new Annotation([new Line($input)]);
 
@@ -377,18 +362,116 @@ final class AnnotationTest extends TestCase
                 " * @return int\r\n",
                 ['int'],
             ],
+            [
+                '/** @var Collection<Foo<Bar>, Foo<Baz>>',
+                ['Collection<Foo<Bar>, Foo<Baz>>'],
+            ],
+            [
+                '/** @var int | string',
+                ['int', 'string'],
+            ],
+            [
+                '/** @var Foo::*',
+                ['Foo::*'],
+            ],
+            [
+                '/** @var Foo::A',
+                ['Foo::A'],
+            ],
+            [
+                '/** @var Foo::A|Foo::B',
+                ['Foo::A', 'Foo::B'],
+            ],
+            [
+                '/** @var Foo::A*',
+                ['Foo::A*'],
+            ],
+            [
+                '/** @var array<Foo::A*>|null',
+                ['array<Foo::A*>', 'null'],
+            ],
+            [
+                '/** @var null|true|false|1|1.5|\'a\'|"b"',
+                ['null', 'true', 'false', '1', '1.5', "'a'", '"b"'],
+            ],
+            [
+                '/** @param int | "a" | A<B<C, D>, E<F::*|G[]>> $foo */',
+                ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>'],
+            ],
+            [
+                '/** @var class-string<Foo> */',
+                ['class-string<Foo>'],
+            ],
+            [
+                '/** @var A&B */',
+                ['A&B'],
+            ],
+            [
+                '/** @var A & B */',
+                ['A & B'],
+            ],
+            [
+                '/** @var array{1: bool, 2: bool} */',
+                ['array{1: bool, 2: bool}'],
+            ],
+            [
+                '/** @var array{a: int|string, b?: bool} */',
+                ['array{a: int|string, b?: bool}'],
+            ],
+            [
+                '/** @var array{\'a\': "a", "b"?: \'b\'} */',
+                ['array{\'a\': "a", "b"?: \'b\'}'],
+            ],
+            [
+                '/** @var array { a : int | string , b ? : A<B, C> } */',
+                ['array { a : int | string , b ? : A<B, C> }'],
+            ],
+            [
+                '/** @param callable(string) $function',
+                ['callable(string)'],
+            ],
+            [
+                '/** @param callable(string): bool $function',
+                ['callable(string): bool'],
+            ],
+            [
+                '/** @param callable(array<int, string>, array<int, Foo>): bool $function',
+                ['callable(array<int, string>, array<int, Foo>): bool'],
+            ],
+            [
+                '/** @param array<int, callable(string): bool> $function',
+                ['array<int, callable(string): bool>'],
+            ],
+            [
+                '/** @param callable(string): callable(int) $function',
+                ['callable(string): callable(int)'],
+            ],
+            [
+                '/** @param callable(string) : callable(int) : bool $function',
+                ['callable(string) : callable(int) : bool'],
+            ],
+            [
+                '* @param TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null $x',
+                ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null'],
+            ],
+            [
+                '/** @param Closure(string) $function',
+                ['Closure(string)'],
+            ],
+            [
+                '/** @param   array  <  int   , callable  (  string  )  :   bool  > $function',
+                ['array  <  int   , callable  (  string  )  :   bool  >'],
+            ],
         ];
     }
 
     /**
      * @param string[] $expected
      * @param string[] $new
-     * @param string   $input
-     * @param string   $output
      *
      * @dataProvider provideTypesCases
      */
-    public function testTypes($expected, $new, $input, $output)
+    public function testTypes(array $expected, array $new, string $input, string $output): void
     {
         $line = new Line($input);
         $tag = new Annotation([$line]);
@@ -416,11 +499,10 @@ final class AnnotationTest extends TestCase
 
     /**
      * @param string[] $expected
-     * @param string   $input
      *
      * @dataProvider provideNormalizedTypesCases
      */
-    public function testNormalizedTypes($expected, $input)
+    public function testNormalizedTypes(array $expected, string $input): void
     {
         $line = new Line($input);
         $tag = new Annotation([$line]);
@@ -437,7 +519,7 @@ final class AnnotationTest extends TestCase
         ];
     }
 
-    public function testGetTypesOnBadTag()
+    public function testGetTypesOnBadTag(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('This tag does not support types');
@@ -447,7 +529,7 @@ final class AnnotationTest extends TestCase
         $tag->getTypes();
     }
 
-    public function testSetTypesOnBadTag()
+    public function testSetTypesOnBadTag(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('This tag does not support types');
@@ -457,7 +539,7 @@ final class AnnotationTest extends TestCase
         $tag->setTypes(['string']);
     }
 
-    public function testGetTagsWithTypes()
+    public function testGetTagsWithTypes(): void
     {
         $tags = Annotation::getTagsWithTypes();
         static::assertIsArray($tags);
@@ -465,5 +547,56 @@ final class AnnotationTest extends TestCase
             static::assertIsString($tag);
             static::assertNotEmpty($tag);
         }
+    }
+
+    /**
+     * @param Line[]                 $lines
+     * @param null|NamespaceAnalysis $namespace
+     * @param NamespaceUseAnalysis[] $namespaceUses
+     * @param null|string            $expectedCommonType
+     *
+     * @dataProvider provideTypeExpressionCases
+     */
+    public function testGetTypeExpression(array $lines, $namespace, array $namespaceUses, $expectedCommonType): void
+    {
+        $annotation = new Annotation($lines, $namespace, $namespaceUses);
+        $result = $annotation->getTypeExpression();
+
+        static::assertInstanceOf(TypeExpression::class, $result);
+        static::assertSame($expectedCommonType, $result->getCommonType());
+    }
+
+    public function provideTypeExpressionCases()
+    {
+        $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
+        $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
+
+        yield [[new Line('* @param array|Traversable $foo')], null, [], 'iterable'];
+        yield [[new Line('* @param array|Traversable $foo')], $appNamespace, [], null];
+        yield [[new Line('* @param array|Traversable $foo')], $appNamespace, [$useTraversable], 'iterable'];
+    }
+
+    /**
+     * @param Line[]      $lines
+     * @param null|string $expectedVariableName
+     *
+     * @dataProvider provideGetVariableCases
+     */
+    public function testGetVariableName(array $lines, $expectedVariableName): void
+    {
+        $annotation = new Annotation($lines);
+        static::assertSame($expectedVariableName, $annotation->getVariableName());
+    }
+
+    public function provideGetVariableCases()
+    {
+        yield [[new Line('* @param int $foo')], '$foo'];
+        yield [[new Line('* @param int $foo some description')], '$foo'];
+        yield [[new Line('/** @param int $foo*/')], '$foo'];
+        yield [[new Line('* @param int')], null];
+        yield [[new Line('* @var int $foo')], '$foo'];
+        yield [[new Line('* @var int $foo some description')], '$foo'];
+        yield [[new Line('/** @var int $foo*/')], '$foo'];
+        yield [[new Line('* @var int')], null];
     }
 }

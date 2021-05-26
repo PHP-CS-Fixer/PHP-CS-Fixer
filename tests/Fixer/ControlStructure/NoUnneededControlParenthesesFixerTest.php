@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,9 +29,9 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 {
     private static $defaultStatements;
 
-    public static function doSetUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
@@ -42,57 +44,20 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, $fixStatement = null)
+    public function testFix(string $expected, ?string $input = null, ?string $fixStatement = null): void
     {
         $this->fixerTest($expected, $input, $fixStatement);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
-     * @group legacy
-     * @dataProvider provideFixCases
-     * @expectedDeprecation Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
-     */
-    public function testLegacyFix($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement, true);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, $fixStatement = null)
+    public function testFix70(string $expected, ?string $input = null, ?string $fixStatement = null): void
     {
         $this->fixerTest($expected, $input, $fixStatement);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     *
-     * @group legacy
-     * @dataProvider provideFix70Cases
-     * @expectedDeprecation Passing "statements" at the root of the configuration for rule "no_unneeded_control_parentheses" is deprecated and will not be supported in 3.0, use "statements" => array(...) option instead.
-     * @requires PHP 7.0
-     */
-    public function testLegacyFix70($expected, $input = null, $fixStatement = null)
-    {
-        $this->fixerTest($expected, $input, $fixStatement, true);
     }
 
     public function provideFixCases()
@@ -479,13 +444,10 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixYieldFromCases
      * @requires PHP 7.0
      */
-    public function testFixYieldFrom($expected, $input = null)
+    public function testFixYieldFrom(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['statements' => ['yield_from']]);
         $this->doTest($expected, $input);
@@ -543,13 +505,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     * @param null|string $fixStatement
-     * @param bool        $legacy
-     */
-    private function fixerTest($expected, $input = null, $fixStatement = null, $legacy = false)
+    private function fixerTest(string $expected, ?string $input = null, ?string $fixStatement = null, bool $legacy = false): void
     {
         // Default config. Fixes all statements.
         $this->doTest($expected, $input);

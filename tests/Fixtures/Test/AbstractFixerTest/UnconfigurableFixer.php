@@ -13,6 +13,8 @@
 namespace PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -20,20 +22,22 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class UnconfigurableFixer extends AbstractFixer
 {
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
+        throw new \LogicException('Not implemented.');
     }
 
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
+        return true;
     }
 
-    public function doSomethingWithCreateConfigDefinition()
+    public function doSomethingWithCreateConfigDefinition(): FixerConfigurationResolverInterface
     {
         return $this->createConfigurationDefinition();
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
     }
 }

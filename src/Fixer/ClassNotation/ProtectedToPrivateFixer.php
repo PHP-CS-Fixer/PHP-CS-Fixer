@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -28,7 +31,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Converts `protected` variables and methods to `private` where possible.',
@@ -55,7 +58,7 @@ final class Sample
      * Must run before OrderedClassElementsFixer.
      * Must run after FinalInternalClassFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 66;
     }
@@ -63,7 +66,7 @@ final class Sample
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL, T_PROTECTED]);
     }
@@ -71,7 +74,7 @@ final class Sample
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
         for ($index = 0; $index < $end; ++$index) {
@@ -90,11 +93,7 @@ final class Sample
         }
     }
 
-    /**
-     * @param int $classOpenIndex
-     * @param int $classCloseIndex
-     */
-    private function fixClass(Tokens $tokens, $classOpenIndex, $classCloseIndex)
+    private function fixClass(Tokens $tokens, int $classOpenIndex, int $classCloseIndex): void
     {
         for ($index = $classOpenIndex + 1; $index < $classCloseIndex; ++$index) {
             if ($tokens[$index]->equals('{')) {
@@ -113,14 +112,8 @@ final class Sample
 
     /**
      * Decide whether or not skip the fix for given class.
-     *
-     * @param int $classIndex
-     * @param int $classOpenIndex
-     * @param int $classCloseIndex
-     *
-     * @return bool
      */
-    private function skipClass(Tokens $tokens, $classIndex, $classOpenIndex, $classCloseIndex)
+    private function skipClass(Tokens $tokens, int $classIndex, int $classOpenIndex, int $classCloseIndex): bool
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
         if (!$prevToken->isGivenKind(T_FINAL)) {

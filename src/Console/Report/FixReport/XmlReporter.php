@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ final class XmlReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return 'xml';
     }
@@ -32,7 +34,7 @@ final class XmlReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportSummary $reportSummary)
+    public function generate(ReportSummary $reportSummary): string
     {
         if (!\extension_loaded('dom')) {
             throw new \RuntimeException('Cannot generate report! `ext-dom` is not available!');
@@ -75,12 +77,7 @@ final class XmlReporter implements ReporterInterface
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
     }
 
-    /**
-     * @param \DOMDocument $dom
-     *
-     * @return \DOMElement
-     */
-    private function createAppliedFixersElement($dom, array $fixResult)
+    private function createAppliedFixersElement(\DOMDocument $dom, array $fixResult): \DOMElement
     {
         $appliedFixersXML = $dom->createElement('applied_fixers');
 
@@ -93,10 +90,7 @@ final class XmlReporter implements ReporterInterface
         return $appliedFixersXML;
     }
 
-    /**
-     * @return \DOMElement
-     */
-    private function createDiffElement(\DOMDocument $dom, array $fixResult)
+    private function createDiffElement(\DOMDocument $dom, array $fixResult): \DOMElement
     {
         $diffXML = $dom->createElement('diff');
         $diffXML->appendChild($dom->createCDATASection($fixResult['diff']));
@@ -104,12 +98,7 @@ final class XmlReporter implements ReporterInterface
         return $diffXML;
     }
 
-    /**
-     * @param float $time
-     *
-     * @return \DOMElement
-     */
-    private function createTimeElement($time, \DOMDocument $dom)
+    private function createTimeElement(float $time, \DOMDocument $dom): \DOMElement
     {
         $time = round($time / 1000, 3);
 
@@ -122,12 +111,7 @@ final class XmlReporter implements ReporterInterface
         return $timeXML;
     }
 
-    /**
-     * @param float $memory
-     *
-     * @return \DOMElement
-     */
-    private function createMemoryElement($memory, \DOMDocument $dom)
+    private function createMemoryElement(float $memory, \DOMDocument $dom): \DOMElement
     {
         $memory = round($memory / 1024 / 1024, 3);
 

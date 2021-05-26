@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -50,20 +52,17 @@ final class FixerOption implements FixerOptionInterface
     private $normalizer;
 
     /**
-     * @param string        $name
-     * @param string        $description
-     * @param bool          $isRequired
      * @param mixed         $default
      * @param null|string[] $allowedTypes
      */
     public function __construct(
-        $name,
-        $description,
-        $isRequired = true,
+        string $name,
+        string $description,
+        bool $isRequired = true,
         $default = null,
-        array $allowedTypes = null,
-        array $allowedValues = null,
-        \Closure $normalizer = null
+        ?array $allowedTypes = null,
+        ?array $allowedValues = null,
+        ?\Closure $normalizer = null
     ) {
         if ($isRequired && null !== $default) {
             throw new \LogicException('Required options cannot have a default value.');
@@ -91,7 +90,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -99,7 +98,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -107,7 +106,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasDefault()
+    public function hasDefault(): bool
     {
         return !$this->isRequired;
     }
@@ -127,7 +126,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedTypes()
+    public function getAllowedTypes(): ?array
     {
         return $this->allowedTypes;
     }
@@ -135,7 +134,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedValues()
+    public function getAllowedValues(): ?array
     {
         return $this->allowedValues;
     }
@@ -143,7 +142,7 @@ final class FixerOption implements FixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getNormalizer()
+    public function getNormalizer(): ?\Closure
     {
         return $this->normalizer;
     }
@@ -162,10 +161,8 @@ final class FixerOption implements FixerOptionInterface
      * all elements are still referenced.
      *
      * See {@see https://bugs.php.net/bug.php?id=69639 Bug #69639} for details.
-     *
-     * @return \Closure
      */
-    private function unbind(\Closure $closure)
+    private function unbind(\Closure $closure): \Closure
     {
         return $closure->bindTo(null);
     }

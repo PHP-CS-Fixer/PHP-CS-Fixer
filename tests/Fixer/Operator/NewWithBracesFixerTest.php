@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,24 +26,18 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NewWithBracesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -330,13 +326,10 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input = null)
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,26 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @group legacy
-     * @dataProvider provideTestFixCases
-     * @expectedDeprecation Passing "assertions" at the root of the configuration for rule "php_unit_strict" is deprecated and will not be supported in 3.0, use "assertions" => array(...) option instead.
-     */
-    public function testLegacyFix($expected, $input = null)
-    {
-        $this->fixer->configure(array_keys($this->getMethodsMap()));
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
 
@@ -102,11 +87,9 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     /**
      * Only method calls with 2 or 3 arguments should be fixed.
      *
-     * @param string $expected
-     *
      * @dataProvider provideTestNoFixWithWrongNumberOfArgumentsCases
      */
-    public function testNoFixWithWrongNumberOfArguments($expected)
+    public function testNoFixWithWrongNumberOfArguments(string $expected): void
     {
         $this->fixer->configure(['assertions' => array_keys($this->getMethodsMap())]);
         $this->doTest($expected);
@@ -136,7 +119,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         return $cases;
     }
 
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[php_unit_strict\] Invalid configuration: The option "assertions" .*\.$/');
@@ -145,13 +128,10 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -184,12 +164,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private static function generateTest($content)
+    private static function generateTest(string $content): string
     {
         return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }

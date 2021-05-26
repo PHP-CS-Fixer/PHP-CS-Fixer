@@ -20,17 +20,6 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
-``ensure_fully_multiline``
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use option ``on_multiline`` instead.
-
-ensure every argument of a multiline argument list is on its own line
-
-Allowed types: ``bool``
-
-Default value: ``false``
-
 ``on_multiline``
 ~~~~~~~~~~~~~~~~
 
@@ -38,7 +27,7 @@ Defines how to handle function arguments lists that contain newlines.
 
 Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ignore'``
 
-Default value: ``'ignore'``
+Default value: ``'ensure_fully_multiline'``
 
 ``after_heredoc``
 ~~~~~~~~~~~~~~~~~
@@ -251,4 +240,6 @@ The rule is part of the following rule sets:
   ``['on_multiline' => 'ensure_fully_multiline']``
 
 @Symfony
-  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``method_argument_space`` rule with the default config.
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``method_argument_space`` rule with the config below:
+
+  ``['on_multiline' => 'ignore']``

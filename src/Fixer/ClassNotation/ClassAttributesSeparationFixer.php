@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,20 +15,20 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
 
 /**
  * Make sure there is one blank line above and below class elements.
@@ -35,27 +37,20 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author SpacePossum
  */
-final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @internal
      */
-    const SPACING_NONE = 'none';
+    public const SPACING_NONE = 'none';
 
     /**
      * @internal
      */
-    const SPACING_ONE = 'one';
+    public const SPACING_ONE = 'one';
 
-    /**
-     * @internal
-     */
-    const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
-
-    /**
-     * @internal
-     */
-    const SUPPORTED_TYPES = ['const', 'method', 'property'];
+    private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
+    private const SUPPORTED_TYPES = ['const', 'method', 'property'];
 
     /**
      * @var array<string, string>
@@ -65,7 +60,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -78,7 +73,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Class, trait and interface elements must be separated with one or none blank line.',
@@ -129,7 +124,7 @@ class Sample
      * Must run before BracesFixer, IndentationTypeFixer.
      * Must run after OrderedClassElementsFixer, SingleClassElementPerStatementFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 55;
     }
@@ -137,7 +132,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
@@ -145,7 +140,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = $classStart = $classEnd = false;
@@ -187,34 +182,19 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property` => `none|one` values.'))
-                ->setNormalizer(static function (Options $options, $values) {
-                    $deprecated = array_intersect($values, self::SUPPORTED_TYPES);
-                    if (\count($deprecated) > 0) {
-                        Utils::triggerDeprecation('A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.');
-
-                        return array_fill_keys($deprecated, self::SPACING_ONE);
-                    }
-
-                    return $values;
-                })
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function ($option) {
-                    $deprecated = array_intersect($option, self::SUPPORTED_TYPES);
-                    if (\count($deprecated) > 0) {
-                        $option = array_fill_keys($deprecated, self::SPACING_ONE);
-                    }
-
+                ->setAllowedValues([static function (array $option) {
                     foreach ($option as $type => $spacing) {
                         if (!\in_array($type, self::SUPPORTED_TYPES, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected element type, expected any of "%s", got "%s".',
                                     implode('", "', self::SUPPORTED_TYPES),
-                                    \is_object($type) ? \get_class($type) : \gettype($type).'#'.$type
+                                    \gettype($type).'#'.$type
                                 )
                             );
                         }
@@ -247,12 +227,8 @@ class Sample
      *
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
-     *
-     * @param int    $classEndIndex
-     * @param int    $elementEndIndex
-     * @param string $spacing
      */
-    private function fixSpaceBelowClassElement(Tokens $tokens, $classEndIndex, $elementEndIndex, $spacing)
+    private function fixSpaceBelowClassElement(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing): void
     {
         for ($nextNotWhite = $elementEndIndex + 1;; ++$nextNotWhite) {
             if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
@@ -281,12 +257,8 @@ class Sample
      *
      * Deals with comments, PHPDocs and spaces above the method with respect to the position of the
      * method within the class or trait.
-     *
-     * @param int    $classEndIndex
-     * @param int    $elementEndIndex
-     * @param string $spacing
      */
-    private function fixSpaceBelowClassMethod(Tokens $tokens, $classEndIndex, $elementEndIndex, $spacing)
+    private function fixSpaceBelowClassMethod(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing): void
     {
         $nextNotWhite = $tokens->getNextNonWhitespace($elementEndIndex);
 
@@ -299,11 +271,10 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      *
-     * @param int    $classStartIndex index of the class Token the element is in
-     * @param int    $elementIndex    index of the element to fix
-     * @param string $spacing
+     * @param int $classStartIndex index of the class Token the element is in
+     * @param int $elementIndex    index of the element to fix
      */
-    private function fixSpaceAboveClassElement(Tokens $tokens, $classStartIndex, $elementIndex, $spacing)
+    private function fixSpaceAboveClassElement(Tokens $tokens, int $classStartIndex, int $elementIndex, string $spacing): void
     {
         static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
@@ -387,12 +358,7 @@ class Sample
         $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2);
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     * @param int $reqLineCount
-     */
-    private function correctLineBreaks(Tokens $tokens, $startIndex, $endIndex, $reqLineCount = 2)
+    private function correctLineBreaks(Tokens $tokens, int $startIndex, int $endIndex, int $reqLineCount = 2): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -446,13 +412,7 @@ class Sample
         }
     }
 
-    /**
-     * @param int $whiteSpaceStartIndex
-     * @param int $whiteSpaceEndIndex
-     *
-     * @return int
-     */
-    private function getLineBreakCount(Tokens $tokens, $whiteSpaceStartIndex, $whiteSpaceEndIndex)
+    private function getLineBreakCount(Tokens $tokens, int $whiteSpaceStartIndex, int $whiteSpaceEndIndex): int
     {
         $lineCount = 0;
 
@@ -463,12 +423,7 @@ class Sample
         return $lineCount;
     }
 
-    /**
-     * @param int $commentIndex
-     *
-     * @return int
-     */
-    private function findCommentBlockStart(Tokens $tokens, $commentIndex)
+    private function findCommentBlockStart(Tokens $tokens, int $commentIndex): int
     {
         $start = $commentIndex;
 
@@ -489,10 +444,8 @@ class Sample
 
     /**
      * @param int $index attribute close index
-     *
-     * @return int
      */
-    private function findAttributeBlockStart(Tokens $tokens, $index)
+    private function findAttributeBlockStart(Tokens $tokens, int $index): int
     {
         $start = $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 

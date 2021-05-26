@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -37,13 +39,13 @@ final class WarningsDetector
         $this->toolInfo = $toolInfo;
     }
 
-    public function detectOldMajor()
+    public function detectOldMajor(): void
     {
         // @TODO 2.99 to be activated with new MAJOR release
         // $this->warnings[] = 'You are running PHP CS Fixer v2, which is not maintained anymore. Please update to v3.';
     }
 
-    public function detectOldVendor()
+    public function detectOldVendor(): void
     {
         if ($this->toolInfo->isInstalledByComposer()) {
             $details = $this->toolInfo->getComposerInstallationDetails();
@@ -60,7 +62,7 @@ final class WarningsDetector
     /**
      * @return string[]
      */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         if (!\count($this->warnings)) {
             return [];

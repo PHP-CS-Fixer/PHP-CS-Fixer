@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -26,12 +28,8 @@ final class CodeHasher
 
     /**
      * Calculate hash for code.
-     *
-     * @param string $code
-     *
-     * @return string
      */
-    public static function calculateCodeHash($code)
+    public static function calculateCodeHash(string $code): string
     {
         return (string) crc32($code);
     }

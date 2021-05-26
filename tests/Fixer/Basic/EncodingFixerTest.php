@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, \SplFileInfo $file = null)
+    public function testFix(string $expected, ?string $input = null, \SplFileInfo $file = null): void
     {
         $this->doTest($expected, $input, $file);
     }
@@ -43,7 +42,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         yield ['<?php '];
     }
 
-    private function prepareTestCase($expectedFilename, $inputFilename = null)
+    private function prepareTestCase(string $expectedFilename, ?string $inputFilename = null)
     {
         $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
         $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;

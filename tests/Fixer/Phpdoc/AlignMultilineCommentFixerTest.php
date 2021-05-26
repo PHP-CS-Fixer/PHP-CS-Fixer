@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
 {
-    public function testInvalidConfiguration()
+    public function testInvalidConfiguration(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
 
@@ -32,12 +34,9 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDefaultCases
      */
-    public function testDefaults($expected, $input = null)
+    public function testDefaults(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -172,12 +171,9 @@ class A
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDocLikeMultilineCommentsCases
      */
-    public function testDocLikeMultilineComments($expected, $input = null)
+    public function testDocLikeMultilineComments(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_type' => 'phpdocs_like']);
         $this->doTest($expected, $input);
@@ -223,12 +219,9 @@ class A
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMixedContentMultilineCommentsCases
      */
-    public function testMixedContentMultilineComments($expected, $input = null)
+    public function testMixedContentMultilineComments(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['comment_type' => 'all_multiline']);
         $this->doTest($expected, $input);
@@ -257,12 +250,9 @@ class A
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideDefaultCases
      */
-    public function testWhitespaceAwareness($expected, $input = null)
+    public function testWhitespaceAwareness(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $expected = str_replace("\n", "\r\n", $expected);

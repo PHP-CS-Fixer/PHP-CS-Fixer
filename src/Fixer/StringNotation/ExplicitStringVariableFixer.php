@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\StringNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,7 +30,7 @@ final class ExplicitStringVariableFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.',
@@ -55,7 +58,7 @@ EOT
      * Must run before SimpleToComplexStringVariableFixer.
      * Must run after BacktickToShellExecFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -63,7 +66,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_VARIABLE);
     }
@@ -71,7 +74,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $backtickStarted = false;
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
@@ -158,10 +161,8 @@ EOT
      * Check if token is a part of a string.
      *
      * @param Token $token The token to check
-     *
-     * @return bool
      */
-    private function isStringPartToken(Token $token)
+    private function isStringPartToken(Token $token): bool
     {
         return $token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)
             || $token->isGivenKind(T_START_HEREDOC)

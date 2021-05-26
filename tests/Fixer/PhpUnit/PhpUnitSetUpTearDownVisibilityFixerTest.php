@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,19 +27,13 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param mixed       $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'setUp and tearDown are made protected if they are public' => [

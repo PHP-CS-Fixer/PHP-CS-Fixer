@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,10 +25,13 @@ use PhpCsFixer\Differ\UnifiedDiffer;
  */
 final class UnifiedDifferTest extends AbstractDifferTestCase
 {
-    public function testDiffReturnsDiff()
+    public function testDiffReturnsDiff(): void
     {
-        $diff = '--- Original
-+++ New
+        $differ = new UnifiedDiffer();
+        $file = __FILE__;
+
+        $diff = '--- '.$file.'
++++ '.$file.'
 @@ -2,7 +2,7 @@
  '.'
  function baz($options)
@@ -37,8 +42,21 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
      }
  '.'
 ';
+        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode(), new \SplFileInfo($file)));
+    }
+
+    public function testDiffAddsQuotes(): void
+    {
         $differ = new UnifiedDiffer();
 
-        static::assertSame($diff, $differ->diff($this->oldCode(), $this->newCode()));
+        static::assertSame(
+            '--- "test test test.txt"
++++ "test test test.txt"
+@@ -1 +1 @@
+-a
++b
+',
+            $differ->diff("a\n", "b\n", new DummyTestSplFileInfo('/foo/bar/test test test.txt'))
+        );
     }
 }

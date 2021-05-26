@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,7 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RequiredFixerConfigurationExceptionTest extends TestCase
 {
-    public function testIsInvalidFixerConfigurationException()
+    public function testIsInvalidFixerConfigurationException(): void
     {
         $exception = new RequiredFixerConfigurationException(
             'hal',
@@ -35,7 +37,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
         static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $fixerName = 'hal';
         $message = 'I cannot do that, Dave.';
@@ -50,7 +52,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
         static::assertNull($exception->getPrevious());
     }
 
-    public function testConstructorSetsValues()
+    public function testConstructorSetsValues(): void
     {
         $fixerName = 'hal';
         $message = 'I cannot do that, Dave.';

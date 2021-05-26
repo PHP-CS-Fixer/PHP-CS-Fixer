@@ -19,8 +19,6 @@ Rules
   config:
   ``['b_mode' => false]``
 - `function_to_constant <./../rules/language_construct/function_to_constant.rst>`_
-  config:
-  ``['functions' => ['get_called_class', 'get_class', 'get_class_this', 'php_sapi_name', 'phpversion', 'pi']]``
 - `implode_call <./../rules/function_notation/implode_call.rst>`_
 - `is_null <./../rules/language_construct/is_null.rst>`_
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
@@ -36,8 +34,6 @@ Rules
 - `no_unreachable_default_argument_value <./../rules/function_notation/no_unreachable_default_argument_value.rst>`_
 - `no_useless_sprintf <./../rules/function_notation/no_useless_sprintf.rst>`_
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
-  config:
-  ``['use_escape_sequences_in_strings' => true]``
 - `ordered_traits <./../rules/class_notation/ordered_traits.rst>`_
 - `php_unit_construct <./../rules/php_unit/php_unit_construct.rst>`_
 - `php_unit_mock_short_will_return <./../rules/php_unit/php_unit_mock_short_will_return.rst>`_

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,7 +30,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 1; // must run before NamespaceOperatorTransformer
     }
@@ -36,7 +38,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function getRequiredPhpVersionId()
+    public function getRequiredPhpVersionId(): int
     {
         return 80000;
     }
@@ -44,26 +46,24 @@ final class NameQualifiedTransformer extends AbstractTransformer
     /**
      * {@inheritdoc}
      */
-    public function process(Tokens $tokens, Token $token, $index)
+    public function process(Tokens $tokens, Token $token, int $index): void
     {
         if ($token->isGivenKind([T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
-            return $this->transformQualified($tokens, $token, $index);
-        }
-
-        if ($token->isGivenKind(T_NAME_RELATIVE)) {
-            return $this->transformRelative($tokens, $token, $index);
+            $this->transformQualified($tokens, $token, $index);
+        } elseif ($token->isGivenKind(T_NAME_RELATIVE)) {
+            $this->transformRelative($tokens, $token, $index);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCustomTokens()
+    public function getCustomTokens(): array
     {
         return [];
     }
 
-    private function transformQualified(Tokens $tokens, Token $token, $index)
+    private function transformQualified(Tokens $tokens, Token $token, int $index): void
     {
         $parts = explode('\\', $token->getContent());
         $newTokens = [];
@@ -83,7 +83,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
         $tokens->overrideRange($index, $index, $newTokens);
     }
 
-    private function transformRelative(Tokens $tokens, Token $token, $index)
+    private function transformRelative(Tokens $tokens, Token $token, int $index): void
     {
         $parts = explode('\\', $token->getContent());
         $newTokens = [

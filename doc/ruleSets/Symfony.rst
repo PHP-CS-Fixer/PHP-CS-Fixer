@@ -9,8 +9,6 @@ Rules
 
 - `@PSR12 <./PSR12.rst>`_
 - `array_syntax <./../rules/array_notation/array_syntax.rst>`_
-  config:
-  ``['syntax' => 'short']``
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
 - `blank_line_before_statement <./../rules/whitespace/blank_line_before_statement.rst>`_
@@ -41,6 +39,8 @@ Rules
 - `magic_constant_casing <./../rules/casing/magic_constant_casing.rst>`_
 - `magic_method_casing <./../rules/casing/magic_method_casing.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
+  config:
+  ``['on_multiline' => 'ignore']``
 - `native_function_casing <./../rules/casing/native_function_casing.rst>`_
 - `native_function_type_declaration_casing <./../rules/casing/native_function_type_declaration_casing.rst>`_
 - `no_alias_language_construct_call <./../rules/alias/no_alias_language_construct_call.rst>`_
@@ -79,8 +79,6 @@ Rules
 - `php_unit_fqcn_annotation <./../rules/php_unit/php_unit_fqcn_annotation.rst>`_
 - `php_unit_method_casing <./../rules/php_unit/php_unit_method_casing.rst>`_
 - `phpdoc_align <./../rules/phpdoc/phpdoc_align.rst>`_
-  config:
-  ``['tags' => ['method', 'param', 'property', 'return', 'throws', 'type', 'var']]``
 - `phpdoc_annotation_without_dot <./../rules/phpdoc/phpdoc_annotation_without_dot.rst>`_
 - `phpdoc_indent <./../rules/phpdoc/phpdoc_indent.rst>`_
 - `phpdoc_inline_tag_normalizer <./../rules/phpdoc/phpdoc_inline_tag_normalizer.rst>`_
@@ -119,9 +117,8 @@ Rules
 - `standardize_increment <./../rules/operator/standardize_increment.rst>`_
 - `standardize_not_equals <./../rules/operator/standardize_not_equals.rst>`_
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
-- `trailing_comma_in_multiline_array <./../rules/array_notation/trailing_comma_in_multiline_array.rst>`_
+- `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
-- `visibility_required <./../rules/class_notation/visibility_required.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_

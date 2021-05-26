@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,24 +15,25 @@
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
-use PhpCsFixer\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
  * @author SpacePossum
  */
-final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface, WhitespacesAwareFixerInterface
+final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @var array
@@ -41,7 +44,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'continue' => T_CONTINUE,
         'declare' => T_DECLARE,
         'default' => T_DEFAULT,
-        'die' => T_EXIT, // TODO remove this alias 3.0, use `exit`
         'do' => T_DO,
         'exit' => T_EXIT,
         'for' => T_FOR,
@@ -58,6 +60,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'try' => T_TRY,
         'while' => T_WHILE,
         'yield' => T_YIELD,
+        'yield_from' => T_YIELD_FROM,
     ];
 
     /**
@@ -71,27 +74,18 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     public function __construct()
     {
         parent::__construct();
-
-        // @TODO: To be moved back to compile time property declaration when PHP support of PHP CS Fixer will be 7.0+
-        if (\defined('T_YIELD_FROM')) {
-            self::$tokenMap['yield_from'] = T_YIELD_FROM;
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
         $this->fixTokenMap = [];
 
         foreach ($this->configuration['statements'] as $key) {
-            if ('die' === $key) {
-                Utils::triggerDeprecation('Option "die" is deprecated, use "exit" instead.');
-            }
-
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
 
@@ -101,7 +95,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'An empty line feed must precede any configured statement.',
@@ -260,7 +254,7 @@ if (true) {
      *
      * Must run after NoExtraBlankLinesFixer, NoUselessReturnFixer, ReturnAssignmentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -21;
     }
@@ -268,7 +262,7 @@ if (true) {
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound($this->fixTokenMap);
     }
@@ -276,7 +270,7 @@ if (true) {
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
 
@@ -304,7 +298,7 @@ if (true) {
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $allowed = self::$tokenMap;
         $allowed['yield_from'] = true; // TODO remove this when update to PHP7.0
@@ -328,12 +322,7 @@ if (true) {
         ]);
     }
 
-    /**
-     * @param int $prevNonWhitespace
-     *
-     * @return bool
-     */
-    private function shouldAddBlankLine(Tokens $tokens, $prevNonWhitespace)
+    private function shouldAddBlankLine(Tokens $tokens, int $prevNonWhitespace): bool
     {
         $prevNonWhitespaceToken = $tokens[$prevNonWhitespace];
 
@@ -354,10 +343,7 @@ if (true) {
         return $prevNonWhitespaceToken->equalsAny([';', '}']);
     }
 
-    /**
-     * @param int $index
-     */
-    private function insertBlankLine(Tokens $tokens, $index)
+    private function insertBlankLine(Tokens $tokens, int $index): void
     {
         $prevIndex = $index - 1;
         $prevToken = $tokens[$prevIndex];

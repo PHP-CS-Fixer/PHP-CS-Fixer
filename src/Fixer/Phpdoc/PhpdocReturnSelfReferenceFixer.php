@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -14,11 +16,13 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -28,8 +32,11 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @author SpacePossum
  */
-final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var string[]
+     */
     private static $toTypes = [
         '$this',
         'static',
@@ -39,7 +46,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'The type of `@return` annotations of methods returning a reference to itself must the configured one.',
@@ -96,7 +103,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return \count($tokens) > 10 && $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
     }
@@ -107,7 +114,7 @@ class Sample
      * Must run before NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 10;
     }
@@ -115,7 +122,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
@@ -128,7 +135,7 @@ class Sample
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $default = [
             'this' => '$this',
@@ -139,7 +146,7 @@ class Sample
             '@static' => 'static',
         ];
 
-        return new FixerConfigurationResolverRootless('replacements', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.'))
                 ->setAllowedTypes(['array'])
                 ->setNormalizer(static function (Options $options, $value) use ($default) {
@@ -172,13 +179,10 @@ class Sample
                 })
                 ->setDefault($default)
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
-    /**
-     * @param int $index
-     */
-    private function fixMethod(Tokens $tokens, $index)
+    private function fixMethod(Tokens $tokens, int $index): void
     {
         static $methodModifiers = [T_STATIC, T_FINAL, T_ABSTRACT, T_PRIVATE, T_PROTECTED, T_PUBLIC];
 

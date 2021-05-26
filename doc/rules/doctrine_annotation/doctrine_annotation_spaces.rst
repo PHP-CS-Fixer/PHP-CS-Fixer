@@ -41,18 +41,6 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
-``around_argument_assignments``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use options ``before_argument_assignments`` and ``after_argument_assignments``
-instead.
-
-Whether to fix spaces around argument assignment operator.
-
-Allowed types: ``bool``
-
-Default value: ``true``
-
 ``before_argument_assignments``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -70,19 +58,6 @@ Whether to add, remove or ignore spaces after argument assignment operator.
 Allowed types: ``null``, ``bool``
 
 Default value: ``false``
-
-``around_array_assignments``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use options ``before_array_assignments_equals``,
-``after_array_assignments_equals``, ``before_array_assignments_colon`` and
-``after_array_assignments_colon`` instead.
-
-Whether to fix spaces around array assignment operators.
-
-Allowed types: ``bool``
-
-Default value: ``true``
 
 ``before_array_assignments_equals``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

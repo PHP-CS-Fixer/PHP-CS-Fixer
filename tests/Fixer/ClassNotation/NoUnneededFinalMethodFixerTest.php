@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -230,13 +229,10 @@ class Bar
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.0
      * @dataProvider providePhp70Cases
      */
-    public function testFixPhp70($expected, $input = null)
+    public function testFixPhp70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -312,12 +308,9 @@ class Foo
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixConfigCases
      */
-    public function testFixConfig($expected, $input, array $config)
+    public function testFixConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);

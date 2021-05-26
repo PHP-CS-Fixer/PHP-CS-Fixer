@@ -13,8 +13,6 @@ Configuration
 
 Whether definitions should be multiline.
 
-.. note:: The previous name of this option was ``multiLineExtendsEachSingleLine`` but it is now deprecated and will be removed on next major version.
-
 Allowed types: ``bool``
 
 Default value: ``false``
@@ -24,8 +22,6 @@ Default value: ``false``
 
 Whether definitions should be single line when including a single item.
 
-.. note:: The previous name of this option was ``singleItemSingleLine`` but it is now deprecated and will be removed on next major version.
-
 Allowed types: ``bool``
 
 Default value: ``false``
@@ -34,8 +30,6 @@ Default value: ``false``
 ~~~~~~~~~~~~~~~
 
 Whether definitions should be single line.
-
-.. note:: The previous name of this option was ``singleLine`` but it is now deprecated and will be removed on next major version.
 
 Allowed types: ``bool``
 

@@ -26,28 +26,6 @@ Allowed types: ``array``
 
 Default value: ``[]``
 
-``align_double_arrow``
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use options ``operators`` and ``default`` instead.
-
-Whether to apply, remove or ignore double arrows alignment.
-
-Allowed values: ``false``, ``null``, ``true``
-
-Default value: ``false``
-
-``align_equals``
-~~~~~~~~~~~~~~~~
-
-.. warning:: This option is deprecated and will be removed on next major version. Use options ``operators`` and ``default`` instead.
-
-Whether to apply, remove or ignore equals alignment.
-
-Allowed values: ``false``, ``null``, ``true``
-
-Default value: ``false``
-
 Examples
 --------
 

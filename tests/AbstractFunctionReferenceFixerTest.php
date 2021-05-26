@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,36 +26,32 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     private $fixer;
 
-    protected function doSetUp()
+    protected function setUp(): void
     {
         $this->fixer = new FunctionReferenceTestFixer();
 
-        parent::doSetUp();
+        parent::setUp();
     }
 
-    protected function doTearDown()
+    protected function tearDown(): void
     {
         $this->fixer = null;
 
-        parent::doTearDown();
+        parent::tearDown();
     }
 
     /**
      * @param null|int[] $expected
-     * @param string     $source
-     * @param string     $functionNameToSearch
-     * @param int        $start
-     * @param null|int   $end
      *
      * @dataProvider provideAbstractFunctionReferenceFixerCases
      */
     public function testAbstractFunctionReferenceFixer(
-        $expected,
-        $source,
-        $functionNameToSearch,
-        $start = 0,
-        $end = null
-    ) {
+        ?array $expected,
+        string $source,
+        string $functionNameToSearch,
+        int $start = 0,
+        ?int $end = null
+    ): void {
         static::assertTrue($this->fixer->isRisky());
 
         $tokens = Tokens::fromCode($source);

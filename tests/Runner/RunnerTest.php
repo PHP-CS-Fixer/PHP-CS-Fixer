@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -20,6 +22,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Runner\Runner;
+use PhpCsFixer\Tests\Fixtures\FakeDiffer;
 use PhpCsFixer\Tests\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Finder\Finder;
@@ -35,7 +38,7 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatFixSuccessfully()
+    public function testThatFixSuccessfully(): void
     {
         $linterProphecy = $this->prophesize(\PhpCsFixer\Linter\LinterInterface::class);
         $linterProphecy
@@ -105,7 +108,7 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testThatFixInvalidFileReportsToErrorManager()
+    public function testThatFixInvalidFileReportsToErrorManager(): void
     {
         $errorsManager = new ErrorsManager();
 
@@ -138,5 +141,35 @@ final class RunnerTest extends TestCase
 
         static::assertSame(Error::TYPE_INVALID, $error->getType());
         static::assertSame($pathToInvalidFile, $error->getFilePath());
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     */
+    public function testThatDiffedFileIsPassedToDiffer(): void
+    {
+        $spy = new FakeDiffer();
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
+        $fixers = [
+            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+        ];
+
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            $spy,
+            null,
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            true
+        );
+
+        $runner->fix();
+
+        static::assertSame($path, $spy->passedFile->getPath());
     }
 }

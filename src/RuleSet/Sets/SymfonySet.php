@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -19,13 +21,11 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  */
 final class SymfonySet extends AbstractRuleSetDescription
 {
-    public function getRules()
+    public function getRules(): array
     {
         return [
             '@PSR12' => true,
-            'array_syntax' => [
-                'syntax' => 'short',
-            ],
+            'array_syntax' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,
             'blank_line_before_statement' => [
@@ -62,7 +62,9 @@ final class SymfonySet extends AbstractRuleSetDescription
             'linebreak_after_opening_tag' => true,
             'magic_constant_casing' => true,
             'magic_method_casing' => true,
-            'method_argument_space' => true,
+            'method_argument_space' => [
+                'on_multiline' => 'ignore',
+            ],
             'native_function_casing' => true,
             'native_function_type_declaration_casing' => true,
             'no_alias_language_construct_call' => true,
@@ -111,7 +113,9 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'yield_from',
                 ],
             ],
-            'no_unneeded_curly_braces' => ['namespaces' => true],
+            'no_unneeded_curly_braces' => [
+                'namespaces' => true,
+            ],
             'no_unset_cast' => true,
             'no_unused_imports' => true,
             'no_whitespace_before_comma_in_array' => true,
@@ -120,18 +124,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'ordered_imports' => true,
             'php_unit_fqcn_annotation' => true,
             'php_unit_method_casing' => true,
-            'phpdoc_align' => [
-                // @TODO: on 3.0 switch whole rule to `=> true`, currently we use custom config that will be default on 3.0
-                'tags' => [
-                    'method',
-                    'param',
-                    'property',
-                    'return',
-                    'throws',
-                    'type',
-                    'var',
-                ],
-            ],
+            'phpdoc_align' => true,
             'phpdoc_annotation_without_dot' => true,
             'phpdoc_indent' => true,
             'phpdoc_inline_tag_normalizer' => true,
@@ -175,16 +168,15 @@ final class SymfonySet extends AbstractRuleSetDescription
             'standardize_increment' => true,
             'standardize_not_equals' => true,
             'switch_continue_to_break' => true,
-            'trailing_comma_in_multiline_array' => true,
+            'trailing_comma_in_multiline' => true,
             'trim_array_spaces' => true,
             'unary_operator_spaces' => true,
-            'visibility_required' => true,
             'whitespace_after_comma_in_array' => true,
             'yoda_style' => true,
         ];
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.';
     }

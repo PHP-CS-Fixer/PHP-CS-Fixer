@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,12 +30,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideWithTabsCases
      */
-    public function testWithTabs($expected, $input = null, array $configuration = [])
+    public function testWithTabs(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -76,12 +75,9 @@ public function myFunction() {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestCases
      */
-    public function testConfigured($expected, $input = null, array $configuration = [])
+    public function testConfigured(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -451,12 +447,9 @@ $b#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixDefaults($expected, $input = null)
+    public function testFixDefaults(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -652,12 +645,9 @@ $b;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideUnalignEqualsCases
      */
-    public function testUnalignEquals($expected, $input = null)
+    public function testUnalignEquals(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -794,120 +784,17 @@ $b;
         ];
     }
 
-    public function testWrongConfigItem()
+    public function testWrongConfigItem(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals", "default", "operators"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "default", "operators"\.$/'
         );
 
         $this->fixer->configure(['foo' => true]);
     }
 
-    public function testWrongConfigOldValue()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches(
-            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
-        );
-
-        $this->fixer->configure(['align_double_arrow' => 123]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
-     */
-    public function testWrongConfigOldDeprecated()
-    {
-        $this->fixer->configure([
-            'align_equals' => true,
-            'align_double_arrow' => false,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
-     */
-    public function testWrongConfigOldDeprecated2()
-    {
-        $this->fixer->configure([
-            'align_equals' => true,
-            'align_double_arrow' => null,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
-     */
-    public function testWrongConfigOldDeprecated3()
-    {
-        $this->fixer->configure([
-            'align_equals' => null,
-            'align_double_arrow' => true,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
-     */
-    public function testWrongConfigOldDeprecated4()
-    {
-        $this->fixer->configure([
-            'align_equals' => false,
-            'align_double_arrow' => true,
-        ]);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].
-     */
-    public function testWrongConfigOldDeprecated5()
-    {
-        $this->fixer->configure([
-            'align_equals' => true,
-            'align_double_arrow' => true,
-        ]);
-
-        // simple test to see if the old config is still used
-        $this->doTest(
-            '<?php
-                $a = array(
-                    1  => 2,
-                    2  => 3,
-                );
-
-                $b   = 1;
-                $c   =  2;
-            ',
-            '<?php
-                $a = array(
-                    1 => 2,
-                    2  => 3,
-                );
-
-                $b = 1;
-                $c   =  2;
-            '
-        );
-    }
-
-    public function testWrongConfigOldAndNewMixed()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Mixing old configuration with new configuration is not allowed\.$/');
-
-        $this->fixer->configure([
-            'align_double_arrow' => true,
-            'operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN],
-        ]);
-    }
-
-    public function testWrongConfigTypeForOperators()
+    public function testWrongConfigTypeForOperators(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
@@ -917,7 +804,7 @@ $b;
         $this->fixer->configure(['operators' => true]);
     }
 
-    public function testWrongConfigTypeForOperatorsKey()
+    public function testWrongConfigTypeForOperatorsKey(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/');
@@ -925,7 +812,7 @@ $b;
         $this->fixer->configure(['operators' => [123 => 1]]);
     }
 
-    public function testWrongConfigTypeForOperatorsKeyValue()
+    public function testWrongConfigTypeForOperatorsKeyValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/');
@@ -934,12 +821,9 @@ $b;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideUnalignDoubleArrowCases
      */
-    public function testUnalignDoubleArrow($expected, $input = null)
+    public function testUnalignDoubleArrow(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1331,12 +1215,9 @@ $b;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideAlignEqualsCases
      */
-    public function testFixAlignEquals($expected, $input = null)
+    public function testFixAlignEquals(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
@@ -1457,12 +1338,9 @@ $b;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideAlignDoubleArrowCases
      */
-    public function testFixAlignDoubleArrow($expected, $input = null)
+    public function testFixAlignDoubleArrow(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN]]);
         $this->doTest($expected, $input);
@@ -2005,7 +1883,7 @@ $b;
         ];
     }
 
-    public function testDoNotTouchEqualsAndArrowByConfig()
+    public function testDoNotTouchEqualsAndArrowByConfig(): void
     {
         $this->fixer->configure(
             [
@@ -2037,7 +1915,7 @@ $b;
     /**
      * @requires PHP 7.0
      */
-    public function testPHP70Cases()
+    public function testPHP70Cases(): void
     {
         $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]]);
         $this->doTest(
@@ -2073,12 +1951,9 @@ $a = $ae?? $b;
     /**
      * @requires PHP 7.1
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP71Cases
      */
-    public function testPHP71Cases($expected, $input = null, array $configuration = [])
+    public function testPHP71Cases(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -2130,13 +2005,10 @@ $a = $ae?? $b;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74($expected, $input = null, array $configuration = null)
+    public function testFixPhp74(string $expected, ?string $input = null, ?array $configuration = null): void
     {
         if (null !== $configuration) {
             $this->fixer->configure($configuration);

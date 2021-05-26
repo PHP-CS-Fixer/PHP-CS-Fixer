@@ -8,5 +8,3 @@ Rules
 -----
 
 - `array_syntax <./../rules/array_notation/array_syntax.rst>`_
-  config:
-  ``['syntax' => 'short']``

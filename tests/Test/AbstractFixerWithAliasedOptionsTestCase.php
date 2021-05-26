@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,7 @@
 namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 
 /**
@@ -28,14 +30,14 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
      */
     private $fixerWithAliasedConfig;
 
-    protected function doTearDown()
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         $this->fixerWithAliasedConfig = null;
     }
 
-    protected function doTest($expected, $input = null, \SplFileInfo $file = null)
+    protected function doTest(string $expected, ?string $input = null, ?\SplFileInfo $file = null): void
     {
         parent::doTest($expected, $input, $file);
 
@@ -57,9 +59,9 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
         }
     }
 
-    protected function configureFixerWithAliasedOptions(array $configuration)
+    protected function configureFixerWithAliasedOptions(array $configuration): void
     {
-        if (!$this->fixer instanceof ConfigurationDefinitionFixerInterface) {
+        if (!$this->fixer instanceof ConfigurableFixerInterface) {
             throw new \LogicException('Fixer is not configurable.');
         }
 

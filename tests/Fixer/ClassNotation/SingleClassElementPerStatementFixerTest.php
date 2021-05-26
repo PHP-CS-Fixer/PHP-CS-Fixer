@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,12 +27,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -618,34 +617,9 @@ echo Foo::A, Foo::B;
     }
 
     /**
-     * @param string $expected
-     *
-     * @group legacy
-     * @dataProvider provideConfigurationCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration for rule "single_class_element_per_statement" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
-     */
-    public function testLegacyFixWithConfiguration(array $configuration, $expected)
-    {
-        static $input = <<<'EOT'
-<?php
-
-class Foo
-{
-    const SOME_CONST = 'a', OTHER_CONST = 'b';
-    protected static $foo = 1, $bar = 2;
-}
-EOT;
-
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected
-     *
      * @dataProvider provideConfigurationCases
      */
-    public function testFixWithConfiguration(array $configuration, $expected)
+    public function testFixWithConfiguration(array $configuration, string $expected): void
     {
         static $input = <<<'EOT'
 <?php
@@ -707,7 +681,7 @@ EOT
         ];
     }
 
-    public function testWrongConfig()
+    public function testWrongConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
@@ -716,13 +690,10 @@ EOT
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
-    public function testPHP71($expected, $input)
+    public function testPHP71(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -753,12 +724,9 @@ EOT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
@@ -778,7 +746,7 @@ EOT
     /**
      * @requires PHP 7.0
      */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php
@@ -827,11 +795,8 @@ EOT
     /**
      * @dataProvider provideTestFix74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

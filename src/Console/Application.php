@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -16,11 +18,13 @@ use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
+use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\PharChecker;
 use PhpCsFixer\ToolInfo;
+use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,8 +39,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    const VERSION = '2.19.0-DEV';
-    const VERSION_CODENAME = '';
+    public const VERSION = '3.1.0-DEV';
+    public const VERSION_CODENAME = '';
 
     /**
      * @var ToolInfo
@@ -45,10 +49,6 @@ final class Application extends BaseApplication
 
     public function __construct()
     {
-        if (!getenv('PHP_CS_FIXER_FUTURE_MODE')) {
-            error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
-        }
-
         parent::__construct('PHP CS Fixer', self::VERSION);
 
         $this->toolInfo = new ToolInfo();
@@ -57,6 +57,7 @@ final class Application extends BaseApplication
         $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
         $this->add(new ListFilesCommand($this->toolInfo));
+        $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
@@ -64,10 +65,7 @@ final class Application extends BaseApplication
         ));
     }
 
-    /**
-     * @return int
-     */
-    public static function getMajorVersion()
+    public static function getMajorVersion(): int
     {
         return (int) explode('.', self::VERSION)[0];
     }
@@ -75,28 +73,50 @@ final class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    public function doRun(InputInterface $input, OutputInterface $output)
+    public function doRun(InputInterface $input, OutputInterface $output): int
     {
         $stdErr = $output instanceof ConsoleOutputInterface
             ? $output->getErrorOutput()
             : ($input->hasParameterOption('--format', true) && 'txt' !== $input->getParameterOption('--format', null, true) ? null : $output)
         ;
+
         if (null !== $stdErr) {
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            foreach ($warningsDetector->getWarnings() as $warning) {
-                $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+            $warnings = $warningsDetector->getWarnings();
+
+            if ($warnings) {
+                foreach ($warnings as $warning) {
+                    $stdErr->writeln(sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', $warning));
+                }
+                $stdErr->writeln('');
             }
         }
 
-        return parent::doRun($input, $output);
+        $result = parent::doRun($input, $output);
+
+        if (
+            null !== $stdErr
+            && $output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
+        ) {
+            $triggeredDeprecations = Utils::getTriggeredDeprecations();
+            if ($triggeredDeprecations) {
+                $stdErr->writeln('');
+                $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use:</>' : 'Detected deprecations in use:');
+                foreach ($triggeredDeprecations as $deprecation) {
+                    $stdErr->writeln(sprintf('- %s', $deprecation));
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLongVersion()
+    public function getLongVersion(): string
     {
         $version = implode('', [
             parent::getLongVersion(),
@@ -106,7 +126,7 @@ final class Application extends BaseApplication
 
         $commit = '@git-commit@';
 
-        if ('@'.'git-commit@' !== $commit) {
+        if ('@'.'git-commit@' !== $commit) { // @phpstan-ignore-line as `$commit` is replaced during phar building
             $version .= ' ('.substr($commit, 0, 7).')';
         }
 
@@ -116,7 +136,7 @@ final class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         return [new HelpCommand(), new ListCommand()];
     }

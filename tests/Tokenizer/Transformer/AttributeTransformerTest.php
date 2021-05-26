@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AttributeTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param string $source
-     *
      * @dataProvider provideProcessCases
      * @requires PHP 8.0
      */
-    public function testProcess($source, array $expectedTokens)
+    public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
@@ -66,11 +66,9 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param string $source
-     *
      * @dataProvider provideNotChangeCases
      */
-    public function testNotChange($source)
+    public function testNotChange(string $source): void
     {
         Tokens::clearCache();
 

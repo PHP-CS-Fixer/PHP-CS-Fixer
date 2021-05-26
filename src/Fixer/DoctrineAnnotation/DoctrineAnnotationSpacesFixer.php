@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -17,9 +19,11 @@ use PhpCsFixer\AbstractDoctrineAnnotationFixer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 
 /**
@@ -30,7 +34,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Fixes spaces in Doctrine annotations.',
@@ -52,44 +56,15 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
      *
      * Must run after DoctrineAnnotationArrayAssignmentFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
-    }
-
-    public function configure(array $configuration = null)
-    {
-        parent::configure($configuration);
-
-        if (!$this->configuration['around_argument_assignments']) {
-            foreach ([
-                'before_argument_assignments',
-                'after_argument_assignments',
-            ] as $newOption) {
-                if (!\array_key_exists($newOption, $configuration)) {
-                    $this->configuration[$newOption] = null;
-                }
-            }
-        }
-
-        if (!$this->configuration['around_array_assignments']) {
-            foreach ([
-                'before_array_assignments_equals',
-                'after_array_assignments_equals',
-                'before_array_assignments_colon',
-                'after_array_assignments_colon',
-            ] as $newOption) {
-                if (!\array_key_exists($newOption, $configuration)) {
-                    $this->configuration[$newOption] = null;
-                }
-            }
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver(array_merge(
             parent::createConfigurationDefinition()->getOptions(),
@@ -102,11 +77,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                     ->setAllowedTypes(['bool'])
                     ->setDefault(true)
                     ->getOption(),
-                (new FixerOptionBuilder('around_argument_assignments', 'Whether to fix spaces around argument assignment operator.'))
-                    ->setAllowedTypes(['bool'])
-                    ->setDefault(true)
-                    ->setDeprecationMessage('Use options `before_argument_assignments` and `after_argument_assignments` instead.')
-                    ->getOption(),
                 (new FixerOptionBuilder('before_argument_assignments', 'Whether to add, remove or ignore spaces before argument assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
                     ->setDefault(false)
@@ -114,11 +84,6 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 (new FixerOptionBuilder('after_argument_assignments', 'Whether to add, remove or ignore spaces after argument assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
                     ->setDefault(false)
-                    ->getOption(),
-                (new FixerOptionBuilder('around_array_assignments', 'Whether to fix spaces around array assignment operators.'))
-                    ->setAllowedTypes(['bool'])
-                    ->setDefault(true)
-                    ->setDeprecationMessage('Use options `before_array_assignments_equals`, `after_array_assignments_equals`, `before_array_assignments_colon` and `after_array_assignments_colon` instead.')
                     ->getOption(),
                 (new FixerOptionBuilder('before_array_assignments_equals', 'Whether to add, remove or ignore spaces before array `=` assignment operator.'))
                     ->setAllowedTypes(['null', 'bool'])
@@ -143,14 +108,14 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
     /**
      * {@inheritdoc}
      */
-    protected function fixAnnotations(Tokens $tokens)
+    protected function fixAnnotations(Tokens $doctrineAnnotationTokens): void
     {
         if ($this->configuration['around_parentheses']) {
-            $this->fixSpacesAroundParentheses($tokens);
+            $this->fixSpacesAroundParentheses($doctrineAnnotationTokens);
         }
 
         if ($this->configuration['around_commas']) {
-            $this->fixSpacesAroundCommas($tokens);
+            $this->fixSpacesAroundCommas($doctrineAnnotationTokens);
         }
 
         if (
@@ -161,11 +126,11 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             || null !== $this->configuration['before_array_assignments_colon']
             || null !== $this->configuration['after_array_assignments_colon']
         ) {
-            $this->fixAroundAssignments($tokens);
+            $this->fixAroundAssignments($doctrineAnnotationTokens);
         }
     }
 
-    private function fixSpacesAroundParentheses(Tokens $tokens)
+    private function fixSpacesAroundParentheses(Tokens $tokens): void
     {
         $inAnnotationUntilIndex = null;
 
@@ -214,7 +179,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    private function fixSpacesAroundCommas(Tokens $tokens)
+    private function fixSpacesAroundCommas(Tokens $tokens): void
     {
         $inAnnotationUntilIndex = null;
 
@@ -253,7 +218,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    private function fixAroundAssignments(Tokens $tokens)
+    private function fixAroundAssignments(Tokens $tokens): void
     {
         $beforeArguments = $this->configuration['before_argument_assignments'];
         $afterArguments = $this->configuration['after_argument_assignments'];
@@ -306,30 +271,17 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
         }
     }
 
-    /**
-     * @param int       $index
-     * @param null|bool $insert
-     */
-    private function updateSpacesAfter(Tokens $tokens, $index, $insert)
+    private function updateSpacesAfter(Tokens $tokens, int $index, ?bool $insert): void
     {
         $this->updateSpacesAt($tokens, $index + 1, $index + 1, $insert);
     }
 
-    /**
-     * @param int       $index
-     * @param null|bool $insert
-     */
-    private function updateSpacesBefore(Tokens $tokens, $index, $insert)
+    private function updateSpacesBefore(Tokens $tokens, int $index, ?bool $insert): void
     {
         $this->updateSpacesAt($tokens, $index - 1, $index, $insert);
     }
 
-    /**
-     * @param int       $index
-     * @param int       $insertIndex
-     * @param null|bool $insert
-     */
-    private function updateSpacesAt(Tokens $tokens, $index, $insertIndex, $insert)
+    private function updateSpacesAt(Tokens $tokens, int $index, int $insertIndex, ?bool $insert): void
     {
         if (null === $insert) {
             return;

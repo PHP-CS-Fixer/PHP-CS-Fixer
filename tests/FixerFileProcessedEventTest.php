@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\FixerFileProcessedEvent;
  */
 final class FixerFileProcessedEventTest extends TestCase
 {
-    public function testFixerFileProcessedEvent()
+    public function testFixerFileProcessedEvent(): void
     {
         $status = FixerFileProcessedEvent::STATUS_NO_CHANGES;
         $event = new FixerFileProcessedEvent($status);

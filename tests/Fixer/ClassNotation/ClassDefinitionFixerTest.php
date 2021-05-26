@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,7 @@
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,29 +26,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer
  */
-final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyConfigureDefaultToNull()
-    {
-        $defaultConfig = [
-            'multi_line_extends_each_single_line' => false,
-            'single_item_single_line' => false,
-            'single_line' => false,
-        ];
-
-        $fixer = new ClassDefinitionFixer();
-        $fixer->configure($defaultConfig);
-        static::assertConfigurationSame($defaultConfig, $fixer);
-
-        $fixer->configure(null);
-        static::assertConfigurationSame($defaultConfig, $fixer);
-    }
-
-    public function testConfigureDefaultToNull()
+    public function testConfigureDefaultToNull(): void
     {
         $defaultConfig = [
             'multi_line_extends_each_single_line' => false,
@@ -71,9 +53,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      *
      * @requires PHP 7.0
      */
-    public function testFixingAnonymousClasses($expected, $input, array $config = [])
+    public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -84,7 +66,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      *
      * @dataProvider provideClassesCases
      */
-    public function testFixingClasses($expected, $input)
+    public function testFixingClasses(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
@@ -98,9 +80,9 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      *
      * @dataProvider provideClassesWithConfigCases
      */
-    public function testFixingClassesWithConfig($expected, $input, array $config)
+    public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
     {
-        $this->configureFixerWithAliasedOptions($config);
+        $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
@@ -111,7 +93,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      *
      * @dataProvider provideInterfacesCases
      */
-    public function testFixingInterfaces($expected, $input)
+    public function testFixingInterfaces(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
@@ -124,14 +106,14 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
      *
      * @dataProvider provideTraitsCases
      */
-    public function testFixingTraits($expected, $input)
+    public function testFixingTraits(string $expected, string $input): void
     {
         $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
-    public function testInvalidConfigurationKey()
+    public function testInvalidConfigurationKey(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
@@ -142,7 +124,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerWithAliasedOptionsTest
         $fixer->configure(['a' => false]);
     }
 
-    public function testInvalidConfigurationValueType()
+    public function testInvalidConfigurationValueType(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
@@ -406,7 +388,7 @@ TestInterface3, /**/     TestInterface4   ,
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
-    public function testClassyDefinitionInfo($source, array $expected)
+    public function testClassyDefinitionInfo(string $source, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -490,23 +472,21 @@ TestInterface3, /**/     TestInterface4   ,
 
     /**
      * @param string $source PHP source code
-     * @param string $label
      *
      * @dataProvider provideClassyImplementsInfoCases
      */
-    public function testClassyInheritanceInfo($source, $label, array $expected)
+    public function testClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
     /**
      * @param string $source PHP source code
-     * @param string $label
      *
      * @requires PHP 7.0
      * @dataProvider provideClassyInheritanceInfo7Cases
      */
-    public function testClassyInheritanceInfo7($source, $label, array $expected)
+    public function testClassyInheritanceInfo7(string $source, string $label, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
@@ -625,13 +605,10 @@ namespace {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider providePHP7Cases
      * @requires PHP 7.0
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFixPHP7(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
 
@@ -675,12 +652,9 @@ $a = new class implements
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure([]);
@@ -698,7 +672,7 @@ $a = new class implements
         ];
     }
 
-    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer)
+    private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
     {
         $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
         $reflectionProperty->setAccessible(true);
@@ -706,7 +680,7 @@ $a = new class implements
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
-    private function doTestClassyInheritanceInfo($source, $label, array $expected)
+    private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
@@ -719,7 +693,7 @@ $a = new class implements
         static::assertSame($expected, $result);
     }
 
-    private function provideClassyCases($classy)
+    private function provideClassyCases(string $classy)
     {
         return [
             [
@@ -787,7 +761,7 @@ namespace {
         ];
     }
 
-    private function provideClassyExtendingCases($classy)
+    private function provideClassyExtendingCases(string $classy)
     {
         return [
             [

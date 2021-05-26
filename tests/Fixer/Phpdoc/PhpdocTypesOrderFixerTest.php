@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,23 +24,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithNullFirst($expected, $input = null)
+    public function testFixWithNullFirst(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'none',
@@ -152,12 +148,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithNullLastCases
      */
-    public function testFixWithNullLast($expected, $input = null)
+    public function testFixWithNullLast(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'none',
@@ -270,12 +263,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmCases
      */
-    public function testFixWithAlphaAlgorithm($expected, $input = null)
+    public function testFixWithAlphaAlgorithm(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
@@ -384,12 +374,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases
      */
-    public function testFixWithAlphaAlgorithmAndNullAlwaysFirst($expected, $input = null)
+    public function testFixWithAlphaAlgorithmAndNullAlwaysFirst(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',
@@ -499,12 +486,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithAlphaAlgorithmAndNullAlwaysLastCases
      */
-    public function testFixWithAlphaAlgorithmAndNullAlwaysLast($expected, $input = null)
+    public function testFixWithAlphaAlgorithmAndNullAlwaysLast(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => 'alpha',

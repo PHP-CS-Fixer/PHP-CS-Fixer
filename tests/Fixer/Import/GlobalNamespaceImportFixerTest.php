@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixImportConstantsCases
      */
-    public function testFixImportConstants($expected, $input = null)
+    public function testFixImportConstants(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_constants' => true]);
         $this->doTest($expected, $input);
@@ -228,12 +227,9 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixImportFunctionsCases
      */
-    public function testFixImportFunctions($expected, $input = null)
+    public function testFixImportFunctions(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_functions' => true]);
         $this->doTest($expected, $input);
@@ -419,13 +415,10 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixImportFunctions70Cases
      * @requires PHP 7.0
      */
-    public function testFixImportFunctions70($expected, $input = null)
+    public function testFixImportFunctions70(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_functions' => true]);
         $this->doTest($expected, $input);
@@ -454,12 +447,9 @@ EXPECTED
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixImportClassesCases
      */
-    public function testFixImportClasses($expected, $input = null)
+    public function testFixImportClasses(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_classes' => true]);
         $this->doTest($expected, $input);
@@ -725,13 +715,10 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixImportClasses71Cases
      * @requires PHP 7.1
      */
-    public function testFixImportClasses71($expected, $input = null)
+    public function testFixImportClasses71(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_classes' => true]);
         $this->doTest($expected, $input);
@@ -763,12 +750,9 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixFullyQualifyConstantsCases
      */
-    public function testFixFullyQualifyConstants($expected, $input = null)
+    public function testFixFullyQualifyConstants(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_constants' => false]);
         $this->doTest($expected, $input);
@@ -825,12 +809,9 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixFullyQualifyFunctionsCases
      */
-    public function testFixFullyQualifyFunctions($expected, $input = null)
+    public function testFixFullyQualifyFunctions(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_functions' => false]);
         $this->doTest($expected, $input);
@@ -894,12 +875,9 @@ INPUT
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixFullyQualifyClassesCases
      */
-    public function testFixFullyQualifyClasses($expected, $input = null)
+    public function testFixFullyQualifyClasses(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['import_classes' => false]);
         $this->doTest($expected, $input);
@@ -986,11 +964,9 @@ INPUT
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideMultipleNamespacesCases
      */
-    public function testMultipleNamespaces($expected)
+    public function testMultipleNamespaces(string $expected): void
     {
         $this->fixer->configure(['import_constants' => true]);
         $this->doTest($expected);

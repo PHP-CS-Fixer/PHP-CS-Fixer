@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -30,9 +32,9 @@ final class CiIntegrationTest extends AbstractSmokeTest
 {
     public static $fixtureDir;
 
-    public static function doSetUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         self::$fixtureDir = __DIR__.'/../Fixtures/ci-integration';
 
@@ -62,16 +64,16 @@ final class CiIntegrationTest extends AbstractSmokeTest
         }
     }
 
-    public static function doTearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
-        parent::doTearDownAfterClass();
+        parent::tearDownAfterClass();
 
         self::executeCommand('rm -rf .git');
     }
 
-    protected function doTearDown()
+    protected function tearDown(): void
     {
-        parent::doTearDown();
+        parent::tearDown();
 
         self::executeScript([
             'git reset . -q',
@@ -82,21 +84,19 @@ final class CiIntegrationTest extends AbstractSmokeTest
     }
 
     /**
-     * @param string   $branchName
      * @param string[] $caseCommands
      * @param string[] $expectedResult1Lines
      * @param string[] $expectedResult2Lines
-     * @param string   $expectedResult3Files
      *
      * @dataProvider provideIntegrationCases
      */
     public function testIntegration(
-        $branchName,
+        string $branchName,
         array $caseCommands,
         array $expectedResult1Lines,
         array $expectedResult2Lines,
-        $expectedResult3Files
-    ) {
+        string $expectedResult3FilesLine
+    ): void {
         self::executeScript(array_merge(
             [
                 "git checkout -b {$branchName} -q",
@@ -149,19 +149,24 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
 ';
 
+        $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
+        $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
+        $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
+
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $aboutSubpattern = Application::VERSION_CODENAME
             ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/').' by Fabien Potencier and Dariusz Ruminski'
             : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' by Fabien Potencier and Dariusz Ruminski';
 
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})\n%s$/',
+            '/^(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             $aboutSubpattern,
             preg_quote(sprintf('Runtime: PHP %s', PHP_VERSION), '/'),
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
-            \strlen($expectedResult3Files),
+            \strlen($expectedResult3FilesDots),
+            preg_quote($expectedResult3FilesPercentage, '/'),
             preg_quote('Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error', '/')
         );
 
@@ -170,8 +175,8 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
         preg_match($pattern, $result3->getError(), $matches);
 
         static::assertArrayHasKey(1, $matches);
-        static::assertSame(substr_count($expectedResult3Files, '.'), substr_count($matches[1], '.'));
-        static::assertSame(substr_count($expectedResult3Files, 'S'), substr_count($matches[1], 'S'));
+        static::assertSame(substr_count($expectedResult3FilesDots, '.'), substr_count($matches[1], '.'));
+        static::assertSame(substr_count($expectedResult3FilesDots, 'S'), substr_count($matches[1], 'S'));
 
         static::assertMatchesRegularExpression(
             '/^\s*Checked all files in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
@@ -203,7 +208,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     'dir b/file b.php',
                     '',
                 ],
-                'S.',
+                'S.                                                                  2 / 2 (100%)',
             ],
             'changes-including-dist-config-file' => [
                 'changes-including-dist-config-file',
@@ -224,7 +229,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     '',
                     '',
                 ],
-                '...',
+                '...                                                                 3 / 3 (100%)',
             ],
             'changes-including-custom-config-file-creation' => [
                 'changes-including-custom-config-file-creation',
@@ -243,7 +248,7 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     '',
                     '',
                 ],
-                '...',
+                '...                                                                 3 / 3 (100%)',
             ],
             'changes-including-composer-lock' => [
                 'changes-including-composer-lock',
@@ -262,12 +267,12 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
                     '',
                     '',
                 ],
-                '...',
+                '...                                                                 3 / 3 (100%)',
             ],
         ];
     }
 
-    private static function executeCommand($command)
+    private static function executeCommand(string $command)
     {
         return CommandExecutor::create($command, self::$fixtureDir)->getResult();
     }

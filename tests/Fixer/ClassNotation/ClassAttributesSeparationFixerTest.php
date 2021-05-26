@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -12,6 +14,7 @@
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,13 +28,25 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param int    $expected
-     * @param string $code
-     * @param int    $index
-     *
+     * @dataProvider provideInvalidElementsCases
+     */
+    public function testInvalidElements(array $elements): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->fixer->configure(['elements' => $elements]);
+    }
+
+    public static function provideInvalidElementsCases(): iterable
+    {
+        yield 'numeric keys' => [['method', 'property']];
+        yield 'wrong key name' => [['methods' => 'one']];
+        yield 'wrong key value' => [['method' => 'two']];
+    }
+
+    /**
      * @dataProvider provideCommentBlockStartDetectionCases
      */
-    public function testCommentBlockStartDetection($expected, $code, $index)
+    public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($code);
@@ -124,12 +139,9 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixClassesCases
      */
-    public function testFixClasses($expected, $input = null)
+    public function testFixClasses(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -726,12 +738,9 @@ public function B1(); // allowed comment
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixTraitsCases
      */
-    public function testFixTraits($expected, $input = null)
+    public function testFixTraits(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -823,12 +832,9 @@ trait SomeReturnInfo {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixInterfaceCases
      */
-    public function testFixInterface($expected, $input = null)
+    public function testFixInterface(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -909,12 +915,9 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null)
+    public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
@@ -936,12 +939,9 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideConfigCases
      */
-    public function testWithConfig($expected, $input, array $config)
+    public function testWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1148,97 +1148,10 @@ class ezcReflectionMethod extends ReflectionMethod {
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideDeprecatedConfigCases
-     * @group legacy
-     * @expectedDeprecation A list of elements is deprecated, use a dictionary of `const|method|property` => `none|one` instead.
-     */
-    public function testWithDeprecatedConfig($expected, $input = null, array $config = [])
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideDeprecatedConfigCases()
-    {
-        return [
-            [
-                '<?php
-                    class A
-                    {
-                        private $a = null;
-
-                        public $b = 1;
-
-                        function E() {}
-                     }
-                ',
-                '<?php
-                    class A
-                    {
-                        private $a = null;
-                        public $b = 1;
-
-
-
-                        function E() {}
-                     }
-                ',
-                ['elements' => ['property']],
-            ],
-            [
-                '<?php
-                    class A
-                    {
-                        function F() {}
-
-                        function B5() {}
-                    }
-                ',
-                '<?php
-                    class A
-                    {
-                        function F() {}
-                        function B5() {}
-                    }
-                ',
-                ['elements' => ['method']],
-            ],
-            [
-                '<?php
-                    class A
-                    {
-                        const A = 1;
-
-                        const THREE = ONE + self::TWO; /* test */ # test
-
-                        const B = 2;
-                    }
-                ',
-                '<?php
-                    class A
-                    {
-
-                        const A = 1;
-                        const THREE = ONE + self::TWO; /* test */ # test
-                        const B = 2;
-                    }
-                ',
-                ['elements' => ['const']],
-            ],
-        ];
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1304,13 +1217,10 @@ private $d = 123;
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input)
+    public function testFix71(string $expected, string $input): void
     {
         $this->fixer->configure([
             'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],
@@ -1352,13 +1262,10 @@ private $d = 123;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -1401,13 +1308,10 @@ private $d = 123;
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp80Cases
      * @requires PHP 8.0
      */
-    public function testFixPhp80($expected, $input = null)
+    public function testFixPhp80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

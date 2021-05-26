@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -27,17 +29,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamespacesAnalyzerTest extends TestCase
 {
     /**
-     * @param string $code
-     * @param array  $expected
-     *
      * @dataProvider provideNamespacesCases
      */
-    public function testNamespaces($code, $expected)
+    public function testNamespaces(string $code, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespacesAnalyzer();
 
-        static::assertSame(serialize($expected), serialize(($analyzer->getDeclarations($tokens))));
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getDeclarations($tokens))
+        );
     }
 
     public function provideNamespacesCases()
@@ -81,6 +83,77 @@ final class NamespacesAnalyzerTest extends TestCase
                     17
                 ),
             ]],
+        ];
+    }
+
+    /**
+     * @param string $code
+     * @param int    $index
+     *
+     * @dataProvider provideGetNamespaceAtCases
+     */
+    public function testGetNamespaceAt($code, $index, NamespaceAnalysis $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new NamespacesAnalyzer();
+
+        static::assertSame(
+            serialize($expected),
+            serialize($analyzer->getNamespaceAt($tokens, $index))
+        );
+    }
+
+    public function provideGetNamespaceAtCases()
+    {
+        return [
+            [
+                '<?php // no namespaces',
+                1,
+                new NamespaceAnalysis(
+                    '',
+                    '',
+                    0,
+                    0,
+                    0,
+                    1
+                ),
+            ],
+            [
+                '<?php namespace Foo\Bar;',
+                5,
+                new NamespaceAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    1,
+                    6,
+                    1,
+                    6
+                ),
+            ],
+            [
+                '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
+                5,
+                new NamespaceAnalysis(
+                    'Foo\Bar',
+                    'Bar',
+                    1,
+                    6,
+                    1,
+                    7
+                ),
+            ],
+            [
+                '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
+                13,
+                new NamespaceAnalysis(
+                    'Foo\Baz',
+                    'Baz',
+                    10,
+                    16,
+                    10,
+                    17
+                ),
+            ],
         ];
     }
 }

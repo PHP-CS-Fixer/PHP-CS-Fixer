@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -25,7 +28,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsUnknownConfigurationKey()
+    public function testConfigureRejectsUnknownConfigurationKey(): void
     {
         $key = 'foo';
 
@@ -45,7 +48,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $element
      */
-    public function testConfigureRejectsInvalidConfigurationElement($element)
+    public function testConfigureRejectsInvalidConfigurationElement($element): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
@@ -60,10 +63,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
-    /**
-     * @return array
-     */
-    public function provideInvalidConfigurationElementCases()
+    public function provideInvalidConfigurationElementCases(): array
     {
         return [
             'null' => [null],
@@ -73,22 +73,20 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
             'array' => [[]],
             'float' => [0.1],
             'object' => [new \stdClass()],
-            'not-trimmed' => ['  json_encode  '],
+            'not-trimmed' => ['  is_string  '],
         ];
     }
 
     /**
-     * @param string[]    $include
-     * @param null|string $expectedExceptionClass
-     * @param null|string $expectedExceptionMessage
+     * @param string[] $include
      *
      * @dataProvider provideConfigureIncludeSetsCases
      */
     public function testConfigureIncludeSets(
         array $include,
-        $expectedExceptionClass = null,
-        $expectedExceptionMessage = null
-    ) {
+        ?string $expectedExceptionClass = null,
+        ?string $expectedExceptionMessage = null
+    ): void {
         if (null !== $expectedExceptionClass) {
             $this->expectException($expectedExceptionClass);
             $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($expectedExceptionMessage, '#')));
@@ -105,8 +103,8 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     {
         return [
             [['foo', 'bar']],
-            [['@all']],
-            [['@all', 'bar']],
+            [[NativeFunctionInvocationFixer::SET_ALL]],
+            [[NativeFunctionInvocationFixer::SET_ALL, 'bar']],
             [
                 ['@xxx'],
                 InvalidFixerConfigurationException::class,
@@ -120,11 +118,11 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testConfigureResetsExclude()
+    public function testConfigureResetsExclude(): void
     {
         $this->fixer->configure([
             'exclude' => [
-                'json_encode',
+                'is_string',
             ],
         ]);
 
@@ -138,7 +136,7 @@ class Bar
     public function baz($foo)
     {
         if (isset($foo)) {
-            json_encode($foo);
+            is_string($foo);
         }
     }
 }
@@ -154,7 +152,7 @@ class Bar
     public function baz($foo)
     {
         if (isset($foo)) {
-            \json_encode($foo);
+            \is_string($foo);
         }
     }
 }
@@ -169,35 +167,29 @@ PHP;
 
     /**
      * @dataProvider provideFixWithDefaultConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithDefaultConfiguration($expected, $input = null)
+    public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithDefaultConfigurationCases()
+    public function provideFixWithDefaultConfigurationCases(): array
     {
         return [
             [
                 '<?php
 
-\json_encode($foo);
+\is_string($foo);
 ',
             ],
             [
                 '<?php
 
-\json_encode($foo);
+\is_string($foo);
 ',
                 '<?php
 
-json_encode($foo);
+is_string($foo);
 ',
             ],
             [
@@ -207,7 +199,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return \json_encode($foo);
+        return \is_string($foo);
     }
 }
 ',
@@ -215,7 +207,7 @@ class Foo
             [
                 '<?php
 
-\json_encode($foo);
+json_encode($foo);
 \strlen($foo);
 ',
                 '<?php
@@ -231,7 +223,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return \JSON_ENCODE($foo);
+        return \IS_STRING($foo);
     }
 }
 ',
@@ -241,7 +233,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return JSON_ENCODE($foo);
+        return IS_STRING($foo);
     }
 }
 ',
@@ -249,7 +241,7 @@ class Foo
             'fix multiple calls in single code' => [
                 '<?php
 
-\json_encode($foo);
+json_encode($foo);
 \strlen($foo);
 \strlen($foo);
 ',
@@ -265,31 +257,25 @@ strlen($foo);
 
     /**
      * @dataProvider provideFixWithConfiguredExcludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredExclude($expected, $input = null)
+    public function testFixWithConfiguredExclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'exclude' => [
-                'json_encode',
+                'is_string',
             ],
         ]);
 
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithConfiguredExcludeCases()
+    public function provideFixWithConfiguredExcludeCases(): array
     {
         return [
             [
                 '<?php
 
-json_encode($foo);
+is_string($foo);
 ',
             ],
             [
@@ -299,7 +285,7 @@ class Foo
 {
     public function bar($foo)
     {
-        return json_encode($foo);
+        return is_string($foo);
     }
 }
 ',
@@ -309,12 +295,8 @@ class Foo
 
     /**
      * @dataProvider provideFixWithNamespaceConfigurationCases
-     *
-     * @param string      $expected
-     * @param null|string $input
-     * @param string      $scope
      */
-    public function testFixWithNamespaceConfiguration($expected, $input = null, $scope = 'namespaced')
+    public function testFixWithNamespaceConfiguration(string $expected, ?string $input = null, string $scope = 'namespaced'): void
     {
         $this->fixer->configure(['scope' => $scope]);
         $this->doTest($expected, $input);
@@ -341,44 +323,44 @@ namespace space1 { ?>
             [
                 '<?php
 namespace Bar {
-    echo \strtoLOWER("in 1");
+    echo \strLEN("in 1");
 }
 
 namespace {
-    echo strtolower("out 1");
+    echo strlen("out 1");
 }
 
 namespace {
-    echo strtolower("out 2");
+    echo strlen("out 2");
 }
 
 namespace Bar{
-    echo \strtolower("in 2");
+    echo \strlen("in 2");
 }
 
 namespace {
-    echo strtolower("out 3");
+    echo strlen("out 3");
 }
 ',
                 '<?php
 namespace Bar {
-    echo strtoLOWER("in 1");
+    echo strLEN("in 1");
 }
 
 namespace {
-    echo strtolower("out 1");
+    echo strlen("out 1");
 }
 
 namespace {
-    echo strtolower("out 2");
+    echo strlen("out 2");
 }
 
 namespace Bar{
-    echo strtolower("in 2");
+    echo strlen("in 2");
 }
 
 namespace {
-    echo strtolower("out 3");
+    echo strlen("out 3");
 }
 ',
             ],
@@ -387,17 +369,17 @@ namespace {
 namespace space11 ?>
 
     <?php
-echo \strtolower(__NAMESPACE__);
+echo \strlen(__NAMESPACE__);
 namespace space2;
-echo \strtolower(__NAMESPACE__);
+echo \strlen(__NAMESPACE__);
 ',
                 '<?php
 namespace space11 ?>
 
     <?php
-echo strtolower(__NAMESPACE__);
+echo strlen(__NAMESPACE__);
 namespace space2;
-echo strtolower(__NAMESPACE__);
+echo strlen(__NAMESPACE__);
 ',
             ],
             [
@@ -427,33 +409,33 @@ echo count([1]);
 ',
             ],
             [
-                '<?php namespace {echo strtolower("out 2");}',
+                '<?php namespace {echo strlen("out 2");}',
             ],
             [
                 '<?php
 namespace space13 {
-    echo \strtolower("in 1");
+    echo \strlen("in 1");
 }
 
 namespace space2 {
-    echo \strtolower("in 2");
+    echo \strlen("in 2");
 }
 
 namespace { // global
-    echo strtolower("global 1");
+    echo strlen("global 1");
 }
 ',
                 '<?php
 namespace space13 {
-    echo strtolower("in 1");
+    echo strlen("in 1");
 }
 
 namespace space2 {
-    echo strtolower("in 2");
+    echo strlen("in 2");
 }
 
 namespace { // global
-    echo strtolower("global 1");
+    echo strlen("global 1");
 }
 ',
             ],
@@ -481,11 +463,8 @@ namespace {
 
     /**
      * @dataProvider provideFixWithConfiguredIncludeCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFixWithConfiguredInclude($expected, $input = null, array $configuration = [])
+    public function testFixWithConfiguredInclude(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
 
@@ -509,7 +488,7 @@ namespace {
                     not_me();
                 ',
                 [
-                    'include' => ['@internal', 'some_other'],
+                    'include' => [NativeFunctionInvocationFixer::SET_INTERNAL, 'some_other'],
                     'exclude' => ['strlen'],
                 ],
             ],
@@ -527,7 +506,7 @@ namespace {
                     me_as_well();
                 ',
                 [
-                    'include' => ['@all'],
+                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
                 ],
             ],
             'include @compiler_optimized' => [
@@ -535,7 +514,7 @@ namespace {
                     // do not fix
                     $a = strrev($a);
                     $a .= str_repeat($a, 4);
-                    $b = \already_prefixed_function();
+                    $b = already_prefixed_function();
                     // fix
                     $c = \get_class($d);
                     $e = \intval($f);
@@ -550,7 +529,7 @@ namespace {
                     $e = intval($f);
                 ',
                 [
-                    'include' => ['@compiler_optimized'],
+                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                 ],
             ],
             [
@@ -581,7 +560,7 @@ namespace {
                 ',
                 null,
                 [
-                    'include' => ['@all'],
+                    'include' => [NativeFunctionInvocationFixer::SET_ALL],
                 ],
             ],
         ];
@@ -603,7 +582,7 @@ namespace {
                         $c = intval($d);
                     ',
                 [
-                    'include' => ['@compiler_optimized'],
+                    'include' => [NativeFunctionInvocationFixer::SET_COMPILER_OPTIMIZED],
                     'strict' => true,
                 ],
             ];
@@ -613,7 +592,7 @@ namespace {
     /**
      * @requires PHP 7.3
      */
-    public function testFix73()
+    public function testFix73(): void
     {
         $this->doTest(
             '<?php $name = \get_class($foo, );',
@@ -624,7 +603,7 @@ namespace {
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80()
+    public function testFixPrePHP80(): void
     {
         $this->doTest(
             '<?php
@@ -649,7 +628,7 @@ echo strlen($a);
     /**
      * @requires PHP 8.0
      */
-    public function testFixWithAttributesAndStrict()
+    public function testFixWithAttributesAndStrict(): void
     {
         $this->testFixWithConfiguredInclude(
             '<?php
@@ -664,7 +643,7 @@ class Foo {}
     /**
      * @requires PHP 8.0
      */
-    public function testFixWithNullSafeObjectOperator()
+    public function testFixWithNullSafeObjectOperator(): void
     {
         $this->doTest('<?php $x?->count();');
     }

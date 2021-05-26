@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureRejectsUnknownConfigurationKey()
+    public function testConfigureRejectsUnknownConfigurationKey(): void
     {
         $key = 'foo';
 
@@ -42,10 +44,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @dataProvider provideConfigureRejectsInvalidConfigurationValueCases
      *
-     * @param mixed  $value
-     * @param string $expectedMessage
+     * @param mixed $value
      */
-    public function testConfigureRejectsInvalidConfigurationValue($value, $expectedMessage)
+    public function testConfigureRejectsInvalidConfigurationValue($value, string $expectedMessage): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedMessage);
@@ -87,12 +88,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config ?: ['only_untyped' => false]);
 
@@ -305,13 +303,10 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null, array $config = [])
+    public function testFix70(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config ?: ['only_untyped' => false]);
 
@@ -352,13 +347,10 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input, array $config)
+    public function testFix71(string $expected, ?string $input, array $config): void
     {
         $this->fixer->configure($config);
 
@@ -410,12 +402,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces($expected, $input = null, array $config = [])
+    public function testMessyWhitespaces(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($config ?: ['only_untyped' => false]);
@@ -434,12 +423,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideByReferenceCases
      */
-    public function testByReference($expected, $input)
+    public function testByReference(string $expected, string $input): void
     {
         $this->fixer->configure(['only_untyped' => false]);
         $this->doTest($expected, $input);
@@ -482,12 +468,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideVariableNumberOfArgumentsCases
      */
-    public function testVariableNumberOfArguments($expected, $input)
+    public function testVariableNumberOfArguments(string $expected, string $input): void
     {
         $this->fixer->configure(['only_untyped' => false]);
         $this->doTest($expected, $input);

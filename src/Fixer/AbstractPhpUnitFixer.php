@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,12 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    final public function isCandidate(Tokens $tokens)
+    final public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
     }
 
-    final protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    final protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
 
@@ -38,18 +40,9 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @param int $startIndex
-     * @param int $endIndex
-     */
-    abstract protected function applyPhpUnitClassFix(Tokens $tokens, $startIndex, $endIndex);
+    abstract protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void;
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    final protected function getDocBlockIndex(Tokens $tokens, $index)
+    final protected function getDocBlockIndex(Tokens $tokens, int $index): int
     {
         do {
             $index = $tokens->getPrevNonWhitespace($index);
@@ -58,12 +51,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         return $index;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    final protected function isPHPDoc(Tokens $tokens, $index)
+    final protected function isPHPDoc(Tokens $tokens, int $index): bool
     {
         return $tokens[$index]->isGivenKind(T_DOC_COMMENT);
     }

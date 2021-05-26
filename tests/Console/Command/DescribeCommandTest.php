@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -34,7 +36,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
-    public function testExecuteOutput()
+    public function testExecuteOutput(): void
     {
         $expected =
 "Description of Foo/bar rule.
@@ -73,7 +75,7 @@ Fixing examples:
         static::assertSame($expected, $this->execute('Foo/bar', false)->getDisplay(true));
     }
 
-    public function testExecuteOutputWithDecoration()
+    public function testExecuteOutputWithDecoration(): void
     {
         $expected =
 "\033[32mDescription of\033[39m Foo/bar \033[32mrule\033[39m.
@@ -114,12 +116,12 @@ Fixing examples:
         static::assertSame($expected, $actual);
     }
 
-    public function testExecuteStatusCode()
+    public function testExecuteStatusCode(): void
     {
         static::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
 
-    public function testExecuteWithUnknownRuleName()
+    public function testExecuteWithUnknownRuleName(): void
     {
         $application = new Application();
         $application->add(new DescribeCommand(new FixerFactory()));
@@ -136,7 +138,7 @@ Fixing examples:
         ]);
     }
 
-    public function testExecuteWithUnknownSetName()
+    public function testExecuteWithUnknownSetName(): void
     {
         $application = new Application();
         $application->add(new DescribeCommand(new FixerFactory()));
@@ -153,7 +155,7 @@ Fixing examples:
         ]);
     }
 
-    public function testExecuteWithoutName()
+    public function testExecuteWithoutName(): void
     {
         $application = new Application();
         $application->add(new DescribeCommand(new FixerFactory()));
@@ -169,14 +171,14 @@ Fixing examples:
         ]);
     }
 
-    public function testGetAlternativeSuggestion()
+    public function testGetAlternativeSuggestion(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('#^Rule "Foo2/bar" not found\. Did you mean "Foo/bar"\?$#');
         $this->execute('Foo2/bar', false);
     }
 
-    public function testFixerClassNameIsExposedWhenVerbose()
+    public function testFixerClassNameIsExposedWhenVerbose(): void
     {
         $fixerName = uniqid('Foo/bar_');
 
@@ -184,6 +186,7 @@ Fixing examples:
         $fixer->getName()->willReturn($fixerName);
         $fixer->getPriority()->willReturn(0);
         $fixer->isRisky()->willReturn(true);
+        $fixer->getDefinition()->willReturn(new FixerDefinition('Fixes stuff.', []));
         $mock = $fixer->reveal();
 
         $fixerFactory = new FixerFactory();
@@ -208,17 +211,10 @@ Fixing examples:
         static::assertStringContainsString(\get_class($mock), $commandTester->getDisplay(true));
     }
 
-    /**
-     * @param string $name
-     * @param bool   $decorated
-     *
-     * @return CommandTester
-     */
-    private function execute($name, $decorated)
+    private function execute(string $name, bool $decorated): CommandTester
     {
         $fixer = $this->prophesize();
-        $fixer->willImplement(\PhpCsFixer\Fixer\DefinedFixerInterface::class);
-        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface::class);
+        $fixer->willImplement(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
         $fixer->willImplement(\PhpCsFixer\Fixer\DeprecatedFixerInterface::class);
 
         $fixer->getName()->willReturn('Foo/bar');
@@ -257,17 +253,17 @@ Fixing examples:
         ));
 
         $things = false;
-        $fixer->configure([])->will(function () use (&$things) {
+        $fixer->configure([])->will(function () use (&$things): void {
             $things = false;
         });
-        $fixer->configure(['functions' => ['foo', 'bar']])->will(function () use (&$things) {
+        $fixer->configure(['functions' => ['foo', 'bar']])->will(function () use (&$things): void {
             $things = true;
         });
 
         $fixer->fix(
             Argument::type(\SplFileInfo::class),
             Argument::type(\PhpCsFixer\Tokenizer\Tokens::class)
-        )->will(function (array $arguments) use (&$things) {
+        )->will(function (array $arguments) use (&$things): void {
             $arguments[1][3] = new Token([
                 $arguments[1][3]->getId(),
                 ($things ? '\'good stuff and good thing\'' : '\'good stuff and bad thing\''),

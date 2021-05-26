@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocNoPackageFixerTest extends AbstractFixerTestCase
 {
-    public function testFixPackage()
+    public function testFixPackage(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -44,7 +46,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixSubpackage()
+    public function testFixSubpackage(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -64,7 +66,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixMany()
+    public function testFixMany(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -87,7 +89,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testDoNothing()
+    public function testDoNothing(): void
     {
         $expected = <<<'EOF'
 <?php

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -100,11 +99,9 @@ function Foo(INTEGER $a) {}
     /**
      * @requires PHP <7.0
      *
-     * @param string $expected
-     *
      * @dataProvider provideFixPre70Cases
      */
-    public function testFixPre70($expected)
+    public function testFixPre70(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -118,13 +115,10 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFix70Cases
      * @requires PHP 7.0
      */
-    public function testFix70($expected, $input = null)
+    public function testFix70(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -147,13 +141,10 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix71Cases
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input)
+    public function testFix71(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -181,13 +172,10 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */
-    public function testFix72($expected, $input)
+    public function testFix72(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -203,13 +191,10 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input)
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

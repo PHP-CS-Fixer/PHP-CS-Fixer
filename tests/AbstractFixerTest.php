@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -22,7 +24,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class AbstractFixerTest extends TestCase
 {
-    public function testConfigureUnconfigurable()
+    public function testConfigureUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
@@ -30,32 +32,32 @@ final class AbstractFixerTest extends TestCase
         static::assertSame('unconfigurable', $fixer->getName());
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectExceptionMessage('Cannot configure using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
         $fixer->configure(['foo' => 'bar']);
     }
 
-    public function testGetConfigurationDefinitionUnconfigurable()
+    public function testGetConfigurationDefinitionUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot get configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectExceptionMessage(sprintf('Cannot get configuration definition using Abstract parent, child "%s" not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".', \get_class($fixer)));
 
         $fixer->getConfigurationDefinition();
     }
 
-    public function testCreateConfigurationDefinitionUnconfigurable()
+    public function testCreateConfigurationDefinitionUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface".');
+        $this->expectExceptionMessage('Cannot create configuration definition using Abstract parent, child not implementing "PhpCsFixer\Fixer\ConfigurableFixerInterface".');
 
         $fixer->doSomethingWithCreateConfigDefinition();
     }
 
-    public function testSetWhitespacesConfigUnconfigurable()
+    public function testSetWhitespacesConfigUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
 

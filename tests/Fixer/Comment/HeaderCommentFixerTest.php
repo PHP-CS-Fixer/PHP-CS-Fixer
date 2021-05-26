@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,7 +15,8 @@
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Tests\Test\AbstractFixerWithAliasedOptionsTestCase;
+use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
@@ -21,17 +24,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @covers \PhpCsFixer\Fixer\Comment\HeaderCommentFixer
  */
-final class HeaderCommentFixerTest extends AbstractFixerWithAliasedOptionsTestCase
+final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix(array $configuration, $expected, $input)
+    public function testFix(array $configuration, string $expected, string $input): void
     {
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -76,7 +76,7 @@ echo 1;',
                     'header' => 'tmp',
                     'location' => 'after_declare_strict',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 declare(strict_types=1);
@@ -120,7 +120,7 @@ echo 1;',
             [
                 [
                     'header' => 'new',
-                    'comment_type' => 'comment',
+                    'comment_type' => HeaderCommentFixer::HEADER_COMMENT,
                 ],
                 '<?php
 
@@ -135,7 +135,7 @@ echo 1;',
             [
                 [
                     'header' => 'new',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -150,7 +150,7 @@ echo 1;',
             [
                 [
                     'header' => 'def',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -189,7 +189,7 @@ echo 1;',
             [
                 [
                     'header' => 'abc',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -304,7 +304,7 @@ echo \'x\';',
                     'header' => 'foo',
                     'location' => 'after_open',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 /**
@@ -332,7 +332,7 @@ echo 1;',
                     'header' => 'foo',
                     'location' => 'after_open',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 /**
@@ -425,7 +425,7 @@ class Foo {}',
             [
                 [
                     'header' => 'tmp',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -447,7 +447,7 @@ class Foo {}',
             [
                 [
                     'header' => 'tmp',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 '<?php
 
@@ -550,7 +550,7 @@ declare(strict_types=1) ?>',
         ];
     }
 
-    public function testDefaultConfiguration()
+    public function testDefaultConfiguration(): void
     {
         $this->fixer->configure(['header' => 'a']);
         $this->doTest(
@@ -567,29 +567,14 @@ echo 1;'
     }
 
     /**
-     * @group legacy
-     * @expectedDeprecation Passing NULL to set default configuration is deprecated and will not be supported in 3.0, use an empty array instead.
-     */
-    public function testLegacyMisconfiguration()
-    {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[header_comment] Missing required configuration: The required option "header" is missing.');
-
-        $this->fixer->configure(null);
-    }
-
-    /**
-     * @param null|array $configuration
-     * @param string     $exceptionMessage
-     *
      * @dataProvider provideMisconfigurationCases
      */
-    public function testMisconfiguration($configuration, $exceptionMessage)
+    public function testMisconfiguration(?array $configuration, string $exceptionMessage): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[header_comment\\] {$exceptionMessage}$#");
 
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
     }
 
     public function provideMisconfigurationCases()
@@ -632,15 +617,11 @@ echo 1;'
     }
 
     /**
-     * @param string $expected
-     * @param string $header
-     * @param string $type
-     *
      * @dataProvider provideHeaderGenerationCases
      */
-    public function testHeaderGeneration($expected, $header, $type)
+    public function testHeaderGeneration(string $expected, string $header, string $type): void
     {
-        $this->configureFixerWithAliasedOptions([
+        $this->fixer->configure([
             'header' => $header,
             'comment_type' => $type,
         ]);
@@ -663,24 +644,22 @@ echo 1;'
  * a
  */',
                 'a',
-                'comment',
+                HeaderCommentFixer::HEADER_COMMENT,
             ],
             [
                 '/**
  * a
  */',
                 'a',
-                'PHPDoc',
+                HeaderCommentFixer::HEADER_PHPDOC,
             ],
         ];
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideDoNotTouchCases
      */
-    public function testDoNotTouch($expected)
+    public function testDoNotTouch(string $expected): void
     {
         $this->fixer->configure([
             'header' => '',
@@ -702,7 +681,7 @@ echo 1;'
         ];
     }
 
-    public function testWithoutConfiguration()
+    public function testWithoutConfiguration(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
 
@@ -710,15 +689,12 @@ echo 1;'
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(array $configuration, $expected, $input = null)
+    public function testMessyWhitespaces(array $configuration, string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->configureFixerWithAliasedOptions($configuration);
+        $this->fixer->configure($configuration);
 
         $this->doTest($expected, $input);
     }
@@ -731,7 +707,7 @@ echo 1;'
                     'header' => 'whitemess',
                     'location' => 'after_declare_strict',
                     'separate' => 'bottom',
-                    'comment_type' => 'PHPDoc',
+                    'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
                 ],
                 "<?php\r\ndeclare(strict_types=1);\r\n/**\r\n * whitemess\r\n */\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
                 "<?php\r\ndeclare(strict_types=1);\r\n\r\nnamespace A\\B;\r\n\r\necho 1;",
@@ -739,7 +715,7 @@ echo 1;'
         ];
     }
 
-    public function testConfigurationUpdatedWithWhitespsacesConfig()
+    public function testConfigurationUpdatedWithWhitespsacesConfig(): void
     {
         $this->fixer->configure(['header' => 'Foo']);
 
@@ -770,14 +746,14 @@ echo 1;'
         );
     }
 
-    public function testInvalidHeaderConfiguration()
+    public function testInvalidHeaderConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[header_comment\] Cannot use \'\*/\' in header\.$#');
 
         $this->fixer->configure([
             'header' => '/** test */',
-            'comment_type' => 'PHPDoc',
+            'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,13 +15,14 @@
 namespace PhpCsFixer\Fixer\ClassNotation;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverRootless;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -27,13 +30,18 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Gregor Harlan <gharlan@web.de>
  */
-final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class OrderedClassElementsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /** @internal */
-    const SORT_ALPHA = 'alpha';
+    public const SORT_ALPHA = 'alpha';
 
     /** @internal */
-    const SORT_NONE = 'none';
+    public const SORT_NONE = 'none';
+
+    private const SUPPORTED_SORT_ALGORITHMS = [
+        self::SORT_NONE,
+        self::SORT_ALPHA,
+    ];
 
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
@@ -81,16 +89,6 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     ];
 
     /**
-     * Array of supported sort algorithms in configuration.
-     *
-     * @var string[]
-     */
-    private $supportedSortAlgorithms = [
-        self::SORT_NONE,
-        self::SORT_ALPHA,
-    ];
-
-    /**
      * @var array Resolved configuration array (type => position)
      */
     private $typePosition;
@@ -98,7 +96,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -143,7 +141,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
@@ -151,7 +149,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Orders the elements of classes/interfaces/traits.',
@@ -209,7 +207,7 @@ class Example
     public function C(){}
 }
 ',
-                    ['order' => ['method_public'], 'sort_algorithm' => 'alpha']
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
             ]
         );
@@ -218,10 +216,10 @@ class Example
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassAttributesSeparationFixer, MethodSeparationFixer, NoBlankLinesAfterClassOpeningFixer, SpaceAfterSemicolonFixer.
+     * Must run before ClassAttributesSeparationFixer, NoBlankLinesAfterClassOpeningFixer, SpaceAfterSemicolonFixer.
      * Must run after NoPhp4ConstructorFixer, ProtectedToPrivateFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 65;
     }
@@ -229,7 +227,7 @@ class Example
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
             if (!$tokens[$i]->isClassy()) {
@@ -257,9 +255,9 @@ class Example
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        return new FixerConfigurationResolverRootless('order', [
+        return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'List of strings defining order of elements.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
@@ -280,22 +278,17 @@ class Example
                     'method_private',
                 ])
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'),
-                'sortAlgorithm'
-            ))
-                ->setAllowedValues($this->supportedSortAlgorithms)
+            (new FixerOptionBuilder('sort_algorithm', 'How multiple occurrences of same type statements should be sorted'))
+                ->setAllowedValues(self::SUPPORTED_SORT_ALGORITHMS)
                 ->setDefault(self::SORT_NONE)
                 ->getOption(),
-        ], $this->getName());
+        ]);
     }
 
     /**
-     * @param int $startIndex
-     *
      * @return array[]
      */
-    private function getElements(Tokens $tokens, $startIndex)
+    private function getElements(Tokens $tokens, int $startIndex): array
     {
         static $elementTokenKinds = [CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION];
 
@@ -365,11 +358,9 @@ class Example
     }
 
     /**
-     * @param int $index
-     *
      * @return array|string type or array of type and name
      */
-    private function detectElementType(Tokens $tokens, $index)
+    private function detectElementType(Tokens $tokens, int $index)
     {
         $token = $tokens[$index];
 
@@ -417,12 +408,7 @@ class Example
         return 'method';
     }
 
-    /**
-     * @param int $index
-     *
-     * @return int
-     */
-    private function findElementEnd(Tokens $tokens, $index)
+    private function findElementEnd(Tokens $tokens, int $index): int
     {
         $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
@@ -442,7 +428,7 @@ class Example
      *
      * @return array[]
      */
-    private function sortElements(array $elements)
+    private function sortElements(array $elements): array
     {
         static $phpunitPositions = [
             'setupbeforeclass' => 1,
@@ -496,7 +482,7 @@ class Example
         return $elements;
     }
 
-    private function sortGroupElements(array $a, array $b)
+    private function sortGroupElements(array $a, array $b): int
     {
         $selectedSortAlgorithm = $this->configuration['sort_algorithm'];
 
@@ -508,11 +494,9 @@ class Example
     }
 
     /**
-     * @param int     $startIndex
-     * @param int     $endIndex
      * @param array[] $elements
      */
-    private function sortTokens(Tokens $tokens, $startIndex, $endIndex, array $elements)
+    private function sortTokens(Tokens $tokens, int $startIndex, int $endIndex, array $elements): void
     {
         $replaceTokens = [];
 

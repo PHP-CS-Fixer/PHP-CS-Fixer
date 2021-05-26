@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,23 +25,17 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
 final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFixWithUnindentedMixedLines($expected, $input = null)
+    public function testFixWithUnindentedMixedLines(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'indent_mixed_lines' => false,
@@ -47,10 +43,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $cases = $this->createTestCases([
             ['
@@ -359,12 +352,9 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixWithIndentedMixedLinesCases
      */
-    public function testFixWithIndentedMixedLines($expected, $input = null)
+    public function testFixWithIndentedMixedLines(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'indent_mixed_lines' => true,
@@ -372,10 +362,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixWithIndentedMixedLinesCases()
+    public function provideFixWithIndentedMixedLinesCases(): array
     {
         return $this->createTestCases([
             ['

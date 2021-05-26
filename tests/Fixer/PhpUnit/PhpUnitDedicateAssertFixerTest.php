@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -25,51 +27,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestFixCases
      */
-    public function testFix($expected, $input = null, array $config = [])
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string      $expected
-     * @param null|string $input
-     *
-     * @dataProvider provideTestFixLegacyCases
-     * @group legacy
-     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
-     */
-    public function testFixLegacy($expected, $input = null)
-    {
-        $defaultFunctions = [
-            'array_key_exists',
-            'empty',
-            'file_exists',
-            'is_array',
-            'is_bool',
-            'is_callable',
-            'is_double',
-            'is_float',
-            'is_infinite',
-            'is_int',
-            'is_integer',
-            'is_long',
-            'is_nan',
-            'is_null',
-            'is_numeric',
-            'is_object',
-            'is_real',
-            'is_resource',
-            'is_scalar',
-            'is_string',
-        ];
-
-        $this->fixer->configure(['functions' => $defaultFunctions]);
         $this->doTest($expected, $input);
     }
 
@@ -159,6 +121,7 @@ $this->assertTrue(is_writable($a));
 $this->assertTrue(is_readable($a));
 '),
                 null,
+                ['target' => PhpUnitTargetVersion::VERSION_5_0],
             ],
             [
                 self::generateTest('
@@ -263,17 +226,10 @@ $a#
         return $cases;
     }
 
-    public function provideTestFixLegacyCases()
-    {
-        return array_filter($this->provideTestFixCases(), static function (array $case) { return !isset($case[2]); });
-    }
-
     /**
-     * @param string $expected
-     *
      * @dataProvider provideNotFixCases
      */
-    public function testNotFix($expected)
+    public function testNotFix(string $expected): void
     {
         $this->doTest($expected);
     }
@@ -301,45 +257,7 @@ $a#
         ];
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Passing "functions" at the root of the configuration for rule "php_unit_dedicate_assert" is deprecated and will not be supported in 3.0, use "functions" => array(...) option instead.
-     */
-    public function testLegacyConfig()
-    {
-        $this->fixer->configure(['file_exists']);
-        $this->doTest(
-            self::generateTest('
-                $this->assertFileExists($a);
-                $this->assertTrue(is_infinite($a));
-            '),
-            self::generateTest('
-                $this->assertTrue(file_exists($a));
-                $this->assertTrue(is_infinite($a));
-            ')
-        );
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Option "functions" for rule "php_unit_dedicate_assert" is deprecated and will be removed in version 3.0. Use option "target" instead.
-     */
-    public function testConfig()
-    {
-        $this->fixer->configure(['functions' => ['file_exists']]);
-        $this->doTest(
-            self::generateTest('
-                $this->assertFileExists($a);
-                $this->assertTrue(is_infinite($a));
-            '),
-            self::generateTest('
-                $this->assertTrue(file_exists($a));
-                $this->assertTrue(is_infinite($a));
-            ')
-        );
-    }
-
-    public function testInvalidConfig()
+    public function testInvalidConfig(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[php_unit_dedicate_assert\] Invalid configuration: The option "target" .*\.$/');
@@ -348,12 +266,9 @@ $a#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestAssertCountCases
      */
-    public function testAssertCount($expected, $input = null)
+    public function testAssertCount(string $expected, ?string $input = null): void
     {
         if (null === $input) {
             $expected = sprintf($expected, 'count');
@@ -365,12 +280,9 @@ $a#
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideTestAssertCountCases
      */
-    public function testAssertCountFromSizeOf($expected, $input = null)
+    public function testAssertCountFromSizeOf(string $expected, ?string $input = null): void
     {
         if (null === $input) {
             $expected = sprintf($expected, 'sizeof');
@@ -501,12 +413,9 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideTestAssertCountCasingCases
      */
-    public function testAssertCountCasing($expected, $input)
+    public function testAssertCountCasing(string $expected, string $input): void
     {
         $expected = sprintf($expected, 'count');
         $input = sprintf($input, 'COUNT');
@@ -515,12 +424,9 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @dataProvider provideTestAssertCountCasingCases
      */
-    public function testAssertCountFromSizeOfCasing($expected, $input)
+    public function testAssertCountFromSizeOfCasing(string $expected, string $input): void
     {
         $expected = sprintf($expected, 'sizeof');
         $input = sprintf($input, 'SIZEOF');
@@ -543,13 +449,10 @@ $a# 5
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */
-    public function testFix73($expected, $input)
+    public function testFix73(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
@@ -588,12 +491,7 @@ $a# 5
         ];
     }
 
-    /**
-     * @param string $content
-     *
-     * @return string
-     */
-    private static function generateTest($content)
+    private static function generateTest(string $content): string
     {
         return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";
     }

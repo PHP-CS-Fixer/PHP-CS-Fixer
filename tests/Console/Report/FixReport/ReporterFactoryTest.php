@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class ReporterFactoryTest extends TestCase
 {
-    public function testInterfaceIsFluent()
+    public function testInterfaceIsFluent(): void
     {
         $builder = new ReporterFactory();
 
@@ -36,7 +38,7 @@ final class ReporterFactoryTest extends TestCase
         static::assertSame($builder, $testInstance);
     }
 
-    public function testRegisterBuiltInReports()
+    public function testRegisterBuiltInReports(): void
     {
         $builder = new ReporterFactory();
 
@@ -49,7 +51,7 @@ final class ReporterFactoryTest extends TestCase
         );
     }
 
-    public function testThatCanRegisterAndGetReports()
+    public function testThatCanRegisterAndGetReports(): void
     {
         $builder = new ReporterFactory();
 
@@ -66,7 +68,7 @@ final class ReporterFactoryTest extends TestCase
         static::assertSame($r3, $builder->getReporter('r3'));
     }
 
-    public function testGetFormats()
+    public function testGetFormats(): void
     {
         $builder = new ReporterFactory();
 
@@ -81,7 +83,7 @@ final class ReporterFactoryTest extends TestCase
         static::assertSame(['r1', 'r2', 'r3'], $builder->getFormats());
     }
 
-    public function testRegisterReportWithOccupiedFormat()
+    public function testRegisterReportWithOccupiedFormat(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Reporter for format "non_unique_name" is already registered.');
@@ -94,7 +96,7 @@ final class ReporterFactoryTest extends TestCase
         $factory->registerReporter($r2);
     }
 
-    public function testGetNonRegisteredReport()
+    public function testGetNonRegisteredReport(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Reporter for format "non_registered_format" is not registered.');
@@ -104,7 +106,7 @@ final class ReporterFactoryTest extends TestCase
         $builder->getReporter('non_registered_format');
     }
 
-    private function createReporterDouble($format)
+    private function createReporterDouble(string $format)
     {
         $reporter = $this->prophesize(\PhpCsFixer\Console\Report\FixReport\ReporterInterface::class);
         $reporter->getFormat()->willReturn($format);

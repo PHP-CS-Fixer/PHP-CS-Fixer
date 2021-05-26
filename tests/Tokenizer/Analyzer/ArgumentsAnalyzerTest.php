@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -28,13 +30,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ArgumentsAnalyzerTest extends TestCase
 {
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     *
      * @dataProvider provideArgumentsCases
      */
-    public function testArguments($code, $openIndex, $closeIndex, array $arguments)
+    public function testArguments(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
@@ -44,14 +42,9 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     * @param array  $expected
-     *
      * @dataProvider provideArgumentsInfoCases
      */
-    public function testArgumentInfo($code, $openIndex, $closeIndex, $expected)
+    public function testArgumentInfo(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
@@ -63,15 +56,10 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     * @param array  $expected
-     *
      * @requires PHP 8.0
      * @dataProvider provideArgumentsInfo80Cases
      */
-    public function testArgumentInfo80($code, $openIndex, $closeIndex, $expected)
+    public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
@@ -184,6 +172,22 @@ final class ArgumentsAnalyzerTest extends TestCase
 
     public function provideArgumentsInfo80Cases()
     {
+        yield [
+            '<?php function foo(#[AnAttribute] ?string $param = null) {}',
+            5,
+            16,
+            new ArgumentAnalysis(
+                '$param',
+                12,
+                'null',
+                new TypeAnalysis(
+                    '?string',
+                    9,
+                    10
+                )
+            ),
+        ];
+
         foreach (['public', 'protected', 'private'] as $visibility) {
             yield [
                 sprintf('<?php class Foo { public function __construct(%s ?string $param = null) {} }', $visibility),
@@ -204,14 +208,10 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     *
      * @requires PHP 7.3
      * @dataProvider provideArguments73Cases
      */
-    public function testArguments73($code, $openIndex, $closeIndex, array $arguments)
+    public function testArguments73(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
@@ -233,14 +233,10 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $openIndex
-     * @param int    $closeIndex
-     *
      * @requires PHP 8.0
      * @dataProvider provideArguments80Cases
      */
-    public function testArguments80($code, $openIndex, $closeIndex, array $arguments)
+    public function testArguments80(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();

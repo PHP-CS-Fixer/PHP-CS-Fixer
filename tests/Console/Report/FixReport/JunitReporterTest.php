@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -13,6 +15,7 @@
 namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\JunitReporter;
+use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -35,26 +38,26 @@ final class JunitReporterTest extends AbstractReporterTestCase
      */
     private static $xsd;
 
-    public static function doSetUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        parent::doSetUpBeforeClass();
+        parent::setUpBeforeClass();
 
         self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/junit-10.xsd');
     }
 
-    public static function doTearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
-        parent::doTearDownAfterClass();
+        parent::tearDownAfterClass();
 
         self::$xsd = null;
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'junit';
     }
 
-    protected function createNoErrorReport()
+    protected function createNoErrorReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -66,7 +69,7 @@ final class JunitReporterTest extends AbstractReporterTestCase
 XML;
     }
 
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -80,7 +83,7 @@ XML;
 XML;
     }
 
-    protected function createWithDiffReport()
+    protected function createWithDiffReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -99,7 +102,7 @@ this text is a diff ;)]]></failure>
 XML;
     }
 
-    protected function createWithAppliedFixersReport()
+    protected function createWithAppliedFixersReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -116,7 +119,7 @@ XML;
 XML;
     }
 
-    protected function createWithTimeAndMemoryReport()
+    protected function createWithTimeAndMemoryReport(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -130,7 +133,7 @@ XML;
 XML;
     }
 
-    protected function createComplexReport()
+    protected function createComplexReport(): string
     {
         return <<<'XML'
 <?xml version="1.0"?>
@@ -162,7 +165,7 @@ another diff here ;)</failure>
 XML;
     }
 
-    protected function assertFormat($expected, $input)
+    protected function assertFormat(string $expected, string $input): void
     {
         $formatter = new OutputFormatter();
         $input = $formatter->format($input);
@@ -171,7 +174,7 @@ XML;
         static::assertXmlStringEqualsXmlString($expected, $input);
     }
 
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new JunitReporter();
     }

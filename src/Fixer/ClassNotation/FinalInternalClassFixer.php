@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,12 +17,13 @@ namespace PhpCsFixer\Fixer\ClassNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\DocBlock\DocBlock;
-use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
-use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -30,12 +33,12 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author SpacePossum
  */
-final class FinalInternalClassFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
+final class FinalInternalClassFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function configure(array $configuration = null)
+    public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
@@ -52,7 +55,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Internal classes should be `final`.',
@@ -74,10 +77,10 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      *
-     * Must run before FinalStaticAccessFixer, ProtectedToPrivateFixer, SelfStaticAccessorFixer.
+     * Must run before ProtectedToPrivateFixer, SelfStaticAccessorFixer.
      * Must run after PhpUnitInternalClassFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 67;
     }
@@ -85,7 +88,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_CLASS);
     }
@@ -93,7 +96,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -101,7 +104,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isClassCandidate($tokens, $index)) {
@@ -122,9 +125,9 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
     /**
      * {@inheritdoc}
      */
-    protected function createConfigurationDefinition()
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $annotationsAsserts = [static function (array $values) {
+        $annotationsAsserts = [static function (array $values): bool {
             foreach ($values as $value) {
                 if (!\is_string($value) || '' === $value) {
                     return false;
@@ -134,7 +137,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
             return true;
         }];
 
-        $annotationsNormalizer = static function (Options $options, array $value) {
+        $annotationsNormalizer = static function (Options $options, array $value): array {
             $newValue = [];
             foreach ($value as $key) {
                 if ('@' === $key[0]) {
@@ -148,19 +151,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
         };
 
         return new FixerConfigurationResolver([
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'),
-                'annotation-white-list'
-            ))
+            (new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'),
-                'annotation-black-list'
-            ))
+            (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues($annotationsAsserts)
                 ->setDefault([
@@ -174,10 +171,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
                 ])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
-            (new AliasedFixerOptionBuilder(
-                new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'),
-                'consider-absent-docblock-as-internal-class'
-            ))
+            (new FixerOptionBuilder('consider_absent_docblock_as_internal_class', 'Should classes without any DocBlock be fixed to final?'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
@@ -186,10 +180,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
 
     /**
      * @param int $index T_CLASS index
-     *
-     * @return bool
      */
-    private function isClassCandidate(Tokens $tokens, $index)
+    private function isClassCandidate(Tokens $tokens, int $index): bool
     {
         if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL, T_NEW])) {
             return false; // ignore class; it is abstract or already final
@@ -205,7 +197,9 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurati
         $tags = [];
 
         foreach ($doc->getAnnotations() as $annotation) {
-            Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches);
+            if (1 !== Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches)) {
+                continue;
+            }
             $tag = strtolower(substr(array_shift($matches), 1));
             foreach ($this->configuration['annotation_exclude'] as $tagStart => $true) {
                 if (0 === strpos($tag, $tagStart)) {

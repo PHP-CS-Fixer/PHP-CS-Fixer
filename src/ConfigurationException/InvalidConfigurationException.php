@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,12 +26,7 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
  */
 class InvalidConfigurationException extends \InvalidArgumentException
 {
-    /**
-     * @param string          $message
-     * @param null|int        $code
-     * @param null|\Throwable $previous
-     */
-    public function __construct($message, $code = null, $previous = null)
+    public function __construct(string $message, ?int $code = null, ?\Throwable $previous = null)
     {
         parent::__construct(
             $message,

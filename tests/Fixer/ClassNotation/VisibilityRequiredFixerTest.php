@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,7 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class VisibilityRequiredFixerTest extends AbstractFixerTestCase
 {
-    public function testFixProperties()
+    public function testFixProperties(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -64,7 +66,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixPropertiesAfterMethod()
+    public function testFixPropertiesAfterMethod(): void
     {
         $input = <<<'EOF'
 <?php
@@ -85,32 +87,27 @@ EOF;
     }
 
     /**
-     * @param string $expected
      * @param string $input
      *
      * @dataProvider provideFixMethodsCases
      */
-    public function testFixMethods($expected, $input = null)
+    public function testFixMethods(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @param string $expected
      * @param string $input
      *
      * @requires PHP 7.0
      * @dataProvider provideFixMethods70Cases
      */
-    public function testFixMethods70($expected, $input = null)
+    public function testFixMethods70(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixMethods70Cases()
+    public function provideFixMethods70Cases(): array
     {
         return [
             [
@@ -150,10 +147,7 @@ EOF
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixMethodsCases()
+    public function provideFixMethodsCases(): array
     {
         return [
             [
@@ -229,7 +223,7 @@ EOF
         ];
     }
 
-    public function testLeaveFunctionsAlone()
+    public function testLeaveFunctionsAlone(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -241,7 +235,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneWithVariablesMatchingOopWords()
+    public function testLeaveFunctionsAloneWithVariablesMatchingOopWords(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -255,7 +249,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneInsideConditionals()
+    public function testLeaveFunctionsAloneInsideConditionals(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -269,7 +263,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment()
+    public function testLeaveFunctionsAloneInsideConditionalsWithOopWordInComment(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -285,7 +279,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneWithOopWordInComment()
+    public function testLeaveFunctionsAloneWithOopWordInComment(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -298,7 +292,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml()
+    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInInlineHtml(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -315,7 +309,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue()
+    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInStringValue(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -329,7 +323,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName()
+    public function testLeaveFunctionsAloneOutsideClassesWithOopWordInFunctionName(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -346,7 +340,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveFunctionsAloneAfterClass()
+    public function testLeaveFunctionsAloneAfterClass(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -367,7 +361,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testCurlyOpenSyntax()
+    public function testCurlyOpenSyntax(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -387,7 +381,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testDollarOpenCurlyBracesSyntax()
+    public function testDollarOpenCurlyBracesSyntax(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -404,7 +398,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveJavascriptOutsidePhpAlone()
+    public function testLeaveJavascriptOutsidePhpAlone(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -423,7 +417,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveJavascriptInStringAlone()
+    public function testLeaveJavascriptInStringAlone(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -440,7 +434,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testLeaveJavascriptInVariableAlone()
+    public function testLeaveJavascriptInVariableAlone(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -464,7 +458,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function testFixCommaSeparatedProperty()
+    public function testFixCommaSeparatedProperty(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -493,7 +487,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function testFixesVarDeclarationsWithArrayValue()
+    public function testFixesVarDeclarationsWithArrayValue(): void
     {
         $expected = <<<'EOF'
 <?php
@@ -529,13 +523,13 @@ EOF;
     /**
      * @requires PHP <7.1
      */
-    public function testIgnoreConstants()
+    public function testIgnoreConstants(): void
     {
         $this->fixer->configure(['elements' => ['const']]);
         $this->doTest('<?php class A { const B=1; }');
     }
 
-    public function testInvalidConfigurationType()
+    public function testInvalidConfigurationType(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
@@ -543,7 +537,7 @@ EOF;
         $this->fixer->configure(['elements' => [null]]);
     }
 
-    public function testInvalidConfigurationValue()
+    public function testInvalidConfigurationValue(): void
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
@@ -555,25 +549,10 @@ EOF;
      * @param string $expected expected PHP source after fixing
      * @param string $input    PHP source to fix
      *
-     * @group legacy
-     * @requires PHP 7.1
-     * @dataProvider provideFixClassConstCases
-     * @expectedDeprecation Passing "elements" at the root of the configuration for rule "visibility_required" is deprecated and will not be supported in 3.0, use "elements" => array(...) option instead.
-     */
-    public function testLegacyFixClassConst($expected, $input)
-    {
-        $this->fixer->configure(['const']);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @param string $expected expected PHP source after fixing
-     * @param string $input    PHP source to fix
-     *
      * @requires PHP 7.1
      * @dataProvider provideFixClassConstCases
      */
-    public function testFixClassConst($expected, $input)
+    public function testFixClassConst(string $expected, string $input): void
     {
         $this->fixer->configure(['elements' => ['const']]);
         $this->doTest($expected, $input);
@@ -621,7 +600,7 @@ const F=1; }',
         ];
     }
 
-    public function testCommentCases()
+    public function testCommentCases(): void
     {
         $expected = '<?php
 class A
@@ -657,7 +636,7 @@ AB# <- this is the name
     /**
      * @requires PHP 7.0
      */
-    public function testAnonymousClassFixing()
+    public function testAnonymousClassFixing(): void
     {
         $this->doTest(
             '<?php
@@ -691,7 +670,7 @@ AB# <- this is the name
         );
     }
 
-    public function testRemovingNewlinesBetweenKeywords()
+    public function testRemovingNewlinesBetweenKeywords(): void
     {
         $this->doTest(
             '<?php
@@ -724,7 +703,7 @@ AB# <- this is the name
     /**
      * @requires PHP 7.1
      */
-    public function testKeepingComment()
+    public function testKeepingComment(): void
     {
         $this->fixer->configure(['elements' => ['property', 'method', 'const']]);
 
@@ -746,7 +725,7 @@ AB# <- this is the name
         );
     }
 
-    public function testFixingWithAllKeywords()
+    public function testFixingWithAllKeywords(): void
     {
         $this->doTest(
             '<?php
@@ -779,13 +758,10 @@ AB# <- this is the name
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.4
      * @dataProvider provideFix74Cases
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -829,13 +805,10 @@ AB# <- this is the name
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 8.0
      * @dataProvider provideFix80Cases
      */
-    public function testFix80($expected, $input = null)
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -848,6 +821,19 @@ AB# <- this is the name
 
         yield [
             '<?php class Foo { private int | /* or empty */ null $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { private array|null $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { private null|array $foo; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static null|array $foo; }',
+            '<?php class Foo { static null|array $foo; }',
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Operator;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -26,7 +29,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Unary operators should be placed adjacent to their operands.',
@@ -39,7 +42,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
      *
      * Must run before NotOperatorWithSpaceFixer, NotOperatorWithSuccessorSpaceFixer.
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
@@ -47,7 +50,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
@@ -55,7 +58,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 

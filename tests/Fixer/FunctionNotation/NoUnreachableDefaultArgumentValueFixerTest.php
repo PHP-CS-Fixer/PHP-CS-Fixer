@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -23,19 +25,13 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
 {
     /**
      * @dataProvider provideFixCases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix($expected, $input = null)
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -169,19 +165,13 @@ $bar) {}',
 
     /**
      * @dataProvider provideFix56Cases
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix56($expected, $input = null)
+    public function testFix56(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix56Cases()
+    public function provideFix56Cases(): array
     {
         return [
             [
@@ -196,20 +186,14 @@ $bar) {}',
     /**
      * @dataProvider provideFix71Cases
      *
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @requires PHP 7.1
      */
-    public function testFix71($expected, $input = null)
+    public function testFix71(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
@@ -225,19 +209,13 @@ $bar) {}',
     /**
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
-     *
-     * @param string      $expected
-     * @param null|string $input
      */
-    public function testFix74($expected, $input = null)
+    public function testFix74(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @return array
-     */
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [

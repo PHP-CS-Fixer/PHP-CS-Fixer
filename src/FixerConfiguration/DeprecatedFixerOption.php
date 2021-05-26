@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -24,10 +26,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
      */
     private $deprecationMessage;
 
-    /**
-     * @param string $deprecationMessage
-     */
-    public function __construct(FixerOptionInterface $option, $deprecationMessage)
+    public function __construct(FixerOptionInterface $option, string $deprecationMessage)
     {
         $this->option = $option;
         $this->deprecationMessage = $deprecationMessage;
@@ -36,7 +35,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->option->getName();
     }
@@ -44,7 +43,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->option->getDescription();
     }
@@ -52,7 +51,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasDefault()
+    public function hasDefault(): bool
     {
         return $this->option->hasDefault();
     }
@@ -68,7 +67,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedTypes()
+    public function getAllowedTypes(): ?array
     {
         return $this->option->getAllowedTypes();
     }
@@ -76,7 +75,7 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedValues()
+    public function getAllowedValues(): ?array
     {
         return $this->option->getAllowedValues();
     }
@@ -84,15 +83,12 @@ final class DeprecatedFixerOption implements DeprecatedFixerOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getNormalizer()
+    public function getNormalizer(): ?\Closure
     {
         return $this->option->getNormalizer();
     }
 
-    /**
-     * @return string
-     */
-    public function getDeprecationMessage()
+    public function getDeprecationMessage(): string
     {
         return $this->deprecationMessage;
     }

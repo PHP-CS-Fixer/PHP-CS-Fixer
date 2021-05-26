@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,7 +17,6 @@ namespace PhpCsFixer\Tests\Tokenizer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -31,7 +32,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideConstructorValidationCases
      */
-    public function testConstructorValidation($input)
+    public function testConstructorValidation($input): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -54,40 +55,22 @@ final class TokenTest extends TestCase
         ];
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::clear is deprecated and will be removed in 3.0.
-     */
-    public function testClear()
-    {
-        $token = $this->getForeachToken();
-        $token->clear();
-
-        Tokens::setLegacyMode(false);
-
-        static::assertSame('', $token->getContent());
-        static::assertNull($token->getId());
-        static::assertFalse($token->isArray());
-    }
-
-    public function testGetPrototype()
+    public function testGetPrototype(): void
     {
         static::assertSame($this->getBraceTokenPrototype(), $this->getBraceToken()->getPrototype());
         static::assertSame($this->getForeachTokenPrototype(), $this->getForeachToken()->getPrototype());
     }
 
-    public function testIsArray()
+    public function testIsArray(): void
     {
         static::assertFalse($this->getBraceToken()->isArray());
         static::assertTrue($this->getForeachToken()->isArray());
     }
 
     /**
-     * @param bool $isCast
-     *
      * @dataProvider provideIsCastCases
      */
-    public function testIsCast(Token $token, $isCast)
+    public function testIsCast(Token $token, bool $isCast): void
     {
         static::assertSame($isCast, $token->isCast());
     }
@@ -108,11 +91,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool $isClassy
-     *
      * @dataProvider provideIsClassyCases
      */
-    public function testIsClassy(Token $token, $isClassy)
+    public function testIsClassy(Token $token, bool $isClassy): void
     {
         static::assertSame($isClassy, $token->isClassy());
     }
@@ -129,11 +110,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool $isComment
-     *
      * @dataProvider provideIsCommentCases
      */
-    public function testIsComment(Token $token, $isComment)
+    public function testIsComment(Token $token, bool $isComment): void
     {
         static::assertSame($isComment, $token->isComment());
     }
@@ -158,11 +137,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool $isObjectOperator
-     *
      * @dataProvider provideIsObjectOperatorCases
      */
-    public function testIsObjectOperator(Token $token, $isObjectOperator)
+    public function testIsObjectOperator(Token $token, bool $isObjectOperator): void
     {
         static::assertSame($isObjectOperator, $token->isObjectOperator());
     }
@@ -186,23 +163,7 @@ final class TokenTest extends TestCase
         }
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isEmpty is deprecated and will be removed in 3.0.
-     */
-    public function testIsEmpty()
-    {
-        $braceToken = $this->getBraceToken();
-        static::assertFalse($braceToken->isEmpty());
-
-        $emptyToken = new Token('');
-        static::assertTrue($emptyToken->isEmpty());
-
-        $whitespaceToken = new Token([T_WHITESPACE, ' ']);
-        static::assertFalse($whitespaceToken->isEmpty());
-    }
-
-    public function testIsGivenKind()
+    public function testIsGivenKind(): void
     {
         $braceToken = $this->getBraceToken();
         $foreachToken = $this->getForeachToken();
@@ -220,20 +181,18 @@ final class TokenTest extends TestCase
         static::assertTrue($foreachToken->isGivenKind([T_FOR, T_FOREACH]));
     }
 
-    public function testIsKeywords()
+    public function testIsKeywords(): void
     {
         static::assertTrue($this->getForeachToken()->isKeyword());
         static::assertFalse($this->getBraceToken()->isKeyword());
     }
 
     /**
-     * @param ?int   $tokenId
-     * @param string $content
-     * @param bool   $isConstant
+     * @param ?int $tokenId
      *
      * @dataProvider provideMagicConstantCases
      */
-    public function testIsMagicConstant($tokenId, $content, $isConstant = true)
+    public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void
     {
         $token = new Token(
             null === $tokenId ? $content : [$tokenId, $content]
@@ -268,11 +227,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool $isNativeConstant
-     *
      * @dataProvider provideIsNativeConstantCases
      */
-    public function testIsNativeConstant(Token $token, $isNativeConstant)
+    public function testIsNativeConstant(Token $token, bool $isNativeConstant): void
     {
         static::assertSame($isNativeConstant, $token->isNativeConstant());
     }
@@ -291,12 +248,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool        $isWhitespace
-     * @param null|string $whitespaces
-     *
      * @dataProvider provideIsWhitespaceCases
      */
-    public function testIsWhitespace(Token $token, $isWhitespace, $whitespaces = null)
+    public function testIsWhitespace(Token $token, bool $isWhitespace, ?string $whitespaces = null): void
     {
         if (null !== $whitespaces) {
             static::assertSame($isWhitespace, $token->isWhitespace($whitespaces));
@@ -323,15 +277,11 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param mixed       $prototype
-     * @param null|int    $expectedId
-     * @param null|string $expectedContent
-     * @param null|bool   $expectedIsArray
-     * @param null|string $expectedExceptionClass
+     * @param mixed $prototype
      *
      * @dataProvider provideCreatingTokenCases
      */
-    public function testCreatingToken($prototype, $expectedId, $expectedContent, $expectedIsArray, $expectedExceptionClass = null)
+    public function testCreatingToken($prototype, ?int $expectedId, ?string $expectedContent, ?bool $expectedIsArray, ?string $expectedExceptionClass = null): void
     {
         if ($expectedExceptionClass) {
             $this->expectException($expectedExceptionClass);
@@ -354,7 +304,7 @@ final class TokenTest extends TestCase
         ];
     }
 
-    public function testEqualsDefaultIsCaseSensitive()
+    public function testEqualsDefaultIsCaseSensitive(): void
     {
         $token = new Token([T_FUNCTION, 'function', 1]);
 
@@ -363,13 +313,11 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool               $equals
      * @param array|string|Token $other
-     * @param bool               $caseSensitive
      *
      * @dataProvider provideEqualsCases
      */
-    public function testEquals(Token $token, $equals, $other, $caseSensitive = true)
+    public function testEquals(Token $token, bool $equals, $other, bool $caseSensitive = true): void
     {
         static::assertSame($equals, $token->equals($other, $caseSensitive));
     }
@@ -410,7 +358,7 @@ final class TokenTest extends TestCase
         ];
     }
 
-    public function testEqualsAnyDefaultIsCaseSensitive()
+    public function testEqualsAnyDefaultIsCaseSensitive(): void
     {
         $token = new Token([T_FUNCTION, 'function', 1]);
 
@@ -419,12 +367,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool $equalsAny
-     * @param bool $caseSensitive
-     *
      * @dataProvider provideEqualsAnyCases
      */
-    public function testEqualsAny($equalsAny, array $other, $caseSensitive = true)
+    public function testEqualsAny(bool $equalsAny, array $other, bool $caseSensitive = true): void
     {
         $token = new Token([T_FUNCTION, 'function', 1]);
 
@@ -449,13 +394,11 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param bool       $isKeyCaseSensitive
      * @param array|bool $caseSensitive
-     * @param int        $key
      *
      * @dataProvider provideIsKeyCaseSensitiveCases
      */
-    public function testIsKeyCaseSensitive($isKeyCaseSensitive, $caseSensitive, $key)
+    public function testIsKeyCaseSensitive(bool $isKeyCaseSensitive, $caseSensitive, int $key): void
     {
         static::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
@@ -480,22 +423,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @group legacy
-     * @expectedDeprecation PhpCsFixer\Tokenizer\Token::isChanged is deprecated and will be removed in 3.0.
-     */
-    public function testIsChanged()
-    {
-        $token = new Token([T_WHITESPACE, ' ']);
-        static::assertFalse($token->isChanged());
-    }
-
-    /**
-     * @param null|string $expected
-     * @param int         $id
-     *
      * @dataProvider provideTokenGetNameCases
      */
-    public function testTokenGetNameForId($expected, $id)
+    public function testTokenGetNameForId(?string $expected, int $id): void
     {
         static::assertSame($expected, Token::getNameForId($id));
     }
@@ -519,11 +449,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param null|string $expected
-     *
      * @dataProvider provideGetNameCases
      */
-    public function testGetName(Token $token, $expected = null)
+    public function testGetName(Token $token, ?string $expected = null): void
     {
         static::assertSame($expected, $token->getName());
     }
@@ -549,7 +477,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideToArrayCases
      */
-    public function testToArray(Token $token, array $expected)
+    public function testToArray(Token $token, array $expected): void
     {
         static::assertSame($expected, $token->toArray());
     }

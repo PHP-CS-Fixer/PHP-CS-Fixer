@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -15,6 +17,7 @@ namespace PhpCsFixer\Fixer\Alias;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
@@ -48,7 +51,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function getDefinition()
+    public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Replace deprecated `ereg` regular expression functions with `preg`.',
@@ -61,7 +64,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens)
+    public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_STRING);
     }
@@ -69,7 +72,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    public function isRisky()
+    public function isRisky(): bool
     {
         return true;
     }
@@ -77,7 +80,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens)
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $end = $tokens->count() - 1;
         $functionsAnalyzer = new FunctionsAnalyzer();
@@ -137,10 +140,8 @@ final class EregToPregFixer extends AbstractFixer
      * Check the validity of a PCRE.
      *
      * @param string $pattern the regular expression
-     *
-     * @return bool
      */
-    private function checkPreg($pattern)
+    private function checkPreg(string $pattern): bool
     {
         try {
             Preg::match($pattern, '');
@@ -158,7 +159,7 @@ final class EregToPregFixer extends AbstractFixer
      *
      * @return string the preg delimiter
      */
-    private function getBestDelimiter($pattern)
+    private function getBestDelimiter(string $pattern): string
     {
         // try do find something that's not used
         $delimiters = [];
