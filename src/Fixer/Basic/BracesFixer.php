@@ -130,7 +130,7 @@ class Foo
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
+     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, EmptyLoopBodyFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
     {
