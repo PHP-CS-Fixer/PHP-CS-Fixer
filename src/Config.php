@@ -93,7 +93,7 @@ class Config implements ConfigInterface
      */
     public static function create()
     {
-        Utils::triggerDeprecation(new \RuntimeException(__METHOD__.' is deprecated since 2.17 and will be removed in 3.0.'));
+        Utils::triggerDeprecation(new \RuntimeException(__METHOD__.' is deprecated since 2.17 and will be removed in 3.0, use the constructor instead.'));
 
         return new static();
     }
