@@ -283,6 +283,8 @@ Language Construct
     Using ``isset($var) &&`` multiple times should be done in one call.
 - `combine_consecutive_unsets <./language_construct/combine_consecutive_unsets.rst>`_
     Calling ``unset`` on multiple items should be done in one call.
+- `declare_braces <./language_construct/declare_braces.rst>`_
+    There must not be spaces around ``declare`` statement braces.
 - `declare_equal_normalize <./language_construct/declare_equal_normalize.rst>`_
     Equal sign in declare statement should be surrounded by spaces or not following configuration.
 - `dir_constant <./language_construct/dir_constant.rst>`_ *(risky)*
