@@ -25,6 +25,7 @@ final class PHP80MigrationRiskySet extends AbstractRuleSetDescription
     {
         return [
             '@PHP74Migration:risky' => true,
+            'modernize_strpos' => true,
             'no_alias_functions' => [
                 'sets' => [
                     '@all',
