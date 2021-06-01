@@ -26,6 +26,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``allow_single_line_empty_function_body``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether the braces are allowed to be placed on the same line if the function body is empty.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``position_after_functions_and_oop_constructs``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -172,6 +172,10 @@ class Foo
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('allow_single_line_empty_function_body', 'Whether the braces are allowed to be placed on the same line if the function body is empty.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
             (new FixerOptionBuilder('position_after_functions_and_oop_constructs', 'whether the opening brace should be placed on "next" or "same" line after classy constructs (non-anonymous classes, interfaces, traits, methods and non-lambda functions).'))
                 ->setAllowedValues([self::LINE_NEXT, self::LINE_SAME])
                 ->setDefault(self::LINE_NEXT)
@@ -353,6 +357,20 @@ class Foo
                 );
 
                 if (!$this->isMultilined($tokens, $index, $braceEndIndex)) {
+                    $index = $braceEndIndex;
+
+                    continue;
+                }
+            }
+
+            if (
+                $this->configuration['allow_single_line_empty_function_body']
+                && $token->isGivenKind(T_FUNCTION)
+            ) {
+                $braceStartIndex = $tokens->getNextTokenOfKind($index, ['{']);
+                $braceEndIndex = $tokens->getNextMeaningfulToken($braceStartIndex);
+
+                if ('}' === $tokens[$braceEndIndex]->getContent() && !$this->isMultilined($tokens, $braceStartIndex, $braceEndIndex)) {
                     $index = $braceEndIndex;
 
                     continue;

@@ -4889,6 +4889,71 @@ if (true) {
     }
 
     /**
+     * @dataProvider provideFixWithAllowSingleLineEmptyFunctionBody
+     */
+    public function testFixWithAllowSingleLineEmptyFunctionBody(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'allow_single_line_empty_function_body' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithAllowSingleLineEmptyFunctionBody()
+    {
+        return [
+            [
+                '<?php
+    $emptyBody = function () {};',
+            ],
+            [
+                '<?php
+    $nonEmptyBody = function () {
+        0;
+    };',
+                '<?php
+    $nonEmptyBody = function () { 0; };',
+            ],
+            [
+                '<?php
+    function empty_body(): void {}',
+            ],
+            [
+                '<?php
+    function non_empty_body(): void
+    {
+        0;
+    }',
+                '<?php
+    function non_empty_body(): void { 0; }',
+            ],
+            [
+                '<?php
+    class A
+    {
+        public function emptyBody(): void {}
+    }',
+            ],
+            [
+                '<?php
+    class A
+    {
+        public function nonEmptyBody(): void
+        {
+            0;
+        }
+    }',
+                '<?php
+    class A
+    {
+        public function nonEmptyBody(): void { 0; }
+    }',
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
      */
     public function testDoWhileLoopInsideAnIfWithoutBrackets(string $expected, ?string $input = null): void
