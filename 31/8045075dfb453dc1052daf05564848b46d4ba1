@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-15T13:52:09Z
+
+[![Coverage Status](https://coveralls.io/builds/40314024/badge)](https://coveralls.io/builds/40314024)
+
+Coverage increased (+0.009%) to 91.559% when pulling **d5599def03e50c20abb0bf8822f40a46d564178a on kubawerlos:run-migration-rules-on-php-8** into **f196ab00f59b24ea36795ea0b42728c0f90f8323 on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-05-15T19:41:33Z
+
+Return annotation for `__sleep` method could be removed when https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5718 is merged.
+
+Other changes looks acceptable to me, but I'm open to sugestions. WDYT @keradus as it was your [idea](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5689#discussion_r626909103) to make this?
