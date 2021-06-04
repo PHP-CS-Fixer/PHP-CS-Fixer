@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-05T20:35:25Z
+
+[![Coverage Status](https://coveralls.io/builds/39714378/badge)](https://coveralls.io/builds/39714378)
+
+Coverage decreased (-0.001%) to 91.548% when pulling **e17cdb2ad0f92d1861dbea440302ed8f17854b41 on kubawerlos:fix_ArrayIndentationFixer** into **f196ab00f59b24ea36795ea0b42728c0f90f8323 on FriendsOfPHP:2.19**.
