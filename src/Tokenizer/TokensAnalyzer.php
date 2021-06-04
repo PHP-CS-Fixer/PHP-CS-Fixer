@@ -361,6 +361,14 @@ final class TokensAnalyzer
             }
         }
 
+        // check for attribute: `#[Foo]`
+        if (
+            \defined('T_ATTRIBUTE') // @TODO: drop condition when PHP 8.0+ is required
+            && $this->tokens[$prevIndex]->isGivenKind(T_ATTRIBUTE)
+        ) {
+            return false;
+        }
+
         // check for goto label
         if ($this->tokens[$nextIndex]->equals(':')) {
             if (null === $this->gotoLabelAnalyzer) {
@@ -368,6 +376,17 @@ final class TokensAnalyzer
             }
 
             if ($this->gotoLabelAnalyzer->belongsToGoToLabel($this->tokens, $nextIndex)) {
+                return false;
+            }
+        }
+
+        // check for non-capturing catches
+        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_TYPE_ALTERNATION, T_STRING])) {
+            $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+        }
+        if ($this->tokens[$prevIndex]->equals('(')) {
+            $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+            if ($this->tokens[$prevPrevIndex]->isGivenKind(T_CATCH)) {
                 return false;
             }
         }
