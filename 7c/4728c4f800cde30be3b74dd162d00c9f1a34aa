@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-25T21:18:12Z
+
+[![Coverage Status](https://coveralls.io/builds/40010844/badge)](https://coveralls.io/builds/40010844)
+
+Coverage increased (+0.003%) to 91.562% when pulling **d52875dc860d8eb3bfad26a766af5d3a9c60272f on julienfalque:fix_NativeConstantInvocationFixer-2** into **9965811693e42d9f5d01968811f4265a26fc8dd1 on FriendsOfPHP:2.19**.
