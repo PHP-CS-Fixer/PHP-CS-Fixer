@@ -153,6 +153,7 @@ final class ProjectCodeTest extends TestCase
         $allowedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $allowedProps);
+
         $definedProps = array_map(static function (\ReflectionProperty $item) {
             return $item->getName();
         }, $definedProps);
@@ -343,12 +344,14 @@ final class ProjectCodeTest extends TestCase
                 return $token->isGivenKind(T_STRING);
             }
         );
+
         $strings = array_map(
             static function (Token $token) {
                 return $token->getContent();
             },
             $stringTokens
         );
+
         $strings = array_unique($strings);
         $message = sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
         static::assertNotContains('preg_filter', $strings, $message);
@@ -536,6 +539,7 @@ final class ProjectCodeTest extends TestCase
                 return false !== $rm->getDocComment() && stripos($rm->getDocComment(), '@inheritdoc');
             }
         );
+
         $methodsWithInheritdoc = array_map(
             static function (\ReflectionMethod $rm) {
                 return $rm->getName();
@@ -683,6 +687,28 @@ final class ProjectCodeTest extends TestCase
             }
 
             yield [\get_class($fixer)];
+        }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     */
+    public function testConstantsAreInUpperCase(string $className)
+    {
+        $rc = new \ReflectionClass($className);
+
+        $reflectionClassConstants = $rc->getReflectionConstants();
+
+        if (\count($reflectionClassConstants) < 1) {
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        foreach ($reflectionClassConstants as $constant) {
+            $constantName = $constant->getName();
+            static::assertSame(strtoupper($constantName), $constantName, $className);
         }
     }
 
