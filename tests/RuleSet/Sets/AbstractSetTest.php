@@ -44,6 +44,14 @@ abstract class AbstractSetTest extends TestCase
         static::assertIsBool($isRiskySet);
         static::assertIsArray($setRules);
 
+        if (1 === preg_match('/(\d)(\d)Migration/', \get_class($set), $matches)) {
+            static::assertStringEndsWith(
+                sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
+                $setDescription,
+                sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
+            );
+        }
+
         try {
             $factory->useRuleSet(new RuleSet($set->getRules()));
         } catch (InvalidForEnvFixerConfigurationException $e) {
