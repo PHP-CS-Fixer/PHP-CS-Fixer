@@ -769,11 +769,7 @@ $a(1,2);',
      */
     public function testIsConstantInvocation($source, array $expected)
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
-        }
+        $this->doIsConstantInvocationTest($source, $expected);
     }
 
     public function provideIsConstantInvocationCases()
@@ -813,7 +809,7 @@ $a(1,2);',
             ],
             [
                 '<?php func(FOO, Bar\BAZ);',
-                [3 => true, 8 => true],
+                [1 => false, 3 => true, 6 => false,  8 => true],
             ],
             [
                 '<?php if (FOO && BAR) {}',
@@ -821,11 +817,11 @@ $a(1,2);',
             ],
             [
                 '<?php return FOO * X\Y\BAR;',
-                [3 => true, 11 => true],
+                [3 => true, 7 => false, 9 => false,  11 => true],
             ],
             [
                 '<?php function x() { yield FOO; yield FOO => BAR; }',
-                [11 => true, 16 => true, 20 => true],
+                [3 => false, 11 => true, 16 => true, 20 => true],
             ],
             [
                 '<?php switch ($a) { case FOO: break; }',
@@ -845,7 +841,7 @@ $a(1,2);',
             ],
             [
                 '<?php namespace X; const FOO = 1;',
-                [8 => false],
+                [3 => false, 8 => false],
             ],
             [
                 '<?php class FOO {}',
@@ -861,31 +857,31 @@ $a(1,2);',
             ],
             [
                 '<?php class x extends FOO {}',
-                [7 => false],
+                [3 => false, 7 => false],
             ],
             [
                 '<?php class x implements FOO {}',
-                [7 => false],
+                [3 => false, 7 => false],
             ],
             [
                 '<?php class x implements FOO, BAR, BAZ {}',
-                [7 => false, 10 => false, 13 => false],
+                [3 => false, 7 => false, 10 => false, 13 => false],
             ],
             [
                 '<?php class x { const FOO = 1; }',
-                [9 => false],
+                [3 => false, 9 => false],
             ],
             [
                 '<?php class x { use FOO; }',
-                [9 => false],
+                [3 => false, 9 => false],
             ],
             [
                 '<?php class x { use FOO, BAR { FOO::BAZ insteadof BAR; } }',
-                [9 => false, 12 => false, 16 => false, 18 => false, 22 => false],
+                [3 => false, 9 => false, 12 => false, 16 => false, 18 => false, 22 => false],
             ],
             [
                 '<?php function x (FOO $foo, BAR &$bar, BAZ ...$baz) {}',
-                [6 => false, 11 => false, 17 => false],
+                [3 => false, 6 => false, 11 => false, 17 => false],
             ],
             [
                 '<?php FOO();',
@@ -893,11 +889,11 @@ $a(1,2);',
             ],
             [
                 '<?php FOO::x();',
-                [1 => false],
+                [1 => false, 3 => false],
             ],
             [
                 '<?php x::FOO();',
-                [3 => false],
+                [1 => false, 3 => false],
             ],
             [
                 '<?php $foo instanceof FOO;',
@@ -921,11 +917,11 @@ $a(1,2);',
             ],
             [
                 '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
-                [3 => true, 7 => true],
+                [1 => false, 3 => true, 7 => true],
             ],
             [
                 '<?php interface Foo extends Bar, Baz, Qux {}',
-                [7 => false, 10 => false, 13 => false],
+                [3 => false, 7 => false, 10 => false, 13 => false],
             ],
             [
                 '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
@@ -942,11 +938,7 @@ $a(1,2);',
      */
     public function testIsConstantInvocation70($source, array $expected)
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
-        }
+        $this->doIsConstantInvocationTest($source, $expected);
     }
 
     public function provideIsConstantInvocation70Cases()
@@ -954,11 +946,11 @@ $a(1,2);',
         return [
             [
                 '<?php function x(): FOO {}',
-                [8 => false],
+                [3 => false, 8 => false],
             ],
             [
                 '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
-                [8 => false, 11 => false, 15 => false, 18 => false],
+                [3 => false, 5 => false, 8 => false, 11 => false, 15 => false, 18 => false],
             ],
         ];
     }
@@ -971,11 +963,7 @@ $a(1,2);',
      */
     public function testIsConstantInvocation71($source, array $expected)
     {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isConstantInvocation($index), 'Token at index '.$index.' should match the expected value.');
-        }
+        $this->doIsConstantInvocationTest($source, $expected);
     }
 
     public function provideIsConstantInvocation71Cases()
@@ -983,11 +971,11 @@ $a(1,2);',
         return [
             [
                 '<?php function x(?FOO $foo) {}',
-                [6 => false],
+                [3 => false, 6 => false],
             ],
             [
                 '<?php function x(): ?FOO {}',
-                [9 => false],
+                [3 => false, 9 => false],
             ],
             [
                 '<?php try {} catch (FOO|BAR|BAZ $e) {}',
@@ -995,20 +983,64 @@ $a(1,2);',
             ],
             [
                 '<?php interface Foo { public function bar(): Baz; }',
-                [16 => false],
+                [3 => false, 11 => false, 16 => false],
             ],
             [
                 '<?php interface Foo { public function bar(): \Baz; }',
-                [17 => false],
+                [3 => false, 11 => false, 17 => false],
             ],
             [
                 '<?php interface Foo { public function bar(): ?Baz; }',
-                [17 => false],
+                [3 => false, 11 => false, 17 => false],
             ],
             [
                 '<?php interface Foo { public function bar(): ?\Baz; }',
-                [18 => false],
+                [3 => false, 11 => false, 18 => false],
             ],
+        ];
+    }
+
+    /**
+     * @param string $source
+     *
+     * @dataProvider provideIsConstantInvocationPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsConstantInvocationPhp80($source, array $expected)
+    {
+        $this->doIsConstantInvocationTest($source, $expected);
+    }
+
+    public function provideIsConstantInvocationPhp80Cases()
+    {
+        yield [
+            '<?php $a?->b?->c;',
+            [3 => false, 5 => false],
+        ];
+
+        yield [
+            '<?php try {} catch (Exception) {}',
+            [9 => false],
+        ];
+
+        yield [
+            '<?php try {} catch (\Exception) {}',
+            [10 => false],
+        ];
+
+        yield [
+            '<?php try {} catch (Foo | Bar) {}',
+            [9 => false, 13 => false],
+        ];
+
+        yield [
+            '<?php #[Foo] function foo() {}',
+            [2 => false, 7 => false],
+        ];
+
+        yield [
+            '<?php #[Foo()] function foo() {}',
+            [2 => false, 9 => false],
         ];
     }
 
@@ -1019,23 +1051,6 @@ $a(1,2);',
 
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode('<?php '));
         $tokensAnalyzer->isConstantInvocation(0);
-    }
-
-    /**
-     * @requires PHP 8.0
-     */
-    public function testIsConstantInvocationForNullSafeObjectOperator()
-    {
-        $tokens = Tokens::fromCode('<?php $a?->b?->c;');
-
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_STRING)) {
-                continue;
-            }
-            static::assertFalse($tokensAnalyzer->isConstantInvocation($index));
-        }
     }
 
     /**
@@ -2070,5 +2085,29 @@ class MyTestWithAnonymousClass extends TestCase
         }
 
         return $cases;
+    }
+
+    /**
+     * @param string $source
+     */
+    private function doIsConstantInvocationTest($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+
+        static::assertCount(
+            $tokens->countTokenKind(T_STRING),
+            $expected,
+            'All T_STRING tokens must be tested'
+        );
+
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame(
+                $expectedValue,
+                $tokensAnalyzer->isConstantInvocation($index),
+                sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+            );
+        }
     }
 }
