@@ -26,6 +26,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
+    /** @var int */
+    private $newlineTokenIndexCache;
+
+    /** @var int */
+    private $newlineTokenPositionCache;
+
     /**
      * {@inheritdoc}
      */
@@ -60,6 +66,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $this->returnWithUpdateCache(0, null);
+
         $scopes = [];
         $previousLineInitialIndent = '';
         $previousLineNewIndent = '';
@@ -216,21 +224,30 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
         return '';
     }
 
-    private function getPreviousNewlineTokenIndex(Tokens $tokens, int $index): ?int
+    private function getPreviousNewlineTokenIndex(Tokens $tokens, int $startIndex): ?int
     {
+        $index = $startIndex;
         while ($index > 0) {
             $index = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE], [T_INLINE_HTML]]);
+
+            if ($this->newlineTokenIndexCache > $index) {
+                return $this->returnWithUpdateCache($startIndex, $this->newlineTokenPositionCache);
+            }
 
             if (null === $index) {
                 break;
             }
 
             if ($this->isNewLineToken($tokens, $index)) {
-                return $index;
+                return $this->returnWithUpdateCache($startIndex, $index);
+            }
+
+            if ($this->isNewLineToken($tokens, $index)) {
+                return $this->returnWithUpdateCache($startIndex, $index);
             }
         }
 
-        return null;
+        return $this->returnWithUpdateCache($startIndex, null);
     }
 
     private function isNewLineToken(Tokens $tokens, int $index): bool
@@ -251,5 +268,13 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
         }
 
         return $content;
+    }
+
+    private function returnWithUpdateCache(int $index, ?int $position): ?int
+    {
+        $this->newlineTokenIndexCache = $index;
+        $this->newlineTokenPositionCache = $position;
+
+        return $position;
     }
 }
