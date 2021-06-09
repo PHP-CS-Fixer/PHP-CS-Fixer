@@ -28,10 +28,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param array<string, string|null> $config
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -101,6 +104,16 @@ $foo = true;
                 '<?php
 
 $foo = true;
+?>',
+                '<?php
+$foo = true;
+?>',
+                ['blank_line' => 'single'],
+            ],
+            [
+                '<?php
+
+$foo = true;
 $bar = false;
 ',
                 '<?php $foo = true;
@@ -127,6 +140,43 @@ Html here
                 '<?= $bar;
 $foo = $bar;
 ?>',
+            ],
+            [
+                '<?php
+$foo = true;
+?>',
+                '<?php
+
+$foo = true;
+?>',
+                ['blank_line' => 'none'],
+            ],
+            [
+                '<?php
+$foo = true;
+?>',
+                '<?php
+
+
+
+$foo = true;
+?>',
+                ['blank_line' => 'none'],
+            ],
+            [
+                '<?php
+$foo = true;
+?>',
+                null,
+                ['blank_line' => null],
+            ],
+            [
+                '<?php
+
+$foo = true;
+?>',
+                null,
+                ['blank_line' => null],
             ],
         ];
     }

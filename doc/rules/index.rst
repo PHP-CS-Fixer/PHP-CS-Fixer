@@ -362,7 +362,7 @@ PHP Tag
 -------
 
 - `blank_line_after_opening_tag <./php_tag/blank_line_after_opening_tag.rst>`_
-    Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.
+    Ensure there is no code on the same line as the PHP open tag and it is followed or not by a blank line.
 - `echo_tag_syntax <./php_tag/echo_tag_syntax.rst>`_
     Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print`` syntax, or vice-versa.
 - `full_opening_tag <./php_tag/full_opening_tag.rst>`_

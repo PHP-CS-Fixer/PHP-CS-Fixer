@@ -14,18 +14,17 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\PhpTag;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class LinebreakAfterOpeningTagFixer extends AbstractProxyFixer implements WhitespacesAwareFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -49,32 +48,11 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
     /**
      * {@inheritdoc}
      */
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    protected function createProxyFixers(): array
     {
-        // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
-            return;
-        }
+        $fixer = new BlankLineAfterOpeningTagFixer();
+        $fixer->configure(['blank_line' => null]);
 
-        // ignore if linebreak already present
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
-            return;
-        }
-
-        $newlineFound = false;
-        foreach ($tokens as $token) {
-            if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
-                $newlineFound = true;
-
-                break;
-            }
-        }
-
-        // ignore one-line files
-        if (!$newlineFound) {
-            return;
-        }
-
-        $tokens[0] = new Token([T_OPEN_TAG, rtrim($tokens[0]->getContent()).$this->whitespacesConfig->getLineEnding()]);
+        return [$fixer];
     }
 }

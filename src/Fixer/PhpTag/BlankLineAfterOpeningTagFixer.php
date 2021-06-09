@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\PhpTag;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -25,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Ceeram <ceeram@cakephp.org>
  */
-final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
+final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -33,8 +37,11 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.',
-            [new CodeSample("<?php \$a = 1;\n\$b = 1;\n")]
+            'Ensure there is no code on the same line as the PHP open tag and it is followed or not by a blank line.',
+            [
+                new CodeSample("<?php \$a = 1;\n\$b = 1;\n"),
+                new CodeSample("<?php \$a = 1;\n\$b = 1;\n", ['blank_line' => 'none']),
+            ]
         );
     }
 
@@ -55,6 +62,19 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_OPEN_TAG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('blank_line', 'Ensure after linebreak there is. there isn\'t or ignore the empty line.'))
+                ->setAllowedValues(['single', 'none', null])
+                ->setDefault('single')
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -90,12 +110,18 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
             $tokens[0] = new Token([$token->getId(), rtrim($token->getContent()).$lineEnding]);
         }
 
+        if (null === $this->configuration['blank_line']) {
+            return;
+        }
+
         if (false === strpos($tokens[1]->getContent(), "\n")) {
             if ($tokens[1]->isWhitespace()) {
                 $tokens[1] = new Token([T_WHITESPACE, $lineEnding.$tokens[1]->getContent()]);
-            } else {
+            } elseif ('single' === $this->configuration['blank_line']) {
                 $tokens->insertAt(1, new Token([T_WHITESPACE, $lineEnding]));
             }
+        } elseif ('none' === $this->configuration['blank_line'] && $tokens[1]->isWhitespace()) {
+            $tokens->clearAt(1);
         }
     }
 }
