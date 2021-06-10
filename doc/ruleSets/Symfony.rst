@@ -16,7 +16,7 @@ Rules
   ``['statements' => ['return']]``
 - `braces <./../rules/basic/braces.rst>`_
   config:
-  ``['allow_single_line_anonymous_class_with_empty_body' => true, 'allow_single_line_closure' => true]``
+  ``['allow_single_line_closure' => true, 'allow_single_line_empty_body' => true]``
 - `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
 - `class_attributes_separation <./../rules/class_notation/class_attributes_separation.rst>`_
   config:

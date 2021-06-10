@@ -11,7 +11,7 @@ Rules
 - `blank_line_after_opening_tag <./../rules/php_tag/blank_line_after_opening_tag.rst>`_
 - `braces <./../rules/basic/braces.rst>`_
   config:
-  ``['allow_single_line_anonymous_class_with_empty_body' => true]``
+  ``['allow_single_line_empty_body' => true]``
 - `compact_nullable_typehint <./../rules/whitespace/compact_nullable_typehint.rst>`_
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_

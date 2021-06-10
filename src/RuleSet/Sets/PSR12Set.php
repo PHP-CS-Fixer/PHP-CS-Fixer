@@ -27,7 +27,7 @@ final class PSR12Set extends AbstractRuleSetDescription
             '@PSR2' => true,
             'blank_line_after_opening_tag' => true,
             'braces' => [
-                'allow_single_line_anonymous_class_with_empty_body' => true,
+                'allow_single_line_empty_body' => true,
             ],
             'compact_nullable_typehint' => true,
             'declare_equal_normalize' => true,

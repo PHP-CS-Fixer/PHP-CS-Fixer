@@ -109,9 +109,7 @@ class FooBarTest extends \PHPUnit_Framework_TestCase implements Test1Interface, 
 
 final class FinalClass
 {
-	final public function finalMethod()
-	{
-	}
+	final public function finalMethod() {}
 }
 
 echo 1;

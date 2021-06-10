@@ -11,6 +11,8 @@ Configuration
 ``allow_single_line_anonymous_class_with_empty_body``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed on next major version. Use option "allow_single_line_empty_body" instead.
+
 Whether single line anonymous class with empty body notation should be allowed.
 
 Allowed types: ``bool``
@@ -26,10 +28,10 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
-``allow_single_line_empty_function_body``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``allow_single_line_empty_body``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether the braces are allowed to be placed on the same line if the function body is empty.
+Whether the braces are allowed to be placed on the same line if they are empty.
 
 Allowed types: ``bool``
 
@@ -191,7 +193,7 @@ The rule is part of the following rule sets:
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``braces`` rule with the config below:
 
-  ``['allow_single_line_anonymous_class_with_empty_body' => true]``
+  ``['allow_single_line_empty_body' => true]``
 
 @PSR2
   Using the `@PSR2 <./../../ruleSets/PSR2.rst>`_ rule set will enable the ``braces`` rule with the default config.
@@ -199,9 +201,9 @@ The rule is part of the following rule sets:
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``braces`` rule with the config below:
 
-  ``['allow_single_line_anonymous_class_with_empty_body' => true, 'allow_single_line_closure' => true]``
+  ``['allow_single_line_closure' => true, 'allow_single_line_empty_body' => true]``
 
 @Symfony
   Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``braces`` rule with the config below:
 
-  ``['allow_single_line_anonymous_class_with_empty_body' => true, 'allow_single_line_closure' => true]``
+  ``['allow_single_line_closure' => true, 'allow_single_line_empty_body' => true]``

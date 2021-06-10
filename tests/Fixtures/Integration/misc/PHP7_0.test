@@ -75,14 +75,10 @@ class Foo implements FooInterface
     }
 
     // scalar typehinting
-    public function bar1(int $a): string
-    {
-    }
+    public function bar1(int $a): string {}
 
     // scalar typehinting
-    public function bar2(int $a): string
-    {
-    }
+    public function bar2(int $a): string {}
 
     public function getFnc1()
     {

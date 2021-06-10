@@ -35,23 +35,17 @@ abstract class XB extends XA
 }
 class XC extends XB
 {
-    public function bar($x): stdClass
-    {
-    }
+    public function bar($x): stdClass {}
 }
 
 // Parameter Type Widening
 class ArrayClass
 {
-    public function foo(array $foo)
-    { /* ... */
-    }
+    public function foo(array $foo) { /* ... */ }
 }
 class EverythingClass extends ArrayClass
 {
-    public function foo($foo)
-    { /* ... */
-    }
+    public function foo($foo) { /* ... */ }
 }
 
 --INPUT--
