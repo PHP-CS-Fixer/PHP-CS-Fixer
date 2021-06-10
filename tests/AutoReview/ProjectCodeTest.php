@@ -694,7 +694,7 @@ final class ProjectCodeTest extends TestCase
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
      */
-    public function testConstantsAreInUpperCase(string $className)
+    public function testConstantsAreInUpperCase(string $className): void
     {
         $rc = new \ReflectionClass($className);
 

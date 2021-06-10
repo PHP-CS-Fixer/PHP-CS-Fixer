@@ -28,7 +28,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param array<string, string|null> $config
+     * @param array<string, null|string> $config
      *
      * @dataProvider provideFixCases
      */
