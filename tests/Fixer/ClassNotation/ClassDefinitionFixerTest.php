@@ -628,17 +628,17 @@ namespace {
      * @param string      $expected
      * @param null|string $input
      *
-     * @dataProvider providePHP7Cases
+     * @dataProvider providePHP70Cases
      * @requires PHP 7.0
      */
-    public function testFixPHP7($expected, $input = null)
+    public function testFixPHP70($expected, $input = null)
     {
         $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
-    public function providePHP7Cases()
+    public function providePHP70Cases()
     {
         return [
             [
@@ -670,6 +670,37 @@ $a = new class implements
     \Fcc, \GFddZz
 {
 }?>',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider providePHP73Cases
+     * @requires PHP 7.3
+     */
+    public function testFixPHP73($expected, $input)
+    {
+        $this->fixer->configure([]);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP73Cases()
+    {
+        return [
+            [
+                '<?php new class(1, 2, 3, ) {};',
+                '<?php new class(1, 2, 3,) {};',
+            ],
+            [
+                '<?php new class(1, 2, 3, ) {};',
+                '<?php new class(
+                    1,
+                    2,
+                    3,
+                ) {};',
             ],
         ];
     }
