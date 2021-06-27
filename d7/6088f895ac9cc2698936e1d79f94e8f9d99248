@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-29T17:53:21Z
+
+[![Coverage Status](https://coveralls.io/builds/40142866/badge)](https://coveralls.io/builds/40142866)
+
+Coverage increased (+0.01%) to 91.569% when pulling **f33e72fb3e129da17b3f069d7857e2eb539c527e on HypeMC:static-property-with-null** into **15ddc20440d53fbbaa962e0b5eb01ce9226e1c1b on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-06-16T17:49:59Z
+
+@julienfalque
+if this is enhancement ➡️ target branch is incorrect,
+if this is a bug ➡️ label is incorrect.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-17T07:50:01Z
+
+> if this is enhancement -> target branch is incorrect
+
+Is it? Until now I thought we considered enhancements as something in between bugs and new features, e.g. something a rule does not do yet but should have done from the beginning, like this PR.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-06-27T13:06:05Z
+
+since a while i was move toward "enhancements === features". but yeah, we have no official, clear policy. I'm happy to merge to both lines.
