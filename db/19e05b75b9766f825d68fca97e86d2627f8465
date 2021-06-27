@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-15T18:25:21Z
+
+> maybe you want to use PSR12 instead.
+
+Yeah I would rather keep PSR-12 which supersedes PSR-2 :)
+
+---------------------------------------------------------------------------
+
+by Kocal at 2021-06-15T19:07:19Z
+
+Done :)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-15T21:33:44Z
+
+[![Coverage Status](https://coveralls.io/builds/40612986/badge)](https://coveralls.io/builds/40612986)
+
+Coverage remained the same at 92.164% when pulling **86abfc92e9be6a11aeb9639e0f25cacdadb9feef on Kocal:patch-1** into **1dc0f2133ec09d0267cb7adb9b71a81f23ad2866 on FriendsOfPHP:3.0**.
