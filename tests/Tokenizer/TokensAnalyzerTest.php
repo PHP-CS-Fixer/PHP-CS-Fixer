@@ -1525,7 +1525,7 @@ $b;',
         return [
             [
                 '<?php try {} catch (A | B $e) {}',
-                [11 => true],
+                [11 => false],
             ],
         ];
     }

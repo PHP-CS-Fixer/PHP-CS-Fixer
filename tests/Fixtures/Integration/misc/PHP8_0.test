@@ -57,14 +57,14 @@ $object = new #[ExampleAttribute] class()
 // https://wiki.php.net/rfc/union_types_v2
 class Number
 {
-    private int | float | null $number;
+    private int|float|null $number;
 
     public function setNumber(int | float $number): void
     {
         $this->number = $number;
     }
 
-    public function getNumber(): int | float | null
+    public function getNumber(): int|float | null
     {
         return $this->number;
     }
@@ -234,12 +234,12 @@ class Number
 {
     private int|float|null $number;
 
-    public function setNumber(int|float $number): void
+    public function setNumber(int | float $number): void
     {
         $this->number = $number;
     }
 
-    public function getNumber(): int|float|null
+    public function getNumber(): int|float | null
     {
         return $this->number;
     }
