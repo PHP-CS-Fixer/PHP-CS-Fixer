@@ -8,19 +8,15 @@ parameters:
     paths:
         - src
         - tests
-    excludes_analyse:
+    excludePaths:
+        - src/Event/Event.php # @TODO remove in PHP CS Fixer 3.0
+        - tests/Event/EventTest.php # @TODO remove in PHP CS Fixer 3.0
         - tests/Fixtures
     ignoreErrors:
         - '/^Return typehint of method PhpCsFixer\\Tests\\Test\\.+::createIsIdenticalStringConstraint\(\) has invalid type PHPUnit_Framework_Constraint_IsIdentical\.$/'
-        - '/^Class (Symfony\\Contracts\\EventDispatcher\\Event|Symfony\\Component\\EventDispatcher\\Event) not found.$/'
-        - '/^Constant T_NAME_(RELATIVE|FULLY_QUALIFIED|QUALIFIED) not found\.$/'
-        - '/assertInstanceOf\(\) expects class-string.*, string given/'
         -
             message: '/^Unsafe usage of new static\(\)\.$/'
             path: src/Config.php
-        -
-            message: '/^Else branch is unreachable because previous condition is always true\.$/'
-            path: src/Event/Event.php
         -
             message: '/^Result of && is always false\.$/'
             path: src/Config.php
@@ -29,13 +25,9 @@ parameters:
             path: src/Config.php
         -
             message: '/^Else branch is unreachable because ternary operator condition is always true\.$/'
-            paths:
-                - src/Config.php
+            path: src/Config.php
         -
-            message: '/^Parameter #1 \$function of function register_shutdown_function expects callable\(\): void, array\(\$this\(PhpCsFixer\\FileRemoval\), ''clean''\) given\.$/'
-            path: src/FileRemoval.php
-        -
-            message: '/^Constant T_ATTRIBUTE not found\.$/'
-            path: src/Tokenizer/Transformer/AttributeTransformer.php
+            message: '/^Dead catch - LogicException is never thrown in the try block\.$/'
+            path: src/Test/AccessibleObject.php
 
     tipsOfTheDay: false
