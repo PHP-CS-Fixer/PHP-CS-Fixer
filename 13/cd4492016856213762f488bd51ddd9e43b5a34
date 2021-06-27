@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-21T20:53:10Z
+
+[![Coverage Status](https://coveralls.io/builds/40759487/badge)](https://coveralls.io/builds/40759487)
+
+Coverage increased (+0.004%) to 91.565% when pulling **c613bcf0d6c6262f3692a2a44be33c32aeac7243 on kubawerlos:update_phpstan** into **a41998cc23d69457e8fbded3e84877a52ba5be29 on FriendsOfPHP:2.19**.
