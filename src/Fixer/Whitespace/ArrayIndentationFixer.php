@@ -241,10 +241,6 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             if ($this->isNewLineToken($tokens, $index)) {
                 return $this->returnWithUpdateCache($startIndex, $index);
             }
-
-            if ($this->isNewLineToken($tokens, $index)) {
-                return $this->returnWithUpdateCache($startIndex, $index);
-            }
         }
 
         return $this->returnWithUpdateCache($startIndex, null);

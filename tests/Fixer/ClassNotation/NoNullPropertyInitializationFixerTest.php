@@ -135,7 +135,113 @@ null;#13
 ',
             ],
             [
+                '<?php class Foo { public static $bar; }',
+                '<?php class Foo { public static $bar = null; }',
+            ],
+            [
+                '<?php class Foo { protected static $bar; }',
+                '<?php class Foo { protected static $bar = null; }',
+            ],
+            [
+                '<?php class Foo { private static $bar; }',
+                '<?php class Foo { private static $bar = null; }',
+            ],
+            [
+                '<?php class Foo { static $bar; }',
+                '<?php class Foo { static $bar = null; }',
+            ],
+            [
+                '<?php class Foo { STATIC $bar; }',
+                '<?php class Foo { STATIC $bar = null; }',
+            ],
+            [
+                '<?php class Foo { public static $bar; }',
+                '<?php class Foo { public static $bar = NULL; }',
+            ],
+            [
+                '<?php class Foo { PUblic STatic $bar; }',
+                '<?php class Foo { PUblic STatic $bar = nuLL; }',
+            ],
+            [
+                '<?php trait Foo { public static $bar; }',
+                '<?php trait Foo { public static $bar = nuLL; }',
+            ],
+            [
+                '<?php class Foo { public static $bar; }',
+                '<?php class Foo { public static $bar = \null; }',
+            ],
+            [
+                '<?php class Foo {/* */public/* */static/* A */$bar/* B *//** C */;/* D */}',
+                '<?php class Foo {/* */public/* */static/* A */$bar/* B */=/** C */null;/* D */}',
+            ],
+            [
+                '<?php class Foo { public static $bar; protected static $baz; }',
+                '<?php class Foo { public static $bar = null; protected static $baz = null; }',
+            ],
+            [
+                '<?php class Foo { public static $bar = \'null\'; }',
+            ],
+            [
+                '<?php class Foo { public static function bar() { return null; } }',
+            ],
+            [
+                '<?php class Foo { protected static $bar, $baz, $qux; }',
+                '<?php class Foo { protected static $bar = null, $baz = null, $qux = null; }',
+            ],
+            [
+                '<?php class Foo { protected static $bar, $baz = \'baz\', $qux; }',
+                '<?php class Foo { protected static $bar, $baz = \'baz\', $qux = null; }',
+            ],
+            [
+                '<?php trait Foo { public static $bar; } abstract class Bar { protected static $bar, $baz = \'baz\', $qux; }',
+                '<?php trait Foo { public static $bar = null; } abstract class Bar { protected static $bar, $baz = \'baz\', $qux = null; }',
+            ],
+            [
+                '<?php class Foo { public function foo() { return null; } public static $bar; public function baz() { return null; } }',
+                '<?php class Foo { public function foo() { return null; } public static $bar = null; public function baz() { return null; } }',
+            ],
+            [
+                '<?php class#1
+Foo#2
+{#3
+protected#4
+static#4.5
+$bar#5
+#6
+,#7
+$baz#8
+#9
+,#10
+$qux#11
+#12
+;#13
+}
+',
+                '<?php class#1
+Foo#2
+{#3
+protected#4
+static#4.5
+$bar#5
+=#6
+null,#7
+$baz#8
+=#9
+null,#10
+$qux#11
+=#12
+null;#13
+}
+',
+            ],
+            [
                 '<?php class Foo { const FOO = null; }',
+            ],
+            [
+                '<?php class Foo { public function foo() { static $foo = null; } }',
+            ],
+            [
+                '<?php function foo() { static $foo = null; }',
             ],
         ];
     }
@@ -163,6 +269,24 @@ null;#13
             [
                 '<?php class Foo { public function foo() { return new class() { private $bar; }; } } trait Baz { public $baz; }',
                 '<?php class Foo { public function foo() { return new class() { private $bar = null; }; } } trait Baz { public $baz = null; }',
+            ],
+            [
+                '<?php new class () { public static $bar; };',
+                '<?php new class () { public static $bar = null; };',
+            ],
+            [
+                '<?php class Foo { public function foo() { return new class() { private static $bar; }; } }',
+                '<?php class Foo { public function foo() { return new class() { private static $bar = null; }; } }',
+            ],
+            [
+                '<?php class Foo { public function foo() { return new class() { private static $bar; }; } } trait Baz { public static $baz; }',
+                '<?php class Foo { public function foo() { return new class() { private static $bar = null; }; } } trait Baz { public static $baz = null; }',
+            ],
+            [
+                '<?php class Foo { public function foo() { return new class() { public function foo() { static $foo = null; } }; } }',
+            ],
+            [
+                '<?php function foo() { return new class() { public function foo() { static $foo = null; } }; }',
             ],
         ];
     }
@@ -205,6 +329,16 @@ null;#13
         yield [
             '<?php class Foo { protected ? array $bar = null; }',
         ];
+
+        yield [
+            '<?php class Foo { protected static ?int $bar = null; }',
+        ];
+        yield [
+            '<?php class Foo { protected static ? string $bar = null; }',
+        ];
+        yield [
+            '<?php class Foo { protected static ? array $bar = null; }',
+        ];
     }
 
     /**
@@ -227,6 +361,16 @@ null;#13
         yield [
             '<?php class Foo { public $bar/* oh hai! */; }',
             '<?php class Foo { public $bar = \/* oh hai! */null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar; }',
+            '<?php class Foo { public static $bar = \     null; }',
+        ];
+
+        yield [
+            '<?php class Foo { public static $bar/* oh hai! */; }',
+            '<?php class Foo { public static $bar = \/* oh hai! */null; }',
         ];
     }
 

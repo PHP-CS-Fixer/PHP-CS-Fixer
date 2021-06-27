@@ -8,11 +8,12 @@ parameters:
     paths:
         - src
         - tests
-    excludes_analyse:
+    excludePaths:
+        - src/Event/Event.php # @TODO remove in PHP CS Fixer 3.0
+        - tests/Event/EventTest.php # @TODO remove in PHP CS Fixer 3.0
         - tests/Fixtures
     ignoreErrors:
-        - '/^Constant T_NAME_(RELATIVE|FULLY_QUALIFIED|QUALIFIED) not found\.$/'
         -
-            message: '/^Constant T_ATTRIBUTE not found\.$/'
-            path: src/Tokenizer/Transformer/AttributeTransformer.php
+            message: '/^Static method PhpCsFixer\\Console\\Command\\HelpCommand::wordwrap\(\) is unused\.$/'
+            path: src/Console/Command/HelpCommand.php
     tipsOfTheDay: false

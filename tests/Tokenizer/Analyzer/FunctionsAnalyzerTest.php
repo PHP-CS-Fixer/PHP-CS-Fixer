@@ -752,6 +752,12 @@ class Foo {}
                 24,
             ];
         }
+
+        yield [
+            true,
+            sprintf($template, '$this::'),
+            24,
+        ];
     }
 
     /**

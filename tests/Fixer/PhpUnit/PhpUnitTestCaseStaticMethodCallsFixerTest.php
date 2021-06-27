@@ -479,6 +479,24 @@ EOF
                     'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
                 ],
             ],
+            'handle $this with double colon following' => [
+                '<?php
+                class FooTest extends TestCase
+                {
+                    public function testFoo()
+                    {
+                        static::assertTrue(true);
+                    }
+                }',
+                '<?php
+                class FooTest extends TestCase
+                {
+                    public function testFoo()
+                    {
+                        $this::assertTrue(true);
+                    }
+                }',
+            ],
         ];
     }
 

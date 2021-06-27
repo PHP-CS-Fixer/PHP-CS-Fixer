@@ -183,15 +183,16 @@ final class FunctionsAnalyzer
         if (!$tokens->offsetExists($operatorIndex)) {
             return false;
         }
+        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(T_DOUBLE_COLON)) {
+            return false;
+        }
 
         $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
         if (!$tokens->offsetExists($referenceIndex)) {
             return false;
         }
 
-        return $tokens[$operatorIndex]->isObjectOperator() && $tokens[$referenceIndex]->equals([T_VARIABLE, '$this'], false)
-            || $tokens[$operatorIndex]->isGivenKind(T_DOUBLE_COLON) && $tokens[$referenceIndex]->equals([T_STRING, 'self'], false)
-            || $tokens[$operatorIndex]->isGivenKind(T_DOUBLE_COLON) && $tokens[$referenceIndex]->equals([T_STATIC, 'static'], false);
+        return $tokens[$referenceIndex]->equalsAny([[T_VARIABLE, '$this'], [T_STRING, 'self'], [T_STATIC, 'static']], false);
     }
 
     private function buildFunctionsAnalysis(Tokens $tokens): void
