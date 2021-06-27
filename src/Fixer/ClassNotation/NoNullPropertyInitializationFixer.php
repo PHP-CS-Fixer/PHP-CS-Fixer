@@ -37,6 +37,13 @@ class Foo {
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+class Foo {
+    public static $foo = null;
+}
+'
+                ),
             ]
         );
     }
@@ -46,7 +53,7 @@ class Foo {
      */
     public function isCandidate(Tokens $tokens)
     {
-        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT]) && $tokens->isAnyTokenKindsFound([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR]);
+        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT]) && $tokens->isAnyTokenKindsFound([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR, T_STATIC]);
     }
 
     /**
@@ -54,13 +61,55 @@ class Foo {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $inClass = [];
+        $classLevel = 0;
+
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR])) {
+            if ($tokens[$index]->isClassy()) {
+                ++$classLevel;
+                $inClass[$classLevel] = 1;
+
+                $index = $tokens->getNextTokenOfKind($index, ['{']);
+
+                continue;
+            }
+
+            if (0 === $classLevel) {
+                continue;
+            }
+
+            if ($tokens[$index]->equals('{')) {
+                ++$inClass[$classLevel];
+
+                continue;
+            }
+
+            if ($tokens[$index]->equals('}')) {
+                --$inClass[$classLevel];
+
+                if (0 === $inClass[$classLevel]) {
+                    unset($inClass[$classLevel]);
+                    --$classLevel;
+                }
+
+                continue;
+            }
+
+            // Ensure we are in a class but not in a method in case there are static variables defined
+            if (1 !== $inClass[$classLevel]) {
+                continue;
+            }
+
+            if (!$tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR, T_STATIC])) {
                 continue;
             }
 
             while (true) {
                 $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
+
+                if ($tokens[$index]->isGivenKind(T_STATIC)) {
+                    $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
+                }
 
                 if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
                     break;
