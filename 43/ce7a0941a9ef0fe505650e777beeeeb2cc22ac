@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-10T17:34:41Z
+
+[![Coverage Status](https://coveralls.io/builds/40485170/badge)](https://coveralls.io/builds/40485170)
+
+Coverage remained the same at 91.561% when pulling **237fbd2ac9afa26e6113dc50949fd37087f32abd on julienfalque:phpdoc_to_property_type-no_superfluous_phpdoc_tags-priority** into **a41998cc23d69457e8fbded3e84877a52ba5be29 on FriendsOfPHP:2.19**.
