@@ -1993,12 +1993,11 @@ $a = $ae?? $b;
                 ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
             'multiple exceptions catch, default config' => [
-                '<?php try {} catch (A | B $e) {}',
                 '<?php try {} catch (A   |     B $e) {}',
             ],
             'multiple exceptions catch, no space config' => [
-                '<?php try {} catch (A|B $e) {}',
                 '<?php try {} catch (A   |     B $e) {}',
+                null,
                 ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
             ],
         ];
@@ -2038,5 +2037,22 @@ $a = $ae?? $b;
                 ['operators' => ['??=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
             ],
         ];
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testUnionTypesAreNotChanged(): void
+    {
+        $this->doTest(
+            '<?php
+            class Foo
+            {
+                private bool|int | string $prop;
+                public function bar(TypeA | TypeB|TypeC $x): TypeA|TypeB | TypeC|TypeD
+                {
+                }
+            }'
+        );
     }
 }
