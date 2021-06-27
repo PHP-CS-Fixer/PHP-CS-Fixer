@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-21T14:04:42Z
+
+How did you find it? 😁
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-21T14:11:50Z
+
+[![Coverage Status](https://coveralls.io/builds/40745738/badge)](https://coveralls.io/builds/40745738)
+
+Coverage decreased (-0.005%) to 91.556% when pulling **2a6e45ba70e98c339257343de0ce6d586d58d448 on kubawerlos:fix_isTheSameClassCall** into **a41998cc23d69457e8fbded3e84877a52ba5be29 on FriendsOfPHP:2.19**.
