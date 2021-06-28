@@ -372,7 +372,7 @@ interface Bar extends
                     continue;
                 }
 
-                if ($tokens[$i + 1]->equalsAny([',', '(', ')']) || $tokens[$i - 1]->equals('(')) {
+                if (!$tokens[$i - 1]->equals(',') && $tokens[$i + 1]->equalsAny([',', '(', ')']) || $tokens[$i - 1]->equals('(')) {
                     $tokens->clearAt($i);
 
                     continue;
