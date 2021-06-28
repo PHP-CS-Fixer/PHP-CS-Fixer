@@ -12,7 +12,7 @@ is a good practice to add that file into your ``.gitignore`` file.
 With the ``--config`` option you can specify the path to the
 ``.php-cs-fixer.php`` file.
 
-The example below will add two rules to the default list of PSR2 set rules:
+The example below will add two rules to the default list of PSR12 set rules:
 
 .. code-block:: php
 

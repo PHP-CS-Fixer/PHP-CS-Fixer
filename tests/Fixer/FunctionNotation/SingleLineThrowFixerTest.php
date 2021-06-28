@@ -292,6 +292,23 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
                     default => throw new \NotOneOrTwo()
                 };
             '];
+
+            yield ['<?php
+                match ($number) {
+                    1 => $function->one(),
+                    2 => throw new Exception("Number 2 is not allowed."),
+                    1 => $function->three(),
+                    default => throw new \NotOneOrTwo()
+                };
+            '];
+
+            yield [
+                '<?php throw new Exception(match ($a) { 1 => "a", 3 => "b" });',
+                '<?php throw new Exception(match ($a) {
+                    1 => "a",
+                    3 => "b"
+                });',
+            ];
         }
     }
 }

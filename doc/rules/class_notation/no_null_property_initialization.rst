@@ -21,6 +21,19 @@ Example #1
    +    public $foo;
     }
 
+Example #2
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo {
+   -    public static $foo = null;
+   +    public static $foo;
+    }
+
 Rule sets
 ---------
 
