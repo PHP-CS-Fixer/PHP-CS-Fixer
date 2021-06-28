@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-26T10:32:07Z
+
+[![Coverage Status](https://coveralls.io/builds/40905477/badge)](https://coveralls.io/builds/40905477)
+
+Coverage remained the same at 91.561% when pulling **16bd0dfbb0d0af66974279c002d70a75a74cf07a on kubawerlos:fix_ClassDefinition** into **a41998cc23d69457e8fbded3e84877a52ba5be29 on FriendsOfPHP:2.19**.
