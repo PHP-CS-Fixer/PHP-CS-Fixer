@@ -565,6 +565,7 @@ final class FixerFactoryTest extends TestCase
                 $expectedMessage .= sprintf("\n     * Must run before %s.", implode(', ', $priorityMap['before']));
             }
 
+            // @phpstan-ignore-next-line to avoid `Comparison operation ">" between int<1, max> and 0 is always true.`
             if (\count($priorityMap['after']) > 0) {
                 sort($priorityMap['after']);
                 $expectedMessage .= sprintf("\n     * Must run after %s.", implode(', ', $priorityMap['after']));
