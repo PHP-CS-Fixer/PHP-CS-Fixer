@@ -247,11 +247,33 @@ yield  from  baz();
                 }
             }
 
-            if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE])) {
-                $tokens[$whitespaceTokenIndex] = new Token([T_WHITESPACE, ' ']);
-            } else {
-                $tokens->insertAt($whitespaceTokenIndex, new Token([T_WHITESPACE, ' ']));
+            if (
+                $token->isGivenKind([
+                    T_PUBLIC,
+                    T_PROTECTED,
+                    T_PRIVATE,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+                ])
+                && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([T_STATIC, T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])
+            ) {
+                $i = $tokens->getNextMeaningfulToken($index);
+
+                if ($tokens[$i]->isGivenKind(T_STATIC)) {
+                    $i = $tokens->getNextMeaningfulToken($i);
+                }
+
+                while ($tokens[$i]->isGivenKind([T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])) {
+                    ++$i;
+                }
+
+                if (true === $tokens[$tokens->getNextMeaningfulToken($i)]->isGivenKind(T_VARIABLE)) {
+                    $this->forceSingleSpace($tokens, $i);
+                }
             }
+
+            $this->forceSingleSpace($tokens, $whitespaceTokenIndex);
 
             if (
                 70000 <= \PHP_VERSION_ID
@@ -342,5 +364,17 @@ yield  from  baz();
         }
 
         return false;
+    }
+
+    /**
+     * @param int $whitespaceTokenIndex
+     */
+    private function forceSingleSpace(Tokens $tokens, $whitespaceTokenIndex)
+    {
+        if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE])) {
+            $tokens[$whitespaceTokenIndex] = new Token([T_WHITESPACE, ' ']);
+        } else {
+            $tokens->insertAt($whitespaceTokenIndex, new Token([T_WHITESPACE, ' ']));
+        }
     }
 }

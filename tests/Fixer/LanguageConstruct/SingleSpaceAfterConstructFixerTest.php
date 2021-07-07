@@ -3184,6 +3184,56 @@ $arr = [/* empty */];
     }
 
     /**
+     * @param string $input
+     * @param string $expected
+     *
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases()
+    {
+        yield 'typed property' => [
+            "<?php
+class Point {
+    public \\DateTime \$x;
+    protected bool \$y = true;
+    private array \$z = [];
+    public int \$a = 0;
+    protected string \$b = '';
+    private float \$c = 0.0;
+    static public string \$sp;
+    public static string \$ps;
+
+    private static function getMapById()
+    {
+    }
+}
+",
+            "<?php
+class Point {
+    public \\DateTime    \$x;
+    protected bool      \$y = true;
+    private array       \$z = [];
+    public int          \$a = 0;
+    protected string	\$b = '';
+    private float\n\$c = 0.0;
+    static public string       \$sp;
+    public static string       \$ps;
+
+    private static function getMapById()
+    {
+    }
+}
+",
+        ];
+    }
+
+    /**
      * @dataProvider provideWithNamespaceCases
      *
      * @param string      $expected
@@ -3292,6 +3342,12 @@ namespace/* comment */ Foo;',
             '<?php
 class Point {
     public function __construct(
+        public \DateTime $a,
+        protected bool $b = true,
+        private array $c = [],
+        public int $d = 0,
+        protected string $e,
+        private float $f = 0.0,
         public float $x = 0.0,
         protected float $y = 0.0,
         private float $z = 0.0,
@@ -3301,6 +3357,12 @@ class Point {
             "<?php
 class Point {
     public function __construct(
+        public \\DateTime    \$a,
+        protected bool      \$b = true,
+        private array       \$c = [],
+        public int          \$d = 0,
+        protected string	\$e,
+        private float\n\$f = 0.0,
         public       float \$x = 0.0,
         protected\tfloat \$y = 0.0,
         private\nfloat \$z = 0.0,
