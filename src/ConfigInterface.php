@@ -105,7 +105,7 @@ interface ConfigInterface
     /**
      * Adds a suite of custom sets.
      *
-     * Name of custom set should follow `VendorName/SetName` convention.
+     * Name of custom set should follow `@VendorName/SetName` convention.
      *
      * @param AbstractRuleSetDescription[]|iterable|\Traversable $ruleSets
      */
