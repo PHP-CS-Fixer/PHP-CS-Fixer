@@ -2,7 +2,7 @@
 Creating custom rule sets
 =====================
 
-If you need to enforce a set pf specific code style rules, you can implement your
+If you need to enforce a set of specific code style rules, you can create your
 own rule set.
 
 For each rule set you want to add, create a class that extends
