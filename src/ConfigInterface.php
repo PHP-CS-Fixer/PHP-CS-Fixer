@@ -107,9 +107,9 @@ interface ConfigInterface
      *
      * Name of custom set should follow `VendorName/SetName` convention.
      *
-     * @param RuleSetInterface[]|iterable|\Traversable $sets
+     * @param AbstractRuleSetDescription[]|iterable|\Traversable $ruleSets
      */
-    public function registerCustomRuleSets(iterable $sets): self;
+    public function registerCustomRuleSets(iterable $ruleSets): self;
 
     /**
      * Sets the path to the cache file.

@@ -217,10 +217,10 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function registerCustomRuleSets(iterable $sets): ConfigInterface
+    public function registerCustomRuleSets(iterable $ruleSets): ConfigInterface
     {
-        foreach ($sets as $set) {
-            $this->addCustomRuleSet($set);
+        foreach ($ruleSets as $ruleSet) {
+            $this->addCustomRuleSet($ruleSet);
         }
 
         return $this;
