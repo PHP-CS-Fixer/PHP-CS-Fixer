@@ -50,6 +50,8 @@ and [configuration file](./doc/config.rst) documentation for more details.
 If you need to apply code styles that are not supported by the tool, you can
 [create custom rules](./doc/custom_rules.rst).
 
+If you want to group multiple code style fixers, you can [create custom rule set](./doc/custom_rule_sets.rst).
+
 ## Editor Integration
 
 Dedicated plugins exist for:
