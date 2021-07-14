@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Documentation\DocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
@@ -32,6 +32,17 @@ use Symfony\Component\Finder\Finder;
 final class DocumentationTest extends TestCase
 {
     /**
+     * @var RuleSetsFactory
+     */
+    private static $ruleSetsFactory;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$ruleSetsFactory = new RuleSetsFactory();
+        self::$ruleSetsFactory->registerBuiltInRuleSets();
+    }
+
+    /**
      * @dataProvider provideFixerCases
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
@@ -42,7 +53,7 @@ final class DocumentationTest extends TestCase
 
         static::assertFileExists($path);
 
-        $expected = $generator->generateFixerDocumentation($fixer);
+        $expected = $generator->generateFixerDocumentation($fixer, self::$ruleSetsFactory);
         $actual = file_get_contents($path);
 
         $expected = preg_replace_callback(
@@ -128,7 +139,7 @@ final class DocumentationTest extends TestCase
         $generator = new DocumentationGenerator();
         $paths = [];
 
-        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
+        foreach (self::$ruleSetsFactory->getRuleSets() as $name => $definition) {
             $paths[$name] = $path = $generator->getRuleSetsDocumentationFilePath($name);
 
             static::assertFileEqualsString(
@@ -155,7 +166,7 @@ final class DocumentationTest extends TestCase
         $generator = new DocumentationGenerator();
 
         static::assertCount(
-            \count(RuleSets::getSetDefinitions()) + 1,
+            \count(self::$ruleSetsFactory->getRuleSets()) + 1,
             (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
         );
     }

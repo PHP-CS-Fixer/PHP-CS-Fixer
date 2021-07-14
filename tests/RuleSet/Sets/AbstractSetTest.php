@@ -18,6 +18,7 @@ use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -52,8 +53,10 @@ abstract class AbstractSetTest extends TestCase
             );
         }
 
+        $ruleSetsFactory = new RuleSetsFactory();
+        $ruleSetsFactory->registerBuiltInRuleSets();
         try {
-            $factory->useRuleSet(new RuleSet($set->getRules()));
+            $factory->useRuleSet(new RuleSet($ruleSetsFactory, $set->getRules()));
         } catch (InvalidForEnvFixerConfigurationException $e) {
             static::markTestSkipped(sprintf('Cannot test set "%s" on this environment. %s', $setName, $e->getMessage()));
         }

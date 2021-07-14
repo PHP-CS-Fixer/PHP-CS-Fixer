@@ -36,6 +36,7 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\Utils;
@@ -183,6 +184,11 @@ final class ConfigurationResolver
      * @var FixerFactory
      */
     private $fixerFactory;
+
+    /**
+     * @var RuleSetsFactory
+     */
+    private $ruleSetsFactory;
 
     public function __construct(
         ConfigInterface $config,
@@ -588,6 +594,19 @@ final class ConfigurationResolver
         return $this->fixerFactory;
     }
 
+    private function createRuleSetsFactory(): RuleSetsFactory
+    {
+        if (null === $this->ruleSetsFactory) {
+            $ruleSetsFactory = new RuleSetsFactory();
+            $ruleSetsFactory->registerBuiltInRuleSets();
+            $ruleSetsFactory->registerCustomRuleSets($this->getConfig()->getCustomRuleSets());
+
+            $this->ruleSetsFactory = $ruleSetsFactory;
+        }
+
+        return $this->ruleSetsFactory;
+    }
+
     private function getFormat(): string
     {
         if (null === $this->format) {
@@ -605,7 +624,7 @@ final class ConfigurationResolver
             $rules = $this->parseRules();
             $this->validateRules($rules);
 
-            $this->ruleSet = new RuleSet($rules);
+            $this->ruleSet = new RuleSet($this->createRuleSetsFactory(), $rules);
         }
 
         return $this->ruleSet;
@@ -684,7 +703,7 @@ final class ConfigurationResolver
 
             $ruleSet[$key] = true;
         }
-        $ruleSet = new RuleSet($ruleSet);
+        $ruleSet = new RuleSet($this->createRuleSetsFactory(), $ruleSet);
 
         /** @var string[] $configuredFixers */
         $configuredFixers = array_keys($ruleSet->getRules());

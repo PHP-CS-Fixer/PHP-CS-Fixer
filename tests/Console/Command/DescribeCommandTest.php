@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use Prophecy\Argument;
@@ -124,7 +125,7 @@ Fixing examples:
     public function testExecuteWithUnknownRuleName(): void
     {
         $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $application->add(new DescribeCommand(new FixerFactory(), new RuleSetsFactory()));
 
         $command = $application->find('describe');
 
@@ -141,7 +142,7 @@ Fixing examples:
     public function testExecuteWithUnknownSetName(): void
     {
         $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $application->add(new DescribeCommand(new FixerFactory(), new RuleSetsFactory()));
 
         $command = $application->find('describe');
 
@@ -158,7 +159,7 @@ Fixing examples:
     public function testExecuteWithoutName(): void
     {
         $application = new Application();
-        $application->add(new DescribeCommand(new FixerFactory()));
+        $application->add(new DescribeCommand(new FixerFactory(), new RuleSetsFactory()));
 
         $command = $application->find('describe');
 
@@ -193,7 +194,7 @@ Fixing examples:
         $fixerFactory->registerFixer($mock, true);
 
         $application = new Application();
-        $application->add(new DescribeCommand($fixerFactory));
+        $application->add(new DescribeCommand($fixerFactory, new RuleSetsFactory()));
 
         $command = $application->find('describe');
 
@@ -274,7 +275,7 @@ Fixing examples:
         $fixerFactory->registerFixer($fixer->reveal(), true);
 
         $application = new Application();
-        $application->add(new DescribeCommand($fixerFactory));
+        $application->add(new DescribeCommand($fixerFactory, new RuleSetsFactory()));
 
         $command = $application->find('describe');
 

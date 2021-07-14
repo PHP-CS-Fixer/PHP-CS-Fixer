@@ -36,8 +36,15 @@ final class RuleSet implements RuleSetInterface
      */
     private $rules;
 
-    public function __construct(array $set = [])
+    /**
+     * @var RuleSetsFactory
+     */
+    private $ruleSetsFactory;
+
+    public function __construct(RuleSetsFactory $ruleSetsFactory, array $set = [])
     {
+        $this->ruleSetsFactory = $ruleSetsFactory;
+
         foreach ($set as $name => $value) {
             if ('' === $name) {
                 throw new \InvalidArgumentException('Rule/set name must not be empty.');
@@ -132,7 +139,7 @@ final class RuleSet implements RuleSetInterface
      */
     private function resolveSubset(string $setName, bool $setValue): array
     {
-        $rules = RuleSets::getSetDefinition($setName)->getRules();
+        $rules = $this->ruleSetsFactory->getRuleSet($setName)->getRules();
 
         foreach ($rules as $name => $value) {
             if ('@' === $name[0]) {

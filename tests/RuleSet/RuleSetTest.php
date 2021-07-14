@@ -21,7 +21,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -33,6 +33,17 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RuleSetTest extends TestCase
 {
+    /**
+     * @var RuleSetsFactory
+     */
+    private static $ruleSetsFactory;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$ruleSetsFactory = new RuleSetsFactory();
+        self::$ruleSetsFactory->registerBuiltInRuleSets();
+    }
+
     /**
      * @param array|bool $ruleConfig
      *
@@ -72,11 +83,11 @@ final class RuleSetTest extends TestCase
      */
     public function testThatDefaultConfigIsNotPassed(string $setName, string $ruleName, $ruleConfig): void
     {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
-        $factory->useRuleSet(new RuleSet([$ruleName => true]));
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerBuiltInFixers();
+        $fixerFactory->useRuleSet(new RuleSet(self::$ruleSetsFactory, [$ruleName => true]));
 
-        $fixer = current($factory->getFixers());
+        $fixer = current($fixerFactory->getFixers());
 
         if (!$fixer instanceof ConfigurableFixerInterface || \is_bool($ruleConfig)) {
             $this->addToAssertionCount(1);
@@ -106,20 +117,22 @@ final class RuleSetTest extends TestCase
      */
     public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
     {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
-        $factory->useRuleSet(new RuleSet([$ruleName => true]));
+        $fixerFactory = new FixerFactory();
+        $fixerFactory->registerBuiltInFixers();
+        $fixerFactory->useRuleSet(new RuleSet(self::$ruleSetsFactory, [$ruleName => true]));
 
-        $fixer = current($factory->getFixers());
+        $fixer = current($fixerFactory->getFixers());
 
         static::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
     public function provideAllRulesFromSetsCases()
     {
+        $ruleSetsFactory = new RuleSetsFactory();
+        $ruleSetsFactory->registerBuiltInRuleSets();
         $cases = [];
-        foreach (RuleSets::getSetDefinitionNames() as $setName) {
-            $ruleSet = new RuleSet([$setName => true]);
+        foreach ($ruleSetsFactory->getRuleSetsNames() as $setName) {
+            $ruleSet = new RuleSet($ruleSetsFactory, [$setName => true]);
             foreach ($ruleSet->getRules() as $rule => $config) {
                 $cases[] = [
                     $setName,
@@ -134,7 +147,7 @@ final class RuleSetTest extends TestCase
 
     public function testGetBuildInSetDefinitionNames(): void
     {
-        $setNames = RuleSets::getSetDefinitionNames();
+        $setNames = self::$ruleSetsFactory->getRuleSetsNames();
 
         static::assertIsArray($setNames);
         static::assertNotEmpty($setNames);
@@ -145,7 +158,7 @@ final class RuleSetTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Set "@foo" does not exist.');
 
-        new RuleSet(['@foo' => true]);
+        new RuleSet(self::$ruleSetsFactory, ['@foo' => true]);
     }
 
     public function testResolveRulesWithMissingRuleValue(): void
@@ -153,12 +166,12 @@ final class RuleSetTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing value for "braces" rule/set.');
 
-        new RuleSet(['braces']);
+        new RuleSet(self::$ruleSetsFactory, ['braces']);
     }
 
     public function testResolveRulesWithSet(): void
     {
-        $ruleSet = new RuleSet([
+        $ruleSet = new RuleSet(self::$ruleSetsFactory, [
             '@PSR1' => true,
             'braces' => true,
             'encoding' => false,
@@ -179,7 +192,7 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithNestedSet(): void
     {
-        $ruleSet = new RuleSet([
+        $ruleSet = new RuleSet(self::$ruleSetsFactory, [
             '@PSR2' => true,
             'strict_comparison' => true,
         ]);
@@ -219,7 +232,7 @@ final class RuleSetTest extends TestCase
 
     public function testResolveRulesWithDisabledSet(): void
     {
-        $ruleSet = new RuleSet([
+        $ruleSet = new RuleSet(self::$ruleSetsFactory, [
             '@PSR2' => true,
             '@PSR1' => false,
             'encoding' => true,
@@ -264,7 +277,7 @@ final class RuleSetTest extends TestCase
         try {
             $fixers = (new FixerFactory())
                 ->registerBuiltInFixers()
-                ->useRuleSet(new RuleSet($set))
+                ->useRuleSet(new RuleSet(self::$ruleSetsFactory, $set))
                 ->getFixers()
             ;
         } catch (InvalidForEnvFixerConfigurationException $exception) {
@@ -291,9 +304,11 @@ final class RuleSetTest extends TestCase
 
     public function provideSafeSetCases()
     {
+        $ruleSetsFactory = new RuleSetsFactory();
+        $ruleSetsFactory->registerBuiltInRuleSets();
         $sets = [];
 
-        foreach (RuleSets::getSetDefinitionNames() as $name) {
+        foreach ($ruleSetsFactory->getRuleSetsNames() as $name) {
             $sets[$name] = [
                 [$name => true],
                 false === strpos($name, ':risky'),
@@ -317,13 +332,14 @@ final class RuleSetTest extends TestCase
         $this->expectExceptionMessageMatches('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
 
         new RuleSet(
+            self::$ruleSetsFactory,
             ['@PSR1' => ['@PSR2' => 'no']]
         );
     }
 
     public function testGetMissingRuleConfiguration(): void
     {
-        $ruleSet = new RuleSet();
+        $ruleSet = new RuleSet(self::$ruleSetsFactory);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('#^Rule "_not_exists" is not in the set\.$#');
@@ -334,7 +350,7 @@ final class RuleSetTest extends TestCase
     public function testDuplicateRuleConfigurationInSetDefinitions(): void
     {
         $resolvedSets = [];
-        $setDefinitions = RuleSets::getSetDefinitions();
+        $setDefinitions = self::$ruleSetsFactory->getRuleSets();
 
         foreach ($setDefinitions as $setName => $setDefinition) {
             $resolvedSets[$setName] = ['rules' => [], 'sets' => []];
@@ -392,7 +408,7 @@ final class RuleSetTest extends TestCase
     {
         static::assertContains(
             sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
-            RuleSets::getSetDefinitionNames(),
+            self::$ruleSetsFactory->getRuleSetsNames(),
             sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
         );
     }

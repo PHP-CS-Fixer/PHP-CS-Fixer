@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -128,7 +129,9 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineRuleset(SplFileInfo $file, string $config): RuleSet
     {
-        return new RuleSet($this->parseJson($config));
+        $ruleSetsFactory = new RuleSetsFactory();
+        $ruleSetsFactory->registerBuiltInRuleSets();
+        return new RuleSet($ruleSetsFactory, $this->parseJson($config));
     }
 
     /**

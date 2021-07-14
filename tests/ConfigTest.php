@@ -22,6 +22,9 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\Sets\PSR1Set;
+use PhpCsFixer\RuleSet\Sets\PSR2Set;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -202,6 +205,19 @@ final class ConfigTest extends TestCase
         static::assertSame($expected, $config->getCustomFixers());
     }
 
+    /**
+     * @param AbstractRuleSetDescription[] $expected
+     *
+     * @dataProvider provideRegisterCustomRuleSetsCases
+     */
+    public function testRegisterCustomRuleSets(array $expected, iterable $suite): void
+    {
+        $config = new Config();
+        $config->registerCustomRuleSets($suite);
+
+        static::assertSame($expected, $config->getCustomRuleSets());
+    }
+
     public function testConfigDefault(): void
     {
         $config = new Config();
@@ -254,6 +270,19 @@ final class ConfigTest extends TestCase
         return [
             [$fixers, $fixers],
             [$fixers, new \ArrayIterator($fixers)],
+        ];
+    }
+
+    public function provideRegisterCustomRuleSetsCases(): array
+    {
+        $ruleSets = [
+            new PSR1Set(),
+            new PSR2Set(),
+        ];
+
+        return [
+            [$ruleSets, $ruleSets],
+            [$ruleSets, new \ArrayIterator($ruleSets)],
         ];
     }
 

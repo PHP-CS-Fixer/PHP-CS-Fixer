@@ -19,7 +19,7 @@ use PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory;
 use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Console\Report\ListSetsReport\ReportSummary;
 use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,8 +59,10 @@ final class ListSetsCommand extends Command
             $input->getOption('format'),
             new ReporterFactory()
         );
+        $ruleSetsFactory = new RuleSetsFactory();
+        $ruleSetsFactory->registerBuiltInRuleSets();
         $reportSummary = new ReportSummary(
-            array_values(RuleSets::getSetDefinitions())
+            array_values($ruleSetsFactory->getRuleSets())
         );
         $report = $reporter->generate($reportSummary);
 
