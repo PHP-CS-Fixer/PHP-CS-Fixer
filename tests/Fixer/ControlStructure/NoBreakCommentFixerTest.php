@@ -1186,13 +1186,13 @@ switch ($foo) {
     }
 
     /**
-     * @param string $input
-     * @param string $expected
+     * @param string      $expected
+     * @param null|string $input
      *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected, $input)
+    public function testFix80($expected, $input = null)
     {
         $this->doTest($expected, $input);
     }
@@ -1231,6 +1231,23 @@ switch ($foo) {
                     default:
                         echo "PHP8";
                 }
+            ',
+        ];
+
+        yield [
+            '<?php
+                match ($foo) {
+                    1 => "a",
+                    default => "b"
+                };
+                match ($bar) {
+                    2 => "c",
+                    default => "d"
+                };
+                match ($baz) {
+                    3 => "e",
+                    default => "f"
+                };
             ',
         ];
     }
