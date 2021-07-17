@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-05T14:55:46Z
+
+[![Coverage Status](https://coveralls.io/builds/41130394/badge)](https://coveralls.io/builds/41130394)
+
+Coverage remained the same at 91.572% when pulling **6d4f7712e252edaaf4cf535bacc8b141da3f5308 on kubawerlos:update-phpstan** into **bddb80c8a5d9e64e91f8d15e0087c3ee3d44ba7d on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-07-05T18:43:09Z
+
+Yep, we should drop it and use an exact version (or commit `compose.lock`) so we don't get new errors randomly reported as new PHPStan versions are released. I would even apply this reasoning to all the tools we use (when possible).
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-07-05T20:30:23Z
+
+Let's go with PHPStan for now as it's the only one making troubles.
