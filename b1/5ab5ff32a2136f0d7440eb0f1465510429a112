@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-29T15:40:37Z
+
+[![Coverage Status](https://coveralls.io/builds/41002410/badge)](https://coveralls.io/builds/41002410)
+
+Coverage increased (+0.0009%) to 91.573% when pulling **bb9fa3882a68324c2e667b8be0b6eddf2bf4f55c on fancyweb:fix/static-lambda-parent** into **bddb80c8a5d9e64e91f8d15e0087c3ee3d44ba7d on FriendsOfPHP:2.19**.
