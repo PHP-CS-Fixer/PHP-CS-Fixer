@@ -168,6 +168,10 @@ final class StaticLambdaFixer extends AbstractFixer
                     return true; // "$$a" case
                 }
             }
+
+            if ($tokens[$i]->equals([T_STRING, 'parent'], false)) {
+                return true; // parent:: case
+            }
         }
 
         return false;
