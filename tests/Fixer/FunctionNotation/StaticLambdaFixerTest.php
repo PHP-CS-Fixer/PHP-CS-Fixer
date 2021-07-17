@@ -224,6 +224,19 @@ $b = new Q();
 $b->abc();
 ',
             ],
+            [
+                '<?php
+
+                class A {}
+                class B extends A {
+                    public function foo()
+                    {
+                        $c = function () {
+                            return parent::foo();
+                        };
+                    }
+                }',
+            ],
         ];
     }
 
