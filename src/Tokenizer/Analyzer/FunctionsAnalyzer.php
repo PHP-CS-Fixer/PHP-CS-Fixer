@@ -125,6 +125,10 @@ final class FunctionsAnalyzer
             return $functionUse->getShortName() === ltrim($functionUse->getFullName(), '\\');
         }
 
+        if (AttributeAnalyzer::isAttribute($tokens, $index)) {
+            return false;
+        }
+
         return true;
     }
 

@@ -622,25 +622,35 @@ echo strlen($a);
     }
 
     /**
+     * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFixWithAttributesAndStrict(): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
-        $this->testFixWithConfiguredInclude(
-            '<?php
-#[\Attribute(\Attribute::TARGET_CLASS)]
-class Foo {}
-',
-            null,
-            ['strict' => true]
-        );
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 8.0
-     */
-    public function testFixWithNullSafeObjectOperator(): void
+    public function provideFix80Cases()
     {
-        $this->doTest('<?php $x?->count();');
+        yield 'attribute and strict' => [
+            '<?php
+                #[\Attribute(\Attribute::TARGET_CLASS)]
+                class Foo {}
+            ',
+            null,
+            ['strict' => true],
+        ];
+
+        yield 'null safe operator' => ['<?php $x?->count();'];
+
+        yield 'multiple function-calls-like in attribute' => [
+            '<?php
+                #[Foo(), Bar(), Baz()]
+                class Foo {}
+            ',
+            null,
+            ['include' => ['@all']],
+        ];
     }
 }
