@@ -636,6 +636,14 @@ $a#4
                 '<?php $a = $b = null === $c;',
                 '<?php $a = $b = $c === null;',
             ],
+            [
+                '<?php function test() {return yield 1 !== $a [$b];};',
+                '<?php function test() {return yield $a [$b] !== 1;};',
+            ],
+            [
+                '<?php function test() {return yield from [1 !== $a [$b]];};',
+                '<?php function test() {return yield from [$a [$b] !== 1];};',
+            ],
         ];
 
         foreach ($tests as $index => $test) {
