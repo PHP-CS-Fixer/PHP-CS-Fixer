@@ -64,6 +64,11 @@ interface ConfigInterface
     public function getName(): string;
 
     /**
+     * Get number processes to use.
+     */
+    public function getParallel(): int;
+
+    /**
      * Get configured PHP executable, if any.
      */
     public function getPhpExecutable(): ?string;
@@ -108,6 +113,11 @@ interface ConfigInterface
     public function setIndent(string $indent): self;
 
     public function setLineEnding(string $lineEnding): self;
+
+    /**
+     * Set number of processes to use.
+     */
+    public function setParallel(int $parallel): self;
 
     /**
      * Set PHP executable.

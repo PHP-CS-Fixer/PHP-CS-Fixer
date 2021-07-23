@@ -83,6 +83,11 @@ class Config implements ConfigInterface
      */
     private $usingCache = true;
 
+    /**
+     * @var int
+     */
+    private $parallel = 1;
+
     public function __construct(string $name = 'default')
     {
         $this->name = $name;
@@ -154,6 +159,14 @@ class Config implements ConfigInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParallel(): int
+    {
+        return $this->parallel;
     }
 
     /**
@@ -256,6 +269,16 @@ class Config implements ConfigInterface
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
         $this->lineEnding = $lineEnding;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParallel(int $parallel): ConfigInterface
+    {
+        $this->parallel = $parallel;
 
         return $this;
     }

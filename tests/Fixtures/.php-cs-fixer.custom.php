@@ -206,6 +206,16 @@ final class CustomConfig implements ConfigInterface
     {
         return $this;
     }
+
+    public function getParallel(): int
+    {
+        return 1;
+    }
+
+    public function setParallel(int $parallel): ConfigInterface
+    {
+        return $this;
+    }
 }
 
 return new CustomConfig();

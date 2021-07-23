@@ -217,6 +217,7 @@ EOF
                     new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
                     new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                     new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
+                    new InputOption('parallel', '', InputOption::VALUE_REQUIRED, 'Number of processes to use.'),
                 ]
             )
             ->setDescription('Fixes a directory or a file.')
@@ -253,6 +254,7 @@ EOF
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
+                'parallel' => $input->getOption('parallel'),
             ],
             getcwd(),
             $this->toolInfo
@@ -269,6 +271,8 @@ EOF
             if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
                 $stdErr->writeln($this->getApplication()->getLongVersion());
                 $stdErr->writeln(sprintf('Runtime: <info>PHP %s</info>', PHP_VERSION));
+
+                $stdErr->writeln(sprintf('Using Processes: <info>%d</info>', \function_exists('pcntl_fork') ? $resolver->getParallel() : 1));
             }
 
             $configFile = $resolver->getConfigFile();
@@ -314,7 +318,8 @@ EOF
             $resolver->isDryRun(),
             $resolver->getCacheManager(),
             $resolver->getDirectory(),
-            $resolver->shouldStopOnViolation()
+            $resolver->shouldStopOnViolation(),
+            $resolver->getParallel()
         );
 
         $this->stopwatch->start('fixFiles');

@@ -87,6 +87,11 @@ final class Runner
      */
     private $stopOnViolation;
 
+    /**
+     * @var int
+     */
+    private $parallel;
+
     public function __construct(
         $finder,
         array $fixers,
@@ -94,10 +99,11 @@ final class Runner
         ?EventDispatcherInterface $eventDispatcher,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
-        $isDryRun,
+        bool $isDryRun,
         CacheManagerInterface $cacheManager,
         ?DirectoryInterface $directory = null,
-        $stopOnViolation = false
+        bool $stopOnViolation = false,
+        int $parallel = 1
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -109,19 +115,91 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?: new Directory('');
         $this->stopOnViolation = $stopOnViolation;
+        $this->parallel = $parallel;
     }
 
     public function fix(): array
     {
-        $changed = [];
+        $finderIterator = $this->finder instanceof \IteratorAggregate
+            ? $this->finder->getIterator()
+            : $this->finder;
 
-        $finder = $this->finder;
-        $finderIterator = $finder instanceof \IteratorAggregate ? $finder->getIterator() : $finder;
         $fileFilteredFileIterator = new FileFilterIterator(
             $finderIterator,
             $this->eventDispatcher,
             $this->cacheManager
         );
+
+        if ($this->parallel > 1) {
+            return $this->fixParallel($fileFilteredFileIterator);
+        }
+
+        return $this->fixProcedural($fileFilteredFileIterator);
+    }
+
+    private function fixParallel(FileFilterIterator $fileFilteredFileIterator): array
+    {
+        if (false === \function_exists('pcntl_fork')) {
+            return $this->fixProcedural($fileFilteredFileIterator);
+        }
+
+        $changed = [];
+        $childProcesses = [];
+
+        $files = iterator_to_array($fileFilteredFileIterator);
+        $numFiles = \count($files);
+        $numPerBatch = (int) ceil($numFiles / $this->parallel);
+
+        foreach (array_chunk($files, $numPerBatch) as $batch) {
+            $childOutFilename = tempnam(sys_get_temp_dir(), 'php-cs-fixer');
+            $pid = pcntl_fork();
+            if (-1 === $pid) {
+                exit('could not fork');
+            }
+            if ($pid) {
+                $childProcesses[$pid] = $childOutFilename;
+            } else {
+                $changedBatch = [];
+
+                /** @var \SplFileInfo $file */
+                foreach ($batch as $file) {
+                    $fixInfo = $this->fixFile($file, $this->linter->lintFile($file->getRealPath()));
+
+                    // we do not need Tokens to still caching just fixed file - so clear the cache
+                    Tokens::clearCache();
+
+                    if ($fixInfo) {
+                        $name = $this->directory->getRelativePathTo($file->__toString());
+                        $changedBatch[$name] = $fixInfo;
+                    }
+                }
+
+                $output = '<?php'.PHP_EOL;
+                $output .= 'return '.var_export($changedBatch, true).';'.PHP_EOL;
+
+                file_put_contents($childOutFilename, $output);
+
+                exit($pid);
+            }
+        }
+
+        while (\count($childProcesses) > 0) {
+            foreach ($childProcesses as $pid => $output) {
+                $res = pcntl_waitpid($pid, $status, WNOHANG);
+                if ($pid === $res) {
+                    $newChanges = include $output;
+                    unset($childProcesses[$pid]);
+                    $changed = array_merge($changed, $newChanges);
+                }
+            }
+        }
+
+        return $changed;
+    }
+
+    private function fixProcedural(FileFilterIterator $fileFilteredFileIterator): array
+    {
+        $changed = [];
 
         $collection = $this->linter->isAsync()
             ? new FileCachingLintingIterator($fileFilteredFileIterator, $this->linter)

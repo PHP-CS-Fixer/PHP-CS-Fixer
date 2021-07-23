@@ -131,6 +131,7 @@ final class ConfigurationResolver
         'stop-on-violation' => null,
         'using-cache' => null,
         'verbosity' => null,
+        'parallel' => null,
     ];
 
     private $cacheFile;
@@ -183,6 +184,11 @@ final class ConfigurationResolver
      * @var FixerFactory
      */
     private $fixerFactory;
+
+    /**
+     * @var null|int
+     */
+    private $parallel;
 
     public function __construct(
         ConfigInterface $config,
@@ -357,6 +363,19 @@ final class ConfigurationResolver
         }
 
         return $this->linter;
+    }
+
+    public function getParallel(): int
+    {
+        if (null === $this->parallel) {
+            if (null === $this->options['parallel']) {
+                $this->parallel = $this->getConfig()->getParallel();
+            } else {
+                $this->parallel = (int) $this->options['parallel'];
+            }
+        }
+
+        return $this->parallel;
     }
 
     /**
