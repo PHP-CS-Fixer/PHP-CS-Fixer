@@ -27,7 +27,6 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Generator\NamespacedStringTokenGenerator;
 use PhpCsFixer\Tokenizer\Resolver\TypeShortNameResolver;
-use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -103,6 +102,7 @@ class SomeClass
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $lastIndex = $tokens->count() - 1;
+
         for ($index = $lastIndex; $index >= 0; --$index) {
             if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
                 continue;
@@ -149,27 +149,58 @@ class SomeClass
             return;
         }
 
-        $typeName = $type->getName();
-
-        if (0 !== strpos($typeName, '\\')) {
-            return;
+        $typeStartIndex = $type->getStartIndex();
+        if ($tokens[$typeStartIndex]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+            $typeStartIndex = $tokens->getNextMeaningfulToken($typeStartIndex);
         }
 
-        $shortType = (new TypeShortNameResolver())->resolve($tokens, $typeName);
-        if ($shortType === $typeName) {
-            return;
+        foreach ($this->getSimpleTypes($tokens, $typeStartIndex, $type->getEndIndex()) as $simpleType) {
+            $typeName = $tokens->generatePartialCode($simpleType['start'], $simpleType['end']);
+
+            if (0 !== strpos($typeName, '\\')) {
+                continue;
+            }
+
+            $shortType = (new TypeShortNameResolver())->resolve($tokens, $typeName);
+            if ($shortType === $typeName) {
+                continue;
+            }
+
+            $shortType = (new NamespacedStringTokenGenerator())->generate($shortType);
+
+            $tokens->overrideRange(
+                $simpleType['start'],
+                $simpleType['end'],
+                $shortType
+            );
         }
+    }
 
-        $shortType = (new NamespacedStringTokenGenerator())->generate($shortType);
+    /**
+     * @return \Generator<array<int>>
+     */
+    private function getSimpleTypes(Tokens $tokens, int $startIndex, int $endIndex): iterable
+    {
+        $index = $startIndex;
 
-        if (true === $type->isNullable()) {
-            array_unshift($shortType, new Token([CT::T_NULLABLE_TYPE, '?']));
+        while (true) {
+            $prevIndex = $index;
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if (null === $startIndex) {
+                $startIndex = $index;
+            }
+
+            if ($index >= $endIndex) {
+                yield ['start' => $startIndex, 'end' => $index];
+
+                break;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
+                yield ['start' => $startIndex, 'end' => $prevIndex];
+                $startIndex = null;
+            }
         }
-
-        $tokens->overrideRange(
-            $type->getStartIndex(),
-            $type->getEndIndex(),
-            $shortType
-        );
     }
 }
