@@ -77,6 +77,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
                     echo "aaa" | "bbb";
                     echo F_OK | F_ERR;
                     echo foo(F_OK | F_ERR);
+                    $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
                     // try {} catch (ExceptionType1 | ExceptionType2) {}
                 ',
             ],
@@ -248,6 +249,58 @@ class Number
             [
                 6 => CT::T_TYPE_ALTERNATION,
                 8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'multiple unions' => [
+            '<?php function foo(null|string $param1, null|string | int $param2) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                13 => CT::T_TYPE_ALTERNATION,
+                16 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'multiple unions function' => [
+            '<?php function foo(null|string $param1, null|string | int $param2) {}',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                13 => CT::T_TYPE_ALTERNATION,
+                16 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'multiple unions anonymous function' => [
+            '<?php $foo = static function (null|string $param1, null|string | int $param2) {};',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                18 => CT::T_TYPE_ALTERNATION,
+                21 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'multiple unions short function' => [
+            '<?php $foo = static fn (null|string $param1, null|string | int $param2) => null;',
+            [
+                11 => CT::T_TYPE_ALTERNATION,
+                18 => CT::T_TYPE_ALTERNATION,
+                21 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'second argument union with no type declaration on first' => [
+            '<?php function foo($param1, null|string | int $param2) {}',
+            [
+                9 => CT::T_TYPE_ALTERNATION,
+                12 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'second argument union with nullable type declaration on first' => [
+            '<?php function foo(?int $param1, null|string | int $param2) {}',
+            [
+                12 => CT::T_TYPE_ALTERNATION,
+                15 => CT::T_TYPE_ALTERNATION,
             ],
         ];
     }

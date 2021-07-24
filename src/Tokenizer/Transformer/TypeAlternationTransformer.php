@@ -13,6 +13,7 @@
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -84,7 +85,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
             return;
         }
 
-        if (!$prevToken->equals('(')) {
+        if (!$prevToken->equalsAny(['(', ','])) {
             return;
         }
 
@@ -112,8 +113,31 @@ final class TypeAlternationTransformer extends AbstractTransformer
             $prePrevToken->isGivenKind(T_STRING)
             && $tokens[$tokens->getPrevMeaningfulToken($prevPrevTokenIndex)]->isGivenKind(T_FUNCTION)
         ) {
-            // `|` is part of function variable `function Foo (X|Y`
+            // `|` is part of first function variable `function Foo (X|Y`
             $this->replaceToken($tokens, $index);
+
+            return;
+        }
+
+        $functionKinds = [[T_FUNCTION]];
+        if (\PHP_VERSION_ID >= 70400) {
+            $functionKinds[] = [T_FN];
+        }
+        if (
+            $prePrevToken->isGivenKind(T_VARIABLE)
+            && null !== $methodIndex = $tokens->getPrevTokenOfKind($prevPrevTokenIndex, $functionKinds)
+        ) {
+            $functionsAnalyzer = new FunctionsAnalyzer();
+            $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $methodIndex);
+
+            foreach ($arguments as $argument) {
+                if ($argument->getNameIndex() === $prevPrevTokenIndex) {
+                    // `|` is part of function variable `function Foo ($bar, X|Y`
+                    $this->replaceToken($tokens, $index);
+
+                    return;
+                }
+            }
 
             return;
         }
