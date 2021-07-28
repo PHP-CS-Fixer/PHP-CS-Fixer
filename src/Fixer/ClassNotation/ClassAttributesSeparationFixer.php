@@ -269,6 +269,7 @@ class Sample
         }
 
         $functionIndex = $tokens->getTokenNotOfKindsSibling($nextNotWhite - 1, 1, [T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
+
         if ($tokens[$functionIndex]->isGivenKind(T_FUNCTION)) {
             $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, 2);
 

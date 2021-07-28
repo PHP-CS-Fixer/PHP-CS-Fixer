@@ -786,7 +786,7 @@ class XYZ
 {
     public function test1()
     {
-        $GLOBALS = 2;
+        $GLOBALS[\'a\'] = 2;
 
         return $GLOBALS;
     }
