@@ -77,10 +77,6 @@ class Token
             $this->isArray = true;
             $this->id = $token[0];
             $this->content = $token[1];
-
-            if ($token[0] && '' === $token[1]) {
-                throw new \InvalidArgumentException('Cannot set empty content for id-based Token.');
-            }
         } elseif (\is_string($token)) {
             $this->isArray = false;
             $this->content = $token;
