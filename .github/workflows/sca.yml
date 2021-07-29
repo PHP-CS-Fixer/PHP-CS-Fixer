@@ -76,7 +76,9 @@ jobs:
         run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
 
       - name: Check - composer normalize
-        run: composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+        run: |
+          composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+          composer normalize --dry-run --working-dir=./dev-tools composer.json
 
       - name: Check - shell scripts
         run: ./dev-tools/check_shell_scripts.sh
