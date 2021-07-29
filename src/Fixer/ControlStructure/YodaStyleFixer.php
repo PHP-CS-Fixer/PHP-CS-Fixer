@@ -483,6 +483,7 @@ return $foo === count($bar);
                 T_SR_EQUAL,     // >>=
                 T_THROW,        // throw
                 T_XOR_EQUAL,    // ^=
+                T_YIELD,
             ];
 
             // @TODO: drop condition when PHP 7.0+ is required
