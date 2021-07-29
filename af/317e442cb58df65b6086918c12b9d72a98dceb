@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-15T14:51:36Z
+
+[![Coverage Status](https://coveralls.io/builds/41449135/badge)](https://coveralls.io/builds/41449135)
+
+Coverage remained the same at 91.573% when pulling **748102785c05d015ece1b4e84906a72b1b5a54dc on kubawerlos:SingleLineCommentStyleFixer_after_HeaderCommentFixer** into **b15ab5ff32a2136f0d7440eb0f1465510429a112 on FriendsOfPHP:2.19**.
