@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-27T12:46:49Z
+
+[![Coverage Status](https://coveralls.io/builds/41725790/badge)](https://coveralls.io/builds/41725790)
+
+Coverage remained the same at 91.573% when pulling **1dd11d30809730fc83dfc633025ae1376481610e on SpacePossum:2_19_RandomApiMigrationFixer_add_random_int** into **b15ab5ff32a2136f0d7440eb0f1465510429a112 on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-06-27T13:16:04Z
+
+> RandomApiMigrationFixer - add option to migrate to "random_int"
+
+it's *not* adding any option - one can already migrate to `random_int`. Even `PHP70MigrationRisky` set is doing that
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-26T15:02:41Z
+
+I've removed the tests
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-26T15:13:27Z
+
+I was wrong thinking adding support here indeed. It is because this is also supported currently:
+```
+            [
+                '<?php foo();',
+                '<?php rand();',
+                ['replacements' => ['rand' => 'foo']],
+            ],
+```
+making it a more generic function renaming rule than I expected. I was expecting known PHP random methods as input _and_ as output.
+Anyway, besides the docs this PR also adds proper argument counts for using `random_int` as input FWIW
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-28T08:07:01Z
+
+sca fail seems unrelated
