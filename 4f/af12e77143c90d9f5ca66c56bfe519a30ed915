@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-23T15:37:27Z
+
+[![Coverage Status](https://coveralls.io/builds/41608612/badge)](https://coveralls.io/builds/41608612)
+
+Coverage decreased (-0.001%) to 91.572% when pulling **213b763130ea83937d1ebc874a9da61395e8ff5e on kubawerlos:fix_NativeFunctionTypeDeclarationCasingFixer** into **b15ab5ff32a2136f0d7440eb0f1465510429a112 on FriendsOfPHP:2.19**.
