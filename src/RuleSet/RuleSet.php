@@ -49,7 +49,7 @@ class RuleSet implements RuleSetInterface
                 throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
             }
 
-            if (true !== $value && false !== $value && !\is_array($value)) {
+            if (!\is_bool($value) && !\is_array($value)) {
                 // @TODO drop me on 3.0
                 if (null === $value) {
                     Utils::triggerDeprecation(new InvalidFixerConfigurationException(

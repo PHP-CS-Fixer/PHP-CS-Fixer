@@ -26,6 +26,7 @@ $finder = PhpCsFixer\Finder::create()
     ->append([
         __DIR__.'/dev-tools/doc.php',
         __DIR__.'/php-cs-fixer',
+        __FILE__,
     ])
 ;
 

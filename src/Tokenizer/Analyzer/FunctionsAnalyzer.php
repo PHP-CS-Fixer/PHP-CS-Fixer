@@ -194,15 +194,18 @@ final class FunctionsAnalyzer
         }
 
         $operatorIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens->offsetExists($operatorIndex)) {
+
+        if (null === $operatorIndex) {
             return false;
         }
+
         if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(T_DOUBLE_COLON)) {
             return false;
         }
 
         $referenceIndex = $tokens->getPrevMeaningfulToken($operatorIndex);
-        if (!$tokens->offsetExists($referenceIndex)) {
+
+        if (null === $referenceIndex) {
             return false;
         }
 
