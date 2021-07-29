@@ -799,6 +799,21 @@ function a() {
     }
 }
 ',
+                '<?php
+function a() {
+    for ($i = 1; $i <= 3; $i++) {
+        echo yield $i === 1 ? 1 : 2;
+    }
+}
+',
+            ],
+            [
+                '<?php function test() {return yield 1 !== $a [$b];};',
+                '<?php function test() {return yield $a [$b] !== 1;};',
+            ],
+            [
+                '<?php function test() {return yield 1 === $a;};',
+                '<?php function test() {return yield $a === 1;};',
             ],
         ];
     }

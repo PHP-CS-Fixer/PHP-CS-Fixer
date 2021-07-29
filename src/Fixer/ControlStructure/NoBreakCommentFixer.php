@@ -121,10 +121,18 @@ switch ($foo) {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($position = \count($tokens) - 1; $position >= 0; --$position) {
-            if ($tokens[$position]->isGivenKind([T_CASE, T_DEFAULT])) {
-                $this->fixCase($tokens, $position);
+        for ($index = \count($tokens) - 1; $index >= 0; --$index) {
+            if (!$tokens[$index]->isGivenKind([T_CASE, T_DEFAULT])) {
+                continue;
             }
+
+            $caseColonIndex = $tokens->getNextTokenOfKind($index, [':', ';', [T_DOUBLE_ARROW]]);
+
+            if ($tokens[$caseColonIndex]->isGivenKind(T_DOUBLE_ARROW)) {
+                continue; // this is "default" from "match"
+            }
+
+            $this->fixCase($tokens, $caseColonIndex);
         }
     }
 
@@ -133,9 +141,8 @@ switch ($foo) {
         $empty = true;
         $fallThrough = true;
         $commentPosition = null;
-        $caseColonIndex = $tokens->getNextTokenOfKind($casePosition, [':', ';']);
 
-        for ($i = $caseColonIndex + 1, $max = \count($tokens); $i < $max; ++$i) {
+        for ($i = $casePosition + 1, $max = \count($tokens); $i < $max; ++$i) {
             if ($tokens[$i]->isGivenKind([T_SWITCH, T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE, T_DO, T_FUNCTION, T_CLASS])) {
                 $empty = false;
                 $i = $this->getStructureEnd($tokens, $i);
@@ -152,7 +159,7 @@ switch ($foo) {
             if ($tokens[$i]->isGivenKind([T_THROW])) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
-                if ($previousIndex === $caseColonIndex || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [T_OPEN_TAG]])) {
+                if ($previousIndex === $casePosition || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [T_OPEN_TAG]])) {
                     $fallThrough = false;
                 }
 

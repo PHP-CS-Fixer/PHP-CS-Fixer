@@ -118,6 +118,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['general_phpdoc_tag_rename'], $fixers['phpdoc_add_missing_param_annotation']],
             [$fixers['global_namespace_import'], $fixers['no_unused_imports']],
             [$fixers['global_namespace_import'], $fixers['ordered_imports']],
+            [$fixers['header_comment'], $fixers['single_line_comment_style']],
             [$fixers['implode_call'], $fixers['method_argument_space']],
             [$fixers['indentation_type'], $fixers['phpdoc_indent']],
             [$fixers['is_null'], $fixers['yoda_style']],

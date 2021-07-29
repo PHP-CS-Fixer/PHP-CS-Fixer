@@ -40,6 +40,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
         'mt_rand' => [1, 2],
         'rand' => [0, 2],
         'srand' => [0, 1],
+        'random_int' => [0, 2],
     ];
 
     /**
@@ -63,7 +64,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Replaces `rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs.',
+            'Replaces `rand`, `srand`, `getrandmax` functions calls with their `mt_*` analogs or `random_int`.',
             [
                 new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n"),
                 new CodeSample(
@@ -76,7 +77,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 ),
             ],
             null,
-            'Risky when the configured functions are overridden.'
+            'Risky when the configured functions are overridden. Or when relying on the seed based generating of the numbers.'
         );
     }
 
@@ -101,9 +102,11 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
             }
 
             $currIndex = 0;
+
             while (null !== $currIndex) {
                 // try getting function reference and translate boundaries for humans
                 $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+
                 if (null === $boundaries) {
                     // next function search, as current one not found
                     continue 2;
@@ -111,13 +114,13 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                 list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
+
                 if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;
                 }
 
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
-
                 $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
 
                 if (0 === $count && 'random_int' === $functionReplacement['alternativeName']) {
@@ -166,7 +169,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 }])
                 ->setDefault([
                     'getrandmax' => 'mt_getrandmax',
-                    'rand' => 'mt_rand',
+                    'rand' => 'mt_rand', // @TODO change to `random_int` as default on 4.0
                     'srand' => 'mt_srand',
                 ])
                 ->getOption(),

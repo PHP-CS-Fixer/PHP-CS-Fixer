@@ -643,6 +643,33 @@ EOT
         }
     }',
             ],
+            'expecting exception with message below' => [
+                '<?php
+    class MyTest extends TestCase
+    {
+        /**
+         */
+        public function testSomething()
+        {
+            $this->setExpectedException(\Foo\Bar::class);
+
+            $this->initialize();
+        }
+    }',
+                '<?php
+    class MyTest extends TestCase
+    {
+        /**
+         * @expectedException Foo\Bar
+         *
+         * Testing stuff.
+         */
+        public function testSomething()
+        {
+            $this->initialize();
+        }
+    }',
+            ],
         ];
     }
 

@@ -22,7 +22,7 @@ Alias
 - `pow_to_exponentiation <./alias/pow_to_exponentiation.rst>`_ *(risky)*
     Converts ``pow`` to the ``**`` operator.
 - `random_api_migration <./alias/random_api_migration.rst>`_ *(risky)*
-    Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*`` analogs.
+    Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*`` analogs or ``random_int``.
 - `set_type_to_cast <./alias/set_type_to_cast.rst>`_ *(risky)*
     Cast shall be used, not ``settype``.
 
