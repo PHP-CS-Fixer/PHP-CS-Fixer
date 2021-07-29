@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-29T13:14:53Z
+
+[![Coverage Status](https://coveralls.io/builds/41764272/badge)](https://coveralls.io/builds/41764272)
+
+Coverage decreased (-0.01%) to 91.559% when pulling **f274fdb1a2f748b91a38a8fbc317c08096f70ab8 on keradus:2.19_deprecate** into **0d01a5198ba5875c57182f7e9802122ba5dce2fc on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-29T14:15:00Z
+
+looks good, please check the tests:
+```
+3) PhpCsFixer\Tests\Smoke\CiIntegrationTest::testIntegration with data set "changes-including-custom-config-file-creation" ('changes-including-custom-conf...eation', array('echo "" >> dir\ b/file\ b.php', 'echo "echo 1;" >> dir\ b/file\ b.php', 'sed -e 's/@Symfony/@PSR2/' .p...er.php', 'git add .', 'git commit -m "Random changes...on" -q'), array('.php-cs-fixer.php', 'dir b/file b.php'), array('', ''), '...')
+Failed asserting that 'You are running PHP CS Fixer v2, which is not maintained anymore. Please update to v3.
+If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
+```
+:)
