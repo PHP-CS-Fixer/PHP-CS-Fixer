@@ -140,13 +140,19 @@ final class CiIntegrationTest extends AbstractSmokeTest
             $steps[4],
         ]);
 
+        $optionalDeprecatedVersionWarning = 'You are running PHP CS Fixer v3, which is not maintained anymore. Please update to v4.
+';
+
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 5.6.0 and maximum version of PHP 7.4.*.
 Current PHP version: '.PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
-If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
+';
+
+        $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
+
 ';
 
         $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
@@ -159,9 +165,11 @@ If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, 
             : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' by Fabien Potencier and Dariusz Ruminski';
 
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
+            preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
+            preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
             preg_quote(sprintf('Runtime: PHP %s', PHP_VERSION), '/'),
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
