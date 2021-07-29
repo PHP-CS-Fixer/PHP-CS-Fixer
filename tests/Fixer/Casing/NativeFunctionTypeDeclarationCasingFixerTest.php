@@ -94,6 +94,12 @@ class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
 function Foo(INTEGER $a) {}
                 ',
             ],
+            [
+                '<?php function Foo(
+                    String\A $x,
+                    B\String\C $y
+                ) {}',
+            ],
         ];
     }
 
@@ -229,6 +235,21 @@ function Foo(INTEGER $a) {}
         yield [
             '<?php class T { public function Foo(mixed $A): mixed {}}',
             '<?php class T { public function Foo(Mixed $A): MIXED {}}',
+        ];
+
+        yield [
+            '<?php function foo(int|bool $x) {}',
+            '<?php function foo(INT|BOOL $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(int | bool $x) {}',
+            '<?php function foo(INT | BOOL $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(): int|bool {}',
+            '<?php function foo(): INT|BOOL {}',
         ];
     }
 }
