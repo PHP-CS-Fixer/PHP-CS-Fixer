@@ -93,8 +93,6 @@ abstract class A
     }
 
     /**
-     * @param string                  $expected
-     * @param null|string             $input
      * @param array<string, string[]> $configuration
      *
      * @dataProvider provideFixWithConfigurationCases
