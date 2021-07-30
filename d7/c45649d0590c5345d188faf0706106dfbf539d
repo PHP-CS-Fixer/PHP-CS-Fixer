@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-07T11:57:27Z
+
+Is this correct? `<` and `>` have a greater precedence than `+=`.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-06-16T17:45:18Z
+
+Good point 😄
+
+Yet, the problem exists as the referenced code breaks PHP syntax.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-17T07:28:37Z
+
+Not sure what you mean. The referenced code and the code in your tests in valid syntax-wise. Some code may be broken logically, but is it related to PHP CS Fixer?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-06-22T22:09:09Z
+
+@julienfalque when you try to fix:
+```
+if (0x80 > $c %= 0x200000) {
+    return chr($c);
+}
+```
+with
+```
+'yoda_style' => [
+    'equal' => false,
+    'identical' => false,
+    'less_and_greater' => false,
+],
+```
+there is a syntax error.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-05T14:15:13Z
+
+[![Coverage Status](https://coveralls.io/builds/41777778/badge)](https://coveralls.io/builds/41777778)
+
+Coverage increased (+0.002%) to 91.561% when pulling **ac14f61d6cbf2ad449c5380591890334bebb98ae on kubawerlos:fix_YodaStyleFixer** into **5ad0853148d9cc0e88686894dda72490e48a28ff on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-29T21:41:44Z
+
+@kubawerlos can you rebase to solve conflict, pls?
