@@ -99,7 +99,7 @@ abstract class A
      *
      * @dataProvider provideFixWithConfigurationCases
      */
-    public function testFixWithConfiguration(string $expected, string $input, array $configuration): void
+    public function testFixWithConfiguration(string $expected, ?string $input, array $configuration): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
