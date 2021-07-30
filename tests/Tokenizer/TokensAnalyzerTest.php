@@ -1042,6 +1042,21 @@ $a(1,2);',
             '<?php #[Foo()] function foo() {}',
             [2 => false, 9 => false],
         ];
+
+        yield [
+            '<?php #[\Foo()] function foo() {}',
+            [3 => false, 10 => false],
+        ];
+
+        yield [
+            '<?php #[A\Foo()] function foo() {}',
+            [4 => false, 11 => false],
+        ];
+
+        yield [
+            '<?php #[\A\Foo()] function foo() {}',
+            [5 => false, 12 => false],
+        ];
     }
 
     public function testIsConstantInvocationInvalid()
@@ -2106,7 +2121,7 @@ class MyTestWithAnonymousClass extends TestCase
             static::assertSame(
                 $expectedValue,
                 $tokensAnalyzer->isConstantInvocation($index),
-                sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+                sprintf('Token at index %d should match the expected value (%s).', $index, $expectedValue ? 'true' : 'false')
             );
         }
     }
