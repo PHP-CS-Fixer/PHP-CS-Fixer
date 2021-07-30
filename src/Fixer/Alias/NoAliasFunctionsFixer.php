@@ -323,9 +323,9 @@ mbereg_search_getregs();
 
         $list = '';
         foreach ($sets as $set => $description) {
-            $list .= sprintf('* `%s` (%s)\n', $set, $description);
+            $list .= sprintf("* `%s` (%s)\n", $set, $description);
         }
-        $list = sprintf('List of sets to fix. Defined sets are:\n\n%s', $list);
+        $list = sprintf("List of sets to fix. Defined sets are:\n\n%s", $list);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sets', $list))
