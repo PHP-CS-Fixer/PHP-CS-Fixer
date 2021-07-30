@@ -231,7 +231,7 @@ abstract class A
     private function provideAllCases(): array
     {
         $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
-        /** @var array<string, string[]> $aliases */
+        /** @var array<string, string[]> $allAliases */
         $allAliases = $reflectionConstant->getValue();
 
         $finalCases = [];
