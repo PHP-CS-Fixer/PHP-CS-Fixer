@@ -34,70 +34,136 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const SETS = [
+        '@internal' => [
+            'dir' => 'getdir',
+            'diskfreespace' => 'disk_free_space',
+
+            'checkdnsrr' => 'dns_check_record',
+            'getmxrr' => 'dns_get_mx',
+
+            'session_commit' => 'session_write_close',
+
+            'stream_register_wrapper' => 'stream_wrapper_register',
+            'set_file_buffer' => 'stream_set_write_buffer',
+            'socket_set_blocking' => 'stream_set_blocking',
+            'socket_get_status' => 'stream_get_meta_data',
+            'socket_set_timeout' => 'stream_set_timeout',
+            'socket_getopt' => 'socket_get_option',
+            'socket_setopt' => 'socket_set_option',
+
+            'chop' => 'rtrim',
+            'close' => 'closedir',
+            'doubleval' => 'floatval',
+            'fputs' => 'fwrite',
+            'get_required_files' => 'get_included_files',
+            'ini_alter' => 'ini_set',
+            'is_double' => 'is_float',
+            'is_integer' => 'is_int',
+            'is_long' => 'is_int',
+            'is_real' => 'is_float',
+            'is_writeable' => 'is_writable',
+            'join' => 'implode',
+            'key_exists' => 'array_key_exists',
+            'magic_quotes_runtime' => 'set_magic_quotes_runtime',
+            'pos' => 'current',
+            'show_source' => 'highlight_file',
+            'sizeof' => 'count',
+            'strchr' => 'strstr',
+            'user_error' => 'trigger_error',
+        ],
+
+        '@IMAP' => [
+            'imap_create' => 'imap_createmailbox',
+            'imap_fetchtext' => 'imap_body',
+            'imap_header' => 'imap_headerinfo',
+            'imap_listmailbox' => 'imap_list',
+            'imap_listsubscribed' => 'imap_lsub',
+            'imap_rename' => 'imap_renamemailbox',
+            'imap_scan' => 'imap_listscan',
+            'imap_scanmailbox' => 'imap_listscan',
+        ],
+
+        '@snmp' => [
+            'snmpwalkoid' => 'snmprealwalk',
+            'snmp_set_oid_numeric_print' => 'snmp_set_oid_output_format',
+        ],
+
+        '@ldap' => [
+            'ldap_close' => 'ldap_unbind',
+            'ldap_get_values' => 'ldap_get_values_len',
+            'ldap_modify' => 'ldap_mod_replace',
+        ],
+
+        '@mysqli' => [
+            'mysqli_execute' => 'mysqli_stmt_execute',
+            'mysqli_set_opt' => 'mysqli_options',
+            'mysqli_escape_string' => 'mysqli_real_escape_string',
+        ],
+
+        '@pg' => [
+            'pg_exec' => 'pg_query',
+        ],
+
+        '@oci' => [
+            'oci_free_cursor' => 'oci_free_statement',
+        ],
+
+        '@odbc' => [
+            'odbc_do' => 'odbc_exec',
+            'odbc_field_precision' => 'odbc_field_len',
+        ],
+
+        '@mbreg' => [
+            'mbereg' => 'mb_ereg',
+            'mbereg_match' => 'mb_ereg_match',
+            'mbereg_replace' => 'mb_ereg_replace',
+            'mbereg_search' => 'mb_ereg_search',
+            'mbereg_search_getpos' => 'mb_ereg_search_getpos',
+            'mbereg_search_getregs' => 'mb_ereg_search_getregs',
+            'mbereg_search_init' => 'mb_ereg_search_init',
+            'mbereg_search_pos' => 'mb_ereg_search_pos',
+            'mbereg_search_regs' => 'mb_ereg_search_regs',
+            'mbereg_search_setpos' => 'mb_ereg_search_setpos',
+            'mberegi' => 'mb_eregi',
+            'mberegi_replace' => 'mb_eregi_replace',
+            'mbregex_encoding' => 'mb_regex_encoding',
+            'mbsplit' => 'mb_split',
+        ],
+
+        '@openssl' => [
+            'openssl_get_publickey' => 'openssl_pkey_get_public',
+            'openssl_get_privatekey' => 'openssl_pkey_get_private',
+        ],
+
+        '@sodium' => [
+            'sodium_crypto_scalarmult_base' => 'sodium_crypto_box_publickey_from_secretkey',
+        ],
+
+        '@exif' => [
+            'read_exif_data' => 'exif_read_data',
+        ],
+
+        '@ftp' => [
+            'ftp_quit' => 'ftp_close',
+        ],
+
+        '@posix' => [
+            'posix_errno' => 'posix_get_last_error',
+        ],
+
+        '@pcntl' => [
+            'pcntl_errno' => 'pcntl_get_last_error',
+        ],
+
+        '@time' => [
+            'mktime' => ['time', 0],
+            'gmmktime' => ['time', 0],
+        ],
+    ];
+
     /** @var array<string, array<int|string>|string> stores alias (key) - master (value) functions mapping */
     private $aliases = [];
-
-    /** @var array<string, string> stores alias (key) - master (value) functions mapping */
-    private static $internalSet = [
-        'chop' => 'rtrim',
-        'close' => 'closedir',
-        'doubleval' => 'floatval',
-        'fputs' => 'fwrite',
-        'get_required_files' => 'get_included_files',
-        'ini_alter' => 'ini_set',
-        'is_double' => 'is_float',
-        'is_integer' => 'is_int',
-        'is_long' => 'is_int',
-        'is_real' => 'is_float',
-        'is_writeable' => 'is_writable',
-        'join' => 'implode',
-        'key_exists' => 'array_key_exists',
-        'magic_quotes_runtime' => 'set_magic_quotes_runtime',
-        'pos' => 'current',
-        'show_source' => 'highlight_file',
-        'sizeof' => 'count',
-        'strchr' => 'strstr',
-        'user_error' => 'trigger_error',
-    ];
-
-    /** @var array<string, string> stores alias (key) - master (value) functions mapping */
-    private static $imapSet = [
-        'imap_create' => 'imap_createmailbox',
-        'imap_fetchtext' => 'imap_body',
-        'imap_header' => 'imap_headerinfo',
-        'imap_listmailbox' => 'imap_list',
-        'imap_listsubscribed' => 'imap_lsub',
-        'imap_rename' => 'imap_renamemailbox',
-        'imap_scan' => 'imap_listscan',
-        'imap_scanmailbox' => 'imap_listscan',
-    ];
-
-    /** @var array<string, string> stores alias (key) - master (value) functions mapping */
-    private static $mbregSet = [
-        'mbereg' => 'mb_ereg',
-        'mbereg_match' => 'mb_ereg_match',
-        'mbereg_replace' => 'mb_ereg_replace',
-        'mbereg_search' => 'mb_ereg_search',
-        'mbereg_search_getpos' => 'mb_ereg_search_getpos',
-        'mbereg_search_getregs' => 'mb_ereg_search_getregs',
-        'mbereg_search_init' => 'mb_ereg_search_init',
-        'mbereg_search_pos' => 'mb_ereg_search_pos',
-        'mbereg_search_regs' => 'mb_ereg_search_regs',
-        'mbereg_search_setpos' => 'mb_ereg_search_setpos',
-        'mberegi' => 'mb_eregi',
-        'mberegi_replace' => 'mb_eregi_replace',
-        'mbregex_encoding' => 'mb_regex_encoding',
-        'mbsplit' => 'mb_split',
-    ];
-
-    private static $exifSet = [
-        'read_exif_data' => 'exif_read_data',
-    ];
-
-    private static $timeSet = [
-        'mktime' => ['time', 0],
-        'gmmktime' => ['time', 0],
-    ];
 
     public function configure(array $configuration): void
     {
@@ -106,26 +172,12 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         $this->aliases = [];
         foreach ($this->configuration['sets'] as $set) {
             if ('@all' === $set) {
-                $this->aliases = self::$internalSet;
-                $this->aliases = array_merge($this->aliases, self::$imapSet);
-                $this->aliases = array_merge($this->aliases, self::$mbregSet);
-                $this->aliases = array_merge($this->aliases, self::$timeSet);
-                $this->aliases = array_merge($this->aliases, self::$exifSet);
+                $this->aliases = array_merge(...array_values(self::SETS));
 
                 break;
             }
 
-            if ('@internal' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$internalSet);
-            } elseif ('@IMAP' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$imapSet);
-            } elseif ('@mbreg' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$mbregSet);
-            } elseif ('@time' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$timeSet);
-            } elseif ('@exif' === $set) {
-                $this->aliases = array_merge($this->aliases, self::$exifSet);
-            }
+            $this->aliases = array_merge($this->aliases, self::SETS[$set]);
         }
     }
 
@@ -249,13 +301,37 @@ mbereg_search_getregs();
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $sets = ['@internal', '@IMAP', '@mbreg', '@all', '@time', '@exif'];
+        $sets = [
+            '@all' => 'all listed sets',
+            '@internal' => 'native functions',
+            '@exif' => 'EXIF functions',
+            '@ftp' => 'FTP functions',
+            '@IMAP' => 'IMAP functions',
+            '@ldap' => 'LDAP functions',
+            '@mbreg' => 'from `ext-mbstring`',
+            '@mysqli' => 'mysqli functions',
+            '@oci' => 'oci functions',
+            '@odbc' => 'odbc functions',
+            '@openssl' => 'openssl functions',
+            '@pcntl' => 'PCNTL functions',
+            '@pg' => 'pg functions',
+            '@posix' => 'POSIX functions',
+            '@snmp' => 'SNMP functions',
+            '@sodium' => 'libsodium functions',
+            '@time' => 'time functions',
+        ];
+
+        $list = '';
+        foreach ($sets as $set => $description) {
+            $list .= sprintf('* `%s` (%s)\n', $set, $description);
+        }
+        $list = sprintf('List of sets to fix. Defined sets are:\n\n%s', $list);
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('sets', 'List of sets to fix. Defined sets are `@internal` (native functions), `@IMAP` (IMAP functions), `@mbreg` (from `ext-mbstring`) `@all` (all listed sets).'))
+            (new FixerOptionBuilder('sets', $list))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($sets)])
-                ->setDefault(['@internal', '@IMAP'])
+                ->setAllowedValues([new AllowedValueSubset(array_keys($sets))])
+                ->setDefault(['@internal', '@IMAP', '@pg'])
                 ->getOption(),
         ]);
     }
