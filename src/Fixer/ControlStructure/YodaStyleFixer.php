@@ -372,7 +372,7 @@ return $foo === count($bar);
         $left = $this->getLeftSideCompareFixableInfo($tokens, $index);
         $right = $this->getRightSideCompareFixableInfo($tokens, $index);
 
-        if (!$yoda && $tokens[$tokens->getNextMeaningfulToken($right['end'])]->equals('=')) {
+        if (!$yoda && $this->isOfLowerPrecedenceAssignment($tokens[$tokens->getNextMeaningfulToken($right['end'])])) {
             return null;
         }
 
@@ -457,43 +457,26 @@ return $foo === count($bar);
 
         if (null === $tokens) {
             $tokens = [
-                T_AND_EQUAL,    // &=
                 T_BOOLEAN_AND,  // &&
                 T_BOOLEAN_OR,   // ||
                 T_CASE,         // case
-                T_CONCAT_EQUAL, // .=
-                T_DIV_EQUAL,    // /=
                 T_DOUBLE_ARROW, // =>
                 T_ECHO,         // echo
                 T_GOTO,         // goto
                 T_LOGICAL_AND,  // and
                 T_LOGICAL_OR,   // or
                 T_LOGICAL_XOR,  // xor
-                T_MINUS_EQUAL,  // -=
-                T_MOD_EQUAL,    // %=
-                T_MUL_EQUAL,    // *=
                 T_OPEN_TAG,     // <?php
                 T_OPEN_TAG_WITH_ECHO,
-                T_OR_EQUAL,     // |=
-                T_PLUS_EQUAL,   // +=
-                T_POW_EQUAL,    // **=
                 T_PRINT,        // print
                 T_RETURN,       // return
-                T_SL_EQUAL,     // <<=
-                T_SR_EQUAL,     // >>=
                 T_THROW,        // throw
-                T_XOR_EQUAL,    // ^=
-                T_YIELD,
+                T_YIELD,        // yield
             ];
 
             // @TODO: drop condition when PHP 7.0+ is required
             if (\defined('T_COALESCE')) {
                 $tokens[] = T_COALESCE; // ??
-            }
-
-            // @TODO: drop condition when PHP 7.4+ is required
-            if (\defined('T_COALESCE_EQUAL')) {
-                $tokens[] = T_COALESCE_EQUAL; // ??=
             }
         }
 
@@ -502,13 +485,44 @@ return $foo === count($bar);
             '&', '|', '^',
             // ternary operators
             '?', ':',
-            // assignment
-            '=',
             // end of PHP statement
             ',', ';',
         ];
 
-        return $token->isGivenKind($tokens) || $token->equalsAny($otherTokens);
+        return $this->isOfLowerPrecedenceAssignment($token) || $token->isGivenKind($tokens) || $token->equalsAny($otherTokens);
+    }
+
+    /**
+     * Checks whether the given assignment token has a lower precedence than `T_IS_EQUAL`
+     * or `T_IS_IDENTICAL`.
+     */
+    private function isOfLowerPrecedenceAssignment(Token $token)
+    {
+        static $tokens;
+
+        if (null === $tokens) {
+            $tokens = [
+                T_AND_EQUAL,    // &=
+                T_CONCAT_EQUAL, // .=
+                T_DIV_EQUAL,    // /=
+                T_MINUS_EQUAL,  // -=
+                T_MOD_EQUAL,    // %=
+                T_MUL_EQUAL,    // *=
+                T_OR_EQUAL,     // |=
+                T_PLUS_EQUAL,   // +=
+                T_POW_EQUAL,    // **=
+                T_SL_EQUAL,     // <<=
+                T_SR_EQUAL,     // >>=
+                T_XOR_EQUAL,    // ^=
+            ];
+
+            // @TODO: drop condition when PHP 7.4+ is required
+            if (\defined('T_COALESCE_EQUAL')) {
+                $tokens[] = T_COALESCE_EQUAL; // ??=
+            }
+        }
+
+        return $token->equals('=') || $token->isGivenKind($tokens);
     }
 
     /**
