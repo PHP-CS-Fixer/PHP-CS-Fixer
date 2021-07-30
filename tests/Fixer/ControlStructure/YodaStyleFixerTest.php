@@ -653,14 +653,26 @@ $a#4
             ];
         }
 
-        $templateExpected = '<?php $a %s 4 === $b ? 2 : 3;';
-        $templateInput = '<?php $a %s $b === 4 ? 2 : 3;';
-        $operators = ['**=', '*=', '|=', '+=', '-=', '^=', 'xor', 'or', 'and', '<<=', '>>=', '&=', '.=', '/=', '-=', '||', '&&'];
+        $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=',  '<<=', '>>=', '&=', '.=', '/=', '%='];
+        if (\PHP_VERSION_ID >= 70400) {
+            $assignmentOperators[] = '??=';
+        }
 
-        foreach ($operators as $operator) {
+        $logicalOperators = ['xor', 'or', 'and',  '||', '&&'];
+        if (\PHP_VERSION_ID >= 70400) {
+            $logicalOperators[] = '??';
+        }
+
+        foreach (array_merge($assignmentOperators, $logicalOperators) as $operator) {
             yield [
-                sprintf($templateExpected, $operator),
-                sprintf($templateInput, $operator),
+                sprintf('<?php $a %s 4 === $b ? 2 : 3;', $operator),
+                sprintf('<?php $a %s $b === 4 ? 2 : 3;', $operator),
+            ];
+        }
+
+        foreach ($assignmentOperators as $operator) {
+            yield [
+                sprintf('<?php 1 === $x %s 2;', $operator),
             ];
         }
     }
