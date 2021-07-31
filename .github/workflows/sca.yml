@@ -86,22 +86,29 @@ jobs:
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$" || true
-          echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
-          git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$" || true >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          if git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$"; then
+            echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
+            git diff origin/$GITHUB_BASE_REF --name-only --diff-filter=ACMRTUXB | grep -E "\.php$" >> $GITHUB_ENV
+            echo 'EOF' >> $GITHUB_ENV
+          fi
 
       - name: Find changed files (for push)
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" || true
-          echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
-          git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" || true >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          if git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$"; then
+            echo 'CHANGED_PHP_FILES<<EOF' >> $GITHUB_ENV
+            git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" >> $GITHUB_ENV
+            echo 'EOF' >> $GITHUB_ENV
+          fi
 
       - name: Check - phpmd
-        if: ${{ github.env.CHANGED_PHP_FILES }}
-        run: ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` text phpmd.xml
+        if: ${{ env.CHANGED_PHP_FILES }}
+        run: |
+          if [ '${{ github.event_name }}' == 'pull_request' ]; then
+            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` github phpmd.xml
+          else
+            ./dev-tools/vendor/bin/phpmd `echo "$CHANGED_PHP_FILES" | xargs | sed 's/ /,/g'` ansi phpmd.xml
+          fi
 
       - name: Check - ensure test files are not present in the archive
         run: |
