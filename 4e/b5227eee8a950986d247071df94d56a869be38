@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-30T08:47:03Z
+
+[![Coverage Status](https://coveralls.io/builds/41777146/badge)](https://coveralls.io/builds/41777146)
+
+Coverage increased (+0.0004%) to 91.56% when pulling **e528bde9f025ce1b5d9687b3130c9a167ec12325 on SpacePossum:2_19_class_attribute_trait_import_support** into **5ad0853148d9cc0e88686894dda72490e48a28ff on FriendsOfPHP:2.19**.
