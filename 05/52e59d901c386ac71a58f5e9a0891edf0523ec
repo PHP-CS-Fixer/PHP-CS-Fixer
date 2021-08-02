@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-13T16:07:45Z
+
+[![Coverage Status](https://coveralls.io/builds/41778030/badge)](https://coveralls.io/builds/41778030)
+
+Coverage increased (+0.002%) to 91.562% when pulling **d684396c6f1364534ed406b106f0819c5dc546df on kubawerlos:fix_TypeAlternationTransformer** into **5ad0853148d9cc0e88686894dda72490e48a28ff on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T08:14:50Z
+
+@kubawerlos please rebase and squash my commit, than RTM :)  thanks for nice fix!
