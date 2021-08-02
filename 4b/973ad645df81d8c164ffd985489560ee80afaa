@@ -1,0 +1,148 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-22T11:40:57Z
+
+[![Coverage Status](https://coveralls.io/builds/41829163/badge)](https://coveralls.io/builds/41829163)
+
+Coverage increased (+0.01%) to 92.194% when pulling **79bfe09fb3a16a786dd2291e0646ce84c9591673 on paulbalandan:class-attr-sep-hybrid-option** into **e5ebc7f718204a7f2d12c6cf49c86cf143ec2ca6 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by ruudk at 2021-06-18T10:36:02Z
+
+🙌  Amazing! Thanks for tackling this @paulbalandan
+
+I [tried this in the past](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5060) but couldn't get it to work.
+
+Instead of calling the option `one_if_phpdoc` shouldn't we also think about PHP 8 Attributes? How do we want to support that in the future? Maybe the option should be called `one_if_phpdoc_or_attribute` and support Attributes as well?
+
+Because properties can be annotated with only an attribute, with an attribute and phpdoc, only a phpdoc, or nothing at all.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-18T11:49:39Z
+
+@ruudk Good point! I agree PHP 8 attributes should be supported. Maybe a name like `only_if_meta` would be more appropriate? Anyway, @paulbalandan, could you please make the changes for that?
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-06-18T12:03:09Z
+
+@julienfalque sure, I'll look into that. Just to confirm, `meta` means phpdocs and attributes only, right?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-18T12:06:49Z
+
+Thanks! Yep, `meta` means "PHPDocs or attritbute".
+
+---------------------------------------------------------------------------
+
+by ruudk at 2021-06-18T12:13:45Z
+
+Does it matter if it's a phpdoc or regular comment? I think as a user you expect the same behavior:
+
+```
+    const FOO = 1;
+
+    // Some comment to explain more
+    const BAR = 2;
+    const BAZ = 3;
+```
+?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-18T12:36:13Z
+
+IMO we can start with PHPDocs and attributes only and see if the option needs adjustements afterwards.
+
+---------------------------------------------------------------------------
+
+by ruudk at 2021-06-18T18:11:23Z
+
+I was looking at the example in the OP:
+```php
+
+// Before
+class Sample
+{
+    /** @var int */
+    const FOO = 1;
+    /** @var int */
+    const BAR = 2;
+    #[Foo\Baz]
+    const BAZ = 3;
+    const OTHER = 4;
+}
+
+// After
+class Sample
+{
+    /** @var int */
+    const FOO = 1;
+
+    /** @var int */
+    const BAR = 2;
+
+    #[Foo\Baz]
+    const BAZ = 3;
+    const OTHER = 4;
+}
+```
+
+Shouldn't there also be a newline between `BAZ` and `OTHER` because `BAZ` has meta? That's how I would manually format this.
+
+Like this:
+```php
+
+// Before
+class Sample
+{
+    /** @var int */
+    const FOO = 1;
+    /** @var int */
+    const BAR = 2;
+    #[Foo\Baz]
+    const BAZ = 3;
+    const OTHER = 4;
+    const OTHER2 = 5;
+}
+
+// After
+class Sample
+{
+    /** @var int */
+    const FOO = 1;
+
+    /** @var int */
+    const BAR = 2;
+
+    #[Foo\Baz]
+    const BAZ = 3;
+
+    const OTHER = 4;
+    const OTHER2 = 5;
+}
+```
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-06-18T18:44:33Z
+
+The rule adds a new line if the element _itself_ has a meta above it. It will not be affected if the element above it has the meta instead.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T08:38:22Z
+
+closes #5800 as well
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T09:12:53Z
+
+I like this PR a lot and know it is a feature request for a lot for some time :+1:
+
+Left a minor and kicked the CI, so lets see on that.
+Another thing I was wondering is https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5704#issuecomment-864200146 , I would like the style with each PHPDoc + element being separated by itself, so basically agreeing with @ruudk . What do others think and what would  be the effort to adjust?
