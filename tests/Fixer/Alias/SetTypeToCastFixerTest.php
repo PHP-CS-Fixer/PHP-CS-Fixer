@@ -145,7 +145,7 @@ $foo#5
             // do not fix cases
             'first argument is not a variable' => [
                 '<?php
-                    namespace A\B;             // needed to keep the linter happy on PHP5.6
+                    namespace A\B;             // comment
                     function settype($a, $b){} // "
 
                     settype(1, "double");
@@ -153,7 +153,7 @@ $foo#5
             ],
             'first argument is variable followed by operation' => [
                 '<?php
-                    namespace A\B;                // needed to keep the linter happy on PHP5.6
+                    namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
                     settype($foo + 1, "integer"); // function must be overridden, so do not fix it
@@ -202,7 +202,7 @@ $foo#5
             ],
             'wrapped statements, not-fixable, even after removing the useless parenthesis brace' => [
                 '<?php
-                    namespace A\B;                // needed to keep the linter happy on PHP5.6
+                    namespace A\B;                // comment
                     function settype($a, $b){}    // "
 
                     settype($foo1, (("integer")."1"));
