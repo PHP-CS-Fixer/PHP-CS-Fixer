@@ -22,9 +22,10 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\ClassAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ClassesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements and PSR12 ¶8. Anonymous Classes.
@@ -163,43 +164,42 @@ interface Bar extends
      */
     private function fixClassyDefinition(Tokens $tokens, $classyIndex)
     {
-        $classDefInfo = $this->getClassyDefinitionInfo($tokens, $classyIndex);
+        $classAnalysis = $this->getClassyDefinitionInfo($tokens, $classyIndex);
 
         // PSR2 4.1 Lists of implements MAY be split across multiple lines, where each subsequent line is indented once.
         // When doing so, the first item in the list MUST be on the next line, and there MUST be only one interface per line.
-
-        if (false !== $classDefInfo['implements']) {
-            $classDefInfo['implements'] = $this->fixClassyDefinitionImplements(
+        if ([] !== $implements = $classAnalysis->getImplements()) {
+            $implements = $this->fixClassyDefinitionImplements(
                 $tokens,
-                $classDefInfo['open'],
-                $classDefInfo['implements']
+                $classAnalysis->getOpen(),
+                $implements
             );
         }
 
-        if (false !== $classDefInfo['extends']) {
-            $classDefInfo['extends'] = $this->fixClassyDefinitionExtends(
+        if ([] !== $extends = $classAnalysis->getExtends()) {
+            $extends = $this->fixClassyDefinitionExtends(
                 $tokens,
-                false === $classDefInfo['implements'] ? $classDefInfo['open'] : $classDefInfo['implements']['start'],
-                $classDefInfo['extends']
+                [] === $implements ? $classAnalysis->getOpen() : $implements['start'],
+                $extends
             );
         }
 
         // PSR2: class definition open curly brace must go on a new line.
         // PSR12: anonymous class curly brace on same line if not multi line implements.
+        $open = $this->fixClassyDefinitionOpenSpacing($tokens, $classAnalysis);
 
-        $classDefInfo['open'] = $this->fixClassyDefinitionOpenSpacing($tokens, $classDefInfo);
-        if ($classDefInfo['implements']) {
-            $end = $classDefInfo['implements']['start'];
-        } elseif ($classDefInfo['extends']) {
-            $end = $classDefInfo['extends']['start'];
+        if ([] !== $implements) {
+            $end = $implements['start'];
+        } elseif ([] !== $extends) {
+            $end = $extends['start'];
         } else {
-            $end = $tokens->getPrevNonWhitespace($classDefInfo['open']);
+            $end = $tokens->getPrevNonWhitespace($open);
         }
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
         $this->makeClassyDefinitionSingleLine(
             $tokens,
-            $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
+            true === $classAnalysis->getAnonymous() ? $tokens->getPrevMeaningfulToken($classyIndex) : $classAnalysis->getStart(),
             $end
         );
     }
@@ -253,13 +253,13 @@ interface Bar extends
     /**
      * @return int
      */
-    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, array $classDefInfo)
+    private function fixClassyDefinitionOpenSpacing(Tokens $tokens, ClassAnalysis $classAnalysis)
     {
-        if ($classDefInfo['anonymousClass']) {
-            if (false !== $classDefInfo['implements']) {
-                $spacing = $classDefInfo['implements']['multiLine'] ? $this->whitespacesConfig->getLineEnding() : ' ';
-            } elseif (false !== $classDefInfo['extends']) {
-                $spacing = $classDefInfo['extends']['multiLine'] ? $this->whitespacesConfig->getLineEnding() : ' ';
+        if (true === $classAnalysis->getAnonymous()) {
+            if ([] !== $implements = $classAnalysis->getImplements()) {
+                $spacing = $implements['multiLine'] ? $this->whitespacesConfig->getLineEnding() : ' ';
+            } elseif ([] !== $extends = $classAnalysis->getExtends()) {
+                $spacing = $extends['multiLine'] ? $this->whitespacesConfig->getLineEnding() : ' ';
             } else {
                 $spacing = ' ';
             }
@@ -267,7 +267,7 @@ interface Bar extends
             $spacing = $this->whitespacesConfig->getLineEnding();
         }
 
-        $openIndex = $tokens->getNextTokenOfKind($classDefInfo['classy'], ['{']);
+        $openIndex = $tokens->getNextTokenOfKind($classAnalysis->getClass(), ['{']);
         if (' ' !== $spacing && false !== strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
             return $openIndex;
         }
@@ -288,38 +288,11 @@ interface Bar extends
     /**
      * @param int $classyIndex
      *
-     * @return array
+     * @return ClassAnalysis
      */
     private function getClassyDefinitionInfo(Tokens $tokens, $classyIndex)
     {
-        $openIndex = $tokens->getNextTokenOfKind($classyIndex, ['{']);
-        $prev = $tokens->getPrevMeaningfulToken($classyIndex);
-        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classyIndex;
-
-        $extends = false;
-        $implements = false;
-        $anonymousClass = false;
-
-        if (!$tokens[$classyIndex]->isGivenKind(T_TRAIT)) {
-            $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
-            $extends = \count($extends) ? $this->getClassyInheritanceInfo($tokens, key($extends), 'numberOfExtends') : false;
-
-            if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
-                $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
-                $implements = \count($implements) ? $this->getClassyInheritanceInfo($tokens, key($implements), 'numberOfImplements') : false;
-                $tokensAnalyzer = new TokensAnalyzer($tokens);
-                $anonymousClass = $tokensAnalyzer->isAnonymousClass($classyIndex);
-            }
-        }
-
-        return [
-            'start' => $startIndex,
-            'classy' => $classyIndex,
-            'open' => $openIndex,
-            'extends' => $extends,
-            'implements' => $implements,
-            'anonymousClass' => $anonymousClass,
-        ];
+        return (new ClassesAnalyzer())->getClassDefinition($tokens, $classyIndex);
     }
 
     /**
@@ -330,23 +303,7 @@ interface Bar extends
      */
     private function getClassyInheritanceInfo(Tokens $tokens, $startIndex, $label)
     {
-        $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
-        ++$startIndex;
-        $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
-        $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
-        for ($i = $startIndex; $i < $endIndex; ++$i) {
-            if ($tokens[$i]->equals(',')) {
-                ++$implementsInfo[$label];
-
-                continue;
-            }
-
-            if (!$implementsInfo['multiLine'] && false !== strpos($tokens[$i]->getContent(), "\n")) {
-                $implementsInfo['multiLine'] = true;
-            }
-        }
-
-        return $implementsInfo;
+        return (new ClassesAnalyzer())->getClassInheritanceInfo($tokens, $startIndex, $label);
     }
 
     /**
