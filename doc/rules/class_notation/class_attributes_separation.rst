@@ -11,7 +11,8 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Dictionary of ``const|method|property|trait_import`` => ``none|one`` values.
+Dictionary of ``const|method|property|trait_import`` =>
+``none|one|only_if_meta`` values.
 
 Allowed types: ``array``
 
@@ -78,6 +79,80 @@ With configuration: ``['elements' => ['const' => 'one']]``.
    +
         /** seconds in some hours */
         const B = 3600;
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['elements' => ['const' => 'only_if_meta']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+        /** @var int */
+        const SECOND = 1;
+   +
+        /** @var int */
+        const MINUTE = 60;
+   -
+        const HOUR = 3600;
+   -
+        const DAY = 86400;
+    }
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['elements' => ['property' => 'only_if_meta']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+        public $a;
+   +
+        #[SetUp]
+        public $b;
+   +
+        /** @var string */
+        public $c;
+        public $d;
+   -
+        public $e;
+    }
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['elements' => ['property' => 'only_if_meta']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+        public $a;
+   +
+        #[SetUp]
+        public $b;
+   +
+        /** @var string */
+        public $c;
+   +
+        /** @internal */
+        #[Assert\String()]
+        public $d;
+   -
+        public $e;
     }
 
 Rule sets

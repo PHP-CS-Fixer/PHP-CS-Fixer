@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -972,7 +971,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function A() {}
                      }
                 ',
-                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['property' => 'one']],
             ],
             [
                 '<?php
@@ -994,7 +993,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function A() {}
                     }
                 ',
-                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE]],
+                ['elements' => ['property' => 'none']],
             ],
             [
                 '<?php
@@ -1016,7 +1015,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const B = 2;
                     }
                 ',
-                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['const' => 'one']],
             ],
             [
                 '<?php
@@ -1037,7 +1036,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         const B = 2;
                     }
                 ',
-                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE]],
+                ['elements' => ['const' => 'none']],
             ],
             [
                 '<?php
@@ -1055,7 +1054,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function B4() {}
                     }
                 ',
-                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['method' => 'one']],
             ],
             [
                 '<?php
@@ -1073,7 +1072,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function B() {}
                     }
                 ',
-                ['elements' => ['method' => ClassAttributesSeparationFixer::SPACING_NONE]],
+                ['elements' => ['method' => 'none']],
             ],
             [
                 '<?php
@@ -1096,7 +1095,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         final function f2() {}
                      }
                 ',
-                ['elements' => ['property' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['property' => 'none', 'method' => 'one']],
             ],
             [
                 '<?php
@@ -1119,7 +1118,7 @@ class ezcReflectionMethod extends ReflectionMethod {
                         function f2() {}
                      }
                 ',
-                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['const' => 'none', 'method' => 'one']],
             ],
             [
                 '<?php
@@ -1142,7 +1141,135 @@ class ezcReflectionMethod extends ReflectionMethod {
                         public function f2() {}
                      }
                 ',
-                ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
+                ['elements' => ['const' => 'none', 'method' => 'one']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+                        const BAR = 2;
+
+                        /** @var int */
+                        const BAZ = 3;
+
+                        /** @var int */
+                        const NEW = 4;
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        const FOO = 1;
+
+                        const BAR = 2;
+
+                        /** @var int */
+                        const BAZ = 3;
+                        /** @var int */
+                        const NEW = 4;
+                    }
+                ',
+                ['elements' => ['const' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                    class B
+                    {
+                        public $foo;
+
+                        /** @var string */
+                        public $bar;
+                        public $baz;
+                    }
+                ',
+                '<?php
+                    class B
+                    {
+                        public $foo;
+                        /** @var string */
+                        public $bar;
+
+                        public $baz;
+                    }
+                ',
+                ['elements' => ['property' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                    class C
+                    {
+                        public function f1() {}
+                        public function f2() {}
+                        public function f3() {}
+
+                        /** @return string */
+                        public function f4() {}
+                    }
+                ',
+                '<?php
+                    class C
+                    {
+                        public function f1() {}
+
+                        public function f2() {}
+
+                        public function f3() {}
+                        /** @return string */
+                        public function f4() {}
+                    }
+                ',
+                ['elements' => ['method' => 'only_if_meta']],
+            ],
+            [
+                '<?php
+                class Sample
+                {
+                    /** @var int */
+                    const ART = 1;
+                    const SCIENCE = 2;
+
+                    /** @var string */
+                    public $a;
+
+                    /** @var int */
+                    public $b;
+                    public $c;
+
+                    /**
+                     * @param string $a
+                     * @param int $b
+                     * @param int $c
+                     */
+                    public function __construct($a, $b, $c) {}
+                    public function __destruct() {}
+                }
+                ',
+                '<?php
+                class Sample
+                {
+                    /** @var int */
+                    const ART = 1;
+
+                    const SCIENCE = 2;
+                    /** @var string */
+                    public $a;
+                    /** @var int */
+                    public $b;
+
+                    public $c;
+
+                    /**
+                     * @param string $a
+                     * @param int $b
+                     * @param int $c
+                     */
+                    public function __construct($a, $b, $c) {}
+
+                    public function __destruct() {}
+                }
+                ',
+                ['elements' => ['const' => 'only_if_meta', 'property' => 'only_if_meta', 'method' => 'only_if_meta']],
             ],
         ];
     }
@@ -1223,7 +1350,7 @@ private $d = 123;
     public function testFix71(string $expected, string $input): void
     {
         $this->fixer->configure([
-            'elements' => ['method' => ClassAttributesSeparationFixer::SPACING_ONE, 'const' => ClassAttributesSeparationFixer::SPACING_ONE],
+            'elements' => ['method' => 'one', 'const' => 'one'],
         ]);
         $this->doTest($expected, $input);
     }
@@ -1265,8 +1392,9 @@ private $d = 123;
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74(string $expected, ?string $input = null): void
+    public function testFix74(string $expected, ?string $input, array $config): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1290,6 +1418,7 @@ private $d = 123;
                 public iterable $baz;
                 var ? Foo\Bar $qux;
             }',
+            ['elements' => ['property' => 'one']],
         ];
 
         yield [
@@ -1304,6 +1433,45 @@ private $d = 123;
                 private array $foo;
                 private array $bar;
             }',
+            ['elements' => ['property' => 'one']],
+        ];
+
+        yield [
+            '<?php
+            class Entity
+            {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+                private string $three;
+                private string $four;
+                private string $five;
+            }',
+            '<?php
+            class Entity
+            {
+                /**
+                 * @ORM\Column(name="one", type="text")
+                 */
+                private string $one;
+                /**
+                 * @ORM\Column(name="two", type="text")
+                 */
+                private string $two;
+
+                private string $three;
+
+                private string $four;
+
+                private string $five;
+            }',
+            ['elements' => ['property' => 'only_if_meta']],
         ];
     }
 
@@ -1311,8 +1479,9 @@ private $d = 123;
      * @dataProvider provideFixPhp80Cases
      * @requires PHP 8.0
      */
-    public function testFixPhp80(string $expected, ?string $input = null): void
+    public function testFixPhp80(string $expected, ?string $input, array $config): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -1355,6 +1524,7 @@ class User1
 
 
 }',
+            ['elements' => ['property' => 'one']],
         ];
 
         yield 'attributes minimal' => [
@@ -1365,6 +1535,7 @@ class User2{
 }',
             '<?php
 class User2{#[ORM\Id, ORM\Column("integer"), ORM\GeneratedValue] private $id;}',
+            ['elements' => ['property' => 'one']],
         ];
 
         yield 'attributes not blocks' => [
@@ -1387,6 +1558,7 @@ class User3
 
     #[Assert\Email(["message" => "Foo"])] private $email;
 }',
+            ['elements' => ['property' => 'one']],
         ];
 
         yield 'constructor property promotion' => [
@@ -1412,6 +1584,7 @@ class User3
                     private float $z = 0.0,
                 ) {}
             }',
+            ['elements' => ['property' => 'one', 'method' => 'one']],
         ];
 
         yield 'typed properties' => [
@@ -1432,6 +1605,81 @@ class User3
                 private int | float | null $c;
                 private int | float | null $d;
             }',
+            ['elements' => ['property' => 'one']],
+        ];
+
+        yield 'attributes with conditional spacing' => [
+            '<?php
+class User
+{
+    private $id;
+
+    #[Assert\String()]
+    private $name;
+    private $email;
+}
+',
+            '<?php
+class User
+{
+
+    private $id;
+    #[Assert\String()]
+    private $name;
+
+    private $email;
+}
+',
+            ['elements' => ['property' => 'only_if_meta']],
+        ];
+
+        yield 'mixed attributes and phpdoc with conditional spacing' => [
+            '<?php
+class User
+{
+    private $id;
+
+    /** @var string */
+    #[Assert\Email(["message" => "Foo"])]
+    private $email;
+
+    #[Assert\String()]
+    #[ORM\Column()]
+    private $place;
+
+    #[ORM\Column()]
+    /** @var string */
+    private $hash;
+
+    /** @var string **/
+    #[ORM\Column()]
+    /** @internal */
+    private $updatedAt;
+}
+',
+            '<?php
+class User
+{
+
+    private $id;
+    /** @var string */
+    #[Assert\Email(["message" => "Foo"])]
+    private $email;
+    #[Assert\String()]
+    #[ORM\Column()]
+    private $place;
+    #[ORM\Column()]
+    /** @var string */
+    private $hash;
+
+
+    /** @var string **/
+    #[ORM\Column()]
+    /** @internal */
+    private $updatedAt;
+}
+',
+            ['elements' => ['property' => 'only_if_meta']],
         ];
     }
 
