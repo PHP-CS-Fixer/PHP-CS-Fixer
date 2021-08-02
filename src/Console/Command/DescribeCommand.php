@@ -27,7 +27,7 @@ use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -63,11 +63,16 @@ final class DescribeCommand extends Command
     private $fixerFactory;
 
     /**
+     * @var RuleSetsFactory
+     */
+    private $ruleSetsFactory;
+
+    /**
      * @var array<string, FixerInterface>
      */
     private $fixers;
 
-    public function __construct(?FixerFactory $fixerFactory = null)
+    public function __construct(?FixerFactory $fixerFactory = null, ?RuleSetsFactory $ruleSetsFactory = null)
     {
         parent::__construct();
 
@@ -76,7 +81,13 @@ final class DescribeCommand extends Command
             $fixerFactory->registerBuiltInFixers();
         }
 
+        if (null === $ruleSetsFactory) {
+            $ruleSetsFactory = new RuleSetsFactory();
+            $ruleSetsFactory->registerBuiltInRuleSets();
+        }
+
         $this->fixerFactory = $fixerFactory;
+        $this->ruleSetsFactory = $ruleSetsFactory;
     }
 
     /**
@@ -310,7 +321,7 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        $ruleSetDefinitions = RuleSets::getSetDefinitions();
+        $ruleSetDefinitions = $this->ruleSetsFactory->getRuleSets();
         $fixers = $this->getFixers();
 
         $output->writeln(sprintf('<info>Description of the</info> %s <info>set.</info>', $ruleSetDefinitions[$name]->getName()));
@@ -383,7 +394,7 @@ final class DescribeCommand extends Command
             return $this->setNames;
         }
 
-        $this->setNames = RuleSets::getSetDefinitionNames();
+        $this->setNames = $this->ruleSetsFactory->getRuleSetsNames();
 
         return $this->setNames;
     }

@@ -42,6 +42,14 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
+    public function getCustomRuleSets(): array
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFinder(): iterable
     {
         return array(__FILE__);
@@ -123,6 +131,14 @@ final class CustomConfig implements ConfigInterface
      * {@inheritdoc}
      */
     public function registerCustomFixers(iterable $fixers): ConfigInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCustomRuleSets(iterable $ruleSets): ConfigInterface
     {
         return $this;
     }

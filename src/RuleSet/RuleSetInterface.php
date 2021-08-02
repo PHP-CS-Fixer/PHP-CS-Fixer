@@ -23,7 +23,7 @@ namespace PhpCsFixer\RuleSet;
  */
 interface RuleSetInterface
 {
-    public function __construct(array $set = []);
+    public function __construct(RuleSetsFactory $ruleSetsFactory, array $set = []);
 
     /**
      * Get configuration for given rule.

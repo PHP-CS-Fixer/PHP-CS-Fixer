@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -32,6 +33,11 @@ class Config implements ConfigInterface
      * @var FixerInterface[]
      */
     private $customFixers = [];
+
+    /**
+     * @var AbstractRuleSetDescription[]
+     */
+    private $customRuleSets = [];
 
     /**
      * @var null|iterable
@@ -102,6 +108,14 @@ class Config implements ConfigInterface
     public function getCustomFixers(): array
     {
         return $this->customFixers;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomRuleSets(): array
+    {
+        return $this->customRuleSets;
     }
 
     /**
@@ -195,6 +209,18 @@ class Config implements ConfigInterface
     {
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCustomRuleSets(iterable $ruleSets): ConfigInterface
+    {
+        foreach ($ruleSets as $ruleSet) {
+            $this->addCustomRuleSet($ruleSet);
         }
 
         return $this;
@@ -303,5 +329,10 @@ class Config implements ConfigInterface
     private function addCustomFixer(FixerInterface $fixer): void
     {
         $this->customFixers[] = $fixer;
+    }
+
+    private function addCustomRuleSet(AbstractRuleSetDescription $ruleSet): void
+    {
+        $this->customRuleSets[] = $ruleSet;
     }
 }

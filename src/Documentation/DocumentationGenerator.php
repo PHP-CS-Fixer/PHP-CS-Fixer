@@ -29,7 +29,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -151,7 +151,7 @@ RST;
         );
     }
 
-    public function generateFixerDocumentation(FixerInterface $fixer): string
+    public function generateFixerDocumentation(FixerInterface $fixer, RuleSetsFactory $ruleSetsFactory): string
     {
         $name = $fixer->getName();
         $title = "Rule ``{$name}``";
@@ -295,8 +295,8 @@ RST;
 
         $ruleSetConfigs = [];
 
-        foreach (RuleSets::getSetDefinitionNames() as $set) {
-            $ruleSet = new RuleSet([$set => true]);
+        foreach ($ruleSetsFactory->getRuleSetsNames() as $set) {
+            $ruleSet = new RuleSet($ruleSetsFactory, [$set => true]);
 
             if ($ruleSet->hasRule($name)) {
                 $ruleSetConfigs[$set] = $ruleSet->getRuleConfiguration($name);

@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use PhpCsFixer\WhitespacesFixerConfig;
 use stdClass;
 
@@ -131,13 +132,13 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = (new FixerFactory())
             ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet([]))
+            ->useRuleSet(new RuleSet(new RuleSetsFactory(), []))
         ;
         static::assertCount(0, $factory->getFixers());
 
         $factory = (new FixerFactory())
             ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet(['strict_comparison' => true, 'blank_line_before_statement' => false]))
+            ->useRuleSet(new RuleSet(new RuleSetsFactory(), ['strict_comparison' => true, 'blank_line_before_statement' => false]))
         ;
         $fixers = $factory->getFixers();
         static::assertCount(1, $fixers);
@@ -154,7 +155,7 @@ final class FixerFactoryTest extends TestCase
 
         $factory = (new FixerFactory())
             ->registerBuiltInFixers()
-            ->useRuleSet(new RuleSet(['non_existing_rule' => true]))
+            ->useRuleSet(new RuleSet(new RuleSetsFactory(), ['non_existing_rule' => true]))
         ;
         $fixers = $factory->getFixers();
         static::assertCount(1, $fixers);
@@ -189,7 +190,7 @@ final class FixerFactoryTest extends TestCase
         static::assertTrue($factory->hasRule('f1'), 'Should have f1 fixer');
         static::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
 
-        $factory->useRuleSet(new RuleSet(['f2' => true]));
+        $factory->useRuleSet(new RuleSet(new RuleSetsFactory(), ['f2' => true]));
         static::assertFalse($factory->hasRule('f1'), 'Should not have f1 fixer');
         static::assertTrue($factory->hasRule('f2'), 'Should have f2 fixer');
     }
@@ -209,8 +210,8 @@ final class FixerFactoryTest extends TestCase
     public function provideConflictingFixersCases()
     {
         return [
-            [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],
-            [new RuleSet(['single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true])],
+            [new RuleSet(new RuleSetsFactory(), ['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],
+            [new RuleSet(new RuleSetsFactory(), ['single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true])],
         ];
     }
 
@@ -278,7 +279,7 @@ final class FixerFactoryTest extends TestCase
             '[non_configurable] Is not configurable.'
         );
 
-        $factory->useRuleSet(new RuleSet([
+        $factory->useRuleSet(new RuleSet(new RuleSetsFactory(), [
             'non_configurable' => ['bar' => 'baz'],
         ]));
     }
@@ -304,7 +305,7 @@ final class FixerFactoryTest extends TestCase
             '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
         );
 
-        $factory->useRuleSet(new RuleSet([
+        $factory->useRuleSet(new RuleSet(new RuleSetsFactory(), [
             'foo' => $value,
         ]));
     }
@@ -329,7 +330,7 @@ final class FixerFactoryTest extends TestCase
 
         $factory->registerFixer($fixer->reveal(), false);
 
-        $factory->useRuleSet(new RuleSet([
+        $factory->useRuleSet(new RuleSet(new RuleSetsFactory(), [
             'foo' => ['bar' => 'baz'],
         ]));
     }

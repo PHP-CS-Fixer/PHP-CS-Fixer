@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -35,6 +36,13 @@ interface ConfigInterface
      * @return FixerInterface[]
      */
     public function getCustomFixers(): array;
+
+    /**
+     * Returns the custom fixers to use.
+     *
+     * @return AbstractRuleSetDescription[]
+     */
+    public function getCustomRuleSets(): array;
 
     /**
      * Returns files to scan.
@@ -93,6 +101,15 @@ interface ConfigInterface
      * @param FixerInterface[]|iterable|\Traversable $fixers
      */
     public function registerCustomFixers(iterable $fixers): self;
+
+    /**
+     * Adds a suite of custom sets.
+     *
+     * Name of custom set should follow `@VendorName/SetName` convention.
+     *
+     * @param AbstractRuleSetDescription[]|iterable|\Traversable $ruleSets
+     */
+    public function registerCustomRuleSets(iterable $ruleSets): self;
 
     /**
      * Sets the path to the cache file.

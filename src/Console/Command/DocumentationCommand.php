@@ -16,7 +16,7 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Documentation\DocumentationGenerator;
 use PhpCsFixer\FixerFactory;
-use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\RuleSet\RuleSetsFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,15 +60,18 @@ final class DocumentationCommand extends Command
         $fixerFactory->registerBuiltInFixers();
         $fixers = $fixerFactory->getFixers();
 
-        $this->generateFixersDocs($fixers);
-        $this->generateRuleSetsDocs($fixers);
+        $ruleSetsFactory = new RuleSetsFactory();
+        $ruleSetsFactory->registerBuiltInRuleSets();
+
+        $this->generateFixersDocs($fixers, $ruleSetsFactory);
+        $this->generateRuleSetsDocs($fixers, $ruleSetsFactory);
 
         $output->writeln('Docs updated.');
 
         return 0;
     }
 
-    private function generateFixersDocs(array $fixers): void
+    private function generateFixersDocs(array $fixers, RuleSetsFactory $ruleSetsFactory): void
     {
         $filesystem = new Filesystem();
 
@@ -82,7 +85,7 @@ final class DocumentationCommand extends Command
             $docForFixerRelativePaths[] = $this->generator->getFixerDocumentationFileRelativePath($fixer);
             $filesystem->dumpFile(
                 $this->generator->getFixerDocumentationFilePath($fixer),
-                $this->generator->generateFixerDocumentation($fixer)
+                $this->generator->generateFixerDocumentation($fixer, $ruleSetsFactory)
             );
         }
 
@@ -102,7 +105,7 @@ final class DocumentationCommand extends Command
         }
     }
 
-    private function generateRuleSetsDocs(array $fixers): void
+    private function generateRuleSetsDocs(array $fixers, RuleSetsFactory $ruleSetsFactory): void
     {
         $filesystem = new Filesystem();
 
@@ -114,7 +117,7 @@ final class DocumentationCommand extends Command
         $index = $this->generator->getRuleSetsDocumentationIndexFilePath();
         $paths = [];
 
-        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
+        foreach ($ruleSetsFactory->getRuleSets() as $name => $definition) {
             $paths[$name] = $path = $this->generator->getRuleSetsDocumentationFilePath($name);
             $filesystem->dumpFile($path, $this->generator->generateRuleSetsDocumentation($definition, $fixers));
         }
