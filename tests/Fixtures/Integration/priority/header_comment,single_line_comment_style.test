@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: header_comment,single_line_comment_style.
+--RULESET--
+{ "header_comment": { "header": "Single line header." }, "single_line_comment_style": true }
+--EXPECT--
+<?php
+
+// Single line header.
+
+--INPUT--
+<?php
+
+/*
+ * Old header.
+ */

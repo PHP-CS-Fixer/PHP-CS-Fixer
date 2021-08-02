@@ -23,7 +23,7 @@ your system:
 
 .. code-block:: console
 
-    $ wget https://cs.symfony.com/download/php-cs-fixer-v2.phar -O php-cs-fixer
+    $ wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer
 
 or with specified version:
 
@@ -35,7 +35,7 @@ or with curl:
 
 .. code-block:: console
 
-    $ curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
+    $ curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o php-cs-fixer
 
 then:
 
@@ -123,4 +123,4 @@ Locally (PHIVE)
 
     $ phive update php-cs-fixer
 
-.. _php-cs-fixer.phar: https://cs.symfony.com/download/php-cs-fixer-v2.phar
+.. _php-cs-fixer.phar: https://cs.symfony.com/download/php-cs-fixer-v3.phar

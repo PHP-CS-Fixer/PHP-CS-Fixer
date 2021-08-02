@@ -47,7 +47,7 @@ final class RuleSet implements RuleSetInterface
                 throw new \InvalidArgumentException(sprintf('Missing value for "%s" rule/set.', $value));
             }
 
-            if (true !== $value && false !== $value && !\is_array($value)) {
+            if (!\is_bool($value) && !\is_array($value)) {
                 $message = '@' === $name[0] ? 'Set must be enabled (true) or disabled (false). Other values are not allowed.' : 'Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.';
 
                 if (null === $value) {

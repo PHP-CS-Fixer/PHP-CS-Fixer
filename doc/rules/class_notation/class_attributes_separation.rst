@@ -11,11 +11,11 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Dictionary of ``const|method|property`` => ``none|one`` values.
+Dictionary of ``const|method|property|trait_import`` => ``none|one`` values.
 
 Allowed types: ``array``
 
-Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one']``
+Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'one']``
 
 Examples
 --------
