@@ -140,7 +140,6 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_alternative_syntax'], $fixers['no_useless_else']],
             [$fixers['no_alternative_syntax'], $fixers['switch_continue_to_break']],
             [$fixers['no_blank_lines_after_phpdoc'], $fixers['header_comment']],
-            [$fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']],
             [$fixers['no_empty_comment'], $fixers['no_extra_blank_lines']],
             [$fixers['no_empty_comment'], $fixers['no_trailing_whitespace']],
             [$fixers['no_empty_comment'], $fixers['no_whitespace_in_blank_line']],
