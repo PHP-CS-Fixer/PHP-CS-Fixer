@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-24T19:47:52Z
+
+[![Coverage Status](https://coveralls.io/builds/41768397/badge)](https://coveralls.io/builds/41768397)
+
+Coverage increased (+0.005%) to 92.181% when pulling **7976ba3ec1c905caf6ebdf92bd025e3b300fb782 on kubawerlos:remove_references_to_php_5.6** into **347dc040543a17e58190c4fad1d7c149e21ee478 on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-05-25T07:33:11Z
+
+:+1:
+can you rebase and squash @kubawerlos ?
