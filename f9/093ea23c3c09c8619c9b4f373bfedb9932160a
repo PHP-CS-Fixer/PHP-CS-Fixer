@@ -1,0 +1,274 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-03-22T22:18:24Z
+
+[![Coverage Status](https://coveralls.io/builds/41781716/badge)](https://coveralls.io/builds/41781716)
+
+Coverage increased (+0.008%) to 92.183% when pulling **711e4635853cea8ee8e9d5ee9c5f11fbdce20218 on VincentLanglet:feature/ignoreTag** into **296384573bf26ab329b4255be5e61dcb2108da22 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-03-22T22:52:08Z
+
+Hi @keradus, this is my first PR on this project.
+I'm sorry but I don't understand the test failure.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-03-27T23:42:50Z
+
+> @VincentLanglet to fix failing tests you have to regenerate docs: `php ./dev-tools/doc.php`.
+
+But this command is changing the example 2.
+It's like it's not using my second code sample.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-29T20:22:35Z
+
+> But this command is changing the example 2.
+> It's like it's not using my second code sample.
+
+I don't thin I get it - you already updated the docs with example 2 (as it's visible in diff), but it looks like you made some changes later. I believe if you regenerate docs the diff in this PR will look correctly.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-03-29T22:25:58Z
+
+> I don't thin I get it - you already updated the docs with example 2 (as it's visible in diff), but it looks like you made some changes later. I believe if you regenerate docs the diff in this PR will look correctly.
+
+The doc update does
+```
+    --- Original
+    +++ New
+-   @@ -1,7 +1,7 @@
++   @@ -1,12 +1,12 @@
+     <?php
+     $first = true;// needed because by default first docblock is never fixed.
+
+-   -/** This should be a comment */
+-   +/* This should be a comment */
++   -/** This will be changed */
++   +/* This will be changed */
++    foreach($connections as $key => $sqlite) {
++        $sqlite->open($path);
++    }
++
++    /** @todo This will not be changed */
+     foreach($connections as $key => $sqlite) {
+         $sqlite->open($path);
+     }
+```
+Basically it replaces my second example by the first one.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-31T16:50:09Z
+
+> Basically it replaces my second example by the first one.
+
+@VincentLanglet not really, these are the changes from - your - 2nd example, they are just produce exactly the same as 1st example. To see it more clearly change something in your example, like variable `$connections` to `$array` and regenerate the docs.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-03-31T17:17:30Z
+
+> > Basically it replaces my second example by the first one.
+>
+> @VincentLanglet not really, these are the changes from - your - 2nd example, they are just produce exactly the same as 1st example. To see it more clearly change something in your example, like variable `$connections` to `$array` and regenerate the docs.
+
+Oh, I see.
+
+Since
+```
+/** @todo This should be a PHPDoc as the tag is on "ignored_tags" list */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+```
+is untouched, it's not in the diff !
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-03-31T17:19:28Z
+
+Exactly, I address this issue in https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5585
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-04-03T17:16:35Z
+
+Done @kubawerlos :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-03T20:40:24Z
+
+@VincentLanglet for "PHPDoc having 2 different tags and only one of them in config" I meant PHPDoc like this:
+```
+/**
+ * @foo text
+ * @bar text
+ */
+```
+and ignored tags only `foo`.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-04-04T09:47:41Z
+
+@kubawerlos Done, tahnks to this test, I discovered I should use matchAll. :)
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-04-05T09:59:28Z
+
+> @VincentLanglet I cannot fint that test with PHPDoc having multiple tags
+
+I have added an example but no tests.
+But now there is also a test with multiple tags.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-04-05T11:40:28Z
+
+(each new) feature should be targetting master, imho
+under which tag it would get released is another story, not blocking here
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-04-05T11:51:15Z
+
+Done
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-07T14:00:43Z
+
+@VincentLanglet can you rebase (and regenerate docs) your changes? The docs got the `@@` lines removed.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-04-07T20:17:01Z
+
+> @VincentLanglet can you rebase (and regenerate docs) your changes? The docs got the `@@` lines removed.
+
+Done :)
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-05-05T11:53:40Z
+
+@keradus @kubawerlos  Is there any issue with this PR ?
+I was expecting this feature to be introduced in 2.19 but just saw you removed it from the milestone.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-05-05T13:17:36Z
+
+> I was expecting this feature to be introduced in 2.19
+
+I thought the same, @keradus should it aim 3.1 now?
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-05-22T11:37:38Z
+
+I rebased the PR to fix the conflict.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-05-31T22:08:44Z
+
+Friendly ping @keradus.
+
+Would it be possible to get some feedback ?
+I'd like to avoid rebasing this PR again and again
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-06-07T20:32:38Z
+
+@keradus @kubawerlos Is there any interest in this PR or should I close it ?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-06-07T20:38:49Z
+
+@VincentLanglet I think this feature is interesting and should be merged, but this requires time and maitainers don't have much these days, please be patient :)
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-06-07T20:44:47Z
+
+> @VincentLanglet I think this feature is interesting and should be merged, but this requires time and maitainers don't have much these days, please be patient :)
+
+Sure, I understand this. I was just expecting at least one comment to be sure I don't rebase (and fix the conflict)  regularly for nothing.
+
+The branch is now up to date. Let's wait and see 🤞🏻 =)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-06-09T15:20:39Z
+
+This is definitely something worth merging, but only @keradus, @SpacePossum and @julienfalque can do it, approving running workflow before that.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-07-11T18:49:05Z
+
+Friendly ping @keradus
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-07-30T08:29:29Z
+
+@keradus Would it be possible to get some review ? :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T10:41:42Z
+
+I think we could do with 2 examples, one with default config and one with a single excluded tag.
+Maybe we should document that the excluded tags are matched case insensitive as well.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-07-30T11:03:53Z
+
+> I think we could do with 2 examples, one with default config and one with a single excluded tag.
+> Maybe we should document that the excluded tags are matched case insensitive as well.
+
+There is already 4 examples
+- One with default config
+- One with single excluded tag
+- One to show it's cade insensitive
+- One to show it support multiple tag in the same docblock
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T11:10:14Z
+
+Yeah I saw the 4, but I think 2 is enough if we would update the docs stating the ignored tags are matched case insensitive.
+
+Having more tests would be better than more examples. Like a test with `@ignore-me` for the special chars from the regex, `@TODO` to test the case insensitive matching works, `@TODOnot` to test the word matching works (so it doesn't match when configured `'todo'`). What would be a sane tag look like to have the `\\\\` in the regex?
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-07-30T11:24:17Z
+
+Done @SpacePossum
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T11:35:18Z
+
+thanks :+1: if the pipeline succeeds than RTM from me
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-07-30T11:48:45Z
+
+> thanks 👍 if the pipeline succeeds than RTM from me
+
+Tests were failing because of the doc, it might be better now I hope.
