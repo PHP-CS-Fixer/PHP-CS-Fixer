@@ -1530,4 +1530,39 @@ class User3
             }',
         ];
     }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFixClassesWithTraitsCases
+     */
+    public function testFixClassesWithTraits($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixClassesWithTraitsCases()
+    {
+        yield [
+            '<?php
+class Foo
+{
+    use SomeTrait1;
+
+    use SomeTrait2;
+
+    public function Bar(){}
+}
+',
+            '<?php
+class Foo
+{
+    use SomeTrait1;
+    use SomeTrait2;
+    public function Bar(){}
+}
+',
+        ];
+    }
 }
