@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-28T09:18:26Z
+
+Hi and thanks for your PR!
+
+Looking good already. Could you adjust the test to only test the single issue here, maybe like:
+
+```php
+    public function testWhitespaceInDocBlockAboveNamespaceIsNotTouched()
+    {
+        $expected = '<?php
+/**
+ * This is a file-level docblock.
+ */
+
+namespace Foo\Bar\Baz;
+';
+        $this->doTest($expected);
+    }
+```
+
+Thanks!
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-29T22:38:55Z
+
+[![Coverage Status](https://coveralls.io/builds/41786338/badge)](https://coveralls.io/builds/41786338)
+
+Coverage remained the same at 91.561% when pulling **e4dd5a61eb63e821bc03127f8d10d992ff5e42b0 on paulbalandan:no-blank-line-after-phpdoc** into **d7c45649d0590c5345d188faf0706106dfbf539d on FriendsOfPHP:2.19**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-29T22:54:25Z
+
+@paulbalandan CI is failing for proposed changes
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-07-30T09:15:50Z
+
+@keradus or @SpacePossum , is it an acceptable fix to just remove the integration of the fixer against `single_blank_line_after_namespace`? Before this PR, `no_blank_lines_after_phpdoc` considers `T_NAMESPACE` as documentable that's why it gets an integration/priority check with `single_blank_line_after_namespace`. Now that this skips `T_NAMESPACE`, I think the integration/priority checks should be dropped too.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-30T10:59:19Z
+
+if there is no longer priority conflict between those two rules anymore, move test from `Integration/priority/` to `Integration/misc` and drop `tests/AutoReview/FixerFactoryTest.php:143:            [$fixers['no_blank_lines_after_phpdoc'], $fixers['single_blank_line_before_namespace']]` row
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-07-30T13:29:29Z
+
+I have fixed the integration failure. Not sure if the removal of the priority comment in `SingleBlankLineBeforeNamespace` is warranted.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-30T14:45:14Z
+
+please avoid squashing the commits in future. now, I have no clue what are the newest changes and have to review from scratch :(
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-30T14:46:04Z
+
+> Not sure if the removal of the priority comment (...)
+
+we have tests for it. if CI is happy, all good
