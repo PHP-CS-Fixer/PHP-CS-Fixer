@@ -1,9 +1,6 @@
 --TEST--
 Test of super huge file that would require 64566 tokens to be inserted! Basically, this tests Tokens::insertSlices, without which this test would take few hours to execute.
-Note: requiring PHP 7+ just to skip PHP 5.6 with memory issues for this huge test case.
 --RULESET--
 {
     "whitespace_after_comma_in_array": true
 }
---REQUIREMENTS--
-{"php": 70000}

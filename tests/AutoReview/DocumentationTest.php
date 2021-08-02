@@ -160,6 +160,23 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    public function testInstallationDocHasCorrectMinimumVersion(): void
+    {
+        $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
+        $composerJson = json_decode($composerJsonContent, true);
+        $phpVersion = $composerJson['require']['php'];
+        $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
+
+        $minimumVersionInformation = sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
+        $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
+
+        static::assertStringContainsString(
+            $minimumVersionInformation,
+            file_get_contents($installationDocPath),
+            sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
+        );
+    }
+
     private static function assertFileEqualsString(string $expectedString, string $actualFilePath, string $message = ''): void
     {
         static::assertFileExists($actualFilePath, $message);
