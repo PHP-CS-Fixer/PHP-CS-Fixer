@@ -36,94 +36,34 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $cases = [];
-
-        foreach (['internalSet', 'imapSet'] as $setStaticAttributeName) {
-            $reflectionProperty = new \ReflectionProperty(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, $setStaticAttributeName);
-            $reflectionProperty->setAccessible(true);
-
-            /** @var string[] $aliases */
-            $aliases = $reflectionProperty->getValue();
-
-            foreach ($aliases as $alias => $master) {
-                // valid cases
-                $cases[] = ["<?php \$smth->{$alias}(\$a);"];
-                $cases[] = ["<?php {$alias}Smth(\$a);"];
-                $cases[] = ["<?php smth_{$alias}(\$a);"];
-                $cases[] = ["<?php new {$alias}(\$a);"];
-                $cases[] = ["<?php new Smth\\{$alias}(\$a);"];
-                $cases[] = ["<?php Smth\\{$alias}(\$a);"];
-                $cases[] = ["<?php namespace\\{$alias}(\$a);"];
-                $cases[] = ["<?php Smth::{$alias}(\$a);"];
-                $cases[] = ["<?php new {$alias}\\smth(\$a);"];
-                $cases[] = ["<?php {$alias}::smth(\$a);"];
-                $cases[] = ["<?php {$alias}\\smth(\$a);"];
-                $cases[] = ['<?php "SELECT ... '.$alias.'(\$a) ...";'];
-                $cases[] = ['<?php "SELECT ... '.strtoupper($alias).'($a) ...";'];
-                $cases[] = ["<?php 'test'.'{$alias}' . 'in concatenation';"];
-                $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
-                $cases[] = [
-                    '<?php
-    class '.ucfirst($alias).'ing
-    {
-        const '.$alias.' = 1;
-
-        public function '.$alias.'($'.$alias.')
-        {
-            if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
-                echo '.$alias.';
-            }
-        }
-    }
-
-    class '.$alias.' extends '.ucfirst($alias).'ing{
-        const '.$alias.' = "'.$alias.'";
-    }
-    ',
-                ];
-
-                // cases to be fixed
-                $cases[] = [
-                    "<?php {$master}(\$a);",
-                    "<?php {$alias}(\$a);",
-                ];
-                $cases[] = [
-                    "<?php \\{$master}(\$a);",
-                    "<?php \\{$alias}(\$a);",
-                ];
-                $cases[] = [
-                    "<?php {$master}
-                                (\$a);",
-                    "<?php {$alias}
-                                (\$a);",
-                ];
-                $cases[] = [
-                    "<?php /* foo */ {$master} /** bar */ (\$a);",
-                    "<?php /* foo */ {$alias} /** bar */ (\$a);",
-                ];
-                $cases[] = [
-                    "<?php a({$master}());",
-                    "<?php a({$alias}());",
-                ];
-                $cases[] = [
-                    "<?php a(\\{$master}());",
-                    "<?php a(\\{$alias}());",
-                ];
+        $finalCases = [];
+        $defaultSets = [
+            '@internal',
+            '@IMAP',
+            '@pg',
+        ];
+        foreach ($this->provideAllCases() as $set => $cases) {
+            if (\in_array($set, $defaultSets, true)) {
+                $finalCases = array_merge($finalCases, $cases);
+            } else {
+                foreach ($cases as $case) {
+                    $finalCases[] = [$case[0]];
+                }
             }
         }
 
         // static case to fix - in case previous generation is broken
-        $cases[] = [
+        $finalCases[] = [
             '<?php is_int($a);',
             '<?php is_integer($a);',
         ];
 
-        $cases[] = [
+        $finalCases[] = [
             '<?php $b=is_int(count(implode($b,$a)));',
             '<?php $b=is_integer(sizeof(join($b,$a)));',
         ];
 
-        $cases[] = [
+        $finalCases[] = [
             '<?php
 interface JoinInterface
 {
@@ -149,7 +89,7 @@ abstract class A
 }',
         ];
 
-        return $cases;
+        return $finalCases;
     }
 
     /**
@@ -157,7 +97,7 @@ abstract class A
      *
      * @dataProvider provideFixWithConfigurationCases
      */
-    public function testFixWithConfiguration(string $expected, string $input, array $configuration): void
+    public function testFixWithConfiguration(string $expected, ?string $input, array $configuration): void
     {
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
@@ -165,7 +105,7 @@ abstract class A
 
     public function provideFixWithConfigurationCases()
     {
-        return [
+        $finalCases = [
             '@internal' => [
                 '<?php
                     $a = rtrim($b);
@@ -272,5 +212,103 @@ abstract class A
                 ['sets' => ['@exif']],
             ],
         ];
+
+        foreach ($this->provideAllCases() as $set => $cases) {
+            foreach ($cases as $case) {
+                $finalCases[] = [
+                    $case[0],
+                    $case[1] ?? null,
+                    ['sets' => [$set]],
+                ];
+            }
+        }
+
+        return $finalCases;
+    }
+
+    private function provideAllCases(): array
+    {
+        $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
+        /** @var array<string, string[]> $allAliases */
+        $allAliases = $reflectionConstant->getValue();
+
+        $finalCases = [];
+        $sets = $allAliases;
+        unset($sets['@time']); // Tested manually
+        $sets = array_keys($sets);
+        foreach ($sets as $set) {
+            $aliases = $allAliases[$set];
+
+            $cases = [];
+            foreach ($aliases as $alias => $master) {
+                // valid cases
+                $cases[] = ["<?php \$smth->{$alias}(\$a);"];
+                $cases[] = ["<?php {$alias}Smth(\$a);"];
+                $cases[] = ["<?php smth_{$alias}(\$a);"];
+                $cases[] = ["<?php new {$alias}(\$a);"];
+                $cases[] = ["<?php new Smth\\{$alias}(\$a);"];
+                $cases[] = ["<?php Smth\\{$alias}(\$a);"];
+                $cases[] = ["<?php namespace\\{$alias}(\$a);"];
+                $cases[] = ["<?php Smth::{$alias}(\$a);"];
+                $cases[] = ["<?php new {$alias}\\smth(\$a);"];
+                $cases[] = ["<?php {$alias}::smth(\$a);"];
+                $cases[] = ["<?php {$alias}\\smth(\$a);"];
+                $cases[] = ['<?php "SELECT ... '.$alias.'(\$a) ...";'];
+                $cases[] = ['<?php "SELECT ... '.strtoupper($alias).'($a) ...";'];
+                $cases[] = ["<?php 'test'.'{$alias}' . 'in concatenation';"];
+                $cases[] = ['<?php "test" . "'.$alias.'"."in concatenation";'];
+                $cases[] = [
+                    '<?php
+    class '.ucfirst($alias).'ing
+    {
+        const '.$alias.' = 1;
+
+        public function '.$alias.'($'.$alias.')
+        {
+            if (defined("'.$alias.'") || $'.$alias.' instanceof '.$alias.') {
+                echo '.$alias.';
+            }
+        }
+    }
+
+    class '.$alias.' extends '.ucfirst($alias).'ing{
+        const '.$alias.' = "'.$alias.'";
+    }
+    ',
+                ];
+
+                // cases to be fixed
+                $cases[] = [
+                    "<?php {$master}(\$a);",
+                    "<?php {$alias}(\$a);",
+                ];
+                $cases[] = [
+                    "<?php \\{$master}(\$a);",
+                    "<?php \\{$alias}(\$a);",
+                ];
+                $cases[] = [
+                    "<?php {$master}
+                                (\$a);",
+                    "<?php {$alias}
+                                (\$a);",
+                ];
+                $cases[] = [
+                    "<?php /* foo */ {$master} /** bar */ (\$a);",
+                    "<?php /* foo */ {$alias} /** bar */ (\$a);",
+                ];
+                $cases[] = [
+                    "<?php a({$master}());",
+                    "<?php a({$alias}());",
+                ];
+                $cases[] = [
+                    "<?php a(\\{$master}());",
+                    "<?php a(\\{$alias}());",
+                ];
+            }
+
+            $finalCases[$set] = $cases;
+        }
+
+        return $finalCases;
     }
 }
