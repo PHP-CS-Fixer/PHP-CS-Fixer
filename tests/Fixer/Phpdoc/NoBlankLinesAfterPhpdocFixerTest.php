@@ -287,6 +287,22 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testWhitespaceInDocBlockAboveNamespaceIsNotTouched()
+    {
+        $expected = <<<'EOF'
+<?php
+
+/**
+ * This is a file-level docblock.
+ */
+
+namespace Foo\Bar\Baz;
+
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testFixesWindowsStyle()
     {
         $expected = "<?php\r\n    /**     * Constant!     */\n    \$foo = 123;";
