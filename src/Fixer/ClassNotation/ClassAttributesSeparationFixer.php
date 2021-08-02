@@ -146,7 +146,7 @@ class Sample
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = $classStart = $classEnd = false;
 
-        foreach (array_reverse($tokensAnalyzer->getClassyElements(true), true) as $index => $element) {
+        foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             if (!isset($this->classElementTypes[$element['type']])) {
                 continue; // not configured to be fixed
             }
