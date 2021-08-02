@@ -77,7 +77,13 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
                     echo "aaa" | "bbb";
                     echo F_OK | F_ERR;
                     echo foo(F_OK | F_ERR);
+                    foo($A||$b);
+                    foo($A|$b);
                     // try {} catch (ExceptionType1 | ExceptionType2) {}
+                    $a = function(){};
+                    $x = ($y|$z);
+                    function foo(){}
+                    $a = $b|$c;
                 ',
             ],
         ];
@@ -248,6 +254,34 @@ class Number
             [
                 6 => CT::T_TYPE_ALTERNATION,
                 8 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'multiple function parameters' => [
+            '<?php function foo(A|B $x, C|D $y, E|F $z) {};',
+            [
+                6 => CT::T_TYPE_ALTERNATION,
+                13 => CT::T_TYPE_ALTERNATION,
+                20 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'function calls and function definitions' => [
+            '<?php
+                f1(CONST_A|CONST_B);
+                function f2(A|B $x, C|D $y, E|F $z) {};
+                f3(CONST_A|CONST_B);
+                function f4(A|B $x, C|D $y, E|F $z) {};
+                f5(CONST_A|CONST_B);
+                $x = ($y|$z);
+            ',
+            [
+                15 => CT::T_TYPE_ALTERNATION,
+                22 => CT::T_TYPE_ALTERNATION,
+                29 => CT::T_TYPE_ALTERNATION,
+                52 => CT::T_TYPE_ALTERNATION,
+                59 => CT::T_TYPE_ALTERNATION,
+                66 => CT::T_TYPE_ALTERNATION,
             ],
         ];
     }
