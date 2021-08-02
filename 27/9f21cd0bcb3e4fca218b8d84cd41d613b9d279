@@ -1,0 +1,75 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-01T11:10:32Z
+
+[![Coverage Status](https://coveralls.io/builds/38528493/badge)](https://coveralls.io/builds/38528493)
+
+Coverage decreased (-0.07%) to 91.777% when pulling **c856bd85d5bf7d20cca3bf7a20b9a3979aaacb60 on zoonru:2.18** into **9bf2760ce9d2218cc127cb4106e9ddfedca4eb3a on FriendsOfPHP:2.18**.
+
+---------------------------------------------------------------------------
+
+by danog at 2021-04-01T11:36:26Z
+
+Note quite sure what to make of the phpstan analysis, seems like a bug to me (mixed is a supertype of string; plus the error is not triggered on other lines of the elseif))
+As a friendly recommendation from a psalm lover, I can really recommend switching to https://psalm.dev for static analysis :)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-04-02T14:42:03Z
+
+That's weird, I've reported a bug: https://github.com/phpstan/phpstan/issues/4793 - check out the example, it's really strange.
+
+As workaround you can add above the line with `foreach ($this->configuration['sets'] as $set) {` PHPdoc like this: /** @var string $set */
+
+> I can really recommend switching to https://psalm.dev
+
+Why not both? I often use both as the can detect different issues and both have some bugs.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-04-24T21:52:33Z
+
+Needs tests covering some of these options.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-05-25T12:01:50Z
+
+Thanks @danog for these improvements :)
+
+Please add the some tests [here](https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v2.19.0/tests/Fixer/Alias/NoAliasFunctionsFixerTest.php) and have a look at my minors, looking close to finished
+
+---------------------------------------------------------------------------
+
+by danog at 2021-06-22T10:55:12Z
+
+Finally got around to finishing this MR :)
+Applied the requested changes, and added some tests based on the existing test logic.
+The only detail that I'm not sure about is the `@pg` set: the only alias function contained in that set is the extremely old `pg_exec` alias, deprecated way back in PHP 4.
+I'm not sure if it's worth removing from the defaults.
+
+---------------------------------------------------------------------------
+
+by danog at 2021-07-26T09:10:12Z
+
+All OK over here? :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-29T21:47:01Z
+
+@danog can you rebase on 2.19 or allow to modify your branch by us? we need to ensure that CI kicks off for this PR and all jobs to be green, before we are able to merge.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-07-29T22:57:39Z
+
+I don't see it solving any bug in the existing fixer. it's giving existing fixer more functionality (to handle more aliases)
+
+should go to 3.1 line
+
+---------------------------------------------------------------------------
+
+by danog at 2021-07-30T09:37:26Z
+
+There, all fixed up nicely.
