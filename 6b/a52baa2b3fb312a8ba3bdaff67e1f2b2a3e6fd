@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-03T15:54:05Z
+
+[![Coverage Status](https://coveralls.io/builds/41870088/badge)](https://coveralls.io/builds/41870088)
+
+Coverage increased (+0.004%) to 92.189% when pulling **a3bb1a3c3811ad30b2728a990a0f9641b993b062 on SpacePossum:3_0_SingleImportPerStatementFixer_typed_imports** into **7c1dff08d39d342b73f475952632ee1f7a445022 on FriendsOfPHP:3.0**.
