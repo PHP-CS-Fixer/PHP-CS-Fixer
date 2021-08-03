@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-03T10:25:05Z
+
+[![Coverage Status](https://coveralls.io/builds/41860678/badge)](https://coveralls.io/builds/41860678)
+
+Coverage remained the same at 92.185% when pulling **5669a314f623a688fdc97c88a71fa0959f72b19b on kubawerlos:fix_PhpdocTypesOrderFixer_array_shapes** into **7c1dff08d39d342b73f475952632ee1f7a445022 on FriendsOfPHP:3.0**.
