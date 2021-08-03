@@ -73,7 +73,7 @@ final class ReporterFactory
     /**
      * @return string[]
      */
-    public function getFormats()
+    public function getFormats(): array
     {
         $formats = array_keys($this->reporters);
         sort($formats);
@@ -81,12 +81,7 @@ final class ReporterFactory
         return $formats;
     }
 
-    /**
-     * @param string $format
-     *
-     * @return ReporterInterface
-     */
-    public function getReporter($format)
+    public function getReporter(string $format): ReporterInterface
     {
         if (!isset($this->reporters[$format])) {
             throw new \UnexpectedValueException(sprintf('Reporter for format "%s" is not registered.', $format));

@@ -5419,12 +5419,9 @@ if ($a) foreach ($b as $c): ?>
     /**
      * @requires PHP 8.0
      *
-     * @param string $input
-     * @param string $expected
-     *
      * @dataProvider provideFix80Cases
      */
-    public function testFix80($expected, $input): void
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

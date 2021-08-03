@@ -157,12 +157,11 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string                 $code
      * @param NamespaceUseAnalysis[] $expected
      *
      * @dataProvider provideGetDeclarationsInNamespaceCases
      */
-    public function testGetDeclarationsInNamespace($code, NamespaceAnalysis $namespace, array $expected): void
+    public function testGetDeclarationsInNamespace(string $code, NamespaceAnalysis $namespace, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespaceUsesAnalyzer();

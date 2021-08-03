@@ -307,13 +307,10 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $input
-     *
      * @requires PHP 8.0
      * @dataProvider provideFix80Cases
      */
-    public function testFix80($expected, $input): void
+    public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }

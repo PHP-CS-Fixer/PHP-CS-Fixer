@@ -478,10 +478,8 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
-     *
-     * @param string $className
      */
-    public function testThereIsNoTriggerErrorUsedDirectly($className): void
+    public function testThereIsNoTriggerErrorUsedDirectly(string $className): void
     {
         if (Utils::class === $className) {
             $this->addToAssertionCount(1); // This is where "trigger_error" should be

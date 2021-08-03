@@ -1581,13 +1581,9 @@ $b;',
     }
 
     /**
-     * @param bool   $isBlockMultiline
-     * @param string $source
-     * @param int    $tokenIndex
-     *
      * @dataProvider provideIsBlockMultilineCases
      */
-    public function testIsBlockMultiline($isBlockMultiline, $source, $tokenIndex): void
+    public function testIsBlockMultiline(bool $isBlockMultiline, string $source, int $tokenIndex): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
