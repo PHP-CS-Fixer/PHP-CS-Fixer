@@ -144,6 +144,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var array<array<int, int>, OutputInterface> */',
             ],
+            [
+                '<?php /** @var array<string, array{event: string, subscribers: array<int, string>}> */',
+            ],
         ];
     }
 
