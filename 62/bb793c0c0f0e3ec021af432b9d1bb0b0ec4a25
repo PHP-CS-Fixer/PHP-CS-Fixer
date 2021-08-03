@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-27T11:53:06Z
+
+[![Coverage Status](https://coveralls.io/builds/41839693/badge)](https://coveralls.io/builds/41839693)
+
+Coverage increased (+0.03%) to 92.201% when pulling **7870e3a6a9d2dedf3fde27380eadf97d0d16b7e5 on SpacePossum:3_0_EmptyLoopBodyFixer** into **296384573bf26ab329b4255be5e61dcb2108da22 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T09:24:41Z
+
+I've changed the default and removed the rule from the Symfony set. This way the talk about (default) value in sets can be done in new PR's with representation of the community of the set, while not blocking this PR from proceeding.
