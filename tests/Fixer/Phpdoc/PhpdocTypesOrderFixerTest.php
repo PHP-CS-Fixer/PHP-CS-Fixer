@@ -144,6 +144,18 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var array<array<int, int>, OutputInterface> */',
             ],
+            [
+                '<?php /** @var iterable<array{names:array<string>, surname:string}> */',
+            ],
+            [
+                '<?php /** @var iterable<array{surname:string, names:array<string>}> */',
+            ],
+            [
+                '<?php /** @return array<array{level:string, message:string, context:array<mixed>}> */',
+            ],
+            [
+                '<?php /** @return Data<array{enabled: string[], all: array<string, string>}> */',
+            ],
         ];
     }
 
