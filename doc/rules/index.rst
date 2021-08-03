@@ -163,6 +163,8 @@ Control Structure
 
 - `elseif <./control_structure/elseif.rst>`_
     The keyword ``elseif`` should be used instead of ``else if`` so that all control keywords look like single words.
+- `empty_loop_body <./control_structure/empty_loop_body.rst>`_
+    Empty loop-body must be in configured style.
 - `include <./control_structure/include.rst>`_
     Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
