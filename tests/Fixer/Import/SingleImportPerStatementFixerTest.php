@@ -258,6 +258,21 @@ use Foo\
     Bar, Baz
 };',
             ],
+            [
+                '<?php
+use function md5;
+use function str_repeat;
+use const true;
+use const false;
+use A;
+use B;
+',
+                '<?php
+use function md5, str_repeat;
+use const true, false;
+use A,B;
+',
+            ],
         ];
     }
 
