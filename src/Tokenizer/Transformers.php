@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
-use PhpCsFixer\Utils;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -42,7 +41,7 @@ final class Transformers
         $this->registerBuiltInTransformers();
 
         usort($this->items, static function (TransformerInterface $a, TransformerInterface $b) {
-            return Utils::cmpInt($b->getPriority(), $a->getPriority()); // TODO: update to use spaceship operator (PHP 7.0 required)
+            return $b->getPriority() <=> $a->getPriority();
         });
     }
 

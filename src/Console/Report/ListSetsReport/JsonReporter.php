@@ -36,18 +36,20 @@ final class JsonReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary)
     {
-        $json = ['sets' => []];
-
         $sets = $reportSummary->getSets();
+
         usort($sets, function (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b) {
-            return $a->getName() > $b->getName() ? 1 : -1;
+            return strcmp($a->getName(), $b->getName());
         });
 
+        $json = ['sets' => []];
+
         foreach ($sets as $set) {
-            $json['sets'][$set->getName()] = [
+            $setName = $set->getName();
+            $json['sets'][$setName] = [
                 'description' => $set->getDescription(),
                 'isRisky' => $set->isRisky(),
-                'name' => $set->getName(),
+                'name' => $setName,
             ];
         }
 
