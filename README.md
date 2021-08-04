@@ -56,7 +56,7 @@ Dedicated plugins exist for:
 
 * [Atom](https://github.com/Glavin001/atom-beautify)
 * [NetBeans](https://plugins.netbeans.apache.org/catalogue/?id=36)
-* [PhpStorm](https://medium.com/@valeryan/how-to-configure-phpstorm-to-use-php-cs-fixer-1844991e521f)
+* [PhpStorm](https://www.jetbrains.com/help/phpstorm/using-php-cs-fixer.html)
 * [Sublime Text](https://github.com/benmatselby/sublime-phpcs)
 * [Vim](https://github.com/stephpy/vim-php-cs-fixer)
 * [VS Code](https://github.com/junstyle/vscode-php-cs-fixer)
