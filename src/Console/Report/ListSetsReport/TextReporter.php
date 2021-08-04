@@ -26,7 +26,7 @@ final class TextReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return 'txt';
     }
@@ -34,7 +34,7 @@ final class TextReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportSummary $reportSummary)
+    public function generate(ReportSummary $reportSummary): string
     {
         $output = '';
         $i = 0;

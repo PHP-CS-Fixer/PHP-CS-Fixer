@@ -346,7 +346,7 @@ $c = get_class($d);
     /**
      * @return array<string, true> normalized function names of which the PHP compiler optimizes
      */
-    private function getAllCompilerOptimizedFunctionsNormalized()
+    private function getAllCompilerOptimizedFunctionsNormalized(): array
     {
         return $this->normalizeFunctionNames([
             // @see https://github.com/php/php-src/blob/PHP-7.4/Zend/zend_compile.c "zend_try_compile_special_func"
@@ -396,7 +396,7 @@ $c = get_class($d);
     /**
      * @return array<string, true> normalized function names of all internal defined functions
      */
-    private function getAllInternalFunctionsNormalized()
+    private function getAllInternalFunctionsNormalized(): array
     {
         return $this->normalizeFunctionNames(get_defined_functions()['internal']);
     }

@@ -496,12 +496,10 @@ EOT
     }
 
     /**
-     * @param string $input
-     *
      * @dataProvider provideDoNotFix80Cases
      * @requires PHP 8.0
      */
-    public function test80DoNotFix($input): void
+    public function test80DoNotFix(string $input): void
     {
         $this->doTest($input);
     }

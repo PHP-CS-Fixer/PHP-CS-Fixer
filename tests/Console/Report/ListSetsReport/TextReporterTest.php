@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 
+use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
 
 /**
@@ -25,25 +26,22 @@ use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new TextReporter();
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'txt';
     }
 
-    protected function assertFormat($expected, $input): void
+    protected function assertFormat(string $expected, string $input): void
     {
         static::assertSame($expected, $input);
     }
 
-    /**
-     * @return string
-     */
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return str_replace("\n", PHP_EOL, ' 1) @PhpCsFixer
       Rule set as used by the PHP-CS-Fixer development team, highly opinionated.

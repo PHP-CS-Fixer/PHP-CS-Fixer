@@ -141,12 +141,7 @@ final class TokensAnalyzer
         return $this->isBlockMultiline($tokens, $index);
     }
 
-    /**
-     * @param int $index
-     *
-     * @return bool
-     */
-    public function isBlockMultiline(Tokens $tokens, $index)
+    public function isBlockMultiline(Tokens $tokens, int $index): bool
     {
         $blockType = Tokens::detectBlockType($tokens[$index]);
 

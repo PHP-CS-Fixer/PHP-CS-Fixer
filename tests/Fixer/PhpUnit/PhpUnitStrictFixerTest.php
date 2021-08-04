@@ -154,7 +154,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
     /**
      * @return array<string, string>
      */
-    private function getMethodsMap()
+    private function getMethodsMap(): array
     {
         return [
             'assertAttributeEquals' => 'assertAttributeSame',

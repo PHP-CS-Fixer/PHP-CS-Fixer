@@ -87,12 +87,9 @@ final class NamespacesAnalyzerTest extends TestCase
     }
 
     /**
-     * @param string $code
-     * @param int    $index
-     *
      * @dataProvider provideGetNamespaceAtCases
      */
-    public function testGetNamespaceAt($code, $index, NamespaceAnalysis $expected): void
+    public function testGetNamespaceAt(string $code, int $index, NamespaceAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new NamespacesAnalyzer();

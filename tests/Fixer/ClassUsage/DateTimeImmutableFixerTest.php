@@ -178,12 +178,10 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected
-     *
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80($expected): void
+    public function testFix80(string $expected): void
     {
         $this->doTest($expected);
     }

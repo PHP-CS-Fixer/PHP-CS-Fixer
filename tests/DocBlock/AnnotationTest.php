@@ -551,13 +551,11 @@ final class AnnotationTest extends TestCase
 
     /**
      * @param Line[]                 $lines
-     * @param null|NamespaceAnalysis $namespace
      * @param NamespaceUseAnalysis[] $namespaceUses
-     * @param null|string            $expectedCommonType
      *
      * @dataProvider provideTypeExpressionCases
      */
-    public function testGetTypeExpression(array $lines, $namespace, array $namespaceUses, $expectedCommonType): void
+    public function testGetTypeExpression(array $lines, ?NamespaceAnalysis $namespace, array $namespaceUses, ?string $expectedCommonType): void
     {
         $annotation = new Annotation($lines, $namespace, $namespaceUses);
         $result = $annotation->getTypeExpression();
@@ -577,12 +575,11 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param Line[]      $lines
-     * @param null|string $expectedVariableName
+     * @param Line[] $lines
      *
      * @dataProvider provideGetVariableCases
      */
-    public function testGetVariableName(array $lines, $expectedVariableName): void
+    public function testGetVariableName(array $lines, ?string $expectedVariableName): void
     {
         $annotation = new Annotation($lines);
         static::assertSame($expectedVariableName, $annotation->getVariableName());

@@ -190,10 +190,7 @@ SAMPLE
         }
     }
 
-    /**
-     * @param int $startIndex
-     */
-    private function fixBlock(Tokens $tokens, $startIndex): void
+    private function fixBlock(Tokens $tokens, int $startIndex): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         if (!$tokensAnalyzer->isBlockMultiline($tokens, $startIndex)) {

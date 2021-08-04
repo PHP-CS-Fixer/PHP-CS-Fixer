@@ -72,10 +72,7 @@ final class ListSetsCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $format
-     */
-    private function resolveReporterWithFactory($format, ReporterFactory $factory): ReporterInterface
+    private function resolveReporterWithFactory(string $format, ReporterFactory $factory): ReporterInterface
     {
         try {
             $factory->registerBuiltInReporters();
