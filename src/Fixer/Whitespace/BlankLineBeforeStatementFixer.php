@@ -69,14 +69,6 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     private $fixTokenMap = [];
 
     /**
-     * Dynamic yield from option set on constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration): void
@@ -300,16 +292,10 @@ if (true) {
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $allowed = self::$tokenMap;
-        $allowed['yield_from'] = true; // TODO remove this when update to PHP7.0
-        ksort($allowed);
-
-        $allowed = array_keys($allowed);
-
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of statements which must be preceded by an empty line.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset($allowed)])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
                 ->setDefault([
                     'break',
                     'continue',

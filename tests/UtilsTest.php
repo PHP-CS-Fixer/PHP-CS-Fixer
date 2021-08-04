@@ -109,26 +109,6 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCmpIntCases
-     */
-    public function testCmpInt(int $expected, int $left, int $right): void
-    {
-        static::assertSame($expected, Utils::cmpInt($left, $right));
-    }
-
-    public function provideCmpIntCases()
-    {
-        return [
-            [0,    1,   1],
-            [0,   -1,  -1],
-            [-1,  10,  20],
-            [-1, -20, -10],
-            [1,   20,  10],
-            [1,  -10, -20],
-        ];
-    }
-
-    /**
      * @param array|string $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
