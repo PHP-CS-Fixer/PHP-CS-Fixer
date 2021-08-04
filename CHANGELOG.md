@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.0.2
+--------------------
+
+* bug #5816 FullyQualifiedStrictTypesFixer - fix for union types (kubawerlos, keradus)
+* bug #5835 PhpdocTypesOrderFixer: fix for array shapes (kubawerlos)
+* bug #5837 SingleImportPerStatementFixer - fix const and function imports (SpacePossum)
+* bug #5844 PhpdocTypesOrderFixer: handle callable() type (Slamdunk)
+* minor #5839 DX: automate checking 7.0 types on project itself (keradus)
+* minor #5840 DX: drop v2 compatible config in project itself (keradus)
+
 Changelog for v3.0.1
 --------------------
 
