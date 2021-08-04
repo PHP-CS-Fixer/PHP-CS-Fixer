@@ -26,7 +26,7 @@ final class JsonReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return 'json';
     }
@@ -34,7 +34,7 @@ final class JsonReporter implements ReporterInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ReportSummary $reportSummary)
+    public function generate(ReportSummary $reportSummary): string
     {
         $json = ['sets' => []];
 

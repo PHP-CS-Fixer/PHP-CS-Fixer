@@ -27,12 +27,11 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 final class TypeExpressionTest extends TestCase
 {
     /**
-     * @param string   $typesExpression
      * @param string[] $expectedTypes
      *
      * @dataProvider provideGetTypesCases
      */
-    public function testGetTypes($typesExpression, $expectedTypes): void
+    public function testGetTypes(string $typesExpression, array $expectedTypes): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
         static::assertSame($expectedTypes, $expression->getTypes());
@@ -88,13 +87,11 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @param string                 $typesExpression
-     * @param null|string            $expectedCommonType
      * @param NamespaceUseAnalysis[] $namespaceUses
      *
      * @dataProvider provideCommonTypeCases
      */
-    public function testGetCommonType($typesExpression, $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
+    public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
         static::assertSame($expectedCommonType, $expression->getCommonType());
@@ -161,12 +158,9 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @param string $typesExpression
-     * @param bool   $expectNullAllowed
-     *
      * @dataProvider provideAllowsNullCases
      */
-    public function testAllowsNull($typesExpression, $expectNullAllowed): void
+    public function testAllowsNull(string $typesExpression, bool $expectNullAllowed): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
         static::assertSame($expectNullAllowed, $expression->allowsNull());

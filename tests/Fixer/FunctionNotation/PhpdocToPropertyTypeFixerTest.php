@@ -24,12 +24,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix($expected, $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         if (null !== $input && \PHP_VERSION_ID < 70400) {
             $expected = $input;
@@ -449,13 +446,10 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string      $expected
-     * @param null|string $input
-     *
      * @dataProvider provideFixPhp70Cases
      * @requires PHP 7.0
      */
-    public function testFixPhp70($expected, $input = null, array $config = []): void
+    public function testFixPhp70(string $expected, ?string $input = null, array $config = []): void
     {
         if (null !== $input && \PHP_VERSION_ID < 70400) {
             $expected = $input;

@@ -492,4 +492,37 @@ class Two
             ],
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): iterable
+    {
+        yield [
+            '<?php function foo(A|B|C $x) {}',
+            '<?php function foo(\A|\B|\C $x) {}',
+        ];
+
+        yield [
+            '<?php function foo(): A|B|C {}',
+            '<?php function foo(): \A|\B|\C {}',
+        ];
+
+        yield 'aaa' => [
+            '<?php function foo(): A | B | C {}',
+            '<?php function foo(): \A | \B | \C {}',
+        ];
+
+        yield [
+            '<?php function f(): Foo|Bar|A\B\C {}',
+            '<?php function f(): Foo|\Bar|\A\B\C {}',
+        ];
+    }
 }

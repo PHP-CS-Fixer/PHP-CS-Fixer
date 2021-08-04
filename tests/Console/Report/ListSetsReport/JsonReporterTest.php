@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 
 use PhpCsFixer\Console\Report\ListSetsReport\JsonReporter;
+use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,26 +26,23 @@ use PhpCsFixer\Console\Report\ListSetsReport\JsonReporter;
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {
-    protected function createReporter()
+    protected function createReporter(): ReporterInterface
     {
         return new JsonReporter();
     }
 
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return 'json';
     }
 
-    protected function assertFormat($expected, $input): void
+    protected function assertFormat(string $expected, string $input): void
     {
         static::assertJsonSchema($input);
         static::assertJsonStringEqualsJsonString($expected, $input);
     }
 
-    /**
-     * @return string
-     */
-    protected function createSimpleReport()
+    protected function createSimpleReport(): string
     {
         return '{
     "sets": {
@@ -62,10 +60,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
 }';
     }
 
-    /**
-     * @param string $json
-     */
-    private static function assertJsonSchema($json): void
+    private static function assertJsonSchema(string $json): void
     {
         $jsonPath = __DIR__.'/../../../../doc/schemas/list-sets/schema.json';
 

@@ -141,10 +141,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         }
     }
 
-    /**
-     * @return bool
-     */
-    private function isPreviousTokenToClear(Token $token)
+    private function isPreviousTokenToClear(Token $token): bool
     {
         static $tokens = null;
 
@@ -155,10 +152,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         return $token->equalsAny($tokens) || $token->isObjectOperator();
     }
 
-    /**
-     * @return bool
-     */
-    private function isNextTokenToClear(Token $token)
+    private function isNextTokenToClear(Token $token): bool
     {
         static $tokens = null;
 

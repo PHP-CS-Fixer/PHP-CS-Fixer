@@ -71,12 +71,7 @@ final class NamespacesAnalyzer
         return $namespaces;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return NamespaceAnalysis
-     */
-    public function getNamespaceAt(Tokens $tokens, $index)
+    public function getNamespaceAt(Tokens $tokens, int $index): NamespaceAnalysis
     {
         if (!$tokens->offsetExists($index)) {
             throw new \InvalidArgumentException("Token index {$index} does not exist.");

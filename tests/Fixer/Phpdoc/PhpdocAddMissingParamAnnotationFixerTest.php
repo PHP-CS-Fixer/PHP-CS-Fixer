@@ -59,7 +59,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @return iterable<string, array>
      */
-    public function provideConfigureRejectsInvalidConfigurationValueCases()
+    public function provideConfigureRejectsInvalidConfigurationValueCases(): iterable
     {
         yield 'null' => [
             null,

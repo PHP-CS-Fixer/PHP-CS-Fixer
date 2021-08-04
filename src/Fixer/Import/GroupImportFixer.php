@@ -267,13 +267,8 @@ final class GroupImportFixer extends AbstractFixer
 
     /**
      * Check if namespace use analyses are different.
-     *
-     * @param null|NamespaceUseAnalysis $analysis1
-     * @param null|NamespaceUseAnalysis $analysis2
-     *
-     * @return bool
      */
-    private function areDeclarationsDifferent($analysis1, $analysis2)
+    private function areDeclarationsDifferent(?NamespaceUseAnalysis $analysis1, ?NamespaceUseAnalysis $analysis2): bool
     {
         if (null === $analysis1 || null === $analysis2) {
             return true;

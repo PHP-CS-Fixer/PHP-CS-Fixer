@@ -974,7 +974,7 @@ else?><?php echo 5;',
     /**
      * @return array<array<string>>
      */
-    private function generateCases(string $expected, ?string $input = null)
+    private function generateCases(string $expected, ?string $input = null): array
     {
         $cases = [];
 

@@ -55,21 +55,16 @@ abstract class AbstractReporterTestCase extends TestCase
     }
 
     /**
-     * @param string $expectedReport
-     *
      * @dataProvider provideGenerateCases
      */
-    final public function testGenerate($expectedReport, ReportSummary $reportSummary): void
+    final public function testGenerate(string $expectedReport, ReportSummary $reportSummary): void
     {
         $actualReport = $this->reporter->generate($reportSummary);
 
         $this->assertFormat($expectedReport, $actualReport);
     }
 
-    /**
-     * @return iterable
-     */
-    final public function provideGenerateCases()
+    final public function provideGenerateCases(): iterable
     {
         yield 'example' => [
             $this->createSimpleReport(),
@@ -80,24 +75,11 @@ abstract class AbstractReporterTestCase extends TestCase
         ];
     }
 
-    /**
-     * @return ReporterInterface
-     */
-    abstract protected function createReporter();
+    abstract protected function createReporter(): ReporterInterface;
 
-    /**
-     * @return string
-     */
-    abstract protected function getFormat();
+    abstract protected function getFormat(): string;
 
-    /**
-     * @param string $expected
-     * @param string $input
-     */
-    abstract protected function assertFormat($expected, $input);
+    abstract protected function assertFormat(string $expected, string $input): void;
 
-    /**
-     * @return string
-     */
-    abstract protected function createSimpleReport();
+    abstract protected function createSimpleReport(): string;
 }
