@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-23T14:52:11Z
+
+[![Coverage Status](https://coveralls.io/builds/41878762/badge)](https://coveralls.io/builds/41878762)
+
+Coverage increased (+0.006%) to 92.196% when pulling **a86d7165aafc8461cfd519dc6fcd351cc352a90f on kubawerlos:fix_FullyQualifiedStrictTypesFixer** into **a8897f2050e78c3010be1ac11246700a0e07257e on FriendsOfPHP:3.0**.
