@@ -156,6 +156,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @return Data<array{enabled: string[], all: array<string, string>}> */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
         ];
     }
 
@@ -271,6 +274,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var Foo[]|Foo|Foo\Bar|Foo_Bar|null */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
         ];
     }
 
@@ -381,6 +387,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var Foo|Foo[]|Foo\Bar|Foo_Bar|null */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
+            ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
             ],
         ];
     }
@@ -494,6 +503,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @return array<array<string, int>> */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
         ];
     }
 
@@ -604,6 +616,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @var Foo|Foo[]|Foo\Bar|Foo_Bar|null */',
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
+            ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
             ],
         ];
     }
