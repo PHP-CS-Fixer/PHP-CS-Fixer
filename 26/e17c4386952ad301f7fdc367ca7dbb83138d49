@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-04T07:03:45Z
+
+[![Coverage Status](https://coveralls.io/builds/41889690/badge)](https://coveralls.io/builds/41889690)
+
+Coverage remained the same at 92.189% when pulling **c2d304ebe8f649dfec7c852936144e7774785087 on Slamdunk:phpdoc_types_order_callable_bug** into **50a38f5248268f7c22cf9335b7792f7dfbd1b5c0 on FriendsOfPHP:3.0**.
