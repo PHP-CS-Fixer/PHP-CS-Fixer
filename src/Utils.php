@@ -40,21 +40,6 @@ final class Utils
     }
 
     /**
-     * Compare two integers for equality.
-     *
-     * We'll return 0 if they're equal, 1 if the first is bigger than the
-     * second, and -1 if the second is bigger than the first.
-     */
-    public static function cmpInt(int $a, int $b): int
-    {
-        if ($a === $b) {
-            return 0;
-        }
-
-        return $a < $b ? -1 : 1;
-    }
-
-    /**
      * Calculate the trailing whitespace.
      *
      * What we're doing here is grabbing everything after the final newline.
@@ -101,7 +86,7 @@ final class Utils
                 return $comparison;
             }
 
-            return self::cmpInt($a[1], $b[1]);
+            return $a[1] <=> $b[1];
         });
 
         return array_map(static function (array $item) {
@@ -126,7 +111,7 @@ final class Utils
                 return $fixer->getPriority();
             },
             static function (int $a, int $b) {
-                return self::cmpInt($b, $a);
+                return $b <=> $a;
             }
         );
     }

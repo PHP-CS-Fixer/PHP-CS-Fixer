@@ -59,9 +59,11 @@ final class ListSetsCommand extends Command
             $input->getOption('format'),
             new ReporterFactory()
         );
+
         $reportSummary = new ReportSummary(
             array_values(RuleSets::getSetDefinitions())
         );
+
         $report = $reporter->generate($reportSummary);
 
         $output->isDecorated()
