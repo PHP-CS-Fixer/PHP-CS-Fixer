@@ -980,13 +980,13 @@ $a(1,2);',
         ];
 
         yield [
-            '<?php #[Foo] function foo() {}',
-            [2 => false, 7 => false],
+            '<?php #[Foo, Bar] function foo() {}',
+            [2 => false, 5 => false, 10 => false],
         ];
 
         yield [
-            '<?php #[Foo()] function foo() {}',
-            [2 => false, 9 => false],
+            '<?php #[Foo(), Bar()] function foo() {}',
+            [2 => false, 7 => false, 14 => false],
         ];
     }
 

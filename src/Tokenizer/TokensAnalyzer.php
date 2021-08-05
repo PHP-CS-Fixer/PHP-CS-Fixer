@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
+use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 
 /**
@@ -357,10 +358,7 @@ final class TokensAnalyzer
         }
 
         // check for attribute: `#[Foo]`
-        if (
-            \defined('T_ATTRIBUTE') // @TODO: drop condition when PHP 8.0+ is required
-            && $this->tokens[$prevIndex]->isGivenKind(T_ATTRIBUTE)
-        ) {
+        if (AttributeAnalyzer::isAttribute($this->tokens, $index)) {
             return false;
         }
 
