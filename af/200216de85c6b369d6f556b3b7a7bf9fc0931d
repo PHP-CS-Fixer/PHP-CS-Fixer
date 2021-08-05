@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-02T07:08:40Z
+
+thanks for the research :+1:
+lets see what happens when we run the checks :)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-02T07:27:18Z
+
+[![Coverage Status](https://coveralls.io/builds/41933578/badge)](https://coveralls.io/builds/41933578)
+
+Coverage remained the same at 92.192% when pulling **18cbca5171869489b0e46b2c937e5da7b8a04edc on paulbalandan:phpmd-sca** into **ff30407f3f2d74c552cb7c860607d21529ac1dfa on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-08-03T14:04:28Z
+
+The 2nd commit shows that phpmd is now being called whenever there are changed PHP files, so the added sample file can now be deleted.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-04T09:49:18Z
+
+can you re-add the test file again to show how phpmd is kicking off now?
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-08-04T10:47:40Z
+
+I think the failing CI is unrelated, or not?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-05T13:13:07Z
+
+i think we are ready to merge @paulbalandan ? if so, pls drop the test file and if CI still green, let's merge
