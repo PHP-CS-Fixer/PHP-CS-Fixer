@@ -142,9 +142,6 @@ final class Utils
         return $last;
     }
 
-    /**
-     * Handle triggering deprecation error.
-     */
     public static function triggerDeprecation(\Exception $futureException): void
     {
         if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
