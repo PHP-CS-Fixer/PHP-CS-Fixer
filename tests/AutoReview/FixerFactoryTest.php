@@ -102,6 +102,8 @@ final class FixerFactoryTest extends TestCase
             [$fixers['empty_loop_body'], $fixers['braces']],
             [$fixers['empty_loop_body'], $fixers['no_extra_blank_lines']],
             [$fixers['empty_loop_body'], $fixers['no_trailing_whitespace']],
+            [$fixers['empty_loop_condition'], $fixers['no_extra_blank_lines']],
+            [$fixers['empty_loop_condition'], $fixers['no_trailing_whitespace']],
             [$fixers['escape_implicit_backslashes'], $fixers['heredoc_to_nowdoc']],
             [$fixers['escape_implicit_backslashes'], $fixers['single_quote']],
             [$fixers['explicit_string_variable'], $fixers['simple_to_complex_string_variable']],
