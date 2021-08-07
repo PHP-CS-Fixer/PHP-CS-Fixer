@@ -91,36 +91,6 @@ final class HelpCommand extends BaseHelpCommand
     }
 
     /**
-     * Wraps a string to the given number of characters, ignoring style tags.
-     *
-     * @return string[]
-     */
-    private static function wordwrap(string $string, int $width): array
-    {
-        $result = [];
-        $currentLine = 0;
-        $lineLength = 0;
-        foreach (explode(' ', $string) as $word) {
-            $wordLength = \strlen(Preg::replace('~</?(\w+)>~', '', $word));
-            if (0 !== $lineLength) {
-                ++$wordLength; // space before word
-            }
-
-            if ($lineLength + $wordLength > $width) {
-                ++$currentLine;
-                $lineLength = 0;
-            }
-
-            $result[$currentLine][] = $word;
-            $lineLength += $wordLength;
-        }
-
-        return array_map(static function (array $line) {
-            return implode(' ', $line);
-        }, $result);
-    }
-
-    /**
      * @param mixed $value
      */
     private static function scalarToString($value): string

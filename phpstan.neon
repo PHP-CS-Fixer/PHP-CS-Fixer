@@ -9,11 +9,5 @@ parameters:
         - src
         - tests
     excludePaths:
-        - src/Event/Event.php # @TODO remove in PHP CS Fixer 3.0
-        - tests/Event/EventTest.php # @TODO remove in PHP CS Fixer 3.0
         - tests/Fixtures
-    ignoreErrors:
-        -
-            message: '/^Static method PhpCsFixer\\Console\\Command\\HelpCommand::wordwrap\(\) is unused\.$/'
-            path: src/Console/Command/HelpCommand.php
     tipsOfTheDay: false
