@@ -44,7 +44,14 @@ jobs:
             php-version: '8.0'
             job-description: 'with calculating code coverage'
             calculate-code-coverage: 'yes'
-            phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
+            phpunit-options: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            job-description: 'with calculating code coverage'
+            composer-flags: '--ignore-platform-req=php' #needed for phpspec/prophecy
+            phpunit-options: 'tests/Tokenizer/Transformer/TypeAlternationTransformerTest.php tests/Tokenizer/Transformer/TypeIntersectionTransformerTest.php'
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'windows-latest'
             php-version: '7.4'
@@ -121,7 +128,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}
+        run: vendor/bin/phpunit ${{ matrix.phpunit-options }}
 
       - name: Upload coverage results to Coveralls
         if: matrix.calculate-code-coverage == 'yes'
