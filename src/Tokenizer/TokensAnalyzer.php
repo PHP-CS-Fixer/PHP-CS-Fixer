@@ -327,7 +327,7 @@ final class TokensAnalyzer
         // `FOO & $bar` could be:
         //   - function reference parameter: function baz(Foo & $bar) {}
         //   - bit operator: $x = FOO & $bar;
-        if ($this->tokens[$nextIndex]->equals('&') && $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(T_VARIABLE)) {
+        if ($this->tokens[$nextIndex]->isAmpersand() && $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(T_VARIABLE)) {
             $checkIndex = $this->tokens->getPrevTokenOfKind($prevIndex, [';', '{', '}', [T_FUNCTION], [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]]);
 
             if ($this->tokens[$checkIndex]->isGivenKind(T_FUNCTION)) {
@@ -481,7 +481,7 @@ final class TokensAnalyzer
             return true;
         }
 
-        if (!$token->equals('&') || !$prevToken->isGivenKind(T_STRING)) {
+        if (!$token->isAmpersand() || !$prevToken->isGivenKind(T_STRING)) {
             return false;
         }
 

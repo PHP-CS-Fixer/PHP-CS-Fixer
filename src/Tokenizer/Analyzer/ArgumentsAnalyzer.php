@@ -105,7 +105,7 @@ final class ArgumentsAnalyzer
                 $token->isComment()
                 || $token->isWhitespace()
                 || $token->isGivenKind([T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE])
-                || $token->equals('&')
+                || $token->isAmpersand()
             ) {
                 continue;
             }

@@ -227,6 +227,21 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @dataProvider provideIsAmpersandCases
+     */
+    public function testIsAmpersand(bool $isAmpersand, Token $token): void
+    {
+        static::assertSame($isAmpersand, $token->isAmpersand());
+    }
+
+    public function provideIsAmpersandCases(): iterable
+    {
+        yield [false, $this->getBraceToken()];
+        yield [false, $this->getForeachToken()];
+        yield [true, new Token('&')];
+    }
+
+    /**
      * @dataProvider provideIsNativeConstantCases
      */
     public function testIsNativeConstant(Token $token, bool $isNativeConstant): void

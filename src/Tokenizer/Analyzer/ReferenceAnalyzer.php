@@ -30,7 +30,7 @@ final class ReferenceAnalyzer
             return true;
         }
 
-        if (!$tokens[$index]->equals('&')) {
+        if (!$tokens[$index]->isAmpersand()) {
             return false;
         }
 

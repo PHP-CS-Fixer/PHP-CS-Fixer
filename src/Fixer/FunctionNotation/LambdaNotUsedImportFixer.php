@@ -291,7 +291,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
             $info = $this->argumentsAnalyzer->getArgumentInfo($tokens, $start, $end);
             $argument = $info->getNameIndex();
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($argument)]->equals('&')) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($argument)]->isAmpersand()) {
                 continue;
             }
 

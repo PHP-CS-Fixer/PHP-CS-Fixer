@@ -115,7 +115,7 @@ SAMPLE
                 $next = $tokens->getNextMeaningfulToken($next);
 
                 while (!$tokens[$next]->equals(')')) {
-                    if ($tokens[$next]->equals('&')) {
+                    if ($tokens[$next]->isAmpersand()) {
                         // variables used by reference are not supported by arrow functions
                         continue 2;
                     }

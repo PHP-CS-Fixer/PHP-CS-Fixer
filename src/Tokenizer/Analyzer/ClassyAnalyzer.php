@@ -60,7 +60,7 @@ final class ClassyAnalyzer
         // `Foo & $bar` could be:
         //   - function reference parameter: function baz(Foo & $bar) {}
         //   - bit operator: $x = Foo & $bar;
-        if ($nextToken->equals('&') && $tokens[$tokens->getNextMeaningfulToken($next)]->isGivenKind(T_VARIABLE)) {
+        if ($nextToken->isAmpersand() && $tokens[$tokens->getNextMeaningfulToken($next)]->isGivenKind(T_VARIABLE)) {
             $checkIndex = $tokens->getPrevTokenOfKind($prev + 1, [';', '{', '}', [T_FUNCTION], [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO]]);
 
             return $tokens[$checkIndex]->isGivenKind(T_FUNCTION);

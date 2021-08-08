@@ -129,7 +129,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
         // go through the function declaration and check if references are passed
         // - check if it will be risky to fix return statements of this function
         for ($index = $functionIndex + 1; $index < $functionOpenIndex; ++$index) {
-            if ($tokens[$index]->equals('&')) {
+            if ($tokens[$index]->isAmpersand()) {
                 $isRisky = true;
 
                 break;
@@ -168,7 +168,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue; // don't bother to look into anything else than nested functions as the current is risky already
             }
 
-            if ($tokens[$index]->equals('&')) {
+            if ($tokens[$index]->isAmpersand()) {
                 $isRisky = true;
 
                 continue;

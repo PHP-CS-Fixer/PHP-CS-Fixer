@@ -429,6 +429,14 @@ final class Token
     }
 
     /**
+     * Check if token is an ampersand.
+     */
+    public function isAmpersand(): bool
+    {
+        return $this->equals('&');
+    }
+
+    /**
      * Check if token is whitespace.
      *
      * @param null|string $whitespaces whitespace characters, default is " \t\n\r\0\x0B"

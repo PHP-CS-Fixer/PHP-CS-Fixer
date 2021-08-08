@@ -47,7 +47,7 @@ final class ReturnRefTransformer extends AbstractTransformer
         }
 
         if (
-            $token->equals('&')
+            $token->isAmpersand()
             && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind($prevKinds)
         ) {
             $tokens[$index] = new Token([CT::T_RETURN_REF, '&']);

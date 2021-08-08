@@ -153,7 +153,7 @@ function bar($foo) {}
                 }
 
                 $byRefIndex = $tokens->getPrevMeaningfulToken($variableIndex);
-                if ($tokens[$byRefIndex]->equals('&')) {
+                if ($tokens[$byRefIndex]->isAmpersand()) {
                     $variableIndex = $byRefIndex;
                 }
 
