@@ -1,16 +1,16 @@
 {
     "require": {
-        "php": "^7.1"
+        "php": "^7.4"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.13",
+        "ergebnis/composer-normalize": "^2.15.0",
         "humbug/box": "^3.8",
-        "jangregor/phpstan-prophecy": "^0.6",
+        "jangregor/phpstan-prophecy": "^0.8.1",
         "maglnet/composer-require-checker": "2.0.0",
         "mi-schi/phpmd-extension": "^4.3",
         "phpmd/phpmd": "^2.10.2",
         "phpstan/phpstan": "0.12.92",
-        "phpstan/phpstan-phpunit": "0.12.20"
+        "phpstan/phpstan-phpunit": "0.12.21"
     },
     "config": {
         "optimize-autoloader": true,
