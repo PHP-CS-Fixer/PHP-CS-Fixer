@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Tokenizer\AbstractTypeTransformer
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer
  */
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
