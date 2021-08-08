@@ -51,7 +51,7 @@ final class TypeAlternationTransformer extends AbstractTypeTransformer
      */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        $this->doProcess($tokens, $index, '|', [CT::T_TYPE_ALTERNATION, '|']);
+        $this->doProcess($tokens, $index, '|');
     }
 
     /**
