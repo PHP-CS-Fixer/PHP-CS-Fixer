@@ -141,6 +141,7 @@ jobs:
         run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php70types.php
 
       - name: Run PHP CS Fixer
+        if: matrix.php-version != '8.1' # not there yet
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FUTURE_MODE: 1

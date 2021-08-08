@@ -30,15 +30,6 @@ final class TypeIntersectionTransformer extends AbstractTypeTransformer
     /**
      * {@inheritdoc}
      */
-    public function getPriority(): int
-    {
-        // needs to run after ArrayTypehintTransformer and TypeColonTransformer
-        return -15;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredPhpVersionId(): int
     {
         return 80100;
