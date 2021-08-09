@@ -147,11 +147,13 @@ class Sample
         $class = $classStart = $classEnd = false;
 
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
-            if (!isset($this->classElementTypes[$element['type']])) {
+            $elementType = $element['type'];
+
+            if (!isset($this->classElementTypes[$elementType])) {
                 continue; // not configured to be fixed
             }
 
-            $spacing = $this->classElementTypes[$element['type']];
+            $spacing = $this->classElementTypes[$elementType];
 
             if ($element['classIndex'] !== $class) {
                 $class = $element['classIndex'];
@@ -159,24 +161,20 @@ class Sample
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
             }
 
-            if ('method' === $element['type'] && !$tokens[$class]->isGivenKind(T_INTERFACE)) {
+            // most elements end with a semicolon so let's check that first
+            $elementEnd = $tokens->getNextTokenOfKind($index, [';']);
+
+            if ('method' === $elementType && !$tokens[$class]->isGivenKind(T_INTERFACE)) {
                 // method of class or trait
                 $attributes = $tokensAnalyzer->getMethodAttributes($index);
 
-                $methodEnd = true === $attributes['abstract']
-                    ? $tokens->getNextTokenOfKind($index, [';'])
-                    : $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($index, ['{']))
-                ;
-
-                $this->fixSpaceBelowClassMethod($tokens, $classEnd, $methodEnd, $spacing);
-                $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
-
-                continue;
+                if (!$attributes['abstract']) {
+                    $elementEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($index, ['{']));
+                }
             }
 
-            // `const`, `property` or `method` of an `interface`
-            $this->fixSpaceBelowClassElement($tokens, $classEnd, $tokens->getNextTokenOfKind($index, [';']), $spacing);
-            $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
+            $this->fixSpaceBelowClassElement($tokens, $classEnd, $elementEnd, $spacing, $elementType);
+            $this->fixSpaceAboveClassElement($tokens, $classStart, $index);
         }
     }
 
@@ -230,8 +228,10 @@ class Sample
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
      */
-    private function fixSpaceBelowClassElement(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing): void
+    private function fixSpaceBelowClassElement(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing, string $currentElementType): void
     {
+        static $nextAttributeModifiers = [T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_STRING];
+
         for ($nextNotWhite = $elementEndIndex + 1;; ++$nextNotWhite) {
             if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
                 continue;
@@ -244,26 +244,21 @@ class Sample
             $nextNotWhite = $tokens->getNextNonWhitespace($nextNotWhite);
         }
 
-        $functionIndex = $tokens->getTokenNotOfKindsSibling($nextNotWhite - 1, 1, [T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
+        $nextAttributeIndex = $tokens->getTokenNotOfKindsSibling($nextNotWhite - 1, 1, $nextAttributeModifiers);
+        /** @var Token $nextAttribute */
+        $nextAttribute = $tokens[$nextAttributeIndex];
 
-        if ($tokens[$functionIndex]->isGivenKind(T_FUNCTION)) {
+        if (
+            ($nextAttribute->isGivenKind(T_FUNCTION) && 'method' !== $currentElementType)
+            || ($nextAttribute->isGivenKind(T_VARIABLE) && 'property' !== $currentElementType)
+            || ($nextAttribute->isGivenKind(T_CONST) && 'const' !== $currentElementType)
+            || ($nextAttribute->isGivenKind(CT::T_USE_TRAIT) && 'trait_import' !== $currentElementType)
+        ) {
+            // boundary between different class attributes should be separated by a blank line
             $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, 2);
 
             return;
         }
-
-        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2);
-    }
-
-    /**
-     * Fix spacing below a method of a class or trait.
-     *
-     * Deals with comments, PHPDocs and spaces above the method with respect to the position of the
-     * method within the class or trait.
-     */
-    private function fixSpaceBelowClassMethod(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing): void
-    {
-        $nextNotWhite = $tokens->getNextNonWhitespace($elementEndIndex);
 
         $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $nextNotWhite === $classEndIndex || self::SPACING_NONE === $spacing ? 1 : 2);
     }
@@ -277,7 +272,7 @@ class Sample
      * @param int $classStartIndex index of the class Token the element is in
      * @param int $elementIndex    index of the element to fix
      */
-    private function fixSpaceAboveClassElement(Tokens $tokens, int $classStartIndex, int $elementIndex, string $spacing): void
+    private function fixSpaceAboveClassElement(Tokens $tokens, int $classStartIndex, int $elementIndex): void
     {
         static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
@@ -358,7 +353,13 @@ class Sample
             return;
         }
 
-        $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $nonWhiteAbove === $classStartIndex || self::SPACING_NONE === $spacing ? 1 : 2);
+        // deal with element beneath/beside class curly open brace
+        if ($nonWhiteAbove === $classStartIndex) {
+            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
+        }
+
+        // else: element with another element above it
+        // do nothing, as fixSpaceBelowClassElement() has taken care of the spacing
     }
 
     private function correctLineBreaks(Tokens $tokens, int $startIndex, int $endIndex, int $reqLineCount = 2): void
