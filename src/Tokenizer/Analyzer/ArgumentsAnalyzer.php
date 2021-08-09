@@ -95,6 +95,12 @@ final class ArgumentsAnalyzer
             'type_index_start' => null,
             'type_index_end' => null,
         ];
+        $skip_tokens = [T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE];
+
+        // @TODO: drop condition when PHP 8.1+ is required
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) {
+            $skip_tokens = array_merge($skip_tokens, [T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, T_COALESCE]);
+        }
 
         $sawName = false;
 
@@ -104,7 +110,7 @@ final class ArgumentsAnalyzer
             if (
                 $token->isComment()
                 || $token->isWhitespace()
-                || $token->isGivenKind([T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE])
+                || $token->isGivenKind($skip_tokens)
                 || $token->equals('&')
             ) {
                 continue;
