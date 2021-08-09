@@ -1144,6 +1144,84 @@ class ezcReflectionMethod extends ReflectionMethod {
                 ',
                 ['elements' => ['const' => ClassAttributesSeparationFixer::SPACING_NONE, 'method' => ClassAttributesSeparationFixer::SPACING_ONE]],
             ],
+            [
+                '<?php
+                    class A
+                    {
+                        use FooTrait;
+                        use BarTrait;
+
+                        const FOO = 1;
+
+                        const BAR = 2;
+
+                        public function f1() {}
+
+                        public function f2() {}
+                     }
+                ',
+                '<?php
+                    class A
+                    {
+                        use FooTrait;
+                        use BarTrait;
+                        const FOO = 1;
+                        const BAR = 2;
+                        public function f1() {}
+                        public function f2() {}
+                     }
+                ',
+                ['elements' => ['const' => 'one', 'method' => 'one', 'trait_import' => 'none']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        public static function foo() {}
+
+                        use ATrait;
+
+                        private $a = 1;
+
+                        public function f1() {}
+                        public function f2() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        public static function foo() {}
+                        use ATrait;
+                        private $a = 1;
+                        public function f1() {}
+                        public function f2() {}
+                    }
+                ',
+                ['elements' => ['method' => 'none', 'trait_import' => 'one', 'property' => 'one']],
+            ],
+            [
+                '<?php
+                    class A
+                    {
+                        public static function foo() {}
+
+                        private $a = 1;
+
+                        public function f1() {}
+                        public function f2() {}
+                    }
+                ',
+                '<?php
+                    class A
+                    {
+                        public static function foo() {}
+                        private $a = 1;
+                        public function f1() {}
+                        public function f2() {}
+                    }
+                ',
+                ['elements' => ['method' => 'none', 'property' => 'one']],
+            ],
         ];
     }
 
@@ -1265,8 +1343,12 @@ private $d = 123;
      * @dataProvider provideFix74Cases
      * @requires PHP 7.4
      */
-    public function testFix74(string $expected, ?string $input = null): void
+    public function testFix74(string $expected, ?string $input = null, ?array $config = null): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -1290,6 +1372,7 @@ private $d = 123;
                 public iterable $baz;
                 var ? Foo\Bar $qux;
             }',
+            null,
         ];
 
         yield [
@@ -1304,6 +1387,31 @@ private $d = 123;
                 private array $foo;
                 private array $bar;
             }',
+            null,
+        ];
+
+        yield [
+            '<?php
+            class A
+            {
+                private array $foo;
+                private array $bar;
+
+                public function qux() {}
+                public function baz() {}
+            }',
+            '<?php
+            class A
+            {
+                private array $foo;
+
+                private array $bar;
+
+                public function qux() {}
+
+                public function baz() {}
+            }',
+            ['elements' => ['property' => 'none', 'method' => 'none']],
         ];
     }
 
