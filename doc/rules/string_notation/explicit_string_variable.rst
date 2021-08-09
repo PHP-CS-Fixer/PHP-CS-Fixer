@@ -34,7 +34,7 @@ Example #1
    -$a = "My name is $name !";
    -$b = "I live in $state->country !";
    -$c = "I have $farm[0] chickens !";
-   +$a = "My name is ${name} !";
+   +$a = "My name is {$name} !";
    +$b = "I live in {$state->country} !";
    +$c = "I have {$farm[0]} chickens !";
 
