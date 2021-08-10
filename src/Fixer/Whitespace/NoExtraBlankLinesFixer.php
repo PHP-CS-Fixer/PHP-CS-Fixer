@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PhpCsFixer\Utils;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -80,6 +81,10 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
      */
     public function configure(array $configuration): void
     {
+        if (isset($configuration['tokens']) && \in_array('use_trait', $configuration['tokens'], true)) {
+            Utils::triggerDeprecation(new \RuntimeException('Option "use_trait" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.'));
+        }
+
         parent::configure($configuration);
 
         static $reprToTokenMap = [
@@ -248,18 +253,6 @@ class Bar
                 ),
                 new CodeSample(
                     '<?php
-
-class Foo
-{
-    use Bar;
-
-    use Baz;
-}
-',
-                    ['tokens' => ['use_trait']]
-                ),
-                new CodeSample(
-                    '<?php
 switch($a) {
 
     case 1:
@@ -279,7 +272,7 @@ switch($a) {
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer.
-     * Must run after CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer.
+     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer.
      */
     public function getPriority(): int
     {
