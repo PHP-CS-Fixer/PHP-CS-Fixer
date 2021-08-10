@@ -1573,5 +1573,41 @@ class Foo
 }
 ',
         ];
+
+        yield [
+            '<?php
+            class Foo
+            {
+                use Bar;
+
+                use Baz { bazzy as private; }
+
+                use Char {
+                    ping as public charPing;
+                    pong as private charPong;
+                }
+
+                use Qux;
+
+                use Bon;
+
+                public function isFoo() {}
+            }
+            ',
+            '<?php
+            class Foo
+            {
+                use Bar;
+                use Baz { bazzy as private; }
+                use Char {
+                    ping as public charPing;
+                    pong as private charPong;
+                }
+                use Qux;
+                use Bon;
+                public function isFoo() {}
+            }
+            ',
+        ];
     }
 }

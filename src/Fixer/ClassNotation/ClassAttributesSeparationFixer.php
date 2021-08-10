@@ -171,6 +171,17 @@ class Sample
                 if (!$attributes['abstract']) {
                     $elementEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($index, ['{']));
                 }
+            } elseif ('trait_import' === $elementType) {
+                // expect the 2nd meaningful token after CT::T_USE_TRAIT to be
+                // the ending semicolon or the opening curly brace
+                $nextIndex = $tokens->getNextMeaningfulToken($index); // trait name
+                $nextIndex = $tokens->getNextMeaningfulToken($nextIndex); // ; or {
+
+                if ($tokens[$nextIndex]->equals('{')) {
+                    // the trait is either managing a conflict resolution or
+                    // changing visibility, e.g. `use LoggerTrait { log as private; }`
+                    $elementEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
+                }
             }
 
             $this->fixSpaceBelowClassElement($tokens, $classEnd, $elementEnd, $spacing, $elementType);
