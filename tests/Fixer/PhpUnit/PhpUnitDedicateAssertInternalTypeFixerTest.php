@@ -153,21 +153,6 @@ final class MyTest extends \PhpUnit\FrameWork\TestCase
 }
 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             'anonymous class false positive case' => [
                 '<?php
 final class MyTest extends \PhpUnit\FrameWork\TestCase

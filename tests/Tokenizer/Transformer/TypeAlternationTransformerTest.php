@@ -282,5 +282,20 @@ class Number
                 66 => CT::T_TYPE_ALTERNATION,
             ],
         ];
+
+        yield 'callable type' => [
+            '<?php
+                function f1(array|callable $x) {};
+                function f2(callable|array $x) {};
+                function f3(string|callable $x) {};
+                function f4(callable|string $x) {};
+            ',
+            [
+                7 => CT::T_TYPE_ALTERNATION,
+                22 => CT::T_TYPE_ALTERNATION,
+                37 => CT::T_TYPE_ALTERNATION,
+                52 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
     }
 }

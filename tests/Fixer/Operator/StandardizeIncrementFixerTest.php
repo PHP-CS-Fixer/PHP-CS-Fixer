@@ -36,7 +36,7 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php ++$i;',
                 '<?php $i += 1;',
@@ -553,10 +553,6 @@ $i#3
                 }',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

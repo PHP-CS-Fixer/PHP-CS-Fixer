@@ -55,7 +55,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
             return;
         }
 
-        $prevIndex = $tokens->getTokenNotOfKindsSibling($index, -1, [T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
+        $prevIndex = $tokens->getTokenNotOfKindsSibling($index, -1, [T_CALLABLE, T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
 
         /** @var Token $prevToken */
         $prevToken = $tokens[$prevIndex];

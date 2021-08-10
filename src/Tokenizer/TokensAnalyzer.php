@@ -57,7 +57,7 @@ final class TokensAnalyzer
 
         for ($index = 1, $count = \count($this->tokens) - 2; $index < $count; ++$index) {
             if ($this->tokens[$index]->isClassy()) {
-                list($index, $newElements) = $this->findClassyElements($index, $index);
+                [$index, $newElements] = $this->findClassyElements($index, $index);
                 $elements += $newElements;
             }
         }
@@ -672,7 +672,7 @@ final class TokensAnalyzer
                             --$nestedBracesLevel;
 
                             if (0 === $nestedBracesLevel) {
-                                list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $index);
+                                [$index, $newElements] = $this->findClassyElements($nestedClassIndex, $index);
                                 $elements += $newElements;
 
                                 break;
@@ -682,12 +682,12 @@ final class TokensAnalyzer
                         }
 
                         if ($token->isClassy()) { // anonymous class in class
-                            list($index, $newElements) = $this->findClassyElements($index, $index);
+                            [$index, $newElements] = $this->findClassyElements($index, $index);
                             $elements += $newElements;
                         }
                     }
                 } else {
-                    list($index, $newElements) = $this->findClassyElements($nestedClassIndex, $nestedClassIndex);
+                    [$index, $newElements] = $this->findClassyElements($nestedClassIndex, $nestedClassIndex);
                     $elements += $newElements;
                 }
 

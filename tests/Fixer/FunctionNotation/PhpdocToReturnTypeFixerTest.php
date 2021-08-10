@@ -22,7 +22,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
- * @requires PHP 7.0
  */
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 {
@@ -49,7 +48,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             'no phpdoc return' => [
                 '<?php function my_foo() {}',
             ],
@@ -331,10 +330,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return string[]|int[] */ function my_foo() {}',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield 'report static as self' => [

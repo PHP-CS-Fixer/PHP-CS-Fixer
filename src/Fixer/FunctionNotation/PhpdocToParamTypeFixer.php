@@ -143,7 +143,7 @@ function bar($foo) {}
                     continue;
                 }
 
-                list($paramType, $isNullable) = $typeInfo;
+                [$paramType, $isNullable] = $typeInfo;
 
                 $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
                 $variableIndex = $this->findCorrectVariable($tokens, $startIndex, $paramTypeAnnotation);

@@ -69,7 +69,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
                 return;
             }
 
-            list($functionNameIndex, $openParenthesis, $closeParenthesis) = $boundaries;
+            [$functionNameIndex, $openParenthesis, $closeParenthesis] = $boundaries;
 
             // analysing cursor shift, so nested expressions kept processed
             $currIndex = $openParenthesis;

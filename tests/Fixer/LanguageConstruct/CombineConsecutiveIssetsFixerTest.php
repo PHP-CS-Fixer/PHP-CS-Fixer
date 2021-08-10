@@ -179,9 +179,6 @@ isset
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClass(): void
     {
         $this->doTest(

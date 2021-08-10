@@ -86,7 +86,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'switch',
                     'throw',
                     'use',
-                    'use_trait',
                 ],
             ],
             'no_leading_namespace_whitespace' => true,

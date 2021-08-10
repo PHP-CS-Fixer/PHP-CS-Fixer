@@ -84,21 +84,6 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                 '<?php interface T extends A, B, C {}',
                 '<?php interface T extends C, A, B {}',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFixAlpha70Cases
-     */
-    public function testFixAlpha70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixAlpha70Cases()
-    {
-        return [
             'nested anonymous classes' => [
                 '<?php
                     class T implements A, B, C

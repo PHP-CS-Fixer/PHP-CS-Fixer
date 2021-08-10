@@ -15,7 +15,7 @@ Dictionary of ``const|method|property|trait_import`` => ``none|one`` values.
 
 Allowed types: ``array``
 
-Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'one']``
+Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']``
 
 Examples
 --------

@@ -128,7 +128,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
         $replacements = [];
         $escapeSequences = [];
 
-        foreach ($this->symbolsReplace as $character => list($replacement, $codepoint)) {
+        foreach ($this->symbolsReplace as $character => [$replacement, $codepoint]) {
             $replacements[$character] = $replacement;
             $escapeSequences[$character] = '\u{'.$codepoint.'}';
         }

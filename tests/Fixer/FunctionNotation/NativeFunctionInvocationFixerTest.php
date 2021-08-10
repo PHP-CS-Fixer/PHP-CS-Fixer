@@ -473,7 +473,7 @@ namespace {
 
     public function provideFixWithConfiguredIncludeCases()
     {
-        $tests = [
+        yield from [
             'include set + 1, exclude 1' => [
                 '<?php
                     echo \count([1]);
@@ -564,10 +564,6 @@ namespace {
                 ],
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield 'include @compiler_optimized with strict enabled' => [

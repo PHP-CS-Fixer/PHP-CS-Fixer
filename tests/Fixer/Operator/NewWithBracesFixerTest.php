@@ -44,7 +44,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php class A { public function B(){ $static = new static(new \SplFileInfo(__FILE__)); }}',
             ],
@@ -254,10 +254,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

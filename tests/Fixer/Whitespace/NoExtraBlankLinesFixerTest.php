@@ -631,9 +631,11 @@ $a = new Qux();',
 
     /**
      * @dataProvider provideRemoveBetweenUseTraitsCases
+     * @group legacy
      */
     public function testRemoveBetweenUseTraits(string $expected, string $input): void
     {
+        $this->expectDeprecation('Option "use_trait" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.');
         $this->fixer->configure(['tokens' => ['use_trait']]);
 
         $this->doTest($expected, $input);
@@ -756,7 +758,7 @@ class Foo
 
     public function provideOneAndInLineCases()
     {
-        $tests = [
+        yield from [
             [
                 "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",
             ],
@@ -771,10 +773,6 @@ class Foo
                 "<?php\n\n\$a->{'Test'};\nfunction test(){}\n",
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

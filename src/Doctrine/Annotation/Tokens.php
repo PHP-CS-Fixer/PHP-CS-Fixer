@@ -248,7 +248,7 @@ final class Tokens extends \SplFixedArray
         $this->setSize($this->getSize() + 1);
 
         for ($i = $this->getSize() - 1; $i > $index; --$i) {
-            $this[$i] = isset($this[$i - 1]) ? $this[$i - 1] : new Token();
+            $this[$i] = $this[$i - 1] ?? new Token();
         }
 
         $this[$index] = $token;

@@ -26,8 +26,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP 7.0
-     *
      * @dataProvider provideCodeWithReturnTypesCases
      */
     public function testCodeWithReturnTypes(string $expected, ?string $input = null): void

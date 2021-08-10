@@ -167,7 +167,7 @@ final class ProjectCodeTest extends TestCase
         $extraProps = array_diff(
             $definedProps,
             $allowedProps,
-            isset($exceptionPropsPerClass[$className]) ? $exceptionPropsPerClass[$className] : []
+            $exceptionPropsPerClass[$className] ?? []
         );
 
         sort($extraProps);

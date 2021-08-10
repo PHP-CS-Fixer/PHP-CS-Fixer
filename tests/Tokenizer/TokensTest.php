@@ -301,7 +301,7 @@ final class TokensTest extends TestCase
     {
         $emptyToken = new Token('');
 
-        $tests = [
+        return [
             ['Invalid sequence.', []],
             [
                 'Non-meaningful token at position: "0".',
@@ -316,10 +316,6 @@ final class TokensTest extends TestCase
                 ['{', '!', $emptyToken, '}'],
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
     }
 
     public function testClearRange(): void
@@ -341,7 +337,7 @@ class FooBar
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(T_PUBLIC));
+        [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
@@ -697,21 +693,7 @@ PHP;
             [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2],
             [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5],
             [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFindBlockEnd70Cases
-     */
-    public function testFindBlockEnd70(int $expectedIndex, string $source, int $type, int $searchIndex): void
-    {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
-    }
-
-    public function provideFindBlockEnd70Cases()
-    {
-        return [
+            [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
             [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
         ];
     }

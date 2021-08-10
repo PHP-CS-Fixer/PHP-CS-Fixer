@@ -197,6 +197,15 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                 ],
             ],
             'do not touch' => ['<?php if (1) {} class Foo{ } function bar(){ }'],
+            'dynamic property with string with variable' => [
+                '<?php $object->{"set_{$name}"}(42);',
+                [
+                    3 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                    6 => T_CURLY_OPEN,
+                    8 => CT::T_CURLY_CLOSE,
+                    10 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                ],
+            ],
         ];
     }
 

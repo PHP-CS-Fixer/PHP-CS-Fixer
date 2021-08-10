@@ -36,7 +36,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 
     public function provideNoEmptyStatementsCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
@@ -388,10 +388,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         foreach (['break', 'continue'] as $ops) {
             yield [

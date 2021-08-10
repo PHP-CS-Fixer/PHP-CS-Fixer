@@ -78,6 +78,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['braces'], $fixers['method_chaining_indentation']],
             [$fixers['class_attributes_separation'], $fixers['braces']],
             [$fixers['class_attributes_separation'], $fixers['indentation_type']],
+            [$fixers['class_attributes_separation'], $fixers['no_extra_blank_lines']],
             [$fixers['class_definition'], $fixers['braces']],
             [$fixers['class_keyword_remove'], $fixers['no_unused_imports']],
             [$fixers['combine_consecutive_issets'], $fixers['multiline_whitespace_before_semicolons']],
@@ -519,7 +520,7 @@ final class FixerFactoryTest extends TestCase
         $map = [];
 
         foreach ($cases as $beforeAfter) {
-            list($before, $after) = $beforeAfter;
+            [$before, $after] = $beforeAfter;
 
             $beforeClass = \get_class($before);
             $afterClass = \get_class($after);

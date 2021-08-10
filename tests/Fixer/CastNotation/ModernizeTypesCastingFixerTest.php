@@ -175,7 +175,7 @@ OVERRIDDEN;
 
     public function provideFix70Cases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php $foo = ((string) $x)[0];',
                 '<?php $foo = strval($x)[0];',
@@ -185,10 +185,6 @@ OVERRIDDEN;
                 '<?php $foo = strval($x + $y)[0];',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

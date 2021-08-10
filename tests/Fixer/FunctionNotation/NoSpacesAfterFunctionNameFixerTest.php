@@ -35,7 +35,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             'test function call' => [
                 '<?php abc($a);',
                 '<?php abc ($a);',
@@ -144,10 +144,6 @@ $$e(2);
  ($a);',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield 'test dynamic by array, curly mix' => [
