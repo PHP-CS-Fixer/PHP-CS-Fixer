@@ -1243,8 +1243,6 @@ class Tokens extends \SplFixedArray
                 if (0 === $blockLevel) {
                     break;
                 }
-
-                continue;
             }
         }
 
