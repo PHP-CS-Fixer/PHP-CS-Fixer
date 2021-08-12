@@ -16,6 +16,10 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -26,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
+final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * @var string[]
@@ -40,12 +44,23 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHPDoc annotation descriptions should not be a sentence.',
-            [new CodeSample('<?php
+            [
+                new CodeSample('<?php
 /**
  * @param string $bar Some string.
  */
 function foo ($bar) {}
-')]
+'),
+                new CodeSample(
+                    '<?php
+/**
+ * @param string $bar Some string.
+ */
+function foo ($bar) {}
+',
+                    ['lowercase' => false]
+                ),
+            ]
         );
     }
 
@@ -113,26 +128,41 @@ function foo ($bar) {}
                 $endLine = $doc->getLine($annotation->getEnd());
                 $endLine->setContent(Preg::replace('/(?<![.。])[.。]\h*(\H+)$/u', '\1', $endLine->getContent()));
 
-                $startLine = $doc->getLine($annotation->getStart());
-                $optionalTypeRegEx = $annotation->supportTypes()
-                    ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
-                    : '';
-                $content = Preg::replaceCallback(
-                    '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
-                    static function (array $matches) {
-                        if (\function_exists('mb_strtolower')) {
-                            return $matches[1].mb_strtolower($matches[2]).$matches[3];
-                        }
+                if (true === $this->configuration['lowercase']) {
+                    $startLine = $doc->getLine($annotation->getStart());
+                    $optionalTypeRegEx = $annotation->supportTypes()
+                        ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
+                        : '';
+                    $content = Preg::replaceCallback(
+                        '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
+                        static function (array $matches) {
+                            if (\function_exists('mb_strtolower')) {
+                                return $matches[1].mb_strtolower($matches[2]).$matches[3];
+                            }
 
-                        return $matches[1].strtolower($matches[2]).$matches[3];
-                    },
-                    $startLine->getContent(),
-                    1
-                );
-                $startLine->setContent($content);
+                            return $matches[1].strtolower($matches[2]).$matches[3];
+                        },
+                        $startLine->getContent(),
+                        1
+                    );
+                    $startLine->setContent($content);
+                }
             }
 
             $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('lowercase', 'Whether to lowercase the first character of description.'))
+                ->setAllowedValues([true, false])
+                ->setDefault(true)
+                ->getOption(),
+        ]);
     }
 }

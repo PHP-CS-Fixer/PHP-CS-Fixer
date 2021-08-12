@@ -25,15 +25,32 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 {
-    /**
-     * @dataProvider provideFixCases
-     */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testInvalidConfigMissingKey(): void
     {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[phpdoc_annotation_without_dot\] Invalid configuration: The option "a" does not exist\. Defined options are: "lowercase"\.$#');
+
+        $this->fixer->configure(['a' => 1]);
+    }
+
+    public function testInvalidConfigValue(): void
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches('#^\[phpdoc_annotation_without_dot\] Invalid configuration: The option "lowercase" with value "lower" is invalid\. Accepted values are: true, false\.$#');
+
+        $this->fixer->configure(['lowercase' => 'lower']);
+    }
+
+    /**
+     * @dataProvider provideFixCasesForLowercaseTrue
+     */
+    public function testFixWithLowercase(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['lowercase' => true]);
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCasesForLowercaseTrue()
     {
         return [
             [
@@ -219,6 +236,59 @@ function foo ($bar) {}
  */
 function foo ($bar) {}
 ',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixCasesForLowercaseFalse
+     */
+    public function testWithoutLowercase(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['lowercase' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixCasesForLowercaseFalse()
+    {
+        return [
+            [
+                '<?php
+    /**
+     * @param string|null $str Some string
+     * @param string      $ab  Ab
+     *
+     * @return array Result array
+     */',
+                '<?php
+    /**
+     * @param string|null $str Some string.
+     * @param string      $ab  Ab.
+     *
+     * @return array Result array。
+     */',
+            ],
+            [
+                '<?php
+    /**
+     * @var string A string variable
+     */',
+                '<?php
+    /**
+     * @var string A string variable.
+     */',
+            ],
+            [
+                '<?php
+    /**
+     * @deprecated This is
+     *             deprecated
+     */',
+                '<?php
+    /**
+     * @deprecated This is
+     *             deprecated.
+     */',
             ],
         ];
     }
