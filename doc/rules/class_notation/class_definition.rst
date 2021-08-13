@@ -35,6 +35,16 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``space_before_parenthesis``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether there should be a single space after the parenthesis of anonymous class
+(PSR12) or not.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
@@ -129,6 +139,19 @@ With configuration: ``['multi_line_extends_each_single_line' => true]``.
    +    BarBaz,
    +    FooBarBaz
     {}
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['space_before_parenthesis' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$foo = new class(){};
+   +$foo = new class () {};
 
 Rule sets
 ---------

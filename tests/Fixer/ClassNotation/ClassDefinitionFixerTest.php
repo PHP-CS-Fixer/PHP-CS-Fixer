@@ -28,12 +28,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
-    public function testConfigureDefaultToNull(): void
+    public function testConfigureDefaultToFalse(): void
     {
         $defaultConfig = [
             'multi_line_extends_each_single_line' => false,
             'single_item_single_line' => false,
             'single_line' => false,
+            'space_before_parenthesis' => false,
         ];
 
         $fixer = new ClassDefinitionFixer();
@@ -117,7 +118,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
-            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line"\.$/'
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
@@ -278,6 +279,16 @@ A#
 {};',
                 '<?php $a = new class()#
 {};',
+            ],
+            'space_before_parenthesis 1' => [
+                '<?php $z = new class () {};',
+                '<?php $z = new class()  {};',
+                ['space_before_parenthesis' => true],
+            ],
+            'space_before_parenthesis 2' => [
+                '<?php $z = new class () {};',
+                '<?php $z = new class   ()  {};',
+                ['space_before_parenthesis' => true],
             ],
         ];
     }
@@ -822,6 +833,11 @@ extends
     private function provideClassyImplementsCases()
     {
         return [
+            [
+                '<?php class LotOfImplements implements A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q
+{}',
+                '<?php class LotOfImplements implements A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q{}',
+            ],
             [
                 "<?php class E implements B\n{}",
                 "<?php class    E   \nimplements     B       \t{}",
