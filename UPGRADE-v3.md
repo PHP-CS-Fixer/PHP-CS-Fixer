@@ -157,8 +157,8 @@ Code BC changes
 
 - class `Token` is now `final`
 - class `Tokens` is now `final`
-- method `create` of class `Config` has been removed, use the constructor
-- method `create` of class `RuleSet` has been removed, use the constructor
+- method `create` of class `Config` has been removed, [use the constructor](./doc/config.rst)
+- method `create` of class `RuleSet` has been removed, [use the constructor](./doc/custom_rules.rst)
 
 ### BC breaks; common internal classes
 
