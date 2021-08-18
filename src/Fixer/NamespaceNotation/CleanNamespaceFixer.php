@@ -94,7 +94,7 @@ final class CleanNamespaceFixer extends AbstractLinesBeforeNamespaceFixer
             }
         }
 
-        if ($tokens[$index - 1]->isWhiteSpace()) {
+        if ($tokens[$index - 1]->isWhitespace()) {
             array_pop($spaceIndexes);
         }
 

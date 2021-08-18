@@ -171,18 +171,14 @@ RST;
             }
         }
 
-        $riskyDescription = null;
-        $samples = [];
+        $definition = $fixer->getDefinition();
 
-        if ($fixer instanceof FixerInterface) {
-            $definition = $fixer->getDefinition();
+        $doc .= "\n\n".$this->toRst($definition->getSummary());
 
-            $doc .= "\n\n".$this->toRst($definition->getSummary());
-
-            $description = $definition->getDescription();
-            if (null !== $description) {
-                $description = $this->toRst($description);
-                $doc .= <<<RST
+        $description = $definition->getDescription();
+        if (null !== $description) {
+            $description = $this->toRst($description);
+            $doc .= <<<RST
 
 
 Description
@@ -190,11 +186,10 @@ Description
 
 {$description}
 RST;
-            }
-
-            $riskyDescription = $definition->getRiskyDescription();
-            $samples = $definition->getCodeSamples();
         }
+
+        $riskyDescription = $definition->getRiskyDescription();
+        $samples = $definition->getCodeSamples();
 
         if (null !== $riskyDescription) {
             $riskyDescription = $this->toRst($riskyDescription, 3);

@@ -101,7 +101,7 @@ switch ($foo) {
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues([
                     static function (string $value) {
-                        if (\is_string($value) && Preg::match('/\R/', $value)) {
+                        if (Preg::match('/\R/', $value)) {
                             throw new InvalidOptionsException('The comment text must not contain new lines.');
                         }
 

@@ -314,15 +314,6 @@ final class Runner
             return;
         }
 
-        // BC compatibility < Sf 4.3
-        if (
-            !$this->eventDispatcher instanceof \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
-        ) {
-            $this->eventDispatcher->dispatch($name, $event);
-
-            return;
-        }
-
         $this->eventDispatcher->dispatch($event, $name);
     }
 }

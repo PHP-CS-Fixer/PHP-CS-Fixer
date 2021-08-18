@@ -120,7 +120,7 @@ final class TypeExpression
      */
     public function __construct(string $value, ?NamespaceAnalysis $namespace, array $namespaceUses)
     {
-        while ('' !== $value && false !== $value) {
+        while ('' !== $value) {
             Preg::match(
                 '{^'.self::REGEX_TYPES.'$}x',
                 $value,

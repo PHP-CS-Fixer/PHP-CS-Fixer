@@ -134,7 +134,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return false;
         }
 
-        $info['indexes'] = [];
+        $info = ['indexes' => []];
 
         $prev = $tokens->getPrevMeaningfulToken($index);
 
