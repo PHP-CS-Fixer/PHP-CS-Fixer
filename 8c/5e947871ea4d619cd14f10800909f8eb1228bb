@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-13T14:51:06Z
+
+[![Coverage Status](https://coveralls.io/builds/42133365/badge)](https://coveralls.io/builds/42133365)
+
+Coverage remained the same at 92.221% when pulling **074b7dfc4e9352022d4ca42b5978d8d6014545fc on SpacePossum:master_empty_loop_body,no_trailing_whitespace_prio_test** into **676db92e1a6758067f9416dd6b966607ec706d21 on FriendsOfPHP:master**.
