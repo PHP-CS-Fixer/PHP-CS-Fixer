@@ -411,22 +411,6 @@ class Bar {
 \foo();
 INPUT
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixImportFunctions70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixImportFunctions70(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['import_functions' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixImportFunctions70Cases()
-    {
-        return [
             'name already used' => [
                 <<<'EXPECTED'
 <?php

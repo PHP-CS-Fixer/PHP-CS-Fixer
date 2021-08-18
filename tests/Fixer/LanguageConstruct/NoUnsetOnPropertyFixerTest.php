@@ -117,19 +117,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 '<?php unset($bar->foo{0});',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
         yield 'It does not break complex expressions' => [
             '<?php
                 unset(a()[b()["a"]]);

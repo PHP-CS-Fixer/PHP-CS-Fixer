@@ -382,21 +382,6 @@ class Foo
 class Foo{}
 /**  */',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFixVar70Cases
-     */
-    public function testFixVar70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixVar70Cases()
-    {
-        return [
             'anonymousClass' => [
                 <<<'EOF'
 <?php

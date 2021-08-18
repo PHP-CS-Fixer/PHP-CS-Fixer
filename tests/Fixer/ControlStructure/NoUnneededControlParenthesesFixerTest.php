@@ -51,15 +51,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->fixerTest($expected, $input, $fixStatement);
     }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null, ?string $fixStatement = null): void
-    {
-        $this->fixerTest($expected, $input, $fixStatement);
-    }
-
     public function provideFixCases()
     {
         return [
@@ -429,12 +420,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 function foo() { $a = (yield($x)); }
                 ',
             ],
-        ];
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
                 $var = clone ($obj1->getSubject() ?? $obj2);
@@ -445,7 +430,6 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixYieldFromCases
-     * @requires PHP 7.0
      */
     public function testFixYieldFrom(string $expected, ?string $input = null): void
     {

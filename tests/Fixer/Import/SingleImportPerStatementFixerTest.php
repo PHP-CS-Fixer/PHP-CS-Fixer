@@ -206,21 +206,6 @@ C  ; ',
 use X ?><?php new X(); // run before white space around semicolon',
                 '<?php use Z , X ?><?php new X(); // run before white space around semicolon',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php use FooA#
 ;#
@@ -276,9 +261,6 @@ use A,B;
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testMessyComments(): void
     {
         if (\PHP_VERSION_ID >= 80000) {

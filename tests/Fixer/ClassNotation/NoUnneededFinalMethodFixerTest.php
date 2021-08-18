@@ -225,21 +225,6 @@ class Bar
     }
 }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider providePhp70Cases
-     */
-    public function testFixPhp70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function providePhp70Cases()
-    {
-        return [
             'anonymous-class-inside' => [
                 '<?php
 final class Foo
