@@ -1,5 +1,5 @@
 includes:
-    - dev-tools/vendor/jangregor/phpstan-prophecy/src/extension.neon
+    - dev-tools/vendor/jangregor/phpstan-prophecy/extension.neon
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
 
