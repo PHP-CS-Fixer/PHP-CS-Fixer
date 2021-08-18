@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.19.2
+---------------------
+
+* bug #5881 SelfUpdateCommand - fix link to UPGRADE docs (keradus)
+
 Changelog for v2.19.1
 ---------------------
 
