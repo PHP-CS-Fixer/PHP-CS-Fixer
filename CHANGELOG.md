@@ -158,6 +158,11 @@ Changelog for v3.0.0
 * minor #5657 DX: convert some properties to constants (keradus)
 * minor #5669 Remove TrailingCommaInMultilineArrayFixer (kubawerlos, keradus)
 
+Changelog for v2.19.2
+---------------------
+
+* bug #5881 SelfUpdateCommand - fix link to UPGRADE docs (keradus)
+
 Changelog for v2.19.1
 ---------------------
 
