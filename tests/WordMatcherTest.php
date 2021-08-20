@@ -25,8 +25,13 @@ use PhpCsFixer\WordMatcher;
  */
 final class WordMatcherTest extends TestCase
 {
+
     /**
      * @dataProvider provideMatchCases
+     * 
+     * @param string $expected
+     * @param string $needle
+     * @param array $candidates
      */
     public function testMatch(?string $expected, string $needle, array $candidates): void
     {
@@ -34,6 +39,11 @@ final class WordMatcherTest extends TestCase
         static::assertSame($expected, $matcher->match($needle));
     }
 
+    /**
+     * Data provider as array of match case to test
+     * 
+     * @return array
+     */
     public function provideMatchCases(): array
     {
         return [
