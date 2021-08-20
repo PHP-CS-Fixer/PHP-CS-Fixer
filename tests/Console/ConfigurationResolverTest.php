@@ -954,17 +954,53 @@ final class ConfigurationResolverTest extends TestCase
         );
     }
 
+    /**
+     * @param string[] $rules
+     *
+     * @dataProvider provideRenamedRulesCases
+     */
+    public function testResolveRenamedRulesWithUnknownRules(string $expectedMessage, array $rules): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $resolver = $this->createConfigurationResolver(['rules' => implode(',', $rules)]);
+        $resolver->getRules();
+    }
+
+    public function provideRenamedRulesCases(): \Generator
+    {
+        yield 'with config' => [
+            'The rules contain unknown fixers: "blank_line_before_return" is renamed (did you mean "blank_line_before_statement"? (note: use configuration "[\'statements\' => [\'return\']]")).
+For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['blank_line_before_return'],
+        ];
+
+        yield 'without config' => [
+            'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?).
+For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['final_static_access'],
+        ];
+
+        yield [
+            'The rules contain unknown fixers: "hash_to_slash_comment" is renamed (did you mean "single_line_comment_style"? (note: use configuration "[\'comment_types\' => [\'hash\']]")).
+For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['hash_to_slash_comment'],
+        ];
+
+        yield 'both renamed and unknown' => [
+            'The rules contain unknown fixers: "final_static_access" is renamed (did you mean "self_static_accessor"?), "binary_operator_space" (did you mean "binary_operator_spaces"?).
+For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.0.0/UPGRADE-v3.md#renamed-ruless.',
+            ['final_static_access', 'binary_operator_space'],
+        ];
+    }
+
     public function testResolveRulesWithUnknownRules(): void
     {
-        $this->expectException(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
-        );
-        $this->expectExceptionMessage(
-            'The rules contain unknown fixers: "bar", "binary_operator_space" (did you mean "binary_operator_spaces"?).'
-        );
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('The rules contain unknown fixers: "bar", "binary_operator_space" (did you mean "binary_operator_spaces"?).');
 
         $resolver = $this->createConfigurationResolver(['rules' => 'braces,-bar,binary_operator_space']);
-
         $resolver->getRules();
     }
 
@@ -1073,7 +1109,7 @@ final class ConfigurationResolverTest extends TestCase
 
     public function testDeprecationOfPassingOtherThanNoOrYes(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Expected "yes" or "no" for option "allow-risky", got "yes please".');
 
         $resolver = $this->createConfigurationResolver(['allow-risky' => 'yes please']);
