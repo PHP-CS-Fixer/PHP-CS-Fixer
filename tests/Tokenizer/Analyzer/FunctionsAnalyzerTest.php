@@ -285,22 +285,7 @@ final class FunctionsAnalyzerTest extends TestCase
                 11,
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideIsGlobalFunctionCallPhp70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsGlobalFunctionCallPhp70(bool $isFunctionIndex, string $code, int $index): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
-    }
-
-    public function provideIsGlobalFunctionCallPhp70Cases()
-    {
         yield [
             true,
             '<?php

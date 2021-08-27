@@ -21,7 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @requires PHP 7.0
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
  */
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase

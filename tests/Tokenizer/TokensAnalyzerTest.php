@@ -575,25 +575,6 @@ preg_replace_callback(
                 '<?php $foo = function &() {};',
                 [5 => true],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsLambda70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsLambda70(string $source, array $expected): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
-    }
-
-    public function provideIsLambda70Cases()
-    {
-        return [
             [
                 '<?php
                     $a = function (): array {
@@ -913,21 +894,6 @@ $a(1,2);',
                 '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
                 [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsConstantInvocation70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsConstantInvocation70(string $source, array $expected): void
-    {
-        $this->doIsConstantInvocationTest($source, $expected);
-    }
-
-    public function provideIsConstantInvocation70Cases()
-    {
-        return [
             [
                 '<?php function x(): FOO {}',
                 [3 => false, 8 => false],
@@ -1838,23 +1804,6 @@ class AnnotatedClass
 EOF
                 ,
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideGetImportUseIndexesPHP70Cases
-     * @requires PHP 7.0
-     */
-    public function testGetImportUseIndexesPHP70(array $expected, string $input, bool $perNamespace = false): void
-    {
-        $tokens = Tokens::fromCode($input);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
-    }
-
-    public function provideGetImportUseIndexesPHP70Cases()
-    {
-        return [
             [
                 [1, 22, 41],
                 '<?php

@@ -133,19 +133,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
                 }
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotChange70Cases
-     * @requires PHP 7.0
-     */
-    public function testDoNotChange70(string $source): void
-    {
-        static::assertNotChange($source);
-    }
-
-    public function provideDoNotChange70Cases()
-    {
         yield 'return type' => ['<?php function foo(): array { return []; }'];
     }
 
