@@ -203,18 +203,11 @@ FIXED;
                 '<?php $a === (null === ($a ? $x : $y));',
                 '<?php $a === is_null($a ? $x : $y);',
             ],
+            [
+                '<?php null !== ($a ?? null);',
+                '<?php !is_null($a ?? null);',
+            ],
         ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testFix70(): void
-    {
-        $this->doTest(
-            '<?php null !== ($a ?? null);',
-            '<?php !is_null($a ?? null);'
-        );
     }
 
     /**

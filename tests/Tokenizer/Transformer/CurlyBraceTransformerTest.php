@@ -51,32 +51,6 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    /**
-     * @dataProvider provideProcess70Cases
-     * @requires PHP 7.0
-     */
-    public function testProcess70(string $source, array $expectedTokens = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_CURLY_OPEN,
-                CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
-                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
-                CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-                CT::T_DYNAMIC_VAR_BRACE_OPEN,
-                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                CT::T_GROUP_IMPORT_BRACE_OPEN,
-                CT::T_GROUP_IMPORT_BRACE_CLOSE,
-            ]
-        );
-    }
-
     public function provideProcessCases()
     {
         return [
@@ -206,12 +180,6 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     10 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
                 ],
             ],
-        ];
-    }
-
-    public function provideProcess70Cases()
-    {
-        return [
             [
                 '<?php use some\a\{ClassA, ClassB, ClassC as C};',
                 [

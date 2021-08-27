@@ -489,17 +489,6 @@ TestInterface3, /**/     TestInterface4   ,
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    /**
-     * @param string $source PHP source code
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideClassyInheritanceInfo7Cases
-     */
-    public function testClassyInheritanceInfo7(string $source, string $label, array $expected): void
-    {
-        $this->doTestClassyInheritanceInfo($source, $label, $expected);
-    }
-
     public function provideClassyImplementsInfoCases()
     {
         yield from [
@@ -586,11 +575,8 @@ namespace {
             'numberOfImplements',
             ['start' => 36, 'numberOfImplements' => 2, 'multiLine' => $multiLine],
         ];
-    }
 
-    public function provideClassyInheritanceInfo7Cases()
-    {
-        return [
+        yield from [
             [
                 "<?php \$a = new    class(3)     extends\nSomeClass\timplements    SomeInterface, D {};",
                 'numberOfExtends',
@@ -610,17 +596,16 @@ namespace {
     }
 
     /**
-     * @dataProvider providePHP70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFixPHP70(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
 
         $this->doTest($expected, $input);
     }
 
-    public function providePHP70Cases()
+    public function provideFixCases()
     {
         return [
             [

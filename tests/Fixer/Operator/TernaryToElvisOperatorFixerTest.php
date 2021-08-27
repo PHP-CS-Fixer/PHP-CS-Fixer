@@ -467,20 +467,8 @@ EOT
                 '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70Fix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
+        yield from [
             [
                 '<?php new class() extends Foo {} ? new class{} : $a;',
             ],

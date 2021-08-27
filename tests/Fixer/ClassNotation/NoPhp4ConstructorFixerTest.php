@@ -26,15 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFix70(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFixCases()
     {
         return [
             [

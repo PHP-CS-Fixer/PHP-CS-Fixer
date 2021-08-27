@@ -37,7 +37,7 @@ final class ClassyAnalyzerTest extends TestCase
 
     public function provideIsClassyInvocationCases()
     {
-        return [
+        yield from [
             [
                 '<?php new Foo;',
                 [3 => true],
@@ -103,21 +103,7 @@ final class ClassyAnalyzerTest extends TestCase
                 [1 => false, 7 => false],
             ],
         ];
-    }
 
-    /**
-     * @param array<int, bool> $expected
-     *
-     * @dataProvider provideIsClassyInvocation70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsClassyInvocation70(string $source, array $expected): void
-    {
-        self::assertClassyInvocation($source, $expected);
-    }
-
-    public function provideIsClassyInvocation70Cases()
-    {
         yield [
             '<?php function foo(int $foo, string &$bar): self {}',
             [3 => false, 5 => false, 10 => false, 17 => false],

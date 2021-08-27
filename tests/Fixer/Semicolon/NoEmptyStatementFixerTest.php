@@ -427,15 +427,14 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFixPHP7(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function providePHP7Cases()
+    public function provideFixCases()
     {
         return [
             [

@@ -27,18 +27,12 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideDocblocksCases
+     * @dataProvider provideTraitsCases
+     * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideTraitsCases
-     */
-    public function testFixTraits(string $expected, ?string $input = null): void
-    {
         $this->doTest($expected, $input);
     }
 
@@ -700,16 +694,7 @@ trait DocBlocks
         ];
     }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
+    public function provideFixCases()
     {
         return [
             [

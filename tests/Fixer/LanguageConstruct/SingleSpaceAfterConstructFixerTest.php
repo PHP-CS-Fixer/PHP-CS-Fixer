@@ -2789,8 +2789,6 @@ $bar; }',
     }
 
     /**
-     * @requires PHP 7.0
-     *
      * @dataProvider provideFixWithYieldFromCases
      */
     public function testFixWithYieldFrom(string $expected, ?string $input = null): void

@@ -131,20 +131,8 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
                 ',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        yield 'call by variable' => [
+        yield 'call by property' => [
             '<?php
                 ($f->c)(1, 2);
                 ($f->{c})(1, 2);
