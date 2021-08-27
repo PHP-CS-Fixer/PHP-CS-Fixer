@@ -109,7 +109,6 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
 
     /**
      * @dataProvider provideFixWithEscapeSequencesInStringsCases
-     * @requires PHP 7.0
      */
     public function testFixWithEscapeSequencesInStrings(string $expected, ?string $input = null): void
     {

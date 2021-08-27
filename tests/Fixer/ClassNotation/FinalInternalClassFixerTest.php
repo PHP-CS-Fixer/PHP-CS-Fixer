@@ -276,7 +276,6 @@ class B{}
      * @param string      $expected PHP source code
      * @param null|string $input    PHP source code
      *
-     * @requires PHP 7.0
      * @dataProvider provideAnonymousClassesCases
      */
     public function testAnonymousClassesCases(string $expected, ?string $input = null): void

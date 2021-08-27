@@ -28,7 +28,6 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     * @requires PHP 7.0
      */
     public function testFix(string $expected, ?string $input = null): void
     {
@@ -142,7 +141,6 @@ $a = 456;
 
     /**
      * @dataProvider provideMessyWhitespacesCases
-     * @requires PHP 7.0
      */
     public function testMessyWhitespaces(string $expected, ?string $input = null): void
     {

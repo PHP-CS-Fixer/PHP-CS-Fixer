@@ -2966,23 +2966,6 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
 ?><?php ++$a;
 } ?>',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixCommentBeforeBrace70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixCommentBeforeBrace70(string $expected, ?string $input = null, array $configuration = []): void
-    {
-        $this->fixer->configure($configuration);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixCommentBeforeBrace70Cases()
-    {
-        return [
             [
                 '<?php
     $foo = new class ($a) extends Foo implements Bar { // foo

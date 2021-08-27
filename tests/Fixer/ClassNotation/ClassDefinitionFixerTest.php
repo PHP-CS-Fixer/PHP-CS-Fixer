@@ -50,8 +50,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      * @param array<string, bool> $config
      *
      * @dataProvider provideAnonymousClassesCases
-     *
-     * @requires PHP 7.0
      */
     public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {

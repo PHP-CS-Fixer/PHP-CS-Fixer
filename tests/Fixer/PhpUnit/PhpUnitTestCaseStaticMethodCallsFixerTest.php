@@ -500,9 +500,6 @@ EOF
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(

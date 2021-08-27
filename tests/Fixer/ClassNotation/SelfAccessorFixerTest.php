@@ -142,21 +142,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                     public function baz31(\Test\Foo\Foo2\Bar $bar);
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php class Foo { function bar() {
                     new class() { function baz() { new Foo(); } };
