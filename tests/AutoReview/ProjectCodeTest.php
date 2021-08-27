@@ -798,6 +798,7 @@ final class ProjectCodeTest extends TestCase
         );
 
         $classes = array_filter($classes, static function (string $class): bool {
+            // @phpstan-ignore-next-line due to false positive reported in https://github.com/phpstan/phpstan/issues/5369
             return is_subclass_of($class, TestCase::class);
         });
 

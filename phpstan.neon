@@ -10,4 +10,8 @@ parameters:
         - tests
     excludePaths:
         - tests/Fixtures
+    ignoreErrors:
+        - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
+        - '/^Unsafe call to private method [a-zA-Z\\]+::[a-zA-Z]+\(\) through static::\.$/'
+        - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
     tipsOfTheDay: false
