@@ -33,7 +33,7 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
 
     public function provideTestFixCases()
     {
-        $tests = [
+        yield from [
             'alternative syntax |' => [
                 '<?php
                     switch($foo):
@@ -399,10 +399,6 @@ case $b:
 }}}}}}}}}}',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 70000) {
             yield 'simple case' => [

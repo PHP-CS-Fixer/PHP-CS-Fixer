@@ -116,7 +116,7 @@ EOF;
 
     public function provideOutsideCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php
 $a = $b[0]    ;',
@@ -178,10 +178,6 @@ $baz [0]
      [2] = 3;',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

@@ -285,11 +285,7 @@ else?><?php echo 5;',
             }
         ';
 
-        $tests = $this->generateCases($expected, $input);
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
+        yield from $this->generateCases($expected, $input);
 
         yield [
             '<?php
@@ -453,7 +449,7 @@ else?><?php echo 5;',
 
     public function provideNegativeCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php
                     if ($a0) {
@@ -611,10 +607,6 @@ else?><?php echo 5;',
                     };',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID >= 80000) {
             $cases = [

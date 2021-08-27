@@ -53,7 +53,7 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php $a = 1 + ($b + $c) === true ? 1 : 2;',
                 null,
@@ -637,10 +637,6 @@ $a#4
                 '<?php $a = $b = $c === null;',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         $template = '<?php $a = ($b + $c) %s 1 === true ? 1 : 2;';
         $operators = ['||', '&&'];

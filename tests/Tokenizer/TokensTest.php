@@ -301,7 +301,7 @@ final class TokensTest extends TestCase
     {
         $emptyToken = new Token('');
 
-        $tests = [
+        return [
             ['Invalid sequence.', []],
             [
                 'Non-meaningful token at position: "0".',
@@ -316,10 +316,6 @@ final class TokensTest extends TestCase
                 ['{', '!', $emptyToken, '}'],
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
     }
 
     public function testClearRange(): void

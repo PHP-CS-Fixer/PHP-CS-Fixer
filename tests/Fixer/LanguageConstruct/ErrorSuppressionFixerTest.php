@@ -39,7 +39,7 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php trigger_error("This is not a deprecation warning."); ?>',
             ],
@@ -115,10 +115,6 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
                 [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['trigger_error']],
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [
