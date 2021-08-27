@@ -163,22 +163,6 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
                 '<?php foo(\E_DEPRECATED | \E_USER_DEPRECATED);',
                 '<?php foo(E_DEPRECATED | E_USER_DEPRECATED);',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70WithDefaultConfigurationCases
-     *
-     * @requires PHP 7.0
-     */
-    public function testFix70WithDefaultConfiguration(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70WithDefaultConfigurationCases(): array
-    {
-        return [
             ['<?php function foo(): M_PI {}'],
             ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'],
         ];

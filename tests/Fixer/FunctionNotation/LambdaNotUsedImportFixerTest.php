@@ -103,21 +103,6 @@ $f = function() use ($b) { return function($b) { return function($b) { return fu
 $f = function() use ($a) { return function() use ($a) { return function() use ($a) { return function() use ($a) { }; }; }; };
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider providePhp70Cases
-     */
-    public function testFixPhp70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function providePhp70Cases()
-    {
-        return [
             'anonymous class' => [
                 '<?php
 $a = function() use ($b) { new class($b){}; }; // do not fix

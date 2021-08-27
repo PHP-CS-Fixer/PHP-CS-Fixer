@@ -72,24 +72,6 @@ final class FinalClassFixerTest extends AbstractFixerTestCase
                 '<?php /** @internal Map my app to an @Entity */ final class MyMapper {}',
                 '<?php /** @internal Map my app to an @Entity */ class MyMapper {}',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             ['<?php $anonymClass = new class {};'],
         ];
     }

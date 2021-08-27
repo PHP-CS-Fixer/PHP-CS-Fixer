@@ -100,24 +100,6 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     abstract public static function bar();
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             'anonymous-class' => [
                 sprintf(
                     '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',

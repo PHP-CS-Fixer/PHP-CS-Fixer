@@ -1207,7 +1207,6 @@ function foo() {
 
     /**
      * @dataProvider provideFixWithYieldFromCases
-     * @requires PHP 7.0
      */
     public function testFixWithYieldFrom(string $expected, ?string $input = null): void
     {
