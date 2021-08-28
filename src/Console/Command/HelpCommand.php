@@ -106,7 +106,7 @@ final class HelpCommand extends BaseHelpCommand
             return '[]';
         }
 
-        $isHash = static::isHash($value);
+        $isHash = !array_is_list($value);
         $str = '[';
 
         foreach ($value as $k => $v) {
@@ -121,20 +121,5 @@ final class HelpCommand extends BaseHelpCommand
         }
 
         return substr($str, 0, -2).']';
-    }
-
-    private static function isHash(array $array): bool
-    {
-        $i = 0;
-
-        foreach ($array as $k => $v) {
-            if ($k !== $i) {
-                return true;
-            }
-
-            ++$i;
-        }
-
-        return false;
     }
 }
