@@ -154,6 +154,16 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                     $next2 = & \Next($array2);
                 ',
             ],
+            [
+                '<?php
+                    namespace Foo;
+                    use function MyStuff\StrToLower;
+                    class Bar {
+                        public function getName() {
+                            return StrToLower($this->name);
+                        }
+                    }',
+            ],
         ];
     }
 
@@ -186,10 +196,26 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80(): void
+    public function testFix80(string $expected): void
     {
-        $this->doTest('<?php $a?->STRTOLOWER(1,);');
+        $this->doTest($expected);
+    }
+
+    public function provideFix80Cases(): iterable
+    {
+        yield ['<?php $a?->STRTOLOWER(1,);'];
+
+        yield [
+            '<?php
+                    final class SomeClass
+            {
+                #[File(mimeTypes: ["application/pdf", "image/*"])]
+                public FileBlob $attachment;
+            }
+            ',
+        ];
     }
 }
