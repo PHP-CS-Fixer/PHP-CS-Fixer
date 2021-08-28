@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-05T06:47:18Z
+
+[![Coverage Status](https://coveralls.io/builds/41938690/badge)](https://coveralls.io/builds/41938690)
+
+Coverage increased (+0.0004%) to 92.192% when pulling **c818712d60baca997414d13daff1b8b4824bf290 on boesing:bugfix/phpdoc_tag_type-inline-see** into **ff30407f3f2d74c552cb7c860607d21529ac1dfa on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by boesing at 2021-08-05T17:00:46Z
+
+@juliendufresne yah, was thinking the same yesterday evening but was too tired. Added now, thanks for the reminder!
