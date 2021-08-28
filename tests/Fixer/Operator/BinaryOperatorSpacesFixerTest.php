@@ -2052,6 +2052,10 @@ $a = $ae?? $b;
                 public function bar(TypeA | TypeB|TypeC $x): TypeA|TypeB | TypeC|TypeD
                 {
                 }
+                public function baz(
+                    callable|array $a,
+                    array|callable $b,
+                ) {}
             }'
         );
     }

@@ -1506,6 +1506,43 @@ $b;',
     }
 
     /**
+     * @dataProvider provideIsBinaryOperator80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsBinaryOperator80(string $source, array $expected): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public static function provideIsBinaryOperator80Cases(): iterable
+    {
+        yield [
+            '<?php function foo(array|string $x) {}',
+            [6 => false],
+        ];
+        yield [
+            '<?php function foo(string|array $x) {}',
+            [6 => false],
+        ];
+        yield [
+            '<?php function foo(int|callable $x) {}',
+            [6 => false],
+        ];
+        yield [
+            '<?php function foo(callable|int $x) {}',
+            [6 => false],
+        ];
+    }
+
+    /**
      * @dataProvider provideArrayExceptionsCases
      */
     public function testIsNotArray(string $source, int $tokenIndex): void
