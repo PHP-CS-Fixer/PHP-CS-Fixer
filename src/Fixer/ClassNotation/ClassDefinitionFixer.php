@@ -96,6 +96,12 @@ interface Bar extends
 ',
                     ['multi_line_extends_each_single_line' => true]
                 ),
+                new CodeSample(
+                    '<?php
+$foo = new class(){};
+',
+                    ['space_before_parenthesis' => true]
+                ),
             ]
         );
     }
@@ -149,6 +155,10 @@ interface Bar extends
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('space_before_parenthesis', 'Whether there should be a single space after the parenthesis of anonymous class (PSR12) or not.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
@@ -182,6 +192,7 @@ interface Bar extends
         // PSR12: anonymous class curly brace on same line if not multi line implements.
 
         $classDefInfo['open'] = $this->fixClassyDefinitionOpenSpacing($tokens, $classDefInfo);
+
         if ($classDefInfo['implements']) {
             $end = $classDefInfo['implements']['start'];
         } elseif ($classDefInfo['extends']) {
@@ -191,11 +202,7 @@ interface Bar extends
         }
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
-        $this->makeClassyDefinitionSingleLine(
-            $tokens,
-            $classDefInfo['anonymousClass'] ? $tokens->getPrevMeaningfulToken($classyIndex) : $classDefInfo['start'],
-            $end
-        );
+        $this->makeClassyDefinitionSingleLine($tokens, $classDefInfo['start'], $end);
     }
 
     private function fixClassyDefinitionExtends(Tokens $tokens, int $classOpenIndex, array $classExtendsInfo): array
@@ -249,6 +256,7 @@ interface Bar extends
         }
 
         $openIndex = $tokens->getNextTokenOfKind($classDefInfo['classy'], ['{']);
+
         if (' ' !== $spacing && false !== strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
             return $openIndex;
         }
@@ -269,9 +277,6 @@ interface Bar extends
     private function getClassyDefinitionInfo(Tokens $tokens, int $classyIndex): array
     {
         $openIndex = $tokens->getNextTokenOfKind($classyIndex, ['{']);
-        $prev = $tokens->getPrevMeaningfulToken($classyIndex);
-        $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classyIndex;
-
         $extends = false;
         $implements = false;
         $anonymousClass = false;
@@ -286,6 +291,13 @@ interface Bar extends
                 $tokensAnalyzer = new TokensAnalyzer($tokens);
                 $anonymousClass = $tokensAnalyzer->isAnonymousClass($classyIndex);
             }
+        }
+
+        if ($anonymousClass) {
+            $startIndex = $tokens->getPrevMeaningfulToken($classyIndex); // go to "new" for anonymous class
+        } else {
+            $prev = $tokens->getPrevMeaningfulToken($classyIndex);
+            $startIndex = $tokens[$prev]->isGivenKind([T_FINAL, T_ABSTRACT]) ? $prev : $classyIndex;
         }
 
         return [
@@ -304,6 +316,7 @@ interface Bar extends
         ++$startIndex;
         $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
         $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
+
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if ($tokens[$i]->equals(',')) {
                 ++$implementsInfo[$label];
@@ -323,13 +336,12 @@ interface Bar extends
     {
         for ($i = $endIndex; $i >= $startIndex; --$i) {
             if ($tokens[$i]->isWhitespace()) {
-                $prevNonWhite = $tokens->getPrevNonWhitespace($i);
-                $nextNonWhite = $tokens->getNextNonWhitespace($i);
+                if ($tokens[$i - 1]->isComment() || $tokens[$i + 1]->isComment()) {
+                    $content = $tokens[$i - 1]->getContent();
 
-                if ($tokens[$prevNonWhite]->isComment() || $tokens[$nextNonWhite]->isComment()) {
-                    $content = $tokens[$prevNonWhite]->getContent();
                     if (!('#' === $content || '//' === substr($content, 0, 2))) {
-                        $content = $tokens[$nextNonWhite]->getContent();
+                        $content = $tokens[$i + 1]->getContent();
+
                         if (!('#' === $content || '//' === substr($content, 0, 2))) {
                             $tokens[$i] = new Token([T_WHITESPACE, ' ']);
                         }
@@ -338,7 +350,17 @@ interface Bar extends
                     continue;
                 }
 
-                if (!$tokens[$i - 1]->equals(',') && $tokens[$i + 1]->equalsAny([',', '(', ')']) || $tokens[$i - 1]->equals('(')) {
+                if ($tokens[$i - 1]->isGivenKind(T_CLASS) && $tokens[$i + 1]->equals('(')) {
+                    if (true === $this->configuration['space_before_parenthesis']) {
+                        $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                    } else {
+                        $tokens->clearAt($i);
+                    }
+
+                    continue;
+                }
+
+                if (!$tokens[$i - 1]->equals(',') && $tokens[$i + 1]->equalsAny([',', ')']) || $tokens[$i - 1]->equals('(')) {
                     $tokens->clearAt($i);
 
                     continue;
@@ -350,6 +372,12 @@ interface Bar extends
             }
 
             if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
+                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+
+                continue;
+            }
+
+            if ($this->configuration['space_before_parenthesis'] && $tokens[$i]->isGivenKind(T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
                 $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
 
                 continue;
@@ -374,6 +402,7 @@ interface Bar extends
         for ($i = $endIndex; $i > $startIndex; --$i) {
             $previousInterfaceImplementingIndex = $tokens->getPrevTokenOfKind($i, [',', [T_IMPLEMENTS], [T_EXTENDS]]);
             $breakAtIndex = $tokens->getNextMeaningfulToken($previousInterfaceImplementingIndex);
+
             // make the part of a ',' or 'implements' single line
             $this->makeClassyDefinitionSingleLine(
                 $tokens,
@@ -383,6 +412,7 @@ interface Bar extends
 
             // make sure the part is on its own line
             $isOnOwnLine = false;
+
             for ($j = $breakAtIndex; $j > $previousInterfaceImplementingIndex; --$j) {
                 if (false !== strpos($tokens[$j]->getContent(), "\n")) {
                     $isOnOwnLine = true;
