@@ -491,7 +491,7 @@ TestInterface3, /**/     TestInterface4   ,
 
     public function provideClassyImplementsInfoCases()
     {
-        $tests = [
+        yield from [
             '1' => [
                 '<?php
 class X11 implements    Z   , T,R
@@ -524,10 +524,6 @@ class X10 implements    Z   , T,R    //
                 ['start' => 5, 'numberOfImplements' => 3, 'multiLine' => false],
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             $multiLine = true;

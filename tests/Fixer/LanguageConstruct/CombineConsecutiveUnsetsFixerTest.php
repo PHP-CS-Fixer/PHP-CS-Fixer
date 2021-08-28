@@ -35,7 +35,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php //1
                     unset($foo/*;*/, /*;*/$bar, $c , $foobar  ,  $foobar2);
@@ -130,10 +130,6 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

@@ -35,7 +35,7 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             'comment' => [
                 '<?php $a++;//a ?>',
                 '<?php $a++//a ?>',
@@ -82,10 +82,6 @@ A is equal to 5
 <?php } ?>',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

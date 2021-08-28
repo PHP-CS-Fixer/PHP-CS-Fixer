@@ -403,7 +403,7 @@ class Foo {}
 
     public function provideFunctionsWithArgumentsCases()
     {
-        $tests = [
+        yield from [
             ['<?php function(){};', 1, []],
             ['<?php function($a){};', 1, [
                 '$a' => new ArgumentAnalysis(
@@ -485,10 +485,6 @@ class Foo {}
             ]],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
                 '$a' => new ArgumentAnalysis(
@@ -535,7 +531,7 @@ class Foo {}
 
     public function provideFunctionsWithArgumentsPhp74Cases()
     {
-        $tests = [
+        yield from [
             ['<?php fn() => null;', 1, []],
             ['<?php fn($a) => null;', 1, [
                 '$a' => new ArgumentAnalysis(
@@ -616,10 +612,6 @@ class Foo {}
                 ),
             ]],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield ['<?php fn(\Foo/** TODO: change to something else */\Bar $a) => null;', 1, [
