@@ -16,7 +16,7 @@ namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\LanguageConstruct\DeclareBracesFixer;
+use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -193,7 +193,7 @@ class Foo
     protected function createProxyFixers(): array
     {
         return [
-            new DeclareBracesFixer(),
+            new DeclareParenthesesFixer(),
         ];
     }
 
@@ -707,7 +707,7 @@ class Foo
 
             // Declare tokens don't follow the same rules are other control statements
             if ($token->isGivenKind(T_DECLARE)) {
-                continue; // delegated to DeclareBracesFixer
+                continue; // delegated to DeclareParenthesesFixer
             }
 
             if ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT::T_USE_LAMBDA)) {

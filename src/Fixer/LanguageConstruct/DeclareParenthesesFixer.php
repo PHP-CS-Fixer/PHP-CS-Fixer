@@ -20,12 +20,12 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class DeclareBracesFixer extends AbstractFixer
+final class DeclareParenthesesFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There must not be spaces around `declare` statement braces.',
+            'There must not be spaces around `declare` statement parentheses.',
             [new CodeSample("<?php declare ( strict_types=1 );\n")]
         );
     }

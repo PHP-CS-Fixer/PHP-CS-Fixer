@@ -1,8 +1,8 @@
-=======================
-Rule ``declare_braces``
-=======================
+============================
+Rule ``declare_parentheses``
+============================
 
-There must not be spaces around ``declare`` statement braces.
+There must not be spaces around ``declare`` statement parentheses.
 
 Examples
 --------

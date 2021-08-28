@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareBracesFixer
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer
  */
-final class DeclareBracesFixerTest extends AbstractFixerTestCase
+final class DeclareParenthesesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
