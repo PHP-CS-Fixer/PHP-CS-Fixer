@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-28T08:36:40Z
+
+> I would argue we should extract conditional cases into dedicated providers with `@require` annotations, but this can be done later.
+
+I'd like to discuss it, so we have some order in tests/providers, so when bumping lowest PHP version we have [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5902), not [this](https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5906).
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-28T13:54:39Z
+
+i'm open to discuss how to have conditional tests existing, but IMHO it's good value to see some tests were skipped due to missing requirements.
+
+it;s different to say " 100 / 100 tests passed" vs "100 / 150 tests passed and 50 could not be executed due to not fulfilled requirements"
