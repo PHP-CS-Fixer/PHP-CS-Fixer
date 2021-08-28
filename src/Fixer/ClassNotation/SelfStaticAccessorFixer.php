@@ -18,8 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -79,7 +77,7 @@ final class Foo
 }
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 $a = new class() {
     public function getBar()
@@ -87,8 +85,7 @@ $a = new class() {
         return static::class;
     }
 };
-',
-                    new VersionSpecification(70000)
+'
                 ),
             ]
         );

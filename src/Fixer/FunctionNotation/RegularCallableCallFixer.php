@@ -18,8 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -47,13 +45,12 @@ final class RegularCallableCallFixer extends AbstractFixer
     call_user_func_array($callback, [1, 2]);
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 call_user_func(function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
 call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
-',
-                    new VersionSpecification(70000)
+'
                 ),
             ],
             null,

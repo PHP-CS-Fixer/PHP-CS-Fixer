@@ -22,8 +22,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -65,9 +63,8 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         return new FixerDefinition(
             'PHP arrays should be declared using the configured syntax.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\narray(1,2);\n",
-                    new VersionSpecification(50400)
+                new CodeSample(
+                    "<?php\narray(1,2);\n"
                 ),
                 new CodeSample(
                     "<?php\n[1,2];\n",

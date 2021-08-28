@@ -18,8 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -37,7 +35,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
             'A return statement wishing to return `void` should not return `null`.',
             [
                 new CodeSample("<?php return null;\n"),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'EOT'
 <?php
 function foo() { return null; }
@@ -46,8 +44,6 @@ function baz(): ?int { return null; }
 function xyz(): void { return null; }
 
 EOT
-                    ,
-                    new VersionSpecification(70100)
                 ),
             ]
         );

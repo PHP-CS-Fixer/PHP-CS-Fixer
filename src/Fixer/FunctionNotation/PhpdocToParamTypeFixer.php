@@ -16,10 +16,9 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\DocBlock\Annotation;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -56,25 +55,18 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
         return new FixerDefinition(
             'EXPERIMENTAL: Takes `@param` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
-/** @param string $bar */
-function my_foo($bar)
+/**
+ * @param string $foo
+ * @param string|null $bar
+ */
+function f($foo, $bar)
 {}
-',
-                    new VersionSpecification(70000)
+'
                 ),
-                new VersionSpecificCodeSample(
-                    '<?php
-
-/** @param string|null $bar */
-function my_foo($bar)
-{}
-',
-                    new VersionSpecification(70100)
-                ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 /** @param Foo $foo */
@@ -82,7 +74,6 @@ function foo($foo) {}
 /** @param string $foo */
 function bar($foo) {}
 ',
-                    new VersionSpecification(70100),
                     ['scalar_types' => false]
                 ),
             ],
@@ -143,7 +134,7 @@ function bar($foo) {}
                     continue;
                 }
 
-                list($paramType, $isNullable) = $typeInfo;
+                [$paramType, $isNullable] = $typeInfo;
 
                 $startIndex = $tokens->getNextTokenOfKind($index, ['(']);
                 $variableIndex = $this->findCorrectVariable($tokens, $startIndex, $paramTypeAnnotation);

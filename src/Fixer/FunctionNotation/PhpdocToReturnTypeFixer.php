@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
@@ -54,23 +55,17 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
         return new FixerDefinition(
             'EXPERIMENTAL: Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 /** @return \My\Bar */
-function my_foo()
+function f1()
 {}
-',
-                    new VersionSpecification(70000)
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
 
 /** @return void */
-function my_foo()
+function f2()
 {}
-',
-                    new VersionSpecification(70100)
+'
                 ),
                 new VersionSpecificCodeSample(
                     '<?php
@@ -81,7 +76,7 @@ function my_foo()
 ',
                     new VersionSpecification(70200)
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 /** @return Foo */
@@ -89,7 +84,6 @@ function foo() {}
 /** @return string */
 function bar() {}
 ',
-                    new VersionSpecification(70100),
                     ['scalar_types' => false]
                 ),
                 new VersionSpecificCodeSample(
@@ -178,7 +172,7 @@ final class Foo {
                 continue;
             }
 
-            list($returnType, $isNullable) = $typeInfo;
+            [$returnType, $isNullable] = $typeInfo;
 
             $startIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
