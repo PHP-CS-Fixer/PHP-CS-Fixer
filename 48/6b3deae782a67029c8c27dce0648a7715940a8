@@ -1,0 +1,31 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-05T20:55:13Z
+
+[![Coverage Status](https://coveralls.io/builds/42133805/badge)](https://coveralls.io/builds/42133805)
+
+Coverage increased (+0.1%) to 92.31% when pulling **628d93095ffbbfcc52e95ccad53b092fb445382b on kubawerlos:add_AttributeAnalyzer** into **af200216de85c6b369d6f556b3b7a7bf9fc0931d on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-05T22:09:01Z
+
+@SpacePossum I'm counting on your creativity with test cases.
+
+---------------------------------------------------------------------------
+
+by davidbyoung at 2021-08-12T19:12:38Z
+
+Thanks for the PR!  Any update on when this might get merged in so that #5809 can get merged in?  I can't upgrade to v3 in my PHP 8.0 project until they're merged because of the issue with attributes being accidentally marked as global functions (#5722).  Thanks again.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-12T19:50:09Z
+
+@davidbyoung it needs to be reviewed, feel invited to do it.
+
+---------------------------------------------------------------------------
+
+by davidbyoung at 2021-08-27T14:15:29Z
+
+Good morning.  Is there anything outstanding that we need for this PR to be merged in besides being updated to latest?
