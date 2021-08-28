@@ -126,7 +126,7 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
 
     public function provideDoNotFixCases()
     {
-        $tests = [
+        yield from [
             'reference' => [
                 '<?php $fn = function() use(&$b) {} ?>',
             ],
@@ -180,10 +180,6 @@ $foo();
 ',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 70100) {
             yield 'super global, invalid from PHP7.1' => [

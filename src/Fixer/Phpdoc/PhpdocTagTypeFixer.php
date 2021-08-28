@@ -90,21 +90,23 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
             return;
         }
 
+        $regularExpression = sprintf(
+            '/({?@(?:%s).*?(?:(?=\s\*\/)|(?=\n)}?))/i',
+            implode('|', array_map(
+                function (string $tag) {
+                    return preg_quote($tag, '/');
+                },
+                array_keys($this->configuration['tags'])
+            ))
+        );
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
             }
 
             $parts = Preg::split(
-                sprintf(
-                    '/({?@(?:%s)(?:}|\h.*?(?:}|(?=\R)|(?=\h+\*\/)))?)/i',
-                    implode('|', array_map(
-                        function (string $tag) {
-                            return preg_quote($tag, '/');
-                        },
-                        array_keys($this->configuration['tags'])
-                    ))
-                ),
+                $regularExpression,
                 $token->getContent(),
                 -1,
                 PREG_SPLIT_DELIM_CAPTURE

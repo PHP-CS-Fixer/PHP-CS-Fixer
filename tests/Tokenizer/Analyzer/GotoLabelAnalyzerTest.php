@@ -45,7 +45,7 @@ final class GotoLabelAnalyzerTest extends TestCase
 
     public function provideIsClassyInvocationCases()
     {
-        $tests = [
+        yield from [
             'no candidates' => [
                 '<?php
                     $a = \InvalidArgumentException::class;
@@ -84,10 +84,6 @@ final class GotoLabelAnalyzerTest extends TestCase
                 [10],
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield [

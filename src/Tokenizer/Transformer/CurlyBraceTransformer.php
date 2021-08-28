@@ -131,7 +131,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         }
 
         $openIndex = $index + 1;
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $openIndex);
 
         $tokens[$openIndex] = new Token([CT::T_DYNAMIC_PROP_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}']);
@@ -155,7 +155,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $openIndex);
 
         $tokens[$openIndex] = new Token([CT::T_DYNAMIC_VAR_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}']);
@@ -195,7 +195,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
 
         $tokens[$index] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}']);
@@ -213,9 +213,51 @@ final class CurlyBraceTransformer extends AbstractTransformer
             return;
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
 
         $tokens[$index] = new Token([CT::T_GROUP_IMPORT_BRACE_OPEN, '{']);
         $tokens[$closeIndex] = new Token([CT::T_GROUP_IMPORT_BRACE_CLOSE, '}']);
+    }
+
+    /**
+     * We do not want to rely on `$tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index)` here,
+     * as it relies on block types that are assuming that `}` tokens are already transformed to Custom Tokens that are allowing to distinguish different block types.
+     * As we are just about to transform `{` and `}` into Custom Tokens by this transformer, thus we need to compare those tokens manually by content without using `Tokens::findBlockEnd`.
+     */
+    private function naivelyFindCurlyBlockEnd(Tokens $tokens, int $startIndex): int
+    {
+        if (!$tokens->offsetExists($startIndex)) {
+            throw new \OutOfBoundsException(sprintf('Unavailable index: "%s".', $startIndex));
+        }
+
+        if ('{' !== $tokens[$startIndex]->getContent()) {
+            throw new \InvalidArgumentException(sprintf('Wrong start index: "%s".', $startIndex));
+        }
+
+        $blockLevel = 1;
+        $endIndex = $tokens->count() - 1;
+        for ($index = $startIndex + 1; $index !== $endIndex; ++$index) {
+            $token = $tokens[$index];
+
+            if ('{' === $token->getContent()) {
+                ++$blockLevel;
+
+                continue;
+            }
+
+            if ('}' === $token->getContent()) {
+                --$blockLevel;
+
+                if (0 === $blockLevel) {
+                    if (!$token->equals('}')) {
+                        throw new \UnexpectedValueException(sprintf('Detected block end for index: "%s" was already transformed into other token type: "%s".', $startIndex, $token->getName()));
+                    }
+
+                    return $index;
+                }
+            }
+        }
+
+        throw new \UnexpectedValueException(sprintf('Missing block end for index: "%s".', $startIndex));
     }
 }

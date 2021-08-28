@@ -35,7 +35,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases()
     {
-        $tests = [
+        yield from [
             [
                 '<?php
     switch (1) {
@@ -330,10 +330,6 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 }',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [

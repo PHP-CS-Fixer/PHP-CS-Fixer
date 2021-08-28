@@ -119,16 +119,12 @@ final class TokenTest extends TestCase
 
     public function provideIsCommentCases()
     {
-        $tests = [
+        yield from [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
             [new Token([T_COMMENT, '/* comment */', 1]), true],
             [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_ATTRIBUTE')) {
@@ -146,17 +142,13 @@ final class TokenTest extends TestCase
 
     public function provideIsObjectOperatorCases()
     {
-        $tests = [
+        yield from [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
             [new Token([T_COMMENT, '/* comment */']), false],
             [new Token([T_DOUBLE_COLON, '::']), false],
             [new Token([T_OBJECT_OPERATOR, '->']), true],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
             yield [new Token([T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
