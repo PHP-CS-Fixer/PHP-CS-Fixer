@@ -167,7 +167,7 @@ class Foo
         }
 
         // does the PHP4-constructor only call $this->__construct($args, ...)?
-        list($sequences, $case) = $this->getWrapperMethodSequence($tokens, '__construct', $php4['startIndex'], $php4['bodyIndex']);
+        [$sequences, $case] = $this->getWrapperMethodSequence($tokens, '__construct', $php4['startIndex'], $php4['bodyIndex']);
         foreach ($sequences as $seq) {
             if (null !== $tokens->findSequence($seq, $php4['bodyIndex'] - 1, $php4['endIndex'], $case)) {
                 // good, delete it!
@@ -180,7 +180,7 @@ class Foo
         }
 
         // does __construct only call the PHP4-constructor (with the same args)?
-        list($sequences, $case) = $this->getWrapperMethodSequence($tokens, $className, $php4['startIndex'], $php4['bodyIndex']);
+        [$sequences, $case] = $this->getWrapperMethodSequence($tokens, $className, $php4['startIndex'], $php4['bodyIndex']);
         foreach ($sequences as $seq) {
             if (null !== $tokens->findSequence($seq, $php5['bodyIndex'] - 1, $php5['endIndex'], $case)) {
                 // that was a weird choice, but we can safely delete it and...

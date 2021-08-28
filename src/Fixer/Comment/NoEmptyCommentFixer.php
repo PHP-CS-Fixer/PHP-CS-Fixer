@@ -72,7 +72,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
                 continue;
             }
 
-            list($blockStart, $index, $isEmpty) = $this->getCommentBlock($tokens, $index);
+            [$blockStart, $index, $isEmpty] = $this->getCommentBlock($tokens, $index);
             if (false === $isEmpty) {
                 continue;
             }

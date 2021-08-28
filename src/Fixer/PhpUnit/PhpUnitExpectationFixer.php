@@ -207,7 +207,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 return;
             }
 
-            list($thisIndex, , $index) = array_keys($match);
+            [$thisIndex, , $index] = array_keys($match);
 
             if (!isset($this->methodMap[$tokens[$index]->getContent()])) {
                 continue;

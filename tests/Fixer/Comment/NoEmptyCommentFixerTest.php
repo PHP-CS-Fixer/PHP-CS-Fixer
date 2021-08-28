@@ -267,7 +267,7 @@ echo 1;
         $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
         $method->setAccessible(true);
 
-        list($foundStart, $foundEnd, $foundIsEmpty) = $method->invoke($this->fixer, $tokens, $startIndex);
+        [$foundStart, $foundEnd, $foundIsEmpty] = $method->invoke($this->fixer, $tokens, $startIndex);
 
         static::assertSame($startIndex, $foundStart, 'Find start index of block failed.');
         static::assertSame($endIndex, $foundEnd, 'Find end index of block failed.');

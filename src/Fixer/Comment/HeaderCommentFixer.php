@@ -436,7 +436,7 @@ echo 1;
         }
 
         $nextIndex = $index + 1;
-        $nextToken = isset($tokens[$nextIndex]) ? $tokens[$nextIndex] : null;
+        $nextToken = $tokens[$nextIndex] ?? null;
 
         if (!$newlineRemoved && null !== $nextToken && $nextToken->isWhitespace()) {
             $content = Preg::replace('/^\R/', '', $nextToken->getContent());
