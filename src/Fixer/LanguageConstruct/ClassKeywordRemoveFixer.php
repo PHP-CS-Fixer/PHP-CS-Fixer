@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -25,9 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @deprecated
+ *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-final class ClassKeywordRemoveFixer extends AbstractFixer
+final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
     /**
      * @var string[]
@@ -52,6 +55,14 @@ $className = Baz::class;
                 ),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSuccessorsNames(): array
+    {
+        return [];
     }
 
     /**
