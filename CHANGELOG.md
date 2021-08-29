@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.1.0
+--------------------
+
+* feature #5572 PhpdocToCommentFixer - Add `ignored_tags` option (VincentLanglet)
+* feature #5588 NoAliasFunctionsFixer - Add more function aliases (danog)
+* feature #5704 ClassAttributesSeparationFixer - Introduce `only_if_meta` spacing option (paulbalandan)
+* feature #5734 TypesSpacesFixer - Introduction (kubawerlos)
+* feature #5745 EmptyLoopBodyFixer - introduction (SpacePossum, keradus)
+* feature #5751 Extract DeclareParenthesesFixer from BracesFixer (julienfalque, keradus)
+* feature #5877 ClassDefinitionFixer - PSR12 for anonymous class (SpacePossum)
+* minor #5875 EmptyLoopBodyFixer - NoTrailingWhitespaceFixer - priority test (SpacePossum)
+* minor #5914 Deprecate ClassKeywordRemoveFixer (kubawerlos)
+
 Changelog for v3.0.3
 --------------------
 
