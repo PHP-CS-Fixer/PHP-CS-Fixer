@@ -277,7 +277,7 @@ Import
 Language Construct
 ------------------
 
-- `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_
+- `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_ *(deprecated)*
     Converts ``::class`` keywords to FQCN strings.
 - `combine_consecutive_issets <./language_construct/combine_consecutive_issets.rst>`_
     Using ``isset($var) &&`` multiple times should be done in one call.
