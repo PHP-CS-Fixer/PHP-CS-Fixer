@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-28T17:01:29Z
+
+[![Coverage Status](https://coveralls.io/builds/42485917/badge)](https://coveralls.io/builds/42485917)
+
+Coverage decreased (-0.005%) to 92.312% when pulling **1ab48e2d39fb34e9431ef9196ef56ce08b6fbeac on kubawerlos:deprecate_ClassKeywordRemoveFixer** into **0865c64b450590fefa43f8921488222c5361b84d on FriendsOfPHP:master**.
