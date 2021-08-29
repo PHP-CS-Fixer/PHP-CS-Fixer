@@ -12,8 +12,6 @@ PHP 7.2 test.
 
 namespace Foo;
 
-use Bar\A;
-
 class C
 {
     public function A($a, object $b): object

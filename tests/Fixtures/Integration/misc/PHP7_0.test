@@ -25,7 +25,6 @@ use const some\a\ConstC;
 use function some\a\fn_a;
 use function some\a\fn_b;
 use function some\a\fn_c;
-use function some\x\CC as C;
 use some\x\ClassX;
 use function some\x\D;
 use const some\x\E;
