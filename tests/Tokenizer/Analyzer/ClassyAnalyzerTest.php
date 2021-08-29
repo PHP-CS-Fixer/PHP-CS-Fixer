@@ -206,6 +206,11 @@ final class ClassyAnalyzerTest extends TestCase
             '<?php function foo(): int|A|false {}',
             [3 => false, 8 => false, 10 => true, 12 => false],
         ];
+
+        yield [
+            '<?php #[AnAttribute] class Foo {}',
+            [2 => true],
+        ];
     }
 
     private static function assertClassyInvocation(string $source, array $expected): void

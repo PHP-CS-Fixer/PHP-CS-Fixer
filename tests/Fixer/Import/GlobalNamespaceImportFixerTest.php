@@ -1011,4 +1011,39 @@ namespace {
 INPUT
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testAttributes(): void
+    {
+        $this->fixer->configure([
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => true,
+        ]);
+        $this->doTest(
+            '<?php
+namespace Foo;
+use AnAttribute1;
+use AnAttribute2;
+use AnAttribute3;
+class Bar
+{
+    #[AnAttribute1]
+    public function f1() {}
+    #[AnAttribute2, AnAttribute3]
+    public function f2() {}
+}',
+            '<?php
+namespace Foo;
+class Bar
+{
+    #[\AnAttribute1]
+    public function f1() {}
+    #[\AnAttribute2, \AnAttribute3]
+    public function f2() {}
+}'
+        );
+    }
 }
