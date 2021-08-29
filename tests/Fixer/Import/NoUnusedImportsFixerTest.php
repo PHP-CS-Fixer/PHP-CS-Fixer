@@ -408,6 +408,7 @@ EOF
 <?php
 
 use Foo as Bar;
+use A\MyTrait1;
 
 class MyParent
 {
@@ -422,6 +423,7 @@ EOF
 
 use Foo;
 use Foo as Bar;
+use A\MyTrait1;
 
 class MyParent
 {
@@ -1085,6 +1087,192 @@ class StoreController
     {}
 }',
             ],
+            'unused import matching function call' => [
+                '<?php
+namespace Foo;
+bar();',
+                '<?php
+namespace Foo;
+use Bar;
+bar();',
+            ],
+            'unused import matching function declaration' => [
+                '<?php
+namespace Foo;
+function bar () {}',
+                '<?php
+namespace Foo;
+use Bar;
+function bar () {}',
+            ],
+            'unused import matching method declaration' => [
+                '<?php
+namespace Foo;
+class Foo {
+    public function bar () {}
+}',
+                '<?php
+namespace Foo;
+use Bar;
+class Foo {
+    public function bar () {}
+}',
+            ],
+            'unused import matching constant usage' => [
+                '<?php
+namespace Foo;
+echo BAR;',
+                '<?php
+namespace Foo;
+use Bar;
+echo BAR;',
+            ],
+            'unused import matching class constant' => [
+                '<?php
+namespace Foo;
+class Foo {
+    const BAR = 1;
+}',
+                '<?php
+namespace Foo;
+use Bar;
+class Foo {
+    const BAR = 1;
+}',
+            ],
+            'unused function import matching class usage' => [
+                '<?php
+namespace Foo;
+new Bar();
+Baz::method();',
+                '<?php
+namespace Foo;
+use function bar;
+use function baz;
+new Bar();
+Baz::method();',
+            ],
+            'unused function import matching method call' => [
+                '<?php
+namespace Foo;
+Foo::bar();',
+                '<?php
+namespace Foo;
+use function bar;
+Foo::bar();',
+            ],
+            'unused function import matching method declaration' => [
+                '<?php
+namespace Foo;
+class Foo {
+    public function bar () {}
+}',
+                '<?php
+namespace Foo;
+use function bar;
+class Foo {
+    public function bar () {}
+}',
+            ],
+            'unused function import matching constant usage' => [
+                '<?php
+namespace Foo;
+echo BAR;',
+                '<?php
+namespace Foo;
+use function bar;
+echo BAR;',
+            ],
+            'unused function import matching class constant' => [
+                '<?php
+namespace Foo;
+class Foo {
+    const BAR = 1;
+}',
+                '<?php
+namespace Foo;
+use function bar;
+class Foo {
+    const BAR = 1;
+}',
+            ],
+            'unused constant import matching function call' => [
+                '<?php
+namespace Foo;
+bar();',
+                '<?php
+namespace Foo;
+use const BAR;
+bar();',
+            ],
+            'unused constant import matching function declaration' => [
+                '<?php
+namespace Foo;
+function bar () {}',
+                '<?php
+namespace Foo;
+use const BAR;
+function bar () {}',
+            ],
+            'unused constant import matching method declaration' => [
+                '<?php
+namespace Foo;
+class Foo {
+    public function bar () {}
+}',
+                '<?php
+namespace Foo;
+use const BAR;
+class Foo {
+    public function bar () {}
+}',
+            ],
+            'unused constant import matching class constant' => [
+                '<?php
+namespace Foo;
+class Foo {
+    const BAR = 1;
+}',
+                '<?php
+namespace Foo;
+use const BAR;
+class Foo {
+    const BAR = 1;
+}',
+            ],
+            'attribute without braces' => [
+                '<?php
+use Foo;
+class Controller
+{
+    #[Foo]
+    public function foo() {}
+}',
+            ],
+            'attribute with braces' => [
+                '<?php
+use Foo;
+class Controller
+{
+    #[Foo()]
+    public function foo() {}
+}',
+            ],
+            'go to' => [
+                '<?php
+Bar1:
+Bar2:
+Bar3:
+',
+                '<?php
+use Bar1;
+use const Bar2;
+use function Bar3;
+Bar1:
+Bar2:
+Bar3:
+',
+            ],
         ];
     }
 
@@ -1181,10 +1369,16 @@ use /**/A\B/**/;
 
     /**
      * @requires PHP 8.0
+     * @dataProvider providePhp80Cases
      */
-    public function testFix80(): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->doTest(
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp80Cases()
+    {
+        yield [
             '<?php
 
 
@@ -1197,7 +1391,14 @@ use Foo\Bar;
 
 $x = $foo?->bar;
 $y = foo?->bar();
-'
-        );
+',
+        ];
+
+        yield 'with union type in non-capturing catch' => [
+            '<?php
+use Foo;
+use Bar;
+try {} catch (Foo | Bar) {}',
+        ];
     }
 }
