@@ -2941,6 +2941,7 @@ echo 1;
 new Dummy(/* a */);
 new Dummy(/** b */);
 foo(/* c */);
+foo($a /* d */, $b);
 $arr = [/* empty */];
 ',
         ];
