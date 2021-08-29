@@ -179,7 +179,7 @@ final class ProcessOutputTest extends TestCase
     private function foreachStatus(array $statuses, \Closure $action): void
     {
         foreach ($statuses as $status) {
-            $multiplier = isset($status[1]) ? $status[1] : 1;
+            $multiplier = $status[1] ?? 1;
             $status = $status[0];
 
             for ($i = 0; $i < $multiplier; ++$i) {

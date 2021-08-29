@@ -178,7 +178,7 @@ final class Foo {
                 continue;
             }
 
-            list($returnType, $isNullable) = $typeInfo;
+            [$returnType, $isNullable] = $typeInfo;
 
             $startIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
 

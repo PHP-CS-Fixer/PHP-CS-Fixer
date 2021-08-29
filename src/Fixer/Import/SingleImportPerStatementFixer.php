@@ -173,7 +173,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
     private function fixGroupUse(Tokens $tokens, int $index, int $endIndex): void
     {
-        list($groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment) = $this->getGroupDeclaration($tokens, $index);
+        [$groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment] = $this->getGroupDeclaration($tokens, $index);
         $statements = $this->getGroupStatements($tokens, $groupPrefix, $groupOpenIndex, $groupCloseIndex, $comment);
 
         if (\count($statements) < 2) {

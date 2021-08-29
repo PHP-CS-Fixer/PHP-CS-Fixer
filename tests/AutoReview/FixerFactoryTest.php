@@ -523,7 +523,7 @@ final class FixerFactoryTest extends TestCase
         $map = [];
 
         foreach ($cases as $beforeAfter) {
-            list($before, $after) = $beforeAfter;
+            [$before, $after] = $beforeAfter;
 
             $beforeClass = \get_class($before);
             $afterClass = \get_class($after);

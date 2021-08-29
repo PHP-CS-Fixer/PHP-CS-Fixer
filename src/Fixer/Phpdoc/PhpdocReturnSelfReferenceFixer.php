@@ -219,7 +219,7 @@ class Sample
         $newTypes = [];
         foreach ($types as $type) {
             $lower = strtolower($type);
-            $newTypes[] = isset($this->configuration['replacements'][$lower]) ? $this->configuration['replacements'][$lower] : $type;
+            $newTypes[] = $this->configuration['replacements'][$lower] ?? $type;
         }
 
         if ($types === $newTypes) {

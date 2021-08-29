@@ -89,7 +89,7 @@ final class IsNullFixer extends AbstractFixer
             $matches = array_keys($matches);
 
             // move the cursor just after the sequence
-            list($isNullIndex, $currIndex) = $matches;
+            [$isNullIndex, $currIndex] = $matches;
 
             if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $matches[0])) {
                 continue;

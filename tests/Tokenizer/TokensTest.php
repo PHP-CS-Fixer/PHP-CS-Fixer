@@ -337,7 +337,7 @@ class FooBar
 PHP;
 
         $tokens = Tokens::fromCode($source);
-        list($fooIndex, $barIndex) = array_keys($tokens->findGivenKind(T_PUBLIC));
+        [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 

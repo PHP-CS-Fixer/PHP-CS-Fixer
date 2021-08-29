@@ -99,7 +99,7 @@ final class FileHandler implements FileHandlerInterface
             $error = error_get_last();
 
             throw new IOException(
-                sprintf('Failed to write file "%s", "%s".', $this->file, isset($error['message']) ? $error['message'] : 'no reason available'),
+                sprintf('Failed to write file "%s", "%s".', $this->file, $error['message'] ?? 'no reason available'),
                 0,
                 null,
                 $this->file

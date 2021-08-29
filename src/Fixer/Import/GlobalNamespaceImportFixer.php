@@ -176,7 +176,7 @@ if (count($x)) {
      */
     private function importConstants(Tokens $tokens, array $useDeclarations): array
     {
-        list($global, $other) = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
+        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
             return $declaration->isConstant();
         }, true);
 
@@ -248,7 +248,7 @@ if (count($x)) {
      */
     private function importFunctions(Tokens $tokens, array $useDeclarations): array
     {
-        list($global, $other) = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
+        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
             return $declaration->isFunction();
         }, false);
 
@@ -299,7 +299,7 @@ if (count($x)) {
      */
     private function importClasses(Tokens $tokens, array $useDeclarations): array
     {
-        list($global, $other) = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
+        [$global, $other] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
             return $declaration->isClass();
         }, false);
 
@@ -490,7 +490,7 @@ if (count($x)) {
             return;
         }
 
-        list($global) = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
+        [$global] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
             return $declaration->isConstant() && !$declaration->isAliased();
         }, true);
 
@@ -532,7 +532,7 @@ if (count($x)) {
             return;
         }
 
-        list($global) = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
+        [$global] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
             return $declaration->isFunction() && !$declaration->isAliased();
         }, false);
 
@@ -574,7 +574,7 @@ if (count($x)) {
             return;
         }
 
-        list($global) = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
+        [$global] = $this->filterUseDeclarations($useDeclarations, static function (NamespaceUseAnalysis $declaration) {
             return $declaration->isClass() && !$declaration->isAliased();
         }, false);
 
@@ -723,7 +723,7 @@ if (count($x)) {
 
                 Preg::matchAll('/[\\\\\w]+/', $fullType, $matches, PREG_OFFSET_CAPTURE);
 
-                foreach (array_reverse($matches[0]) as list($type, $offset)) {
+                foreach (array_reverse($matches[0]) as [$type, $offset]) {
                     $newType = $callback($type);
 
                     if (null !== $newType && $type !== $newType) {

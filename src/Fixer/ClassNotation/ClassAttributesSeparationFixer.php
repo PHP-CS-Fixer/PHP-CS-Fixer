@@ -408,7 +408,7 @@ class Sample
 
             if ($tokens[$nonWhiteAbovePHPDoc]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 // PHPDocs can have attributes adjacent to them, so adjust our comparison points
-                list($nonWhiteAbove, $nonWhiteAbovePHPDoc, $reqLineCount) = $this->getAttributePhpdocSequenceOffset($tokens, $nonWhiteAbovePHPDoc, $classStartIndex);
+                [$nonWhiteAbove, $nonWhiteAbovePHPDoc, $reqLineCount] = $this->getAttributePhpdocSequenceOffset($tokens, $nonWhiteAbovePHPDoc, $classStartIndex);
             }
 
             $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $reqLineCount);
@@ -423,7 +423,7 @@ class Sample
 
             // make sure there is blank line above the attribute comment
             // with the exception when it is directly after a class opening or has an adjacent PHPDoc
-            list($nonWhiteAbove, $nonWhiteAboveComment, $reqLineCount) = $this->getAttributePhpdocSequenceOffset($tokens, $nonWhiteAbove, $classStartIndex);
+            [$nonWhiteAbove, $nonWhiteAboveComment, $reqLineCount] = $this->getAttributePhpdocSequenceOffset($tokens, $nonWhiteAbove, $classStartIndex);
 
             $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $reqLineCount);
 
