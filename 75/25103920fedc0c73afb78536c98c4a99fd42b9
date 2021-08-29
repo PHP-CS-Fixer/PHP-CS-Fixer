@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-11T17:38:22Z
+
+[![Coverage Status](https://coveralls.io/builds/42088232/badge)](https://coveralls.io/builds/42088232)
+
+Coverage increased (+0.002%) to 92.307% when pulling **a522d0638533e7bd145c30fa432ca5dea8d336de on SpacePossum:3_0_class_attr** into **1b656b57d4ab35c80d5c5c3b60b1e360ba713018 on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-11T19:33:21Z
+
+hmm seems we cannot integration/prio test using fixtures with deprecated elements, I think this should be allowed as the test might still be of value as long as the deprecated element is still supported.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-11T20:13:30Z
+
+> hmm seems we cannot integration/prio test using fixtures with deprecated elements, I think this should be allowed as the test might still be of value as long as the deprecated element is still supported.
+
+We can simply move those tests to `misc` directory, right?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-12T06:05:13Z
+
+The missing deprecation option was for all fixtures, like prio, misc,etc., I've added support for it through the `settings` part
