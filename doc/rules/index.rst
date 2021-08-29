@@ -285,6 +285,8 @@ Language Construct
     Calling ``unset`` on multiple items should be done in one call.
 - `declare_equal_normalize <./language_construct/declare_equal_normalize.rst>`_
     Equal sign in declare statement should be surrounded by spaces or not following configuration.
+- `declare_parentheses <./language_construct/declare_parentheses.rst>`_
+    There must not be spaces around ``declare`` statement parentheses.
 - `dir_constant <./language_construct/dir_constant.rst>`_ *(risky)*
     Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__`` constant.
 - `error_suppression <./language_construct/error_suppression.rst>`_ *(risky)*
