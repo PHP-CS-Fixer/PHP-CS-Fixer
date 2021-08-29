@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by sstok at 2020-04-18T11:16:07Z
+
+Note. I helped with a really old version of this fixer (before tokens were used) and have almost no knowledge the current version 👍
+
+---------------------------------------------------------------------------
+
+by enumag at 2020-06-30T08:17:43Z
+
+What's the current status of this?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-18T14:44:56Z
+
+[![Coverage Status](https://coveralls.io/builds/42485808/badge)](https://coveralls.io/builds/42485808)
+
+Coverage remained the same at 92.283% when pulling **9711c2bb7ea2978d77e174abc6a49380339b37a0 on kubawerlos:bug/PhpdocAlignFixer_whitespace_in_type** into **ca8aea789c8c61c3fea2fa5928bd9b37878a0566 on FriendsOfPHP:3.0**.
