@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by akalineskou at 2021-08-20T13:51:02Z
+
+Any news on this? @keradus
+
+Also why change the branch to 3.0?
+From contributing "If you are fixing a bug or typo, improving tests or for any small tweak: the lowest branch where the changes can be applied. Once your Pull Request is accepted, the changes will get merged up to highest branches."
+Would this fix, if merged, be merged to 2.x too?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-23T19:19:08Z
+
+Or should it be considered a bug?
+
+---------------------------------------------------------------------------
+
+by akalineskou at 2021-08-23T19:51:23Z
+
+Probably a bug since this wasn't the desired effect?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-29T18:59:49Z
+
+Thank you @akalineskou.
