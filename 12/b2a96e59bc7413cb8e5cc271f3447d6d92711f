@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-28T16:45:44Z
+
+[![Coverage Status](https://coveralls.io/builds/42486343/badge)](https://coveralls.io/builds/42486343)
+
+Coverage increased (+0.0008%) to 92.283% when pulling **21d66433783838720cae2452c18c8027e4e1f56c on kubawerlos:fix_GlobalNamespaceImportFixer** into **ca8aea789c8c61c3fea2fa5928bd9b37878a0566 on FriendsOfPHP:3.0**.
