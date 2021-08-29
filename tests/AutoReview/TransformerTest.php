@@ -58,7 +58,7 @@ final class TransformerTest extends TestCase
         $name = $transformer->getName();
 
         foreach ($this->provideTransformerPriorityCases() as $pair) {
-            list($first, $second) = $pair;
+            [$first, $second] = $pair;
 
             if ($name === $first->getName() || $name === $second->getName()) {
                 $this->addToAssertionCount(1);
@@ -74,7 +74,7 @@ final class TransformerTest extends TestCase
     {
         $transformers = [];
 
-        foreach ($this->provideTransformerCases() as list($transformer)) {
+        foreach ($this->provideTransformerCases() as [$transformer]) {
             $transformers[$transformer->getName()] = $transformer;
         }
 

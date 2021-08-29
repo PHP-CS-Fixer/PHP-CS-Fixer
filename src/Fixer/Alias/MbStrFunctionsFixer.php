@@ -117,7 +117,7 @@ $a = substr_count($a, $b);
                     continue 2;
                 }
 
-                list($functionName, $openParenthesis, $closeParenthesis) = $boundaries;
+                [$functionName, $openParenthesis, $closeParenthesis] = $boundaries;
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
                 if (!\in_array($count, $functionReplacement['argumentCount'], true)) {
                     continue 2;

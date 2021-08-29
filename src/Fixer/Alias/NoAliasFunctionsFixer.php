@@ -229,7 +229,7 @@ mbereg_search_getregs();
             }
 
             if (\is_array($this->aliases[$tokenContent])) {
-                list($alias, $numberOfArguments) = $this->aliases[$tokenContent];
+                [$alias, $numberOfArguments] = $this->aliases[$tokenContent];
 
                 $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis));
 

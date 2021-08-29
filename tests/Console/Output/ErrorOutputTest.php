@@ -86,7 +86,7 @@ Files that were not fixed due to errors reported during %s:
     public function provideTestCases()
     {
         $lineNumber = __LINE__;
-        list($exceptionLineNumber, $error) = $this->getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
+        [$exceptionLineNumber, $error] = $this->getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
         ++$lineNumber;
 
         return [

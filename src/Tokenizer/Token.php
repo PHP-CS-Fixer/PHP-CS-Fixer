@@ -212,7 +212,7 @@ final class Token
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
         if (\is_array($caseSensitive)) {
-            return isset($caseSensitive[$key]) ? $caseSensitive[$key] : true;
+            return $caseSensitive[$key] ?? true;
         }
 
         return $caseSensitive;

@@ -86,7 +86,7 @@ final class DocBlock
      */
     public function getLine(int $pos): ?Line
     {
-        return isset($this->lines[$pos]) ? $this->lines[$pos] : null;
+        return $this->lines[$pos] ?? null;
     }
 
     /**
@@ -182,7 +182,7 @@ final class DocBlock
     {
         $annotations = $this->getAnnotations();
 
-        return isset($annotations[$pos]) ? $annotations[$pos] : null;
+        return $annotations[$pos] ?? null;
     }
 
     /**
