@@ -170,6 +170,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'switch_continue_to_break' => true,
             'trailing_comma_in_multiline' => true,
             'trim_array_spaces' => true,
+            'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
             'yoda_style' => true,
