@@ -1,0 +1,87 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-24T18:33:02Z
+
+[![Coverage Status](https://coveralls.io/builds/42485589/badge)](https://coveralls.io/builds/42485589)
+
+Coverage increased (+0.02%) to 92.339% when pulling **eec2de4405efb7111d42163f383cc900cd744a6c on kubawerlos:add_UnionTypesSpacesFixer** into **cbe00f0b032a5d4d9975e57946d82cee75f7d131 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2021-05-25T06:45:47Z
+
+About the name, should we anticipate for intersection types?
+`TypesSpacesFixer` maybe?
+(just asking myself, I'm good with UnionTypesSpacesFixer)
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-25T11:29:06Z
+
+@nicolas-grekas Good point! I think we can be fairly sure intersection types will land in PHP at some point. `TypesSpacesFixer` looks more suitable to me :+1:
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-05-25T13:15:40Z
+
+Wouldn't `TypesSpacesFixer` suggest handling all spaces in types like `function foo (TypeA | TypeA | ? string $x) {}` when that space after `?` is already handled?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-25T14:16:29Z
+
+`?` is not allowed when using union types with `|` but I see your point. I don't have a better suggestion for now.
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-05-25T14:24:48Z
+
+Let's go with `TypesSpacesFixer` for now then.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2021-07-12T15:19:38Z
+
+I just ran this PR on branch 6.0 of symfony/symfony, all went well!
+Can't wait ;)
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2021-07-12T15:40:30Z
+
+Hum, on second try, it looks like this doesn't fix past the first argument.
+After I added spaces, I have this kind of diff when I try to remove the spaces again with the rule:
+```diff
+-    public function trans(string|\Stringable|TranslatableInterface|null $message, array|string $arguments = [], string $domain = null, string $locale = null, int $count = null): string
++    public function trans(string|\Stringable|TranslatableInterface|null $message, array | string $arguments = [], string $domain = null, string $locale = null, int $count = null): string
+```
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-07-13T16:20:49Z
+
+@nicolas-grekas I've found the reason: https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5799 - can you review that, please?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T10:01:41Z
+
+looks very nice :)
+little todo list
+
+- [ ] rebase and squash my commit
+- [x] wait for #5799 to be merged
+- [ ] add unit tests that currently will fail because of issue above
+- [ ] wait for CI to be green with the new tests, merge and ship
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2021-08-12T07:07:31Z
+
+#5799 is now merged ;)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-28T17:59:11Z
+
+@SpacePossum all done
