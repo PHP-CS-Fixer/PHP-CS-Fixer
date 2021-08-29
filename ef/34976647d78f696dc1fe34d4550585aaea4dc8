@@ -1,0 +1,109 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-17T08:05:37Z
+
+[![Coverage Status](https://coveralls.io/builds/42486188/badge)](https://coveralls.io/builds/42486188)
+
+Coverage increased (+0.0004%) to 92.294% when pulling **f84f1580eb96050ab921e0921f5d79caf12d2cbd on julienfalque:unused-import-types** into **1127221c0c3beaac7a581d8ea20e539ba55c1e56 on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-18T16:10:33Z
+
+@GrahamCampbell I don't reproduce that, could you provide the full snippet please?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-05-19T07:45:50Z
+
+Oh, I think the issue only occurs when combined with https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5685.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-19T19:45:15Z
+
+@GrahamCampbell Actually I didn't notice your snippet uses a non-capturing catch 😐. I do reproduce the issue now, trying to fix it.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-19T20:19:56Z
+
+Fixed in #5685, which this PR now depends on. Thanks @GrahamCampbell!
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-05-22T22:50:00Z
+
+I think this also has an issue with PHP 8 attributes.
+
+```php
+<?php
+
+use Symfony\Component\Routing\Annotation\Route;
+
+class Controller
+{
+    #[Route('/foo', name: 'foo')]
+    public function foo(Request $request): Response
+    {
+    }
+}
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-23T16:24:13Z
+
+@GrahamCampbell Fixed too, thanks :+1:
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-05-25T21:05:54Z
+
+Where there other changes there, or just a rebase?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-05-25T21:09:39Z
+
+Only a rebase (onto #5741 instead of #5685).
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T13:35:14Z
+
+Fixed another issue for `goto` labels and in detecting `goto` labels. Please rebase and squash my commits out.
+There is a thing I'm not 100% about:
+
+```
+                if ($analyzer->isConstantInvocation($index)) {
+                    $type = NamespaceUseAnalysis::TYPE_CONSTANT;
+                } elseif ($nextMeaningfulToken->equals('(') && !$prevMeaningfulToken->isGivenKind($tokensNotBeforeFunctionCall)) {
+                    $type = NamespaceUseAnalysis::TYPE_FUNCTION;
+                } else {
+                    $type = NamespaceUseAnalysis::TYPE_CLASS;
+                }
+```
+
+First case is 100% `constant` invocation. The second, `function` and 3rd (default) `class`, are not checked on the same detail level. If `T_STRING` would be used in the future for a new PHP feature we would default here to `class`, while previous to this PR the default was to assume it was used. Could we improve the testing without adding to much code?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-08-02T11:00:24Z
+
+> If T_STRING would be used in the future for a new PHP feature we would default here to class, while previous to this PR the default was to assume it was used. Could we improve the testing without adding to much code?
+
+I think the current code is fine. If we know for sure that the tested token does not match a `function` or `const` import, then the token can only match a class/interface/trait import, which is what `NamespaceUseAnalysis::TYPE_CLASS` means. This would only fail if PHP introduces a new type of import but then supporting it would be part of the updates we do for each new PHP version.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-02T19:21:30Z
+
+The `goto` case was also considered a "class" usage by the code because it is a T_STRING and is not a constant and not a function. I think when PHP would use the T_STRING token in the future for something different or new it would happen again.
+For now I cannot think of such a case so we should be good though :)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-08-21T20:50:12Z
+
+Merge conflicts. 😭
