@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-28T16:27:47Z
+
+[![Coverage Status](https://coveralls.io/builds/42485951/badge)](https://coveralls.io/builds/42485951)
+
+Coverage increased (+0.0008%) to 92.317% when pulling **d2fd18b7519b09503931daf1908303c09f4dd8c4 on julienfalque:split-braces-declare-braces** into **0865c64b450590fefa43f8921488222c5361b84d on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-08-23T07:13:41Z
+
+I would not deprecate `braces` until we have extracted everything into dedicated rules. Everything is done in #4884 and #4885 but we decided to split #4884 into smaller PR to ease merging.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-08-23T09:51:47Z
+
+I am not suggesting deprecating the braces fixer. I'm suggesting deprecating the option in the braces fixer that proxies declare_braces.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-08-23T10:19:03Z
+
+Oh ok. Well, since the point is to deprecate the rule entirely, I'm not sure it's worth the hassle.
