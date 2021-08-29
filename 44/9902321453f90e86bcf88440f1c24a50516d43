@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-28T18:57:43Z
+
+[![Coverage Status](https://coveralls.io/builds/42489685/badge)](https://coveralls.io/builds/42489685)
+
+Coverage decreased (-0.0008%) to 92.282% when pulling **0b196bff8f46acbc9d432bb35b7bde5a22a69a7d on kubawerlos:use_PHP71Migration_rules** into **ca8aea789c8c61c3fea2fa5928bd9b37878a0566 on FriendsOfPHP:3.0**.
