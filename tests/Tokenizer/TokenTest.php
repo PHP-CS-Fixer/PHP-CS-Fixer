@@ -346,6 +346,14 @@ final class TokenTest extends TestCase
         yield [$function, false, [T_FUNCTION, 'function', 'unexpected']];
 
         yield [new Token('&'), true, '&'];
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition with new MAJOR release 4.0
+            yield [new Token('&'), true, new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+            yield [new Token('&'), true, new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+            yield [new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, '&'];
+            yield [new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+            yield [new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, '&'];
+            yield [new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+        }
     }
 
     public function testEqualsAnyDefaultIsCaseSensitive(): void

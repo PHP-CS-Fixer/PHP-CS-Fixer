@@ -569,16 +569,20 @@ final class TokensAnalyzer
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
+        if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+            return false;
+        }
+
+        if (isset($potentialUnaryNonArrayOperators[$token->getContent()])) {
+            return !$this->isUnaryPredecessorOperator($index);
+        }
+
         if ($token->isArray()) {
             return isset($arrayOperators[$token->getId()]);
         }
 
         if (isset($nonArrayOperators[$token->getContent()])) {
             return true;
-        }
-
-        if (isset($potentialUnaryNonArrayOperators[$token->getContent()])) {
-            return !$this->isUnaryPredecessorOperator($index);
         }
 
         return false;
