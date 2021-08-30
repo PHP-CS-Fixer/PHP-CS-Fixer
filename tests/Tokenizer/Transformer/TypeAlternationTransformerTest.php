@@ -28,7 +28,6 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
-     * @requires PHP 7.1
      */
     public function testProcess(string $source, array $expectedTokens = []): void
     {
@@ -295,6 +294,21 @@ class Number
                 22 => CT::T_TYPE_ALTERNATION,
                 37 => CT::T_TYPE_ALTERNATION,
                 52 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'promoted properties' => [
+            '<?php class Foo {
+                public function __construct(
+                    public int|string $a,
+                    protected int|string $b,
+                    private int|string $c
+                ) {}
+            }',
+            [
+                17 => CT::T_TYPE_ALTERNATION,
+                26 => CT::T_TYPE_ALTERNATION,
+                35 => CT::T_TYPE_ALTERNATION,
             ],
         ];
     }

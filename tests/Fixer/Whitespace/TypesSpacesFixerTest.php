@@ -25,7 +25,6 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     * @requires PHP 7.1
      */
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -127,6 +126,23 @@ TypeB $x) {}',
 |//not a space
 TypeB $x) {}',
             ['space' => 'single'],
+        ];
+
+        yield [
+            '<?php class Foo {
+                public function __construct(
+                    public int|string $a,
+                    protected int|string $b,
+                    private int|string $c
+                ) {}
+            }',
+            '<?php class Foo {
+                public function __construct(
+                    public int    |    string $a,
+                    protected int | string $b,
+                    private int   |   string $c
+                ) {}
+            }',
         ];
     }
 }
