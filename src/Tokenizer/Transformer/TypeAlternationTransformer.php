@@ -64,6 +64,7 @@ final class TypeAlternationTransformer extends AbstractTransformer
             CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): X|Y`
             CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X|Y`
             T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var X|Y $a;`, `private X|Y $a` or `public static X|Y $a`
+            CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, // promoted properties
         ])) {
             $this->replaceToken($tokens, $index);
 
