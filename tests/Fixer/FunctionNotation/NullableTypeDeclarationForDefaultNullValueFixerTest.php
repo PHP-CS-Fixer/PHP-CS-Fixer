@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 
 /**
  * @author HypeMC
@@ -96,10 +97,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
      * @dataProvider provideFixCases
      * @dataProvider provideNonInverseOnlyFixCases
      */
-    public function testFix(string $input, string $expected): void
+    public function testFix(string $expected, string $input): void
     {
         if (\PHP_VERSION_ID < 70100) {
-            $this->doTest($input);
+            $this->doTest($expected);
         } else {
             $this->doTest($expected, $input);
         }
@@ -108,7 +109,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     /**
      * @requires PHP 7.1
      *
-     * @dataProvider provideFixCases
+     * @dataProvider provideInvertedFixCases
      * @dataProvider provideInverseOnlyFixCases
      */
     public function testFixInverse(string $expected, string $input): void
@@ -121,200 +122,205 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function provideFixCases(): \Generator
     {
         yield [
-            '<?php function foo(string $param = null) {}',
             '<?php function foo(?string $param = null) {}',
+            '<?php function foo(string $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(string $param= null) {}',
             '<?php function foo(?string $param= null) {}',
+            '<?php function foo(string $param= null) {}',
         ];
 
         yield [
-            '<?php function foo(string $param =null) {}',
             '<?php function foo(?string $param =null) {}',
+            '<?php function foo(string $param =null) {}',
         ];
 
         yield [
-            '<?php function foo(string $param=null) {}',
             '<?php function foo(?string $param=null) {}',
+            '<?php function foo(string $param=null) {}',
         ];
 
         yield [
-            '<?php function foo(string $param1 = null, string $param2 = null) {}',
             '<?php function foo(?string $param1 = null, ?string $param2 = null) {}',
+            '<?php function foo(string $param1 = null, string $param2 = null) {}',
         ];
 
         yield [
-            '<?php function foo(string &$param = null) {}',
             '<?php function foo(?string &$param = null) {}',
+            '<?php function foo(string &$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(string & $param = null) {}',
             '<?php function foo(?string & $param = null) {}',
+            '<?php function foo(string & $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(string /*comment*/$param = null) {}',
             '<?php function foo(?string /*comment*/$param = null) {}',
+            '<?php function foo(string /*comment*/$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(string /*comment*/&$param = null) {}',
             '<?php function foo(?string /*comment*/&$param = null) {}',
+            '<?php function foo(string /*comment*/&$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(string &/*comment*/$param = null) {}',
             '<?php function foo(?string &/*comment*/$param = null) {}',
+            '<?php function foo(string &/*comment*/$param = null) {}',
         ];
 
         yield [
-            '<?php $foo = function (string $param = null) {};',
             '<?php $foo = function (?string $param = null) {};',
+            '<?php $foo = function (string $param = null) {};',
         ];
 
         yield [
-            '<?php $foo = function (string &$param = null) {};',
             '<?php $foo = function (?string &$param = null) {};',
+            '<?php $foo = function (string &$param = null) {};',
         ];
 
         yield [
-            '<?php function foo(Baz $param = null) {}',
             '<?php function foo(?Baz $param = null) {}',
+            '<?php function foo(Baz $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(\Baz $param = null) {}',
             '<?php function foo(?\Baz $param = null) {}',
+            '<?php function foo(\Baz $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(Bar\Baz $param = null) {}',
             '<?php function foo(?Bar\Baz $param = null) {}',
+            '<?php function foo(Bar\Baz $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(\Bar\Baz $param = null) {}',
             '<?php function foo(?\Bar\Baz $param = null) {}',
+            '<?php function foo(\Bar\Baz $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(Baz &$param = null) {}',
             '<?php function foo(?Baz &$param = null) {}',
+            '<?php function foo(Baz &$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(\Baz &$param = null) {}',
             '<?php function foo(?\Baz &$param = null) {}',
+            '<?php function foo(\Baz &$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(Bar\Baz &$param = null) {}',
             '<?php function foo(?Bar\Baz &$param = null) {}',
+            '<?php function foo(Bar\Baz &$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(\Bar\Baz &$param = null) {}',
             '<?php function foo(?\Bar\Baz &$param = null) {}',
+            '<?php function foo(\Bar\Baz &$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(Baz & $param = null) {}',
             '<?php function foo(?Baz & $param = null) {}',
+            '<?php function foo(Baz & $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(\Baz & $param = null) {}',
             '<?php function foo(?\Baz & $param = null) {}',
+            '<?php function foo(\Baz & $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(Bar\Baz & $param = null) {}',
             '<?php function foo(?Bar\Baz & $param = null) {}',
+            '<?php function foo(Bar\Baz & $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(\Bar\Baz & $param = null) {}',
             '<?php function foo(?\Bar\Baz & $param = null) {}',
+            '<?php function foo(\Bar\Baz & $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(array &$param = null) {}',
             '<?php function foo(?array &$param = null) {}',
+            '<?php function foo(array &$param = null) {}',
         ];
 
         yield [
-            '<?php function foo(array & $param = null) {}',
             '<?php function foo(?array & $param = null) {}',
+            '<?php function foo(array & $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(callable $param = null) {}',
             '<?php function foo(?callable $param = null) {}',
+            '<?php function foo(callable $param = null) {}',
         ];
 
         yield [
-            '<?php $foo = function (Baz $param = null) {};',
             '<?php $foo = function (?Baz $param = null) {};',
+            '<?php $foo = function (Baz $param = null) {};',
         ];
 
         yield [
-            '<?php $foo = function (Baz &$param = null) {};',
             '<?php $foo = function (?Baz &$param = null) {};',
+            '<?php $foo = function (Baz &$param = null) {};',
         ];
 
         yield [
-            '<?php $foo = function (Baz & $param = null) {};',
             '<?php $foo = function (?Baz & $param = null) {};',
+            '<?php $foo = function (Baz & $param = null) {};',
         ];
 
         yield [
-            '<?php class Test { public function foo(Bar\Baz $param = null) {} }',
             '<?php class Test { public function foo(?Bar\Baz $param = null) {} }',
+            '<?php class Test { public function foo(Bar\Baz $param = null) {} }',
         ];
 
         yield [
-            '<?php class Test { public function foo(self $param = null) {} }',
             '<?php class Test { public function foo(?self $param = null) {} }',
+            '<?php class Test { public function foo(self $param = null) {} }',
         ];
 
         yield [
-            '<?php function foo(iterable $param = null) {}',
             '<?php function foo(?iterable $param = null) {}',
+            '<?php function foo(iterable $param = null) {}',
         ];
 
         yield [
-            '<?php $foo = function(array $a = null,
-                    array $b = null, array     $c = null, array
-                    $d = null) {};',
             '<?php $foo = function(?array $a = null,
                     ?array $b = null, ?array     $c = null, ?array
                     $d = null) {};',
+            '<?php $foo = function(array $a = null,
+                    array $b = null, array     $c = null, array
+                    $d = null) {};',
         ];
 
         yield [
-            '<?php function foo(string $param = NULL) {}',
             '<?php function foo(?string $param = NULL) {}',
+            '<?php function foo(string $param = NULL) {}',
         ];
+    }
+
+    public function provideInvertedFixCases(): \Generator
+    {
+        return TestCaseUtils::swapExpectedInputTestCases($this->provideFixCases());
     }
 
     public function provideNonInverseOnlyFixCases(): \Generator
     {
         yield [
-            '<?php function foo( string $param = null) {}',
             '<?php function foo( ?string $param = null) {}',
+            '<?php function foo( string $param = null) {}',
         ];
 
         yield [
-            '<?php function foo(/*comment*/string $param = null) {}',
             '<?php function foo(/*comment*/?string $param = null) {}',
+            '<?php function foo(/*comment*/string $param = null) {}',
         ];
 
         yield [
-            '<?php function foo( /*comment*/ string $param = null) {}',
             '<?php function foo( /*comment*/ ?string $param = null) {}',
+            '<?php function foo( /*comment*/ string $param = null) {}',
         ];
     }
 
@@ -340,13 +346,13 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
      * @dataProvider provideFixPhp74Cases
      * @requires PHP 7.4
      */
-    public function testFixPhp74(string $input, string $expected): void
+    public function testFixPhp74(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @dataProvider provideFixPhp74Cases
+     * @dataProvider provideInvertedFixPhp74Cases
      * @requires PHP 7.4
      */
     public function testFixInversePhp74(string $expected, string $input): void
@@ -359,55 +365,60 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function provideFixPhp74Cases(): \Generator
     {
         yield [
-            '<?php $foo = fn (string $param = null) => null;',
             '<?php $foo = fn (?string $param = null) => null;',
+            '<?php $foo = fn (string $param = null) => null;',
         ];
 
         yield [
-            '<?php $foo = fn (string &$param = null) => null;',
             '<?php $foo = fn (?string &$param = null) => null;',
+            '<?php $foo = fn (string &$param = null) => null;',
         ];
 
         yield [
-            '<?php $foo = fn (Baz $param = null) => null;',
             '<?php $foo = fn (?Baz $param = null) => null;',
+            '<?php $foo = fn (Baz $param = null) => null;',
         ];
 
         yield [
-            '<?php $foo = fn (Baz &$param = null) => null;',
             '<?php $foo = fn (?Baz &$param = null) => null;',
+            '<?php $foo = fn (Baz &$param = null) => null;',
         ];
 
         yield [
-            '<?php $foo = fn (Baz & $param = null) => null;',
             '<?php $foo = fn (?Baz & $param = null) => null;',
+            '<?php $foo = fn (Baz & $param = null) => null;',
         ];
 
         yield [
-            '<?php $foo = fn(array $a = null,
-                    array $b = null, array     $c = null, array
-                    $d = null) => null;',
             '<?php $foo = fn(?array $a = null,
                     ?array $b = null, ?array     $c = null, ?array
                     $d = null) => null;',
+            '<?php $foo = fn(array $a = null,
+                    array $b = null, array     $c = null, array
+                    $d = null) => null;',
         ];
+    }
+
+    public function provideInvertedFixPhp74Cases()
+    {
+        return TestCaseUtils::swapExpectedInputTestCases($this->provideFixPhp74Cases());
     }
 
     /**
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80(string $input, ?string $expected = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
-        if (null === $expected) {
-            $this->doTest($input);
+        if (null === $input) {
+            $this->doTest($expected);
         } else {
             $this->doTest($expected, $input);
         }
     }
 
     /**
-     * @dataProvider provideFix80Cases
+     * @dataProvider provideInvertedFix80Cases
      * @requires PHP 8.0
      */
     public function testFixInverse80(string $expected, ?string $input = null): void
@@ -420,8 +431,8 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function provideFix80Cases(): \Generator
     {
         yield 'trailing comma' => [
-            '<?php function foo(string $param = null,) {}',
             '<?php function foo(?string $param = null,) {}',
+            '<?php function foo(string $param = null,) {}',
         ];
 
         yield 'property promotion' => [
@@ -430,7 +441,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                     public ?string $paramA = null,
                     protected ?string $paramB = null,
                     private ?string $paramC = null,
-                    string $paramD = null,
+                    ?string $paramD = null,
                     $a = []
                 ) {}
             }',
@@ -439,7 +450,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
                     public ?string $paramA = null,
                     protected ?string $paramB = null,
                     private ?string $paramC = null,
-                    ?string $paramD = null,
+                    string $paramD = null,
                     $a = []
                 ) {}
             }',
@@ -454,21 +465,26 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
 
         yield 'attribute' => [
-            '<?php function foo(#[AnAttribute] string $param = null) {}',
             '<?php function foo(#[AnAttribute] ?string $param = null) {}',
+            '<?php function foo(#[AnAttribute] string $param = null) {}',
         ];
 
         yield 'attributes' => [
-            '<?php function foo(
-                #[AnAttribute] string $a = null,
-                #[AnAttribute] string $b = null,
-                #[AnAttribute] string $c = null
-            ) {}',
             '<?php function foo(
                 #[AnAttribute] ?string $a = null,
                 #[AnAttribute] ?string $b = null,
                 #[AnAttribute] ?string $c = null
             ) {}',
+            '<?php function foo(
+                #[AnAttribute] string $a = null,
+                #[AnAttribute] string $b = null,
+                #[AnAttribute] string $c = null
+            ) {}',
         ];
+    }
+
+    public function provideInvertedFix80Cases()
+    {
+        return TestCaseUtils::swapExpectedInputTestCases($this->provideFix80Cases());
     }
 }
