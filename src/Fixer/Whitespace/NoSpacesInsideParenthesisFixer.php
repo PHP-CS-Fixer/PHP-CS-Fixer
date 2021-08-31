@@ -14,20 +14,18 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Whitespace;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @deprecated in favor of SpacesInsideParenthesis fixer
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.6, ¶5.
  *
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class NoSpacesInsideParenthesisFixer extends AbstractFixer
+final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -56,48 +54,11 @@ function foo( \$bar, \$baz )
         return 2;
     }
 
-    public function isCandidate(Tokens $tokens): bool
-    {
-        return $tokens->isTokenKindFound('(');
-    }
-
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
-    {
-        foreach ($tokens as $index => $token) {
-            if (!$token->equals('(')) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-            // ignore parenthesis for T_ARRAY
-            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
-                continue;
-            }
-
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-
-            // remove space after opening `(`
-            if (!$tokens[$tokens->getNextNonWhitespace($index)]->isComment()) {
-                $this->removeSpaceAroundToken($tokens, $index + 1);
-            }
-
-            // remove space before closing `)` if it is not `list($a, $b, )` case
-            if (!$tokens[$tokens->getPrevMeaningfulToken($endIndex)]->equals(',')) {
-                $this->removeSpaceAroundToken($tokens, $endIndex - 1);
-            }
-        }
-    }
-
     /**
-     * Remove spaces from token at a given index.
+     * {@inheritdoc}
      */
-    private function removeSpaceAroundToken(Tokens $tokens, int $index): void
+    protected function createProxyFixers(): array
     {
-        $token = $tokens[$index];
-
-        if ($token->isWhitespace() && !str_contains($token->getContent(), "\n")) {
-            $tokens->clearAt($index);
-        }
+        return [new SpacesInsideParenthesisFixer()];
     }
 }
