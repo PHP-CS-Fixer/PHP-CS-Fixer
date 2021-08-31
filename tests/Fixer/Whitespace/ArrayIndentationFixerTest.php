@@ -32,7 +32,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return $this->withLongArraySyntaxCases([
             [
@@ -845,7 +845,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithTabsCases()
+    public function provideFixWithTabsCases(): array
     {
         return $this->withLongArraySyntaxCases([
             [
@@ -896,7 +896,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [
@@ -920,7 +920,7 @@ INPUT
         ];
     }
 
-    private function withLongArraySyntaxCases(array $cases)
+    private function withLongArraySyntaxCases(array $cases): array
     {
         $longSyntaxCases = [];
 
@@ -936,7 +936,7 @@ INPUT
         return array_merge($cases, $longSyntaxCases);
     }
 
-    private function toLongArraySyntax(string $php)
+    private function toLongArraySyntax(string $php): string
     {
         return strtr($php, [
             '[' => 'array(',

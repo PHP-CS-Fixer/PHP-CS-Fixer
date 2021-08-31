@@ -282,7 +282,7 @@ private $d = 123;
         );
     }
 
-    public function provideCommentBlockStartDetectionCases()
+    public function provideCommentBlockStartDetectionCases(): array
     {
         return [
             [
@@ -367,7 +367,7 @@ private $d = 123;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassesCases()
+    public function provideFixClassesCases(): array
     {
         $cases = [];
 
@@ -965,7 +965,7 @@ public function B1(); // allowed comment
         $this->doTest($expected, $input);
     }
 
-    public function provideFixTraitsCases()
+    public function provideFixTraitsCases(): array
     {
         $cases = [];
 
@@ -1059,7 +1059,7 @@ trait SomeReturnInfo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixInterfaceCases()
+    public function provideFixInterfaceCases(): array
     {
         $cases = [];
         $cases[] = [
@@ -1144,7 +1144,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -1167,7 +1167,7 @@ class ezcReflectionMethod extends ReflectionMethod {
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigCases()
+    public function provideConfigCases(): array
     {
         return [
             'multi line property' => [
@@ -1767,7 +1767,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
@@ -1813,7 +1813,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php
@@ -1901,7 +1901,7 @@ abstract class Example
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): \Generator
     {
         yield 'attributes' => [
             '<?php

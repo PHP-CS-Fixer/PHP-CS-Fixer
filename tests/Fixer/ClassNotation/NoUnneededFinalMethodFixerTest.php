@@ -33,7 +33,7 @@ final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'default' => [
@@ -301,7 +301,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixConfigCases()
+    public function provideFixConfigCases(): \Generator
     {
         yield [
             '<?php

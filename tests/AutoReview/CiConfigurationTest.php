@@ -81,7 +81,7 @@ final class CiConfigurationTest extends TestCase
         }
     }
 
-    private static function generateMinorVersionsRange(float $from, float $to)
+    private static function generateMinorVersionsRange(float $from, float $to): array
     {
         $range = [];
 
@@ -135,7 +135,7 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
-    private function getAllPhpVersionsUsedByCiForDeployments()
+    private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
         $jobs = array_filter($this->getGitHubJobs(), function (array $job) {
             return isset($job['execute-deployment']) && 'yes' === $job['execute-deployment'];
@@ -151,7 +151,7 @@ final class CiConfigurationTest extends TestCase
         return $this->getPhpVersionsUsedByGitHub();
     }
 
-    private function convertPhpVerIdToNiceVer(string $verId)
+    private function convertPhpVerIdToNiceVer(string $verId): string
     {
         $matchResult = Preg::match('/^(?<major>\d{1,2})(?<minor>\d{2})(?<patch>\d{2})$/', $verId, $capture);
         if (1 !== $matchResult) {
@@ -161,7 +161,7 @@ final class CiConfigurationTest extends TestCase
         return sprintf('%d.%d', $capture['major'], $capture['minor']);
     }
 
-    private function getMaxPhpVersionFromEntryFile()
+    private function getMaxPhpVersionFromEntryFile(): string
     {
         $tokens = Tokens::fromCode(file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
@@ -179,7 +179,7 @@ final class CiConfigurationTest extends TestCase
         return $this->convertPhpVerIdToNiceVer((string) ($phpVerId - 100));
     }
 
-    private function getMinPhpVersionFromEntryFile()
+    private function getMinPhpVersionFromEntryFile(): string
     {
         $tokens = Tokens::fromCode(file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([

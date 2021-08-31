@@ -34,7 +34,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -188,7 +188,7 @@ OVERRIDDEN;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

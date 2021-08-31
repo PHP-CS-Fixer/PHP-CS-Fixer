@@ -34,7 +34,7 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'no changes' => ['<?php /** Summary. */'],

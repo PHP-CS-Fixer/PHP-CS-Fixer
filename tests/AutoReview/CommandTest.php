@@ -37,7 +37,7 @@ final class CommandTest extends TestCase
         static::assertNotNull($command->getDefaultName());
     }
 
-    public function provideCommandHasNameConstCases()
+    public function provideCommandHasNameConstCases(): array
     {
         $application = new Application();
         $commands = $application->all();

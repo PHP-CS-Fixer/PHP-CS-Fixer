@@ -178,7 +178,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($outputDocBlock, $doc->getContent());
     }
 
-    public function provideDocBlocksToConvertToMultiLineCases()
+    public function provideDocBlocksToConvertToMultiLineCases(): array
     {
         return [
             'It keeps a multi line doc block as is' => [
@@ -225,7 +225,7 @@ final class DocBlockTest extends TestCase
         static::assertSame($outputDocBlock, $doc->getContent());
     }
 
-    public function provideDocBlocksToConvertToSingleLineCases()
+    public function provideDocBlocksToConvertToSingleLineCases(): array
     {
         return [
             'It keeps a single line doc block as is' => [

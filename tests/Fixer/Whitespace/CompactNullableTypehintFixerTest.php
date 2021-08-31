@@ -35,7 +35,7 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
@@ -120,7 +120,7 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [

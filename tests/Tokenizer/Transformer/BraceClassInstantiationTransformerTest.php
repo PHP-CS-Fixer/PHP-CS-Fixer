@@ -38,7 +38,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -318,7 +318,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp70Cases()
+    public function provideProcessPhp70Cases(): array
     {
         return [
             [
@@ -366,7 +366,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp74Cases()
+    public function provideProcessPhp74Cases(): array
     {
         return [
             [
@@ -401,7 +401,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
-    public function provideProcessPhp80Cases()
+    public function provideProcessPhp80Cases(): array
     {
         return [
             [

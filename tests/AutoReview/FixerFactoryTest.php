@@ -382,7 +382,7 @@ final class FixerFactoryTest extends TestCase
         static::assertSame($expected, $actual, sprintf('The ruleset of "%s" must contain the rules for the priority test.', $file));
     }
 
-    public function provideFixersPriorityPairsHaveIntegrationTestCases()
+    public function provideFixersPriorityPairsHaveIntegrationTestCases(): array
     {
         return array_filter(
             $this->provideFixersPriorityCases(),
@@ -455,9 +455,10 @@ final class FixerFactoryTest extends TestCase
         );
     }
 
-    public function provideIntegrationTestFilesCases()
+    public function provideIntegrationTestFilesCases(): array
     {
         $fileNames = [];
+
         foreach (new \DirectoryIterator($this->getIntegrationPriorityDirectory()) as $candidate) {
             if ($candidate->isDot()) {
                 continue;

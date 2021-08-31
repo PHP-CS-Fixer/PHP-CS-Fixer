@@ -33,7 +33,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield 'call by name - list' => [
             '<?php
@@ -210,7 +210,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): \Generator
     {
         yield [
             '<?php foo(1,);',

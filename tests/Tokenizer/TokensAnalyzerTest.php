@@ -53,7 +53,7 @@ final class TokensAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetClassyElementsCases()
+    public function provideGetClassyElementsCases(): \Generator
     {
         yield 'trait import' => [
             [
@@ -499,7 +499,7 @@ PHP;
         }
     }
 
-    public function provideIsAnonymousClassCases()
+    public function provideIsAnonymousClassCases(): array
     {
         return [
             [
@@ -541,7 +541,7 @@ PHP;
         }
     }
 
-    public function provideIsLambdaCases()
+    public function provideIsLambdaCases(): array
     {
         return [
             [
@@ -605,7 +605,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda74Cases()
+    public function provideIsLambda74Cases(): array
     {
         return [
             [
@@ -632,7 +632,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda71Cases()
+    public function provideIsLambda71Cases(): array
     {
         return [
             [
@@ -686,7 +686,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda80Cases()
+    public function provideIsLambda80Cases(): array
     {
         return [
             [
@@ -739,7 +739,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($source, $expected);
     }
 
-    public function provideIsConstantInvocationCases()
+    public function provideIsConstantInvocationCases(): array
     {
         return [
             [
@@ -914,7 +914,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($source, $expected);
     }
 
-    public function provideIsConstantInvocation71Cases()
+    public function provideIsConstantInvocation71Cases(): array
     {
         return [
             [
@@ -957,7 +957,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($source, $expected);
     }
 
-    public function provideIsConstantInvocationPhp80Cases()
+    public function provideIsConstantInvocationPhp80Cases(): \Generator
     {
         yield [
             '<?php $a?->b?->c;',
@@ -1032,7 +1032,7 @@ $a(1,2);',
         }
     }
 
-    public function provideIsUnarySuccessorOperatorCases()
+    public function provideIsUnarySuccessorOperatorCases(): array
     {
         return [
             [
@@ -1090,7 +1090,7 @@ $a(1,2);',
         }
     }
 
-    public function provideIsUnaryPredecessorOperatorCases()
+    public function provideIsUnaryPredecessorOperatorCases(): array
     {
         return [
             [
@@ -1172,7 +1172,7 @@ $a(1,2);',
         }
     }
 
-    public function provideIsBinaryOperatorCases()
+    public function provideIsBinaryOperatorCases(): \Generator
     {
         $cases = [
             [
@@ -1332,7 +1332,7 @@ $b;',
         static::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
-    public function provideIsArrayCases()
+    public function provideIsArrayCases(): array
     {
         return [
             [
@@ -1415,7 +1415,7 @@ $b;',
         }
     }
 
-    public function provideIsArray71Cases()
+    public function provideIsArray71Cases(): array
     {
         return [
             [
@@ -1448,7 +1448,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator71Cases()
+    public function provideIsBinaryOperator71Cases(): array
     {
         return [
             [
@@ -1475,7 +1475,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator74Cases()
+    public function provideIsBinaryOperator74Cases(): array
     {
         return [
             [
@@ -1544,7 +1544,7 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
-    public function provideArrayExceptionsCases()
+    public function provideArrayExceptionsCases(): array
     {
         return [
             ['<?php $a;', 1],
@@ -1574,7 +1574,7 @@ $b;',
         static::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
     }
 
-    public static function provideIsBlockMultilineCases()
+    public static function provideIsBlockMultilineCases(): \Generator
     {
         yield [
             false,
@@ -1619,7 +1619,7 @@ $b;',
         static::assertSame($expected, $attributes);
     }
 
-    public function provideGetFunctionPropertiesCases()
+    public function provideGetFunctionPropertiesCases(): array
     {
         $defaultAttributes = [
             'visibility' => null,
@@ -1762,7 +1762,7 @@ SRC;
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function provideGetImportUseIndexesCases()
+    public function provideGetImportUseIndexesCases(): array
     {
         return [
             [
@@ -1852,7 +1852,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function provideGetImportUseIndexesPHP72Cases()
+    public function provideGetImportUseIndexesPHP72Cases(): array
     {
         return [
             [
@@ -1963,7 +1963,7 @@ class MyTestWithAnonymousClass extends TestCase
         static::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
-    public function provideIsSuperGlobalCases()
+    public function provideIsSuperGlobalCases(): array
     {
         $superNames = [
             '$_COOKIE',

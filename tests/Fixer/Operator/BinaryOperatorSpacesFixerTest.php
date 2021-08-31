@@ -38,7 +38,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideWithTabsCases()
+    public function provideWithTabsCases(): array
     {
         return [
             [
@@ -83,7 +83,7 @@ public function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public function provideConfiguredCases()
+    public function provideConfiguredCases(): array
     {
         return [
             [
@@ -483,7 +483,7 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -681,7 +681,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignEqualsCases()
+    public function provideUnalignEqualsCases(): array
     {
         return [
             [
@@ -857,7 +857,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignDoubleArrowCases()
+    public function provideUnalignDoubleArrowCases(): array
     {
         return [
             [
@@ -1252,7 +1252,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignEqualsCases()
+    public function provideAlignEqualsCases(): array
     {
         return [
             [
@@ -1375,7 +1375,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignDoubleArrowCases()
+    public function provideAlignDoubleArrowCases(): array
     {
         return [
             [
@@ -1952,7 +1952,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             'align array destruction' => [
@@ -2009,7 +2009,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [

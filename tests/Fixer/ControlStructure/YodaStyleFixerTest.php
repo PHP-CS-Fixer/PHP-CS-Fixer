@@ -51,7 +51,7 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield from [
             [
@@ -732,7 +732,7 @@ function a() {
         $this->doTest($input, $expected);
     }
 
-    public function provideLessGreaterCases()
+    public function provideLessGreaterCases(): array
     {
         return [
             [
@@ -823,7 +823,7 @@ function a() {
         }
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             // no fix cases
@@ -876,7 +876,7 @@ function a() {
         $this->doTest($expected);
     }
 
-    public function provideFixWithConfigCases()
+    public function provideFixWithConfigCases(): array
     {
         return [
             [
@@ -916,7 +916,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): \Generator
     {
         yield [
             '<?php if (1_000 === $b);',
@@ -939,7 +939,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function providePHP74Cases()
+    public function providePHP74Cases(): array
     {
         return [
             [
@@ -966,7 +966,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases()
+    public function provideFixPrePHP80Cases(): \Generator
     {
         yield [
             '<?php return \A/*5*/\/*6*/B\/*7*/C::MY_CONST === \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable;',
@@ -1002,7 +1002,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php

@@ -85,15 +85,11 @@ final class DocumentationTest extends TestCase
         static::assertSame($expected, $actual);
     }
 
-    public function provideFixerCases()
+    public function provideFixerCases(): \Generator
     {
-        $cases = [];
-
         foreach ($this->getFixers() as $fixer) {
-            $cases[$fixer->getName()] = [$fixer];
+            yield $fixer->getName() => [$fixer];
         }
-
-        return $cases;
     }
 
     public function testFixersDocumentationIndexFileIsUpToDate(): void
@@ -183,7 +179,7 @@ final class DocumentationTest extends TestCase
         static::assertSame($expectedString, file_get_contents($actualFilePath), $message);
     }
 
-    private function getFixers()
+    private function getFixers(): array
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();

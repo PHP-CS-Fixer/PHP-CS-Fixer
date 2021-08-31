@@ -51,7 +51,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->fixerTest($expected, $input, $fixStatement);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -437,7 +437,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixYieldFromCases()
+    public function provideFixYieldFromCases(): array
     {
         return [
             [

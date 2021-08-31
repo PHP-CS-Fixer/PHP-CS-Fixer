@@ -33,9 +33,10 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         $input = $expected = '<?php';
+
         for ($inc = 1; $inc < 15; ++$inc) {
             $input .= " \$var{$inc} = \"My name is \$name!\";";
             $expected .= " \$var{$inc} = \"My name is \${name}!\";";
@@ -227,7 +228,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFix71Cases()
+    public function provideTestFix71Cases(): array
     {
         return [
             [

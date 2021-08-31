@@ -31,7 +31,7 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): \Generator
     {
         yield from [
             'alternative syntax |' => [
@@ -503,7 +503,7 @@ switch($a) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             'numeric literal separator' => [

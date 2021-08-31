@@ -46,7 +46,7 @@ final class TagTest extends TestCase
         static::assertSame($new, $tag->getName());
     }
 
-    public function provideNameCases()
+    public function provideNameCases(): array
     {
         return [
             ['param', 'var', '     * @param Foo $foo'],
@@ -72,7 +72,7 @@ final class TagTest extends TestCase
         static::assertSame($expected, $tag->valid());
     }
 
-    public function provideValidCases()
+    public function provideValidCases(): array
     {
         return [
             [true, '     * @param Foo $foo'],

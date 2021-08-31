@@ -34,7 +34,7 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $finalCases = [];
         $defaultSets = [
@@ -103,7 +103,7 @@ abstract class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfigurationCases()
+    public function provideFixWithConfigurationCases(): array
     {
         $finalCases = [
             '@internal' => [

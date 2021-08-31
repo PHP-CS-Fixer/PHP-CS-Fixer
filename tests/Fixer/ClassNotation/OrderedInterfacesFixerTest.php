@@ -34,7 +34,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAlphaCases()
+    public function provideFixAlphaCases(): array
     {
         return [
             'single' => [
@@ -128,7 +128,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAlphaDescendCases()
+    public function provideFixAlphaDescendCases(): array
     {
         return [
             'single' => [
@@ -154,7 +154,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixLengthCases()
+    public function provideFixLengthCases(): array
     {
         return [
             'single' => [
@@ -197,7 +197,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixLengthDescendCases()
+    public function provideFixLengthDescendCases(): array
     {
         return [
             'single' => [

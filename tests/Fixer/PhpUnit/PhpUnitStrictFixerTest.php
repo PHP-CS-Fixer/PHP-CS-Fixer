@@ -36,7 +36,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         $cases = [
             ['<?php $self->foo();'],
@@ -47,34 +47,42 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
             $cases[] = [self::generateTest("\$sth->{$methodBefore}(1, 1);")];
             $cases[] = [self::generateTest("\$sth->{$methodAfter}(1, 1);")];
             $cases[] = [self::generateTest("\$this->{$methodBefore}(1, 2, 'message', \$toMuch);")];
+
             $cases[] = [
                 self::generateTest("\$this->{$methodAfter}(1, 2);"),
                 self::generateTest("\$this->{$methodBefore}(1, 2);"),
             ];
+
             $cases[] = [
                 self::generateTest("\$this->{$methodAfter}(1, 2); \$this->{$methodAfter}(1, 2);"),
                 self::generateTest("\$this->{$methodBefore}(1, 2); \$this->{$methodBefore}(1, 2);"),
             ];
+
             $cases[] = [
                 self::generateTest("\$this->{$methodAfter}(1, 2, 'descr');"),
                 self::generateTest("\$this->{$methodBefore}(1, 2, 'descr');"),
             ];
+
             $cases[] = [
                 self::generateTest("\$this->/*aaa*/{$methodAfter} \t /**bbb*/  ( /*ccc*/1  , 2);"),
                 self::generateTest("\$this->/*aaa*/{$methodBefore} \t /**bbb*/  ( /*ccc*/1  , 2);"),
             ];
+
             $cases[] = [
                 self::generateTest("\$this->{$methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');"),
                 self::generateTest("\$this->{$methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');"),
             ];
+
             $cases[] = [
                 self::generateTest("self::{$methodAfter}(1, 2);"),
                 self::generateTest("self::{$methodBefore}(1, 2);"),
             ];
+
             $cases[] = [
                 self::generateTest("static::{$methodAfter}(1, 2);"),
                 self::generateTest("static::{$methodBefore}(1, 2);"),
             ];
+
             $cases[] = [
                 self::generateTest("STATIC::{$methodAfter}(1, 2);"),
                 self::generateTest("STATIC::{$methodBefore}(1, 2);"),
@@ -95,9 +103,10 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideTestNoFixWithWrongNumberOfArgumentsCases()
+    public function provideTestNoFixWithWrongNumberOfArgumentsCases(): array
     {
         $cases = [];
+
         foreach ($this->getMethodsMap() as $candidate => $fix) {
             $cases[sprintf('do not change call to "%s" without arguments.', $candidate)] = [
                 self::generateTest(sprintf('$this->%s();', $candidate)),
@@ -136,7 +145,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): \Generator
     {
         foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
             yield [

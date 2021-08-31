@@ -51,7 +51,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCodeWithReturnTypesCases()
+    public function provideCodeWithReturnTypesCases(): array
     {
         return [
             'Import common strict types' => [
@@ -236,7 +236,7 @@ class SomeClass
         ];
     }
 
-    public function provideCodeWithoutReturnTypesCases()
+    public function provideCodeWithoutReturnTypesCases(): array
     {
         return [
             'Import common strict types' => [
@@ -438,7 +438,7 @@ function withReference(\Exception &$e) {}',
         ];
     }
 
-    public function provideCodeWithReturnTypesCasesWithNullableCases()
+    public function provideCodeWithReturnTypesCasesWithNullableCases(): array
     {
         return [
             'Test namespace fixes with nullable types' => [

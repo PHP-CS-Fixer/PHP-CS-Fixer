@@ -533,7 +533,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideInheritDocCases()
+    public function provideInheritDocCases(): array
     {
         return [
             [

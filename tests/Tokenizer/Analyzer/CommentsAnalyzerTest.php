@@ -51,7 +51,7 @@ final class CommentsAnalyzerTest extends TestCase
         static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideCommentsCases()
+    public function provideCommentsCases(): array
     {
         return [
             'discover all 4 comments for the 1st comment with slash' => [
@@ -167,7 +167,7 @@ $bar;',
         static::assertTrue($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideHeaderCommentCases()
+    public function provideHeaderCommentCases(): array
     {
         return [
             ['<?php /* Comment */ namespace Foo;', 1],
@@ -189,7 +189,7 @@ $bar;',
         static::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
-    public function provideNotHeaderCommentCases()
+    public function provideNotHeaderCommentCases(): array
     {
         return [
             ['<?php $foo; /* Comment */ $bar;', 4],
@@ -223,7 +223,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidateCases()
+    public function providePhpdocCandidateCases(): array
     {
         return [
             ['<?php /* @var Foo */ $bar = "baz";'],
@@ -275,7 +275,7 @@ $bar;',
         static::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function provideNotPhpdocCandidateCases()
+    public function provideNotPhpdocCandidateCases(): array
     {
         return [
             ['<?php class Foo {} /* At the end of file */'],
@@ -320,7 +320,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp74Cases()
+    public function providePhpdocCandidatePhp74Cases(): array
     {
         return [
             ['<?php /* Before anonymous function */ $fn = fn($x) => $x + 1;'],
@@ -340,7 +340,7 @@ $bar;',
         static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
-    public function providePhpdocCandidatePhp80Cases()
+    public function providePhpdocCandidatePhp80Cases(): array
     {
         return [
             ['<?php

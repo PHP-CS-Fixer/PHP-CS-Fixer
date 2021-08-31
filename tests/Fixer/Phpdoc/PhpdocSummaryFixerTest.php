@@ -367,7 +367,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideInheritDocCases()
+    public function provideInheritDocCases(): array
     {
         return [
             [
@@ -410,7 +410,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

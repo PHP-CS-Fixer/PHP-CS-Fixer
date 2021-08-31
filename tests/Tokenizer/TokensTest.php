@@ -49,7 +49,6 @@ final class TokensTest extends TestCase
 
     /**
      * @param Token[]         $sequence
-     * @param int             $start
      * @param null|array|bool $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
@@ -82,7 +81,7 @@ final class TokensTest extends TestCase
         );
     }
 
-    public function provideFindSequenceCases()
+    public function provideFindSequenceCases(): array
     {
         return [
             [
@@ -297,7 +296,7 @@ final class TokensTest extends TestCase
         $tokens->findSequence($sequence);
     }
 
-    public function provideFindSequenceExceptionCases()
+    public function provideFindSequenceExceptionCases(): array
     {
         $emptyToken = new Token('');
 
@@ -358,7 +357,7 @@ PHP;
         static::assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideMonolithicPhpDetectionCases()
+    public function provideMonolithicPhpDetectionCases(): array
     {
         return [
             ["<?php\n", true],
@@ -385,7 +384,7 @@ PHP;
         static::assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideShortOpenTagMonolithicPhpDetectionCases()
+    public function provideShortOpenTagMonolithicPhpDetectionCases(): array
     {
         return [
             ["<?\n", true],
@@ -409,7 +408,7 @@ PHP;
         static::assertSame($monolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideShortOpenTagEchoMonolithicPhpDetectionCases()
+    public function provideShortOpenTagEchoMonolithicPhpDetectionCases(): array
     {
         return [
             ["<?=' ';\n", true],
@@ -480,7 +479,6 @@ PHP;
         static::assertArrayHasKey(1, $found);
         static::assertSame(T_CLASS, $found[1]->getId());
 
-        /** @var array $found */
         $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
         static::assertCount(2, $found);
         static::assertArrayHasKey(T_CLASS, $found);
@@ -523,7 +521,7 @@ PHP;
         }
     }
 
-    public function provideGetClearTokenAndMergeSurroundingWhitespaceCases()
+    public function provideGetClearTokenAndMergeSurroundingWhitespaceCases(): array
     {
         $clearToken = new Token('');
 
@@ -644,7 +642,7 @@ PHP;
         static::assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
     }
 
-    public function provideTokenOfKindSiblingCases()
+    public function provideTokenOfKindSiblingCases(): array
     {
         return [
             // find next cases
@@ -681,7 +679,7 @@ PHP;
         static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public function provideFindBlockEndCases()
+    public function provideFindBlockEndCases(): array
     {
         return [
             [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2],
@@ -707,7 +705,7 @@ PHP;
         static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public function provideFindBlockEnd71Cases()
+    public function provideFindBlockEnd71Cases(): array
     {
         return [
             [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
@@ -724,7 +722,7 @@ PHP;
         static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
     }
 
-    public function provideFindBlockEnd80Cases()
+    public function provideFindBlockEnd80Cases(): array
     {
         return [
             [
@@ -839,7 +837,7 @@ PHP;
         static::assertSame($isEmpty, $tokens->isEmptyAt(0), $token->toJson());
     }
 
-    public function provideIsEmptyCases()
+    public function provideIsEmptyCases(): array
     {
         return [
             [new Token(''), true],
@@ -883,7 +881,7 @@ PHP;
         static::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
-    public function provideEnsureWhitespaceAtIndexCases()
+    public function provideEnsureWhitespaceAtIndexCases(): array
     {
         return [
             [
@@ -1036,20 +1034,18 @@ echo $a;',
 
     /**
      * @dataProvider provideRemoveLeadingWhitespaceCases
-     *
-     * @param string $input
      */
     public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
     {
         Tokens::clearCache();
 
-        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens = Tokens::fromCode($input ?? $expected);
         $tokens->removeLeadingWhitespace($index, $whitespaces);
 
         static::assertSame($expected, $tokens->generateCode());
     }
 
-    public function provideRemoveLeadingWhitespaceCases()
+    public function provideRemoveLeadingWhitespaceCases(): array
     {
         return [
             [
@@ -1104,29 +1100,25 @@ echo $a;',
 
     /**
      * @dataProvider provideRemoveTrailingWhitespaceCases
-     *
-     * @param string $input
      */
     public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, string $input = null): void
     {
         Tokens::clearCache();
 
-        $tokens = Tokens::fromCode(null === $input ? $expected : $input);
+        $tokens = Tokens::fromCode($input ?? $expected);
         $tokens->removeTrailingWhitespace($index, $whitespaces);
 
         static::assertSame($expected, $tokens->generateCode());
     }
 
-    public function provideRemoveTrailingWhitespaceCases()
+    public function provideRemoveTrailingWhitespaceCases(): \Generator
     {
-        $cases = [];
         $leadingCases = $this->provideRemoveLeadingWhitespaceCases();
+
         foreach ($leadingCases as $leadingCase) {
             $leadingCase[0] -= 2;
-            $cases[] = $leadingCase;
+            yield $leadingCase;
         }
-
-        return $cases;
     }
 
     public function testRemovingLeadingWhitespaceWithEmptyTokenInCollection(): void
@@ -1204,7 +1196,7 @@ $bar;',
         static::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
     }
 
-    public function provideDetectBlockTypeCases()
+    public function provideDetectBlockTypeCases(): \Generator
     {
         yield [
             [
@@ -1265,7 +1257,7 @@ $bar;',
         self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
-    public function provideOverrideRangeCases()
+    public function provideOverrideRangeCases(): \Generator
     {
         // typically done by transformers, here we test the reverse
 
@@ -1384,7 +1376,7 @@ $bar;',
         static::assertSame($expectIndex, $tokens->getMeaningfulTokenSibling($index, $direction));
     }
 
-    public function provideGetMeaningfulTokenSiblingCases()
+    public function provideGetMeaningfulTokenSiblingCases(): \Generator
     {
         yield [null, 0, 1, '<?php '];
 

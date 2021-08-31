@@ -36,7 +36,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             'class_mapping' => [
@@ -267,7 +267,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
         static::assertStringNotContainsString('_', $tokens->generateCode());
     }
 
-    public static function provideClassIsFixedCases()
+    public static function provideClassIsFixedCases(): \Generator
     {
         $classmap = require __DIR__.'/../../../vendor/composer/autoload_classmap.php';
 

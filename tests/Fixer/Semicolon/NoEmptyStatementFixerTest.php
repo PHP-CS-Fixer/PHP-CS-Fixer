@@ -34,7 +34,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNoEmptyStatementsCases()
+    public function provideNoEmptyStatementsCases(): \Generator
     {
         yield from [
             [
@@ -434,7 +434,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -529,7 +529,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithShortOpenTagCases()
+    public function provideCasesWithShortOpenTagCases(): array
     {
         return [
             [
@@ -547,7 +547,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultipleSemicolonsCases()
+    public function provideFixMultipleSemicolonsCases(): array
     {
         return [
             [

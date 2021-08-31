@@ -50,7 +50,7 @@ use Foo\Test;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield [
             '<?php

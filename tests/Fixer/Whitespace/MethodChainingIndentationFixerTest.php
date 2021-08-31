@@ -34,7 +34,7 @@ final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -247,7 +247,7 @@ $foo
         $this->doTest($expected, $input);
     }
 
-    public function provideWindowsWhitespacesCases()
+    public function provideWindowsWhitespacesCases(): array
     {
         return [
             [

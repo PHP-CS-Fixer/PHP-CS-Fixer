@@ -35,7 +35,7 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $cases = [
             [

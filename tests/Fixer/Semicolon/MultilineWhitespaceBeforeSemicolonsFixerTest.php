@@ -39,7 +39,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public function provideMultiLineWhitespaceFixCases()
+    public function provideMultiLineWhitespaceFixCases(): array
     {
         return [
             [
@@ -212,7 +212,7 @@ self
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesMultiLineWhitespaceFixCases()
+    public function provideMessyWhitespacesMultiLineWhitespaceFixCases(): array
     {
         return [
             [
@@ -230,7 +230,7 @@ self
         $this->doTest($expected, $input);
     }
 
-    public function provideSemicolonForChainedCallsFixCases()
+    public function provideSemicolonForChainedCallsFixCases(): array
     {
         return [
             [
@@ -852,7 +852,7 @@ Service
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesSemicolonForChainedCallsFixCases()
+    public function provideMessyWhitespacesSemicolonForChainedCallsFixCases(): array
     {
         return [
             [
@@ -880,7 +880,7 @@ Service
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

@@ -36,7 +36,7 @@ final class TypeShortNameResolverTest extends TestCase
         static::assertSame($expected, $resolver->resolve($tokens, $type));
     }
 
-    public function provideResolverCases()
+    public function provideResolverCases(): array
     {
         return [
             [

@@ -31,7 +31,7 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield ['<?php throw new Exception; foo(
                     "Foo"

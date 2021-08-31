@@ -41,7 +41,7 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideDefaultCases()
+    public function provideDefaultCases(): array
     {
         return [
             [
@@ -179,7 +179,7 @@ class A
         $this->doTest($expected, $input);
     }
 
-    public function provideDocLikeMultilineCommentsCases()
+    public function provideDocLikeMultilineCommentsCases(): array
     {
         return [
             [
@@ -227,7 +227,7 @@ class A
         $this->doTest($expected, $input);
     }
 
-    public function provideMixedContentMultilineCommentsCases()
+    public function provideMixedContentMultilineCommentsCases(): array
     {
         return [
             [

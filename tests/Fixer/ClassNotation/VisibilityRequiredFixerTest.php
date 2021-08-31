@@ -541,7 +541,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassConstCases()
+    public function provideFixClassConstCases(): array
     {
         return [
             [
@@ -746,7 +746,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php class Foo { private int $foo; }',
@@ -793,7 +793,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php class Foo { private int|float|null $foo; }',

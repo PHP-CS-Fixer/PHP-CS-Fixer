@@ -36,9 +36,10 @@ final class FinalInternalClassFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $input = $expected = '<?php ';
+
         for ($i = 1; $i < 10; ++$i) {
             $input .= sprintf("/** @internal */\nclass class%d\n{\n}\n", $i);
             $expected .= sprintf("/** @internal */\nfinal class class%d\n{\n}\n", $i);
@@ -155,7 +156,7 @@ abstract class class4 {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfigCases()
+    public function provideFixWithConfigCases(): array
     {
         return [
             [
@@ -283,7 +284,7 @@ class B{}
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousClassesCases()
+    public function provideAnonymousClassesCases(): array
     {
         return [
             [

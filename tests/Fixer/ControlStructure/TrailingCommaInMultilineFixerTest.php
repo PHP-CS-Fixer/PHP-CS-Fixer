@@ -43,7 +43,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($configuration);
     }
 
-    public static function provideInvalidConfigurationCases()
+    public static function provideInvalidConfigurationCases(): \Generator
     {
         if (\PHP_VERSION_ID < 70300) {
             yield [
@@ -71,7 +71,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases()
+    public static function provideFixCases(): array
     {
         return [
             // long syntax tests
@@ -410,7 +410,7 @@ $a
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix73Cases()
+    public static function provideFix73Cases(): array
     {
         return [
             [
@@ -573,7 +573,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases()
+    public static function provideFix80Cases(): array
     {
         return [
             [

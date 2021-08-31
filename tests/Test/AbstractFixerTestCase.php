@@ -151,7 +151,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             if ($fixerIsConfigurable) {
                 // always re-configure as the fixer might have been configured with diff. configuration form previous sample
-                $this->fixer->configure(null === $config ? [] : $config);
+                $this->fixer->configure($config ?? []);
             }
 
             Tokens::clearCache();
@@ -466,7 +466,7 @@ abstract class AbstractFixerTestCase extends TestCase
         static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
 
-    private function findAllTokenSequences($tokens, $sequence)
+    private function findAllTokenSequences($tokens, $sequence): array
     {
         $lastIndex = 0;
         $sequences = [];

@@ -83,7 +83,7 @@ Files that were not fixed due to errors reported during %s:
         static::assertStringStartsWith($startWith, $displayed);
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         $lineNumber = __LINE__;
         [$exceptionLineNumber, $error] = $this->getErrorAndLineNumber(); // note: keep call and __LINE__ separated with one line break
@@ -159,7 +159,7 @@ EOT;
         return str_replace(PHP_EOL, "\n", $displayed);
     }
 
-    private function getErrorAndLineNumber()
+    private function getErrorAndLineNumber(): array
     {
         $lineNumber = __LINE__;
         $exception = new \RuntimeException(// note: keep exception constructor and __LINE__ separated with one line break

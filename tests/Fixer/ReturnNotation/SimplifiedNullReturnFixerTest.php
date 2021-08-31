@@ -33,7 +33,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             // check correct statements aren't changed
@@ -64,7 +64,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNullableReturnTypeCases()
+    public function provideNullableReturnTypeCases(): array
     {
         return [
             ['<?php function foo(): ? /* C */ int { return null; }'],

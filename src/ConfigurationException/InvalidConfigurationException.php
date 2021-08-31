@@ -30,7 +30,7 @@ class InvalidConfigurationException extends \InvalidArgumentException
     {
         parent::__construct(
             $message,
-            null === $code ? FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG : $code,
+            $code ?? FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_CONFIG,
             $previous
         );
     }

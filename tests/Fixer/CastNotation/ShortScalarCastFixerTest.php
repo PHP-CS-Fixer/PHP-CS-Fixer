@@ -60,7 +60,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         foreach (['boolean' => 'bool', 'integer' => 'int', 'double' => 'float', 'binary' => 'string'] as $from => $to) {
             foreach ($this->createCasesFor($from, $to) as $case) {
@@ -69,7 +69,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixDeprecatedCases()
+    public function provideFixDeprecatedCases(): \Generator
     {
         return $this->createCasesFor('real', 'float');
     }
@@ -82,7 +82,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideNoFixCases()
+    public function provideNoFixCases(): array
     {
         $cases = [];
         $types = ['string', 'array', 'object'];
@@ -101,7 +101,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         return $cases;
     }
 
-    private function createCasesFor(string $from, string $to)
+    private function createCasesFor(string $from, string $to): \Generator
     {
         yield [
             sprintf('<?php echo ( %s  )$a;', $to),

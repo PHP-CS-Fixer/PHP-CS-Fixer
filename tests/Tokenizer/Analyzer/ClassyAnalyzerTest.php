@@ -35,7 +35,7 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
-    public function provideIsClassyInvocationCases()
+    public function provideIsClassyInvocationCases(): \Generator
     {
         yield from [
             [
@@ -138,7 +138,7 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
-    public function provideIsClassyInvocation71Cases()
+    public function provideIsClassyInvocation71Cases(): array
     {
         return [
             [
@@ -171,7 +171,7 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
-    public function provideIsClassyInvocation80Cases()
+    public function provideIsClassyInvocation80Cases(): \Generator
     {
         yield [
             '<?php function foo(): \Foo|int {}',

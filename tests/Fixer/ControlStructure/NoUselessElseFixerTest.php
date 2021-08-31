@@ -35,7 +35,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providePHPCloseTagCases()
+    public function providePHPCloseTagCases(): array
     {
         return [
             [
@@ -135,7 +135,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixIfElseIfElseCases()
+    public function provideFixIfElseIfElseCases(): array
     {
         $expected =
             '<?php
@@ -259,7 +259,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixIfElseCases()
+    public function provideFixIfElseCases(): \Generator
     {
         $expected = '<?php
             while(true) {
@@ -317,7 +317,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNestedIfCases()
+    public function provideFixNestedIfCases(): array
     {
         return [
             [
@@ -355,7 +355,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixEmptyElseCases()
+    public function provideFixEmptyElseCases(): array
     {
         return [
             [
@@ -447,7 +447,7 @@ else?><?php echo 5;',
         $this->doTest($expected);
     }
 
-    public function provideNegativeCases()
+    public function provideNegativeCases(): \Generator
     {
         yield from [
             [
@@ -652,7 +652,7 @@ else?><?php echo 5;',
         static::assertSame($expected, $result);
     }
 
-    public function provideBlockDetectionCases()
+    public function provideBlockDetectionCases(): array
     {
         $cases = [];
 
@@ -700,7 +700,7 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideConditionsWithoutBracesCases()
+    public function provideConditionsWithoutBracesCases(): array
     {
         $cases = [];
         $statements = [
@@ -810,7 +810,7 @@ else?><?php echo 5;',
         }
     }
 
-    public function provideIsInConditionWithoutBracesCases()
+    public function provideIsInConditionWithoutBracesCases(): array
     {
         return [
             [

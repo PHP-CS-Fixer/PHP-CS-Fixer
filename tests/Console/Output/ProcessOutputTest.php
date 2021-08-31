@@ -50,7 +50,7 @@ final class ProcessOutputTest extends TestCase
         static::assertSame($expectedOutput, $output->fetch());
     }
 
-    public function provideProcessProgressOutputCases()
+    public function provideProcessProgressOutputCases(): array
     {
         return [
             [

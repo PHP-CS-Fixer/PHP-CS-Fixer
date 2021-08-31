@@ -32,7 +32,7 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -271,7 +271,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php

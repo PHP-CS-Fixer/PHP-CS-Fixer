@@ -141,15 +141,11 @@ final class LineTest extends TestCase
         static::assertSame(14 === $pos, $line->isTheEnd());
     }
 
-    public function provideLinesCases()
+    public function provideLinesCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$content as $index => $content) {
-            $cases[] = [$index, $content];
+            yield [$index, $content];
         }
-
-        return $cases;
     }
 
     /**
@@ -163,15 +159,11 @@ final class LineTest extends TestCase
         static::assertSame($useful, $line->containsUsefulContent());
     }
 
-    public function provideLinesWithUsefulCases()
+    public function provideLinesWithUsefulCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$useful as $index => $useful) {
-            $cases[] = [$index, $useful];
+            yield [$index, $useful];
         }
-
-        return $cases;
     }
 
     /**
@@ -185,15 +177,11 @@ final class LineTest extends TestCase
         static::assertSame($tag, $line->containsATag());
     }
 
-    public function provideLinesWithTagCases()
+    public function provideLinesWithTagCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$tag as $index => $tag) {
-            $cases[] = [$index, $tag];
+            yield [$index, $tag];
         }
-
-        return $cases;
     }
 
     public function testSetContent(): void

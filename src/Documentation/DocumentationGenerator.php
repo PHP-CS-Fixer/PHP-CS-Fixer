@@ -90,11 +90,7 @@ RST;
         $currentGroup = null;
         foreach ($fixers as $fixer) {
             $namespace = Preg::replace('/^.*\\\\(.+)\\\\.+Fixer$/', '$1', \get_class($fixer));
-            if (isset($overrideGroups[$namespace])) {
-                $group = $overrideGroups[$namespace];
-            } else {
-                $group = Preg::replace('/(?<=[[:lower:]])(?=[[:upper:]])/', ' ', $namespace);
-            }
+            $group = $overrideGroups[$namespace] ?? Preg::replace('/(?<=[[:lower:]])(?=[[:upper:]])/', ' ', $namespace);
 
             if ($group !== $currentGroup) {
                 $underline = str_repeat('-', \strlen($group));

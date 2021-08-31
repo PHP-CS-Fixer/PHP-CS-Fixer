@@ -41,7 +41,7 @@ final class PhpUnitTargetVersionTest extends TestCase
         );
     }
 
-    public function provideTestFulfillsCases()
+    public function provideTestFulfillsCases(): array
     {
         return [
             [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6],

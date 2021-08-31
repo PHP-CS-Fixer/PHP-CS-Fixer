@@ -38,7 +38,7 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'no phpdoc return' => [

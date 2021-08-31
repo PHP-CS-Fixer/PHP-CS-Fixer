@@ -38,7 +38,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideEchoToPrintFixCases()
+    public function provideEchoToPrintFixCases(): array
     {
         return [
             [
@@ -135,9 +135,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public static function provideEchoToPrintFixNewCases()
+    public static function provideEchoToPrintFixNewCases(): \Generator
     {
-        foreach (self::getCodeSnippetsToConvertBothWays() as $name => $codeSnippet) {
+        foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
                 sprintf($codeSnippet, 'print'),
                 sprintf($codeSnippet, 'echo'),
@@ -156,7 +156,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function providePrintToEchoFixCases()
+    public function providePrintToEchoFixCases(): array
     {
         return [
             [
@@ -274,9 +274,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public static function providePrintToEchoFixNewCases()
+    public static function providePrintToEchoFixNewCases(): \Generator
     {
-        foreach (self::getCodeSnippetsToConvertBothWays() as $name => $codeSnippet) {
+        foreach (self::getCodeSnippetsToConvertBothWays() as $codeSnippet) {
             yield [
                 sprintf($codeSnippet, 'echo'),
                 sprintf($codeSnippet, 'print'),
@@ -302,7 +302,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($wrongConfig);
     }
 
-    public function provideWrongConfigCases()
+    public function provideWrongConfigCases(): array
     {
         return [
             [
@@ -332,7 +332,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         static::assertSame($expected, $reflectionProperty->getValue($fixer));
     }
 
-    private static function getCodeSnippetsToConvertBothWays()
+    private static function getCodeSnippetsToConvertBothWays(): \Generator
     {
         yield 'inside of HTML' => '<div><?php %1$s "foo" ?></div>';
 

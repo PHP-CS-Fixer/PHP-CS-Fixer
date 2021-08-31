@@ -1022,7 +1022,7 @@ use A\A1;
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidSortAlgorithmCases()
+    public function provideInvalidSortAlgorithmCases(): array
     {
         return [
             [
@@ -1639,7 +1639,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideFixByLengthCases()
+    public function provideFixByLengthCases(): array
     {
         return [
             [
@@ -1785,7 +1785,7 @@ use const ZZZ;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixTypesOrderAndLengthCases()
+    public function provideFixTypesOrderAndLengthCases(): array
     {
         return [
             [
@@ -1910,7 +1910,7 @@ use function some\a\{fn_a, fn_b};
         $this->doTest($expected, $input);
     }
 
-    public function provideFixTypesOrderAndNoneCases()
+    public function provideFixTypesOrderAndNoneCases(): array
     {
         return [
             [
@@ -1974,7 +1974,7 @@ use function some\a\{fn_a, fn_b};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         $input =
             '<?php use A\{B,};

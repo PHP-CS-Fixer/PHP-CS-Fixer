@@ -465,7 +465,7 @@ if ($foo === $bar) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithForCases()
+    public function provideFixWithForCases(): array
     {
         return [
             [
@@ -594,7 +594,7 @@ if ($foo) { }',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithForEachCases()
+    public function provideFixWithForEachCases(): array
     {
         return [
             [
@@ -1098,7 +1098,7 @@ do {
     /**
      * @yield array
      */
-    public function provideFixWithYieldCases()
+    public function provideFixWithYieldCases(): array
     {
         return [
             [
@@ -1220,7 +1220,7 @@ function foo() {
     /**
      * @yield array
      */
-    public function provideFixWithYieldFromCases()
+    public function provideFixWithYieldFromCases(): array
     {
         return [
             [
@@ -1281,7 +1281,7 @@ function foo() {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithMultipleConfigStatementsCases()
+    public function provideFixWithMultipleConfigStatementsCases(): array
     {
         $statementsWithoutCaseOrDefault = [
             'break',

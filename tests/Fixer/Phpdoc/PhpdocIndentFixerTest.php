@@ -33,7 +33,7 @@ final class PhpdocIndentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixIndentCases()
+    public function provideFixIndentCases(): array
     {
         $cases = [];
 

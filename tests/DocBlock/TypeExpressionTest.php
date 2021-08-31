@@ -37,7 +37,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectedTypes, $expression->getTypes());
     }
 
-    public function provideGetTypesCases()
+    public function provideGetTypesCases(): \Generator
     {
         yield ['int', ['int']];
         yield ['Foo[][]', ['Foo[][]']];
@@ -97,7 +97,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectedCommonType, $expression->getCommonType());
     }
 
-    public function provideCommonTypeCases()
+    public function provideCommonTypeCases(): \Generator
     {
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
@@ -166,7 +166,7 @@ final class TypeExpressionTest extends TestCase
         static::assertSame($expectNullAllowed, $expression->allowsNull());
     }
 
-    public function provideAllowsNullCases()
+    public function provideAllowsNullCases(): \Generator
     {
         yield ['null', true];
         yield ['mixed', true];

@@ -134,7 +134,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
         $fixer->configure(['single_line' => 'z']);
     }
 
-    public function provideAnonymousClassesCases()
+    public function provideAnonymousClassesCases(): array
     {
         return [
             [
@@ -291,7 +291,7 @@ A#
         ];
     }
 
-    public function provideClassesCases()
+    public function provideClassesCases(): array
     {
         return array_merge(
             $this->provideClassyCases('class'),
@@ -300,7 +300,7 @@ A#
         );
     }
 
-    public function provideClassesWithConfigCases()
+    public function provideClassesWithConfigCases(): array
     {
         return [
             [
@@ -350,7 +350,7 @@ A#
         ];
     }
 
-    public function provideInterfacesCases()
+    public function provideInterfacesCases(): array
     {
         $cases = array_merge(
             $this->provideClassyCases('interface'),
@@ -387,7 +387,7 @@ TestInterface3, /**/     TestInterface4   ,
         return $cases;
     }
 
-    public function provideTraitsCases()
+    public function provideTraitsCases(): array
     {
         return $this->provideClassyCases('trait');
     }
@@ -410,7 +410,7 @@ TestInterface3, /**/     TestInterface4   ,
         static::assertSame($expected, $result);
     }
 
-    public function provideClassyDefinitionInfoCases()
+    public function provideClassyDefinitionInfoCases(): array
     {
         return [
             [
@@ -489,7 +489,7 @@ TestInterface3, /**/     TestInterface4   ,
         $this->doTestClassyInheritanceInfo($source, $label, $expected);
     }
 
-    public function provideClassyImplementsInfoCases()
+    public function provideClassyImplementsInfoCases(): \Generator
     {
         yield from [
             '1' => [
@@ -605,7 +605,7 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -651,7 +651,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public function providePHP73Cases()
+    public function providePHP73Cases(): array
     {
         return [
             [
@@ -680,7 +680,7 @@ $a = new class implements
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -711,7 +711,7 @@ $a = new class implements
         static::assertSame($expected, $result);
     }
 
-    private function provideClassyCases(string $classy)
+    private function provideClassyCases(string $classy): array
     {
         return [
             [
@@ -779,7 +779,7 @@ namespace {
         ];
     }
 
-    private function provideClassyExtendingCases(string $classy)
+    private function provideClassyExtendingCases(string $classy): array
     {
         return [
             [
@@ -809,7 +809,7 @@ extends
         ];
     }
 
-    private function provideClassyImplementsCases()
+    private function provideClassyImplementsCases(): array
     {
         return [
             [

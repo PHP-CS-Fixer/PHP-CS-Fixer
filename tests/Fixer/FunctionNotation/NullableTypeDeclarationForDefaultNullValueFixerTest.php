@@ -35,7 +35,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases()
+    public function provideDoNotFixCases(): \Generator
     {
         yield ['<?php function foo($param = null) {}'];
         yield ['<?php function foo($param1 = null, $param2 = null) {}'];
@@ -118,7 +118,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield [
             '<?php function foo(string $param = null) {}',
@@ -300,7 +300,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public function provideNonInverseOnlyFixCases()
+    public function provideNonInverseOnlyFixCases(): \Generator
     {
         yield [
             '<?php function foo( string $param = null) {}',
@@ -318,7 +318,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public function provideInverseOnlyFixCases()
+    public function provideInverseOnlyFixCases(): \Generator
     {
         yield [
             '<?php function foo(string $param = null) {}',
@@ -356,7 +356,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): \Generator
     {
         yield [
             '<?php $foo = fn (string $param = null) => null;',
@@ -417,7 +417,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield 'trailing comma' => [
             '<?php function foo(string $param = null,) {}',

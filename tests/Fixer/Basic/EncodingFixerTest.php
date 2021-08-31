@@ -33,7 +33,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield $this->prepareTestCase('test-utf8.case1.php', 'test-utf8.case1-bom.php');
 
@@ -42,7 +42,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         yield ['<?php '];
     }
 
-    private function prepareTestCase(string $expectedFilename, ?string $inputFilename = null)
+    private function prepareTestCase(string $expectedFilename, ?string $inputFilename = null): array
     {
         $expectedFile = $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$expectedFilename);
         $inputFile = $inputFilename ? $this->getTestFile(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;

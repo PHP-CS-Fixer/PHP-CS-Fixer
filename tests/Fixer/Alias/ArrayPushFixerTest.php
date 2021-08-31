@@ -33,7 +33,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield 'minimal' => [
             '<?php $a[] =$b;',

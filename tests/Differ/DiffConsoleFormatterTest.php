@@ -40,7 +40,7 @@ final class DiffConsoleFormatterTest extends TestCase
         );
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             [

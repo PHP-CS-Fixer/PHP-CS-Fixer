@@ -77,7 +77,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         );
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -851,7 +851,7 @@ $example = function () use ($message1,$message2) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix56Cases()
+    public function provideFix56Cases(): array
     {
         return [
             [
@@ -871,7 +871,7 @@ $example = function () use ($message1,$message2) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -943,7 +943,7 @@ functionCall(
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
