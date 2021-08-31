@@ -161,6 +161,8 @@ Constant Notation
 Control Structure
 -----------------
 
+- `control_structure_continuation_position <./control_structure/control_structure_continuation_position.rst>`_
+    Control structure continuation keyword must be on the configured line.
 - `elseif <./control_structure/elseif.rst>`_
     The keyword ``elseif`` should be used instead of ``else if`` so that all control keywords look like single words.
 - `empty_loop_body <./control_structure/empty_loop_body.rst>`_

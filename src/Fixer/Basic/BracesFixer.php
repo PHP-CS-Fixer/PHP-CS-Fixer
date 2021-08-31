@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\ControlStructure\ControlStructureContinuationPositionFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
@@ -47,6 +48,11 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
      * @internal
      */
     public const LINE_SAME = 'same';
+
+    /**
+     * @var null|ControlStructureContinuationPositionFixer
+     */
+    private $controlStructureContinuationPositionFixer;
 
     /**
      * {@inheritdoc}
@@ -138,6 +144,17 @@ class Foo
         return 35;
     }
 
+    public function configure(array $configuration = null): void
+    {
+        parent::configure($configuration);
+
+        $this->getControlStructureContinuationPositionFixer()->configure([
+            'position' => self::LINE_NEXT === $this->configuration['position_after_control_structures']
+                ? ControlStructureContinuationPositionFixer::NEXT_LINE
+                : ControlStructureContinuationPositionFixer::SAME_LINE,
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -154,7 +171,6 @@ class Foo
         $this->fixCommentBeforeBrace($tokens);
         $this->fixMissingControlBraces($tokens);
         $this->fixIndents($tokens);
-        $this->fixControlContinuationBraces($tokens);
         $this->fixSpaceAroundToken($tokens);
         $this->fixDoWhile($tokens);
 
@@ -193,6 +209,7 @@ class Foo
     protected function createProxyFixers(): array
     {
         return [
+            $this->getControlStructureContinuationPositionFixer(),
             new DeclareParenthesesFixer(),
         ];
     }
@@ -252,34 +269,6 @@ class Foo
                 // left trim till last line break
                 $tokens[$braceIndex] = new Token([T_WHITESPACE, substr($c, strrpos($c, "\n"))]);
             }
-        }
-    }
-
-    private function fixControlContinuationBraces(Tokens $tokens): void
-    {
-        $controlContinuationTokens = $this->getControlContinuationTokens();
-
-        for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind($controlContinuationTokens)) {
-                continue;
-            }
-
-            $prevIndex = $tokens->getPrevNonWhitespace($index);
-            $prevToken = $tokens[$prevIndex];
-
-            if (!$prevToken->equals('}')) {
-                continue;
-            }
-
-            $tokens->ensureWhitespaceAtIndex(
-                $index - 1,
-                1,
-                self::LINE_NEXT === $this->configuration['position_after_control_structures'] ?
-                    $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $index)
-                    : ' '
-            );
         }
     }
 
@@ -1004,5 +993,14 @@ class Foo
         }
 
         return $siblingIndex;
+    }
+
+    private function getControlStructureContinuationPositionFixer(): ControlStructureContinuationPositionFixer
+    {
+        if (null === $this->controlStructureContinuationPositionFixer) {
+            $this->controlStructureContinuationPositionFixer = new ControlStructureContinuationPositionFixer();
+        }
+
+        return $this->controlStructureContinuationPositionFixer;
     }
 }
