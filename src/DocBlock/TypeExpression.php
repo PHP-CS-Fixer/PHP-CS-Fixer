@@ -217,11 +217,7 @@ final class TypeExpression
             'self|static' => 'self',
         ];
 
-        if (isset($parents[$types])) {
-            return $parents[$types];
-        }
-
-        return null;
+        return $parents[$types] ?? null;
     }
 
     private function normalize(string $type): string

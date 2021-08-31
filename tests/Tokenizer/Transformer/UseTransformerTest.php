@@ -44,7 +44,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -147,7 +147,7 @@ $a = new class(
         );
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         return [
             [

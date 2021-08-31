@@ -36,7 +36,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $original = $fixed = $this->getClassElementStubs();
         $fixed = str_replace('public function f1', 'final public function f1', $fixed);
@@ -121,7 +121,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         return [
             'constant visibility' => [

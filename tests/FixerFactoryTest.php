@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
@@ -39,12 +40,14 @@ final class FixerFactoryTest extends TestCase
         $testInstance = $factory->registerCustomFixers(
             [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')]
         );
+
         static::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerFixer(
             $this->createFixerDouble('f3'),
             false
         );
+
         static::assertSame($factory, $testInstance);
 
         $ruleSetProphecy = $this->prophesize(RuleSetInterface::class);
@@ -52,6 +55,7 @@ final class FixerFactoryTest extends TestCase
         $testInstance = $factory->useRuleSet(
             $ruleSetProphecy->reveal()
         );
+
         static::assertSame($factory, $testInstance);
     }
 
@@ -63,7 +67,27 @@ final class FixerFactoryTest extends TestCase
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        static::assertGreaterThan(0, \count($factory->getFixers()));
+        $fixerClasses = array_filter(
+            get_declared_classes(),
+            static function (string $className): bool {
+                $class = new \ReflectionClass($className);
+
+                return !$class->isAbstract() && $class->implementsInterface(FixerInterface::class) && 0 === strpos($class->getNamespaceName(), 'PhpCsFixer\\Fixer\\');
+            }
+        );
+
+        sort($fixerClasses);
+
+        $fixers = array_map(
+            static function (FixerInterface $fixer): string {
+                return \get_class($fixer);
+            },
+            $factory->getFixers()
+        );
+
+        sort($fixers);
+
+        static::assertSame($fixerClasses, $fixers);
     }
 
     /**
@@ -133,12 +157,14 @@ final class FixerFactoryTest extends TestCase
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet([]))
         ;
+
         static::assertCount(0, $factory->getFixers());
 
         $factory = (new FixerFactory())
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet(['strict_comparison' => true, 'blank_line_before_statement' => false]))
         ;
+
         $fixers = $factory->getFixers();
         static::assertCount(1, $fixers);
         static::assertSame('strict_comparison', $fixers[0]->getName());
@@ -156,6 +182,7 @@ final class FixerFactoryTest extends TestCase
             ->registerBuiltInFixers()
             ->useRuleSet(new RuleSet(['non_existing_rule' => true]))
         ;
+
         $fixers = $factory->getFixers();
         static::assertCount(1, $fixers);
         static::assertSame('strict_comparison', $fixers[0]->getName());
@@ -206,7 +233,7 @@ final class FixerFactoryTest extends TestCase
             ->registerBuiltInFixers()->useRuleSet($ruleSet);
     }
 
-    public function provideConflictingFixersCases()
+    public function provideConflictingFixersCases(): array
     {
         return [
             [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])],
@@ -248,7 +275,6 @@ final class FixerFactoryTest extends TestCase
         $fixer->setWhitespacesConfig($config)->shouldBeCalled();
 
         $factory->registerFixer($fixer->reveal(), false);
-
         $factory->setWhitespacesConfig($config);
     }
 
@@ -274,6 +300,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
         );
+
         $this->expectExceptionMessage(
             '[non_configurable] Is not configurable.'
         );
@@ -300,6 +327,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
         );
+
         $this->expectExceptionMessage(
             '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
         );
@@ -309,7 +337,7 @@ final class FixerFactoryTest extends TestCase
         ]));
     }
 
-    public function provideConfigureFixerWithNonArrayCases()
+    public function provideConfigureFixerWithNonArrayCases(): array
     {
         return [
             ['bar'],
@@ -326,9 +354,7 @@ final class FixerFactoryTest extends TestCase
         $fixer->configure(['bar' => 'baz'])->shouldBeCalled();
 
         $factory = new FixerFactory();
-
         $factory->registerFixer($fixer->reveal(), false);
-
         $factory->useRuleSet(new RuleSet([
             'foo' => ['bar' => 'baz'],
         ]));

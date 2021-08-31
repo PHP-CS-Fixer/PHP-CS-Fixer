@@ -46,7 +46,7 @@ final class EmptyLoopBodyFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield 'simple "while"' => [
             '<?php while(foo());',

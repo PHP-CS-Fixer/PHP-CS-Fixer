@@ -46,7 +46,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixVarCases()
+    public function provideFixVarCases(): array
     {
         return [
             'testFixVar' => [

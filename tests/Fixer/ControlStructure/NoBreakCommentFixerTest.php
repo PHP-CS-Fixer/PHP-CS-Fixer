@@ -45,7 +45,7 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -995,7 +995,7 @@ switch($a) {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixWithDifferentCommentTextCases()
+    public function provideTestFixWithDifferentCommentTextCases(): array
     {
         $cases = $this->provideFixCases();
 
@@ -1054,19 +1054,17 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixWithDifferentLineEndingCases()
+    public function provideTestFixWithDifferentLineEndingCases(): \Generator
     {
-        $cases = [];
         foreach ($this->provideFixCases() as $case) {
             $case[0] = str_replace("\n", "\r\n", $case[0]);
+
             if (isset($case[1])) {
                 $case[1] = str_replace("\n", "\r\n", $case[1]);
             }
 
-            $cases[] = $case;
+            yield $case;
         }
-
-        return $cases;
     }
 
     public function testFixWithCommentTextWithSpecialRegexpCharacters(): void
@@ -1138,7 +1136,7 @@ switch ($foo) {
         ]);
     }
 
-    public function provideFixWithCommentTextContainingNewLinesCases()
+    public function provideFixWithCommentTextContainingNewLinesCases(): array
     {
         return [
             ["No\nbreak"],
@@ -1164,7 +1162,7 @@ switch ($foo) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php

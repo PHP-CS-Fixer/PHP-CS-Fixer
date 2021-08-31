@@ -54,7 +54,7 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideToLongCases()
+    public function provideToLongCases(): array
     {
         // reverse testing
         $shortCases = $this->provideToShortCases();
@@ -100,7 +100,7 @@ class Test
         return $cases;
     }
 
-    public function provideToShortCases()
+    public function provideToShortCases(): array
     {
         return [
             [
@@ -194,7 +194,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function providePhp72Cases()
+    public function providePhp72Cases(): array
     {
         return [
             [
@@ -224,7 +224,7 @@ $a;#
         $this->doTest($expected, $input);
     }
 
-    public function providePhp73Cases()
+    public function providePhp73Cases(): array
     {
         return [
             [

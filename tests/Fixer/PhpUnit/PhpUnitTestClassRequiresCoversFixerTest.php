@@ -34,7 +34,7 @@ final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'already with annotation: @covers' => [
@@ -247,7 +247,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

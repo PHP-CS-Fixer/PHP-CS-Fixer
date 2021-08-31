@@ -35,7 +35,7 @@ final class PhpUnitDedicateAssertFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         $cases = [
             [
@@ -234,7 +234,7 @@ $a#
         $this->doTest($expected);
     }
 
-    public function provideNotFixCases()
+    public function provideNotFixCases(): array
     {
         return [
             [
@@ -293,7 +293,7 @@ $a#
         $this->doTest($expected, $input);
     }
 
-    public function provideTestAssertCountCases()
+    public function provideTestAssertCountCases(): array
     {
         return [
             // positive fixing
@@ -434,7 +434,7 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
-    public function provideTestAssertCountCasingCases()
+    public function provideTestAssertCountCasingCases(): array
     {
         return [
             [
@@ -457,7 +457,7 @@ $a# 5
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

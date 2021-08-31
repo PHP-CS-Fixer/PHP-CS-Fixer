@@ -35,9 +35,10 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $manySpaces = [];
+
         for ($i = 1; $i <= 100; ++$i) {
             $manySpaces[] = 'namespace Test'.$i.';';
         }
@@ -149,7 +150,7 @@ namespace TestComment;',
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

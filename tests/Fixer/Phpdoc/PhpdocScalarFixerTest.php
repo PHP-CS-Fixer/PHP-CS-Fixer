@@ -35,7 +35,7 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases()
+    public static function provideFixCases(): \Generator
     {
         yield 'basic fix' => [
             '<?php

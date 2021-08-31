@@ -33,7 +33,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield from [
             'test function call' => [

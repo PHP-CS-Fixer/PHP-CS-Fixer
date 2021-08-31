@@ -33,7 +33,7 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $operators = ['+=', '-=', '*=', '**=', '/=', '.=', '%=', '&=', '|=', '^=', '<<=', '>>='];
 
@@ -492,7 +492,7 @@ EOT
         $this->doTest($input);
     }
 
-    public function provideDoNotFix80Cases()
+    public function provideDoNotFix80Cases(): array
     {
         return [
             ['<?php

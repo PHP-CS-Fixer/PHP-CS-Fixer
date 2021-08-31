@@ -33,7 +33,7 @@ final class ElseifFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             ['<?php if ($some) { $test = true; } else { $test = false; }'],

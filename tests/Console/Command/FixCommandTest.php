@@ -81,7 +81,7 @@ final class FixCommandTest extends TestCase
         return $commandTester;
     }
 
-    private function getDefaultArguments()
+    private function getDefaultArguments(): array
     {
         return [
             'path' => [__FILE__],

@@ -33,7 +33,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield from [
             'It replaces an unset on a property with  = null' => [
@@ -139,7 +139,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): \Generator
     {
         yield from [
             'It replaces an unset on a property with  = null' => [

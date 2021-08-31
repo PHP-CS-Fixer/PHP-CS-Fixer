@@ -34,7 +34,7 @@ final class OrderedClassElementsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -374,7 +374,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
@@ -443,7 +443,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases()
+    public function provideConfigurationCases(): array
     {
         return [
             [
@@ -974,7 +974,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideSortingConfigurationCases()
+    public function provideSortingConfigurationCases(): array
     {
         return [
             [
@@ -1259,7 +1259,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php
@@ -1325,7 +1325,7 @@ class TestClass
         );
     }
 
-    public function provideWithConfigWithNoCandidateCases()
+    public function provideWithConfigWithNoCandidateCases(): \Generator
     {
         yield ['z', '__construct'];
         yield ['z', '__destruct'];
@@ -1342,7 +1342,7 @@ class TestClass
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php class Foo

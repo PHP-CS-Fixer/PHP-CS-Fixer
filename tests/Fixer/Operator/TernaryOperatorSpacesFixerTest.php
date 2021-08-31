@@ -33,7 +33,7 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'handle goto labels 1' => [
@@ -206,7 +206,7 @@ $a = ($b
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): array
     {
         return [
             'nullable types in constructor property promotion' => [

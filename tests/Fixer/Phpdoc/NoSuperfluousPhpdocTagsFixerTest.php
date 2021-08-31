@@ -32,7 +32,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'no typehint' => [
@@ -1246,7 +1246,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp71Cases()
+    public function provideFixPhp71Cases(): array
     {
         return [
             'same nullable type hint' => [
@@ -1421,7 +1421,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'some typed static public property' => [
@@ -1697,7 +1697,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): array
     {
         return [
             'static return' => [

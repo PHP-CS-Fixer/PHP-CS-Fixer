@@ -44,50 +44,44 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideLowerGeneratedCases()
+    public function provideLowerGeneratedCases(): \Generator
     {
-        $cases = [];
         foreach (['true', 'false', 'null'] as $case) {
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', strtoupper($case)),
             ];
 
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', $case),
                 sprintf('<?php $x = %s;', ucfirst($case)),
             ];
 
-            $cases[] = [sprintf('<?php $x = new %s;', ucfirst($case))];
-            $cases[] = [sprintf('<?php $x = new %s;', strtoupper($case))];
-            $cases[] = [sprintf('<?php $x = "%s story";', $case)];
-            $cases[] = [sprintf('<?php $x = "%s";', $case)];
+            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+            yield [sprintf('<?php $x = "%s story";', $case)];
+            yield [sprintf('<?php $x = "%s";', $case)];
         }
-
-        return $cases;
     }
 
-    public function provideUpperGeneratedCases()
+    public function provideUpperGeneratedCases(): \Generator
     {
-        $cases = [];
         foreach (['true', 'false', 'null'] as $case) {
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', strtoupper($case)),
                 sprintf('<?php $x = %s;', $case),
             ];
 
-            $cases[] = [
+            yield [
                 sprintf('<?php $x = %s;', strtoupper($case)),
                 sprintf('<?php $x = %s;', ucfirst($case)),
             ];
 
-            $cases[] = [sprintf('<?php $x = new %s;', ucfirst($case))];
-            $cases[] = [sprintf('<?php $x = new %s;', strtoupper($case))];
-            $cases[] = [sprintf('<?php $x = "%s story";', $case)];
-            $cases[] = [sprintf('<?php $x = "%s";', $case)];
+            yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+            yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+            yield [sprintf('<?php $x = "%s story";', $case)];
+            yield [sprintf('<?php $x = "%s";', $case)];
         }
-
-        return $cases;
     }
 
     /**
@@ -98,7 +92,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -166,7 +160,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix56Cases()
+    public function provideFix56Cases(): array
     {
         return [
             ['<?php use Foo\Null;'],
@@ -197,7 +191,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix80Cases()
+    public static function provideFix80Cases(): array
     {
         return [
             ['<?php class Foo { public function Bar() { return $this?->False; } }'],

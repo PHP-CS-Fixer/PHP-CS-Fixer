@@ -155,7 +155,7 @@ final class CacheTest extends TestCase
         static::assertSame($hash, $cached->get($file));
     }
 
-    public function provideCanConvertToAndFromJsonCases()
+    public function provideCanConvertToAndFromJsonCases(): array
     {
         $toolInfo = new ToolInfo();
         $config = new Config();

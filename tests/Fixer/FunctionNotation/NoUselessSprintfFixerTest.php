@@ -31,7 +31,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield 'simple' => [
             '<?php echo "bar";',

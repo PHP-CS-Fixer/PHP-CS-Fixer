@@ -35,7 +35,7 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             'Minimal case, alternative casing, alternative statement end.' => [
@@ -254,7 +254,7 @@ get_called_class#1
         $this->fixer->configure($config);
     }
 
-    public function provideInvalidConfigurationKeysCases()
+    public function provideInvalidConfigurationKeysCases(): array
     {
         return [
             [['functions' => ['a']]],

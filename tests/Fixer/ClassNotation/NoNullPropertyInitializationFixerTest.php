@@ -33,7 +33,7 @@ final class NoNullPropertyInitializationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -285,7 +285,7 @@ null;#13
         $this->doTest($expected, $input);
     }
 
-    public function providePhp71Cases()
+    public function providePhp71Cases(): array
     {
         return [
             [
@@ -303,7 +303,7 @@ null;#13
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php class Foo { protected ?int $bar = null; }',
@@ -336,7 +336,7 @@ null;#13
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases()
+    public function provideFixPrePHP80Cases(): \Generator
     {
         yield [
             '<?php class Foo { public $bar; }',

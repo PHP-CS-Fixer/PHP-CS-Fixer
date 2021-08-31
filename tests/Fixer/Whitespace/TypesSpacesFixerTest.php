@@ -32,7 +32,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield [
             '<?php try {} catch (ErrorA|ErrorB $e) {}',
@@ -67,7 +67,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php function foo(TypeA|TypeB $x) {}',

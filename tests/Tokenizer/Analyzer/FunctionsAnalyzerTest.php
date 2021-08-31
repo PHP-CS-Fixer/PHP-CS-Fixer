@@ -39,7 +39,7 @@ final class FunctionsAnalyzerTest extends TestCase
         self::assertIsGlobalFunctionCall($code, $indices);
     }
 
-    public function provideIsGlobalFunctionCallCases()
+    public function provideIsGlobalFunctionCallCases(): \Generator
     {
         yield [
             '<?php CONSTANT;',
@@ -274,7 +274,7 @@ A();
         self::assertIsGlobalFunctionCall($code, $indices);
     }
 
-    public function provideIsGlobalFunctionCallPhp74Cases()
+    public function provideIsGlobalFunctionCallPhp74Cases(): \Generator
     {
         yield [
             '<?php $foo = fn() => false;',
@@ -293,7 +293,7 @@ A();
         self::assertIsGlobalFunctionCall($code, $indices);
     }
 
-    public function provideIsGlobalFunctionCallPhp80Cases()
+    public function provideIsGlobalFunctionCallPhp80Cases(): \Generator
     {
         yield [
             '<?php $a = new (foo());',
@@ -352,7 +352,7 @@ class Foo {}
         static::assertSame(serialize($expected), serialize($actual));
     }
 
-    public function provideFunctionsWithArgumentsCases()
+    public function provideFunctionsWithArgumentsCases(): \Generator
     {
         yield from [
             ['<?php function(){};', 1, []],
@@ -452,7 +452,7 @@ class Foo {}
         }
     }
 
-    public function provideFunctionReturnTypeInfoCases()
+    public function provideFunctionReturnTypeInfoCases(): \Generator
     {
         yield ['<?php function(){};', 1, null];
         yield ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)];
@@ -476,7 +476,7 @@ class Foo {}
         static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
-    public function provideFunctionsWithArgumentsPhp74Cases()
+    public function provideFunctionsWithArgumentsPhp74Cases(): \Generator
     {
         yield from [
             ['<?php fn() => null;', 1, []],
@@ -591,7 +591,7 @@ class Foo {}
         static::assertSame(serialize($expected), serialize($actual));
     }
 
-    public function provideFunctionsWithReturnTypePhp74Cases()
+    public function provideFunctionsWithReturnTypePhp74Cases(): \Generator
     {
         yield ['<?php fn() => null;', 1, null];
         yield ['<?php fn(array $a) => null;', 1, null];
@@ -615,7 +615,7 @@ class Foo {}
         static::assertSame($isTheSameClassCall, $analyzer->isTheSameClassCall($tokens, $index));
     }
 
-    public function provideIsTheSameClassCallCases()
+    public function provideIsTheSameClassCallCases(): \Generator
     {
         $template = '<?php
             class Foo {
@@ -696,7 +696,7 @@ class Foo {}
         static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
     }
 
-    public function provideFunctionsWithArgumentsPhp80Cases()
+    public function provideFunctionsWithArgumentsPhp80Cases(): \Generator
     {
         yield ['<?php function($aa,){};', 1, [
             '$aa' => new ArgumentAnalysis(

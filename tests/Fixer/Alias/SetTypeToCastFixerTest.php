@@ -33,7 +33,7 @@ final class SetTypeToCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'null cast' => [
@@ -232,7 +232,7 @@ $foo#5
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             'null cast' => [

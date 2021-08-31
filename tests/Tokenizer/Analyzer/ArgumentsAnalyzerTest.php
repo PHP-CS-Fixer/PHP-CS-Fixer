@@ -70,7 +70,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         );
     }
 
-    public function provideArgumentsCases()
+    public function provideArgumentsCases(): array
     {
         return [
             ['<?php function(){};', 2, 3, []],
@@ -82,7 +82,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         ];
     }
 
-    public function provideArgumentsInfoCases()
+    public function provideArgumentsInfoCases(): array
     {
         return [
             ['<?php function($a){};', 3, 3, new ArgumentAnalysis(
@@ -170,7 +170,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         ];
     }
 
-    public function provideArgumentsInfo80Cases()
+    public function provideArgumentsInfo80Cases(): \Generator
     {
         yield [
             '<?php function foo(#[AnAttribute] ?string $param = null) {}',
@@ -220,7 +220,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArguments73Cases()
+    public function provideArguments73Cases(): array
     {
         return [
             ['<?php foo($a,);', 2, 5, [3 => 3]],
@@ -245,7 +245,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArguments80Cases()
+    public function provideArguments80Cases(): array
     {
         return [
             ['<?php class Foo { public function __construct(public ?string $param = null) {} }', 12, 23, [13 => 22]],

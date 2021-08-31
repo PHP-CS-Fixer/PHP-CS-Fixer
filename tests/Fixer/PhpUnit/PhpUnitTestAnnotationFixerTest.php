@@ -988,7 +988,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

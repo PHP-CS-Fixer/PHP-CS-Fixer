@@ -41,7 +41,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
     protected function find(string $functionNameToSearch, Tokens $tokens, int $start = 0, ?int $end = null): ?array
     {
         // make interface consistent with findSequence
-        $end = null === $end ? $tokens->count() : $end;
+        $end = $end ?? $tokens->count();
 
         // find raw sequence which we can analyse for context
         $candidateSequence = [[T_STRING, $functionNameToSearch], '('];

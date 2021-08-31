@@ -34,7 +34,7 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -131,7 +131,7 @@ $a = 456;
         $this->doTest($input);
     }
 
-    public function provideDoNotFixCases()
+    public function provideDoNotFixCases(): array
     {
         return [
             ['  <?php echo 123;'], // first statement must be a open tag
@@ -149,7 +149,7 @@ $a = 456;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [

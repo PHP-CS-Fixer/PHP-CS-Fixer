@@ -32,7 +32,7 @@ final class NoUnsetCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'simple form I' => [

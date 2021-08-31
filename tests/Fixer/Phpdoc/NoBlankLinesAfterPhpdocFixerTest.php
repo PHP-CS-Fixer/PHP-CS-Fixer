@@ -324,7 +324,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideInlineTypehintingDocsBeforeFlowBreakCases()
+    public function provideInlineTypehintingDocsBeforeFlowBreakCases(): array
     {
         $cases = [];
 

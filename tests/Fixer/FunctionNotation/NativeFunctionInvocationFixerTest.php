@@ -99,7 +99,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideConfigureIncludeSetsCases()
+    public function provideConfigureIncludeSetsCases(): array
     {
         return [
             [['foo', 'bar']],
@@ -302,7 +302,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithNamespaceConfigurationCases()
+    public function provideFixWithNamespaceConfigurationCases(): array
     {
         return [
             [
@@ -471,7 +471,7 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredIncludeCases()
+    public function provideFixWithConfiguredIncludeCases(): \Generator
     {
         yield from [
             'include set + 1, exclude 1' => [

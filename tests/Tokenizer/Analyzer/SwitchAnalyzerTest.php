@@ -50,7 +50,7 @@ final class SwitchAnalyzerTest extends TestCase
         static::assertSame(serialize($expected), serialize(($analyzer->getSwitchAnalysis($tokens, $index))));
     }
 
-    public static function provideGettingSwitchAnalysisCases()
+    public static function provideGettingSwitchAnalysisCases(): \Generator
     {
         yield 'two cases' => [
             new SwitchAnalysis(7, 46, [new CaseAnalysis(12), new CaseAnalysis(39)]),

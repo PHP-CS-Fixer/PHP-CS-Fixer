@@ -40,7 +40,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $this->getTestFile(__FILE__));
     }
 
-    public static function provideFixNewCases()
+    public static function provideFixNewCases(): \Generator
     {
         foreach (['class', 'interface', 'trait'] as $element) {
             yield sprintf('%s with originally short name', $element) => [
@@ -174,7 +174,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $fileProphecy = $this->prophesize();
         $fileProphecy->willExtend(\SplFileInfo::class);
@@ -363,7 +363,7 @@ class PsrAutoloadingFixer {}
         ];
     }
 
-    public function provideIgnoredCases()
+    public function provideIgnoredCases(): array
     {
         $cases = ['.php', 'Foo.class.php', '4Foo.php', '$#.php'];
 

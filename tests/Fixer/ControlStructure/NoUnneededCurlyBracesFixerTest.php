@@ -33,7 +33,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield from [
             'simple sample, last token candidate' => [
@@ -133,7 +133,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideNoFix7Cases()
+    public function provideNoFix7Cases(): array
     {
         return [
             [
@@ -162,7 +162,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNamespaceCases()
+    public function provideFixNamespaceCases(): \Generator
     {
         yield [
             '<?php

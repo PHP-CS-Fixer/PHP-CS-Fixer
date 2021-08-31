@@ -34,7 +34,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield from [
             [
@@ -242,7 +242,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideNotFixCases()
+    public function provideNotFixCases(): array
     {
         return [
             [
@@ -269,7 +269,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -292,7 +292,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
@@ -311,7 +311,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): array
     {
         return [
             [

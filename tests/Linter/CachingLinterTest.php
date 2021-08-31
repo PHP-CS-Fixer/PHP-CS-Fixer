@@ -40,7 +40,7 @@ final class CachingLinterTest extends TestCase
         static::assertSame($isAsync, $linter->isAsync());
     }
 
-    public function provideIsAsyncCases()
+    public function provideIsAsyncCases(): array
     {
         return [
             [true],

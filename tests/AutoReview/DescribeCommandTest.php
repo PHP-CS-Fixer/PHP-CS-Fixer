@@ -48,17 +48,13 @@ final class DescribeCommandTest extends TestCase
         static::assertSame(0, $commandTester->getStatusCode());
     }
 
-    public function provideDescribeCommandCases()
+    public function provideDescribeCommandCases(): \Generator
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
 
-        $cases = [];
-
         foreach ($factory->getFixers() as $fixer) {
-            $cases[] = [$factory, $fixer->getName()];
+            yield [$factory, $fixer->getName()];
         }
-
-        return $cases;
     }
 }

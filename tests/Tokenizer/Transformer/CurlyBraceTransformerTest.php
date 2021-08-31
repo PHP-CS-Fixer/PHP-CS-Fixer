@@ -51,7 +51,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             'curly open/close I' => [
@@ -216,7 +216,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public static function provideProcess80Cases()
+    public static function provideProcess80Cases(): array
     {
         return [
             'dynamic property brace open/close' => [

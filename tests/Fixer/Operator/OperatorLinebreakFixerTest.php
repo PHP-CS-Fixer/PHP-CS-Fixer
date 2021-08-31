@@ -37,7 +37,7 @@ final class OperatorLinebreakFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases()
+    public static function provideFixCases(): \Generator
     {
         foreach (static::pairs() as $key => $value) {
             yield sprintf('%s when position is "beginning"', $key) => $value;
@@ -205,7 +205,7 @@ return $foo
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix71Cases()
+    public static function provideFix71Cases(): \Generator
     {
         yield 'nullable type when position is "end"' => [
             '<?php
@@ -219,7 +219,7 @@ return $foo
         ];
     }
 
-    private static function pairs()
+    private static function pairs(): \Generator
     {
         yield 'handle equal sign' => [
             '<?php

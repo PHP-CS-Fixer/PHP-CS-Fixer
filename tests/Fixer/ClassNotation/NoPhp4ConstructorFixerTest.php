@@ -33,7 +33,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -71,7 +71,7 @@ final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideSimpleCases()
+    public function provideSimpleCases(): array
     {
         return [
             [
@@ -1139,7 +1139,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): \Generator
     {
         yield [
             <<<'EOF'

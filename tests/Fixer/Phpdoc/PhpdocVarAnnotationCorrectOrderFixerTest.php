@@ -33,7 +33,7 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         yield [ // It's @param, we care only about @var
             '<?php /** @param $foo Foo */',

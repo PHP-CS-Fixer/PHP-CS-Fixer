@@ -103,7 +103,7 @@ EOF;
         $this->doTest($this->removeLinesFromString($this->template, $lineNumberRemoved), $this->template);
     }
 
-    public function provideWithConfigCases()
+    public function provideWithConfigCases(): array
     {
         $tests = [
             [
@@ -362,7 +362,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentCases()
+    public function provideCommentCases(): array
     {
         return [
             [
@@ -416,7 +416,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideLineBreakCases()
+    public function provideLineBreakCases(): array
     {
         $input = '<?php //
 
@@ -472,7 +472,7 @@ $b = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideBetweenUseCases()
+    public function provideBetweenUseCases(): array
     {
         return [
             ['<?php use A\B;'],
@@ -527,7 +527,7 @@ $b = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideRemoveLinesBetweenUseStatementsCases()
+    public function provideRemoveLinesBetweenUseStatementsCases(): array
     {
         return [
             [
@@ -600,7 +600,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         $this->doTest($expected);
     }
 
-    public function provideWithoutUsesCases()
+    public function provideWithoutUsesCases(): array
     {
         return [
             [
@@ -635,7 +635,7 @@ $a = new Qux();',
         $this->doTest($expected, $input);
     }
 
-    public function provideRemoveBetweenUseTraitsCases()
+    public function provideRemoveBetweenUseTraitsCases(): \Generator
     {
         yield [
             '<?php
@@ -750,7 +750,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideOneAndInLineCases()
+    public function provideOneAndInLineCases(): \Generator
     {
         yield from [
             [
@@ -788,7 +788,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideBraceCases()
+    public function provideBraceCases(): array
     {
         return [
             [
@@ -887,7 +887,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -922,7 +922,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideSwitchCases()
+    public function provideSwitchCases(): array
     {
         return [
             [
@@ -1061,7 +1061,7 @@ class Foo {}'
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): \Generator
     {
         yield [
             '<?php
@@ -1105,7 +1105,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php
@@ -1127,7 +1127,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         ];
     }
 
-    private function removeLinesFromString(string $input, array $lineNumbers)
+    private function removeLinesFromString(string $input, array $lineNumbers): string
     {
         sort($lineNumbers);
         $lines = explode("\n", $input);

@@ -33,7 +33,7 @@ final class PhpUnitDedicateAssertInternalTypeFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixInternalTypeCases()
+    public function provideTestFixInternalTypeCases(): array
     {
         return [
             'skip cases' => [

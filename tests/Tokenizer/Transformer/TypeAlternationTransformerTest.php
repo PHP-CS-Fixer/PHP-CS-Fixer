@@ -40,7 +40,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             'no namespace' => [
@@ -97,7 +97,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcess80Cases()
+    public function provideProcess80Cases(): \Generator
     {
         yield 'arrow function' => [
             '<?php $a = fn(int|null $item): int|null => $item * 2;',

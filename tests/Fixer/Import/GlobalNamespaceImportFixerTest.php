@@ -34,7 +34,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportConstantsCases()
+    public function provideFixImportConstantsCases(): array
     {
         return [
             'non-global names' => [
@@ -235,7 +235,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportFunctionsCases()
+    public function provideFixImportFunctionsCases(): array
     {
         return [
             'non-global names' => [
@@ -439,7 +439,7 @@ EXPECTED
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportClassesCases()
+    public function provideFixImportClassesCases(): array
     {
         return [
             'non-global names' => [
@@ -708,7 +708,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportClasses71Cases()
+    public function provideFixImportClasses71Cases(): array
     {
         return [
             'handle typehints' => [
@@ -742,7 +742,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyConstantsCases()
+    public function provideFixFullyQualifyConstantsCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -801,7 +801,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyFunctionsCases()
+    public function provideFixFullyQualifyFunctionsCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -867,7 +867,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyClassesCases()
+    public function provideFixFullyQualifyClassesCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -956,7 +956,7 @@ INPUT
         $this->doTest($expected);
     }
 
-    public function provideMultipleNamespacesCases()
+    public function provideMultipleNamespacesCases(): \Generator
     {
         yield [
             <<<'INPUT'

@@ -33,7 +33,7 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ['<?php $øøøøa = 1;'],
@@ -110,7 +110,7 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [

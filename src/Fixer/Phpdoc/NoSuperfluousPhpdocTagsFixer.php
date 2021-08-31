@@ -408,11 +408,7 @@ class Foo {
             static function (string $type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
-                if (isset($symbolShortNames[$type])) {
-                    return $symbolShortNames[$type];
-                }
-
-                return $type;
+                return $symbolShortNames[$type] ?? $type;
             },
             $types
         );

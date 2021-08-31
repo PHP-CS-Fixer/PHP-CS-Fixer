@@ -56,7 +56,7 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -137,7 +137,7 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php function foo(mixed $a){}',

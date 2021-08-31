@@ -130,7 +130,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($progressType, $resolver->getProgress());
     }
 
-    public function provideProgressTypeCases()
+    public function provideProgressTypeCases(): array
     {
         return [
             ['none'],
@@ -195,7 +195,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
-    public function provideResolveConfigFileDefaultCases()
+    public function provideResolveConfigFileDefaultCases(): array
     {
         $dirBase = $this->getFixtureDir();
 
@@ -297,7 +297,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expectedPaths, $resolver->getPath());
     }
 
-    public function providePathCases()
+    public function providePathCases(): \Generator
     {
         yield [
             ['Command'],
@@ -343,7 +343,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
-    public function provideEmptyPathCases()
+    public function provideEmptyPathCases(): \Generator
     {
         yield [
             [''],
@@ -496,7 +496,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expected, $intersectionItems);
     }
 
-    public function provideResolveIntersectionOfPathsCases()
+    public function provideResolveIntersectionOfPathsCases(): array
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
         $cb = static function (array $items) use ($dir) {
@@ -662,7 +662,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
-    public function provideConfigFinderIsOverriddenCases()
+    public function provideConfigFinderIsOverriddenCases(): array
     {
         $root = __DIR__.'/../..';
 
@@ -1040,7 +1040,7 @@ final class ConfigurationResolverTest extends TestCase
         static::assertInstanceOf($expected, $resolver->getDiffer());
     }
 
-    public function provideDifferCases()
+    public function provideDifferCases(): array
     {
         return [
             [
@@ -1081,7 +1081,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRiskyAllowed();
     }
 
-    public function provideResolveBooleanOptionCases()
+    public function provideResolveBooleanOptionCases(): array
     {
         return [
             [true, true, 'yes'],
@@ -1122,7 +1122,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getFixers();
     }
 
-    public function provideDeprecatedFixerConfiguredCases()
+    public function provideDeprecatedFixerConfiguredCases(): array
     {
         return [
             [true],
@@ -1131,7 +1131,7 @@ final class ConfigurationResolverTest extends TestCase
         ];
     }
 
-    public function provideGetDirectoryCases()
+    public function provideGetDirectoryCases(): array
     {
         return [
             [null, '/my/path/my/file', 'path/my/file'],
@@ -1171,20 +1171,20 @@ final class ConfigurationResolverTest extends TestCase
         return str_replace('/', \DIRECTORY_SEPARATOR, $path);
     }
 
-    private static function assertSameRules(array $expected, array $actual, string $message = ''): void
+    private static function assertSameRules(array $expected, array $actual): void
     {
         ksort($expected);
         ksort($actual);
 
-        static::assertSame($expected, $actual, $message);
+        static::assertSame($expected, $actual);
     }
 
-    private function getFixtureDir()
+    private function getFixtureDir(): string
     {
         return realpath(__DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'ConfigurationResolverConfigFile'.\DIRECTORY_SEPARATOR).'/';
     }
 
-    private function createConfigurationResolver(array $options, Config $config = null, string $cwdPath = '')
+    private function createConfigurationResolver(array $options, Config $config = null, string $cwdPath = ''): ConfigurationResolver
     {
         if (null === $config) {
             $config = new Config();

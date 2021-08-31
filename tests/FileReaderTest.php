@@ -41,7 +41,6 @@ final class FileReaderTest extends TestCase
     {
         $instance = FileReader::createSingleton();
 
-        static::assertInstanceOf(\PhpCsFixer\FileReader::class, $instance);
         static::assertSame($instance, FileReader::createSingleton());
     }
 
