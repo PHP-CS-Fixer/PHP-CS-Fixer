@@ -11,12 +11,11 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Dictionary of ``const|method|property|trait_import`` =>
-``none|one|only_if_meta`` values.
+Dictionary of ``const|method|property|trait_import`` => ``none|one`` values.
 
 Allowed types: ``array``
 
-Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'one']``
+Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']``
 
 Examples
 --------
@@ -55,9 +54,9 @@ With configuration: ``['elements' => ['property' => 'one']]``.
    +++ New
     <?php
     class Sample
-   -{private $a; // a is awesome
+   -{private $a; // foo
    +{
-   +private $a; // a is awesome
+   +private $a; // foo
    +
         /** second in a hour */
         private $b;
@@ -105,30 +104,6 @@ With configuration: ``['elements' => ['const' => 'only_if_meta']]``.
     }
 
 Example #5
-~~~~~~~~~~
-
-With configuration: ``['elements' => ['property' => 'only_if_meta']]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    class Sample
-    {
-        public $a;
-   +
-        #[SetUp]
-        public $b;
-   +
-        /** @var string */
-        public $c;
-        public $d;
-   -
-        public $e;
-    }
-
-Example #6
 ~~~~~~~~~~
 
 With configuration: ``['elements' => ['property' => 'only_if_meta']]``.

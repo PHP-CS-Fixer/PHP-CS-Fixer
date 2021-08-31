@@ -198,24 +198,6 @@ With configuration: ``['tokens' => ['use']]``.
 Example #11
 ~~~~~~~~~~~
 
-With configuration: ``['tokens' => ['use_trait']]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-
-    class Foo
-    {
-        use Bar;
-   -
-        use Baz;
-    }
-
-Example #12
-~~~~~~~~~~~
-
 With configuration: ``['tokens' => ['switch', 'case', 'default']]``.
 
 .. code-block:: diff
@@ -240,9 +222,9 @@ The rule is part of the following rule sets:
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_extra_blank_lines`` rule with the config below:
 
-  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``
+  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
 
 @Symfony
   Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``no_extra_blank_lines`` rule with the config below:
 
-  ``['tokens' => ['case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``
+  ``['tokens' => ['case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``

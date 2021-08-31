@@ -75,7 +75,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                     'switch',
                     'throw',
                     'use',
-                    'use_trait',
                 ],
             ],
             'no_null_property_initialization' => true,

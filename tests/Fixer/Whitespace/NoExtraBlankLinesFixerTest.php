@@ -631,9 +631,11 @@ $a = new Qux();',
 
     /**
      * @dataProvider provideRemoveBetweenUseTraitsCases
+     * @group legacy
      */
     public function testRemoveBetweenUseTraits(string $expected, string $input): void
     {
+        $this->expectDeprecation('Option "use_trait" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.');
         $this->fixer->configure(['tokens' => ['use_trait']]);
 
         $this->doTest($expected, $input);

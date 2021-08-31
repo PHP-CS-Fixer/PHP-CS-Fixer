@@ -41,25 +41,22 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
-    private const SPACING_NONE = 'none';
+    /**
+     * @internal
+     */
+    public const SPACING_NONE = 'none';
 
-    private const SPACING_ONE = 'one';
+    /**
+     * @internal
+     */
+    public const SPACING_ONE = 'one';
 
     private const SPACING_ONLY_IF_META = 'only_if_meta';
-
-    private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE, self::SPACING_ONLY_IF_META];
-
-    private const SUPPORTED_TYPES = ['const', 'method', 'property', 'trait_import'];
 
     /**
      * @var array<string, string>
      */
     private $classElementTypes = [];
-
-    /**
-     * @var array<int, int>
-     */
-    private $possibleMetadataKinds = [];
 
     /**
      * {@inheritdoc}
@@ -72,12 +69,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
         foreach ($this->configuration['elements'] as $elementType => $spacing) {
             $this->classElementTypes[$elementType] = $spacing;
-        }
-
-        $this->possibleMetadataKinds = [T_DOC_COMMENT];
-        if (\defined('T_ATTRIBUTE')) {
-            // @todo remove check when PHP 8.0+ is required
-            $this->possibleMetadataKinds[] = T_ATTRIBUTE;
         }
     }
 
@@ -107,7 +98,7 @@ final class Sample
                 new CodeSample(
                     '<?php
 class Sample
-{private $a; // a is awesome
+{private $a; // foo
     /** second in a hour */
     private $b;
 }
@@ -150,23 +141,6 @@ class Sample
     public $b;
     /** @var string */
     public $c;
-    public $d;
-
-    public $e;
-}
-',
-                    new VersionSpecification(80000),
-                    ['elements' => ['property' => self::SPACING_ONLY_IF_META]]
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
-class Sample
-{
-    public $a;
-    #[SetUp]
-    public $b;
-    /** @var string */
-    public $c;
     /** @internal */
     #[Assert\String()]
     public $d;
@@ -184,7 +158,7 @@ class Sample
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, IndentationTypeFixer.
+     * Must run before BracesFixer, IndentationTypeFixer, NoExtraBlankLinesFixer.
      * Must run after OrderedClassElementsFixer, SingleClassElementPerStatementFixer.
      */
     public function getPriority(): int
@@ -205,40 +179,24 @@ class Sample
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $class = $classStart = $classEnd = false;
+        foreach ($this->getElementsByClass($tokens) as $class) {
+            $elements = $class['elements'];
+            $elementCount = \count($elements);
 
-        foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
-            if (!isset($this->classElementTypes[$element['type']])) {
-                continue; // not configured to be fixed
-            }
-
-            $spacing = $this->classElementTypes[$element['type']];
-
-            if ($element['classIndex'] !== $class) {
-                $class = $element['classIndex'];
-                $classStart = $tokens->getNextTokenOfKind($class, ['{']);
-                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
-            }
-
-            if ('method' === $element['type'] && !$tokens[$class]->isGivenKind(T_INTERFACE)) {
-                // method of class or trait
-                $attributes = $tokensAnalyzer->getMethodAttributes($index);
-
-                $methodEnd = true === $attributes['abstract']
-                    ? $tokens->getNextTokenOfKind($index, [';'])
-                    : $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($index, ['{']))
-                ;
-
-                $this->fixSpaceBelowClassMethod($tokens, $classEnd, $methodEnd, $spacing);
-                $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
-
+            if (0 === $elementCount) {
                 continue;
             }
 
-            // `const`, `property` or `method` of an `interface`
-            $this->fixSpaceBelowClassElement($tokens, $classEnd, $tokens->getNextTokenOfKind($index, [';']), $spacing);
-            $this->fixSpaceAboveClassElement($tokens, $classStart, $index, $spacing);
+            if (isset($this->classElementTypes[$elements[0]['type']])) {
+                $this->fixSpaceBelowClassElement($tokens, $class);
+                $this->fixSpaceAboveClassElement($tokens, $class, 0);
+            }
+
+            for ($index = 1; $index < $elementCount; ++$index) {
+                if (isset($this->classElementTypes[$elements[$index]['type']])) {
+                    $this->fixSpaceAboveClassElement($tokens, $class, $index);
+                }
+            }
         }
     }
 
@@ -248,26 +206,30 @@ class Sample
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', sprintf('Dictionary of `%s` => `%s` values.', implode('|', self::SUPPORTED_TYPES), implode('|', self::SUPPORTED_SPACINGS))))
+            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import` => `none|one` values.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option) {
                     foreach ($option as $type => $spacing) {
-                        if (!\in_array($type, self::SUPPORTED_TYPES, true)) {
+                        $supportedTypes = ['const', 'method', 'property', 'trait_import'];
+
+                        if (!\in_array($type, $supportedTypes, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected element type, expected any of "%s", got "%s".',
-                                    implode('", "', self::SUPPORTED_TYPES),
+                                    implode('", "', $supportedTypes),
                                     \gettype($type).'#'.$type
                                 )
                             );
                         }
 
-                        if (!\in_array($spacing, self::SUPPORTED_SPACINGS, true)) {
+                        $supportedSpacings = [self::SPACING_NONE, self::SPACING_ONE, self::SPACING_ONLY_IF_META];
+
+                        if (!\in_array($spacing, $supportedSpacings, true)) {
                             throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected spacing for element type "%s", expected any of "%s", got "%s".',
                                     $spacing,
-                                    implode('", "', self::SUPPORTED_SPACINGS),
+                                    implode('", "', $supportedSpacings),
                                     \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing)
                                 )
                             );
@@ -280,57 +242,10 @@ class Sample
                     'const' => self::SPACING_ONE,
                     'method' => self::SPACING_ONE,
                     'property' => self::SPACING_ONE,
-                    'trait_import' => self::SPACING_ONE,
+                    'trait_import' => self::SPACING_NONE,
                 ])
                 ->getOption(),
         ]);
-    }
-
-    /**
-     * Fix spacing below an element of a class, interface or trait.
-     *
-     * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
-     * element within the class, interface or trait.
-     */
-    private function fixSpaceBelowClassElement(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing): void
-    {
-        for ($nextNotWhite = $elementEndIndex + 1;; ++$nextNotWhite) {
-            if (($tokens[$nextNotWhite]->isComment() || $tokens[$nextNotWhite]->isWhitespace()) && false === strpos($tokens[$nextNotWhite]->getContent(), "\n")) {
-                continue;
-            }
-
-            break;
-        }
-
-        if ($tokens[$nextNotWhite]->isWhitespace()) {
-            $nextNotWhite = $tokens->getNextNonWhitespace($nextNotWhite);
-        }
-
-        $functionIndex = $tokens->getTokenNotOfKindsSibling($nextNotWhite - 1, 1, [T_ABSTRACT, T_FINAL, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
-
-        if ($tokens[$functionIndex]->isGivenKind(T_FUNCTION)) {
-            $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, 2);
-
-            return;
-        }
-
-        $reqLineCount = $this->determineRequiredLineCount($tokens, $nextNotWhite, $classEndIndex, $spacing);
-
-        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $reqLineCount);
-    }
-
-    /**
-     * Fix spacing below a method of a class or trait.
-     *
-     * Deals with comments, PHPDocs and spaces above the method with respect to the position of the
-     * method within the class or trait.
-     */
-    private function fixSpaceBelowClassMethod(Tokens $tokens, int $classEndIndex, int $elementEndIndex, string $spacing): void
-    {
-        $nextNotWhite = $tokens->getNextNonWhitespace($elementEndIndex);
-        $reqLineCount = $this->determineRequiredLineCount($tokens, $nextNotWhite, $classEndIndex, $spacing);
-
-        $this->correctLineBreaks($tokens, $elementEndIndex, $nextNotWhite, $reqLineCount);
     }
 
     /**
@@ -338,139 +253,121 @@ class Sample
      *
      * Deals with comments, PHPDocs and spaces above the element with respect to the position of the
      * element within the class, interface or trait.
-     *
-     * @param int $classStartIndex index of the class Token the element is in
-     * @param int $elementIndex    index of the element to fix
      */
-    private function fixSpaceAboveClassElement(Tokens $tokens, int $classStartIndex, int $elementIndex, string $spacing): void
+    private function fixSpaceAboveClassElement(Tokens $tokens, array $class, int $elementIndex): void
     {
-        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
+        $element = $class['elements'][$elementIndex];
+        $elementAboveEnd = isset($class['elements'][$elementIndex + 1]) ? $class['elements'][$elementIndex + 1]['end'] : 0;
+        $nonWhiteAbove = $tokens->getPrevNonWhitespace($element['start']);
 
-        $nonWhiteAbove = null;
+        // element is directly after class open brace
+        if ($nonWhiteAbove === $class['open']) {
+            $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 1);
 
-        // find out where the element definition starts
-        $firstElementAttributeIndex = $elementIndex;
-
-        for ($i = $elementIndex; $i > $classStartIndex; --$i) {
-            $nonWhiteAbove = $tokens->getPrevNonWhitespace($i);
-
-            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($methodAttr)) {
-                $firstElementAttributeIndex = $nonWhiteAbove;
-            } else {
-                break;
-            }
+            return;
         }
 
         // deal with comments above an element
         if ($tokens[$nonWhiteAbove]->isGivenKind(T_COMMENT)) {
-            if (1 === $firstElementAttributeIndex - $nonWhiteAbove) {
-                // no white space found between comment and element start
-                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
+            // check if the comment belongs to the previous element
+            if ($elementAboveEnd === $nonWhiteAbove) {
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], $this->determineRequiredLineCount($tokens, $class, $elementIndex));
 
                 return;
             }
 
-            // $tokens[$nonWhiteAbove + 1] is always a white space token here
-            if (substr_count($tokens[$nonWhiteAbove + 1]->getContent(), "\n") > 1) {
-                // more than one line break, always bring it back to 2 line breaks between the element start and what is above it
-                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 2);
+            // more than one line break, always bring it back to 2 line breaks between the element start and what is above it
+            if ($tokens[$nonWhiteAbove + 1]->isWhitespace() && substr_count($tokens[$nonWhiteAbove + 1]->getContent(), "\n") > 1) {
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 2);
 
                 return;
             }
 
             // there are 2 cases:
-            if ($tokens[$nonWhiteAbove - 1]->isWhitespace() && substr_count($tokens[$nonWhiteAbove - 1]->getContent(), "\n") > 0) {
+            if (
+                1 === $element['start'] - $nonWhiteAbove
+                || $tokens[$nonWhiteAbove - 1]->isWhitespace() && substr_count($tokens[$nonWhiteAbove - 1]->getContent(), "\n") > 0
+                || $tokens[$nonWhiteAbove + 1]->isWhitespace() && substr_count($tokens[$nonWhiteAbove + 1]->getContent(), "\n") > 0
+            ) {
                 // 1. The comment is meant for the element (although not a PHPDoc),
                 //    make sure there is one line break between the element and the comment...
-                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 1);
                 //    ... and make sure there is blank line above the comment (with the exception when it is directly after a class opening)
-                $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove);
+                $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove, $elementAboveEnd);
                 $nonWhiteAboveComment = $tokens->getPrevNonWhitespace($nonWhiteAbove);
 
-                $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $classStartIndex ? 1 : 2);
+                $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : 2);
             } else {
                 // 2. The comment belongs to the code above the element,
                 //    make sure there is a blank line above the element (i.e. 2 line breaks)
-                $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 2);
+                $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 2);
             }
 
             return;
         }
 
-        // deal with element with a PHPDoc above it
-        if ($tokens[$nonWhiteAbove]->isGivenKind(T_DOC_COMMENT)) {
-            // there should be one linebreak between the element and the PHPDoc above it
-            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
-
-            // there should be one blank line between the PHPDoc and whatever is above (with the exception when it is directly after a class opening)
-            $nonWhiteAbovePHPDoc = $tokens->getPrevNonWhitespace($nonWhiteAbove);
-            $reqLineCount = $nonWhiteAbovePHPDoc === $classStartIndex ? 1 : 2;
-
-            if ($tokens[$nonWhiteAbovePHPDoc]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                // PHPDocs can have attributes adjacent to them, so adjust our comparison points
-                [$nonWhiteAbove, $nonWhiteAbovePHPDoc, $reqLineCount] = $this->getAttributePhpdocSequenceOffset($tokens, $nonWhiteAbovePHPDoc, $classStartIndex);
-            }
-
-            $this->correctLineBreaks($tokens, $nonWhiteAbovePHPDoc, $nonWhiteAbove, $reqLineCount);
-
-            return;
-        }
-
-        // deal with element with an attribute above it
-        if ($tokens[$nonWhiteAbove]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        // deal with element with a PHPDoc/attribute above it
+        if ($tokens[$nonWhiteAbove]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE])) {
             // there should be one linebreak between the element and the attribute above it
-            $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, 1);
+            $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 1);
 
-            // make sure there is blank line above the attribute comment
-            // with the exception when it is directly after a class opening or has an adjacent PHPDoc
-            [$nonWhiteAbove, $nonWhiteAboveComment, $reqLineCount] = $this->getAttributePhpdocSequenceOffset($tokens, $nonWhiteAbove, $classStartIndex);
+            // make sure there is blank line above the comment (with the exception when it is directly after a class opening)
+            $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove, $elementAboveEnd);
+            $nonWhiteAboveComment = $tokens->getPrevNonWhitespace($nonWhiteAbove);
 
-            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $reqLineCount);
+            $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : 2);
 
             return;
         }
 
-        $reqLineCount = $this->determineRequiredLineCount($tokens, $nonWhiteAbove, $classStartIndex, $spacing);
-
-        $this->correctLineBreaks($tokens, $nonWhiteAbove, $firstElementAttributeIndex, $reqLineCount);
+        $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], $this->determineRequiredLineCount($tokens, $class, $elementIndex));
     }
 
-    /**
-     * @return array<int, int>
-     */
-    private function getAttributePhpdocSequenceOffset(Tokens $tokens, int $attributeCloseIndex, int $classStartIndex): array
+    private function determineRequiredLineCount(Tokens $tokens, array $class, int $elementIndex): int
     {
-        $attributeStartIndex = $this->findAttributeBlockStart($tokens, $attributeCloseIndex);
-        $nonWhiteAboveAttribute = $tokens->getNonWhitespaceSibling($attributeStartIndex, -1);
-        $reqLineCount = $nonWhiteAboveAttribute === $classStartIndex || $tokens[$nonWhiteAboveAttribute]->isGivenKind(T_DOC_COMMENT) ? 1 : 2;
-
-        return [$attributeStartIndex, $nonWhiteAboveAttribute, $reqLineCount];
-    }
-
-    private function determineRequiredLineCount(Tokens $tokens, int $notWhiteIndex, int $classStartOrEndIndex, string $spacing): int
-    {
-        // if the two indices are equal, this means the index is either at the
-        // start or end of the class and no additional line breaks are needed
-        if ($notWhiteIndex === $classStartOrEndIndex) {
-            return 1;
-        }
-
-        if (self::SPACING_NONE === $spacing) {
-            return 1;
-        }
+        $type = $class['elements'][$elementIndex]['type'];
+        $spacing = $this->classElementTypes[$type];
 
         if (self::SPACING_ONE === $spacing) {
             return 2;
         }
 
-        if (self::SPACING_ONLY_IF_META === $spacing && $tokens[$notWhiteIndex]->isGivenKind($this->possibleMetadataKinds)) {
-            return 2;
+        if (self::SPACING_NONE === $spacing) {
+            if (!isset($class['elements'][$elementIndex + 1])) {
+                return 1;
+            }
+
+            $aboveElement = $class['elements'][$elementIndex + 1];
+
+            if ($aboveElement['type'] !== $type) {
+                return 2;
+            }
+
+            $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($aboveElement['start']);
+
+            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
-        return 1;
+        if (self::SPACING_ONLY_IF_META === $spacing) {
+            $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
+
+            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+        }
+
+        throw new \RuntimeException(sprintf('Unknown spacing "%s".', $spacing));
     }
 
-    private function correctLineBreaks(Tokens $tokens, int $startIndex, int $endIndex, int $reqLineCount = 2): void
+    private function fixSpaceBelowClassElement(Tokens $tokens, array $class): void
+    {
+        $element = $class['elements'][0];
+
+        // if this is last element fix; fix to the class end `}` here if appropriate
+        if ($class['close'] === $tokens->getNextNonWhitespace($element['end'])) {
+            $this->correctLineBreaks($tokens, $element['end'], $class['close'], 1);
+        }
+    }
+
+    private function correctLineBreaks(Tokens $tokens, int $startIndex, int $endIndex, int $reqLineCount): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
@@ -524,22 +421,26 @@ class Sample
         }
     }
 
-    private function getLineBreakCount(Tokens $tokens, int $whiteSpaceStartIndex, int $whiteSpaceEndIndex): int
+    private function getLineBreakCount(Tokens $tokens, int $startIndex, int $endIndex): int
     {
         $lineCount = 0;
 
-        for ($i = $whiteSpaceStartIndex; $i < $whiteSpaceEndIndex; ++$i) {
+        for ($i = $startIndex; $i < $endIndex; ++$i) {
             $lineCount += substr_count($tokens[$i]->getContent(), "\n");
         }
 
         return $lineCount;
     }
 
-    private function findCommentBlockStart(Tokens $tokens, int $commentIndex): int
+    private function findCommentBlockStart(Tokens $tokens, int $start, int $elementAboveEnd): int
     {
-        $start = $commentIndex;
+        for ($i = $start; $i > $elementAboveEnd; --$i) {
+            if ($tokens[$i]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $start = $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $i);
 
-        for ($i = $commentIndex - 1; $i > 0; --$i) {
+                continue;
+            }
+
             if ($tokens[$i]->isComment()) {
                 $start = $i;
 
@@ -554,25 +455,121 @@ class Sample
         return $start;
     }
 
-    /**
-     * @param int $index attribute close index
-     */
-    private function findAttributeBlockStart(Tokens $tokens, int $index): int
+    private function getElementsByClass(Tokens $tokens): \Generator
     {
-        $start = $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $class = $classIndex = false;
+        $elements = $tokensAnalyzer->getClassyElements();
 
-        for ($i = $index - 1; $i > 0; --$i) {
-            if ($tokens[$i]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $start = $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $i);
+        for (end($elements);; prev($elements)) {
+            $index = key($elements);
 
-                continue;
+            if (null === $index) {
+                break;
             }
 
-            if (!$tokens[$i]->isWhitespace() || $this->getLineBreakCount($tokens, $i, $i + 1) > 1) {
+            $element = current($elements);
+            $element['index'] = $index;
+
+            if ($element['classIndex'] !== $classIndex) {
+                if (false !== $class) {
+                    yield $class;
+                }
+
+                $classIndex = $element['classIndex'];
+                $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
+                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+                $class = [
+                    'index' => $classIndex,
+                    'open' => $classOpen,
+                    'close' => $classEnd,
+                    'elements' => [],
+                ];
+            }
+
+            unset($element['classIndex']);
+            $element['start'] = $this->getFirstTokenIndexOfClassElement($tokens, $class, $element);
+            $element['end'] = $this->getLastTokenIndexOfClassElement($tokens, $class, $element, $tokensAnalyzer);
+
+            $class['elements'][] = $element; // reset the key by design
+        }
+
+        if (false !== $class) {
+            yield $class;
+        }
+    }
+
+    private function getFirstTokenIndexOfClassElement(Tokens $tokens, array $class, array $element): int
+    {
+        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
+
+        $firstElementAttributeIndex = $element['index'];
+
+        while ($firstElementAttributeIndex > $class['open']) {
+            $nonWhiteAbove = $tokens->getPrevMeaningfulToken($firstElementAttributeIndex);
+
+            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($methodAttr)) {
+                $firstElementAttributeIndex = $nonWhiteAbove;
+            } else {
                 break;
             }
         }
 
-        return $start;
+        return $firstElementAttributeIndex;
+    }
+
+    // including trailing single line comments if belonging to the class element
+    private function getLastTokenIndexOfClassElement(Tokens $tokens, array $class, array $element, TokensAnalyzer $tokensAnalyzer): int
+    {
+        // find last token of the element
+        if ('method' === $element['type'] && !$tokens[$class['index']]->isGivenKind(T_INTERFACE)) {
+            $attributes = $tokensAnalyzer->getMethodAttributes($element['index']);
+
+            if (true === $attributes['abstract']) {
+                $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);
+            } else {
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
+            }
+        } elseif ('trait_import' === $element['type']) {
+            $elementEndIndex = $element['index'];
+
+            do {
+                $elementEndIndex = $tokens->getNextMeaningfulToken($elementEndIndex);
+            } while ($tokens[$elementEndIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR]));
+
+            if (!$tokens[$elementEndIndex]->equals(';')) {
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
+            }
+        } else { // const or property
+            $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);
+        }
+
+        $singleLineElement = true;
+
+        for ($i = $element['index'] + 1; $i < $elementEndIndex; ++$i) {
+            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+                $singleLineElement = false;
+
+                break;
+            }
+        }
+
+        if ($singleLineElement) {
+            do {
+                $nextToken = $tokens[$elementEndIndex + 1];
+
+                if (($nextToken->isComment() || $nextToken->isWhitespace()) && false === strpos($nextToken->getContent(), "\n")) {
+                    ++$elementEndIndex;
+                } else {
+                    break;
+                }
+            } while (true);
+
+            if ($tokens[$elementEndIndex]->isWhitespace()) {
+                $elementEndIndex = $tokens->getPrevNonWhitespace($elementEndIndex);
+            }
+        }
+
+        return $elementEndIndex;
     }
 }

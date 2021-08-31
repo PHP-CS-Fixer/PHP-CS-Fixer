@@ -30,7 +30,7 @@ Rules
   ``['strategy' => 'new_line_for_chained_calls']``
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_
   config:
-  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``
+  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
 - `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
