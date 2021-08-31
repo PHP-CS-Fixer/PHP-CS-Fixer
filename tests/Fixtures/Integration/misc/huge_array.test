@@ -4,5 +4,3 @@ Test if array_indentation can handle huge arrays.
 {
     "array_indentation": true
 }
---REQUIREMENTS--
-{"php": 70000}

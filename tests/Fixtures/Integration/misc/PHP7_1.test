@@ -4,8 +4,6 @@ PHP 7.1 test.
 {
     "@Symfony": true
 }
---REQUIREMENTS--
-{"php": 70100}
 --EXPECT--
 <?php
 

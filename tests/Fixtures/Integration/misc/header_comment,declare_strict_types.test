@@ -8,8 +8,6 @@ Integration of fixers: header_comment, declare_strict_types
     },
     "declare_strict_types": true
 }
---REQUIREMENTS--
-{"php": 70000}
 --EXPECT--
 <?php
 /**
