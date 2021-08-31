@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-28T14:32:13Z
+
+[![Coverage Status](https://coveralls.io/builds/42487154/badge)](https://coveralls.io/builds/42487154)
+
+Coverage remained the same at 92.283% when pulling **cc7e294e95196c91fa7d6f9eb09c9aad8cb6c565 on kubawerlos:remove_references_to_php_7.0_in_tests** into **ca8aea789c8c61c3fea2fa5928bd9b37878a0566 on FriendsOfPHP:3.0**.
