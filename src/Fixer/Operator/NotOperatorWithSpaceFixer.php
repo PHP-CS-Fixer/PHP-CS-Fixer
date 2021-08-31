@@ -47,7 +47,7 @@ if (!$bar) {
     /**
      * {@inheritdoc}
      *
-     * Must run after UnaryOperatorSpacesFixer.
+     * Must run after ModernizeStrposFixer, UnaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {

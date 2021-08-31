@@ -14,7 +14,7 @@ Alias
 - `mb_str_functions <./alias/mb_str_functions.rst>`_ *(risky)*
     Replace non multibyte-safe functions with corresponding mb function.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky)*
-    Replace ``strpos()`` expressions with ``str_starts_with()`` or ``str_contains()`` if possible.
+    Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
 - `no_alias_functions <./alias/no_alias_functions.rst>`_ *(risky)*
     Master functions shall be used instead of aliases.
 - `no_alias_language_construct_call <./alias/no_alias_language_construct_call.rst>`_

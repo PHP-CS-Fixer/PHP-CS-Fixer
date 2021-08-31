@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: modernize_strpos,not_operator_with_space.
+--RULESET--
+{"modernize_strpos": true, "not_operator_with_space": true}
+--EXPECT--
+<?php
+$a = ! str_starts_with($haystack9a, $needle)  ;
+
+--INPUT--
+<?php
+$a = strpos($haystack9a, $needle) !== 0;

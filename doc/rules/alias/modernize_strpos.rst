@@ -2,12 +2,13 @@
 Rule ``modernize_strpos``
 =========================
 
-Replace ``strpos()`` expressions with ``str_starts_with()`` or
-``str_contains()`` if possible.
+Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if
+possible.
 
 .. warning:: Using this rule is risky.
 
-   Risky if the ``strpos`` function is overridden.
+   Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
+   overridden.
 
 Examples
 --------
@@ -19,38 +20,15 @@ Example #1
 
    --- Original
    +++ New
-   -<?php if (strpos($haystack, $needle) === 0) {}
-   +<?php if (str_starts_with($haystack, $needle)) {}
-
-Example #2
-~~~~~~~~~~
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-   -<?php if (strpos($haystack, $needle) !== 0) {}
-   +<?php if (!str_starts_with($haystack, $needle)) {}
-
-Example #3
-~~~~~~~~~~
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-   -<?php if (strpos($haystack, $needle) !== false) {}
-   +<?php if (str_contains($haystack, $needle)) {}
-
-Example #4
-~~~~~~~~~~
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-   -<?php if (strpos($haystack, $needle) === false) {}
-   +<?php if (!str_contains($haystack, $needle)) {}
+    <?php
+   -if (strpos($haystack, $needle) === 0) {}
+   -if (strpos($haystack, $needle) !== 0) {}
+   -if (strpos($haystack, $needle) !== false) {}
+   -if (strpos($haystack, $needle) === false) {}
+   +if (str_starts_with($haystack, $needle)  ) {}
+   +if (!str_starts_with($haystack, $needle)  ) {}
+   +if (str_contains($haystack, $needle)  ) {}
+   +if (!str_contains($haystack, $needle)  ) {}
 
 Rule sets
 ---------
