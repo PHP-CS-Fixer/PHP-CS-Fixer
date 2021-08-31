@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -73,9 +71,8 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 new CodeSample(
                     '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0')."!\";\n"
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0')."!\";\n",
-                    new VersionSpecification(70000),
                     ['use_escape_sequences_in_strings' => false]
                 ),
             ],

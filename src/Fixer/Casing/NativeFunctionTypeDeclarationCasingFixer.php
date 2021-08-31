@@ -108,13 +108,11 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
             'Native type hints for functions should use the correct case.',
             [
                 new CodeSample("<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar)\n    {\n        return 1;\n    }\n}\n"),
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction Foo(INT \$a): Bool\n{\n    return true;\n}\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\nfunction Foo(INT \$a): Bool\n{\n    return true;\n}\n"
                 ),
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction Foo(Iterable \$a): VOID\n{\n    echo 'Hello world';\n}\n",
-                    new VersionSpecification(70100)
+                new CodeSample(
+                    "<?php\nfunction Foo(Iterable \$a): VOID\n{\n    echo 'Hello world';\n}\n"
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction Foo(Object \$a)\n{\n    return 'hi!';\n}\n",

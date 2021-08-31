@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -58,14 +56,9 @@ final  class  Foo  extends  Bar  implements  Baz,  BarBaz
 trait  Foo
 {
 }
-'
-                ),
-                new VersionSpecificCodeSample(
-                    '<?php
 
 $foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
-',
-                    new VersionSpecification(70100)
+'
                 ),
                 new CodeSample(
                     '<?php

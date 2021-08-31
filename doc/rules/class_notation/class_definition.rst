@@ -74,21 +74,10 @@ Example #1
     {
     }
 
-Example #2
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-
    -$foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
    +$foo = new class extends Bar implements Baz, BarBaz {};
 
-Example #3
+Example #2
 ~~~~~~~~~~
 
 With configuration: ``['single_line' => true]``.
@@ -105,7 +94,7 @@ With configuration: ``['single_line' => true]``.
    +class Foo extends Bar implements Baz, BarBaz
     {}
 
-Example #4
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['single_item_single_line' => true]``.
@@ -122,7 +111,7 @@ With configuration: ``['single_item_single_line' => true]``.
    +class Foo extends Bar implements Baz
     {}
 
-Example #5
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['multi_line_extends_each_single_line' => true]``.

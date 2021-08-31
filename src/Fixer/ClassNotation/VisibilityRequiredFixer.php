@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -59,14 +57,13 @@ class Sample
 }
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 class Sample
 {
     const SAMPLE = 1;
 }
 ',
-                    new VersionSpecification(70100),
                     ['elements' => ['const']]
                 ),
             ]

@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -93,7 +91,9 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
         return new FixerDefinition(
             'Ordering `use` statements.',
             [
-                new CodeSample("<?php\nuse Z; use A;\n"),
+                new CodeSample(
+                    "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n"
+                ),
                 new CodeSample(
                     '<?php
 use Acme\Bar;
@@ -103,11 +103,7 @@ use Bar;
 ',
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
-                new VersionSpecificCodeSample(
-                    "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n",
-                    new VersionSpecification(70000)
-                ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 use const AAAA;
 use const BBB;
@@ -119,7 +115,6 @@ use Acme;
 use function CCC\AA;
 use function DDD;
 ',
-                    new VersionSpecification(70000),
                     [
                         'sort_algorithm' => self::SORT_LENGTH,
                         'imports_order' => [
@@ -129,7 +124,7 @@ use function DDD;
                         ],
                     ]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 use const BBB;
 use const AAAA;
@@ -141,7 +136,6 @@ use Bar;
 use function DDD;
 use function CCC\AA;
 ',
-                    new VersionSpecification(70000),
                     [
                         'sort_algorithm' => self::SORT_ALPHA,
                         'imports_order' => [
@@ -151,7 +145,7 @@ use function CCC\AA;
                         ],
                     ]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 use const BBB;
 use const AAAA;
@@ -163,7 +157,6 @@ use Acme;
 use AAC;
 use Bar;
 ',
-                    new VersionSpecification(70000),
                     [
                         'sort_algorithm' => self::SORT_NONE,
                         'imports_order' => [

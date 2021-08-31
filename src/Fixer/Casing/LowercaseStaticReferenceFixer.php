@@ -18,8 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -55,7 +53,7 @@ class Foo extends Bar
     }
 }
 '),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 class Foo extends Bar
 {
@@ -64,8 +62,7 @@ class Foo extends Bar
         return false;
     }
 }
-',
-                    new VersionSpecification(70100)
+'
                 ),
             ]
         );
