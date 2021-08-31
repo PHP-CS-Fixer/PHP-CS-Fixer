@@ -7,8 +7,6 @@ PHP 7.0 test.
     "random_api_migration": true,
     "visibility_required": {"elements": ["property", "method"]}
 }
---REQUIREMENTS--
-{"php": 70000}
 --EXPECT--
 <?php
 

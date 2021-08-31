@@ -2,8 +2,6 @@
 Integration of fixers: phpdoc_scalar,phpdoc_to_return_type.
 --RULESET--
 {"phpdoc_to_return_type": {"scalar_types": true}, "phpdoc_scalar": true}
---REQUIREMENTS--
-{"php": 70000}
 --EXPECT--
 <?php
 /** @return string */
