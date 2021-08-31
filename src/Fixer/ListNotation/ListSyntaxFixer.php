@@ -85,7 +85,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound($this->candidateTokenKind);
+        return $tokens->isTokenKindFound($this->candidateTokenKind);
     }
 
     /**

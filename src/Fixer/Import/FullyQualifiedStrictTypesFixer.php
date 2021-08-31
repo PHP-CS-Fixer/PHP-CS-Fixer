@@ -126,10 +126,6 @@ class SomeClass
 
     private function fixFunctionReturnType(Tokens $tokens, int $index): void
     {
-        if (\PHP_VERSION_ID < 70000) {
-            return;
-        }
-
         $returnType = (new FunctionsAnalyzer())->getFunctionReturnType($tokens, $index);
         if (!$returnType) {
             return;

@@ -105,10 +105,6 @@ class Sample
                 continue;
             }
 
-            if (\PHP_VERSION_ID < 70100 && 'const' === $element['type']) {
-                continue;
-            }
-
             $abstractFinalIndex = null;
             $visibilityIndex = null;
             $staticIndex = null;

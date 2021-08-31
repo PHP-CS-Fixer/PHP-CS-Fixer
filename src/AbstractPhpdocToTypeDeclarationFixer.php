@@ -182,7 +182,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             return null;
         }
 
-        if ($isNullable && (\PHP_VERSION_ID < 70100 || 'void' === $commonType)) {
+        if ($isNullable && 'void' === $commonType) {
             return null;
         }
 

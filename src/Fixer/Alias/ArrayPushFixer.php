@@ -46,7 +46,7 @@ final class ArrayPushFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
+        return $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
     }
 
     /**

@@ -54,10 +54,7 @@ final class CurlyBraceTransformer extends AbstractTransformer
         $this->transformIntoDynamicPropBraces($tokens, $token, $index);
         $this->transformIntoDynamicVarBraces($tokens, $token, $index);
         $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
-
-        if (\PHP_VERSION_ID >= 70000) {
-            $this->transformIntoGroupUseBraces($tokens, $token, $index);
-        }
+        $this->transformIntoGroupUseBraces($tokens, $token, $index);
     }
 
     /**

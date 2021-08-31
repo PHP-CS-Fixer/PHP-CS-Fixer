@@ -84,10 +84,6 @@ function foo() {
         $this->operators = self::BOOLEAN_OPERATORS;
         if (!$this->configuration['only_booleans']) {
             $this->operators = array_merge($this->operators, self::getNonBooleanOperators());
-            if (\PHP_VERSION_ID >= 70000) {
-                $this->operators[] = [T_COALESCE];
-                $this->operators[] = [T_SPACESHIP];
-            }
         }
         $this->position = $this->configuration['position'];
     }
@@ -314,6 +310,7 @@ function foo() {
                 [T_IS_IDENTICAL], [T_IS_NOT_EQUAL], [T_IS_NOT_IDENTICAL], [T_IS_SMALLER_OR_EQUAL], [T_MINUS_EQUAL],
                 [T_MOD_EQUAL], [T_MUL_EQUAL], [T_OR_EQUAL], [T_PAAMAYIM_NEKUDOTAYIM], [T_PLUS_EQUAL], [T_POW],
                 [T_POW_EQUAL], [T_SL], [T_SL_EQUAL], [T_SR], [T_SR_EQUAL], [T_XOR_EQUAL],
+                [T_COALESCE], [T_SPACESHIP],
             ],
             array_map(function ($id) { return [$id]; }, Token::getObjectOperatorKinds())
         );
