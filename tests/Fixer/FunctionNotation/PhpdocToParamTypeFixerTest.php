@@ -248,6 +248,9 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             'skip mixed types including array' => [
                 '<?php /** @param array|Foo $expected */ function testResolveIntersectionOfPaths($expected) {}',
             ],
+            'skip primitive or array types' => [
+                '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths($expected) {}',
+            ],
             'array of types' => [
                 '<?php /** @param Foo[] $foo */ function my_foo(array $foo) {}',
                 '<?php /** @param Foo[] $foo */ function my_foo($foo) {}',
