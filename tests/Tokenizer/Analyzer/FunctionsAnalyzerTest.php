@@ -30,98 +30,78 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
+     * @param int[] $indices
+     *
      * @dataProvider provideIsGlobalFunctionCallCases
      */
-    public function testIsGlobalFunctionCall(bool $isFunctionIndex, string $code, int $index): void
+    public function testIsGlobalFunctionCall(string $code, array $indices): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
+        self::assertIsGlobalFunctionCall($code, $indices);
     }
 
     public function provideIsGlobalFunctionCallCases()
     {
-        yield '1' => [
-            false,
+        yield [
             '<?php CONSTANT;',
-            1,
+            [],
         ];
 
-        yield '2' => [
-            true,
+        yield [
             '<?php foo("bar");',
-            1,
+            [1],
         ];
 
-        yield '3' => [
-            false,
+        yield [
             '<?php \foo("bar");',
-            1,
+            [2],
         ];
 
-        yield '4' => [
-            true,
-            '<?php \foo("bar");',
-            2,
-        ];
-
-        yield '5' => [
-            false,
+        yield [
             '<?php foo\bar("baz");',
-            1,
+            [],
         ];
 
-        yield '6' => [
-            false,
+        yield [
             '<?php foo\bar("baz");',
-            3,
+            [],
         ];
 
-        yield '7' => [
-            false,
+        yield [
             '<?php foo::bar("baz");',
-            1,
+            [],
         ];
 
-        yield '8' => [
-            false,
+        yield [
             '<?php foo::bar("baz");',
-            3,
+            [],
         ];
 
-        yield '9' => [
-            false,
+        yield [
             '<?php $foo->bar("baz");',
-            3,
+            [],
         ];
 
-        yield '10' => [
-            false,
+        yield [
             '<?php new bar("baz");',
-            3,
+            [],
         ];
 
-        yield '11' => [
-            false,
+        yield [
             '<?php function foo() {}',
-            3,
+            [],
         ];
 
-        yield '12' => [
-            false,
+        yield [
             '<?php function & foo() {}',
-            5,
+            [],
         ];
 
-        yield '13' => [
-            false,
+        yield [
             '<?php namespace\foo("bar");',
-            3,
+            [],
         ];
 
-        yield '15' => [
-            true,
+        yield [
             '<?php
                 namespace A {
                     use function A;
@@ -131,71 +111,64 @@ final class FunctionsAnalyzerTest extends TestCase
                     A();
                 }
             ',
-            30,
+            [30],
         ];
 
-        yield '16' => [
-            true,
+        yield [
             '<?php
                 function A(){}
                 A();
             ',
-            10,
+            [10],
         ];
 
-        yield '17' => [
-            true,
+        yield [
             '<?php
                 function A(){}
                 a();
             ',
-            10,
+            [10],
         ];
 
-        yield '18' => [
-            true,
+        yield [
             '<?php
                 namespace {
                     function A(){}
                     A();
                 }
             ',
-            14,
+            [14],
         ];
 
-        yield '19' => [
-            false,
+        yield [
             '<?php
                 namespace Z {
                     function A(){}
                     A();
                 }
             ',
-            16,
+            [],
         ];
 
-        yield '20' => [
-            false,
+        yield [
             '<?php
             namespace Z;
 
             function A(){}
             A();
             ',
-            15,
+            [],
         ];
 
-        yield '21' => [
-            true,
+        yield [
             '<?php
                 function & A(){}
                 A();
             ',
-            12,
+            [12],
         ];
 
-        yield '22' => [
-            true,
+        yield [
             '<?php
                 class Foo
                 {
@@ -203,11 +176,10 @@ final class FunctionsAnalyzerTest extends TestCase
                 }
                 A();
             ',
-            20,
+            [20],
         ];
 
-        yield '23' => [
-            true,
+        yield [
             '<?php
                 namespace A {
                     function A(){}
@@ -216,47 +188,42 @@ final class FunctionsAnalyzerTest extends TestCase
                     A();
                 }
             ',
-            24,
+            [24],
         ];
 
-        yield '24' => [
-            false,
+        yield [
             '<?php
                 use function X\a;
                 A();
             ',
-            11,
+            [],
         ];
 
-        yield '25' => [
-            true,
+        yield [
             '<?php
                 use A;
                 A();
             ',
-            7,
+            [7],
         ];
 
-        yield '26' => [
-            true,
+        yield [
             '<?php
                 use const A;
                 A();
             ',
-            9,
+            [9],
         ];
 
-        yield '27' => [
-            true,
+        yield [
             '<?php
                 use function A;
                 str_repeat($a, $b);
             ',
-            9,
+            [9],
         ];
 
-        yield '28' => [
-            true,
+        yield [
             '<?php
                 namespace {
                     function A(){}
@@ -264,30 +231,25 @@ final class FunctionsAnalyzerTest extends TestCase
                     $b = function(){};
                 }
             ',
-            14,
+            [14],
         ];
 
-        foreach ([1, 6, 11, 16, 21, 26] as $index) {
-            yield [
-                true,
-                '<?php implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);',
-                $index,
-            ];
-        }
+        yield [
+            '<?php implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);',
+            [1, 6, 11, 16, 21, 26],
+        ];
 
         if (\PHP_VERSION_ID < 80000) {
-            yield '14' => [
-                true,
+            yield [
                 '<?php
                     use function \  str_repeat;
                     str_repeat($a, $b);
                 ',
-                11,
+                [11],
             ];
         }
 
         yield [
-            true,
             '<?php
 $z = new class(
     new class(){ private function A(){} }
@@ -297,69 +259,71 @@ $z = new class(
 
 A();
                 ',
-            46,
+            [46],
         ];
     }
 
     /**
+     * @param int[] $indices
+     *
      * @dataProvider provideIsGlobalFunctionCallPhp74Cases
      * @requires PHP 7.4
      */
-    public function testIsGlobalFunctionCallPhp74(bool $isFunctionIndex, string $code, int $index): void
+    public function testIsGlobalFunctionCallPhp74(string $code, array $indices): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
+        self::assertIsGlobalFunctionCall($code, $indices);
     }
 
     public function provideIsGlobalFunctionCallPhp74Cases()
     {
         yield [
-            false,
             '<?php $foo = fn() => false;',
-            5,
+            [],
         ];
     }
 
     /**
+     * @param int[] $indices
+     *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      * @requires PHP 8.0
      */
-    public function testIsGlobalFunctionCallPhp80(bool $isFunctionIndex, string $code, int $index): void
+    public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        static::assertSame($isFunctionIndex, $analyzer->isGlobalFunctionCall($tokens, $index));
+        self::assertIsGlobalFunctionCall($code, $indices);
     }
 
     public function provideIsGlobalFunctionCallPhp80Cases()
     {
         yield [
-            true,
             '<?php $a = new (foo());',
-            8,
+            [8],
         ];
 
         yield [
-            true,
             '<?php $b = $foo instanceof (foo());',
-            10,
+            [10],
         ];
 
         yield [
-            false,
             '<?php
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class Foo {}
 ',
-            3,
+            [],
         ];
+
         yield [
-            false,
             '<?php $x?->count();',
-            3,
+            [],
+        ];
+
+        yield [
+            '<?php
+                #[Foo(), Bar(), Baz()]
+                class Foo {}
+            ',
+            [],
         ];
     }
 
@@ -757,5 +721,31 @@ class Foo {}
                 null
             ),
         ]];
+    }
+
+    /**
+     * @param int[] $expectedIndices
+     */
+    private static function assertIsGlobalFunctionCall(string $code, array $expectedIndices): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        $actualIndices = [];
+        foreach ($tokens as $index => $token) {
+            if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
+                $actualIndices[] = $index;
+            }
+        }
+
+        static::assertSame(
+            $expectedIndices,
+            $actualIndices,
+            sprintf(
+                'Global function calls found at positions: [%s], expected at [%s].',
+                implode(', ', $actualIndices),
+                implode(', ', $expectedIndices)
+            )
+        );
     }
 }
