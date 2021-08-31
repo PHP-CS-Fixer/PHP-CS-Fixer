@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-29T18:03:04Z
+
+@SpacePossum due to new deprecations , this PR should be merge to `master` and not `3.0`.
+can you pls help to solve conflicts ? they are mostly related to `only_if_meta` option
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-30T19:36:22Z
+
+tagging 3.2 due to new deprecations
