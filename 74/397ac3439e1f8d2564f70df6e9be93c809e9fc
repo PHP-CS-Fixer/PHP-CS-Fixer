@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-20T15:51:28Z
+
+[![Coverage Status](https://coveralls.io/builds/42505934/badge)](https://coveralls.io/builds/42505934)
+
+Coverage increased (+0.002%) to 92.343% when pulling **51bd5bb7f2c5d4cabfab4d70164fba27a8db521d on shakaran:detect_renamed_rules** into **0b905620790a71fa414f6f38fb09f0030ed05618 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-08-27T08:56:42Z
+
+If I understand correctly, this is creating a mapping between removed things from `2.x` and their replacements in `3.x` to warn the user. Aren't deprecations in `2.x`, changelog and upgrade guide enough for that?
+
+---------------------------------------------------------------------------
+
+by shakaran at 2021-08-27T10:14:43Z
+
+> If I understand correctly, this is creating a mapping between removed things from `2.x` and their replacements in `3.x` to warn the user. Aren't deprecations in `2.x`, changelog and upgrade guide enough for that?
+
+Sadly, a lot users will upgrade without read docs. The error message updated in this PR will help to go docs directly in terminal, and also help to edit the config rules or even in scripts with --rules parameter. For example, my self was using 2.18 and I do self-upgrade to 3.0 without notify which rules have been changed. In several projects, with dozens of rules this warnings would help me a lot to quickly edit the new ones replaced rules. Also for future it is more easy to detect renamed rules or deprecated with the test
