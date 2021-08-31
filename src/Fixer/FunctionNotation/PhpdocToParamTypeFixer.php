@@ -27,8 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
 {
-    private const MINIMUM_PHP_VERSION = 70000;
-
     /**
      * @var array{int, string}[]
      */
@@ -87,7 +85,7 @@ function bar($foo) {}
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= self::MINIMUM_PHP_VERSION && $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**

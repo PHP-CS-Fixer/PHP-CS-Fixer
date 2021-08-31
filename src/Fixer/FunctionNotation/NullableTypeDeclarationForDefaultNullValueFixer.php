@@ -58,10 +58,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\PHP_VERSION_ID < 70100) {
-            return false;
-        }
-
         if (!$tokens->isTokenKindFound(T_VARIABLE)) {
             return false;
         }

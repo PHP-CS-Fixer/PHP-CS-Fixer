@@ -54,7 +54,7 @@ EOT
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_VARIABLE);
+        return $tokens->isTokenKindFound(T_VARIABLE);
     }
 
     /**

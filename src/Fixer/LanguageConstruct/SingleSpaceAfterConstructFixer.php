@@ -250,8 +250,7 @@ yield  from  baz();
             }
 
             if (
-                70000 <= \PHP_VERSION_ID
-                && $token->isGivenKind(T_YIELD_FROM)
+                $token->isGivenKind(T_YIELD_FROM)
                 && 'yield from' !== strtolower($token->getContent())
             ) {
                 $tokens[$index] = new Token([T_YIELD_FROM, Preg::replace(

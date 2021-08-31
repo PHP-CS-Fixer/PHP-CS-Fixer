@@ -114,7 +114,7 @@ final class Foo {
             return true;
         }
 
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**

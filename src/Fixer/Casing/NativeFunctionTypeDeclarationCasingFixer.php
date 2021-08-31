@@ -65,27 +65,23 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
             'self' => true,
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            $this->hints = array_merge(
-                $this->hints,
-                [
-                    'bool' => true,
-                    'float' => true,
-                    'int' => true,
-                    'string' => true,
-                ]
-            );
-        }
+        $this->hints = array_merge(
+            $this->hints,
+            [
+                'bool' => true,
+                'float' => true,
+                'int' => true,
+                'string' => true,
+            ]
+        );
 
-        if (\PHP_VERSION_ID >= 70100) {
-            $this->hints = array_merge(
-                $this->hints,
-                [
-                    'iterable' => true,
-                    'void' => true,
-                ]
-            );
-        }
+        $this->hints = array_merge(
+            $this->hints,
+            [
+                'iterable' => true,
+                'void' => true,
+            ]
+        );
 
         if (\PHP_VERSION_ID >= 70200) {
             $this->hints = array_merge($this->hints, ['object' => true]);
@@ -137,10 +133,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
-                if (\PHP_VERSION_ID >= 70000) {
-                    $this->fixFunctionReturnType($tokens, $index);
-                }
-
+                $this->fixFunctionReturnType($tokens, $index);
                 $this->fixFunctionArgumentTypes($tokens, $index);
             }
         }

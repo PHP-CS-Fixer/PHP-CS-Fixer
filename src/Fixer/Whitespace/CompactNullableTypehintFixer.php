@@ -47,7 +47,7 @@ final class CompactNullableTypehintFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
+        return $tokens->isTokenKindFound(CT::T_NULLABLE_TYPE);
     }
 
     /**
