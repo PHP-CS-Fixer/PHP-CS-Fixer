@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-07-18T07:29:53Z
+
+[![Coverage Status](https://coveralls.io/builds/42486091/badge)](https://coveralls.io/builds/42486091)
+
+Coverage increased (+0.0008%) to 92.283% when pulling **92f9b73842b87dfc9f9604d79abe21aedc19bc12 on kubawerlos:fix_FunctionsAnalyzer** into **ca8aea789c8c61c3fea2fa5928bd9b37878a0566 on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-31T07:56:01Z
+
+can you rebase and squash? I think this is RTM after that
