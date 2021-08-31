@@ -34,7 +34,7 @@ final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $fixerReflection = new \ReflectionClass(MagicMethodCasingFixer::class);
         $property = $fixerReflection->getProperty('magicNames');
@@ -165,87 +165,8 @@ class Foo extends Bar
 }
 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFixCases
-     */
-    public function testDoNotFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideDoNotFixCases()
-    {
-        return [
-            [
-                '<?php
-__Tostring();',
-            ],
-            [
-                '<?php
-function __Tostring() {}',
-            ],
-            [
-                '<?php
-                    #->__sleep()
-                    /** ->__sleep() */
-                    echo $a->__sleep;
-                ',
-            ],
-            [
-                '<?php
-                    class B
-                    {
-                        public function _not_magic()
-                        {
-                        }
-                    }
-                ',
-            ],
-            [
-                '<?php
-                    function __alsoNotMagic()
-                    {
-                    }
-                ',
-            ],
-            [
-                '<?php
-                    function __()
-                    {
-                    }
-                ',
-            ],
-            [
-                '<?php
-                    function a()
-                    {
-                    }
-                ',
-            ],
-            [
-                '<?php
-                    $a->__not_magic();
-                ',
-            ],
-            [
-                '<?php
-                    $a->a();
-                ',
-            ],
-            [
-                '<?php A\B\__callstatic(); echo $a->b;',
-            ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testFixPHP7(): void
-    {
-        $this->doTest(
+        yield 'PHP 7 syntax' => [
             '<?php
             function __TOSTRING(){} // do not fix
 
@@ -337,8 +258,81 @@ function __Tostring() {}',
             function __ISSET($bar){} // do not fix
 
             $a->__UnSet($foo); // fix
-            '
-        );
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideDoNotFixCases
+     */
+    public function testDoNotFix(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideDoNotFixCases(): array
+    {
+        return [
+            [
+                '<?php
+__Tostring();',
+            ],
+            [
+                '<?php
+function __Tostring() {}',
+            ],
+            [
+                '<?php
+                    #->__sleep()
+                    /** ->__sleep() */
+                    echo $a->__sleep;
+                ',
+            ],
+            [
+                '<?php
+                    class B
+                    {
+                        public function _not_magic()
+                        {
+                        }
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    function __alsoNotMagic()
+                    {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    function __()
+                    {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    function a()
+                    {
+                    }
+                ',
+            ],
+            [
+                '<?php
+                    $a->__not_magic();
+                ',
+            ],
+            [
+                '<?php
+                    $a->a();
+                ',
+            ],
+            [
+                '<?php A\B\__callstatic(); echo $a->b;',
+            ],
+        ];
     }
 
     /**

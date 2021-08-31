@@ -35,6 +35,6 @@ final class GotoLabelAnalyzer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
 
-        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG]]);
+        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([':', ';', '{', '}', [T_OPEN_TAG]]);
     }
 }

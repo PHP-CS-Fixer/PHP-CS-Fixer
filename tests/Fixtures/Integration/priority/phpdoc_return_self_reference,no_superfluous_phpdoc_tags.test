@@ -2,8 +2,6 @@
 Integration of fixers: phpdoc_return_self_reference,no_superfluous_phpdoc_tags.
 --RULESET--
 {"no_superfluous_phpdoc_tags": true, "phpdoc_return_self_reference": true}
---REQUIREMENTS--
-{"php": 70000}
 --EXPECT--
 <?php
 

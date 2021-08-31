@@ -34,9 +34,9 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideNoEmptyStatementsCases()
+    public function provideNoEmptyStatementsCases(): \Generator
     {
-        $tests = [
+        yield from [
             [
                 '<?php
                 abstract class TestClass0 extends Test IMPLEMENTS TestInterface, TestInterface2
@@ -389,10 +389,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         foreach (['break', 'continue'] as $ops) {
             yield [
                 sprintf('<?php while(true) {%s ;}', $ops),
@@ -431,15 +427,14 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider providePHP7Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFixPHP7(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function providePHP7Cases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -534,7 +529,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideCasesWithShortOpenTagCases()
+    public function provideCasesWithShortOpenTagCases(): array
     {
         return [
             [
@@ -552,7 +547,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixMultipleSemicolonsCases()
+    public function provideFixMultipleSemicolonsCases(): array
     {
         return [
             [

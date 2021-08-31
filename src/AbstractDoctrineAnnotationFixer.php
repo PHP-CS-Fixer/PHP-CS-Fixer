@@ -192,6 +192,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
 
                     // PHPStan
                     'phpstan',
+                    'template',
 
                     // other
                     'fix',

@@ -18,8 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
@@ -55,7 +53,7 @@ class SomeClass
 }
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 use Foo\Bar;
@@ -67,8 +65,7 @@ class SomeClass
     {
     }
 }
-',
-                    new VersionSpecification(70000)
+'
                 ),
             ]
         );
@@ -129,10 +126,6 @@ class SomeClass
 
     private function fixFunctionReturnType(Tokens $tokens, int $index): void
     {
-        if (\PHP_VERSION_ID < 70000) {
-            return;
-        }
-
         $returnType = (new FunctionsAnalyzer())->getFunctionReturnType($tokens, $index);
         if (!$returnType) {
             return;

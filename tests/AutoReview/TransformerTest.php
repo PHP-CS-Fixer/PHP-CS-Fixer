@@ -58,7 +58,7 @@ final class TransformerTest extends TestCase
         $name = $transformer->getName();
 
         foreach ($this->provideTransformerPriorityCases() as $pair) {
-            list($first, $second) = $pair;
+            [$first, $second] = $pair;
 
             if ($name === $first->getName() || $name === $second->getName()) {
                 $this->addToAssertionCount(1);
@@ -70,11 +70,11 @@ final class TransformerTest extends TestCase
         static::fail(sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
     }
 
-    public function provideTransformerPriorityCases()
+    public function provideTransformerPriorityCases(): array
     {
         $transformers = [];
 
-        foreach ($this->provideTransformerCases() as list($transformer)) {
+        foreach ($this->provideTransformerCases() as [$transformer]) {
             $transformers[$transformer->getName()] = $transformer;
         }
 

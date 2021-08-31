@@ -3,6 +3,48 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.1.0
+--------------------
+
+* feature #5572 PhpdocToCommentFixer - Add `ignored_tags` option (VincentLanglet)
+* feature #5588 NoAliasFunctionsFixer - Add more function aliases (danog)
+* feature #5704 ClassAttributesSeparationFixer - Introduce `only_if_meta` spacing option (paulbalandan)
+* feature #5734 TypesSpacesFixer - Introduction (kubawerlos)
+* feature #5745 EmptyLoopBodyFixer - introduction (SpacePossum, keradus)
+* feature #5751 Extract DeclareParenthesesFixer from BracesFixer (julienfalque, keradus)
+* feature #5877 ClassDefinitionFixer - PSR12 for anonymous class (SpacePossum)
+* minor #5875 EmptyLoopBodyFixer - NoTrailingWhitespaceFixer - priority test (SpacePossum)
+* minor #5914 Deprecate ClassKeywordRemoveFixer (kubawerlos)
+
+Changelog for v3.0.3
+--------------------
+
+* bug #4927 PhpdocAlignFixer - fix for whitespace in type (kubawerlos)
+* bug #5720 NoUnusedImportsFixer - Fix undetected unused imports when type mismatch (julienfalque, SpacePossum)
+* bug #5806 DoctrineAnnotationFixer - Add template to ignored_tags (akalineskou)
+* bug #5849 PhpdocTagTypeFixer - must not remove inlined tags within other tags (boesing)
+* bug #5853 BracesFixer - handle alternative short foreach with if (SpacePossum)
+* bug #5855 GlobalNamespaceImportFixer - fix for attributes imported as constants (kubawerlos)
+* bug #5881 SelfUpdateCommand - fix link to UPGRADE docs (keradus)
+* bug #5884 CurlyBraceTransformer - fix handling dynamic property with string with variable (kubawerlos, keradus)
+* bug #5912 TypeAlternationTransformer - fix for "callable" type (kubawerlos)
+* bug #5913 SingleSpaceAfterConstructFixer - improve comma handling (keradus)
+* minor #5829 DX: Fix SCA with PHPMD (paulbalandan)
+* minor #5838 PHP7  - use spaceship (SpacePossum, keradus)
+* minor #5848 Docs: update PhpStorm integration link (keradus)
+* minor #5856 Add AttributeAnalyzer (kubawerlos)
+* minor #5857 DX: PHPMD - exclude fixtures (keradus)
+* minor #5859 Various fixes (kubawerlos)
+* minor #5864 DX: update dev tools (kubawerlos)
+* minor #5876 AttributeTransformerTest - add more tests (SpacePossum)
+* minor #5879 Update UPGRADE-v3.md adding relative links (shakaran, keradus)
+* minor #5882 Docs: don't use v2 for installation example (keradus)
+* minor #5883 Docs: typo (brianteeman, keradus)
+* minor #5890 DX: use PHP 8.1 polyfill (keradus)
+* minor #5902 Remove references to PHP 7.0 in tests (only removing lines) (kubawerlos)
+* minor #5905 DX: Use "yield from" in tests (kubawerlos, keradus)
+* minor #5917 Use `@PHP71Migration` rules (kubawerlos, keradus)
+
 Changelog for v3.0.2
 --------------------
 

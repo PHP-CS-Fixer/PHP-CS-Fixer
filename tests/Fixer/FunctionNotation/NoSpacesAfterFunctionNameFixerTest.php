@@ -33,9 +33,9 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             'test function call' => [
                 '<?php abc($a);',
                 '<?php abc ($a);',
@@ -145,10 +145,6 @@ $$e(2);
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield 'test dynamic by array, curly mix' => [
                 '<?php $a["e"](1); $a{2}(1);',
@@ -160,42 +156,15 @@ $$e(2);
                 '<?php $a{"e"} (1); $a{2} (1);',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix54Cases
-     */
-    public function test54(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix54Cases()
-    {
-        return [
-            [
-                '<?php echo (new Process())->getOutput();',
-                '<?php echo (new Process())->getOutput ();',
-            ],
+        yield [
+            '<?php echo (new Process())->getOutput();',
+            '<?php echo (new Process())->getOutput ();',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            [
-                '<?php $a()(1);',
-                '<?php $a () (1);',
-            ],
+        yield [
+            '<?php $a()(1);',
+            '<?php $a () (1);',
         ];
     }
 }

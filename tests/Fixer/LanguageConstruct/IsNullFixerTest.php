@@ -33,7 +33,7 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -203,18 +203,11 @@ FIXED;
                 '<?php $a === (null === ($a ? $x : $y));',
                 '<?php $a === is_null($a ? $x : $y);',
             ],
+            [
+                '<?php null !== ($a ?? null);',
+                '<?php !is_null($a ?? null);',
+            ],
         ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testFix70(): void
-    {
-        $this->doTest(
-            '<?php null !== ($a ?? null);',
-            '<?php !is_null($a ?? null);'
-        );
     }
 
     /**
@@ -226,7 +219,7 @@ FIXED;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

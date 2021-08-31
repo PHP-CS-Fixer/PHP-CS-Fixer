@@ -27,14 +27,13 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     * @requires PHP 7.0
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -114,7 +113,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

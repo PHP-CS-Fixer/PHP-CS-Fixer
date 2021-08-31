@@ -84,7 +84,7 @@ final class IntegrationCase
         $this->inputCode = $inputCode;
     }
 
-    public function hasInputCode()
+    public function hasInputCode(): bool
     {
         return null !== $this->inputCode;
     }

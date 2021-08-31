@@ -19,10 +19,9 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -42,13 +41,11 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         return new FixerDefinition(
             'Adds or removes `?` before type declarations for parameters with a default `null` value.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction sample(string \$str = null)\n{}\n",
-                    new VersionSpecification(70100)
+                new CodeSample(
+                    "<?php\nfunction sample(string \$str = null)\n{}\n"
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     "<?php\nfunction sample(?string \$str = null)\n{}\n",
-                    new VersionSpecification(70100),
                     ['use_nullable_type_declaration' => false]
                 ),
             ],
@@ -61,10 +58,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\PHP_VERSION_ID < 70100) {
-            return false;
-        }
-
         if (!$tokens->isTokenKindFound(T_VARIABLE)) {
             return false;
         }

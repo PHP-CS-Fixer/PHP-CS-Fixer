@@ -27,6 +27,9 @@ Rules
 - `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_
+- `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_
+  config:
+  ``['style' => 'braces']``
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
 - `function_typehint_space <./../rules/function_notation/function_typehint_space.rst>`_
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_
@@ -52,7 +55,7 @@ Rules
 - `no_empty_statement <./../rules/semicolon/no_empty_statement.rst>`_
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_
   config:
-  ``['tokens' => ['case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``
+  ``['tokens' => ['case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
 - `no_leading_namespace_whitespace <./../rules/namespace_notation/no_leading_namespace_whitespace.rst>`_
 - `no_mixed_echo_print <./../rules/alias/no_mixed_echo_print.rst>`_
 - `no_multiline_whitespace_around_double_arrow <./../rules/array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
@@ -119,6 +122,7 @@ Rules
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
+- `types_spaces <./../rules/whitespace/types_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_

@@ -34,7 +34,6 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $config = $this->loadConfig();
 
-        static::assertInstanceOf(\PhpCsFixer\Config::class, $config);
         static::assertEmpty($config->getCustomFixers());
         static::assertNotEmpty($config->getRules());
 

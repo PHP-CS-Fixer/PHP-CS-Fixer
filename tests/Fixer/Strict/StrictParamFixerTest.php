@@ -33,7 +33,7 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -188,7 +188,7 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): \Generator
     {
         yield [
             '<?php in_array($b, $c, true, );',

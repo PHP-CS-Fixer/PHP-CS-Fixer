@@ -19,10 +19,9 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -37,23 +36,18 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      */
     public function getDefinition(): FixerDefinitionInterface
     {
-        $versionSpecification = new VersionSpecification(70000);
-
         return new FixerDefinition(
             'There should be one or no space before colon, and one space after it in return type declarations, according to configuration.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(int \$a):string {};\n",
-                    $versionSpecification
+                new CodeSample(
+                    "<?php\nfunction foo(int \$a):string {};\n"
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     "<?php\nfunction foo(int \$a):string {};\n",
-                    $versionSpecification,
                     ['space_before' => 'none']
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     "<?php\nfunction foo(int \$a):string {};\n",
-                    $versionSpecification,
                     ['space_before' => 'one']
                 ),
             ],
@@ -76,7 +70,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(CT::T_TYPE_COLON);
+        return $tokens->isTokenKindFound(CT::T_TYPE_COLON);
     }
 
     /**

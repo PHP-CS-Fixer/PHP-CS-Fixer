@@ -34,7 +34,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAlphaCases()
+    public function provideFixAlphaCases(): array
     {
         return [
             'single' => [
@@ -84,21 +84,6 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
                 '<?php interface T extends A, B, C {}',
                 '<?php interface T extends C, A, B {}',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFixAlpha70Cases
-     */
-    public function testFixAlpha70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixAlpha70Cases()
-    {
-        return [
             'nested anonymous classes' => [
                 '<?php
                     class T implements A, B, C
@@ -143,7 +128,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixAlphaDescendCases()
+    public function provideFixAlphaDescendCases(): array
     {
         return [
             'single' => [
@@ -169,7 +154,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixLengthCases()
+    public function provideFixLengthCases(): array
     {
         return [
             'single' => [
@@ -212,7 +197,7 @@ final class OrderedInterfacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixLengthDescendCases()
+    public function provideFixLengthDescendCases(): array
     {
         return [
             'single' => [

@@ -39,7 +39,7 @@ final class TokenTest extends TestCase
         new Token($input);
     }
 
-    public function provideConstructorValidationCases()
+    public function provideConstructorValidationCases(): array
     {
         return [
             [null],
@@ -75,7 +75,7 @@ final class TokenTest extends TestCase
         static::assertSame($isCast, $token->isCast());
     }
 
-    public function provideIsCastCases()
+    public function provideIsCastCases(): array
     {
         return [
             [$this->getBraceToken(), false],
@@ -98,7 +98,7 @@ final class TokenTest extends TestCase
         static::assertSame($isClassy, $token->isClassy());
     }
 
-    public function provideIsClassyCases()
+    public function provideIsClassyCases(): array
     {
         return [
             [$this->getBraceToken(), false],
@@ -117,18 +117,14 @@ final class TokenTest extends TestCase
         static::assertSame($isComment, $token->isComment());
     }
 
-    public function provideIsCommentCases()
+    public function provideIsCommentCases(): \Generator
     {
-        $tests = [
+        yield from [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
             [new Token([T_COMMENT, '/* comment */', 1]), true],
             [new Token([T_DOC_COMMENT, '/** docs */', 1]), true],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         // @TODO: drop condition when PHP 8.0+ is required
         if (\defined('T_ATTRIBUTE')) {
@@ -144,19 +140,15 @@ final class TokenTest extends TestCase
         static::assertSame($isObjectOperator, $token->isObjectOperator());
     }
 
-    public function provideIsObjectOperatorCases()
+    public function provideIsObjectOperatorCases(): \Generator
     {
-        $tests = [
+        yield from [
             [$this->getBraceToken(), false],
             [$this->getForeachToken(), false],
             [new Token([T_COMMENT, '/* comment */']), false],
             [new Token([T_DOUBLE_COLON, '::']), false],
             [new Token([T_OBJECT_OPERATOR, '->']), true],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
             yield [new Token([T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
@@ -201,7 +193,7 @@ final class TokenTest extends TestCase
         static::assertSame($isConstant, $token->isMagicConstant());
     }
 
-    public function provideMagicConstantCases()
+    public function provideMagicConstantCases(): \Generator
     {
         $cases = [
             [T_CLASS_C, '__CLASS__'],
@@ -215,15 +207,13 @@ final class TokenTest extends TestCase
         ];
 
         foreach ($cases as $case) {
-            $cases[] = [$case[0], strtolower($case[1])];
+            yield [$case[0], strtolower($case[1])];
         }
 
         foreach ([$this->getForeachToken(), $this->getBraceToken()] as $token) {
-            $cases[] = [$token->getId(), $token->getContent(), false];
-            $cases[] = [$token->getId(), strtolower($token->getContent()), false];
+            yield [$token->getId(), $token->getContent(), false];
+            yield [$token->getId(), strtolower($token->getContent()), false];
         }
-
-        return $cases;
     }
 
     /**
@@ -234,7 +224,7 @@ final class TokenTest extends TestCase
         static::assertSame($isNativeConstant, $token->isNativeConstant());
     }
 
-    public function provideIsNativeConstantCases()
+    public function provideIsNativeConstantCases(): array
     {
         return [
             [$this->getBraceToken(), false],
@@ -260,7 +250,7 @@ final class TokenTest extends TestCase
         }
     }
 
-    public function provideIsWhitespaceCases()
+    public function provideIsWhitespaceCases(): array
     {
         return [
             [$this->getBraceToken(), false],
@@ -293,7 +283,7 @@ final class TokenTest extends TestCase
         static::assertSame($expectedIsArray, $token->isArray());
     }
 
-    public function provideCreatingTokenCases()
+    public function provideCreatingTokenCases(): array
     {
         return [
             [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true],
@@ -322,7 +312,7 @@ final class TokenTest extends TestCase
         static::assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
-    public function provideEqualsCases()
+    public function provideEqualsCases(): array
     {
         $brace = $this->getBraceToken();
         $function = new Token([T_FUNCTION, 'function', 1]);
@@ -376,7 +366,7 @@ final class TokenTest extends TestCase
         static::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
-    public function provideEqualsAnyCases()
+    public function provideEqualsAnyCases(): array
     {
         $brace = $this->getBraceToken();
         $foreach = $this->getForeachToken();
@@ -403,7 +393,7 @@ final class TokenTest extends TestCase
         static::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
-    public function provideIsKeyCaseSensitiveCases()
+    public function provideIsKeyCaseSensitiveCases(): array
     {
         return [
             [true, true, 0],
@@ -430,7 +420,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, Token::getNameForId($id));
     }
 
-    public function provideTokenGetNameCases()
+    public function provideTokenGetNameCases(): array
     {
         return [
             [
@@ -456,7 +446,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, $token->getName());
     }
 
-    public function provideGetNameCases()
+    public function provideGetNameCases(): \Generator
     {
         yield [
             new Token([T_FUNCTION, 'function', 1]),
@@ -482,7 +472,7 @@ final class TokenTest extends TestCase
         static::assertSame($expected, $token->toArray());
     }
 
-    public function provideToArrayCases()
+    public function provideToArrayCases(): \Generator
     {
         yield [
             new Token([T_FUNCTION, 'function', 1]),
@@ -518,22 +508,22 @@ final class TokenTest extends TestCase
         ];
     }
 
-    private function getBraceToken()
+    private function getBraceToken(): Token
     {
         return new Token($this->getBraceTokenPrototype());
     }
 
-    private function getBraceTokenPrototype()
+    private function getBraceTokenPrototype(): string
     {
         return '(';
     }
 
-    private function getForeachToken()
+    private function getForeachToken(): Token
     {
         return new Token($this->getForeachTokenPrototype());
     }
 
-    private function getForeachTokenPrototype()
+    private function getForeachTokenPrototype(): array
     {
         static $prototype = [T_FOREACH, 'foreach'];
 

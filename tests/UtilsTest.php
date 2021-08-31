@@ -120,7 +120,7 @@ final class UtilsTest extends TestCase
         static::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
-    public function provideCalculateTrailingWhitespaceIndentCases()
+    public function provideCalculateTrailingWhitespaceIndentCases(): array
     {
         return [
             ['    ', [T_WHITESPACE, "\n\n    "]],
@@ -157,7 +157,7 @@ final class UtilsTest extends TestCase
         );
     }
 
-    public function provideStableSortCases()
+    public function provideStableSortCases(): array
     {
         return [
             [
@@ -222,7 +222,7 @@ final class UtilsTest extends TestCase
         static::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
     }
 
-    public function provideNaturalLanguageJoinWithBackticksCases()
+    public function provideNaturalLanguageJoinWithBackticksCases(): array
     {
         return [
             [

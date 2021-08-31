@@ -33,7 +33,7 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -99,39 +99,6 @@ function Foo(INTEGER $a) {}
                     B\String\C $y
                 ) {}',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP <7.0
-     *
-     * @dataProvider provideFixPre70Cases
-     */
-    public function testFixPre70(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public function provideFixPre70Cases()
-    {
-        return [
-            ['<?php function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D, ITERABLE $E, VOID $F, OBJECT $o) {}'],
-            ['<?php class Foo { public function Foo(\INT $a) {}}'],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php final class Foo1 { final public function Foo(bool $A, float $B, int $C, string $D): int {} }',
                 '<?php final class Foo1 { final public function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {} }',
@@ -155,7 +122,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
@@ -186,7 +153,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         return [
             [
@@ -205,7 +172,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php class T { public function Foo(object $A): static {}}',

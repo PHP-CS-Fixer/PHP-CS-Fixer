@@ -41,7 +41,7 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [

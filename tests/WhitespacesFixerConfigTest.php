@@ -41,7 +41,7 @@ final class WhitespacesFixerConfigTest extends TestCase
         static::assertSame($lineEnding, $config->getLineEnding());
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             ['    ', "\n"],

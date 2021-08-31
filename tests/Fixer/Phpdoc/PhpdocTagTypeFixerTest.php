@@ -36,7 +36,7 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -349,6 +349,40 @@ final class PhpdocTagTypeFixerTest extends AbstractFixerTestCase
 /**
  * @return array{0: float, 1: int}
  */',
+            ],
+            [
+                '<?php
+/** @internal Please use {@see Foo} instead */',
+                '<?php
+/** {@internal Please use {@see Foo} instead} */',
+            ],
+            [
+                '<?php
+/**
+ * @internal Please use {@see Foo} instead
+ */',
+                '<?php
+/**
+ * {@internal Please use {@see Foo} instead}
+ */',
+            ],
+            [
+                '<?php
+/**
+ *
+ * @internal Please use {@see Foo} instead
+ *
+ */',
+                '<?php
+/**
+ *
+ * {@internal Please use {@see Foo} instead}
+ *
+ */',
+            ],
+            [
+                '<?php
+/** @internal Foo Bar {@see JsonSerializable} */',
             ],
         ];
     }

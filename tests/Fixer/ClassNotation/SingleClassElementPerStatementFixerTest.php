@@ -34,7 +34,7 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -635,7 +635,7 @@ EOT;
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases()
+    public function provideConfigurationCases(): array
     {
         return [
             [
@@ -698,7 +698,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             [
@@ -733,7 +733,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -743,9 +743,6 @@ EOT
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(
@@ -801,7 +798,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFix74Cases()
+    public function provideTestFix74Cases(): \Generator
     {
         yield [
             '<?php class Foo {

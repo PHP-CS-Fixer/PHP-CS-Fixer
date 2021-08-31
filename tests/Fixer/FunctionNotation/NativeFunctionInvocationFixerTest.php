@@ -99,7 +99,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideConfigureIncludeSetsCases()
+    public function provideConfigureIncludeSetsCases(): array
     {
         return [
             [['foo', 'bar']],
@@ -302,7 +302,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithNamespaceConfigurationCases()
+    public function provideFixWithNamespaceConfigurationCases(): array
     {
         return [
             [
@@ -471,9 +471,9 @@ namespace {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfiguredIncludeCases()
+    public function provideFixWithConfiguredIncludeCases(): \Generator
     {
-        $tests = [
+        yield from [
             'include set + 1, exclude 1' => [
                 '<?php
                     echo \count([1]);
@@ -565,10 +565,6 @@ namespace {
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield 'include @compiler_optimized with strict enabled' => [
                 '<?php
@@ -626,25 +622,35 @@ echo strlen($a);
     }
 
     /**
+     * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFixWithAttributesAndStrict(): void
+    public function testFix80(string $expected, ?string $input = null, array $config = []): void
     {
-        $this->testFixWithConfiguredInclude(
-            '<?php
-#[\Attribute(\Attribute::TARGET_CLASS)]
-class Foo {}
-',
-            null,
-            ['strict' => true]
-        );
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 8.0
-     */
-    public function testFixWithNullSafeObjectOperator(): void
+    public function provideFix80Cases()
     {
-        $this->doTest('<?php $x?->count();');
+        yield 'attribute and strict' => [
+            '<?php
+                #[\Attribute(\Attribute::TARGET_CLASS)]
+                class Foo {}
+            ',
+            null,
+            ['strict' => true],
+        ];
+
+        yield 'null safe operator' => ['<?php $x?->count();'];
+
+        yield 'multiple function-calls-like in attribute' => [
+            '<?php
+                #[Foo(), Bar(), Baz()]
+                class Foo {}
+            ',
+            null,
+            ['include' => ['@all']],
+        ];
     }
 }

@@ -459,7 +459,7 @@ return $foo === count($bar);
      * Checks whether the given assignment token has a lower precedence than `T_IS_EQUAL`
      * or `T_IS_IDENTICAL`.
      */
-    private function isOfLowerPrecedenceAssignment(Token $token)
+    private function isOfLowerPrecedenceAssignment(Token $token): bool
     {
         static $tokens;
 

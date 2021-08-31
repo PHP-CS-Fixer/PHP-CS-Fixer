@@ -40,28 +40,15 @@ Example #1
    +++ New
     <?php
 
-    /** @param string $bar */
-   -function my_foo($bar)
-   +function my_foo(string $bar)
+    /**
+     * @param string $foo
+     * @param string|null $bar
+     */
+   -function f($foo, $bar)
+   +function f(string $foo, ?string $bar)
     {}
 
 Example #2
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-
-    /** @param string|null $bar */
-   -function my_foo($bar)
-   +function my_foo(?string $bar)
-    {}
-
-Example #3
 ~~~~~~~~~~
 
 With configuration: ``['scalar_types' => false]``.

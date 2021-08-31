@@ -96,18 +96,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @param string $input
-     *
-     * @requires PHP 7.0
-     * @dataProvider provideFixMethods70Cases
-     */
-    public function testFixMethods70(string $expected, string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixMethods70Cases(): array
+    public function provideFixMethodsCases(): iterable
     {
         return [
             [
@@ -144,12 +133,6 @@ class MyTestWithAnonymousClass extends TestCase
 EOF
                 ,
             ],
-        ];
-    }
-
-    public function provideFixMethodsCases(): array
-    {
-        return [
             [
                 <<<'EOF'
 <?php
@@ -558,7 +541,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixClassConstCases()
+    public function provideFixClassConstCases(): array
     {
         return [
             [
@@ -633,9 +616,6 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(
@@ -766,7 +746,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php class Foo { private int $foo; }',
@@ -813,7 +793,7 @@ AB# <- this is the name
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php class Foo { private int|float|null $foo; }',

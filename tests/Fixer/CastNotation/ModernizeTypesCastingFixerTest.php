@@ -34,7 +34,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $multiLinePatternToFix = <<<'FIX'
 <?php $x =
@@ -99,7 +99,7 @@ class overridesIntval
 }
 OVERRIDDEN;
 
-        return [
+        yield from [
             ['<?php $x = "intval";'],
 
             ['<?php $x = ClassA::intval(mt_rand(0, 100));'],
@@ -161,21 +161,6 @@ OVERRIDDEN;
                 '<?php $foo = ((int) $x)**2;',
                 '<?php $foo = intval($x)**2;',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFix70Cases
-     */
-    public function testFix70(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        $tests = [
             [
                 '<?php $foo = ((string) $x)[0];',
                 '<?php $foo = strval($x)[0];',
@@ -185,10 +170,6 @@ OVERRIDDEN;
                 '<?php $foo = strval($x + $y)[0];',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield [
@@ -207,7 +188,7 @@ OVERRIDDEN;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

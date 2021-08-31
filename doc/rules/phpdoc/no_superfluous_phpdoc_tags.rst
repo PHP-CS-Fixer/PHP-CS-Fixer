@@ -54,8 +54,10 @@ Example #1
         /**
    -     * @param Bar $bar
    -     * @param mixed $baz
+         *
+   -     * @return Baz
          */
-        public function doFoo(Bar $bar, $baz) {}
+        public function doFoo(Bar $bar, $baz): Baz {}
     }
 
 Example #2
@@ -79,26 +81,6 @@ With configuration: ``['allow_mixed' => true]``.
 Example #3
 ~~~~~~~~~~
 
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    class Foo {
-        /**
-   -     * @param Bar $bar
-   -     * @param mixed $baz
-         *
-   -     * @return Baz
-         */
-        public function doFoo(Bar $bar, $baz): Baz {}
-    }
-
-Example #4
-~~~~~~~~~~
-
 With configuration: ``['remove_inheritdoc' => true]``.
 
 .. code-block:: diff
@@ -114,7 +96,7 @@ With configuration: ``['remove_inheritdoc' => true]``.
         public function doFoo(Bar $bar, $baz) {}
     }
 
-Example #5
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['allow_unused_params' => true]``.

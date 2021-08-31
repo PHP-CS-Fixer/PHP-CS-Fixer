@@ -103,7 +103,7 @@ EOF;
         $this->doTest($this->removeLinesFromString($this->template, $lineNumberRemoved), $this->template);
     }
 
-    public function provideWithConfigCases()
+    public function provideWithConfigCases(): array
     {
         $tests = [
             [
@@ -362,7 +362,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentCases()
+    public function provideCommentCases(): array
     {
         return [
             [
@@ -416,7 +416,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideLineBreakCases()
+    public function provideLineBreakCases(): array
     {
         $input = '<?php //
 
@@ -472,7 +472,7 @@ $b = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideBetweenUseCases()
+    public function provideBetweenUseCases(): array
     {
         return [
             ['<?php use A\B;'],
@@ -518,68 +518,62 @@ $b = 1;
         ];
     }
 
-    public function testRemoveLinesBetweenUseStatements(): void
-    {
-        $expected = <<<'EOF'
-<?php
-
-use Zxy\Qux;
-use Zoo\Bar as Bar2;
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
-
-$c = 1;
-
-use Foo\Quxx as Quxx1;
-use Foo\Zar\Quxx;
-
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
-        ;
-
-        $input = <<<'EOF'
-<?php
-
-use Zxy\Qux;
-
-use Zoo\Bar as Bar2;
-
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
-
-$c = 1;
-
-use Foo\Quxx as Quxx1;
-
-use Foo\Zar\Quxx;
-
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
-        ;
-
-        $this->fixer->configure(['tokens' => ['use']]);
-        $this->doTest($expected, $input);
-    }
-
     /**
-     * @dataProvider provideRemoveLinesBetweenUseStatements70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideRemoveLinesBetweenUseStatementsCases
      */
-    public function testRemoveLinesBetweenUseStatements70(string $expected, ?string $input = null): void
+    public function testRemoveLinesBetweenUseStatements(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected, $input);
     }
 
-    public function provideRemoveLinesBetweenUseStatements70Cases()
+    public function provideRemoveLinesBetweenUseStatementsCases(): array
     {
         return [
+            [
+                <<<'EOF'
+<?php
+
+use Zxy\Qux;
+use Zoo\Bar as Bar2;
+use Foo\Bar as Bar1;
+use Foo\Zar\Baz;
+
+$c = 1;
+
+use Foo\Quxx as Quxx1;
+use Foo\Zar\Quxx;
+
+$a = new Bar1();
+$a = new Bar2();
+$a = new Baz();
+$a = new Qux();
+EOF
+                ,
+
+                <<<'EOF'
+<?php
+
+use Zxy\Qux;
+
+use Zoo\Bar as Bar2;
+
+use Foo\Bar as Bar1;
+use Foo\Zar\Baz;
+
+$c = 1;
+
+use Foo\Quxx as Quxx1;
+
+use Foo\Zar\Quxx;
+
+$a = new Bar1();
+$a = new Bar2();
+$a = new Baz();
+$a = new Qux();
+EOF
+                ,
+            ],
             [
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
@@ -606,7 +600,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         $this->doTest($expected);
     }
 
-    public function provideWithoutUsesCases()
+    public function provideWithoutUsesCases(): array
     {
         return [
             [
@@ -631,15 +625,17 @@ $a = new Qux();',
 
     /**
      * @dataProvider provideRemoveBetweenUseTraitsCases
+     * @group legacy
      */
     public function testRemoveBetweenUseTraits(string $expected, string $input): void
     {
+        $this->expectDeprecation('Option "use_trait" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.');
         $this->fixer->configure(['tokens' => ['use_trait']]);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideRemoveBetweenUseTraitsCases()
+    public function provideRemoveBetweenUseTraitsCases(): \Generator
     {
         yield [
             '<?php
@@ -754,9 +750,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideOneAndInLineCases()
+    public function provideOneAndInLineCases(): \Generator
     {
-        $tests = [
+        yield from [
             [
                 "<?php\n\n\$a = function() use (\$b) { while(3<1)break; \$c = \$b[1]; while(\$b<1)continue; if (true) throw \$e; return 1; };\n\n",
             ],
@@ -772,42 +768,14 @@ class Foo
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield [
                 "<?php\n\n\$a = \$b{0};\n\n",
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideOneAndInLine70Cases
-     * @requires PHP 7.0
-     */
-    public function testOneOrInLine70Cases(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['tokens' => [
-            'break',
-            'continue',
-            'return',
-            'throw',
-            'curly_brace_block',
-            'square_brace_block',
-            'parenthesis_brace_block',
-        ]]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideOneAndInLine70Cases()
-    {
-        return [
-            [
-                "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
-            ],
+        yield [
+            "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
         ];
     }
 
@@ -820,7 +788,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideBraceCases()
+    public function provideBraceCases(): array
     {
         return [
             [
@@ -919,7 +887,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -954,7 +922,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideSwitchCases()
+    public function provideSwitchCases(): array
     {
         return [
             [
@@ -1093,7 +1061,7 @@ class Foo {}'
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): \Generator
     {
         yield [
             '<?php
@@ -1137,7 +1105,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         $this->doTest($expected);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php
@@ -1159,7 +1127,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
         ];
     }
 
-    private function removeLinesFromString(string $input, array $lineNumbers)
+    private function removeLinesFromString(string $input, array $lineNumbers): string
     {
         sort($lineNumbers);
         $lines = explode("\n", $input);

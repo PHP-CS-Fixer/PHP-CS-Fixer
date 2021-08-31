@@ -31,7 +31,7 @@ final class FullOpeningTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             ['<?php echo \'Foo\';', '<? echo \'Foo\';'],
@@ -113,7 +113,7 @@ TEST;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixLT70Cases()
+    public function provideFixLT70Cases(): array
     {
         return [
             [

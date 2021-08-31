@@ -38,7 +38,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideWithTabsCases()
+    public function provideWithTabsCases(): array
     {
         return [
             [
@@ -75,7 +75,7 @@ public function myFunction() {
     }
 
     /**
-     * @dataProvider provideTestCases
+     * @dataProvider provideConfiguredCases
      */
     public function testConfigured(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -83,7 +83,7 @@ public function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public function provideConfiguredCases(): array
     {
         return [
             [
@@ -443,6 +443,35 @@ $b#
                     'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
                 ],
             ],
+            [
+                '<?php declare(strict_types=1);
+$a = 1;
+echo 1 <=> 1;
+echo 1 <=> 2;
+echo 2 <=> 1;
+echo 2 <=> 1;
+
+$a = $a  ?? $b;
+$a = $ab ?? $b;
+$a = $ac ?? $b;
+$a = $ad ?? $b;
+$a = $ae ?? $b;
+',
+                '<?php declare(strict_types=1);
+$a = 1;
+echo 1<=>1;
+echo 1 <=>2;
+echo 2<=> 1;
+echo 2  <=>   1;
+
+$a = $a ?? $b;
+$a = $ab   ?? $b;
+$a = $ac    ?? $b;
+$a = $ad  ?? $b;
+$a = $ae?? $b;
+',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
         ];
     }
 
@@ -454,7 +483,7 @@ $b#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -652,7 +681,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignEqualsCases()
+    public function provideUnalignEqualsCases(): array
     {
         return [
             [
@@ -828,7 +857,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideUnalignDoubleArrowCases()
+    public function provideUnalignDoubleArrowCases(): array
     {
         return [
             [
@@ -1223,7 +1252,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignEqualsCases()
+    public function provideAlignEqualsCases(): array
     {
         return [
             [
@@ -1346,7 +1375,7 @@ $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideAlignDoubleArrowCases()
+    public function provideAlignDoubleArrowCases(): array
     {
         return [
             [
@@ -1913,42 +1942,6 @@ $b;
     }
 
     /**
-     * @requires PHP 7.0
-     */
-    public function testPHP70Cases(): void
-    {
-        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]]);
-        $this->doTest(
-            '<?php declare(strict_types=1);
-$a = 1;
-echo 1 <=> 1;
-echo 1 <=> 2;
-echo 2 <=> 1;
-echo 2 <=> 1;
-
-$a = $a  ?? $b;
-$a = $ab ?? $b;
-$a = $ac ?? $b;
-$a = $ad ?? $b;
-$a = $ae ?? $b;
-',
-            '<?php declare(strict_types=1);
-$a = 1;
-echo 1<=>1;
-echo 1 <=>2;
-echo 2<=> 1;
-echo 2  <=>   1;
-
-$a = $a ?? $b;
-$a = $ab   ?? $b;
-$a = $ac    ?? $b;
-$a = $ad  ?? $b;
-$a = $ae?? $b;
-'
-        );
-    }
-
-    /**
      * @requires PHP 7.1
      *
      * @dataProvider providePHP71Cases
@@ -1959,7 +1952,7 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             'align array destruction' => [
@@ -2016,7 +2009,7 @@ $a = $ae?? $b;
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [
@@ -2052,6 +2045,10 @@ $a = $ae?? $b;
                 public function bar(TypeA | TypeB|TypeC $x): TypeA|TypeB | TypeC|TypeD
                 {
                 }
+                public function baz(
+                    callable|array $a,
+                    array|callable $b,
+                ) {}
             }'
         );
     }

@@ -34,7 +34,7 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -360,21 +360,6 @@ use Bar;
 class Baz {}
 '),
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
 use some\test\{ClassA, ClassB, ClassC as C};
@@ -453,7 +438,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -476,7 +461,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         $imports = [
             'some\a\{ClassA, ClassB, ClassC as C,};',

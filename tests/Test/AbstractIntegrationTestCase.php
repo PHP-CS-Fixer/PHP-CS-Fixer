@@ -122,9 +122,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @see doTest()
      * @large
+     * @group legacy
      */
     public function testIntegration(IntegrationCase $case): void
     {
+        foreach ($case->getSettings()['deprecations'] as $deprecation) {
+            $this->expectDeprecation($deprecation);
+        }
+
         $this->doTest($case);
     }
 

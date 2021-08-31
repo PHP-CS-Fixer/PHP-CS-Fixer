@@ -41,27 +41,16 @@ Example #1
     <?php
 
     /** @return \My\Bar */
-   -function my_foo()
-   +function my_foo(): \My\Bar
+   -function f1()
+   +function f1(): \My\Bar
+    {}
+
+    /** @return void */
+   -function f2()
+   +function f2(): void
     {}
 
 Example #2
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-
-    /** @return void */
-   -function my_foo()
-   +function my_foo(): void
-    {}
-
-Example #3
 ~~~~~~~~~~
 
 *Default* configuration.
@@ -77,7 +66,7 @@ Example #3
    +function my_foo(): object
     {}
 
-Example #4
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['scalar_types' => false]``.
@@ -94,7 +83,7 @@ With configuration: ``['scalar_types' => false]``.
     /** @return string */
     function bar() {}
 
-Example #5
+Example #4
 ~~~~~~~~~~
 
 *Default* configuration.

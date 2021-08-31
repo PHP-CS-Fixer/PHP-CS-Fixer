@@ -100,15 +100,11 @@ final class AnnotationTest extends TestCase
         static::assertSame($content, (string) $annotation);
     }
 
-    public function provideGetContentCases()
+    public function provideGetContentCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$content as $index => $content) {
-            $cases[] = [$index, $content];
+            yield [$index, $content];
         }
-
-        return $cases;
     }
 
     /**
@@ -122,15 +118,11 @@ final class AnnotationTest extends TestCase
         static::assertSame($start, $annotation->getStart());
     }
 
-    public function provideStartCases()
+    public function provideStartCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$start as $index => $start) {
-            $cases[] = [$index, $start];
+            yield [$index, $start];
         }
-
-        return $cases;
     }
 
     /**
@@ -144,15 +136,11 @@ final class AnnotationTest extends TestCase
         static::assertSame($end, $annotation->getEnd());
     }
 
-    public function provideEndCases()
+    public function provideEndCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$end as $index => $end) {
-            $cases[] = [$index, $end];
+            yield [$index, $end];
         }
-
-        return $cases;
     }
 
     /**
@@ -166,15 +154,11 @@ final class AnnotationTest extends TestCase
         static::assertSame($tag, $annotation->getTag()->getName());
     }
 
-    public function provideGetTagCases()
+    public function provideGetTagCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$tags as $index => $tag) {
-            $cases[] = [$index, $tag];
+            yield [$index, $tag];
         }
-
-        return $cases;
     }
 
     /**
@@ -191,15 +175,11 @@ final class AnnotationTest extends TestCase
         static::assertSame('', $doc->getLine($end)->getContent());
     }
 
-    public function provideRemoveCases()
+    public function provideRemoveCases(): \Generator
     {
-        $cases = [];
-
         foreach (self::$start as $index => $start) {
-            $cases[] = [$index, $start, self::$end[$index]];
+            yield [$index, $start, self::$end[$index]];
         }
-
-        return $cases;
     }
 
     /**
@@ -214,7 +194,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expected, $doc->getContent());
     }
 
-    public function provideRemoveEdgeCasesCases()
+    public function provideRemoveEdgeCasesCases(): array
     {
         return [
             // Single line
@@ -263,7 +243,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expected, $tag->getTypes());
     }
 
-    public function provideTypeParsingCases()
+    public function provideTypeParsingCases(): array
     {
         return [
             [
@@ -485,7 +465,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($output, $line->getContent());
     }
 
-    public function provideTypesCases()
+    public function provideTypesCases(): array
     {
         return [
             [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'],
@@ -510,7 +490,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expected, $tag->getNormalizedTypes());
     }
 
-    public function provideNormalizedTypesCases()
+    public function provideNormalizedTypesCases(): array
     {
         return [
             [['null', 'string'], '* @param StRiNg|NuLl $foo'],
@@ -564,7 +544,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expectedCommonType, $result->getCommonType());
     }
 
-    public function provideTypeExpressionCases()
+    public function provideTypeExpressionCases(): \Generator
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
@@ -585,7 +565,7 @@ final class AnnotationTest extends TestCase
         static::assertSame($expectedVariableName, $annotation->getVariableName());
     }
 
-    public function provideGetVariableCases()
+    public function provideGetVariableCases(): \Generator
     {
         yield [[new Line('* @param int $foo')], '$foo'];
         yield [[new Line('* @param int $foo some description')], '$foo'];

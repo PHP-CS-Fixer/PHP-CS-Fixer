@@ -24,91 +24,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class OrderedImportsFixerTest extends AbstractFixerTestCase
 {
-    public function testFix(): void
-    {
-        $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
-<?php
-
-use Foo\Bar;
-use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
- use Foo\Bir as FBB;
-use Foo\Zar\Baz;
-use SomeClass;
-   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
-use Zoo\Bar as ZooBar;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Zoo\Tar;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
-
-        $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
-<?php
-
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
-
-        $this->doTest($expected, $input);
-    }
-
     public function testFixWithMultipleNamespace(): void
     {
         $expected = <<<'EOF'
@@ -636,19 +551,101 @@ B#
     }
 
     /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideFixCases
      */
-    public function testFix70(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
 
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70Cases()
+    public function provideFixCases(): iterable
     {
         return [
+            [
+                <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Bar as ZooBar;
+use Foo\Bar;
+use Foo\Zar\Baz;
+
+<?php
+
+use Foo\Bar;
+use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+ use Foo\Bir as FBB;
+use Foo\Zar\Baz;
+use SomeClass;
+   use Symfony\Annotation\Template, Symfony\Doctrine\Entities\Entity;
+use Zoo\Bar as ZooBar;
+
+$a = new Bar();
+$a = new FooBaz();
+$a = new someclass();
+
+use Zoo\Tar;
+
+class AnnotatedClass
+{
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+
+        return function () use ($bar, $foo) {};
+    }
+}
+EOF
+                ,
+
+                <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Bar as ZooBar;
+use Foo\Bar;
+use Foo\Zar\Baz;
+
+<?php
+
+use Foo\Bar\FooBar as FooBaz;
+use Zoo\Bar as ZooBar, Zoo\Tar;
+ use Foo\Bar;
+use Foo\Zar\Baz;
+use Symfony\Annotation\Template;
+   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+use SomeClass;
+
+$a = new Bar();
+$a = new FooBaz();
+$a = new someclass();
+
+use Symfony\Doctrine\Entities\Entity;
+
+class AnnotatedClass
+{
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+
+        return function () use ($bar, $foo) {};
+    }
+}
+EOF
+                ,
+            ],
             [
                 '<?php
 use A\B;
@@ -1025,7 +1022,7 @@ use A\A1;
         $this->fixer->configure($configuration);
     }
 
-    public function provideInvalidSortAlgorithmCases()
+    public function provideInvalidSortAlgorithmCases(): array
     {
         return [
             [
@@ -1050,96 +1047,6 @@ use A\A1;
                 \stdClass::class,
             ],
         ];
-    }
-
-    public function testFixByLength(): void
-    {
-        $this->fixer->configure([
-            'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
-            'imports_order' => null,
-        ]);
-
-        $expected = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
-<?php
-
-use Foo\Bar;
-use Zoo\Tar, SomeClass;
- use Foo\Zar\Baz;
-use Foo\Bir as FBB;
-use Zoo\Bar as ZooBar;
-   use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
-use Symfony\Annotation\Template;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
-
-        $input = <<<'EOF'
-The normal
-use of this fixer
-should not change this sentence nor those statements below
-use Zoo\Bar as ZooBar;
-use Foo\Bar;
-use Foo\Zar\Baz;
-
-<?php
-
-use Foo\Bar\FooBar as FooBaz;
-use Zoo\Bar as ZooBar, Zoo\Tar;
- use Foo\Bar;
-use Foo\Zar\Baz;
-use Symfony\Annotation\Template;
-   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
-use SomeClass;
-
-$a = new Bar();
-$a = new FooBaz();
-$a = new someclass();
-
-use Symfony\Doctrine\Entities\Entity;
-
-class AnnotatedClass
-{
-    /**
-     * @Template(foobar=21)
-     * @param Entity $foo
-     */
-    public function doSomething($foo)
-    {
-        $bar = $foo->toArray();
-        /** @var ArrayInterface $bar */
-
-        return function () use ($bar, $foo) {};
-    }
-}
-EOF;
-
-        $this->doTest($expected, $input);
     }
 
     public function testByLengthFixWithSameLength(): void
@@ -1720,10 +1627,9 @@ EOF
     }
 
     /**
-     * @dataProvider provideFix70ByLengthCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixByLengthCases
      */
-    public function testFix70ByLength(string $expected, ?string $input = null): void
+    public function testFixByLength(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1733,9 +1639,92 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70ByLengthCases()
+    public function provideFixByLengthCases(): array
     {
         return [
+            [
+                <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Bar as ZooBar;
+use Foo\Bar;
+use Foo\Zar\Baz;
+
+<?php
+
+use Foo\Bar;
+use Zoo\Tar, SomeClass;
+ use Foo\Zar\Baz;
+use Foo\Bir as FBB;
+use Zoo\Bar as ZooBar;
+   use Foo\Bar\Foo as Fooo, Foo\Bar\FooBar as FooBaz;
+use Symfony\Annotation\Template;
+
+$a = new Bar();
+$a = new FooBaz();
+$a = new someclass();
+
+use Symfony\Doctrine\Entities\Entity;
+
+class AnnotatedClass
+{
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+
+        return function () use ($bar, $foo) {};
+    }
+}
+EOF
+                ,
+
+                <<<'EOF'
+The normal
+use of this fixer
+should not change this sentence nor those statements below
+use Zoo\Bar as ZooBar;
+use Foo\Bar;
+use Foo\Zar\Baz;
+
+<?php
+
+use Foo\Bar\FooBar as FooBaz;
+use Zoo\Bar as ZooBar, Zoo\Tar;
+ use Foo\Bar;
+use Foo\Zar\Baz;
+use Symfony\Annotation\Template;
+   use Foo\Bar\Foo as Fooo, Foo\Bir as FBB;
+use SomeClass;
+
+$a = new Bar();
+$a = new FooBaz();
+$a = new someclass();
+
+use Symfony\Doctrine\Entities\Entity;
+
+class AnnotatedClass
+{
+    /**
+     * @Template(foobar=21)
+     * @param Entity $foo
+     */
+    public function doSomething($foo)
+    {
+        $bar = $foo->toArray();
+        /** @var ArrayInterface $bar */
+
+        return function () use ($bar, $foo) {};
+    }
+}
+EOF
+                ,
+            ],
             [
                 '<?php
 use A\B;
@@ -1784,10 +1773,9 @@ use const ZZZ;
     }
 
     /**
-     * @dataProvider provideFix70TypesOrderAndLengthCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixTypesOrderAndLengthCases
      */
-    public function testFix70TypesOrderAndLength(string $expected, ?string $input = null): void
+    public function testFixTypesOrderAndLength(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_LENGTH,
@@ -1797,7 +1785,7 @@ use const ZZZ;
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70TypesOrderAndLengthCases()
+    public function provideFixTypesOrderAndLengthCases(): array
     {
         return [
             [
@@ -1840,12 +1828,11 @@ use function some\f\{fn_c, fn_d, fn_e};
     }
 
     /**
-     * @dataProvider provideFix70TypesOrderAndAlphabetCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixTypesOrderAndAlphabetCases
      *
      * @param string[] $importOrder
      */
-    public function testFix70TypesOrderAndAlphabet(string $expected, ?string $input = null, array $importOrder = null): void
+    public function testFixTypesOrderAndAlphabet(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_ALPHA,
@@ -1855,7 +1842,7 @@ use function some\f\{fn_c, fn_d, fn_e};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70TypesOrderAndAlphabetCases()
+    public function provideFixTypesOrderAndAlphabetCases(): iterable
     {
         return [
             [
@@ -1909,12 +1896,11 @@ use function some\a\{fn_a, fn_b};
     }
 
     /**
-     * @dataProvider provideFix70TypesOrderAndNoneCases
-     * @requires PHP 7.0
+     * @dataProvider provideFixTypesOrderAndNoneCases
      *
      * @param null|string[] $importOrder
      */
-    public function testFix70TypesOrderAndNone(string $expected, ?string $input = null, array $importOrder = null): void
+    public function testFixTypesOrderAndNone(string $expected, ?string $input = null, array $importOrder = null): void
     {
         $this->fixer->configure([
             'sort_algorithm' => OrderedImportsFixer::SORT_NONE,
@@ -1924,7 +1910,7 @@ use function some\a\{fn_a, fn_b};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix70TypesOrderAndNoneCases()
+    public function provideFixTypesOrderAndNoneCases(): array
     {
         return [
             [
@@ -1988,7 +1974,7 @@ use function some\a\{fn_a, fn_b};
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         $input =
             '<?php use A\{B,};

@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\FunctionNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -36,9 +35,8 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         return new FixerDefinition(
             'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\ndirname(dirname(dirname(\$path)));\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\ndirname(dirname(dirname(\$path)));\n"
                 ),
             ],
             null,
@@ -51,7 +49,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**

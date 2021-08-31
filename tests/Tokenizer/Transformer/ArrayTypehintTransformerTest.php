@@ -41,7 +41,7 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -74,7 +74,7 @@ function foo (array /** @type array */ $bar)
         );
     }
 
-    public function provideProcessPhp74Cases()
+    public function provideProcessPhp74Cases(): array
     {
         return [
             [

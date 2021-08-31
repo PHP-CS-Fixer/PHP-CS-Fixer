@@ -33,7 +33,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'sample' => [
@@ -67,7 +67,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases()
+    public function provideDoNotFixCases(): array
     {
         return [
             [
@@ -249,7 +249,7 @@ $b->abc();
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [

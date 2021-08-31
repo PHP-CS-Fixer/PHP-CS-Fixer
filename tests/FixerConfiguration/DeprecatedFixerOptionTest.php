@@ -71,7 +71,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame(!$isRequired, $option->hasDefault());
     }
 
-    public function provideHasDefaultCases()
+    public function provideHasDefaultCases(): array
     {
         return [
             [true],
@@ -94,7 +94,7 @@ final class DeprecatedFixerOptionTest extends TestCase
         static::assertSame($default, $option->getDefault());
     }
 
-    public function provideGetDefaultCases()
+    public function provideGetDefaultCases(): array
     {
         return [
             ['foo'],

@@ -65,27 +65,23 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
             'self' => true,
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            $this->hints = array_merge(
-                $this->hints,
-                [
-                    'bool' => true,
-                    'float' => true,
-                    'int' => true,
-                    'string' => true,
-                ]
-            );
-        }
+        $this->hints = array_merge(
+            $this->hints,
+            [
+                'bool' => true,
+                'float' => true,
+                'int' => true,
+                'string' => true,
+            ]
+        );
 
-        if (\PHP_VERSION_ID >= 70100) {
-            $this->hints = array_merge(
-                $this->hints,
-                [
-                    'iterable' => true,
-                    'void' => true,
-                ]
-            );
-        }
+        $this->hints = array_merge(
+            $this->hints,
+            [
+                'iterable' => true,
+                'void' => true,
+            ]
+        );
 
         if (\PHP_VERSION_ID >= 70200) {
             $this->hints = array_merge($this->hints, ['object' => true]);
@@ -108,13 +104,11 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
             'Native type hints for functions should use the correct case.',
             [
                 new CodeSample("<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar)\n    {\n        return 1;\n    }\n}\n"),
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction Foo(INT \$a): Bool\n{\n    return true;\n}\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\nfunction Foo(INT \$a): Bool\n{\n    return true;\n}\n"
                 ),
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction Foo(Iterable \$a): VOID\n{\n    echo 'Hello world';\n}\n",
-                    new VersionSpecification(70100)
+                new CodeSample(
+                    "<?php\nfunction Foo(Iterable \$a): VOID\n{\n    echo 'Hello world';\n}\n"
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction Foo(Object \$a)\n{\n    return 'hi!';\n}\n",
@@ -139,10 +133,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
-                if (\PHP_VERSION_ID >= 70000) {
-                    $this->fixFunctionReturnType($tokens, $index);
-                }
-
+                $this->fixFunctionReturnType($tokens, $index);
                 $this->fixFunctionArgumentTypes($tokens, $index);
             }
         }

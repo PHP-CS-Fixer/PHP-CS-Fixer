@@ -97,7 +97,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -299,23 +299,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         return $string;
     }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
     /**
@@ -357,7 +340,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             [
@@ -412,7 +395,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -431,7 +414,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideByReferenceCases()
+    public function provideByReferenceCases(): array
     {
         return [
             [
@@ -476,7 +459,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
-    public function provideVariableNumberOfArgumentsCases()
+    public function provideVariableNumberOfArgumentsCases(): array
     {
         return [
             [

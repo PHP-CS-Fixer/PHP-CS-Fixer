@@ -34,7 +34,7 @@ final class IncludeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $template = '<?php %s';
         $tests = [

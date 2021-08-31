@@ -40,7 +40,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $this->getTestFile(__FILE__));
     }
 
-    public static function provideFixNewCases()
+    public static function provideFixNewCases(): \Generator
     {
         foreach (['class', 'interface', 'trait'] as $element) {
             yield sprintf('%s with originally short name', $element) => [
@@ -160,6 +160,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      * @dataProvider provideIgnoredCases
+     * @dataProvider provideAnonymousClassCases
      */
     public function testFix(string $expected, ?string $input = null, ?\SplFileInfo $file = null, ?string $dir = null): void
     {
@@ -173,7 +174,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input, $file);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
         $fileProphecy = $this->prophesize();
         $fileProphecy->willExtend(\SplFileInfo::class);
@@ -362,7 +363,7 @@ class PsrAutoloadingFixer {}
         ];
     }
 
-    public function provideIgnoredCases()
+    public function provideIgnoredCases(): array
     {
         $cases = ['.php', 'Foo.class.php', '4Foo.php', '$#.php'];
 
@@ -399,16 +400,7 @@ class Bar {}',
         }, $cases);
     }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires     PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input, $this->getTestFile(__FILE__));
-    }
-
-    public function provideFix70Cases()
+    public function provideAnonymousClassCases(): iterable
     {
         yield 'class with anonymous class' => [
             '<?php

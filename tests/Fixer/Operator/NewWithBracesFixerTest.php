@@ -33,18 +33,9 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
+    public function provideFixCases(): \Generator
     {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixCases()
-    {
-        $tests = [
+        yield from [
             [
                 '<?php class A { public function B(){ $static = new static(new \SplFileInfo(__FILE__)); }}',
             ],
@@ -255,10 +246,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield [
                 '<?php $a = new $b{$c}();',
@@ -275,11 +262,8 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
                 '<?php $a = new $b{$c}[1]{0}[2];',
             ];
         }
-    }
 
-    public function provideFix70Cases()
-    {
-        return [
+        yield from [
             [
                 '<?php
                     $a = new Foo() <=> 1;
@@ -334,7 +318,7 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php $a = new (foo());',

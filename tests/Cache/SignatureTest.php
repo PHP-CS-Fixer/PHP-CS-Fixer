@@ -74,7 +74,7 @@ final class SignatureTest extends TestCase
         static::assertFalse($signature->equals($anotherSignature));
     }
 
-    public function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases()
+    public function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases(): \Generator
     {
         $php = PHP_VERSION;
         $version = '2.0';

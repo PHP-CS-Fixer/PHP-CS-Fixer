@@ -184,7 +184,7 @@ class srand extends SrandClass{
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [

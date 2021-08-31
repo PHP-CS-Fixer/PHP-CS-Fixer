@@ -278,7 +278,7 @@ final class DescribeCommand extends Command
                 $configuration = $codeSample->getConfiguration();
 
                 if ($fixer instanceof ConfigurableFixerInterface) {
-                    $fixer->configure(null === $configuration ? [] : $configuration);
+                    $fixer->configure($configuration ?? []);
                 }
 
                 $file = $codeSample instanceof FileSpecificCodeSampleInterface

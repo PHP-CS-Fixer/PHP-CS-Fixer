@@ -34,7 +34,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): \Generator
     {
         yield 'function call' => [
             '<?php foo(test: 1);',
@@ -92,7 +92,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         static::assertNotChange($source);
     }
 
-    public function provideDoNotChangeCases()
+    public function provideDoNotChangeCases(): \Generator
     {
         yield 'switch/case/constants' => [
             '<?php
@@ -133,19 +133,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
                 }
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotChange70Cases
-     * @requires PHP 7.0
-     */
-    public function testDoNotChange70(string $source): void
-    {
-        static::assertNotChange($source);
-    }
-
-    public function provideDoNotChange70Cases()
-    {
         yield 'return type' => ['<?php function foo(): array { return []; }'];
     }
 

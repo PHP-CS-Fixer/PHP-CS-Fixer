@@ -51,33 +51,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    /**
-     * @dataProvider provideProcess70Cases
-     * @requires PHP 7.0
-     */
-    public function testProcess70(string $source, array $expectedTokens = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_CURLY_OPEN,
-                CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
-                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
-                CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-                CT::T_DYNAMIC_VAR_BRACE_OPEN,
-                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                CT::T_GROUP_IMPORT_BRACE_OPEN,
-                CT::T_GROUP_IMPORT_BRACE_CLOSE,
-            ]
-        );
-    }
-
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             'curly open/close I' => [
@@ -197,12 +171,15 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                 ],
             ],
             'do not touch' => ['<?php if (1) {} class Foo{ } function bar(){ }'],
-        ];
-    }
-
-    public function provideProcess70Cases()
-    {
-        return [
+            'dynamic property with string with variable' => [
+                '<?php $object->{"set_{$name}"}(42);',
+                [
+                    3 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                    6 => T_CURLY_OPEN,
+                    8 => CT::T_CURLY_CLOSE,
+                    10 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                ],
+            ],
             [
                 '<?php use some\a\{ClassA, ClassB, ClassC as C};',
                 [
@@ -239,7 +216,7 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public static function provideProcess80Cases()
+    public static function provideProcess80Cases(): array
     {
         return [
             'dynamic property brace open/close' => [

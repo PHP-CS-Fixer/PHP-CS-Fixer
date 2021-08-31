@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -59,14 +57,13 @@ class Sample
 }
 '
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 class Sample
 {
     const SAMPLE = 1;
 }
 ',
-                    new VersionSpecification(70100),
                     ['elements' => ['const']]
                 ),
             ]
@@ -105,10 +102,6 @@ class Sample
 
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             if (!\in_array($element['type'], $this->configuration['elements'], true)) {
-                continue;
-            }
-
-            if (\PHP_VERSION_ID < 70100 && 'const' === $element['type']) {
                 continue;
             }
 

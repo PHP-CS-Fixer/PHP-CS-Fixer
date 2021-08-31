@@ -42,7 +42,7 @@ final class NamespacedStringTokenGeneratorTest extends TestCase
         );
     }
 
-    public function provideGeneratorCases()
+    public function provideGeneratorCases(): array
     {
         return [
             ['test', ['test']],

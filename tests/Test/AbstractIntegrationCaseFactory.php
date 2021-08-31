@@ -148,6 +148,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     {
         $parsed = $this->parseJson($config, [
             'checkPriority' => true,
+            'deprecations' => [],
         ]);
 
         if (!\is_bool($parsed['checkPriority'])) {
@@ -155,6 +156,23 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                 'Expected bool value for "checkPriority", got "%s".',
                 \is_object($parsed['checkPriority']) ? \get_class($parsed['checkPriority']) : \gettype($parsed['checkPriority']).'#'.$parsed['checkPriority']
             ));
+        }
+
+        if (!\is_array($parsed['deprecations'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected array value for "deprecations", got "%s".',
+                \is_object($parsed['deprecations']) ? \get_class($parsed['deprecations']) : \gettype($parsed['deprecations']).'#'.$parsed['deprecations']
+            ));
+        }
+
+        foreach ($parsed['deprecations'] as $index => $deprecation) {
+            if (!\is_string($deprecation)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Expected only string value for "deprecations", got "%s" @ index %d.',
+                    \is_object($deprecation) ? \get_class($deprecation) : \gettype($deprecation).'#'.$deprecation,
+                    $index
+                ));
+            }
         }
 
         return $parsed;

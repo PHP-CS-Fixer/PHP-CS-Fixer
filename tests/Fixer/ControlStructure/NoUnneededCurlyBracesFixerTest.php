@@ -33,9 +33,9 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             'simple sample, last token candidate' => [
                 '<?php  echo 1;',
                 '<?php { echo 1;}',
@@ -113,10 +113,6 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield 'no fixes, offset access syntax with curly braces' => [
                 '<?php
@@ -137,7 +133,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
-    public function provideNoFix7Cases()
+    public function provideNoFix7Cases(): array
     {
         return [
             [
@@ -166,7 +162,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNamespaceCases()
+    public function provideFixNamespaceCases(): \Generator
     {
         yield [
             '<?php

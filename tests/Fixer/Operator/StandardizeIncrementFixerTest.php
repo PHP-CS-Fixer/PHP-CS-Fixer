@@ -34,9 +34,9 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             [
                 '<?php ++$i;',
                 '<?php $i += 1;',
@@ -554,10 +554,6 @@ $i#3
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield [
                 '<?php echo ++$foo->{$bar};',
@@ -579,20 +575,8 @@ $i#3
                 '<?php $a{$b} -= 1;',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
+        yield from [
             [
                 '<?php $i -= 1 ?? 2;',
             ],
@@ -633,7 +617,7 @@ $i#3
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [

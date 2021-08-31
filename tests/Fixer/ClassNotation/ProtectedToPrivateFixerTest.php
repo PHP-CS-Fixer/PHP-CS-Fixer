@@ -33,7 +33,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
         $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
@@ -87,24 +87,6 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 '<?php final class MyClass { private $v1; }',
                 '<?php final class MyClass { protected $v1; }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70Fix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        $attributesAndMethodsOriginal = $this->getAttributesAndMethods(true);
-        $attributesAndMethodsFixed = $this->getAttributesAndMethods(false);
-
-        return [
             'anonymous-class-inside' => [
                 "<?php
 final class Foo
@@ -145,7 +127,7 @@ final class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): \Generator
     {
         yield [
             '<?php final class Foo { private int $foo; }',

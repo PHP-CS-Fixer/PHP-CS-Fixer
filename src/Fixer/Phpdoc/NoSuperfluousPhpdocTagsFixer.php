@@ -24,8 +24,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -47,8 +45,10 @@ class Foo {
     /**
      * @param Bar $bar
      * @param mixed $baz
+     *
+     * @return Baz
      */
-    public function doFoo(Bar $bar, $baz) {}
+    public function doFoo(Bar $bar, $baz): Baz {}
 }
 '),
                 new CodeSample('<?php
@@ -60,17 +60,6 @@ class Foo {
     public function doFoo(Bar $bar, $baz) {}
 }
 ', ['allow_mixed' => true]),
-                new VersionSpecificCodeSample('<?php
-class Foo {
-    /**
-     * @param Bar $bar
-     * @param mixed $baz
-     *
-     * @return Baz
-     */
-    public function doFoo(Bar $bar, $baz): Baz {}
-}
-', new VersionSpecification(70000)),
                 new CodeSample('<?php
 class Foo {
     /**
@@ -419,11 +408,7 @@ class Foo {
             static function (string $type) use ($symbolShortNames) {
                 $type = strtolower($type);
 
-                if (isset($symbolShortNames[$type])) {
-                    return $symbolShortNames[$type];
-                }
-
-                return $type;
+                return $symbolShortNames[$type] ?? $type;
             },
             $types
         );

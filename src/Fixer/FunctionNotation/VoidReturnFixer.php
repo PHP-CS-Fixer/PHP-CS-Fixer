@@ -17,10 +17,9 @@ namespace PhpCsFixer\Fixer\FunctionNotation;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -39,9 +38,8 @@ final class VoidReturnFixer extends AbstractFixer
         return new FixerDefinition(
             'Add `void` return type to functions with missing or empty return statements, but priority is given to `@return` annotations. Requires PHP >= 7.1.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\nfunction foo(\$a) {};\n",
-                    new VersionSpecification(70100)
+                new CodeSample(
+                    "<?php\nfunction foo(\$a) {};\n"
                 ),
             ],
             null,
@@ -65,7 +63,7 @@ final class VoidReturnFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(T_FUNCTION);
     }
 
     /**

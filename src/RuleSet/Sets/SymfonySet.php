@@ -49,6 +49,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'clean_namespace' => true,
             'concat_space' => true,
             'echo_tag_syntax' => true,
+            'empty_loop_body' => ['style' => 'braces'],
             'fully_qualified_strict_types' => true,
             'function_typehint_space' => true,
             'general_phpdoc_tag_rename' => [
@@ -86,7 +87,6 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'switch',
                     'throw',
                     'use',
-                    'use_trait',
                 ],
             ],
             'no_leading_namespace_whitespace' => true,
@@ -170,6 +170,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'switch_continue_to_break' => true,
             'trailing_comma_in_multiline' => true,
             'trim_array_spaces' => true,
+            'types_spaces' => true,
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
             'yoda_style' => true,

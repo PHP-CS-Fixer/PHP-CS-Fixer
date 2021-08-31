@@ -39,8 +39,11 @@ Example #1
    --- Original
    +++ New
     <?php
-   -use Z; use A;
-   +use A; use Z;
+   +use AAA;
+   +use const AAB;
+    use function AAC;
+   -use const AAB;
+   -use AAA;
 
 Example #2
 ~~~~~~~~~~
@@ -63,22 +66,6 @@ With configuration: ``['sort_algorithm' => 'length']``.
 Example #3
 ~~~~~~~~~~
 
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-   +use AAA;
-   +use const AAB;
-    use function AAC;
-   -use const AAB;
-   -use AAA;
-
-Example #4
-~~~~~~~~~~
-
 With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const', 'class', 'function']]``.
 
 .. code-block:: diff
@@ -99,7 +86,7 @@ With configuration: ``['sort_algorithm' => 'length', 'imports_order' => ['const'
     use function CCC\AA;
    -use function DDD;
 
-Example #5
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']]``.
@@ -122,7 +109,7 @@ With configuration: ``['sort_algorithm' => 'alpha', 'imports_order' => ['const',
     use function DDD;
    -use function CCC\AA;
 
-Example #6
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['sort_algorithm' => 'none', 'imports_order' => ['const', 'class', 'function']]``.

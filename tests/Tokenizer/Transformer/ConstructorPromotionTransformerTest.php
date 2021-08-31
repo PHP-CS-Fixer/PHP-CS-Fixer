@@ -42,7 +42,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): \Generator
     {
         yield [
             '<?php

@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -36,7 +35,7 @@ final class ArrayPushFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Converts simple usages of `array_push($x, $y);` to `$x[] = $y;`.',
-            [new VersionSpecificCodeSample("<?php\narray_push(\$x, \$y);\n", new VersionSpecification(70000))],
+            [new CodeSample("<?php\narray_push(\$x, \$y);\n")],
             null,
             'Risky when the function `array_push` is overridden.'
         );
@@ -47,7 +46,7 @@ final class ArrayPushFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
+        return $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
     }
 
     /**

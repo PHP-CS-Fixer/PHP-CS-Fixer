@@ -14,8 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\Basic;
 
-use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
@@ -35,7 +36,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class BracesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
+final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
      * @internal
@@ -130,7 +131,7 @@ class Foo
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
-     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
+     * Must run after ClassAttributesSeparationFixer, ClassDefinitionFixer, ElseifFixer, EmptyLoopBodyFixer, LineEndingFixer, NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUselessElseFixer, SingleLineThrowFixer, SingleSpaceAfterConstructFixer, SingleTraitInsertPerStatementFixer.
      */
     public function getPriority(): int
     {
@@ -156,6 +157,8 @@ class Foo
         $this->fixControlContinuationBraces($tokens);
         $this->fixSpaceAroundToken($tokens);
         $this->fixDoWhile($tokens);
+
+        parent::applyFix($file, $tokens);
     }
 
     /**
@@ -185,6 +188,13 @@ class Foo
                 ->setDefault(self::LINE_SAME)
                 ->getOption(),
         ]);
+    }
+
+    protected function createProxyFixers(): array
+    {
+        return [
+            new DeclareParenthesesFixer(),
+        ];
     }
 
     private function fixCommentBeforeBrace(Tokens $tokens): void
@@ -697,8 +707,10 @@ class Foo
 
             // Declare tokens don't follow the same rules are other control statements
             if ($token->isGivenKind(T_DECLARE)) {
-                $this->fixDeclareStatement($tokens, $index);
-            } elseif ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT::T_USE_LAMBDA)) {
+                continue; // delegated to DeclareParenthesesFixer
+            }
+
+            if ($token->isGivenKind($controlTokens) || $token->isGivenKind(CT::T_USE_LAMBDA)) {
                 $nextNonWhitespaceIndex = $tokens->getNextNonWhitespace($index);
 
                 if (!$tokens[$nextNonWhitespaceIndex]->equals(':')) {
@@ -867,37 +879,6 @@ class Foo
         }
 
         return [];
-    }
-
-    private function fixDeclareStatement(Tokens $tokens, int $index): void
-    {
-        $tokens->removeTrailingWhitespace($index);
-
-        $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
-        $tokens->removeTrailingWhitespace($startParenthesisIndex);
-
-        $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
-        $tokens->removeLeadingWhitespace($endParenthesisIndex);
-
-        $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{']);
-        $startBraceToken = $tokens[$startBraceIndex];
-
-        if ($startBraceToken->equals('{')) {
-            $this->fixSingleLineWhitespaceForDeclare($tokens, $startBraceIndex);
-        }
-    }
-
-    private function fixSingleLineWhitespaceForDeclare(Tokens $tokens, int $startBraceIndex): void
-    {
-        // fix single-line whitespace before {
-        // eg: `declare(ticks=1){` => `declare(ticks=1) {`
-        // eg: `declare(ticks=1)   {` => `declare(ticks=1) {`
-        if (
-            !$tokens[$startBraceIndex - 1]->isWhitespace()
-            || $tokens[$startBraceIndex - 1]->isWhitespace(" \t")
-        ) {
-            $tokens->ensureWhitespaceAtIndex($startBraceIndex - 1, 1, ' ');
-        }
     }
 
     private function ensureWhitespaceAtIndexAndIndentMultilineComment(Tokens $tokens, int $index, string $whitespace): void

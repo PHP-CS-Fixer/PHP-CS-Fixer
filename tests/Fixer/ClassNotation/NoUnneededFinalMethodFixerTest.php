@@ -33,7 +33,7 @@ final class NoUnneededFinalMethodFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'default' => [
@@ -225,21 +225,6 @@ class Bar
     }
 }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     * @dataProvider providePhp70Cases
-     */
-    public function testFixPhp70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function providePhp70Cases()
-    {
-        return [
             'anonymous-class-inside' => [
                 '<?php
 final class Foo
@@ -316,7 +301,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixConfigCases()
+    public function provideFixConfigCases(): \Generator
     {
         yield [
             '<?php

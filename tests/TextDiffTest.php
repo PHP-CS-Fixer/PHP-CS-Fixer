@@ -63,7 +63,7 @@ final class TextDiffTest extends TestCase
         static::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
-    public function provideDiffReportingCases()
+    public function provideDiffReportingCases(): \Generator
     {
         $expected = <<<'TEST'
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
@@ -79,10 +79,9 @@ TEST;
         }
 
         $expected = substr(json_encode($expected), 1, -1);
-        $cases[] = [$expected, 'json', true];
-        $cases[] = [$expected, 'json', false];
 
-        return $cases;
+        yield [$expected, 'json', true];
+        yield [$expected, 'json', false];
     }
 
     /**

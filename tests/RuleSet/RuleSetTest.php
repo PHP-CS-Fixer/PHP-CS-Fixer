@@ -115,21 +115,19 @@ final class RuleSetTest extends TestCase
         static::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
-    public function provideAllRulesFromSetsCases()
+    public function provideAllRulesFromSetsCases(): \Generator
     {
-        $cases = [];
         foreach (RuleSets::getSetDefinitionNames() as $setName) {
             $ruleSet = new RuleSet([$setName => true]);
+
             foreach ($ruleSet->getRules() as $rule => $config) {
-                $cases[] = [
+                yield $setName.':'.$rule => [
                     $setName,
                     $rule,
                     $config,
                 ];
             }
         }
-
-        return $cases;
     }
 
     public function testGetBuildInSetDefinitionNames(): void
@@ -289,26 +287,22 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public function provideSafeSetCases()
+    public function provideSafeSetCases(): \Generator
     {
-        $sets = [];
-
         foreach (RuleSets::getSetDefinitionNames() as $name) {
-            $sets[$name] = [
+            yield $name => $sets[$name] = [
                 [$name => true],
                 false === strpos($name, ':risky'),
             ];
         }
 
-        $sets['@Symfony:risky_and_@Symfony'] = [
+        yield '@Symfony:risky_and_@Symfony' => [
             [
                 '@Symfony:risky' => true,
                 '@Symfony' => false,
             ],
             false,
         ];
-
-        return $sets;
     }
 
     public function testInvalidConfigNestedSets(): void
@@ -397,17 +391,18 @@ final class RuleSetTest extends TestCase
         );
     }
 
-    public static function providePhpUnitTargetVersionHasSetCases()
+    public static function providePhpUnitTargetVersionHasSetCases(): \Generator
     {
         foreach ((new \ReflectionClass(PhpUnitTargetVersion::class))->getConstants() as $constant) {
             if ('newest' === $constant) {
                 continue;
             }
+
             yield [$constant];
         }
     }
 
-    private function sortNestedArray(array $array)
+    private function sortNestedArray(array $array): array
     {
         foreach ($array as $key => $element) {
             if (!\is_array($element)) {
@@ -426,7 +421,7 @@ final class RuleSetTest extends TestCase
         return $array;
     }
 
-    private function findInSets(array $sets, string $ruleName, $config)
+    private function findInSets(array $sets, string $ruleName, $config): array
     {
         $duplicates = [];
 
@@ -473,11 +468,11 @@ final class RuleSetTest extends TestCase
         return $resolvedSets[$setName];
     }
 
-    private static function assertSameRules(array $expected, array $actual, string $message = ''): void
+    private static function assertSameRules(array $expected, array $actual): void
     {
         ksort($expected);
         ksort($actual);
 
-        static::assertSame($expected, $actual, $message);
+        static::assertSame($expected, $actual);
     }
 }

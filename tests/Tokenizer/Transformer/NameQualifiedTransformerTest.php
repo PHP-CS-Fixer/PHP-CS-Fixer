@@ -164,7 +164,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
     }
 
-    public function providePriorityCases()
+    public function providePriorityCases(): array
     {
         return [
             [

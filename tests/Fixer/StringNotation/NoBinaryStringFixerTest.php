@@ -33,7 +33,7 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [

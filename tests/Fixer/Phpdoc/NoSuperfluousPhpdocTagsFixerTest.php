@@ -32,7 +32,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'no typehint' => [
@@ -1083,22 +1083,6 @@ class Foo {
     private $bar;
 }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixPhp70(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp70Cases()
-    {
-        return [
             'same type hint' => [
                 '<?php
 class Foo {
@@ -1128,7 +1112,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'multiple different types' => [
+            'multiple different types (with return type)' => [
                 '<?php
 class Foo {
     /**
@@ -1139,7 +1123,7 @@ class Foo {
     public function doFoo(Bar $bar): Baz {}
 }',
             ],
-            'with import' => [
+            'with import (with return type)' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1157,7 +1141,7 @@ use Foo\Baz;
  */
 function foo(Bar $bar): Baz {}',
             ],
-            'with root symbols' => [
+            'with root symbols (with return type)' => [
                 '<?php
 /**
  */
@@ -1169,7 +1153,7 @@ function foo(\Foo\Bar $bar): \Foo\Baz {}',
  */
 function foo(\Foo\Bar $bar): \Foo\Baz {}',
             ],
-            'with mix of imported and fully qualified symbols' => [
+            'with mix of imported and fully qualified symbols (with return type)' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1190,7 +1174,7 @@ use Foo\Qux;
  */
 function foo(Bar $bar, \Foo\Baz $baz): \Foo\Qux {}',
             ],
-            'with aliased imported' => [
+            'with aliased imported (with return type)' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1262,7 +1246,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp71Cases()
+    public function provideFixPhp71Cases(): array
     {
         return [
             'same nullable type hint' => [
@@ -1437,7 +1421,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'some typed static public property' => [
@@ -1713,7 +1697,7 @@ class Foo {
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): array
     {
         return [
             'static return' => [

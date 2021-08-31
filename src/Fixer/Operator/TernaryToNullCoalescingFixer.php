@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Operator;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -35,9 +34,8 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         return new FixerDefinition(
             'Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n",
-                    new VersionSpecification(70000)
+                new CodeSample(
+                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n"
                 ),
             ]
         );
@@ -48,7 +46,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_ISSET);
+        return $tokens->isTokenKindFound(T_ISSET);
     }
 
     /**

@@ -2,8 +2,6 @@
 Integration of fixers: phpdoc_to_param_type,no_superfluous_phpdoc_tags.
 --RULESET--
 {"phpdoc_to_param_type": true, "no_superfluous_phpdoc_tags": true}
---REQUIREMENTS--
-{"php": 70000}
 --EXPECT--
 <?php
 

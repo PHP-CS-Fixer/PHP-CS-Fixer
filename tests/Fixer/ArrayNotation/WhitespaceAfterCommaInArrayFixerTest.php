@@ -33,7 +33,7 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             //old style array
@@ -124,7 +124,7 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [

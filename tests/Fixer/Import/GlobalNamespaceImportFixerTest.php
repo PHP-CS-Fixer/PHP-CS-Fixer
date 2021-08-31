@@ -34,7 +34,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportConstantsCases()
+    public function provideFixImportConstantsCases(): array
     {
         return [
             'non-global names' => [
@@ -235,7 +235,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportFunctionsCases()
+    public function provideFixImportFunctionsCases(): array
     {
         return [
             'non-global names' => [
@@ -411,22 +411,6 @@ class Bar {
 \foo();
 INPUT
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixImportFunctions70Cases
-     * @requires PHP 7.0
-     */
-    public function testFixImportFunctions70(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['import_functions' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixImportFunctions70Cases()
-    {
-        return [
             'name already used' => [
                 <<<'EXPECTED'
 <?php
@@ -455,7 +439,7 @@ EXPECTED
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportClassesCases()
+    public function provideFixImportClassesCases(): array
     {
         return [
             'non-global names' => [
@@ -724,7 +708,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixImportClasses71Cases()
+    public function provideFixImportClasses71Cases(): array
     {
         return [
             'handle typehints' => [
@@ -758,7 +742,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyConstantsCases()
+    public function provideFixFullyQualifyConstantsCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -817,7 +801,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyFunctionsCases()
+    public function provideFixFullyQualifyFunctionsCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -883,7 +867,7 @@ INPUT
         $this->doTest($expected, $input);
     }
 
-    public function provideFixFullyQualifyClassesCases()
+    public function provideFixFullyQualifyClassesCases(): array
     {
         return [
             'already fqn or sub namespace' => [
@@ -972,7 +956,7 @@ INPUT
         $this->doTest($expected);
     }
 
-    public function provideMultipleNamespacesCases()
+    public function provideMultipleNamespacesCases(): \Generator
     {
         yield [
             <<<'INPUT'
@@ -1026,5 +1010,40 @@ namespace {
 }
 INPUT
         ];
+    }
+
+    /**
+     * @requires PHP 8.0
+     */
+    public function testAttributes(): void
+    {
+        $this->fixer->configure([
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => true,
+        ]);
+        $this->doTest(
+            '<?php
+namespace Foo;
+use AnAttribute1;
+use AnAttribute2;
+use AnAttribute3;
+class Bar
+{
+    #[AnAttribute1]
+    public function f1() {}
+    #[AnAttribute2, AnAttribute3]
+    public function f2() {}
+}',
+            '<?php
+namespace Foo;
+class Bar
+{
+    #[\AnAttribute1]
+    public function f1() {}
+    #[\AnAttribute2, \AnAttribute3]
+    public function f2() {}
+}'
+        );
     }
 }

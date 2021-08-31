@@ -27,14 +27,13 @@ final class ExplicitIndirectVariableFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideTestFixCases
-     * @requires PHP 7.0
      */
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [
@@ -82,7 +81,7 @@ $foo
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFix80Cases()
+    public function provideTestFix80Cases(): array
     {
         return [
             [

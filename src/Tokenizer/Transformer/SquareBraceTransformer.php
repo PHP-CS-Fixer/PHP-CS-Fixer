@@ -150,7 +150,7 @@ final class SquareBraceTransformer extends AbstractTransformer
 
     private function isArrayDestructing(Tokens $tokens, int $index): bool
     {
-        if (\PHP_VERSION_ID < 70100 || !$tokens[$index]->equals('[')) {
+        if (!$tokens[$index]->equals('[')) {
             return false;
         }
 

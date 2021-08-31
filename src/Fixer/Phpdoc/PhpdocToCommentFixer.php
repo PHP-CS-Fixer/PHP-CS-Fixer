@@ -15,9 +15,14 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -26,8 +31,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Ceeram <ceeram@cakephp.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-final class PhpdocToCommentFixer extends AbstractFixer
+final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var string[]
+     */
+    private $ignoredTags = [];
+
     /**
      * {@inheritdoc}
      */
@@ -64,14 +74,58 @@ final class PhpdocToCommentFixer extends AbstractFixer
                     '<?php
 $first = true;// needed because by default first docblock is never fixed.
 
-/** This should not be a docblock */
+/** This should be a comment */
 foreach($connections as $key => $sqlite) {
     $sqlite->open($path);
 }
 '
                 ),
+                new CodeSample(
+                    '<?php
+$first = true;// needed because by default first docblock is never fixed.
+
+/** This should be a comment */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+
+/** @todo This should be a PHPDoc as the tag is on "ignored_tags" list */
+foreach($connections as $key => $sqlite) {
+    $sqlite->open($path);
+}
+',
+                    ['ignored_tags' => ['todo']]
+                ),
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(array $configuration = null): void
+    {
+        parent::configure($configuration);
+
+        $this->ignoredTags = array_map(
+            static function ($tag) {
+                return strtolower($tag);
+            },
+            $this->configuration['ignored_tags']
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('ignored_tags', 'List of ignored tags (matched case insensitively)'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
+        ]);
     }
 
     /**
@@ -92,6 +146,14 @@ foreach($connections as $key => $sqlite) {
 
             if ($commentsAnalyzer->isBeforeStructuralElement($tokens, $index)) {
                 continue;
+            }
+
+            if (0 < Preg::matchAll('~\@([a-zA-Z0-9_\\\\-]+)\b~', $token->getContent(), $matches)) {
+                foreach ($matches[1] as $match) {
+                    if (\in_array(strtolower($match), $this->ignoredTags, true)) {
+                        continue 2;
+                    }
+                }
             }
 
             $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);

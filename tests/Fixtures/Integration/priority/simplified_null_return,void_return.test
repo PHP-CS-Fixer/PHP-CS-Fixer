@@ -2,8 +2,6 @@
 Integration of fixers: simplified_null_return,void_return.
 --RULESET--
 {"simplified_null_return": true, "void_return": true}
---REQUIREMENTS--
-{"php": 70100}
 --EXPECT--
 <?php
 class Foo {

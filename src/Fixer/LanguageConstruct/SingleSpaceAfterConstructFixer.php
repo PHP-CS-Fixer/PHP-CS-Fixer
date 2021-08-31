@@ -23,8 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -159,12 +157,11 @@ echo  "Hello!";
                         ],
                     ]
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     '<?php
 
 yield  from  baz();
 ',
-                    new VersionSpecification(70000),
                     [
                         'constructs' => [
                             'yield_from',
@@ -209,7 +206,7 @@ yield  from  baz();
 
             $whitespaceTokenIndex = $index + 1;
 
-            if ($tokens[$whitespaceTokenIndex]->equalsAny([';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) {
+            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) {
                 continue;
             }
 
@@ -253,8 +250,7 @@ yield  from  baz();
             }
 
             if (
-                70000 <= \PHP_VERSION_ID
-                && $token->isGivenKind(T_YIELD_FROM)
+                $token->isGivenKind(T_YIELD_FROM)
                 && 'yield from' !== strtolower($token->getContent())
             ) {
                 $tokens[$index] = new Token([T_YIELD_FROM, Preg::replace(

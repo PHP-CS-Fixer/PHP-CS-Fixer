@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -96,26 +97,27 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
         $types = [];
 
-        $indent = '(?P<indent>(?: {2}|\t)*)';
+        $indent = '(?P<indent>(?:\ {2}|\t)*)';
+
         // e.g. @param <hint> <$var>
-        if (!empty($tagsWithNameToAlign)) {
-            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>[^$]+?)\s+(?P<var>(?:&|\.{3})?\$[^\s]+)';
+        if ([] !== $tagsWithNameToAlign) {
+            $types[] = '(?P<tag>'.implode('|', $tagsWithNameToAlign).')\s+(?P<hint>(?:'.TypeExpression::REGEX_TYPES.')?)\s+(?P<var>(?:&|\.{3})?\$\S+)';
         }
 
         // e.g. @return <hint>
-        if (!empty($tagsWithoutNameToAlign)) {
-            $types[] = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>[^\s]+?)';
+        if ([] !== $tagsWithoutNameToAlign) {
+            $types[] = '(?P<tag2>'.implode('|', $tagsWithoutNameToAlign).')\s+(?P<hint2>(?:'.TypeExpression::REGEX_TYPES.')?)';
         }
 
         // e.g. @method <hint> <signature>
-        if (!empty($tagsWithMethodSignatureToAlign)) {
+        if ([] !== $tagsWithMethodSignatureToAlign) {
             $types[] = '(?P<tag3>'.implode('|', $tagsWithMethodSignatureToAlign).')(\s+(?P<hint3>[^\s(]+)|)\s+(?P<signature>.+\))';
         }
 
         // optional <desc>
         $desc = '(?:\s+(?P<desc>\V*))';
 
-        $this->regex = '/^'.$indent.' \* @(?:'.implode('|', $types).')'.$desc.'\s*$/u';
+        $this->regex = '/^'.$indent.'\ \*\ @(?J)(?:'.implode('|', $types).')'.$desc.'\s*$/ux';
         $this->regexCommentLine = '/^'.$indent.' \*(?! @)(?:\s+(?P<desc>\V+))(?<!\*\/)\r?$/u';
         $this->align = $this->configuration['align'];
     }

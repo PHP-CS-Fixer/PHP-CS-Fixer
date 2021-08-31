@@ -33,9 +33,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             'It replaces an unset on a property with  = null' => [
                 '<?php $foo->bar = null;',
                 '<?php unset($foo->bar);',
@@ -108,28 +108,12 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield 'It does not replace unsets on arrays with special notation' => [
                 '<?php unset($bar->foo{0});',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
         yield 'It does not break complex expressions' => [
             '<?php
                 unset(a()[b()["a"]]);
@@ -155,9 +139,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): \Generator
     {
-        $tests = [
+        yield from [
             'It replaces an unset on a property with  = null' => [
                 '<?php $foo->bar = null;',
                 '<?php unset($foo->bar,);',
@@ -237,10 +221,6 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 '<?php unset($foo->bar , );',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield 'It does not replace unsets on arrays with special notation' => [

@@ -41,7 +41,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -83,7 +83,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcess74Cases()
+    public function provideProcess74Cases(): array
     {
         return [
             [
@@ -149,7 +149,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcess80Cases()
+    public function provideProcess80Cases(): array
     {
         return [
             [

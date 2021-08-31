@@ -35,7 +35,7 @@ final class FixerNameValidatorTest extends TestCase
         static::assertSame($isValid, $validator->isValid($name, $isCustom));
     }
 
-    public function provideIsValidCases()
+    public function provideIsValidCases(): array
     {
         return [
             ['', true, false],

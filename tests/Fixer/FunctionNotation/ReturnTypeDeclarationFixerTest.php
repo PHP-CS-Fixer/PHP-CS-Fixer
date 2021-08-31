@@ -21,7 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @requires PHP 7.0
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer
  */
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
@@ -58,7 +57,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeNoneCases()
+    public function provideFixWithSpaceBeforeNoneCases(): array
     {
         return [
             [
@@ -124,7 +123,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeOneCases()
+    public function provideFixWithSpaceBeforeOneCases(): array
     {
         return [
             [
@@ -157,7 +156,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithSpaceBeforeNonePhp74Cases()
+    public function provideFixWithSpaceBeforeNonePhp74Cases(): array
     {
         return [
             [
@@ -176,7 +175,7 @@ string {}',
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php function foo(): mixed{}',

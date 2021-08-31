@@ -47,7 +47,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         $cases = [
             ['$sth->assertSame(true, $foo);'],
@@ -165,7 +165,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases()
+    public function provideFix73Cases(): array
     {
         return [
             [
@@ -185,10 +185,11 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest(self::generateTest('$this->assertSame(null, $a);'));
     }
 
-    private function generateCases(string $expectedTemplate, string $inputTemplate)
+    private function generateCases(string $expectedTemplate, string $inputTemplate): array
     {
-        $cases = [];
         $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];
+        $cases = [];
+
         foreach (['true', 'false', 'null'] as $type) {
             foreach ($functionTypes as $method => $positive) {
                 $cases[] = [

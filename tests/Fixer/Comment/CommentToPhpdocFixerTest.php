@@ -34,7 +34,7 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public function provideTestCases(): array
     {
         return [
             [

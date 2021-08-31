@@ -43,9 +43,9 @@ final class GotoLabelAnalyzerTest extends TestCase
         }
     }
 
-    public function provideIsClassyInvocationCases()
+    public function provideIsClassyInvocationCases(): \Generator
     {
-        $tests = [
+        yield from [
             'no candidates' => [
                 '<?php
                     $a = \InvalidArgumentException::class;
@@ -53,27 +53,27 @@ final class GotoLabelAnalyzerTest extends TestCase
                 ',
                 [],
             ],
-            'handle goto labels 1' => [
+            'after php tag' => [
                 '<?php
                     beginning:
                     echo $guard?1:2;',
                 [3],
             ],
-            'handle goto labels 2' => [
+            'after closing brace' => [
                 '<?php
                     function A(){}
                     beginning:
                     echo $guard?1:2;',
                 [11],
             ],
-            'handle goto labels 3' => [
+            'after statement' => [
                 '<?php
                     echo 1;
                     beginning:
                     echo $guard?1:2;',
                 [8],
             ],
-            'handle goto labels 4' => [
+            'after opening brace' => [
                 '<?php
                     echo 1;
                     {
@@ -83,11 +83,18 @@ final class GotoLabelAnalyzerTest extends TestCase
                 ',
                 [10],
             ],
+            'after use statements' => [
+                '<?php
+use Bar1;
+use const Bar2;
+use function Bar3;
+Bar1:
+Bar2:
+Bar3:
+',
+                [21, 24, 27],
+            ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID >= 80000) {
             yield [

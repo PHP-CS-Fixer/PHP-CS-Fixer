@@ -33,7 +33,7 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixNestedFunctionsCases()
+    public function provideFixNestedFunctionsCases(): array
     {
         return [
             [
@@ -193,7 +193,7 @@ function B($b0, $b1, $b2)
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -446,21 +446,6 @@ var names are case insensitive */ return $a   ;}
                     }',
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             [
                 '<?php
                     function a($foos) {
@@ -488,7 +473,7 @@ var names are case insensitive */ return $a   ;}
         $this->doTest($expected);
     }
 
-    public function provideDoNotFixCases()
+    public function provideDoNotFixCases(): array
     {
         return [
             'invalid reference stays invalid' => [
@@ -813,7 +798,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
         $this->doTest($expected, $input);
     }
 
-    public function provideRepetitiveFixCases()
+    public function provideRepetitiveFixCases(): \Generator
     {
         yield [
             '<?php

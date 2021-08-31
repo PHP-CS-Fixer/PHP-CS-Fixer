@@ -21,7 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @requires PHP 7.0
  * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
  */
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
@@ -34,9 +33,9 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             // Do not fix cases.
             ['<?php $x = isset($a) ? $a[1] : null;'],
             ['<?php $x = isset($a) and $a ? $a : "";'],
@@ -176,10 +175,6 @@ null
 ;',
             ],
         ];
-
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
 
         if (\PHP_VERSION_ID < 80000) {
             yield ['<?php $x = $a ? $a : isset($b) ? $b : isset($c) ? $c : "";'];

@@ -434,7 +434,7 @@ class Bar
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases()
+    public function provideFix71Cases(): array
     {
         return [
             'It can handle constants with visibility' => [
@@ -481,7 +481,7 @@ class Foo
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'It can handle properties with type declaration' => [

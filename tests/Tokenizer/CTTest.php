@@ -70,15 +70,11 @@ final class CTTest extends TestCase
         static::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
     }
 
-    public function provideConstantsCases()
+    public function provideConstantsCases(): \Generator
     {
-        $cases = [];
-
         foreach ($this->getConstants() as $name => $value) {
-            $cases[] = [$name, $value];
+            yield [$name, $value];
         }
-
-        return $cases;
     }
 
     private function getConstants()

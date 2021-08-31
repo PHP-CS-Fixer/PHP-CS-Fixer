@@ -46,7 +46,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedMatches, $actualMatches);
     }
 
-    public function providePatternValidationCases()
+    public function providePatternValidationCases(): array
     {
         return [
             'invalid_blank' => ['', null, PregException::class],
@@ -211,7 +211,7 @@ final class PregTest extends TestCase
         static::assertSame($expectedResult, $actualResult);
     }
 
-    public function provideCommonCases()
+    public function provideCommonCases(): array
     {
         return [
             ['/u/u', 'u'],
@@ -222,7 +222,7 @@ final class PregTest extends TestCase
         ];
     }
 
-    public function provideArrayOfPatternsCases()
+    public function provideArrayOfPatternsCases(): array
     {
         return [
             [['/à/', '/í/'], 'Tàíl'],

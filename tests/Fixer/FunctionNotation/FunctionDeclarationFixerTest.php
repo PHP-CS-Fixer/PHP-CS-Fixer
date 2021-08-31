@@ -49,7 +49,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -354,23 +354,6 @@ foo#
                 ',
                 self::$configurationClosureSpacingNone,
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70(string $expected, ?string $input = null, array $configuration = []): void
-    {
-        $this->fixer->configure($configuration);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
             ['<?php use function Foo\bar; bar ( 1 );'],
             ['<?php use function some\test\{fn_a, fn_b, fn_c};'],
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>'],
@@ -391,7 +374,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases()
+    public function provideFix74Cases(): array
     {
         return [
             [
@@ -463,7 +446,7 @@ foo#
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): \Generator
     {
         yield [
             '<?php function ($i,) {};',

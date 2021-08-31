@@ -33,7 +33,7 @@ final class SingleTraitInsertPerStatementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'simple' => [
@@ -250,9 +250,6 @@ class Test2
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(

@@ -71,7 +71,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideCommentCases()
+    public function provideCommentCases(): array
     {
         return [
             [
@@ -114,9 +114,9 @@ EOF;
         $this->doTest($expected);
     }
 
-    public function provideOutsideCases()
+    public function provideOutsideCases(): \Generator
     {
-        $tests = [
+        yield from [
             [
                 '<?php
 $a = $b[0]    ;',
@@ -179,10 +179,6 @@ $baz [0]
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield [
                 '<?php
@@ -209,7 +205,7 @@ $var = $arr[0]{     0
         }
     }
 
-    public function provideInsideCases()
+    public function provideInsideCases(): array
     {
         return [
             [
@@ -304,7 +300,7 @@ $var = $arr[0][     0
         $this->doTest($expected, $input);
     }
 
-    public function provideConfigurationCases()
+    public function provideConfigurationCases(): \Generator
     {
         $tests = [
             [
@@ -378,7 +374,7 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             'Config "default".' => [

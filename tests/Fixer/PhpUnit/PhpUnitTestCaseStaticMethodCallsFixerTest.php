@@ -71,7 +71,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases()
+    public function provideTestFixCases(): array
     {
         return [
             [
@@ -500,9 +500,6 @@ EOF
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClassFixing(): void
     {
         $this->doTest(

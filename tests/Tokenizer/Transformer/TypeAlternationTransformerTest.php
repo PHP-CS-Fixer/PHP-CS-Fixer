@@ -28,7 +28,6 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
-     * @requires PHP 7.1
      */
     public function testProcess(string $source, array $expectedTokens = []): void
     {
@@ -41,7 +40,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             'no namespace' => [
@@ -98,7 +97,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
-    public function provideProcess80Cases()
+    public function provideProcess80Cases(): \Generator
     {
         yield 'arrow function' => [
             '<?php $a = fn(int|null $item): int|null => $item * 2;',
@@ -280,6 +279,36 @@ class Number
                 52 => CT::T_TYPE_ALTERNATION,
                 59 => CT::T_TYPE_ALTERNATION,
                 66 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'callable type' => [
+            '<?php
+                function f1(array|callable $x) {};
+                function f2(callable|array $x) {};
+                function f3(string|callable $x) {};
+                function f4(callable|string $x) {};
+            ',
+            [
+                7 => CT::T_TYPE_ALTERNATION,
+                22 => CT::T_TYPE_ALTERNATION,
+                37 => CT::T_TYPE_ALTERNATION,
+                52 => CT::T_TYPE_ALTERNATION,
+            ],
+        ];
+
+        yield 'promoted properties' => [
+            '<?php class Foo {
+                public function __construct(
+                    public int|string $a,
+                    protected int|string $b,
+                    private int|string $c
+                ) {}
+            }',
+            [
+                17 => CT::T_TYPE_ALTERNATION,
+                26 => CT::T_TYPE_ALTERNATION,
+                35 => CT::T_TYPE_ALTERNATION,
             ],
         ];
     }

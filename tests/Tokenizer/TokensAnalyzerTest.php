@@ -53,7 +53,7 @@ final class TokensAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetClassyElementsCases()
+    public function provideGetClassyElementsCases(): \Generator
     {
         yield 'trait import' => [
             [
@@ -499,7 +499,7 @@ PHP;
         }
     }
 
-    public function provideIsAnonymousClassCases()
+    public function provideIsAnonymousClassCases(): array
     {
         return [
             [
@@ -541,7 +541,7 @@ PHP;
         }
     }
 
-    public function provideIsLambdaCases()
+    public function provideIsLambdaCases(): array
     {
         return [
             [
@@ -575,25 +575,6 @@ preg_replace_callback(
                 '<?php $foo = function &() {};',
                 [5 => true],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsLambda70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsLambda70(string $source, array $expected): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
-    }
-
-    public function provideIsLambda70Cases()
-    {
-        return [
             [
                 '<?php
                     $a = function (): array {
@@ -624,7 +605,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda74Cases()
+    public function provideIsLambda74Cases(): array
     {
         return [
             [
@@ -651,7 +632,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda71Cases()
+    public function provideIsLambda71Cases(): array
     {
         return [
             [
@@ -705,7 +686,7 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda80Cases()
+    public function provideIsLambda80Cases(): array
     {
         return [
             [
@@ -758,7 +739,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($source, $expected);
     }
 
-    public function provideIsConstantInvocationCases()
+    public function provideIsConstantInvocationCases(): array
     {
         return [
             [
@@ -913,21 +894,6 @@ $a(1,2);',
                 '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
                 [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsConstantInvocation70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsConstantInvocation70(string $source, array $expected): void
-    {
-        $this->doIsConstantInvocationTest($source, $expected);
-    }
-
-    public function provideIsConstantInvocation70Cases()
-    {
-        return [
             [
                 '<?php function x(): FOO {}',
                 [3 => false, 8 => false],
@@ -948,7 +914,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($source, $expected);
     }
 
-    public function provideIsConstantInvocation71Cases()
+    public function provideIsConstantInvocation71Cases(): array
     {
         return [
             [
@@ -991,7 +957,7 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($source, $expected);
     }
 
-    public function provideIsConstantInvocationPhp80Cases()
+    public function provideIsConstantInvocationPhp80Cases(): \Generator
     {
         yield [
             '<?php $a?->b?->c;',
@@ -1014,13 +980,13 @@ $a(1,2);',
         ];
 
         yield [
-            '<?php #[Foo] function foo() {}',
-            [2 => false, 7 => false],
+            '<?php #[Foo, Bar] function foo() {}',
+            [2 => false, 5 => false, 10 => false],
         ];
 
         yield [
-            '<?php #[Foo()] function foo() {}',
-            [2 => false, 9 => false],
+            '<?php #[Foo(), Bar()] function foo() {}',
+            [2 => false, 7 => false, 14 => false],
         ];
     }
 
@@ -1066,7 +1032,7 @@ $a(1,2);',
         }
     }
 
-    public function provideIsUnarySuccessorOperatorCases()
+    public function provideIsUnarySuccessorOperatorCases(): array
     {
         return [
             [
@@ -1124,7 +1090,7 @@ $a(1,2);',
         }
     }
 
-    public function provideIsUnaryPredecessorOperatorCases()
+    public function provideIsUnaryPredecessorOperatorCases(): array
     {
         return [
             [
@@ -1206,7 +1172,7 @@ $a(1,2);',
         }
     }
 
-    public function provideIsBinaryOperatorCases()
+    public function provideIsBinaryOperatorCases(): \Generator
     {
         $cases = [
             [
@@ -1341,29 +1307,9 @@ $b;',
             ];
         }
 
-        return $cases;
-    }
+        yield from $cases;
 
-    /**
-     * @dataProvider provideIsBinaryOperator70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsBinaryOperator70(string $source, array $expected): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-            if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public function provideIsBinaryOperator70Cases()
-    {
-        return [
+        yield from [
             [
                 '<?php $a <=> $b;',
                 [3 => true],
@@ -1386,7 +1332,7 @@ $b;',
         static::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
 
-    public function provideIsArrayCases()
+    public function provideIsArrayCases(): array
     {
         return [
             [
@@ -1469,7 +1415,7 @@ $b;',
         }
     }
 
-    public function provideIsArray71Cases()
+    public function provideIsArray71Cases(): array
     {
         return [
             [
@@ -1502,7 +1448,7 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator71Cases()
+    public function provideIsBinaryOperator71Cases(): array
     {
         return [
             [
@@ -1529,13 +1475,50 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator74Cases()
+    public function provideIsBinaryOperator74Cases(): array
     {
         return [
             [
                 '<?php $a ??= $b;',
                 [3 => true],
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideIsBinaryOperator80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsBinaryOperator80(string $source, array $expected): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public static function provideIsBinaryOperator80Cases(): iterable
+    {
+        yield [
+            '<?php function foo(array|string $x) {}',
+            [6 => false],
+        ];
+        yield [
+            '<?php function foo(string|array $x) {}',
+            [6 => false],
+        ];
+        yield [
+            '<?php function foo(int|callable $x) {}',
+            [6 => false],
+        ];
+        yield [
+            '<?php function foo(callable|int $x) {}',
+            [6 => false],
         ];
     }
 
@@ -1561,7 +1544,7 @@ $b;',
         $tokensAnalyzer->isArrayMultiLine($tokenIndex);
     }
 
-    public function provideArrayExceptionsCases()
+    public function provideArrayExceptionsCases(): array
     {
         return [
             ['<?php $a;', 1],
@@ -1591,7 +1574,7 @@ $b;',
         static::assertSame($isBlockMultiline, $tokensAnalyzer->isBlockMultiline($tokens, $tokenIndex));
     }
 
-    public static function provideIsBlockMultilineCases()
+    public static function provideIsBlockMultilineCases(): \Generator
     {
         yield [
             false,
@@ -1636,7 +1619,7 @@ $b;',
         static::assertSame($expected, $attributes);
     }
 
-    public function provideGetFunctionPropertiesCases()
+    public function provideGetFunctionPropertiesCases(): array
     {
         $defaultAttributes = [
             'visibility' => null,
@@ -1779,7 +1762,7 @@ SRC;
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function provideGetImportUseIndexesCases()
+    public function provideGetImportUseIndexesCases(): array
     {
         return [
             [
@@ -1838,23 +1821,6 @@ class AnnotatedClass
 EOF
                 ,
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideGetImportUseIndexesPHP70Cases
-     * @requires PHP 7.0
-     */
-    public function testGetImportUseIndexesPHP70(array $expected, string $input, bool $perNamespace = false): void
-    {
-        $tokens = Tokens::fromCode($input);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
-    }
-
-    public function provideGetImportUseIndexesPHP70Cases()
-    {
-        return [
             [
                 [1, 22, 41],
                 '<?php
@@ -1886,7 +1852,7 @@ use const some\a\{ConstA, ConstB, ConstC};
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
-    public function provideGetImportUseIndexesPHP72Cases()
+    public function provideGetImportUseIndexesPHP72Cases(): array
     {
         return [
             [
@@ -1997,7 +1963,7 @@ class MyTestWithAnonymousClass extends TestCase
         static::assertSame($expected, $tokensAnalyzer->isSuperGlobal($index));
     }
 
-    public function provideIsSuperGlobalCases()
+    public function provideIsSuperGlobalCases(): array
     {
         $superNames = [
             '$_COOKIE',

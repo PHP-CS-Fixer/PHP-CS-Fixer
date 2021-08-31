@@ -15,6 +15,7 @@ Rules
   ``['statements' => ['break', 'case', 'continue', 'declare', 'default', 'exit', 'goto', 'include', 'include_once', 'require', 'require_once', 'return', 'switch', 'throw', 'try']]``
 - `combine_consecutive_issets <./../rules/language_construct/combine_consecutive_issets.rst>`_
 - `combine_consecutive_unsets <./../rules/language_construct/combine_consecutive_unsets.rst>`_
+- `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_
 - `escape_implicit_backslashes <./../rules/string_notation/escape_implicit_backslashes.rst>`_
 - `explicit_indirect_variable <./../rules/language_construct/explicit_indirect_variable.rst>`_
 - `explicit_string_variable <./../rules/string_notation/explicit_string_variable.rst>`_
@@ -29,7 +30,7 @@ Rules
   ``['strategy' => 'new_line_for_chained_calls']``
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_
   config:
-  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']]``
+  ``['tokens' => ['break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
 - `no_null_property_initialization <./../rules/class_notation/no_null_property_initialization.rst>`_
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_

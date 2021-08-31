@@ -15,10 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\LanguageConstruct;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -36,7 +35,7 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
         return new FixerDefinition(
             'Add curly braces to indirect variables to make them clear to understand. Requires PHP >= 7.0.',
             [
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     <<<'EOT'
 <?php
 echo $$foo;
@@ -45,8 +44,6 @@ echo $foo->$bar['baz'];
 echo $foo->$callback($baz);
 
 EOT
-,
-                    new VersionSpecification(70000)
                 ),
             ]
         );
@@ -57,7 +54,7 @@ EOT
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70000 && $tokens->isTokenKindFound(T_VARIABLE);
+        return $tokens->isTokenKindFound(T_VARIABLE);
     }
 
     /**

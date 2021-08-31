@@ -35,7 +35,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -104,7 +104,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             [

@@ -41,7 +41,7 @@ final class AllowedValueSubsetTest extends TestCase
         static::assertSame($expectedResult, $subset($inputValue));
     }
 
-    public function provideInvokeCases()
+    public function provideInvokeCases(): array
     {
         return [
             [

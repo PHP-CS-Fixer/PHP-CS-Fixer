@@ -20,10 +20,9 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
+use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\FixerDefinition\VersionSpecification;
-use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -60,13 +59,11 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
         return new FixerDefinition(
             'List (`array` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.',
             [
-                new VersionSpecificCodeSample(
-                    "<?php\nlist(\$sample) = \$array;\n",
-                    new VersionSpecification(70100)
+                new CodeSample(
+                    "<?php\nlist(\$sample) = \$array;\n"
                 ),
-                new VersionSpecificCodeSample(
+                new CodeSample(
                     "<?php\n[\$sample] = \$array;\n",
-                    new VersionSpecification(70100),
                     ['syntax' => 'long']
                 ),
             ]
@@ -88,7 +85,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70100 && $tokens->isTokenKindFound($this->candidateTokenKind);
+        return $tokens->isTokenKindFound($this->candidateTokenKind);
     }
 
     /**

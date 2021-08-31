@@ -163,6 +163,8 @@ Control Structure
 
 - `elseif <./control_structure/elseif.rst>`_
     The keyword ``elseif`` should be used instead of ``else if`` so that all control keywords look like single words.
+- `empty_loop_body <./control_structure/empty_loop_body.rst>`_
+    Empty loop-body must be in configured style.
 - `include <./control_structure/include.rst>`_
     Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
@@ -275,7 +277,7 @@ Import
 Language Construct
 ------------------
 
-- `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_
+- `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_ *(deprecated)*
     Converts ``::class`` keywords to FQCN strings.
 - `combine_consecutive_issets <./language_construct/combine_consecutive_issets.rst>`_
     Using ``isset($var) &&`` multiple times should be done in one call.
@@ -283,6 +285,8 @@ Language Construct
     Calling ``unset`` on multiple items should be done in one call.
 - `declare_equal_normalize <./language_construct/declare_equal_normalize.rst>`_
     Equal sign in declare statement should be surrounded by spaces or not following configuration.
+- `declare_parentheses <./language_construct/declare_parentheses.rst>`_
+    There must not be spaces around ``declare`` statement parentheses.
 - `dir_constant <./language_construct/dir_constant.rst>`_ *(risky)*
     Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__`` constant.
 - `error_suppression <./language_construct/error_suppression.rst>`_ *(risky)*
@@ -563,3 +567,5 @@ Whitespace
     Remove trailing whitespace at the end of blank lines.
 - `single_blank_line_at_eof <./whitespace/single_blank_line_at_eof.rst>`_
     A PHP file without end tag must always end with a single empty line feed.
+- `types_spaces <./whitespace/types_spaces.rst>`_
+    A single space or none should be around union type operator.

@@ -167,7 +167,7 @@ final class ProjectCodeTest extends TestCase
         $extraProps = array_diff(
             $definedProps,
             $allowedProps,
-            isset($exceptionPropsPerClass[$className]) ? $exceptionPropsPerClass[$className] : []
+            $exceptionPropsPerClass[$className] ?? []
         );
 
         sort($extraProps);
@@ -559,7 +559,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClassCases()
+    public function provideSrcClassCases(): array
     {
         return array_map(
             static function (string $item) {
@@ -569,7 +569,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcClassesNotAbuseInterfacesCases()
+    public function provideSrcClassesNotAbuseInterfacesCases(): array
     {
         return array_map(
             static function (string $item) {
@@ -615,7 +615,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideSrcConcreteClassCases()
+    public function provideSrcConcreteClassCases(): array
     {
         return array_map(
             static function (string $item) { return [$item]; },
@@ -630,7 +630,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideTestClassCases()
+    public function provideTestClassCases(): array
     {
         return array_map(
             static function (string $item) {
@@ -640,7 +640,7 @@ final class ProjectCodeTest extends TestCase
         );
     }
 
-    public function provideClassesWherePregFunctionsAreForbiddenCases()
+    public function provideClassesWherePregFunctionsAreForbiddenCases(): array
     {
         return array_map(
             static function (string $item) {
@@ -665,7 +665,7 @@ final class ProjectCodeTest extends TestCase
         static::assertTrue($reflection->isSubclassOf(\PhpCsFixer\Fixer\AbstractPhpUnitFixer::class));
     }
 
-    public function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases()
+    public function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): \Generator
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -710,7 +710,7 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
-    private function getUsedDataProviderMethodNames(string $testClassName)
+    private function getUsedDataProviderMethodNames(string $testClassName): array
     {
         $dataProviderMethodNames = [];
         $tokens = Tokens::fromCode(file_get_contents(
@@ -798,6 +798,7 @@ final class ProjectCodeTest extends TestCase
         );
 
         $classes = array_filter($classes, static function (string $class): bool {
+            // @phpstan-ignore-next-line due to false positive reported in https://github.com/phpstan/phpstan/issues/5369
             return is_subclass_of($class, TestCase::class);
         });
 

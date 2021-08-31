@@ -28,7 +28,6 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
-     * @requires PHP 7.0
      */
     public function testProcess(string $source, array $expectedTokens = []): void
     {
@@ -41,7 +40,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): array
     {
         return [
             [
@@ -99,7 +98,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessPhp74Cases()
+    public function provideProcessPhp74Cases(): array
     {
         return [
             [

@@ -22,7 +22,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
- * @requires PHP 7.0
  */
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 {
@@ -47,9 +46,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             'no phpdoc return' => [
                 '<?php function my_foo() {}',
             ],
@@ -220,6 +219,9 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return null|array */ function my_foo() {}',
                 70100,
             ],
+            'skip primitive or array types' => [
+                '<?php /** @return string|string[] */ function my_foo() {}',
+            ],
             'skip mixed nullable types' => [
                 '<?php /** @return null|Foo|Bar */ function my_foo() {}',
             ],
@@ -332,10 +334,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         if (\PHP_VERSION_ID < 80000) {
             yield 'report static as self' => [
                 '<?php
@@ -365,7 +363,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): array
     {
         return [
             'arrow function' => [
@@ -385,7 +383,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp80Cases()
+    public function provideFixPhp80Cases(): \Generator
     {
         yield 'static' => [
             '<?php

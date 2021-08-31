@@ -37,7 +37,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($name, $option->getName());
     }
 
-    public function provideGetNameCases()
+    public function provideGetNameCases(): array
     {
         return [
             ['foo'],
@@ -55,7 +55,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($description, $option->getDescription());
     }
 
-    public function provideGetDescriptionCases()
+    public function provideGetDescriptionCases(): array
     {
         return [
             ['Foo.'],
@@ -71,7 +71,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($hasDefault, $input->hasDefault());
     }
 
-    public function provideHasDefaultCases()
+    public function provideHasDefaultCases(): array
     {
         return [
             [
@@ -95,7 +95,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($default, $option->getDefault());
     }
 
-    public function provideGetDefaultCases()
+    public function provideGetDefaultCases(): array
     {
         return [
             ['baz'],
@@ -122,7 +122,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
-    public function provideGetAllowedTypesCases()
+    public function provideGetAllowedTypesCases(): array
     {
         return [
             [null],
@@ -141,7 +141,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($allowedValues, $option->getAllowedValues());
     }
 
-    public function provideGetAllowedValuesCases()
+    public function provideGetAllowedValuesCases(): array
     {
         return [
             [null],
@@ -179,7 +179,7 @@ final class AliasedFixerOptionTest extends TestCase
         static::assertSame($alias, $options->getAlias());
     }
 
-    public function provideGetAliasCases()
+    public function provideGetAliasCases(): array
     {
         return [
             ['bar'],

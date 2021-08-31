@@ -51,9 +51,9 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
         }
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): \Generator
     {
-        $tests = [
+        yield from [
             [
                 '<?php $a = 1 + ($b + $c) === true ? 1 : 2;',
                 null,
@@ -638,10 +638,6 @@ $a#4
             ],
         ];
 
-        foreach ($tests as $index => $test) {
-            yield $index => $test;
-        }
-
         $template = '<?php $a = ($b + $c) %s 1 === true ? 1 : 2;';
         $operators = ['||', '&&'];
 
@@ -675,6 +671,45 @@ $a#4
                 sprintf('<?php 1 === $x %s 2;', $operator),
             ];
         }
+
+        yield from [
+            ['<?php $a = $b + 1 <=> $d;'],
+            [
+                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === $a;/**/',
+            ],
+            [
+                '<?php $a = $b ?? 1 ?? 2 == $d;',
+                '<?php $a = $b ?? 1 ?? $d == 2;',
+            ],
+            [
+                '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
+                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
+            ],
+            [
+                '<?php
+function a() {
+    for ($i = 1; $i <= 3; $i++) {
+        echo yield 1 === $i ? 1 : 2;
+    }
+}
+',
+                '<?php
+function a() {
+    for ($i = 1; $i <= 3; $i++) {
+        echo yield $i === 1 ? 1 : 2;
+    }
+}
+',
+            ],
+            [
+                '<?php function test() {return yield 1 !== $a [$b];};',
+                '<?php function test() {return yield $a [$b] !== 1;};',
+            ],
+            [
+                '<?php function test() {return yield 1 === $a;};',
+                '<?php function test() {return yield $a === 1;};',
+            ],
+        ];
     }
 
     /**
@@ -697,7 +732,7 @@ $a#4
         $this->doTest($input, $expected);
     }
 
-    public function provideLessGreaterCases()
+    public function provideLessGreaterCases(): array
     {
         return [
             [
@@ -762,75 +797,6 @@ $a#4
     }
 
     /**
-     * @dataProvider providePHP70Cases
-     * @requires PHP 7.0
-     */
-    public function testPHP70Cases(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['equal' => true, 'identical' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * Test with the inverse config.
-     *
-     * @dataProvider providePHP70Cases
-     * @requires PHP 7.0
-     */
-    public function testPHP70CasesInverse(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['equal' => false, 'identical' => false]);
-
-        if (null === $input) {
-            $this->doTest($expected);
-        } else {
-            $this->doTest($input, $expected);
-        }
-    }
-
-    public function providePHP70Cases()
-    {
-        return [
-            ['<?php $a = $b + 1 <=> $d;'],
-            [
-                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === $a;/**/',
-            ],
-            [
-                '<?php $a = $b ?? 1 ?? 2 == $d;',
-                '<?php $a = $b ?? 1 ?? $d == 2;',
-            ],
-            [
-                '<?php $a = 1 === new class(10) extends SomeClass implements SomeInterface {};/**/',
-                '<?php $a = new class(10) extends SomeClass implements SomeInterface {} === 1;/**/',
-            ],
-            [
-                '<?php
-function a() {
-    for ($i = 1; $i <= 3; $i++) {
-        echo yield 1 === $i ? 1 : 2;
-    }
-}
-',
-                '<?php
-function a() {
-    for ($i = 1; $i <= 3; $i++) {
-        echo yield $i === 1 ? 1 : 2;
-    }
-}
-',
-            ],
-            [
-                '<?php function test() {return yield 1 !== $a [$b];};',
-                '<?php function test() {return yield $a [$b] !== 1;};',
-            ],
-            [
-                '<?php function test() {return yield 1 === $a;};',
-                '<?php function test() {return yield $a === 1;};',
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider providePHP71Cases
      * @requires PHP 7.1
      */
@@ -857,7 +823,7 @@ function a() {
         }
     }
 
-    public function providePHP71Cases()
+    public function providePHP71Cases(): array
     {
         return [
             // no fix cases
@@ -910,7 +876,7 @@ function a() {
         $this->doTest($expected);
     }
 
-    public function provideFixWithConfigCases()
+    public function provideFixWithConfigCases(): array
     {
         return [
             [
@@ -950,7 +916,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPhp74Cases()
+    public function provideFixPhp74Cases(): \Generator
     {
         yield [
             '<?php if (1_000 === $b);',
@@ -973,7 +939,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function providePHP74Cases()
+    public function providePHP74Cases(): array
     {
         return [
             [
@@ -1000,7 +966,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFixPrePHP80Cases()
+    public function provideFixPrePHP80Cases(): \Generator
     {
         yield [
             '<?php return \A/*5*/\/*6*/B\/*7*/C::MY_CONST === \A/*1*//*1*//*1*//*1*//*1*/\/*2*/B/*3*/\C/*4*/::$myVariable;',
@@ -1036,7 +1002,7 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield [
             '<?php

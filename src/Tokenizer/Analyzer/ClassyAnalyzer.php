@@ -57,6 +57,10 @@ final class ClassyAnalyzer
             return true;
         }
 
+        if (AttributeAnalyzer::isAttribute($tokens, $index)) {
+            return true;
+        }
+
         // `Foo & $bar` could be:
         //   - function reference parameter: function baz(Foo & $bar) {}
         //   - bit operator: $x = Foo & $bar;

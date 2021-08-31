@@ -18,6 +18,7 @@ use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -41,8 +42,7 @@ abstract class AbstractSetTest extends TestCase
         static::assertSanityString($setName);
         static::assertSanityString($setDescription);
         static::assertSame('.', substr($setDescription, -1), sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
-        static::assertIsBool($isRiskySet);
-        static::assertIsArray($setRules);
+        static::assertRules($setRules, $factory, $setName);
 
         if (1 === preg_match('/(\d)(\d)Migration/', \get_class($set), $matches)) {
             static::assertStringEndsWith(
@@ -66,6 +66,28 @@ abstract class AbstractSetTest extends TestCase
                 static::assertTrue(\is_bool($setRules[$fixerName]) || \is_array($setRules[$fixerName]));
             }
         }
+    }
+
+    private static function assertRules(array $setRules, FixerFactory $factory, string $setName): void
+    {
+        $sawRule = false;
+
+        foreach ($setRules as $rule => $config) {
+            static::assertIsString($rule, $setName);
+
+            if ('@' === substr($rule, 0, 1)) {
+                static::assertFalse($sawRule, sprintf('Ruleset "%s" should define all sets it extends first and than list by rule configuration overrides.', $setName));
+                RuleSets::getSetDefinition($setName);
+            } else {
+                $sawRule = true;
+                static::assertTrue($factory->hasRule($rule));
+            }
+        }
+
+        $setRulesSorted = $setRules;
+        ksort($setRulesSorted);
+
+        static::assertSame($setRulesSorted, $setRules);
     }
 
     private static function assertSanityString(string $string): void

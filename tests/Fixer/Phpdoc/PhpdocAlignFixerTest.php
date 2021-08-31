@@ -785,7 +785,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         return [
             [
@@ -1133,7 +1133,7 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    public function provideVariadicCases()
+    public function provideVariadicCases(): array
     {
         return [
             [
@@ -1255,7 +1255,7 @@ class Foo {}
         $this->doTest($input);
     }
 
-    public function provideInvalidPhpdocCases()
+    public function provideInvalidPhpdocCases(): array
     {
         return [
             [
@@ -1285,5 +1285,37 @@ class Foo {}
  ',
             ],
         ];
+    }
+
+    public function testTypesContainingCallables(): void
+    {
+        $this->doTest(
+            '<?php
+            /**
+             * @param callable(Foo): Bar       $x  Description
+             * @param callable(FooFoo): BarBar $yy Description
+             */
+            ',
+            '<?php
+            /**
+             * @param callable(Foo): Bar $x Description
+             * @param callable(FooFoo): BarBar $yy Description
+             */
+            '
+        );
+    }
+
+    public function testTypesContainingWhitespace(): void
+    {
+        $this->doTest('<?php
+            /**
+             * @var int                   $key
+             * @var iterable<int, string> $value
+             */
+            /**
+             * @param array<int, $this>    $arrayOfIntegers
+             * @param array<string, $this> $arrayOfStrings
+             */
+        ');
     }
 }

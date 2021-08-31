@@ -33,7 +33,7 @@ final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             [
@@ -179,9 +179,6 @@ isset
         ];
     }
 
-    /**
-     * @requires PHP 7.0
-     */
     public function testAnonymousClass(): void
     {
         $this->doTest(
