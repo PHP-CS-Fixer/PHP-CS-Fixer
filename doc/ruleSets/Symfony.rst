@@ -27,6 +27,9 @@ Rules
 - `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_
+- `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_
+  config:
+  ``['style' => 'braces']``
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
 - `function_typehint_space <./../rules/function_notation/function_typehint_space.rst>`_
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_

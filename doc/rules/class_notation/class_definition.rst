@@ -129,7 +129,7 @@ With configuration: ``['multi_line_extends_each_single_line' => true]``.
    +    FooBarBaz
     {}
 
-Example #6
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['space_before_parenthesis' => true]``.
