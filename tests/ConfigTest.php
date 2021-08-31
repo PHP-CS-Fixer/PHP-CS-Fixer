@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
@@ -80,7 +81,7 @@ final class ConfigTest extends TestCase
 
     public function testConfigRulesUsingInvalidJson(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
 
         $config = new Config();
         $configResolver = new ConfigurationResolver(
