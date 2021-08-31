@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-08-28T22:43:13Z
+
+@keradus @SpacePossum @julienfalque @localheinz why "Multiple non-versioned samples with default configuration." is a bad thing? What does it prevent from? There are now 5 tests failing because of it.
+
+The changes here are only cleanup, so the problem already occurs, only hidden under specific PHP version sample.
+
+Edit: I've removed duplicates in 2nd commit, but I'm still not sure what that limitation was for,
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-28T23:03:20Z
+
+[![Coverage Status](https://coveralls.io/builds/42487413/badge)](https://coveralls.io/builds/42487413)
+
+Coverage decreased (-0.02%) to 92.265% when pulling **50bdd965837cb2ccbe181abb8c3683542a04c232 on kubawerlos:remove_version_specific_when_not_needed** into **ca8aea789c8c61c3fea2fa5928bd9b37878a0566 on FriendsOfPHP:3.0**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-30T20:32:09Z
+
+The test is to prevent having a lot of examples than are similar. Having one example for the default config and at least another one with configuration when the rule has options should be enough.
