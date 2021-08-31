@@ -518,68 +518,62 @@ $b = 1;
         ];
     }
 
-    public function testRemoveLinesBetweenUseStatements(): void
-    {
-        $expected = <<<'EOF'
-<?php
-
-use Zxy\Qux;
-use Zoo\Bar as Bar2;
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
-
-$c = 1;
-
-use Foo\Quxx as Quxx1;
-use Foo\Zar\Quxx;
-
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
-        ;
-
-        $input = <<<'EOF'
-<?php
-
-use Zxy\Qux;
-
-use Zoo\Bar as Bar2;
-
-use Foo\Bar as Bar1;
-use Foo\Zar\Baz;
-
-$c = 1;
-
-use Foo\Quxx as Quxx1;
-
-use Foo\Zar\Quxx;
-
-$a = new Bar1();
-$a = new Bar2();
-$a = new Baz();
-$a = new Qux();
-EOF
-        ;
-
-        $this->fixer->configure(['tokens' => ['use']]);
-        $this->doTest($expected, $input);
-    }
-
     /**
-     * @dataProvider provideRemoveLinesBetweenUseStatements70Cases
-     * @requires PHP 7.0
+     * @dataProvider provideRemoveLinesBetweenUseStatementsCases
      */
-    public function testRemoveLinesBetweenUseStatements70(string $expected, ?string $input = null): void
+    public function testRemoveLinesBetweenUseStatements(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['tokens' => ['use']]);
         $this->doTest($expected, $input);
     }
 
-    public function provideRemoveLinesBetweenUseStatements70Cases()
+    public function provideRemoveLinesBetweenUseStatementsCases()
     {
         return [
+            [
+                <<<'EOF'
+<?php
+
+use Zxy\Qux;
+use Zoo\Bar as Bar2;
+use Foo\Bar as Bar1;
+use Foo\Zar\Baz;
+
+$c = 1;
+
+use Foo\Quxx as Quxx1;
+use Foo\Zar\Quxx;
+
+$a = new Bar1();
+$a = new Bar2();
+$a = new Baz();
+$a = new Qux();
+EOF
+                ,
+
+                <<<'EOF'
+<?php
+
+use Zxy\Qux;
+
+use Zoo\Bar as Bar2;
+
+use Foo\Bar as Bar1;
+use Foo\Zar\Baz;
+
+$c = 1;
+
+use Foo\Quxx as Quxx1;
+
+use Foo\Zar\Quxx;
+
+$a = new Bar1();
+$a = new Bar2();
+$a = new Baz();
+$a = new Qux();
+EOF
+                ,
+            ],
             [
                 '<?php
 use some\a\{ClassA, ClassB, ClassC as C};
@@ -779,33 +773,9 @@ class Foo
                 "<?php\n\n\$a = \$b{0};\n\n",
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideOneAndInLine70Cases
-     * @requires PHP 7.0
-     */
-    public function testOneOrInLine70Cases(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['tokens' => [
-            'break',
-            'continue',
-            'return',
-            'throw',
-            'curly_brace_block',
-            'square_brace_block',
-            'parenthesis_brace_block',
-        ]]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideOneAndInLine70Cases()
-    {
-        return [
-            [
-                "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
-            ],
+        yield [
+            "<?php\n\n\$a = new class { public function a () { while(4<1)break; while(3<1)continue; if (true) throw \$e; return 1; }};\n\n",
         ];
     }
 

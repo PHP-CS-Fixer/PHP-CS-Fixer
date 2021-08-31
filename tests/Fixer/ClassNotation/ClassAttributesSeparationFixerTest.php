@@ -189,6 +189,63 @@ public function A(){}
 {
     public const A = 1; /* foo */ /* bar */   }',
         ];
+
+        $to = $from = '<?php ';
+
+        for ($i = 0; $i < 15; ++$i) {
+            $from .= sprintf('class A%d{public function GA%d(){return new class {public function B6B%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
+            $to .= sprintf("class A%d{\npublic function GA%d(){return new class {\npublic function B6B%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
+        }
+
+        yield from [
+            [$to, $from],
+            [
+                '<?php $a = new class {
+                public function H(){}
+
+                public function B7(){}
+
+                private function C(){}
+                };',
+                '<?php $a = new class {
+                public function H(){}
+                public function B7(){}
+                private function C(){}
+                };',
+            ],
+            [
+                '<?php
+                    class A
+                    {
+public function getFilter()
+                        {
+                            return new class () implements FilterInterface {
+private $d = 123;
+
+                                public function pass($a, $b) {
+                                    echo $a;
+                                }
+
+                                public $e = 5;
+};}
+                    }
+                ',
+                '<?php
+                    class A
+                    {public function getFilter()
+                        {
+                            return new class () implements FilterInterface {private $d = 123;
+                                public function pass($a, $b) {
+                                    echo $a;
+                                }
+                                public $e = 5;};}
+
+
+
+                    }
+                ',
+            ],
+        ];
     }
 
     /**
@@ -1694,75 +1751,6 @@ abstract class Example
                     }
                 ',
                 ['elements' => ['property' => 'none', 'trait_import' => 'none']],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        $to = $from = '<?php ';
-
-        for ($i = 0; $i < 15; ++$i) {
-            $from .= sprintf('class A%d{public function GA%d(){return new class {public function B6B%d(){}};}public function otherFunction%d(){}}', $i, $i, $i, $i);
-            $to .= sprintf("class A%d{\npublic function GA%d(){return new class {\npublic function B6B%d(){}\n};}\n\npublic function otherFunction%d(){}\n}", $i, $i, $i, $i);
-        }
-
-        return [
-            [$to, $from],
-            [
-                '<?php $a = new class {
-                public function H(){}
-
-                public function B7(){}
-
-                private function C(){}
-                };',
-                '<?php $a = new class {
-                public function H(){}
-                public function B7(){}
-                private function C(){}
-                };',
-            ],
-            [
-                '<?php
-                    class A
-                    {
-public function getFilter()
-                        {
-                            return new class () implements FilterInterface {
-private $d = 123;
-
-                                public function pass($a, $b) {
-                                    echo $a;
-                                }
-
-                                public $e = 5;
-};}
-                    }
-                ',
-                '<?php
-                    class A
-                    {public function getFilter()
-                        {
-                            return new class () implements FilterInterface {private $d = 123;
-                                public function pass($a, $b) {
-                                    echo $a;
-                                }
-                                public $e = 5;};}
-
-
-
-                    }
-                ',
             ],
         ];
     }

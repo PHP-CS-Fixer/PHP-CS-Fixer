@@ -156,42 +156,15 @@ $$e(2);
                 '<?php $a{"e"} (1); $a{2} (1);',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix54Cases
-     */
-    public function test54(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix54Cases()
-    {
-        return [
-            [
-                '<?php echo (new Process())->getOutput();',
-                '<?php echo (new Process())->getOutput ();',
-            ],
+        yield [
+            '<?php echo (new Process())->getOutput();',
+            '<?php echo (new Process())->getOutput ();',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function test70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
-            [
-                '<?php $a()(1);',
-                '<?php $a () (1);',
-            ],
+        yield [
+            '<?php $a()(1);',
+            '<?php $a () (1);',
         ];
     }
 }

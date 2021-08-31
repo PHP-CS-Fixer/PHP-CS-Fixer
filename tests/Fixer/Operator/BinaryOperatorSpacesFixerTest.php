@@ -75,7 +75,7 @@ public function myFunction() {
     }
 
     /**
-     * @dataProvider provideTestCases
+     * @dataProvider provideConfiguredCases
      */
     public function testConfigured(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -83,7 +83,7 @@ public function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public function provideTestCases()
+    public function provideConfiguredCases()
     {
         return [
             [
@@ -442,6 +442,35 @@ $b#
                 [
                     'operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE],
                 ],
+            ],
+            [
+                '<?php declare(strict_types=1);
+$a = 1;
+echo 1 <=> 1;
+echo 1 <=> 2;
+echo 2 <=> 1;
+echo 2 <=> 1;
+
+$a = $a  ?? $b;
+$a = $ab ?? $b;
+$a = $ac ?? $b;
+$a = $ad ?? $b;
+$a = $ae ?? $b;
+',
+                '<?php declare(strict_types=1);
+$a = 1;
+echo 1<=>1;
+echo 1 <=>2;
+echo 2<=> 1;
+echo 2  <=>   1;
+
+$a = $a ?? $b;
+$a = $ab   ?? $b;
+$a = $ac    ?? $b;
+$a = $ad  ?? $b;
+$a = $ae?? $b;
+',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
         ];
     }
@@ -1909,42 +1938,6 @@ $b;
                      6 => 7,
                 );
             '
-        );
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testPHP70Cases(): void
-    {
-        $this->fixer->configure(['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]]);
-        $this->doTest(
-            '<?php declare(strict_types=1);
-$a = 1;
-echo 1 <=> 1;
-echo 1 <=> 2;
-echo 2 <=> 1;
-echo 2 <=> 1;
-
-$a = $a  ?? $b;
-$a = $ab ?? $b;
-$a = $ac ?? $b;
-$a = $ad ?? $b;
-$a = $ae ?? $b;
-',
-            '<?php declare(strict_types=1);
-$a = 1;
-echo 1<=>1;
-echo 1 <=>2;
-echo 2<=> 1;
-echo 2  <=>   1;
-
-$a = $a ?? $b;
-$a = $ab   ?? $b;
-$a = $ac    ?? $b;
-$a = $ad  ?? $b;
-$a = $ae?? $b;
-'
         );
     }
 

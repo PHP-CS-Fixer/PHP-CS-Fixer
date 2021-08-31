@@ -1307,29 +1307,9 @@ $b;',
             ];
         }
 
-        return $cases;
-    }
+        yield from $cases;
 
-    /**
-     * @dataProvider provideIsBinaryOperator70Cases
-     * @requires PHP 7.0
-     */
-    public function testIsBinaryOperator70(string $source, array $expected): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-            if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public function provideIsBinaryOperator70Cases()
-    {
-        return [
+        yield from [
             [
                 '<?php $a <=> $b;',
                 [3 => true],

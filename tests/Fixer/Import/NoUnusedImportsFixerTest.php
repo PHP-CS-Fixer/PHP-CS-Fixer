@@ -1273,15 +1273,8 @@ Bar2:
 Bar3:
 ',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.0
-     */
-    public function testPHP70(): void
-    {
-        $expected = <<<'EOF'
+            [
+                $expected = <<<'EOF'
 <?php
 use some\a\{ClassD};
 use some\b\{ClassA, ClassB, ClassC as C};
@@ -1290,8 +1283,9 @@ use const some\d\{ConstA, ConstB, ConstC};
 
 new CLassD();
 echo fn_a();
-EOF;
-        $this->doTest($expected);
+EOF
+            ],
+        ];
     }
 
     /**

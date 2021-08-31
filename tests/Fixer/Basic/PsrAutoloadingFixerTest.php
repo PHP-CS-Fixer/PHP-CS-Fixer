@@ -160,6 +160,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      * @dataProvider provideIgnoredCases
+     * @dataProvider provideAnonymousClassCases
      */
     public function testFix(string $expected, ?string $input = null, ?\SplFileInfo $file = null, ?string $dir = null): void
     {
@@ -399,16 +400,7 @@ class Bar {}',
         }, $cases);
     }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires     PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input, $this->getTestFile(__FILE__));
-    }
-
-    public function provideFix70Cases()
+    public function provideAnonymousClassCases(): iterable
     {
         yield 'class with anonymous class' => [
             '<?php

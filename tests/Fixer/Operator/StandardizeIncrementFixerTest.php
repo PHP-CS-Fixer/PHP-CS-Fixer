@@ -575,20 +575,8 @@ $i#3
                 '<?php $a{$b} -= 1;',
             ];
         }
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases()
-    {
-        return [
+        yield from [
             [
                 '<?php $i -= 1 ?? 2;',
             ],
