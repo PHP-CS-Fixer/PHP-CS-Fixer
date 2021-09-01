@@ -184,8 +184,6 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $input
-     *
      * @dataProvider provideFix72Cases
      * @requires PHP 7.2
      */

@@ -28,13 +28,14 @@ final class NamespacedStringTokenGeneratorTest extends TestCase
     /**
      * @dataProvider provideGeneratorCases
      */
-    public function testGenerator(string $input, array $expected): void
+    public function testGenerator(array $expected, string $input): void
     {
         $generator = new NamespacedStringTokenGenerator();
+
         static::assertSame(
             $expected,
             array_map(
-                static function (Token $token) {
+                static function (Token $token): string {
                     return $token->getContent();
                 },
                 $generator->generate($input)
@@ -42,12 +43,12 @@ final class NamespacedStringTokenGeneratorTest extends TestCase
         );
     }
 
-    public function provideGeneratorCases(): array
+    public function provideGeneratorCases(): \Generator
     {
-        return [
-            ['test', ['test']],
-            ['Some\\Namespace', ['Some', '\\', 'Namespace']],
-            ['Some\\Bigger\\Namespace', ['Some', '\\', 'Bigger', '\\', 'Namespace']],
-        ];
+        yield [['test'], 'test'];
+
+        yield [['Some', '\\', 'Namespace'], 'Some\\Namespace'];
+
+        yield [['Some', '\\', 'Bigger', '\\', 'Namespace'], 'Some\\Bigger\\Namespace'];
     }
 }

@@ -140,7 +140,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                         sprintf(
                             'Transformation into "%s" must be allowed in self-documentation of the Transformer, currently allowed custom tokens are: %s',
                             Token::getNameForId($modification),
-                            implode(', ', array_map(function ($ct) { return Token::getNameForId($ct); }, $customTokensOfTransformer))
+                            implode(', ', array_map(static function ($ct) { return Token::getNameForId($ct); }, $customTokensOfTransformer))
                         )
                     );
                 } else {

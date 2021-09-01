@@ -197,11 +197,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             }
         }
 
-        if (null !== $endIndex) {
-            return $endIndex;
-        }
-
-        return $tokens->getPrevMeaningfulToken($parentScopeEndIndex);
+        return $endIndex ?? $tokens->getPrevMeaningfulToken($parentScopeEndIndex);
     }
 
     private function getLineIndentation(Tokens $tokens, int $index): string

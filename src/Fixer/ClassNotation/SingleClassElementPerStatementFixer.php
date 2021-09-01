@@ -34,7 +34,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * Fixer for rules defined in PSR2 ¶4.2.
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
- * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface

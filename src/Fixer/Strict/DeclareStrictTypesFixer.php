@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
- * @author SpacePossum
  */
 final class DeclareStrictTypesFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {

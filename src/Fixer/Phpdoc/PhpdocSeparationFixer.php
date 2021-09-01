@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class PhpdocSeparationFixer extends AbstractFixer
 {
@@ -117,7 +117,7 @@ function fnc($foo, $bar) {}
     /**
      * Make sure the annotations are correctly separated.
      */
-    private function fixAnnotations(DocBlock $doc): string
+    private function fixAnnotations(DocBlock $doc): void
     {
         foreach ($doc->getAnnotations() as $index => $annotation) {
             $next = $doc->getAnnotation($index + 1);
@@ -134,8 +134,6 @@ function fnc($foo, $bar) {}
                 }
             }
         }
-
-        return $doc->getContent();
     }
 
     /**

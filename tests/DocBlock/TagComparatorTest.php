@@ -20,7 +20,7 @@ use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *

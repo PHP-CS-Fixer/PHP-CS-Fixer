@@ -339,23 +339,33 @@ use function Foo\a;
 use function Foo\b;
 ',
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php
 
 /*1*//*2*//*3*//*4*//*5*//*6*/
 /*7*//*8*//*9*//*10*//*11*//*12*/
 /*13*//*14*//*15*//*16*//*17*/use A\{B, C, D};
 /*18*/
 ',
-                '<?php
+            '<?php
 
 /*1*/use/*2*/A/*3*/\/*4*/B/*5*/;/*6*/
 /*7*/use/*8*/A/*9*/\/*10*/C/*11*/;/*12*/
 /*13*/use/*14*/A/*15*/\/*16*/D/*17*/;/*18*/
 ',
-            ];
-        }
+        ];
     }
 }

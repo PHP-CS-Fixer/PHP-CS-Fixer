@@ -453,7 +453,7 @@ class Tokens extends \SplFixedArray
             $elements[$kind] = [];
         }
 
-        $possibleKinds = array_filter($possibleKinds, function ($kind) {
+        $possibleKinds = array_filter($possibleKinds, function ($kind): bool {
             return $this->isTokenKindFound($kind);
         });
 
@@ -620,7 +620,7 @@ class Tokens extends \SplFixedArray
         return $this->getTokenNotOfKind(
             $index,
             $direction,
-            function (int $a) use ($tokens) {
+            function (int $a) use ($tokens): bool {
                 return $this[$a]->equalsAny($tokens);
             }
         );
@@ -638,7 +638,7 @@ class Tokens extends \SplFixedArray
         return $this->getTokenNotOfKind(
             $index,
             $direction,
-            function (int $index) use ($kinds) {
+            function (int $index) use ($kinds): bool {
                 return $this[$index]->isGivenKind($kinds);
             }
         );
@@ -705,7 +705,7 @@ class Tokens extends \SplFixedArray
      *
      * @param array                 $sequence      an array of tokens (kinds) (same format used by getNextTokenOfKind)
      * @param int                   $start         start index, defaulting to the start of the file
-     * @param int                   $end           end index, defaulting to the end of the file
+     * @param null|int              $end           end index, defaulting to the end of the file
      * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                             the ones used in $others. If any is missing, the default case-sensitive
      *                                             comparison is used
@@ -827,7 +827,7 @@ class Tokens extends \SplFixedArray
      * like edge case example of 3.7h vs 4s (https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/3996#issuecomment-455617637),
      * yet at same time changing a logic of fixers in not-always easy way.
      *
-     * To be discuss:
+     * To be discussed:
      * - should we always aim to use this method?
      * - should we deprecate `insertAt` method ?
      *
@@ -941,7 +941,7 @@ class Tokens extends \SplFixedArray
             $this[$indexStart + $itemIndex] = $item;
         }
 
-        // If we want to add less tokens than passed range contains then clear
+        // If we want to add fewer tokens than passed range contains then clear
         // not needed tokens.
         if ($itemsCount < $indexToChange) {
             $this->clearRange($indexStart + $itemsCount, $indexEnd);

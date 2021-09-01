@@ -360,7 +360,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function (array $option) use ($thisFixer) {
+                ->setAllowedValues([static function (array $option) use ($thisFixer): bool {
                     foreach ($option as $method => $value) {
                         if (!isset($thisFixer->staticMethods[$method])) {
                             throw new InvalidOptionsException(

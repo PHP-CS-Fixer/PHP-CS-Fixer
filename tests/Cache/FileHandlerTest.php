@@ -19,6 +19,7 @@ use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -100,7 +101,7 @@ final class FileHandlerTest extends TestCase
     {
         $file = __DIR__.'/non-existent-directory/.php-cs-fixer.cache';
 
-        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
             '#^Directory of cache file "%s" does not exists.#',
             preg_quote($file, '#')
@@ -136,7 +137,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($dir);
 
-        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
             '#^%s$#',
             preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
@@ -154,7 +155,7 @@ final class FileHandlerTest extends TestCase
 
         $handler = new FileHandler($file);
 
-        $this->expectException(\Symfony\Component\Filesystem\Exception\IOException::class);
+        $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(sprintf(
             '#^%s$#',
             preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')

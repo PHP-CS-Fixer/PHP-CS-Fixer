@@ -22,9 +22,6 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class ShortScalarCastFixer extends AbstractFixer
 {
     /**

@@ -19,7 +19,6 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 interface ConfigurableFixerInterface extends FixerInterface
 {

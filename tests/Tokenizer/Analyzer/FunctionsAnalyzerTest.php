@@ -36,7 +36,7 @@ final class FunctionsAnalyzerTest extends TestCase
      */
     public function testIsGlobalFunctionCall(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($code, $indices);
+        self::assertIsGlobalFunctionCall($indices, $code);
     }
 
     public function provideIsGlobalFunctionCallCases(): \Generator
@@ -91,7 +91,7 @@ final class FunctionsAnalyzerTest extends TestCase
             [],
         ];
 
-        yield [
+        yield 'function with ref. return' => [
             '<?php function & foo() {}',
             [],
         ];
@@ -160,7 +160,7 @@ final class FunctionsAnalyzerTest extends TestCase
             [],
         ];
 
-        yield [
+        yield 'function signature ref. return, calls itself' => [
             '<?php
                 function & A(){}
                 A();
@@ -271,7 +271,7 @@ A();
      */
     public function testIsGlobalFunctionCallPhp74(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($code, $indices);
+        self::assertIsGlobalFunctionCall($indices, $code);
     }
 
     public function provideIsGlobalFunctionCallPhp74Cases(): \Generator
@@ -290,7 +290,7 @@ A();
      */
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($code, $indices);
+        self::assertIsGlobalFunctionCall($indices, $code);
     }
 
     public function provideIsGlobalFunctionCallPhp80Cases(): \Generator
@@ -339,16 +339,14 @@ class Foo {}
     }
 
     /**
-     * @param ?array $expected
-     *
      * @dataProvider provideFunctionReturnTypeInfoCases
      */
-    public function testFunctionReturnTypeInfo(string $code, int $methodIndex, $expected): void
+    public function testFunctionReturnTypeInfo(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
-
         $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+
         static::assertSame(serialize($expected), serialize($actual));
     }
 
@@ -577,8 +575,6 @@ class Foo {}
     }
 
     /**
-     * @param ?TypeAnalysis $expected
-     *
      * @dataProvider provideFunctionsWithReturnTypePhp74Cases
      * @requires PHP 7.4
      */
@@ -586,8 +582,8 @@ class Foo {}
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
-
         $actual = $analyzer->getFunctionReturnType($tokens, $methodIndex);
+
         static::assertSame(serialize($expected), serialize($actual));
     }
 
@@ -639,11 +635,13 @@ class Foo {}
                 sprintf($template, '$this->'),
                 $i,
             ];
+
             yield [
                 24 === $i,
                 sprintf($template, 'self::'),
                 $i,
             ];
+
             yield [
                 24 === $i,
                 sprintf($template, 'static::'),
@@ -726,12 +724,12 @@ class Foo {}
     /**
      * @param int[] $expectedIndices
      */
-    private static function assertIsGlobalFunctionCall(string $code, array $expectedIndices): void
+    private static function assertIsGlobalFunctionCall(array $expectedIndices, string $code): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
-
         $actualIndices = [];
+
         foreach ($tokens as $index => $token) {
             if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
                 $actualIndices[] = $index;

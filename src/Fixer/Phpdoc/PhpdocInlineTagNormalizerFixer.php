@@ -26,9 +26,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
@@ -89,11 +86,11 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
             $content = Preg::replaceCallback(
                 sprintf(
                     '#(?:@{+|{+\h*@)\h*(%s)s?([^}]*)(?:}+)#i',
-                    implode('|', array_map(function ($tag) {
+                    implode('|', array_map(static function (string $tag): string {
                         return preg_quote($tag, '/');
                     }, $this->configuration['tags']))
                 ),
-                function (array $matches) {
+                static function (array $matches): string {
                     $doc = trim($matches[2]);
 
                     if ('' === $doc) {

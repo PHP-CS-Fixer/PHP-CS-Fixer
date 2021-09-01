@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
- * @author SpacePossum
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
@@ -111,7 +110,7 @@ final class Sample
     }
 
     /**
-     * Decide whether or not skip the fix for given class.
+     * Decide whether to skip the fix for given class.
      */
     private function skipClass(Tokens $tokens, int $classIndex, int $classOpenIndex, int $classCloseIndex): bool
     {

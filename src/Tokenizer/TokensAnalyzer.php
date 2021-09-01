@@ -24,7 +24,6 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
- * @author SpacePossum
  *
  * @internal
  */
@@ -733,9 +732,9 @@ final class TokensAnalyzer
 
             if (0 === $bracesLevel && $token->isGivenKind(T_VARIABLE)) {
                 $elements[$index] = [
+                    'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'property',
-                    'classIndex' => $classIndex,
                 ];
 
                 continue;
@@ -743,21 +742,21 @@ final class TokensAnalyzer
 
             if ($token->isGivenKind(T_FUNCTION)) {
                 $elements[$index] = [
+                    'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'method',
-                    'classIndex' => $classIndex,
                 ];
             } elseif ($token->isGivenKind(T_CONST)) {
                 $elements[$index] = [
+                    'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'const',
-                    'classIndex' => $classIndex,
                 ];
             } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
                 $elements[$index] = [
+                    'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'trait_import',
-                    'classIndex' => $classIndex,
                 ];
             }
         }

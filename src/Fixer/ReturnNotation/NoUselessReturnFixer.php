@@ -20,9 +20,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class NoUselessReturnFixer extends AbstractFixer
 {
     /**

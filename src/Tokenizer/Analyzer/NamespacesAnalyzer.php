@@ -74,7 +74,7 @@ final class NamespacesAnalyzer
     public function getNamespaceAt(Tokens $tokens, int $index): NamespaceAnalysis
     {
         if (!$tokens->offsetExists($index)) {
-            throw new \InvalidArgumentException("Token index {$index} does not exist.");
+            throw new \InvalidArgumentException(sprintf('Token index %d does not exist.', $index));
         }
 
         foreach ($this->getDeclarations($tokens) as $namespace) {
@@ -83,6 +83,6 @@ final class NamespacesAnalyzer
             }
         }
 
-        throw new \LogicException("Unable to get the namespace at index {$index}.");
+        throw new \LogicException(sprintf('Unable to get the namespace at index %d.', $index));
     }
 }

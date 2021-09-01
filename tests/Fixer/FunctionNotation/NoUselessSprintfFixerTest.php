@@ -95,30 +95,59 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
                 echo sprint();
             ',
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 70000) {
-            yield [
-                '<?php echo sprint[2]("foo");
-            ',
-            ];
-        }
+    /**
+     * @dataProvider provideFix70Cases
+     * @requires PHP 7.0
+     */
+    public function testFix70(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
 
-        if (\PHP_VERSION_ID > 70300) {
-            yield 'trailing comma' => [
-                '<?php echo "bar";',
-                '<?php echo sprintf("bar",);',
-            ];
-        }
+    public function provideFix70Cases(): \Generator
+    {
+        yield [
+            '<?php echo sprint[2]("foo");',
+        ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php echo  "bar";',
-                '<?php echo \ sprintf("bar");',
-            ];
+    /**
+     * @dataProvider provideFix73Cases
+     * @requires PHP 7.3
+     */
+    public function testFix73(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
 
-            yield [
-                '<?php echo A /* 1 */ \ B \ sprintf("bar");',
-            ];
-        }
+    public function provideFix73Cases(): \Generator
+    {
+        yield 'trailing comma' => [
+            '<?php echo "bar";',
+            '<?php echo sprintf("bar",);',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php echo  "bar";',
+            '<?php echo \ sprintf("bar");',
+        ];
+
+        yield [
+            '<?php echo A /* 1 */ \ B \ sprintf("bar");',
+        ];
     }
 }

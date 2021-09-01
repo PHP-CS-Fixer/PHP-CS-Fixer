@@ -33,7 +33,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 /**
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  * @author Darius Matulionis <darius@matulionis.lt>
  * @author Adriano Pilger <adriano.pilger@gmail.com>
  */
@@ -257,7 +256,7 @@ use Bar;
                 ->getOption(),
             (new FixerOptionBuilder('imports_order', 'Defines the order of import types.'))
                 ->setAllowedTypes(['array', 'null'])
-                ->setAllowedValues([static function (?array $value) use ($supportedSortTypes) {
+                ->setAllowedValues([static function (?array $value) use ($supportedSortTypes): bool {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
                         if (\count($missing)) {

@@ -130,11 +130,21 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php (unset)$f;',
-            ];
-        }
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php (unset)$f;',
+        ];
     }
 }

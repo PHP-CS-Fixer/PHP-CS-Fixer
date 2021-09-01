@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -95,7 +96,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfig(array $config, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage));
 
         $this->fixer->configure($config);

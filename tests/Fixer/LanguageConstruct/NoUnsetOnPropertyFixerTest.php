@@ -122,12 +122,22 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
                 unset(c($a)->a);
             ',
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield 'It does not break curly access expressions' => [
-                '<?php unset(a(){"a"});',
-            ];
-        }
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield 'It does not break curly access expressions' => [
+            '<?php unset(a(){"a"});',
+        ];
     }
 
     /**

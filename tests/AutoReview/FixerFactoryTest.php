@@ -316,7 +316,7 @@ final class FixerFactoryTest extends TestCase
 
         $docFixerNames = array_filter(
             array_keys($fixers),
-            static function (string $name) {
+            static function (string $name): bool {
                 return false !== strpos($name, 'phpdoc');
             }
         );
@@ -387,7 +387,7 @@ final class FixerFactoryTest extends TestCase
         return array_filter(
             $this->provideFixersPriorityCases(),
             // ignore speed-up only priorities set up
-            function (array $case) {
+            function (array $case): bool {
                 return !\in_array(
                     $this->generateIntegrationTestName($case[0], $case[1]),
                     [
@@ -483,7 +483,7 @@ final class FixerFactoryTest extends TestCase
              * @param array<FixerInterface> $priorityPair1
              * @param array<FixerInterface> $priorityPair2
              */
-            static function (array $priorityPair1, array $priorityPair2) {
+            static function (array $priorityPair1, array $priorityPair2): int {
                 $fixer1 = $priorityPair1[0];
                 $fixer2 = $priorityPair2[0];
 

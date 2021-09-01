@@ -47,13 +47,13 @@ final class JunitReporter implements ReporterInterface
         $testsuite = $testsuites->appendChild($dom->createElement('testsuite'));
         $testsuite->setAttribute('name', 'PHP CS Fixer');
 
-        if (\count($reportSummary->getChanged())) {
+        if (\count($reportSummary->getChanged()) > 0) {
             $this->createFailedTestCases($dom, $testsuite, $reportSummary);
         } else {
             $this->createSuccessTestCase($dom, $testsuite);
         }
 
-        if ($reportSummary->getTime()) {
+        if ($reportSummary->getTime() > 0) {
             $testsuite->setAttribute(
                 'time',
                 sprintf(

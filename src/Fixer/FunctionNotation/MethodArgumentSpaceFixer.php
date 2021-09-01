@@ -137,6 +137,7 @@ SAMPLE
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $expectedTokens = [T_LIST, T_FUNCTION, CT::T_USE_LAMBDA];
+
         if (\PHP_VERSION_ID >= 70400) {
             $expectedTokens[] = T_FN;
         }
@@ -149,6 +150,7 @@ SAMPLE
             }
 
             $meaningfulTokenBeforeParenthesis = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
             if (
                 $meaningfulTokenBeforeParenthesis->isKeyword()
                 && !$meaningfulTokenBeforeParenthesis->isGivenKind($expectedTokens)
@@ -209,10 +211,9 @@ SAMPLE
      */
     private function fixFunction(Tokens $tokens, int $startFunctionIndex): bool
     {
-        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
-
         $isMultiline = false;
 
+        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
         $firstWhitespaceIndex = $this->findWhitespaceIndexAfterParenthesis($tokens, $startFunctionIndex, $endFunctionIndex);
         $lastWhitespaceIndex = $this->findWhitespaceIndexAfterParenthesis($tokens, $endFunctionIndex, $startFunctionIndex);
 
@@ -228,6 +229,7 @@ SAMPLE
             }
 
             $newLinesRemoved = $this->ensureSingleLine($tokens, $index);
+
             if (!$newLinesRemoved) {
                 $isMultiline = true;
             }
@@ -294,11 +296,13 @@ SAMPLE
     private function ensureSingleLine(Tokens $tokens, int $index): bool
     {
         $previousToken = $tokens[$index - 1];
+
         if ($previousToken->isComment() && 0 !== strpos($previousToken->getContent(), '/*')) {
             return false;
         }
 
         $content = Preg::replace('/\R\h*/', '', $tokens[$index]->getContent());
+
         if ('' !== $content) {
             $tokens[$index] = new Token([T_WHITESPACE, $content]);
         } else {
@@ -317,6 +321,7 @@ SAMPLE
                 $searchIndex,
                 [[T_WHITESPACE]]
             );
+
             $searchIndex = $prevWhitespaceTokenIndex;
         } while (null !== $prevWhitespaceTokenIndex
             && false === strpos($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
@@ -400,6 +405,7 @@ SAMPLE
         }
 
         $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index);
+
         if ($tokens[$nextMeaningfulTokenIndex]->equals(')')) {
             return;
         }

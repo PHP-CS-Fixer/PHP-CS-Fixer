@@ -29,9 +29,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
-/**
- * @author SpacePossum
- */
 final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
@@ -125,6 +122,7 @@ class Sample
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
             if ('method' === $element['type']) {
                 $this->fixMethod($tokens, $index);
@@ -217,9 +215,9 @@ class Sample
         }
 
         $newTypes = [];
+
         foreach ($types as $type) {
-            $lower = strtolower($type);
-            $newTypes[] = $this->configuration['replacements'][$lower] ?? $type;
+            $newTypes[] = $this->configuration['replacements'][strtolower($type)] ?? $type;
         }
 
         if ($types === $newTypes) {

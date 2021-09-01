@@ -112,15 +112,25 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield 'no fixes, offset access syntax with curly braces' => [
-                '<?php
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield 'no fixes, offset access syntax with curly braces' => [
+            '<?php
                     echo ${$a};
                     echo $a{1};
                 ',
-            ];
-        }
+        ];
     }
 
     /**

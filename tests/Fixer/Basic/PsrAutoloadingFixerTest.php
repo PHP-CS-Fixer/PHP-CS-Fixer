@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
@@ -389,7 +389,7 @@ class PsrAutoloadingFixer {}
             }
         }
 
-        return array_map(function ($case) {
+        return array_map(function ($case): array {
             return [
                 '<?php
 namespace Aaa;

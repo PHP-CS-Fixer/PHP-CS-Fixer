@@ -25,7 +25,7 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  */
 final class PhpdocVarWithoutNameFixer extends AbstractFixer
@@ -89,13 +89,15 @@ final class Foo
                 continue;
             }
 
-            // For people writing static public $foo instead of public static $foo
+            // For people writing "static public $foo" instead of "public static $foo"
             if ($tokens[$nextIndex]->isGivenKind(T_STATIC)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }
 
             // We want only doc blocks that are for properties and thus have specified access modifiers next
-            if (!$tokens[$nextIndex]->isGivenKind([T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR])) {
+            $propertyModifierKinds = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR];
+
+            if (!$tokens[$nextIndex]->isGivenKind($propertyModifierKinds)) {
                 continue;
             }
 

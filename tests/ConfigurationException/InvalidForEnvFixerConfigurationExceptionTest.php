@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\ConfigurationException;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
@@ -37,7 +38,7 @@ final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class, $exception);
+        static::assertInstanceOf(InvalidFixerConfigurationException::class, $exception);
         static::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         static::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         static::assertSame($fixerName, $exception->getFixerName());

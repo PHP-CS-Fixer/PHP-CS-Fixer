@@ -866,11 +866,6 @@ PHP;
     }
 
     /**
-     * @param string $expected   valid PHP code
-     * @param string $input      valid PHP code
-     * @param int    $index      token index
-     * @param string $whiteSpace white space
-     *
      * @dataProvider provideEnsureWhitespaceAtIndexCases
      */
     public function testEnsureWhitespaceAtIndex(string $expected, string $input, int $index, int $offset, string $whiteSpace): void

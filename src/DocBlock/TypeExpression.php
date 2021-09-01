@@ -150,13 +150,13 @@ final class TypeExpression
     public function getCommonType(): ?string
     {
         $aliases = [
-            'true' => 'bool',
-            'false' => 'bool',
             'boolean' => 'bool',
-            'integer' => 'int',
-            'double' => 'float',
-            'real' => 'float',
             'callback' => 'callable',
+            'double' => 'float',
+            'false' => 'bool',
+            'integer' => 'int',
+            'real' => 'float',
+            'true' => 'bool',
         ];
 
         $mainType = null;
@@ -211,8 +211,8 @@ final class TypeExpression
         $types = implode('|', $types);
 
         $parents = [
-            'array|iterable' => 'iterable',
             'array|Traversable' => 'iterable',
+            'array|iterable' => 'iterable',
             'iterable|Traversable' => 'iterable',
             'self|static' => 'self',
         ];
@@ -223,13 +223,13 @@ final class TypeExpression
     private function normalize(string $type): string
     {
         $aliases = [
-            'true' => 'bool',
-            'false' => 'bool',
             'boolean' => 'bool',
-            'integer' => 'int',
-            'double' => 'float',
-            'real' => 'float',
             'callback' => 'callable',
+            'double' => 'float',
+            'false' => 'bool',
+            'integer' => 'int',
+            'real' => 'float',
+            'true' => 'bool',
         ];
 
         if (isset($aliases[$type])) {
@@ -237,18 +237,18 @@ final class TypeExpression
         }
 
         if (\in_array($type, [
-            'void',
-            'null',
-            'bool',
-            'int',
-            'float',
-            'string',
             'array',
-            'iterable',
-            'object',
+            'bool',
             'callable',
-            'resource',
+            'float',
+            'int',
+            'iterable',
             'mixed',
+            'null',
+            'object',
+            'resource',
+            'string',
+            'void',
         ], true)) {
             return $type;
         }

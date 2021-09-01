@@ -18,7 +18,7 @@ namespace PhpCsFixer\DocBlock;
  * This class is responsible for comparing tags to see if they should be kept
  * together, or kept apart.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @final
  */

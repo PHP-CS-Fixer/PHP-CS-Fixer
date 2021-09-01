@@ -37,13 +37,13 @@ final class TokensAnalyzerTest extends TestCase
     {
         $tokens = Tokens::fromCode($source);
 
-        foreach ($expectedElements as $index => $element) {
-            $expectedElements[$index] = [
-                'token' => $tokens[$index],
-                'type' => $element['type'],
-                'classIndex' => $element['classIndex'],
-            ];
-        }
+        array_walk(
+            $expectedElements,
+            static function (array &$element, $index) use ($tokens): void {
+                $element['token'] = $tokens[$index];
+                ksort($element);
+            }
+        );
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -58,28 +58,28 @@ final class TokensAnalyzerTest extends TestCase
         yield 'trait import' => [
             [
                 10 => [
-                    'type' => 'trait_import',
                     'classIndex' => 4,
+                    'type' => 'trait_import',
                 ],
                 19 => [
-                    'type' => 'trait_import',
                     'classIndex' => 4,
+                    'type' => 'trait_import',
                 ],
                 24 => [
-                    'type' => 'const',
                     'classIndex' => 4,
+                    'type' => 'const',
                 ],
                 35 => [
-                    'type' => 'method',
                     'classIndex' => 4,
+                    'type' => 'method',
                 ],
                 55 => [
-                    'type' => 'trait_import',
                     'classIndex' => 49,
+                    'type' => 'trait_import',
                 ],
                 64 => [
-                    'type' => 'method',
                     'classIndex' => 49,
+                    'type' => 'method',
                 ],
             ],
             '<?php
@@ -112,44 +112,44 @@ final class TokensAnalyzerTest extends TestCase
         yield [
             [
                 9 => [
-                    'type' => 'property',
                     'classIndex' => 1,
+                    'type' => 'property',
                 ],
                 14 => [
-                    'type' => 'property',
                     'classIndex' => 1,
+                    'type' => 'property',
                 ],
                 19 => [
-                    'type' => 'property',
                     'classIndex' => 1,
+                    'type' => 'property',
                 ],
                 28 => [
-                    'type' => 'property',
                     'classIndex' => 1,
+                    'type' => 'property',
                 ],
                 42 => [
-                    'type' => 'const',
                     'classIndex' => 1,
+                    'type' => 'const',
                 ],
                 53 => [
-                    'type' => 'method',
                     'classIndex' => 1,
+                    'type' => 'method',
                 ],
                 83 => [
-                    'type' => 'method',
                     'classIndex' => 1,
+                    'type' => 'method',
                 ],
                 140 => [
-                    'type' => 'method',
                     'classIndex' => 1,
+                    'type' => 'method',
                 ],
                 164 => [
-                    'type' => 'const',
                     'classIndex' => 158,
+                    'type' => 'const',
                 ],
                 173 => [
-                    'type' => 'trait_import',
                     'classIndex' => 158,
+                    'type' => 'trait_import',
                 ],
             ],
             <<<'PHP'
@@ -215,24 +215,24 @@ PHP;
         static::assertSame(
             [
                 11 => [
+                    'classIndex' => 1,
                     'token' => $tokens[11],
                     'type' => 'property',
-                    'classIndex' => 1,
                 ],
                 19 => [
+                    'classIndex' => 1,
                     'token' => $tokens[19],
                     'type' => 'property',
-                    'classIndex' => 1,
                 ],
                 26 => [
+                    'classIndex' => 1,
                     'token' => $tokens[26],
                     'type' => 'property',
-                    'classIndex' => 1,
                 ],
                 41 => [
+                    'classIndex' => 1,
                     'token' => $tokens[41],
                     'type' => 'property',
-                    'classIndex' => 1,
                 ],
             ],
             $elements
@@ -269,34 +269,34 @@ PHP;
         static::assertSame(
             [
                 9 => [
+                    'classIndex' => 1,
                     'token' => $tokens[9],
                     'type' => 'property', // $A
-                    'classIndex' => 1,
                 ],
                 14 => [
+                    'classIndex' => 1,
                     'token' => $tokens[14],
                     'type' => 'method', // B
-                    'classIndex' => 1,
                 ],
                 33 => [
+                    'classIndex' => 26,
                     'token' => $tokens[33],
                     'type' => 'property', // $level1
-                    'classIndex' => 26,
                 ],
                 38 => [
+                    'classIndex' => 26,
                     'token' => $tokens[38],
                     'type' => 'method', // XYZ
-                    'classIndex' => 26,
                 ],
                 56 => [
+                    'classIndex' => 50,
                     'token' => $tokens[56],
                     'type' => 'property', // $level2
-                    'classIndex' => 50,
                 ],
                 74 => [
+                    'classIndex' => 1,
                     'token' => $tokens[74],
                     'type' => 'method', // C
-                    'classIndex' => 1,
                 ],
             ],
             $elements
@@ -382,64 +382,64 @@ PHP;
         static::assertSame(
             [
                 9 => [
+                    'classIndex' => 1,
                     'token' => $tokens[9],
                     'type' => 'method',
-                    'classIndex' => 1,
                 ],
                 27 => [
+                    'classIndex' => 21,
                     'token' => $tokens[27],
                     'type' => 'method',
-                    'classIndex' => 21,
                 ],
                 44 => [
+                    'classIndex' => 1,
                     'token' => $tokens[44],
                     'type' => 'method',
-                    'classIndex' => 1,
                 ],
                 64 => [
+                    'classIndex' => 56,
                     'token' => $tokens[64],
                     'type' => 'method',
-                    'classIndex' => 56,
                 ],
                 82 => [
+                    'classIndex' => 76,
                     'token' => $tokens[82],
                     'type' => 'method',
-                    'classIndex' => 76,
                 ],
                 100 => [
+                    'classIndex' => 94,
                     'token' => $tokens[100],
                     'type' => 'method',
-                    'classIndex' => 94,
                 ],
                 118 => [
+                    'classIndex' => 112,
                     'token' => $tokens[118],
                     'type' => 'method',
-                    'classIndex' => 112,
                 ],
                 139 => [
+                    'classIndex' => 112,
                     'token' => $tokens[139],
                     'type' => 'method',
-                    'classIndex' => 112,
                 ],
                 170 => [
+                    'classIndex' => 76,
                     'token' => $tokens[170],
                     'type' => 'method',
-                    'classIndex' => 76,
                 ],
                 188 => [
+                    'classIndex' => 182,
                     'token' => $tokens[188],
                     'type' => 'method',
-                    'classIndex' => 182,
                 ],
                 206 => [
+                    'classIndex' => 200,
                     'token' => $tokens[206],
                     'type' => 'method',
-                    'classIndex' => 200,
                 ],
                 242 => [
+                    'classIndex' => 56,
                     'token' => $tokens[242],
                     'type' => 'method',
-                    'classIndex' => 56,
                 ],
             ],
             $elements
@@ -474,13 +474,13 @@ PHP;
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $elements = $tokensAnalyzer->getClassyElements();
-
         $expected = [];
+
         foreach ([11, 23, 31, 44, 51, 54, 61, 69] as $index) {
             $expected[$index] = [
+                'classIndex' => 1,
                 'token' => $tokens[$index],
                 'type' => 'property',
-                'classIndex' => 1,
             ];
         }
 
@@ -490,7 +490,7 @@ PHP;
     /**
      * @dataProvider provideIsAnonymousClassCases
      */
-    public function testIsAnonymousClass(string $source, array $expected): void
+    public function testIsAnonymousClass(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -502,49 +502,44 @@ PHP;
     public function provideIsAnonymousClassCases(): \Generator
     {
         yield [
+            [1 => false],
             '<?php class foo {}',
-            [1 => false],
         ];
 
         yield [
+            [7 => true],
             '<?php $foo = new class() {};',
-            [7 => true],
         ];
 
         yield [
+            [7 => true],
             '<?php $foo = new class() extends Foo implements Bar, Baz {};',
-            [7 => true],
         ];
 
         yield [
-            '<?php class Foo { function bar() { return new class() {}; } }',
             [1 => false, 19 => true],
+            '<?php class Foo { function bar() { return new class() {}; } }',
         ];
 
         yield [
-            '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
             [7 => true, 11 => true],
+            '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
         ];
 
         yield [
-            '<?php interface foo {}',
             [1 => false],
-        ];
-
-        yield [
-            '<?php $foo = new /* */ class() {};',
-            [9 => true],
+            '<?php interface foo {}',
         ];
 
         if (\PHP_VERSION_ID >= 80000) {
             yield [
-                '<?php $object = new #[ExampleAttribute] class(){};',
                 [11 => true],
+                '<?php $object = new #[ExampleAttribute] class(){};',
             ];
 
             yield [
-                '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
                 [27 => true],
+                '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
             ];
         }
     }
@@ -552,7 +547,7 @@ PHP;
     /**
      * @dataProvider provideIsLambdaCases
      */
-    public function testIsLambda(string $source, array $expected): void
+    public function testIsLambda(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -565,22 +560,23 @@ PHP;
     {
         return [
             [
+                [1 => false],
                 '<?php function foo () {};',
-                [1 => false],
             ],
             [
+                [1 => false],
                 '<?php function /** foo */ foo () {};',
-                [1 => false],
             ],
             [
+                [5 => true],
                 '<?php $foo = function () {};',
-                [5 => true],
             ],
             [
+                [5 => true],
                 '<?php $foo = function /** foo */ () {};',
-                [5 => true],
             ],
             [
+                [7 => true],
                 '<?php
 preg_replace_callback(
     "/(^|[a-z])/",
@@ -589,25 +585,24 @@ preg_replace_callback(
     },
     $string
 );',
-                [7 => true],
             ],
             [
-                '<?php $foo = function &() {};',
                 [5 => true],
+                '<?php $foo = function &() {};',
             ],
             [
+                [6 => true],
                 '<?php
                     $a = function (): array {
                         return [];
                     };',
-                [6 => true],
             ],
             [
+                [2 => false],
                 '<?php
                     function foo (): array {
                         return [];
                     };',
-                [2 => false],
             ],
         ];
     }
@@ -616,7 +611,7 @@ preg_replace_callback(
      * @dataProvider provideIsLambda74Cases
      * @requires PHP 7.4
      */
-    public function testIsLambda74(string $source, array $expected): void
+    public function testIsLambda74(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -629,12 +624,12 @@ preg_replace_callback(
     {
         return [
             [
-                '<?php $fn = fn() => [];',
                 [5 => true],
+                '<?php $fn = fn() => [];',
             ],
             [
-                '<?php $fn = fn () => [];',
                 [5 => true],
+                '<?php $fn = fn () => [];',
             ],
         ];
     }
@@ -643,7 +638,7 @@ preg_replace_callback(
      * @dataProvider provideIsLambda71Cases
      * @requires PHP 7.1
      */
-    public function testIsLambda71(string $source, array $expected): void
+    public function testIsLambda71(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -656,39 +651,39 @@ preg_replace_callback(
     {
         return [
             [
+                [6 => true],
                 '<?php
                     $a = function (): void {
                         return [];
                     };',
-                [6 => true],
             ],
             [
+                [2 => false],
                 '<?php
                     function foo (): void {
                         return [];
                     };',
-                [2 => false],
             ],
             [
+                [6 => true],
                 '<?php
                     $a = function (): ?int {
                         return [];
                     };',
-                [6 => true],
             ],
             [
+                [6 => true],
                 '<?php
                     $a = function (): int {
                         return [];
                     };',
-                [6 => true],
             ],
             [
+                [2 => false],
                 '<?php
                     function foo (): ?int {
                         return [];
                     };',
-                [2 => false],
             ],
         ];
     }
@@ -697,7 +692,7 @@ preg_replace_callback(
      * @dataProvider provideIsLambda80Cases
      * @requires PHP 8.0
      */
-    public function testIsLambda80(string $source, array $expected): void
+    public function testIsLambda80(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
@@ -710,20 +705,21 @@ preg_replace_callback(
     {
         return [
             [
+                [6 => true],
                 '<?php
                     $a = function (): ?static {
                         return [];
                     };',
-                [6 => true],
             ],
             [
+                [6 => true],
                 '<?php
                     $a = function (): static {
                         return [];
                     };',
-                [6 => true],
             ],
             [
+                [14 => true],
                 '<?php
 $c = 4; //
 $a = function(
@@ -737,7 +733,6 @@ $a = function(
 
 
 $a(1,2);',
-                [14 => true],
             ],
         ];
     }
@@ -754,175 +749,176 @@ $a(1,2);',
     /**
      * @dataProvider provideIsConstantInvocationCases
      */
-    public function testIsConstantInvocation(string $source, array $expected): void
+    public function testIsConstantInvocation(array $expected, string $source): void
     {
-        $this->doIsConstantInvocationTest($source, $expected);
+        $this->doIsConstantInvocationTest($expected, $source);
     }
 
     public function provideIsConstantInvocationCases(): array
     {
         return [
             [
+                [3 => true],
                 '<?php echo FOO;',
-                [3 => true],
             ],
             [
-                '<?php echo \FOO;',
                 [4 => true],
+                '<?php echo \FOO;',
             ],
             [
-                '<?php echo Foo\Bar\BAR;',
                 [3 => false, 5 => false, 7 => true],
+                '<?php echo Foo\Bar\BAR;',
             ],
             [
+                [3 => true, 7 => true, 11 => true],
                 '<?php echo FOO ? BAR : BAZ;',
-                [3 => true, 7 => true, 11 => true],
             ],
             [
+                [3 => true, 7 => true, 11 => true],
                 '<?php echo FOO & BAR | BAZ;',
-                [3 => true, 7 => true, 11 => true],
             ],
             [
-                '<?php echo FOO & $bar;',
                 [3 => true],
+                '<?php echo FOO & $bar;',
             ],
             [
+                [5 => true],
                 '<?php echo $foo[BAR];',
-                [5 => true],
             ],
             [
-                '<?php echo FOO[BAR];',
                 [3 => true, 5 => true],
+                '<?php echo FOO[BAR];',
             ],
             [
-                '<?php func(FOO, Bar\BAZ);',
                 [1 => false, 3 => true, 6 => false,  8 => true],
+                '<?php func(FOO, Bar\BAZ);',
             ],
             [
-                '<?php if (FOO && BAR) {}',
                 [4 => true, 8 => true],
+                '<?php if (FOO && BAR) {}',
             ],
             [
-                '<?php return FOO * X\Y\BAR;',
                 [3 => true, 7 => false, 9 => false,  11 => true],
+                '<?php return FOO * X\Y\BAR;',
             ],
             [
-                '<?php function x() { yield FOO; yield FOO => BAR; }',
                 [3 => false, 11 => true, 16 => true, 20 => true],
+                '<?php function x() { yield FOO; yield FOO => BAR; }',
             ],
             [
-                '<?php switch ($a) { case FOO: break; }',
                 [11 => true],
+                '<?php switch ($a) { case FOO: break; }',
             ],
             [
+                [3 => false],
                 '<?php namespace FOO;',
-                [3 => false],
             ],
             [
+                [3 => false],
                 '<?php use FOO;',
-                [3 => false],
             ],
             [
-                '<?php use function FOO\BAR\BAZ;',
                 [5 => false, 7 => false, 9 => false],
+                '<?php use function FOO\BAR\BAZ;',
             ],
             [
+                [3 => false, 8 => false],
                 '<?php namespace X; const FOO = 1;',
-                [3 => false, 8 => false],
             ],
             [
+                [3 => false],
                 '<?php class FOO {}',
-                [3 => false],
             ],
             [
+                [3 => false],
                 '<?php interface FOO {}',
-                [3 => false],
             ],
             [
+                [3 => false],
                 '<?php trait FOO {}',
-                [3 => false],
             ],
             [
+                [3 => false, 7 => false],
                 '<?php class x extends FOO {}',
-                [3 => false, 7 => false],
             ],
             [
+                [3 => false, 7 => false],
                 '<?php class x implements FOO {}',
-                [3 => false, 7 => false],
             ],
             [
+                [3 => false, 7 => false, 10 => false, 13 => false],
                 '<?php class x implements FOO, BAR, BAZ {}',
-                [3 => false, 7 => false, 10 => false, 13 => false],
             ],
             [
+                [3 => false, 9 => false],
                 '<?php class x { const FOO = 1; }',
-                [3 => false, 9 => false],
             ],
             [
+                [3 => false, 9 => false],
                 '<?php class x { use FOO; }',
-                [3 => false, 9 => false],
             ],
             [
-                '<?php class x { use FOO, BAR { FOO::BAZ insteadof BAR; } }',
                 [3 => false, 9 => false, 12 => false, 16 => false, 18 => false, 22 => false],
+                '<?php class x { use FOO, BAR { FOO::BAZ insteadof BAR; } }',
             ],
             [
-                '<?php function x (FOO $foo, BAR &$bar, BAZ ...$baz) {}',
                 [3 => false, 6 => false, 11 => false, 17 => false],
+                '<?php function x (FOO $foo, BAR &$bar, BAZ ...$baz) {}',
             ],
             [
-                '<?php FOO();',
                 [1 => false],
+                '<?php FOO();',
             ],
             [
+                [1 => false, 3 => false],
                 '<?php FOO::x();',
-                [1 => false, 3 => false],
             ],
             [
+                [1 => false, 3 => false],
                 '<?php x::FOO();',
-                [1 => false, 3 => false],
             ],
             [
-                '<?php $foo instanceof FOO;',
                 [5 => false],
+                '<?php $foo instanceof FOO;',
             ],
             [
-                '<?php try {} catch (FOO $e) {}',
                 [9 => false],
+                '<?php try {} catch (FOO $e) {}',
             ],
             [
-                '<?php "$foo[BAR]";',
                 [4 => false],
+                '<?php "$foo[BAR]";',
             ],
             [
-                '<?php "{$foo[BAR]}";',
                 [5 => true],
+                '<?php "{$foo[BAR]}";',
             ],
             [
-                '<?php FOO: goto FOO;',
                 [1 => false, 6 => false],
+                '<?php FOO: goto FOO;',
             ],
             [
-                '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
                 [1 => false, 3 => true, 7 => true],
+                '<?php foo(E_USER_DEPRECATED | E_DEPRECATED);',
             ],
             [
-                '<?php interface Foo extends Bar, Baz, Qux {}',
                 [3 => false, 7 => false, 10 => false, 13 => false],
+                '<?php interface Foo extends Bar, Baz, Qux {}',
             ],
             [
-                '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
                 [3 => false, 5 => false, 8 => false, 10 => false, 13 => false, 15 => false],
+                '<?php use Foo\Bar, Foo\Baz, Foo\Qux;',
             ],
             [
-                '<?php function x(): FOO {}',
                 [3 => false, 8 => false],
+                '<?php function x(): FOO {}',
             ],
             [
-                '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
                 [3 => false, 5 => false, 8 => false, 11 => false, 15 => false, 18 => false],
+                '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
             ],
             [
+                [6 => false, 16 => false, 21 => false],
                 '<?php
 
 abstract class Baz
@@ -930,7 +926,6 @@ abstract class Baz
     abstract public function test(): Foo;
 }
 ',
-                [6 => false, 16 => false, 21 => false],
             ],
         ];
     }
@@ -939,41 +934,41 @@ abstract class Baz
      * @dataProvider provideIsConstantInvocation71Cases
      * @requires PHP 7.1
      */
-    public function testIsConstantInvocation71(string $source, array $expected): void
+    public function testIsConstantInvocation71(array $expected, string $source): void
     {
-        $this->doIsConstantInvocationTest($source, $expected);
+        $this->doIsConstantInvocationTest($expected, $source);
     }
 
     public function provideIsConstantInvocation71Cases(): array
     {
         return [
             [
-                '<?php function x(?FOO $foo) {}',
                 [3 => false, 6 => false],
+                '<?php function x(?FOO $foo) {}',
             ],
             [
-                '<?php function x(): ?FOO {}',
                 [3 => false, 9 => false],
+                '<?php function x(): ?FOO {}',
             ],
             [
-                '<?php try {} catch (FOO|BAR|BAZ $e) {}',
                 [9 => false, 11 => false, 13 => false],
+                '<?php try {} catch (FOO|BAR|BAZ $e) {}',
             ],
             [
-                '<?php interface Foo { public function bar(): Baz; }',
                 [3 => false, 11 => false, 16 => false],
+                '<?php interface Foo { public function bar(): Baz; }',
             ],
             [
+                [3 => false, 11 => false, 17 => false],
                 '<?php interface Foo { public function bar(): \Baz; }',
-                [3 => false, 11 => false, 17 => false],
             ],
             [
+                [3 => false, 11 => false, 17 => false],
                 '<?php interface Foo { public function bar(): ?Baz; }',
-                [3 => false, 11 => false, 17 => false],
             ],
             [
-                '<?php interface Foo { public function bar(): ?\Baz; }',
                 [3 => false, 11 => false, 18 => false],
+                '<?php interface Foo { public function bar(): ?\Baz; }',
             ],
         ];
     }
@@ -982,14 +977,15 @@ abstract class Baz
      * @dataProvider provideIsConstantInvocationPhp80Cases
      * @requires PHP 8.0
      */
-    public function testIsConstantInvocationPhp80(string $source, array $expected): void
+    public function testIsConstantInvocationPhp80(array $expected, string $source): void
     {
-        $this->doIsConstantInvocationTest($source, $expected);
+        $this->doIsConstantInvocationTest($expected, $source);
     }
 
     public function provideIsConstantInvocationPhp80Cases(): \Generator
     {
         yield [
+            [6 => false, 16 => false, 21 => false, 23 => false],
             '<?php
 
 abstract class Baz
@@ -997,42 +993,41 @@ abstract class Baz
     abstract public function test(): Foo|Bar;
 }
 ',
-            [6 => false, 16 => false, 21 => false, 23 => false],
         ];
 
         yield [
-            '<?php function test(): Foo|Bar {}',
             [3 => false, 8 => false, 10 => false],
+            '<?php function test(): Foo|Bar {}',
         ];
 
         yield [
-            '<?php $a?->b?->c;',
             [3 => false, 5 => false],
+            '<?php $a?->b?->c;',
         ];
 
         yield [
-            '<?php try {} catch (Exception) {}',
             [9 => false],
+            '<?php try {} catch (Exception) {}',
         ];
 
         yield [
-            '<?php try {} catch (\Exception) {}',
             [10 => false],
+            '<?php try {} catch (\Exception) {}',
         ];
 
         yield [
-            '<?php try {} catch (Foo | Bar) {}',
             [9 => false, 13 => false],
+            '<?php try {} catch (Foo | Bar) {}',
         ];
 
         yield [
-            '<?php #[Foo, Bar] function foo() {}',
             [2 => false, 5 => false, 10 => false],
+            '<?php #[Foo, Bar] function foo() {}',
         ];
 
         yield [
-            '<?php #[Foo(), Bar()] function foo() {}',
             [2 => false, 7 => false, 14 => false],
+            '<?php #[Foo(), Bar()] function foo() {}',
         ];
     }
 
@@ -1051,13 +1046,13 @@ abstract class Baz
     public function testIsConstantInvocationForNullSafeObjectOperator(): void
     {
         $tokens = Tokens::fromCode('<?php $a?->b?->c;');
-
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_STRING)) {
                 continue;
             }
+
             static::assertFalse($tokensAnalyzer->isConstantInvocation($index));
         }
     }
@@ -1065,12 +1060,13 @@ abstract class Baz
     /**
      * @dataProvider provideIsUnarySuccessorOperatorCases
      */
-    public function testIsUnarySuccessorOperator(string $source, array $expected): void
+    public function testIsUnarySuccessorOperator(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isUnary) {
             static::assertSame($isUnary, $tokensAnalyzer->isUnarySuccessorOperator($index));
+
             if ($isUnary) {
                 static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isBinaryOperator($index));
@@ -1082,40 +1078,40 @@ abstract class Baz
     {
         return [
             [
+                [2 => true],
                 '<?php $a++;',
-                [2 => true],
             ],
             [
+                [2 => true],
                 '<?php $a--;',
-                [2 => true],
             ],
             [
-                '<?php $a ++;',
                 [3 => true],
+                '<?php $a ++;',
             ],
             [
-                '<?php $a++ + 1;',
                 [2 => true, 4 => false],
+                '<?php $a++ + 1;',
             ],
             [
-                '<?php ${"a"}++;',
                 [5 => true],
+                '<?php ${"a"}++;',
             ],
             [
-                '<?php $foo->bar++;',
                 [4 => true],
+                '<?php $foo->bar++;',
             ],
             [
-                '<?php $foo->{"bar"}++;',
                 [6 => true],
+                '<?php $foo->{"bar"}++;',
             ],
             'array access' => [
-                '<?php $a["foo"]++;',
                 [5 => true],
+                '<?php $a["foo"]++;',
             ],
             'array curly access' => [
-                '<?php $a{"foo"}++;',
                 [5 => true],
+                '<?php $a{"foo"}++;',
             ],
         ];
     }
@@ -1123,12 +1119,13 @@ abstract class Baz
     /**
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
-    public function testIsUnaryPredecessorOperator(string $source, array $expected): void
+    public function testIsUnaryPredecessorOperator(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isUnary) {
             static::assertSame($isUnary, $tokensAnalyzer->isUnaryPredecessorOperator($index));
+
             if ($isUnary) {
                 static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isBinaryOperator($index));
@@ -1140,64 +1137,64 @@ abstract class Baz
     {
         return [
             [
+                [1 => true],
                 '<?php ++$a;',
-                [1 => true],
             ],
             [
+                [1 => true],
                 '<?php --$a;',
-                [1 => true],
             ],
             [
+                [1 => true],
                 '<?php -- $a;',
-                [1 => true],
             ],
             [
-                '<?php $a + ++$b;',
                 [3 => false, 5 => true],
+                '<?php $a + ++$b;',
             ],
             [
-                '<?php !!$a;',
                 [1 => true, 2 => true],
+                '<?php !!$a;',
             ],
             [
-                '<?php $a = &$b;',
                 [5 => true],
+                '<?php $a = &$b;',
             ],
             [
-                '<?php function &foo() {}',
                 [3 => true],
+                '<?php function &foo() {}',
             ],
             [
-                '<?php @foo();',
                 [1 => true],
+                '<?php @foo();',
             ],
             [
-                '<?php foo(+ $a, -$b);',
                 [3 => true, 8 => true],
+                '<?php foo(+ $a, -$b);',
             ],
             [
-                '<?php function foo(&$a, array &$b, Bar &$c) {}',
                 [5 => true, 11 => true, 17 => true],
+                '<?php function foo(&$a, array &$b, Bar &$c) {}',
             ],
             [
-                '<?php function foo($a, ...$b) {}',
                 [8 => true],
+                '<?php function foo($a, ...$b) {}',
             ],
             [
-                '<?php function foo(&...$b) {}',
                 [5 => true, 6 => true],
+                '<?php function foo(&...$b) {}',
             ],
             [
+                [7 => true],
                 '<?php function foo(array ...$b) {}',
-                [7 => true],
             ],
             [
+                [7 => true],
                 '<?php $foo = function(...$a) {};',
-                [7 => true],
             ],
             [
-                '<?php $foo = function($a, ...$b) {};',
                 [10 => true],
+                '<?php $foo = function($a, ...$b) {};',
             ],
         ];
     }
@@ -1205,12 +1202,13 @@ abstract class Baz
     /**
      * @dataProvider provideIsBinaryOperatorCases
      */
-    public function testIsBinaryOperator(string $source, array $expected): void
+    public function testIsBinaryOperator(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
             static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
             if ($isBinary) {
                 static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
@@ -1222,123 +1220,123 @@ abstract class Baz
     {
         $cases = [
             [
+                [8 => true],
                 '<?php echo $a[1] + 1;',
-                [8 => true],
             ],
             [
+                [8 => true],
                 '<?php echo $a{1} + 1;',
-                [8 => true],
             ],
             [
+                [3 => true],
                 '<?php $a .= $b; ?>',
-                [3 => true],
             ],
             [
+                [3 => true],
                 '<?php $a . \'a\' ?>',
-                [3 => true],
             ],
             [
+                [3 => true],
                 '<?php $a &+ $b;',
-                [3 => true],
             ],
             [
+                [3 => true],
                 '<?php $a && $b;',
-                [3 => true],
             ],
             [
+                [3 => true],
                 '<?php $a & $b;',
-                [3 => true],
             ],
             [
-                '<?php [] + [];',
                 [4 => true],
+                '<?php [] + [];',
             ],
             [
+                [3 => true],
                 '<?php $a + $b;',
-                [3 => true],
             ],
             [
+                [3 => true],
                 '<?php 1 + $b;',
-                [3 => true],
             ],
             [
+                [3 => true],
                 '<?php 0.2 + $b;',
-                [3 => true],
             ],
             [
+                [6 => true],
                 '<?php $a[1] + $b;',
-                [6 => true],
             ],
             [
-                '<?php FOO + $b;',
                 [3 => true],
+                '<?php FOO + $b;',
             ],
             [
+                [5 => true],
                 '<?php foo() + $b;',
-                [5 => true],
             ],
             [
-                '<?php ${"foo"} + $b;',
                 [6 => true],
+                '<?php ${"foo"} + $b;',
             ],
             [
-                '<?php $a+$b;',
                 [2 => true],
+                '<?php $a+$b;',
             ],
             [
-                '<?php $a /* foo */  +  /* bar */  $b;',
                 [5 => true],
+                '<?php $a /* foo */  +  /* bar */  $b;',
             ],
             [
+                [3 => true],
                 '<?php $a =
 $b;',
-                [3 => true],
             ],
 
             [
+                [3 => true],
                 '<?php $a
 = $b;',
-                [3 => true],
             ],
             [
-                '<?php $a = array("b" => "c", );',
                 [3 => true, 9 => true, 12 => false],
+                '<?php $a = array("b" => "c", );',
             ],
             [
+                [3 => true, 5 => false],
                 '<?php $a * -$b;',
-                [3 => true, 5 => false],
             ],
             [
-                '<?php $a = -2 / +5;',
                 [3 => true, 5 => false, 8 => true, 10 => false],
+                '<?php $a = -2 / +5;',
             ],
             [
-                '<?php $a = &$b;',
                 [3 => true, 5 => false],
+                '<?php $a = &$b;',
             ],
             [
-                '<?php $a++ + $b;',
                 [2 => false, 4 => true],
+                '<?php $a++ + $b;',
             ],
             [
-                '<?php $a = FOO & $bar;',
                 [7 => true],
+                '<?php $a = FOO & $bar;',
             ],
             [
+                [3 => true],
                 '<?php __LINE__ - 1;',
-                [3 => true],
             ],
             [
-                '<?php `echo 1` + 1;',
                 [5 => true],
+                '<?php `echo 1` + 1;',
             ],
             [
+                [3 => true],
                 '<?php $a ** $b;',
-                [3 => true],
             ],
             [
-                '<?php $a **= $b;',
                 [3 => true],
+                '<?php $a **= $b;',
             ],
         ];
 
@@ -1346,24 +1344,24 @@ $b;',
             '+', '-', '*', '/', '%', '<', '>', '|', '^', '&=', '&&', '||', '.=', '/=', '==', '>=', '===', '!=',
             '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=', '^',
         ];
-        foreach ($operators as $operator) {
-            $cases[] = [
-                '<?php $a '.$operator.' $b;',
-                [3 => true],
-            ];
-        }
 
         yield from $cases;
 
-        yield from [
-            [
-                '<?php $a <=> $b;',
+        foreach ($operators as $operator) {
+            yield [
                 [3 => true],
-            ],
-            [
-                '<?php $a ?? $b;',
-                [3 => true],
-            ],
+                '<?php $a '.$operator.' $b;',
+            ];
+        }
+
+        yield [
+            [3 => true],
+            '<?php $a <=> $b;',
+        ];
+
+        yield [
+            [3 => true],
+            '<?php $a ?? $b;',
         ];
     }
 
@@ -1374,6 +1372,7 @@ $b;',
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         static::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
         static::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
     }
@@ -1453,6 +1452,7 @@ $b;',
 
         foreach ($tokens as $index => $token) {
             $expect = \in_array($index, $tokenIndexes, true);
+
             static::assertSame(
                 $expect,
                 $tokensAnalyzer->isArray($index),
@@ -1481,12 +1481,13 @@ $b;',
      * @dataProvider provideIsBinaryOperator71Cases
      * @requires PHP 7.1
      */
-    public function testIsBinaryOperator71(string $source, array $expected): void
+    public function testIsBinaryOperator71(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
             static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
             if ($isBinary) {
                 static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
@@ -1494,13 +1495,11 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator71Cases(): array
+    public function provideIsBinaryOperator71Cases(): \Generator
     {
-        return [
-            [
-                '<?php try {} catch (A | B $e) {}',
-                [11 => false],
-            ],
+        yield [
+            [11 => false],
+            '<?php try {} catch (A | B $e) {}',
         ];
     }
 
@@ -1508,12 +1507,13 @@ $b;',
      * @dataProvider provideIsBinaryOperator74Cases
      * @requires PHP 7.4
      */
-    public function testIsBinaryOperator74(string $source, array $expected): void
+    public function testIsBinaryOperator74(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
             static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
             if ($isBinary) {
                 static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
@@ -1521,13 +1521,11 @@ $b;',
         }
     }
 
-    public function provideIsBinaryOperator74Cases(): array
+    public function provideIsBinaryOperator74Cases(): \Generator
     {
-        return [
-            [
-                '<?php $a ??= $b;',
-                [3 => true],
-            ],
+        yield [
+            [3 => true],
+            '<?php $a ??= $b;',
         ];
     }
 
@@ -1535,12 +1533,13 @@ $b;',
      * @dataProvider provideIsBinaryOperator80Cases
      * @requires PHP 8.0
      */
-    public function testIsBinaryOperator80(string $source, array $expected): void
+    public function testIsBinaryOperator80(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
         foreach ($expected as $index => $isBinary) {
             static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
             if ($isBinary) {
                 static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
                 static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
@@ -1551,20 +1550,23 @@ $b;',
     public static function provideIsBinaryOperator80Cases(): iterable
     {
         yield [
+            [6 => false],
             '<?php function foo(array|string $x) {}',
-            [6 => false],
         ];
+
         yield [
+            [6 => false],
             '<?php function foo(string|array $x) {}',
-            [6 => false],
         ];
+
         yield [
+            [6 => false],
             '<?php function foo(int|callable $x) {}',
-            [6 => false],
         ];
+
         yield [
-            '<?php function foo(callable|int $x) {}',
             [6 => false],
+            '<?php function foo(callable|int $x) {}',
         ];
     }
 
@@ -1575,6 +1577,7 @@ $b;',
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         static::assertFalse($tokensAnalyzer->isArray($tokenIndex));
     }
 
@@ -1662,6 +1665,7 @@ $b;',
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $attributes = $tokensAnalyzer->getMethodAttributes($index);
+
         static::assertSame($expected, $attributes);
     }
 
@@ -1785,6 +1789,7 @@ SRC;
 
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_WHILE)) {
                 continue;
@@ -1805,6 +1810,7 @@ SRC;
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
@@ -1895,6 +1901,7 @@ use const some\a\{ConstA, ConstB, ConstC};
     {
         $tokens = Tokens::fromCode($input);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
@@ -1961,39 +1968,39 @@ class MyTestWithAnonymousClass extends TestCase
 
         static::assertSame([
             13 => [
+                'classIndex' => 1,
                 'token' => $tokens[13],
                 'type' => 'method', // setUp
-                'classIndex' => 1,
             ],
             46 => [
+                'classIndex' => 1,
                 'token' => $tokens[46],
                 'type' => 'method', // testSomethingWithMoney
-                'classIndex' => 1,
             ],
             100 => [
+                'classIndex' => 87,
                 'token' => $tokens[100], // const A
                 'type' => 'const',
-                'classIndex' => 87,
             ],
             115 => [
+                'classIndex' => 65,
                 'token' => $tokens[115], // const B
                 'type' => 'const',
-                'classIndex' => 65,
             ],
             124 => [
+                'classIndex' => 65, // $a
                 'token' => $tokens[124],
                 'type' => 'method', // foo
-                'classIndex' => 65, // $a
             ],
             143 => [
+                'classIndex' => 138,
                 'token' => $tokens[143], // const AA
                 'type' => 'const',
-                'classIndex' => 138,
             ],
             161 => [
+                'classIndex' => 158,
                 'token' => $tokens[161], // const AB
                 'type' => 'const',
-                'classIndex' => 158,
             ],
         ], $elements);
     }
@@ -2053,7 +2060,7 @@ class MyTestWithAnonymousClass extends TestCase
         return $cases;
     }
 
-    private function doIsConstantInvocationTest(string $source, array $expected): void
+    private function doIsConstantInvocationTest(array $expected, string $source): void
     {
         $tokens = Tokens::fromCode($source);
 

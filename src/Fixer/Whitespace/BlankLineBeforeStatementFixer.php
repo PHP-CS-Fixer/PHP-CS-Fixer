@@ -31,7 +31,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
- * @author SpacePossum
  */
 final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {

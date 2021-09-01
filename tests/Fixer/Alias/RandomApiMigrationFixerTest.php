@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -28,7 +29,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 {
     public function testConfigureCheckSearchFunction(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Function "is_null" is not handled by the fixer\.$#');
 
         $this->fixer->configure(['replacements' => ['is_null' => 'random_int']]);
@@ -36,7 +37,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
 
     public function testConfigureCheckReplacementType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
 
         $this->fixer->configure(['replacements' => ['rand' => null]]);
@@ -184,18 +185,17 @@ class srand extends SrandClass{
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases(): array
+    public function provideFix73Cases(): \Generator
     {
-        return [
-            [
-                '<?php $a = random_int(1,2,) + random_int(3,4,);',
-                '<?php $a = rand(1,2,) + mt_rand(3,4,);',
-                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-            ],
-            [
-                '<?php mt_srand($a,);',
-                '<?php srand($a,);',
-            ],
+        yield [
+            '<?php $a = random_int(1,2,) + random_int(3,4,);',
+            '<?php $a = rand(1,2,) + mt_rand(3,4,);',
+            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+        ];
+
+        yield [
+            '<?php mt_srand($a,);',
+            '<?php srand($a,);',
         ];
     }
 }

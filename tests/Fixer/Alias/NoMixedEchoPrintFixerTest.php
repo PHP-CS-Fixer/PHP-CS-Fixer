@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -296,7 +297,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
      */
     public function testWrongConfig(array $wrongConfig, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedMessage);
 
         $this->fixer->configure($wrongConfig);

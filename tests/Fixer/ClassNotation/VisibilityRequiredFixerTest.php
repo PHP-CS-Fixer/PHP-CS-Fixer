@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -87,8 +88,6 @@ EOF;
     }
 
     /**
-     * @param string $input
-     *
      * @dataProvider provideFixMethodsCases
      */
     public function testFixMethods(string $expected, string $input = null): void
@@ -514,7 +513,7 @@ EOF;
 
     public function testInvalidConfigurationType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => [null]]);
@@ -522,16 +521,13 @@ EOF;
 
     public function testInvalidConfigurationValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[visibility_required\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['_unknown_']]);
     }
 
     /**
-     * @param string $expected expected PHP source after fixing
-     * @param string $input    PHP source to fix
-     *
      * @requires PHP 7.1
      * @dataProvider provideFixClassConstCases
      */

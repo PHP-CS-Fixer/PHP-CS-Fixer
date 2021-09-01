@@ -21,7 +21,7 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
  *
  * @internal
@@ -46,7 +46,6 @@ final class UtilsTest extends TestCase
 
     /**
      * @param string $expected Camel case string
-     * @param string $input    Input string
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
@@ -169,14 +168,14 @@ final class UtilsTest extends TestCase
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
-                static function ($element) { return 'foo'; },
+                static function (): string { return 'foo'; },
                 'strcmp',
             ],
             [
                 ['b', 'd', 'e', 'a', 'c'],
                 ['b', 'd', 'e', 'a', 'c'],
                 static function ($element) { return $element; },
-                static function ($a, $b) { return 0; },
+                static function (): int { return 0; },
             ],
             [
                 ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],

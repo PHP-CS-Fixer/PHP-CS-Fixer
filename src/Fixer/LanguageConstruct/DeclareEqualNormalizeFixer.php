@@ -27,7 +27,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 final class DeclareEqualNormalizeFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

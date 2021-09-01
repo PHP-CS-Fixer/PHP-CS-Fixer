@@ -76,9 +76,11 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
         foreach ($replacement as $functionIdentity => $newToken) {
             $currIndex = 0;
-            while (null !== $currIndex) {
+
+            do {
                 // try getting function reference and translate boundaries for humans
                 $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
+
                 if (null === $boundaries) {
                     // next function search, as current one not found
                     continue 2;
@@ -96,6 +98,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 $paramContentEnd = $closeParenthesis;
                 $commaCandidate = $tokens->getPrevMeaningfulToken($paramContentEnd);
+
                 if ($tokens[$commaCandidate]->equals(',')) {
                     $tokens->removeTrailingWhitespace($commaCandidate);
                     $tokens->clearAt($commaCandidate);
@@ -104,6 +107,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 // check if something complex passed as an argument and preserve parenthesises then
                 $countParamTokens = 0;
+
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $paramContentEnd; ++$paramContentIndex) {
                     //not a space, means some sensible token
                     if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
@@ -111,14 +115,15 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     }
                 }
 
-                $preserveParenthesises = $countParamTokens > 1;
+                $preserveParentheses = $countParamTokens > 1;
 
                 $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesis);
                 $afterCloseParenthesisToken = $tokens[$afterCloseParenthesisIndex];
-                $wrapInParenthesises = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(T_POW);
+                $wrapInParentheses = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(T_POW);
 
                 // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
+
                 if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
@@ -130,11 +135,12 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     new Token($newToken),
                     new Token([T_WHITESPACE, ' ']),
                 ];
-                if ($wrapInParenthesises) {
+
+                if ($wrapInParentheses) {
                     array_unshift($replacementSequence, new Token('('));
                 }
 
-                if (!$preserveParenthesises) {
+                if (!$preserveParentheses) {
                     // closing parenthesis removed with leading spaces
                     $tokens->removeLeadingWhitespace($closeParenthesis);
                     $tokens->clearAt($closeParenthesis);
@@ -148,7 +154,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                     $tokens->removeTrailingWhitespace($functionName);
                 }
 
-                if ($wrapInParenthesises) {
+                if ($wrapInParentheses) {
                     $tokens->insertAt($closeParenthesis, new Token(')'));
                 }
 
@@ -156,7 +162,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 // nested transformations support
                 $currIndex = $functionName;
-            }
+            } while (null !== $currIndex);
         }
     }
 }

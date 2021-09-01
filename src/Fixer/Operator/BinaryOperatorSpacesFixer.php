@@ -31,7 +31,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 final class BinaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -297,7 +296,7 @@ $array = [
             --$index;
         }
 
-        if (\count($this->alignOperatorTokens)) {
+        if (\count($this->alignOperatorTokens) > 0) {
             $this->fixAlignment($tokens, $this->alignOperatorTokens);
         }
     }
@@ -314,7 +313,7 @@ $array = [
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function (array $option) {
+                ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $operator => $value) {
                         if (!\in_array($operator, self::SUPPORTED_OPERATORS, true)) {
                             throw new InvalidOptionsException(

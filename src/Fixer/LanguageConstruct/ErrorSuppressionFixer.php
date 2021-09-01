@@ -78,7 +78,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(['@', T_STRING]);
+        return $tokens->isTokenKindFound(T_STRING);
     }
 
     /**
@@ -116,7 +116,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
-        $excludedFunctions = array_map(static function (string $function) {
+        $excludedFunctions = array_map(static function (string $function): string {
             return strtolower($function);
         }, $this->configuration[self::OPTION_NOISE_REMAINING_USAGES_EXCLUDE]);
 
@@ -136,6 +136,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             $functionIndex = $index;
             $startIndex = $index;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
             if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                 $startIndex = $prevIndex;
                 $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
@@ -174,8 +175,8 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
         }
 
         $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextTokenOfKind($index, [T_STRING, '(']));
-
         $prevIndex = $tokens->getPrevMeaningfulToken($endBraceIndex);
+
         if ($tokens[$prevIndex]->equals(',')) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }

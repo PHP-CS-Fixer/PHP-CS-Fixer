@@ -21,8 +21,6 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author SpacePossum
- *
  * @internal
  */
 final class ErrorOutput

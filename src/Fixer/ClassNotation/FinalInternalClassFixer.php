@@ -31,7 +31,6 @@ use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 final class FinalInternalClassFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

@@ -109,6 +109,7 @@ class Foo {
         $namespaceUseAnalyzer = new NamespaceUsesAnalyzer();
 
         $shortNames = [];
+
         foreach ($namespaceUseAnalyzer->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {
             $shortNames[strtolower($namespaceUseAnalysis->getShortName())] = '\\'.strtolower($namespaceUseAnalysis->getFullName());
         }
@@ -119,7 +120,6 @@ class Foo {
             }
 
             $content = $initialContent = $token->getContent();
-
             $documentedElementIndex = $this->findDocumentedElement($tokens, $index);
 
             if (null === $documentedElementIndex) {
@@ -176,14 +176,14 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE])) {
+            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE, T_TRAIT])) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
 
-        $index = $tokens->getNextMeaningfulToken($docCommentIndex);
-
         $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STRING, T_NS_SEPARATOR];
+
+        $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
         if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
             return null;
@@ -245,11 +245,13 @@ class Foo {
      */
     private function fixPropertyDocComment(string $content, Tokens $tokens, int $index, array $shortNames): string
     {
+        $propertyModifierKinds = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
+
         $docBlock = new DocBlock($content);
 
         do {
             $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
+        } while ($tokens[$index]->isGivenKind($propertyModifierKinds));
 
         $propertyTypeInfo = $this->getPropertyTypeInfo($tokens, $index);
 
@@ -338,15 +340,16 @@ class Foo {
     private function parseTypeHint(Tokens $tokens, int $index): array
     {
         $allowsNull = false;
+
         if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
             $allowsNull = true;
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
         $type = '';
+
         while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
             $type .= $tokens[$index]->getContent();
-
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
@@ -384,6 +387,7 @@ class Foo {
         }
 
         $actualTypes = null === $info['type'] ? [] : [$info['type']];
+
         if ($info['allows_null']) {
             $actualTypes[] = 'null';
         }

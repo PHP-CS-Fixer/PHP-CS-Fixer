@@ -145,18 +145,6 @@ $$e(2);
             ],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield 'test dynamic by array, curly mix' => [
-                '<?php $a["e"](1); $a{2}(1);',
-                '<?php $a["e"] (1); $a{2} (1);',
-            ];
-
-            yield 'test dynamic by array, curly only' => [
-                '<?php $a{"e"}(1); $a{2}(1);',
-                '<?php $a{"e"} (1); $a{2} (1);',
-            ];
-        }
-
         yield [
             '<?php echo (new Process())->getOutput();',
             '<?php echo (new Process())->getOutput ();',
@@ -165,6 +153,28 @@ $$e(2);
         yield [
             '<?php $a()(1);',
             '<?php $a () (1);',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield 'test dynamic by array, curly mix' => [
+            '<?php $a["e"](1); $a{2}(1);',
+            '<?php $a["e"] (1); $a{2} (1);',
+        ];
+
+        yield 'test dynamic by array, curly only' => [
+            '<?php $a{"e"}(1); $a{2}(1);',
+            '<?php $a{"e"} (1); $a{2} (1);',
         ];
     }
 }

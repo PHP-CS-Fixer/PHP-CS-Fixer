@@ -25,7 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  */
@@ -55,11 +54,11 @@ final class HelpCommand extends BaseHelpCommand
         $allowed = $option->getAllowedValues();
 
         if (null !== $allowed) {
-            $allowed = array_filter($allowed, static function ($value) {
+            $allowed = array_filter($allowed, static function ($value): bool {
                 return !($value instanceof \Closure);
             });
 
-            usort($allowed, static function ($valueA, $valueB) {
+            usort($allowed, static function ($valueA, $valueB): int {
                 if ($valueA instanceof AllowedValueSubset) {
                     return -1;
                 }

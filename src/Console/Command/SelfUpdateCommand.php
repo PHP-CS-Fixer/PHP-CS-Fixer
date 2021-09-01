@@ -29,7 +29,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Stephane PY <py.stephane1@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  */

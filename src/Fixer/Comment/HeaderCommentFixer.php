@@ -31,7 +31,6 @@ use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Antonio J. García Lagar <aj@garcialagar.es>
- * @author SpacePossum
  */
 final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -204,7 +203,7 @@ echo 1;
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('header', 'Proper header content.'))
                 ->setAllowedTypes(['string'])
-                ->setNormalizer(static function (Options $options, $value) use ($fixerName) {
+                ->setNormalizer(static function (Options $options, string $value) use ($fixerName): string {
                     if ('' === trim($value)) {
                         return '';
                     }

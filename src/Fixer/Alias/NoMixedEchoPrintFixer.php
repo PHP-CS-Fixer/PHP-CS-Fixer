@@ -28,7 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
- * @author SpacePossum
  */
 final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

@@ -29,7 +29,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
      * @dataProvider provideProcessCases
      * @requires PHP 8.0
      */
-    public function testProcess(string $source, array $expectedTokens): void
+    public function testProcess(array $expectedTokens, string $source): void
     {
         $this->doTest(
             $source,
@@ -45,6 +45,11 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
     public function provideProcessCases(): \Generator
     {
         yield [
+            [
+                14 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                25 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                36 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+            ],
             '<?php
 class Point {
     public function __construct(
@@ -54,20 +59,15 @@ class Point {
     ) {}
 }
 ',
-            [
-                14 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
-                25 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
-                36 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
-            ],
         ];
 
         yield [
-            '<?php $a = new class {function/* 1 */__CONSTRUCT/* 2 */(/* 3 */public float $x,protected float $y,private float $z) {}};',
             [
                 16 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 22 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                 28 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
             ],
+            '<?php $a = new class {function/* 1 */__CONSTRUCT/* 2 */(/* 3 */public float $x,protected float $y,private float $z) {}};',
         ];
     }
 

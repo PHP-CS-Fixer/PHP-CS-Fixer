@@ -54,7 +54,7 @@ final class DiffConsoleFormatter
             implode(
                 PHP_EOL,
                 array_map(
-                    static function (string $line) use ($isDecorated, $lineTemplate) {
+                    static function (string $line) use ($isDecorated, $lineTemplate): string {
                         if ($isDecorated) {
                             $count = 0;
                             $line = Preg::replaceCallback(
@@ -63,7 +63,7 @@ final class DiffConsoleFormatter
                                     '/^(\-.*)/',
                                     '/^(@.*)/',
                                 ],
-                                static function (array $matches) {
+                                static function (array $matches): string {
                                     if ('+' === $matches[0][0]) {
                                         $colour = 'green';
                                     } elseif ('-' === $matches[0][0]) {

@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * This abstract fixer is responsible for ensuring that a certain number of
  * lines prefix a namespace declaration.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  */

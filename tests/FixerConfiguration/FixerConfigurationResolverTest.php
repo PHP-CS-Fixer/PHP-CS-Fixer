@@ -20,6 +20,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -89,7 +91,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new FixerOption('foo', 'Bar.'),
         ]);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\MissingOptionsException::class);
+        $this->expectException(MissingOptionsException::class);
         $configuration->resolve([]);
     }
 
@@ -116,7 +118,7 @@ final class FixerConfigurationResolverTest extends TestCase
             $configuration->resolve(['foo' => 1])
         );
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $configuration->resolve(['foo' => '1']);
     }
 
@@ -131,7 +133,7 @@ final class FixerConfigurationResolverTest extends TestCase
             $configuration->resolve(['foo' => true])
         );
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $configuration->resolve(['foo' => 1]);
     }
 
@@ -146,7 +148,7 @@ final class FixerConfigurationResolverTest extends TestCase
             $configuration->resolve(['foo' => ['bar']])
         );
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $configuration->resolve(['foo' => ['baz']]);
     }
 
@@ -156,7 +158,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new FixerOption('bar', 'Bar.'),
         ]);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException::class);
+        $this->expectException(UndefinedOptionsException::class);
         $configuration->resolve(['foo' => 'foooo']);
     }
 
@@ -196,7 +198,7 @@ final class FixerConfigurationResolverTest extends TestCase
             new AliasedFixerOption(new FixerOption('bar', 'Bar.'), 'baz'),
         ]);
 
-        $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
+        $this->expectException(InvalidOptionsException::class);
         $this->expectExceptionMessage('Aliased option "bar"/"baz" is passed multiple times');
 
         $configuration->resolve([

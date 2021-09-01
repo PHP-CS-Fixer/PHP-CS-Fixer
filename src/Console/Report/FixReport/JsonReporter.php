@@ -54,17 +54,11 @@ final class JsonReporter implements ReporterInterface
 
         $json = [
             'files' => $jFiles,
-        ];
-
-        if (null !== $reportSummary->getTime()) {
-            $json['time'] = [
+            'time' => [
                 'total' => round($reportSummary->getTime() / 1000, 3),
-            ];
-        }
-
-        if (null !== $reportSummary->getMemory()) {
-            $json['memory'] = round($reportSummary->getMemory() / 1024 / 1024, 3);
-        }
+            ],
+            'memory' => round($reportSummary->getMemory() / 1024 / 1024, 3),
+        ];
 
         $json = json_encode($json);
 

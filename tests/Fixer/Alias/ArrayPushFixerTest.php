@@ -241,23 +241,43 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 if ($b) {} elseif (foo()) array_push($a, $b);
             ',
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php $a5{1*3}[2+1][] = $b4{2+1};',
-                '<?php array_push($a5{1*3}[2+1], $b4{2+1});',
-            ];
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
 
-            yield [
-                '<?php $a5{1*3}[2+1][] = $b7{2+1};',
-                '<?php array_push($a5{1*3}[2+1], $b7{2+1});',
-            ];
-        }
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php $a5{1*3}[2+1][] = $b4{2+1};',
+            '<?php array_push($a5{1*3}[2+1], $b4{2+1});',
+        ];
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield [
-                '<?php array_push($b?->c[2], $b19);',
-            ];
-        }
+        yield [
+            '<?php $a5{1*3}[2+1][] = $b7{2+1};',
+            '<?php array_push($a5{1*3}[2+1], $b7{2+1});',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php array_push($b?->c[2], $b19);',
+        ];
     }
 }

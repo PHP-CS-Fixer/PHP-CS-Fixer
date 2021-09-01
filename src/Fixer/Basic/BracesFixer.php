@@ -313,7 +313,7 @@ class Foo
         $controlTokens = $this->getControlTokens();
         $indentTokens = array_filter(
             array_merge($classyAndFunctionTokens, $controlTokens),
-            static function (int $item) {
+            static function (int $item): bool {
                 return T_SWITCH !== $item;
             }
         );

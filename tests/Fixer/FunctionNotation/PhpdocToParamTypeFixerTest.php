@@ -28,7 +28,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, ?array $config = null): void
+    public function testFix(string $expected, ?string $input = null, ?int $versionSpecificFix = null, array $config = null): void
     {
         if (
             null !== $input
@@ -40,6 +40,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             $expected = $input;
             $input = null;
         }
+
         if (null !== $config) {
             $this->fixer->configure($config);
         }

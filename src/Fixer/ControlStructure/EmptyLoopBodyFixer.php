@@ -26,9 +26,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
-/**
- * @author SpacePossum
- */
 final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const STYLE_BRACES = 'braces';

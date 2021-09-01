@@ -210,23 +210,6 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly":
-                        break;
-                }
-                ',
-                '<?php
-                switch ($a) {
-                    case $b ? "c" : "this" ? "is" : "ugly";
-                        break;
-                }
-                ',
-            ];
-        }
-
         yield from [
             'nested switch in switch case' => [
                 '<?php
@@ -252,6 +235,33 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
                 }
                 ',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly":
+                        break;
+                }
+                ',
+            '<?php
+                switch ($a) {
+                    case $b ? "c" : "this" ? "is" : "ugly";
+                        break;
+                }
+                ',
         ];
     }
 

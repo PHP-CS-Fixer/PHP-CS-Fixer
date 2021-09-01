@@ -22,8 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform named argument tokens.
  *
- * @author SpacePossum
- *
  * @internal
  */
 final class NamedArgumentTransformer extends AbstractTransformer

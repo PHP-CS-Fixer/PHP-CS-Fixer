@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -35,7 +36,7 @@ abstract class AbstractLinterTestCase extends TestCase
         $tokens = Tokens::fromCode("<?php \n#EOF\n");
         $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
 
-        $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+        $this->expectException(LintingException::class);
         $linter->lintSource($tokens->generateCode())->check();
     }
 
@@ -45,7 +46,7 @@ abstract class AbstractLinterTestCase extends TestCase
     public function testLintFile(string $file, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
-            $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+            $this->expectException(LintingException::class);
             $this->expectExceptionMessage($errorMessage);
         } else {
             $this->expectNotToPerformAssertions();
@@ -81,7 +82,7 @@ abstract class AbstractLinterTestCase extends TestCase
     public function testLintSource(string $source, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
-            $this->expectException(\PhpCsFixer\Linter\LintingException::class);
+            $this->expectException(LintingException::class);
             $this->expectExceptionMessage($errorMessage);
         } else {
             $this->expectNotToPerformAssertions();

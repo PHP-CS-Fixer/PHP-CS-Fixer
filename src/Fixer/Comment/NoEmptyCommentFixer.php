@@ -21,9 +21,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class NoEmptyCommentFixer extends AbstractFixer
 {
     private const TYPE_HASH = 1;

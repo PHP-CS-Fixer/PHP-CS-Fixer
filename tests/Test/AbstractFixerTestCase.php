@@ -233,7 +233,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
 
-        $usedMethods = array_unique(array_map(function (array $sequence) {
+        $usedMethods = array_unique(array_map(static function (array $sequence): string {
             $last = end($sequence);
 
             return $last->getContent();
@@ -246,7 +246,7 @@ abstract class AbstractFixerTestCase extends TestCase
             return;
         }
 
-        $usedMethods = array_filter($usedMethods, function (string $method) {
+        $usedMethods = array_filter($usedMethods, static function (string $method): bool {
             return 0 === Preg::match('/^(count|find|generate|get|is|rewind)/', $method);
         });
 
@@ -400,7 +400,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             static::assertSame(
                 \count($tokens),
-                \count(array_unique(array_map(static function (Token $token) {
+                \count(array_unique(array_map(static function (Token $token): string {
                     return spl_object_hash($token);
                 }, $tokens->toArray()))),
                 'Token items inside Tokens collection must be unique.'

@@ -225,13 +225,23 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
                 '<?php pow($b, ...$a);',
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php echo $a{1}** $b{2+5};',
-                '<?php echo pow($a{1}, $b{2+5});',
-            ];
-        }
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php echo $a{1}** $b{2+5};',
+            '<?php echo pow($a{1}, $b{2+5});',
+        ];
     }
 
     /**

@@ -202,11 +202,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 ->setAllowedValues([
                     new AllowedValueSubset($allowedValues),
                 ])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value): array {
                     $normalized = [];
 
-                    foreach ($value as $index => $annotation) {
-                        // since we will be using strtolower on the input annotations when building the sorting
+                    foreach ($value as $annotation) {
+                        // since we will be using "strtolower" on the input annotations when building the sorting
                         // map we must match the type in lower case as well
                         $normalized[$annotation] = strtolower($annotation);
                     }

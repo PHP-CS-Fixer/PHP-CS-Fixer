@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
-/**
- * @author SpacePossum
- */
 final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const TAG_REGEX = '/^(?:
@@ -93,7 +90,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         $regularExpression = sprintf(
             '/({?@(?:%s).*?(?:(?=\s\*\/)|(?=\n)}?))/i',
             implode('|', array_map(
-                function (string $tag) {
+                static function (string $tag): string {
                     return preg_quote($tag, '/');
                 },
                 array_keys($this->configuration['tags'])
@@ -153,7 +150,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('tags', 'The list of tags to fix'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($value) {
+                ->setAllowedValues([static function (array $value): bool {
                     foreach ($value as $type) {
                         if (!\in_array($type, ['annotation', 'inline'], true)) {
                             throw new InvalidOptionsException("Unknown tag type \"{$type}\".");
@@ -185,8 +182,9 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
                     'var' => 'annotation',
                     'version' => 'annotation',
                 ])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value): array {
                     $normalized = [];
+
                     foreach ($value as $tag => $type) {
                         $normalized[strtolower($tag)] = $type;
                     }

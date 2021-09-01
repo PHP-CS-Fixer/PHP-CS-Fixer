@@ -188,18 +188,17 @@ SAMPLE
     private function transform(Tokens $tokens, int $index, ?int $useStart, ?int $useEnd, int $braceOpen, int $return, int $semicolon, int $braceClose): void
     {
         $tokensToInsert = [new Token([T_DOUBLE_ARROW, '=>'])];
+
         if ($tokens->getNextMeaningfulToken($return) === $semicolon) {
             $tokensToInsert[] = new Token([T_WHITESPACE, ' ']);
             $tokensToInsert[] = new Token([T_STRING, 'null']);
         }
 
         $tokens->clearRange($semicolon, $braceClose);
-
         $tokens->clearRange($braceOpen + 1, $return);
-
         $tokens->overrideRange($braceOpen, $braceOpen, $tokensToInsert);
 
-        if ($useStart) {
+        if (null !== $useStart) {
             $tokens->clearRange($useStart, $useEnd);
         }
 

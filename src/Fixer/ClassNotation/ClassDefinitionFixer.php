@@ -29,8 +29,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * Fixer for part of the rules defined in PSR2 ¶4.1 Extends and Implements and PSR12 ¶8. Anonymous Classes.
- *
- * @author SpacePossum
  */
 final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {

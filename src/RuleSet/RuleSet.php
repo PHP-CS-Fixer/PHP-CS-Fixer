@@ -20,7 +20,6 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
  * Set of rules to be used by fixer.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  */
@@ -95,10 +94,8 @@ final class RuleSet implements RuleSetInterface
 
     /**
      * Resolve input set into group of rules.
-     *
-     * @return $this
      */
-    private function resolveSet(array $rules): self
+    private function resolveSet(array $rules): void
     {
         $resolvedRules = [];
 
@@ -120,8 +117,6 @@ final class RuleSet implements RuleSetInterface
         $resolvedRules = array_filter($resolvedRules);
 
         $this->rules = $resolvedRules;
-
-        return $this;
     }
 
     /**

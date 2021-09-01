@@ -28,7 +28,7 @@ final class EmptyLoopBodyFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFixConfig(string $expected, ?string $input = null, ?array $config = null): void
+    public function testFixConfig(string $expected, ?string $input = null, array $config = null): void
     {
         if (null === $config) {
             $this->doTest($expected, $input);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -60,9 +61,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
      * @dataProvider provideClassesCases
      */
     public function testFixingClasses(string $expected, string $input): void
@@ -73,10 +71,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string              $expected PHP source code
-     * @param string              $input    PHP source code
-     * @param array<string, bool> $config
-     *
      * @dataProvider provideClassesWithConfigCases
      */
     public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
@@ -87,9 +81,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
      * @dataProvider provideInterfacesCases
      */
     public function testFixingInterfaces(string $expected, string $input): void
@@ -100,9 +91,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     *
      * @dataProvider provideTraitsCases
      */
     public function testFixingTraits(string $expected, string $input): void
@@ -114,7 +102,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
             '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
         );
@@ -125,7 +113,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigurationValueType(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
             '/^\[class_definition\] Invalid configuration: The option "single_line" with value "z" is expected to be of type "bool", but is of type "string"\.$/'
         );

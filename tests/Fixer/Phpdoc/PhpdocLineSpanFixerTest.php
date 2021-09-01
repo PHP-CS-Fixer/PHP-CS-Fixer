@@ -425,8 +425,6 @@ class Bar
     /**
      * @requires PHP 7.1
      * @dataProvider provideFix71Cases
-     *
-     * @param string $input
      */
     public function testFix71(string $expected, string $input = null, array $config = []): void
     {
@@ -472,8 +470,6 @@ class Foo
     /**
      * @requires PHP 7.4
      * @dataProvider provideFixPhp74Cases
-     *
-     * @param string $input
      */
     public function testFixPhp74(string $expected, string $input = null, array $config = []): void
     {
