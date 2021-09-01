@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-01T09:30:23Z
+
+[![Coverage Status](https://coveralls.io/builds/42572185/badge)](https://coveralls.io/builds/42572185)
+
+Coverage remained the same at 92.347% when pulling **aeff4e3c4ed9cee172721c129ed90937adcd6b7a on SpacePossum:master_NoAliasFunctionsFixer_remove_dir_mapping** into **d40f78eab5afc1b8d851e5d5a33bee5cc6acc801 on FriendsOfPHP:master**.
