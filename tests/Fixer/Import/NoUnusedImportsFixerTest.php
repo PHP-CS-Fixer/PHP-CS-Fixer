@@ -1395,7 +1395,7 @@ use Bar;
 try {} catch (Foo | Bar) {}',
         ];
 
-        yield [
+        yield 'union return' => [
             '<?php
 
 use Foo;
@@ -1406,6 +1406,21 @@ abstract class Baz
     abstract public function test(): Foo|Bar;
 }
 ',
+        ];
+
+        yield 'attribute' => [
+            "<?php
+use Acme\\JsonSchemaValidationBundle\\Annotation\\JsonSchema;
+use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\IsGranted;
+use Symfony\\Component\\Routing\\Annotation\\Route;
+
+#[
+  Route('/basket/{uuid}/item', name: 'addBasketItem', requirements: ['uuid' => '%regex.uuid%'], methods: ['POST']),
+  IsGranted('ROLE_USER'),
+  JsonSchema('Public/Basket/addItem.json'),
+]
+class Foo {}
+",
         ];
     }
 }
