@@ -104,12 +104,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
 
         $tokensNotBeforeFunctionCall = [T_NEW];
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
+
+        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
             $tokensNotBeforeFunctionCall[] = T_ATTRIBUTE;
         }
 
         $namespaceEndIndex = $namespace->getScopeEndIndex();
+
         for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
             if (isset($ignoredIndexes[$index])) {
                 $index = $ignoredIndexes[$index];
@@ -190,6 +191,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             // when multi line white space keep the line feed if the previous token is a comment
             $prevIndex = $tokens->getPrevNonWhitespace($index);
+
             if ($tokens[$prevIndex]->isComment()) {
                 $content = $tokens[$index]->getContent();
                 $tokens[$index] = new Token([T_WHITESPACE, substr($content, strrpos($content, "\n"))]); // preserve indent only
@@ -224,6 +226,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         }
 
         $nextIndex = $tokens->getNonEmptySibling($useDeclaration->getEndIndex(), 1);
+
         if (null === $nextIndex) {
             return;
         }

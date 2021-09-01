@@ -902,6 +902,16 @@ $a(1,2);',
                 '<?php use X\Y\{FOO, BAR as BAR2, BAZ};',
                 [3 => false, 5 => false, 8 => false, 11 => false, 15 => false, 18 => false],
             ],
+            [
+                '<?php
+
+abstract class Baz
+{
+    abstract public function test(): Foo;
+}
+',
+                [6 => false, 16 => false, 21 => false],
+            ],
         ];
     }
 
@@ -959,6 +969,22 @@ $a(1,2);',
 
     public function provideIsConstantInvocationPhp80Cases(): \Generator
     {
+        yield [
+            '<?php
+
+abstract class Baz
+{
+    abstract public function test(): Foo|Bar;
+}
+',
+            [6 => false, 16 => false, 21 => false, 23 => false],
+        ];
+
+        yield [
+            '<?php function test(): Foo|Bar {}',
+            [3 => false, 8 => false, 10 => false],
+        ];
+
         yield [
             '<?php $a?->b?->c;',
             [3 => false, 5 => false],

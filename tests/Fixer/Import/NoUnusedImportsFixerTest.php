@@ -1394,5 +1394,18 @@ use Foo;
 use Bar;
 try {} catch (Foo | Bar) {}',
         ];
+
+        yield [
+            '<?php
+
+use Foo;
+use Bar;
+
+abstract class Baz
+{
+    abstract public function test(): Foo|Bar;
+}
+',
+        ];
     }
 }

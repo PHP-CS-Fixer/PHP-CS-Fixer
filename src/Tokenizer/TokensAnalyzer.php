@@ -313,7 +313,7 @@ final class TokensAnalyzer
 
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_TRAIT, CT::T_TYPE_COLON]) || $this->tokens[$prevIndex]->isObjectOperator()) {
+        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_TRAIT, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) || $this->tokens[$prevIndex]->isObjectOperator()) {
             return false;
         }
 
