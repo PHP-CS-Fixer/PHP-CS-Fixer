@@ -145,7 +145,7 @@ class Foo {
 
             [$propertyType, $isNullable] = $typeInfo;
 
-            if (\in_array($propertyType, ['void', 'callable'], true)) {
+            if (\in_array($propertyType, ['callable', 'never', 'void'], true)) {
                 continue;
             }
 

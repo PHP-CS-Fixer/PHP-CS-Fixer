@@ -144,6 +144,7 @@ final class TypeExpressionTest extends TestCase
         yield ['int|null', 'int'];
         yield ['null|int', 'int'];
         yield ['void', 'void'];
+        yield ['never', 'never'];
         yield ['array|Traversable', 'iterable', null, [$useTraversable]];
         yield ['array|Traversable', 'iterable', $globalNamespace, [$useTraversable]];
         yield ['array|Traversable', 'iterable', $appNamespace, [$useTraversable]];

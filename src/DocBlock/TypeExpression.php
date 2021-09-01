@@ -244,6 +244,7 @@ final class TypeExpression
             'int',
             'iterable',
             'mixed',
+            'never',
             'null',
             'object',
             'resource',
