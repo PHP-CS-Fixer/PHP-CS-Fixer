@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Tests\TestCase;
@@ -31,7 +32,7 @@ final class FixCommandTest extends TestCase
     public function testEmptyRulesValue(): void
     {
         $this->expectException(
-            \PhpCsFixer\ConfigurationException\InvalidConfigurationException::class
+            InvalidConfigurationException::class
         );
         $this->expectExceptionMessageMatches(
             '#^Empty rules value is not allowed\.$#'
@@ -44,7 +45,7 @@ final class FixCommandTest extends TestCase
 
     public function testEmptyFormatValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class);
+        $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage('Expected "yes" or "no" for option "using-cache", got "not today".');
 
         $cmdTester = $this->doTestExecute(

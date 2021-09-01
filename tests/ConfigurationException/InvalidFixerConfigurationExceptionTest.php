@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\ConfigurationException;
 
+use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
@@ -31,7 +32,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
     {
         $exception = new InvalidFixerConfigurationException('foo', 'I cannot do that, Dave.');
 
-        static::assertInstanceOf(\PhpCsFixer\ConfigurationException\InvalidConfigurationException::class, $exception);
+        static::assertInstanceOf(InvalidConfigurationException::class, $exception);
     }
 
     public function testDefaults(): void
