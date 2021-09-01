@@ -1273,6 +1273,33 @@ Bar2:
 Bar3:
 ',
             ],
+            'use_in_union_type' => [
+                       <<<'EOF'
+<?php
+
+use Foo;
+use Bar;
+
+abstract class Baz
+{
+    abstract public function test(): Foo|Bar;
+}
+EOF
+                       ,
+                       <<<'EOF'
+<?php
+
+use Foo;
+use Bar;
+use Qux;
+
+abstract class Baz
+{
+    abstract public function test(): Foo|Bar;
+}
+EOF
+                       ,
+            ],
             [
                 $expected = <<<'EOF'
 <?php
