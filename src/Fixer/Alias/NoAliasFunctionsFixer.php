@@ -36,7 +36,6 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
 {
     private const SETS = [
         '@internal' => [
-            'dir' => 'getdir',
             'diskfreespace' => 'disk_free_space',
 
             'checkdnsrr' => 'dns_check_record',
