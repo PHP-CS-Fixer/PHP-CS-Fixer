@@ -133,7 +133,7 @@ final class TokensAnalyzer
 
         $tokens = $this->tokens;
 
-        // Skip only when its an array, for short arrays we need the brace for correct
+        // Skip only when it's an array, for short arrays we need the brace for correct
         // level counting
         if ($tokens[$index]->isGivenKind(T_ARRAY)) {
             $index = $tokens->getNextMeaningfulToken($index);
@@ -266,7 +266,14 @@ final class TokensAnalyzer
             return false;
         }
 
-        return $this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NEW);
+        $index = $this->tokens->getPrevMeaningfulToken($index);
+
+        while ($this->tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $index = $this->tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+            $index = $this->tokens->getPrevMeaningfulToken($index);
+        }
+
+        return $this->tokens[$index]->isGivenKind(T_NEW);
     }
 
     /**
@@ -389,7 +396,7 @@ final class TokensAnalyzer
     }
 
     /**
-     * Checks if there is an unary successor operator under given index.
+     * Checks if there is a unary successor operator under given index.
      */
     public function isUnarySuccessorOperator(int $index): bool
     {
@@ -415,7 +422,7 @@ final class TokensAnalyzer
     }
 
     /**
-     * Checks if there is an unary predecessor operator under given index.
+     * Checks if there is a unary predecessor operator under given index.
      */
     public function isUnaryPredecessorOperator(int $index): bool
     {
