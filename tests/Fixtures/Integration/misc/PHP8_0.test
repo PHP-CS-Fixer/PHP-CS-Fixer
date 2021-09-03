@@ -46,8 +46,7 @@ class PostsController
     }
 }
 
-$object = new #[ExampleAttribute] class()
-{
+$object = new #[ExampleAttribute] class() {
     #[ExampleAttribute]
     public function foo(#[ExampleAttribute] $bar): void
     {

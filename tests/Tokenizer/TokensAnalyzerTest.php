@@ -499,34 +499,54 @@ PHP;
         }
     }
 
-    public function provideIsAnonymousClassCases(): array
+    public function provideIsAnonymousClassCases(): \Generator
     {
-        return [
-            [
-                '<?php class foo {}',
-                [1 => false],
-            ],
-            [
-                '<?php $foo = new class() {};',
-                [7 => true],
-            ],
-            [
-                '<?php $foo = new class() extends Foo implements Bar, Baz {};',
-                [7 => true],
-            ],
-            [
-                '<?php class Foo { function bar() { return new class() {}; } }',
-                [1 => false, 19 => true],
-            ],
-            [
-                '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
-                [7 => true, 11 => true],
-            ],
-            [
-                '<?php interface foo {}',
-                [1 => false],
-            ],
+        yield [
+            '<?php class foo {}',
+            [1 => false],
         ];
+
+        yield [
+            '<?php $foo = new class() {};',
+            [7 => true],
+        ];
+
+        yield [
+            '<?php $foo = new class() extends Foo implements Bar, Baz {};',
+            [7 => true],
+        ];
+
+        yield [
+            '<?php class Foo { function bar() { return new class() {}; } }',
+            [1 => false, 19 => true],
+        ];
+
+        yield [
+            '<?php $a = new class(new class($d->a) implements B{}) extends C{};',
+            [7 => true, 11 => true],
+        ];
+
+        yield [
+            '<?php interface foo {}',
+            [1 => false],
+        ];
+
+        yield [
+            '<?php $foo = new /* */ class() {};',
+            [9 => true],
+        ];
+
+        if (\PHP_VERSION_ID >= 80000) {
+            yield [
+                '<?php $object = new #[ExampleAttribute] class(){};',
+                [11 => true],
+            ];
+
+            yield [
+                '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
+                [27 => true],
+            ];
+        }
     }
 
     /**
@@ -1393,7 +1413,7 @@ $b;',
                 '<?php
                     array(
                         "a" => array(5, 6, 7),
-8 => new \Exception(\'Ellow\')
+8 => new \Exception(\'Hello\')
                     );
                 ',
                 2, true,
@@ -1403,7 +1423,7 @@ $b;',
                 '<?php
                     array(
                         "a" => [9, 10, 11],
-12 => new \Exception(\'Ellow\')
+12 => new \Exception(\'Hello\')
                     );
                 ',
                 2, true,
