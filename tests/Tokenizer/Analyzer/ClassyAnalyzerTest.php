@@ -82,7 +82,7 @@ final class ClassyAnalyzerTest extends TestCase
                 '<?php class Foo { use A, B\C, \D, E { A::bar insteadof \E; } }',
                 [3 => false, 9 => true, 12 => false, 14 => true, 18 => true, 21 => true, 25 => true, 32 => true],
             ],
-            [
+            'with reference' => [
                 '<?php function foo(Foo $foo, Bar &$bar, \Baz ...$baz, Foo\Bar $fooBar) {}',
                 [3 => false, 5 => true, 10 => true, 17 => true, 23 => false, 25 => true],
             ],

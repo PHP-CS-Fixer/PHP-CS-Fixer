@@ -574,5 +574,48 @@ class Foo
                 'property' => 'single',
             ],
         ];
+
+        yield [
+            '<?php
+class Foo
+{
+    /**
+     * 0
+     */
+    const B0 = "0";
+
+    /**
+     * 1
+     */
+    final public const B1 = "1";
+
+    /**
+     * 2
+     */
+    public final const B2 = "2";
+
+    /**
+     * 3
+     */
+    final const B3 = "3";
+}
+',
+            '<?php
+class Foo
+{
+    /** 0 */
+    const B0 = "0";
+
+    /** 1 */
+    final public const B1 = "1";
+
+    /** 2 */
+    public final const B2 = "2";
+
+    /** 3 */
+    final const B3 = "3";
+}
+',
+        ];
     }
 }

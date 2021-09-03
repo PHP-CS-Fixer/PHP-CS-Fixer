@@ -64,8 +64,8 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
                 "<?php final class MyClass { \n // public protected private \n }",
             ],
             'final' => [
-                "<?php final class MyClass { {$attributesAndMethodsFixed} }",
-                "<?php final class MyClass { {$attributesAndMethodsOriginal} }",
+                "<?php final class MyClass { {$attributesAndMethodsFixed} } class B {use C;}",
+                "<?php final class MyClass { {$attributesAndMethodsOriginal} } class B {use C;}",
             ],
             'final-implements' => [
                 "<?php final class MyClass implements MyInterface { {$attributesAndMethodsFixed} }",
@@ -115,6 +115,9 @@ final class Foo
 }
 ",
             ],
+            [
+                '<?php $a = new class{protected function A(){ echo 123; }};',
+            ],
         ];
     }
 
@@ -133,10 +136,12 @@ final class Foo
             '<?php final class Foo { private int $foo; }',
             '<?php final class Foo { protected int $foo; }',
         ];
+
         yield [
             '<?php final class Foo { private ?string $foo; }',
             '<?php final class Foo { protected ?string $foo; }',
         ];
+
         yield [
             '<?php final class Foo { private array $foo; }',
             '<?php final class Foo { protected array $foo; }',
@@ -185,6 +190,14 @@ final class Foo2 {
             ',
             '<?php
                 final class Foo { protected readonly int $d; }
+            ',
+        ];
+
+        yield [
+            // '<?php final class Foo { final private const Y = "i"; }', 'Fatal error: Private constant Foo::Y cannot be final as it is not visible to other classes on line 1.
+            '<?php
+                final class Foo1 { final protected const Y = "abc"; }
+                final class Foo2 { protected final const Y = "def"; }
             ',
         ];
     }

@@ -34,7 +34,7 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";
         $nowdocTemplate = "<?php\n\$a=\n<<<'EOT'\n%s\n\nEOT;\n";

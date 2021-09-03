@@ -271,11 +271,31 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
     {
         $classmap = require __DIR__.'/../../../vendor/composer/autoload_classmap.php';
 
-        foreach (array_keys($classmap) as $class) {
-            if (!str_starts_with($class, 'PHPUnit_')) {
-                continue;
+        foreach ($classmap as $class => $file) {
+            if (str_starts_with($class, 'PHPUnit_')) {
+                yield $file => [$class];
             }
-            yield [$class];
         }
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                final class MyTest extends TestCase
+                {
+                    final public const PHPUNIT_FOO_A = "foo";
+                    final public const PHPUNIT_FOO_B = Bar::PHPUNIT_FOO;
+                }',
+        ];
     }
 }

@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer
  */
@@ -34,7 +35,6 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      * @param null|Token[] $input
      *
      * @dataProvider provideProcessCases
-     * @requires PHP 8.0
      */
     public function testProcess(array $expected, array $input = null): void
     {
@@ -60,12 +60,8 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         }
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): \Generator
     {
-        if (\PHP_VERSION_ID < 80000) {
-            return;
-        }
-
         yield 'string' => [
             [
                 new Token([T_OPEN_TAG, "<?php\n"]),
@@ -164,101 +160,104 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         self::assertTokens(Tokens::fromArray($expected), Tokens::fromCode($source));
     }
 
-    public function providePriorityCases(): array
+    public function providePriorityCases(): \Generator
     {
-        return [
+        yield [
             [
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token(';'),
-                    new Token([T_STRING, 'Bar']),
-                    new Token(';'),
-                ],
-                '<?php Foo;Bar;',
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_STRING, 'Foo']),
+                new Token(';'),
+                new Token([T_STRING, 'Bar']),
+                new Token(';'),
             ],
+            '<?php Foo;Bar;',
+        ];
+
+        yield [
             [
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar1']),
-                    new Token(';'),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar2']),
-                    new Token(';'),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar3']),
-                    new Token(';'),
-                ],
-                '<?php Foo\Bar1;\Foo\Bar2;Foo\Bar3;',
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar1']),
+                new Token(';'),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar2']),
+                new Token(';'),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar3']),
+                new Token(';'),
             ],
+            '<?php Foo\Bar1;\Foo\Bar2;Foo\Bar3;',
+        ];
+
+        yield [
             [
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar1']),
-                    new Token(';'),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar2']),
-                    new Token(';'),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar3']),
-                    new Token(';'),
-                ],
-                '<?php Foo\Bar1;Foo\Bar2;Foo\Bar3;',
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar1']),
+                new Token(';'),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar2']),
+                new Token(';'),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar3']),
+                new Token(';'),
             ],
+            '<?php Foo\Bar1;Foo\Bar2;Foo\Bar3;',
+        ];
+
+        yield [
             [
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar1']),
-                    new Token(';'),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar2']),
-                    new Token(';'),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar3']),
-                    new Token(';'),
-                ],
-                '<?php \Foo\Bar1;\Foo\Bar2;\Foo\Bar3;',
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar1']),
+                new Token(';'),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar2']),
+                new Token(';'),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Foo']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar3']),
+                new Token(';'),
             ],
+            '<?php \Foo\Bar1;\Foo\Bar2;\Foo\Bar3;',
+        ];
+
+        yield [
             [
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Transformer']),
-                    new Token(';'),
-                ],
-                '<?php namespace\\Transformer;',
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Transformer']),
+                new Token(';'),
             ],
+            '<?php namespace\\Transformer;',
+        ];
+
+        yield [
             [
-                [
-                    new Token([T_OPEN_TAG, '<?php ']),
-                    new Token([T_NAMESPACE, 'namespace']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Foo']),
-                    new Token(';'),
-                    new Token([T_NAMESPACE, 'namespace']),
-                    new Token([T_NS_SEPARATOR, '\\']),
-                    new Token([T_STRING, 'Bar']),
-                    new Token(';'),
-                ],
-                '<?php namespace\Foo;namespace\Bar;',
+                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([T_NAMESPACE, 'namespace']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Foo']),
+                new Token(';'),
+                new Token([T_NAMESPACE, 'namespace']),
+                new Token([T_NS_SEPARATOR, '\\']),
+                new Token([T_STRING, 'Bar']),
+                new Token(';'),
             ],
+            '<?php namespace\Foo;namespace\Bar;',
         ];
     }
 }

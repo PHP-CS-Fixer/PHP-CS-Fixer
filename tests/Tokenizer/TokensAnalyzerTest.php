@@ -533,6 +533,26 @@ class Foo
 }
             ',
         ];
+
+        yield 'final const' => [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'const', // A
+                ],
+                24 => [
+                    'classIndex' => 1,
+                    'type' => 'const', // B
+                ],
+            ],
+            '<?php
+class Foo
+{
+    final public const A = "1";
+    public final const B = "2";
+}
+            ',
+        ];
     }
 
     /**
@@ -821,11 +841,11 @@ $a(1,2);',
                 [3 => true, 7 => true, 11 => true],
                 '<?php echo FOO ? BAR : BAZ;',
             ],
-            [
+            'Bitwise & and bitwise |' => [
                 [3 => true, 7 => true, 11 => true],
                 '<?php echo FOO & BAR | BAZ;',
             ],
-            [
+            'Bitwise &' => [
                 [3 => true],
                 '<?php echo FOO & $bar;',
             ],
@@ -1076,6 +1096,28 @@ abstract class Baz
         yield [
             [2 => false, 7 => false, 14 => false],
             '<?php #[Foo(), Bar()] function foo() {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideIsConstantInvocationPhp81Cases
+     * @requires PHP 8.1
+     */
+    public function testIsConstantInvocationPhp81(array $expected, string $source): void
+    {
+        $this->doIsConstantInvocationTest($expected, $source);
+    }
+
+    public function provideIsConstantInvocationPhp81Cases(): \Generator
+    {
+        yield [
+            [5 => false, 15 => false],
+            '<?php
+abstract class Baz
+{
+    final public const Y = "i";
+}
+',
         ];
     }
 

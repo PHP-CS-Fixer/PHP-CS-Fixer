@@ -23,6 +23,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
@@ -90,17 +91,20 @@ class Bar
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $tokensCount = \count($tokens);
-        for ($index = 0; $index < $tokensCount; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+        foreach ($this->getClassMethods($tokens) as $element) {
+            $index = $element['method_final_index'];
+
+            if ($element['class_is_final']) {
+                $this->clearFinal($tokens, $index);
+
                 continue;
             }
 
-            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
-            $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-            $classIsFinal = $prevToken->isGivenKind(T_FINAL);
+            if (!$element['method_is_private'] || false === $this->configuration['private_methods'] || $element['method_is_constructor']) {
+                continue;
+            }
 
-            $this->fixClass($tokens, $classOpen, $classIsFinal);
+            $this->clearFinal($tokens, $index);
         }
     }
 
@@ -117,54 +121,67 @@ class Bar
         ]);
     }
 
-    private function fixClass(Tokens $tokens, int $classOpenIndex, bool $classIsFinal): void
+    private function getClassMethods(Tokens $tokens): \Generator
     {
-        $tokensCount = \count($tokens);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_STATIC];
 
-        for ($index = $classOpenIndex + 1; $index < $tokensCount; ++$index) {
-            // Class end
-            if ($tokens[$index]->equals('}')) {
-                return;
+        $classesAreFinal = [];
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        for (end($elements);; prev($elements)) {
+            $index = key($elements);
+
+            if (null === $index) {
+                break;
             }
 
-            // Skip method content
-            if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            $element = current($elements);
 
-                continue;
+            if ('method' !== $element['type']) {
+                continue; // not a method
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FINAL)) {
-                continue;
+            $classIndex = $element['classIndex'];
+
+            if (!\array_key_exists($classIndex, $classesAreFinal)) {
+                $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
+                $classesAreFinal[$classIndex] = $prevToken->isGivenKind(T_FINAL);
             }
 
-            if (!$classIsFinal && (!$this->isPrivateMethodOtherThanConstructor($tokens, $index, $classOpenIndex) || !$this->configuration['private_methods'])) {
-                continue;
-            }
+            $element['class_is_final'] = $classesAreFinal[$classIndex];
+            $element['method_is_constructor'] = '__construct' === strtolower($tokens[$tokens->getNextMeaningfulToken($index)]->getContent());
+            $element['method_final_index'] = null;
+            $element['method_is_private'] = false;
 
-            $tokens->clearAt($index);
+            $previous = $index;
 
-            ++$index;
+            do {
+                $previous = $tokens->getPrevMeaningfulToken($previous);
 
-            if ($tokens[$index]->isWhitespace()) {
-                $tokens->clearAt($index);
-            }
+                if ($tokens[$previous]->isGivenKind(T_PRIVATE)) {
+                    $element['method_is_private'] = true;
+                } elseif ($tokens[$previous]->isGivenKind(T_FINAL)) {
+                    $element['method_final_index'] = $previous;
+                }
+            } while ($tokens[$previous]->isGivenKind($modifierKinds));
+
+            yield $element;
         }
     }
 
-    private function isPrivateMethodOtherThanConstructor(Tokens $tokens, int $index, int $classOpenIndex): bool
+    private function clearFinal(Tokens $tokens, ?int $index): void
     {
-        $index = max($classOpenIndex + 1, $tokens->getPrevTokenOfKind($index, [';', '{', '}']));
-        $private = false;
-
-        while (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
-            if ($tokens[$index]->isGivenKind(T_PRIVATE)) {
-                $private = true;
-            }
-
-            $index = $tokens->getNextMeaningfulToken($index);
+        if (null === $index) {
+            return;
         }
 
-        return $private && '__construct' !== strtolower($tokens[$tokens->getNextMeaningfulToken($index)]->getContent());
+        $tokens->clearAt($index);
+
+        ++$index;
+
+        if ($tokens[$index]->isWhitespace()) {
+            $tokens->clearAt($index);
+        }
     }
 }

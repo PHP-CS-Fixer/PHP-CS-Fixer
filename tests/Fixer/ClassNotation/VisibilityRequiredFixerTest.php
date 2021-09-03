@@ -854,5 +854,35 @@ class Foo
 }
             ',
         ];
+
+        yield [
+            '<?php
+class Foo
+{
+    final public const B = "2";
+}
+',
+            '<?php
+class Foo
+{
+    public final const B = "2";
+}
+',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    final public const B = "2";
+}
+',
+            '<?php
+class Foo
+{
+    final const B = "2";
+}
+',
+        ];
     }
 }

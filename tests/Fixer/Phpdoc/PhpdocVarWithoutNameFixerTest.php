@@ -535,5 +535,17 @@ class Foo
     readonly int $bar4;
 }',
         ];
+
+        yield 'final public const are not handled by this fixer' => [
+            '<?php
+class A
+{
+    /**
+     * @var array<string, true> SKIPPED_TYPES
+     */
+    final public const SKIPPED_TYPES = ["a" => true];
+}
+',
+        ];
     }
 }
