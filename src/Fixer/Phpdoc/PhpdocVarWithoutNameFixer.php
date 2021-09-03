@@ -97,6 +97,10 @@ final class Foo
             // We want only doc blocks that are for properties and thus have specified access modifiers next
             $propertyModifierKinds = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR];
 
+            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+                $propertyModifierKinds[] = T_READONLY;
+            }
+
             if (!$tokens[$nextIndex]->isGivenKind($propertyModifierKinds)) {
                 continue;
             }

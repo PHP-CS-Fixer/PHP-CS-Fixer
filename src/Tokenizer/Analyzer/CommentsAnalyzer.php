@@ -156,22 +156,30 @@ final class CommentsAnalyzer
      */
     private function isStructuralElement(Token $token): bool
     {
-        static $skip = [
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_VAR,
-            T_FUNCTION,
-            T_ABSTRACT,
-            T_CONST,
-            T_NAMESPACE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_FINAL,
-            T_STATIC,
-        ];
+        static $skip;
+
+        if (null === $skip) {
+            $skip = [
+                T_PRIVATE,
+                T_PROTECTED,
+                T_PUBLIC,
+                T_VAR,
+                T_FUNCTION,
+                T_ABSTRACT,
+                T_CONST,
+                T_NAMESPACE,
+                T_REQUIRE,
+                T_REQUIRE_ONCE,
+                T_INCLUDE,
+                T_INCLUDE_ONCE,
+                T_FINAL,
+                T_STATIC,
+            ];
+
+            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+                $skip[] = T_READONLY;
+            }
+        }
 
         return $token->isClassy() || $token->isGivenKind($skip);
     }

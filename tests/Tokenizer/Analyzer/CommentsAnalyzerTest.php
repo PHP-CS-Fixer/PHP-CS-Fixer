@@ -350,4 +350,32 @@ $bar;',
 Class MyAnnotation3 {}'],
         ];
     }
+
+    /**
+     * @dataProvider providePhpdocCandidatePhp81Cases
+     * @requires PHP 8.1
+     */
+    public function testPhpdocCandidatePhp81(string $code): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $analyzer = new CommentsAnalyzer();
+
+        static::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
+    }
+
+    public function providePhpdocCandidatePhp81Cases(): \Generator
+    {
+        yield 'public readonly' => [
+            '<?php class Foo { /* */ public readonly int $a1; }',
+        ];
+
+        yield 'readonly public' => [
+            '<?php class Foo { /* */ readonly public int $a1; }',
+        ];
+
+        yield 'readonly union' => [
+            '<?php class Foo { /* */ readonly A|B $a1; }',
+        ];
+    }
 }

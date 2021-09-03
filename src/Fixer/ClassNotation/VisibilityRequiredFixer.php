@@ -100,6 +100,16 @@ class Sample
 
         $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            $propertyReadOnlyType = T_READONLY;
+            $propertyTypeDeclarationKinds[] = T_READONLY;
+        } else {
+            $propertyReadOnlyType = -999;
+        }
+
+        $expectedKindsGeneric = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
+        $expectedKindsPropertyKinds = array_merge($expectedKindsGeneric, $propertyTypeDeclarationKinds);
+
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
             if (!\in_array($element['type'], $this->configuration['elements'], true)) {
                 continue;
@@ -109,18 +119,20 @@ class Sample
             $visibilityIndex = null;
             $staticIndex = null;
             $typeIndex = null;
+            $readOnlyIndex = null;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            $expectedKinds = [T_ABSTRACT, T_FINAL, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
-
-            if ('property' === $element['type']) {
-                $expectedKinds = array_merge($expectedKinds, $propertyTypeDeclarationKinds);
-            }
+            $expectedKinds = 'property' === $element['type']
+                ? $expectedKindsPropertyKinds
+                : $expectedKindsGeneric
+            ;
 
             while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {
                 if ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL])) {
                     $abstractFinalIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind(T_STATIC)) {
                     $staticIndex = $prevIndex;
+                } elseif ($tokens[$prevIndex]->isGivenKind($propertyReadOnlyType)) {
+                    $readOnlyIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind($propertyTypeDeclarationKinds)) {
                     $typeIndex = $prevIndex;
                 } else {
@@ -138,11 +150,13 @@ class Sample
                 continue;
             }
 
-            if (null !== $staticIndex) {
-                if ($this->isKeywordPlacedProperly($tokens, $staticIndex, $index)) {
-                    $index = $staticIndex;
+            $swapIndex = $staticIndex ?? $readOnlyIndex; // "static" property cannot be "readonly", so there can always be at most one swap
+
+            if (null !== $swapIndex) {
+                if ($this->isKeywordPlacedProperly($tokens, $swapIndex, $index)) {
+                    $index = $swapIndex;
                 } else {
-                    $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $staticIndex, $index);
+                    $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $swapIndex, $index);
                 }
             }
 

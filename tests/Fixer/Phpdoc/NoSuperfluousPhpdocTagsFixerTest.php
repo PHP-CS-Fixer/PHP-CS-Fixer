@@ -1730,4 +1730,50 @@ class Foo {
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'some readonly properties' => [
+            '<?php
+class Foo {
+    /**
+     */
+    private readonly array $bar1;
+
+    /**
+     */
+    readonly private array $bar2;
+
+    /**
+     */
+    readonly array $bar3;
+}',
+            '<?php
+class Foo {
+    /**
+     * @var array
+     */
+    private readonly array $bar1;
+
+    /**
+     * @var array
+     */
+    readonly private array $bar2;
+
+    /**
+     * @var array
+     */
+    readonly array $bar3;
+}',
+        ];
+    }
 }

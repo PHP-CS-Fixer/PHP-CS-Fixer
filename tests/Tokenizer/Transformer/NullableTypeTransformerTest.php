@@ -138,7 +138,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      * @dataProvider provideProcess80Cases
      * @requires PHP 8.0
      */
-    public function testProcess80(string $source, array $expectedTokens = []): void
+    public function testProcess80(array $expectedTokens, string $source): void
     {
         $this->doTest(
             $source,
@@ -149,34 +149,71 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcess80Cases(): array
+    public function provideProcess80Cases(): \Generator
     {
-        return [
+        yield [
             [
-                '<?php
-                    class Foo
-                    {
-                        public function __construct(
-                            private ?string $foo = null,
-                            protected ?string $bar = null,
-                            public ?string $xyz = null,
-                        ) {
-                        }
-                    }',
-                [
-                    17 => CT::T_NULLABLE_TYPE,
-                    29 => CT::T_NULLABLE_TYPE,
-                    41 => CT::T_NULLABLE_TYPE,
-                ],
+                17 => CT::T_NULLABLE_TYPE,
+                29 => CT::T_NULLABLE_TYPE,
+                41 => CT::T_NULLABLE_TYPE,
             ],
+            '<?php
+                class Foo
+                {
+                    public function __construct(
+                        private ?string $foo = null,
+                        protected ?string $bar = null,
+                        public ?string $xyz = null,
+                    ) {
+                    }
+                }
+            ',
+        ];
+
+        yield [
             [
-                '<?php
-                    function test(#[TestAttribute] ?User $user) {}
-                ',
-                [
-                    10 => CT::T_NULLABLE_TYPE,
-                ],
+                10 => CT::T_NULLABLE_TYPE,
             ],
+            '<?php
+                function test(#[TestAttribute] ?User $user) {}
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideProcess81Cases
+     * @requires PHP 8.1
+     */
+    public function testProcess81(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_NULLABLE_TYPE,
+            ]
+        );
+    }
+
+    public function provideProcess81Cases(): \Generator
+    {
+        yield [
+            [
+                19 => CT::T_NULLABLE_TYPE,
+                33 => CT::T_NULLABLE_TYPE,
+                47 => CT::T_NULLABLE_TYPE,
+            ],
+            '<?php
+                class Foo
+                {
+                    public function __construct(
+                        private readonly ?string $foo = null,
+                        protected readonly ?string $bar = null,
+                        public readonly ?string $xyz = null,
+                    ) {
+                    }
+                }
+            ',
         ];
     }
 }

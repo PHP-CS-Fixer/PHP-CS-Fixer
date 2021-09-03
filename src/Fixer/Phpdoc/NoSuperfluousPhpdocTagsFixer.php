@@ -183,6 +183,10 @@ class Foo {
 
         $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STRING, T_NS_SEPARATOR];
 
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            $kindsBeforeProperty[] = T_READONLY;
+        }
+
         $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
         if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
@@ -246,6 +250,10 @@ class Foo {
     private function fixPropertyDocComment(string $content, Tokens $tokens, int $index, array $shortNames): string
     {
         $propertyModifierKinds = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
+
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            $propertyModifierKinds[] = T_READONLY;
+        }
 
         $docBlock = new DocBlock($content);
 

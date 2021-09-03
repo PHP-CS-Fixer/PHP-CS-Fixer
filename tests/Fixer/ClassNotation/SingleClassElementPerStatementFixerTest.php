@@ -877,4 +877,45 @@ class Foo
 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+class Foo
+{
+    readonly int $a;
+    readonly int $b;
+    public readonly int $c;
+    public readonly int $d;
+    readonly private string /*1*/$e;
+    readonly private string /*2*/$f;
+    readonly float $g;
+    protected readonly float $h1;
+    protected readonly float $h2;
+    readonly float $z1;
+    readonly float $z2;
+    readonly float $z3;
+}',
+            '<?php
+class Foo
+{
+    readonly int $a, $b;
+    public readonly int $c, $d;
+    readonly private string /*1*/$e,/*2*/$f;
+    readonly float $g;
+    protected readonly float $h1, $h2;
+    readonly float $z1, $z2, $z3;
+}',
+        ];
+    }
 }

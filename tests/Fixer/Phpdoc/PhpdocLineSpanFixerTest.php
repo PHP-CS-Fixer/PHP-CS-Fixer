@@ -524,4 +524,55 @@ class Foo
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly' => [
+            '<?php
+
+class Foo
+{
+    /** @var string[] */
+    private readonly array $foo1;
+
+    /** @var string[] */
+    readonly private array $foo2;
+
+    /** @var string[] */
+    readonly array $foo3;
+}',
+            '<?php
+
+class Foo
+{
+    /**
+     * @var string[]
+     */
+    private readonly array $foo1;
+
+    /**
+     * @var string[]
+     */
+    readonly private array $foo2;
+
+    /**
+     * @var string[]
+     */
+    readonly array $foo3;
+}',
+            [
+                'property' => 'single',
+            ],
+        ];
+    }
 }

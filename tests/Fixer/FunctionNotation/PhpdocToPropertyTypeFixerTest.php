@@ -451,4 +451,20 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly properties are always typed, make sure the fixer does not crash' => [
+            '<?php class Foo { /** @var int */ private readonly string $foo; }',
+        ];
+    }
 }

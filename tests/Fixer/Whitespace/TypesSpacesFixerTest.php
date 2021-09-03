@@ -145,4 +145,33 @@ TypeB $x) {}',
             }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class Foo {
+                public function __construct(
+                    public readonly int|string $a,
+                    protected    readonly       int|string $b,
+                    private  readonly int|string $c
+                ) {}
+            }',
+            '<?php class Foo {
+                public function __construct(
+                    public readonly int    |    string $a,
+                    protected    readonly       int | string $b,
+                    private  readonly int   |   string $c
+                ) {}
+            }',
+        ];
+    }
 }
