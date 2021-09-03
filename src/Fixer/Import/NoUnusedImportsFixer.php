@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -105,24 +106,43 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
         $tokensNotBeforeFunctionCall = [T_NEW];
 
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
+        $attributeIsDefined = \defined('T_ATTRIBUTE');
+
+        if ($attributeIsDefined) { // @TODO: drop condition when PHP 8.0+ is required
             $tokensNotBeforeFunctionCall[] = T_ATTRIBUTE;
         }
 
         $namespaceEndIndex = $namespace->getScopeEndIndex();
+        $inAttribute = false;
 
         for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
+            $token = $tokens[$index];
+
+            if ($attributeIsDefined && $token->isGivenKind(T_ATTRIBUTE)) {
+                $inAttribute = true;
+
+                continue;
+            }
+
+            if ($attributeIsDefined && $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $inAttribute = false;
+
+                continue;
+            }
+
             if (isset($ignoredIndexes[$index])) {
                 $index = $ignoredIndexes[$index];
 
                 continue;
             }
 
-            $token = $tokens[$index];
-
             if ($token->isGivenKind(T_STRING)) {
                 if (0 !== strcasecmp($import->getShortName(), $token->getContent())) {
                     continue;
+                }
+
+                if ($inAttribute) {
+                    return true;
                 }
 
                 $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
