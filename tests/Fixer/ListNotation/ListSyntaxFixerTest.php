@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ListNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 
 /**
  * @requires PHP 7.1
@@ -37,7 +38,7 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideToLongCases
+     * @dataProvider provideFixToLongSyntaxCases
      */
     public function testFixToLongSyntax(string $expected, ?string $input = null): void
     {
@@ -46,7 +47,7 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideToShortCases
+     * @dataProvider provideFixToShortSyntaxCases
      */
     public function testFixToShortSyntax(string $expected, ?string $input = null): void
     {
@@ -54,10 +55,10 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideToLongCases(): array
+    public function provideFixToLongSyntaxCases(): array
     {
         // reverse testing
-        $shortCases = $this->provideToShortCases();
+        $shortCases = $this->provideFixToShortSyntaxCases();
         $cases = [];
         foreach ($shortCases as $label => $shortCase) {
             $cases[$label] = [$shortCase[1], $shortCase[0]];
@@ -100,7 +101,7 @@ class Test
         return $cases;
     }
 
-    public function provideToShortCases(): array
+    public function provideFixToShortSyntaxCases(): array
     {
         return [
             [
@@ -176,7 +177,7 @@ $a;#
 
     /**
      * @requires PHP 7.2
-     * @dataProvider providePhp72Cases
+     * @dataProvider provideFixToShortSyntaxPhp72Cases
      */
     public function testFixToShortSyntaxPhp72(string $expected, string $input): void
     {
@@ -186,15 +187,15 @@ $a;#
 
     /**
      * @requires PHP 7.2
-     * @dataProvider providePhp72Cases
+     * @dataProvider provideFixToLongSyntaxPhp72Cases
      */
     public function testFixToLongSyntaxPhp72(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'long']);
-        $this->doTest($input, $expected); // test reversed
+        $this->doTest($expected, $input);
     }
 
-    public function providePhp72Cases(): \Generator
+    public function provideFixToShortSyntaxPhp72Cases(): \Generator
     {
         yield [
             '<?php [$a, $b,, [$c, $d]] = $a;',
@@ -202,9 +203,14 @@ $a;#
         ];
     }
 
+    public function provideFixToLongSyntaxPhp72Cases()
+    {
+        return TestCaseUtils::swapExpectedInputTestCases($this->provideFixToShortSyntaxPhp72Cases());
+    }
+
     /**
      * @requires PHP 7.3
-     * @dataProvider providePhp73Cases
+     * @dataProvider provideFixToShortSyntaxPhp73Cases
      */
     public function testFixToShortSyntaxPhp73(string $expected, string $input): void
     {
@@ -214,15 +220,15 @@ $a;#
 
     /**
      * @requires PHP 7.3
-     * @dataProvider providePhp73Cases
+     * @dataProvider provideFixToLongSyntaxPhp73Cases
      */
     public function testFixToLongSyntaxPhp73(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'long']);
-        $this->doTest($input, $expected); // test reversed
+        $this->doTest($expected, $input);
     }
 
-    public function providePhp73Cases(): \Generator
+    public function provideFixToShortSyntaxPhp73Cases(): \Generator
     {
         yield [
             '<?php [&$a, $b] = $a;',
@@ -238,5 +244,10 @@ $a;#
             '<?php [&$a, $b,, [&$c, $d]] = $a;',
             '<?php list(&$a, $b,, list(&$c, $d)) = $a;',
         ];
+    }
+
+    public function provideFixToLongSyntaxPhp73Cases()
+    {
+        return TestCaseUtils::swapExpectedInputTestCases($this->provideFixToShortSyntaxPhp73Cases());
     }
 }
