@@ -1161,7 +1161,7 @@ class ezcReflectionMethod extends ReflectionMethod {
     /**
      * @dataProvider provideConfigCases
      */
-    public function testWithConfig(string $expected, string $input, array $config): void
+    public function testWithConfig(string $expected, ?string $input, array $config): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
@@ -1280,6 +1280,33 @@ class Foo
     const OTHER2 = 5;
 }',
                 ['elements' => ['const' => 'none']],
+            ],
+            'multiple trait import 5954' => [
+                '<?php
+class Foo
+{
+    use Bar, Baz;
+}',
+                null,
+                ['elements' => ['method' => 'one']],
+            ],
+            'multiple trait import with method 5954' => [
+                '<?php
+class Foo
+{
+    use Bar, Baz;
+
+    public function f() {}
+}',
+                '<?php
+class Foo
+{
+    use Bar, Baz;
+
+
+    public function f() {}
+}',
+                ['elements' => ['method' => 'one']],
             ],
             'trait group import 5843' => [
                 '<?php
