@@ -166,7 +166,7 @@ abstract class AbstractFixerTestCase extends TestCase
             $duplicatedCodeSample = array_search(
                 $sample,
                 \array_slice($samples, 0, $sampleCounter),
-                false
+                true
             );
 
             static::assertFalse(

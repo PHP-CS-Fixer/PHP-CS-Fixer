@@ -2,6 +2,7 @@ includes:
     - dev-tools/vendor/jangregor/phpstan-prophecy/extension.neon
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - dev-tools/vendor/phpstan/phpstan-phpunit/extension.neon
+    - dev-tools/vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
     level: 5
@@ -10,8 +11,27 @@ parameters:
         - tests
     excludePaths:
         - tests/Fixtures
+    treatPhpDocTypesAsCertain: false
+    reportMaybesInPropertyPhpDocTypes: false
     ignoreErrors:
+        - '/^Anonymous function should have native return typehint ".+"\.$/'
+        - '/^Call to function array_key_exists\(\) with string and array<string, mixed> will always evaluate to true\.$/'
+        - '/^Call to static method PHPUnit\\Framework\\Assert::[a-zA-Z]+\(\) with .+ will always evaluate to true\.$/'
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
+        - '/^Construct empty\(\) is not allowed\. Use more strict comparison\.$/'
+        - '/^For loop initial assignment overwrites variable \$[a-zA-Z]+\.$/'
+        - '/^Foreach overwrites \$[a-zA-Z]+ with its key variable\.$/'
+        - '/^Foreach overwrites \$[a-zA-Z]+ with its value variable\.$/'
+        - '/^Only booleans are allowed in (&&|\|\|), .+ given on the (left|right) side\.$/'
+        - '/^Only booleans are allowed in a negated boolean, .+ given\.$/'
+        - '/^Only booleans are allowed in a ternary operator condition, .+ given\.$/'
+        - '/^Only booleans are allowed in an if condition, .+ given\.$/'
+        - '/^Parameter #\d \$[a-zA-Z]+ \([a-zA-Z\\<>|,\h]+\) of method [a-zA-Z\\]+::[a-zA-Z]+\(\) should be contravariant with parameter \$[a-zA-Z_]+ \([a-zA-Z\\<>|,\h]+\) of method [a-zA-Z\\<>|,]+::[a-zA-Z]+\(\)$/'
+        - '/^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$/'
+        - '/^Strict comparison using !== between .+ and .+ will always evaluate to true.$/'
+        - '/^Unreachable statement - code above always terminates\.$/'
         - '/^Unsafe call to private method [a-zA-Z\\]+::[a-zA-Z]+\(\) through static::\.$/'
+        - '/^Variable \$[a-zA-Z0-9]+ might not be defined\.$/'
+        - '/^Variable method call on \$this\([a-zA-Z\\]+\)\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
     tipsOfTheDay: false
