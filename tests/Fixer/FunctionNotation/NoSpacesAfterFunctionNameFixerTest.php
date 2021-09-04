@@ -143,6 +143,10 @@ $$e(2);
                 '<?php abc#
  ($a);',
             ],
+            'whitespace between echo and IIFE\'s parenthesis Issue #5950' => [
+                '<?php echo (function () {})();',
+                '<?php echo (function  () {})();'
+            ]
         ];
 
         yield [
