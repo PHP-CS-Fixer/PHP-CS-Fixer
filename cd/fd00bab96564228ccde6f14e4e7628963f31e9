@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by keradus at 2021-08-31T12:55:54Z
+
+@fabpot , fabbot.io is wrong here, it assumes it runs on Symfony. maybe it could run rules depending on repos (default rules or default+Symfony rules?)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-04T11:55:27Z
+
+Merge conflicts. 😭
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-09-04T12:46:14Z
+
+not sure what this comment brings to discussion, each of us can see it, no need to fingerprint it :shrug:
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-04T13:20:03Z
+
+[![Coverage Status](https://coveralls.io/builds/42656638/badge)](https://coveralls.io/builds/42656638)
+
+Coverage remained the same at 92.339% when pulling **e36a05f6828d84ed810f1cbf34bded1610fab917 on keradus:dx_project_code_expected_order** into **8fc254807bcafa8a0443aedc02c7d88b19e80e77 on FriendsOfPHP:master**.
