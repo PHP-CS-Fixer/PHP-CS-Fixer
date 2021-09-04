@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-06T10:31:47Z
+
+[![Coverage Status](https://coveralls.io/builds/42588585/badge)](https://coveralls.io/builds/42588585)
+
+Coverage increased (+0.02%) to 92.36% when pulling **3db05b60c964efb10d50d6a44a506cd40bea37a4 on SpacePossum:master_EmptyLoopConditionFixer** into **fa22fa0f2f52bdcd710a35bdd71b4d613d8a097e on FriendsOfPHP:master**.
