@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-01T01:09:57Z
+
+[![Coverage Status](https://coveralls.io/builds/42590835/badge)](https://coveralls.io/builds/42590835)
+
+Coverage decreased (-0.004%) to 92.343% when pulling **84741dc23f9d1a2ee516dc9f2243fe8f4742b960 on julienfalque:split-braces-fixer-control-structure-continuation** into **74397ac3439e1f8d2564f70df6e9be93c809e9fc on FriendsOfPHP:master**.
