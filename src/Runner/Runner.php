@@ -193,10 +193,6 @@ final class Runner
                     $appliedFixers[] = $fixer->getName();
                 }
             }
-        } catch (\Exception $e) {
-            $this->processException($name, $e);
-
-            return null;
         } catch (\ParseError $e) {
             $this->dispatchEvent(
                 FixerFileProcessedEvent::NAME,
