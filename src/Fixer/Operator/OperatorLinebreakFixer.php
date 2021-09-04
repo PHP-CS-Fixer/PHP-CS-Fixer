@@ -180,7 +180,7 @@ function foo() {
     private function getCasesColonsForSwitch(Tokens $tokens, int $switchIndex): array
     {
         return array_map(
-            static function (CaseAnalysis $caseAnalysis) {
+            static function (CaseAnalysis $caseAnalysis): int {
                 return $caseAnalysis->getColonIndex();
             },
             (new SwitchAnalyzer())->getSwitchAnalysis($tokens, $switchIndex)->getCases()
@@ -277,11 +277,13 @@ function foo() {
     private function getReplacementsAndClear(Tokens $tokens, array $indices, int $direction): array
     {
         return array_map(
-            static function (int $index) use ($tokens, $direction) {
+            static function (int $index) use ($tokens, $direction): Token {
                 $clone = $tokens[$index];
+
                 if ($tokens[$index + $direction]->isWhitespace()) {
                     $tokens->clearAt($index + $direction);
                 }
+
                 $tokens->clearAt($index);
 
                 return $clone;
@@ -312,7 +314,7 @@ function foo() {
                 [T_POW_EQUAL], [T_SL], [T_SL_EQUAL], [T_SR], [T_SR_EQUAL], [T_XOR_EQUAL],
                 [T_COALESCE], [T_SPACESHIP],
             ],
-            array_map(function ($id) { return [$id]; }, Token::getObjectOperatorKinds())
+            array_map(static function ($id): array { return [$id]; }, Token::getObjectOperatorKinds())
         );
     }
 }

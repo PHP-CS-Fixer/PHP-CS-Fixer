@@ -31,7 +31,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Bram Gotink <bram@gotink.me>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFixerInterface
@@ -131,7 +131,7 @@ class InvalidName {}
             return false;
         }
 
-        // ignore stubs/fixtures, since they are typically containing invalid files for various reasons
+        // ignore stubs/fixtures, since they typically contain invalid files for various reasons
         return !Preg::match('{[/\\\\](stub|fixture)s?[/\\\\]}i', $file->getRealPath());
     }
 

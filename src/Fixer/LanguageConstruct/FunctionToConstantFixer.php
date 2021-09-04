@@ -28,9 +28,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class FunctionToConstantFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**

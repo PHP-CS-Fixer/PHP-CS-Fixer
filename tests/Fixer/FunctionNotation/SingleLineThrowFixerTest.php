@@ -274,41 +274,55 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
             ;',
             ];
         }
+    }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield [
-                '<?php throw $this?->getExceptionFactory()?->createAnException("Foo");',
-                '<?php throw $this
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php throw $this?->getExceptionFactory()?->createAnException("Foo");',
+            '<?php throw $this
                     ?->getExceptionFactory()
                     ?->createAnException(
                     "Foo"
                 );',
-            ];
+        ];
 
-            yield ['<?php
+        yield [
+            '<?php
                 match ($number) {
                     1 => $function->one(),
                     2 => $function->two(),
                     default => throw new \NotOneOrTwo()
                 };
-            '];
+            ',
+        ];
 
-            yield ['<?php
+        yield [
+            '<?php
                 match ($number) {
                     1 => $function->one(),
                     2 => throw new Exception("Number 2 is not allowed."),
                     1 => $function->three(),
                     default => throw new \NotOneOrTwo()
                 };
-            '];
+            ',
+        ];
 
-            yield [
-                '<?php throw new Exception(match ($a) { 1 => "a", 3 => "b" });',
-                '<?php throw new Exception(match ($a) {
-                    1 => "a",
-                    3 => "b"
-                });',
-            ];
-        }
+        yield [
+            '<?php throw new Exception(match ($a) { 1 => "a", 3 => "b" });',
+            '<?php throw new Exception(match ($a) {
+                1 => "a",
+                3 => "b"
+            });',
+        ];
     }
 }

@@ -422,64 +422,74 @@ EOT
             '<?= $a ? $a : $b ?>',
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php $foo = $a->{$b} ? $bar{0} : $foo;',
-            ];
+        yield [
+            '<?php new class() extends Foo {} ? new class{} : $a;',
+        ];
 
-            yield [
-                '<?php $l[$b[0] ?  : $c[0]];',
-                '<?php $l[$b[0] ? $b{0} : $c[0]];',
-            ];
+        yield [
+            '<?php $a ?  : new class{};',
+            '<?php $a ? $a : new class{};',
+        ];
 
-            yield [
-                '<?php $l{$b{0} ?  : $c{0}};',
-                '<?php $l{$b{0} ? $b{0} : $c{0}};',
-            ];
+        yield [
+            '<?php $a ?  : new class($a) extends Foo {};',
+            '<?php $a ? $a : new class($a) extends Foo {};',
+        ];
+    }
 
-            yield [
-                '<?php $z = $a[1][2] ?  : 1;',
-                '<?php $z = $a[1][2] ? $a[1][2] : 1;',
-            ];
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
 
-            yield [
-                '<?php $i = $bar{0}[1]{2}[3] ?  : $foo;',
-                '<?php $i = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
-            ];
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php $foo = $a->{$b} ? $bar{0} : $foo;',
+        ];
 
-            yield [
-                '<?php $fooX = $bar{0}[1]{2}[3] ?  : $foo;',
-                '<?php $fooX = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
-            ];
+        yield [
+            '<?php $l[$b[0] ?  : $c[0]];',
+            '<?php $l[$b[0] ? $b{0} : $c[0]];',
+        ];
 
-            yield [
-                '<?php $k = $bar{0} ?  : $foo;',
-                '<?php $k = $bar{0} ? $bar{0} : $foo;',
-            ];
+        yield [
+            '<?php $l{$b{0} ?  : $c{0}};',
+            '<?php $l{$b{0} ? $b{0} : $c{0}};',
+        ];
 
-            yield 'ignore different type of index braces' => [
-                '<?php $z = $a[1] ?  : 1;',
-                '<?php $z = $a[1] ? $a{1} : 1;',
-            ];
+        yield [
+            '<?php $z = $a[1][2] ?  : 1;',
+            '<?php $z = $a[1][2] ? $a[1][2] : 1;',
+        ];
 
-            yield [
-                '<?php __FILE__.$a.$b{2}.$c->$a[0] ?  : 1;',
-                '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
-            ];
-        }
+        yield [
+            '<?php $i = $bar{0}[1]{2}[3] ?  : $foo;',
+            '<?php $i = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
+        ];
 
-        yield from [
-            [
-                '<?php new class() extends Foo {} ? new class{} : $a;',
-            ],
-            [
-                '<?php $a ?  : new class{};',
-                '<?php $a ? $a : new class{};',
-            ],
-            [
-                '<?php $a ?  : new class($a) extends Foo {};',
-                '<?php $a ? $a : new class($a) extends Foo {};',
-            ],
+        yield [
+            '<?php $fooX = $bar{0}[1]{2}[3] ?  : $foo;',
+            '<?php $fooX = $bar{0}[1]{2}[3] ? $bar{0}[1]{2}[3] : $foo;',
+        ];
+
+        yield [
+            '<?php $k = $bar{0} ?  : $foo;',
+            '<?php $k = $bar{0} ? $bar{0} : $foo;',
+        ];
+
+        yield 'ignore different type of index braces' => [
+            '<?php $z = $a[1] ?  : 1;',
+            '<?php $z = $a[1] ? $a{1} : 1;',
+        ];
+
+        yield [
+            '<?php __FILE__.$a.$b{2}.$c->$a[0] ?  : 1;',
+            '<?php __FILE__.$a.$b{2}.$c->$a[0] ? __FILE__.$a.$b{2}.$c->$a[0] : 1;',
         ];
     }
 

@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 /**
- * @author SpacePossum
- *
  * @internal
  */
 interface RuleSetDescriptionInterface

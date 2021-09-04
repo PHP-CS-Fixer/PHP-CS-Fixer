@@ -122,10 +122,12 @@ with a line not prefixed with asterisk
 
             $whitespace = '';
             $previousIndex = $index - 1;
+
             if ($tokens[$previousIndex]->isWhitespace()) {
                 $whitespace = $tokens[$previousIndex]->getContent();
                 --$previousIndex;
             }
+
             if ($tokens[$previousIndex]->isGivenKind(T_OPEN_TAG)) {
                 $whitespace = Preg::replace('/\S/', '', $tokens[$previousIndex]->getContent()).$whitespace;
             }
@@ -147,6 +149,7 @@ with a line not prefixed with asterisk
                 }
 
                 $line = ltrim($line);
+
                 if ($token->isGivenKind(T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
                     continue;
                 }

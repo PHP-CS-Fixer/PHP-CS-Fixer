@@ -330,22 +330,32 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 }',
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly":
                         break;
                 }
                 ',
-                '<?php
+            '<?php
                 switch ($a) {
                     case $b ? "c" : "this" ? "is" : "ugly" :
                         break;
                 }
                 ',
-            ];
-        }
+        ];
     }
 }

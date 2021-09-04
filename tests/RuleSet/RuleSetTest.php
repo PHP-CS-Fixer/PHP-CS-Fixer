@@ -290,7 +290,7 @@ final class RuleSetTest extends TestCase
     public function provideSafeSetCases(): \Generator
     {
         foreach (RuleSets::getSetDefinitionNames() as $name) {
-            yield $name => $sets[$name] = [
+            yield $name => [
                 [$name => true],
                 false === strpos($name, ':risky'),
             ];

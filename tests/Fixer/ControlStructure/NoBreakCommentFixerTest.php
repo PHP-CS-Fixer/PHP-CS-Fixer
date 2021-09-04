@@ -999,7 +999,7 @@ switch($a) {
     {
         $cases = $this->provideFixCases();
 
-        $replaceCommentText = static function (string $php) {
+        $replaceCommentText = static function (string $php): string {
             return strtr($php, [
                 'No break' => 'Fall-through case!',
                 'no break' => 'fall-through case!',

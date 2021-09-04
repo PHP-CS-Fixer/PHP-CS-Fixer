@@ -24,9 +24,6 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
-/**
- * @author SpacePossum
- */
 final class LambdaNotUsedImportFixer extends AbstractFixer
 {
     /**

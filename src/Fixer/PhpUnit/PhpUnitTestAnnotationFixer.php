@@ -165,9 +165,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         }
     }
 
-    /**
-     * @param int$index
-     */
     private function isTestMethod(Tokens $tokens, int $index): bool
     {
         // Check if we are dealing with a (non abstract, non lambda) function

@@ -101,7 +101,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                 ->getOption(),
             (new FixerOptionBuilder('replacements', 'A map of tags to replace.'))
                 ->setAllowedTypes(['array'])
-                ->setNormalizer(function (Options $options, $value) {
+                ->setNormalizer(static function (Options $options, $value): array {
                     $normalizedValue = [];
 
                     foreach ($value as $from => $to) {
@@ -199,7 +199,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
 
             $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replaceCallback(
                 $regex,
-                function (array $matches) use ($caseInsensitive, $replacements) {
+                static function (array $matches) use ($caseInsensitive, $replacements) {
                     if ($caseInsensitive) {
                         $matches[1] = strtolower($matches[1]);
                     }

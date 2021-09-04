@@ -18,7 +18,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author John Kelly <wablam@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal

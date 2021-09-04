@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
+use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -37,7 +38,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
      */
     public function testInvalidConfiguration($exceptionMessega, $configuration): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException::class);
+        $this->expectException(InvalidForEnvFixerConfigurationException::class);
         $this->expectExceptionMessage($exceptionMessega);
 
         $this->fixer->configure($configuration);

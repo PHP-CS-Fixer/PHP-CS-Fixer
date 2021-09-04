@@ -23,9 +23,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
-/**
- * @author SpacePossum
- */
 final class StaticLambdaFixer extends AbstractFixer
 {
     /**

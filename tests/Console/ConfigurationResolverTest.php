@@ -484,7 +484,7 @@ final class ConfigurationResolverTest extends TestCase
         ], $config);
 
         $intersectionItems = array_map(
-            static function (\SplFileInfo $file) {
+            static function (\SplFileInfo $file): string {
                 return $file->getRealPath();
             },
             iterator_to_array($resolver->getFinder(), false)
@@ -499,9 +499,9 @@ final class ConfigurationResolverTest extends TestCase
     public function provideResolveIntersectionOfPathsCases(): array
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
-        $cb = static function (array $items) use ($dir) {
+        $cb = static function (array $items) use ($dir): array {
             return array_map(
-                static function (string $item) use ($dir) {
+                static function (string $item) use ($dir): string {
                     return realpath($dir.'/'.$item);
                 },
                 $items

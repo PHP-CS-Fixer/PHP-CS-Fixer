@@ -100,57 +100,71 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
-    public function provideGetNamespaceAtCases(): array
+    public function provideGetNamespaceAtCases(): \Generator
     {
-        return [
-            [
-                '<?php // no namespaces',
+        yield [
+            '<?php // no namespaces',
+            1,
+            new NamespaceAnalysis(
+                '',
+                '',
+                0,
+                0,
+                0,
+                1
+            ),
+        ];
+
+        yield [
+            '<?php namespace Foo\Bar;',
+            5,
+            new NamespaceAnalysis(
+                'Foo\Bar',
+                'Bar',
                 1,
-                new NamespaceAnalysis(
-                    '',
-                    '',
-                    0,
-                    0,
-                    0,
-                    1
-                ),
-            ],
-            [
-                '<?php namespace Foo\Bar;',
-                5,
-                new NamespaceAnalysis(
-                    'Foo\Bar',
-                    'Bar',
-                    1,
-                    6,
-                    1,
-                    6
-                ),
-            ],
-            [
-                '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
-                5,
-                new NamespaceAnalysis(
-                    'Foo\Bar',
-                    'Bar',
-                    1,
-                    6,
-                    1,
-                    7
-                ),
-            ],
-            [
-                '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
-                13,
-                new NamespaceAnalysis(
-                    'Foo\Baz',
-                    'Baz',
-                    10,
-                    16,
-                    10,
-                    17
-                ),
-            ],
+                6,
+                1,
+                6
+            ),
+        ];
+
+        yield [
+            '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
+            5,
+            new NamespaceAnalysis(
+                'Foo\Bar',
+                'Bar',
+                1,
+                6,
+                1,
+                7
+            ),
+        ];
+
+        yield [
+            '<?php namespace Foo\Bar{}; namespace Foo\Baz {};',
+            13,
+            new NamespaceAnalysis(
+                'Foo\Baz',
+                'Baz',
+                10,
+                16,
+                10,
+                17
+            ),
+        ];
+
+        yield [
+            ' ',
+            0,
+            new NamespaceAnalysis(
+                '',
+                '',
+                0,
+                0,
+                0,
+                0
+            ),
         ];
     }
 }

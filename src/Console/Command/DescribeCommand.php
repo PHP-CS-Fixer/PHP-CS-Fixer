@@ -41,7 +41,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  */
@@ -193,7 +192,14 @@ final class DescribeCommand extends Command
                 $line = '* <info>'.OutputFormatter::escape($option->getName()).'</info>';
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
 
-                if (null !== $allowed) {
+                if (null === $allowed) {
+                    $allowed = array_map(
+                        static function (string $type): string {
+                            return '<comment>'.$type.'</comment>';
+                        },
+                        $option->getAllowedTypes()
+                    );
+                } else {
                     foreach ($allowed as &$value) {
                         if ($value instanceof AllowedValueSubset) {
                             $value = 'a subset of <comment>'.HelpCommand::toString($value->getAllowedValues()).'</comment>';
@@ -201,18 +207,9 @@ final class DescribeCommand extends Command
                             $value = '<comment>'.HelpCommand::toString($value).'</comment>';
                         }
                     }
-                } else {
-                    $allowed = array_map(
-                        static function (string $type) {
-                            return '<comment>'.$type.'</comment>';
-                        },
-                        $option->getAllowedTypes()
-                    );
                 }
 
-                if (null !== $allowed) {
-                    $line .= ' ('.implode(', ', $allowed).')';
-                }
+                $line .= ' ('.implode(', ', $allowed).')';
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';
@@ -245,7 +242,7 @@ final class DescribeCommand extends Command
         }
 
         /** @var CodeSampleInterface[] $codeSamples */
-        $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample) {
+        $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample): bool {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(\PHP_VERSION_ID);
             }
@@ -421,7 +418,7 @@ final class DescribeCommand extends Command
             static function (array $matches) {
                 return Preg::replaceCallback(
                     '/`(.*)<(.*)>`_/',
-                    static function (array $matches) {
+                    static function (array $matches): string {
                         return $matches[1].'('.$matches[2].')';
                     },
                     $matches[1]

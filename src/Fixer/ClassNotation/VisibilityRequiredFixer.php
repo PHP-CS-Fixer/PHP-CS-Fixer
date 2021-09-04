@@ -32,7 +32,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.5.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 final class VisibilityRequiredFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -98,6 +97,7 @@ class Sample
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
         foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
@@ -179,8 +179,8 @@ class Sample
     private function moveTokenAndEnsureSingleSpaceFollows(Tokens $tokens, int $fromIndex, int $toIndex): void
     {
         $tokens->insertAt($toIndex, [$tokens[$fromIndex], new Token([T_WHITESPACE, ' '])]);
-
         $tokens->clearAt($fromIndex);
+
         if ($tokens[$fromIndex + 1]->isWhitespace()) {
             $tokens->clearAt($fromIndex + 1);
         }

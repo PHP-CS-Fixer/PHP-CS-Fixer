@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -650,11 +651,13 @@ $a#4
         }
 
         $assignmentOperators = ['=', '**=', '*=', '|=', '+=', '-=', '^=',  '<<=', '>>=', '&=', '.=', '/=', '%='];
+
         if (\PHP_VERSION_ID >= 70400) {
             $assignmentOperators[] = '??=';
         }
 
         $logicalOperators = ['xor', 'or', 'and',  '||', '&&'];
+
         if (\PHP_VERSION_ID >= 70400) {
             $logicalOperators[] = '??';
         }
@@ -777,7 +780,7 @@ function a() {
      */
     public function testInvalidConfig(array $config, string $expectedMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[{$this->fixer->getName()}\\] {$expectedMessage}$#");
 
         $this->fixer->configure($config);
@@ -876,24 +879,24 @@ function a() {
         $this->doTest($expected);
     }
 
-    public function provideFixWithConfigCases(): array
+    public function provideFixWithConfigCases(): \Generator
     {
-        return [
+        yield [
             [
-                [
-                    'identical' => false,
-                ],
-                '<?php
+                'identical' => false,
+            ],
+            '<?php
 $a = [1, 2, 3];
 while (2 !== $b = array_pop($c));
 ',
-            ],
+        ];
+
+        yield [
             [
-                [
-                    'equal' => false,
-                    'identical' => false,
-                ],
-                '<?php
+                'equal' => false,
+                'identical' => false,
+            ],
+            '<?php
                 if ($revision->event == \'created\') {
     foreach ($revision->getModified() as $col => $data) {
         $model->$col = $data[\'new\'];
@@ -903,7 +906,6 @@ while (2 !== $b = array_pop($c));
         $model->$col = $data[\'old\'];
     }
 }',
-            ],
         ];
     }
 
@@ -939,20 +941,19 @@ while (2 !== $b = array_pop($c));
         $this->doTest($expected, $input);
     }
 
-    public function providePHP74Cases(): array
+    public function providePHP74Cases(): \Generator
     {
-        return [
+        yield [
+            '<?php fn() => $c === array(1) ? $b : $d;',
+            null,
             [
-                '<?php fn() => $c === array(1) ? $b : $d;',
-                null,
-                [
-                    'less_and_greater' => false,
-                ],
+                'less_and_greater' => false,
             ],
-            [
-                '<?php $a ??= 4 === $b ? 2 : 3;',
-                '<?php $a ??= $b === 4 ? 2 : 3;',
-            ],
+        ];
+
+        yield [
+            '<?php $a ??= 4 === $b ? 2 : 3;',
+            '<?php $a ??= $b === 4 ? 2 : 3;',
         ];
     }
 

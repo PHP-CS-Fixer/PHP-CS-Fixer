@@ -134,7 +134,7 @@ class Foo {
                 continue;
             }
 
-            $typeInfo = $this->resolveAppliableType(
+            $typeInfo = $this->resolveApplicableType(
                 $propertyIndexes,
                 $this->getAnnotationsFromDocComment('var', $tokens, $docCommentIndex)
             );
@@ -181,6 +181,7 @@ class Foo {
         }
 
         $properties = [];
+
         while (!$tokens[$index]->equals(';')) {
             if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
                 $properties[$tokens[$index]->getContent()] = $index;
@@ -196,7 +197,7 @@ class Foo {
      * @param array<string, int> $propertyIndexes
      * @param Annotation[]       $annotations
      */
-    private function resolveAppliableType(array $propertyIndexes, array $annotations): ?array
+    private function resolveApplicableType(array $propertyIndexes, array $annotations): ?array
     {
         $propertyTypes = [];
 
@@ -231,6 +232,7 @@ class Foo {
         }
 
         $type = array_shift($propertyTypes);
+
         foreach ($propertyTypes as $propertyType) {
             if ($propertyType !== $type) {
                 return null;

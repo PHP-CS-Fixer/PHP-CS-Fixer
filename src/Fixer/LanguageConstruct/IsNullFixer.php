@@ -75,9 +75,9 @@ final class IsNullFixer extends AbstractFixer
     {
         static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
         $functionsAnalyzer = new FunctionsAnalyzer();
-
         $currIndex = 0;
-        while (null !== $currIndex) {
+
+        do {
             $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
@@ -96,6 +96,7 @@ final class IsNullFixer extends AbstractFixer
             }
 
             $next = $tokens->getNextMeaningfulToken($currIndex);
+
             if ($tokens[$next]->equals(')')) {
                 continue;
             }
@@ -112,6 +113,7 @@ final class IsNullFixer extends AbstractFixer
 
             // check if inversion being used, text comparison is due to not existing constant
             $isInvertedNullCheck = false;
+
             if ($tokens[$prevTokenIndex]->equals('!')) {
                 $isInvertedNullCheck = true;
 
@@ -123,6 +125,7 @@ final class IsNullFixer extends AbstractFixer
             // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
             $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
             $isContainingDangerousConstructs = false;
+
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {
                 if (\in_array($tokens[$paramTokenIndex]->getContent(), ['?', '?:', '=', '??'], true)) {
                     $isContainingDangerousConstructs = true;
@@ -139,6 +142,7 @@ final class IsNullFixer extends AbstractFixer
 
             // possible trailing comma removed
             $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);
+
             if ($tokens[$prevIndex]->equals(',')) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
             }
@@ -171,6 +175,6 @@ final class IsNullFixer extends AbstractFixer
 
             // nested is_null calls support
             $currIndex = $isNullIndex;
-        }
+        } while (null !== $currIndex);
     }
 }

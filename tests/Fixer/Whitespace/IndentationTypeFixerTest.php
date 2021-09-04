@@ -311,7 +311,7 @@ function myFunction() {
     {
         return array_filter(
             $this->provideMessyWhitespacesCases(),
-            static function (string $key) {
+            static function (string $key): bool {
                 return false === strpos($key, 'mix indentation');
             },
             ARRAY_FILTER_USE_KEY

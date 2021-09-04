@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
@@ -236,7 +236,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideTypeParsingCases
      */
-    public function testTypeParsing(string $input, array $expected): void
+    public function testTypeParsing(array $expected, string $input): void
     {
         $tag = new Annotation([new Line($input)]);
 
@@ -247,200 +247,200 @@ final class AnnotationTest extends TestCase
     {
         return [
             [
+                ['int'],
                 ' * @method int method()',
-                ['int'],
             ],
             [
+                ['int[]'],
                 " * @return int[]\r",
-                ['int[]'],
             ],
             [
+                ['int[]'],
                 " * @return int[]\r\n",
-                ['int[]'],
             ],
             [
-                ' * @method Foo[][] method()',
                 ['Foo[][]'],
+                ' * @method Foo[][] method()',
             ],
             [
-                ' * @method int[] method()',
                 ['int[]'],
+                ' * @method int[] method()',
             ],
             [
-                ' * @method int[]|null method()',
                 ['int[]', 'null'],
+                ' * @method int[]|null method()',
             ],
             [
-                ' * @method int[]|null|?int|array method()',
                 ['int[]', 'null', '?int', 'array'],
+                ' * @method int[]|null|?int|array method()',
             ],
             [
-                ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',
                 ['null', 'Foo\Bar', '\Baz\Bax', 'int[]'],
+                ' * @method null|Foo\Bar|\Baz\Bax|int[] method()',
             ],
             [
-                ' * @method gen<int> method()',
                 ['gen<int>'],
+                ' * @method gen<int> method()',
             ],
             [
-                ' * @method int|gen<int> method()',
                 ['int', 'gen<int>'],
+                ' * @method int|gen<int> method()',
             ],
             [
-                ' * @method \int|\gen<\int, \bool> method()',
                 ['\int', '\gen<\int, \bool>'],
+                ' * @method \int|\gen<\int, \bool> method()',
             ],
             [
-                ' * @method gen<int,  int> method()',
                 ['gen<int,  int>'],
+                ' * @method gen<int,  int> method()',
             ],
             [
-                ' * @method gen<int,  bool|string> method()',
                 ['gen<int,  bool|string>'],
+                ' * @method gen<int,  bool|string> method()',
             ],
             [
-                ' * @method gen<int,  string[]> method() <> a',
                 ['gen<int,  string[]>'],
+                ' * @method gen<int,  string[]> method() <> a',
             ],
             [
-                ' * @method gen<int,  gener<string, bool>> method() foo <a >',
                 ['gen<int,  gener<string, bool>>'],
+                ' * @method gen<int,  gener<string, bool>> method() foo <a >',
             ],
             [
-                ' * @method gen<int,  gener<string, null|bool>> method()',
                 ['gen<int,  gener<string, null|bool>>'],
+                ' * @method gen<int,  gener<string, null|bool>> method()',
             ],
             [
-                ' * @method null|gen<int,  gener<string, bool>>|int|string[] method() foo <a >',
                 ['null', 'gen<int,  gener<string, bool>>', 'int', 'string[]'],
+                ' * @method null|gen<int,  gener<string, bool>>|int|string[] method() foo <a >',
             ],
             [
-                ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
                 ['null', 'gen<int,  gener<string, bool>>', 'int', 'array<int, string>', 'string[]'],
+                ' * @method null|gen<int,  gener<string, bool>>|int|array<int, string>|string[] method() foo <a >',
             ],
             [
-                '/** @return    this */',
                 ['this'],
+                '/** @return    this */',
             ],
             [
-                '/** @return    @this */',
                 ['@this'],
+                '/** @return    @this */',
             ],
             [
-                '/** @return $SELF|int */',
                 ['$SELF', 'int'],
+                '/** @return $SELF|int */',
             ],
             [
-                '/** @var array<string|int, string>',
                 ['array<string|int, string>'],
+                '/** @var array<string|int, string>',
             ],
             [
+                ['int'],
                 " * @return int\n",
-                ['int'],
             ],
             [
+                ['int'],
                 " * @return int\r\n",
-                ['int'],
             ],
             [
-                '/** @var Collection<Foo<Bar>, Foo<Baz>>',
                 ['Collection<Foo<Bar>, Foo<Baz>>'],
+                '/** @var Collection<Foo<Bar>, Foo<Baz>>',
             ],
             [
-                '/** @var int | string',
                 ['int', 'string'],
+                '/** @var int | string',
             ],
             [
-                '/** @var Foo::*',
                 ['Foo::*'],
+                '/** @var Foo::*',
             ],
             [
-                '/** @var Foo::A',
                 ['Foo::A'],
+                '/** @var Foo::A',
             ],
             [
-                '/** @var Foo::A|Foo::B',
                 ['Foo::A', 'Foo::B'],
+                '/** @var Foo::A|Foo::B',
             ],
             [
-                '/** @var Foo::A*',
                 ['Foo::A*'],
+                '/** @var Foo::A*',
             ],
             [
-                '/** @var array<Foo::A*>|null',
                 ['array<Foo::A*>', 'null'],
+                '/** @var array<Foo::A*>|null',
             ],
             [
-                '/** @var null|true|false|1|1.5|\'a\'|"b"',
                 ['null', 'true', 'false', '1', '1.5', "'a'", '"b"'],
+                '/** @var null|true|false|1|1.5|\'a\'|"b"',
             ],
             [
-                '/** @param int | "a" | A<B<C, D>, E<F::*|G[]>> $foo */',
                 ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>'],
+                '/** @param int | "a" | A<B<C, D>, E<F::*|G[]>> $foo */',
             ],
             [
-                '/** @var class-string<Foo> */',
                 ['class-string<Foo>'],
+                '/** @var class-string<Foo> */',
             ],
             [
-                '/** @var A&B */',
                 ['A&B'],
+                '/** @var A&B */',
             ],
             [
-                '/** @var A & B */',
                 ['A & B'],
+                '/** @var A & B */',
             ],
             [
-                '/** @var array{1: bool, 2: bool} */',
                 ['array{1: bool, 2: bool}'],
+                '/** @var array{1: bool, 2: bool} */',
             ],
             [
-                '/** @var array{a: int|string, b?: bool} */',
                 ['array{a: int|string, b?: bool}'],
+                '/** @var array{a: int|string, b?: bool} */',
             ],
             [
-                '/** @var array{\'a\': "a", "b"?: \'b\'} */',
                 ['array{\'a\': "a", "b"?: \'b\'}'],
+                '/** @var array{\'a\': "a", "b"?: \'b\'} */',
             ],
             [
-                '/** @var array { a : int | string , b ? : A<B, C> } */',
                 ['array { a : int | string , b ? : A<B, C> }'],
+                '/** @var array { a : int | string , b ? : A<B, C> } */',
             ],
             [
-                '/** @param callable(string) $function',
                 ['callable(string)'],
+                '/** @param callable(string) $function',
             ],
             [
-                '/** @param callable(string): bool $function',
                 ['callable(string): bool'],
+                '/** @param callable(string): bool $function',
             ],
             [
-                '/** @param callable(array<int, string>, array<int, Foo>): bool $function',
                 ['callable(array<int, string>, array<int, Foo>): bool'],
+                '/** @param callable(array<int, string>, array<int, Foo>): bool $function',
             ],
             [
-                '/** @param array<int, callable(string): bool> $function',
                 ['array<int, callable(string): bool>'],
+                '/** @param array<int, callable(string): bool> $function',
             ],
             [
-                '/** @param callable(string): callable(int) $function',
                 ['callable(string): callable(int)'],
+                '/** @param callable(string): callable(int) $function',
             ],
             [
-                '/** @param callable(string) : callable(int) : bool $function',
                 ['callable(string) : callable(int) : bool'],
+                '/** @param callable(string) : callable(int) : bool $function',
             ],
             [
-                '* @param TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null $x',
                 ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null'],
+                '* @param TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null $x',
             ],
             [
-                '/** @param Closure(string) $function',
                 ['Closure(string)'],
+                '/** @param Closure(string) $function',
             ],
             [
-                '/** @param   array  <  int   , callable  (  string  )  :   bool  > $function',
                 ['array  <  int   , callable  (  string  )  :   bool  >'],
+                '/** @param   array  <  int   , callable  (  string  )  :   bool  > $function',
             ],
         ];
     }

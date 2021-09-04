@@ -122,8 +122,10 @@ abstract class AbstractMachine
             if (!$tokens[$index]->isGivenKind(T_PUBLIC)) {
                 continue;
             }
+
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             $nextToken = $tokens[$nextIndex];
+
             if ($nextToken->isGivenKind(T_STATIC)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
                 $nextToken = $tokens[$nextIndex];
@@ -133,6 +135,7 @@ abstract class AbstractMachine
             if (!$nextToken->isGivenKind(T_FUNCTION)) {
                 continue;
             }
+
             $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             $nextToken = $tokens[$nextIndex];
 
@@ -143,11 +146,13 @@ abstract class AbstractMachine
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
+
             if ($prevToken->isGivenKind(T_STATIC)) {
                 $index = $prevIndex;
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $prevToken = $tokens[$prevIndex];
             }
+
             // skip abstract or already final methods
             if ($prevToken->isGivenKind([T_ABSTRACT, T_FINAL])) {
                 $index = $prevIndex;

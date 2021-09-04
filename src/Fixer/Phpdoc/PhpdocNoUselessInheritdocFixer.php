@@ -25,8 +25,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Remove inheritdoc tags from classy that does not inherit.
- *
- * @author SpacePossum
  */
 final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
 {
@@ -126,7 +124,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
         $count = 0;
         $content = Preg::replaceCallback(
             '#(\h*(?:@{*|{*\h*@)\h*inheritdoc\h*)([^}]*)((?:}*)\h*)#i',
-            static function (array $matches) {
+            static function (array $matches): string {
                 return ' '.$matches[2];
             },
             $tokens[$tokenIndex]->getContent(),

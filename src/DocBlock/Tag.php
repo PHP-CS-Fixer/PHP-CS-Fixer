@@ -19,7 +19,7 @@ use PhpCsFixer\Preg;
 /**
  * This represents a tag, as defined by the proposed PSR PHPDoc standard.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @final
  */

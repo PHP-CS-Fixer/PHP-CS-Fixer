@@ -87,9 +87,9 @@ final class EregToPregFixer extends AbstractFixer
         foreach (self::$functions as $map) {
             // the sequence is the function name, followed by "(" and a quoted string
             $seq = [[T_STRING, $map[0]], '(', [T_CONSTANT_ENCAPSED_STRING]];
-
             $currIndex = 0;
-            while (null !== $currIndex) {
+
+            do {
                 $match = $tokens->findSequence($seq, $currIndex, $end, false);
 
                 // did we find a match?
@@ -112,6 +112,7 @@ final class EregToPregFixer extends AbstractFixer
 
                 // ensure the first parameter is just a string (e.g. has nothing appended)
                 $next = $tokens->getNextMeaningfulToken($match[2]);
+
                 if (null === $next || !$tokens[$next]->equalsAny([',', ')'])) {
                     continue;
                 }
@@ -131,7 +132,7 @@ final class EregToPregFixer extends AbstractFixer
                 // modify function and argument
                 $tokens[$match[0]] = new Token([T_STRING, $map[1]]);
                 $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $quote.$preg.$quote]);
-            }
+            } while (null !== $currIndex);
         }
     }
 
@@ -171,7 +172,7 @@ final class EregToPregFixer extends AbstractFixer
         }
 
         // return the least used delimiter, using the position in the list as a tie breaker
-        uasort($delimiters, static function (array $a, array $b) {
+        uasort($delimiters, static function (array $a, array $b): int {
             if ($a[0] === $b[0]) {
                 return $a[1] <=> $b[1];
             }

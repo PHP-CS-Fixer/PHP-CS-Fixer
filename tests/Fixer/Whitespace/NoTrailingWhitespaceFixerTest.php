@@ -134,18 +134,28 @@ EOT;
                 "<?php      \n   \n    ",
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield [
-                '<?php class Foo {
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php class Foo {
     #[Required]
     public $bar;
 }',
-                '<?php class Foo {
+            '<?php class Foo {
     #[Required]     '.'
     public $bar;
 }',
-            ];
-        }
+        ];
     }
 }

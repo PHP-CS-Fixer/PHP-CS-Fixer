@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -683,7 +684,7 @@ EOT
 
     public function testWrongConfig(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['foo']]);
@@ -733,13 +734,11 @@ EOT
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases(): array
+    public function provideMessyWhitespacesCases(): \Generator
     {
-        return [
-            [
-                "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
-                "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
-            ],
+        yield [
+            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
+            "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
         ];
     }
 
@@ -809,6 +808,7 @@ EOT
                 private int $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 protected ?string $foo;
@@ -818,6 +818,7 @@ EOT
                 protected ?string $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 public ? string $foo;
@@ -827,6 +828,7 @@ EOT
                 public ? string $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 var ? Foo\Bar $foo;
@@ -836,6 +838,7 @@ EOT
                 var ? Foo\Bar $foo, $bar;
             }',
         ];
+
         yield [
             '<?php class Foo {
                 var array $foo;

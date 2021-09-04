@@ -67,7 +67,7 @@ final class DocumentationTest extends TestCase
                     |$
                 )
             /x',
-            function (array $matches) use ($actual) {
+            static function (array $matches) use ($actual): string {
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');
 

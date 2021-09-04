@@ -23,8 +23,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶5.2.
- *
- * @author SpacePossum
  */
 final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 {

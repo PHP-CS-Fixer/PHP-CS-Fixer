@@ -175,8 +175,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
         if ('alpha' === $this->configuration['sort_algorithm']) {
             $types = Utils::stableSort(
                 $types,
-                static function (string $type) { return $type; },
-                static function (string $typeA, string $typeB) {
+                static function (string $type): string { return $type; },
+                static function (string $typeA, string $typeB): int {
                     $regexp = '/^\\??\\\?/';
 
                     return strcasecmp(
@@ -212,7 +212,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
     {
         $types = array_filter(
             Preg::split('/([^|<{\(]+(?:[<{].*[>}]|\(.+\)(?::.+)?)?)/', $types, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
-            static function (string $value) {
+            static function (string $value): bool {
                 return '|' !== $value;
             }
         );

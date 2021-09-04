@@ -554,57 +554,40 @@ $i#3
             ],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php echo ++$foo->{$bar};',
-                '<?php echo $foo->{$bar} += 1;',
-            ];
+        yield [
+            '<?php $i -= 1 ?? 2;',
+        ];
 
-            yield [
-                '<?php echo ++$foo->{$bar->{$baz}};',
-                '<?php echo $foo->{$bar->{$baz}} += 1;',
-            ];
+        yield [
+            '<?php $i += 1 ?? 2;',
+        ];
 
-            yield [
-                '<?php ++$a{$b};',
-                '<?php $a{$b} += 1;',
-            ];
+        yield [
+            '<?php $i -= 1 <=> 2;',
+        ];
 
-            yield [
-                '<?php --$a{$b};',
-                '<?php $a{$b} -= 1;',
-            ];
-        }
+        yield [
+            '<?php $i += 1 <=> 2;',
+        ];
 
-        yield from [
-            [
-                '<?php $i -= 1 ?? 2;',
-            ],
-            [
-                '<?php $i += 1 ?? 2;',
-            ],
-            [
-                '<?php $i -= 1 <=> 2;',
-            ],
-            [
-                '<?php $i += 1 <=> 2;',
-            ],
-            [
-                '<?php ++$a::$b::$c;',
-                '<?php $a::$b::$c += 1;',
-            ],
-            [
-                '<?php ++$a->$b::$c;',
-                '<?php $a->$b::$c += 1;',
-            ],
-            [
-                '<?php ++$a::${$b}::$c;',
-                '<?php $a::${$b}::$c += 1;',
-            ],
-            [
-                '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
-                '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h += 1;',
-            ],
+        yield [
+            '<?php ++$a::$b::$c;',
+            '<?php $a::$b::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->$b::$c;',
+            '<?php $a->$b::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a::${$b}::$c;',
+            '<?php $a::${$b}::$c += 1;',
+        ];
+
+        yield [
+            '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
+            '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h += 1;',
         ];
     }
 
@@ -623,6 +606,38 @@ $i#3
             [
                 '<?php $i += 1_0;',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php echo ++$foo->{$bar};',
+            '<?php echo $foo->{$bar} += 1;',
+        ];
+
+        yield [
+            '<?php echo ++$foo->{$bar->{$baz}};',
+            '<?php echo $foo->{$bar->{$baz}} += 1;',
+        ];
+
+        yield [
+            '<?php ++$a{$b};',
+            '<?php $a{$b} += 1;',
+        ];
+
+        yield [
+            '<?php --$a{$b};',
+            '<?php $a{$b} -= 1;',
         ];
     }
 }

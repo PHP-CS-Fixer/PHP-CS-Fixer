@@ -471,7 +471,7 @@ class Example
         }
         unset($element);
 
-        usort($elements, function (array $a, array $b) {
+        usort($elements, function (array $a, array $b): int {
             if ($a['position'] === $b['position']) {
                 return $this->sortGroupElements($a, $b);
             }

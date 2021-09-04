@@ -135,9 +135,9 @@ final class FunctionsAnalyzer
     /**
      * @return ArgumentAnalysis[]
      */
-    public function getFunctionArguments(Tokens $tokens, int $methodIndex): array
+    public function getFunctionArguments(Tokens $tokens, int $functionIndex): array
     {
-        $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
+        $argumentsStart = $tokens->getNextTokenOfKind($functionIndex, ['(']);
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
         $argumentAnalyzer = new ArgumentsAnalyzer();
         $arguments = [];

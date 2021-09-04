@@ -158,7 +158,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             while (!$tokens[$next]->equalsAny([',', ')'])) {
                 $blockType = Tokens::detectBlockType($tokens[$next]);
 
-                if ($blockType) {
+                if (null !== $blockType) {
                     $next = $tokens->findBlockEnd($blockType['type'], $next);
                 }
 

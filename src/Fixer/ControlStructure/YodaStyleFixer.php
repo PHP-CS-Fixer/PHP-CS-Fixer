@@ -30,7 +30,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @author Bram Gotink <bram@gotink.me>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -179,8 +178,10 @@ return $foo === count($bar);
     {
         ++$index;
         $count = \count($tokens);
+
         while ($index < $count) {
             $token = $tokens[$index];
+
             if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
                 ++$index;
 
@@ -192,6 +193,7 @@ return $foo === count($bar);
             }
 
             $block = Tokens::detectBlockType($token);
+
             if (null === $block) {
                 ++$index;
 
@@ -230,6 +232,7 @@ return $foo === count($bar);
 
         while (0 <= $index) {
             $token = $tokens[$index];
+
             if ($token->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
                 --$index;
 
@@ -241,6 +244,7 @@ return $foo === count($bar);
             }
 
             $block = Tokens::detectBlockType($token);
+
             if (null === $block) {
                 --$index;
                 $nonBlockFound = true;
@@ -276,6 +280,7 @@ return $foo === count($bar);
             }
 
             $fixableCompareInfo = $this->getCompareFixableInfo($tokens, $i, $yoda);
+
             if (null === $fixableCompareInfo) {
                 continue;
             }
@@ -304,7 +309,7 @@ return $foo === count($bar);
      * If the left-hand side and right-hand side of the given comparison are
      * swapped, this function runs recursively on the previous left-hand-side.
      *
-     * @return int a upper bound for all non-fixed comparisons
+     * @return int an upper bound for all non-fixed comparisons
      */
     private function fixTokensCompare(
         Tokens $tokens,
@@ -316,6 +321,7 @@ return $foo === count($bar);
     ): int {
         $type = $tokens[$compareOperatorIndex]->getId();
         $content = $tokens[$compareOperatorIndex]->getContent();
+
         if (\array_key_exists($type, $this->candidatesMap)) {
             $tokens[$compareOperatorIndex] = clone $this->candidatesMap[$type];
         } elseif (\array_key_exists($content, $this->candidatesMap)) {
@@ -364,7 +370,6 @@ return $foo === count($bar);
         }
 
         $strict = $this->configuration['always_move_variable'];
-
         $leftSideIsVariable = $this->isVariable($tokens, $left['start'], $left['end'], $strict);
         $rightSideIsVariable = $this->isVariable($tokens, $right['start'], $right['end'], $strict);
 
@@ -536,6 +541,7 @@ return $foo === count($bar);
         }
 
         $expectString = false;
+
         while ($index <= $end) {
             $current = $tokens[$index];
             if ($current->isComment() || $current->isWhitespace() || $tokens->isEmptyAt($index)) {

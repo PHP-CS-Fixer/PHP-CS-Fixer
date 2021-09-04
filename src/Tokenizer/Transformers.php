@@ -40,7 +40,7 @@ final class Transformers
     {
         $this->registerBuiltInTransformers();
 
-        usort($this->items, static function (TransformerInterface $a, TransformerInterface $b) {
+        usort($this->items, static function (TransformerInterface $a, TransformerInterface $b): int {
             return $b->getPriority() <=> $a->getPriority();
         });
     }

@@ -23,9 +23,6 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
-/**
- * @author SpacePossum
- */
 final class ReturnAssignmentFixer extends AbstractFixer
 {
     /**
@@ -180,7 +177,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue;
             }
 
-            // test if there this is anything in the function body that might
+            // test if there is anything in the function body that might
             // change global state or indirect changes (like through references, eval, etc.)
 
             if ($tokens[$index]->isGivenKind($riskyKinds)) {

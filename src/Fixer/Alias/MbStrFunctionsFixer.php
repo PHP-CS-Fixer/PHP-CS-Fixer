@@ -57,7 +57,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
 
         $this->functions = array_filter(
             self::$functionsMap,
-            static function (array $mapping) {
+            static function (array $mapping): bool {
                 return \function_exists($mapping['alternativeName']) && (new \ReflectionFunction($mapping['alternativeName']))->isInternal();
             }
         );
@@ -109,7 +109,7 @@ $a = substr_count($a, $b);
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         foreach ($this->functions as $functionIdentity => $functionReplacement) {
             $currIndex = 0;
-            while (null !== $currIndex) {
+            do {
                 // try getting function reference and translate boundaries for humans
                 $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
                 if (null === $boundaries) {
@@ -127,7 +127,7 @@ $a = substr_count($a, $b);
                 $currIndex = $openParenthesis;
 
                 $tokens[$functionName] = new Token([T_STRING, $functionReplacement['alternativeName']]);
-            }
+            } while (null !== $currIndex);
         }
     }
 }

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
@@ -297,13 +299,9 @@ final class FixerFactoryTest extends TestCase
         $fixer = $this->createFixerDouble('non_configurable');
         $factory->registerFixer($fixer, false);
 
-        $this->expectException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
-        );
+        $this->expectException(InvalidFixerConfigurationException::class);
 
-        $this->expectExceptionMessage(
-            '[non_configurable] Is not configurable.'
-        );
+        $this->expectExceptionMessage('[non_configurable] Is not configurable.');
 
         $factory->useRuleSet(new RuleSet([
             'non_configurable' => ['bar' => 'baz'],
@@ -319,14 +317,12 @@ final class FixerFactoryTest extends TestCase
     {
         $factory = new FixerFactory();
 
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
+        $fixer = $this->prophesize(ConfigurableFixerInterface::class);
         $fixer->getName()->willReturn('foo');
 
         $factory->registerFixer($fixer->reveal(), false);
 
-        $this->expectException(
-            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class
-        );
+        $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->expectExceptionMessage(
             '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
@@ -349,7 +345,7 @@ final class FixerFactoryTest extends TestCase
 
     public function testConfigurableFixerIsConfigured(): void
     {
-        $fixer = $this->prophesize(\PhpCsFixer\Fixer\ConfigurableFixerInterface::class);
+        $fixer = $this->prophesize(ConfigurableFixerInterface::class);
         $fixer->getName()->willReturn('foo');
         $fixer->configure(['bar' => 'baz'])->shouldBeCalled();
 

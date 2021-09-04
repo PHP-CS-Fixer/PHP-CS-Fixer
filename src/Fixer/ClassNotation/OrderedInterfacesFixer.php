@@ -180,7 +180,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 $interfaces[$interfaceIndex]['originalIndex'] = $interfaceIndex;
             }
 
-            usort($interfaces, function (array $first, array $second) {
+            usort($interfaces, function (array $first, array $second): int {
                 $score = self::ORDER_LENGTH === $this->configuration[self::OPTION_ORDER]
                     ? \strlen($first['normalized']) - \strlen($second['normalized'])
                     : strcasecmp($first['normalized'], $second['normalized']);

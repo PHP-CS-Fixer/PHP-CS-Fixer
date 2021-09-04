@@ -607,22 +607,33 @@ else?><?php echo 5;',
                     };',
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            $cases = [
-                '$bar = $foo1 ?? throw new \Exception($e);',
-                '$callable = fn() => throw new Exception();',
-                '$value = $falsableValue ?: throw new InvalidArgumentException();',
-                '$value = !empty($array)
+    /**
+     * @dataProvider provideNegativePhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testNegativePhp80Cases(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideNegativePhp80Cases(): \Generator
+    {
+        $cases = [
+            '$bar = $foo1 ?? throw new \Exception($e);',
+            '$callable = fn() => throw new Exception();',
+            '$value = $falsableValue ?: throw new InvalidArgumentException();',
+            '$value = !empty($array)
                     ? reset($array)
                     : throw new InvalidArgumentException();',
-                '$a = $condition && throw new Exception();',
-                '$a = $condition || throw new Exception();',
-                '$a = $condition and throw new Exception();',
-                '$a = $condition or throw new Exception();',
-            ];
+            '$a = $condition && throw new Exception();',
+            '$a = $condition || throw new Exception();',
+            '$a = $condition and throw new Exception();',
+            '$a = $condition or throw new Exception();',
+        ];
 
-            $template = '<?php
+        $template = '<?php
                 if ($foo) {
                     %s
                 } else {
@@ -630,9 +641,8 @@ else?><?php echo 5;',
                 }
             ';
 
-            foreach ($cases as $index => $case) {
-                yield [sprintf('PHP8 Negative case %d', $index) => sprintf($template, $case)];
-            }
+        foreach ($cases as $index => $case) {
+            yield [sprintf('PHP8 Negative case %d', $index) => sprintf($template, $case)];
         }
     }
 
@@ -700,9 +710,8 @@ else?><?php echo 5;',
         $this->doTest($expected, $input);
     }
 
-    public function provideConditionsWithoutBracesCases(): array
+    public function provideConditionsWithoutBracesCases(): \Generator
     {
-        $cases = [];
         $statements = [
             'die;',
             'throw new Exception($i);',
@@ -713,59 +722,11 @@ else?><?php echo 5;',
             'foreach($a as $b){throw new Exception($i);}',
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            $statements[] = 'throw new class extends Exception{};';
-            $statements[] = 'throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };';
-        }
-
-        if (\PHP_VERSION_ID >= 80000) {
-            $statements[] = '$b = $a ?? throw new Exception($i);';
-        }
-
-        $ifTemplate = '<?php
-            if ($a === false)
-            {
-                if ($v) %s
-            }
-            else
-                $ret .= $value;
-
-            return $ret;'
-        ;
-
-        $ifElseIfTemplate = '<?php
-            if ($a === false)
-            {
-                if ($v) { $ret = "foo"; }
-                elseif($a)
-                    %s
-            }
-            else
-                $ret .= $value;
-
-            return $ret;'
-        ;
-
-        $ifElseTemplate = '<?php
-            if ($a === false)
-            {
-                if ($v) { $ret = "foo"; }
-                else
-                    %s
-            }
-            else
-                $ret .= $value;
-
-            return $ret;'
-        ;
-
         foreach ($statements as $statement) {
-            $cases[] = [sprintf($ifTemplate, $statement)];
-            $cases[] = [sprintf($ifElseTemplate, $statement)];
-            $cases[] = [sprintf($ifElseIfTemplate, $statement)];
+            yield from $this->generateConditionsWithoutBracesCase($statement);
         }
 
-        $cases[] = [
+        yield [
             '<?php
                 if ($a === false)
                 {
@@ -785,8 +746,35 @@ else?><?php echo 5;',
 
                 return $ret;',
         ];
+    }
 
-        return $cases;
+    /**
+     * @dataProvider provideConditionsWithoutBraces70Cases
+     * @requires PHP 7.0
+     */
+    public function testConditionsWithoutBraces70(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideConditionsWithoutBraces70Cases(): \Generator
+    {
+        yield from $this->generateConditionsWithoutBracesCase('throw new class extends Exception{};');
+        yield from $this->generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
+    }
+
+    /**
+     * @dataProvider provideConditionsWithoutBraces80Cases
+     * @requires PHP 8.0
+     */
+    public function testConditionsWithoutBraces80(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideConditionsWithoutBraces80Cases(): \Generator
+    {
+        yield from $this->generateConditionsWithoutBracesCase('$b = $a ?? throw new Exception($i);');
     }
 
     /**
@@ -799,8 +787,8 @@ else?><?php echo 5;',
         $reflection = new \ReflectionObject($this->fixer);
         $method = $reflection->getMethod('isInConditionWithoutBraces');
         $method->setAccessible(true);
-
         $tokens = Tokens::fromCode($input);
+
         foreach ($indexes as $index => $expected) {
             static::assertSame(
                 $expected,
@@ -961,6 +949,50 @@ else?><?php echo 5;',
                 ',
             ],
         ];
+    }
+
+    private function generateConditionsWithoutBracesCase(string $statement): \Generator
+    {
+        $ifTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        $ifElseIfTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) { $ret = "foo"; }
+                elseif($a)
+                    %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        $ifElseTemplate = '<?php
+            if ($a === false)
+            {
+                if ($v) { $ret = "foo"; }
+                else
+                    %s
+            }
+            else
+                $ret .= $value;
+
+            return $ret;'
+        ;
+
+        yield [sprintf($ifTemplate, $statement)];
+        yield [sprintf($ifElseTemplate, $statement)];
+        yield [sprintf($ifElseIfTemplate, $statement)];
     }
 
     /**

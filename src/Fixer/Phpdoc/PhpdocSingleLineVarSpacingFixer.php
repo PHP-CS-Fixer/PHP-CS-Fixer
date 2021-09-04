@@ -24,8 +24,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for part of rule defined in PSR5 ¶7.22.
- *
- * @author SpacePossum
  */
 final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
 {

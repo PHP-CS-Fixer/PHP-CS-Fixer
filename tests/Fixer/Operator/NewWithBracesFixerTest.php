@@ -246,23 +246,6 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php $a = new $b{$c}();',
-                '<?php $a = new $b{$c};',
-            ];
-
-            yield [
-                '<?php $a = new $b{$c}{0}{1}() ?>',
-                '<?php $a = new $b{$c}{0}{1} ?>',
-            ];
-
-            yield [
-                '<?php $a = new $b{$c}[1]{0}[2]();',
-                '<?php $a = new $b{$c}[1]{0}[2];',
-            ];
-        }
-
         yield from [
             [
                 '<?php
@@ -310,6 +293,33 @@ final class NewWithBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php $a = new $b{$c}();',
+            '<?php $a = new $b{$c};',
+        ];
+
+        yield [
+            '<?php $a = new $b{$c}{0}{1}() ?>',
+            '<?php $a = new $b{$c}{0}{1} ?>',
+        ];
+
+        yield [
+            '<?php $a = new $b{$c}[1]{0}[2]();',
+            '<?php $a = new $b{$c}[1]{0}[2];',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
@@ -340,9 +350,9 @@ $a = new ($foo."ar");',
 
         yield [
             '<?php
-                    $bar1 = new $foo[0]?->bar();
-                    $bar2 = new $foo[0][1]?->bar();
-                ',
+                $bar1 = new $foo[0]?->bar();
+                $bar2 = new $foo[0][1]?->bar();
+            ',
         ];
     }
 }

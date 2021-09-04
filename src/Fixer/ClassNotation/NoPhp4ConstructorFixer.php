@@ -87,7 +87,7 @@ class Foo
         for ($i = 0; $i < $numClasses; ++$i) {
             $index = $classes[$i];
 
-            // is it an an anonymous class definition?
+            // is it an anonymous class definition?
             if ($tokensAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
@@ -109,6 +109,7 @@ class Foo
 
                     // the index points to the { of a block-namespace
                     $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nspIndex);
+
                     if ($index < $nspEnd) {
                         // the class is inside a block namespace, skip other classes that might be in it
                         for ($j = $i + 1; $j < $numClasses; ++$j) {
@@ -168,6 +169,7 @@ class Foo
 
         // does the PHP4-constructor only call $this->__construct($args, ...)?
         [$sequences, $case] = $this->getWrapperMethodSequence($tokens, '__construct', $php4['startIndex'], $php4['bodyIndex']);
+
         foreach ($sequences as $seq) {
             if (null !== $tokens->findSequence($seq, $php4['bodyIndex'] - 1, $php4['endIndex'], $case)) {
                 // good, delete it!
@@ -181,6 +183,7 @@ class Foo
 
         // does __construct only call the PHP4-constructor (with the same args)?
         [$sequences, $case] = $this->getWrapperMethodSequence($tokens, $className, $php4['startIndex'], $php4['bodyIndex']);
+
         foreach ($sequences as $seq) {
             if (null !== $tokens->findSequence($seq, $php5['bodyIndex'] - 1, $php5['endIndex'], $case)) {
                 // that was a weird choice, but we can safely delete it and...
@@ -316,6 +319,7 @@ class Foo
 
             // parse method parameters, if any
             $index = $startIndex;
+
             while (true) {
                 // find the next variable name
                 $index = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
@@ -382,6 +386,7 @@ class Foo
         $modifiers = [];
 
         $prevBlock = $tokens->getPrevMeaningfulToken($function[0]);
+
         while (null !== $prevBlock && $tokens[$prevBlock]->isGivenKind($possibleModifiers)) {
             $modifiers[$tokens[$prevBlock]->getId()] = $prevBlock;
             $prevBlock = $tokens->getPrevMeaningfulToken($prevBlock);

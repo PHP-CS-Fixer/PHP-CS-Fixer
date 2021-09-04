@@ -21,9 +21,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class CombineConsecutiveUnsetsFixer extends AbstractFixer
 {
     /**
@@ -122,7 +119,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
      * * closing brace index
      * * end semicolon index
      *
-     * Or the index to where the method looked for an call.
+     * Or the index to where the method looked for a call.
      *
      * @return int|int[]
      */

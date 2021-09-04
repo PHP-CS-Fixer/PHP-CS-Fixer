@@ -19,8 +19,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
- *
- * @author SpacePossum
  */
 abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
 {

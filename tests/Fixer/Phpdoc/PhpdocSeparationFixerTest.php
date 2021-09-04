@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -406,7 +406,7 @@ namespace Foo;
  * @subpackage Foo\Bar
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @copyright Foo Bar
  * @license MIT
  */
@@ -428,7 +428,7 @@ namespace Foo;
  * @subpackage Foo\Bar
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @copyright Foo Bar
  *
@@ -455,7 +455,7 @@ namespace Foo;
 *    @internal
 *
  *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-    *@author Graham Campbell <graham@alt-three.com>
+    *@author Graham Campbell <hello@gjcampbell.co.uk>
  */
 class Bar {}
 
@@ -476,7 +476,7 @@ namespace Foo;
  *          @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
      *
                              *
-    *@author Graham Campbell <graham@alt-three.com>
+    *@author Graham Campbell <hello@gjcampbell.co.uk>
  */
 class Bar {}
 

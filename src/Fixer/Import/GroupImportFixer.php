@@ -81,24 +81,24 @@ final class GroupImportFixer extends AbstractFixer
         }
 
         $allNamespaceAndType = array_map(
-            function (NamespaceUseAnalysis $useDeclaration) {
+            function (NamespaceUseAnalysis $useDeclaration): string {
                 return $this->getNamespaceNameWithSlash($useDeclaration).$useDeclaration->getType();
             },
             $useDeclarations
         );
 
-        $sameNamespaces = array_filter(array_count_values($allNamespaceAndType), function (int $count) {
+        $sameNamespaces = array_filter(array_count_values($allNamespaceAndType), static function (int $count): bool {
             return $count > 1;
         });
         $sameNamespaces = array_keys($sameNamespaces);
 
-        $sameNamespaceAnalysis = array_filter($useDeclarations, function (NamespaceUseAnalysis $useDeclaration) use ($sameNamespaces) {
+        $sameNamespaceAnalysis = array_filter($useDeclarations, function (NamespaceUseAnalysis $useDeclaration) use ($sameNamespaces): bool {
             $namespaceNameAndType = $this->getNamespaceNameWithSlash($useDeclaration).$useDeclaration->getType();
 
             return \in_array($namespaceNameAndType, $sameNamespaces, true);
         });
 
-        usort($sameNamespaceAnalysis, function (NamespaceUseAnalysis $a, NamespaceUseAnalysis $b) {
+        usort($sameNamespaceAnalysis, function (NamespaceUseAnalysis $a, NamespaceUseAnalysis $b): int {
             $namespaceA = $this->getNamespaceNameWithSlash($a);
             $namespaceB = $this->getNamespaceNameWithSlash($b);
 

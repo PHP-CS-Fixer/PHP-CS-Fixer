@@ -34,7 +34,7 @@ final class CommandTest extends TestCase
      */
     public function testCommandHasNameConst(Command $command): void
     {
-        static::assertNotNull($command->getDefaultName());
+        static::assertNotNull($command::getDefaultName());
     }
 
     public function provideCommandHasNameConstCases(): array
@@ -42,7 +42,7 @@ final class CommandTest extends TestCase
         $application = new Application();
         $commands = $application->all();
 
-        $names = array_filter(array_keys($commands), static function (string $name) use ($commands) {
+        $names = array_filter(array_keys($commands), static function (string $name) use ($commands): bool {
             return
                 // is not an alias
                 !\in_array($name, $commands[$name]->getAliases(), true)

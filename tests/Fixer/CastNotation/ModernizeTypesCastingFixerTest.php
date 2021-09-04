@@ -170,13 +170,23 @@ OVERRIDDEN;
                 '<?php $foo = strval($x + $y)[0];',
             ],
         ];
+    }
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php $foo = ((string) ($x + $y)){0};',
-                '<?php $foo = strval($x + $y){0};',
-            ];
-        }
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield [
+            '<?php $foo = ((string) ($x + $y)){0};',
+            '<?php $foo = strval($x + $y){0};',
+        ];
     }
 
     /**

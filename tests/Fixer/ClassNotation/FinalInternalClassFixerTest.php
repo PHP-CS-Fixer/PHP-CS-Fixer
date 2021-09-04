@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -144,10 +145,6 @@ abstract class class4 {}
     }
 
     /**
-     * @param string $expected PHP source code
-     * @param string $input    PHP source code
-     * @param array  $config   Fixer configuration
-     *
      * @dataProvider provideFixWithConfigCases
      */
     public function testFixWithConfig(string $expected, string $input, array $config): void
@@ -297,7 +294,7 @@ $a = new class (){};',
 
     public function testConfigureSameAnnotationInBothLists(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
             sprintf('#^%s$#', preg_quote('[final_internal_class] Annotation cannot be used in both the include and exclude list, got duplicates: "internal123".', '#'))
         );

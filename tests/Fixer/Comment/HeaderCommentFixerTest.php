@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
@@ -571,7 +572,7 @@ echo 1;'
      */
     public function testMisconfiguration(?array $configuration, string $exceptionMessage): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[header_comment\\] {$exceptionMessage}$#");
 
         $this->fixer->configure($configuration);
@@ -683,7 +684,7 @@ echo 1;'
 
     public function testWithoutConfiguration(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException::class);
+        $this->expectException(RequiredFixerConfigurationException::class);
 
         $this->doTest('<?php echo 1;');
     }

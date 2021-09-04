@@ -77,7 +77,7 @@ final class DocumentationGenerator
             'Phpdoc' => 'PHPDoc',
         ];
 
-        usort($fixers, function (FixerInterface $a, FixerInterface $b) {
+        usort($fixers, static function (FixerInterface $a, FixerInterface $b): int {
             return strcmp(\get_class($a), \get_class($b));
         });
 
@@ -131,7 +131,7 @@ RST;
     {
         return $this->getFixersDocumentationDirectoryPath().'/'.Preg::replaceCallback(
             '/^.*\\\\(.+)\\\\(.+)Fixer$/',
-            function (array $matches) {
+            static function (array $matches): string {
                 return Utils::camelCaseToUnderscore($matches[1]).'/'.Utils::camelCaseToUnderscore($matches[2]);
             },
             \get_class($fixer)
@@ -224,8 +224,15 @@ RST;
                 }
 
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
-                $allowedKind = 'Allowed values';
-                if (null !== $allowed) {
+
+                if (null === $allowed) {
+                    $allowedKind = 'Allowed types';
+                    $allowed = array_map(static function ($value): string {
+                        return '``'.$value.'``';
+                    }, $option->getAllowedTypes());
+                } else {
+                    $allowedKind = 'Allowed values';
+
                     foreach ($allowed as &$value) {
                         if ($value instanceof AllowedValueSubset) {
                             $value = 'a subset of ``'.HelpCommand::toString($value->getAllowedValues()).'``';
@@ -233,17 +240,10 @@ RST;
                             $value = '``'.HelpCommand::toString($value).'``';
                         }
                     }
-                } else {
-                    $allowedKind = 'Allowed types';
-                    $allowed = array_map(function ($value) {
-                        return '``'.$value.'``';
-                    }, $option->getAllowedTypes());
                 }
 
-                if (null !== $allowed) {
-                    $allowed = implode(', ', $allowed);
-                    $optionInfo .= "\n\n{$allowedKind}: {$allowed}";
-                }
+                $allowed = implode(', ', $allowed);
+                $optionInfo .= "\n\n{$allowedKind}: {$allowed}";
 
                 if ($option->hasDefault()) {
                     $default = HelpCommand::toString($option->getDefault());

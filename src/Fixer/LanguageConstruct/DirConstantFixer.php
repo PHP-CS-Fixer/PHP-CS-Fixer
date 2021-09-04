@@ -63,7 +63,8 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $currIndex = 0;
-        while (null !== $currIndex) {
+
+        do {
             $boundaries = $this->find('dirname', $tokens, $currIndex, $tokens->count() - 1);
             if (null === $boundaries) {
                 return;
@@ -78,12 +79,14 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
 
             $fileCandidateRightIndex = $tokens->getPrevMeaningfulToken($closeParenthesis);
             $trailingCommaIndex = null;
+
             if ($tokens[$fileCandidateRightIndex]->equals(',')) {
                 $trailingCommaIndex = $fileCandidateRightIndex;
                 $fileCandidateRightIndex = $tokens->getPrevMeaningfulToken($fileCandidateRightIndex);
             }
 
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
+
             if (!$fileCandidateRight->isGivenKind(T_FILE)) {
                 continue;
             }
@@ -98,6 +101,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             // get rid of root namespace when it used
             $namespaceCandidateIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
             $namespaceCandidate = $tokens[$namespaceCandidateIndex];
+
             if ($namespaceCandidate->isGivenKind(T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
                 $tokens->clearAt($namespaceCandidateIndex);
@@ -129,6 +133,6 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             // replace constant and remove function name
             $tokens[$fileCandidateLeftIndex] = new Token([T_DIR, '__DIR__']);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionNameIndex);
-        }
+        } while (null !== $currIndex);
     }
 }

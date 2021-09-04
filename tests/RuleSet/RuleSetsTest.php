@@ -141,7 +141,7 @@ Integration of %s.
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        return array_map(static function (string $setDefinitionName) {
+        return array_map(static function (string $setDefinitionName): array {
             return [$setDefinitionName];
         }, $setDefinitionNames);
     }
@@ -167,11 +167,11 @@ Integration of %s.
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function (string $setDefinitionName) {
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static function (string $setDefinitionName): bool {
             return 1 === preg_match('/^@PHPUnit\d{2}Migration:risky$/', $setDefinitionName);
         });
 
-        return array_map(static function (string $setDefinitionName) {
+        return array_map(static function (string $setDefinitionName): array {
             return [$setDefinitionName];
         }, $setDefinitionPHPUnitMigrationNames);
     }
@@ -196,7 +196,7 @@ Integration of %s.
 
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            static function (string $version) use ($maximumVersionForRuleset) {
+            static function (string $version) use ($maximumVersionForRuleset): bool {
                 return strcmp($maximumVersionForRuleset, $version) >= 0;
             }
         );

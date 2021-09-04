@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 /**
- * @author SpacePossum
- *
  * @internal
  */
 final class DescribeNameNotFoundException extends \InvalidArgumentException

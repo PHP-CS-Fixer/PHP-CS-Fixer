@@ -154,7 +154,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     private function getColonIndicesForSwitch(Tokens $tokens, int $switchIndex): array
     {
         return array_map(
-            static function (CaseAnalysis $caseAnalysis) {
+            static function (CaseAnalysis $caseAnalysis): int {
                 return $caseAnalysis->getColonIndex();
             },
             (new SwitchAnalyzer())->getSwitchAnalysis($tokens, $switchIndex)->getCases()

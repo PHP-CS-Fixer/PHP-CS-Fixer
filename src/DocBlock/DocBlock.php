@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * It internally splits it up into "lines" that we can manipulate.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @final
  */
@@ -161,7 +161,7 @@ final class DocBlock
 
         $usefulLines = array_filter(
             $this->lines,
-            static function (Line $line) {
+            static function (Line $line): bool {
                 return $line->containsUsefulContent();
             }
         );

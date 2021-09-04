@@ -157,9 +157,6 @@ final class OrderedTraitsFixer extends AbstractFixer
      */
     private function sort(Tokens $tokens, array $elements): void
     {
-        /**
-         * @return string
-         */
         $toTraitName = static function (Tokens $use): string {
             $string = '';
 
@@ -177,7 +174,7 @@ final class OrderedTraitsFixer extends AbstractFixer
         };
 
         $sortedElements = $elements;
-        uasort($sortedElements, static function (Tokens $useA, Tokens $useB) use ($toTraitName) {
+        uasort($sortedElements, static function (Tokens $useA, Tokens $useB) use ($toTraitName): int {
             return strcasecmp($toTraitName($useA), $toTraitName($useB));
         });
 

@@ -331,12 +331,12 @@ final class ConfigurationResolver
 
             if (false === $this->getRiskyAllowed()) {
                 $riskyFixers = array_map(
-                    static function (FixerInterface $fixer) {
+                    static function (FixerInterface $fixer): string {
                         return $fixer->getName();
                     },
                     array_filter(
                         $this->fixers,
-                        static function (FixerInterface $fixer) {
+                        static function (FixerInterface $fixer): bool {
                             return $fixer->isRisky();
                         }
                     )
@@ -375,7 +375,7 @@ final class ConfigurationResolver
                 $this->path = $this->options['path'];
             } else {
                 $this->path = array_map(
-                    static function (string $rawPath) use ($cwd, $filesystem) {
+                    static function (string $rawPath) use ($cwd, $filesystem): string {
                         $path = trim($rawPath);
 
                         if ('' === $path) {
@@ -693,7 +693,7 @@ final class ConfigurationResolver
         $fixers = $this->createFixerFactory()->getFixers();
 
         /** @var string[] $availableFixers */
-        $availableFixers = array_map(static function (FixerInterface $fixer) {
+        $availableFixers = array_map(static function (FixerInterface $fixer): string {
             return $fixer->getName();
         }, $fixers);
 
@@ -873,7 +873,7 @@ final class ConfigurationResolver
 
             return new \CallbackFilterIterator(
                 new \IteratorIterator($nestedFinder),
-                static function (\SplFileInfo $current) use ($pathsByType) {
+                static function (\SplFileInfo $current) use ($pathsByType): bool {
                     $currentRealPath = $current->getRealPath();
 
                     if (\in_array($currentRealPath, $pathsByType['file'], true)) {

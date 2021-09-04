@@ -36,8 +36,6 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * Make sure there is one blank line above and below class elements.
  *
  * The exception is when an element is the first or last item in a 'classy'.
- *
- * @author SpacePossum
  */
 final class ClassAttributesSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -208,7 +206,7 @@ class Sample
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import` => `none|one` values.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([static function (array $option) {
+                ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $type => $spacing) {
                         $supportedTypes = ['const', 'method', 'property', 'trait_import'];
 
@@ -501,19 +499,19 @@ class Sample
 
     private function getFirstTokenIndexOfClassElement(Tokens $tokens, array $class, array $element): int
     {
-        static $methodAttr = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
+        static $modifierTypes = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
 
         $firstElementAttributeIndex = $element['index'];
 
-        while ($firstElementAttributeIndex > $class['open']) {
+        do {
             $nonWhiteAbove = $tokens->getPrevMeaningfulToken($firstElementAttributeIndex);
 
-            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($methodAttr)) {
+            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($modifierTypes)) {
                 $firstElementAttributeIndex = $nonWhiteAbove;
             } else {
                 break;
             }
-        }
+        } while ($firstElementAttributeIndex > $class['open']);
 
         return $firstElementAttributeIndex;
     }

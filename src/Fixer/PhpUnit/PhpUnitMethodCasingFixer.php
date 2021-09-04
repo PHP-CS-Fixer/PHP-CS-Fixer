@@ -190,7 +190,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
                 continue;
             }
 
-            $newLineContent = Preg::replaceCallback('/(@depends\s+)(.+)(\b)/', function (array $matches) {
+            $newLineContent = Preg::replaceCallback('/(@depends\s+)(.+)(\b)/', function (array $matches): string {
                 return sprintf(
                     '%s%s%s',
                     $matches[1],

@@ -128,7 +128,7 @@ final class CacheTest extends TestCase
             'hashes' => [],
         ];
 
-        return array_map(static function (string $missingKey) use ($data) {
+        return array_map(static function (string $missingKey) use ($data): array {
             unset($data[$missingKey]);
 
             return [
@@ -202,6 +202,7 @@ final class CacheTest extends TestCase
         $this->expectException(
             \UnexpectedValueException::class
         );
+
         $this->expectExceptionMessage(
             'Can not encode cache signature to JSON, error: "Malformed UTF-8 characters, possibly incorrectly encoded". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.'
         );

@@ -149,7 +149,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $importedOriginalClassesMap = [];
         $currIndex = 0;
 
-        while (null !== $currIndex) {
+        while (true) {
             $currIndex = $tokens->getNextTokenOfKind($currIndex, [[T_STRING]]);
 
             if (null === $currIndex) {
@@ -157,6 +157,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
+
             if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON])) {
                 continue;
             }

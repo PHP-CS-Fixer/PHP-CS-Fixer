@@ -18,9 +18,6 @@ use PhpCsFixer\Diff\Differ;
 use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
 use PhpCsFixer\Preg;
 
-/**
- * @author SpacePossum
- */
 final class UnifiedDiffer implements DifferInterface
 {
     /**

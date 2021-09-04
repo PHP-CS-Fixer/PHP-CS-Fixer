@@ -29,9 +29,8 @@ use PhpCsFixer\Preg;
 /**
  * Case sensitive tag replace fixer (does not process inline tags like {@inheritdoc}).
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  */
 final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements ConfigurableFixerInterface
 {

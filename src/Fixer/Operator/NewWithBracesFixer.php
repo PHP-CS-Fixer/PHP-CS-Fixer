@@ -121,7 +121,7 @@ final class NewWithBracesFixer extends AbstractFixer
 
             // entrance into array index syntax - need to look for exit
             while ($nextToken->equals('[') || $nextToken->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
-                $nextIndex = $tokens->findBlockEnd($tokens->detectBlockType($nextToken)['type'], $nextIndex) + 1;
+                $nextIndex = $tokens->findBlockEnd(Tokens::detectBlockType($nextToken)['type'], $nextIndex) + 1;
                 $nextToken = $tokens[$nextIndex];
             }
 

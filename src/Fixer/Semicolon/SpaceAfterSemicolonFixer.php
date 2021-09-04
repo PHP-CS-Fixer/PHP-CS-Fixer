@@ -26,9 +26,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class SpaceAfterSemicolonFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**

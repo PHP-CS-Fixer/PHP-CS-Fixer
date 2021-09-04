@@ -67,7 +67,7 @@ final class PregTest extends TestCase
      */
     public function testPatternValidation(string $pattern, ?int $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
-        $setup = function () use ($expectedException, $expectedMessage) {
+        $setup = function () use ($expectedException, $expectedMessage): bool {
             $i = 0;
 
             if (null !== $expectedException) {
@@ -107,7 +107,7 @@ final class PregTest extends TestCase
      */
     public function testPatternsValidation(string $pattern, ?int $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
-        $setup = function () use ($expectedException, $expectedMessage) {
+        $setup = function () use ($expectedException, $expectedMessage): bool {
             $i = 0;
 
             if (null !== $expectedException) {
@@ -203,7 +203,7 @@ final class PregTest extends TestCase
      */
     public function testReplaceCallback($pattern, $subject): void
     {
-        $callback = static function (array $x) { return implode('-', $x); };
+        $callback = static function (array $x): string { return implode('-', $x); };
 
         $expectedResult = preg_replace_callback($pattern, $callback, $subject);
         $actualResult = Preg::replaceCallback($pattern, $callback, $subject);

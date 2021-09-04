@@ -62,7 +62,8 @@ final class NamespaceUsesAnalyzer
         foreach ($useIndexes as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
-            if ($analysis) {
+
+            if (null !== $analysis) {
                 $uses[] = $analysis;
             }
         }

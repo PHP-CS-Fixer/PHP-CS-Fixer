@@ -1234,6 +1234,19 @@ class Foo {
                 ',
                 ['remove_inheritdoc' => true],
             ],
+            'remove_trait_inheritdoc' => [
+                '<?php
+/**
+ *
+ */
+trait Foo {}',
+                '<?php
+/**
+ * @inheritDoc
+ */
+trait Foo {}',
+                ['remove_inheritdoc' => true],
+            ],
         ];
     }
 

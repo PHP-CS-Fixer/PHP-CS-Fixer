@@ -96,19 +96,16 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     {
         $analyzer = new TokensAnalyzer($tokens);
 
-        $elements = $analyzer->getClassyElements();
-
-        foreach ($elements as $index => $element) {
+        foreach ($analyzer->getClassyElements() as $index => $element) {
             if (!$this->hasDocBlock($tokens, $index)) {
                 continue;
             }
 
-            $type = $element['type'];
             $docIndex = $this->getDocBlockIndex($tokens, $index);
             $doc = new DocBlock($tokens[$docIndex]->getContent());
 
-            if ('multi' === $this->configuration[$type]) {
-                $doc->makeMultiLine($originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docIndex), $this->whitespacesConfig->getLineEnding());
+            if ('multi' === $this->configuration[$element['type']]) {
+                $doc->makeMultiLine(WhitespacesAnalyzer::detectIndent($tokens, $docIndex), $this->whitespacesConfig->getLineEnding());
             } else {
                 $doc->makeSingleLine();
             }
@@ -126,9 +123,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
 
     private function getDocBlockIndex(Tokens $tokens, int $index): int
     {
-        do {
-            $index = $tokens->getPrevNonWhitespace($index);
-        } while ($tokens[$index]->isGivenKind([
+        $propertyPartKinds = [
             T_PUBLIC,
             T_PROTECTED,
             T_PRIVATE,
@@ -141,7 +136,11 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             T_NS_SEPARATOR,
             CT::T_ARRAY_TYPEHINT,
             CT::T_NULLABLE_TYPE,
-        ]));
+        ];
+
+        do {
+            $index = $tokens->getPrevNonWhitespace($index);
+        } while ($tokens[$index]->isGivenKind($propertyPartKinds));
 
         return $index;
     }

@@ -22,9 +22,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
 {
     /**
@@ -99,7 +96,7 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
     {
         usort(
             $flags,
-            static function (string $flag1, string $flag2) {
+            static function (string $flag1, string $flag2): int {
                 if ($flag1 === $flag2) {
                     return 0;
                 }

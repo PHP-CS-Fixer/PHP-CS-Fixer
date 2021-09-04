@@ -202,7 +202,7 @@ final class Token
     }
 
     /**
-     * A helper method used to find out whether or not a certain input token has to be case-sensitively matched.
+     * A helper method used to find out whether a certain input token has to be case-sensitively matched.
      *
      * @param array<int, bool>|bool $caseSensitive global case sensitiveness or an array of booleans, whose keys should match
      *                                             the ones used in $others. If any is missing, the default case-sensitive

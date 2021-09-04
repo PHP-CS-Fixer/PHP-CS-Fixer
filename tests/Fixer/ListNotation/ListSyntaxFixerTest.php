@@ -188,19 +188,17 @@ $a;#
      * @requires PHP 7.2
      * @dataProvider providePhp72Cases
      */
-    public function testFixToLongSyntaxPhp72(string $input, string $expected): void
+    public function testFixToLongSyntaxPhp72(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'long']);
-        $this->doTest($expected, $input);
+        $this->doTest($input, $expected); // test reversed
     }
 
-    public function providePhp72Cases(): array
+    public function providePhp72Cases(): \Generator
     {
-        return [
-            [
-                '<?php [$a, $b,, [$c, $d]] = $a;',
-                '<?php list($a, $b,, list($c, $d)) = $a;',
-            ],
+        yield [
+            '<?php [$a, $b,, [$c, $d]] = $a;',
+            '<?php list($a, $b,, list($c, $d)) = $a;',
         ];
     }
 
@@ -218,27 +216,27 @@ $a;#
      * @requires PHP 7.3
      * @dataProvider providePhp73Cases
      */
-    public function testFixToLongSyntaxPhp73(string $input, string $expected): void
+    public function testFixToLongSyntaxPhp73(string $expected, string $input): void
     {
         $this->fixer->configure(['syntax' => 'long']);
-        $this->doTest($expected, $input);
+        $this->doTest($input, $expected); // test reversed
     }
 
-    public function providePhp73Cases(): array
+    public function providePhp73Cases(): \Generator
     {
-        return [
-            [
-                '<?php [&$a, $b] = $a;',
-                '<?php list(&$a, $b) = $a;',
-            ],
-            [
-                '<?php [&$a,/* */&$b] = $a;',
-                '<?php list(&$a,/* */&$b) = $a;',
-            ],
-            [
-                '<?php [&$a, $b,, [&$c, $d]] = $a;',
-                '<?php list(&$a, $b,, list(&$c, $d)) = $a;',
-            ],
+        yield [
+            '<?php [&$a, $b] = $a;',
+            '<?php list(&$a, $b) = $a;',
+        ];
+
+        yield [
+            '<?php [&$a,/* */&$b] = $a;',
+            '<?php list(&$a,/* */&$b) = $a;',
+        ];
+
+        yield [
+            '<?php [&$a, $b,, [&$c, $d]] = $a;',
+            '<?php list(&$a, $b,, list(&$c, $d)) = $a;',
         ];
     }
 }
