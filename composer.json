@@ -33,7 +33,7 @@
     },
     "require-dev": {
         "justinrainbow/json-schema": "^5.2",
-        "keradus/cli-executor": "^1.4",
+        "keradus/cli-executor": "^1.5",
         "mikey179/vfsstream": "^1.6.8",
         "php-coveralls/php-coveralls": "^2.4.3",
         "php-cs-fixer/accessible-object": "^1.1",
