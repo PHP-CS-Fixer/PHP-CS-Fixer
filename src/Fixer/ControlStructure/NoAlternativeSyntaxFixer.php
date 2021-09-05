@@ -15,6 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -24,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Eddilbert Macharia <edd.cowan@gmail.com>
  */
-final class NoAlternativeSyntaxFixer extends AbstractFixer
+final class NoAlternativeSyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -38,13 +42,8 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
                     "<?php\nif(true):echo 't';else:echo 'f';endif;\n"
                 ),
                 new CodeSample(
-                    "<?php\nwhile(true):echo 'red';endwhile;\n"
-                ),
-                new CodeSample(
-                    "<?php\nfor(;;):echo 'xc';endfor;\n"
-                ),
-                new CodeSample(
-                    "<?php\nforeach(array('a') as \$item):echo 'xc';endforeach;\n"
+                    "<?php if (\$condition): ?>\nLorem ipsum.\n<?php endif; ?>\n",
+                    ['fix_non_monolithic_code' => true]
                 ),
             ]
         );
@@ -55,7 +54,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->hasAlternativeSyntax();
+        return $tokens->hasAlternativeSyntax() && ($this->configuration['fix_non_monolithic_code'] || $tokens->isMonolithicPhp());
     }
 
     /**
@@ -66,6 +65,19 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer
     public function getPriority(): int
     {
         return 42;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('fix_non_monolithic_code', 'Whether to also fix code with inline HTML.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true) // @TODO change to "false" on next major 4.0
+                ->getOption(),
+        ]);
     }
 
     /**

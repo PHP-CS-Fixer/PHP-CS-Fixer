@@ -28,99 +28,150 @@ final class NoAlternativeSyntaxFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, ?array $configuration = null): void
     {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public function provideFixCases(): \Generator
     {
-        return [
-            [
-                '<?php
-                    declare(ticks = 1) {
-                    }
-                ',
-                '<?php
-                    declare(ticks = 1) :
-                    enddeclare;
-                ',
-            ],
-            [
-                '<?php
-        switch ($foo) {
-            case 1:
-        }
+        yield [
+            '<?php
+                declare(ticks = 1) {
+                }
+            ',
+            '<?php
+                declare(ticks = 1) :
+                enddeclare;
+            ',
+        ];
 
-        switch ($foo)   {
-            case 1:
-        }    ?>',
-                '<?php
-        switch ($foo):
-            case 1:
-        endswitch;
+        yield [
+            '<?php
+    switch ($foo) {
+        case 1:
+    }
 
-        switch ($foo)   :
-            case 1:
-        endswitch    ?>',
-            ],
-            [
-                '<?php
-                    if ($some1) {
-                        if ($some2) {
-                            if ($some3) {
-                                $test = true;
-                            }
+    switch ($foo)   {
+        case 1:
+    }    ?>',
+            '<?php
+    switch ($foo):
+        case 1:
+    endswitch;
+
+    switch ($foo)   :
+        case 1:
+    endswitch    ?>',
+        ];
+
+        yield [
+            '<?php
+                if ($some1) {
+                    if ($some2) {
+                        if ($some3) {
+                            $test = true;
                         }
                     }
-                ',
-                '<?php
-                    if ($some1) :
-                        if ($some2) :
-                            if ($some3) :
-                                $test = true;
-                            endif;
+                }
+            ',
+            '<?php
+                if ($some1) :
+                    if ($some2) :
+                        if ($some3) :
+                            $test = true;
                         endif;
                     endif;
-                ',
-            ],
-            ['<?php if ($some) { $test = true; } else { $test = false; }'],
-            [
-                '<?php if ($some) /* foo */ { $test = true; } else { $test = false; }',
-                '<?php if ($some) /* foo */ : $test = true; else :$test = false; endif;',
-            ],
-            [
-                '<?php if ($some) { $test = true; } else { $test = false; }',
-                '<?php if ($some) : $test = true; else :$test = false; endif;',
-            ],
-            [
-                '<?php if ($some) { if($test){echo $test;}$test = true; } else { $test = false; }',
-                '<?php if ($some) : if($test){echo $test;}$test = true; else : $test = false; endif;',
-            ],
-            [
-                '<?php foreach (array("d") as $item) { echo $item;}',
-                '<?php foreach (array("d") as $item):echo $item;endforeach;',
-            ],
-            [
-                '<?php foreach (array("d") as $item) { if($item){echo $item;}}',
-                '<?php foreach (array("d") as $item):if($item){echo $item;}endforeach;',
-            ],
-            [
-                '<?php while (true) { echo "c";}',
-                '<?php while (true):echo "c";endwhile;',
-            ],
-            [
-                '<?php foreach (array("d") as $item) { while ($item) { echo "dd";}}',
-                '<?php foreach (array("d") as $item):while ($item):echo "dd";endwhile;endforeach;',
-            ],
-            [
-                '<?php foreach (array("d") as $item) { while ($item) { echo "dd" ; } }',
-                '<?php foreach (array("d") as $item): while ($item) : echo "dd" ; endwhile; endforeach;',
-            ],
-            [
-                '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
-                '<?php if ($some) : $test = true; elseif ($some !== "test") : $test = false; endif;',
-            ],
+                endif;
+            ',
+        ];
+
+        yield [
+            '<?php if ($some) { $test = true; } else { $test = false; }',
+        ];
+
+        yield [
+            '<?php if ($some) /* foo */ { $test = true; } else { $test = false; }',
+            '<?php if ($some) /* foo */ : $test = true; else :$test = false; endif;',
+        ];
+
+        yield [
+            '<?php if ($some) { $test = true; } else { $test = false; }',
+            '<?php if ($some) : $test = true; else :$test = false; endif;',
+        ];
+
+        yield [
+            '<?php if ($some) { if($test){echo $test;}$test = true; } else { $test = false; }',
+            '<?php if ($some) : if($test){echo $test;}$test = true; else : $test = false; endif;',
+        ];
+
+        yield [
+            '<?php foreach (array("d") as $item) { echo $item;}',
+            '<?php foreach (array("d") as $item):echo $item;endforeach;',
+        ];
+
+        yield [
+            '<?php foreach (array("d") as $item) { if($item){echo $item;}}',
+            '<?php foreach (array("d") as $item):if($item){echo $item;}endforeach;',
+        ];
+
+        yield [
+            '<?php while (true) { echo "c";}',
+            '<?php while (true):echo "c";endwhile;',
+        ];
+
+        yield [
+            '<?php foreach (array("d") as $item) { while ($item) { echo "dd";}}',
+            '<?php foreach (array("d") as $item):while ($item):echo "dd";endwhile;endforeach;',
+        ];
+
+        yield [
+            '<?php foreach (array("d") as $item) { while ($item) { echo "dd" ; } }',
+            '<?php foreach (array("d") as $item): while ($item) : echo "dd" ; endwhile; endforeach;',
+        ];
+
+        yield [
+            '<?php if ($some) { $test = true; } elseif ($some !== "test") { $test = false; }',
+            '<?php if ($some) : $test = true; elseif ($some !== "test") : $test = false; endif;',
+        ];
+
+        yield [
+            '<?php if ($condition) { ?><p>This is visible.</p><?php } ?>',
+            '<?php if ($condition): ?><p>This is visible.</p><?php endif; ?>',
+        ];
+
+        yield [
+            '<?php if ($condition): ?><p>This is visible.</p><?php endif; ?>',
+            null,
+            ['fix_non_monolithic_code' => false],
+        ];
+
+        yield [
+            '<?php if (true) { ?>Text display.<?php } ?>',
+            '<?php if (true): ?>Text display.<?php endif; ?>',
+            ['fix_non_monolithic_code' => true],
+        ];
+
+        yield [
+            '<?php if (true): ?>Text display.<?php endif; ?>',
+            null,
+            ['fix_non_monolithic_code' => false],
+        ];
+
+        yield [
+            '<?php if ($condition) { ?><?= "xd"; ?><?php } ?>',
+            '<?php if ($condition): ?><?= "xd"; ?><?php endif; ?>',
+            ['fix_non_monolithic_code' => true],
+        ];
+
+        yield [
+            '<?php if ($condition): ?><?= "xd"; ?><?php endif; ?>',
+            null,
+            ['fix_non_monolithic_code' => false],
         ];
     }
 }
