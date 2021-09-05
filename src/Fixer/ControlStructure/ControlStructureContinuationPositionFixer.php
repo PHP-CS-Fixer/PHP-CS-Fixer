@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class ControlStructureContinuationPositionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
@@ -135,38 +136,9 @@ if ($baz == true) {
                 $index - 1,
                 1,
                 self::NEXT_LINE === $this->configuration['position'] ?
-                    $this->whitespacesConfig->getLineEnding().$this->detectIndent($tokens, $index)
+                    $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $index)
                     : ' '
             );
         }
-    }
-
-    private function detectIndent(Tokens $tokens, int $index): string
-    {
-        while (true) {
-            $whitespaceIndex = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE]]);
-
-            if (null === $whitespaceIndex) {
-                return '';
-            }
-
-            $whitespaceToken = $tokens[$whitespaceIndex];
-
-            if (false !== strpos($whitespaceToken->getContent(), "\n")) {
-                break;
-            }
-
-            $prevToken = $tokens[$whitespaceIndex - 1];
-
-            if ($prevToken->isGivenKind([T_OPEN_TAG, T_COMMENT]) && "\n" === substr($prevToken->getContent(), -1)) {
-                break;
-            }
-
-            $index = $whitespaceIndex;
-        }
-
-        $explodedContent = explode("\n", $whitespaceToken->getContent());
-
-        return end($explodedContent);
     }
 }
