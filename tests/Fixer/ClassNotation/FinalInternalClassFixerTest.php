@@ -281,14 +281,16 @@ class B{}
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousClassesCases(): array
+    public function provideAnonymousClassesCases(): \Generator
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 /** @internal */
 $a = new class (){};',
-            ],
+        ];
+
+        yield [
+            '<?php $object = new /**/ class(){};',
         ];
     }
 
@@ -303,5 +305,78 @@ $a = new class (){};',
             'annotation_include' => ['@internal123', 'a'],
             'annotation_exclude' => ['@internal123', 'b'],
         ]);
+    }
+
+    /**
+     * @dataProvider provideAttributeExcludeCases
+     * @requires PHP 8.0
+     */
+    public function testAttributeExclude(string $expected, string $input, array $config): void
+    {
+        $config['consider_absent_docblock_as_internal_class'] = true;
+
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideAttributeExcludeCases(): \Generator
+    {
+        yield [
+            '<?php
+#[C]
+final class Foo {}
+',
+            '<?php
+#[C]
+class Foo {}
+',
+            ['attribute_exclude' => ['Entity', 'ORM\Entity', 'A']],
+        ];
+
+        yield [
+            '<?php
+#[Entity(repositoryClass: PostRepository::class)]
+class User
+{}
+
+#[ORM\Entity]
+#[Index(name: "category_idx", columns: ["category"])]
+class Article
+{}
+
+#[A]
+class ArticleB
+{}
+
+#[B]
+final class Foo {}
+
+$object1 = new #[ExampleAttribute] class(){};
+$object2 = new /* */ class(){};
+$object3 = new #[B] #[ExampleAttribute] class(){};
+',
+            '<?php
+#[Entity(repositoryClass: PostRepository::class)]
+class User
+{}
+
+#[ORM\Entity]
+#[Index(name: "category_idx", columns: ["category"])]
+class Article
+{}
+
+#[A]
+class ArticleB
+{}
+
+#[B]
+class Foo {}
+
+$object1 = new #[ExampleAttribute] class(){};
+$object2 = new /* */ class(){};
+$object3 = new #[B] #[ExampleAttribute] class(){};
+',
+            ['attribute_exclude' => ['Entity', 'orm\entity', 'A']],
+        ];
     }
 }

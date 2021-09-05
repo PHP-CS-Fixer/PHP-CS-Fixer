@@ -25,8 +25,10 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -105,8 +107,10 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isClassCandidate($tokens, $index)) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS) || $tokensAnalyzer->isAnonymousClass($index) || !$this->isClassCandidate($tokens, $index)) {
                 continue;
             }
 
@@ -126,7 +130,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $annotationsAsserts = [static function (array $values): bool {
+        $notEmptyStringAssert = [static function (array $values): bool {
             foreach ($values as $value) {
                 if (!\is_string($value) || '' === $value) {
                     return false;
@@ -138,6 +142,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
 
         $annotationsNormalizer = static function (Options $options, array $value): array {
             $newValue = [];
+
             foreach ($value as $key) {
                 if ('@' === $key[0]) {
                     $key = substr($key, 1);
@@ -152,13 +157,13 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('annotation_include', 'Class level annotations tags that must be set in order to fix the class. (case insensitive)'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues($annotationsAsserts)
+                ->setAllowedValues($notEmptyStringAssert)
                 ->setDefault(['@internal'])
                 ->setNormalizer($annotationsNormalizer)
                 ->getOption(),
             (new FixerOptionBuilder('annotation_exclude', 'Class level annotations tags that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues($annotationsAsserts)
+                ->setAllowedValues($notEmptyStringAssert)
                 ->setDefault([
                     '@final',
                     '@Entity',
@@ -174,6 +179,25 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('attribute_exclude', 'Class level attributes that must be omitted to fix the class, even if all of the white list ones are used as well. (case insensitive)'))
+                ->setAllowedTypes(['array'])
+                ->setAllowedValues($notEmptyStringAssert)
+                ->setDefault([
+                    'Entity',
+                    'ORM\Entity',
+                    'ORM\Mapping\Entity',
+                    'Mapping\Entity',
+                ])
+                ->setNormalizer(static function (Options $options, array $value): array {
+                    $newValue = [];
+
+                    foreach ($value as $key) {
+                        $newValue[strtolower($key)] = true;
+                    }
+
+                    return $newValue;
+                })
+                ->getOption(),
         ]);
     }
 
@@ -186,20 +210,32 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             return false; // ignore class; it is abstract or already final
         }
 
-        $docToken = $tokens[$tokens->getPrevNonWhitespace($index)];
+        $classHeaderTokenIndex = $tokens->getPrevNonWhitespace($index);
+        $classHeaderToken = $tokens[$classHeaderTokenIndex];
 
-        if (!$docToken->isGivenKind(T_DOC_COMMENT)) {
-            return $this->configuration['consider_absent_docblock_as_internal_class'];
+        if ($classHeaderToken->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            return $this->isAttributeCandidate($tokens, $classHeaderTokenIndex);
         }
 
-        $doc = new DocBlock($docToken->getContent());
+        if ($classHeaderToken->isGivenKind(T_DOC_COMMENT)) {
+            return $this->isPhpdocCandidate($classHeaderToken);
+        }
+
+        return $this->configuration['consider_absent_docblock_as_internal_class'];
+    }
+
+    private function isPhpdocCandidate(Token $classHeaderToken): bool
+    {
+        $doc = new DocBlock($classHeaderToken->getContent());
         $tags = [];
 
         foreach ($doc->getAnnotations() as $annotation) {
             if (1 !== Preg::match('/@\S+(?=\s|$)/', $annotation->getContent(), $matches)) {
                 continue;
             }
+
             $tag = strtolower(substr(array_shift($matches), 1));
+
             foreach ($this->configuration['annotation_exclude'] as $tagStart => $true) {
                 if (0 === strpos($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration
@@ -213,6 +249,34 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             if (!isset($tags[$tag])) {
                 return false; // ignore class: class-level PHPDoc does not contain all tags that has been included through configuration
             }
+        }
+
+        return true;
+    }
+
+    private function isAttributeCandidate(Tokens $tokens, int $attributeCloseIndex): bool
+    {
+        if (\count($this->configuration['attribute_exclude']) < 1) {
+            return true; // quick look ahead
+        }
+
+        while ($tokens[$attributeCloseIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            $attributeStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $attributeCloseIndex);
+            $attr = '';
+
+            for ($i = $tokens->getNextMeaningfulToken($attributeStartIndex); $i < $attributeCloseIndex; ++$i) {
+                if (!$tokens[$i]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+                    break;
+                }
+
+                $attr .= strtolower($tokens[$i]->getContent());
+            }
+
+            if (isset($this->configuration['attribute_exclude'][$attr])) {
+                return false;
+            }
+
+            $attributeCloseIndex = $tokens->getPrevNonWhitespace($attributeStartIndex);
         }
 
         return true;

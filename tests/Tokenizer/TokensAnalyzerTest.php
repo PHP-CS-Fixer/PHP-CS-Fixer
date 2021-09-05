@@ -530,18 +530,32 @@ PHP;
             [1 => false],
             '<?php interface foo {}',
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 80000) {
-            yield [
-                [11 => true],
-                '<?php $object = new #[ExampleAttribute] class(){};',
-            ];
+    /**
+     * @dataProvider provideIsAnonymousClassPhp80Cases
+     * @requires PHP 8.0
+     */
+    public function testIsAnonymousClassPhp80(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
 
-            yield [
-                [27 => true],
-                '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
-            ];
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame($expectedValue, $tokensAnalyzer->isAnonymousClass($index));
         }
+    }
+
+    public function provideIsAnonymousClassPhp80Cases(): \Generator
+    {
+        yield [
+            [11 => true],
+            '<?php $object = new #[ExampleAttribute] class(){};',
+        ];
+
+        yield [
+            [27 => true],
+            '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
+        ];
     }
 
     /**

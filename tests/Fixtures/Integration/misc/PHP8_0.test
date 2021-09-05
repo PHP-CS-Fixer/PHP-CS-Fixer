@@ -38,7 +38,7 @@ $country = $session?->user?->getAddress()?->country;
 #[MyAttribute(100 + 200)]
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_FUNCTION)]
 #[MyAttribute(1234), MyAttribute(5678)]
-class PostsController
+final class PostsController
 {
     #[Route('/api/posts/{id}', methods: ['GET'])]
     public function get($id): void

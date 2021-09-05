@@ -40,6 +40,16 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``attribute_exclude``
+~~~~~~~~~~~~~~~~~~~~~
+
+Class level attributes that must be omitted to fix the class, even if all of the
+white list ones are used as well. (case insensitive)
+
+Allowed types: ``array``
+
+Default value: ``['Entity', 'ORM\\Entity', 'ORM\\Mapping\\Entity', 'Mapping\\Entity']``
+
 Examples
 --------
 
