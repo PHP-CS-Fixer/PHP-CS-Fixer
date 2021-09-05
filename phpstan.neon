@@ -15,3 +15,4 @@ parameters:
         - '/^Unsafe call to private method [a-zA-Z\\]+::[a-zA-Z]+\(\) through static::\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
     tipsOfTheDay: false
+    tmpDir: dev-tools/phpstan/cache
