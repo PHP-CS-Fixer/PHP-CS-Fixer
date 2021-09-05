@@ -152,7 +152,7 @@ switch ($foo) {
     {
         $openCount = 1;
 
-        do {
+        while (true) {
             ++$openIndex;
             $token = $tokens[$openIndex];
 
@@ -173,7 +173,7 @@ switch ($foo) {
             }
 
             $openIndex = $this->doFix($tokens, $openIndex, $depth, false);
-        } while (true);
+        }
 
         return $openIndex;
     }

@@ -75,7 +75,7 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
     {
         if (self::STYLE_WHILE === $this->configuration['style']) {
             $candidateLoopKinds = [T_FOR, T_WHILE];
-            $replacement = [new Token([T_WHILE, 'while']), new Token('('), new Token([T_STRING, 'true']), new Token(')')];
+            $replacement = [new Token([T_WHILE, 'while']), new Token([T_WHITESPACE, ' ']), new Token('('), new Token([T_STRING, 'true']), new Token(')')];
 
             $fixLoop = static function (int $index, int $openIndex, int $endIndex) use ($tokens, $replacement): void {
                 if (self::isForLoopWithEmptyCondition($tokens, $index, $openIndex, $endIndex)) {
