@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-05T14:47:44Z
+
+[![Coverage Status](https://coveralls.io/builds/42661926/badge)](https://coveralls.io/builds/42661926)
+
+Coverage increased (+0.005%) to 92.379% when pulling **9d584d9909e5a4f3d0931c98ebcadab9c3b4d7dd on julienfalque:remove-duplicated-method** into **a72859e6c59189bf0c6ece4943baafa88102608a on FriendsOfPHP:master**.
