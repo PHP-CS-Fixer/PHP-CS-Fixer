@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-05T12:07:49Z
+
+[![Coverage Status](https://coveralls.io/builds/42661174/badge)](https://coveralls.io/builds/42661174)
+
+Coverage remained the same at 92.373% when pulling **9e9ea024d39353875ed79e555dc5b2768b3484f9 on julienfalque:phpstan-cache** into **d4d84da14fa06f3bcd90f38269d6b9e84a8a8f41 on FriendsOfPHP:master**.
