@@ -632,7 +632,7 @@ final class ProjectCodeTest extends TestCase
                 static function (string $className): bool {
                     $rc = new \ReflectionClass($className);
 
-                    return !$rc->isAbstract() && !$rc->isInterface();
+                    return !$rc->isTrait() && !$rc->isAbstract() && !$rc->isInterface();
                 }
             )
         );

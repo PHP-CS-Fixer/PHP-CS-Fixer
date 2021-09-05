@@ -156,7 +156,7 @@ class Sample
     /**
      * {@inheritdoc}
      *
-     * Must run before BracesFixer, IndentationTypeFixer, NoExtraBlankLinesFixer.
+     * Must run before BracesFixer, IndentationTypeFixer, NoExtraBlankLinesFixer, StatementIndentationFixer.
      * Must run after OrderedClassElementsFixer, SingleClassElementPerStatementFixer.
      */
     public function getPriority(): int

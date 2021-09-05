@@ -194,7 +194,7 @@ Exit code of the fix command is built using following bit flags:
 * 64 - Exception raised within the application.
 
 EOF
-            ;
+        ;
     }
 
     /**

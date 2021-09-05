@@ -2699,6 +2699,11 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Operator\\StandardizeNotEqualsFixer <./../src/Fixer/Operator/StandardizeNotEqualsFixer.php>`_
+-  `statement_indentation <./rules/whitespace/statement_indentation.rst>`_
+
+   Each statement must be indented.
+
+   `Source PhpCsFixer\\Fixer\\Whitespace\\StatementIndentationFixer <./../src/Fixer/Whitespace/StatementIndentationFixer.php>`_
 -  `static_lambda <./rules/function_notation/static_lambda.rst>`_
 
    Lambdas not (indirect) referencing ``$this`` must be declared ``static``.

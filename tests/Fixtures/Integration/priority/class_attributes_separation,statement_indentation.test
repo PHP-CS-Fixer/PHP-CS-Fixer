@@ -1,0 +1,27 @@
+--TEST--
+Integration of fixers: class_attributes_separation,statement_indentation.
+--RULESET--
+{"class_attributes_separation": true, "statement_indentation": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    /** 1 */
+    private $var1;
+
+    /** 2 */
+    private $var2;
+
+    /** 3 */
+    private $var3;
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    /** 1 */
+    private $var1;/** 2 */private $var2;/** 3 */private $var3;
+}

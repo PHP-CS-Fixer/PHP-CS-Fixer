@@ -383,7 +383,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             zzz();
         }
 '
-;
+        ;
         $input = $expected = '<?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
