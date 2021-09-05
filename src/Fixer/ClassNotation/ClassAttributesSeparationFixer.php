@@ -204,7 +204,7 @@ class Sample
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import` => `none|one` values.'))
+            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import` => `none|one|only_if_meta` values.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $type => $spacing) {

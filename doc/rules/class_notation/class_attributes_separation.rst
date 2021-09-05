@@ -11,7 +11,8 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-Dictionary of ``const|method|property|trait_import`` => ``none|one`` values.
+Dictionary of ``const|method|property|trait_import`` =>
+``none|one|only_if_meta`` values.
 
 Allowed types: ``array``
 
