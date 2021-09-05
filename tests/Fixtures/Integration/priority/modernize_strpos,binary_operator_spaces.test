@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: modernize_strpos,binary_operator_spaces.
+--RULESET--
+{"modernize_strpos": true, "binary_operator_spaces": true}
+--EXPECT--
+<?php
+$a = $input && str_contains($input, $method) ? $input : null;
+
+--INPUT--
+<?php
+$a = $input && FALSE !== strpos($input, $method) ? $input : null;

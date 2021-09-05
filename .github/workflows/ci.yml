@@ -109,7 +109,7 @@ jobs:
             composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
             composer info -D
 
-      - name: Execute migration rules
+      - name: Execute migration rules # we want to execute migration rules BEFORE we gonna run tests and self-fixing, so we know that our codebase is future-ready
         if: matrix.execute-migration-rules == 'yes'
         run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 

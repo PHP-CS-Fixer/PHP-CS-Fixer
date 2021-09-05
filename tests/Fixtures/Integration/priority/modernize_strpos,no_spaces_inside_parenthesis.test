@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: modernize_strpos,no_spaces_inside_parenthesis.
+--RULESET--
+{"modernize_strpos": true, "no_spaces_inside_parenthesis": true}
+--EXPECT--
+<?php
+if (str_starts_with($haystack1, $needle)) {}
+
+--INPUT--
+<?php
+if (0 === strpos($haystack1, $needle)) {}
