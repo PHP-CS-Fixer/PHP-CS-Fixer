@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-05T13:16:54Z
+
+[![Coverage Status](https://coveralls.io/builds/42661650/badge)](https://coveralls.io/builds/42661650)
+
+Coverage remained the same at 92.374% when pulling **d33c35614bbf6c4deb584c6c7b49024be4f04810 on julienfalque:fix-stdin-test-docker** into **701e439df59fdc4dc6fa226857e830d881647f23 on FriendsOfPHP:master**.
