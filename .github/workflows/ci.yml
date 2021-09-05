@@ -27,6 +27,11 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
+            job-description: 'with Sf ^6'
+            execute-flex-with-symfony-version: '^6' # Explicit check for Sf 6.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '7.4'
             job-description: 'with deployment'
             execute-deployment: 'yes'
 
@@ -93,6 +98,16 @@ jobs:
       - name: Configure Symfony Flex
         if: matrix.execute-flex-with-symfony-version
         run: composer config extra.symfony.require ${{ matrix.execute-flex-with-symfony-version }}
+
+      - name: Configure Symfony v6@dev hacks
+        if: matrix.execute-flex-with-symfony-version == '^6'
+        run: |
+          # not yet ready for v6
+          composer remove --no-update --dev php-coveralls/php-coveralls
+          # update Symfony components to v6@dev
+          cat composer.json | grep symfony.*^5 | awk -F: '{ printf $1; print ":^6@dev" }' | xargs -n 1 composer require --no-update
+          # dependency of symfony/console, we need to pin it so we can install @dev version
+          composer require --no-update symfony/string:^6@dev
 
       - name: Install dependencies
         uses: nick-invision/retry@v2
