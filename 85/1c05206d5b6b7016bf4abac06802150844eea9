@@ -1,0 +1,82 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-05-30T12:14:58Z
+
+[![Coverage Status](https://coveralls.io/builds/42663470/badge)](https://coveralls.io/builds/42663470)
+
+Coverage increased (+0.002%) to 92.381% when pulling **2246d7cea37340996ecb6a37792b2633c059c3b4 on derrabus:feature/modernize-strpos** into **23ccc662249aab2afbaeaacb595d9c9286619e03 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by stof at 2021-06-07T09:26:40Z
+
+Does this implementation also work when using qualified calls to `strpos` ?
+
+---------------------------------------------------------------------------
+
+by stof at 2021-06-07T09:27:53Z
+
+Note that replacing qualified calls to `strpos` with qualified calls to `str_contains` (or calls using a `use function` which also avoid using the global fallback) would not even be risky.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-31T15:49:10Z
+
+>Does this implementation also work when using qualified calls to strpos ?
+
+support added
+
+---
+
+rebased on top of master, added fixes for bunch of edge cases, please not that I `forced` pushed the proposed fixes
+
+---------------------------------------------------------------------------
+
+by derrabus at 2021-08-31T17:37:18Z
+
+Thanks!
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-09-04T07:31:25Z
+
+`PHP 8.0 with migration rules` CI job is exposing issue (maybe priority issue?)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-09-04T11:09:06Z
+
+> maybe priority issue?
+
+Definitely - and the fixes are straightforward - the fixers that needs to have priorities fixed are shown on failed job.
+
+@derrabus do you need any help? If you don't know how or don't have a time - you can remove the fixer from `PHP80MigrationRisky` for now and we have this PR focused only on the fixer itself, and then I will raise PR with adding the fixer to `PHP80MigrationRisky` with the priority tests and fixed priority.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-04T11:19:41Z
+
+the "problem"  is running
+>run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php70types.php
+
+and than run:
+> php php-cs-fixer fix --diff --dry-run -v
+
+and expect no changes in the second run, which makes no sense as the first set doesn't contain the rules that the second has, so it is not priority.
+
+You can also see in the PR that the priority fixtures of the reported "issues" are already added and fixed
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-09-04T13:45:39Z
+
+I think it's actually about changes coming when executing 8.0 rules and not 7.0 ones.
+I'm glad we have integration tests covering the cases. Then, all we need now is to figure out how to make CI green ;)
+
+---------------------------------------------------------------------------
+
+by derrabus at 2021-09-05T17:12:05Z
+
+> @derrabus do you need any help?
+
+I'm a bit busy at the moment, but it appears @SpacePossum has already taken over.
