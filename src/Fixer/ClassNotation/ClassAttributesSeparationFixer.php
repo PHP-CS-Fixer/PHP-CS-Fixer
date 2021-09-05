@@ -533,7 +533,7 @@ class Sample
 
             do {
                 $elementEndIndex = $tokens->getNextMeaningfulToken($elementEndIndex);
-            } while ($tokens[$elementEndIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR]));
+            } while ($tokens[$elementEndIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
 
             if (!$tokens[$elementEndIndex]->equals(';')) {
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
