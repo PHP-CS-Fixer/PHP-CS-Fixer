@@ -18,9 +18,10 @@ if (PHP_VERSION_ID <= 80001 || PHP_VERSION_ID >= 80100) {
 
 $config = require '.php-cs-fixer.dist.php';
 
-$config->setRules([
+$config->setRules(array_merge($config->getRules(), [
     '@PHP80Migration' => true,
     '@PHP80Migration:risky' => true,
-]);
+    'heredoc_indentation' => false,
+]));
 
 return $config;
