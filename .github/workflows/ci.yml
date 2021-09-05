@@ -111,7 +111,7 @@ jobs:
 
       - name: Execute migration rules
         if: matrix.execute-migration-rules == 'yes'
-        run: php php-cs-fixer fix --rules @PHP80Migration,@PHP80Migration:risky -q
+        run: php php-cs-fixer fix --config .php-cs-fixer.php-highest.php -q
 
       - name: Disable time limit for tests when collecting coverage
         if: matrix.calculate-code-coverage == 'yes'
@@ -129,9 +129,9 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
-      - name: Run PHP CS Fixer for PHP 7.0 types
-        if: matrix.php-version == '7.1' # we run on lowest supported version, we running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
-        run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php70types.php
+      - name: Run PHP CS Fixer for PHP 7.1 types
+        if: matrix.php-version == '7.1' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
+        run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer
         env:
