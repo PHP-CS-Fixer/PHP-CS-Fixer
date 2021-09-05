@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-07-30T14:18:35Z
+
+Hi and thanks for the PR!
+
+Could you restore the current samples and add a single new sample that shows the behavior of the new flag? Secondly, I would prefer the new flag be called as to what it does and not the negative, like `fix_monolithic_code` with `true/false` and the default set to maintain the current behavior.
+Wonder what the others think of this change, so maybe wait for more opinions before putting more effort in the PR :)
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-07-30T15:22:51Z
+
+> Could you restore the current samples and add a single new sample that shows the behavior of the new flag?
+
+This is initially what I did but tests fail saying there should be no more than 1 code sample with default configuration for a configurable fixer.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-02T12:14:23Z
+
+[![Coverage Status](https://coveralls.io/builds/42661493/badge)](https://coveralls.io/builds/42661493)
+
+Coverage increased (+0.0008%) to 92.374% when pulling **695c8129ffd0dddff33dc4d00016b8ab7d6a3792 on paulbalandan:no-alt-syntax-new-option** into **7b6502faa204a6db1ffc3a60e44a88e4c3422c5d on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-08-31T06:23:14Z
+
+Thanks for the changes!
+I like where this is going, just a few minors. However, you might want to get some of the members to say of they like this before putting more time in it.
+
+For me the naming of the option must be renamed to a positive, for example: `only_fix_monolithic_code`.
+I think we only need two examples, the current one for the default configuration you got in the PR now and only one of 3 with the new configuration option, I see issue with the previous request now, sorry about that :+1:
+The `isCandidate` check can be a one liner without an `if`, like `return $tokens->hasAlternativeSyntax() && (!$this->configuration['only_monolithic_code'] || $tokens->isMonolithicPhp())`
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-02T21:54:45Z
+
+the PR aims to add an option to not fix non-monolithic code, is this what you want as you are strongly against fixing non-monolithic code? or do you request to change the default behavior (currently the fixer does fix non-monolithic code) ?
+
+---------------------------------------------------------------------------
+
+by paulbalandan at 2021-09-04T14:56:17Z
+
+I would also like this to be clarified. This PR now adds an option to skip fixing non-monolithic code, which is current behavior.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-09-04T17:15:54Z
+
+got you :+1:
+Then, let's add a TODO for v4 to change the default of newly introduced option
