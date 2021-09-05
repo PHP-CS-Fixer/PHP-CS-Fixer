@@ -30,12 +30,12 @@ Example #1
    +++ New
     <?php
    -for(;;) {
-   +while(true) {
+   +while (true) {
         foo();
     }
 
    -do {
-   +while(true) {
+   +while (true) {
         foo();
    -} while(true); // do while
    +}  // do while
@@ -54,3 +54,14 @@ With configuration: ``['style' => 'for']``.
    +for(;;) {
         foo();
     }
+
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+@PhpCsFixer
+  Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``empty_loop_condition`` rule with the default config.
+
+@Symfony
+  Using the `@Symfony <./../../ruleSets/Symfony.rst>`_ rule set will enable the ``empty_loop_condition`` rule with the default config.

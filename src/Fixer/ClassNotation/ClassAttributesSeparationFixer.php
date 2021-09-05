@@ -553,7 +553,7 @@ class Sample
         }
 
         if ($singleLineElement) {
-            do {
+            while (true) {
                 $nextToken = $tokens[$elementEndIndex + 1];
 
                 if (($nextToken->isComment() || $nextToken->isWhitespace()) && false === strpos($nextToken->getContent(), "\n")) {
@@ -561,7 +561,7 @@ class Sample
                 } else {
                     break;
                 }
-            } while (true);
+            }
 
             if ($tokens[$elementEndIndex]->isWhitespace()) {
                 $elementEndIndex = $tokens->getPrevNonWhitespace($elementEndIndex);

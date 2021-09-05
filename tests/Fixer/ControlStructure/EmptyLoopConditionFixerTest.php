@@ -41,7 +41,7 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
     {
         yield 'from `for` to `while`' => [
             '<?php
-                while(true){ if(foo()) {break;}}
+                while (true){ if(foo()) {break;}}
                 for(;$i < 1;){ if(foo()) {break;}}',
             '<?php
                 for(;;){ if(foo()) {break;}}
@@ -49,7 +49,7 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'from `do while` to `while`' => [
-            '<?php while(true){ if(foo()) {break;}}',
+            '<?php while (true){ if(foo()) {break;}}',
             '<?php do{ if(foo()) {break;}}while(true);',
         ];
 
@@ -74,19 +74,19 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'multiple `do while` to `while`' => [
-            '<?php while(true){}while(true){}while(true){}while(true){}while(true){}while(true){}',
+            '<?php while (true){}while (true){}while (true){}while (true){}while (true){}while (true){}',
             '<?php do{}while(true);do{}while(true);do{}while(true);do{}while(true);do{}while(true);do{}while(true);',
         ];
 
         yield 'multiple nested `do while` to `while`' => [
-            '<?php while(true){while(true){while(true){while(true){while(true){while(true){while(true){}}}}}}}',
+            '<?php while (true){while (true){while (true){while (true){while (true){while (true){while (true){}}}}}}}',
             '<?php do{do{do{do{do{do{do{}while(true);}while(true);}while(true);}while(true);}while(true);}while(true);}while(true);',
         ];
 
         // comment cases
 
         yield 'comment inside empty `for` condition' => [
-            '<?php while(true)/* 1 *//* 2 */{}',
+            '<?php while (true)/* 1 *//* 2 */{}',
             '<?php for(/* 1 */;;/* 2 */){}',
         ];
 
@@ -98,14 +98,14 @@ final class EmptyLoopConditionFixerTest extends AbstractFixerTestCase
 
         // space cases
         yield 'lot of space' => [
-            '<?php while(true){ foo3(); }              ',
+            '<?php while (true){ foo3(); }              ',
             '<?php do{ foo3(); } while(true)            ; ',
         ];
 
         yield [
             '<?php
 
-while(true) {
+while (true) {
     foo1();
 }
 

@@ -5,7 +5,7 @@ Integration of fixers: empty_loop_condition,no_extra_blank_lines.
 --EXPECT--
 <?php
 
-while(true) {
+while (true) {
     foo1();
 }
 

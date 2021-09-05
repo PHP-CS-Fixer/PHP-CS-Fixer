@@ -185,14 +185,14 @@ class Sample
         static $methodModifiers = [T_STATIC, T_FINAL, T_ABSTRACT, T_PRIVATE, T_PROTECTED, T_PUBLIC];
 
         // find PHPDoc of method (if any)
-        do {
+        while (true) {
             $tokenIndex = $tokens->getPrevMeaningfulToken($index);
             if (!$tokens[$tokenIndex]->isGivenKind($methodModifiers)) {
                 break;
             }
 
             $index = $tokenIndex;
-        } while (true);
+        }
 
         $docIndex = $tokens->getPrevNonWhitespace($index);
         if (!$tokens[$docIndex]->isGivenKind(T_DOC_COMMENT)) {
