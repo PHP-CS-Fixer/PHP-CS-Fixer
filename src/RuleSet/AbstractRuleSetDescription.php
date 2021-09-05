@@ -32,6 +32,6 @@ abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
 
     public function isRisky(): bool
     {
-        return false !== strpos(static::class, 'Risky');
+        return str_contains(static::class, 'Risky');
     }
 }

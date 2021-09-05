@@ -406,7 +406,7 @@ use Bar;
                                 if (
                                     '' === $firstIndent
                                     && $namespaceTokens[$k2]->isWhitespace()
-                                    && false !== strpos($namespaceTokens[$k2]->getContent(), $lineEnding)
+                                    && str_contains($namespaceTokens[$k2]->getContent(), $lineEnding)
                                 ) {
                                     $lastIndent = $lineEnding;
                                     $firstIndent = $lineEnding.$this->whitespacesConfig->getIndent();

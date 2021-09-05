@@ -131,7 +131,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
         // start index of the sequence is always 1 here, 0 is always open tag
         // transform "<?php\n" to "<?php " if needed
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
+        if (str_contains($tokens[0]->getContent(), "\n")) {
             $tokens[0] = new Token([$tokens[0]->getId(), trim($tokens[0]->getContent()).' ']);
         }
 

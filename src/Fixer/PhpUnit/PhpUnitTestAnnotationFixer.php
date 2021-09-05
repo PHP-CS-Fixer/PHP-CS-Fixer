@@ -185,7 +185,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         // If the function doesn't have test in its name, and no doc block, its not a test
         return
             $this->isPHPDoc($tokens, $docBlockIndex)
-            && false !== strpos($tokens[$docBlockIndex]->getContent(), '@test')
+            && str_contains($tokens[$docBlockIndex]->getContent(), '@test')
         ;
     }
 
@@ -198,7 +198,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
     private function hasTestPrefix(string $functionName): bool
     {
-        return 0 === strpos($functionName, 'test');
+        return str_starts_with($functionName, 'test');
     }
 
     private function hasProperTestAnnotation(Tokens $tokens, int $index): bool
@@ -270,15 +270,15 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             }
 
             if (!$needsAnnotation
-                && false !== strpos($lines[$i]->getContent(), ' @test')
-                && false === strpos($lines[$i]->getContent(), '@testWith')
-                && false === strpos($lines[$i]->getContent(), '@testdox')
+                && str_contains($lines[$i]->getContent(), ' @test')
+                && !str_contains($lines[$i]->getContent(), '@testWith')
+                && !str_contains($lines[$i]->getContent(), '@testdox')
             ) {
                 // We remove @test from the doc block
                 $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
             }
             // ignore the line if it isn't @depends
-            if (false === strpos($lines[$i]->getContent(), '@depends')) {
+            if (!str_contains($lines[$i]->getContent(), '@depends')) {
                 continue;
             }
 

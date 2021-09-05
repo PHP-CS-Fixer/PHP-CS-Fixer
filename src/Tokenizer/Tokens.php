@@ -365,7 +365,7 @@ class Tokens extends \SplFixedArray
             $token = $tokens[$index];
 
             if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
-                if (0 === strpos($whitespace, "\r\n")) {
+                if (str_starts_with($whitespace, "\r\n")) {
                     $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
                     return \strlen($whitespace) > 2 // can be removed on PHP 7; https://php.net/manual/en/function.substr.php
@@ -1103,7 +1103,7 @@ class Tokens extends \SplFixedArray
     public function isPartialCodeMultiline(int $start, int $end): bool
     {
         for ($i = $start; $i <= $end; ++$i) {
-            if (false !== strpos($this[$i]->getContent(), "\n")) {
+            if (str_contains($this[$i]->getContent(), "\n")) {
                 return true;
             }
         }

@@ -162,7 +162,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
 
         return
             $this->isPHPDoc($tokens, $docBlockIndex) // If the function doesn't have test in its name, and no doc block, it's not a test
-            && false !== strpos($tokens[$docBlockIndex]->getContent(), '@test')
+            && str_contains($tokens[$docBlockIndex]->getContent(), '@test')
         ;
     }
 
@@ -186,7 +186,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $docBlockNeedsUpdate = false;
         for ($inc = 0; $inc < \count($lines); ++$inc) {
             $lineContent = $lines[$inc]->getContent();
-            if (false === strpos($lineContent, '@depends')) {
+            if (!str_contains($lineContent, '@depends')) {
                 continue;
             }
 

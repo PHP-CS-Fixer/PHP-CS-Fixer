@@ -261,7 +261,7 @@ final class TypeExpression
             return $matches[1];
         }
 
-        if (0 === strpos($type, '\\')) {
+        if (str_starts_with($type, '\\')) {
             return substr($type, 1);
         }
 

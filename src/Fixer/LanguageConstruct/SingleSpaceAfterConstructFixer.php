@@ -219,7 +219,7 @@ yield  from  baz();
             }
 
             if ($token->isGivenKind(T_OPEN_TAG)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && false === strpos($token->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && !str_contains($token->getContent(), "\n")) {
                     $tokens->clearAt($whitespaceTokenIndex);
                 }
 
@@ -239,7 +239,7 @@ yield  from  baz();
             }
 
             if ($token->isComment() || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && false !== strpos($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                     continue;
                 }
             }
@@ -281,7 +281,7 @@ yield  from  baz();
 
         if (
             !$tokenFollowingReturn->isGivenKind(T_WHITESPACE)
-            || false === strpos($tokenFollowingReturn->getContent(), "\n")
+            || !str_contains($tokenFollowingReturn->getContent(), "\n")
         ) {
             return false;
         }
@@ -289,7 +289,7 @@ yield  from  baz();
         $nestedCount = 0;
 
         for ($indexEnd = \count($tokens) - 1, ++$index; $index < $indexEnd; ++$index) {
-            if (false !== strpos($tokens[$index]->getContent(), "\n")) {
+            if (str_contains($tokens[$index]->getContent(), "\n")) {
                 return true;
             }
 
@@ -322,7 +322,7 @@ yield  from  baz();
                 return false;
             }
 
-            if ($hasMoreThanOneAncestor && false !== strpos($token->getContent(), "\n")) {
+            if ($hasMoreThanOneAncestor && str_contains($token->getContent(), "\n")) {
                 return true;
             }
         }

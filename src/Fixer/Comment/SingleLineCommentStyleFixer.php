@@ -145,7 +145,7 @@ $c = 3;
 
             if (
                 !$this->asteriskEnabled
-                || false !== strpos($commentContent, '?>')
+                || str_contains($commentContent, '?>')
                 || '/*' !== substr($content, 0, 2)
                 || 1 === Preg::match('/[^\s\*].*\R.*[^\s\*]/s', $commentContent)
             ) {

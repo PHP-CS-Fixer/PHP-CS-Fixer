@@ -326,7 +326,7 @@ final class FixerFactoryTest extends TestCase
         $docFixerNames = array_filter(
             array_keys($fixers),
             static function (string $name): bool {
-                return false !== strpos($name, 'phpdoc');
+                return str_contains($name, 'phpdoc');
             }
         );
 

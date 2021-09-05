@@ -150,7 +150,7 @@ class SomeClass
         foreach ($this->getSimpleTypes($tokens, $typeStartIndex, $type->getEndIndex()) as $simpleType) {
             $typeName = $tokens->generatePartialCode($simpleType['start'], $simpleType['end']);
 
-            if (0 !== strpos($typeName, '\\')) {
+            if (!str_starts_with($typeName, '\\')) {
                 continue;
             }
 

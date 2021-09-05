@@ -373,7 +373,7 @@ switch($a) {
                 return;
             }
 
-            if ($this->tokens[$i]->isWhitespace() && false !== strpos($this->tokens[$i]->getContent(), "\n")) {
+            if ($this->tokens[$i]->isWhitespace() && str_contains($this->tokens[$i]->getContent(), "\n")) {
                 break;
             }
         }
@@ -400,7 +400,7 @@ switch($a) {
         $bodyEnd = $this->tokens->findBlockEnd($blockTypeInfo['type'], $index);
 
         for ($i = $bodyEnd - 1; $i >= $index; --$i) {
-            if (false !== strpos($this->tokens[$i]->getContent(), "\n")) {
+            if (str_contains($this->tokens[$i]->getContent(), "\n")) {
                 $this->removeEmptyLinesAfterLineWithTokenAt($i);
                 $this->removeEmptyLinesAfterLineWithTokenAt($index);
 
@@ -416,7 +416,7 @@ switch($a) {
         for ($end = $index; $end < $tokenCount; ++$end) {
             if (
                 $this->tokens[$end]->equals('}')
-                || false !== strpos($this->tokens[$end]->getContent(), "\n")
+                || str_contains($this->tokens[$end]->getContent(), "\n")
             ) {
                 break;
             }

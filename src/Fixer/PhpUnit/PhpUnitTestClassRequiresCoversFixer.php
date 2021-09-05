@@ -79,7 +79,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $docContent = $tokens[$docIndex]->getContent();
 
             // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
-            if (false === strpos($docContent, "\n")) {
+            if (!str_contains($docContent, "\n")) {
                 return;
             }
 

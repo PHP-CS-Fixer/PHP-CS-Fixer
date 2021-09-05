@@ -154,7 +154,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             return;
         }
 
-        if (false !== strpos($tokens[$offsetIndex]->getContent(), "\n")) {
+        if (str_contains($tokens[$offsetIndex]->getContent(), "\n")) {
             return;
         }
 

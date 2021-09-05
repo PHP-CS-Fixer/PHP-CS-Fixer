@@ -128,7 +128,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                 // - doesn't have a type declaration
                 !$argumentInfo->hasTypeAnalysis()
                 // type is a union
-                || false !== strpos($argumentInfo->getTypeAnalysis()->getName(), '|')
+                || str_contains($argumentInfo->getTypeAnalysis()->getName(), '|')
                 // - a default value is not null we can continue
                 || !$argumentInfo->hasDefault() || 'null' !== strtolower($argumentInfo->getDefault())
             ) {

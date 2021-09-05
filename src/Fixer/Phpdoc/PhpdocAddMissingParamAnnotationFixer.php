@@ -119,7 +119,7 @@ function f9(string $foo, $bar, $baz) {}
             }
 
             // ignore one-line phpdocs like `/** foo */`, as there is no place to put new annotations
-            if (false === strpos($tokenContent, "\n")) {
+            if (!str_contains($tokenContent, "\n")) {
                 continue;
             }
 

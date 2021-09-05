@@ -43,6 +43,7 @@ $config
         '@PhpCsFixer:risky' => true,
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => ['header' => $header],
+        'modernize_strpos' => true, // needs PHP 8+ or polyfill
     ])
     ->setFinder($finder)
 ;

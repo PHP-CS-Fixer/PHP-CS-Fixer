@@ -40,13 +40,13 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
         $indent = '    ';
         $lineEnding = "\n";
 
-        if (false !== strpos($expected, "\t")) {
+        if (str_contains($expected, "\t")) {
             $indent = "\t";
         } elseif (preg_match('/\n  \S/', $expected)) {
             $indent = '  ';
         }
 
-        if (false !== strpos($expected, "\r")) {
+        if (str_contains($expected, "\r")) {
             $lineEnding = "\r\n";
         }
 

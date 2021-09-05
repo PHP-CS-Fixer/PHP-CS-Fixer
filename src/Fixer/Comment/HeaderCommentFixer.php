@@ -208,7 +208,7 @@ echo 1;
                         return '';
                     }
 
-                    if (false !== strpos($value, '*/')) {
+                    if (str_contains($value, '*/')) {
                         throw new InvalidFixerConfigurationException($fixerName, 'Cannot use \'*/\' in header.');
                     }
 

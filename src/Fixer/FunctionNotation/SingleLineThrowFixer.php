@@ -95,10 +95,10 @@ final class SingleLineThrowFixer extends AbstractFixer
             $content = $tokens[$index]->getContent();
 
             if ($tokens[$index]->isGivenKind(T_COMMENT)) {
-                if (0 === strpos($content, '//')) {
+                if (str_starts_with($content, '//')) {
                     $content = '/*'.substr($content, 2).' */';
                     $tokens->clearAt($index + 1);
-                } elseif (0 === strpos($content, '#')) {
+                } elseif (str_starts_with($content, '#')) {
                     $content = '/*'.substr($content, 1).' */';
                     $tokens->clearAt($index + 1);
                 } elseif (false !== Preg::match('/\R/', $content)) {

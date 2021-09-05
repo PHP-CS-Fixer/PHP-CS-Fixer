@@ -104,7 +104,7 @@ function foo( \$bar, \$baz )
     {
         $token = $tokens[$index];
 
-        if ($token->isWhitespace() && false === strpos($token->getContent(), "\n")) {
+        if ($token->isWhitespace() && !str_contains($token->getContent(), "\n")) {
             $tokens->clearAt($index);
         }
     }

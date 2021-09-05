@@ -75,7 +75,7 @@ EOT
 
             if (
                 !$token->isGivenKind(T_DOC_COMMENT)
-                && !($token->isGivenKind(T_COMMENT) && 0 === strpos($originalContent, '/*'))
+                && !($token->isGivenKind(T_COMMENT) && str_starts_with($originalContent, '/*'))
             ) {
                 continue;
             }

@@ -313,7 +313,7 @@ if (true) {
 
         if ($prevNonWhitespaceToken->isComment()) {
             for ($j = $prevNonWhitespace - 1; $j >= 0; --$j) {
-                if (false !== strpos($tokens[$j]->getContent(), "\n")) {
+                if (str_contains($tokens[$j]->getContent(), "\n")) {
                     return false;
                 }
 

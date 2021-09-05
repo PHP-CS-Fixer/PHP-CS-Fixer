@@ -203,7 +203,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index]->isWhitespace() || false === strpos($tokens[$index]->getContent(), "\n")) {
+            if (!$tokens[$index]->isWhitespace() || !str_contains($tokens[$index]->getContent(), "\n")) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
                 continue;
@@ -295,13 +295,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             $useDeclarationFullName = ltrim($useDeclaration->getFullName(), '\\');
 
-            if (0 !== strpos($useDeclarationFullName, $namespace.'\\')) {
+            if (!str_starts_with($useDeclarationFullName, $namespace.'\\')) {
                 continue;
             }
 
             $partName = substr($useDeclarationFullName, $nsLength);
 
-            if (false === strpos($partName, '\\')) {
+            if (!str_contains($partName, '\\')) {
                 $this->removeUseDeclaration($tokens, $useDeclaration);
             }
         }

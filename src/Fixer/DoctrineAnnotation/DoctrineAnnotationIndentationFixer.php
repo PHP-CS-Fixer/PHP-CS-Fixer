@@ -82,7 +82,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
 
         $indentLevel = 0;
         foreach ($doctrineAnnotationTokens as $index => $token) {
-            if (!$token->isType(DocLexer::T_NONE) || false === strpos($token->getContent(), "\n")) {
+            if (!$token->isType(DocLexer::T_NONE) || !str_contains($token->getContent(), "\n")) {
                 continue;
             }
 
@@ -125,7 +125,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
 
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
-            if ($token->isType(DocLexer::T_NONE) && false !== strpos($token->getContent(), "\n")) {
+            if ($token->isType(DocLexer::T_NONE) && str_contains($token->getContent(), "\n")) {
                 break;
             }
 
@@ -154,7 +154,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         while (isset($tokens[++$index])) {
             $token = $tokens[$index];
             if ($token->isType(DocLexer::T_NONE)) {
-                if (false !== strpos($token->getContent(), "\n")) {
+                if (str_contains($token->getContent(), "\n")) {
                     return false;
                 }
 
@@ -181,7 +181,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
         for ($index = $newLineTokenIndex + 1, $max = \count($tokens); $index < $max; ++$index) {
             $token = $tokens[$index];
 
-            if (false !== strpos($token->getContent(), "\n")) {
+            if (str_contains($token->getContent(), "\n")) {
                 return false;
             }
 

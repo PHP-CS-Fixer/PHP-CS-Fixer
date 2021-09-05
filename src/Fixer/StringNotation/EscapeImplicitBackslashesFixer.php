@@ -110,7 +110,7 @@ EOF;
             if ($token->equalsAny(['"', 'b"', 'B"'])) {
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
-            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || false === strpos($content, '\\')) {
+            if (!$token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, T_CONSTANT_ENCAPSED_STRING]) || !str_contains($content, '\\')) {
                 continue;
             }
 

@@ -74,7 +74,7 @@ final class FixerFactoryTest extends TestCase
             static function (string $className): bool {
                 $class = new \ReflectionClass($className);
 
-                return !$class->isAbstract() && $class->implementsInterface(FixerInterface::class) && 0 === strpos($class->getNamespaceName(), 'PhpCsFixer\\Fixer\\');
+                return !$class->isAbstract() && $class->implementsInterface(FixerInterface::class) && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\\Fixer\\');
             }
         );
 

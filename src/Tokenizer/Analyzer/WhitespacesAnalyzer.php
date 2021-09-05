@@ -32,7 +32,7 @@ final class WhitespacesAnalyzer
 
             $whitespaceToken = $tokens[$whitespaceIndex];
 
-            if (false !== strpos($whitespaceToken->getContent(), "\n")) {
+            if (str_contains($whitespaceToken->getContent(), "\n")) {
                 break;
             }
 

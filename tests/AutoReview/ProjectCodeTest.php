@@ -671,7 +671,7 @@ final class ProjectCodeTest extends TestCase
         $factory->registerBuiltInFixers();
 
         foreach ($factory->getFixers() as $fixer) {
-            if (0 !== strpos($fixer->getName(), 'php_unit_')) {
+            if (!str_starts_with($fixer->getName(), 'php_unit_')) {
                 continue;
             }
 
