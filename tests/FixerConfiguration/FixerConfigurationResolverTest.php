@@ -165,7 +165,7 @@ final class FixerConfigurationResolverTest extends TestCase
     public function testResolveWithNormalizers(): void
     {
         $configuration = new FixerConfigurationResolver([
-            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, $value): int {
+            new FixerOption('foo', 'Bar.', true, null, null, null, static function (Options $options, string $value): int {
                 return (int) $value;
             }),
         ]);
