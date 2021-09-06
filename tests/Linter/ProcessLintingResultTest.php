@@ -18,8 +18,6 @@ use PhpCsFixer\Linter\ProcessLintingResult;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\ProcessLintingResult

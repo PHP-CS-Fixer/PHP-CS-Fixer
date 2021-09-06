@@ -18,7 +18,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Саша Стаменковић <umpirsky@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *

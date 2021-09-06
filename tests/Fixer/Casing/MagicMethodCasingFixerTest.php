@@ -18,8 +18,6 @@ use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer

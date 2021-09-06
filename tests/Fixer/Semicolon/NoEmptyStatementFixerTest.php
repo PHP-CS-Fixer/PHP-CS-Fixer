@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal

@@ -47,6 +47,11 @@ final class FunctionsAnalyzerTest extends TestCase
         ];
 
         yield [
+            '<?php foo();',
+            [1],
+        ];
+
+        yield [
             '<?php foo("bar");',
             [1],
         ];

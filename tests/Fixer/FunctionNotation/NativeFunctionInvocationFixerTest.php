@@ -21,7 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -632,7 +631,7 @@ echo strlen($a);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix80Cases()
+    public function provideFix80Cases(): \Generator
     {
         yield 'attribute and strict' => [
             '<?php

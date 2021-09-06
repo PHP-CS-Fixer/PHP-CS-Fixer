@@ -18,8 +18,6 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CodeHasher;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\CodeHasher

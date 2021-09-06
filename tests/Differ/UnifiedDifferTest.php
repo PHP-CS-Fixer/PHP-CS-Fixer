@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\Differ;
 use PhpCsFixer\Differ\UnifiedDiffer;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\UnifiedDiffer

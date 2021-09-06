@@ -227,6 +227,8 @@ final class ProjectCodeTest extends TestCase
 
         if ([] === $publicMethods) {
             $this->addToAssertionCount(1); // no methods to test, all good!
+
+            return;
         }
 
         foreach ($publicMethods as $method) {
@@ -243,20 +245,20 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatTestDataProvidersAreCorrectlyNamed(string $testClassName): void
     {
-        $usedDataProviderMethodNames = $this->getUsedDataProviderMethodNames($testClassName);
+        $asserts = 0;
 
-        if (empty($usedDataProviderMethodNames)) {
-            $this->addToAssertionCount(1); // no data providers to test, all good!
-
-            return;
-        }
-
-        foreach ($usedDataProviderMethodNames as $dataProviderMethodName) {
+        foreach ($this->getUsedDataProviderMethodNames($testClassName) as $dataProviderMethodName) {
             static::assertMatchesRegularExpression('/^provide[A-Z]\S+Cases$/', $dataProviderMethodName, sprintf(
                 'Data provider in "%s" with name "%s" is not correctly named.',
                 $testClassName,
                 $dataProviderMethodName
             ));
+
+            ++$asserts;
+        }
+
+        if (0 === $asserts) {
+            $this->addToAssertionCount(1); // no data providers to test, all good!
         }
     }
 
@@ -271,15 +273,21 @@ final class ProjectCodeTest extends TestCase
             $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
             static function (\ReflectionMethod $reflectionMethod) use ($reflectionClass): bool {
                 return $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
-                    && 'provide' === substr($reflectionMethod->getName(), 0, 7);
+                    && str_starts_with($reflectionMethod->getName(), 'provide');
             }
         );
 
         if ([] === $definedDataProviders) {
             $this->addToAssertionCount(1); // no methods to test, all good!
+
+            return;
         }
 
-        $usedDataProviderMethodNames = $this->getUsedDataProviderMethodNames($testClassName);
+        $usedDataProviderMethodNames = [];
+
+        foreach ($this->getUsedDataProviderMethodNames($testClassName) as $providerName) {
+            $usedDataProviderMethodNames[] = $providerName;
+        }
 
         foreach ($definedDataProviders as $definedDataProvider) {
             static::assertContains(
@@ -406,7 +414,7 @@ final class ProjectCodeTest extends TestCase
                 }
             }
 
-            $expected = array_filter($expected, function ($item) { return false !== $item; });
+            $expected = array_filter($expected, static function ($item): bool { return false !== $item; });
 
             if (\count($expected) < 2) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
@@ -710,27 +718,35 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
-    private function getUsedDataProviderMethodNames(string $testClassName): array
+    private function getUsedDataProviderMethodNames(string $testClassName): \Generator
     {
-        $dataProviderMethodNames = [];
+        foreach ($this->getAnnotationsOfTestClass($testClassName, 'dataProvider') as $methodName => $dataProviderAnnotation) {
+            if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+                yield $methodName => $matches['methodName'];
+            }
+        }
+    }
+
+    private function getAnnotationsOfTestClass(string $testClassName, string $annotation): \Generator
+    {
         $tokens = Tokens::fromCode(file_get_contents(
             str_replace('\\', \DIRECTORY_SEPARATOR, preg_replace('#^PhpCsFixer\\\Tests#', 'tests', $testClassName)).'.php'
         ));
 
-        foreach ($tokens as $token) {
-            if ($token->isGivenKind(T_DOC_COMMENT)) {
-                $docBlock = new DocBlock($token->getContent());
-                $dataProviderAnnotations = $docBlock->getAnnotationsOfType('dataProvider');
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+                continue;
+            }
 
-                foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
-                    if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
-                        $dataProviderMethodNames[] = $matches['methodName'];
-                    }
-                }
+            $methodName = $tokens[$tokens->getNextTokenOfKind($index, [[T_STRING]])]->getContent();
+
+            $docBlock = new DocBlock($token->getContent());
+            $dataProviderAnnotations = $docBlock->getAnnotationsOfType($annotation);
+
+            foreach ($dataProviderAnnotations as $dataProviderAnnotation) {
+                yield $methodName => $dataProviderAnnotation;
             }
         }
-
-        return array_unique($dataProviderMethodNames);
     }
 
     private function getSrcClasses()

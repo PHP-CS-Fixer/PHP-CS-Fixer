@@ -18,8 +18,6 @@ use PhpCsFixer\Console\Output\NullOutput;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\NullOutput

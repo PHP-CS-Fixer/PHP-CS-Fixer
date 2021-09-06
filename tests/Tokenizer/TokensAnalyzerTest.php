@@ -22,7 +22,6 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Max Voloshin <voloshin.dp@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
- * @author SpacePossum
  *
  * @internal
  *

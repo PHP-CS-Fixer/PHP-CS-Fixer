@@ -20,8 +20,6 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @coversNothing

@@ -401,11 +401,10 @@ class Example
             return ['phpunit', strtolower($nameToken->getContent())];
         }
 
-        if ('__' === substr($nameToken->getContent(), 0, 2)) {
-            return 'magic';
-        }
-
-        return 'method';
+        return str_starts_with($nameToken->getContent(), '__')
+            ? 'magic'
+            : 'method'
+        ;
     }
 
     private function findElementEnd(Tokens $tokens, int $index): int

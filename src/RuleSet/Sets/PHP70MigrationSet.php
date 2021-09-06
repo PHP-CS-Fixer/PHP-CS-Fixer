@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
  */
-final class PHP70MigrationSet extends AbstractRuleSetDescription
+final class PHP70MigrationSet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
@@ -27,10 +27,5 @@ final class PHP70MigrationSet extends AbstractRuleSetDescription
             '@PHP54Migration' => true,
             'ternary_to_null_coalescing' => true,
         ];
-    }
-
-    public function getDescription(): string
-    {
-        return 'Rules to improve code for PHP 7.0 compatibility.';
     }
 }

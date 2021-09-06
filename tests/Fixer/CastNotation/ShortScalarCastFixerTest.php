@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer

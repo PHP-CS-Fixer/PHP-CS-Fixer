@@ -20,7 +20,6 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *

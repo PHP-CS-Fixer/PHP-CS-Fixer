@@ -15,6 +15,9 @@ function endProgram(): never
     exit();
 }
 
+// https://wiki.php.net/rfc/fsync_function
+fsync($fp);
+
 --INPUT--
 <?php
 
@@ -23,3 +26,6 @@ function endProgram(): NEVER
 {
     die();
 }
+
+// https://wiki.php.net/rfc/fsync_function
+FSYNC($fp);

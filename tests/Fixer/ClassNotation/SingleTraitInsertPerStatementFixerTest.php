@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\SingleTraitInsertPerStatementFixer

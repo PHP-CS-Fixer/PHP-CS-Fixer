@@ -89,22 +89,22 @@ final class IntegrationCase
         return null !== $this->inputCode;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
-    public function getExpectedCode()
+    public function getExpectedCode(): string
     {
         return $this->expectedCode;
     }
 
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
 
-    public function getInputCode()
+    public function getInputCode(): ?string
     {
         return $this->inputCode;
     }
@@ -125,22 +125,22 @@ final class IntegrationCase
         return $this->requirements[$name];
     }
 
-    public function getRequirements()
+    public function getRequirements(): array
     {
         return $this->requirements;
     }
 
-    public function getRuleset()
+    public function getRuleset(): RuleSet
     {
         return $this->ruleset;
     }
 
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->settings;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

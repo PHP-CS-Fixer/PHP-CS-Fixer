@@ -51,7 +51,7 @@ final class FixerFactoryTest extends TestCase
         static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)));
     }
 
-    public function provideFixersPriorityCases()
+    public function provideFixersPriorityCases(): array
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();
@@ -295,7 +295,7 @@ final class FixerFactoryTest extends TestCase
         ];
     }
 
-    public function provideFixersPrioritySpecialPhpdocCases()
+    public function provideFixersPrioritySpecialPhpdocCases(): array
     {
         $factory = new FixerFactory();
         $factory->registerBuiltInFixers();

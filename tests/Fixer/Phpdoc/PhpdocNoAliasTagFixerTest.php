@@ -20,7 +20,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *

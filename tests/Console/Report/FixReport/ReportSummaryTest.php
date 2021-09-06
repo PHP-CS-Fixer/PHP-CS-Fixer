@@ -18,8 +18,6 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReportSummary

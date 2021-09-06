@@ -75,12 +75,12 @@ abstract class AbstractSetTest extends TestCase
         foreach ($setRules as $rule => $config) {
             static::assertIsString($rule, $setName);
 
-            if ('@' === substr($rule, 0, 1)) {
+            if (str_starts_with($rule, '@')) {
                 static::assertFalse($sawRule, sprintf('Ruleset "%s" should define all sets it extends first and than list by rule configuration overrides.', $setName));
                 RuleSets::getSetDefinition($setName);
             } else {
                 $sawRule = true;
-                static::assertTrue($factory->hasRule($rule));
+                static::assertTrue($factory->hasRule($rule), $rule);
             }
         }
 

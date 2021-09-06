@@ -110,7 +110,7 @@ Integration of %s.
      */
     public function testBuildInSetDefinitionNames(string $setName): void
     {
-        static::assertSame('@', substr($setName, 0, 1));
+        static::assertStringStartsWith('@', $setName);
     }
 
     /**

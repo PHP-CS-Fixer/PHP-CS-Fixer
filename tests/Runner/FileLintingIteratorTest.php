@@ -20,8 +20,6 @@ use PhpCsFixer\Runner\FileLintingIterator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileLintingIterator

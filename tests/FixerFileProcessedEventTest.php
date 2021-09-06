@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\FixerFileProcessedEvent;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\FixerFileProcessedEvent

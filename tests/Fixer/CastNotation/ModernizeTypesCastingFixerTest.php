@@ -75,7 +75,7 @@ class overridesIntval
 
     public function usesInval()
     {
-        // that's why it risky
+        // that's why it is risky
         return intval(mt_rand(0, 100));
     }
 }
@@ -93,7 +93,7 @@ class overridesIntval
 
     public function usesInval()
     {
-        // that's why it risky
+        // that's why it is risky
         return (int) (mt_rand(0, 100));
     }
 }

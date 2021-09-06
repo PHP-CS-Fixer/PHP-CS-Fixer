@@ -20,7 +20,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -325,7 +324,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    private static function assertCandidateTokenType($expected, AbstractFixer $fixer): void
+    private static function assertCandidateTokenType(int $expected, AbstractFixer $fixer): void
     {
         $reflectionProperty = new \ReflectionProperty($fixer, 'candidateTokenType');
         $reflectionProperty->setAccessible(true);

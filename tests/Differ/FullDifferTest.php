@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\Differ;
 use PhpCsFixer\Differ\FullDiffer;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\FullDiffer

@@ -19,8 +19,6 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author SpacePossum
- *
  * @internal
  * @covers \PhpCsFixer\Indicator\PhpUnitTestCaseIndicator
  */

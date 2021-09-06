@@ -18,8 +18,6 @@ use PhpCsFixer\Linter\TokenizerLintingResult;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult

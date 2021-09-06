@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
  */
-final class PHP74MigrationSet extends AbstractRuleSetDescription
+final class PHP74MigrationSet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
@@ -28,10 +28,5 @@ final class PHP74MigrationSet extends AbstractRuleSetDescription
             'normalize_index_brace' => true,
             'short_scalar_cast' => true,
         ];
-    }
-
-    public function getDescription(): string
-    {
-        return 'Rules to improve code for PHP 7.4 compatibility.';
     }
 }

@@ -22,8 +22,6 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
  *
- * @author SpacePossum
- *
  * @internal
  *
  * @coversNothing

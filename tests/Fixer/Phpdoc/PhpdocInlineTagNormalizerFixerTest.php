@@ -51,7 +51,7 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
      * {@inheritdoc foo bar.} d
      * {@inheritdoc foo bar.} e
      * {@inheritdoc test} f
-     * end comment {@inheritdoc here we are done} @spacepossum {1}
+     * end comment {@inheritdoc here we are done} @foo {1}
      */
 ',
                 '<?php
@@ -66,7 +66,7 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
      * { @inheritdoc 	foo bar.  } d
      * {@ 	inheritdoc foo bar.	} e
      * @{{inheritdoc test}} f
-     * end comment {@inheritdoc here we are done} @spacepossum {1}
+     * end comment {@inheritdoc here we are done} @foo {1}
      */
 ',
             ],
