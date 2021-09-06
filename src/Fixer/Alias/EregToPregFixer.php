@@ -164,7 +164,7 @@ final class EregToPregFixer extends AbstractFixer
         // try do find something that's not used
         $delimiters = [];
         foreach (self::$delimiters as $k => $d) {
-            if (false === strpos($pattern, $d)) {
+            if (!str_contains($pattern, $d)) {
                 return $d;
             }
 

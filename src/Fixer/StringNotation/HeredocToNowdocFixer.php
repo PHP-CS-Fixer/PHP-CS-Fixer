@@ -71,7 +71,7 @@ EOF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_START_HEREDOC) || false !== strpos($token->getContent(), "'")) {
+            if (!$token->isGivenKind(T_START_HEREDOC) || str_contains($token->getContent(), "'")) {
                 continue;
             }
 

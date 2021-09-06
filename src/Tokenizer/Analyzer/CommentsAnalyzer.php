@@ -205,7 +205,7 @@ final class CommentsAnalyzer
 
             if (
                 $token->isGivenKind(T_VARIABLE)
-                && false !== strpos($docsContent, $token->getContent())
+                && str_contains($docsContent, $token->getContent())
             ) {
                 return true;
             }
@@ -244,7 +244,7 @@ final class CommentsAnalyzer
         for ($index = $languageConstructIndex + 1; $index < $endIndex; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_VARIABLE) && false !== strpos($docsContent, $token->getContent())) {
+            if ($token->isGivenKind(T_VARIABLE) && str_contains($docsContent, $token->getContent())) {
                 return true;
             }
         }

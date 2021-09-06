@@ -170,7 +170,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             }
 
             if ($token->isType(DocLexer::T_NONE)) {
-                if (false !== strpos($token->getContent(), "\n")) {
+                if (str_contains($token->getContent(), "\n")) {
                     continue;
                 }
 

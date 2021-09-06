@@ -507,7 +507,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
 
             if ($input && (!$fixStatement || $fixStatement === $statement)) {
                 foreach (explode('_', $statement) as $singleStatement) {
-                    if (false !== strpos($input, $singleStatement)) {
+                    if (str_contains($input, $singleStatement)) {
                         $withInput = true;
 
                         break;

@@ -57,13 +57,13 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
         }
 
         // ignore if linebreak already present
-        if (false !== strpos($tokens[0]->getContent(), "\n")) {
+        if (str_contains($tokens[0]->getContent(), "\n")) {
             return;
         }
 
         $newlineFound = false;
         foreach ($tokens as $token) {
-            if ($token->isWhitespace() && false !== strpos($token->getContent(), "\n")) {
+            if ($token->isWhitespace() && str_contains($token->getContent(), "\n")) {
                 $newlineFound = true;
 
                 break;

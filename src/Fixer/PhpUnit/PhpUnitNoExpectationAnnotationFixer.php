@@ -247,7 +247,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $params = [];
         $exceptionClass = ltrim($annotations['expectedException'], '\\');
-        if (false !== strpos($exceptionClass, '*')) {
+        if (str_contains($exceptionClass, '*')) {
             $exceptionClass = substr($exceptionClass, 0, strpos($exceptionClass, '*'));
         }
         $exceptionClass = trim($exceptionClass);

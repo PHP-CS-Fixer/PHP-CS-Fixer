@@ -48,7 +48,7 @@ abstract class AbstractLinesBeforeNamespaceFixer extends AbstractFixer implement
                 if ($token->isGivenKind(T_OPEN_TAG)) {
                     $openingToken = $token;
                     $openingTokenIndex = $index - $i;
-                    $newlineInOpening = false !== strpos($token->getContent(), "\n");
+                    $newlineInOpening = str_contains($token->getContent(), "\n");
                     if ($newlineInOpening) {
                         ++$precedingNewlines;
                     }

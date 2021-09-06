@@ -545,7 +545,7 @@ class Sample
         $singleLineElement = true;
 
         for ($i = $element['index'] + 1; $i < $elementEndIndex; ++$i) {
-            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+            if (str_contains($tokens[$i]->getContent(), "\n")) {
                 $singleLineElement = false;
 
                 break;
@@ -556,7 +556,7 @@ class Sample
             while (true) {
                 $nextToken = $tokens[$elementEndIndex + 1];
 
-                if (($nextToken->isComment() || $nextToken->isWhitespace()) && false === strpos($nextToken->getContent(), "\n")) {
+                if (($nextToken->isComment() || $nextToken->isWhitespace()) && !str_contains($nextToken->getContent(), "\n")) {
                     ++$elementEndIndex;
                 } else {
                     break;

@@ -81,7 +81,7 @@ final class Line
      */
     public function isTheStart(): bool
     {
-        return false !== strpos($this->content, '/**');
+        return str_contains($this->content, '/**');
     }
 
     /**
@@ -89,7 +89,7 @@ final class Line
      */
     public function isTheEnd(): bool
     {
-        return false !== strpos($this->content, '*/');
+        return str_contains($this->content, '*/');
     }
 
     /**

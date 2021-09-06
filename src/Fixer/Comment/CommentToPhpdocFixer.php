@@ -206,7 +206,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
             if (!$tokens[$index]->isComment()) {
                 continue;
             }
-            if (false !== strpos($tokens[$index]->getContent(), '*/')) {
+            if (str_contains($tokens[$index]->getContent(), '*/')) {
                 return;
             }
             $message = $this->getMessage($tokens[$index]->getContent());
@@ -227,10 +227,10 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
 
     private function getMessage(string $content): string
     {
-        if (0 === strpos($content, '#')) {
+        if (str_starts_with($content, '#')) {
             return substr($content, 1);
         }
-        if (0 === strpos($content, '//')) {
+        if (str_starts_with($content, '//')) {
             return substr($content, 2);
         }
 

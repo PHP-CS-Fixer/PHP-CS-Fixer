@@ -297,7 +297,7 @@ SAMPLE
     {
         $previousToken = $tokens[$index - 1];
 
-        if ($previousToken->isComment() && 0 !== strpos($previousToken->getContent(), '/*')) {
+        if ($previousToken->isComment() && !str_starts_with($previousToken->getContent(), '/*')) {
             return false;
         }
 
@@ -324,7 +324,7 @@ SAMPLE
 
             $searchIndex = $prevWhitespaceTokenIndex;
         } while (null !== $prevWhitespaceTokenIndex
-            && false === strpos($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
+            && !str_contains($tokens[$prevWhitespaceTokenIndex]->getContent(), "\n")
         );
 
         if (null === $prevWhitespaceTokenIndex) {
@@ -482,6 +482,6 @@ SAMPLE
      */
     private function isNewline(Token $token): bool
     {
-        return $token->isWhitespace() && false !== strpos($token->getContent(), "\n");
+        return $token->isWhitespace() && str_contains($token->getContent(), "\n");
     }
 }

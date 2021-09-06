@@ -177,7 +177,7 @@ SAMPLE
     private function isMultilined(Tokens $tokens, int $start, int $end): bool
     {
         for ($i = $start; $i < $end; ++$i) {
-            if (false !== strpos($tokens[$i]->getContent(), "\n")) {
+            if (str_contains($tokens[$i]->getContent(), "\n")) {
                 return true;
             }
         }

@@ -139,7 +139,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 if ($previousToken->isGivenKind(T_START_HEREDOC)) {
                     $previousTokenContent = $previousToken->getContent();
 
-                    if (false !== strpos($previousTokenContent, '\'')) {
+                    if (str_contains($previousTokenContent, '\'')) {
                         $tokens[$index - 1] = new Token([T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
                         $stringTypeChanged = true;
                     }

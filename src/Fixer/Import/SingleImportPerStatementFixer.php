@@ -231,7 +231,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
 
             if ($tokens[$i - 1]->isWhitespace()) {
                 $tokens[$i - 1] = new Token([T_WHITESPACE, $ending.$indent]);
-            } elseif (false === strpos($tokens[$i - 1]->getContent(), "\n")) {
+            } elseif (!str_contains($tokens[$i - 1]->getContent(), "\n")) {
                 $tokens->insertAt($i, new Token([T_WHITESPACE, $ending.$indent]));
             }
         }

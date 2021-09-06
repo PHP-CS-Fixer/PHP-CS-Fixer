@@ -292,7 +292,7 @@ final class RuleSetTest extends TestCase
         foreach (RuleSets::getSetDefinitionNames() as $name) {
             yield $name => [
                 [$name => true],
-                false === strpos($name, ':risky'),
+                !str_contains($name, ':risky'),
             ];
         }
 

@@ -72,7 +72,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         $this->name = $name;
         $this->nullable = false;
 
-        if (0 === strpos($name, '?')) {
+        if (str_starts_with($name, '?')) {
             $this->name = substr($name, 1);
             $this->nullable = true;
         }

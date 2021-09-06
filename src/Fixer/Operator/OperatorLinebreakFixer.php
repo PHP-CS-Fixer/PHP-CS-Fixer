@@ -295,7 +295,7 @@ function foo() {
     private function isMultiline(Tokens $tokens, int $indexStart, int $indexEnd): bool
     {
         for ($index = $indexStart; $index <= $indexEnd; ++$index) {
-            if (false !== strpos($tokens[$index]->getContent(), "\n")) {
+            if (str_contains($tokens[$index]->getContent(), "\n")) {
                 return true;
             }
         }

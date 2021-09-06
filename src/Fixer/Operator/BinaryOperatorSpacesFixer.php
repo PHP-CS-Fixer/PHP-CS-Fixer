@@ -388,7 +388,7 @@ $array = [
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -398,7 +398,7 @@ $array = [
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
             }
         } else {
@@ -411,7 +411,7 @@ $array = [
         // fix white space after operator
         if ($tokens[$index + 1]->isWhitespace()) {
             $content = $tokens[$index + 1]->getContent();
-            if (false === strpos($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
+            if (!str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($index + 1)]->isComment()) {
                 $tokens->clearAt($index + 1);
             }
         }
@@ -419,7 +419,7 @@ $array = [
         // fix white space before operator
         if ($tokens[$index - 1]->isWhitespace()) {
             $content = $tokens[$index - 1]->getContent();
-            if (false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            if (!str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                 $tokens->clearAt($index - 1);
             }
         }
@@ -624,7 +624,7 @@ $array = [
 
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if (false !== strpos($tokens[$i - 1]->getContent(), "\n")) {
+                    if (str_contains($tokens[$i - 1]->getContent(), "\n")) {
                         break;
                     }
 
@@ -672,7 +672,7 @@ $array = [
         }
 
         $content = $tokens[$index - 1]->getContent();
-        if (' ' !== $content && false === strpos($content, "\n")) {
+        if (' ' !== $content && !str_contains($content, "\n")) {
             $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
         }
     }
@@ -687,7 +687,7 @@ $array = [
         for ($j = 0; $j <= $this->deepestLevel; ++$j) {
             $placeholder = sprintf(self::ALIGN_PLACEHOLDER, $j);
 
-            if (false === strpos($tmpCode, $placeholder)) {
+            if (!str_contains($tmpCode, $placeholder)) {
                 continue;
             }
 

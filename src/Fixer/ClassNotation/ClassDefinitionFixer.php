@@ -248,7 +248,7 @@ $foo = new class(){};
 
         $openIndex = $tokens->getNextTokenOfKind($classDefInfo['classy'], ['{']);
 
-        if (' ' !== $spacing && false !== strpos($tokens[$openIndex - 1]->getContent(), "\n")) {
+        if (' ' !== $spacing && str_contains($tokens[$openIndex - 1]->getContent(), "\n")) {
             return $openIndex;
         }
 
@@ -315,7 +315,7 @@ $foo = new class(){};
                 continue;
             }
 
-            if (!$implementsInfo['multiLine'] && false !== strpos($tokens[$i]->getContent(), "\n")) {
+            if (!$implementsInfo['multiLine'] && str_contains($tokens[$i]->getContent(), "\n")) {
                 $implementsInfo['multiLine'] = true;
             }
         }
@@ -378,7 +378,7 @@ $foo = new class(){};
                 continue;
             }
 
-            if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && false === strpos($tokens[$i]->getContent(), "\n")) {
+            if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && !str_contains($tokens[$i]->getContent(), "\n")) {
                 $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
             }
 
@@ -405,7 +405,7 @@ $foo = new class(){};
             $isOnOwnLine = false;
 
             for ($j = $breakAtIndex; $j > $previousInterfaceImplementingIndex; --$j) {
-                if (false !== strpos($tokens[$j]->getContent(), "\n")) {
+                if (str_contains($tokens[$j]->getContent(), "\n")) {
                     $isOnOwnLine = true;
 
                     break;

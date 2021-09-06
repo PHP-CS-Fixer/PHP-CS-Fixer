@@ -881,7 +881,7 @@ final class ConfigurationResolver
                     }
 
                     foreach ($pathsByType['dir'] as $path) {
-                        if (0 === strpos($currentRealPath, $path)) {
+                        if (str_starts_with($currentRealPath, $path)) {
                             return true;
                         }
                     }

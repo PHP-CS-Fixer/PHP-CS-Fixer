@@ -201,7 +201,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             }
             $tag = strtolower(substr(array_shift($matches), 1));
             foreach ($this->configuration['annotation_exclude'] as $tagStart => $true) {
-                if (0 === strpos($tag, $tagStart)) {
+                if (str_starts_with($tag, $tagStart)) {
                     return false; // ignore class: class-level PHPDoc contains tag that has been excluded through configuration
                 }
             }
