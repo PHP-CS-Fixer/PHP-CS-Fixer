@@ -25,9 +25,6 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
-/**
- * @author SpacePossum
- */
 final class EmptyLoopConditionFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     private const STYLE_FOR = 'for';

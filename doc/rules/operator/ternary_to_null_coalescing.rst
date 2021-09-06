@@ -37,3 +37,6 @@ The rule is part of the following rule sets:
 
 @PHP80Migration
   Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``ternary_to_null_coalescing`` rule.
+
+@PHP81Migration
+  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``ternary_to_null_coalescing`` rule.

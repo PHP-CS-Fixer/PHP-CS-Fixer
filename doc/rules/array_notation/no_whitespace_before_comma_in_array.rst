@@ -68,6 +68,11 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+@PHP81Migration
+  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the config below:
+
+  ``['after_heredoc' => true]``
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``no_whitespace_before_comma_in_array`` rule with the default config.
 

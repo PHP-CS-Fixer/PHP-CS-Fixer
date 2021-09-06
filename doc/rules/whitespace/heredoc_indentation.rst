@@ -87,3 +87,6 @@ The rule is part of the following rule sets:
 
 @PHP80Migration
   Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
+
+@PHP81Migration
+  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``heredoc_indentation`` rule with the default config.
