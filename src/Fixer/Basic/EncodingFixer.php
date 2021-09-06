@@ -37,7 +37,7 @@ final class EncodingFixer extends AbstractFixer
     {
         parent::__construct();
 
-        $this->BOM = pack('CCC', 0xef, 0xbb, 0xbf);
+        $this->BOM = pack('CCC', 0xEF, 0xBB, 0xBF);
     }
 
     /**

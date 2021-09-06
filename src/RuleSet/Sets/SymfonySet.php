@@ -60,6 +60,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'include' => true,
             'increment_style' => true,
+            'integer_literal_case' => true,
             'lambda_not_used_import' => true,
             'linebreak_after_opening_tag' => true,
             'magic_constant_casing' => true,

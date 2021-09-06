@@ -38,6 +38,7 @@ Rules
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
 - `include <./../rules/control_structure/include.rst>`_
 - `increment_style <./../rules/operator/increment_style.rst>`_
+- `integer_literal_case <./../rules/casing/integer_literal_case.rst>`_
 - `lambda_not_used_import <./../rules/function_notation/lambda_not_used_import.rst>`_
 - `linebreak_after_opening_tag <./../rules/php_tag/linebreak_after_opening_tag.rst>`_
 - `magic_constant_casing <./../rules/casing/magic_constant_casing.rst>`_
