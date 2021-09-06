@@ -204,4 +204,21 @@ function Foo(INTEGER $a) {}
             '<?php function foo(): INT|BOOL {}',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class T { public function Foo(object $A): never {die;}}',
+            '<?php class T { public function Foo(object $A): NEVER {die;}}',
+        ];
+    }
 }

@@ -79,6 +79,9 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
             'void' => [
                 '<?php class Foo { /** @var void */ private $foo; }',
             ],
+            'never' => [
+                '<?php class Foo { /** @var never */ private $foo; }',
+            ],
             'iterable' => [
                 '<?php class Foo { /** @var iterable */ private iterable $foo; }',
                 '<?php class Foo { /** @var iterable */ private $foo; }',

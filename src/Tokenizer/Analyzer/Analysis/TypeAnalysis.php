@@ -38,6 +38,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         'int',
         'iterable',
         'mixed',
+        'never',
         'numeric',
         'object',
         'resource',

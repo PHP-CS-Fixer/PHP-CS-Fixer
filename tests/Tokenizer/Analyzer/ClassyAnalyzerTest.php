@@ -199,6 +199,25 @@ final class ClassyAnalyzerTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<int, bool> $expected
+     *
+     * @dataProvider provideIsClassyInvocation81Cases
+     * @requires PHP 8.1
+     */
+    public function testIsClassyInvocation81(string $source, array $expected): void
+    {
+        self::assertClassyInvocation($source, $expected);
+    }
+
+    public function provideIsClassyInvocation81Cases(): \Generator
+    {
+        yield [
+            '<?php function foo(): never {}',
+            [3 => false, 8 => false],
+        ];
+    }
+
     private static function assertClassyInvocation(string $source, array $expected): void
     {
         $tokens = Tokens::fromCode($source);

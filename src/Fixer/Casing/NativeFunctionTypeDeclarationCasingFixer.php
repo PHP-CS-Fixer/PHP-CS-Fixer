@@ -42,6 +42,7 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
      * object   PHP 7.2
      * static   PHP 8.0 (return type only)
      * mixed    PHP 8.0
+     * never    PHP 8.1
      *
      * @var array<string, true>
      */
@@ -87,6 +88,10 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
         if (\PHP_VERSION_ID >= 80000) {
             $this->hints = array_merge($this->hints, ['static' => true]);
             $this->hints = array_merge($this->hints, ['mixed' => true]);
+        }
+
+        if (\PHP_VERSION_ID >= 80100) {
+            $this->hints = array_merge($this->hints, ['never' => true]);
         }
 
         $this->functionsAnalyzer = new FunctionsAnalyzer();

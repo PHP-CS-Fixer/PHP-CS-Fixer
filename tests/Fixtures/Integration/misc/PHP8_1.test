@@ -1,0 +1,25 @@
+--TEST--
+PHP 8.1 test.
+--RULESET--
+{
+    "@PhpCsFixer": true
+}
+--REQUIREMENTS--
+{"php": 80100}
+--EXPECT--
+<?php
+
+// https://wiki.php.net/rfc/noreturn_type
+function endProgram(): never
+{
+    exit();
+}
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/noreturn_type
+function endProgram(): NEVER
+{
+    die();
+}
