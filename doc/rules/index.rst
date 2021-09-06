@@ -55,6 +55,8 @@ Basic
     PHP code MUST use only UTF-8 without BOM (remove BOM).
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
     Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
+- `octal_notation <./basic/octal_notation.rst>`_
+    Literal octal must be in ``0o`` notation.
 - `psr_autoloading <./basic/psr_autoloading.rst>`_ *(risky)*
     Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.
 

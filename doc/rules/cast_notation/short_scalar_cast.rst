@@ -58,6 +58,9 @@ The rule is part of the following rule sets:
 @PHP80Migration
   Using the `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ rule set will enable the ``short_scalar_cast`` rule.
 
+@PHP81Migration
+  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``short_scalar_cast`` rule.
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``short_scalar_cast`` rule.
 

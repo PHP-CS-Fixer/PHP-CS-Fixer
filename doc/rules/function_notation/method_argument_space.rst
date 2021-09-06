@@ -224,6 +224,11 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+@PHP81Migration
+  Using the `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ rule set will enable the ``method_argument_space`` rule with the config below:
+
+  ``['after_heredoc' => true]``
+
 @PSR12
   Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``method_argument_space`` rule with the config below:
 
