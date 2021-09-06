@@ -1032,4 +1032,24 @@ if ($a = $obj instanceof (foo()) === true) {
             ['equal' => true, 'identical' => true],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'does not make a lot of sense but is valid syntax, do not break 1' => [
+            '<?php $b = strlen( ... ) === $a;',
+        ];
+
+        yield 'does not make a lot of sense but is valid syntax, do not break 2' => [
+            '<?php $b = $a === strlen( ... );',
+        ];
+    }
 }

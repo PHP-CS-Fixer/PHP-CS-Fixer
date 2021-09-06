@@ -177,4 +177,21 @@ $$e(2);
             '<?php $a{"e"} (1); $a{2} (1);',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php strlen(...);',
+            '<?php strlen  (...);',
+        ];
+    }
 }

@@ -1452,5 +1452,15 @@ class Foo
 }
 ',
         ];
+
+        yield 'first callable class' => [
+            '<?php
+use Foo;
+Foo::method(...);',
+            '<?php
+use Foo;
+use Bar;
+Foo::method(...);',
+        ];
     }
 }

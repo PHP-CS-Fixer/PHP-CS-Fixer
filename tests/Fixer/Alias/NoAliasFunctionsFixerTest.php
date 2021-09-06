@@ -226,6 +226,22 @@ abstract class A
         return $finalCases;
     }
 
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'simple 8.1' => [
+            '<?php $a = is_double(...);',
+        ];
+    }
+
     private function provideAllCases(): array
     {
         $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');

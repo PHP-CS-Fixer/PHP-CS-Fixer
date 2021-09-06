@@ -143,4 +143,20 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
             '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );'
         );
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php $a = trigger_error(...);',
+        ];
+    }
 }

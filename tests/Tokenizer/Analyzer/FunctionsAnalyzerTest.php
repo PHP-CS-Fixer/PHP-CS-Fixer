@@ -333,6 +333,37 @@ class Foo {}
     }
 
     /**
+     * @param int[] $indices
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp81Cases
+     * @requires PHP 8.1
+     */
+    public function testIsGlobalFunctionCallPhp81(array $indices, string $code): void
+    {
+        self::assertIsGlobalFunctionCall($indices, $code);
+    }
+
+    public function provideIsGlobalFunctionCallPhp81Cases(): \Generator
+    {
+        yield 'first class callable cases' => [
+            [],
+            '<?php
+strlen(...);
+$closure(...);
+$invokableObject(...);
+$obj->method(...);
+$obj->$methodStr(...);
+($obj->property)(...);
+Foo::method(...);
+$classStr::$methodStr(...);
+self::{$complex . $expression}(...);
+\'strlen\'(...);
+[$obj, \'method\'](...);
+[Foo::class, \'method\'](...) ?>',
+        ];
+    }
+
+    /**
      * @dataProvider provideFunctionsWithArgumentsCases
      */
     public function testFunctionArgumentInfo(string $code, int $methodIndex, array $expected): void

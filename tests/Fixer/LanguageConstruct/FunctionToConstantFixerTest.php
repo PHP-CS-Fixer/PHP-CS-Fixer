@@ -269,4 +269,20 @@ get_called_class#1
 
         $this->fixer->configure(['pi123']);
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'first callable class' => [
+            '<?php $a = get_class(...);',
+        ];
+    }
 }
