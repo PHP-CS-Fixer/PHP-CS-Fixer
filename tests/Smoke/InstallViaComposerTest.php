@@ -137,7 +137,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
         $cwd = __DIR__.'/../..';
 
         $stepsToInitializeArtifact = [
-            // Clone current version of project to new location, as we gonna modify it.
+            // Clone current version of project to new location, as we are going to modify it.
             // Warning! Only already committed changes will be cloned!
             "git clone --depth=1 . {$tmpArtifactPath}",
         ];

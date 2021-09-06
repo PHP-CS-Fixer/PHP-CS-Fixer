@@ -18,8 +18,6 @@ use PhpCsFixer\Tests\Fixtures\Test\AbstractTransformerTest\FooTransformer;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\AbstractTransformer

@@ -20,8 +20,6 @@ use PhpCsFixer\Tests\Test\TestCaseUtils;
 /**
  * @requires PHP 7.1
  *
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ListNotation\ListSyntaxFixer
@@ -65,7 +63,7 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         }
 
         // the reverse of this is different because of all the comments and white space,
-        // therefore we override with a similar case case here
+        // therefore we override with a similar case here
         $cases['comment case'] = [
             '<?php
 #

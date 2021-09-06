@@ -113,7 +113,8 @@ $foo->__INVOKE(1);
             }
 
             $content = $tokens[$index]->getContent();
-            if ('__' !== substr($content, 0, 2)) {
+
+            if (!str_starts_with($content, '__')) {
                 continue; // cheap look ahead
             }
 

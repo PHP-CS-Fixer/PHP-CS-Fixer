@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
  */
-final class PHP73MigrationSet extends AbstractRuleSetDescription
+final class PHP73MigrationSet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
@@ -30,10 +30,5 @@ final class PHP73MigrationSet extends AbstractRuleSetDescription
             'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],
             'trailing_comma_in_multiline' => ['after_heredoc' => true],
         ];
-    }
-
-    public function getDescription(): string
-    {
-        return 'Rules to improve code for PHP 7.3 compatibility.';
     }
 }

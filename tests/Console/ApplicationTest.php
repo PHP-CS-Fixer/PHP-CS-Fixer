@@ -18,8 +18,6 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Console\Application

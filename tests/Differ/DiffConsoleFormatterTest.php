@@ -19,8 +19,6 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Differ\DiffConsoleFormatter

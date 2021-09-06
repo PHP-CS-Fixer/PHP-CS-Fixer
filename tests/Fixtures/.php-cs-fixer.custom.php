@@ -15,11 +15,9 @@ use PhpCsFixer\ConfigInterface;
 /**
  * Custom config class/file for PHPUnit test.
  *
- * This class does NOT represent a good/sane configuration and is therefor NOT a example.
+ * This class does NOT represent a good/sane configuration and is therefore NOT an example.
  *
  * @internal
- *
- * @author SpacePossum
  */
 final class CustomConfig implements ConfigInterface
 {

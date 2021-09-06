@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
  */
-final class PHP80MigrationRiskySet extends AbstractRuleSetDescription
+final class PHP80MigrationRiskySet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
@@ -35,10 +35,5 @@ final class PHP80MigrationRiskySet extends AbstractRuleSetDescription
             'no_unneeded_final_method' => true, // final private method (not constructor) are no longer allowed >= PHP8.0
             'no_unreachable_default_argument_value' => true,
         ];
-    }
-
-    public function getDescription(): string
-    {
-        return 'Rules to improve code for PHP 8.0 compatibility.';
     }
 }

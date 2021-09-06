@@ -15,12 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
  */
-final class PHPUnit84MigrationRiskySet extends AbstractRuleSetDescription
+final class PHPUnit84MigrationRiskySet extends AbstractMigrationSetDescription
 {
     public function getRules(): array
     {
@@ -31,10 +31,5 @@ final class PHPUnit84MigrationRiskySet extends AbstractRuleSetDescription
                 'target' => PhpUnitTargetVersion::VERSION_8_4,
             ],
         ];
-    }
-
-    public function getDescription(): string
-    {
-        return 'Rules to improve tests code for PHPUnit 8.4 compatibility.';
     }
 }

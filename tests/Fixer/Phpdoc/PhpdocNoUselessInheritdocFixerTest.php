@@ -19,8 +19,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @author SpacePossum
- *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer
  */
 final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase

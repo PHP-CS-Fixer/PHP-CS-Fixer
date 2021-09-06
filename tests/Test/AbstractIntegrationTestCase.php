@@ -59,8 +59,6 @@ use Symfony\Component\Finder\SplFileInfo;
  *   * Section or any line in it may be omitted.
  *  ** PHP minimum version. Default to current running php version (no effect).
  *
- * @author SpacePossum
- *
  * @internal
  */
 abstract class AbstractIntegrationTestCase extends TestCase

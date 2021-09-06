@@ -21,7 +21,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
- * @author SpacePossum
  *
  * @internal
  *

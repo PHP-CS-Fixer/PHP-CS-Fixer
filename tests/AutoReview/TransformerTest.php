@@ -19,7 +19,6 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
 
 /**
- * @author SpacePossum
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  *
  * @internal

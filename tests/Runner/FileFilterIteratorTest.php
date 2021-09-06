@@ -20,8 +20,6 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileFilterIterator

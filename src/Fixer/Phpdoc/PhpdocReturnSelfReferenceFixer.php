@@ -147,8 +147,9 @@ class Sample
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced return types with new ones.'))
                 ->setAllowedTypes(['array'])
-                ->setNormalizer(static function (Options $options, $value) use ($default) {
+                ->setNormalizer(static function (Options $options, array $value) use ($default): array {
                     $normalizedValue = [];
+
                     foreach ($value as $from => $to) {
                         if (\is_string($from)) {
                             $from = strtolower($from);
@@ -157,7 +158,7 @@ class Sample
                         if (!isset($default[$from])) {
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown key "%s", expected any of "%s".',
-                                \is_object($from) ? \get_class($from) : \gettype($from).(\is_resource($from) ? '' : '#'.$from),
+                                \gettype($from).'#'.$from,
                                 implode('", "', array_keys($default))
                             ));
                         }

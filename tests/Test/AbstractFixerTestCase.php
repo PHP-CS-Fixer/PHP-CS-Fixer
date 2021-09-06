@@ -128,7 +128,7 @@ abstract class AbstractFixerTestCase extends TestCase
             static::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
 
             if (!($this->fixer instanceof SingleBlankLineAtEofFixer)) {
-                static::assertSame("\n", substr($code, -1), sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
+                static::assertStringEndsWith("\n", $code, sprintf('[%s] Sample #%d must end with linebreak', $fixerName, $sampleCounter));
             }
 
             $config = $sample->getConfiguration();

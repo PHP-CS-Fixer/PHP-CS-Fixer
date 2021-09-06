@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\PharChecker;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\PharChecker

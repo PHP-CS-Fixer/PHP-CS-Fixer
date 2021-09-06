@@ -18,7 +18,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *
@@ -138,8 +137,15 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     class Foo
     {
         const TRUE = 1;
-        const FALSE = 2;
+        const FALSE = true;
         const NULL = null;
+    }',
+                '<?php
+    class Foo
+    {
+        const TRUE = 1;
+        const FALSE = TRUE;
+        const NULL = NULL;
     }',
             ],
             ['<?php $x = new /**/False?>'],

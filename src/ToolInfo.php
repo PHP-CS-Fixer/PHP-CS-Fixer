@@ -86,7 +86,7 @@ final class ToolInfo implements ToolInfoInterface
 
     public function isInstalledAsPhar(): bool
     {
-        return 'phar://' === substr(__DIR__, 0, 7);
+        return str_starts_with(__DIR__, 'phar://');
     }
 
     public function isInstalledByComposer(): bool

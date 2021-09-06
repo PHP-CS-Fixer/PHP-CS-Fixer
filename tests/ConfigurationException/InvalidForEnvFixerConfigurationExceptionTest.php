@@ -20,8 +20,6 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException

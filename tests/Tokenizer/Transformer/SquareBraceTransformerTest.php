@@ -21,7 +21,6 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author SpacePossum
  *
  * @internal
  *

@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\ToolInfo;
 
 /**
- * @author SpacePossum
- *
  * @internal
  *
  * @covers \PhpCsFixer\ToolInfo

@@ -1122,7 +1122,7 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
             '<?php
                 $a = $bar ?? throw new \Exception();
 
-                // Now, we gonna use it!
+                // Now, we are going to use it!
                 var_dump($a);
             ',
         ];

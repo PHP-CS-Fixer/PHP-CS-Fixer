@@ -88,7 +88,7 @@ final class TrimArraySpacesFixer extends AbstractFixer
                 !$nextNonWhitespaceToken->isComment()
                 || $nextNonWhitespaceIndex === $prevNonWhitespaceIndex
                 || $tokenAfterNextNonWhitespaceToken->isWhitespace(" \t")
-                || '/*' === substr($nextNonWhitespaceToken->getContent(), 0, 2)
+                || str_starts_with($nextNonWhitespaceToken->getContent(), '/*')
             )
         ) {
             $tokens->clearAt($nextIndex);

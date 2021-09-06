@@ -330,10 +330,10 @@ $foo = new class(){};
                 if ($tokens[$i - 1]->isComment() || $tokens[$i + 1]->isComment()) {
                     $content = $tokens[$i - 1]->getContent();
 
-                    if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                    if (!('#' === $content || str_starts_with($content, '//'))) {
                         $content = $tokens[$i + 1]->getContent();
 
-                        if (!('#' === $content || '//' === substr($content, 0, 2))) {
+                        if (!('#' === $content || str_starts_with($content, '//'))) {
                             $tokens[$i] = new Token([T_WHITESPACE, ' ']);
                         }
                     }

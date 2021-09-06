@@ -399,7 +399,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public function provideInvertedFixPhp74Cases()
+    public function provideInvertedFixPhp74Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases($this->provideFixPhp74Cases());
     }
@@ -483,7 +483,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
     }
 
-    public function provideInvertedFix80Cases()
+    public function provideInvertedFix80Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases($this->provideFix80Cases());
     }

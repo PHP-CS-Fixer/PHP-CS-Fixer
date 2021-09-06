@@ -253,9 +253,9 @@ final class DocBlock
         $lineString = str_replace('*/', '', $lineString);
         $lineString = trim($lineString);
 
-        if ('/**' === substr($lineString, 0, 3)) {
+        if (str_starts_with($lineString, '/**')) {
             $lineString = substr($lineString, 3);
-        } elseif ('*' === substr($lineString, 0, 1)) {
+        } elseif (str_starts_with($lineString, '*')) {
             $lineString = substr($lineString, 1);
         }
 
