@@ -684,6 +684,10 @@ $foo;',
                 '<?php do{} while (true);',
             ],
             [
+                '<?php DO {} while (true);',
+                '<?php DO{} while (true);',
+            ],
+            [
                 '<?php do {} while (true);',
                 '<?php do  {} while (true);',
             ],
@@ -736,8 +740,8 @@ $foo;',
 9000;',
             ],
             [
-                '<?php echo /* foo */9000;',
-                '<?php echo/* foo */9000;',
+                '<?php ECHO /* foo */9000;',
+                '<?php ECHO/* foo */9000;',
             ],
         ];
     }
@@ -2040,8 +2044,8 @@ CONST BAR = 9000; }',
                 '<?php class Foo { public$bar; }',
             ],
             [
-                '<?php class Foo { public $bar; }',
-                '<?php class Foo { public  $bar; }',
+                '<?php class Foo { Public $bar; }',
+                '<?php class Foo { Public  $bar; }',
             ],
             [
                 '<?php class Foo { public $bar; }',
@@ -3099,7 +3103,7 @@ class Point {
 
     public function provideFix81Cases(): \Generator
     {
-        yield [
+        yield 'readonly' => [
             '<?php
 final class Foo
 {
@@ -3120,6 +3124,32 @@ final class Foo
     ) {}
 }
             ',
+        ];
+
+        yield 'enum' => [
+            '<?php
+enum Suit {
+    case Hearts;
+}
+',
+            '<?php
+enum     Suit {
+    case Hearts;
+}
+',
+        ];
+
+        yield 'enum full caps' => [
+            '<?php
+ENUM Suit {
+    case Hearts;
+}
+',
+            '<?php
+ENUM     Suit {
+    case Hearts;
+}
+',
         ];
     }
 }

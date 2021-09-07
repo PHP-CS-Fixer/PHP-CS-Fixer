@@ -15,7 +15,8 @@
         "T_NAME_QUALIFIED",
         "T_NAME_RELATIVE",
         "T_NULLSAFE_OBJECT_OPERATOR",
-        "T_READONLY"
+        "T_READONLY",
+        "T_ENUM"
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",
