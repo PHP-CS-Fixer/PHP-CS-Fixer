@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -86,12 +87,12 @@ class Foo extends Bar
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_NAMESPACE, T_NS_SEPARATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC]) || $tokens[$prevIndex]->isObjectOperator()) {
+            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_NAMESPACE, T_NS_SEPARATOR]) || $tokens[$prevIndex]->isObjectOperator()) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->isGivenKind([T_FUNCTION, T_NS_SEPARATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC])) {
+            if ($tokens[$nextIndex]->isGivenKind([T_FUNCTION, T_NS_SEPARATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STRING, CT::T_NULLABLE_TYPE])) {
                 continue;
             }
 

@@ -849,4 +849,32 @@ EOT
             }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+class Foo
+{
+    private string|int $prop1;
+    private string|int $prop2;
+}
+',
+            '<?php
+class Foo
+{
+    private string|int $prop1, $prop2;
+}
+',
+        ];
+    }
 }

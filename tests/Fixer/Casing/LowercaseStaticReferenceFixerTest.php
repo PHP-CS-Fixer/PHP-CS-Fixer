@@ -197,10 +197,78 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFix74Cases
+     * @requires PHP 7.4
+     */
+    public function testFix74(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix74Cases(): \Generator
+    {
+        yield [
+            '<?php class Foo {
+                private STATIC int $baz1;
+                private STATIC ?int $baz2;
+            }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
-    public function testFix80(): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->doTest('<?php $foo?->Self();');
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield ['<?php $foo?->Self();'];
+
+        yield [
+            '<?php class Foo extends A {
+                public function baz1() : int|parent {}
+                public function baz2() : parent|int {}
+                public function baz3() : ?parent {}
+            }',
+            '<?php class Foo extends A {
+                public function baz1() : int|Parent {}
+                public function baz2() : Parent|int {}
+                public function baz3() : ?Parent {}
+            }',
+        ];
+
+        yield [
+            '<?php class Foo extends A {
+                public function baz1() : int|static {}
+                public function baz2() : static|int {}
+                public function baz3() : ?static {}
+            }',
+            '<?php class Foo extends A {
+                public function baz1() : int|STATIC {}
+                public function baz2() : STATIC|int {}
+                public function baz3() : ?STATIC {}
+            }',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    private int|self $prop1, $prop2;
+    private self|int $prop3, $prop4;
+}
+',
+            '<?php
+class Foo
+{
+    private int|SELF $prop1, $prop2;
+    private SELF|int $prop3, $prop4;
+}
+',
+        ];
     }
 }
