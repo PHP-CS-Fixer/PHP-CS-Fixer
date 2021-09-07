@@ -161,8 +161,10 @@ final class Example
     private function expandElement(Tokens $tokens, string $type, int $startIndex, int $endIndex): void
     {
         $divisionContent = null;
+
         if ($tokens[$startIndex - 1]->isWhitespace()) {
             $divisionContent = $tokens[$startIndex - 1]->getContent();
+
             if (Preg::match('#(\n|\r\n)#', $divisionContent, $matches)) {
                 $divisionContent = $matches[0].trim($divisionContent, "\r\n");
             }
@@ -189,6 +191,7 @@ final class Example
             }
 
             $tokens[$i] = new Token(';');
+
             if ($tokens[$i + 1]->isWhitespace()) {
                 $tokens->clearAt($i + 1);
             }
@@ -209,12 +212,13 @@ final class Example
     private function getModifiersSequences(Tokens $tokens, string $type, int $startIndex, int $endIndex): array
     {
         if ('property' === $type) {
-            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT];
+            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
         } else {
             $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
         }
 
         $sequence = [];
+
         for ($i = $startIndex; $i < $endIndex - 1; ++$i) {
             if ($tokens[$i]->isComment()) {
                 continue;
