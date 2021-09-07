@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-06T09:39:56Z
+
+[![Coverage Status](https://coveralls.io/builds/42697510/badge)](https://coveralls.io/builds/42697510)
+
+Coverage decreased (-0.2%) to 92.13% when pulling **c68307577b96e14ebd4a74b9949cadd6431030d5 on SpacePossum:master_PHP81_readonly_support** into **057c4774e1e425572c864d6e3a4e4acf63180fef on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-07T07:32:42Z
+
+note to self TODO:
+- [x] CI
+- [x] stashed FIXME's under the "final const" branch
