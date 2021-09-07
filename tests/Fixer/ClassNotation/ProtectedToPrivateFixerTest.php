@@ -143,6 +143,52 @@ final class Foo
         ];
     }
 
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+final class Foo2 {
+    private int|float $a;
+}
+',
+            '<?php
+final class Foo2 {
+    protected int|float $a;
+}
+',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                final class Foo { private readonly int $d; }
+            ',
+            '<?php
+                final class Foo { protected readonly int $d; }
+            ',
+        ];
+    }
+
     private function getAttributesAndMethods(bool $original)
     {
         $attributesAndMethodsOriginal = '

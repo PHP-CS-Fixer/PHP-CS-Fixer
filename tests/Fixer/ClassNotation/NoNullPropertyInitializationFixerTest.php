@@ -374,4 +374,24 @@ class Point {
 }
 ');
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly - cannot have default value, fixer should not crash' => [
+            '<?php
+final class Foo
+{
+    public readonly string $prop;
+}',
+        ];
+    }
 }

@@ -113,6 +113,10 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
             self::$tokenMap['match'] = T_MATCH;
         }
 
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            self::$tokenMap['readonly'] = T_READONLY;
+        }
+
         $this->fixTokenMap = [];
 
         foreach ($this->configuration['constructs'] as $key) {

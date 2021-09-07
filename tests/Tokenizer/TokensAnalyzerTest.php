@@ -487,6 +487,55 @@ PHP;
     }
 
     /**
+     * @dataProvider provideGetClassyElements81Cases
+     * @requires PHP 8.1
+     */
+    public function testGetClassyElements81(array $expected, string $source): void
+    {
+        $tokens = Tokens::fromCode($source);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
+
+        array_walk(
+            $expected,
+            static function (array &$element, $index) use ($tokens): void {
+                $element['token'] = $tokens[$index];
+                ksort($element);
+            }
+        );
+
+        static::assertSame($expected, $elements);
+    }
+
+    public function provideGetClassyElements81Cases(): \Generator
+    {
+        yield [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'property', // $prop1
+                ],
+                20 => [
+                    'classIndex' => 1,
+                    'type' => 'property', // $prop2
+                ],
+                29 => [
+                    'classIndex' => 1,
+                    'type' => 'property', // $prop13
+                ],
+            ],
+            '<?php
+class Foo
+{
+    readonly string $prop1;
+    readonly public string $prop2;
+    public readonly string $prop3;
+}
+            ',
+        ];
+    }
+
+    /**
      * @dataProvider provideIsAnonymousClassCases
      */
     public function testIsAnonymousClass(array $expected, string $source): void

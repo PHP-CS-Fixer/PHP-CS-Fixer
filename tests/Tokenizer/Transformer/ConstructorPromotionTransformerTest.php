@@ -122,4 +122,40 @@ class Point {
             ]));
         }
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_TYPE_ALTERNATION,
+            ]
+        );
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly' => [
+            [
+                14 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                23 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+                36 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                52 => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+            ],
+            '<?php
+class Test {
+    public function __construct(
+        public readonly float $f,
+        private readonly int $i = 0,
+        public readonly array $ary = [],
+        readonly public array $bar = [],
+    ) {}
+}',
+        ];
+    }
 }

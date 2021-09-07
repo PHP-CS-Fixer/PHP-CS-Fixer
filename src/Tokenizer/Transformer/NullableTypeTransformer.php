@@ -54,23 +54,32 @@ final class NullableTypeTransformer extends AbstractTransformer
             return;
         }
 
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
+        static $types;
 
-        if ($prevToken->equalsAny([
-            '(',
-            ',',
-            [CT::T_TYPE_COLON],
-            [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
-            [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
-            [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
-            [CT::T_ATTRIBUTE_CLOSE],
-            [T_PRIVATE],
-            [T_PROTECTED],
-            [T_PUBLIC],
-            [T_VAR],
-            [T_STATIC],
-        ])) {
+        if (null === $types) {
+            $types = [
+                '(',
+                ',',
+                [CT::T_TYPE_COLON],
+                [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
+                [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
+                [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
+                [CT::T_ATTRIBUTE_CLOSE],
+                [T_PRIVATE],
+                [T_PROTECTED],
+                [T_PUBLIC],
+                [T_VAR],
+                [T_STATIC],
+            ];
+
+            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+                $types[] = [T_READONLY];
+            }
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if ($tokens[$prevIndex]->equalsAny($types)) {
             $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }
     }

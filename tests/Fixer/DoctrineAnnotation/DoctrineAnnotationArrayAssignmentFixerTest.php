@@ -174,4 +174,61 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
  */'],
         ]);
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class FooClass{
+    /**
+     * @Foo({bar = "baz"})
+     */
+    private readonly Foo $foo;
+}',
+            '<?php class FooClass{
+    /**
+     * @Foo({bar : "baz"})
+     */
+    private readonly Foo $foo;
+}',
+        ];
+
+        yield [
+            '<?php class FooClass{
+    /**
+     * @Foo({bar = "baz"})
+     */
+    readonly private Foo $foo;
+}',
+            '<?php class FooClass{
+    /**
+     * @Foo({bar : "baz"})
+     */
+    readonly private Foo $foo;
+}',
+        ];
+
+        yield [
+            '<?php class FooClass{
+    /**
+     * @Foo({bar = "baz"})
+     */
+    readonly Foo $foo;
+}',
+            '<?php class FooClass{
+    /**
+     * @Foo({bar : "baz"})
+     */
+    readonly Foo $foo;
+}',
+        ];
+    }
 }

@@ -3087,4 +3087,39 @@ class Point {
             '<?php $foo(test:    1);',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+final class Foo
+{
+    public readonly string $prop;
+
+    public function __construct(
+        public readonly float $x = 0.0,
+    ) {}
+}
+            ',
+            '<?php
+final class Foo
+{
+    public readonly  string $prop;
+
+    public function __construct(
+        public    readonly   float $x = 0.0,
+    ) {}
+}
+            ',
+        ];
+    }
 }

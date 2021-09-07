@@ -71,6 +71,12 @@ final class TypeAlternationTransformer extends AbstractTransformer
             return;
         }
 
+        if (\defined('T_READONLY') && $prevToken->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+            $this->replaceToken($tokens, $index);
+
+            return;
+        }
+
         if (!$prevToken->equalsAny(['(', ','])) {
             return;
         }

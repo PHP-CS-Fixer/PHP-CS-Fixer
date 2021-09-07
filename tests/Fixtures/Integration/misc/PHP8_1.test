@@ -9,6 +9,13 @@ PHP 8.1 test.
 --EXPECT--
 <?php
 
+// https://wiki.php.net/rfc/readonly_properties_v2
+final class Foo
+{
+    public readonly string $c;
+    readonly string $prop, $b;
+}
+
 // https://wiki.php.net/rfc/noreturn_type
 function endProgram(): never
 {
@@ -24,6 +31,13 @@ $b = 0o744;
 
 --INPUT--
 <?php
+
+// https://wiki.php.net/rfc/readonly_properties_v2
+final class Foo
+{
+    public  READONLY string $c;
+    READONLY        string $prop, $b;
+}
 
 // https://wiki.php.net/rfc/noreturn_type
 function endProgram(): NEVER

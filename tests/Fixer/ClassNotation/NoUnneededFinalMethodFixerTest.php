@@ -329,4 +329,36 @@ class Bar
             ['private_methods' => false],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+final class Foo81 {
+    public readonly string $prop1;
+    readonly public string $prop2;
+    readonly string $prop3;
+}
+            ',
+        ];
+
+        yield [
+            '<?php
+class Foo81 {
+    public readonly string $prop1;
+    readonly public string $prop2;
+    readonly string $prop3;
+}
+            ',
+        ];
+    }
 }

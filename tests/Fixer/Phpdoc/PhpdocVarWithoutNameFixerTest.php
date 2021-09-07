@@ -476,6 +476,64 @@ $bar->doSomething(2);
 list($bar) = a();
                 ',
             ],
+            'const are not handled by this fixer' => [
+                '<?php
+class A
+{
+    /**
+     * @var array<string, true> SKIPPED_TYPES
+     */
+    private const SKIPPED_TYPES = ["a" => true];
+}
+',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly' => [
+            '<?php
+
+class Foo
+{
+    /** @var Foo */
+    public $bar1;
+
+    /** @var Foo */
+    public readonly int $bar2;
+
+    /** @var Foo */
+    readonly public int $bar3;
+
+    /** @var Foo */
+    readonly int $bar4;
+}',
+            '<?php
+
+class Foo
+{
+    /** @var Foo $bar1 */
+    public $bar1;
+
+    /** @var Foo $bar2 */
+    public readonly int $bar2;
+
+    /** @var Foo $bar3 */
+    readonly public int $bar3;
+
+    /** @var Foo $bar4 */
+    readonly int $bar4;
+}',
         ];
     }
 }

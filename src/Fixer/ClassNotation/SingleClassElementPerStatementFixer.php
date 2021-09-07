@@ -213,6 +213,10 @@ final class Example
     {
         if ('property' === $type) {
             $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
+
+            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+                $tokenKinds[] = T_READONLY;
+            }
         } else {
             $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
         }

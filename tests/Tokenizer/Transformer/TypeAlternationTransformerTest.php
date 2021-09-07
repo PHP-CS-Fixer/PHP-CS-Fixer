@@ -312,4 +312,48 @@ class Number
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(array $expectedTokens, string $source): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                CT::T_TYPE_ALTERNATION,
+            ]
+        );
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'readonly' => [
+            [
+                12 => CT::T_TYPE_ALTERNATION,
+            ],
+            '<?php
+class Foo
+{
+    public readonly string|int $c;
+}',
+        ];
+
+        yield 'promoted properties' => [
+            [
+                19 => CT::T_TYPE_ALTERNATION,
+                30 => CT::T_TYPE_ALTERNATION,
+                41 => CT::T_TYPE_ALTERNATION,
+            ],
+            '<?php class Foo {
+                public function __construct(
+                    public readonly int|string $a,
+                    protected readonly int|string $b,
+                    private readonly int|string $c
+                ) {}
+            }',
+        ];
+    }
 }

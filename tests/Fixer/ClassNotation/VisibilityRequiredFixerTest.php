@@ -811,4 +811,48 @@ AB# <- this is the name
             '<?php class Foo { static null|array $foo; }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+class Foo
+{
+    public readonly string $prop2a;
+}
+            ',
+            '<?php
+class Foo
+{
+    readonly public string $prop2a;
+}
+            ',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public readonly string $prop1;
+    public readonly string $prop2;
+}
+            ',
+            '<?php
+class Foo
+{
+    readonly string $prop1;
+    public readonly string $prop2;
+}
+            ',
+        ];
+    }
 }
