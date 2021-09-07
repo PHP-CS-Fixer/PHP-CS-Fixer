@@ -159,5 +159,18 @@ class Point {
 }
 ',
         ];
+
+        yield 'enum full caps' => [
+            '<?php
+enum Suit {
+    case Hearts;
+}
+',
+            '<?php
+ENUM Suit {
+    case Hearts;
+}
+',
+        ];
     }
 }
