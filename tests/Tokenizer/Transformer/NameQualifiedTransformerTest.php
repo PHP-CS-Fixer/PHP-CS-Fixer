@@ -62,6 +62,10 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
     public function provideProcessCases(): \Generator
     {
+        if (\PHP_VERSION_ID < 80000) {
+            return; // PHPUnit still calls this for no reason on non PHP8.0
+        }
+
         yield 'string' => [
             [
                 new Token([T_OPEN_TAG, "<?php\n"]),
