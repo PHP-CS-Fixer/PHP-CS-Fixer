@@ -161,7 +161,7 @@ final class EregToPregFixer extends AbstractFixer
      */
     private function getBestDelimiter(string $pattern): string
     {
-        // try do find something that's not used
+        // try to find something that's not used
         $delimiters = [];
         foreach (self::$delimiters as $k => $d) {
             if (!str_contains($pattern, $d)) {

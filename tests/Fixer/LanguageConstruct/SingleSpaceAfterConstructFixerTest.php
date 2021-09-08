@@ -3147,7 +3147,7 @@ ENUM Suit {
 ',
             '<?php
 ENUM     Suit {
-    case Hearts;
+    case     Hearts;
 }
 ',
         ];
@@ -3161,6 +3161,23 @@ ENUM     Suit {
 {
     final   public   const    X = "foo";
 }',
+        ];
+
+        yield [
+            '<?php
+class Test {
+    public function __construct(
+        public $prop = new Foo,
+    ) {}
+}
+',
+            '<?php
+class    Test {
+    public     function    __construct(
+        public    $prop = new     Foo,
+    ) {}
+}
+',
         ];
     }
 }

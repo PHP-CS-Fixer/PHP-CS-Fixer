@@ -354,5 +354,69 @@ $a = new ($foo."ar");',
                 $bar2 = new $foo[0][1]?->bar();
             ',
         ];
+
+        yield [
+            '<?php $a = new
+                #[Internal]
+                class(){};
+            ',
+            '<?php $a = new
+                #[Internal]
+                class{};
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+function test(
+    $foo = new A(),
+    $baz = new C(x: 2),
+) {
+}
+
+class Test {
+    public function __construct(
+        public $prop = new Foo(),
+    ) {}
+}
+
+static $x = new Foo();
+
+const C = new Foo();
+
+function test2($param = new Foo()) {}
+',
+            '<?php
+function test(
+    $foo = new A,
+    $baz = new C(x: 2),
+) {
+}
+
+class Test {
+    public function __construct(
+        public $prop = new Foo,
+    ) {}
+}
+
+static $x = new Foo;
+
+const C = new Foo;
+
+function test2($param = new Foo) {}
+',
+        ];
     }
 }

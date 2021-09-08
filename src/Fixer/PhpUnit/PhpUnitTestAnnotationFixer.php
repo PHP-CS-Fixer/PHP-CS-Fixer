@@ -172,7 +172,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             return false;
         }
 
-        // if the function name starts with test its a test
+        // if the function name starts with test it is a test
         $functionNameIndex = $tokens->getNextMeaningfulToken($index);
         $functionName = $tokens[$functionNameIndex]->getContent();
 
@@ -182,7 +182,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
-        // If the function doesn't have test in its name, and no doc block, its not a test
+        // If the function doesn't have test in its name, and no doc block, it is not a test
         return
             $this->isPHPDoc($tokens, $docBlockIndex)
             && str_contains($tokens[$docBlockIndex]->getContent(), '@test')

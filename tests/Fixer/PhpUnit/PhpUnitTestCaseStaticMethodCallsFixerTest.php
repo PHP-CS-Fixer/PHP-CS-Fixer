@@ -536,4 +536,28 @@ class MyTest extends \PHPUnit_Framework_TestCase
 }'
         );
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+                class FooTest extends TestCase
+                {
+                    public function testFoo()
+                    {
+                        $a = $this::assertTrue(...);
+                    }
+                }
+            ',
+        ];
+    }
 }

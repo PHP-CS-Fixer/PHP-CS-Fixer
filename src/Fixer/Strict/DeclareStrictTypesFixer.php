@@ -136,7 +136,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
         }
 
         if ($endIndex === \count($tokens) - 1) {
-            return; // no more tokens afters sequence, single_blank_line_at_eof might add a line
+            return; // no more tokens after sequence, single_blank_line_at_eof might add a line
         }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();

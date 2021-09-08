@@ -155,7 +155,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
                     $i += 2;
                 }
 
-                if ($token->isWhitespace(" \t") || '//' !== substr($tokens[$i - 1]->getContent(), 0, 2)) {
+                if ($token->isWhitespace(" \t") || !str_starts_with($tokens[$i - 1]->getContent(), '//')) {
                     continue;
                 }
             }

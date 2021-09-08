@@ -278,4 +278,27 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             '<?php array_push($b?->c[2], $b19);',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'simple 8.1' => [
+            '<?php
+                $a[] = $b;
+                $a = array_push(...);
+            ',
+            '<?php
+                array_push($a, $b);
+                $a = array_push(...);
+            ',
+        ];
+    }
 }

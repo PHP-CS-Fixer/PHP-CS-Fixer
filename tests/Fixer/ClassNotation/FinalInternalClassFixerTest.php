@@ -279,14 +279,18 @@ class B{}
         $this->doTest($expected, $input);
     }
 
-    public function provideAnonymousClassesCases(): array
+    public function provideAnonymousClassesCases(): \Generator
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 /** @internal */
 $a = new class (){};',
-            ],
+        ];
+
+        yield [
+            '<?php
+/** @internal */
+$a = new class{};',
         ];
     }
 
@@ -301,5 +305,23 @@ $a = new class (){};',
             'annotation_include' => ['@internal123', 'a'],
             'annotation_exclude' => ['@internal123', 'b'],
         ]);
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+#[Internal]
+class Foo {}',
+        ];
     }
 }

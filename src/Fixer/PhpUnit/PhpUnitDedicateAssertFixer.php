@@ -355,18 +355,21 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         for ($index = $endIndex; $index > $startIndex; --$index) {
             $index = $tokens->getPrevTokenOfKind($index, [[T_STRING]]);
+
             if (null === $index) {
                 return;
             }
 
             // test if "assert" something call
             $loweredContent = strtolower($tokens[$index]->getContent());
-            if ('assert' !== substr($loweredContent, 0, 6)) {
+
+            if (!str_starts_with($loweredContent, 'assert')) {
                 continue;
             }
 
             // test candidate for simple calls like: ([\]+'some fixable call'(...))
             $openBraceIndex = $tokens->getNextMeaningfulToken($index);
+
             if (!$tokens[$openBraceIndex]->equals('(')) {
                 continue;
             }

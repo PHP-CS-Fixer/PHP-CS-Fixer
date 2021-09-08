@@ -489,6 +489,37 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         ];
     }
 
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['statements' => ['switch_case']]);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts ;
+case Diamonds  ;
+case Clubs ;
+case Spades   ;
+}
+
+enum UserStatus: string {
+    case    Pending = "P";
+  case  Active = "A";
+  case   Suspended = "S";
+  case CanceledByUser = "C"  ;
+}
+',
+        ];
+    }
+
     private function fixerTest(string $expected, ?string $input = null, ?string $fixStatement = null, bool $legacy = false): void
     {
         // Default config. Fixes all statements.

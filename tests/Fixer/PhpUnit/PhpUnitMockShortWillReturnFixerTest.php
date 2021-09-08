@@ -293,4 +293,19 @@ class FooTest extends TestCase {
 }'
         );
     }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testFix81(): void
+    {
+        $this->doTest(
+            '<?php
+class FooTest extends TestCase {
+    public function testFoo() {
+        $a = $someMock?->method("someMethod")->will($this?->returnValue(...));
+    }
+}'
+        );
+    }
 }

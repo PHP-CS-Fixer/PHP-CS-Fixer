@@ -101,9 +101,7 @@ final class NewWithBracesFixer extends AbstractFixer
         }
 
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
-            $token = $tokens[$index];
-
-            if (!$token->isGivenKind(T_NEW)) {
+            if (!$tokens[$index]->isGivenKind(T_NEW)) {
                 continue;
             }
 

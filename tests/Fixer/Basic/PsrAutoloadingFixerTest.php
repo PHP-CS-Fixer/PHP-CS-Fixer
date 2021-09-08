@@ -444,4 +444,25 @@ class ClassTwo {};
 ',
         ];
     }
+
+    /**
+     * @requires PHP 8.0
+     * @dataProvider providePhp80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp80Cases(): \Generator
+    {
+        yield 'anonymous + annotation' => [
+            '<?php
+namespace PhpCsFixer\Tests\Fixer\Basic;
+new
+#[Foo]
+class extends stdClass {};
+',
+        ];
+    }
 }

@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -108,6 +109,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $openingBraceIndex = $tokens->getNextMeaningfulToken($functionToRemoveIndex);
             if (!$tokens[$openingBraceIndex]->equals('(')) {
+                continue;
+            }
+
+            if ($tokens[$tokens->getNextMeaningfulToken($openingBraceIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
                 continue;
             }
 

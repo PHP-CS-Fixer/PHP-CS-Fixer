@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -60,6 +61,12 @@ final class DateTimeImmutableFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $functionsAnalyzer = new FunctionsAnalyzer();
+        $functionMap = [
+            'date_create' => 'date_create_immutable',
+            'date_create_from_format' => 'date_create_immutable_from_format',
+        ];
+
         $isInNamespace = false;
         $isImported = false; // e.g. use DateTime;
 
@@ -72,12 +79,15 @@ final class DateTimeImmutableFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_USE) && $isInNamespace) {
+            if ($isInNamespace && $token->isGivenKind(T_USE)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
+
                 if ('datetime' !== strtolower($tokens[$nextIndex]->getContent())) {
                     continue;
                 }
+
                 $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
                 if ($tokens[$nextNextIndex]->equals(';')) {
                     $isImported = true;
                 }
@@ -92,6 +102,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
             if ($tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
                 continue;
             }
@@ -101,10 +112,12 @@ final class DateTimeImmutableFixer extends AbstractFixer
             if ('datetime' === $lowercaseContent) {
                 $this->fixClassUsage($tokens, $index, $isInNamespace, $isImported);
                 $limit = $tokens->count(); // update limit, as fixing class usage may insert new token
-            } elseif ('date_create' === $lowercaseContent) {
-                $this->fixFunctionUsage($tokens, $index, 'date_create_immutable');
-            } elseif ('date_create_from_format' === $lowercaseContent) {
-                $this->fixFunctionUsage($tokens, $index, 'date_create_immutable_from_format');
+
+                continue;
+            }
+
+            if (isset($functionMap[$lowercaseContent]) && $functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+                $tokens[$index] = new Token([T_STRING, $functionMap[$lowercaseContent]]);
             }
         }
     }
@@ -141,21 +154,5 @@ final class DateTimeImmutableFixer extends AbstractFixer
                 $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
             }
         }
-    }
-
-    private function fixFunctionUsage(Tokens $tokens, int $index, string $replacement): void
-    {
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevIndex]->isGivenKind([T_DOUBLE_COLON, T_NEW]) || $tokens[$prevIndex]->isObjectOperator()) {
-            return;
-        }
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
-            $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if ($tokens[$prevPrevIndex]->isGivenKind([T_NEW, T_STRING])) {
-                return;
-            }
-        }
-
-        $tokens[$index] = new Token([T_STRING, $replacement]);
     }
 }

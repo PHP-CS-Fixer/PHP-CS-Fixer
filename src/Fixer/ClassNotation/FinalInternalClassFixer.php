@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -105,8 +106,10 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isClassCandidate($tokens, $index)) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS) || $tokensAnalyzer->isAnonymousClass($index) || !$this->isClassCandidate($tokens, $index)) {
                 continue;
             }
 
@@ -182,7 +185,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
      */
     private function isClassCandidate(Tokens $tokens, int $index): bool
     {
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL, T_NEW])) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_ABSTRACT, T_FINAL])) {
             return false; // ignore class; it is abstract or already final
         }
 

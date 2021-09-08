@@ -354,4 +354,26 @@ function __Tostring() {}',
             '<?php $foo?->__INVOKE(1, );'
         );
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'static call to "__set_state".' => [
+            '<?php $f = Foo::__set_state(...);',
+            '<?php $f = Foo::__set_STATE(...);',
+        ];
+
+        yield 'isset' => [
+            '<?php $a->__isset(...);',
+            '<?php $a->__ISSET(...);',
+        ];
+    }
 }

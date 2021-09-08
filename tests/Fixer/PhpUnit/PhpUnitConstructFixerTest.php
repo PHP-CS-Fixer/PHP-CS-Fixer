@@ -186,6 +186,22 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
         $this->doTest(self::generateTest('$this->assertSame(null, $a);'));
     }
 
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            self::generateTest('$this->assertEquals(...);'),
+        ];
+    }
+
     private function generateCases(string $expectedTemplate, string $inputTemplate): array
     {
         $functionTypes = ['Same' => true, 'NotSame' => false, 'Equals' => true, 'NotEquals' => false];

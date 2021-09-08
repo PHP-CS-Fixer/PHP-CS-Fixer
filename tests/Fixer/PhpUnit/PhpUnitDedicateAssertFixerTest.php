@@ -490,6 +490,22 @@ $a# 5
         ];
     }
 
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            self::generateTest('$a = $this->assertTrue(...);'),
+        ];
+    }
+
     private static function generateTest(string $content): string
     {
         return "<?php final class FooTest extends \\PHPUnit_Framework_TestCase {\n    public function testSomething() {\n        ".$content."\n    }\n}\n";

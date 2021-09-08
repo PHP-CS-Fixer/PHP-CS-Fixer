@@ -114,14 +114,14 @@ $a = new class() {
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $this->tokensAnalyzer = $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
 
         while (null !== $classIndex) {
             if (
-                $tokens[$tokens->getPrevMeaningfulToken($classIndex)]->isGivenKind(T_FINAL)
-                || $tokensAnalyzer->isAnonymousClass($classIndex)
+                $this->tokensAnalyzer->isAnonymousClass($classIndex)
+                || $tokens[$tokens->getPrevMeaningfulToken($classIndex)]->isGivenKind(T_FINAL)
             ) {
                 $classIndex = $this->fixClass($tokens, $classIndex);
             }
