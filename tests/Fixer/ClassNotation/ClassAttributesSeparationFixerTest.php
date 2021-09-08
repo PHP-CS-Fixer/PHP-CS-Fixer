@@ -2206,5 +2206,30 @@ class Foo
     public int $a4;
 }',
         ];
+
+        yield [
+            '<?php
+class Foo
+{
+    final public const B1 = "1";
+
+    public final const B2 = "2";
+
+    final const B3 = "3";
+}
+',
+            '<?php
+class Foo
+{
+    final public const B1 = "1";
+    public final const B2 = "2";
+
+
+    final const B3 = "3";
+
+
+}
+',
+        ];
     }
 }

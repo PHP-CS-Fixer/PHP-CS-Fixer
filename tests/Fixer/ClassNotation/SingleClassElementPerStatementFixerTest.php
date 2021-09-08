@@ -882,7 +882,7 @@ class Foo
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, string $input): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -916,6 +916,17 @@ class Foo
     protected readonly float $h1, $h2;
     readonly float $z1, $z2, $z3;
 }',
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    final public const B1 = "2";
+    final public const B2 = "2";
+    readonly float $z2;
+}
+',
         ];
     }
 }

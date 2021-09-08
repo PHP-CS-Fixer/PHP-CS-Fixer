@@ -201,7 +201,7 @@ $a;#
         ];
     }
 
-    public function provideFixToLongSyntaxPhp72Cases()
+    public function provideFixToLongSyntaxPhp72Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases($this->provideFixToShortSyntaxPhp72Cases());
     }
@@ -244,7 +244,7 @@ $a;#
         ];
     }
 
-    public function provideFixToLongSyntaxPhp73Cases()
+    public function provideFixToLongSyntaxPhp73Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases($this->provideFixToShortSyntaxPhp73Cases());
     }

@@ -3151,5 +3151,16 @@ ENUM     Suit {
 }
 ',
         ];
+
+        yield [
+            '<?php class Foo
+{
+    final public const X = "foo";
+}',
+            '<?php class Foo
+{
+    final   public   const    X = "foo";
+}',
+        ];
     }
 }

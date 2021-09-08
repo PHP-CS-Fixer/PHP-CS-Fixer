@@ -34,7 +34,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         $cases = [];
 
@@ -233,7 +233,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideMessyWhitespacesCases()
+    public function provideMessyWhitespacesCases(): array
     {
         $cases = [];
 
@@ -307,7 +307,7 @@ function myFunction() {
         $this->doTest($input, $expected);
     }
 
-    public function provideMessyWhitespacesReversedCases()
+    public function provideMessyWhitespacesReversedCases(): array
     {
         return array_filter(
             $this->provideMessyWhitespacesCases(),
@@ -328,7 +328,7 @@ function myFunction() {
         $this->doTest($expected, $input);
     }
 
-    public function provideDoubleSpaceIndentCases()
+    public function provideDoubleSpaceIndentCases(): array
     {
         return [
             ['<?php

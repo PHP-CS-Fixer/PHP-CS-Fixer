@@ -163,11 +163,9 @@ final class Annotation
     }
 
     /**
-     * @return TypeExpression
-     *
      * @internal
      */
-    public function getTypeExpression()
+    public function getTypeExpression(): TypeExpression
     {
         return new TypeExpression($this->getTypesContent(), $this->namespace, $this->namespaceUses);
     }

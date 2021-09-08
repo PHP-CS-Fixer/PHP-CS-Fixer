@@ -179,11 +179,25 @@ final class SomeClass {
             'private-method' => [
                 '<?php
 class Foo {
-    private function bar() {}
+    final function bar0() {}
+    final public function bar1() {}
+    final protected function bar2() {}
+    final static public function bar4() {}
+    final public static function bar5() {}
+
+    private function bar31() {}
+    private function bar32() {}
 }',
                 '<?php
 class Foo {
-    final private function bar() {}
+    final function bar0() {}
+    final public function bar1() {}
+    final protected function bar2() {}
+    final static public function bar4() {}
+    final public static function bar5() {}
+
+    final private function bar31() {}
+    private final function bar32() {}
 }',
             ],
             'private-method-with-visibility-before-final' => [
@@ -289,6 +303,48 @@ class Foo
 }
 ',
             ],
+            'final private static' => [
+                '<?php
+class Foo {
+    public function bar(){}
+
+    private static function bar1() {echo 1;}
+    private static function bar2() {echo 2;}
+    static private function bar3() {echo 3;}
+    private static function bar4() {echo 4;}
+    static private function bar5() {echo 5;}
+    static private function bar6() {echo 6;}
+}
+',
+                '<?php
+class Foo {
+    public function bar(){}
+
+    private static final function bar1() {echo 1;}
+    private final static function bar2() {echo 2;}
+    final static private function bar3() {echo 3;}
+    final private static function bar4() {echo 4;}
+    static final private function bar5() {echo 5;}
+    static private final function bar6() {echo 6;}
+}
+',
+            ],
+            [
+                '<?php
+abstract class Foo {
+    public final function bar1(){ $this->bar3(); }
+    private function bar2(){ echo 1; }
+
+    private function bar3(){ echo 2; }
+}',
+                '<?php
+abstract class Foo {
+    public final function bar1(){ $this->bar3(); }
+    private function bar2(){ echo 1; }
+
+    private final function bar3(){ echo 2; }
+}',
+            ],
         ];
     }
 
@@ -357,6 +413,29 @@ class Foo81 {
     public readonly string $prop1;
     readonly public string $prop2;
     readonly string $prop3;
+}
+            ',
+        ];
+
+        yield [
+            '<?php
+final class Foo81 {
+    public function foo81() {}
+    protected function bar81() {}
+    private function baz81() {}
+    public readonly string $prop81;
+    final public const Y = "i81";
+    final const XY = "i81";
+}
+            ',
+            '<?php
+final class Foo81 {
+    final public function foo81() {}
+    final protected function bar81() {}
+    final private function baz81() {}
+    public readonly string $prop81;
+    final public const Y = "i81";
+    final const XY = "i81";
 }
             ',
         ];

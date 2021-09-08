@@ -35,6 +35,12 @@ $b = 0o744;
 // https://wiki.php.net/rfc/is_list
 $a = array_is_list($z);
 
+// https://wiki.php.net/rfc/final_class_const
+interface I
+{
+    final public const Y = 'i';
+}
+
 --INPUT--
 <?php
 
@@ -61,3 +67,9 @@ $b = 0744;
 
 // https://wiki.php.net/rfc/is_list
 $a = Array_Is_List($z);
+
+// https://wiki.php.net/rfc/final_class_const
+interface I
+{
+    FINAL    PUBLIC   CONST Y = "i";
+}

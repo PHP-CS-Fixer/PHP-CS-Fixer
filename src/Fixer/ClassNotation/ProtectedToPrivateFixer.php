@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
@@ -75,58 +76,76 @@ final class Sample
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
-        for ($index = 0; $index < $end; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION];
+
+        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
+            $modifierKinds[] = T_READONLY;
+        }
+
+        $classesCandidate = [];
+
+        foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
+            $classIndex = $element['classIndex'];
+
+            if (!\array_key_exists($classIndex, $classesCandidate)) {
+                $classesCandidate[$classIndex] = $this->isClassCandidate($tokens, $classIndex);
+            }
+
+            if (false === $classesCandidate[$classIndex]) {
+                continue; // not "final" class, "extends", is "anonymous" or uses trait
+            }
+
+            $previous = $index;
+            $isProtected = false;
+            $isFinal = false;
+
+            do {
+                $previous = $tokens->getPrevMeaningfulToken($previous);
+
+                if ($tokens[$previous]->isGivenKind(T_PROTECTED)) {
+                    $isProtected = $previous;
+                } elseif ($tokens[$previous]->isGivenKind(T_FINAL)) {
+                    $isFinal = $previous;
+                }
+            } while ($tokens[$previous]->isGivenKind($modifierKinds));
+
+            if (false === $isProtected) {
                 continue;
             }
 
-            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
-
-            if (!$this->skipClass($tokens, $index, $classOpen, $classClose)) {
-                $this->fixClass($tokens, $classOpen, $classClose);
+            if ($isFinal && 'const' === $element['type']) {
+                continue; // Final constants cannot be private
             }
 
-            $index = $classClose;
+            $element['protected_index'] = $isProtected;
+            $tokens[$element['protected_index']] = new Token([T_PRIVATE, 'private']);
         }
     }
 
-    private function fixClass(Tokens $tokens, int $classOpenIndex, int $classCloseIndex): void
-    {
-        for ($index = $classOpenIndex + 1; $index < $classCloseIndex; ++$index) {
-            if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                continue;
-            }
-
-            if (!$tokens[$index]->isGivenKind(T_PROTECTED)) {
-                continue;
-            }
-
-            $tokens[$index] = new Token([T_PRIVATE, 'private']);
-        }
-    }
-
-    /**
-     * Decide whether to skip the fix for given class.
-     */
-    private function skipClass(Tokens $tokens, int $classIndex, int $classOpenIndex, int $classCloseIndex): bool
+    private function isClassCandidate(Tokens $tokens, int $classIndex): bool
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
+
         if (!$prevToken->isGivenKind(T_FINAL)) {
-            return true;
+            return false;
         }
 
-        for ($index = $classIndex; $index < $classOpenIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_EXTENDS)) {
-                return true;
-            }
+        $classNameIndex = $tokens->getNextMeaningfulToken($classIndex); // move to class name as anonymous class is never "final"
+        $classExtendsIndex = $tokens->getNextMeaningfulToken($classNameIndex); // move to possible "extends"
+
+        if ($tokens[$classExtendsIndex]->isGivenKind(T_EXTENDS)) {
+            return false;
         }
 
-        $useIndex = $tokens->getNextTokenOfKind($classIndex, [[CT::T_USE_TRAIT]]);
+        if (!$tokens->isTokenKindFound(CT::T_USE_TRAIT)) {
+            return true; // cheap test
+        }
 
-        return $useIndex && $useIndex < $classCloseIndex;
+        $classOpenIndex = $tokens->getNextTokenOfKind($classNameIndex, ['{']);
+        $classCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpenIndex);
+        $useIndex = $tokens->getNextTokenOfKind($classOpenIndex, [[CT::T_USE_TRAIT]]);
+
+        return null === $useIndex || $useIndex > $classCloseIndex;
     }
 }

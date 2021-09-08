@@ -271,4 +271,20 @@ class Foo
 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php class A { final const PARENT = 42; }',
+        ];
+    }
 }

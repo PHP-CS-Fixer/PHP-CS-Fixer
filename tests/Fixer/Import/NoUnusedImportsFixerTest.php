@@ -31,7 +31,7 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases()
+    public function provideFixCases(): array
     {
         return [
             'simple' => [
@@ -1297,7 +1297,7 @@ EOF
         $this->doTest($expected, $input);
     }
 
-    public function provideFix72Cases()
+    public function provideFix72Cases(): array
     {
         return [
             [ // TODO test shows lot of cases where imports are not removed while could be
@@ -1370,7 +1370,7 @@ use /**/A\B/**/;
         $this->doTest($expected, $input);
     }
 
-    public function providePhp80Cases()
+    public function providePhp80Cases(): \Generator
     {
         yield [
             '<?php
@@ -1421,6 +1421,36 @@ use Symfony\\Component\\Routing\\Annotation\\Route;
 ]
 class Foo {}
 ",
+        ];
+    }
+
+    /**
+     * @requires PHP 8.1
+     * @dataProvider providePhp81Cases
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function providePhp81Cases(): \Generator
+    {
+        yield 'final const' => [
+            '<?php
+
+class Foo
+{
+    final public const B1 = "2";
+}
+',
+            '<?php
+use A\B1;
+
+class Foo
+{
+    final public const B1 = "2";
+}
+',
         ];
     }
 }

@@ -108,8 +108,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     {
         parent::configure($configuration);
 
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_MATCH')) {
+        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
             self::$tokenMap['match'] = T_MATCH;
         }
 

@@ -238,7 +238,7 @@ OUTPUT;
         $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
 
         $newMajorVersion = $this->getNewMajorReleaseVersion();
-        $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion) {
+        $versionChecker->getLatestVersion()->will(function () use ($latestVersionSuccess, $newMajorVersion): string {
             if ($latestVersionSuccess) {
                 return $newMajorVersion;
             }
@@ -249,7 +249,7 @@ OUTPUT;
         $newMinorVersion = $this->getNewMinorReleaseVersion();
         $versionChecker
             ->getLatestVersionOfMajor($this->getCurrentMajorVersion())
-            ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion) {
+            ->will(function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
                 if ($latestMinorVersionSuccess) {
                     return $newMinorVersion;
                 }

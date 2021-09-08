@@ -54,10 +54,7 @@ final class ReporterFactory
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function registerReporter(ReporterInterface $reporter)
+    public function registerReporter(ReporterInterface $reporter): self
     {
         $format = $reporter->getFormat();
 

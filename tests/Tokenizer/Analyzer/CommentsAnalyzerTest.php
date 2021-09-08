@@ -377,5 +377,21 @@ Class MyAnnotation3 {}'],
         yield 'readonly union' => [
             '<?php class Foo { /* */ readonly A|B $a1; }',
         ];
+
+        yield 'public final const' => [
+            '<?php final class Foo2 extends B implements A
+            {
+                /* */
+                public final const Y = "i";
+            }',
+        ];
+
+        yield 'final public const' => [
+            '<?php final class Foo2 extends B implements A
+            {
+                /* */
+                final public const Y = "i";
+            }',
+        ];
     }
 }
