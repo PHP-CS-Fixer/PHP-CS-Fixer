@@ -12,7 +12,7 @@ Configuration
 
 List of control statements to fix.
 
-Allowed types: ``array``
+Allowed values: a subset of ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield', 'yield_from']``
 
 Default value: ``['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield']``
 

@@ -1215,4 +1215,34 @@ switch ($foo) {
             ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+    case Spades;
+}
+
+enum UserStatus: string {
+  case Pending = \'P\';
+  case Active = \'A\';
+  case Suspended = \'S\';
+  case CanceledByUser = \'C\';
+}
+',
+        ];
+    }
 }

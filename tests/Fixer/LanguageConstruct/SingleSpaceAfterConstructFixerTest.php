@@ -3147,7 +3147,7 @@ ENUM Suit {
 ',
             '<?php
 ENUM     Suit {
-    case Hearts;
+    case     Hearts;
 }
 ',
         ];

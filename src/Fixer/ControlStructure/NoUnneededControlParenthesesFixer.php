@@ -16,6 +16,7 @@ namespace PhpCsFixer\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
@@ -45,14 +46,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     ];
 
     /**
-     * Dynamic option set on constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
@@ -62,6 +55,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         foreach (self::$loops as $loop) {
             $types[] = (array) $loop['lookupTokens'];
         }
+
         $types = array_merge(...$types);
 
         return $tokens->isAnyTokenKindsFound($types);
@@ -140,6 +134,7 @@ yield(2);
                     $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION,
                     $blockStartIndex
                 );
+
                 $blockEndNextIndex = $tokens->getNextMeaningfulToken($blockEndIndex);
 
                 if (!$tokens[$blockEndNextIndex]->equalsAny($loop['neededSuccessors'])) {
@@ -148,6 +143,7 @@ yield(2);
 
                 if (\array_key_exists('forbiddenContents', $loop)) {
                     $forbiddenTokenIndex = $tokens->getNextTokenOfKind($blockStartIndex, $loop['forbiddenContents']);
+
                     // A forbidden token is found and is inside the parenthesis.
                     if (null !== $forbiddenTokenIndex && $forbiddenTokenIndex < $blockEndIndex) {
                         continue;
@@ -174,6 +170,7 @@ yield(2);
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('statements', 'List of control statements to fix.'))
                 ->setAllowedTypes(['array'])
+                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$loops))])
                 ->setDefault([
                     'break',
                     'clone',
