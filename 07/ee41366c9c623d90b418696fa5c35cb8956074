@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-06T10:12:21Z
+
+[![Coverage Status](https://coveralls.io/builds/42740498/badge)](https://coveralls.io/builds/42740498)
+
+Coverage decreased (-0.03%) to 92.097% when pulling **ac37dd68e78b35d410ef0a4a83b167209d4e0f00 on SpacePossum:master_PHP8_FirstClassCallable** into **fdaa52cc15d8dffc9bbeff20b0a7c2ccc031e779 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-08T09:03:21Z
+
+>I don't see any tests covering echo. We should maybe make sure it doesn't
+
+not sure I understand, what would that test look like?
+
+note that is valid:
+```php
+<?php
+
+declare(strict_types=1);
+
+$a = sprintf(...);
+
+echo $a('foo %d', 23);
+```
+
+however this is not allowed:
+```php
+<?php
+
+declare(strict_types=1);
+
+$a = echo(...);
+
+echo $a('foo');
+```
+
+would be great if language constructs like `echo`, `isset`, and `unset` , but they aren't
+(maybe we could ping the PHP team)
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-08T10:30:33Z
+
+> not sure I understand, what would that test look like?
+
+Yeh, not sure. I guess I was just trying to make sure we didn't break code by mistake. It looks like we're all good.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-08T20:00:32Z
+
+Wow, you've been busy. 🚀
