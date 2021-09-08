@@ -170,7 +170,9 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     39 => CT::T_CURLY_CLOSE,
                 ],
             ],
-            'do not touch' => ['<?php if (1) {} class Foo{ } function bar(){ }'],
+            'do not touch' => [
+                '<?php if (1) {} class Foo{ } function bar(){ }',
+            ],
             'dynamic property with string with variable' => [
                 '<?php $object->{"set_{$name}"}(42);',
                 [
@@ -180,11 +182,22 @@ final class CurlyBraceTransformerTest extends AbstractTransformerTestCase
                     10 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
                 ],
             ],
-            [
+            'group import' => [
                 '<?php use some\a\{ClassA, ClassB, ClassC as C};',
                 [
                     7 => CT::T_GROUP_IMPORT_BRACE_OPEN,
                     19 => CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                ],
+            ],
+            'nested curly open + close' => [
+                '<?php echo "{$foo->{"{$bar}"}}";',
+                [
+                    4 => T_CURLY_OPEN,
+                    7 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                    9 => T_CURLY_OPEN,
+                    11 => CT::T_CURLY_CLOSE,
+                    13 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                    14 => CT::T_CURLY_CLOSE,
                 ],
             ],
         ];
