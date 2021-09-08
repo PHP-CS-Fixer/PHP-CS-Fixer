@@ -1462,5 +1462,39 @@ use Foo;
 use Bar;
 Foo::method(...);',
         ];
+
+        yield 'New in initializers' => [
+            '<?php
+namespace A\B\C;
+
+use Foo1;
+use Foo2;
+use Foo3;
+use Foo4;
+use Foo5;
+use Foo6;
+use Foo7;
+
+class Test {
+    public function __construct(
+        public $prop = (new Foo1),
+    ) {}
+}
+
+function test(
+    $foo = (new Foo2),
+    $baz = (new Foo3(x: 2)),
+) {
+}
+
+static $x = new Foo4();
+
+const C = (new Foo5);
+
+function test2($param = (new Foo6)) {}
+
+const D = new Foo7(1,2);
+',
+        ];
     }
 }

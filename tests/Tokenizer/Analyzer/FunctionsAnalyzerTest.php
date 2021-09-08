@@ -359,7 +359,12 @@ $classStr::$methodStr(...);
 self::{$complex . $expression}(...);
 \'strlen\'(...);
 [$obj, \'method\'](...);
-[Foo::class, \'method\'](...) ?>',
+[Foo::class, \'method\'](...);
+$c = new class{};
+$b = new class(){};
+$a = new #[foo]
+class(){};
+',
         ];
     }
 

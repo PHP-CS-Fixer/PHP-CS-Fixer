@@ -135,7 +135,7 @@ $c = 3;
 
             if ($this->hashEnabled && '#' === $content[0]) {
                 if (isset($content[1]) && '[' === $content[1]) {
-                    continue; // This might be attribute on PHP8, do not change
+                    continue; // This might be an attribute on PHP8, do not change
                 }
 
                 $tokens[$index] = new Token([$token->getId(), '//'.substr($content, 1)]);

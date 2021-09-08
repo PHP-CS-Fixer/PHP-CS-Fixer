@@ -116,10 +116,8 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
     /**
      * @throws \LogicException when the option is already defined
-     *
-     * @return $this
      */
-    private function addOption(FixerOptionInterface $option): self
+    private function addOption(FixerOptionInterface $option): void
     {
         $name = $option->getName();
 
@@ -129,7 +127,5 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
 
         $this->options[] = $option;
         $this->registeredNames[] = $name;
-
-        return $this;
     }
 }

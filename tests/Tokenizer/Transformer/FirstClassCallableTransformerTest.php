@@ -90,7 +90,7 @@ $obj->$methodStr(  /* */  ... /* */  );
                 foo(...$args, named: $arg);
                 foo(named: $arg, ...$args);
                 foo(...$nulls);
-            '
+            ',
         ];
     }
 }

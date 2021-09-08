@@ -1119,6 +1119,18 @@ abstract class Baz
 }
 ',
         ];
+
+        yield [
+            [4 => false, 12 => false, 23 => false],
+            '<?php
+
+class Test {
+    public function __construct(
+        public $prop = new Foo,
+    ) {}
+}
+',
+        ];
     }
 
     public function testIsConstantInvocationInvalid(): void

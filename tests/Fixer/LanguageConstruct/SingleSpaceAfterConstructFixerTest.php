@@ -3162,5 +3162,22 @@ ENUM     Suit {
     final   public   const    X = "foo";
 }',
         ];
+
+        yield [
+            '<?php
+class Test {
+    public function __construct(
+        public $prop = new Foo,
+    ) {}
+}
+',
+            '<?php
+class    Test {
+    public     function    __construct(
+        public    $prop = new     Foo,
+    ) {}
+}
+',
+        ];
     }
 }

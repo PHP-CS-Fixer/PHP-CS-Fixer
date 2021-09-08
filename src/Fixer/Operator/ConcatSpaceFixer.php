@@ -122,7 +122,8 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     private function fixConcatenationToNoSpace(Tokens $tokens, int $index): void
     {
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
-        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || '/*' === substr($prevNonWhitespaceToken->getContent(), 0, 2)) {
+
+        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || str_starts_with($prevNonWhitespaceToken->getContent(), '/*')) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 

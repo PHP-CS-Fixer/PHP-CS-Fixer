@@ -26,6 +26,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -153,6 +154,8 @@ class InvalidName {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $tokenAnalyzer = new TokensAnalyzer($tokens);
+
         if (null !== $this->configuration['dir'] && !str_starts_with($file->getRealPath(), $this->configuration['dir'])) {
             return;
         }
@@ -172,10 +175,9 @@ class InvalidName {}
 
                 $namespaceStartIndex = $tokens->getNextMeaningfulToken($index);
                 $namespaceEndIndex = $tokens->getNextTokenOfKind($namespaceStartIndex, [';']);
-
                 $namespace = trim($tokens->generatePartialCode($namespaceStartIndex, $namespaceEndIndex - 1));
             } elseif ($token->isClassy()) {
-                if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_NEW)) {
+                if ($tokenAnalyzer->isAnonymousClass($index)) {
                     continue;
                 }
 
@@ -208,6 +210,7 @@ class InvalidName {}
 
         $configuredDir = realpath($this->configuration['dir']);
         $fileDir = \dirname($file->getRealPath());
+
         if (\strlen($configuredDir) >= \strlen($fileDir)) {
             return;
         }
@@ -230,7 +233,6 @@ class InvalidName {}
     private function calculateClassyName(\SplFileInfo $file, ?string $namespace, string $currentName): string
     {
         $name = $file->getBasename('.php');
-
         $maxNamespace = $this->calculateMaxNamespace($file, $namespace);
 
         if (null !== $this->configuration['dir']) {
@@ -241,9 +243,11 @@ class InvalidName {}
 
         foreach ($namespaceParts as $namespacePart) {
             $nameCandidate = sprintf('%s_%s', $namespacePart, $name);
+
             if (strtolower($nameCandidate) !== strtolower(substr($currentName, -\strlen($nameCandidate)))) {
                 break;
             }
+
             $name = $nameCandidate;
         }
 
@@ -254,6 +258,7 @@ class InvalidName {}
     {
         if (null === $this->configuration['dir']) {
             $root = \dirname($file->getRealPath());
+
             while ($root !== \dirname($root)) {
                 $root = \dirname($root);
             }
@@ -274,9 +279,11 @@ class InvalidName {}
             if (!isset($namespaceAccordingToFileLocationPartsReversed[$key])) {
                 break;
             }
+
             if (strtolower($namespaceParte) !== strtolower($namespaceAccordingToFileLocationPartsReversed[$key])) {
                 break;
             }
+
             unset($namespaceAccordingToFileLocationPartsReversed[$key]);
         }
 
