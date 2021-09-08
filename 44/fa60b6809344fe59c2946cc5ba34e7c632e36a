@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-06T18:38:19Z
+
+Hmm, actions seems to have stalled?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-07T07:09:14Z
+
+[![Coverage Status](https://coveralls.io/builds/42722264/badge)](https://coveralls.io/builds/42722264)
+
+Coverage increased (+0.005%) to 92.137% when pulling **ef7be2f8453e6f4cb06356cdc77761adcc02af27 on SpacePossum:master_PHP81_final_const_support** into **51dd236e79ccb739f3fb54036c758ad0771921dc on FriendsOfPHP:master**.
