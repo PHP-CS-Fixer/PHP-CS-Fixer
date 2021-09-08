@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-08T16:53:06Z
+
+[![Coverage Status](https://coveralls.io/builds/42734212/badge)](https://coveralls.io/builds/42734212)
+
+Coverage decreased (-0.005%) to 92.132% when pulling **8fb5aab05ef533c44ae97dfb81264c7aa04da728 on kubawerlos:add_regular_callable_call_native_function_invocation** into **b4bf99944053a173ecd3db1cd6f342e6322fe9b7 on FriendsOfPHP:master**.
