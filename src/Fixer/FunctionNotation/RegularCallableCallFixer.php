@@ -60,6 +60,16 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before NativeFunctionInvocationFixer.
+     */
+    public function getPriority(): int
+    {
+        return 2;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
