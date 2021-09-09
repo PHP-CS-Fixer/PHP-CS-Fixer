@@ -38,8 +38,8 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         '@internal' => [
             'diskfreespace' => 'disk_free_space',
 
-            'checkdnsrr' => 'dns_check_record',
-            'getmxrr' => 'dns_get_mx',
+            'dns_check_record' => 'checkdnsrr',
+            'dns_get_mx' => 'getmxrr',
 
             'session_commit' => 'session_write_close',
 
@@ -83,14 +83,8 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'imap_scanmailbox' => 'imap_listscan',
         ],
 
-        '@snmp' => [
-            'snmpwalkoid' => 'snmprealwalk',
-            'snmp_set_oid_numeric_print' => 'snmp_set_oid_output_format',
-        ],
-
         '@ldap' => [
             'ldap_close' => 'ldap_unbind',
-            'ldap_get_values' => 'ldap_get_values_len',
             'ldap_modify' => 'ldap_mod_replace',
         ],
 
@@ -169,6 +163,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         parent::configure($configuration);
 
         $this->aliases = [];
+
         foreach ($this->configuration['sets'] as $set) {
             if ('@all' === $set) {
                 $this->aliases = array_merge(...array_values(self::SETS));
@@ -264,6 +259,7 @@ mbereg_search_getregs();
         foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
             // check mapping hit
             $tokenContent = strtolower($token->getContent());
+
             if (!isset($this->aliases[$tokenContent])) {
                 continue;
             }
@@ -315,16 +311,16 @@ mbereg_search_getregs();
             '@pcntl' => 'PCNTL functions',
             '@pg' => 'pg functions',
             '@posix' => 'POSIX functions',
-            '@snmp' => 'SNMP functions',
+            '@snmp' => 'SNMP functions', // @TODO Remove on next major 4.0 as this set is now empty
             '@sodium' => 'libsodium functions',
             '@time' => 'time functions',
         ];
 
-        $list = '';
+        $list = "List of sets to fix. Defined sets are:\n\n";
+
         foreach ($sets as $set => $description) {
             $list .= sprintf("* `%s` (%s)\n", $set, $description);
         }
-        $list = sprintf("List of sets to fix. Defined sets are:\n\n%s", $list);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('sets', $list))
