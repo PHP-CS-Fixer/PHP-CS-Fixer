@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-09T06:54:30Z
+
+New PR because something went wrong when I tried to add unit tests
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-09T07:22:42Z
+
+[![Coverage Status](https://coveralls.io/builds/42749236/badge)](https://coveralls.io/builds/42749236)
+
+Coverage decreased (-0.0004%) to 92.096% when pulling **0e9d477af64dbdb7362e4cdb765f7c48300be936 on SpacePossum:master_foo** into **7443e4e67e0a36f884a5e567cdfc5a0a8aacc3a9 on FriendsOfPHP:master**.
