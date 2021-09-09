@@ -34,36 +34,46 @@ final class NoAliasFunctionsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public function provideFixCases(): \Generator
     {
-        $finalCases = [];
         $defaultSets = [
             '@internal',
             '@IMAP',
             '@pg',
         ];
+
         foreach ($this->provideAllCases() as $set => $cases) {
             if (\in_array($set, $defaultSets, true)) {
-                $finalCases = array_merge($finalCases, $cases);
+                yield from $cases;
             } else {
                 foreach ($cases as $case) {
-                    $finalCases[] = [$case[0]];
+                    yield [$case[0]];
                 }
             }
         }
 
         // static case to fix - in case previous generation is broken
-        $finalCases[] = [
+        yield [
             '<?php is_int($a);',
             '<?php is_integer($a);',
         ];
 
-        $finalCases[] = [
+        yield [
+            '<?php socket_set_option($a, $b, $c, $d);',
+            '<?php socket_setopt($a, $b, $c, $d);',
+        ];
+
+        yield 'dns -> mxrr' => [
+            '<?php getmxrr();',
+            '<?php dns_get_mx();',
+        ];
+
+        yield [
             '<?php $b=is_int(count(implode($b,$a)));',
             '<?php $b=is_integer(sizeof(join($b,$a)));',
         ];
 
-        $finalCases[] = [
+        yield [
             '<?php
 interface JoinInterface
 {
@@ -88,8 +98,6 @@ abstract class A
     }
 }',
         ];
-
-        return $finalCases;
     }
 
     /**
@@ -103,127 +111,129 @@ abstract class A
         $this->doTest($expected, $input);
     }
 
-    public function provideFixWithConfigurationCases(): array
+    public function provideFixWithConfigurationCases(): \Generator
     {
-        $finalCases = [
-            '@internal' => [
-                '<?php
-                    $a = rtrim($b);
-                    $a = imap_header($imap_stream, 1);
-                    mbereg_search_getregs();
-                ',
-                '<?php
-                    $a = chop($b);
-                    $a = imap_header($imap_stream, 1);
-                    mbereg_search_getregs();
-                ',
-                ['sets' => ['@internal']],
-            ],
-            '@IMAP' => [
-                '<?php
-                    $a = chop($b);
-                    $a = imap_headerinfo($imap_stream, 1);
-                    mb_ereg_search_getregs();
-                ',
-                '<?php
-                    $a = chop($b);
-                    $a = imap_header($imap_stream, 1);
-                    mb_ereg_search_getregs();
-                ',
-                ['sets' => ['@IMAP']],
-            ],
-            '@mbreg' => [
-                '<?php
-                    $a = chop($b);
-                    $a = imap_header($imap_stream, 1);
-                    mb_ereg_search_getregs();
-                    mktime();
-                ',
-                '<?php
-                    $a = chop($b);
-                    $a = imap_header($imap_stream, 1);
-                    mbereg_search_getregs();
-                    mktime();
-                ',
-                ['sets' => ['@mbreg']],
-            ],
-            '@all' => [
-                '<?php
-                    $a = rtrim($b);
-                    $a = imap_headerinfo($imap_stream, 1);
-                    mb_ereg_search_getregs();
-                    time();
-                    time();
-                    $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+        yield '@internal' => [
+            '<?php
+                $a = rtrim($b);
+                $a = imap_header($imap_stream, 1);
+                mbereg_search_getregs();
+            ',
+            '<?php
+                $a = chop($b);
+                $a = imap_header($imap_stream, 1);
+                mbereg_search_getregs();
+            ',
+            ['sets' => ['@internal']],
+        ];
 
-                    mktime($a);
-                    echo gmmktime(1, 2, 3, 4, 5, 6);
-                ',
-                '<?php
-                    $a = chop($b);
-                    $a = imap_header($imap_stream, 1);
-                    mbereg_search_getregs();
-                    mktime();
-                    gmmktime();
-                    $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+        yield '@IMAP' => [
+            '<?php
+                $a = chop($b);
+                $a = imap_headerinfo($imap_stream, 1);
+                mb_ereg_search_getregs();
+            ',
+            '<?php
+                $a = chop($b);
+                $a = imap_header($imap_stream, 1);
+                mb_ereg_search_getregs();
+            ',
+            ['sets' => ['@IMAP']],
+        ];
 
-                    mktime($a);
-                    echo gmmktime(1, 2, 3, 4, 5, 6);
-                ',
-                ['sets' => ['@all']],
-            ],
-            '@IMAP, @mbreg' => [
-                '<?php
-                    $a = chop($b);
-                    $a = imap_headerinfo($imap_stream, 1);
-                    mb_ereg_search_getregs();
-                ',
-                '<?php
-                    $a = chop($b);
-                    $a = imap_header($imap_stream, 1);
-                    mbereg_search_getregs();
-                ',
-                ['sets' => ['@IMAP', '@mbreg']],
-            ],
-            '@time' => [
-                '<?php
-                    time();
-                    time();
+        yield '@mbreg' => [
+            '<?php
+                $a = chop($b);
+                $a = imap_header($imap_stream, 1);
+                mb_ereg_search_getregs();
+                mktime();
+            ',
+            '<?php
+                $a = chop($b);
+                $a = imap_header($imap_stream, 1);
+                mbereg_search_getregs();
+                mktime();
+            ',
+            ['sets' => ['@mbreg']],
+        ];
 
-                    MKTIME($A);
-                    ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
-                ',
-                '<?php
-                    MKTIME();
-                    GMMKTIME();
+        yield '@all' => [
+            '<?php
+                $a = rtrim($b);
+                $a = imap_headerinfo($imap_stream, 1);
+                mb_ereg_search_getregs();
+                time();
+                time();
+                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
 
-                    MKTIME($A);
-                    ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
-                ',
-                ['sets' => ['@time']],
-            ],
-            '@exif' => [
-                '<?php
-                    $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
-                ',
-                '<?php
-                    $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
-                ',
-                ['sets' => ['@exif']],
-            ],
+                mktime($a);
+                echo gmmktime(1, 2, 3, 4, 5, 6);
+            ',
+            '<?php
+                $a = chop($b);
+                $a = imap_header($imap_stream, 1);
+                mbereg_search_getregs();
+                mktime();
+                gmmktime();
+                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+
+                mktime($a);
+                echo gmmktime(1, 2, 3, 4, 5, 6);
+            ',
+            ['sets' => ['@all']],
+        ];
+
+        yield '@IMAP, @mbreg' => [
+            '<?php
+                $a = chop($b);
+                $a = imap_headerinfo($imap_stream, 1);
+                mb_ereg_search_getregs();
+            ',
+            '<?php
+                $a = chop($b);
+                $a = imap_header($imap_stream, 1);
+                mbereg_search_getregs();
+            ',
+            ['sets' => ['@IMAP', '@mbreg']],
+        ];
+
+        yield '@time' => [
+            '<?php
+                time();
+                time();
+
+                MKTIME($A);
+                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
+            ',
+            '<?php
+                MKTIME();
+                GMMKTIME();
+
+                MKTIME($A);
+                ECHO GMMKTIME(1, 2, 3, 4, 5, 6);
+            ',
+            ['sets' => ['@time']],
+        ];
+
+        yield '@exif' => [
+            '<?php
+                $foo = exif_read_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+            ',
+            '<?php
+                $foo = read_exif_data($filename, $sections_needed, $sub_arrays, $read_thumbnail);
+            ',
+            ['sets' => ['@exif']],
         ];
 
         foreach ($this->provideAllCases() as $set => $cases) {
             foreach ($cases as $case) {
-                $finalCases[] = [
+                yield [
                     $case[0],
                     $case[1] ?? null,
                     ['sets' => [$set]],
                 ];
             }
         }
-
-        return $finalCases;
     }
 
     /**
@@ -242,20 +252,20 @@ abstract class A
         ];
     }
 
-    private function provideAllCases(): array
+    private function provideAllCases(): \Generator
     {
         $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
         /** @var array<string, string[]> $allAliases */
         $allAliases = $reflectionConstant->getValue();
 
-        $finalCases = [];
         $sets = $allAliases;
         unset($sets['@time']); // Tested manually
         $sets = array_keys($sets);
+
         foreach ($sets as $set) {
             $aliases = $allAliases[$set];
-
             $cases = [];
+
             foreach ($aliases as $alias => $master) {
                 // valid cases
                 $cases[] = ["<?php \$smth->{$alias}(\$a);"];
@@ -298,33 +308,36 @@ abstract class A
                     "<?php {$master}(\$a);",
                     "<?php {$alias}(\$a);",
                 ];
+
                 $cases[] = [
                     "<?php \\{$master}(\$a);",
                     "<?php \\{$alias}(\$a);",
                 ];
+
                 $cases[] = [
                     "<?php {$master}
                                 (\$a);",
                     "<?php {$alias}
                                 (\$a);",
                 ];
+
                 $cases[] = [
                     "<?php /* foo */ {$master} /** bar */ (\$a);",
                     "<?php /* foo */ {$alias} /** bar */ (\$a);",
                 ];
+
                 $cases[] = [
                     "<?php a({$master}());",
                     "<?php a({$alias}());",
                 ];
+
                 $cases[] = [
                     "<?php a(\\{$master}());",
                     "<?php a(\\{$alias}());",
                 ];
             }
 
-            $finalCases[$set] = $cases;
+            yield $set => $cases;
         }
-
-        return $finalCases;
     }
 }
