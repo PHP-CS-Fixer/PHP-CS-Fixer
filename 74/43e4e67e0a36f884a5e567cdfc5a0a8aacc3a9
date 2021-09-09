@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-08T20:56:13Z
+
+[![Coverage Status](https://coveralls.io/builds/42741998/badge)](https://coveralls.io/builds/42741998)
+
+Coverage decreased (-0.0008%) to 92.096% when pulling **ed6927190a65a6c9f3f0c80866f6932ad5acbc24 on SpacePossum:master_bug_5983** into **07ee41366c9c623d90b418696fa5c35cb8956074 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-09T00:38:18Z
+
+Looks good to me, but I think it would be a good idea to regression test this on symfony/symfony and laravel/framework first before merging, just to be sure we're not making things worse. I can do this, tomorrow morning.
