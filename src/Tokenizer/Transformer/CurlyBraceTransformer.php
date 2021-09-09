@@ -88,25 +88,18 @@ final class CurlyBraceTransformer extends AbstractTransformer
         }
 
         $level = 1;
-        $nestIndex = $index;
 
-        while (0 < $level) {
-            ++$nestIndex;
+        do {
+            ++$index;
 
-            // we count all kind of {
-            if ($tokens[$nestIndex]->equals('{')) {
+            if ($tokens[$index]->equals('{') || $tokens[$index]->isGivenKind(T_CURLY_OPEN)) { // we count all kind of {
                 ++$level;
-
-                continue;
-            }
-
-            // we count all kind of }
-            if ($tokens[$nestIndex]->equals('}')) {
+            } elseif ($tokens[$index]->equals('}')) { // we count all kind of }
                 --$level;
             }
-        }
+        } while (0 < $level);
 
-        $tokens[$nestIndex] = new Token([CT::T_CURLY_CLOSE, '}']);
+        $tokens[$index] = new Token([CT::T_CURLY_CLOSE, '}']);
     }
 
     private function transformIntoDollarCloseBrace(Tokens $tokens, Token $token, int $index): void
