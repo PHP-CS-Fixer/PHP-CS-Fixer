@@ -37,6 +37,6 @@ final class DoctrineAnnotationSet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Rules covering Doctrine annotations with configuration based on examples found in `Doctrine Annotation documentation <http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/annotations.html>`_ and `Symfony documentation <http://symfony.com/doc/master/bundles/SensioFrameworkExtraBundle/annotations/routing.html>`_.';
+        return 'Rules covering Doctrine annotations with configuration based on examples found in `Doctrine Annotation documentation <https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/annotations.html>`_ and `Symfony documentation <http://symfony.com/doc/master/bundles/SensioFrameworkExtraBundle/annotations/routing.html>`_.';
     }
 }
