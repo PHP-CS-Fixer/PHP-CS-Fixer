@@ -181,7 +181,7 @@ class Foo {
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
 
-        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STRING, T_NS_SEPARATOR];
+        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, T_STRING, T_NS_SEPARATOR];
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             $kindsBeforeProperty[] = T_READONLY;
@@ -293,7 +293,7 @@ class Foo {
                 $info = $this->parseTypeHint($tokens, $typeIndex);
             } else {
                 $info = [
-                    'type' => null,
+                    'types' => [],
                     'allows_null' => true,
                 ];
             }
@@ -322,7 +322,7 @@ class Foo {
         }
 
         return [
-            'type' => null,
+            'types' => [],
             'allows_null' => true,
         ];
     }
@@ -334,7 +334,7 @@ class Foo {
     {
         if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
             return [
-                'type' => null,
+                'types' => [],
                 'allows_null' => true,
             ];
         }
@@ -354,15 +354,31 @@ class Foo {
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
-        $type = '';
+        $types = [];
 
-        while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
-            $type .= $tokens[$index]->getContent();
+        while (true) {
+            $type = '';
+
+            while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
+                $type .= $tokens[$index]->getContent();
+                $index = $tokens->getNextMeaningfulToken($index);
+            }
+
+            if ('' === $type) {
+                break;
+            }
+
+            $types[] = $type;
+
+            if (!$tokens[$index]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
+                break;
+            }
+
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
         return [
-            'type' => '' === $type ? null : $type,
+            'types' => $types,
             'allows_null' => $allowsNull,
         ];
     }
@@ -390,11 +406,11 @@ class Foo {
             return false;
         }
 
-        if (['mixed'] === $annotationTypes && null === $info['type']) {
+        if (['mixed'] === $annotationTypes && [] === $info['types']) {
             return !$this->configuration['allow_mixed'];
         }
 
-        $actualTypes = null === $info['type'] ? [] : [$info['type']];
+        $actualTypes = $info['types'];
 
         if ($info['allows_null']) {
             $actualTypes[] = 'null';
