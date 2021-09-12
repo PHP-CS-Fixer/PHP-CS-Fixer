@@ -1262,6 +1262,24 @@ class Foo {
     const BAR = "bar";
 }',
             ],
+            'some public const with comment' => [
+                '<?php
+class Foo {
+    /**
+     * Some comment.
+     */
+    const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /**
+     * Some comment.
+     * @var string
+     */
+    const BAR = "bar";
+}',
+            ],
+
         ];
     }
 

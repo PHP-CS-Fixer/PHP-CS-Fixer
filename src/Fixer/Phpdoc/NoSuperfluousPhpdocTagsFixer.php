@@ -281,10 +281,6 @@ class Foo {
     {
         $docBlock = new DocBlock($content);
 
-        do {
-            $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([T_PRIVATE, T_PROTECTED, T_PUBLIC]));
-
         foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
             $annotation->remove();
         }
