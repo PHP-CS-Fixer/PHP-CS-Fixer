@@ -136,6 +136,8 @@ class Foo {
                 $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
             } elseif ($token->isGivenKind(T_VARIABLE)) {
                 $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
+            } elseif ($token->isGivenKind(T_CONST)) {
+                $content = $this->fixConstantDocComment($content, $tokens, $index);
             }
 
             if ('' === $content) {
@@ -176,7 +178,7 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE, T_TRAIT])) {
+            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE, T_TRAIT, T_CONST])) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
@@ -196,7 +198,7 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if ($tokens[$index]->isGivenKind([T_VARIABLE, T_CONST])) {
                 return $index;
             }
         } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
@@ -267,6 +269,24 @@ class Foo {
             if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $shortNames)) {
                 $annotation->remove();
             }
+        }
+
+        return $docBlock->getContent();
+    }
+
+    /**
+     * @param int $index Index of the DocComment token
+     */
+    private function fixConstantDocComment(string $content, Tokens $tokens, int $index): string
+    {
+        $docBlock = new DocBlock($content);
+
+        do {
+            $index = $tokens->getNextMeaningfulToken($index);
+        } while ($tokens[$index]->isGivenKind([T_PRIVATE, T_PROTECTED, T_PUBLIC]));
+
+        foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
+            $annotation->remove();
         }
 
         return $docBlock->getContent();

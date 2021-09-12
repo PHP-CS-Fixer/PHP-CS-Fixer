@@ -1247,6 +1247,36 @@ trait Foo {}',
 trait Foo {}',
                 ['remove_inheritdoc' => true],
             ],
+            'some public const' => [
+                '<?php
+class Foo {
+    /**
+     */
+    const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /**
+     * @var string
+     */
+    const BAR = "bar";
+}',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp71Cases
+     * @requires PHP 7.1
+     */
+    public function testFixPhp71(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPhp71Cases(): array
+    {
+        return [
             'same nullable type hint' => [
                 '<?php
 class Foo {
@@ -1404,6 +1434,87 @@ class Foo {
      * @return array|null
      */
     public function doFoo(iterable $bar, ?int $baz): ?array {}
+}',
+            ],
+            'some public const' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /**
+     * @var string
+     */
+    public const BAR = "bar";
+}',
+            ],
+            'some public const with single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**  */
+    public const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /** @var string */
+    public const BAR = "bar";
+}',
+            ],
+            'some protected const' => [
+                '<?php
+class Foo {
+    /**
+     */
+    protected const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /**
+     * @var string
+     */
+    protected const BAR = "bar";
+}',
+            ],
+            'some protected const with single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**  */
+    protected const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /** @var string */
+    protected const BAR = "bar";
+}',
+            ],
+            'some private const' => [
+                '<?php
+class Foo {
+    /**
+     */
+    private const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /**
+     * @var string
+     */
+    private const BAR = "bar";
+}',
+            ],
+            'some private const with single line PHPDoc' => [
+                '<?php
+class Foo {
+    /**  */
+    private const BAR = "bar";
+}',
+                '<?php
+class Foo {
+    /** @var string */
+    private const BAR = "bar";
 }',
             ],
         ];
