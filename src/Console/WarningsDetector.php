@@ -66,7 +66,7 @@ final class WarningsDetector
      */
     public function getWarnings(): array
     {
-        if (!\count($this->warnings)) {
+        if (0 === \count($this->warnings)) {
             return [];
         }
 

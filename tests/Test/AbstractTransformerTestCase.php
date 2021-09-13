@@ -128,19 +128,28 @@ abstract class AbstractTransformerTestCase extends TestCase
             'Number of expected tokens does not match actual token count.'
         );
 
-        $customTokensOfTransformer = $this->transformer->getCustomTokens();
         $transformerName = $this->transformer->getName();
+        $customTokensOfTransformer = $this->transformer->getCustomTokens();
+
+        foreach ($customTokensOfTransformer as $customTokenOfTransformer) {
+            static::assertTrue(CT::has($customTokenOfTransformer), sprintf('Unknown custom token id "%d" in "%s".', $transformerName, $customTokenOfTransformer));
+            static::assertStringStartsWith('CT::', CT::getName($customTokenOfTransformer));
+        }
+
+        $customTokensOfTransformerList = implode(', ', array_map(static function ($ct): string { return CT::getName($ct); }, $customTokensOfTransformer));
 
         foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
             foreach ($modificationsOfTransformer as $modification) {
+                $customTokenName = Token::getNameForId($modification);
+
                 if ($appliedTransformerName === $transformerName) {
                     static::assertContains(
                         $modification,
                         $customTokensOfTransformer,
                         sprintf(
                             'Transformation into "%s" must be allowed in self-documentation of the Transformer, currently allowed custom tokens are: %s',
-                            Token::getNameForId($modification),
-                            implode(', ', array_map(static function ($ct) { return Token::getNameForId($ct); }, $customTokensOfTransformer))
+                            $customTokenName,
+                            $customTokensOfTransformerList
                         )
                     );
                 } else {
@@ -149,7 +158,7 @@ abstract class AbstractTransformerTestCase extends TestCase
                         $customTokensOfTransformer,
                         sprintf(
                             'Transformation into "%s" must NOT be applied by other Transformer than "%s".',
-                            Token::getNameForId($modification),
+                            $customTokenName,
                             $transformerName
                         )
                     );

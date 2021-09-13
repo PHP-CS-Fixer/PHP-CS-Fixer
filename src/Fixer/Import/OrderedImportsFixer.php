@@ -259,7 +259,7 @@ use Bar;
                 ->setAllowedValues([static function (?array $value) use ($supportedSortTypes): bool {
                     if (null !== $value) {
                         $missing = array_diff($supportedSortTypes, $value);
-                        if (\count($missing)) {
+                        if (\count($missing) > 0) {
                             throw new InvalidOptionsException(sprintf(
                                 'Missing sort %s "%s".',
                                 1 === \count($missing) ? 'type' : 'types',
@@ -268,7 +268,7 @@ use Bar;
                         }
 
                         $unknown = array_diff($value, $supportedSortTypes);
-                        if (\count($unknown)) {
+                        if (\count($unknown) > 0) {
                             throw new InvalidOptionsException(sprintf(
                                 'Unknown sort %s "%s".',
                                 1 === \count($unknown) ? 'type' : 'types',

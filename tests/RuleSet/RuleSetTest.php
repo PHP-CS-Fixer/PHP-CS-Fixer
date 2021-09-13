@@ -334,7 +334,7 @@ final class RuleSetTest extends TestCase
             $resolvedSets[$setName] = ['rules' => [], 'sets' => []];
 
             foreach ($setDefinition->getRules() as $name => $value) {
-                if ('@' === $name[0]) {
+                if (str_starts_with($name, '@')) {
                     $resolvedSets[$setName]['sets'][$name] = $this->expendSet($setDefinitions, $resolvedSets, $name, $value);
                 } else {
                     $resolvedSets[$setName]['rules'][$name] = $value;
@@ -447,7 +447,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param array|string $setValue
+     * @param array|bool $setValue
      *
      * @return mixed
      */
@@ -456,9 +456,9 @@ final class RuleSetTest extends TestCase
         $rules = $setDefinitions[$setName]->getRules();
 
         foreach ($rules as $name => $value) {
-            if ('@' === $name[0]) {
+            if (str_starts_with($name, '@')) {
                 $resolvedSets[$setName]['sets'][$name] = $this->expendSet($setDefinitions, $resolvedSets, $name, $setValue);
-            } elseif (!$setValue) {
+            } elseif (false === $setValue) {
                 $resolvedSets[$setName]['rules'][$name] = false;
             } else {
                 $resolvedSets[$setName]['rules'][$name] = $value;

@@ -269,7 +269,7 @@ namespace {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             if (!isset($this->constantsToEscape[$tokenContent]) && !isset($this->caseInsensitiveConstantsToEscape[strtolower($tokenContent)])) {
-                if (!$this->configuration['strict']) {
+                if (false === $this->configuration['strict']) {
                     continue;
                 }
 

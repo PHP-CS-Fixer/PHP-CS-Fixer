@@ -204,14 +204,14 @@ class Sample
         $docBlock = new DocBlock($tokens[$docIndex]->getContent());
         $returnsBlock = $docBlock->getAnnotationsOfType('return');
 
-        if (!\count($returnsBlock)) {
+        if (0 === \count($returnsBlock)) {
             return; // no return annotation found
         }
 
         $returnsBlock = $returnsBlock[0];
         $types = $returnsBlock->getTypes();
 
-        if (!\count($types)) {
+        if (0 === \count($types)) {
             return; // no return type(s) found
         }
 

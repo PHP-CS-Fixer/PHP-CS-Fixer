@@ -107,7 +107,7 @@ final class DescribeCommand extends Command
         $name = $input->getArgument('name');
 
         try {
-            if ('@' === $name[0]) {
+            if (str_starts_with($name, '@')) {
                 $this->describeSet($output, $name);
 
                 return 0;
@@ -147,7 +147,7 @@ final class DescribeCommand extends Command
 
         $definition = $fixer->getDefinition();
 
-        $description = $definition->getSummary();
+        $summary = $definition->getSummary();
 
         if ($fixer instanceof DeprecatedFixerInterface) {
             $successors = $fixer->getSuccessorsNames();
@@ -155,7 +155,7 @@ final class DescribeCommand extends Command
                 ? 'will be removed on next major version'
                 : sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
             $message = Preg::replace('/(`.+?`)/', '<info>$1</info>', $message);
-            $description .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
+            $summary .= sprintf(' <error>DEPRECATED</error>: %s.', $message);
         }
 
         $output->writeln(sprintf('<info>Description of</info> %s <info>rule</info>.', $name));
@@ -164,10 +164,12 @@ final class DescribeCommand extends Command
             $output->writeln(sprintf('Fixer class: <comment>%s</comment>.', \get_class($fixer)));
         }
 
-        $output->writeln($description);
+        $output->writeln($summary);
 
-        if ($definition->getDescription()) {
-            $output->writeln($definition->getDescription());
+        $description = $definition->getDescription();
+
+        if (null !== $description) {
+            $output->writeln($description);
         }
 
         $output->writeln('');
@@ -250,7 +252,7 @@ final class DescribeCommand extends Command
             return true;
         });
 
-        if (!\count($codeSamples)) {
+        if (0 === \count($codeSamples)) {
             $output->writeln([
                 'Fixing examples can not be demonstrated on the current PHP version.',
                 '',
@@ -322,7 +324,7 @@ final class DescribeCommand extends Command
         $help = '';
 
         foreach ($ruleSetDefinitions[$name]->getRules() as $rule => $config) {
-            if ('@' === $rule[0]) {
+            if (str_starts_with($rule, '@')) {
                 $set = $ruleSetDefinitions[$rule];
                 $help .= sprintf(
                     " * <info>%s</info>%s\n   | %s\n\n",

@@ -54,7 +54,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->hasAlternativeSyntax() && ($this->configuration['fix_non_monolithic_code'] || $tokens->isMonolithicPhp());
+        return $tokens->hasAlternativeSyntax() && (true === $this->configuration['fix_non_monolithic_code'] || $tokens->isMonolithicPhp());
     }
 
     /**

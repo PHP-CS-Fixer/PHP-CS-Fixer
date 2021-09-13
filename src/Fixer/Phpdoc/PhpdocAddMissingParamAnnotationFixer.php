@@ -159,7 +159,7 @@ function f9(string $foo, $bar, $baz) {}
                 }
             }
 
-            if (!\count($arguments)) {
+            if (0 === \count($arguments)) {
                 continue;
             }
 
@@ -176,7 +176,7 @@ function f9(string $foo, $bar, $baz) {}
                 $lastParamLine = max($lastParamLine, $annotation->getEnd());
             }
 
-            if (!\count($arguments)) {
+            if (0 === \count($arguments)) {
                 continue;
             }
 
@@ -191,7 +191,7 @@ function f9(string $foo, $bar, $baz) {}
             foreach ($arguments as $argument) {
                 $type = $argument['type'] ?: 'mixed';
 
-                if ('?' !== $type[0] && 'null' === strtolower($argument['default'])) {
+                if (!str_starts_with($type, '?') && 'null' === strtolower($argument['default'])) {
                     $type = 'null|'.$type;
                 }
 

@@ -285,7 +285,7 @@ final class CommentsAnalyzer
 
     private function getCommentType(string $content): int
     {
-        if ('#' === $content[0]) {
+        if (str_starts_with($content, '#')) {
             return self::TYPE_HASH;
         }
 

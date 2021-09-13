@@ -249,7 +249,7 @@ $c = get_class($d);
                             self::SET_COMPILER_OPTIMIZED,
                         ];
 
-                        if ('@' === $functionName[0] && !\in_array($functionName, $sets, true)) {
+                        if (str_starts_with($functionName, '@') && !\in_array($functionName, $sets, true)) {
                             throw new InvalidOptionsException(sprintf('Unknown set "%s", known sets are "%s".', $functionName, implode('", "', $sets)));
                         }
                     }
@@ -327,7 +327,7 @@ $c = get_class($d);
         }
 
         foreach ($this->configuration['include'] as $additional) {
-            if ('@' !== $additional[0]) {
+            if (!str_starts_with($additional, '@')) {
                 $include[strtolower($additional)] = true;
             }
         }

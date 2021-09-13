@@ -114,7 +114,7 @@ final class Cache implements CacheInterface
 
         $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
 
-        if (\count($missingKeys)) {
+        if (\count($missingKeys) > 0) {
             throw new \InvalidArgumentException(sprintf(
                 'JSON data is missing keys "%s"',
                 implode('", "', $missingKeys)

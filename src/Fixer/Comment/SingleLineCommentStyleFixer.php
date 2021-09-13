@@ -133,7 +133,7 @@ $c = 3;
             $content = $token->getContent();
             $commentContent = substr($content, 2, -2) ?: '';
 
-            if ($this->hashEnabled && '#' === $content[0]) {
+            if ($this->hashEnabled && str_starts_with($content, '#')) {
                 if (isset($content[1]) && '[' === $content[1]) {
                     continue; // This might be an attribute on PHP8, do not change
                 }

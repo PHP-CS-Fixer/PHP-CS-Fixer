@@ -592,7 +592,7 @@ final class ProjectCodeTest extends TestCase
 
                 if (
                     $rc->isInterface()
-                    || ($doc && \count($doc->getAnnotationsOfType('internal')))
+                    || (null !== $doc && \count($doc->getAnnotationsOfType('internal')) > 0)
                     || \in_array($className, [
                         \PhpCsFixer\Finder::class,
                         \PhpCsFixer\Tests\Test\AbstractFixerTestCase::class,
