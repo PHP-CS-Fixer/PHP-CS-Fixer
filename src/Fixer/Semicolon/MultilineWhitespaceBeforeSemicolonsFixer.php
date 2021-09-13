@@ -76,7 +76,7 @@ function foo () {
      * {@inheritdoc}
      *
      * Must run before SpaceAfterSemicolonFixer.
-     * Must run after CombineConsecutiveIssetsFixer, NoEmptyStatementFixer, SimplifiedIfReturnFixer, SingleImportPerStatementFixer.
+     * Must run after CombineConsecutiveIssetsFixer, GetClassToClassKeywordFixer, NoEmptyStatementFixer, SimplifiedIfReturnFixer, SingleImportPerStatementFixer.
      */
     public function getPriority(): int
     {

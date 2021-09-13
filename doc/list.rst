@@ -799,6 +799,15 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocTagRenameFixer <./../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php>`_
+-  `get_class_to_class_keyword <./rules/language_construct/get_class_to_class_keyword.rst>`_
+
+   Replace ``get_class`` calls on object variables with class keyword syntax.
+
+   *warning risky* Risky if the ``get_class`` function is overridden.
+
+   Part of rule set `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\LanguageConstruct\\GetClassToClassKeywordFixer <./../src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php>`_
 -  `global_namespace_import <./rules/import/global_namespace_import.rst>`_
 
    Imports or fully qualifies global classes/functions/constants.
