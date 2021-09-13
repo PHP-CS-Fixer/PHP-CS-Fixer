@@ -90,6 +90,8 @@ $obj->$methodStr(  /* */  ... /* */  );
                 foo(...$args, named: $arg);
                 foo(named: $arg, ...$args);
                 foo(...$nulls);
+                $fruits = ["banana", "orange", ...$parts, "watermelon"];
+                $a = [...$array1, ...$array2];
             ',
         ];
     }

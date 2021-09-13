@@ -75,7 +75,7 @@ class Foo {
         yield ['<?php foreach($foos as &$foo) {}'];
         yield ['<?php foreach($foos as $key => &$foo) {}'];
 
-        if (PHP_VERSION >= 70100) {
+        if (\PHP_VERSION_ID >= 70100) {
             yield ['<?php function foo(?int &$bar) {};'];
         }
     }
@@ -113,7 +113,7 @@ class Foo {
         yield ['<?php foreach($foos as $foo) { $foo & $bar; }'];
         yield ['<?php if ($foo instanceof Bar & 0b01010101) {}'];
 
-        if (PHP_VERSION >= 70100) {
+        if (\PHP_VERSION_ID >= 70100) {
             yield ['<?php function foo(?int $bar = BAZ & QUX) {};'];
         }
     }

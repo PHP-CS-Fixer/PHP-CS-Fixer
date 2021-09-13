@@ -78,7 +78,7 @@ switch ($foo) {
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+        return $tokens->isTokenKindFound(T_SWITCH);
     }
 
     /**

@@ -712,6 +712,25 @@ function a() {
                 '<?php function test() {return yield $a === 1;};',
             ],
         ];
+
+        yield [
+            '<?php
+$a = 1;
+switch ($a) {
+    case 1 === $a:
+        echo 123;
+        break;
+}
+',
+            '<?php
+$a = 1;
+switch ($a) {
+    case $a === 1:
+        echo 123;
+        break;
+}
+',
+        ];
     }
 
     /**

@@ -491,6 +491,23 @@ switch($a) {
 ',
             ];
         }
+
+        yield [
+            '<?php
+            switch($a) {
+                case "a":
+                    echo __FILE__;
+                    break;
+            }
+            ',
+            '<?php
+            switch($a) {
+                case "a":
+                    echo __FILE__;
+                    continue;
+            }
+            ',
+        ];
     }
 
     /**
