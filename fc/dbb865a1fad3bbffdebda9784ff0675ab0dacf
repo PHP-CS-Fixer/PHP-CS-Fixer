@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-13T18:01:19Z
+
+[![Coverage Status](https://coveralls.io/builds/42835838/badge)](https://coveralls.io/builds/42835838)
+
+Coverage remained the same at 92.096% when pulling **3247c37c866427357b3a02091a5a06b841950e83 on SpacePossum:master_SwitchContinueToBreakFixer_candidate_fix** into **52b69d10e3b28ecc301f9fb3efba821b1389eebf on FriendsOfPHP:master**.
