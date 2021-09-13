@@ -90,9 +90,7 @@ final class CommentsAnalyzer
             return false;
         }
 
-        $nextToken = $tokens[$nextIndex];
-
-        if ($this->isStructuralElement($nextToken)) {
+        if ($this->isStructuralElement($tokens, $nextIndex)) {
             return true;
         }
 
@@ -154,7 +152,7 @@ final class CommentsAnalyzer
     /**
      * @see https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#3-definitions
      */
-    private function isStructuralElement(Token $token): bool
+    private function isStructuralElement(Tokens $tokens, int $index): bool
     {
         static $skip;
 
@@ -173,7 +171,6 @@ final class CommentsAnalyzer
                 T_INCLUDE,
                 T_INCLUDE_ONCE,
                 T_FINAL,
-                T_STATIC,
             ];
 
             if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
@@ -181,7 +178,17 @@ final class CommentsAnalyzer
             }
         }
 
-        return $token->isClassy() || $token->isGivenKind($skip);
+        $token = $tokens[$index];
+
+        if ($token->isClassy() || $token->isGivenKind($skip)) {
+            return true;
+        }
+
+        if ($token->isGivenKind(T_STATIC)) {
+            return !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_DOUBLE_COLON);
+        }
+
+        return false;
     }
 
     /**

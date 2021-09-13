@@ -281,6 +281,11 @@ $bar;',
             ['<?php class Foo { public $baz; public function baz(); /* At the end of class */ }'],
             ['<?php /* Before increment */ $i++;'],
             ['<?php /* Comment, but not doc block */ if ($foo === -1) {};'],
+            ['<?php
+                $a = $b[1]; // @phpstan-ignore-line
+
+                static::bar();',
+            ],
         ];
     }
 
