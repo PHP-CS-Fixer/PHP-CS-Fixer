@@ -15,11 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  */
-final class CaseAnalysis
+abstract class AbstractControlCaseStructuresAnalysis
 {
     /**
      * @var int
@@ -29,12 +27,18 @@ final class CaseAnalysis
     /**
      * @var int
      */
-    private $colonIndex;
+    private $open;
 
-    public function __construct(int $index, int $colonIndex)
+    /**
+     * @var int
+     */
+    private $close;
+
+    public function __construct(int $index, int $open, int $close)
     {
         $this->index = $index;
-        $this->colonIndex = $colonIndex;
+        $this->open = $open;
+        $this->close = $close;
     }
 
     public function getIndex(): int
@@ -42,8 +46,13 @@ final class CaseAnalysis
         return $this->index;
     }
 
-    public function getColonIndex(): int
+    public function getOpenIndex(): int
     {
-        return $this->colonIndex;
+        return $this->open;
+    }
+
+    public function getCloseIndex(): int
+    {
+        return $this->close;
     }
 }

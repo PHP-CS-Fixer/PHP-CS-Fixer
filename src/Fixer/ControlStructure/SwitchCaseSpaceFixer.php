@@ -18,6 +18,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -62,34 +64,31 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_CASE, T_DEFAULT])) {
-                continue;
-            }
+        /** @var SwitchAnalysis $analysis */
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+            $default = $analysis->getDefaultAnalysis();
 
-            $ternariesCount = 0;
-            for ($colonIndex = $index + 1;; ++$colonIndex) {
-                // We have to skip ternary case for colons.
-                if ($tokens[$colonIndex]->equals('?')) {
-                    ++$ternariesCount;
+            if (null !== $default) {
+                $index = $default->getIndex();
+
+                if (!$tokens[$index + 1]->isWhitespace() || !$tokens[$index + 2]->equalsAny([':', ';'])) {
+                    continue;
                 }
 
-                if ($tokens[$colonIndex]->equalsAny([':', ';'])) {
-                    if (0 === $ternariesCount) {
-                        break;
-                    }
+                $tokens->clearAt($index + 1);
+            }
 
-                    --$ternariesCount;
+            foreach ($analysis->getCases() as $caseAnalysis) {
+                $colonIndex = $caseAnalysis->getColonIndex();
+                $valueIndex = $tokens->getPrevNonWhitespace($colonIndex);
+
+                // skip if there is no space between the colon and previous token or is space after comment
+                if ($valueIndex === $colonIndex - 1 || $tokens[$valueIndex]->isComment()) {
+                    continue;
                 }
-            }
 
-            $valueIndex = $tokens->getPrevNonWhitespace($colonIndex);
-            // skip if there is no space between the colon and previous token or is space after comment
-            if ($valueIndex === $colonIndex - 1 || $tokens[$valueIndex]->isComment()) {
-                continue;
+                $tokens->clearAt($valueIndex + 1);
             }
-
-            $tokens->clearAt($valueIndex + 1);
         }
     }
 }

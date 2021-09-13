@@ -18,9 +18,9 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -65,15 +65,9 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     {
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
         $ternaryOperatorIndices = [];
-        $excludedIndices = [];
+        $excludedIndices = $this->getColonIndicesForSwitch($tokens);
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_SWITCH)) {
-                $excludedIndices = array_merge($excludedIndices, $this->getColonIndicesForSwitch($tokens, $index));
-
-                continue;
-            }
-
             if (!$token->equalsAny(['?', ':'])) {
                 continue;
             }
@@ -151,14 +145,25 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     /**
      * @return int[]
      */
-    private function getColonIndicesForSwitch(Tokens $tokens, int $switchIndex): array
+    private function getColonIndicesForSwitch(Tokens $tokens): array
     {
-        return array_map(
-            static function (CaseAnalysis $caseAnalysis): int {
-                return $caseAnalysis->getColonIndex();
-            },
-            (new SwitchAnalyzer())->getSwitchAnalysis($tokens, $switchIndex)->getCases()
-        );
+        $colonIndexes = [];
+
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+            foreach ($analysis->getCases() as $case) {
+                $colonIndexes[] = $case->getColonIndex();
+            }
+
+            if ($analysis instanceof SwitchAnalysis) {
+                $defaultAnalysis = $analysis->getDefaultAnalysis();
+
+                if (null !== $defaultAnalysis) {
+                    $colonIndexes[] = $defaultAnalysis->getColonIndex();
+                }
+            }
+        }
+
+        return $colonIndexes;
     }
 
     private function ensureWhitespaceExistence(Tokens $tokens, int $index, bool $after): void

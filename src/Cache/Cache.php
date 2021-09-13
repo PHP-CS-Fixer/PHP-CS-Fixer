@@ -27,7 +27,7 @@ final class Cache implements CacheInterface
     private $signature;
 
     /**
-     * @var array
+     * @var array<string, int>
      */
     private $hashes = [];
 

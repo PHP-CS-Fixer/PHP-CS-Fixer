@@ -15,20 +15,20 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis
  *
  * @internal
  */
-final class CaseAnalysisTest extends TestCase
+final class DefaultAnalysisTest extends TestCase
 {
-    public function testCase(): void
+    public function testDefault(): void
     {
-        $analysis = new CaseAnalysis(12, 20);
+        $analysis = new DefaultAnalysis(15, 16);
 
-        static::assertSame(12, $analysis->getIndex());
-        static::assertSame(20, $analysis->getColonIndex());
+        static::assertSame(15, $analysis->getIndex());
+        static::assertSame(16, $analysis->getColonIndex());
     }
 }

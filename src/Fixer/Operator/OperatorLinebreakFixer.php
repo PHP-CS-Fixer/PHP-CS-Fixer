@@ -23,10 +23,10 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -165,27 +165,23 @@ function foo() {
      */
     private function getExcludedIndices(Tokens $tokens): array
     {
-        $indices = [];
-        for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(T_SWITCH)) {
-                $indices = array_merge($indices, $this->getCasesColonsForSwitch($tokens, $index));
+        $colonIndexes = [];
+
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+            foreach ($analysis->getCases() as $case) {
+                $colonIndexes[] = $case->getColonIndex();
+            }
+
+            if ($analysis instanceof SwitchAnalysis) {
+                $defaultAnalysis = $analysis->getDefaultAnalysis();
+
+                if (null !== $defaultAnalysis) {
+                    $colonIndexes[] = $defaultAnalysis->getColonIndex();
+                }
             }
         }
 
-        return $indices;
-    }
-
-    /**
-     * @return int[]
-     */
-    private function getCasesColonsForSwitch(Tokens $tokens, int $switchIndex): array
-    {
-        return array_map(
-            static function (CaseAnalysis $caseAnalysis): int {
-                return $caseAnalysis->getColonIndex();
-            },
-            (new SwitchAnalyzer())->getSwitchAnalysis($tokens, $switchIndex)->getCases()
-        );
+        return $colonIndexes;
     }
 
     /**

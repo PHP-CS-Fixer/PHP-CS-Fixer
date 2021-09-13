@@ -1387,4 +1387,111 @@ do {
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['default'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield 'match' => [
+            '<?php
+                match ($foo) {
+                    1 => "a",
+                    default => "b"
+                };
+
+                match ($foo) {
+                    1 => "a1",
+
+
+                    default => "b2"
+                };
+            ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['case'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enum' => [
+            '<?php
+enum Suit {
+    case Hearts;
+
+    case Diamonds;
+
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+
+            case 2:
+                return 2; // do fix
+        }
+
+        return "label";
+    }
+}
+',
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+
+
+    case Spades;
+}
+
+enum UserStatus: string {
+    case Pending = "P";
+    case Active = "A";
+
+    public function label(): string {
+        switch ($a) {
+            case 1:
+                return 1;
+            case 2:
+                return 2; // do fix
+        }
+
+        return "label";
+    }
+}
+',
+        ];
+    }
 }

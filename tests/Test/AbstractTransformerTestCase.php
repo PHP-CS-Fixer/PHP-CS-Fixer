@@ -108,7 +108,7 @@ abstract class AbstractTransformerTestCase extends TestCase
         static::assertFalse($tokens->isChanged());
     }
 
-    protected function doTest(string $source, array $expectedTokens = [], array $observedKindsOrPrototypes = []): void
+    protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
     {
         Tokens::clearCache();
         $tokens = new TokensWithObservedTransformers();

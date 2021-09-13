@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Documentation;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -67,7 +66,7 @@ final class DocumentationGenerator
     }
 
     /**
-     * @param AbstractFixer[] $fixers
+     * @param FixerInterface[] $fixers
      */
     public function generateFixersDocumentationIndex(array $fixers): string
     {
@@ -340,7 +339,7 @@ RST;
     }
 
     /**
-     * @param AbstractFixer[] $fixers
+     * @param FixerInterface[] $fixers
      */
     public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers): string
     {
