@@ -19,7 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * Generates a report according to gitlabs subset of codeclimate json files.
  *
- * @see https://github.com/codeclimate/spec/blob/master/SPEC.md#data-types
+ * @see https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types
  *
  * @author Hans-Christian Otto <c.otto@suora.com>
  *
