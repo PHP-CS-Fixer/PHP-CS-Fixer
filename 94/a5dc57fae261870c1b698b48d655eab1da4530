@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-11T22:25:56Z
+
+[![Coverage Status](https://coveralls.io/builds/42836589/badge)](https://coveralls.io/builds/42836589)
+
+Coverage decreased (-0.002%) to 92.094% when pulling **b0c484ba85f32d8b8f8083b3c3902022a7a6e06d on julienfalque:no-superfluous-phpdoc-tags-union-types** into **fcdbb865a1fad3bbffdebda9784ff0675ab0dacf on FriendsOfPHP:master**.
