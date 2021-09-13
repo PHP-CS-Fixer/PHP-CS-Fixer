@@ -1242,6 +1242,12 @@ enum UserStatus: string {
   case Suspended = \'S\';
   case CanceledByUser = \'C\';
 }
+
+switch($a) { // pass the `is candidate` check
+    case 1:
+        echo 1;
+        break;
+}
 ',
         ];
     }

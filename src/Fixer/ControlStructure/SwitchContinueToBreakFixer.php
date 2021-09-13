@@ -79,7 +79,7 @@ switch ($foo) {
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_SWITCH, T_CONTINUE, T_LNUMBER]) && !$tokens->hasAlternativeSyntax();
+        return $tokens->isAllTokenKindsFound([T_SWITCH, T_CONTINUE]) && !$tokens->hasAlternativeSyntax();
     }
 
     /**

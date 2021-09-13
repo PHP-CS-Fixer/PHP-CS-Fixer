@@ -63,7 +63,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CASE, T_DEFAULT]);
+        return $tokens->isTokenKindFound(T_SWITCH);
     }
 
     /**
@@ -81,7 +81,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
         }
     }
 
-    protected function fixSwitchCase(Tokens $tokens, int $index): void
+    private function fixSwitchCase(Tokens $tokens, int $index): void
     {
         $ternariesCount = 0;
         do {
@@ -112,7 +112,7 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
         }
     }
 
-    protected function fixSwitchDefault(Tokens $tokens, int $index): void
+    private function fixSwitchDefault(Tokens $tokens, int $index): void
     {
         do {
             if ($tokens[$index]->equalsAny([':', ';', [T_DOUBLE_ARROW]])) {

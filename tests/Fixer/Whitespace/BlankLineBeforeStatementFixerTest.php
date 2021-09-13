@@ -184,15 +184,20 @@ switch ($a) {
     case 1:
         return 1;
 
-    case 2:
+    case 2;
         return 2;
+
+    case 3:
+        return 3;
 }',
                 '<?php
 switch ($a) {
     case 1:
         return 1;
-    case 2:
+    case 2;
         return 2;
+    case 3:
+        return 3;
 }',
             ],
         ];
@@ -350,6 +355,11 @@ switch ($a) {
 
     default:
         return 2;
+}
+
+switch ($a1) {
+    default:
+        return 22;
 }',
                 '<?php
 switch ($a) {
@@ -357,6 +367,11 @@ switch ($a) {
         return 1;
     default:
         return 2;
+}
+
+switch ($a1) {
+    default:
+        return 22;
 }',
             ],
         ];
