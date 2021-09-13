@@ -23,6 +23,7 @@ with this source code in the file LICENSE.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
+    ->ignoreVCSIgnored(true)
     ->exclude('tests/Fixtures')
     ->in(__DIR__)
     ->append([
