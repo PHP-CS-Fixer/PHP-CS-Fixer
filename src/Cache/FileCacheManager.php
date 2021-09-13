@@ -122,7 +122,7 @@ final class FileCacheManager implements CacheManagerInterface
     {
         $cache = $this->handler->read();
 
-        if (!$cache || !$this->signature->equals($cache->getSignature())) {
+        if (null === $cache || !$this->signature->equals($cache->getSignature())) {
             $cache = new Cache($this->signature);
         }
 

@@ -47,10 +47,10 @@ final class RuleSet implements RuleSetInterface
             }
 
             if (!\is_bool($value) && !\is_array($value)) {
-                $message = '@' === $name[0] ? 'Set must be enabled (true) or disabled (false). Other values are not allowed.' : 'Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.';
+                $message = str_starts_with($name, '@') ? 'Set must be enabled (true) or disabled (false). Other values are not allowed.' : 'Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.';
 
                 if (null === $value) {
-                    $message .= ' To disable the '.('@' === $name[0] ? 'set' : 'rule').', use "FALSE" instead of "NULL".';
+                    $message .= ' To disable the '.(str_starts_with($name, '@') ? 'set' : 'rule').', use "FALSE" instead of "NULL".';
                 }
 
                 throw new InvalidFixerConfigurationException($name, $message);
@@ -101,7 +101,7 @@ final class RuleSet implements RuleSetInterface
 
         // expand sets
         foreach ($rules as $name => $value) {
-            if ('@' === $name[0]) {
+            if (str_starts_with($name, '@')) {
                 if (!\is_bool($value)) {
                     throw new \UnexpectedValueException(sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
@@ -130,7 +130,7 @@ final class RuleSet implements RuleSetInterface
         $rules = RuleSets::getSetDefinition($setName)->getRules();
 
         foreach ($rules as $name => $value) {
-            if ('@' === $name[0]) {
+            if (str_starts_with($name, '@')) {
                 $set = $this->resolveSubset($name, $setValue);
                 unset($rules[$name]);
                 $rules = array_merge($rules, $set);

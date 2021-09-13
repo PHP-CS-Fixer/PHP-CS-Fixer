@@ -143,7 +143,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                         $tokens[$index - 1] = new Token([T_START_HEREDOC, str_replace('\'', '', $previousTokenContent)]);
                         $stringTypeChanged = true;
                     }
-                } elseif ("'" === $content[0]) {
+                } elseif (str_starts_with($content, "'")) {
                     $stringTypeChanged = true;
                     $swapQuotes = true;
                 }

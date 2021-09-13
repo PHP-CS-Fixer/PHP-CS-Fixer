@@ -365,7 +365,7 @@ RST;
             $doc .= "Rules\n-----\n";
 
             foreach ($rules as $rule => $config) {
-                if ('@' === $rule[0]) {
+                if (str_starts_with($rule, '@')) {
                     $ruleSetPath = $this->getRuleSetsDocumentationFilePath($rule);
                     $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 

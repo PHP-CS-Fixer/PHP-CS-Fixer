@@ -71,7 +71,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (!$this->configuration['tags']) {
+        if (0 === \count($this->configuration['tags'])) {
             return;
         }
 

@@ -95,7 +95,7 @@ function foo ($bar) {}
                 $lineAfterAnnotation = $doc->getLine($annotation->getEnd() + 1);
                 if (null !== $lineAfterAnnotation) {
                     $lineAfterAnnotationTrimmed = ltrim($lineAfterAnnotation->getContent());
-                    if ('' === $lineAfterAnnotationTrimmed || '*' !== $lineAfterAnnotationTrimmed[0]) {
+                    if ('' === $lineAfterAnnotationTrimmed || !str_starts_with($lineAfterAnnotationTrimmed, '*')) {
                         // malformed PHPDoc, missing asterisk !
                         continue;
                     }

@@ -457,7 +457,7 @@ class Tokens extends \SplFixedArray
             return $this->isTokenKindFound($kind);
         });
 
-        if (\count($possibleKinds)) {
+        if (\count($possibleKinds) > 0) {
             for ($i = $start; $i < $end; ++$i) {
                 $token = $this[$i];
                 if ($token->isGivenKind($possibleKinds)) {
@@ -591,7 +591,7 @@ class Tokens extends \SplFixedArray
             return $this->isTokenKindFound($this->extractTokenKind($token));
         });
 
-        if (!\count($tokens)) {
+        if (0 === \count($tokens)) {
             return null;
         }
 

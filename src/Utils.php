@@ -135,7 +135,7 @@ final class Utils
 
         $last = array_pop($names);
 
-        if ($names) {
+        if (\count($names) > 0) {
             return implode(', ', $names).' and '.$last;
         }
 

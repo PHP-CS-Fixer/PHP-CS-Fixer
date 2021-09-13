@@ -88,7 +88,7 @@ namespace Foo {
             }
         }
 
-        if ($this->configuration['namespaces']) {
+        if (true === $this->configuration['namespaces']) {
             $this->clearIfIsOverCompleteNamespaceBlock($tokens);
         }
     }

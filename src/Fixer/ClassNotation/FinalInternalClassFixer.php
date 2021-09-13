@@ -47,7 +47,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             $this->configuration['annotation_exclude']
         );
 
-        if (\count($intersect)) {
+        if (\count($intersect) > 0) {
             throw new InvalidFixerConfigurationException($this->getName(), sprintf('Annotation cannot be used in both the include and exclude list, got duplicates: "%s".', implode('", "', array_keys($intersect))));
         }
     }

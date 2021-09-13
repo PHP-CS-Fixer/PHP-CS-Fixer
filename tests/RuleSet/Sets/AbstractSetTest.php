@@ -29,7 +29,6 @@ abstract class AbstractSetTest extends TestCase
     public function testSet(): void
     {
         $set = self::getSet();
-        static::assertTrue($set instanceof RuleSetDescriptionInterface);
 
         $setName = $set->getName();
         $setDescription = $set->getDescription();

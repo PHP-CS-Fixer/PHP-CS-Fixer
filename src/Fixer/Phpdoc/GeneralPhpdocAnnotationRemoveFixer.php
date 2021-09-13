@@ -90,7 +90,7 @@ function foo() {}
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (!\count($this->configuration['annotations'])) {
+        if (0 === \count($this->configuration['annotations'])) {
             return;
         }
 

@@ -171,7 +171,7 @@ final class DocBlock
         }
 
         $lineContent = '';
-        if (\count($usefulLines)) {
+        if (\count($usefulLines) > 0) {
             $lineContent = $this->getSingleLineDocBlockEntry(array_shift($usefulLines));
         }
 

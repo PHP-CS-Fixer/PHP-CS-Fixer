@@ -342,7 +342,7 @@ final class ConfigurationResolver
                     )
                 );
 
-                if (\count($riskyFixers)) {
+                if (\count($riskyFixers) > 0) {
                     throw new InvalidConfigurationException(sprintf('The rules contain risky fixers ("%s"), but they are not allowed to run. Perhaps you forget to use --allow-risky=yes option?', implode('", "', $riskyFixers)));
                 }
             }
@@ -638,8 +638,9 @@ final class ConfigurationResolver
             throw new InvalidConfigurationException('Empty rules value is not allowed.');
         }
 
-        if ('{' === $rules[0]) {
+        if (str_starts_with($rules, '{')) {
             $rules = json_decode($rules, true);
+
             if (JSON_ERROR_NONE !== json_last_error()) {
                 throw new InvalidConfigurationException(sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
             }
@@ -651,11 +652,12 @@ final class ConfigurationResolver
 
         foreach (explode(',', $this->options['rules']) as $rule) {
             $rule = trim($rule);
+
             if ('' === $rule) {
                 throw new InvalidConfigurationException('Empty rule name is not allowed.');
             }
 
-            if ('-' === $rule[0]) {
+            if (str_starts_with($rule, '-')) {
                 $rules[substr($rule, 1)] = false;
             } else {
                 $rules[$rule] = true;
@@ -702,7 +704,7 @@ final class ConfigurationResolver
             $availableFixers
         );
 
-        if (\count($unknownFixers)) {
+        if (\count($unknownFixers) > 0) {
             $renamedRules = [
                 'blank_line_before_return' => [
                     'new_name' => 'blank_line_before_statement',
@@ -835,7 +837,7 @@ final class ConfigurationResolver
             $this->getPath()
         ));
 
-        if (!\count($paths)) {
+        if (0 === \count($paths)) {
             if ($isIntersectionPathMode) {
                 return new \ArrayIterator([]);
             }

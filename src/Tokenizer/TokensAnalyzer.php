@@ -155,7 +155,7 @@ final class TokensAnalyzer
             $token = $tokens[$index];
             $blockType = Tokens::detectBlockType($token);
 
-            if ($blockType && $blockType['isStart']) {
+            if (null !== $blockType && $blockType['isStart']) {
                 $index = $tokens->findBlockEnd($blockType['type'], $index);
 
                 continue;
