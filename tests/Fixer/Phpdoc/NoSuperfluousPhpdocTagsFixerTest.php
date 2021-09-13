@@ -254,7 +254,7 @@ use Foo\Baz;
  */
 function foo(Bar $bar, \Foo\Baz $baz) {}',
             ],
-            'with aliased imported' => [
+            'with aliased import' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1174,7 +1174,7 @@ use Foo\Qux;
  */
 function foo(Bar $bar, \Foo\Baz $baz): \Foo\Qux {}',
             ],
-            'with aliased imported (with return type)' => [
+            'with aliased import (with return type)' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1247,21 +1247,6 @@ trait Foo {}',
 trait Foo {}',
                 ['remove_inheritdoc' => true],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp71Cases
-     * @requires PHP 7.1
-     */
-    public function testFixPhp71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp71Cases(): array
-    {
-        return [
             'same nullable type hint' => [
                 '<?php
 class Foo {
@@ -1324,7 +1309,7 @@ class Foo {
     public function doFoo(?Bar $bar = null) {}
 }',
             ],
-            'multiple different types' => [
+            'multiple different types (nullable)' => [
                 '<?php
 class Foo {
     /**
@@ -1335,7 +1320,7 @@ class Foo {
     public function doFoo(?Bar $bar): ?Baz {}
 }',
             ],
-            'with import' => [
+            'with nullable import' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1353,7 +1338,7 @@ use Foo\Baz;
  */
 function foo(?Bar $bar): ?Baz {}',
             ],
-            'with root symbols' => [
+            'with nullable root symbols' => [
                 '<?php
 /**
  */
@@ -1365,7 +1350,7 @@ function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
  */
 function foo(?\Foo\Bar $bar): ?\Foo\Baz {}',
             ],
-            'with mix of imported and fully qualified symbols' => [
+            'with nullable mix of imported and fully qualified symbols' => [
                 '<?php
 use Foo\Bar;
 use Foo\Baz;
@@ -1386,7 +1371,7 @@ use Foo\Qux;
  */
 function foo(?Bar $bar, ?\Foo\Baz $baz): ?\Foo\Qux {}',
             ],
-            'with aliased imported' => [
+            'with nullable aliased import' => [
                 '<?php
 use Foo\Bar as Baz;
 
@@ -1402,7 +1387,7 @@ use Foo\Bar as Baz;
  */
 function foo(?Baz $bar): ?Baz {}',
             ],
-            'with special type hints' => [
+            'with nullable special type hints' => [
                 '<?php
 class Foo {
     /**
@@ -1727,6 +1712,94 @@ class Foo {
      */
     public function foo($foo): static {}
 }',
+            ],
+            'union type on parameter' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function foo(int|string $foo) {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @param int|string $foo
+     */
+    public function foo(int|string $foo) {}
+}',
+            ],
+            'union type on return type' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public function foo($foo): int|string {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @return int|string
+     */
+    public function foo($foo): int|string {}
+}',
+            ],
+            'union type on property' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public int|string $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var int|string
+     */
+    public int|string $foo;
+}',
+            ],
+            'union type with null' => [
+                '<?php
+/**
+ */
+function foo(int|string|null $foo) {}',
+                '<?php
+/**
+ * @param int|string|null $foo
+ */
+function foo(int|string|null $foo) {}',
+            ],
+            'union type in different order' => [
+                '<?php
+/**
+ */
+function foo(string|int $foo) {}',
+                '<?php
+/**
+ * @param int|string $foo
+ */
+function foo(string|int $foo) {}',
+            ],
+            'more details in phpdocs' => [
+                '<?php
+/**
+ * @param string|array<string> $foo
+ */
+function foo(string|array $foo) {}',
+            ],
+            'missing types in phpdocs' => [
+                '<?php
+/**
+ * @param string|int $foo
+ */
+function foo(string|array|int $foo) {}',
+            ],
+            'too many types in phpdocs' => [
+                '<?php
+/**
+ * @param string|array|int $foo
+ */
+function foo(string|int $foo) {}',
             ],
         ];
     }
