@@ -749,7 +749,7 @@ final class ProjectCodeTest extends TestCase
         }
     }
 
-    private function getSrcClasses()
+    private function getSrcClasses(): array
     {
         static $classes;
 
@@ -784,7 +784,7 @@ final class ProjectCodeTest extends TestCase
         return $classes;
     }
 
-    private function getTestClasses()
+    private function getTestClasses(): array
     {
         static $classes;
 

@@ -24,9 +24,9 @@ use Symfony\Component\Finder\Finder;
 /**
  * @internal
  *
- * @coversNothing
+ * @covers \PhpCsFixer\Documentation\DocumentationGenerator
+ *
  * @group auto-review
- * @group covers-nothing
  * @requires PHP 7.3
  */
 final class DocumentationTest extends TestCase

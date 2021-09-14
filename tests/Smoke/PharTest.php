@@ -31,7 +31,14 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class PharTest extends AbstractSmokeTest
 {
+    /**
+     * @var string
+     */
     private static $pharCwd;
+
+    /**
+     * @var string
+     */
     private static $pharName;
 
     public static function setUpBeforeClass(): void

@@ -369,6 +369,7 @@ return $foo === count($bar);
             return null; // do not fix lists assignment inside statements
         }
 
+        /** @var bool $strict */
         $strict = $this->configuration['always_move_variable'];
         $leftSideIsVariable = $this->isVariable($tokens, $left['start'], $left['end'], $strict);
         $rightSideIsVariable = $this->isVariable($tokens, $right['start'], $right['end'], $strict);

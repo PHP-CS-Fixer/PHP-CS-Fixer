@@ -32,6 +32,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array<string,string>
+     */
     private static $assertionFixers = [
         'assertSame' => 'fixAssertPositive',
         'assertEquals' => 'fixAssertPositive',

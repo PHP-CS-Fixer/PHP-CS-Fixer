@@ -88,8 +88,8 @@ class SomeClass
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_FUNCTION) && (
-            \count((new NamespacesAnalyzer())->getDeclarations($tokens))
-            || \count((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens))
+            \count((new NamespacesAnalyzer())->getDeclarations($tokens)) > 0
+            || \count((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens)) > 0
         );
     }
 
@@ -127,7 +127,8 @@ class SomeClass
     private function fixFunctionReturnType(Tokens $tokens, int $index): void
     {
         $returnType = (new FunctionsAnalyzer())->getFunctionReturnType($tokens, $index);
-        if (!$returnType) {
+
+        if (null === $returnType) {
             return;
         }
 

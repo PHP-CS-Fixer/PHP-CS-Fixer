@@ -536,7 +536,7 @@ enum UserStatus: string {
         foreach (self::$defaultStatements as $statement) {
             $withInput = false;
 
-            if ($input && (null === $fixStatement || $fixStatement === $statement)) {
+            if (null !== $input && (null === $fixStatement || $fixStatement === $statement)) {
                 foreach (explode('_', $statement) as $singleStatement) {
                     if (str_contains($input, $singleStatement)) {
                         $withInput = true;

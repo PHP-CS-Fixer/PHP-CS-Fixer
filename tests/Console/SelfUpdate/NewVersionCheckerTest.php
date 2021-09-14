@@ -100,7 +100,7 @@ final class NewVersionCheckerTest extends TestCase
         return $cases;
     }
 
-    private function createGithubClientStub()
+    private function createGithubClientStub(): GithubClientInterface
     {
         $githubClient = $this->prophesize(GithubClientInterface::class);
 

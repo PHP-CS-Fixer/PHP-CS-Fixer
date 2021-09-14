@@ -176,5 +176,5 @@ abstract class AbstractReporterTestCase extends TestCase
 
     abstract protected function createComplexReport(): string;
 
-    abstract protected function assertFormat(string $expected, string $input);
+    abstract protected function assertFormat(string $expected, string $input): void;
 }

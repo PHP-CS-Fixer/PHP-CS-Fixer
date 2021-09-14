@@ -77,7 +77,8 @@ final class IsNullFixer extends AbstractFixer
         $functionsAnalyzer = new FunctionsAnalyzer();
         $currIndex = 0;
 
-        do {
+        while (true) {
+            // recalculate "end" because we might have added tokens in previous iteration
             $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
@@ -175,6 +176,6 @@ final class IsNullFixer extends AbstractFixer
 
             // nested is_null calls support
             $currIndex = $isNullIndex;
-        } while (null !== $currIndex);
+        }
     }
 }

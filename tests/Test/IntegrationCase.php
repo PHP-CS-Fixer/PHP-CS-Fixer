@@ -23,6 +23,9 @@ use PhpCsFixer\RuleSet\RuleSet;
  */
 final class IntegrationCase
 {
+    /**
+     * @var array
+     */
     private $config;
 
     /**

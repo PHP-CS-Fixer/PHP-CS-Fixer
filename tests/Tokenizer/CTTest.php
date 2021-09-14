@@ -77,7 +77,10 @@ final class CTTest extends TestCase
         }
     }
 
-    private function getConstants()
+    /**
+     * @return array<string,int>
+     */
+    private function getConstants(): array
     {
         static $constants;
 

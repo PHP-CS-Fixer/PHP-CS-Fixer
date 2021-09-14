@@ -252,7 +252,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
         $exceptionClass = trim($exceptionClass);
 
-        if ($this->configuration['use_class_const']) {
+        if (true === $this->configuration['use_class_const']) {
             $params[] = "\\{$exceptionClass}::class";
         } else {
             $params[] = "'{$exceptionClass}'";

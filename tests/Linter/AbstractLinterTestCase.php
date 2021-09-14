@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractLinterTestCase extends TestCase
 {
-    abstract public function testIsAsync();
+    abstract public function testIsAsync(): void;
 
     public function testLintingAfterTokenManipulation(): void
     {

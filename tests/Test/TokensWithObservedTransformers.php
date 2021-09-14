@@ -25,6 +25,10 @@ class TokensWithObservedTransformers extends Tokens
      * @var null|string
      */
     public $currentTransformer;
+
+    /**
+     * @var array<string,array<int|string>>
+     */
     public $observedModificationsPerTransformer = [];
 
     public function offsetSet($index, $newval): void
@@ -32,6 +36,7 @@ class TokensWithObservedTransformers extends Tokens
         if (null !== $this->currentTransformer) {
             $this->observedModificationsPerTransformer[$this->currentTransformer][] = $this->extractTokenKind($newval);
         }
+
         parent::offsetSet($index, $newval);
     }
 
@@ -65,6 +70,6 @@ class TokensWithObservedTransformers extends Tokens
         return $token instanceof Token
             ? ($token->isArray() ? $token->getId() : $token->getContent())
             : (\is_array($token) ? $token[0] : $token)
-            ;
+        ;
     }
 }

@@ -177,8 +177,10 @@ final class DescribeCommand extends Command
         if ($fixer->isRisky()) {
             $output->writeln('<error>Fixer applying this rule is risky.</error>');
 
-            if ($definition->getRiskyDescription()) {
-                $output->writeln($definition->getRiskyDescription());
+            $riskyDescription = $definition->getRiskyDescription();
+
+            if (null !== $riskyDescription) {
+                $output->writeln($riskyDescription);
             }
 
             $output->writeln('');

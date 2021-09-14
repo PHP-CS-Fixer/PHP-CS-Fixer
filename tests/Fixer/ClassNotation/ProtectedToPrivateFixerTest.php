@@ -202,7 +202,7 @@ final class Foo2 {
         ];
     }
 
-    private function getAttributesAndMethods(bool $original)
+    private function getAttributesAndMethods(bool $original): string
     {
         $attributesAndMethodsOriginal = '
 public $v1;

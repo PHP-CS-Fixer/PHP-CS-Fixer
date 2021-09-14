@@ -134,6 +134,9 @@ final class ConfigurationResolver
         'verbosity' => null,
     ];
 
+    /**
+     * @var null|string
+     */
     private $cacheFile;
 
     /**

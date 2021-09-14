@@ -402,6 +402,22 @@ final class RuleSetTest extends TestCase
         }
     }
 
+    public function testEmptyName(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Rule/set name must not be empty.');
+
+        new RuleSet(['' => 'foo']);
+    }
+
+    public function testInvalidConfig(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('[@Symfony:risky] Set must be enabled (true) or disabled (false). Other values are not allowed. To disable the set, use "FALSE" instead of "NULL".');
+
+        new RuleSet(['@Symfony:risky' => null]);
+    }
+
     private function sortNestedArray(array $array): array
     {
         foreach ($array as $key => $element) {

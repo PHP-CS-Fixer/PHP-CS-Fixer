@@ -25,6 +25,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class NoExtraBlankLinesFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @var string
+     */
     private $template = <<<'EOF'
 <?php
 use \DateTime;

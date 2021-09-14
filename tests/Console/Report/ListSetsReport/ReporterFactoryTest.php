@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 
 use PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory;
+use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -107,9 +108,9 @@ final class ReporterFactoryTest extends TestCase
         $builder->getReporter('non_registered_format');
     }
 
-    private function createReporterDouble($format)
+    private function createReporterDouble(string $format): ReporterInterface
     {
-        $reporter = $this->prophesize(\PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface::class);
+        $reporter = $this->prophesize(ReporterInterface::class);
         $reporter->getFormat()->willReturn($format);
 
         return $reporter->reveal();

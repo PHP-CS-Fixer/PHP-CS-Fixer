@@ -148,7 +148,7 @@ if (count($x)) {
 
         $newImports = array_filter($newImports);
 
-        if ($newImports) {
+        if (\count($newImports) > 0) {
             $this->insertImports($tokens, $newImports, $useDeclarations);
         }
     }
@@ -443,7 +443,7 @@ if (count($x)) {
      */
     private function insertImports(Tokens $tokens, array $imports, array $useDeclarations): void
     {
-        if ($useDeclarations) {
+        if (\count($useDeclarations) > 0) {
             $useDeclaration = end($useDeclarations);
             $index = $useDeclaration->getEndIndex() + 1;
         } else {
@@ -709,7 +709,7 @@ if (count($x)) {
     {
         $annotations = $doc->getAnnotationsOfType(Annotation::getTagsWithTypes());
 
-        if (!$annotations) {
+        if (0 === \count($annotations)) {
             return false;
         }
 

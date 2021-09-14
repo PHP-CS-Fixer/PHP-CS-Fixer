@@ -89,7 +89,7 @@ final class EregToPregFixer extends AbstractFixer
             $seq = [[T_STRING, $map[0]], '(', [T_CONSTANT_ENCAPSED_STRING]];
             $currIndex = 0;
 
-            do {
+            while (true) {
                 $match = $tokens->findSequence($seq, $currIndex, $end, false);
 
                 // did we find a match?
@@ -132,7 +132,7 @@ final class EregToPregFixer extends AbstractFixer
                 // modify function and argument
                 $tokens[$match[0]] = new Token([T_STRING, $map[1]]);
                 $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $quote.$preg.$quote]);
-            } while (null !== $currIndex);
+            }
         }
     }
 

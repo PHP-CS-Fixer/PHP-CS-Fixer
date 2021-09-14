@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class SwitchContinueToBreakFixer extends AbstractFixer
 {
+    /**
+     * @var int[]
+     */
     private $switchLevels = [];
 
     /**

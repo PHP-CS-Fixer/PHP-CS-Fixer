@@ -282,9 +282,10 @@ $c = get_class($d);
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
             if (!$functionFilter($tokens[$index]->getContent()) || $tryToRemove) {
-                if (!$this->configuration['strict']) {
+                if (false === $this->configuration['strict']) {
                     continue;
                 }
+
                 if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
                 }

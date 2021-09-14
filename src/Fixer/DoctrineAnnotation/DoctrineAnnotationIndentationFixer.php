@@ -98,7 +98,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             if ($indentLevel > 0 && ($delta < 0 || $mixedBraces)) {
                 --$indentLevel;
 
-                if ($this->configuration['indent_mixed_lines'] && $this->isClosingLineWithMeaningfulContent($doctrineAnnotationTokens, $index)) {
+                if (true === $this->configuration['indent_mixed_lines'] && $this->isClosingLineWithMeaningfulContent($doctrineAnnotationTokens, $index)) {
                     $extraIndentLevel = 1;
                 }
             }
