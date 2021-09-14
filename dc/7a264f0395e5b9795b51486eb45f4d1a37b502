@@ -1,0 +1,39 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-13T06:58:43Z
+
+Hi and thanks for taking the time to propose this improvement!
+
+Currently the documentation gets generated from the various source files. For this case, please also update this file:
+>https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.1.0/src/RuleSet/Sets/DoctrineAnnotationSet.php#L40
+
+after that we'll run the tests/CI and if all green will merge it :+1:
+
+---------------------------------------------------------------------------
+
+by astehlik at 2021-09-13T12:41:20Z
+
+Thank you for the hint :)
+
+I have updated the URL in the DoctrineAnnotationSet source now, too.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-13T12:54:26Z
+
+[![Coverage Status](https://coveralls.io/builds/42852445/badge)](https://coveralls.io/builds/42852445)
+
+Coverage remained the same at 92.101% when pulling **ba4dbc15249fc24d33895d1ad125483e601a4c2a on astehlik:patch-2** into **a2d5d6f14e47713f6470e72d9d5b87487adc6bfa on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-13T15:01:13Z
+
+thanks so much! :)
+can I ask you one more thing, can you maybe rebase (on top of master) and squash the commits?
+
+---------------------------------------------------------------------------
+
+by astehlik at 2021-09-14T08:10:39Z
+
+No problem at all. The branch is now rebased and the commits were sqashed.
