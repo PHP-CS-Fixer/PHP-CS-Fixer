@@ -1050,6 +1050,11 @@ if ($a = $obj instanceof (foo()) === true) {
             null,
             ['equal' => true, 'identical' => true],
         ];
+
+        yield [
+            '<?php new Foo(bar: 1 === $var);',
+            '<?php new Foo(bar: $var === 1);',
+        ];
     }
 
     /**

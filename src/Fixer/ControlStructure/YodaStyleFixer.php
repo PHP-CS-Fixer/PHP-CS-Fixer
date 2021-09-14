@@ -239,6 +239,10 @@ return $foo === count($bar);
                 continue;
             }
 
+            if ($token->isGivenKind([CT::T_NAMED_ARGUMENT_COLON])) {
+                break;
+            }
+
             if ($this->isOfLowerPrecedence($token)) {
                 break;
             }
