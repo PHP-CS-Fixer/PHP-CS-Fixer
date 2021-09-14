@@ -43,7 +43,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             $this->fixer->configure(['assertions' => [$method]]);
             $this->doTest(
                 $expected,
-                $input && str_contains($input, $method) ? $input : null
+                null !== $input && str_contains($input, $method) ? $input : null
             );
         }
     }

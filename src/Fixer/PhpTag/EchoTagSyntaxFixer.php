@@ -145,7 +145,6 @@ EOT
 
     private function longToShort(Tokens $tokens): void
     {
-        $skipWhenComplexCode = $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY];
         $count = $tokens->count();
 
         for ($index = 0; $index < $count; ++$index) {
@@ -165,7 +164,7 @@ EOT
                 continue;
             }
 
-            if ($skipWhenComplexCode && $this->isComplexCode($tokens, $nextMeaningful + 1)) {
+            if (true === $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY] && $this->isComplexCode($tokens, $nextMeaningful + 1)) {
                 $index = $nextMeaningful;
 
                 continue;

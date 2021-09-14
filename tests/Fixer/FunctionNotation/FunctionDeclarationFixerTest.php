@@ -28,6 +28,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @var array<string,string>
+     */
     private static $configurationClosureSpacingNone = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE];
 
     public function testInvalidConfigurationClosureFunctionSpacing(): void

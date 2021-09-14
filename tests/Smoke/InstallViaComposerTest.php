@@ -29,6 +29,9 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class InstallViaComposerTest extends AbstractSmokeTest
 {
+    /**
+     * @var string[]
+     */
     private $stepsToVerifyInstallation = [
         // Confirm we can install.
         'composer install -q',

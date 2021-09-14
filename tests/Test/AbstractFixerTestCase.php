@@ -55,12 +55,20 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     protected $fixer;
 
-    // do not modify this structure without prior discussion
+    /**
+     * do not modify this structure without prior discussion.
+     *
+     * @var array<string,array>
+     */
     private $allowedRequiredOptions = [
         'header_comment' => ['header' => true],
     ];
 
-    // do not modify this structure without prior discussion
+    /**
+     * do not modify this structure without prior discussion.
+     *
+     * @var array<string,bool>
+     */
     private $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
         'general_phpdoc_tag_rename' => true,
@@ -466,10 +474,11 @@ abstract class AbstractFixerTestCase extends TestCase
         static::assertSame(substr_count(strtolower($haystack), strtolower($needle)), substr_count($haystack, $needle), $message);
     }
 
-    private function findAllTokenSequences($tokens, $sequence): array
+    private function findAllTokenSequences(Tokens $tokens, array $sequence): array
     {
         $lastIndex = 0;
         $sequences = [];
+
         while ($found = $tokens->findSequence($sequence, $lastIndex)) {
             $keys = array_keys($found);
             $sequences[] = $found;

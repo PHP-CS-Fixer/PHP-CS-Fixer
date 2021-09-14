@@ -765,7 +765,7 @@ class Tokens extends \SplFixedArray
 
         // begin searching for the first token in the sequence (start included)
         $index = $start - 1;
-        while (null !== $index && $index <= $end) {
+        while ($index <= $end) {
             $index = $this->getNextTokenOfKind($index, [$firstToken], $firstCs);
 
             // ensure we found a match and didn't get past the end index

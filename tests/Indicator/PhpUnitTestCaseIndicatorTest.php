@@ -115,6 +115,11 @@ class Foo implements TestInterface, SomethingElse
                 Tokens::fromCode('<?php final class MyClass {}'),
                 3,
             ],
+            'Anonymous class' => [
+                false,
+                Tokens::fromCode('<?php $a = new class {};'),
+                7,
+            ],
         ];
     }
 

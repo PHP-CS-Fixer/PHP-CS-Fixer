@@ -424,7 +424,7 @@ SAMPLE
 
             if (
                 !$tokens[$prevIndex]->equals(',') && !$tokens[$prevIndex]->isComment()
-                && ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
+                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
             ) {
                 $tokens->clearAt($index - 1);
             }
@@ -444,7 +444,7 @@ SAMPLE
             }
 
             if (
-                (!$this->configuration['keep_multiple_spaces_after_comma'] || Preg::match('/\R/', $newContent))
+                (false === $this->configuration['keep_multiple_spaces_after_comma'] || Preg::match('/\R/', $newContent))
                 && !$this->isCommentLastLineToken($tokens, $index + 2)
             ) {
                 $newContent = ltrim($newContent, " \t");

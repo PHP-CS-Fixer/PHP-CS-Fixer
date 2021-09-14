@@ -81,11 +81,12 @@ function foo() {
     {
         parent::configure($configuration);
 
+        $this->position = $this->configuration['position'];
         $this->operators = self::BOOLEAN_OPERATORS;
-        if (!$this->configuration['only_booleans']) {
+
+        if (false === $this->configuration['only_booleans']) {
             $this->operators = array_merge($this->operators, self::getNonBooleanOperators());
         }
-        $this->position = $this->configuration['position'];
     }
 
     /**

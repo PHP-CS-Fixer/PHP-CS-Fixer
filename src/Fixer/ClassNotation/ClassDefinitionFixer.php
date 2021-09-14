@@ -200,13 +200,13 @@ $foo = new class(){};
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
-        if ($this->configuration['single_line'] || false === $classExtendsInfo['multiLine']) {
+        if (true === $this->configuration['single_line'] || false === $classExtendsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = false;
-        } elseif ($this->configuration['single_item_single_line'] && 1 === $classExtendsInfo['numberOfExtends']) {
+        } elseif (true === $this->configuration['single_item_single_line'] && 1 === $classExtendsInfo['numberOfExtends']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = false;
-        } elseif ($this->configuration['multi_line_extends_each_single_line'] && $classExtendsInfo['multiLine']) {
+        } elseif (true === $this->configuration['multi_line_extends_each_single_line'] && $classExtendsInfo['multiLine']) {
             $this->makeClassyInheritancePartMultiLine($tokens, $classExtendsInfo['start'], $endIndex);
             $classExtendsInfo['multiLine'] = true;
         }
@@ -218,10 +218,10 @@ $foo = new class(){};
     {
         $endIndex = $tokens->getPrevNonWhitespace($classOpenIndex);
 
-        if ($this->configuration['single_line'] || false === $classImplementsInfo['multiLine']) {
+        if (true === $this->configuration['single_line'] || false === $classImplementsInfo['multiLine']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
             $classImplementsInfo['multiLine'] = false;
-        } elseif ($this->configuration['single_item_single_line'] && 1 === $classImplementsInfo['numberOfImplements']) {
+        } elseif (true === $this->configuration['single_item_single_line'] && 1 === $classImplementsInfo['numberOfImplements']) {
             $this->makeClassyDefinitionSingleLine($tokens, $classImplementsInfo['start'], $endIndex);
             $classImplementsInfo['multiLine'] = false;
         } else {
@@ -368,7 +368,7 @@ $foo = new class(){};
                 continue;
             }
 
-            if ($this->configuration['space_before_parenthesis'] && $tokens[$i]->isGivenKind(T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
+            if (true === $this->configuration['space_before_parenthesis'] && $tokens[$i]->isGivenKind(T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
                 $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
 
                 continue;

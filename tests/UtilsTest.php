@@ -267,7 +267,7 @@ final class UtilsTest extends TestCase
         static::assertSame($exception, $futureModeException->getPrevious());
     }
 
-    private function createFixerDouble(string $name, int $priority)
+    private function createFixerDouble(string $name, int $priority): FixerInterface
     {
         $fixer = $this->prophesize(FixerInterface::class);
         $fixer->getName()->willReturn($name);

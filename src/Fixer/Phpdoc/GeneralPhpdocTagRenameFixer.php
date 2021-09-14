@@ -170,11 +170,11 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (!$this->configuration['replacements']) {
+        if (0 === \count($this->configuration['replacements'])) {
             return;
         }
 
-        if ($this->configuration['fix_annotation']) {
+        if (true === $this->configuration['fix_annotation']) {
             if ($this->configuration['fix_inline']) {
                 $regex = '/"[^"]*"(*SKIP)(*FAIL)|\b(?<=@)(%s)\b/';
             } else {
@@ -184,7 +184,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
             $regex = '/(?<={@)(%s)(?=[ \t}])/';
         }
 
-        $caseInsensitive = !$this->configuration['case_sensitive'];
+        $caseInsensitive = false === $this->configuration['case_sensitive'];
         $replacements = $this->configuration['replacements'];
         $regex = sprintf($regex, implode('|', array_keys($replacements)));
 

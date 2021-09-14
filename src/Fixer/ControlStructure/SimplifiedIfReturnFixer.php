@@ -26,6 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
+    /**
+     * @var array[]
+     */
     private $sequences = [
         [
             'isNegative' => false,

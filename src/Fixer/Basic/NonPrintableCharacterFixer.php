@@ -33,8 +33,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NonPrintableCharacterFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    /**
+     * @var array<string, string[]>
+     */
     private $symbolsReplace;
 
+    /**
+     * @var int[]
+     */
     private static $tokens = [
         T_STRING_VARNAME,
         T_INLINE_HTML,

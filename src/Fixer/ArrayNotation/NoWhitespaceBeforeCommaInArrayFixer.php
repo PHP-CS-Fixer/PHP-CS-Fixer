@@ -121,7 +121,7 @@ SAMPLE
 
             if (
                 $currentToken->equals(',') && !$tokens[$prevIndex]->isComment()
-                && ($this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
+                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
             ) {
                 $tokens->removeLeadingWhitespace($i);
             }

@@ -135,6 +135,9 @@ final class CiConfigurationTest extends TestCase
         ));
     }
 
+    /**
+     * @return string[]
+     */
     private function getAllPhpVersionsUsedByCiForDeployments(): array
     {
         $jobs = array_filter($this->getGitHubJobs(), static function (array $job): bool {
@@ -146,7 +149,10 @@ final class CiConfigurationTest extends TestCase
         }, $jobs);
     }
 
-    private function getAllPhpVersionsUsedByCiForTests()
+    /**
+     * @return string[]
+     */
+    private function getAllPhpVersionsUsedByCiForTests(): array
     {
         return $this->getPhpVersionsUsedByGitHub();
     }
@@ -197,14 +203,17 @@ final class CiConfigurationTest extends TestCase
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
 
-    private function getGitHubJobs()
+    private function getGitHubJobs(): array
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 
         return $yaml['jobs']['tests']['strategy']['matrix']['include'];
     }
 
-    private function getPhpVersionsUsedByGitHub()
+    /**
+     * @return string[]
+     */
+    private function getPhpVersionsUsedByGitHub(): array
     {
         $yaml = Yaml::parse(file_get_contents(__DIR__.'/../../.github/workflows/ci.yml'));
 

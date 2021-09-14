@@ -89,7 +89,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
         $insideForParenthesesUntil = null;
 
         for ($index = 0, $max = \count($tokens) - 1; $index < $max; ++$index) {
-            if ($this->configuration['remove_in_empty_for_expressions']) {
+            if (true === $this->configuration['remove_in_empty_for_expressions']) {
                 if ($tokens[$index]->isGivenKind(T_FOR)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $insideForParenthesesUntil = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
@@ -111,7 +111,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
             if (!$tokens[$index + 1]->isWhitespace()) {
                 if (
                     !$tokens[$index + 1]->equalsAny([')', [T_INLINE_HTML]]) && (
-                        !$this->configuration['remove_in_empty_for_expressions']
+                        false === $this->configuration['remove_in_empty_for_expressions']
                         || !$tokens[$index + 1]->equals(';')
                     )
                 ) {

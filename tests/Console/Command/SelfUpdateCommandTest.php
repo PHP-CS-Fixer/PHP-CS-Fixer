@@ -22,6 +22,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\ToolInfoInterface;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -329,7 +330,7 @@ OUTPUT;
         ];
     }
 
-    private function execute(Command $command, array $input, $decorated): CommandTester
+    private function execute(Command $command, array $input, bool $decorated): CommandTester
     {
         $application = new Application();
         $application->add($command);
@@ -365,11 +366,11 @@ OUTPUT;
         );
     }
 
-    private function createToolInfo(bool $isInstalledAsPhar = true)
+    private function createToolInfo(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
         $root = $this->root;
 
-        $toolInfo = $this->prophesize(\PhpCsFixer\ToolInfoInterface::class);
+        $toolInfo = $this->prophesize(ToolInfoInterface::class);
         $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
         $toolInfo
             ->getPharDownloadUri(Argument::type('string'))

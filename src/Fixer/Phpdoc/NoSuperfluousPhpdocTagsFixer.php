@@ -128,7 +128,7 @@ class Foo {
 
             $token = $tokens[$documentedElementIndex];
 
-            if ($this->configuration['remove_inheritdoc']) {
+            if (true === $this->configuration['remove_inheritdoc']) {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
@@ -224,7 +224,7 @@ class Foo {
                 continue;
             }
 
-            if (!isset($argumentsInfo[$argumentName]) && $this->configuration['allow_unused_params']) {
+            if (!isset($argumentsInfo[$argumentName]) && true === $this->configuration['allow_unused_params']) {
                 continue;
             }
 
@@ -407,7 +407,7 @@ class Foo {
         }
 
         if (['mixed'] === $annotationTypes && [] === $info['types']) {
-            return !$this->configuration['allow_mixed'];
+            return false === $this->configuration['allow_mixed'];
         }
 
         $actualTypes = $info['types'];

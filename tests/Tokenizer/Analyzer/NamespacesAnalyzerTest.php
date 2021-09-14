@@ -167,4 +167,13 @@ final class NamespacesAnalyzerTest extends TestCase
             ),
         ];
     }
+
+    public function testInvalidIndex(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Token index 666 does not exist.');
+
+        $analyzer = new NamespacesAnalyzer();
+        $analyzer->getNamespaceAt(new Tokens(), 666);
+    }
 }

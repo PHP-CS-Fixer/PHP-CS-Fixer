@@ -101,7 +101,7 @@ function example($foo = "two words", $bar) {}
     {
         $lastArgumentIndex = $this->getLastNonDefaultArgumentIndex($tokens, $startIndex, $endIndex);
 
-        if (!$lastArgumentIndex) {
+        if (null === $lastArgumentIndex) {
             return;
         }
 

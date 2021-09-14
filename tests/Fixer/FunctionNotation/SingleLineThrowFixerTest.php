@@ -205,8 +205,25 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php throw new Exception( /* 0 */"Foo", /* 1 */0 /* 2 */); //3',
-            '<?php throw new Exception( // 0
+            '<?php throw new Exception( /* A */"Foo", /* 1 */0 /* 2 */); //3',
+            '<?php throw new Exception( // A
+                "Foo", // 1
+                0 // 2
+            ); //3',
+        ];
+
+        yield [
+            '<?php throw new Exception( /* 0123 */ "Foo", /* 1 */0 /* 2 */); //3',
+            '<?php throw new Exception( /* 0123 */
+                "Foo", // 1
+                0 // 2
+            ); //3',
+        ];
+
+        yield [
+            '<?php throw new Exception( /* X  */ "Foo", /* 1 */0 /* 2 */); //3',
+            '<?php throw new Exception( /* X
+ */
                 "Foo", // 1
                 0 // 2
             ); //3',

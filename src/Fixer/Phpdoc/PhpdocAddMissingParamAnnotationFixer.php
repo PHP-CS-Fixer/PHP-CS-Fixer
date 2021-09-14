@@ -154,7 +154,7 @@ function f9(string $foo, $bar, $baz) {}
             foreach ($argumentsAnalyzer->getArguments($tokens, $openIndex, $index) as $start => $end) {
                 $argumentInfo = $this->prepareArgumentInformation($tokens, $start, $end);
 
-                if (!$this->configuration['only_untyped'] || '' === $argumentInfo['type']) {
+                if (false === $this->configuration['only_untyped'] || '' === $argumentInfo['type']) {
                     $arguments[$argumentInfo['name']] = $argumentInfo;
                 }
             }

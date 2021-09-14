@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Smoke;
 
+use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
@@ -30,6 +31,9 @@ use PhpCsFixer\Console\Application;
  */
 final class CiIntegrationTest extends AbstractSmokeTest
 {
+    /**
+     * @var string
+     */
     public static $fixtureDir;
 
     public static function setUpBeforeClass(): void
@@ -280,12 +284,12 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         ];
     }
 
-    private static function executeCommand(string $command)
+    private static function executeCommand(string $command): CliResult
     {
         return CommandExecutor::create($command, self::$fixtureDir)->getResult();
     }
 
-    private static function executeScript(array $scriptParts)
+    private static function executeScript(array $scriptParts): CliResult
     {
         return ScriptExecutor::create($scriptParts, self::$fixtureDir)->getResult();
     }

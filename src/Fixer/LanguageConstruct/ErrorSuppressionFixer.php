@@ -123,7 +123,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($this->configuration[self::OPTION_NOISE_REMAINING_USAGES] && $token->equals('@')) {
+            if (true === $this->configuration[self::OPTION_NOISE_REMAINING_USAGES] && $token->equals('@')) {
                 $tokens->clearAt($index);
 
                 continue;
@@ -145,7 +145,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             $index = $prevIndex;
 
             if ($this->isDeprecationErrorCall($tokens, $functionIndex)) {
-                if (!$this->configuration[self::OPTION_MUTE_DEPRECATION_ERROR]) {
+                if (false === $this->configuration[self::OPTION_MUTE_DEPRECATION_ERROR]) {
                     continue;
                 }
 
@@ -162,7 +162,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
                 continue;
             }
 
-            if ($this->configuration[self::OPTION_NOISE_REMAINING_USAGES] && !\in_array($tokens[$functionIndex]->getContent(), $excludedFunctions, true)) {
+            if (true === $this->configuration[self::OPTION_NOISE_REMAINING_USAGES] && !\in_array($tokens[$functionIndex]->getContent(), $excludedFunctions, true)) {
                 $tokens->clearAt($index);
             }
         }

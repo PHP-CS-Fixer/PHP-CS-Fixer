@@ -83,7 +83,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (!$this->configuration['tags']) {
+        if (0 === \count($this->configuration['tags'])) {
             return;
         }
 

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PhpCsFixer\FileRemoval;
 
 /**
@@ -131,7 +132,25 @@ final class FileRemovalTest extends TestCase
         static::assertFileDoesNotExist($fs->url().'/foo.php');
     }
 
-    private function getMockFileSystem()
+    public function testSleep(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\FileRemoval');
+
+        $fileRemoval = new FileRemoval();
+        $fileRemoval->__sleep();
+    }
+
+    public function testWakeup(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\FileRemoval');
+
+        $fileRemoval = new FileRemoval();
+        $fileRemoval->__wakeup();
+    }
+
+    private function getMockFileSystem(): vfsStreamDirectory
     {
         return vfsStream::setup('root', null, [
             'foo.php' => '',

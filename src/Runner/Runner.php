@@ -94,10 +94,10 @@ final class Runner
         ?EventDispatcherInterface $eventDispatcher,
         ErrorsManager $errorsManager,
         LinterInterface $linter,
-        $isDryRun,
+        bool $isDryRun,
         CacheManagerInterface $cacheManager,
         ?DirectoryInterface $directory = null,
-        $stopOnViolation = false
+        bool $stopOnViolation = false
     ) {
         $this->finder = $finder;
         $this->fixers = $fixers;
@@ -134,7 +134,7 @@ final class Runner
             // we do not need Tokens to still caching just fixed file - so clear the cache
             Tokens::clearCache();
 
-            if ($fixInfo) {
+            if (null !== $fixInfo) {
                 $name = $this->directory->getRelativePathTo($file->__toString());
                 $changed[$name] = $fixInfo;
 

@@ -94,7 +94,8 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurab
         }
 
         $mode = str_replace('t', '', $mode);
-        if ($this->configuration['b_mode']) {
+
+        if (true === $this->configuration['b_mode']) {
             if (!str_contains($mode, 'b')) {
                 $mode .= 'b';
             }
