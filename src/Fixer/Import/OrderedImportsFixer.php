@@ -482,8 +482,8 @@ use Bar;
             }
 
             // Sorting each group by algorithm.
-            foreach ($groupedByTypes as $type => $indexes) {
-                $groupedByTypes[$type] = $this->sortByAlgorithm($indexes);
+            foreach ($groupedByTypes as $type => $groupIndexes) {
+                $groupedByTypes[$type] = $this->sortByAlgorithm($groupIndexes);
             }
 
             // Ordering groups

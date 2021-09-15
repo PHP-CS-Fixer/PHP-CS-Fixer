@@ -137,31 +137,17 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 }
             }
 
-            $interfaceIndex = 0;
-            $interfaces = [['tokens' => []]];
-
             $implementsStart = $index + 1;
-            $classStart = $tokens->getNextTokenOfKind($implementsStart, ['{']);
-            $implementsEnd = $tokens->getPrevNonWhitespace($classStart);
+            $implementsEnd = $tokens->getPrevNonWhitespace($tokens->getNextTokenOfKind($implementsStart, ['{']));
 
-            for ($i = $implementsStart; $i <= $implementsEnd; ++$i) {
-                if ($tokens[$i]->equals(',')) {
-                    ++$interfaceIndex;
-                    $interfaces[$interfaceIndex] = ['tokens' => []];
-
-                    continue;
-                }
-
-                $interfaces[$interfaceIndex]['tokens'][] = $tokens[$i];
-            }
+            $interfaces = $this->getInterfaces($tokens, $implementsStart, $implementsEnd);
 
             if (1 === \count($interfaces)) {
                 continue;
             }
 
             foreach ($interfaces as $interfaceIndex => $interface) {
-                $interfaceTokens = Tokens::fromArray($interface['tokens'], false);
-
+                $interfaceTokens = Tokens::fromArray($interface, false);
                 $normalized = '';
                 $actualInterfaceIndex = $interfaceTokens->getNextMeaningfulToken(-1);
 
@@ -176,8 +162,11 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                     ++$actualInterfaceIndex;
                 }
 
-                $interfaces[$interfaceIndex]['normalized'] = $normalized;
-                $interfaces[$interfaceIndex]['originalIndex'] = $interfaceIndex;
+                $interfaces[$interfaceIndex] = [
+                    'tokens' => $interface,
+                    'normalized' => $normalized,
+                    'originalIndex' => $interfaceIndex,
+                ];
             }
 
             usort($interfaces, function (array $first, array $second): int {
@@ -231,5 +220,24 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 ->setDefault(self::DIRECTION_ASCEND)
                 ->getOption(),
         ]);
+    }
+
+    private function getInterfaces(Tokens $tokens, int $implementsStart, int $implementsEnd): array
+    {
+        $interfaces = [];
+        $interfaceIndex = 0;
+
+        for ($i = $implementsStart; $i <= $implementsEnd; ++$i) {
+            if ($tokens[$i]->equals(',')) {
+                ++$interfaceIndex;
+                $interfaces[$interfaceIndex] = [];
+
+                continue;
+            }
+
+            $interfaces[$interfaceIndex][] = $tokens[$i];
+        }
+
+        return $interfaces;
     }
 }
