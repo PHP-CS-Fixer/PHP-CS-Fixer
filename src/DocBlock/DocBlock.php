@@ -24,8 +24,6 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * It internally splits it up into "lines" that we can manipulate.
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
- * @final
  */
 final class DocBlock
 {

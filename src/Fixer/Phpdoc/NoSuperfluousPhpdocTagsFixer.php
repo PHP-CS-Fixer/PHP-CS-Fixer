@@ -126,16 +126,18 @@ class Foo {
                 continue;
             }
 
-            $token = $tokens[$documentedElementIndex];
+            $documentedElementToken = $tokens[$documentedElementIndex];
 
             if (true === $this->configuration['remove_inheritdoc']) {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
-                $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
-            } elseif ($token->isGivenKind(T_VARIABLE)) {
+            if ($documentedElementToken->isGivenKind(T_FUNCTION)) {
+                $content = $this->fixFunctionDocComment($content, $tokens, $documentedElementIndex, $shortNames);
+            } elseif ($documentedElementToken->isGivenKind(T_VARIABLE)) {
                 $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
+            } elseif ($documentedElementToken->isGivenKind(T_CLASS)) {
+                $content = $this->fixClassDocComment($content, $tokens, $documentedElementIndex);
             }
 
             if ('' === $content) {
@@ -241,14 +243,14 @@ class Foo {
             }
         }
 
+        $this->removeSuperfluousModifierAnnotation($tokens, $docBlock, $functionIndex);
+
         return $docBlock->getContent();
     }
 
-    /**
-     * @param int $index Index of the DocComment token
-     */
-    private function fixPropertyDocComment(string $content, Tokens $tokens, int $index, array $shortNames): string
+    private function fixPropertyDocComment(string $content, Tokens $tokens, int $docCommentIndex, array $shortNames): string
     {
+        $index = $docCommentIndex;
         $propertyModifierKinds = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
@@ -268,6 +270,15 @@ class Foo {
                 $annotation->remove();
             }
         }
+
+        return $docBlock->getContent();
+    }
+
+    private function fixClassDocComment(string $content, Tokens $tokens, $classIndex): string
+    {
+        $docBlock = new DocBlock($content);
+
+        $this->removeSuperfluousModifierAnnotation($tokens, $docBlock, $classIndex);
 
         return $docBlock->getContent();
     }
@@ -495,5 +506,21 @@ class Foo {
                 )
             )
         ~ix', '$1$2', $docComment);
+    }
+
+    /**
+     * @param int $keywordIndex The index of T_CLASS or T_FUNCTION
+     */
+    private function removeSuperfluousModifierAnnotation(Tokens $tokens, DocBlock $docBlock, int $keywordIndex): void
+    {
+        foreach (['abstract' => T_ABSTRACT, 'final' => T_FINAL] as $annotationType => $modifierToken) {
+            $annotations = $docBlock->getAnnotationsOfType($annotationType);
+
+            if ($tokens[$tokens->getPrevNonWhitespace($keywordIndex)]->isGivenKind([$modifierToken]) && \count($annotations) > 0) {
+                foreach ($annotations as $annotation) {
+                    $annotation->remove();
+                }
+            }
+        }
     }
 }

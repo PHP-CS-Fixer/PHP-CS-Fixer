@@ -1406,6 +1406,92 @@ class Foo {
     public function doFoo(iterable $bar, ?int $baz): ?array {}
 }',
             ],
+            'remove abstract annotation in function' => [
+                '<?php
+abstract class Foo {
+    /**
+     */
+    public abstract function doFoo();
+}',
+                '<?php
+abstract class Foo {
+    /**
+     * @abstract
+     */
+    public abstract function doFoo();
+}', ],
+            'dont remove abstract annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     * @abstract
+     */
+    public function doFoo() {}
+}', ],
+            'remove final annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public final function doFoo() {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @final
+     */
+    public final function doFoo() {}
+}', ],
+            'dont remove final annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     * @final
+     */
+    public function doFoo() {}
+}', ],
+            'remove abstract annotation in class' => [
+                '<?php
+/**
+ */
+abstract class Foo {
+}',
+                '<?php
+/**
+ * @abstract
+ */
+abstract class Foo {
+}', ],
+            'dont remove abstract annotation in class' => [
+                '<?php
+abstract class Bar{}
+
+/**
+ * @abstract
+ */
+class Foo {
+}', ],
+            'remove final annotation in class' => [
+                '<?php
+/**
+ */
+final class Foo {
+}',
+                '<?php
+/**
+ * @final
+ */
+final class Foo {
+}', ],
+            'dont remove final annotation in class' => [
+                '<?php
+final class Bar{}
+
+/**
+ * @final
+ */
+class Foo {
+}', ],
         ];
     }
 
