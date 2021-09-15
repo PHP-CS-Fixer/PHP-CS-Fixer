@@ -94,6 +94,8 @@ EOT
 
     /**
      * Override backtick code with corresponding double-quoted string.
+     *
+     * @param array<int, Token> $backtickTokens
      */
     private function fixBackticks(Tokens $tokens, array $backtickTokens): void
     {

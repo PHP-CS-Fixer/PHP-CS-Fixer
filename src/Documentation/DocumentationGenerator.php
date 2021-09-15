@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Documentation;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
@@ -67,7 +66,7 @@ final class DocumentationGenerator
     }
 
     /**
-     * @param AbstractFixer[] $fixers
+     * @param FixerInterface[] $fixers
      */
     public function generateFixersDocumentationIndex(array $fixers): string
     {
@@ -100,11 +99,12 @@ RST;
             }
 
             $summary = str_replace('`', '``', $fixer->getDefinition()->getSummary());
-
             $attributes = [];
+
             if ($fixer instanceof DeprecatedFixerInterface) {
                 $attributes[] = 'deprecated';
             }
+
             if ($fixer->isRisky()) {
                 $attributes[] = 'risky';
             }
@@ -340,7 +340,7 @@ RST;
     }
 
     /**
-     * @param AbstractFixer[] $fixers
+     * @param FixerInterface[] $fixers
      */
     public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers): string
     {
@@ -352,11 +352,12 @@ RST;
         $title = "Rule set ``{$definition->getName()}``";
         $titleLine = str_repeat('=', \strlen($title));
         $doc = "{$titleLine}\n{$title}\n{$titleLine}\n\n".$definition->getDescription();
+
         if ($definition->isRisky()) {
             $doc .= ' This set contains rules that are risky.';
         }
-        $doc .= "\n\n";
 
+        $doc .= "\n\n";
         $rules = $definition->getRules();
 
         if (\count($rules) < 1) {
