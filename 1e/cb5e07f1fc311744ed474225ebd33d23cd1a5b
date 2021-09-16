@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-14T05:43:18Z
+
+[![Coverage Status](https://coveralls.io/builds/42913398/badge)](https://coveralls.io/builds/42913398)
+
+Coverage increased (+0.0008%) to 92.156% when pulling **3b412c988403a05bcae782079459c34ae78de548 on liquid207:bugfix/fix-yoda-style-fixer-does-not-work-with-named-arguments-in-php8** into **25683144bc8067e96c4c0c42d4e511f3a4696ca8 on FriendsOfPHP:master**.
