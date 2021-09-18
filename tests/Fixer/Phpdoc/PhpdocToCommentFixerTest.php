@@ -879,6 +879,18 @@ Class MyAnnotation3
      */
 }',
             ],
+            [
+                '<?php
+class Foo
+{
+	public function __construct(
+	    /** @var string Do not convert this */
+		public string $bar
+	) {
+	}
+}
+',
+            ],
         ];
     }
 }

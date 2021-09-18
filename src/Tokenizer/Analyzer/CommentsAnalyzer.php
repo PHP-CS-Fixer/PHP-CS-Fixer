@@ -171,6 +171,9 @@ final class CommentsAnalyzer
                 T_INCLUDE,
                 T_INCLUDE_ONCE,
                 T_FINAL,
+                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
             ];
 
             if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
