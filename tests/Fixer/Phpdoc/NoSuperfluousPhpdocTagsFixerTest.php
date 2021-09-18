@@ -66,14 +66,14 @@ class Foo {
 class Foo {
     /**
      */
-    public function doFoo(Bar $bar = null) {}
+    public function doFoo(Bar $bar = NULL) {}
 }',
                 '<?php
 class Foo {
     /**
      * @param Bar|null $bar
      */
-    public function doFoo(Bar $bar = null) {}
+    public function doFoo(Bar $bar = NULL) {}
 }',
             ],
             'same typehint with description' => [
@@ -1041,13 +1041,17 @@ class Foo {
 }',
                 ['remove_inheritdoc' => true],
             ],
-            'dont_remove_inheritdoc_non_structural_element' => [
+            'remove_inheritdoc_non_structural_element_it_does_not_inherit' => [
+                '<?php
+/**
+ *
+ */
+$foo = 1;',
                 '<?php
 /**
  * @inheritDoc
  */
 $foo = 1;',
-                null,
                 ['remove_inheritdoc' => true],
             ],
             'property with unsupported type' => [
