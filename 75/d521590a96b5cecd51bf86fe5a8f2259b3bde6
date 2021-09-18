@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-08T21:50:37Z
+
+[![Coverage Status](https://coveralls.io/builds/42838725/badge)](https://coveralls.io/builds/42838725)
+
+Coverage decreased (-0.2%) to 91.935% when pulling **2debbbc732f13adf7af88638662d082c72a414e5 on SpacePossum:master_PHP8_FirstClassCallable_2** into **94a5dc57fae261870c1b698b48d655eab1da4530 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-13T15:57:29Z
+
+I'll take some of the fixes and put these in separate PR's soon'ish
