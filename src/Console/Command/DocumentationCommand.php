@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Documentation\DocumentationGenerator;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
 use Symfony\Component\Console\Command\Command;
@@ -68,6 +69,9 @@ final class DocumentationCommand extends Command
         return 0;
     }
 
+    /**
+     * @param FixerInterface[] $fixers
+     */
     private function generateFixersDocs(array $fixers): void
     {
         $filesystem = new Filesystem();
@@ -102,6 +106,9 @@ final class DocumentationCommand extends Command
         }
     }
 
+    /**
+     * @param FixerInterface[] $fixers
+     */
     private function generateRuleSetsDocs(array $fixers): void
     {
         $filesystem = new Filesystem();

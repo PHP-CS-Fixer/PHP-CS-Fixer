@@ -15,41 +15,35 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis
  *
  * @internal
  */
-final class SwitchAnalysisTest extends TestCase
+final class MatchAnalysisTest extends TestCase
 {
-    public function testSwitchAnalysis(): void
+    public function testMatchAnalysis(): void
     {
-        $analysis = new SwitchAnalysis(10, 11, 15, [], null);
+        $analysis = new MatchAnalysis(10, 11, 15, null);
 
         static::assertSame(10, $analysis->getIndex());
         static::assertSame(11, $analysis->getOpenIndex());
         static::assertSame(15, $analysis->getCloseIndex());
-        static::assertSame([], $analysis->getCases());
         static::assertNull($analysis->getDefaultAnalysis());
     }
 
-    public function testSwitchAnalysis2(): void
+    public function testMatchAnalysis2(): void
     {
-        $caseAnalysis = new CaseAnalysis(20, 21);
         $defaultAnalysis = new DefaultAnalysis(45, 48);
 
-        $analysis = new SwitchAnalysis(15, 17, 190, [$caseAnalysis], $defaultAnalysis);
+        $analysis = new MatchAnalysis(22, 26, 290, $defaultAnalysis);
 
-        static::assertSame(15, $analysis->getIndex());
-        static::assertSame(17, $analysis->getOpenIndex());
-        static::assertSame(190, $analysis->getCloseIndex());
-        static::assertSame([$caseAnalysis], $analysis->getCases());
+        static::assertSame(22, $analysis->getIndex());
+        static::assertSame(26, $analysis->getOpenIndex());
+        static::assertSame(290, $analysis->getCloseIndex());
         static::assertSame($defaultAnalysis, $analysis->getDefaultAnalysis());
     }
 }

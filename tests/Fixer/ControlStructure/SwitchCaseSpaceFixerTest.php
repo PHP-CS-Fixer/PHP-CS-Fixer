@@ -358,4 +358,78 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield [
+            '<?php
+                match ($foo) {
+                    1 => "a",
+                    default => "b"
+                };
+                match ($bar) {
+                    2 => "c",
+                    default=> "d"
+                };
+                match ($baz) {
+                    3 => "e",
+                    default   => "f"
+                };
+            ',
+        ];
+
+        yield [
+            '<?php
+$a = function (): ?string {
+    return $rank ? match (true) {
+      $rank <= 1000 => \'bronze\',
+      default => null,
+  } : null;
+};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts;
+    case Diamonds  ;
+    case Clubs ;
+    case Spades   ;
+}
+
+enum UserStatus: string {
+  case    Pending = \'P\';
+  case  Active = \'A\';
+  case   Suspended = \'S\';
+  case CanceledByUser = \'C\'  ;
+}
+
+switch ($a) {
+    default:
+        echo 1;
+}
+',
+        ];
+    }
 }

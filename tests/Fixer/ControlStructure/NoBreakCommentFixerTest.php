@@ -510,6 +510,18 @@ switch ($foo) {
     case 2:
         bar();
         break;
+    case 21:
+        bar();
+        break;
+    case 22:
+        bar();
+        break;
+    case 23:
+        bar();
+        break;
+    case 24:
+        bar();
+        break;
     case 3:
         baz();
         break;
@@ -525,6 +537,22 @@ switch ($foo) {
     case 2:
         bar();
         /* no break */
+        break;
+    case 21:
+        bar();
+        /*no break*/
+        break;
+    case 22:
+        bar();
+        /*     no break    */
+        break;
+    case 23:
+        bar();
+        /*no break    */
+        break;
+    case 24:
+        bar();
+        /*  no break*/
         break;
     case 3:
         baz();
@@ -980,6 +1008,45 @@ switch($a) {
         echo 1;
 }
                 ',
+            ],
+            [
+                '<?php
+switch ($foo) {
+    case 10:
+        echo 1;
+        /* no break because of some more details stated here */
+    case 22:
+        break;
+}',
+            ],
+            [
+                '<?php
+switch ($foo) {
+    case 10:
+        echo 1;
+        # no break because of some more details stated here */
+    case 22:
+        break;
+}',
+            ],
+            [
+                '<?php
+switch ($foo) {
+    case 100:
+        echo 10;
+        /* no breaking windows please */
+        // no break
+    case 220:
+        break;
+}',
+                '<?php
+switch ($foo) {
+    case 100:
+        echo 10;
+        /* no breaking windows please */
+    case 220:
+        break;
+}',
             ],
         ];
     }

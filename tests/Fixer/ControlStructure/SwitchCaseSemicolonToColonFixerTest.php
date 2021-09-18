@@ -311,4 +311,97 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield 'enums' => [
+            '<?php
+enum Suit {
+    case Hearts; // do not fix
+}
+
+enum UserStatus: string {
+  case Pending = "P"; // do not fix
+
+  public function label(): string {
+    switch (foo()) {
+        case 42: // do fix
+            bar();
+
+            $a = new class() {
+                public function bar() {
+                    switch (foo()) {
+                        case 43: // do fix
+                        bar();
+                    }
+
+                    $expressionResult = match ($condition) {
+                        default => baz(),
+                    };
+                }
+            };
+
+            $a->bar();
+
+            break;
+    }
+
+    return "label";
+  }
+}
+
+$expressionResult = match ($condition) {
+    default => baz(),
+};
+',
+            '<?php
+enum Suit {
+    case Hearts; // do not fix
+}
+
+enum UserStatus: string {
+  case Pending = "P"; // do not fix
+
+  public function label(): string {
+    switch (foo()) {
+        case 42; // do fix
+            bar();
+
+            $a = new class() {
+                public function bar() {
+                    switch (foo()) {
+                        case 43; // do fix
+                        bar();
+                    }
+
+                    $expressionResult = match ($condition) {
+                        default => baz(),
+                    };
+                }
+            };
+
+            $a->bar();
+
+            break;
+    }
+
+    return "label";
+  }
+}
+
+$expressionResult = match ($condition) {
+    default => baz(),
+};
+',
+        ];
+    }
 }
