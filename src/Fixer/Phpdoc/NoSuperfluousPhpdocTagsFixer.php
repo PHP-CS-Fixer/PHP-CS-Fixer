@@ -120,22 +120,24 @@ class Foo {
             }
 
             $content = $initialContent = $token->getContent();
-            $documentedElementIndex = $this->findDocumentedElement($tokens, $index);
+            $documentedElement = $this->findDocumentedElement($tokens, $index);
 
-            if (null === $documentedElementIndex) {
+            if (null === $documentedElement) {
                 continue;
             }
-
-            $token = $tokens[$documentedElementIndex];
 
             if (true === $this->configuration['remove_inheritdoc']) {
                 $content = $this->removeSuperfluousInheritDoc($content);
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
-                $content = $this->fixFunctionDocComment($content, $tokens, $index, $shortNames);
-            } elseif ($token->isGivenKind(T_VARIABLE)) {
-                $content = $this->fixPropertyDocComment($content, $tokens, $index, $shortNames);
+            if ('function' === $documentedElement['type']) {
+                $content = $this->fixFunctionDocComment($content, $tokens, $documentedElement, $shortNames);
+            } elseif ('property' === $documentedElement['type']) {
+                $content = $this->fixPropertyDocComment($content, $tokens, $documentedElement, $shortNames);
+            } elseif ('classy' === $documentedElement['type']) {
+                $content = $this->fixClassDocComment($content, $documentedElement);
+            } else {
+                throw new \RuntimeException('Unknown type.');
             }
 
             if ('' === $content) {
@@ -169,46 +171,81 @@ class Foo {
         ]);
     }
 
-    private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?int
+    private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?array
     {
-        $index = $docCommentIndex;
+        $modifierKinds = [
+            T_PRIVATE,
+            T_PROTECTED,
+            T_PUBLIC,
+            T_ABSTRACT,
+            T_FINAL,
+            T_STATIC,
+        ];
 
-        do {
-            $index = $tokens->getNextMeaningfulToken($index);
-
-            if (null === $index || $tokens[$index]->isGivenKind([T_FUNCTION, T_CLASS, T_INTERFACE, T_TRAIT])) {
-                return $index;
-            }
-        } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL, T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC]));
-
-        $kindsBeforeProperty = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, T_STRING, T_NS_SEPARATOR];
+        $typeKinds = [
+            CT::T_NULLABLE_TYPE,
+            CT::T_ARRAY_TYPEHINT,
+            CT::T_TYPE_ALTERNATION,
+            T_STRING,
+            T_NS_SEPARATOR,
+        ];
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $kindsBeforeProperty[] = T_READONLY;
+            $modifierKinds[] = T_READONLY;
         }
+
+        $element = [
+            'modifiers' => [],
+            'types' => [],
+        ];
 
         $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
-        if (!$tokens[$index]->isGivenKind($kindsBeforeProperty)) {
-            return null;
-        }
+        while (true) {
+            if (null === $index) {
+                break;
+            }
 
-        do {
-            $index = $tokens->getNextMeaningfulToken($index);
+            if ($tokens[$index]->isClassy()) {
+                $element['index'] = $index;
+                $element['type'] = 'classy';
+
+                return $element;
+            }
+
+            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+                $element['index'] = $index;
+                $element['type'] = 'function';
+
+                return $element;
+            }
 
             if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
-                return $index;
+                $element['index'] = $index;
+                $element['type'] = 'property';
+
+                return $element;
             }
-        } while ($tokens[$index]->isGivenKind($kindsBeforeProperty));
+
+            if ($tokens[$index]->isGivenKind($modifierKinds)) {
+                $element['modifiers'][$index] = $tokens[$index];
+            } elseif ($tokens[$index]->isGivenKind($typeKinds)) {
+                $element['types'][$index] = $tokens[$index];
+            } else {
+                break;
+            }
+
+            $index = $tokens->getNextMeaningfulToken($index);
+        }
 
         return null;
     }
 
-    private function fixFunctionDocComment(string $content, Tokens $tokens, int $functionIndex, array $shortNames): string
+    private function fixFunctionDocComment(string $content, Tokens $tokens, array $element, array $shortNames): string
     {
         $docBlock = new DocBlock($content);
 
-        $openingParenthesisIndex = $tokens->getNextTokenOfKind($functionIndex, ['(']);
+        $openingParenthesisIndex = $tokens->getNextTokenOfKind($element['index'], ['(']);
         $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
 
         $argumentsInfo = $this->getArgumentsInfo(
@@ -241,33 +278,38 @@ class Foo {
             }
         }
 
+        $this->removeSuperfluousModifierAnnotation($docBlock, $element);
+
         return $docBlock->getContent();
     }
 
-    /**
-     * @param int $index Index of the DocComment token
-     */
-    private function fixPropertyDocComment(string $content, Tokens $tokens, int $index, array $shortNames): string
+    private function fixPropertyDocComment(string $content, Tokens $tokens, array $element, array $shortNames): string
     {
-        $propertyModifierKinds = [T_STATIC, T_PRIVATE, T_PROTECTED, T_PUBLIC];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $propertyModifierKinds[] = T_READONLY;
+        if (\count($element['types']) > 0) {
+            $propertyTypeInfo = $this->parseTypeHint($tokens, array_key_first($element['types']));
+        } else {
+            $propertyTypeInfo = [
+                'types' => [],
+                'allows_null' => true,
+            ];
         }
 
         $docBlock = new DocBlock($content);
-
-        do {
-            $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind($propertyModifierKinds));
-
-        $propertyTypeInfo = $this->getPropertyTypeInfo($tokens, $index);
 
         foreach ($docBlock->getAnnotationsOfType('var') as $annotation) {
             if ($this->annotationIsSuperfluous($annotation, $propertyTypeInfo, $shortNames)) {
                 $annotation->remove();
             }
         }
+
+        return $docBlock->getContent();
+    }
+
+    private function fixClassDocComment(string $content, array $element): string
+    {
+        $docBlock = new DocBlock($content);
+
+        $this->removeSuperfluousModifierAnnotation($docBlock, $element);
 
         return $docBlock->getContent();
     }
@@ -302,7 +344,7 @@ class Foo {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
                 if (
                     $tokens[$nextIndex]->equals('=')
-                    && $tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals([T_STRING, 'null'])
+                    && $tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals([T_STRING, 'null'], false)
                 ) {
                     $info['allows_null'] = true;
                 }
@@ -325,21 +367,6 @@ class Foo {
             'types' => [],
             'allows_null' => true,
         ];
-    }
-
-    /**
-     * @param int $index The index of the first token of the type hint
-     */
-    private function getPropertyTypeInfo(Tokens $tokens, int $index): array
-    {
-        if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
-            return [
-                'types' => [],
-                'allows_null' => true,
-            ];
-        }
-
-        return $this->parseTypeHint($tokens, $index);
     }
 
     /**
@@ -495,5 +522,20 @@ class Foo {
                 )
             )
         ~ix', '$1$2', $docComment);
+    }
+
+    private function removeSuperfluousModifierAnnotation(DocBlock $docBlock, array $element): void
+    {
+        foreach (['abstract' => T_ABSTRACT, 'final' => T_FINAL] as $annotationType => $modifierToken) {
+            $annotations = $docBlock->getAnnotationsOfType($annotationType);
+
+            foreach ($element['modifiers'] as $token) {
+                if ($token->isGivenKind($modifierToken)) {
+                    foreach ($annotations as $annotation) {
+                        $annotation->remove();
+                    }
+                }
+            }
+        }
     }
 }

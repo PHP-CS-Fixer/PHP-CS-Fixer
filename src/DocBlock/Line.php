@@ -20,8 +20,6 @@ use PhpCsFixer\Preg;
  * This represents a line of a docblock.
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
- * @final
  */
 final class Line
 {

@@ -66,14 +66,14 @@ class Foo {
 class Foo {
     /**
      */
-    public function doFoo(Bar $bar = null) {}
+    public function doFoo(Bar $bar = NULL) {}
 }',
                 '<?php
 class Foo {
     /**
      * @param Bar|null $bar
      */
-    public function doFoo(Bar $bar = null) {}
+    public function doFoo(Bar $bar = NULL) {}
 }',
             ],
             'same typehint with description' => [
@@ -1041,13 +1041,17 @@ class Foo {
 }',
                 ['remove_inheritdoc' => true],
             ],
-            'dont_remove_inheritdoc_non_structural_element' => [
+            'remove_inheritdoc_non_structural_element_it_does_not_inherit' => [
+                '<?php
+/**
+ *
+ */
+$foo = 1;',
                 '<?php
 /**
  * @inheritDoc
  */
 $foo = 1;',
-                null,
                 ['remove_inheritdoc' => true],
             ],
             'property with unsupported type' => [
@@ -1406,6 +1410,92 @@ class Foo {
     public function doFoo(iterable $bar, ?int $baz): ?array {}
 }',
             ],
+            'remove abstract annotation in function' => [
+                '<?php
+abstract class Foo {
+    /**
+     */
+    public abstract function doFoo();
+}',
+                '<?php
+abstract class Foo {
+    /**
+     * @abstract
+     */
+    public abstract function doFoo();
+}', ],
+            'dont remove abstract annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     * @abstract
+     */
+    public function doFoo() {}
+}', ],
+            'remove final annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public final function doFoo() {}
+}',
+                '<?php
+class Foo {
+    /**
+     * @final
+     */
+    public final function doFoo() {}
+}', ],
+            'dont remove final annotation in function' => [
+                '<?php
+class Foo {
+    /**
+     * @final
+     */
+    public function doFoo() {}
+}', ],
+            'remove abstract annotation in class' => [
+                '<?php
+/**
+ */
+abstract class Foo {
+}',
+                '<?php
+/**
+ * @abstract
+ */
+abstract class Foo {
+}', ],
+            'dont remove abstract annotation in class' => [
+                '<?php
+abstract class Bar{}
+
+/**
+ * @abstract
+ */
+class Foo {
+}', ],
+            'remove final annotation in class' => [
+                '<?php
+/**
+ */
+final class Foo {
+}',
+                '<?php
+/**
+ * @final
+ */
+final class Foo {
+}', ],
+            'dont remove final annotation in class' => [
+                '<?php
+final class Bar{}
+
+/**
+ * @final
+ */
+class Foo {
+}', ],
         ];
     }
 
