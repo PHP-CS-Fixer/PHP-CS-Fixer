@@ -1,0 +1,69 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-09-15T09:37:36Z
+
+Also, can you edit your commit message so that `@abstract` and `@final` are surrounded with `` ` ``? This would prevent people from being notified unnecessarily.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-15T09:50:30Z
+
+[![Coverage Status](https://coveralls.io/builds/42914985/badge)](https://coveralls.io/builds/42914985)
+
+Coverage increased (+0.005%) to 92.161% when pulling **1934b64638a9fba3c68b911eaf8eb8f71a90a2b9 on liquid207:feature/improve-no-superfluous-phpdoc-tags-fixer** into **25683144bc8067e96c4c0c42d4e511f3a4696ca8 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-15T10:27:12Z
+
+Thanks for picking this up!
+
+I did a little test and there are some cases that are not fixed as expected I think
+
+```diff
+[12:25 PM]-[possum@aquarium]-[~/work/PHP-CS-Fixer]-[git feature/improve-no-superfluous-phpdoc-tags-fixer]
+$ php php-cs-fixer fix test.php -vvv --dry-run --diff --rules=no_superfluous_phpdoc_tags
+Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9003 (fallback through xdebug.client_host/xdebug.client_port) :-(
+PHP CS Fixer 3.2.0-DEV River by Fabien Potencier and Dariusz Ruminski
+Runtime: PHP 7.4.23
+Loaded config default from "/home/possum/work/PHP-CS-Fixer/.php-cs-fixer.dist.php".
+Paths from configuration file have been overridden by paths provided as command arguments.
+F                                                                                                                                                                                                      1 / 1 (100%)
+Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error
+   1) PHP-CS-Fixer/test.php (no_superfluous_phpdoc_tags)
+      ---------- begin diff ----------
+--- /home/possum/work/PHP-CS-Fixer/test.php
++++ /home/possum/work/PHP-CS-Fixer/test.php
+@@ -2,7 +2,6 @@
+ final class B{}
+
+ /**
+- * @final
+  */
+ class Foo {
+ }
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-16T10:11:09Z
+
+A breaking change, no? Shouldn't we add configuration to the fixer, off by default?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-09-16T18:15:16Z
+
+No, this is part of what the rule is intended to do, but was not implemented yet. If you want to have "no superfluous PHPDoc tags", you likely don't want to keep superfluous `@final`/`@abstract`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-18T13:31:00Z
+
+I left a PR on your fork for even more fixes, let me know what you think
+
+---------------------------------------------------------------------------
+
+by liquid207 at 2021-09-19T01:20:50Z
+
+@SpacePossum I have added you commit to my branch.
