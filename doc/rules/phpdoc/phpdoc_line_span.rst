@@ -13,7 +13,7 @@ Configuration
 
 Whether const blocks should be single or multi line
 
-Allowed values: ``'multi'``, ``'single'``
+Allowed values: ``'multi'``, ``'single'``, ``null``
 
 Default value: ``'multi'``
 
@@ -22,7 +22,7 @@ Default value: ``'multi'``
 
 Whether property doc blocks should be single or multi line
 
-Allowed values: ``'multi'``, ``'single'``
+Allowed values: ``'multi'``, ``'single'``, ``null``
 
 Default value: ``'multi'``
 
@@ -31,7 +31,7 @@ Default value: ``'multi'``
 
 Whether method doc blocks should be single or multi line
 
-Allowed values: ``'multi'``, ``'single'``
+Allowed values: ``'multi'``, ``'single'``, ``null``
 
 Default value: ``'multi'``
 
