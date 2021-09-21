@@ -246,16 +246,21 @@ final class UtilsTest extends TestCase
     {
         putenv('PHP_CS_FIXER_FUTURE_MODE=0');
 
-        $this->expectDeprecation('The message');
+        $message = __METHOD__.'::The message';
+        $this->expectDeprecation($message);
 
-        Utils::triggerDeprecation(new \DomainException('The message'));
+        Utils::triggerDeprecation(new \DomainException($message));
+
+        $triggered = Utils::getTriggeredDeprecations();
+        static::assertContains($message, $triggered);
     }
 
     public function testTriggerDeprecationWhenFutureModeIsOn(): void
     {
         putenv('PHP_CS_FIXER_FUTURE_MODE=1');
 
-        $exception = new \DomainException('The message');
+        $message = __METHOD__.'::The message';
+        $exception = new \DomainException($message);
         $futureModeException = null;
 
         try {
@@ -265,6 +270,9 @@ final class UtilsTest extends TestCase
 
         static::assertInstanceOf(\RuntimeException::class, $futureModeException);
         static::assertSame($exception, $futureModeException->getPrevious());
+
+        $triggered = Utils::getTriggeredDeprecations();
+        static::assertNotContains($message, $triggered);
     }
 
     private function createFixerDouble(string $name, int $priority): FixerInterface

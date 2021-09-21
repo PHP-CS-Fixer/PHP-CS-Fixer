@@ -149,15 +149,7 @@ final class TypeExpression
 
     public function getCommonType(): ?string
     {
-        $aliases = [
-            'boolean' => 'bool',
-            'callback' => 'callable',
-            'double' => 'float',
-            'false' => 'bool',
-            'integer' => 'int',
-            'real' => 'float',
-            'true' => 'bool',
-        ];
+        $aliases = $this->getAliases();
 
         $mainType = null;
 
@@ -222,15 +214,7 @@ final class TypeExpression
 
     private function normalize(string $type): string
     {
-        $aliases = [
-            'boolean' => 'bool',
-            'callback' => 'callable',
-            'double' => 'float',
-            'false' => 'bool',
-            'integer' => 'int',
-            'real' => 'float',
-            'true' => 'bool',
-        ];
+        $aliases = $this->getAliases();
 
         if (isset($aliases[$type])) {
             return $aliases[$type];
@@ -277,5 +261,21 @@ final class TypeExpression
         }
 
         return "{$this->namespace->getFullName()}\\{$type}";
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    private function getAliases(): array
+    {
+        return [
+            'boolean' => 'bool',
+            'callback' => 'callable',
+            'double' => 'float',
+            'false' => 'bool',
+            'integer' => 'int',
+            'real' => 'float',
+            'true' => 'bool',
+        ];
     }
 }

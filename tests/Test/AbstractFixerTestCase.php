@@ -201,6 +201,8 @@ abstract class AbstractFixerTestCase extends TestCase
                 static::assertMatchesRegularExpression('/^[a-z_]+[a-z]$/', $option->getName(), sprintf('[%s] Option %s is not snake_case.', $fixerName, $option->getName()));
             }
         }
+
+        static::assertIsInt($this->fixer->getPriority());
     }
 
     final public function testFixersAreFinal(): void

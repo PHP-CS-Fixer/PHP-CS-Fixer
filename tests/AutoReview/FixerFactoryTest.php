@@ -37,9 +37,13 @@ final class FixerFactoryTest extends TestCase
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
 
-        static::assertSame('encoding', $fixers[0]->getName(), 'Expected "encoding" fixer to have the highest priority.');
-        static::assertSame('full_opening_tag', $fixers[1]->getName(), 'Expected "full_opening_tag" fixer has second highest priority.');
-        static::assertSame('single_blank_line_at_eof', $fixers[\count($fixers) - 1]->getName(), 'Expected "single_blank_line_at_eof" to have the lowest priority.');
+        foreach (self::getFixerWithFixedPosition() as $fixerName => $offset) {
+            if ($offset < 0) {
+                static::assertSame($fixerName, $fixers[\count($fixers) + $offset]->getName(), $fixerName);
+            } else {
+                static::assertSame($fixerName, $fixers[$offset]->getName(), $fixerName);
+            }
+        }
     }
 
     /**
@@ -611,6 +615,72 @@ final class FixerFactoryTest extends TestCase
 
             static::fail($message);
         }
+    }
+
+    public function testFixerWithNoneDefaultPriorityIsTested(): void
+    {
+        $factory = new FixerFactory();
+        $factory->registerBuiltInFixers();
+        $fixers = $factory->getFixers();
+
+        $priorityTests = [];
+
+        foreach (self::getFixerWithFixedPosition() as $fixerName => $offset) {
+            $priorityTests[$fixerName] = true;
+        }
+
+        foreach ($this->provideFixersPriorityCases() as $pair) {
+            [$first, $second] = $pair;
+            $priorityTests[$first->getName()] = true;
+            $priorityTests[$second->getName()] = true;
+        }
+
+        foreach ($this->provideFixersPrioritySpecialPhpdocCases() as $pair) {
+            [$first, $second] = $pair;
+            $priorityTests[$first->getName()] = true;
+            $priorityTests[$second->getName()] = true;
+        }
+
+        $missing = [];
+
+        foreach ($fixers as $fixer) {
+            $priority = $fixer->getPriority();
+
+            if (0 === $priority) {
+                continue;
+            }
+
+            $name = $fixer->getName();
+
+            if (!isset($priorityTests[$name])) {
+                $missing[$name] = true;
+            }
+        }
+
+        $knownIssues = [ // should only shrink
+            'final_class',
+            'psr_autoloading',
+            'single_blank_line_before_namespace',
+        ];
+
+        foreach ($knownIssues as $knownIssue) {
+            if (isset($missing[$knownIssue])) {
+                unset($missing[$knownIssue]);
+            } else {
+                static::fail(sprintf('No longer found known issue "%s", please update the set.', $knownIssue));
+            }
+        }
+
+        static::assertEmpty($missing, 'Fixers without default priority and without priority tests: "'.implode('", "', array_keys($missing)).'."');
+    }
+
+    private static function getFixerWithFixedPosition(): array
+    {
+        return [
+            'encoding' => 0, // Expected "encoding" fixer to have the highest priority.
+            'full_opening_tag' => 1, // Expected "full_opening_tag" fixer has second highest priority.
+            'single_blank_line_at_eof' => -1, // Expected "single_blank_line_at_eof" to have the lowest priority.
+        ];
     }
 
     private function generateIntegrationTestName(FixerInterface $first, FixerInterface $second): string

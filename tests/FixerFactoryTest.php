@@ -185,9 +185,47 @@ final class FixerFactoryTest extends TestCase
             ->useRuleSet(new RuleSet(['non_existing_rule' => true]))
         ;
 
-        $fixers = $factory->getFixers();
-        static::assertCount(1, $fixers);
-        static::assertSame('strict_comparison', $fixers[0]->getName());
+        $factory->getFixers();
+    }
+
+    /**
+     * @covers \PhpCsFixer\FixerFactory::useRuleSet
+     */
+    public function testUseRuleSetWithInvalidConfigForRule(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('Configuration must be an array and may not be empty.');
+
+        $testRuleSet = new class() implements RuleSetInterface {
+            public function __construct(array $set = [])
+            {
+                if ([] !== $set) {
+                    throw new \RuntimeException('Set is not used in test.');
+                }
+            }
+
+            public function getRuleConfiguration(string $rule): ?array
+            {
+                return $this->getRules()[$rule];
+            }
+
+            public function getRules(): array
+            {
+                return ['header_comment' => []];
+            }
+
+            public function hasRule(string $rule): bool
+            {
+                return isset($this->getRules()[$rule]);
+            }
+        };
+
+        $factory = (new FixerFactory())
+            ->registerBuiltInFixers()
+            ->useRuleSet($testRuleSet)
+        ;
+
+        $factory->getFixers();
     }
 
     public function testHasRule(): void

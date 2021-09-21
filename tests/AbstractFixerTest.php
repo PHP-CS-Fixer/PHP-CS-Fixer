@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer;
 use PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\UnconfigurableFixer;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -24,6 +25,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class AbstractFixerTest extends TestCase
 {
+    public function testDefaults(): void
+    {
+        $fixer = new UnconfigurableFixer();
+
+        static::assertFalse($fixer->isRisky());
+        static::assertTrue($fixer->supports(new \SplFileInfo(__FILE__)));
+    }
+
     public function testConfigureUnconfigurable(): void
     {
         $fixer = new UnconfigurableFixer();
@@ -65,5 +74,24 @@ final class AbstractFixerTest extends TestCase
         $this->expectExceptionMessage('Cannot run method for class not implementing "PhpCsFixer\Fixer\WhitespacesAwareFixerInterface".');
 
         $fixer->setWhitespacesConfig(new WhitespacesFixerConfig());
+    }
+
+    public function testGetWhitespacesFixerConfig(): void
+    {
+        $fixer = new SimpleFixer();
+
+        $config = $fixer->getWhitespacesConfig();
+
+        static::assertSame('    ', $config->getIndent());
+        static::assertSame("\n", $config->getLineEnding());
+
+        $newConfig = new WhitespacesFixerConfig("\t", "\r\n");
+
+        $fixer->setWhitespacesConfig($newConfig);
+
+        $config = $fixer->getWhitespacesConfig();
+
+        static::assertSame("\t", $config->getIndent());
+        static::assertSame("\r\n", $config->getLineEnding());
     }
 }
