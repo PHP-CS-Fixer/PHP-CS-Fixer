@@ -419,6 +419,60 @@ class Bar
 }
 ',
             ],
+            'It does not change method doc blocks if configured to do so' => [
+                '<?php
+
+class Foo
+{
+    /** @return mixed */
+    public function bar() {}
+
+    /**
+     * @return void
+     */
+    public function baz() {}
+}',
+                null,
+                [
+                    'method' => null,
+                ],
+            ],
+            'It does not change property doc blocks if configured to do so' => [
+                '<?php
+
+class Foo
+{
+    /**
+     * @var int
+     */
+    public $foo;
+
+    /** @var mixed */
+    public $bar;
+}',
+                null,
+                [
+                    'property' => null,
+                ],
+            ],
+            'It does not change const doc blocks if configured to do so' => [
+                '<?php
+
+class Foo
+{
+    /**
+     * @var int
+     */
+    public const FOO = 1;
+
+    /** @var mixed */
+    public const BAR = null;
+}',
+                null,
+                [
+                    'const' => null,
+                ],
+            ],
         ];
     }
 
