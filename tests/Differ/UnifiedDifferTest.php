@@ -57,4 +57,21 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
             $differ->diff("a\n", "b\n", new DummyTestSplFileInfo('/foo/bar/test test test.txt'))
         );
     }
+
+    public function testDiffWithoutFile(): void
+    {
+        $differ = new UnifiedDiffer();
+
+        static::assertSame(
+            '--- Original
++++ New
+@@ -1 +1 @@
+-a
+\ No newline at end of file
++b
+\ No newline at end of file
+',
+            $differ->diff('a', 'b')
+        );
+    }
 }

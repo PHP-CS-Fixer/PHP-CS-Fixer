@@ -32,6 +32,24 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         static::assertTrue($this->createLinter()->isAsync());
     }
 
+    public function testSleep(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Linter');
+
+        $linter = new ProcessLinter();
+        $linter->__sleep();
+    }
+
+    public function testWakeup(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Linter');
+
+        $linter = new ProcessLinter();
+        $linter->__wakeup();
+    }
+
     /**
      * {@inheritdoc}
      */
