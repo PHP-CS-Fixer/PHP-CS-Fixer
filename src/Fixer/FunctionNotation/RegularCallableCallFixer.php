@@ -198,7 +198,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $afterFirstArgToken = $tokens[$afterFirstArgIndex];
 
         if ($afterFirstArgToken->equals(',')) {
-            $useEllipsis = $tokens[$callIndex]->equals([T_STRING, 'call_user_func_array']);
+            $useEllipsis = $tokens[$callIndex]->equals([T_STRING, 'call_user_func_array'], false);
 
             if ($useEllipsis) {
                 $secondArgIndex = $tokens->getNextMeaningfulToken($afterFirstArgIndex);
