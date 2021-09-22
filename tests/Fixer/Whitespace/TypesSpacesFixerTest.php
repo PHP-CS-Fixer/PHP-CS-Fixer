@@ -173,5 +173,10 @@ TypeB $x) {}',
                 ) {}
             }',
         ];
+
+        yield [
+            '<?php function foo(): \Foo&Bar {}',
+            '<?php function foo(): \Foo  &  Bar {}',
+        ];
     }
 }

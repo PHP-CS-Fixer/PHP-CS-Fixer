@@ -186,6 +186,7 @@ class Foo {
             CT::T_NULLABLE_TYPE,
             CT::T_ARRAY_TYPEHINT,
             CT::T_TYPE_ALTERNATION,
+            CT::T_TYPE_INTERSECTION,
             T_STRING,
             T_NS_SEPARATOR,
         ];
@@ -386,7 +387,7 @@ class Foo {
         while (true) {
             $type = '';
 
-            while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
+            while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE, CT::T_TYPE_INTERSECTION])) {
                 $type .= $tokens[$index]->getContent();
                 $index = $tokens->getNextMeaningfulToken($index);
             }
@@ -462,6 +463,13 @@ class Foo {
         $normalized = array_map(
             static function (string $type) use ($symbolShortNames): string {
                 $type = strtolower($type);
+
+                if (str_contains($type, '&')) {
+                    $intersects = explode('&', $type);
+                    sort($intersects);
+
+                    return implode('&', $intersects);
+                }
 
                 return $symbolShortNames[$type] ?? $type;
             },

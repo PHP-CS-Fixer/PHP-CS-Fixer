@@ -1052,7 +1052,7 @@ abstract class Baz
 
     public function provideIsConstantInvocationPhp80Cases(): \Generator
     {
-        yield [
+        yield 'abstract method return alternation' => [
             [6 => false, 16 => false, 21 => false, 23 => false],
             '<?php
 
@@ -1063,39 +1063,59 @@ abstract class Baz
 ',
         ];
 
-        yield [
+        yield 'function return alternation' => [
             [3 => false, 8 => false, 10 => false],
             '<?php function test(): Foo|Bar {}',
         ];
 
-        yield [
+        yield 'nullsafe operator' => [
             [3 => false, 5 => false],
             '<?php $a?->b?->c;',
         ];
 
-        yield [
+        yield 'non-capturing catch' => [
             [9 => false],
             '<?php try {} catch (Exception) {}',
         ];
 
-        yield [
+        yield 'non-capturing catch 2' => [
             [10 => false],
             '<?php try {} catch (\Exception) {}',
         ];
 
-        yield [
+        yield 'non-capturing multiple catch' => [
             [9 => false, 13 => false],
             '<?php try {} catch (Foo | Bar) {}',
         ];
 
-        yield [
+        yield 'attribute 1' => [
             [2 => false, 5 => false, 10 => false],
             '<?php #[Foo, Bar] function foo() {}',
         ];
 
-        yield [
+        yield 'attribute 2' => [
             [2 => false, 7 => false, 14 => false],
             '<?php #[Foo(), Bar()] function foo() {}',
+        ];
+
+        yield [
+            [2 => false, 9 => false],
+            '<?php #[Foo()] function foo() {}',
+        ];
+
+        yield [
+            [3 => false, 10 => false],
+            '<?php #[\Foo()] function foo() {}',
+        ];
+
+        yield [
+            [2 => false, 4 => false, 11 => false],
+            '<?php #[A\Foo()] function foo() {}',
+        ];
+
+        yield [
+            [3 => false, 5 => false, 12 => false],
+            '<?php #[\A\Foo()] function foo() {}',
         ];
     }
 
@@ -1128,6 +1148,22 @@ class Test {
     public function __construct(
         public $prop = new Foo,
     ) {}
+}
+',
+        ];
+
+        yield 'intersection' => [
+            [3 => false, 9 => false, 11 => false],
+            '<?php function foo(): \Foo&Bar {}',
+        ];
+
+        yield 'abstract method return intersection' => [
+            [6 => false, 16 => false, 21 => false, 23 => false, 25 => false, 27 => false, 29 => false],
+            '<?php
+
+abstract class Baz
+{
+    abstract public function foo(): Foo&Bar1&Bar2&Bar3&Bar4;
 }
 ',
         ];

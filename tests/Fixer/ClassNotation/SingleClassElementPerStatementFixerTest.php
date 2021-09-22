@@ -928,5 +928,21 @@ class Foo
 }
 ',
         ];
+
+        yield [
+            '<?php
+class Foo
+{
+    private Foo&Bar $prop1;
+    private Foo&Bar $prop2;
+}
+',
+            '<?php
+class Foo
+{
+    private Foo&Bar $prop1, $prop2;
+}
+',
+        ];
     }
 }

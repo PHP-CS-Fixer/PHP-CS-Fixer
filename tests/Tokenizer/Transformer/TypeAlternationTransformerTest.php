@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @internal
  *
+ * @covers \PhpCsFixer\Tokenizer\AbstractTypeTransformer
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer
  */
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
@@ -354,6 +355,25 @@ class Foo
                     private readonly int|string $c
                 ) {}
             }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideProcess81Cases
+     * @requires PHP 8.1
+     */
+    public function testProcess81(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    public function provideProcess81Cases(): \Generator
+    {
+        yield 'arrow function with intersection' => [
+            '<?php $a = fn(int|null $item): int&null => $item * 2;',
+            [
+                8 => CT::T_TYPE_ALTERNATION,
+            ],
         ];
     }
 }

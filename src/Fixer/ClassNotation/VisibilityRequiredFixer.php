@@ -98,7 +98,7 @@ class Sample
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION];
+        $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION];
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             $propertyReadOnlyType = T_READONLY;

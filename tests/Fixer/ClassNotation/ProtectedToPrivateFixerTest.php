@@ -200,6 +200,11 @@ final class Foo2 {
                 final class Foo2 { protected final const Y = "def"; }
             ',
         ];
+
+        yield [
+            '<?php final class Foo { private Foo1&Bar $foo; }',
+            '<?php final class Foo { protected Foo1&Bar $foo; }',
+        ];
     }
 
     private function getAttributesAndMethods(bool $original): string

@@ -87,7 +87,10 @@ final class TransformerTest extends TestCase
             [$transformers['square_brace'], $transformers['brace_class_instantiation']],
             [$transformers['type_colon'], $transformers['named_argument']],
             [$transformers['type_colon'], $transformers['nullable_type']],
+            [$transformers['array_typehint'], $transformers['type_alternation']],
             [$transformers['type_colon'], $transformers['type_alternation']],
+            [$transformers['array_typehint'], $transformers['type_intersection']],
+            [$transformers['type_colon'], $transformers['type_intersection']],
             [$transformers['use'], $transformers['type_colon']],
         ];
     }

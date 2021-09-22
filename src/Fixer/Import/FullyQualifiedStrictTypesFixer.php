@@ -191,7 +191,7 @@ class SomeClass
                 break;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
+            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
                 yield ['start' => $startIndex, 'end' => $prevIndex];
                 $startIndex = null;
             }

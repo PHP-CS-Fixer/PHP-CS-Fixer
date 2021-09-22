@@ -523,4 +523,22 @@ class Two
             '<?php function f(): Foo|\Bar|\A\B\C {}',
         ];
     }
+
+    /**
+     * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public static function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php function f(): Foo&Bar & A\B\C {}',
+            '<?php function f(): Foo&\Bar & \A\B\C {}',
+        ];
+    }
 }

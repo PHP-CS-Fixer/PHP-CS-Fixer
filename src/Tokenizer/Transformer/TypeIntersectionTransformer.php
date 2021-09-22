@@ -20,14 +20,12 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * Transform `|` operator into CT::T_TYPE_ALTERNATION in `function foo(Type1 | Type2 $x) {`
- * or `} catch (ExceptionType1 | ExceptionType2 $e) {`.
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * Transform `&` operator into CT::T_TYPE_INTERSECTION in `function foo(Type1 & Type2 $x) {`
+ * or `} catch (ExceptionType1 & ExceptionType2 $e) {`.
  *
  * @internal
  */
-final class TypeAlternationTransformer extends AbstractTypeTransformer
+final class TypeIntersectionTransformer extends AbstractTypeTransformer
 {
     /**
      * {@inheritdoc}
@@ -43,7 +41,7 @@ final class TypeAlternationTransformer extends AbstractTypeTransformer
      */
     public function getRequiredPhpVersionId(): int
     {
-        return 70100;
+        return 80100;
     }
 
     /**
@@ -51,7 +49,7 @@ final class TypeAlternationTransformer extends AbstractTypeTransformer
      */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        $this->doProcess($tokens, $index, '|');
+        $this->doProcess($tokens, $index, [T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']);
     }
 
     /**
@@ -59,11 +57,11 @@ final class TypeAlternationTransformer extends AbstractTypeTransformer
      */
     public function getCustomTokens(): array
     {
-        return [CT::T_TYPE_ALTERNATION];
+        return [CT::T_TYPE_INTERSECTION];
     }
 
     protected function replaceToken(Tokens $tokens, int $index): void
     {
-        $tokens[$index] = new Token([CT::T_TYPE_ALTERNATION, '|']);
+        $tokens[$index] = new Token([CT::T_TYPE_INTERSECTION, '&']);
     }
 }

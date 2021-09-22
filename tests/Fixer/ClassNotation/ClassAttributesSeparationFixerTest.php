@@ -2231,5 +2231,25 @@ class Foo
 }
 ',
         ];
+
+        yield 'intersection properties' => [
+            '<?php
+            class Foo {
+                private static Bar & Something & Baz $a;
+
+                private static Bar & Something & Baz $b;
+
+                private Bar & Something & Baz $c;
+
+                private Bar & Something & Baz $d;
+            }',
+            '<?php
+            class Foo {
+                private static Bar & Something & Baz $a;
+                private static Bar & Something & Baz $b;
+                private Bar & Something & Baz $c;
+                private Bar & Something & Baz $d;
+            }',
+        ];
     }
 }
