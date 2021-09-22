@@ -1848,6 +1848,21 @@ class Foo {
     public int|string $foo;
 }',
             ],
+            'union type on property with spaces' => [
+                '<?php
+class Foo {
+    /**
+     */
+    public int  |  string $foo;
+}',
+                '<?php
+class Foo {
+    /**
+     * @var int|string
+     */
+    public int  |  string $foo;
+}',
+            ],
             'union type with null' => [
                 '<?php
 /**
@@ -1898,7 +1913,7 @@ function foo(string|int $foo) {}',
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, string $input): void
+    public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
         $this->doTest($expected, $input);
     }
@@ -1937,6 +1952,44 @@ class Foo {
      */
     readonly array $bar3;
 }',
+        ];
+
+        yield 'more details in phpdocs' => [
+            '<?php
+/**
+ * @param Foo&Bar $foo
+ */
+function foo(FooInterface&Bar $foo) {}',
+        ];
+
+        yield 'intersection' => [
+            '<?php
+/**
+ */
+function foo(Foo&Bar $foo) {}',
+            '<?php
+/**
+ * @param Foo&Bar $foo
+ */
+function foo(Foo&Bar $foo) {}',
+        ];
+
+        yield 'intersection different order' => [
+            '<?php
+/**
+ * Composite types (i.e. mixing union and intersection types) is not supported in PHP8.1
+ *
+ * @param A|string[] $bar
+ */
+function foo(A & B & C $foo, A|array $bar) {}',
+            '<?php
+/**
+ * Composite types (i.e. mixing union and intersection types) is not supported in PHP8.1
+ *
+ * @param C&A&B $foo
+ * @param A|string[] $bar
+ */
+function foo(A & B & C $foo, A|array $bar) {}',
         ];
     }
 }

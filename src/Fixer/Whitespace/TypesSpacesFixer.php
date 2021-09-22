@@ -59,7 +59,7 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(CT::T_TYPE_ALTERNATION);
+        return $tokens->isAnyTokenKindsFound([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION]);
     }
 
     /**
@@ -78,7 +78,7 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(CT::T_TYPE_ALTERNATION)) {
+            if (!$tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
                 continue;
             }
 

@@ -212,9 +212,14 @@ final class ClassyAnalyzerTest extends TestCase
 
     public function provideIsClassyInvocation81Cases(): \Generator
     {
-        yield [
+        yield 'never' => [
             '<?php function foo(): never {}',
             [3 => false, 8 => false],
+        ];
+
+        yield 'intersection' => [
+            '<?php function foo(): \Foo&Bar {}',
+            [3 => false, 9 => true, 11 => true],
         ];
     }
 

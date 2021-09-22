@@ -312,14 +312,14 @@ final class TokensAnalyzer
 
         if (
             $this->tokens[$nextIndex]->equalsAny(['(', '{'])
-            || $this->tokens[$nextIndex]->isGivenKind([T_AS, T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, T_VARIABLE])
+            || $this->tokens[$nextIndex]->isGivenKind([T_AS, T_DOUBLE_COLON, T_ELLIPSIS, T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, T_VARIABLE])
         ) {
             return false;
         }
 
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_TRAIT, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) || $this->tokens[$prevIndex]->isObjectOperator()) {
+        if ($this->tokens[$prevIndex]->isGivenKind([T_AS, T_CLASS, T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_GOTO, CT::T_GROUP_IMPORT_BRACE_OPEN, T_INTERFACE, T_TRAIT, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION]) || $this->tokens[$prevIndex]->isObjectOperator()) {
             return false;
         }
 
@@ -380,10 +380,6 @@ final class TokensAnalyzer
         }
 
         // check for non-capturing catches
-        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_TYPE_ALTERNATION, T_STRING])) {
-            $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
-        }
-
         if ($this->tokens[$prevIndex]->equals('(')) {
             $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
             if ($this->tokens[$prevPrevIndex]->isGivenKind(T_CATCH)) {

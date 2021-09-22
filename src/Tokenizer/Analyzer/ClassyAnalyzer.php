@@ -41,7 +41,7 @@ final class ClassyAnalyzer
             return false;
         }
 
-        if ($nextToken->isGivenKind([T_DOUBLE_COLON, T_ELLIPSIS, CT::T_TYPE_ALTERNATION, T_VARIABLE])) {
+        if ($nextToken->isGivenKind([T_DOUBLE_COLON, T_ELLIPSIS, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, T_VARIABLE])) {
             return true;
         }
 
@@ -53,7 +53,7 @@ final class ClassyAnalyzer
 
         $prevToken = $tokens[$prev];
 
-        if ($prevToken->isGivenKind([T_EXTENDS, T_INSTANCEOF, T_INSTEADOF, T_IMPLEMENTS, T_NEW, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON, CT::T_USE_TRAIT])) {
+        if ($prevToken->isGivenKind([T_EXTENDS, T_INSTANCEOF, T_INSTEADOF, T_IMPLEMENTS, T_NEW, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_TYPE_COLON, CT::T_USE_TRAIT])) {
             return true;
         }
 

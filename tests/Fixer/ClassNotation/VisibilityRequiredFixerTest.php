@@ -816,13 +816,17 @@ AB# <- this is the name
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, string $input): void
+    public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     public function provideFix81Cases(): \Generator
     {
+        yield [
+            '<?php class Foo { public Foo1&Bar $foo; }',
+        ];
+
         yield [
             '<?php
 class Foo
