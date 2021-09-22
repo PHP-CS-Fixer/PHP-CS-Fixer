@@ -12,7 +12,7 @@ Configuration
 
 List of strings defining order of elements.
 
-Allowed values: a subset of ``['use_trait', 'public', 'protected', 'private', 'constant', 'constant_public', 'constant_protected', 'constant_private', 'property', 'property_static', 'property_public', 'property_protected', 'property_private', 'property_public_static', 'property_protected_static', 'property_private_static', 'method', 'method_abstract', 'method_static', 'method_public', 'method_protected', 'method_private', 'method_public_abstract', 'method_protected_abstract', 'method_public_abstract_static', 'method_protected_abstract_static', 'method_public_static', 'method_protected_static', 'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``
+Allowed values: a subset of ``['use_trait', 'public', 'protected', 'private', 'constant', 'constant_public', 'constant_protected', 'constant_private', 'property', 'property_static', 'property_public', 'property_protected', 'property_private', 'property_public_readonly', 'property_protected_readonly', 'property_private_readonly', 'property_public_static', 'property_protected_static', 'property_private_static', 'method', 'method_abstract', 'method_static', 'method_public', 'method_protected', 'method_private', 'method_public_abstract', 'method_protected_abstract', 'method_public_abstract_static', 'method_protected_abstract_static', 'method_public_static', 'method_protected_static', 'method_private_static', 'construct', 'destruct', 'magic', 'phpunit']``
 
 Default value: ``['use_trait', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
 

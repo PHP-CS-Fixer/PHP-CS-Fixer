@@ -60,6 +60,9 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'property_public' => ['property', 'public'],
         'property_protected' => ['property', 'protected'],
         'property_private' => ['property', 'private'],
+        'property_public_readonly' => ['property_readonly', 'property_public'],
+        'property_protected_readonly' => ['property_readonly', 'property_protected'],
+        'property_private_readonly' => ['property_readonly', 'property_private'],
         'property_public_static' => ['property_static', 'property_public'],
         'property_protected_static' => ['property_static', 'property_protected'],
         'property_private_static' => ['property_static', 'property_private'],
@@ -301,6 +304,7 @@ class Example
                 'visibility' => 'public',
                 'abstract' => false,
                 'static' => false,
+                'readonly' => false,
             ];
 
             for ($i = $startIndex;; ++$i) {
@@ -321,6 +325,10 @@ class Example
                     $element['static'] = true;
 
                     continue;
+                }
+
+                if (\defined('T_READONLY') && $token->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+                    $element['readonly'] = true;
                 }
 
                 if ($token->isGivenKind([T_PROTECTED, T_PRIVATE])) {
@@ -463,6 +471,9 @@ class Example
                 }
                 if ($element['static']) {
                     $type .= '_static';
+                }
+                if ($element['readonly']) {
+                    $type .= '_readonly';
                 }
             }
 

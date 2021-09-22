@@ -1382,4 +1382,50 @@ class TestClass
             }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null, ?array $configuration = null): void
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): \Generator
+    {
+        yield [
+            '<?php
+
+class A
+{
+    readonly public string $publicProp0;
+    public readonly string $publicProp1;
+    public string $pubProp2;
+    protected readonly string $protectedProp0;
+    readonly protected string $protectedProp1;
+    readonly private string $privateProp0;
+    private readonly string $privateProp1;
+}
+',
+            '<?php
+
+class A
+{
+    public string $pubProp2;
+    readonly public string $publicProp0;
+    public readonly string $publicProp1;
+    private readonly string $privateProp1;
+    readonly private string $privateProp0;
+    protected readonly string $protectedProp0;
+    readonly protected string $protectedProp1;
+}
+',
+            ['order' => ['property_public_readonly', 'property_public', 'property_protected_readonly', 'property_private_readonly'], 'sort_algorithm' => 'alpha'],
+        ];
+    }
 }
