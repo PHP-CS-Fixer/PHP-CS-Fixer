@@ -27,17 +27,24 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
             return;
         }
 
-        $prevIndex = $tokens->getTokenNotOfKindsSibling($index, -1, [T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
+        $prevIndex = $tokens->getTokenNotOfKindsSibling($index, -1, [T_CALLABLE, T_NS_SEPARATOR, T_STRING, CT::T_ARRAY_TYPEHINT, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]);
 
         /** @var Token $prevToken */
         $prevToken = $tokens[$prevIndex];
 
         if ($prevToken->isGivenKind([
             CT::T_TYPE_COLON, // `:` is part of a function return type `foo(): X|Y`
-            CT::T_TYPE_ALTERNATION, // is part of a union (chain) `X|Y`
-            CT::T_TYPE_INTERSECTION, // is part of an intersection (chain) `X|Y`
+            CT::T_TYPE_ALTERNATION, // `|` is part of a union (chain) `X|Y`
+            CT::T_TYPE_INTERSECTION,
             T_STATIC, T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, // `var X|Y $a;`, `private X|Y $a` or `public static X|Y $a`
+            CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, // promoted properties
         ])) {
+            $this->replaceToken($tokens, $index);
+
+            return;
+        }
+
+        if (\defined('T_READONLY') && $prevToken->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
             $this->replaceToken($tokens, $index);
 
             return;

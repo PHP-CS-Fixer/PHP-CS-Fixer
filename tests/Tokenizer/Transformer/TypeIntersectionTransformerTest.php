@@ -39,7 +39,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
         );
     }
 
-    public function provideProcessCases()
+    public function provideProcessCases(): \Generator
     {
         yield 'do not fix cases' => [
             '<?php
@@ -65,7 +65,8 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             ],
         ];
 
-        yield 'static function' => ['<?php
+        yield 'static function' => [
+            '<?php
 $a = static function (A&B&int $a):int&null {};
 ',
             [
@@ -75,7 +76,8 @@ $a = static function (A&B&int $a):int&null {};
             ],
         ];
 
-        yield 'static function with use' => ['<?php
+        yield 'static function with use' => [
+            '<?php
 $a = static function () use ($a) : int&null {};
 ',
             [
@@ -83,7 +85,8 @@ $a = static function () use ($a) : int&null {};
             ],
         ];
 
-        yield 'function variable unions' => ['<?php
+        yield 'function variable unions' => [
+            '<?php
 function Bar1(A&B&int $a) {
 }
 ',
@@ -93,7 +96,8 @@ function Bar1(A&B&int $a) {
             ],
         ];
 
-        yield 'class method variable unions' => ['<?php
+        yield 'class method variable unions' => [
+            '<?php
 class Foo
 {
     public function Bar1(A&B&int $a) {}
@@ -110,7 +114,8 @@ class Foo
             ],
         ];
 
-        yield 'class method return unions' => ['<?php
+        yield 'class method return unions' => [
+            '<?php
 class Foo
 {
     public function Bar(): A&B&int {}
@@ -122,7 +127,8 @@ class Foo
             ],
         ];
 
-        yield 'class attribute var + union' => ['<?php
+        yield 'class attribute var + union' => [
+            '<?php
 class Number
 {
     var int&float&null $number;
@@ -134,7 +140,8 @@ class Number
             ],
         ];
 
-        yield 'class attributes visibility + unions' => ['<?php
+        yield 'class attributes visibility + unions' => [
+            '<?php
 class Number
 {
     public array $numbers;
@@ -237,6 +244,46 @@ class Number
                 52 => CT::T_TYPE_INTERSECTION,
                 59 => CT::T_TYPE_INTERSECTION,
                 66 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'static function with alternation' => [
+            '<?php
+$a = static function (A&B&int $a):int|null {};
+',
+            [
+                11 => CT::T_TYPE_INTERSECTION,
+                13 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'promoted properties' => [
+            '<?php class Foo {
+                public function __construct(
+                    public readonly int&string $a,
+                    protected readonly int&string $b,
+                    private readonly int&string $c
+                ) {}
+            }',
+            [
+                19 => CT::T_TYPE_INTERSECTION,
+                30 => CT::T_TYPE_INTERSECTION,
+                41 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+
+        yield 'callable type' => [
+            '<?php
+                function f1(array&callable $x) {};
+                function f2(callable&array $x) {};
+                function f3(string&callable $x) {};
+                function f4(callable&string $x) {};
+            ',
+            [
+                7 => CT::T_TYPE_INTERSECTION,
+                22 => CT::T_TYPE_INTERSECTION,
+                37 => CT::T_TYPE_INTERSECTION,
+                52 => CT::T_TYPE_INTERSECTION,
             ],
         ];
     }
