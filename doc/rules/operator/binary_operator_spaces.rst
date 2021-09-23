@@ -20,7 +20,11 @@ Default value: ``'single_space'``
 ~~~~~~~~~~~~~
 
 Dictionary of ``binary operator`` => ``fix strategy`` values that differ from
-the default strategy.
+the default strategy. Supported are: ``=``, ``*``, ``/``, ``%``, ``<``, ``>``,
+``|``, ``^``, ``+``, ``-``, ``&``, ``&=``, ``&&``, ``||``, ``.=``, ``/=``,
+``=>``, ``==``, ``>=``, ``===``, ``!=``, ``<>``, ``!==``, ``<=``, ``and``,
+``or``, ``xor``, ``-=``, ``%=``, ``*=``, ``|=``, ``+=``, ``<<``, ``<<=``,
+``>>``, ``>>=``, ``^=``, ``**``, ``**=``, ``<=>``, ``??``, ``??=``
 
 Allowed types: ``array``
 
