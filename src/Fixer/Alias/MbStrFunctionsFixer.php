@@ -89,7 +89,7 @@ $a = substr_count($a, $b);
                 ),
             ],
             null,
-            'Risky when any of the functions are overridden.'
+            'Risky when any of the functions are overridden, or when relying on the string byte size rather than its length in characters.'
         );
     }
 
