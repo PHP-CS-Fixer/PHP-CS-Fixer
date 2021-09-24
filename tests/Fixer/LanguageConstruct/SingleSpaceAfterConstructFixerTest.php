@@ -3180,4 +3180,32 @@ class    Test {
 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithSwitchCases
+     */
+    public function testFixWithSwitch(string $expected, string $input): void
+    {
+        $this->fixer->configure([
+            'constructs' => [
+                'switch',
+            ],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithSwitchCases(): \Generator
+    {
+        yield [
+            '<?php
+                switch ($a){ case 1: echo 123; }
+                switch ($b){ case 1: echo 123; }
+            ',
+            '<?php
+                switch($a){ case 1: echo 123; }
+                switch  ($b){ case 1: echo 123; }
+            ',
+        ];
+    }
 }

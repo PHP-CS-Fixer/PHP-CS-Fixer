@@ -84,6 +84,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'require_once' => T_REQUIRE_ONCE,
         'return' => T_RETURN,
         'static' => T_STATIC,
+        'switch' => T_SWITCH,
         'throw' => T_THROW,
         'trait' => T_TRAIT,
         'try' => T_TRY,
