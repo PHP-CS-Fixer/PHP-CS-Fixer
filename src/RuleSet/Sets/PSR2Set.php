@@ -39,6 +39,7 @@ final class PSR2Set extends AbstractRuleSetDescription
             ],
             'no_break_comment' => true,
             'no_closing_tag' => true,
+            'no_space_around_double_colon' => true,
             'no_spaces_after_function_name' => true,
             'no_spaces_inside_parenthesis' => true,
             'no_trailing_whitespace' => true,
