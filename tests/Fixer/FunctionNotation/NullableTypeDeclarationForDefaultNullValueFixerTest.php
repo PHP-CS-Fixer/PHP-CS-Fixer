@@ -44,7 +44,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield ['<?php function foo(& $param = null) {}'];
         yield ['<?php function foo(/**int*/ $param = null) {}'];
         yield ['<?php function foo(/**int*/ &$param = null) {}'];
-        yield ['<?php function foo(&/*comment*/$param = null) {}'];
         yield ['<?php $foo = function ($param = null) {};'];
         yield ['<?php $foo = function (&$param = null) {};'];
 
@@ -57,7 +56,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield ['<?php function foo(?string & $param = null) {}'];
         yield ['<?php function foo(?string /*comment*/$param = null) {}'];
         yield ['<?php function foo(?string /*comment*/&$param = null) {}'];
-        yield ['<?php function foo(?string &/*comment*/$param = null) {}'];
         yield ['<?php function foo(? string $param = null) {}'];
         yield ['<?php function foo(?/*comment*/string $param = null) {}'];
         yield ['<?php function foo(? /*comment*/ string $param = null) {}'];
@@ -164,11 +162,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield [
             '<?php function foo(?string /*comment*/&$param = null) {}',
             '<?php function foo(string /*comment*/&$param = null) {}',
-        ];
-
-        yield [
-            '<?php function foo(?string &/*comment*/$param = null) {}',
-            '<?php function foo(string &/*comment*/$param = null) {}',
         ];
 
         yield [
@@ -486,5 +479,37 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function provideInvertedFix80Cases(): iterable
     {
         return TestCaseUtils::swapExpectedInputTestCases($this->provideFix80Cases());
+    }
+
+    /**
+     * @requires PHP <8.0
+     *
+     * @dataProvider provideFixPre81Cases
+     */
+    public function testFixPre81(string $expected, ?string $input = null, array $configuration = null): void
+    {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre81Cases(): \Generator
+    {
+        yield 'do not fix pre PHP 8.1' => [
+            '<?php
+                function foo1(&/*comment*/$param = null) {}
+                function foo2(?string &/*comment*/$param2 = null) {}
+            ',
+        ];
+
+        $cases = [
+            '<?php function foo(?string &/* comment */$param = null) {}',
+            '<?php function foo(string &/* comment */$param = null) {}',
+        ];
+
+        yield [$cases[0], $cases[1]];
+        yield [$cases[1], $cases[0], ['use_nullable_type_declaration' => false]];
     }
 }

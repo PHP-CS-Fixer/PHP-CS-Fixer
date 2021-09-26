@@ -53,6 +53,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'echo' => T_ECHO,
         'else' => T_ELSE,
         'elseif' => T_ELSEIF,
+        'enum' => null,
         'extends' => T_EXTENDS,
         'final' => T_FINAL,
         'finally' => T_FINALLY,
@@ -80,6 +81,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         'private' => T_PRIVATE,
         'protected' => T_PROTECTED,
         'public' => T_PUBLIC,
+        'readonly' => null,
         'require' => T_REQUIRE,
         'require_once' => T_REQUIRE_ONCE,
         'return' => T_RETURN,
@@ -124,7 +126,9 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
         $this->fixTokenMap = [];
 
         foreach ($this->configuration['constructs'] as $key) {
-            $this->fixTokenMap[$key] = self::$tokenMap[$key];
+            if (null !== self::$tokenMap[$key]) {
+                $this->fixTokenMap[$key] = self::$tokenMap[$key];
+            }
         }
 
         if (isset($this->fixTokenMap['public'])) {
@@ -273,11 +277,13 @@ yield  from  baz();
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $tokens = array_keys(self::$tokenMap);
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('constructs', 'List of constructs which must be followed by a single space.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$tokenMap))])
-                ->setDefault(array_keys(self::$tokenMap))
+                ->setAllowedValues([new AllowedValueSubset($tokens)])
+                ->setDefault($tokens)
                 ->getOption(),
         ]);
     }
