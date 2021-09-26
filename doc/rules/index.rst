@@ -341,6 +341,8 @@ Naming
 Operator
 --------
 
+- `assign_null_coalescing_to_coalesce_equal <./operator/assign_null_coalescing_to_coalesce_equal.rst>`_
+    Use the null coalescing assignment operator ``??=`` where possible.
 - `binary_operator_spaces <./operator/binary_operator_spaces.rst>`_
     Binary operators should be surrounded by space as configured.
 - `concat_space <./operator/concat_space.rst>`_

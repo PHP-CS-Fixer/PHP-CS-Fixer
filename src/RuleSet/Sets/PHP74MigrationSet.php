@@ -25,6 +25,7 @@ final class PHP74MigrationSet extends AbstractMigrationSetDescription
     {
         return [
             '@PHP73Migration' => true,
+            'assign_null_coalescing_to_coalesce_equal' => true,
             'normalize_index_brace' => true,
             'short_scalar_cast' => true,
         ];
