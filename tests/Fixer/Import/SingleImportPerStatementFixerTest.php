@@ -332,10 +332,6 @@ use G\{H,I/*1*/,/*2*/};
      */
     public function testFixPrePHP80(): void
     {
-        if (\PHP_VERSION_ID < 70000) {
-            static::markTestSkipped('PHP > 7.0 && < 8.0 is required.');
-        }
-
         $this->doTest(
             '<?php
 use some\a\ClassA;

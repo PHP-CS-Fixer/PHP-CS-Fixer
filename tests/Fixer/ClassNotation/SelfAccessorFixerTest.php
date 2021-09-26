@@ -158,21 +158,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
                 '<?php interface Foo { public function bar(self $foo, self $bar): self; }',
                 '<?php interface Foo { public function bar(Foo $foo, Foo $bar): Foo; }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { public function bar(?self $foo, ?self $bar): ?self { return new self(); } }',
                 '<?php class Foo { public function bar(?Foo $foo, ?Foo $bar): ?Foo { return new Foo(); } }',

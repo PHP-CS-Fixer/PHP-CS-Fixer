@@ -18,8 +18,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 
 /**
- * @requires PHP 7.1
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ListNotation\ListSyntaxFixer

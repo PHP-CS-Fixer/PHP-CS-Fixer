@@ -305,50 +305,12 @@ endswitch ?>',
             [],
             '<?php',
         ];
-    }
 
-    /**
-     * @requires PHP 7.0
-     * @dataProvider provideFindControlStructuresPhp70Cases
-     */
-    public function testFindControlStructuresPhp70(array $expectedAnalyses, string $source): void
-    {
-        $tokens = Tokens::fromCode($source);
-        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]));
-
-        static::assertCount(\count($expectedAnalyses), $analyses);
-
-        foreach ($expectedAnalyses as $index => $expectedAnalysis) {
-            self::assertAnalysis($expectedAnalysis, $analyses[$index]);
-        }
-    }
-
-    public function provideFindControlStructuresPhp70Cases(): \Generator
-    {
         yield 'function with return type' => [
             [1 => new SwitchAnalysis(1, 7, 43, [new CaseAnalysis(9, 12), new CaseAnalysis(33, 36)], null)],
             '<?php switch ($foo) { case 10: function foo($x): int {}; return true; case 100: return false; }',
         ];
-    }
 
-    /**
-     * @requires PHP 7.1
-     * @dataProvider provideFindControlStructuresPhp71Cases
-     */
-    public function testFindControlStructuresPhp71(array $expectedAnalyses, string $source): void
-    {
-        $tokens = Tokens::fromCode($source);
-        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]));
-
-        static::assertCount(\count($expectedAnalyses), $analyses);
-
-        foreach ($expectedAnalyses as $index => $expectedAnalysis) {
-            self::assertAnalysis($expectedAnalysis, $analyses[$index]);
-        }
-    }
-
-    public function provideFindControlStructuresPhp71Cases(): \Generator
-    {
         yield 'function with nullable parameter' => [
             [1 => new SwitchAnalysis(1, 7, 43, [new CaseAnalysis(9, 12), new CaseAnalysis(33, 36)], null)],
             '<?php switch ($foo) { case 10: function foo(?int $x) {}; return true; case 100: return false; }',

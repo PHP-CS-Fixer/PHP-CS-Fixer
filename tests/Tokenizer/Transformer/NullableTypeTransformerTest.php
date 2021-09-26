@@ -28,7 +28,6 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
      * @dataProvider provideProcessCases
-     * @requires PHP 7.1
      */
     public function testProcess(string $source, array $expectedTokens = []): void
     {

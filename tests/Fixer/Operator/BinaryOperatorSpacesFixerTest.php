@@ -472,6 +472,44 @@ $a = $ae?? $b;
 ',
                 ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE, '??' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
             ],
+            'align array destruction' => [
+                '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b                 = 1;
+                ',
+                '<?php
+                    $c = [$d] = $e[1];
+                    function A(){}[$a] = $a[$c];
+                    $b = 1;
+                ',
+                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
+            ],
+            'align array destruction with assignments' => [
+                '<?php
+                    $d = [
+                        "a" => $a,
+                        "b" => $b,
+                        "c" => $c
+                    ] = $array;
+                ',
+                '<?php
+                    $d = [
+                        "a"=>$a,
+                        "b"   => $b,
+                        "c" =>   $c
+                    ] = $array;
+                ',
+                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+            ],
+            'multiple exceptions catch, default config' => [
+                '<?php try {} catch (A   |     B $e) {}',
+            ],
+            'multiple exceptions catch, no space config' => [
+                '<?php try {} catch (A   |     B $e) {}',
+                null,
+                ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
+            ],
         ];
     }
 
@@ -1939,61 +1977,6 @@ $b;
                 );
             '
         );
-    }
-
-    /**
-     * @requires PHP 7.1
-     *
-     * @dataProvider providePHP71Cases
-     */
-    public function testPHP71Cases(string $expected, ?string $input = null, array $configuration = []): void
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public function providePHP71Cases(): array
-    {
-        return [
-            'align array destruction' => [
-                '<?php
-                    $c = [$d] = $e[1];
-                    function A(){}[$a] = $a[$c];
-                    $b                 = 1;
-                ',
-                '<?php
-                    $c = [$d] = $e[1];
-                    function A(){}[$a] = $a[$c];
-                    $b = 1;
-                ',
-                ['operators' => ['=' => BinaryOperatorSpacesFixer::ALIGN]],
-            ],
-            'align array destruction with assignments' => [
-                '<?php
-                    $d = [
-                        "a" => $a,
-                        "b" => $b,
-                        "c" => $c
-                    ] = $array;
-                ',
-                '<?php
-                    $d = [
-                        "a"=>$a,
-                        "b"   => $b,
-                        "c" =>   $c
-                    ] = $array;
-                ',
-                ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
-            ],
-            'multiple exceptions catch, default config' => [
-                '<?php try {} catch (A   |     B $e) {}',
-            ],
-            'multiple exceptions catch, no space config' => [
-                '<?php try {} catch (A   |     B $e) {}',
-                null,
-                ['operators' => ['|' => BinaryOperatorSpacesFixer::NO_SPACE]],
-            ],
-        ];
     }
 
     /**

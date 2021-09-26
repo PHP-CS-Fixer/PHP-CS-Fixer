@@ -289,9 +289,6 @@ $bar;',
         ];
     }
 
-    /**
-     * @requires PHP 7.1
-     */
     public function testPhpdocCandidate71(): void
     {
         $tokens = Tokens::fromCode('<?php /* @var int $x */ [$x] = [2];');
@@ -300,9 +297,6 @@ $bar;',
         static::assertTrue($analyzer->isHeaderComment($tokens, 1));
     }
 
-    /**
-     * @requires PHP 7.1
-     */
     public function testNotPhpdocCandidate71(): void
     {
         $tokens = Tokens::fromCode('<?php /* @var int $a */ [$b] = [2];');

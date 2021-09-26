@@ -196,10 +196,8 @@ class User
                 // [$e] = $f;',
         ];
 
-        if (\PHP_VERSION_ID >= 70100) {
-            yield [
-                '<?php [$e] = $f;',
-            ];
-        }
+        yield [
+            '<?php [$e] = $f;',
+        ];
     }
 }

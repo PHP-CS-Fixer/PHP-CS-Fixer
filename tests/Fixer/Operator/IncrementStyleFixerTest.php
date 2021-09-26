@@ -169,7 +169,7 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
             ],
         ];
 
-        if (\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 80000) {
+        if (\PHP_VERSION_ID < 80000) {
             $cases[] = [
                 '<?php ++$a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h;',
                 '<?php $a->$b::$c->${$d}->${$e}::f(1 + 2 * 3)->$g::$h++;',

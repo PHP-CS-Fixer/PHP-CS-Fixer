@@ -143,9 +143,8 @@ if (
             ',
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            yield [
-                '<?php use function Foo\iter\ { range, map, filter, apply, reduce, foo\operator };
+        yield [
+            '<?php use function Foo\iter\ { range, map, filter, apply, reduce, foo\operator };
 class Foo
 {
     private function foo1(): \Exception\A /** 2 */   // trailing comment
@@ -156,7 +155,7 @@ class Foo
     {
     }
 }',
-                '<?php use function Foo \ iter /* A */ \ { range, map, filter, apply, reduce, foo \ operator };
+            '<?php use function Foo \ iter /* A */ \ { range, map, filter, apply, reduce, foo \ operator };
 class Foo
 {
     private function foo1(): \Exception   \ /* 1 */  A /** 2 */   // trailing comment
@@ -167,7 +166,6 @@ class Foo
     {
     }
 }',
-            ];
-        }
+        ];
     }
 }

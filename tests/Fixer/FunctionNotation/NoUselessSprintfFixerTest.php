@@ -95,19 +95,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
                 echo sprint();
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix70Cases
-     * @requires PHP 7.0
-     */
-    public function testFix70(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix70Cases(): \Generator
-    {
         yield [
             '<?php echo sprint[2]("foo");',
         ];

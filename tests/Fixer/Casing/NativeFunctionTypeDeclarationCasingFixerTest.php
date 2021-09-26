@@ -108,21 +108,6 @@ function Foo(INTEGER $a) {}
             [
                 '<?php function Foo(): Foo\A { return new Foo(); }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             [
                 '<?php trait XYZ { function Foo(iterable $A): void {} }',
                 '<?php trait XYZ { function Foo(ITERABLE $A): VOID {} }',

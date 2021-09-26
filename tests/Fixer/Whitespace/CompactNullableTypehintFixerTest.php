@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @requires PHP 7.1
- *
  * @author Jack Cherng <jfcherng@gmail.com>
  *
  * @internal

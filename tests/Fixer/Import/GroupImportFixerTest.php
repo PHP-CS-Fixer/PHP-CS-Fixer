@@ -26,23 +26,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class GroupImportFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP <7.0
-     */
-    public function testDoNotFix(): void
-    {
-        $expected = '<?php
-
-namespace Test;
-
-use Foo\Bar;
-use Foo\Baz;
-use Foo\Test;
-';
-
-        $this->doTest($expected);
-    }
-
-    /**
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void

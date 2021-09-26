@@ -32,10 +32,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     {
         if (
             null !== $input
-            && (
-                \PHP_VERSION_ID < 70000
-                || (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
-            )
+            && (null !== $versionSpecificFix && \PHP_VERSION_ID < $versionSpecificFix)
         ) {
             $expected = $input;
             $input = null;
@@ -113,7 +110,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'void return on ^7.1' => [
                 '<?php /** @return void */ function my_foo(): void {}',
                 '<?php /** @return void */ function my_foo() {}',
-                70100,
             ],
             'invalid void return on ^7.1' => [
                 '<?php /** @return null|void */ function my_foo() {}',
@@ -121,7 +117,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'iterable return on ^7.1' => [
                 '<?php /** @return iterable */ function my_foo(): iterable {}',
                 '<?php /** @return iterable */ function my_foo() {}',
-                70100,
             ],
             'object return on ^7.2' => [
                 '<?php /** @return object */ function my_foo(): object {}',
@@ -193,7 +188,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                         /** @return self|null */ function my_foo() {}
                     }
                 ',
-                70100,
             ],
             'skip resource special type' => [
                 '<?php /** @return resource */ function my_foo() {}',
@@ -207,17 +201,14 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'nullable type' => [
                 '<?php /** @return null|Bar */ function my_foo(): ?Bar {}',
                 '<?php /** @return null|Bar */ function my_foo() {}',
-                70100,
             ],
             'nullable type reverse order' => [
                 '<?php /** @return Bar|null */ function my_foo(): ?Bar {}',
                 '<?php /** @return Bar|null */ function my_foo() {}',
-                70100,
             ],
             'nullable native type' => [
                 '<?php /** @return null|array */ function my_foo(): ?array {}',
                 '<?php /** @return null|array */ function my_foo() {}',
-                70100,
             ],
             'skip primitive or array types' => [
                 '<?php /** @return string|string[] */ function my_foo() {}',
@@ -236,12 +227,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'array of array of types' => [
                 '<?php /** @return Foo[][] */ function my_foo(): array {}',
                 '<?php /** @return Foo[][] */ function my_foo() {}',
-                70000,
             ],
             'nullable array of types' => [
                 '<?php /** @return null|Foo[] */ function my_foo(): ?array {}',
                 '<?php /** @return null|Foo[] */ function my_foo() {}',
-                70100,
             ],
             'comments' => [
                 '<?php
@@ -266,12 +255,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             'array and traversable' => [
                 '<?php /** @return array|Traversable */ function my_foo(): iterable {}',
                 '<?php /** @return array|Traversable */ function my_foo() {}',
-                70100,
             ],
             'array and traversable with leading slash' => [
                 '<?php /** @return array|\Traversable */ function my_foo(): iterable {}',
                 '<?php /** @return array|\Traversable */ function my_foo() {}',
-                70100,
             ],
             'array and traversable in a namespace' => [
                 '<?php
@@ -291,7 +278,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      /** @return array|\Traversable */
                      function my_foo() {}
                 ',
-                70100,
             ],
             'array and imported traversable in a namespace' => [
                 '<?php
@@ -306,7 +292,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      /** @return array|Traversable */
                      function my_foo() {}
                 ',
-                70100,
             ],
             'array and object aliased as traversable in a namespace' => [
                 '<?php
@@ -315,43 +300,20 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                      /** @return array|Traversable */
                      function my_foo() {}
                 ',
-                null,
-                70100,
             ],
             'array of object and traversable' => [
                 '<?php /** @return Foo[]|Traversable */ function my_foo(): iterable {}',
                 '<?php /** @return Foo[]|Traversable */ function my_foo() {}',
-                70100,
             ],
             'array of object and iterable' => [
                 '<?php /** @return Foo[]|iterable */ function my_foo(): iterable {}',
                 '<?php /** @return Foo[]|iterable */ function my_foo() {}',
-                70100,
             ],
             'array of string and array of int' => [
                 '<?php /** @return string[]|int[] */ function my_foo(): array {}',
                 '<?php /** @return string[]|int[] */ function my_foo() {}',
             ],
         ];
-
-        if (\PHP_VERSION_ID < 80000) {
-            yield 'report static as self' => [
-                '<?php
-                    class Foo {
-                        /** @return static */ function my_foo(): self {}
-                    }
-                ',
-                '<?php
-                    class Foo {
-                        /** @return static */ function my_foo() {}
-                    }
-                ',
-            ];
-
-            yield 'skip mixed special type' => [
-                '<?php /** @return mixed */ function my_foo() {}',
-            ];
-        }
     }
 
     /**
@@ -371,6 +333,35 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return int */ fn() => 1;',
                 70400,
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixPre80Cases(): \Generator
+    {
+        yield 'report static as self' => [
+            '<?php
+                class Foo {
+                    /** @return static */ function my_foo(): self {}
+                }
+            ',
+            '<?php
+                class Foo {
+                    /** @return static */ function my_foo() {}
+                }
+            ',
+        ];
+
+        yield 'skip mixed special type' => [
+            '<?php /** @return mixed */ function my_foo() {}',
         ];
     }
 

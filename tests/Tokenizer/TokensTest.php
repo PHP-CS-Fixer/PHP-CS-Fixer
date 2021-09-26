@@ -692,21 +692,6 @@ PHP;
             [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
             [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3],
             [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     * @dataProvider provideFindBlockEnd71Cases
-     */
-    public function testFindBlockEnd71(int $expectedIndex, string $source, int $type, int $searchIndex): void
-    {
-        static::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
-    }
-
-    public function provideFindBlockEnd71Cases(): array
-    {
-        return [
             [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5],
             [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1],
         ];

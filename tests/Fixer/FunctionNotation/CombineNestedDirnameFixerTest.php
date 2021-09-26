@@ -97,14 +97,6 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <7.0
-     */
-    public function testDoNotFix(): void
-    {
-        $this->doTest('<?php dirname(dirname($path));');
-    }
-
-    /**
      * @requires PHP 7.3
      * @dataProvider provideFix73Cases
      */

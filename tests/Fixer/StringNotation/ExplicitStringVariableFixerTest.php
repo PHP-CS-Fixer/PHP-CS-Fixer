@@ -216,21 +216,6 @@ EOF;
                 '<?php $pair = "${foo}{$bar[0]}";',
                 '<?php $pair = "$foo{$bar[0]}";',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideTestFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideTestFix71Cases(): array
-    {
-        return [
             [
                 '<?php $a = "My name is {$array[-1]} !";',
                 '<?php $a = "My name is $array[-1] !";',
