@@ -145,6 +145,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['modernize_strpos'], $fixers['no_trailing_whitespace']],
             [$fixers['modernize_strpos'], $fixers['not_operator_with_space']],
             [$fixers['modernize_strpos'], $fixers['not_operator_with_successor_space']],
+            [$fixers['modernize_strpos'], $fixers['php_unit_dedicate_assert']],
             [$fixers['modernize_strpos'], $fixers['single_space_after_construct']],
             [$fixers['multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']],
             [$fixers['native_constant_invocation'], $fixers['global_namespace_import']],
