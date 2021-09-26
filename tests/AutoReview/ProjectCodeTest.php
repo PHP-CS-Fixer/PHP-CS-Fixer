@@ -45,7 +45,11 @@ final class ProjectCodeTest extends TestCase
     private static $classesWithoutTests = [
         \PhpCsFixer\Console\Command\DocumentationCommand::class,
         \PhpCsFixer\Console\SelfUpdate\GithubClient::class,
-        \PhpCsFixer\Documentation\DocumentationGenerator::class,
+        \PhpCsFixer\Documentation\DocumentationLocator::class,
+        \PhpCsFixer\Documentation\FixerDocumentGenerator::class,
+        \PhpCsFixer\Documentation\ListDocumentGenerator::class,
+        \PhpCsFixer\Documentation\RstUtils::class,
+        \PhpCsFixer\Documentation\RuleSetDocumentationGenerator::class,
         \PhpCsFixer\Runner\FileCachingLintingIterator::class,
     ];
 

@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Command;
 
-use PhpCsFixer\Documentation\DocumentationGenerator;
-use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Documentation\DocumentationLocator;
+use PhpCsFixer\Documentation\FixerDocumentGenerator;
+use PhpCsFixer\Documentation\ListDocumentGenerator;
+use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
 use Symfony\Component\Console\Command\Command;
@@ -35,46 +37,28 @@ final class DocumentationCommand extends Command
      */
     protected static $defaultName = 'documentation';
 
-    /**
-     * @var DocumentationGenerator
-     */
-    private $generator;
-
-    public function __construct(?string $name = null)
-    {
-        parent::__construct($name);
-
-        $this->generator = new DocumentationGenerator();
-    }
-
     protected function configure(): void
     {
         $this
             ->setAliases(['doc'])
-            ->setDescription('Dumps the documentation of the project into its /doc directory.')
+            ->setDescription('Dumps the documentation of the project into its "/doc" directory.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $filesystem = new Filesystem();
+        $locator = new DocumentationLocator();
+
         $fixerFactory = new FixerFactory();
         $fixerFactory->registerBuiltInFixers();
         $fixers = $fixerFactory->getFixers();
 
-        $this->generateFixersDocs($fixers);
-        $this->generateRuleSetsDocs($fixers);
+        $setDefinitions = RuleSets::getSetDefinitions();
 
-        $output->writeln('Docs updated.');
-
-        return 0;
-    }
-
-    /**
-     * @param FixerInterface[] $fixers
-     */
-    private function generateFixersDocs(array $fixers): void
-    {
-        $filesystem = new Filesystem();
+        $fixerDocumentGenerator = new FixerDocumentGenerator($locator);
+        $ruleSetDocumentationGenerator = new RuleSetDocumentationGenerator($locator);
+        $listDocumentGenerator = new ListDocumentGenerator($locator);
 
         // Array of existing fixer docs.
         // We first override existing files, and then we will delete files that are no longer needed.
@@ -83,51 +67,60 @@ final class DocumentationCommand extends Command
         $docForFixerRelativePaths = [];
 
         foreach ($fixers as $fixer) {
-            $docForFixerRelativePaths[] = $this->generator->getFixerDocumentationFileRelativePath($fixer);
+            $docForFixerRelativePaths[] = $locator->getFixerDocumentationFileRelativePath($fixer);
             $filesystem->dumpFile(
-                $this->generator->getFixerDocumentationFilePath($fixer),
-                $this->generator->generateFixerDocumentation($fixer)
+                $locator->getFixerDocumentationFilePath($fixer),
+                $fixerDocumentGenerator->generateFixerDocumentation($fixer)
             );
         }
 
         /** @var SplFileInfo $file */
         foreach (
             (new Finder())->files()
-                ->in($this->generator->getFixersDocumentationDirectoryPath())
+                ->in($locator->getFixersDocumentationDirectoryPath())
                 ->notPath($docForFixerRelativePaths) as $file
         ) {
             $filesystem->remove($file->getPathname());
         }
 
-        $index = $this->generator->getFixersDocumentationIndexFilePath();
+        // Fixer doc. index
 
-        if (false === @file_put_contents($index, $this->generator->generateFixersDocumentationIndex($fixers))) {
-            throw new \RuntimeException("Failed updating file {$index}.");
-        }
-    }
+        $filesystem->dumpFile(
+            $locator->getFixersDocumentationIndexFilePath(),
+            $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers)
+        );
 
-    /**
-     * @param FixerInterface[] $fixers
-     */
-    private function generateRuleSetsDocs(array $fixers): void
-    {
-        $filesystem = new Filesystem();
+        // RuleSet docs.
 
         /** @var SplFileInfo $file */
-        foreach ((new Finder())->files()->in($this->generator->getRuleSetsDocumentationDirectoryPath()) as $file) {
+        foreach ((new Finder())->files()->in($locator->getRuleSetsDocumentationDirectoryPath()) as $file) {
             $filesystem->remove($file->getPathname());
         }
 
-        $index = $this->generator->getRuleSetsDocumentationIndexFilePath();
         $paths = [];
 
-        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
-            $paths[$name] = $path = $this->generator->getRuleSetsDocumentationFilePath($name);
-            $filesystem->dumpFile($path, $this->generator->generateRuleSetsDocumentation($definition, $fixers));
+        foreach ($setDefinitions as $name => $definition) {
+            $path = $locator->getRuleSetsDocumentationFilePath($name);
+            $paths[$name] = $path;
+            $filesystem->dumpFile($path, $ruleSetDocumentationGenerator->generateRuleSetsDocumentation($definition, $fixers));
         }
 
-        if (false === @file_put_contents($index, $this->generator->generateRuleSetsDocumentationIndex($paths))) {
-            throw new \RuntimeException("Failed updating file {$index}.");
-        }
+        // RuleSet doc. index
+
+        $filesystem->dumpFile(
+            $locator->getRuleSetsDocumentationIndexFilePath(),
+            $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths)
+        );
+
+        // List file / Appendix
+
+        $filesystem->dumpFile(
+            $locator->getListingFilePath(),
+            $listDocumentGenerator->generateListingDocumentation($fixers)
+        );
+
+        $output->writeln('Docs updated.');
+
+        return 0;
     }
 }

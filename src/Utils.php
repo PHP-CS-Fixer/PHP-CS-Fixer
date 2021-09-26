@@ -31,6 +31,11 @@ final class Utils
      */
     private static $deprecations = [];
 
+    private function __construct()
+    {
+        // cannot create instance of util. class
+    }
+
     /**
      * Converts a camel cased string to a snake cased string.
      */
