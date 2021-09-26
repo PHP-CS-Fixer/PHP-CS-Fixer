@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-23T11:43:26Z
+
+[![Coverage Status](https://coveralls.io/builds/43070391/badge)](https://coveralls.io/builds/43070391)
+
+Coverage increased (+0.007%) to 93.081% when pulling **7ed8125016d2ac5006b16b80b8949f005526b1db on SpacePossum:master_PhpUnitDedicateAssertFixer_assertStringContainsString_assertStringStartsWith_4146** into **80e0efda140385c29b7aeaa3a9fd98b1de745e04 on FriendsOfPHP:master**.
