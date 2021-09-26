@@ -22,6 +22,7 @@ Rules
   ``['on_multiline' => 'ensure_fully_multiline']``
 - `no_break_comment <./../rules/control_structure/no_break_comment.rst>`_
 - `no_closing_tag <./../rules/php_tag/no_closing_tag.rst>`_
+- `no_space_around_double_colon <./../rules/operator/no_space_around_double_colon.rst>`_
 - `no_spaces_after_function_name <./../rules/function_notation/no_spaces_after_function_name.rst>`_
 - `no_spaces_inside_parenthesis <./../rules/whitespace/no_spaces_inside_parenthesis.rst>`_
 - `no_trailing_whitespace <./../rules/whitespace/no_trailing_whitespace.rst>`_
