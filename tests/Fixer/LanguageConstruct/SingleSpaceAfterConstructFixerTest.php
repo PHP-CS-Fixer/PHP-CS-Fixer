@@ -2079,28 +2079,6 @@ function bar() {} }',
                 '<?php class Foo { public /* foo */function bar() {} }',
                 '<?php class Foo { public  /* foo */function bar() {} }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     *
-     * @dataProvider provideFixWithPublicPhp71Cases
-     */
-    public function testFixWithPublicPhp71(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'constructs' => [
-                'public',
-            ],
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixWithPublicPhp71Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { public CONST BAR = 9000; }',
                 '<?php class Foo { public  CONST BAR = 9000; }',

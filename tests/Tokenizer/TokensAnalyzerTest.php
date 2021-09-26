@@ -672,52 +672,6 @@ preg_replace_callback(
                         return [];
                     };',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsLambda74Cases
-     * @requires PHP 7.4
-     */
-    public function testIsLambda74(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
-    }
-
-    public function provideIsLambda74Cases(): array
-    {
-        return [
-            [
-                [5 => true],
-                '<?php $fn = fn() => [];',
-            ],
-            [
-                [5 => true],
-                '<?php $fn = fn () => [];',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsLambda71Cases
-     * @requires PHP 7.1
-     */
-    public function testIsLambda71(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $expectedValue) {
-            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
-        }
-    }
-
-    public function provideIsLambda71Cases(): array
-    {
-        return [
             [
                 [6 => true],
                 '<?php
@@ -752,6 +706,33 @@ preg_replace_callback(
                     function foo (): ?int {
                         return [];
                     };',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideIsLambda74Cases
+     * @requires PHP 7.4
+     */
+    public function testIsLambda74(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $expectedValue) {
+            static::assertSame($expectedValue, $tokensAnalyzer->isLambda($index));
+        }
+    }
+
+    public function provideIsLambda74Cases(): array
+    {
+        return [
+            [
+                [5 => true],
+                '<?php $fn = fn() => [];',
+            ],
+            [
+                [5 => true],
+                '<?php $fn = fn () => [];',
             ],
         ];
     }
@@ -995,21 +976,6 @@ abstract class Baz
 }
 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideIsConstantInvocation71Cases
-     * @requires PHP 7.1
-     */
-    public function testIsConstantInvocation71(array $expected, string $source): void
-    {
-        $this->doIsConstantInvocationTest($expected, $source);
-    }
-
-    public function provideIsConstantInvocation71Cases(): array
-    {
-        return [
             [
                 [3 => false, 6 => false],
                 '<?php function x(?FOO $foo) {}',

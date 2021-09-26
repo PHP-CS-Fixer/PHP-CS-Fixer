@@ -260,37 +260,35 @@ final class SingleLineThrowFixerTest extends AbstractFixerTestCase
 );",
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            yield [
-                '<?php throw new class() extends Exception
-                {
-                    protected $message = "Custom message";
-                }
-            ;',
-                '<?php throw
-                new class()
-                extends Exception
-                {
-                    protected $message = "Custom message";
-                }
-            ;',
-            ];
+        yield [
+            '<?php throw new class() extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+            '<?php throw
+            new class()
+            extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+        ];
 
-            yield [
-                '<?php throw new class extends Exception
-                {
-                    protected $message = "Custom message";
-                }
-            ;',
-                '<?php throw
-                new class
-                extends Exception
-                {
-                    protected $message = "Custom message";
-                }
-            ;',
-            ];
-        }
+        yield [
+            '<?php throw new class extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+            '<?php throw
+            new class
+            extends Exception
+            {
+                protected $message = "Custom message";
+            }
+        ;',
+        ];
     }
 
     /**

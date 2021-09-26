@@ -744,19 +744,7 @@ else?><?php echo 5;',
 
                 return $ret;',
         ];
-    }
 
-    /**
-     * @dataProvider provideConditionsWithoutBraces70Cases
-     * @requires PHP 7.0
-     */
-    public function testConditionsWithoutBraces70(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public function provideConditionsWithoutBraces70Cases(): \Generator
-    {
         yield from $this->generateConditionsWithoutBracesCase('throw new class extends Exception{};');
         yield from $this->generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
     }

@@ -102,6 +102,22 @@ final class ClassyAnalyzerTest extends TestCase
                 '<?php foo(); \bar();',
                 [1 => false, 7 => false],
             ],
+            [
+                '<?php function foo(): \Foo {}',
+                [3 => false, 9 => true],
+            ],
+            [
+                '<?php function foo(?Foo $foo, ?Foo\Bar $fooBar): ?\Foo {}',
+                [3 => false, 6 => true, 12 => false, 14 => true, 22 => true],
+            ],
+            [
+                '<?php function foo(iterable $foo): string {}',
+                [3 => false, 5 => false, 11 => false],
+            ],
+            [
+                '<?php function foo(?int $foo): ?string {}',
+                [3 => false, 6 => false, 13 => false],
+            ],
         ];
 
         yield [
@@ -125,39 +141,6 @@ final class ClassyAnalyzerTest extends TestCase
                 [3 => false, 8 => false],
             ];
         }
-    }
-
-    /**
-     * @param array<int, bool> $expected
-     *
-     * @dataProvider provideIsClassyInvocation71Cases
-     * @requires PHP 7.1
-     */
-    public function testIsClassyInvocation71(string $source, array $expected): void
-    {
-        self::assertClassyInvocation($source, $expected);
-    }
-
-    public function provideIsClassyInvocation71Cases(): array
-    {
-        return [
-            [
-                '<?php function foo(): \Foo {}',
-                [3 => false, 9 => true],
-            ],
-            [
-                '<?php function foo(?Foo $foo, ?Foo\Bar $fooBar): ?\Foo {}',
-                [3 => false, 6 => true, 12 => false, 14 => true, 22 => true],
-            ],
-            [
-                '<?php function foo(iterable $foo): string {}',
-                [3 => false, 5 => false, 11 => false],
-            ],
-            [
-                '<?php function foo(?int $foo): ?string {}',
-                [3 => false, 6 => false, 13 => false],
-            ],
-        ];
     }
 
     /**

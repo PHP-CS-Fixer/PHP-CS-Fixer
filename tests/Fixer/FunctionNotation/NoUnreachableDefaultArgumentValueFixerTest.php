@@ -160,42 +160,12 @@ $bar) {}',
  ,#
 $bar) {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix56Cases
-     */
-    public function testFix56(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix56Cases(): array
-    {
-        return [
             [
                 '<?php function a($a = 1, ...$b) {}',
             ],
             [
                 '<?php function a($a = 1, \SplFileInfo ...$b) {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     *
-     * @requires PHP 7.1
-     */
-    public function testFix71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             [
                 '<?php function foo (?Foo $bar, $baz) {}',
                 '<?php function foo (?Foo $bar = null, $baz) {}',

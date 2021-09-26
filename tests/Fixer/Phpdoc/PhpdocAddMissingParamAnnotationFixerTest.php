@@ -327,23 +327,6 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      */
     function f10(string $foo = "null", $bar) {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(string $expected, ?string $input, array $config): void
-    {
-        $this->fixer->configure($config);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             [
                 '<?php
     /**

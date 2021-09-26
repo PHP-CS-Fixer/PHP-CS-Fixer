@@ -156,21 +156,6 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
             [
                 '<?php class Foo extends Bar { public function baz() : Self\Qux {} }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     * @dataProvider provideFix71Cases
-     */
-    public function testFix71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             [
                 '<?php class Foo extends Bar { public function baz(?self $x) {} }',
                 '<?php class Foo extends Bar { public function baz(?Self $x) {} }',

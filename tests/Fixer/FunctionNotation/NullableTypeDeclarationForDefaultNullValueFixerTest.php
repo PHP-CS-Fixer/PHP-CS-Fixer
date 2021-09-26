@@ -27,8 +27,6 @@ use PhpCsFixer\Tests\Test\TestCaseUtils;
 final class NullableTypeDeclarationForDefaultNullValueFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP 7.1
-     *
      * @dataProvider provideDoNotFixCases
      */
     public function testDoNotFix(string $expected): void
@@ -97,16 +95,10 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
      */
     public function testFix(string $expected, string $input): void
     {
-        if (\PHP_VERSION_ID < 70100) {
-            $this->doTest($expected);
-        } else {
-            $this->doTest($expected, $input);
-        }
+        $this->doTest($expected, $input);
     }
 
     /**
-     * @requires PHP 7.1
-     *
      * @dataProvider provideInvertedFixCases
      * @dataProvider provideInverseOnlyFixCases
      */
@@ -403,11 +395,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
-        if (null === $input) {
-            $this->doTest($expected);
-        } else {
-            $this->doTest($expected, $input);
-        }
+        $this->doTest($expected);
     }
 
     /**

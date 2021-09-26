@@ -273,21 +273,6 @@ null;#13
             [
                 '<?php function foo() { return new class() { public function foo() { static $foo = null; } }; }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     * @dataProvider providePhp71Cases
-     */
-    public function testFixPhp71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function providePhp71Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { public const FOO = null; }',
             ],

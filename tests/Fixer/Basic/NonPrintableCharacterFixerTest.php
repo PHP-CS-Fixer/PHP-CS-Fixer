@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
-use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -293,18 +292,5 @@ INPUT
                  , pack('H*', 'e2808b')),
             ],
         ];
-    }
-
-    /**
-     * @requires PHP <7.0
-     */
-    public function testFixWithEscapeSequencesInStringsLowerThanPhp70(): void
-    {
-        $this->expectException(InvalidForEnvFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[non_printable_character\] Invalid configuration for env: Escape sequences require PHP 7\.0\+\.$/');
-
-        $this->fixer->configure([
-            'use_escape_sequences_in_strings' => true,
-        ]);
     }
 }

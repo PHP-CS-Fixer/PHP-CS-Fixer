@@ -178,16 +178,6 @@ $foo();
 ',
             ],
         ];
-
-        if (\PHP_VERSION_ID < 70100) {
-            yield 'super global, invalid from PHP7.1' => [
-                '<?php $fn = function() use($_COOKIE) {} ?>',
-            ];
-
-            yield 'super global' => [
-                '<?php $foo = function($c) use ($_COOKIE) {};',
-            ];
-        }
     }
 
     /**

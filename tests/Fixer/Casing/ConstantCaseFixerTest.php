@@ -157,38 +157,6 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix56Cases
-     *
-     * @requires PHP <7.0
-     */
-    public function testFix56(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix56Cases(): array
-    {
-        return [
-            ['<?php use Foo\Null;'],
-            ['<?php use Foo\Null as Null;'],
-            ['<?php class True {} class False {} class Null {}'],
-            ['<?php Class Null { use True; }'],
-            ['<?php interface True {}'],
-            ['<?php trait False {}'],
-            [
-                '<?php
-                class Null {
-                    use True, False {
-                        False::bar insteadof True;
-                        True::baz insteadof False;
-                        False::baz as Null;
-                    }
-                }',
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */

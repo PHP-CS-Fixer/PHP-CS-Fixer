@@ -709,21 +709,6 @@ echo 123;
 $session = new Session();
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             [
                 '<?php
 $first = true;// needed because by default first docblock is never fixed.

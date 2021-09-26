@@ -22,7 +22,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @internal
  *
- * @requires PHP 7.1
  * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase

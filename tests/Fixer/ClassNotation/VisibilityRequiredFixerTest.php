@@ -501,15 +501,6 @@ EOF;
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @requires PHP <7.1
-     */
-    public function testIgnoreConstants(): void
-    {
-        $this->fixer->configure(['elements' => ['const']]);
-        $this->doTest('<?php class A { const B=1; }');
-    }
-
     public function testInvalidConfigurationType(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -675,9 +666,6 @@ AB# <- this is the name
         );
     }
 
-    /**
-     * @requires PHP 7.1
-     */
     public function testKeepingComment(): void
     {
         $this->fixer->configure(['elements' => ['property', 'method', 'const']]);

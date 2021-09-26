@@ -166,22 +166,6 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
             ],
             ['<?php function foo(): M_PI {}'],
             ['<?php use X\Y\{FOO, BAR as BAR2, M_PI};'],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71WithDefaultConfigurationCases
-     *
-     * @requires PHP 7.1
-     */
-    public function testFix71WithDefaultConfiguration(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71WithDefaultConfigurationCases(): array
-    {
-        return [
             [
                 '<?php
 try {

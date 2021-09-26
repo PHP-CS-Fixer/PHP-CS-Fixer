@@ -473,22 +473,6 @@ class Foo
                     'const' => null,
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     * @dataProvider provideFix71Cases
-     */
-    public function testFix71(string $expected, string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
             'It can handle constants with visibility' => [
                 '<?php
 

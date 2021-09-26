@@ -27,18 +27,9 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideCodeWithReturnTypesCases
-     */
-    public function testCodeWithReturnTypes(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @requires PHP 7.1
-     *
      * @dataProvider provideCodeWithReturnTypesCasesWithNullableCases
      */
-    public function testCodeWithReturnTypesWithNullable(string $expected, ?string $input = null): void
+    public function testCodeWithReturnTypes(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }

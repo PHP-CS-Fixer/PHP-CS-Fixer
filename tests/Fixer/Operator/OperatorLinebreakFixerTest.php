@@ -175,15 +175,13 @@ return $foo
                 }',
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            yield 'return type' => [
-                '<?php
-                function foo()
-                :
-                bool
-                {};',
-            ];
-        }
+        yield 'return type' => [
+            '<?php
+            function foo()
+            :
+            bool
+            {};',
+        ];
 
         yield 'go to' => ['<?php
                 prepare_value:
@@ -490,10 +488,8 @@ switch ($foo) {
             '::', // Scope Resolution
         ];
 
-        if (\PHP_VERSION_ID >= 70000) {
-            $operators[] = '??';
-            $operators[] = '<=>';
-        }
+        $operators[] = '??';
+        $operators[] = '<=>';
 
         if (\PHP_VERSION_ID >= 80000) {
             $operators[] = '?->';

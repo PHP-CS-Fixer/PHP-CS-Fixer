@@ -614,6 +614,25 @@ B#
 echo Foo::A, Foo::B;
 ',
             ],
+            [
+                '<?php
+                    class Token {
+                        const PUBLIC_CONST = 0;
+                        private const PRIVATE_CONST = 0;
+                        protected const PROTECTED_CONST = 0;
+                        public const PUBLIC_CONST_TWO = 0;
+                        public const TEST_71 = 0;
+                    }
+                ',
+                '<?php
+                    class Token {
+                        const PUBLIC_CONST = 0;
+                        private const PRIVATE_CONST = 0;
+                        protected const PROTECTED_CONST = 0;
+                        public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
+                    }
+                ',
+            ],
         ];
     }
 
@@ -688,40 +707,6 @@ EOT
         $this->expectExceptionMessageMatches('/^\[single_class_element_per_statement\] Invalid configuration: The option "elements" .*\.$/');
 
         $this->fixer->configure(['elements' => ['foo']]);
-    }
-
-    /**
-     * @dataProvider providePHP71Cases
-     * @requires PHP 7.1
-     */
-    public function testPHP71(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function providePHP71Cases(): array
-    {
-        return [
-            [
-                '<?php
-                    class Token {
-                        const PUBLIC_CONST = 0;
-                        private const PRIVATE_CONST = 0;
-                        protected const PROTECTED_CONST = 0;
-                        public const PUBLIC_CONST_TWO = 0;
-                        public const TEST_71 = 0;
-                    }
-                ',
-                '<?php
-                    class Token {
-                        const PUBLIC_CONST = 0;
-                        private const PRIVATE_CONST = 0;
-                        protected const PROTECTED_CONST = 0;
-                        public const PUBLIC_CONST_TWO = 0, TEST_71 = 0;
-                    }
-                ',
-            ],
-        ];
     }
 
     /**
