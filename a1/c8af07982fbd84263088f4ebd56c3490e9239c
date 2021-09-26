@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by julienfalque at 2020-03-05T07:22:48Z
+
+Wondering: would supporting other operators such as `+=`, `-=`, ... require a lot of work?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-01-18T00:53:10Z
+
+I'm dropping the milestone, as PR is marked as a draft
+I'm eager to see this PR ready!
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-23T14:56:04Z
+
+```diff
+-        $argv = $argv ?? $_SERVER['argv'] ?? [];
++        $argv ??= $_SERVER['argv'] ?? [];
+```
+valid?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-23T14:56:34Z
+
+ping @gharlan could you maybe do another review round?
+
+maybe we should add this to the `PHP74MigrationSet` ?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-23T15:02:58Z
+
+[![Coverage Status](https://coveralls.io/builds/43070548/badge)](https://coveralls.io/builds/43070548)
+
+Coverage increased (+0.02%) to 93.1% when pulling **4968ead667f79a8223d2ad34b9f54f5d30f810e0 on SpacePossum:master_AssignNullCoalescingToCoalesceEqualFixer** into **0089c12923bee93a43dbc078340d0d5987a906c3 on FriendsOfPHP:master**.
