@@ -97,7 +97,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         $analyzer = new TokensAnalyzer($tokens);
 
         foreach ($analyzer->getClassyElements() as $index => $element) {
-            if (!$this->hasDocBlock($tokens, $index)) {
+            if (!$this->hasDocBlock($tokens, $index) || 'trait_import' === $element['type']) {
                 continue;
             }
 

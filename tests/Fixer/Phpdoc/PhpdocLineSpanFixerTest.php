@@ -502,6 +502,17 @@ class Foo
                     'property' => 'single',
                 ],
             ],
+            'It does not change doc blocks in trait import' => [
+                '<?php
+trait Bar {}
+
+class Foo
+{
+  /** whatever */
+  use Bar;
+}
+            ',
+            ],
         ];
     }
 
