@@ -331,12 +331,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                 '<?php
     /**
      * Foo
+     * @param null|int $foo
      */
     function f11(?int $foo) {}',
                 '<?php
     /**
      * Foo
-     * @param null|int $foo
      */
     function f11(?int $foo) {}'
             ],
@@ -344,12 +344,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                 '<?php
     /**
      * Foo
+     * @param mixed $foo
      */
     function f12($foo = null) {}',
                 '<?php
     /**
      * Foo
-     * @param mixed $foo
      */
     function f12($foo = null) {}'
             ],
@@ -357,12 +357,12 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                 '<?php
     /**
      * Foo
+     * @param null|string $foo
      */
     function f13(?string $foo = NULL) {}',
                 '<?php
     /**
      * Foo
-     * @param null|string $foo
      */
     function f13(?string $foo = NULL) {}'
             ],
