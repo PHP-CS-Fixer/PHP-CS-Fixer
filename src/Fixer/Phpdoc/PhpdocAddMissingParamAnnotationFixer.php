@@ -189,12 +189,6 @@ function f9(string $foo, $bar, $baz) {}
             $newLines = [];
 
             foreach ($arguments as $argument) {
-                $type = $argument['type'] ?: 'mixed';
-
-                if (!str_starts_with($type, '?') && 'null' === strtolower($argument['default'])) {
-                    $type = 'null|'.$type;
-                }
-
                 $newLines[] = new Line(sprintf(
                     '%s* @param %s %s%s',
                     $indent,
@@ -268,6 +262,14 @@ function f9(string $foo, $bar, $baz) {}
                 } else {
                     $info['type'] .= $token->getContent();
                 }
+            }
+        }
+
+        if ('' === $info['type']) {
+            $info['type'] = 'mixed';
+        } else {
+            if ('mixed' !== $info['type'] && ('?' === $info['type'][0]  || 'null' === strtolower($info['default']))) {
+                $info['type'] = 'null|' . ltrim($info['type'], '?');
             }
         }
 
