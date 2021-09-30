@@ -189,10 +189,18 @@ function f9(string $foo, $bar, $baz) {}
             $newLines = [];
 
             foreach ($arguments as $argument) {
+                if ('' === $argument['type']) {
+                    $argument['type'] = 'mixed';
+                } else {
+                    if ('mixed' !== $argument['type'] && ('?' === $argument['type'][0]  || 'null' === strtolower($argument['default']))) {
+                        $argument['type'] = 'null|' . ltrim($argument['type'], '?');
+                    }
+                }
+
                 $newLines[] = new Line(sprintf(
                     '%s* @param %s %s%s',
                     $indent,
-                    $type,
+                    $argument['type'],
                     $argument['name'],
                     $this->whitespacesConfig->getLineEnding()
                 ));
@@ -262,14 +270,6 @@ function f9(string $foo, $bar, $baz) {}
                 } else {
                     $info['type'] .= $token->getContent();
                 }
-            }
-        }
-
-        if ('' === $info['type']) {
-            $info['type'] = 'mixed';
-        } else {
-            if ('mixed' !== $info['type'] && ('?' === $info['type'][0]  || 'null' === strtolower($info['default']))) {
-                $info['type'] = 'null|' . ltrim($info['type'], '?');
             }
         }
 
