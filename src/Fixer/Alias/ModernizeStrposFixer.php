@@ -101,19 +101,21 @@ if (strpos($haystack, $needle) === false) {}
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            // find candidate function call
-            if (!$tokens[$index]->equals([T_STRING, 'strpos'], false) || !$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 continue;
             }
 
-            // assert called with 2 arguments
+            $isGlobalFunctionStrpos = $tokens[$index]->equals([T_STRING, 'strpos'], false);
+            $isGlobalFunctionSubstr = $tokens[$index]->equals([T_STRING, 'substr'], false);
+
+            if (!$isGlobalFunctionStrpos && !$isGlobalFunctionSubstr) {
+                continue;
+            }
+
+            // assert called with at least 2 arguments
             $openIndex = $tokens->getNextMeaningfulToken($index);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
-            $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
-
-            if (2 !== \count($arguments)) {
-                continue;
-            }
+            $arguments = array_values($argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex));
 
             // check if part condition and fix if needed
             $compareTokens = $this->getCompareTokens($tokens, $index, -1); // look behind
@@ -122,8 +124,26 @@ if (strpos($haystack, $needle) === false) {}
                 $compareTokens = $this->getCompareTokens($tokens, $closeIndex, 1); // look ahead
             }
 
-            if (null !== $compareTokens) {
-                $this->fixCall($tokens, $index, $compareTokens);
+            if (null === $compareTokens) {
+                continue;
+            }
+
+            if ($isGlobalFunctionStrpos) {
+                if (2 !== \count($arguments)) {
+                    continue;
+                }
+
+                $this->fixCall($tokens, $index, $compareTokens, self::REPLACEMENTS);
+            }
+
+            if ($isGlobalFunctionSubstr) {
+                $substrSecondArgumentToken = $tokens[$arguments[1]];
+
+                if (3 !== \count($arguments) || !$substrSecondArgumentToken->equals([T_LNUMBER, '0'])) {
+                    continue;
+                }
+
+                $this->fixSubstrCall($tokens, $index, $closeIndex, $compareTokens, $arguments);
             }
         }
     }
@@ -131,9 +151,9 @@ if (strpos($haystack, $needle) === false) {}
     /**
      * @param array{operator_index: int, operand_index: int} $operatorIndices
      */
-    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices): void
+    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices, array $replacements): void
     {
-        foreach (self::REPLACEMENTS as $replacement) {
+        foreach ($replacements as $replacement) {
             if (!$tokens[$operatorIndices['operator_index']]->equals($replacement['operator'])) {
                 continue;
             }
@@ -164,6 +184,44 @@ if (strpos($haystack, $needle) === false) {}
         }
     }
 
+    private function fixSubstrCall(Tokens $tokens, int $functionStartIndex, int $functionEndIndex, array $operatorIndices, array $arguments): void
+    {
+        $operator = $tokens[$operatorIndices['operator_index']];
+        $operand = $tokens[$operatorIndices['operand_index']];
+
+        if (!$operator->equals([T_IS_IDENTICAL, '===']) && !$operator->equals([T_IS_NOT_IDENTICAL, '!=='])) {
+            return;
+        }
+
+        $thirdArgumentIsNegative = '-' === $tokens[$tokens->getPrevMeaningfulToken($arguments[2])]->getContent();
+        $secondArgumentIndex = $arguments[1];
+        $replacementFunctionName = $thirdArgumentIsNegative ? 'str_ends_with' : 'str_starts_with';
+
+        $replacements = [
+            [
+                'operator' => [T_IS_IDENTICAL, '==='],
+                'operand' => $operand,
+                'replacement' => [T_STRING, $replacementFunctionName],
+                'negate' => false,
+            ],
+            [
+                'operator' => [T_IS_NOT_IDENTICAL, '!=='],
+                'operand' => $operand,
+                'replacement' => [T_STRING, $replacementFunctionName],
+                'negate' => true,
+            ],
+        ];
+
+        // replace the original second argument and third argument with $operand
+        $tokens->clearRange($secondArgumentIndex, $functionEndIndex - 1);
+        $tokens->insertAt($secondArgumentIndex + 1, $operand);
+
+        // after last step $tokens has been changed, so $operatorIndices needs to be recalculated.
+        $operatorIndices = $this->getCompareTokens($tokens, $functionStartIndex, -1) ?: $this->getCompareTokens($tokens, $functionEndIndex + 1, 1);
+
+        $this->fixCall($tokens, $functionStartIndex, $operatorIndices, $replacements);
+    }
+
     /**
      * @param -1|1 $direction
      *
@@ -184,12 +242,6 @@ if (strpos($haystack, $needle) === false) {}
         $operandIndex = $tokens->getMeaningfulTokenSibling($operatorIndex, $direction);
 
         if (null === $operandIndex) {
-            return null;
-        }
-
-        $operand = $tokens[$operandIndex];
-
-        if (!$operand->equals([T_LNUMBER, '0']) && !$operand->equals([T_STRING, 'false'], false)) {
             return null;
         }
 
