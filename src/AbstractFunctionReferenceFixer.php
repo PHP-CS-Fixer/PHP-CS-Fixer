@@ -25,6 +25,19 @@ use PhpCsFixer\Tokenizer\Tokens;
 abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 {
     /**
+     * @var null|FunctionsAnalyzer
+     */
+    private $functionsAnalyzer;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return $tokens->isTokenKindFound(T_STRING);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isRisky(): bool
@@ -40,6 +53,10 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
      */
     protected function find(string $functionNameToSearch, Tokens $tokens, int $start = 0, ?int $end = null): ?array
     {
+        if (null === $this->functionsAnalyzer) {
+            $this->functionsAnalyzer = new FunctionsAnalyzer();
+        }
+
         // make interface consistent with findSequence
         $end = $end ?? $tokens->count();
 
@@ -54,9 +71,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         // translate results for humans
         [$functionName, $openParenthesis] = array_keys($matches);
 
-        $functionsAnalyzer = new FunctionsAnalyzer();
-
-        if (!$functionsAnalyzer->isGlobalFunctionCall($tokens, $functionName)) {
+        if (!$this->functionsAnalyzer->isGlobalFunctionCall($tokens, $functionName)) {
             return $this->find($functionNameToSearch, $tokens, $openParenthesis, $end);
         }
 

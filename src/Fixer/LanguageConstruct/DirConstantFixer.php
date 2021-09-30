@@ -44,7 +44,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_FILE);
+        return $tokens->isAllTokenKindsFound([T_STRING, T_FILE]);
     }
 
     /**

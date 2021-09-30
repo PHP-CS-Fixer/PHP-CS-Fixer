@@ -188,15 +188,15 @@ if (strpos($haystack, $needle) === false) {}
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        static $operatorsPerId = [
-            T_DEC => true,                 // --
-            T_INC => true,                 // ++
-            T_INSTANCEOF => true,          // instanceof
-            T_IS_GREATER_OR_EQUAL => true, // >=
-            T_IS_SMALLER_OR_EQUAL => true, // <=
-            T_POW => true,                 // **
-            T_SL => true,                  // <<
-            T_SR => true,                  // >>
+        static $operatorsKinds = [
+            T_DEC,                 // --
+            T_INC,                 // ++
+            T_INSTANCEOF,          // instanceof
+            T_IS_GREATER_OR_EQUAL, // >=
+            T_IS_SMALLER_OR_EQUAL, // <=
+            T_POW,                 // **
+            T_SL,                  // <<
+            T_SR,                  // >>
         ];
 
         static $operatorsPerContent = [
@@ -212,6 +212,6 @@ if (strpos($haystack, $needle) === false) {}
             '~',
         ];
 
-        return isset($operatorsPerId[$token->getId()]) || $token->equalsAny($operatorsPerContent);
+        return $token->isGivenKind($operatorsKinds) || $token->equalsAny($operatorsPerContent);
     }
 }
