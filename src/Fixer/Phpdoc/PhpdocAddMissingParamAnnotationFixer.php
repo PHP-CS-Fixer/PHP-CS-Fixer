@@ -191,10 +191,8 @@ function f9(string $foo, $bar, $baz) {}
             foreach ($arguments as $argument) {
                 if ('' === $argument['type']) {
                     $argument['type'] = 'mixed';
-                } else {
-                    if ('mixed' !== $argument['type'] && ('?' === $argument['type'][0]  || 'null' === strtolower($argument['default']))) {
-                        $argument['type'] = 'null|' . ltrim($argument['type'], '?');
-                    }
+                } elseif ('mixed' !== $argument['type'] && ('?' === $argument['type'][0]  || 'null' === strtolower($argument['default']))) {
+                    $argument['type'] = 'null|' . ltrim($argument['type'], '?');
                 }
 
                 $newLines[] = new Line(sprintf(
