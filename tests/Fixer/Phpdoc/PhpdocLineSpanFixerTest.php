@@ -473,11 +473,16 @@ class Foo
                     'const' => null,
                 ],
             ],
-            'It can handle constants with visibility' => [
+            'It can handle constants with visibility, does not crash on trait imports' => [
                 '<?php
+trait Bar
+{}
 
 class Foo
 {
+    /** whatever */
+    use Bar;
+
     /**
      *
      */
@@ -487,9 +492,14 @@ class Foo
     private $foo;
 }',
                 '<?php
+trait Bar
+{}
 
 class Foo
 {
+    /** whatever */
+    use Bar;
+
     /**  */
     public const FOO = "foobar";
 

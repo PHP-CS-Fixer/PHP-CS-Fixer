@@ -102,6 +102,11 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             }
 
             $type = $element['type'];
+
+            if (!isset($this->configuration[$type])) {
+                continue;
+            }
+
             $docIndex = $this->getDocBlockIndex($tokens, $index);
             $doc = new DocBlock($tokens[$docIndex]->getContent());
 
