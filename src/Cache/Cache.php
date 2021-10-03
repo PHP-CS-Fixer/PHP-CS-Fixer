@@ -78,7 +78,7 @@ final class Cache implements CacheInterface
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \UnexpectedValueException(sprintf(
-                'Can not encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
+                'Cannot encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
                 json_last_error_msg()
             ));
         }
