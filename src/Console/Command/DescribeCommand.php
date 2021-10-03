@@ -256,7 +256,7 @@ final class DescribeCommand extends Command
 
         if (0 === \count($codeSamples)) {
             $output->writeln([
-                'Fixing examples can not be demonstrated on the current PHP version.',
+                'Fixing examples cannot be demonstrated on the current PHP version.',
                 '',
             ]);
         } else {

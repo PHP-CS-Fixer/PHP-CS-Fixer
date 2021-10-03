@@ -464,7 +464,7 @@ final class Token
         if (JSON_ERROR_NONE !== json_last_error()) {
             $jsonResult = json_encode(
                 [
-                    'errorDescription' => 'Can not encode Tokens to JSON.',
+                    'errorDescription' => 'Cannot encode Tokens to JSON.',
                     'rawErrorMessage' => json_last_error_msg(),
                 ],
                 JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK

@@ -17,7 +17,7 @@ namespace PhpCsFixer;
 /**
  * File reader that unify access to regular file and stdin-alike file.
  *
- * Regular file could be read multiple times with `file_get_contents`, but file provided on stdin can not.
+ * Regular file could be read multiple times with `file_get_contents`, but file provided on stdin cannot.
  * Consecutive try will provide empty content for stdin-alike file.
  * This reader unifies access to them.
  *
