@@ -16,6 +16,15 @@ Allowed values: a subset of ``['break', 'case', 'continue', 'declare', 'default'
 
 Default value: ``['break', 'continue', 'declare', 'return', 'throw', 'try']``
 
+``skip_functions``
+~~~~~~~~~~~~~~~~~~
+
+List of functions that must be skipped.
+
+Allowed types: ``array``
+
+Default value: ``[]``
+
 Examples
 --------
 
@@ -225,6 +234,32 @@ With configuration: ``['statements' => ['yield']]``.
         $foo = $bar;
    +
         yield $foo;
+    }
+
+Example #13
+~~~~~~~~~~~
+
+With configuration: ``['statements' => ['yield'], 'skip_functions' => ['/^bar$/']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    class FooBar {
+        public function foo(): iterable
+        {
+            yield 1;
+   +
+            yield 2;
+        }
+
+        public function bar(): iterable
+        {
+            yield 1;
+            yield 2;
+        }
     }
 
 Rule sets

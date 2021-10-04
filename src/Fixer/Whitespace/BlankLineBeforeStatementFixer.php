@@ -68,6 +68,11 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
     private $fixTokenMap = [];
 
     /**
+     * @var array
+     */
+    private $skipFunctions = [];
+
+    /**
      * {@inheritdoc}
      */
     public function configure(array $configuration): void
@@ -79,6 +84,8 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         foreach ($this->configuration['statements'] as $key) {
             $this->fixTokenMap[$key] = self::$tokenMap[$key];
         }
+
+        $this->skipFunctions = $this->configuration['skip_functions'];
 
         $this->fixTokenMap = array_values($this->fixTokenMap);
     }
@@ -236,6 +243,28 @@ if (true) {
                         'statements' => ['yield'],
                     ]
                 ),
+                new CodeSample(
+                    '<?php
+
+class FooBar {
+    public function foo(): iterable
+    {
+        yield 1;
+        yield 2;
+    }
+
+    public function bar(): iterable
+    {
+        yield 1;
+        yield 2;
+    }
+}
+',
+                    [
+                        'statements' => ['yield'],
+                        'skip_functions' => ['/^bar$/'],
+                    ]
+                ),
             ]
         );
     }
@@ -266,7 +295,12 @@ if (true) {
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            /** @var \PhpCsFixer\Tokenizer\Token $token */
             $token = $tokens[$index];
+
+            if ($this->shouldSkipFunction($tokens, $index)) {
+                continue;
+            }
 
             if (!$token->isGivenKind($this->fixTokenMap)) {
                 continue;
@@ -304,6 +338,10 @@ if (true) {
                     'try',
                 ])
                 ->getOption(),
+            (new FixerOptionBuilder('skip_functions', 'List of functions that must be skipped.'))
+                ->setAllowedTypes(['array'])
+                ->setDefault([])
+                ->getOption(),
         ]);
     }
 
@@ -328,6 +366,24 @@ if (true) {
         return $prevNonWhitespaceToken->equalsAny([';', '}']);
     }
 
+    private function shouldSkipFunction(Tokens $tokens, int $index): bool
+    {
+        $functionIndex = $tokens->getPrevTokenOfKind($index, [[T_FUNCTION]]);
+
+        if (null !== $functionIndex) {
+            $functionNameIndex = $tokens->getNextTokenOfKind($functionIndex, [[T_STRING]]);
+            $functionName = $tokens[$functionNameIndex]->getContent();
+
+            foreach ($this->skipFunctions as $skipFunction) {
+                if (1 === preg_match($skipFunction, $functionName)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private function insertBlankLine(Tokens $tokens, int $index): void
     {
         $prevIndex = $index - 1;
@@ -343,7 +399,7 @@ if (true) {
                 $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
             }
         } else {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+            $tokens->insertSlices([$index => new Token([T_WHITESPACE, $lineEnding.$lineEnding])]);
         }
     }
 }

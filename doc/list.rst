@@ -108,6 +108,10 @@ List of Available Rules
      | List of statements which must be preceded by an empty line.
      | Allowed values: a subset of ``['break', 'case', 'continue', 'declare', 'default', 'do', 'exit', 'for', 'foreach', 'goto', 'if', 'include', 'include_once', 'require', 'require_once', 'return', 'switch', 'throw', 'try', 'while', 'yield', 'yield_from']``
      | Default value: ``['break', 'continue', 'declare', 'return', 'throw', 'try']``
+   - | ``skip_functions``
+     | List of functions that must be skipped.
+     | Allowed types: ``array``
+     | Default value: ``[]``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

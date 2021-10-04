@@ -1494,4 +1494,57 @@ enum UserStatus: string {
 ',
         ];
     }
+
+    /**
+     * @dataProvider provideSkipMethods
+     */
+    public function testSkipMethods(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['yield', 'return'],
+            'skip_functions' => ['/^provide*/'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideSkipMethods(): iterable
+    {
+        yield 'Skip method' => [
+            '<?php
+class SomeClass{
+    public function provideData(): iterable
+    {
+        yield 1;
+        yield 2;
+        yield 3;
+    }
+
+    public function arrangeSomething(): iterable
+    {
+        yield 1;
+
+        yield 2;
+
+        yield 3;
+    }
+}',
+            '<?php
+class SomeClass{
+    public function provideData(): iterable
+    {
+        yield 1;
+        yield 2;
+        yield 3;
+    }
+
+    public function arrangeSomething(): iterable
+    {
+        yield 1;
+        yield 2;
+        yield 3;
+    }
+}',
+        ];
+    }
 }
