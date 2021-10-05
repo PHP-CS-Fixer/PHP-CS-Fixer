@@ -147,7 +147,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
         $optionalDeprecatedVersionWarning = 'You are running PHP CS Fixer v3, which is not maintained anymore. Please update to v4.
 ';
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.1.3 and maximum version of PHP 8.0.*.
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.2.0 and maximum version of PHP 8.0.*.
 Current PHP version: '.PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
