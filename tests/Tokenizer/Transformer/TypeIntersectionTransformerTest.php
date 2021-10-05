@@ -57,6 +57,15 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             ',
         ];
 
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
+                '<?php $a = $b&$c;',
+                [
+                    6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                ],
+            ];
+        }
+
         yield 'arrow function' => [
             '<?php $a = fn(int&null $item): int&null => $item * 2;',
             [
