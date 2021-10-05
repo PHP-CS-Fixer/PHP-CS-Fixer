@@ -633,7 +633,7 @@ $a = new Qux();',
      */
     public function testRemoveBetweenUseTraits(string $expected, string $input): void
     {
-        $this->expectDeprecation('Option "use_trait" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.');
+        $this->expectDeprecation('Option "tokens: use_trait" used in `no_extra_blank_lines` rule is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.');
         $this->fixer->configure(['tokens' => ['use_trait']]);
 
         $this->doTest($expected, $input);

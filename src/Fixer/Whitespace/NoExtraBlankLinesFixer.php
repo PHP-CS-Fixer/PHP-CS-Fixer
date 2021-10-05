@@ -81,7 +81,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     public function configure(array $configuration): void
     {
         if (isset($configuration['tokens']) && \in_array('use_trait', $configuration['tokens'], true)) {
-            Utils::triggerDeprecation(new \RuntimeException('Option "use_trait" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.'));
+            Utils::triggerDeprecation(new \RuntimeException('Option "tokens: use_trait" used in `no_extra_blank_lines` rule is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.'));
         }
 
         parent::configure($configuration);
