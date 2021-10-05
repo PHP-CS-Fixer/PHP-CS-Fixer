@@ -5,7 +5,7 @@ Integration of fixers: class_attributes_separation,no_extra_blank_lines.
 --SETTINGS--
 {
     "deprecations": [
-        "Option \"use_trait\" is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead."
+        "Option \"tokens: use_trait\" used in `no_extra_blank_lines` rule is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead."
     ]
 }
 --EXPECT--
