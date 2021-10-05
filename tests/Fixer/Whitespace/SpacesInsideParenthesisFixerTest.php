@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -27,7 +28,7 @@ final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfigMissingKey(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[spaces_inside_parenthesis\] Invalid configuration: The option "a" does not exist\. Defined options are: "space"\.$#');
 
         $this->fixer->configure(['a' => 1]);
@@ -35,7 +36,7 @@ final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 
     public function testInvalidConfigValue(): void
     {
-        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[spaces_inside_parenthesis\] Invalid configuration: The option "space" with value "double" is invalid\. Accepted values are: "none", "spaces"\.$#');
 
         $this->fixer->configure(['space' => 'double']);
@@ -58,10 +59,12 @@ final class SpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function testDefaultLeaveNewLinesAlone(): void
+    public function provideFixCases()
     {
-        $expected = <<<'EOF'
-<?php
+        return [
+            // default leaves new lines alone
+            [
+                "<?php
 
 class Foo
 {
@@ -77,38 +80,8 @@ class Foo
         };
     }
 }
-EOF;
-        $this->doTest($expected);
-    }
-
-    public function testSpacesLeaveNewLinesAlone(): void
-    {
-        $expected = <<<'EOF'
-<?php
-
-class Foo
-{
-    private function bar()
-    {
-        if ( foo(
-            'foo' ,
-            'bar'    ,
-            [1, 2, 3],
-            'baz' // a comment just to mix things up
-        ) ) {
-            return 1;
-        };
-    }
-}
-EOF;
-
-        $this->fixer->configure(['space' => 'spaces']);
-        $this->doTest($expected);
-    }
-
-    public function provideFixCases()
-    {
-        return [
+"
+            ],
             [
                 '<?php foo();',
                 '<?php foo( );',
@@ -175,12 +148,105 @@ $a = $b->test(  // do not remove space
                 // and this comment
 );',
             ],
+            [
+                '<?php
+function foo($bar, $baz)
+{
+    // function body
+}',
+                '<?php
+function foo( $bar, $baz )
+{
+    // function body
+}',
+            ],
+            [
+                '<?php
+function hello($value) {
+    // code...
+}',
+                '<?php
+function hello( $value ) {
+    // code...
+}',
+            ],
+            [
+                '<?php
+$code = function ($hello, $there) use ($ami, $tumi) {
+    // code
+};
+',
+                '<?php
+$code = function ( $hello, $there   ) use ( $ami, $tumi ) {
+    // code
+};
+',
+            ],
+            [
+                '<?php
+for ($i = 0; $i < 42; $i++) {
+    // code...
+}
+',
+                '<?php
+for (   $i = 0; $i < 42; $i++ ) {
+    // code...
+}
+',
+            ],
+            [
+                '<?php
+explode($a, $b);
+',
+                '<?php
+explode( $a, $b );
+',
+            ],
+            [
+                '<?php
+if ($something) {
+    // code
+}
+',
+                '<?php
+if (  $something      ) {
+    // code
+}
+',
+            ],
+            [
+                '<?php
+multiply((2 + 3) * 4);
+',
+                '<?php
+multiply( (    2 + 3  ) * 4    );
+',
+            ],
         ];
     }
 
     public function provideSpacesFixCases()
     {
         return [
+            // Leaves new lines alone
+            [
+                "<?php
+
+class Foo
+{
+    private function bar()
+    {
+        if ( foo(
+            'foo' ,
+            'bar'    ,
+            [1, 2, 3],
+            'baz' // a comment just to mix things up
+        ) ) {
+            return 1;
+        };
+    }
+}"
+            ],
             [
                 '<?php foo();',
                 '<?php foo( );',
@@ -308,7 +374,7 @@ if ( $something ) {
 }
 ',
                 '<?php
-if ($something) {
+if (    $something    ) {
     // code
 }
 ',
@@ -318,7 +384,7 @@ if ($something) {
 multiply( ( 2 + 3 ) * 4 );
 ',
                 '<?php
-multiply((2 + 3 ) * 4);
+multiply((2 + 3) * 4);
 ',
             ],
         ];
