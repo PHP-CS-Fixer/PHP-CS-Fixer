@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: string_length_to_empty,no_extra_blank_lines.
+--RULESET--
+{"string_length_to_empty": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php $a = '' ===
+
+$b;
+
+--INPUT--
+<?php $a = 0 ===
+
+strlen(
+
+$b);

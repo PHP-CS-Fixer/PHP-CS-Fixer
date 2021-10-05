@@ -63,6 +63,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'psr_autoloading' => true,
             'self_accessor' => true,
             'set_type_to_cast' => true,
+            'string_length_to_empty' => true,
             'string_line_ending' => true,
             'ternary_to_elvis_operator' => true,
         ];

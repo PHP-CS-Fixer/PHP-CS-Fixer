@@ -720,7 +720,7 @@ $array = [
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (self::ALIGN_SINGLE_SPACE === $alignStrategy) {
-                            if (1 > \strlen($before) || ' ' !== substr($before, -1)) { // if last char of before-content is not ' '; add it
+                            if (!str_ends_with($before, ' ')) { // if last char of before-content is not ' '; add it
                                 $before .= ' ';
                             }
                         } elseif (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {

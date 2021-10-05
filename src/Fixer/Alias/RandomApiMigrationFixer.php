@@ -84,14 +84,6 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
     /**
      * {@inheritdoc}
      */
-    public function isCandidate(Tokens $tokens): bool
-    {
-        return $tokens->isTokenKindFound(T_STRING);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();

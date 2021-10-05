@@ -773,6 +773,9 @@ String Notation
 - `single_quote <./string_notation/single_quote.rst>`_
 
   Convert double quotes to single quotes for simple strings.
+- `string_length_to_empty <./string_notation/string_length_to_empty.rst>`_ *(risky)*
+
+  String tests for empty must be done against ``''``, not with ``strlen``.
 - `string_line_ending <./string_notation/string_line_ending.rst>`_ *(risky)*
 
   All multi-line strings must use correct line ending.

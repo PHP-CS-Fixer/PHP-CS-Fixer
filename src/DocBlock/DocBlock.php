@@ -244,7 +244,7 @@ final class DocBlock
     {
         $lineString = $line->getContent();
 
-        if (0 === \strlen($lineString)) {
+        if ('' === $lineString) {
             return $lineString;
         }
 
