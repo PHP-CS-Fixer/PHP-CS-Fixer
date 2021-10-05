@@ -80,7 +80,7 @@ class Foo
         };
     }
 }
-"
+",
             ],
             [
                 '<?php foo();',
@@ -245,7 +245,7 @@ class Foo
             return 1;
         };
     }
-}"
+}",
             ],
             [
                 '<?php foo();',
