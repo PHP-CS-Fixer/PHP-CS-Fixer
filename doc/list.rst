@@ -2719,6 +2719,16 @@ List of Available Rules
    Part of rule set `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Strict\\StrictParamFixer <./../src/Fixer/Strict/StrictParamFixer.php>`_
+-  `string_length_to_empty <./rules/string_notation/string_length_to_empty.rst>`_
+
+   String tests for empty must be done against ``''``, not with ``strlen``.
+
+   *warning risky* Risky when ``strlen`` is overridden, when called using a ``stringable``
+   object, also no longer triggers warning when called using non-string(able).
+
+   Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\StringNotation\\StringLengthToEmptyFixer <./../src/Fixer/StringNotation/StringLengthToEmptyFixer.php>`_
 -  `string_line_ending <./rules/string_notation/string_line_ending.rst>`_
 
    All multi-line strings must use correct line ending.

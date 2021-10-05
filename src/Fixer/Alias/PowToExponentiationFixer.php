@@ -106,7 +106,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * @return array[]
+     * @return array<int[]>
      */
     private function findPowCalls(Tokens $tokens): array
     {

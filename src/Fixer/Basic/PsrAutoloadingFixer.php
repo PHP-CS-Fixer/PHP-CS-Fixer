@@ -124,11 +124,11 @@ class InvalidName {}
             $tokens = Tokens::fromCode(sprintf('<?php class %s {}', $file->getBasename('.php')));
 
             if ($tokens[3]->isKeyword() || $tokens[3]->isMagicConstant()) {
-                // name can not be a class name - detected by PHP 5.x
+                // name cannot be a class name - detected by PHP 5.x
                 return false;
             }
         } catch (\ParseError $e) {
-            // name can not be a class name - detected by PHP 7.x
+            // name cannot be a class name - detected by PHP 7.x
             return false;
         }
 

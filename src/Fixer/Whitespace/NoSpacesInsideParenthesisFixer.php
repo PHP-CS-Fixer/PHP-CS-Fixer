@@ -50,7 +50,7 @@ function foo( \$bar, \$baz )
     /**
      * {@inheritdoc}
      *
-     * Must run before FunctionToConstantFixer.
+     * Must run before FunctionToConstantFixer, StringLengthToEmptyFixer.
      * Must run after CombineConsecutiveIssetsFixer, CombineNestedDirnameFixer, LambdaNotUsedImportFixer, ModernizeStrposFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
      */
     public function getPriority(): int
