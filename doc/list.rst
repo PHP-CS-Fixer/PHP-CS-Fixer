@@ -1612,6 +1612,8 @@ List of Available Rules
 
    There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 
+   *warning deprecated*   Use ``SpacesInsideParenthesisFixer`` instead.
+
    Part of rule sets `@PER <./ruleSets/PER.rst>`_ `@PER-CS1.0 <./ruleSets/PER-CS1.0.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_

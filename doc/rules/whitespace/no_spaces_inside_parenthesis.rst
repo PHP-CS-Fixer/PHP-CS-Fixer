@@ -5,6 +5,14 @@ Rule ``no_spaces_inside_parenthesis``
 There MUST NOT be a space after the opening parenthesis. There MUST NOT be a
 space before the closing parenthesis.
 
+Warning
+-------
+
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``SpacesInsideParenthesisFixer`` instead.
+
 Examples
 --------
 

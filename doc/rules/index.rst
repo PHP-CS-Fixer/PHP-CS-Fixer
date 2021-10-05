@@ -882,7 +882,7 @@ Whitespace
 - `no_spaces_around_offset <./whitespace/no_spaces_around_offset.rst>`_
 
   There MUST NOT be spaces around offset braces.
-- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_
+- `no_spaces_inside_parenthesis <./whitespace/no_spaces_inside_parenthesis.rst>`_ *(deprecated)*
 
   There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 - `no_trailing_whitespace <./whitespace/no_trailing_whitespace.rst>`_
