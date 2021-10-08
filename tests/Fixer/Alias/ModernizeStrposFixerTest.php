@@ -70,6 +70,11 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (strpos($haystack6, $needle) !== 0) {}',
         ];
 
+        yield [
+            '<?php if (!\str_starts_with($haystack6, $needle)  ) {}',
+            '<?php if (\strpos($haystack6, $needle) !== 0) {}',
+        ];
+
         yield 'casing operand' => [
             '<?php if (str_contains($haystack7, $needle)  ) {}',
             '<?php if (strpos($haystack7, $needle) !== FALSE) {}',
