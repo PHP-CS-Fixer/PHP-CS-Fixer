@@ -162,6 +162,22 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @param null|callable(array<string>): array<string, T> $callback */',
             ],
+            [
+                '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
+            [
+                '<?php /** @return Closure(Iterator<TKey, T>): Generator<int, array<TKey, T>> */',
+            ],
+            [
+                '<?php /** @var Closure(Iterator<TKey, T>): Generator<int, array<TKey, T>> $pipe */',
+            ],
+            [
+                '<?php /** @return Generator<int, Promise<mixed>, mixed, Identity> */',
+            ],
+            [
+                '<?php /** @param null|callable(null|foo, null|bar): array<string, T> $callback */',
+                '<?php /** @param null|callable(foo|null, bar|null): array<string, T> $callback */',
+            ],
         ];
     }
 
@@ -278,6 +294,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
             [
+                '<?php /** @return array<int, callable(array<string, string|null> , DateTime): bool> */',
                 '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
             ],
         ];
@@ -621,7 +638,11 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @var Foo[]|null|Foo|Foo\Bar|Foo_Bar */',
             ],
             [
+                '<?php /** @return array<int, callable(array<string, string|null> , DateTime): bool> */',
                 '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
+            ],
+            [
+                '<?php /** @var ?Deferred<TestLocations> */',
             ],
         ];
     }

@@ -179,4 +179,90 @@ final class TypeExpressionTest extends TestCase
         yield ['bool', false];
         yield ['string', false];
     }
+
+    /**
+     * @dataProvider provideSortUnionTypesCases
+     */
+    public function testSortUnionTypes(string $typesExpression, string $expectResult): void
+    {
+        $expression = new TypeExpression($typesExpression, null, []);
+
+        $expression->sortUnionTypes(static function (TypeExpression $a, TypeExpression $b): int {
+            return strcasecmp($a->toString(), $b->toString());
+        });
+
+        static::assertSame($expectResult, $expression->toString());
+    }
+
+    public function provideSortUnionTypesCases(): iterable
+    {
+        yield 'not a union type' => [
+            'int',
+            'int',
+        ];
+        yield 'simple' => [
+            'int|bool',
+            'bool|int',
+        ];
+        yield 'simple in generic' => [
+            'array<int|bool>',
+            'array<bool|int>',
+        ];
+        yield 'generic with multiple types' => [
+            'array<int|bool, string|float>',
+            'array<bool|int, float|string>',
+        ];
+        yield 'simple in array shape with int key' => [
+            'array{0: int|bool}',
+            'array{0: bool|int}',
+        ];
+        yield 'simple in array shape with string key' => [
+            'array{"foo": int|bool}',
+            'array{"foo": bool|int}',
+        ];
+        yield 'simple in array shape with multiple keys' => [
+            'array{0: int|bool, "foo": int|bool}',
+            'array{0: bool|int, "foo": bool|int}',
+        ];
+        yield 'simple in callable argument' => [
+            'callable(int|bool)',
+            'callable(bool|int)',
+        ];
+        yield 'callable with multiple arguments' => [
+            'callable(int|bool, null|array)',
+            'callable(bool|int, array|null)',
+        ];
+        yield 'simple in callable return type' => [
+            'callable(): string|float',
+            'callable(): float|string',
+        ];
+        yield 'simple in closure argument' => [
+            'Closure(int|bool)',
+            'Closure(bool|int)',
+        ];
+        yield 'closure with multiple arguments' => [
+            'Closure(int|bool, null|array)',
+            'Closure(bool|int, array|null)',
+        ];
+        yield 'simple in closure return type' => [
+            'Closure(): string|float',
+            'Closure(): float|string',
+        ];
+        yield 'with multiple nesting levels' => [
+            'array{0: Foo<int|bool>|Bar<callable(string|float|array<int|bool>): Foo|Bar>}',
+            'array{0: Bar<callable(array<bool|int>|float|string): Bar|Foo>|Foo<bool|int>}',
+        ];
+        yield 'nullable generic' => [
+            '?array<Foo|Bar>',
+            '?array<Bar|Foo>',
+        ];
+        yield 'nullable callable' => [
+            '?callable(Foo|Bar): Foo|Bar',
+            '?callable(Bar|Foo): Bar|Foo',
+        ];
+        yield 'nullable array shape' => [
+            '?array{0: Foo|Bar}',
+            '?array{0: Bar|Foo}',
+        ];
+    }
 }
