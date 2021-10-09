@@ -42,27 +42,22 @@ final class ListSyntaxFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @dataProvider provideFixToShortSyntaxCases
-     */
-    public function testFixToShortSyntax(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['syntax' => 'short']);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixToLongSyntaxCases(): array
+    public function provideFixToLongSyntaxCases(): \Generator
     {
         // reverse testing
         $shortCases = $this->provideFixToShortSyntaxCases();
-        $cases = [];
+
         foreach ($shortCases as $label => $shortCase) {
-            $cases[$label] = [$shortCase[1], $shortCase[0]];
+            if ('messy comments case' === $label) {
+                continue;
+            }
+
+            yield $label => [$shortCase[1], $shortCase[0]];
         }
 
         // the reverse of this is different because of all the comments and white space,
         // therefore we override with a similar case here
-        $cases['comment case'] = [
+        yield 'comment case' => [
             '<?php
 #
 list(#
@@ -81,7 +76,7 @@ $a#
 ;#',
         ];
 
-        $cases[] = ['<?php
+        yield ['<?php
 
 class Test
 {
@@ -92,9 +87,16 @@ class Test
 }',
         ];
 
-        $cases[] = ['<?php [$b[$a]] = $foo();'];
+        yield ['<?php [$b[$a]] = $foo();'];
+    }
 
-        return $cases;
+    /**
+     * @dataProvider provideFixToShortSyntaxCases
+     */
+    public function testFixToShortSyntax(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['syntax' => 'short']);
+        $this->doTest($expected, $input);
     }
 
     public function provideFixToShortSyntaxCases(): array
@@ -122,7 +124,7 @@ class Test
 list(//
     $x) =/**/$a?>',
             ],
-            'comment case' => [
+            'messy comments case' => [
                 '<?php
 #a
 #g
@@ -167,6 +169,10 @@ $a;#
             [
                 '<?php [[$a]] = $foo();',
                 '<?php list(list($a)) = $foo();',
+            ],
+            [
+                '<?php foreach ($z as [$a, $b]) {}',
+                '<?php foreach ($z as list($a, $b)) {}',
             ],
         ];
     }

@@ -172,6 +172,10 @@ final class SquareBraceTransformer extends AbstractTransformer
             return false;
         }
 
+        if ($prevToken->isGivenKind(T_AS)) {
+            return true;
+        }
+
         $type = Tokens::detectBlockType($tokens[$index]);
         $end = $tokens->findBlockEnd($type['type'], $index);
 

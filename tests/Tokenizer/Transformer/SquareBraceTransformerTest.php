@@ -318,6 +318,13 @@ class Test
                     25 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ],
             ],
+            [
+                '<?php foreach ($z as [$a, $b]) {}',
+                [
+                    8 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
         ];
     }
 
