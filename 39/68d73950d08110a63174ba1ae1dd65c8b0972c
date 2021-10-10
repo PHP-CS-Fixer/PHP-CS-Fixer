@@ -1,0 +1,67 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-09T11:54:11Z
+
+[![Coverage Status](https://coveralls.io/builds/43386967/badge)](https://coveralls.io/builds/43386967)
+
+Coverage increased (+0.0007%) to 92.82% when pulling **b2bee6b0307d7137b4afc28a6620ab9eb16b198d on SpacePossum:6062** into **39192f5912a5ed7ce48d1bb2aff54067ad4d390b on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by jacekciach at 2021-10-09T12:22:57Z
+
+@SpacePossum I've checked out the branch: the fix works.
+
+```diff
+$ ./php-cs-fixer fix --dry-run -vvv --diff --using-cache=no --config=../php-cs-fixer-bug/.php-cs-fixer.dist.php ../php-cs-fixer-bug/testcase/
+PHP CS Fixer 3.2.2-DEV by Fabien Potencier and Dariusz Ruminski
+Runtime: PHP 7.2.18
+Loaded config default from "../php-cs-fixer-bug/.php-cs-fixer.dist.php".
+Paths from configuration file have been overridden by paths provided as command arguments.
+F                                                                                                                                                       1 / 1 (100%)
+Legend: ?-unknown, I-invalid file syntax (file ignored), S-skipped (cached or empty file), .-no changes, F-fixed, E-error
+   1) php-cs-fixer-bug/testcase/test.php (list_syntax)
+      ---------- begin diff ----------
+--- /home/jciach/php/php-cs-fixer-bug/testcase/test.php
++++ /home/jciach/php/php-cs-fixer-bug/testcase/test.php
+@@ -1,27 +1,27 @@
+ <?php
+
+-foreach ($iterable as [
++foreach ($iterable as list(
+     'a' => $a,
+     'b' => $b,
+-]) {
++)) {
+     // do something
+ }
+
+-foreach ($iterable as [
++foreach ($iterable as list(
+     $a,
+     $b,
+-]) {
++)) {
+     // do something
+ }
+
+ $result = $pdo->query("SELECT id, name FROM employees");
+-while ([$id, $name] = $result->fetch(PDO::FETCH_NUM)) {
++while (list($id, $name) = $result->fetch(PDO::FETCH_NUM)) {
+     echo "id: $id, name: $name\n";
+ }
+
+-[$a, $b] = $array;
++list($a, $b) = $array;
+
+-[
++list(
+     $a,
+     $b,
+-] = $array;
++) = $array;
+
+      ----------- end diff -----------
+
+Checked all files in 0.068 seconds, 12.000 MB memory used
+```
