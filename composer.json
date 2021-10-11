@@ -26,6 +26,7 @@
         "symfony/filesystem": "^4.4.20 || ^5.0",
         "symfony/finder": "^4.4.20 || ^5.0",
         "symfony/options-resolver": "^4.4.20 || ^5.0",
+        "symfony/polyfill-mbstring": "^1.23",
         "symfony/polyfill-php72": "^1.23",
         "symfony/polyfill-php80": "^1.23",
         "symfony/polyfill-php81": "^1.23",
@@ -50,8 +51,7 @@
     },
     "suggest": {
         "ext-dom": "For handling output formats in XML",
-        "ext-mbstring": "For handling non-UTF8 characters.",
-        "symfony/polyfill-mbstring": "When enabling `ext-mbstring` is not possible."
+        "ext-mbstring": "For handling non-UTF8 characters."
     },
     "config": {
         "sort-packages": true

@@ -104,6 +104,10 @@ final class UtilsTest extends TestCase
                 'mr_t',
                 'MrT',
             ],
+            [
+                'voyage_éclair',
+                'VoyageÉclair',
+            ],
         ];
     }
 
