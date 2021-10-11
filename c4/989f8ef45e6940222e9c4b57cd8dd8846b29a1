@@ -1,0 +1,45 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-06T05:14:48Z
+
+[![Coverage Status](https://coveralls.io/builds/43398451/badge)](https://coveralls.io/builds/43398451)
+
+Coverage increased (+0.009%) to 92.828% when pulling **88471a36d31704c8523218e3ff7440ae3e432f28 on paulbalandan:utils-multibyte** into **3968d73950d08110a63174ba1ae1dd65c8b0972c on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-06T06:08:12Z
+
+Hi and thanks for the PR!
+
+Currently we don't require the `mb_ext` , nor do we pollyfil it. Not sure what would be best way forward, making it a requirement, polyfil it using the SF package or adding a `function_exist()` check with a fallback with maybe a custom solution.
+Thoughts @keradus , @julienfalque @kubawerlos ?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-10-06T08:00:58Z
+
+if we need mb_* support, i would require polyfill
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-10-06T10:16:16Z
+
+I have no strong opinion about this. Requiring the polyfill would increase the tool's weight but the extension might not be widespread enough to avoid it. Anyway, whatever choice we make, it should be required in `composer.json`.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-10T09:31:53Z
+
+I know this looks like scope creep, yet I feel like if we go this way we should take care of some other points in the code effected by this as well.
+
+There are a few spots we do `function_exists('mb_*`. With the polyfil now added we should check if these will now always return `true`. We have to check if these have no unwanted side effects (for example if the polyfil does not behave exactly as the extension).
+
+Places are:
+* https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.2.1/src/Cache/Signature.php#L94
+* https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.2.1/src/Fixer/Phpdoc/PhpdocAnnotationWithoutDotFixer.php#L123
+* https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v3.2.1/src/Fixer/Alias/MbStrFunctionsFixer.php#L61
+
+For the last one, `MbStrFunctionsFixer`, I think that one is already good as it checks if the functions are internal.
+
+Btw. nice work on updating the regex, so close to RTM from me :)
