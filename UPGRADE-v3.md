@@ -91,6 +91,7 @@ Rule | Option | Change
 `ordered_imports`                        | `importsOrder`                               | option was renamed, use `imports_order`
 `ordered_imports`                        | `sortAlgorithm`                              | option was renamed, use `sort_algorithm`
 `php_unit_dedicate_assert`               | `functions`                                  | option was removed, use `target` instead
+`php_unit_test_annotation`               | `case`                                       | option was removed, use `php_unit_method_casing` rule instead
 
 ### Changed default values of options
 
