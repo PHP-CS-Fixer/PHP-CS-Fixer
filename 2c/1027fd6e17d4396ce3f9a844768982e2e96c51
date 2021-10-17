@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-13T18:10:55Z
+
+[![Coverage Status](https://coveralls.io/builds/43483339/badge)](https://coveralls.io/builds/43483339)
+
+Coverage remained the same at 92.828% when pulling **195d1b315228a45f01e8230fcad9d82ce8ff6938 on kubawerlos:update_upgrade_doc_with_php_unit_method_casing** into **c4989f8ef45e6940222e9c4b57cd8dd8846b29a1 on FriendsOfPHP:master**.
