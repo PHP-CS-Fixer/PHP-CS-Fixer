@@ -255,6 +255,35 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testGenerics(): void
+    {
+        $this->fixer->configure(['groups' => ['simple', 'meta']]);
+        $this->doTest(
+            '<?php
+            /**
+             * @param array<int, object> $a
+             * @param array<iterable> $b
+             * @param array<parent|$this|self> $c
+             * @param array<\int, \object> $d
+             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
+             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
+             *
+             * @return array<int, array<string, array<int, DoNotChangeThisAsThisIsAClass>>>
+             */',
+            '<?php
+            /**
+             * @param ARRAY<INT, OBJECT> $a
+             * @param ARRAY<ITERABLE> $b
+             * @param array<Parent|$This|Self> $c
+             * @param ARRAY<\INT, \OBJECT> $d
+             * @param iterable<Foo\Int\Bar|Foo\Int|Int\Bar> $thisShouldNotBeChanged
+             * @param iterable<BOOLBOOLBOOL|INTINTINT|ARRAY_BOOL_INT_STRING_> $thisShouldNotBeChangedNeither
+             *
+             * @return ARRAY<INT, ARRAY<STRING, ARRAY<INT, DoNotChangeThisAsThisIsAClass>>>
+             */'
+        );
+    }
+
     public function testWrongConfig(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
