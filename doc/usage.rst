@@ -45,9 +45,9 @@ project:
 
 .. code-block:: console
 
-    $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR2
+    $ php php-cs-fixer.phar fix /path/to/project --rules=@PSR12
 
-By default the ``PSR1`` and ``PSR2`` rules are used. If the ``--rules`` option is used rules from config files are ignored.
+By default the ``PSR12`` rules are used. If the ``--rules`` option is used rules from config files are ignored.
 
 The ``--rules`` option lets you choose the exact rules to apply (the rule names must be separated by a comma):
 
