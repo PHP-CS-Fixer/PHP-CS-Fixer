@@ -34,6 +34,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
             'single_item_single_line' => false,
             'single_line' => false,
             'space_before_parenthesis' => false,
+            'inline_constructor_arguments' => true,
         ];
 
         $fixer = new ClassDefinitionFixer();
@@ -97,7 +98,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
-            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
+            '/^\[class_definition\] Invalid configuration: The option "a" does not exist\. Defined options are: "inline_constructor_arguments", "multi_line_extends_each_single_line", "single_item_single_line", "single_line", "space_before_parenthesis"\.$/'
         );
 
         $fixer = new ClassDefinitionFixer();
@@ -149,8 +150,28 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
                 "<?php \$a = new\n class  (  ){};",
             ],
             [
+                '<?php $a = new class(  ) {};',
+                "<?php \$a = new\n class  (  ){};",
+                ['inline_constructor_arguments' => false],
+            ],
+            [
+                '<?php $a = new class implements Foo {};',
+                "<?php \$a = new\n class    implements Foo {};",
+                ['inline_constructor_arguments' => false],
+            ],
+            [
+                '<?php $a = new class( $this->foo() , bar ( $a) ) {};',
+                "<?php \$a = new\n class  ( \$this->foo() , bar ( \$a) ){};",
+                ['inline_constructor_arguments' => false],
+            ],
+            [
                 '<?php $a = new class(10, 1, /**/ 2) {};',
                 '<?php $a = new class(  10, 1,/**/2  ){};',
+            ],
+            [
+                '<?php $a = new class(  10, 1,/**/2  ) {};',
+                '<?php $a = new class(  10, 1,/**/2  ){};',
+                ['inline_constructor_arguments' => false],
             ],
             [
                 '<?php $a = new class(2) {};',
@@ -159,6 +180,21 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
             [
                 '<?php $a = new class($this->prop) {};',
                 '<?php $a = new class(   $this->prop   ){};',
+            ],
+            [
+                '<?php $a = new class(   $this->prop   ) {};',
+                '<?php $a = new class(   $this->prop   ){};',
+                ['inline_constructor_arguments' => false],
+            ],
+            [
+                "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
+                "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements  A, \t B{};",
+                ['inline_constructor_arguments' => false],
+            ],
+            [
+                "<?php \$a = new class(\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d) implements A, B {};",
+                "<?php \$a = new   class  (\n\t\$a,\n\t\$b,\n\t\$c,\n\t\$d)    implements  A, \t B{};",
+                ['inline_constructor_arguments' => false],
             ],
             [
                 '<?php $a = new class($this->prop, $v[3], 4) {};',
@@ -172,7 +208,7 @@ $instance = new class extends \Foo implements
     \Serializable
 {};',
                 '<?php
-$instance = new class extends \Foo implements
+$instance = new class   extends \Foo  implements
 \ArrayAccess,\Countable,\Serializable{};',
             ],
             'PSR-12 Implements Parenthesis on the next line.' => [
@@ -268,6 +304,11 @@ A#
                 '<?php $z = new class () {};',
                 '<?php $z = new class   ()  {};',
                 ['space_before_parenthesis' => true],
+            ],
+            'space_before_parenthesis and inline_constructor_arguments' => [
+                '<?php $z = new class ( static::foo($this->bar())  ,baz() ) {};',
+                '<?php $z = new class   ( static::foo($this->bar())  ,baz() )  {};',
+                ['space_before_parenthesis' => true, 'inline_constructor_arguments' => false],
             ],
         ];
     }

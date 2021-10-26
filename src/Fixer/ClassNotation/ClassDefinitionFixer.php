@@ -93,6 +93,10 @@ $foo = new class(){};
 ',
                     ['space_before_parenthesis' => true]
                 ),
+                new CodeSample(
+                    "<?php\n\$foo = new class(\n    \$bar,\n    \$baz\n) {};\n",
+                    ['inline_constructor_arguments' => true]
+                ),
             ]
         );
     }
@@ -151,6 +155,10 @@ $foo = new class(){};
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
+            (new FixerOptionBuilder('inline_constructor_arguments', 'Whether constructor argument list in anonymous classes should be single line.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(true)
+                ->getOption(),
         ]);
     }
 
@@ -191,6 +199,18 @@ $foo = new class(){};
             $end = $classDefInfo['extends']['start'];
         } else {
             $end = $tokens->getPrevNonWhitespace($classDefInfo['open']);
+        }
+
+        if ($classDefInfo['anonymousClass'] && !$this->configuration['inline_constructor_arguments']) {
+            if (!$tokens[$end]->equals(')')) { // anonymous class with `extends` and/or `implements`
+                $start = $tokens->getPrevMeaningfulToken($end);
+                $this->makeClassyDefinitionSingleLine($tokens, $start, $end);
+                $end = $start;
+            }
+
+            if ($tokens[$end]->equals(')')) { // skip constructor arguments of anonymous class
+                $end = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $end);
+            }
         }
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.

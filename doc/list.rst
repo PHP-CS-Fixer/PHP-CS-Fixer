@@ -196,6 +196,10 @@ List of Available Rules
      | Whether there should be a single space after the parenthesis of anonymous class (PSR12) or not.
      | Allowed types: ``bool``
      | Default value: ``false``
+   - | ``inline_constructor_arguments``
+     | Whether constructor argument list in anonymous classes should be single line.
+     | Allowed types: ``bool``
+     | Default value: ``true``
 
 
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_

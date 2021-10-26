@@ -135,7 +135,7 @@ SAMPLE
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $expectedTokens = [T_LIST, T_FUNCTION, CT::T_USE_LAMBDA, T_FN];
+        $expectedTokens = [T_LIST, T_FUNCTION, CT::T_USE_LAMBDA, T_FN, T_CLASS];
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             $token = $tokens[$index];

@@ -14,7 +14,7 @@ Rules
   ``['allow_single_line_anonymous_class_with_empty_body' => true]``
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
-  ``['space_before_parenthesis' => true]``
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 - `compact_nullable_typehint <./../rules/whitespace/compact_nullable_typehint.rst>`_
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_
