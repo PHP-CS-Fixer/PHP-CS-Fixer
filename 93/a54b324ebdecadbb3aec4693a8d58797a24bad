@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-21T20:22:53Z
+
+[![Coverage Status](https://coveralls.io/builds/43345892/badge)](https://coveralls.io/builds/43345892)
+
+Coverage remained the same at 92.817% when pulling **d1b593e9b8f089d5f44d36bd4adaba82aa9406ef on kubawerlos:run_static_code_analysis_on_php_80** into **0708baf6ad6e22ce3a5d8af75bfa42916866e90e on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-10-06T17:06:27Z
+
+any chance to move out of Draft here?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-10-06T17:14:01Z
+
+> any chance to move out of Draft here?
+
+@keradus want to merge with this:
+```
+"humbug/php-scoper": "dev-master as 0.14.2",
+```
+?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-10-06T17:31:34Z
+
+can it work for us on 0.15.0?
+what exactly we need from PHP scoper? any concrete PR that got merged and not released? maybe we can ask for release?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2021-10-06T17:46:50Z
+
+> can it work for us on 0.15.0? what exactly we need from PHP scoper? any concrete PR that got merged and not released? maybe we can ask for release?
+
+No, 0.15.0 won't help us, Scoper in this latest release requires `symfony/console` up to version 4: https://github.com/humbug/php-scoper/blob/0.15.0/composer.json#L27
+ComposerRequireChecker in all versions supporting PHP 8 required `symfony/console` 5: https://github.com/maglnet/ComposerRequireChecker/blob/3.0.0/composer.json#L34
+
+Scoper on master requires what we need: https://github.com/humbug/php-scoper/blob/master/composer.json so release would solve our problem.
