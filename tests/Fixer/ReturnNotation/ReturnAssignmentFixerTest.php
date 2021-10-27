@@ -392,13 +392,13 @@ function A($b)
                     function a()
                     {
                         return $c + 1; /*
-var names are case insensitive */ }
+var names are case-insensitive */ }
                 ',
                 '<?php
                     function a()
                     {
                         $A = $c + 1; /*
-var names are case insensitive */ return $a   ;}
+var names are case-insensitive */ return $a   ;}
                 ',
             ],
             [

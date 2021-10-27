@@ -384,7 +384,7 @@ abstract class AbstractFixerTestCase extends TestCase
             throw new \InvalidArgumentException('Input parameter must not be equal to expected parameter.');
         }
 
-        $file = $file ?: $this->getTestFile();
+        $file = $file ?? $this->getTestFile();
         $fileIsSupported = $this->fixer->supports($file);
 
         if (null !== $input) {

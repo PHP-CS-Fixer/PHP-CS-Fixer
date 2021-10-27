@@ -169,7 +169,7 @@ class Number
 
     private \Foo&Bar $number5;
 
-    private ?Bar $number6; // ? cannot be part of an union in PHP8
+    private ?Bar $number6; // ? cannot be part of a union in PHP8
 }
 ',
             [

@@ -843,8 +843,7 @@ class Tokens extends \SplFixedArray
     {
         $itemsCount = 0;
         foreach ($slices as $slice) {
-            $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
-            $itemsCount += \count($slice);
+            $itemsCount += \is_array($slice) || $slice instanceof self ? \count($slice) : 1;
         }
 
         if (0 === $itemsCount) {

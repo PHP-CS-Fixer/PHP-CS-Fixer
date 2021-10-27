@@ -203,7 +203,7 @@ EOF;
         $expected = <<<'EOF'
 <?php
     /**
-     * Does stuffs with stuffs.
+     * Does stuff with stuffs.
      *
      * @param array $stuffs {
      *     @var bool $foo
@@ -216,7 +216,7 @@ EOF;
         $input = <<<'EOF'
 <?php
     /**
-     * Does stuffs with stuffs.
+     * Does stuff with stuffs.
      *
      * @param array $stuffs {
      *     @var Bool $foo

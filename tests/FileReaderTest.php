@@ -31,7 +31,7 @@ final class FileReaderTest extends TestCase
     {
         parent::tearDownAfterClass();
 
-        // testReadStdinCaches registers a stream wrapper for php so we can mock
+        // testReadStdinCaches registers a stream wrapper for PHP so we can mock
         // php://stdin. Restore the original stream wrapper after this class so
         // we don't affect other tests running after it
         stream_wrapper_restore('php');

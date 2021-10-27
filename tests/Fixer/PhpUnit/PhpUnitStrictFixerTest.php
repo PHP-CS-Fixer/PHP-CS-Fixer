@@ -60,8 +60,8 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
             ];
 
             $cases[] = [
-                self::generateTest("\$this->{$methodAfter}(1, 2, 'descr');"),
-                self::generateTest("\$this->{$methodBefore}(1, 2, 'descr');"),
+                self::generateTest("\$this->{$methodAfter}(1, 2, 'description');"),
+                self::generateTest("\$this->{$methodBefore}(1, 2, 'description');"),
             ];
 
             $cases[] = [

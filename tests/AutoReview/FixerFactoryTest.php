@@ -685,7 +685,7 @@ final class FixerFactoryTest extends TestCase
     {
         return [
             'encoding' => 0, // Expected "encoding" fixer to have the highest priority.
-            'full_opening_tag' => 1, // Expected "full_opening_tag" fixer has second highest priority.
+            'full_opening_tag' => 1, // Expected "full_opening_tag" fixer has second-highest priority.
             'single_blank_line_at_eof' => -1, // Expected "single_blank_line_at_eof" to have the lowest priority.
         ];
     }

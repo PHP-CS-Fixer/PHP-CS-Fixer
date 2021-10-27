@@ -34,7 +34,7 @@ final class ListFilesCommandTest extends TestCase
         ]);
 
         $expectedPath = './tests/Fixtures/ListFilesTest/needs-fixing/needs-fixing.php';
-        // make the test also work on windows
+        // make the test also work on Windows
         $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
         static::assertSame(0, $commandTester->getStatusCode());

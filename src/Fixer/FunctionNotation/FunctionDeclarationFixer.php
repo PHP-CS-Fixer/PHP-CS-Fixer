@@ -131,6 +131,7 @@ $f = fn () => null;
             }
 
             $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
+
             if (!$tokens[$startParenthesisIndex]->equals('(')) {
                 continue;
             }
@@ -171,7 +172,6 @@ $f = fn () => null;
 
             // remove single-line edge whitespaces inside parameters list parentheses
             $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
-
             $isLambda = $tokensAnalyzer->isLambda($index);
 
             // remove whitespace before (
@@ -194,6 +194,7 @@ $f = fn () => null;
 
             if ($isLambda) {
                 $prev = $tokens->getPrevMeaningfulToken($index);
+
                 if ($tokens[$prev]->isGivenKind(T_STATIC)) {
                     // fix whitespace after T_STATIC
                     // eg: `$a = static     function(){};` => `$a = static function(){};`
@@ -218,12 +219,12 @@ $f = fn () => null;
 
     private function fixParenthesisInnerEdge(Tokens $tokens, int $start, int $end): void
     {
-        // remove single-line whitespace before )
+        // remove single-line whitespace before `)`
         if ($tokens[$end - 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
             $tokens->clearAt($end - 1);
         }
 
-        // remove single-line whitespace after (
+        // remove single-line whitespace after `(`
         if ($tokens[$start + 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
             $tokens->clearAt($start + 1);
         }

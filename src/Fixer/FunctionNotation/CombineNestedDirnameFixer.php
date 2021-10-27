@@ -90,14 +90,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             }
 
             $prev = $tokens->getPrevMeaningfulToken($prev);
-
             $firstArgumentEnd = $dirnameInfo['end'];
-
             $dirnameInfoArray = [$dirnameInfo];
 
             while ($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) {
                 $dirnameInfoArray[] = $dirnameInfo;
-
                 $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indexes'][0]);
 
                 if (!$tokens[$prev]->equals('(')) {
@@ -133,7 +130,6 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         }
 
         $info = ['indexes' => []];
-
         $prev = $tokens->getPrevMeaningfulToken($index);
 
         if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
@@ -225,9 +221,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         } else {
             $prev = $tokens->getPrevMeaningfulToken($outerDirnameInfo['end']);
             $items = [];
+
             if (!$tokens[$prev]->equals(',')) {
                 $items = [new Token(','), new Token([T_WHITESPACE, ' '])];
             }
+
             $items[] = $levelsToken;
             $tokens->insertAt($outerDirnameInfo['end'], $items);
         }

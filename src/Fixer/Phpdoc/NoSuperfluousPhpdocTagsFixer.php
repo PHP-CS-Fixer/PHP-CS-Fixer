@@ -107,7 +107,6 @@ class Foo {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $namespaceUseAnalyzer = new NamespaceUsesAnalyzer();
-
         $shortNames = [];
 
         foreach ($namespaceUseAnalyzer->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {

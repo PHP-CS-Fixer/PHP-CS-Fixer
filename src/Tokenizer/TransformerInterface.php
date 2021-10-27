@@ -56,7 +56,7 @@ interface TransformerInterface
      *
      * Custom Token kinds from Transformers are always registered, but sometimes
      * there is no need to analyse the Tokens if for sure we cannot find examined
-     * token kind, eg transforming `T_FUNCTION` in `<?php use function Foo\\bar;`
+     * token kind, e.g. transforming `T_FUNCTION` in `<?php use function Foo\\bar;`
      * code.
      */
     public function getRequiredPhpVersionId(): int;

@@ -327,7 +327,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
             $tokens[$assignVarIndex - 1] = new Token([T_WHITESPACE, $originalIndent]);
         }
 
-        // remove trailing space after the new return statement which might be added during the clean up process
+        // remove trailing space after the new return statement which might be added during the cleanup process
         $nextIndex = $tokens->getNonEmptySibling($assignVarIndex, 1);
         if (!$tokens[$nextIndex]->isWhitespace()) {
             $tokens->insertAt($nextIndex, new Token([T_WHITESPACE, ' ']));

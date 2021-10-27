@@ -184,7 +184,7 @@ EOF;
     /**
      * Clients accept an array of constructor parameters.
      *
-     * Here's an example of creating a client using an URI template for the
+     * Here's an example of creating a client using a URI template for the
      * client's base_url and an array of default request options to apply
      * to each request:
      *

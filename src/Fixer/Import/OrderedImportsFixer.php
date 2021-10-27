@@ -504,7 +504,7 @@ use Bar;
         $index = -1;
         $usesOrder = [];
 
-        // Loop trough the index but use original index order
+        // Loop through the index but use original index order
         foreach ($indexes as $v) {
             $usesOrder[$originalIndexes[++$index]] = $v;
         }

@@ -312,40 +312,40 @@ final class TokenTest extends TestCase
         static::assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
-    public function provideEqualsCases(): array
+    public function provideEqualsCases(): \Generator
     {
         $brace = $this->getBraceToken();
         $function = new Token([T_FUNCTION, 'function', 1]);
 
-        return [
-            [$brace, false, '!'],
-            [$brace, false, '!', false],
-            [$brace, true, '('],
-            [$brace, true, '(', false],
-            [$function, false, '('],
-            [$function, false, '(', false],
+        yield [$brace, false, '!'];
+        yield [$brace, false, '!', false];
+        yield [$brace, true, '('];
+        yield [$brace, true, '(', false];
+        yield [$function, false, '('];
+        yield [$function, false, '(', false];
 
-            [$function, false, [T_NAMESPACE]],
-            [$function, false, [T_NAMESPACE], false],
-            [$function, false, [T_VARIABLE, 'function']],
-            [$function, false, [T_VARIABLE, 'function'], false],
-            [$function, false, [T_VARIABLE, 'Function']],
-            [$function, false, [T_VARIABLE, 'Function'], false],
-            [$function, true, [T_FUNCTION]],
-            [$function, true, [T_FUNCTION], false],
-            [$function, true, [T_FUNCTION, 'function']],
-            [$function, true, [T_FUNCTION, 'function'], false],
-            [$function, false, [T_FUNCTION, 'Function']],
-            [$function, true, [T_FUNCTION, 'Function'], false],
-            [$function, false, [T_FUNCTION, 'junction'], false],
+        yield [$function, false, [T_NAMESPACE]];
+        yield [$function, false, [T_NAMESPACE], false];
+        yield [$function, false, [T_VARIABLE, 'function']];
+        yield [$function, false, [T_VARIABLE, 'function'], false];
+        yield [$function, false, [T_VARIABLE, 'Function']];
+        yield [$function, false, [T_VARIABLE, 'Function'], false];
+        yield [$function, true, [T_FUNCTION]];
+        yield [$function, true, [T_FUNCTION], false];
+        yield [$function, true, [T_FUNCTION, 'function']];
+        yield [$function, true, [T_FUNCTION, 'function'], false];
+        yield [$function, false, [T_FUNCTION, 'Function']];
+        yield [$function, true, [T_FUNCTION, 'Function'], false];
+        yield [$function, false, [T_FUNCTION, 'junction'], false];
 
-            [$function, true, new Token([T_FUNCTION, 'function'])],
-            [$function, false, new Token([T_FUNCTION, 'Function'])],
-            [$function, true, new Token([T_FUNCTION, 'Function']), false],
+        yield [$function, true, new Token([T_FUNCTION, 'function'])];
+        yield [$function, false, new Token([T_FUNCTION, 'Function'])];
+        yield [$function, true, new Token([T_FUNCTION, 'Function']), false];
 
-            // if it is an array any additional field is checked too
-            [$function, false, [T_FUNCTION, 'function', 'unexpected']],
-        ];
+        // if it is an array any additional field is checked too
+        yield [$function, false, [T_FUNCTION, 'function', 'unexpected']];
+
+        yield [new Token('&'), true, '&'];
     }
 
     public function testEqualsAnyDefaultIsCaseSensitive(): void
@@ -366,21 +366,19 @@ final class TokenTest extends TestCase
         static::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
-    public function provideEqualsAnyCases(): array
+    public function provideEqualsAnyCases(): \Generator
     {
         $brace = $this->getBraceToken();
         $foreach = $this->getForeachToken();
 
-        return [
-            [false, []],
-            [false, [$brace]],
-            [false, [$brace, $foreach]],
-            [true, [$brace, $foreach, [T_FUNCTION]]],
-            [true, [$brace, $foreach, [T_FUNCTION, 'function']]],
-            [false, [$brace, $foreach, [T_FUNCTION, 'Function']]],
-            [true, [$brace, $foreach, [T_FUNCTION, 'Function']], false],
-            [false, [[T_VARIABLE, 'junction'], [T_FUNCTION, 'junction']], false],
-        ];
+        yield [false, []];
+        yield [false, [$brace]];
+        yield [false, [$brace, $foreach]];
+        yield [true, [$brace, $foreach, [T_FUNCTION]]];
+        yield [true, [$brace, $foreach, [T_FUNCTION, 'function']]];
+        yield [false, [$brace, $foreach, [T_FUNCTION, 'Function']]];
+        yield [true, [$brace, $foreach, [T_FUNCTION, 'Function']], false];
+        yield [false, [[T_VARIABLE, 'junction'], [T_FUNCTION, 'junction']], false];
     }
 
     /**
@@ -393,23 +391,20 @@ final class TokenTest extends TestCase
         static::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
-    public function provideIsKeyCaseSensitiveCases(): array
+    public function provideIsKeyCaseSensitiveCases(): \Generator
     {
-        return [
-            [true, true, 0],
-            [true, true, 1],
-            [true, [], 0],
-            [true, [true], 0],
-            [true, [false, true], 1],
-            [true, [false, true, false], 1],
-            [true, [false], 10],
-
-            [false, false, 10],
-            [false, [false], 0],
-            [false, [true, false], 1],
-            [false, [true, false, true], 1],
-            [false, [1 => false], 1],
-        ];
+        yield [true, true, 0];
+        yield [true, true, 1];
+        yield [true, [], 0];
+        yield [true, [true], 0];
+        yield [true, [false, true], 1];
+        yield [true, [false, true, false], 1];
+        yield [true, [false], 10];
+        yield [false, false, 10];
+        yield [false, [false], 0];
+        yield [false, [true, false], 1];
+        yield [false, [true, false, true], 1];
+        yield [false, [1 => false], 1];
     }
 
     /**

@@ -210,7 +210,6 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         }
 
         $tokens->overrideRange($callIndex, $callIndex, $newCallTokens);
-
         $prevIndex = $tokens->getPrevMeaningfulToken($callIndex);
 
         if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
@@ -221,14 +220,14 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     private function getTokensSubcollection(Tokens $tokens, int $indexStart, int $indexEnd): Tokens
     {
         $size = $indexEnd - $indexStart + 1;
-        $subcollection = new Tokens($size);
+        $subCollection = new Tokens($size);
 
         for ($i = 0; $i < $size; ++$i) {
             /** @var Token $toClone */
             $toClone = $tokens[$i + $indexStart];
-            $subcollection[$i] = clone $toClone;
+            $subCollection[$i] = clone $toClone;
         }
 
-        return $subcollection;
+        return $subCollection;
     }
 }

@@ -261,6 +261,7 @@ switch ($foo) {
         if (!$whitespaceToken->isGivenKind(T_WHITESPACE)) {
             if ($whitespaceToken->isGivenKind(T_OPEN_TAG)) {
                 $content = Preg::replace('/\R/', '', $content);
+
                 if (!Preg::match('/\R/', $whitespaceToken->getContent())) {
                     $tokens[$position - 1] = new Token([T_OPEN_TAG, Preg::replace('/\s+$/', $lineEnding, $whitespaceToken->getContent())]);
                 }
@@ -300,6 +301,7 @@ switch ($foo) {
 
         if ($whitespaceToken->isGivenKind(T_WHITESPACE)) {
             $content = Preg::replace($regex, '', $whitespaceToken->getContent());
+
             if ('' !== $content) {
                 $tokens[$whitespacePosition] = new Token([T_WHITESPACE, $content]);
             } else {
@@ -321,6 +323,7 @@ switch ($foo) {
             );
         } elseif ($initialToken->isGivenKind(T_CLASS)) {
             $openParenthesisPosition = $tokens->getNextMeaningfulToken($position);
+
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
                 $position = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,

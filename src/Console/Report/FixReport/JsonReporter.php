@@ -36,24 +36,24 @@ final class JsonReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary): string
     {
-        $jFiles = [];
+        $jsonFiles = [];
 
         foreach ($reportSummary->getChanged() as $file => $fixResult) {
-            $jfile = ['name' => $file];
+            $jsonFile = ['name' => $file];
 
             if ($reportSummary->shouldAddAppliedFixers()) {
-                $jfile['appliedFixers'] = $fixResult['appliedFixers'];
+                $jsonFile['appliedFixers'] = $fixResult['appliedFixers'];
             }
 
             if (!empty($fixResult['diff'])) {
-                $jfile['diff'] = $fixResult['diff'];
+                $jsonFile['diff'] = $fixResult['diff'];
             }
 
-            $jFiles[] = $jfile;
+            $jsonFiles[] = $jsonFile;
         }
 
         $json = [
-            'files' => $jFiles,
+            'files' => $jsonFiles,
             'time' => [
                 'total' => round($reportSummary->getTime() / 1000, 3),
             ],

@@ -34,6 +34,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
         parent::setUpBeforeClass();
 
         $fixer = new NoUnneededControlParenthesesFixer();
+
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('statements' === $option->getName()) {
                 self::$defaultStatements = $option->getDefault();
@@ -547,10 +548,7 @@ enum UserStatus: string {
             }
 
             $this->fixer->configure($legacy ? [$statement] : ['statements' => [$statement]]);
-            $this->doTest(
-                $expected,
-                $withInput ? $input : null
-            );
+            $this->doTest($expected, $withInput ? $input : null);
         }
     }
 }
