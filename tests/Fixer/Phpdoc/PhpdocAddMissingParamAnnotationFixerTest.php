@@ -91,9 +91,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, ?array $config = null): void
     {
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
+        $this->fixer->configure($config ?? ['only_untyped' => false]);
 
         $this->doTest($expected, $input);
     }
@@ -371,10 +371,10 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     /**
      * @dataProvider provideMessyWhitespacesCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null, array $config = []): void
+    public function testMessyWhitespaces(string $expected, ?string $input = null, ?array $config = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        $this->fixer->configure($config ?: ['only_untyped' => false]);
+        $this->fixer->configure($config ?? ['only_untyped' => false]);
 
         $this->doTest($expected, $input);
     }

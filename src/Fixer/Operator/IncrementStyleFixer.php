@@ -106,26 +106,28 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
 
             if (self::STYLE_PRE === $this->configuration['style'] && $tokensAnalyzer->isUnarySuccessorOperator($index)) {
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($index)];
+
                 if (!$nextToken->equalsAny([';', ')'])) {
                     continue;
                 }
 
                 $startIndex = $this->findStart($tokens, $index);
-
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($startIndex)];
+
                 if ($prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG], ')'])) {
                     $tokens->clearAt($index);
                     $tokens->insertAt($startIndex, clone $token);
                 }
             } elseif (self::STYLE_POST === $this->configuration['style'] && $tokensAnalyzer->isUnaryPredecessorOperator($index)) {
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
                 if (!$prevToken->equalsAny([';', '{', '}', [T_OPEN_TAG], ')'])) {
                     continue;
                 }
 
                 $endIndex = $this->findEnd($tokens, $index);
-
                 $nextToken = $tokens[$tokens->getNextMeaningfulToken($endIndex)];
+
                 if ($nextToken->equalsAny([';', ')'])) {
                     $tokens->clearAt($index);
                     $tokens->insertAt($tokens->getNextNonWhitespace($endIndex), clone $token);
@@ -152,9 +154,11 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
             [T_VARIABLE],
         ])) {
             $blockType = Tokens::detectBlockType($nextToken);
+
             if (null !== $blockType) {
                 $nextIndex = $tokens->findBlockEnd($blockType['type'], $nextIndex);
             }
+
             $index = $nextIndex;
             $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             $nextToken = $tokens[$nextIndex];

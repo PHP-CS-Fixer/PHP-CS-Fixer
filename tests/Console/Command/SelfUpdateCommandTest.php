@@ -146,7 +146,7 @@ final class SelfUpdateCommandTest extends TestCase
         $minorContents = 'New minor version of PHP CS Fixer.';
         $majorContents = 'New major version of PHP CS Fixer.';
 
-        $upToDateDisplay = "\033[32mPHP CS Fixer is already up to date.\033[39m\n";
+        $upToDateDisplay = "\033[32mPHP CS Fixer is already up-to-date.\033[39m\n";
         $newMinorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$minorRelease}\033[39m)\n";
         $newMajorDisplay = "\033[32mPHP CS Fixer updated\033[39m (\033[33m{$currentVersion}\033[39m -> \033[33m{$majorRelease}\033[39m)\n";
         $majorInfoNoMinorDisplay = <<<OUTPUT

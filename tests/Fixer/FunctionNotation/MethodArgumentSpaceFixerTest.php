@@ -849,13 +849,11 @@ $example = function () use ($message1,$message2) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix56Cases(): array
+    public function provideFix56Cases(): \Generator
     {
-        return [
-            [
-                '<?php function A($c, ...$a){}',
-                '<?php function A($c ,...$a){}',
-            ],
+        yield [
+            '<?php function A($c, ...$a){}',
+            '<?php function A($c ,...$a){}',
         ];
     }
 
@@ -869,11 +867,10 @@ $example = function () use ($message1,$message2) {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases(): array
+    public function provideFix73Cases(): \Generator
     {
-        return [
-            [
-                <<<'EXPECTED'
+        yield [
+            <<<'EXPECTED'
 <?php
 foo(
     <<<'EOD'
@@ -882,8 +879,8 @@ foo(
     'baz'
 );
 EXPECTED
-                ,
-                <<<'INPUT'
+            ,
+            <<<'INPUT'
 <?php
 foo(
     <<<'EOD'
@@ -893,41 +890,43 @@ foo(
     'baz'
 );
 INPUT
-                ,
-                ['after_heredoc' => true],
-            ],
-            [
-                <<<'EXPECTED'
+            ,
+            ['after_heredoc' => true],
+        ];
+
+        yield [
+            <<<'EXPECTED'
 <?php
 foo(
     $bar,
     $baz,
 );
 EXPECTED
-                ,
-                null,
-                ['on_multiline' => 'ensure_fully_multiline'],
-            ],
-            [
-                '<?php
+            ,
+            null,
+            ['on_multiline' => 'ensure_fully_multiline'],
+        ];
+
+        yield [
+            '<?php
 functionCall(
     1,
     2,
     3,
 );',
-                '<?php
+            '<?php
 functionCall(
     1, 2,
     3,
 );',
-                [
-                    'on_multiline' => 'ensure_fully_multiline',
-                ],
-            ],
             [
-                '<?php foo(1, 2, 3, );',
-                '<?php foo(1,2,3,);',
+                'on_multiline' => 'ensure_fully_multiline',
             ],
+        ];
+
+        yield [
+            '<?php foo(1, 2, 3, );',
+            '<?php foo(1,2,3,);',
         ];
     }
 
@@ -941,22 +940,20 @@ functionCall(
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): array
+    public function provideFix74Cases(): \Generator
     {
-        return [
-            [
-                '<?php
+        yield [
+            '<?php
 $fn = fn(
     $test1,
     $test2
 ) => null;',
-                '<?php
+            '<?php
 $fn = fn(
     $test1, $test2
 ) => null;',
-                [
-                    'on_multiline' => 'ensure_fully_multiline',
-                ],
+            [
+                'on_multiline' => 'ensure_fully_multiline',
             ],
         ];
     }

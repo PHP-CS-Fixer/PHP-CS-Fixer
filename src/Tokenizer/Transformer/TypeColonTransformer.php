@@ -73,7 +73,7 @@ final class TypeColonTransformer extends AbstractTransformer
 
         $prevKinds = [T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA];
 
-        if (\PHP_VERSION_ID >= 70400) {
+        if (\defined('T_FN')) { // @TODO: drop condition when PHP 7.4+ is required
             $prevKinds[] = T_FN;
         }
 

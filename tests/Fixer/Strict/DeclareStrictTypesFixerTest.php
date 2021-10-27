@@ -132,7 +132,7 @@ $a = 456;
     public function provideDoNotFixCases(): array
     {
         return [
-            ['  <?php echo 123;'], // first statement must be a open tag
+            ['  <?php echo 123;'], // first statement must be an open tag
             ['<?= 123;'], // first token open with echo is not fixed
         ];
     }

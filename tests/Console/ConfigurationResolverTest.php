@@ -188,7 +188,7 @@ final class ConfigurationResolverTest extends TestCase
         $resolver = $this->createConfigurationResolver(
             ['path' => [$path]],
             null,
-            $cwdPath ?: ''
+            $cwdPath ?? ''
         );
 
         static::assertSame($expectedFile, $resolver->getConfigFile());

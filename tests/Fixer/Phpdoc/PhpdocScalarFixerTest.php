@@ -213,7 +213,7 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
         yield 'inline doc' => [
             '<?php
             /**
-             * Does stuffs with stuffs.
+             * Does stuff with stuffs.
              *
              * @param array $stuffs {
              *     @type bool $foo
@@ -223,7 +223,7 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
              ',
             '<?php
             /**
-             * Does stuffs with stuffs.
+             * Does stuff with stuffs.
              *
              * @param array $stuffs {
              *     @type boolean $foo

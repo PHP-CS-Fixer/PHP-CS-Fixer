@@ -94,6 +94,7 @@ class Foo
 
             // is it inside a namespace?
             $nspIndex = $tokens->getPrevTokenOfKind($index, [[T_NAMESPACE, 'namespace']]);
+
             if (null !== $nspIndex) {
                 $nspIndex = $tokens->getNextMeaningfulToken($nspIndex);
 
@@ -190,6 +191,7 @@ class Foo
                 for ($i = $php5['startIndex']; $i <= $php5['endIndex']; ++$i) {
                     $tokens->clearAt($i);
                 }
+
                 // rename the PHP4 one to __construct
                 $tokens[$php4['nameIndex']] = new Token([T_STRING, '__construct']);
 

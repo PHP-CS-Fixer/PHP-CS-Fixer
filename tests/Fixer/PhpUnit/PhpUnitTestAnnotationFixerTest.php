@@ -360,7 +360,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function provides() {}
 
     /**
-     * Im just a helper function but i have test in my name.
+     * I am just a helper function but I have test in my name.
      * I also have a doc Block
      *
      * @return Foo\Bar
@@ -371,7 +371,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     protected function setUp() {}
 
     /**
-     * I depend on the database function, but i already
+     * I depend on the database function, but I already
      * had test in my name and a docblock
      *
      * @depends testDatabase
@@ -402,7 +402,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     public function provides() {}
 
     /**
-     * Im just a helper function but i have test in my name.
+     * I am just a helper function but I have test in my name.
      * I also have a doc Block
      *
      * @return Foo\Bar
@@ -413,7 +413,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     protected function setUp() {}
 
     /**
-     * I depend on the database function, but i already
+     * I depend on the database function, but I already
      * had test in my name and a docblock
      *
      * @depends database
@@ -619,12 +619,12 @@ final class ProcessLinterProcessBuilderTest extends TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * Im a comment about the function
+     * I am a comment about the function
      */
     public function testIHateMyTestSuite() {}
 
     /**
-     * Im another comment about a function
+     * I am another comment about a function
      */
     public function testThisMakesNoSense() {}
 
@@ -647,12 +647,12 @@ class Test extends \PhpUnit\FrameWork\TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * Im a comment @test about the function
+     * I am a comment @test about the function
      */
     public function iHateMyTestSuite() {}
 
     /**
-     * Im another comment about a function @test
+     * I am another comment about a function @test
      */
     public function thisMakesNoSense() {}
 
@@ -739,7 +739,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * Im a comment @test about the function
+     * I am a comment @test about the function
      *
      * @test
      */
@@ -749,7 +749,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
 class Test extends \PhpUnit\FrameWork\TestCase
 {
     /**
-     * Im a comment @test about the function
+     * I am a comment @test about the function
      */
     public function iHateMyTestSuite() {}
 }',

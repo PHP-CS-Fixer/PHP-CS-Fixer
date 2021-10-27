@@ -131,7 +131,7 @@ namespace {
 
         $uniqueConfiguredExclude = array_unique($this->configuration['exclude']);
 
-        // Case sensitive constants handling
+        // Case-sensitive constants handling
         $constantsToEscape = array_values($this->configuration['include']);
 
         if (true === $this->configuration['fix_built_in']) {
@@ -147,7 +147,7 @@ namespace {
             $uniqueConfiguredExclude
         );
 
-        // Case insensitive constants handling
+        // Case-insensitive constants handling
         static $caseInsensitiveConstants = ['null', 'false', 'true'];
         $caseInsensitiveConstantsToEscape = [];
 

@@ -50,7 +50,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         return [
             file_get_contents($expectedFile->getRealPath()),
             $inputFile ? file_get_contents($inputFile->getRealPath()) : null,
-            $inputFile ?: $expectedFile,
+            $inputFile ?? $expectedFile,
         ];
     }
 }

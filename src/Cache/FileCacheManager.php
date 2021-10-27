@@ -66,7 +66,7 @@ final class FileCacheManager implements CacheManagerInterface
         $this->handler = $handler;
         $this->signature = $signature;
         $this->isDryRun = $isDryRun;
-        $this->cacheDirectory = $cacheDirectory ?: new Directory('');
+        $this->cacheDirectory = $cacheDirectory ?? new Directory('');
 
         $this->readCache();
     }

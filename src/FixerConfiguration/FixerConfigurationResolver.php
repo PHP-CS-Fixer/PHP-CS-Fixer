@@ -55,7 +55,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
     /**
      * {@inheritdoc}
      */
-    public function resolve(array $options): array
+    public function resolve(array $configuration): array
     {
         $resolver = new OptionsResolver();
 
@@ -65,8 +65,8 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             if ($option instanceof AliasedFixerOption) {
                 $alias = $option->getAlias();
 
-                if (\array_key_exists($alias, $options)) {
-                    if (\array_key_exists($name, $options)) {
+                if (\array_key_exists($alias, $configuration)) {
+                    if (\array_key_exists($name, $configuration)) {
                         throw new InvalidOptionsException(sprintf('Aliased option "%s"/"%s" is passed multiple times.', $name, $alias));
                     }
 
@@ -76,8 +76,8 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
                         $name
                     )));
 
-                    $options[$name] = $options[$alias];
-                    unset($options[$alias]);
+                    $configuration[$name] = $configuration[$alias];
+                    unset($configuration[$alias]);
                 }
             }
 
@@ -111,7 +111,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
             }
         }
 
-        return $resolver->resolve($options);
+        return $resolver->resolve($configuration);
     }
 
     /**

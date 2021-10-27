@@ -91,6 +91,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $functionToReplaceOpeningBraceIndex = $tokens->getNextMeaningfulToken($functionToReplaceIndex);
+
             if (!$tokens[$functionToReplaceOpeningBraceIndex]->equals('(')) {
                 continue;
             }
@@ -108,6 +109,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $openingBraceIndex = $tokens->getNextMeaningfulToken($functionToRemoveIndex);
+
             if (!$tokens[$openingBraceIndex]->equals('(')) {
                 continue;
             }

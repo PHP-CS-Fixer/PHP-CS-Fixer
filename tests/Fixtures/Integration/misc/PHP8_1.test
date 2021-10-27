@@ -41,6 +41,12 @@ interface I
     final public const Y = 'i';
 }
 
+// https://wiki.php.net/rfc/fsync_function
+fsync($fp);
+
+// https://wiki.php.net/rfc/explicit_octal_notation
+0o16 === 14;
+
 --INPUT--
 <?php
 
@@ -73,3 +79,9 @@ interface I
 {
     FINAL    PUBLIC   CONST Y = "i";
 }
+
+// https://wiki.php.net/rfc/fsync_function
+FSYNC($fp);
+
+// https://wiki.php.net/rfc/explicit_octal_notation
+0O16 === 14;

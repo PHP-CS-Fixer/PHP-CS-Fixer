@@ -126,7 +126,7 @@ EOT
         }
 
         if (1 !== $this->versionChecker->compareVersions($latestVersion, $currentVersion)) {
-            $output->writeln('<info>PHP CS Fixer is already up to date.</info>');
+            $output->writeln('<info>PHP CS Fixer is already up-to-date.</info>');
 
             return 0;
         }

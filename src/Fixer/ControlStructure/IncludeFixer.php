@@ -72,6 +72,7 @@ include_once("sample4.php");
         foreach ($includies as $includy) {
             if ($includy['end'] && !$tokens[$includy['end']]->isGivenKind(T_CLOSE_TAG)) {
                 $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
+
                 if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {
                     $tokens->removeLeadingWhitespace($includy['end']);
                 }
@@ -141,11 +142,13 @@ include_once("sample4.php");
     private function removeWhitespaceAroundIfPossible(Tokens $tokens, int $index): void
     {
         $nextIndex = $tokens->getNextNonWhitespace($index);
+
         if (null === $nextIndex || !$tokens[$nextIndex]->isComment()) {
             $tokens->removeLeadingWhitespace($index);
         }
 
         $prevIndex = $tokens->getPrevNonWhitespace($index);
+
         if (null === $prevIndex || !$tokens[$prevIndex]->isComment()) {
             $tokens->removeTrailingWhitespace($index);
         }

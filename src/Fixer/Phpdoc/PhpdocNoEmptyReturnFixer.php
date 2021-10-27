@@ -113,7 +113,7 @@ function foo() {}
     }
 
     /**
-     * Remove return void or return null annotations..
+     * Remove `return void` or `return null` annotations.
      */
     private function fixAnnotation(DocBlock $doc, Annotation $annotation): void
     {

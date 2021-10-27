@@ -89,9 +89,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 ',
             ],
             'It works with weirdly placed comments' => [
-                '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*ello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);
+                '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*hello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b);
                 unset/*foo*/(/*bar*/$bar);',
-                '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*ello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b);
+                '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*hello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b);
                 unset/*foo*/(/*bar*/$bar);',
             ],
             'It does not mess with consecutive unsets' => [
@@ -201,9 +201,9 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 ',
             ],
             'It works with weirdly placed comments' => [
-                '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*ello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b,);
+                '<?php unset/*foo*/(/*bar*/$bar->foo[0]); self::$foo = null/*baz*/; /*hello*/\Test\Baz::$fooBar = null/*comment*/; unset($bar->foo[0]); $this->foo = null; unset($a); unset($b,);
                 unset/*foo*/(/*bar*/$bar,);',
-                '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*ello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b,);
+                '<?php unset/*foo*/(/*bar*/$bar->foo[0], self::$foo/*baz*/, /*hello*/\Test\Baz::$fooBar/*comment*/, $bar->foo[0], $this->foo, $a, $b,);
                 unset/*foo*/(/*bar*/$bar,);',
             ],
             'It does not mess with consecutive unsets' => [
