@@ -224,6 +224,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['ordered_class_elements'], $fixers['no_blank_lines_after_class_opening']],
             [$fixers['ordered_class_elements'], $fixers['space_after_semicolon']],
             [$fixers['php_unit_construct'], $fixers['php_unit_dedicate_assert']],
+            [$fixers['php_unit_dedicate_assert'], $fixers['no_unused_imports']],
             [$fixers['php_unit_dedicate_assert'], $fixers['php_unit_dedicate_assert_internal_type']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['no_unused_imports']],
             [$fixers['php_unit_fqcn_annotation'], $fixers['phpdoc_order_by_value']],
