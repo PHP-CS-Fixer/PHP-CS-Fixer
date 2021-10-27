@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: php_unit_dedicate_assert,no_unused_imports.
+--RULESET--
+{"php_unit_dedicate_assert": true, "no_unused_imports": true}
+--EXPECT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase {
+    public function testMe()
+    {
+        self::assertCount(10, $collection);
+    }
+}
+
+--INPUT--
+<?php
+use function count;
+class FooTest extends \PHPUnit\Framework\TestCase {
+    public function testMe()
+    {
+        self::assertSame(10, count($collection));
+    }
+}

@@ -225,12 +225,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpUnitDedicateAssertInternalTypeFixer.
+     * Must run before NoUnusedImportsFixer, PhpUnitDedicateAssertInternalTypeFixer.
      * Must run after ModernizeStrposFixer, NoAliasFunctionsFixer, PhpUnitConstructFixer.
      */
     public function getPriority(): int
     {
-        return -15;
+        return -9;
     }
 
     /**
