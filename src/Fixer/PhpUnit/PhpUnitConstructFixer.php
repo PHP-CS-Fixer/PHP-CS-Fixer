@@ -173,7 +173,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
         $sequence = $tokens->findSequence(
             [
                 [T_STRING, $method],
-                '(',
+                '(', // FIXME
             ],
             $index
         );
