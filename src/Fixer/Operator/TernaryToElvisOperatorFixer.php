@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\RangeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -133,7 +134,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
 
             // if before and after the `?` operator are the same (in meaningful matter), clear after
 
-            if ($this->rangeEqualsRange($tokens, $beforeOperator, $afterOperator)) {
+            if (RangeAnalyzer::rangeEqualsRange($tokens, $beforeOperator, $afterOperator)) {
                 $this->clearMeaningfulFromRange($tokens, $afterOperator);
             }
         }
@@ -210,43 +211,6 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         }
 
         return $after;
-    }
-
-    /**
-     * Meaningful compare of tokens within ranges.
-     */
-    private function rangeEqualsRange(Tokens $tokens, array $range1, array $range2): bool
-    {
-        $leftStart = $range1['start'];
-        $leftEnd = $range1['end'];
-
-        while ($tokens[$leftStart]->equals('(') && $tokens[$leftEnd]->equals(')')) {
-            $leftStart = $tokens->getNextMeaningfulToken($leftStart);
-            $leftEnd = $tokens->getPrevMeaningfulToken($leftEnd);
-        }
-
-        $rightStart = $range2['start'];
-        $rightEnd = $range2['end'];
-
-        while ($tokens[$rightStart]->equals('(') && $tokens[$rightEnd]->equals(')')) {
-            $rightStart = $tokens->getNextMeaningfulToken($rightStart);
-            $rightEnd = $tokens->getPrevMeaningfulToken($rightEnd);
-        }
-
-        while ($leftStart <= $leftEnd && $rightStart <= $rightEnd) {
-            if (
-                !$tokens[$leftStart]->equals($tokens[$rightStart])
-                && !($tokens[$leftStart]->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]]) && $tokens[$rightStart]->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]]))
-                && !($tokens[$leftStart]->equalsAny([']', [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE]]) && $tokens[$rightStart]->equalsAny([']', [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE]]))
-            ) {
-                return false;
-            }
-
-            $leftStart = $tokens->getNextMeaningfulToken($leftStart);
-            $rightStart = $tokens->getNextMeaningfulToken($rightStart);
-        }
-
-        return $leftStart > $leftEnd && $rightStart > $rightEnd;
     }
 
     private function clearMeaningfulFromRange(Tokens $tokens, array $range): void
