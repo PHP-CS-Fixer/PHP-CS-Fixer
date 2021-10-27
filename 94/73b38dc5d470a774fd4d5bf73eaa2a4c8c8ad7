@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-27T19:24:34Z
+
+[![Coverage Status](https://coveralls.io/builds/43821510/badge)](https://coveralls.io/builds/43821510)
+
+Coverage remained the same at 92.832% when pulling **14d5458defcfc9a69240bd9e59922bcb165ca5e7 on kubawerlos:add_php_unit_dedicate_assert,no_unused_imports** into **ef44dce9a21a6bcd9ca55e0c77a51586a1b8a977 on FriendsOfPHP:master**.
