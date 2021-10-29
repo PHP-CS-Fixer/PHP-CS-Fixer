@@ -112,6 +112,15 @@ interface ConfigInterface
     public function registerCustomFixers(iterable $fixers): self;
 
     /**
+     * Adds custom rule sets.
+     *
+     * `$ruleSets` must follow `'@RuleName' => RuleClass::class` convention.
+     *
+     * @param iterable|\Traversable $ruleSets
+     */
+    public function registerCustomRuleSets(iterable $ruleSets): self;
+
+    /**
      * Sets the path to the cache file.
      *
      * @param non-empty-string $cacheFile
