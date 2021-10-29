@@ -210,7 +210,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @dataProvider provideRegisterCustomRuleSets
+     * @dataProvider provideRegisterCustomRuleSetsCases
      */
     public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
     {
@@ -280,7 +280,7 @@ final class ConfigTest extends TestCase
         yield [$fixers, new \ArrayIterator($fixers)];
     }
 
-    public function provideRegisterCustomRuleSets(): array
+    public function provideRegisterCustomRuleSetsCases(): array
     {
         $ruleSetGood = [
             '@RulesOk' => SampleRulesOk::class,

@@ -101,6 +101,8 @@ final class RuleSets
 
         self::$setDefinitions[$name] = $set;
 
+        ksort(self::$setDefinitions);
+
         return true;
     }
 }
