@@ -115,8 +115,6 @@ interface ConfigInterface
      * Adds custom rule sets.
      *
      * `$ruleSets` must follow `'@RuleName' => RuleClass::class` convention.
-     *
-     * @param array $ruleSets
      */
     public function registerCustomRuleSets(array $ruleSets): self;
 
