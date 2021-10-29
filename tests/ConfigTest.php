@@ -240,7 +240,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @dataProvider provideRegisterCustomRuleSets
+     * @dataProvider provideRegisterCustomRuleSetsCases
      */
     public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
     {
@@ -302,7 +302,7 @@ final class ConfigTest extends TestCase
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
     }
 
-    public function provideRegisterCustomRuleSets(): array
+    public function provideRegisterCustomRuleSetsCases(): array
     {
         $ruleSetGood = [
             '@RulesOk' => SampleRulesOk::class,
