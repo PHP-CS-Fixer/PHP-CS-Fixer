@@ -181,7 +181,6 @@ Integration of %s.
     public function testRegisterRuleSetOK(): void
     {
         RuleSets::registerRuleSet('@MyRules', SampleRulesOk::class);
-
         static::assertContains('@MyRules', RuleSets::getSetDefinitionNames());
     }
 
