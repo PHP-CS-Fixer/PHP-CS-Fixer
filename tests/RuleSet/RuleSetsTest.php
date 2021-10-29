@@ -209,7 +209,7 @@ Integration of %s.
     public function testRegisterRuleSetMissingClass(): void
     {
         static::expectException(\InvalidArgumentException::class);
-        RuleSets::registerRuleSet('MyRules', '\This\Class\Does\Not\Exists');
+        RuleSets::registerRuleSet('@MyRules', '\This\Class\Does\Not\Exists');
     }
 
     public function testRegisterRuleSetOverlappingName(): void
