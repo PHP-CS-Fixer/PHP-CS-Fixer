@@ -17,14 +17,20 @@ namespace PhpCsFixer\Tests\RuleSet;
 /**
  * Sample external RuleSet.
  *
- * This class is not extending the required class `\PhpCsFixer\RuleSet\AbstractRuleSetDescription`,
+ * This class is not extending the required class `\PhpCsFixer\RuleSet\RuleSetDescriptionInterface`,
  * so it will not be a valid class to be registered as a RuleSet.
  */
 class SampleRulesBad
 {
+    public const NAME = '@RulesBad';
+
+    public function __construct()
+    {
+    }
+
     public function getName(): string
     {
-        return '@RulesBad';
+        return static::NAME;
     }
 
     public function isRisky(): bool
