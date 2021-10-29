@@ -71,4 +71,37 @@ final class RuleSets
 
         return $definitions[$name];
     }
+
+    public static function registerRuleSet(string $name, string $class): bool
+    {
+        if (preg_match('/^@[a-z0-9]+$/i', $name) !== 1) {
+            throw new \InvalidArgumentException('RuleSet name can contain only letters (a-z, A-Z) and numbers, and it must begin with @.');
+        }
+
+        if (!class_exists($class, true)) {
+            throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+        }
+
+        $preDefinedDefinitions = self::getSetDefinitions();
+
+        if (array_key_exists($name, $preDefinedDefinitions)) {
+            throw new \InvalidArgumentException(sprintf('Set "%s" is already defined.', $name));
+        }
+
+        $set = new $class();
+
+        if (!$set instanceof AbstractRuleSetDescription) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class "%s" does must be an instance of "%s".',
+                    $class,
+                    AbstractMigrationSetDescription::class
+                )
+            );
+        }
+
+        self::$setDefinitions[$name] = $set;
+
+        return true;
+    }
 }
