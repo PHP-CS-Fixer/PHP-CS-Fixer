@@ -93,12 +93,12 @@ final class RuleSets
 
         $set = new $class();
 
-        if (!$set instanceof AbstractRuleSetDescription) {
+        if (!$set instanceof RuleSetDescriptionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Class "%s" does must be an instance of "%s".',
                     $class,
-                    AbstractRuleSetDescription::class
+                    RuleSetDescriptionInterface::class
                 )
             );
         }
