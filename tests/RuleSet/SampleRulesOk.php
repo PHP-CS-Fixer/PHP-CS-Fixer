@@ -14,16 +14,24 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet;
 
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+
 /**
  * Sample external RuleSet.
  *
  * The name is intentionally NOT ending with "Set" to better test real-life usage.
  */
-class SampleRulesOk extends \PhpCsFixer\RuleSet\AbstractRuleSetDescription
+class SampleRulesOk implements RuleSetDescriptionInterface
 {
+    public const NAME = '@RulesOk';
+
+    public function __construct()
+    {
+    }
+
     public function getName(): string
     {
-        return '@RulesOk';
+        return static::NAME;
     }
 
     public function isRisky(): bool

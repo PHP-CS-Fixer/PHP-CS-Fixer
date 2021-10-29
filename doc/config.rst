@@ -142,7 +142,7 @@ configure them in your config file.
         ->setLineEnding("\r\n")
     ;
 
-Using custom rule sets
+Using custom rule sets. In this example `\MyNameSpace\MyRuleSetClass` must implement `\PhpCsFixer\RuleSet\RuleSetDescriptionInterface`.
 
 .. code-block:: php
 
