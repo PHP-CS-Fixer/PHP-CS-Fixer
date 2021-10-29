@@ -98,7 +98,7 @@ final class RuleSets
                 sprintf(
                     'Class "%s" does must be an instance of "%s".',
                     $class,
-                    AbstractMigrationSetDescription::class
+                    AbstractRuleSetDescription::class
                 )
             );
         }
