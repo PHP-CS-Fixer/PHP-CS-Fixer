@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
+use PhpCsFixer\Preg;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -74,7 +75,9 @@ final class RuleSets
 
     public static function registerRuleSet(string $name, string $class): bool
     {
-        if (preg_match('/^@[a-z0-9]+$/i', $name) !== 1) {
+        $preg = new Preg();
+
+        if (1 !== $preg->match('/^@[a-z0-9]+$/i', $name)) {
             throw new \InvalidArgumentException('RuleSet name can contain only letters (a-z, A-Z) and numbers, and it must begin with @.');
         }
 
@@ -84,7 +87,7 @@ final class RuleSets
 
         $preDefinedDefinitions = self::getSetDefinitions();
 
-        if (array_key_exists($name, $preDefinedDefinitions)) {
+        if (\array_key_exists($name, $preDefinedDefinitions)) {
             throw new \InvalidArgumentException(sprintf('Set "%s" is already defined.', $name));
         }
 
