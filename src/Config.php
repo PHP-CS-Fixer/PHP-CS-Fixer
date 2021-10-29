@@ -189,7 +189,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    public function registerCustomRuleSets(iterable $ruleSets): ConfigInterface
+    public function registerCustomRuleSets(array $ruleSets): ConfigInterface
     {
         foreach ($ruleSets as $name => $class) {
             RuleSets::registerRuleSet($name, $class);

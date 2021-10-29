@@ -23,7 +23,10 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Tests\RuleSet\SampleRulesBad;
+use PhpCsFixer\Tests\RuleSet\SampleRulesOk;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -236,6 +239,23 @@ final class ConfigTest extends TestCase
         yield [$fixers, new \ArrayIterator($fixers)];
     }
 
+    /**
+     * @dataProvider provideRegisterCustomRuleSets
+     */
+    public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
+    {
+        if (!empty($expectedException)) {
+            $this->expectException($expectedException);
+        }
+
+        $config = new Config();
+        $config->registerCustomRuleSets($ruleSets);
+
+        if (empty($expectedException)) {
+            static::assertContains(array_keys($ruleSets)[0], RuleSets::getSetDefinitionNames());
+        }
+    }
+
     public function testConfigDefault(): void
     {
         $config = new Config();
@@ -280,6 +300,22 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
+    }
+
+    public function provideRegisterCustomRuleSets(): array
+    {
+        $ruleSetGood = [
+            '@RulesOk' => SampleRulesOk::class,
+        ];
+
+        $ruleSetBad = [
+            '@RulesBad' => SampleRulesBad::class,
+        ];
+
+        return [
+            [null, $ruleSetGood],
+            [\InvalidArgumentException::class, $ruleSetBad],
+        ];
     }
 
     public function testConfigConstructorWithName(): void

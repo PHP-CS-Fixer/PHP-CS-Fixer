@@ -116,9 +116,9 @@ interface ConfigInterface
      *
      * `$ruleSets` must follow `'@RuleName' => RuleClass::class` convention.
      *
-     * @param iterable|\Traversable $ruleSets
+     * @param array $ruleSets
      */
-    public function registerCustomRuleSets(iterable $ruleSets): self;
+    public function registerCustomRuleSets(array $ruleSets): self;
 
     /**
      * Sets the path to the cache file.
