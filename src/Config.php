@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -144,6 +145,15 @@ class Config implements ConfigInterface
     {
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
+    public function registerCustomRuleSets(iterable $ruleSets): ConfigInterface
+    {
+        foreach ($ruleSets as $name => $class) {
+            RuleSets::registerRuleSet($name, $class);
         }
 
         return $this;
