@@ -141,3 +141,19 @@ configure them in your config file.
         ->setIndent("\t")
         ->setLineEnding("\r\n")
     ;
+
+Using custom rule sets
+
+.. code-block:: php
+
+    <?php
+
+    $config = new PhpCsFixer\Config();
+    return $config
+        ->registerCustomRuleSets([
+            '@MyRuleSet' => \MyNameSpace\MyRuleSetClass::class,
+        ])
+        ->setRules([
+            '@MyRuleSet' => true,
+        ])
+    ;
