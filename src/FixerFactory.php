@@ -172,8 +172,8 @@ final class FixerFactory
 
             $fixers[] = $fixer;
             $fixersByName[$name] = $fixer;
-
             $conflicts = array_intersect($this->getFixersConflicts($fixer), $fixerNames);
+
             if (\count($conflicts) > 0) {
                 $fixerConflicts[$name] = $conflicts;
             }
@@ -219,6 +219,7 @@ final class FixerFactory
     {
         $message = 'Rule contains conflicting fixers:';
         $report = [];
+
         foreach ($fixerConflicts as $fixer => $fixers) {
             // filter mutual conflicts
             $report[$fixer] = array_filter(
