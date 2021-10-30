@@ -25,17 +25,17 @@ use PhpCsFixer\WhitespacesFixerConfig;
  */
 final class SimpleFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
+    public function getDefinition(): FixerDefinitionInterface
+    {
+        throw new \BadMethodCallException('Not implemented.');
+    }
+
     public function getWhitespacesConfig(): WhitespacesFixerConfig
     {
         return $this->whitespacesConfig;
     }
 
     public function isCandidate(Tokens $tokens): bool
-    {
-        throw new \BadMethodCallException('Not implemented.');
-    }
-
-    public function getDefinition(): FixerDefinitionInterface
     {
         throw new \BadMethodCallException('Not implemented.');
     }
