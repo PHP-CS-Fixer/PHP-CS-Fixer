@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-29T14:54:16Z
+
+The issue would be that `public function __constructor(bool $risky) {` would now also be allowed, i.e. the interface no longer enforces that the constructor has no required parameters.
+
+This might be an issue when relying on a construct like `$set = new $class();`, which is currently guaranteed to work, but after the interface change no longer. As such i think this is a BC break I think we not really need.
+
+I know it is an example, but I think the fact if a set is risky or not might be better set in the set itself (either derived from the rules it is has configured or hardcoded), than passed along.
+
+Thanks for sharing your thoughts! Would like to hear from others on this as well :+1:
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-10-29T15:13:08Z
+
+The interface is `@internal` so we can change it. Maybe we can find another way to build ruleset instances so that we don't need to enforce the signature of the constructor?
+
+---------------------------------------------------------------------------
+
+by niklam at 2021-10-29T15:32:22Z
+
+I have to admit I didn't consider the interface to be marked as `@internal`. For the default rulesets this issue could likely be solved by requiring them to extend `AbstractRuleSetDescription` (which I believe all of them do), and defining the empty constructor `AbstractRuleSetDescription::__construct()` as final, if that's seen as a requirement.
+
+I would suggest making the interface public, so IDEs will not complain when using it outside the main project. This requirement is related to my other PR, #6083. Tho, as `getSetDefinitions()` is not checking any class compatibility, we could just as well define a new public interface.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-29T15:43:52Z
+
+Making the interface public will indeed very likely happen if any of the two PR's go.
+I'm not in favor of changing the type (hinting) from the interface to the abstract implementation or adding yet another interface.
+
+---------------------------------------------------------------------------
+
+by niklam at 2021-10-29T15:48:16Z
+
+One more option is to have one public interface, and have an internal interface extending the public one with constructor defined?
+
+To me `RuleSetInterface` would be very nice and descriptive, but this is again matter of taste.
