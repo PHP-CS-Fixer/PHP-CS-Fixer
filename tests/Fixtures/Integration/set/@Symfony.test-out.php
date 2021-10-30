@@ -70,7 +70,7 @@ class FooBar
     private function reverseBoolean($value = null, $theSwitch = false)
     {
         if (!$theSwitch) {
-            return;
+            return "{$value}-{$theSwitch}";
         }
 
         return !$value;
