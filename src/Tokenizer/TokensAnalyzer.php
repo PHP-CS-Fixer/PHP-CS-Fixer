@@ -345,6 +345,7 @@ final class TokensAnalyzer
         // check for `extends`/`implements`/`use` list
         if ($this->tokens[$prevIndex]->equals(',')) {
             $checkIndex = $prevIndex;
+
             while ($this->tokens[$checkIndex]->equalsAny([',', [T_AS], [CT::T_NAMESPACE_OPERATOR], [T_NS_SEPARATOR], [T_STRING]])) {
                 $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
             }
@@ -382,6 +383,7 @@ final class TokensAnalyzer
         // check for non-capturing catches
         if ($this->tokens[$prevIndex]->equals('(')) {
             $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+
             if ($this->tokens[$prevPrevIndex]->isGivenKind(T_CATCH)) {
                 return false;
             }
@@ -426,11 +428,13 @@ final class TokensAnalyzer
         static $potentialBinaryOperator = ['+', '-', '&', [CT::T_RETURN_REF]];
 
         static $otherOperators;
+
         if (null === $otherOperators) {
             $otherOperators = ['!', '~', '@', [T_ELLIPSIS]];
         }
 
         static $disallowedPrevTokens;
+
         if (null === $disallowedPrevTokens) {
             $disallowedPrevTokens = [
                 ']',
@@ -522,6 +526,7 @@ final class TokensAnalyzer
         ];
 
         static $arrayOperators;
+
         if (null === $arrayOperators) {
             $arrayOperators = [
                 T_AND_EQUAL => true,            // &=
@@ -564,16 +569,16 @@ final class TokensAnalyzer
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
-        if (isset($potentialUnaryNonArrayOperators[$token->getContent()])) {
-            return !$this->isUnaryPredecessorOperator($index);
-        }
-
         if ($token->isArray()) {
             return isset($arrayOperators[$token->getId()]);
         }
 
         if (isset($nonArrayOperators[$token->getContent()])) {
             return true;
+        }
+
+        if (isset($potentialUnaryNonArrayOperators[$token->getContent()])) {
+            return !$this->isUnaryPredecessorOperator($index);
         }
 
         return false;

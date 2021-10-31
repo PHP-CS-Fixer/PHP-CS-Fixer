@@ -55,7 +55,6 @@ abstract class AbstractTransformerTestCase extends TestCase
     {
         $name = $this->transformer->getName();
 
-        static::assertIsString($name);
         static::assertMatchesRegularExpression('/^[a-z]+[a-z_]*[a-z]$/', $name);
     }
 

@@ -16,7 +16,6 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -27,21 +26,15 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
  */
 final class NamespaceUseAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis(): void
-    {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
-        static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
-    }
-
     public function testFullName(): void
     {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
+        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 11, 21, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertSame('Full\NamespaceName', $analysis->getFullName());
     }
 
     public function testAliased(): void
     {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
+        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 12, 22, NamespaceUseAnalysis::TYPE_CLASS);
         static::assertFalse($analysis->isAliased());
 
         $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', true, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
@@ -62,8 +55,8 @@ final class NamespaceUseAnalysisTest extends TestCase
 
     public function testEndIndex(): void
     {
-        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 2, NamespaceUseAnalysis::TYPE_CLASS);
-        static::assertSame(2, $analysis->getEndIndex());
+        $analysis = new NamespaceUseAnalysis('Full\NamespaceName', 'NamespaceName', false, 1, 72, NamespaceUseAnalysis::TYPE_CLASS);
+        static::assertSame(72, $analysis->getEndIndex());
     }
 
     public function testTypeCheck(): void

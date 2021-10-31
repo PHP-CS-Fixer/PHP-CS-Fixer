@@ -216,8 +216,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         $parts = explode($delimiter, $string);
-
         $tokensArray = [];
+
         while (!empty($parts)) {
             $tokensArray[] = new Token([T_STRING, array_shift($parts)]);
             if (!empty($parts)) {

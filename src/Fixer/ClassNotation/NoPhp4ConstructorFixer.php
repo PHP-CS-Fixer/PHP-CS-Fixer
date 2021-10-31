@@ -147,13 +147,11 @@ class Foo
         $php4 = $this->findFunction($tokens, $className, $classStart, $classEnd);
 
         if (null === $php4) {
-            // no PHP4-constructor!
-            return;
+            return; // no PHP4-constructor!
         }
 
         if (!empty($php4['modifiers'][T_ABSTRACT]) || !empty($php4['modifiers'][T_STATIC])) {
-            // PHP4 constructor can't be abstract or static
-            return;
+            return; // PHP4 constructor can't be abstract or static
         }
 
         $php5 = $this->findFunction($tokens, '__construct', $classStart, $classEnd);

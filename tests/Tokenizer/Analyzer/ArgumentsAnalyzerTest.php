@@ -266,6 +266,13 @@ final class ArgumentsAnalyzerTest extends TestCase
                 )
             ),
         ];
+
+        yield ['<?php function($a, $b = \'\'){};', 5, 10, new ArgumentAnalysis(
+            '$b',
+            6,
+            "''",
+            null
+        )];
     }
 
     /**

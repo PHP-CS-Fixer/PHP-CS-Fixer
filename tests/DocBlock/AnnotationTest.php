@@ -522,7 +522,7 @@ final class AnnotationTest extends TestCase
     public function testGetTagsWithTypes(): void
     {
         $tags = Annotation::getTagsWithTypes();
-        static::assertIsArray($tags);
+
         foreach ($tags as $tag) {
             static::assertIsString($tag);
             static::assertNotEmpty($tag);

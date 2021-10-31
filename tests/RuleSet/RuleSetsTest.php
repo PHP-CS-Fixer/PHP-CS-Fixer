@@ -294,7 +294,7 @@ Integration of %s.
 
         $fixers = $factory->getFixers();
 
-        if (empty($fixers)) {
+        if (0 === \count($fixers)) {
             throw new \RuntimeException('FixerFactory unexpectedly returned empty array.');
         }
 

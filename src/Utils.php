@@ -130,7 +130,7 @@ final class Utils
      */
     public static function naturalLanguageJoinWithBackticks(array $names): string
     {
-        if (empty($names)) {
+        if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
         }
 

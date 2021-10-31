@@ -106,9 +106,11 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     private function updateDocBlockIfNeeded(Tokens $tokens, int $docBlockIndex): void
     {
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
-        if (!empty($this->filterDocBlock($doc))) {
+
+        if (0 !== \count($this->filterDocBlock($doc))) {
             return;
         }
+
         $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex);
         $lines = $this->addSizeAnnotation($doc, $tokens, $docBlockIndex);
         $lines = implode('', $lines);
@@ -133,7 +135,8 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     private function makeDocBlockMultiLineIfNeeded(DocBlock $doc, Tokens $tokens, int $docBlockIndex): DocBlock
     {
         $lines = $doc->getLines();
-        if (1 === \count($lines) && empty($this->filterDocBlock($doc))) {
+
+        if (1 === \count($lines) && 0 === \count($this->filterDocBlock($doc))) {
             $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
             return new DocBlock(implode('', $lines));

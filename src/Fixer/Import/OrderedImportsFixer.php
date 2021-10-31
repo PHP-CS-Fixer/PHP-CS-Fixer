@@ -477,6 +477,7 @@ use Bar;
         if (null !== $this->configuration['imports_order']) {
             // Grouping indexes by import type.
             $groupedByTypes = [];
+
             foreach ($indexes as $startIndex => $item) {
                 $groupedByTypes[$item['importType']][$startIndex] = $item;
             }
@@ -488,6 +489,7 @@ use Bar;
 
             // Ordering groups
             $sortedGroups = [];
+
             foreach ($this->configuration['imports_order'] as $type) {
                 if (isset($groupedByTypes[$type]) && !empty($groupedByTypes[$type])) {
                     foreach ($groupedByTypes[$type] as $startIndex => $item) {

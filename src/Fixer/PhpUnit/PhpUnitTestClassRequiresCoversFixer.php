@@ -86,7 +86,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $doc = new DocBlock($docContent);
 
             // skip if already has annotation
-            if (!empty($doc->getAnnotationsOfType([
+            if (0 !== \count($doc->getAnnotationsOfType([
                 'covers',
                 'coversDefaultClass',
                 'coversNothing',
