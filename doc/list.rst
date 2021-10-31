@@ -1799,7 +1799,7 @@ List of Available Rules
 
    - | ``tags``
      | The tags that should be aligned.
-     | Allowed values: a subset of ``['param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var', 'method']``
+     | Allowed values: a subset of ``['param', 'property', 'property-read', 'property-write', 'return', 'throws', 'type', 'var', 'method', 'param-out', 'template', 'template-covariant', 'extends', 'implements', 'deprecated', 'internal', 'readonly', 'no-named-arguments', 'psalm-allow-private-mutation', 'psalm-assert', 'psalm-assert-if-false', 'psalm-if-this-is', 'psalm-assert-if-true', 'psalm-consistent-constructor', 'psalm-consistent-templates', 'psalm-external-mutation-free', 'psalm-ignore-falsable-return', 'psalm-ignore-nullable-return', 'psalm-ignore-var', 'psalm-immutable', 'psalm-import-type', 'psalm-internal', 'psalm-method', 'psalm-mutation-free', 'psalm-param', 'psalm-param-out', 'psalm-property', 'psalm-property-read', 'psalm-property-write', 'psalm-pure', 'psalm-readonly', 'psalm-readonly-allow-private-mutation', 'psalm-require-extends', 'psalm-require-implements', 'psalm-return', 'psalm-seal-properties', 'psalm-suppress SomeIssueName', 'psalm-taint-*', 'psalm-trace', 'psalm-type', 'psalm-var', 'phpstan-var', 'phpstan-param', 'phpstan-return', 'phpstan-template', 'phpstan-template-covariant', 'phpstan-extends', 'phpstan-implements']``
      | Default value: ``['method', 'param', 'property', 'return', 'throws', 'type', 'var']``
    - | ``align``
      | Align comments

@@ -1103,6 +1103,110 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testAlignsSimpleTags(): void
+    {
+        $this->fixer->configure(['tags' => ['deprecated', 'internal']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @deprecated I'm deprecated
+     * @internal   I just happen to be
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @deprecated   I'm deprecated
+     * @internal           I just happen to be
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsSimpleTagsWithName(): void
+    {
+        $this->fixer->configure(['tags' => ['deprecated', 'internal', 'param']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @deprecated        Foobar
+     * @internal          I just happen to be
+     * @param      string $source source package name
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @deprecated  Foobar
+     * @internal           I just happen to be
+     * @param string $source source package name
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsSimpleTagsWithMethod(): void
+    {
+        $this->fixer->configure(['tags' => ['deprecated', 'internal', 'method', 'property']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @deprecated        Foobar
+     * @internal          I just happen to be
+     * @property   string $source source package name
+     * @method     int    bar()   Description
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @deprecated  Foobar
+     * @internal           I just happen to be
+     * @property string $source source package name
+     * @method    int    bar() Description
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
+    public function testAlignsSimpleTagsWithReturn(): void
+    {
+        $this->fixer->configure(['tags' => ['deprecated', 'internal', 'method', 'property', 'return']]);
+
+        $expected = <<<'EOF'
+<?php
+    /**
+     * @deprecated        Foobar
+     * @internal          I just happen to be
+     * @property   string $source source package name
+     * @method     int    bar()   Description
+     * @return     int    Example
+     */
+EOF;
+
+        $input = <<<'EOF'
+<?php
+    /**
+     * @deprecated  Foobar
+     * @internal           I just happen to be
+     * @property string $source source package name
+     * @method    int    bar() Description
+     * @return        int Example
+     */
+EOF;
+
+        $this->doTest($expected, $input);
+    }
+
     public function testDoesNotAlignWithEmptyConfig(): void
     {
         $this->fixer->configure(['tags' => []]);

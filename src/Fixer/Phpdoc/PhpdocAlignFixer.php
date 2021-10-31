@@ -59,15 +59,83 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         'type',
         'var',
         'method',
+        'param-out',
+        'template',
+        'template-covariant',
+        'extends',
+        'implements',
+        'deprecated',
+        'internal',
+        'readonly',
+
+        // Psalm annotations
+        'no-named-arguments',
+        'psalm-allow-private-mutation',
+        'psalm-assert',
+        'psalm-assert-if-false',
+        'psalm-if-this-is',
+        'psalm-assert-if-true',
+        'psalm-consistent-constructor',
+        'psalm-consistent-templates',
+        'psalm-external-mutation-free',
+        'psalm-ignore-falsable-return',
+        'psalm-ignore-nullable-return',
+        'psalm-ignore-var',
+        'psalm-immutable',
+        'psalm-import-type',
+        'psalm-internal',
+        'psalm-method',
+        'psalm-mutation-free',
+        'psalm-param',
+        'psalm-param-out',
+        'psalm-property',
+        'psalm-property-read',
+        'psalm-property-write',
+        'psalm-pure',
+        'psalm-readonly',
+        'psalm-readonly-allow-private-mutation',
+        'psalm-require-extends',
+        'psalm-require-implements',
+        'psalm-return',
+        'psalm-seal-properties',
+        'psalm-suppress SomeIssueName',
+        'psalm-taint-*',
+        'psalm-trace',
+        'psalm-type',
+        'psalm-var',
+
+        // PhpStan
+        'phpstan-var',
+        'phpstan-param',
+        'phpstan-return',
+        'phpstan-template',
+        'phpstan-template-covariant',
+        'phpstan-extends',
+        'phpstan-implements',
     ];
 
     private const TAGS_WITH_NAME = [
         'param',
         'property',
+
+        // Psalm
+        'psalm-param',
+        'psalm-param-out',
+        'psalm-property',
+        'psalm-suppress',
+
+        // PhpStan
+        'phpstan-param',
     ];
 
     private const TAGS_WITH_METHOD_SIGNATURE = [
         'method',
+        'psalm-method',
+    ];
+
+    private const SIMPLE_TAGS = [
+        'deprecated',
+        'internal',
     ];
 
     /**
@@ -92,12 +160,18 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     {
         parent::configure($configuration);
 
+        $simpleTags = array_intersect($this->configuration['tags'], self::SIMPLE_TAGS);
         $tagsWithNameToAlign = array_intersect($this->configuration['tags'], self::TAGS_WITH_NAME);
         $tagsWithMethodSignatureToAlign = array_intersect($this->configuration['tags'], self::TAGS_WITH_METHOD_SIGNATURE);
-        $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
+        $tagsWithoutNameToAlign = array_diff($this->configuration['tags'], $simpleTags, $tagsWithNameToAlign, $tagsWithMethodSignatureToAlign);
         $types = [];
 
         $indent = '(?P<indent>(?:\ {2}|\t)*)';
+
+        // e.g. @deprecated
+        if ([] !== $simpleTags) {
+            $types[] = '(?P<tag>'.implode('|', $simpleTags).')';
+        }
 
         // e.g. @param <hint> <$var>
         if ([] !== $tagsWithNameToAlign) {
@@ -262,15 +336,19 @@ EOF;
                     continue;
                 }
 
-                $tagMax = max($tagMax, \strlen($item['tag']));
-                $hintMax = max($hintMax, \strlen($item['hint']));
-                $varMax = max($varMax, \strlen($item['var']));
+                $tagMax = max($tagMax, \strlen($item['tag'] ?? ''));
+                $hintMax = max($hintMax, \strlen($item['hint'] ?? ''));
+                $varMax = max($varMax, \strlen($item['var'] ?? ''));
             }
 
             $currTag = null;
 
             // update
             foreach ($items as $j => $item) {
+                $item['hint'] = $item['hint'] ?? '';
+                $item['var'] = $item['var'] ?? '';
+                $item['desc'] = $item['desc'] ?? '';
+
                 if (null === $item['tag']) {
                     if ('@' === $item['desc'][0]) {
                         $docBlock->getLine($current + $j)->setContent($item['indent'].' * '.$item['desc'].$lineEnding);
@@ -312,7 +390,15 @@ EOF;
                     .$item['hint']
                 ;
 
-                if (!empty($item['var'])) {
+                if (\in_array($currTag, self::SIMPLE_TAGS, true)) {
+                    if (!empty($item['desc'])) {
+                        $line .= $this->getIndent($hintMax > 0 ? $hintMax + 1 : 0).$item['desc'];
+                    } else {
+                        $line = rtrim($line);
+                    }
+
+                    $line .= $lineEnding;
+                } elseif (!empty($item['var'])) {
                     $line .=
                         $this->getIndent(($hintMax ?: -1) - \strlen($item['hint']) + 1)
                         .$item['var']
@@ -323,7 +409,11 @@ EOF;
                         )
                     ;
                 } elseif (!empty($item['desc'])) {
-                    $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'].$lineEnding;
+                    if ($hintMax > 0) {
+                        $line .= $this->getIndent($hintMax - \strlen($item['hint']) + 1).$item['desc'].$lineEnding;
+                    } else {
+                        $line .= $item['desc'].$lineEnding;
+                    }
                 } else {
                     $line .= $lineEnding;
                 }
