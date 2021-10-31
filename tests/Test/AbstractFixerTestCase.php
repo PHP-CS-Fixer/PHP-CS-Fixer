@@ -19,7 +19,6 @@ use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
-use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -92,8 +91,6 @@ abstract class AbstractFixerTestCase extends TestCase
 
     final public function testIsRisky(): void
     {
-        static::assertIsBool($this->fixer->isRisky(), sprintf('Return type for ::isRisky of "%s" is invalid.', $this->fixer->getName()));
-
         if ($this->fixer->isRisky()) {
             self::assertValidDescription($this->fixer->getName(), 'risky description', $this->fixer->getDefinition()->getRiskyDescription());
         } else {
@@ -126,13 +123,13 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $configSamplesProvided = [];
         $dummyFileInfo = new StdinFileInfo();
+
         foreach ($samples as $sampleCounter => $sample) {
             static::assertInstanceOf(CodeSampleInterface::class, $sample, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
             static::assertIsInt($sampleCounter);
 
             $code = $sample->getCode();
 
-            static::assertIsString($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
             static::assertNotEmpty($code, sprintf('[%s] Sample #%d', $fixerName, $sampleCounter));
 
             if (!($this->fixer instanceof SingleBlankLineAtEofFixer)) {
@@ -140,9 +137,9 @@ abstract class AbstractFixerTestCase extends TestCase
             }
 
             $config = $sample->getConfiguration();
+
             if (null !== $config) {
                 static::assertTrue($fixerIsConfigurable, sprintf('[%s] Sample #%d has configuration, but the fixer is not configurable.', $fixerName, $sampleCounter));
-                static::assertIsArray($config, sprintf('[%s] Sample #%d configuration must be an array or null.', $fixerName, $sampleCounter));
 
                 $configSamplesProvided[$sampleCounter] = $config;
             } elseif ($fixerIsConfigurable) {
@@ -319,8 +316,6 @@ abstract class AbstractFixerTestCase extends TestCase
         }
 
         $configurationDefinition = $this->fixer->getConfigurationDefinition();
-
-        static::assertInstanceOf(FixerConfigurationResolverInterface::class, $configurationDefinition);
 
         foreach ($configurationDefinition->getOptions() as $option) {
             static::assertInstanceOf(FixerOptionInterface::class, $option);

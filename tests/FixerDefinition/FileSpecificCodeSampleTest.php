@@ -28,10 +28,7 @@ final class FileSpecificCodeSampleTest extends TestCase
 {
     public function testImplementsFileSpecificCodeSampleInterface(): void
     {
-        $sample = new FileSpecificCodeSample(
-            file_get_contents(__FILE__),
-            new \SplFileInfo(__FILE__)
-        );
+        $sample = new FileSpecificCodeSample(file_get_contents(__FILE__), new \SplFileInfo(__FILE__));
 
         static::assertInstanceOf(\PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface::class, $sample);
     }

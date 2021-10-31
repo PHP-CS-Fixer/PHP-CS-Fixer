@@ -88,7 +88,7 @@ function foo() {}
             $doc = new DocBlock($token->getContent());
             $annotations = $doc->getAnnotationsOfType('return');
 
-            if (empty($annotations)) {
+            if (0 === \count($annotations)) {
                 continue;
             }
 

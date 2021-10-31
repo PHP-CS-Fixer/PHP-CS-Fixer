@@ -408,6 +408,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
     private function doesDocBlockContainTest(DocBlock $doc): bool
     {
-        return !empty($doc->getAnnotationsOfType('test'));
+        return 0 !== \count($doc->getAnnotationsOfType('test'));
     }
 }

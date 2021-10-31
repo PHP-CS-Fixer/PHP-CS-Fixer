@@ -723,17 +723,16 @@ preg_replace_callback(
         }
     }
 
-    public function provideIsLambda74Cases(): array
+    public function provideIsLambda74Cases(): \Generator
     {
-        return [
-            [
-                [5 => true],
-                '<?php $fn = fn() => [];',
-            ],
-            [
-                [5 => true],
-                '<?php $fn = fn () => [];',
-            ],
+        yield [
+            [5 => true],
+            '<?php $fn = fn() => [];',
+        ];
+
+        yield [
+            [5 => true],
+            '<?php $fn = fn () => [];',
         ];
     }
 
@@ -1322,7 +1321,7 @@ abstract class Baz
 
     public function provideIsBinaryOperatorCases(): \Generator
     {
-        $cases = [
+        yield from [
             [
                 [8 => true],
                 '<?php echo $a[1] + 1;',
@@ -1442,14 +1441,16 @@ $b;',
                 [3 => true],
                 '<?php $a **= $b;',
             ],
+            [
+                [9 => false],
+                '<?php $a = "{$value}-{$theSwitch}";',
+            ],
         ];
 
         $operators = [
             '+', '-', '*', '/', '%', '<', '>', '|', '^', '&=', '&&', '||', '.=', '/=', '==', '>=', '===', '!=',
             '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=', '^',
         ];
-
-        yield from $cases;
 
         foreach ($operators as $operator) {
             yield [

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\ToolInfo;
 
 /**
@@ -26,7 +27,7 @@ final class ToolInfoTest extends TestCase
     public function testGetVersion(): void
     {
         $toolInfo = new ToolInfo();
-        static::assertIsString($toolInfo->getVersion());
+        static::assertStringStartsWith(Application::VERSION, $toolInfo->getVersion());
     }
 
     public function testIsInstallAsPhar(): void

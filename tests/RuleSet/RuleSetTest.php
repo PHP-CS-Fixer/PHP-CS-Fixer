@@ -134,7 +134,6 @@ final class RuleSetTest extends TestCase
     {
         $setNames = RuleSets::getSetDefinitionNames();
 
-        static::assertIsArray($setNames);
         static::assertNotEmpty($setNames);
     }
 

@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
@@ -27,12 +26,6 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  */
 final class TypeAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis(): void
-    {
-        $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
-    }
-
     public function testName(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
@@ -46,14 +39,14 @@ final class TypeAnalysisTest extends TestCase
 
     public function testStartIndex(): void
     {
-        $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertSame(1, $analysis->getStartIndex());
+        $analysis = new TypeAnalysis('string', 10, 20);
+        static::assertSame(10, $analysis->getStartIndex());
     }
 
     public function testEndIndex(): void
     {
-        $analysis = new TypeAnalysis('string', 1, 2);
-        static::assertSame(2, $analysis->getEndIndex());
+        $analysis = new TypeAnalysis('string', 1, 27);
+        static::assertSame(27, $analysis->getEndIndex());
     }
 
     /**

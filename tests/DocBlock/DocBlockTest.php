@@ -65,11 +65,11 @@ final class DocBlockTest extends TestCase
     public function testGetLines(): void
     {
         $doc = new DocBlock(self::$sample);
+        $lines = $doc->getLines();
 
-        static::assertIsArray($doc->getLines());
-        static::assertCount(15, $doc->getLines());
+        static::assertCount(15, $lines);
 
-        foreach ($doc->getLines() as $index => $line) {
+        foreach ($lines as $index => $line) {
             static::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
             static::assertSame($doc->getLine($index), $line);
         }
@@ -80,13 +80,13 @@ final class DocBlockTest extends TestCase
     public function testGetAnnotations(): void
     {
         $doc = new DocBlock(self::$sample);
+        $annotations = $doc->getAnnotations();
 
-        static::assertIsArray($doc->getAnnotations());
-        static::assertCount(5, $doc->getAnnotations());
+        static::assertCount(5, $annotations);
 
-        foreach ($doc->getAnnotations() as $index => $annotations) {
-            static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotations);
-            static::assertSame($doc->getAnnotation($index), $annotations);
+        foreach ($annotations as $index => $annotation) {
+            static::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
+            static::assertSame($doc->getAnnotation($index), $annotation);
         }
 
         static::assertEmpty($doc->getAnnotation(5));
@@ -95,10 +95,8 @@ final class DocBlockTest extends TestCase
     public function testGetAnnotationsOfTypeParam(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('param');
 
-        static::assertIsArray($annotations);
         static::assertCount(3, $annotations);
 
         $first = '     * @param string $hello
@@ -117,10 +115,8 @@ final class DocBlockTest extends TestCase
     public function testGetAnnotationsOfTypeThrows(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('throws');
 
-        static::assertIsArray($annotations);
         static::assertCount(1, $annotations);
 
         $content = '     * @throws \Exception asdnjkasd
@@ -134,10 +130,8 @@ final class DocBlockTest extends TestCase
     public function testGetAnnotationsOfTypeReturn(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('return');
 
-        static::assertIsArray($annotations);
         static::assertCount(1, $annotations);
 
         $content = '     * @return void
@@ -149,10 +143,8 @@ final class DocBlockTest extends TestCase
     public function testGetAnnotationsOfTypeFoo(): void
     {
         $doc = new DocBlock(self::$sample);
-
         $annotations = $doc->getAnnotationsOfType('foo');
 
-        static::assertIsArray($annotations);
         static::assertCount(0, $annotations);
     }
 

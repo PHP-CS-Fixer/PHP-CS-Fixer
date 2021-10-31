@@ -16,7 +16,6 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -27,12 +26,6 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\StartEndTokenAwareAnalysis;
  */
 final class NamespaceAnalysisTest extends TestCase
 {
-    public function testStartEndTokenAwareAnalysis(): void
-    {
-        $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
-        static::assertInstanceOf(StartEndTokenAwareAnalysis::class, $analysis);
-    }
-
     public function testFullName(): void
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
