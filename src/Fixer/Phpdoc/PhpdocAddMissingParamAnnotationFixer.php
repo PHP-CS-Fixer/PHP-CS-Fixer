@@ -192,7 +192,7 @@ function f9(string $foo, $bar, $baz) {}
                 $type = $argument['type'];
                 if ('' === $type) {
                     $type = 'mixed';
-                } elseif ('mixed' !== $type && (str_starts_with($type) || 'null' === strtolower($argument['default']))) {
+                } elseif ('mixed' !== $type && (!str_starts_with($type, '?') || 'null' === strtolower($argument['default']))) {
                     $type = 'null|' . ltrim($type, '?');
                 }
 
