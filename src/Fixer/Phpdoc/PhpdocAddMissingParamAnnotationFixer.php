@@ -189,16 +189,17 @@ function f9(string $foo, $bar, $baz) {}
             $newLines = [];
 
             foreach ($arguments as $argument) {
-                if ('' === $argument['type']) {
-                    $argument['type'] = 'mixed';
-                } elseif ('mixed' !== $argument['type'] && ('?' === $argument['type'][0]  || 'null' === strtolower($argument['default']))) {
-                    $argument['type'] = 'null|' . ltrim($argument['type'], '?');
+                $type = $argument['type'];
+                if ('' === $type) {
+                    $type = 'mixed';
+                } elseif ('mixed' !== $type && (str_starts_with($type) || 'null' === strtolower($argument['default']))) {
+                    $type = 'null|' . ltrim($type, '?');
                 }
 
                 $newLines[] = new Line(sprintf(
                     '%s* @param %s %s%s',
                     $indent,
-                    $argument['type'],
+                    $type,
                     $argument['name'],
                     $this->whitespacesConfig->getLineEnding()
                 ));
