@@ -170,7 +170,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         // e.g. @deprecated
         if ([] !== $simpleTags) {
-            $types[] = '(?P<tag>'.implode('|', $simpleTags).')';
+            $types[] = '(?P<simpleTag>'.implode('|', $simpleTags).')';
         }
 
         // e.g. @param <hint> <$var>
@@ -429,6 +429,12 @@ EOF;
     private function getMatches(string $line, bool $matchCommentOnly = false): ?array
     {
         if (Preg::match($this->regex, $line, $matches)) {
+            if (!empty($matches['simpleTag'])) {
+                $matches['tag'] = $matches['simpleTag'];
+                $matches['hint'] = '';
+                $matches['var'] = '';
+            }
+
             if (!empty($matches['tag2'])) {
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
