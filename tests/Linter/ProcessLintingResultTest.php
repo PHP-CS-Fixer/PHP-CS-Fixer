@@ -26,6 +26,17 @@ use Symfony\Component\Process\Process;
  */
 final class ProcessLintingResultTest extends TestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        /** @TODO drop me after Prophecy issue is soled: https://github.com/phpspec/prophecy/issues/527 */
+        $type = (new \ReflectionMethod(\Symfony\Component\Process\Process::class, 'mustRun'))->getReturnType();
+        if ($type instanceof \ReflectionNamedType && 'static' === $type->getName()) {
+            static::markTestSkipped('Prophecy cannot handle the static return type.');
+        }
+    }
+
     /**
      * @doesNotPerformAssertions
      */
