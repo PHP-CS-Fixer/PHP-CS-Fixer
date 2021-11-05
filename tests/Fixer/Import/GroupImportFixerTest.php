@@ -37,6 +37,38 @@ final class GroupImportFixerTest extends AbstractFixerTestCase
     {
         yield [
             '<?php
+namespace X1\Y1;
+
+use A\{B as X, C as Y};
+use B\C;
+',
+            '<?php
+namespace X1\Y1;
+
+use A\B as X;
+use A\C as Y;
+use B\C;
+',
+        ];
+
+        yield [
+            '<?php
+
+namespace Foo\Bar;
+
+use A\{B as X, C as Y};
+',
+            '<?php
+
+namespace Foo\Bar;
+
+use A\B as X;
+use A\C as Y;
+',
+        ];
+
+        yield [
+            '<?php
 
 namespace Test;
 

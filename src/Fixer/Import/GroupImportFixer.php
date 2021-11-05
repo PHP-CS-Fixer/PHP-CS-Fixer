@@ -208,7 +208,7 @@ final class GroupImportFixer extends AbstractFixer
 
         $tokens->insertAt($insertIndex, $newTokens);
 
-        return \count($newTokens) + 1;
+        return \count($newTokens);
     }
 
     /**
@@ -253,6 +253,7 @@ final class GroupImportFixer extends AbstractFixer
 
         if ($useDeclaration->isAliased()) {
             $inserted = $this->insertToGroupUseWithAlias($tokens, $insertIndex + 1, $useDeclaration);
+            ++$inserted;
             $insertedTokens += $inserted;
             $insertIndex += $inserted;
         }
