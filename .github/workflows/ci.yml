@@ -102,8 +102,6 @@ jobs:
       - name: Configure Symfony v6@dev hacks
         if: matrix.execute-flex-with-symfony-version == '^6'
         run: |
-          # not yet ready for v6
-          composer remove --no-update --dev php-coveralls/php-coveralls
           # update Symfony components to v6@dev
           cat composer.json | grep symfony.*^5 | awk -F: '{ printf $1; print ":^6@dev" }' | xargs -n 1 composer require --no-update
           # dependency of symfony/console, we need to pin it so we can install @dev version
