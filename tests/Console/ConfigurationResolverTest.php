@@ -1170,9 +1170,15 @@ For more info about updating see: https://github.com/FriendsOfPHP/PHP-CS-Fixer/b
     public function provideGetDirectoryCases(): array
     {
         return [
-            [null, '/my/path/my/file', 'path/my/file'],
+            [null, '/my/path/my/file', 'my/file'],
+            [null, './my/file', 'my/file'],
+            [null, 'my/file', 'my/file'],
             ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
+            ['/my/path2/dir/.php-cs-fixer.cache', './dir2/file', 'dir2/file'],
+            ['/my/path2/dir/.php-cs-fixer.cache', 'dir2/file', 'dir2/file'],
             ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'],
+            ['dir/.php-cs-fixer.cache', './dir3/file', 'dir3/file'],
+            ['dir/.php-cs-fixer.cache', 'dir3/file', 'dir3/file'],
         ];
     }
 
