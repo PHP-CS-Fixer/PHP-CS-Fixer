@@ -52,3 +52,21 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
      * @version 1.0
      */
     function foo() {}
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['annotations' => ['template()']]``,he won't do anything because it doesn't support symbols. Please follow this regular expression ``@[a-zA-Z0-9_-]+(?=\s|$)``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * @author John Doe
+     * @package ACME API
+     * @template()
+     * @version 1.0
+     */
+    function foo() {}
