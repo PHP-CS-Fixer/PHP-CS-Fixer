@@ -46,7 +46,7 @@ final class StdinTest extends AbstractSmokeTest
         );
         static::assertSame($expectedError, $stdinResult->getError());
 
-        $path = str_replace('/', \DIRECTORY_SEPARATOR, basename(realpath($cwd)).'/'.$inputFile);
+        $path = str_replace('/', \DIRECTORY_SEPARATOR, $inputFile);
         static::assertSame(
             Preg::replace(
                 '#/?'.preg_quote($path, '#').'#',

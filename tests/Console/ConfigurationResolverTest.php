@@ -1267,7 +1267,7 @@ final class ConfigurationResolverTest extends TestCase
     public function provideGetDirectoryCases()
     {
         return [
-            [null, '/my/path/my/file', 'path/my/file'],
+            [null, '/my/path/my/file', 'my/file'],
             ['/my/path2/dir/.php_cs.cache', '/my/path2/dir/dir2/file', 'dir2/file'],
             ['dir/.php_cs.cache', '/my/path/dir/dir3/file', 'dir3/file'],
         ];
