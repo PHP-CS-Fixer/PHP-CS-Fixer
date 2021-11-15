@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.3.2
+---------------------
+
+experimental release
+
+* Drop support for Symfony v4
+
 Changelog for v3.3.1
 --------------------
 
