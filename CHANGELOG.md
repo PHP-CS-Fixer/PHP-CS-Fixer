@@ -3,6 +3,27 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.3.0
+--------------------
+
+* bug #6054 Utils - Add multibyte and UTF-8 support (paulbalandan)
+* bug #6061 ModernizeStrposFixer - fix for negated with leading slash (kubawerlos)
+* bug #6064 SquareBraceTransformer - fix detect array destructing in foreach (SpacePossum)
+* bug #6082 PhpUnitDedicateAssertFixer must run before NoUnusedImportsFixer (kubawerlos)
+* bug #6089 TokensAnalyzer.php - Fix T_ENCAPSED_AND_WHITESPACE handling in isBina… (SpacePossum)
+* feature #5123 PhpdocTypesFixer - support generic types (kubawerlos)
+* minor #5775 DX: run static code analysis on PHP 8.0 (kubawerlos)
+* minor #6050 DX: TypeIntersectionTransformer - prove to not touch T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG (keradus)
+* minor #6051 NoExtraBlankLinesFixer - Improve deprecation message (paulbalandan)
+* minor #6060 DX: Add upgrade guide link when next Major is available (keradus)
+* minor #6066 Clean ups (SpacePossum, kubawerlos)
+* minor #6069 DX: cleanup stub file (keradus)
+* minor #6070 Update UPGRADE-v3.md with php_unit_test_annotation/case deprecation (kubawerlos)
+* minor #6072 Update usage doc to reflect change to PSR12 default. (hannob, keradus)
+* minor #6084 Change: Remove __constructor() from RuleSetDescriptionInterface (niklam)
+* minor #6085 Dx: reuse WhitespacesAnalyzer::detectIndent (kubawerlos)
+* minor #6087 AbstractProxyFixer - more tests (SpacePossum)
+
 Changelog for v3.2.0
 --------------------
 
