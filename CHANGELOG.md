@@ -285,6 +285,11 @@ Changelog for v3.0.0
 * minor #5657 DX: convert some properties to constants (keradus)
 * minor #5669 Remove TrailingCommaInMultilineArrayFixer (kubawerlos, keradus)
 
+Changelog for v2.19.3
+---------------------
+
+* minor #6060 DX: Add upgrade guide link when next Major is available (keradus)
+
 Changelog for v2.19.2
 ---------------------
 
