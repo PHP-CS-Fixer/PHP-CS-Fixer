@@ -148,7 +148,7 @@ final class CiIntegrationTest extends AbstractSmokeTest
 You may find an UPGRADE guide at https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/v4.0.0/UPGRADE-v4.md .
 ';
 
-        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.1.3 and maximum version of PHP 8.0.*.
+        $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.2.5 and maximum version of PHP 8.0.*.
 Current PHP version: '.PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';

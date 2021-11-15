@@ -10,8 +10,8 @@
  * with this source code in the file LICENSE.
  */
 
-if (PHP_VERSION_ID <= 70103 || PHP_VERSION_ID >= 70200) {
-    fwrite(STDERR, "PHP CS Fixer's config for PHP-LOWEST can be executed only on lowest supported PHP version - 7.1.*.\n");
+if (PHP_VERSION_ID < 70205 || PHP_VERSION_ID >= 70300) {
+    fwrite(STDERR, "PHP CS Fixer's config for PHP-LOWEST can be executed only on lowest supported PHP version - ~7.2.5.\n");
     fwrite(STDERR, "Running it on higher PHP version would falsy expect more changes, eg `mixed` type on PHP 8.\n");
     exit(1);
 }
