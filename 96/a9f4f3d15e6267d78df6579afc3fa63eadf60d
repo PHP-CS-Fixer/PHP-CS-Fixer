@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-12T16:32:14Z
+
+[![Coverage Status](https://coveralls.io/builds/43560058/badge)](https://coveralls.io/builds/43560058)
+
+Coverage increased (+0.004%) to 92.832% when pulling **fa4c7147e7d35f0e7e59c93621a6563288cd7fce on keradus:71** into **c4989f8ef45e6940222e9c4b57cd8dd8846b29a1 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-10-16T13:23:19Z
+
+Are there data providers and unnecessary skipping to clean up in the tests?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-10-17T21:49:06Z
+
+potentially, there are.
+yet, that cleanup is not providing the biggest value to justify prioritizing effort for it
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-10-17T23:02:38Z
+
+Fair.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-11-05T16:44:23Z
+
+Maybe we can remove Symfony 4.x components dependencies?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-11-08T13:47:34Z
+
+when I checked initially there was somemething still blocking, but maybe it's no longer the case. I was also thinking about lower PHPUnit. Let's check after this one is merged
