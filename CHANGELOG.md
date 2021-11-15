@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.3.1
+--------------------
+
+* minor #6067 Bump minimum PHP version to 7.2 (keradus)
+
 Changelog for v3.3.0
 --------------------
 
