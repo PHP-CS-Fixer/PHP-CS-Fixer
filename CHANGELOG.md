@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v2.19.3
+---------------------
+
+* minor #6060 DX: Add upgrade guide link when next Major is available (keradus)
+
 Changelog for v2.19.2
 ---------------------
 
