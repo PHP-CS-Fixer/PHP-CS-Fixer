@@ -24,6 +24,13 @@ Changelog for v3.3.0
 * minor #6085 Dx: reuse WhitespacesAnalyzer::detectIndent (kubawerlos)
 * minor #6087 AbstractProxyFixer - more tests (SpacePossum)
 
+Changelog for v3.2.1
+---------------------
+
+experimental release
+
+* Require PHP 7.2
+
 Changelog for v3.2.0
 --------------------
 

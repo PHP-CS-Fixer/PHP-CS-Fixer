@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.1'
+            php-version: '7.2'
             job-description: 'with lowest deps'
             composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
 
@@ -124,8 +124,8 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
-      - name: Run PHP CS Fixer for PHP 7.1 types
-        if: matrix.php-version == '7.1' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
+      - name: Run PHP CS Fixer for PHP 7.2 types
+        if: matrix.php-version == '7.2' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
         run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer
