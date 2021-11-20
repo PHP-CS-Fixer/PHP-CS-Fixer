@@ -58,7 +58,7 @@ final class MbStrFunctionsFixer extends AbstractFunctionReferenceFixer
         $this->functions = array_filter(
             self::$functionsMap,
             static function (array $mapping): bool {
-                return (new \ReflectionFunction($mapping['alternativeName']))->isInternal();
+                return \function_exists($mapping['alternativeName']) && (new \ReflectionFunction($mapping['alternativeName']))->isInternal();
             }
         );
     }
