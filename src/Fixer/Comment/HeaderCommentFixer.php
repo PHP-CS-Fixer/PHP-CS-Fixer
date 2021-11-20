@@ -427,11 +427,7 @@ echo 1;
 
             $content = Preg::replace('/\R?\h*$/', '', $content);
 
-            if ('' === $content) {
-                $tokens->clearAt($prevIndex);
-            } else {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, $content]);
-            }
+            $tokens->ensureWhitespaceAtIndex($prevIndex, 0, $content);
         }
 
         $nextIndex = $index + 1;
@@ -440,11 +436,7 @@ echo 1;
         if (!$newlineRemoved && null !== $nextToken && $nextToken->isWhitespace()) {
             $content = Preg::replace('/^\R/', '', $nextToken->getContent());
 
-            if ('' === $content) {
-                $tokens->clearAt($nextIndex);
-            } else {
-                $tokens[$nextIndex] = new Token([T_WHITESPACE, $content]);
-            }
+            $tokens->ensureWhitespaceAtIndex($nextIndex, 0, $content);
         }
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);

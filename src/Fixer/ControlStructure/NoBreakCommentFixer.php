@@ -302,11 +302,7 @@ switch ($foo) {
         if ($whitespaceToken->isGivenKind(T_WHITESPACE)) {
             $content = Preg::replace($regex, '', $whitespaceToken->getContent());
 
-            if ('' !== $content) {
-                $tokens[$whitespacePosition] = new Token([T_WHITESPACE, $content]);
-            } else {
-                $tokens->clearAt($whitespacePosition);
-            }
+            $tokens->ensureWhitespaceAtIndex($whitespacePosition, 0, $content);
         }
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($commentPosition);

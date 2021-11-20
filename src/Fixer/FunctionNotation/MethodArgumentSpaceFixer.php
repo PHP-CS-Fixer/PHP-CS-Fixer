@@ -303,11 +303,7 @@ SAMPLE
 
         $content = Preg::replace('/\R\h*/', '', $tokens[$index]->getContent());
 
-        if ('' !== $content) {
-            $tokens[$index] = new Token([T_WHITESPACE, $content]);
-        } else {
-            $tokens->clearAt($index);
-        }
+        $tokens->ensureWhitespaceAtIndex($index, 0, $content);
 
         return true;
     }

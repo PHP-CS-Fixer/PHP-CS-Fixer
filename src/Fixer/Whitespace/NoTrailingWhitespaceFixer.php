@@ -76,11 +76,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
                 && 1 === Preg::match('/^(\R)(.*)$/s', $tokens[$index + 1]->getContent(), $whitespaceMatches)
             ) {
                 $tokens[$index] = new Token([T_OPEN_TAG, $openTagMatches[1].$whitespaceMatches[1]]);
-                if ('' === $whitespaceMatches[2]) {
-                    $tokens->clearAt($index + 1);
-                } else {
-                    $tokens[$index + 1] = new Token([T_WHITESPACE, $whitespaceMatches[2]]);
-                }
+                $tokens->ensureWhitespaceAtIndex($index + 1, 0, $whitespaceMatches[2]);
 
                 continue;
             }
