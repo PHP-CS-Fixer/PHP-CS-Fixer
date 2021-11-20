@@ -124,7 +124,7 @@ SAMPLE
      * {@inheritdoc}
      *
      * Must run before ArrayIndentationFixer.
-     * Must run after BracesFixer, CombineNestedDirnameFixer, FunctionDeclarationFixer, ImplodeCallFixer, MethodChainingIndentationFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
+     * Must run after BracesFixer, CombineNestedDirnameFixer, FunctionDeclarationFixer, ImplodeCallFixer, MethodChainingIndentationFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUselessSprintfFixer, PowToExponentiationFixer.
      */
     public function getPriority(): int
     {
