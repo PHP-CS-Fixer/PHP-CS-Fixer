@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-15T18:44:34Z
+
+[![Coverage Status](https://coveralls.io/builds/44316037/badge)](https://coveralls.io/builds/44316037)
+
+Coverage remained the same at 92.853% when pulling **46b3f852103dad5fe5233add1608fa9e52ed5956 on keradus:phpunit8** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by derrabus at 2021-11-15T23:42:01Z
+
+PR title and commit message are misleading because it's actually v7 that you drop.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-11-16T22:11:10Z
+
+good point @derrabus
