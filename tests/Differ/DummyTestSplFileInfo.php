@@ -16,7 +16,7 @@ namespace PhpCsFixer\Tests\Differ;
 
 final class DummyTestSplFileInfo extends \SplFileInfo
 {
-    public function getRealPath()
+    public function getRealPath(): string
     {
         return $this->getFilename();
     }
