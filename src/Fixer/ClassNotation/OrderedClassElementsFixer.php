@@ -402,6 +402,8 @@ class Example
                 [T_STRING, 'doTearDownAfterClass'],
                 [T_STRING, 'setUp'],
                 [T_STRING, 'doSetUp'],
+                [T_STRING, 'assertPreConditions'],
+                [T_STRING, 'assertPostConditions'],
                 [T_STRING, 'tearDown'],
                 [T_STRING, 'doTearDown'],
             ], false)
@@ -444,8 +446,10 @@ class Example
             'doteardownafterclass' => 4,
             'setup' => 5,
             'dosetup' => 6,
-            'teardown' => 7,
-            'doteardown' => 8,
+            'assertpreconditions' => 7,
+            'assertpostconditions' => 8,
+            'teardown' => 9,
+            'doteardown' => 10,
         ];
 
         foreach ($elements as &$element) {

@@ -148,6 +148,10 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 
     protected function setUp() {}
 
+    protected function assertPreConditions() {}
+
+    protected function assertPostConditions() {}
+
     protected function tearDown() {}
 
     abstract public function foo1($a, $b = 1);
@@ -233,9 +237,13 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     } /* multiline
     comment */
 
+    protected function assertPostConditions() {}
+
     use Baz {
         abc as private;
     }
+
+    protected function assertPreConditions() {}
 
     private function foo5()
     {
