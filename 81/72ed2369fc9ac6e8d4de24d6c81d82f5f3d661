@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-15T23:59:04Z
+
+[![Coverage Status](https://coveralls.io/builds/44283135/badge)](https://coveralls.io/builds/44283135)
+
+Coverage remained the same at 92.853% when pulling **03d61aa6c68cdca27e0dcdf986e7a1802ef4e0d4 on derrabus:bugfix/get-real-path-deprecation** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
