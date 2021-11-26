@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: no_multiline_whitespace_around_double_arrow,method_argument_space.
+--RULESET--
+{"no_multiline_whitespace_around_double_arrow": true, "method_argument_space": true}
+--EXPECT--
+<?php
+$value = [
+    1 => array_merge(
+        $array1,
+        $array2
+    )
+];
+
+--INPUT--
+<?php
+$value = [
+    1 =>
+        array_merge(
+            $array1,
+            $array2
+        )
+];

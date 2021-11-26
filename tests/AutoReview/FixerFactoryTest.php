@@ -182,6 +182,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['no_extra_blank_lines'], $fixers['blank_line_before_statement']],
             [$fixers['no_leading_import_slash'], $fixers['ordered_imports']],
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['binary_operator_spaces']],
+            [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['method_argument_space']],
             [$fixers['no_multiline_whitespace_around_double_arrow'], $fixers['trailing_comma_in_multiline']],
             [$fixers['no_php4_constructor'], $fixers['ordered_class_elements']],
             [$fixers['no_short_bool_cast'], $fixers['cast_spaces']],
