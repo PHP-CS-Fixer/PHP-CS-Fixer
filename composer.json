@@ -27,7 +27,6 @@
         "symfony/finder": "^4.4.20 || ^5.0",
         "symfony/options-resolver": "^4.4.20 || ^5.0",
         "symfony/polyfill-mbstring": "^1.23",
-        "symfony/polyfill-php72": "^1.23",
         "symfony/polyfill-php80": "^1.23",
         "symfony/polyfill-php81": "^1.23",
         "symfony/process": "^4.4.20 || ^5.0",
