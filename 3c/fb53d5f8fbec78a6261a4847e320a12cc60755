@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-20T11:35:03Z
+
+[![Coverage Status](https://coveralls.io/builds/44424035/badge)](https://coveralls.io/builds/44424035)
+
+Coverage remained the same at 92.853% when pulling **d3c1c22fabc8292a6cd89e9ae868be8303ceae14 on werlos:integration_NoMultilineWhitespaceAroundDoubleArrowFixer_MethodArgumentSpaceFixer** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
