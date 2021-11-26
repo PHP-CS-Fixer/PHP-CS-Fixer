@@ -1,0 +1,14 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-11-18T18:43:51Z
+
+:+1:
+RTM from me if the tests pass
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-18T19:01:31Z
+
+[![Coverage Status](https://coveralls.io/builds/44381174/badge)](https://coveralls.io/builds/44381174)
+
+Coverage increased (+0.0007%) to 92.853% when pulling **153e50c45cebba739fae5f84996bd486dc9c2ddc on meyerbaptiste:fix_orderedclasselementsfixer** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
