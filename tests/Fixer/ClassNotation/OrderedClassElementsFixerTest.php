@@ -374,76 +374,6 @@ EOT
     }
 
     /**
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(array $configuration, string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
-            [
-                [],
-                <<<'EOT'
-<?php
-
-class Foo
-{
-    const C2 = 2;
-    public const C1 = 1;
-    public const C3 = 3;
-    protected const C4 = 4;
-    private const C5 = 5;
-}
-EOT
-                , <<<'EOT'
-<?php
-
-class Foo
-{
-    private const C5 = 5;
-    const C2 = 2;
-    public const C1 = 1;
-    protected const C4 = 4;
-    public const C3 = 3;
-}
-EOT
-            ],
-            [
-                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
-                <<<'EOT'
-<?php
-
-class Foo
-{
-    public const C1 = 1;
-    const C2 = 2;
-    public const C3 = 3;
-    protected const C4 = 4;
-    private const C5 = 5;
-}
-EOT
-                , <<<'EOT'
-<?php
-
-class Foo
-{
-    private const C5 = 5;
-    const C2 = 2;
-    public const C1 = 1;
-    protected const C4 = 4;
-    public const C3 = 3;
-}
-EOT
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider provideConfigurationCases
      */
     public function testFixWithConfiguration(array $configuration, string $expected, string $input): void
@@ -1251,6 +1181,60 @@ abstract class Foo
 }
 EOT
                 ,
+            ],
+            [
+                [],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    const C2 = 2;
+    public const C1 = 1;
+    public const C3 = 3;
+    protected const C4 = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    const C2 = 2;
+    public const C1 = 1;
+    protected const C4 = 4;
+    public const C3 = 3;
+}
+EOT
+            ],
+            [
+                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    public const C1 = 1;
+    const C2 = 2;
+    public const C3b = 3;
+    protected const C4a = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    const C2 = 2;
+    public const C1 = 1;
+    protected const C4a = 4;
+    public const C3b = 3;
+}
+EOT
             ],
         ];
     }

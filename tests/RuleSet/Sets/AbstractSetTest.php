@@ -40,7 +40,7 @@ abstract class AbstractSetTest extends TestCase
 
         static::assertSanityString($setName);
         static::assertSanityString($setDescription);
-        static::assertSame('.', substr($setDescription, -1), sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
+        static::assertStringEndsWith('.', $setDescription, sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
         static::assertRules($setRules, $factory, $setName);
 
         if (1 === preg_match('/(\d)(\d)Migration/', \get_class($set), $matches)) {

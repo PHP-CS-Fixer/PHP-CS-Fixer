@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\ProcessLintingResult;
 use PhpCsFixer\Tests\TestCase;
+use Symfony\Component\Process\Process;
 
 /**
  * @internal
@@ -30,7 +32,7 @@ final class ProcessLintingResultTest extends TestCase
     public function testCheckOK(): void
     {
         $process = $this->prophesize();
-        $process->willExtend(\Symfony\Component\Process\Process::class);
+        $process->willExtend(Process::class);
 
         $process
             ->wait()
@@ -49,7 +51,7 @@ final class ProcessLintingResultTest extends TestCase
     public function testCheckFail(): void
     {
         $process = $this->prophesize();
-        $process->willExtend(\Symfony\Component\Process\Process::class);
+        $process->willExtend(Process::class);
 
         $process
             ->wait()
@@ -73,15 +75,9 @@ final class ProcessLintingResultTest extends TestCase
 
         $result = new ProcessLintingResult($process->reveal(), 'test.php');
 
-        $this->expectException(
-            \PhpCsFixer\Linter\LintingException::class
-        );
-        $this->expectExceptionMessage(
-            'Parse error: syntax error, unexpected end of file, expecting \'{\' on line 4.'
-        );
-        $this->expectExceptionCode(
-            123
-        );
+        $this->expectException(LintingException::class);
+        $this->expectExceptionMessage('Parse error: syntax error, unexpected end of file, expecting \'{\' on line 4.');
+        $this->expectExceptionCode(123);
 
         $result->check();
     }

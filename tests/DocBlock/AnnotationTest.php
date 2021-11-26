@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
@@ -540,7 +539,6 @@ final class AnnotationTest extends TestCase
         $annotation = new Annotation($lines, $namespace, $namespaceUses);
         $result = $annotation->getTypeExpression();
 
-        static::assertInstanceOf(TypeExpression::class, $result);
         static::assertSame($expectedCommonType, $result->getCommonType());
     }
 

@@ -96,13 +96,15 @@ class DocBlocks
                 continue;
             }
 
-            $indent = '';
             if ($tokens[$nextIndex - 1]->isWhitespace()) {
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$nextIndex - 1]);
+            } else {
+                $indent = '';
             }
 
             $newPrevContent = $this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent);
-            if ($newPrevContent) {
+
+            if ('' !== $newPrevContent) {
                 if ($prevToken->isArray()) {
                     $tokens[$prevIndex] = new Token([$prevToken->getId(), $newPrevContent]);
                 } else {

@@ -1285,21 +1285,6 @@ new CLassD();
 echo fn_a();
 EOF
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases(): array
-    {
-        return [
             [ // TODO test shows lot of cases where imports are not removed while could be
                 '<?php use A\{B,};
 use some\y\{ClassA, ClassB, ClassC as C,};

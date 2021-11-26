@@ -15,7 +15,7 @@ class Foo {
 
 /**
  *
- * Foo
+ * FooBar
  *
  * @throws Exception
  * @param inTeGer $fo This is int.
@@ -26,5 +26,5 @@ class Foo {
  *
  * @custom
  */
-    public function foo ($fo, $bar, array $baz, $qux) {}
+    public function fooBar ($fo, $bar, array $baz, $qux) {}
 }

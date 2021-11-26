@@ -106,24 +106,6 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
                     $this->getClassElementStubs()
                 ),
             ],
-        ];
-    }
-
-    /**
-     * @param string      $expected PHP source code
-     * @param null|string $input    PHP source code
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases(): array
-    {
-        return [
             'constant visibility' => [
                 '<?php abstract class MyClass {
                     public const A = 1;

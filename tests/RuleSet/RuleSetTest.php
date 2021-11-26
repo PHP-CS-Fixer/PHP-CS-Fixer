@@ -366,10 +366,10 @@ final class RuleSetTest extends TestCase
         if (\count($duplicates) > 0) {
             $message = '';
 
-            foreach ($duplicates as $setName => $r) {
+            foreach ($duplicates as $setName => $rules) {
                 $message .= sprintf("\n\"%s\" defines rules the same as it extends from:", $setName);
 
-                foreach ($duplicates[$setName] as $ruleName => $otherSets) {
+                foreach ($rules as $ruleName => $otherSets) {
                     $message .= sprintf("\n- \"%s\" is also in \"%s\"", $ruleName, implode(', ', $otherSets));
                 }
             }

@@ -476,9 +476,9 @@ $b = 1;
         $this->doTest($expected, $input);
     }
 
-    public function provideBetweenUseCases(): array
+    public function provideBetweenUseCases(): \Generator
     {
-        return [
+        yield from [
             ['<?php use A\B;'],
             ['<?php use A\B?>'],
             ['<?php use A\B;use A\D; return 1;'],
@@ -519,6 +519,36 @@ $b = 1;
                     $example = function () use ($message) { var_dump($message); };
                 ',
             ],
+        ];
+
+        yield [
+            '<?php
+use function A; use function B;
+
+echo 1;',
+        ];
+
+        yield [
+            '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+use const some\Z\{ConstX,ConstY,ConstZ,};
+',
+            '<?php
+use some\a\{ClassA, ClassB, ClassC as C,};
+
+
+use function some\a\{fn_a, fn_b, fn_c,};
+
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+  '.'
+use const some\Z\{ConstX,ConstY,ConstZ,};
+',
         ];
     }
 
@@ -1053,49 +1083,6 @@ class Foo {}',
 
 class Foo {}'
         );
-    }
-
-    /**
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['tokens' => ['use']]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases(): \Generator
-    {
-        yield [
-            '<?php
-use function A; use function B;
-
-echo 1;',
-        ];
-
-        yield [
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C,};
-use function some\a\{fn_a, fn_b, fn_c,};
-use const some\a\{ConstA,ConstB,ConstC
-,
-};
-use const some\Z\{ConstX,ConstY,ConstZ,};
-',
-            '<?php
-use some\a\{ClassA, ClassB, ClassC as C,};
-
-
-use function some\a\{fn_a, fn_b, fn_c,};
-
-use const some\a\{ConstA,ConstB,ConstC
-,
-};
-  '.'
-use const some\Z\{ConstX,ConstY,ConstZ,};
-',
-        ];
     }
 
     /**

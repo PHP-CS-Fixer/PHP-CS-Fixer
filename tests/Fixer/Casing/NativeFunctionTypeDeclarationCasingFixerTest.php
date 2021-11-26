@@ -124,21 +124,6 @@ function Foo(INTEGER $a) {}
                 '<?php function Foo(string $A): ?/* */int {}',
                 '<?php function Foo(STRING $A): ?/* */INT {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases(): array
-    {
-        return [
             [
                 '<?php function Foo(object $A): void {}',
                 '<?php function Foo(OBJECT $A): VOID {}',

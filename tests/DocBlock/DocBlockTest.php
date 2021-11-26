@@ -202,8 +202,6 @@ final class DocBlockTest extends TestCase
 
     /**
      * @dataProvider provideDocBlocksToConvertToSingleLineCases
-     *
-     * @param string $outputDocBlock
      */
     public function testMakeSingleLine(string $inputDocBlock, string $outputDocBlock = null): void
     {

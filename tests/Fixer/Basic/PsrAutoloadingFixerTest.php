@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * This is new test method, to replace old one one day.
+     * This is new test method, to replace old one some day.
      *
      * @dataProvider provideFixNewCases
      */

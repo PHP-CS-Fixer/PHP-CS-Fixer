@@ -143,7 +143,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  */'],
             ['
 /**
- * See {@link http://help Help} or {@see BarClass} for details.
+ * See {@link https://help Help} or {@see BarClass} for details.
  */'],
             ['
 /**
