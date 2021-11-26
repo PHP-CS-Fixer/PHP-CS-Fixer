@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-17T03:54:31Z
+
+[![Coverage Status](https://coveralls.io/builds/44322232/badge)](https://coveralls.io/builds/44322232)
+
+Coverage remained the same at 92.853% when pulling **d3d6fed1e3f9744ed28b084767fb6d9e4e7c053f on liquid207:bugfix/fix-issue-6110** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
