@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-11-26T06:58:45Z
+
+Thanks for opening the PR @phil-davis  :+1:
+
+Looks good to me and ready for merge as soon as the tests have run :)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-26T07:11:20Z
+
+[![Coverage Status](https://coveralls.io/builds/44558386/badge)](https://coveralls.io/builds/44558386)
+
+Coverage remained the same at 92.853% when pulling **005907eb85730c0d6672275b1d0f309f1491ff0b on phil-davis:remove-XdebugHandler-2nd-parameter** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
