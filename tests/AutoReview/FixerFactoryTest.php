@@ -296,6 +296,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['standardize_increment'], $fixers['increment_style']],
             [$fixers['standardize_not_equals'], $fixers['binary_operator_spaces']],
             [$fixers['strict_comparison'], $fixers['binary_operator_spaces']],
+            [$fixers['strict_param'], $fixers['method_argument_space']],
             [$fixers['strict_param'], $fixers['native_function_invocation']],
             [$fixers['string_length_to_empty'], $fixers['no_extra_blank_lines']],
             [$fixers['string_length_to_empty'], $fixers['no_trailing_whitespace']],
