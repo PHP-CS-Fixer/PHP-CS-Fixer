@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-20T11:16:28Z
+
+[![Coverage Status](https://coveralls.io/builds/44423868/badge)](https://coveralls.io/builds/44423868)
+
+Coverage increased (+0.001%) to 92.854% when pulling **867da40dc28e0478d271740cf8cc2f6f4195045d on werlos:use_Tokens_ensureWhitespaceAtIndex** into **07430f5aca4874476bf175317cfb6284cd80421a on FriendsOfPHP:master**.
