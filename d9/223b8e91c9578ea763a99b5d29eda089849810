@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-30T16:23:34Z
+
+[![Coverage Status](https://coveralls.io/builds/44642797/badge)](https://coveralls.io/builds/44642797)
+
+Coverage increased (+0.0004%) to 92.855% when pulling **2b1146d6fb1c68e339c9215d8e363a662086b67a on werlos:integration_NewWithBracesFixer_ClassDefinitionFixer** into **2983833562d0f40bde5f56ac42fb989899ea8086 on FriendsOfPHP:master**.
