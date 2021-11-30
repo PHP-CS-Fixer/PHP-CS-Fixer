@@ -332,7 +332,6 @@ class Test
      * @param array<int, int> $expectedTokens
      *
      * @dataProvider provideProcess72Cases
-     * @requires PHP 7.2
      */
     public function testProcess72(string $source, array $expectedTokens): void
     {

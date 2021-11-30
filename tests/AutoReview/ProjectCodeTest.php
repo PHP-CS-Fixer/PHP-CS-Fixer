@@ -309,7 +309,7 @@ final class ProjectCodeTest extends TestCase
         $reflectionClass = new \ReflectionClass($testClassName);
 
         if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
-            self::addToAssertionCount(1);
+            $this->addToAssertionCount(1);
 
             return;
         }
@@ -318,7 +318,7 @@ final class ProjectCodeTest extends TestCase
         static::assertNotFalse($doc);
 
         if (1 === Preg::match('/@coversNothing/', $doc, $matches)) {
-            self::addToAssertionCount(1);
+            $this->addToAssertionCount(1);
 
             return;
         }

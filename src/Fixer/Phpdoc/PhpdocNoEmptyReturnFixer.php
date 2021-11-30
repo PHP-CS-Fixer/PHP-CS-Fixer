@@ -93,7 +93,7 @@ function foo() {}
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixAnnotation($doc, $annotation);
+                $this->fixAnnotation($annotation);
             }
 
             $newContent = $doc->getContent();
@@ -115,7 +115,7 @@ function foo() {}
     /**
      * Remove `return void` or `return null` annotations.
      */
-    private function fixAnnotation(DocBlock $doc, Annotation $annotation): void
+    private function fixAnnotation(Annotation $annotation): void
     {
         $types = $annotation->getNormalizedTypes();
 

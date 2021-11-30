@@ -180,21 +180,6 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use const \d\e;
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $expected, string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases(): array
-    {
-        return [
             [
                 '<?php
 namespace AAA;

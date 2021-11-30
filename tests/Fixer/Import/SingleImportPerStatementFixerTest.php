@@ -257,6 +257,18 @@ use const true, false;
 use A,B;
 ',
             ],
+            [
+                '<?php
+use D\E;
+use D\F;
+use G\H;
+use G\I/*1*//*2*/;
+',
+                '<?php
+use D\{E,F,};
+use G\{H,I/*1*/,/*2*/};
+',
+            ],
         ];
     }
 
@@ -296,33 +308,6 @@ use D\{
             [
                 "<?php\r\n    use FooA;\r\n    use FooB;",
                 "<?php\r\n    use FooA, FooB;",
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix72Cases(): array
-    {
-        return [
-            [
-                '<?php
-use D\E;
-use D\F;
-use G\H;
-use G\I/*1*//*2*/;
-',
-                '<?php
-use D\{E,F,};
-use G\{H,I/*1*/,/*2*/};
-',
             ],
         ];
     }

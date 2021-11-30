@@ -147,8 +147,6 @@ SAMPLE
         $fixArguments = \in_array(self::ELEMENTS_ARGUMENTS, $this->configuration['elements'], true);
         $fixParameters = \in_array(self::ELEMENTS_PARAMETERS, $this->configuration['elements'], true);
 
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
@@ -194,6 +192,7 @@ SAMPLE
     private function fixBlock(Tokens $tokens, int $startIndex): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         if (!$tokensAnalyzer->isBlockMultiline($tokens, $startIndex)) {
             return;
         }

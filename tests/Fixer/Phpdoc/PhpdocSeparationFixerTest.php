@@ -190,7 +190,7 @@ EOF;
      *
      *     $client = new Client([
      *         'base_url' => [
-     *              'http://www.foo.com/{version}/',
+     *              'https://www.foo.com/{version}/',
      *              ['version' => '123']
      *          ],
      *         'defaults' => [

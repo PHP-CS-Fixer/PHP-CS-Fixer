@@ -695,23 +695,7 @@ class Abc {
 }
 INPUT
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixImportClasses71Cases
-     * @requires PHP 7.1
-     */
-    public function testFixImportClasses71(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['import_classes' => true]);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixImportClasses71Cases(): array
-    {
-        return [
-            'handle typehints' => [
+            'handle typehints 2' => [
                 <<<'EXPECTED'
 <?php
 namespace Test;

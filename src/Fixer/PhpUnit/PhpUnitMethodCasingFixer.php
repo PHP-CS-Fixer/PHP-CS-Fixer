@@ -154,7 +154,7 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $functionNameIndex = $tokens->getNextMeaningfulToken($index);
         $functionName = $tokens[$functionNameIndex]->getContent();
 
-        if ($this->startsWith('test', $functionName)) {
+        if (str_starts_with($functionName, 'test')) {
             return true;
         }
 
@@ -171,11 +171,6 @@ class MyTest extends \\PhpUnit\\FrameWork\\TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         return $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
-    }
-
-    private function startsWith(string $needle, string $haystack): bool
-    {
-        return substr($haystack, 0, \strlen($needle)) === $needle;
     }
 
     private function updateDocBlock(Tokens $tokens, int $docBlockIndex): void
