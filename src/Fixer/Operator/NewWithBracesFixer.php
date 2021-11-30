@@ -40,6 +40,16 @@ final class NewWithBracesFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ClassDefinitionFixer.
+     */
+    public function getPriority(): int
+    {
+        return 37;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {

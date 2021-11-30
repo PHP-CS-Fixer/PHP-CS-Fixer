@@ -152,6 +152,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['multiline_whitespace_before_semicolons'], $fixers['space_after_semicolon']],
             [$fixers['native_constant_invocation'], $fixers['global_namespace_import']],
             [$fixers['native_function_invocation'], $fixers['global_namespace_import']],
+            [$fixers['new_with_braces'], $fixers['class_definition']],
             [$fixers['no_alias_functions'], $fixers['implode_call']],
             [$fixers['no_alias_functions'], $fixers['php_unit_dedicate_assert']],
             [$fixers['no_alternative_syntax'], $fixers['braces']],
