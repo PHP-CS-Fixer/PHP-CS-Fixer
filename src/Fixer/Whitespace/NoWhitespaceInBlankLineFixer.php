@@ -93,11 +93,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
                 $lines[$l] = Preg::replace('/^\h+$/', '', $lines[$l]);
             }
             $content = implode($this->whitespacesConfig->getLineEnding(), $lines);
-            if ('' !== $content) {
-                $tokens[$index] = new Token([T_WHITESPACE, $content]);
-            } else {
-                $tokens->clearAt($index);
-            }
+            $tokens->ensureWhitespaceAtIndex($index, 0, $content);
         }
     }
 }
