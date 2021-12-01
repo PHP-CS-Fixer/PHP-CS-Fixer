@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-30T18:20:41Z
+
+[![Coverage Status](https://coveralls.io/builds/44646740/badge)](https://coveralls.io/builds/44646740)
+
+Coverage remained the same at 92.849% when pulling **3efa9c6569e6cf720e9f05cc7ddd7cd5974ed5b6 on werlos:integration_phpdoc_line_span_no_superfluous_phpdoc_tags** into **f6bfd510b6c2b13817e85b50e48468c53138f94c on FriendsOfPHP:master**.
