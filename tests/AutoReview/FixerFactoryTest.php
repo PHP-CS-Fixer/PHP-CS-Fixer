@@ -243,6 +243,7 @@ final class FixerFactoryTest extends TestCase
             [$fixers['phpdoc_add_missing_param_annotation'], $fixers['phpdoc_order']],
             [$fixers['phpdoc_annotation_without_dot'], $fixers['phpdoc_types']],
             [$fixers['phpdoc_annotation_without_dot'], $fixers['phpdoc_types_order']],
+            [$fixers['phpdoc_line_span'], $fixers['no_superfluous_phpdoc_tags']],
             [$fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']],
             [$fixers['phpdoc_no_access'], $fixers['phpdoc_separation']],
             [$fixers['phpdoc_no_access'], $fixers['phpdoc_trim']],
