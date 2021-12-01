@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-06-21T20:23:57Z
+
+[![Coverage Status](https://coveralls.io/builds/44645841/badge)](https://coveralls.io/builds/44645841)
+
+Coverage decreased (-0.002%) to 92.847% when pulling **a4358ecb46d01aafea687ab6a297f71bbc71fdfa on werlos:test_on_php_81** into **f6bfd510b6c2b13817e85b50e48468c53138f94c on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-10-13T17:08:11Z
+
+small note: everything was squashed, no clue what were the changes introduced as reply to latest comments ;(
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-11-29T17:44:57Z
+
+I think this is good to merge. It will solve the last known issues we have on 8.1 with the current rules and features.
+If there are no other ideas or suggestions or concerns I would to request a final rebase and squash and than merge it :+1:
