@@ -23,6 +23,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
@@ -121,6 +122,7 @@ function foo() {
     {
         $referenceAnalyzer = new ReferenceAnalyzer();
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
+        $alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
 
         $excludedIndices = $this->getExcludedIndices($tokens);
 
@@ -137,6 +139,10 @@ function foo() {
             }
 
             if ($referenceAnalyzer->isReference($tokens, $index)) {
+                continue;
+            }
+
+            if ($alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                 continue;
             }
 
