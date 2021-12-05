@@ -187,6 +187,22 @@ return $foo
                 prepare_value:
                 $objectsPool[$value] = [$id = \count($objectsPool)];
         '];
+
+        yield 'alternative syntax' => [
+            '<?php
+if (true):
+    echo 1;
+else:
+    echo 2;
+endif;
+
+while (true):
+    echo "na";
+endwhile;
+',
+            null,
+            ['position' => 'beginning'],
+        ];
     }
 
     /**
