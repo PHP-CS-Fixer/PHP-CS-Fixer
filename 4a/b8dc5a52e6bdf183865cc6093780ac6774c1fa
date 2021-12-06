@@ -1,0 +1,139 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-05T16:05:01Z
+
+[![Coverage Status](https://coveralls.io/builds/44796245/badge)](https://coveralls.io/builds/44796245)
+
+Coverage decreased (-0.002%) to 92.847% when pulling **c0e23713247f1cd45c4135c09f074520fd08264f on derrabus:improvement/symfony-6** into **f6bfd510b6c2b13817e85b50e48468c53138f94c on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by derrabus at 2021-11-05T19:35:43Z
+
+Seems like Prophecy is having some problems here: phpspec/prophecy#527
+
+---------------------------------------------------------------------------
+
+by mamchyts at 2021-11-30T12:01:00Z
+
+any updates?
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2021-11-30T20:01:45Z
+
+Just FYI, this is last blocker for Symplify and Rector ecosystem to upgrade to Symfony 6. Any ETA on moving this forward?
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2021-11-30T20:36:31Z
+
+Temporary solution to use this PR for those whom need it:
+
+```json
+{
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "dev-improvement/symfony-6 as 3.3.2"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/derrabus/PHP-CS-Fixer"
+        }
+    ]
+}
+```
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-12-01T09:46:04Z
+
+Do Simplify and Rector actually need to be installed along with other app's dependencies? If not, I'd suggest using a different installation method, e.g. a dedicated composer.json, which would prevent dependencies conflicts.
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2021-12-01T10:42:23Z
+
+@julienfalque Unfortunately yes, Symplify ECS uses php-cs-fixer directly as it wraps it, and Rector needs coding standard tool to tidy up spaces.
+
+---------------------------------------------------------------------------
+
+by soxyl at 2021-12-01T11:13:44Z
+
+I get the point that it would be best to install php-cs-fixer separately from the actual project dependencies. Yet, using GrumPHP along with its php-cs-fixer task requires me to [install php-cs-fixer as a dev dependency](https://github.com/phpro/grumphp/blob/master/doc/tasks/phpcsfixer.md) of the main project.
+
+Therefore it would be nice to see support for Symfony 6 soon. :smiley:
+
+---------------------------------------------------------------------------
+
+by derrabus at 2021-12-01T15:51:29Z
+
+CI fails because of php-coveralls/php-coveralls#327 now.
+
+---------------------------------------------------------------------------
+
+by ruudk at 2021-12-01T16:04:58Z
+
+Why is that a dependency for php-cs-fixer ;)?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-01T17:34:48Z
+
+The test is not about the process of linting itself but how the result of a Process that does such linting is transformed into a result object. I wander if updating the test into the following would suffice as replacement:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests\Linter;
+
+use PhpCsFixer\Linter\LintingException;
+use PhpCsFixer\Linter\ProcessLintingResult;
+use PhpCsFixer\Tests\TestCase;
+use Symfony\Component\Process\Process;
+
+/**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Linter\ProcessLintingResult
+ */
+final class ProcessLintingResultTest extends TestCase
+{
+    public function testCheckOK(): void
+    {
+        $process = new Process(['ls']);
+        $process->run();
+        static::assertTrue($process->isSuccessful(), 'Test setup failure.');
+
+        $result = new ProcessLintingResult($process);
+        $result->check();
+    }
+
+    public function testCheckFail(): void
+    {
+        $process = new Process(['foo']);
+        $process->run();
+        static::assertFalse($process->isSuccessful(), 'Test setup failure.');
+
+        $result = new ProcessLintingResult($process);
+
+        $this->expectException(LintingException::class);
+        $this->expectExceptionCode($process->getExitCode());
+
+        $result->check();
+    }
+}
+
+```
