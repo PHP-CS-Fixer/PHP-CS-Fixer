@@ -1,8 +1,8 @@
 {
     "name": "friendsofphp/php-cs-fixer",
-    "type": "application",
     "description": "A tool to automatically fix PHP code style",
     "license": "MIT",
+    "type": "application",
     "authors": [
         {
             "name": "Fabien Potencier",
@@ -52,9 +52,6 @@
         "ext-dom": "For handling output formats in XML",
         "ext-mbstring": "For handling non-UTF8 characters."
     },
-    "config": {
-        "sort-packages": true
-    },
     "autoload": {
         "psr-4": {
             "PhpCsFixer\\": "src/"
@@ -67,5 +64,8 @@
     },
     "bin": [
         "php-cs-fixer"
-    ]
+    ],
+    "config": {
+        "sort-packages": true
+    }
 }
