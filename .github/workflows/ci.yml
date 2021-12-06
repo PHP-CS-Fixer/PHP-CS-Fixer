@@ -26,6 +26,11 @@ jobs:
             execute-flex-with-symfony-version: '^5' # Explicit check for Sf 5.x compatibility
 
           - operating-system: 'ubuntu-20.04'
+            php-version: '8.0'
+            job-description: 'with Sf ^6'
+            execute-flex-with-symfony-version: '^6' # Explicit check for Sf 6.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
             job-description: 'with deployment'
             execute-deployment: 'yes'
