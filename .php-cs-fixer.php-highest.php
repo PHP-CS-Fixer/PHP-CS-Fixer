@@ -10,8 +10,8 @@
  * with this source code in the file LICENSE.
  */
 
-if (PHP_VERSION_ID <= 80001 || PHP_VERSION_ID >= 80100) {
-    fwrite(STDERR, "PHP CS Fixer's config for PHP-HIGHEST can be executed only on highest supported PHP version - 8.0.*.\n");
+if (PHP_VERSION_ID < 80100 || PHP_VERSION_ID >= 80200) {
+    fwrite(STDERR, "PHP CS Fixer's config for PHP-HIGHEST can be executed only on highest supported PHP version - 8.1.*.\n");
     fwrite(STDERR, "Running it on lower PHP version would prevent calling migration rules.\n");
     exit(1);
 }
@@ -19,7 +19,7 @@ if (PHP_VERSION_ID <= 80001 || PHP_VERSION_ID >= 80100) {
 $config = require '.php-cs-fixer.dist.php';
 
 $config->setRules(array_merge($config->getRules(), [
-    '@PHP80Migration' => true,
+    '@PHP81Migration' => true,
     '@PHP80Migration:risky' => true,
     'heredoc_indentation' => false,
 ]));

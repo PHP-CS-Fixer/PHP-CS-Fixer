@@ -101,7 +101,7 @@ final class CiConfigurationTest extends TestCase
 
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
-        if ('8.0' === $lastSupportedVersion) {
+        if ('8.1' === $lastSupportedVersion) {
             return; // no further releases available yet
         }
 
