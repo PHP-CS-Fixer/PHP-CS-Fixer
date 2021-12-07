@@ -49,22 +49,13 @@ final class StdinTest extends AbstractSmokeTest
 
         static::assertSame($expectedError, $stdinResult->getError());
 
-        $fileResult = $this->unifyFooter($fileResult->getOutput());
-
-        $file = realpath($cwd).'/'.$inputFile;
-        $path = str_replace('/', \DIRECTORY_SEPARATOR, $file);
-        $fileResult = str_replace("\n--- ".$path."\n", "\n--- php://stdin\n", $fileResult);
-        $fileResult = str_replace("\n+++ ".$path."\n", "\n+++ php://stdin\n", $fileResult);
-
         $path = str_replace('/', \DIRECTORY_SEPARATOR, $inputFile);
-        $fileResult = Preg::replace(
-            '#/?'.preg_quote($path, '#').'#',
-            'php://stdin',
-            $fileResult
-        );
-
         static::assertSame(
-            $fileResult,
+            Preg::replace(
+                '#/?'.preg_quote($path, '#').'#',
+                'php://stdin',
+                $this->unifyFooter($fileResult->getOutput())
+            ),
             $this->unifyFooter($stdinResult->getOutput())
         );
     }
