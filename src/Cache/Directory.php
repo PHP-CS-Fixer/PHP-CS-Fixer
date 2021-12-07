@@ -50,6 +50,12 @@ final class Directory implements DirectoryInterface
 
     private function normalizePath(string $path): string
     {
-        return str_replace(['\\', '/'], \DIRECTORY_SEPARATOR, $path);
+        $path = str_replace(['\\', '/'], \DIRECTORY_SEPARATOR, $path);
+
+        if (0 === stripos($path, '.'.\DIRECTORY_SEPARATOR)) {
+            $path = str_replace('.'.\DIRECTORY_SEPARATOR, '', $path);
+        }
+
+        return $path;
     }
 }
