@@ -48,6 +48,9 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.1'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.2'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'windows-latest'
