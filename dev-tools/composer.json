@@ -3,7 +3,7 @@
         "php": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.15.0",
+        "ergebnis/composer-normalize": "^2.17.0",
         "humbug/box": "^3.8",
         "humbug/php-scoper": "dev-master#0a4e329 as 0.14.2",
         "jangregor/phpstan-prophecy": "^0.8.1",

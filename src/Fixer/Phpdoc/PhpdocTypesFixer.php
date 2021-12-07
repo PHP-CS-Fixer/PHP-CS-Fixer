@@ -90,7 +90,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
             implode(
                 '|',
                 array_map(
-                    function (string $type): string {
+                    static function (string $type): string {
                         return preg_quote($type, '/');
                     },
                     $typesToFix

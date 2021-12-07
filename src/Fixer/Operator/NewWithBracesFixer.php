@@ -40,6 +40,16 @@ final class NewWithBracesFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ClassDefinitionFixer.
+     */
+    public function getPriority(): int
+    {
+        return 37;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
@@ -98,6 +108,10 @@ final class NewWithBracesFixer extends AbstractFixer
                 [CT::T_BRACE_CLASS_INSTANTIATION_OPEN],
                 [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
             ];
+            if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
+                $nextTokenKinds[] = [T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG];
+                $nextTokenKinds[] = [T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG];
+            }
         }
 
         for ($index = $tokens->count() - 3; $index > 0; --$index) {

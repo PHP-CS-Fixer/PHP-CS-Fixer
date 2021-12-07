@@ -131,7 +131,9 @@ final class ConfigTest extends TestCase
         );
 
         static::assertCount(1, $items);
-        static::assertSame('somefile.php', $items[0]->getFilename());
+
+        $item = reset($items);
+        static::assertSame('somefile.php', $item->getFilename());
     }
 
     public function testThatCustomFinderWorks(): void

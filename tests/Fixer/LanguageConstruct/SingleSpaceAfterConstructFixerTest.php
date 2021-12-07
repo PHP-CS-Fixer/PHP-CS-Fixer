@@ -2925,6 +2925,13 @@ foo($a /* d */, $b);
 $arr = [/* empty */];
 ',
         ];
+
+        yield 'before_destructuring_square_brace_close' => [
+            '<?php
+foreach ($fields as [$field/** @var string*/]) {
+}
+',
+        ];
     }
 
     /**

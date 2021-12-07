@@ -125,31 +125,6 @@ $a = new class(
                     76 => CT::T_USE_TRAIT,
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @param array<int, int> $expectedTokens index => kind
-     *
-     * @dataProvider provideFix72Cases
-     * @requires PHP 7.2
-     */
-    public function testFix72(string $source, array $expectedTokens = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_USE,
-                CT::T_USE_LAMBDA,
-                CT::T_USE_TRAIT,
-            ]
-        );
-    }
-
-    public function provideFix72Cases(): array
-    {
-        return [
             [
                 '<?php
 use A\{B,};

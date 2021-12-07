@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.1'
+            php-version: '7.2'
             job-description: 'with lowest deps'
             composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
 
@@ -24,6 +24,11 @@ jobs:
             php-version: '7.3'
             job-description: 'with Sf ^5'
             execute-flex-with-symfony-version: '^5' # Explicit check for Sf 5.x compatibility
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.0'
+            job-description: 'with Sf ^6'
+            execute-flex-with-symfony-version: '^6' # Explicit check for Sf 6.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
@@ -40,6 +45,10 @@ jobs:
             job-description: 'with calculating code coverage'
             calculate-code-coverage: 'yes'
             phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'windows-latest'
             php-version: '7.4'
@@ -124,8 +133,8 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
-      - name: Run PHP CS Fixer for PHP 7.1 types
-        if: matrix.php-version == '7.1' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
+      - name: Run PHP CS Fixer for PHP 7.2 types
+        if: matrix.php-version == '7.2' # we run on lowest supported version, running it on higher would falsy expect more changes, eg `mixed` type on PHP 8
         run: php php-cs-fixer fix --diff --dry-run -v --config .php-cs-fixer.php-lowest.php
 
       - name: Run PHP CS Fixer

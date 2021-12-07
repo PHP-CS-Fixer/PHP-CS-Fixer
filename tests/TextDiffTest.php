@@ -70,10 +70,10 @@ final class TextDiffTest extends TestCase
 %A$output->writeln('<error>'.(int)$output.'</error>');%A
 %A$output->writeln('<error>'.(int) $output.'</error>');%A
 TEST;
-        $cases = [];
+
         foreach (['txt', 'xml', 'junit'] as $format) {
-            $cases[] = [$expected, $format, true];
-            $cases[] = [$expected, $format, false];
+            yield [$expected, $format, true];
+            yield [$expected, $format, false];
         }
 
         $expected = substr(json_encode($expected), 1, -1);

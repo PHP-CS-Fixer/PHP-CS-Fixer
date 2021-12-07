@@ -94,7 +94,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
             ],
             ['
 /**
- * See {@link http://help Help} or {@see BarClass} for details.
+ * See {@link https://help Help} or {@see BarClass} for details.
  */'],
         ]);
 
@@ -170,7 +170,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
             ],
             ['
 /**
- * See {@link http://help Help} or {@see BarClass} for details.
+ * See {@link https://help Help} or {@see BarClass} for details.
  */'],
         ]);
     }

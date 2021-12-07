@@ -81,14 +81,15 @@ final class VoidReturnFixer extends AbstractFixer
     {
         // These cause syntax errors.
         static $excludedFunctions = [
-            [T_STRING, '__construct'],
-            [T_STRING, '__destruct'],
             [T_STRING, '__clone'],
+            [T_STRING, '__construct'],
+            [T_STRING, '__debugInfo'],
+            [T_STRING, '__destruct'],
             [T_STRING, '__isset'],
-            [T_STRING, '__sleep'],
             [T_STRING, '__serialize'],
             [T_STRING, '__set_state'],
-            [T_STRING, '__debugInfo'],
+            [T_STRING, '__sleep'],
+            [T_STRING, '__toString'],
         ];
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {

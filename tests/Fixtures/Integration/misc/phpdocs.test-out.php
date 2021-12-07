@@ -10,7 +10,7 @@ class Foo {
     public $baz;
 
     /**
-     * Foo.
+     * FooBar.
      *
      * @param int   $fo  this is int
      * @param float $bar this is float
@@ -21,5 +21,5 @@ class Foo {
      *
      * @custom
      */
-    public function foo ($fo, $bar, array $baz, $qux) {}
+    public function fooBar ($fo, $bar, array $baz, $qux) {}
 }

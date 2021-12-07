@@ -310,7 +310,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
 
     private function clearImports(Tokens $tokens, array $imports): void
     {
-        foreach ($imports as $content => $removeIndex) {
+        foreach ($imports as $removeIndex) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($removeIndex);
             $previousRemoveIndex = $tokens->getPrevMeaningfulToken($removeIndex);
 

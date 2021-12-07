@@ -219,7 +219,7 @@ yield  from  baz();
 
             $whitespaceTokenIndex = $index + 1;
 
-            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) {
+            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE], [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]])) {
                 continue;
             }
 
@@ -256,11 +256,7 @@ yield  from  baz();
                 }
             }
 
-            if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE])) {
-                $tokens[$whitespaceTokenIndex] = new Token([T_WHITESPACE, ' ']);
-            } else {
-                $tokens->insertAt($whitespaceTokenIndex, new Token([T_WHITESPACE, ' ']));
-            }
+            $tokens->ensureWhitespaceAtIndex($whitespaceTokenIndex, 0, ' ');
 
             if (
                 $token->isGivenKind(T_YIELD_FROM)

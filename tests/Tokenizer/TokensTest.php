@@ -54,19 +54,12 @@ final class TokensTest extends TestCase
      */
     public function testFindSequence(
         string $source,
-        array $expected = null,
+        ?array $expected,
         array $sequence,
-        int $start = null,
-        ?int $end = null,
-        $caseSensitive = null
+        int $start = 0,
+        int $end = null,
+        $caseSensitive = true
     ): void {
-        if (null === $start) {
-            $start = 0;
-        }
-        if (null === $caseSensitive) {
-            $caseSensitive = true;
-        }
-
         $tokens = Tokens::fromCode($source);
 
         static::assertEqualsTokensArray(

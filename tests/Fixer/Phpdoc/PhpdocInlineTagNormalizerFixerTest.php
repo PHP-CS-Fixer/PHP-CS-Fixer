@@ -153,7 +153,7 @@ final class PhpdocInlineTagNormalizerFixerTest extends AbstractFixerTestCase
         $cases[] = [
             '<?php
     /**
-     * {@link http://www.ietf.org/rfc/rfc1035.text)
+     * {@link https://symfony.com/rfc/rfc1035.text)
      */
     $someVar = "hello";',
         ];

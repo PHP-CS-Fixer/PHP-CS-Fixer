@@ -148,6 +148,10 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
 
     protected function setUp() {}
 
+    protected function assertPreConditions() {}
+
+    protected function assertPostConditions() {}
+
     protected function tearDown() {}
 
     abstract public function foo1($a, $b = 1);
@@ -233,9 +237,13 @@ abstract class Foo extends FooParent implements FooInterface1, FooInterface2
     } /* multiline
     comment */
 
+    protected function assertPostConditions() {}
+
     use Baz {
         abc as private;
     }
+
+    protected function assertPreConditions() {}
 
     private function foo5()
     {
@@ -360,76 +368,6 @@ class ComplexStringVariableAndUseTrait
     use FooTrait;
 }
 
-EOT
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix71Cases
-     * @requires PHP 7.1
-     */
-    public function testFix71(array $configuration, string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix71Cases(): array
-    {
-        return [
-            [
-                [],
-                <<<'EOT'
-<?php
-
-class Foo
-{
-    const C2 = 2;
-    public const C1 = 1;
-    public const C3 = 3;
-    protected const C4 = 4;
-    private const C5 = 5;
-}
-EOT
-                , <<<'EOT'
-<?php
-
-class Foo
-{
-    private const C5 = 5;
-    const C2 = 2;
-    public const C1 = 1;
-    protected const C4 = 4;
-    public const C3 = 3;
-}
-EOT
-            ],
-            [
-                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
-                <<<'EOT'
-<?php
-
-class Foo
-{
-    public const C1 = 1;
-    const C2 = 2;
-    public const C3 = 3;
-    protected const C4 = 4;
-    private const C5 = 5;
-}
-EOT
-                , <<<'EOT'
-<?php
-
-class Foo
-{
-    private const C5 = 5;
-    const C2 = 2;
-    public const C1 = 1;
-    protected const C4 = 4;
-    public const C3 = 3;
-}
 EOT
             ],
         ];
@@ -1243,6 +1181,60 @@ abstract class Foo
 }
 EOT
                 ,
+            ],
+            [
+                [],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    const C2 = 2;
+    public const C1 = 1;
+    public const C3 = 3;
+    protected const C4 = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    const C2 = 2;
+    public const C1 = 1;
+    protected const C4 = 4;
+    public const C3 = 3;
+}
+EOT
+            ],
+            [
+                ['sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA],
+                <<<'EOT'
+<?php
+
+class Foo
+{
+    public const C1 = 1;
+    const C2 = 2;
+    public const C3b = 3;
+    protected const C4a = 4;
+    private const C5 = 5;
+}
+EOT
+                , <<<'EOT'
+<?php
+
+class Foo
+{
+    private const C5 = 5;
+    const C2 = 2;
+    public const C1 = 1;
+    protected const C4a = 4;
+    public const C3b = 3;
+}
+EOT
             ],
         ];
     }

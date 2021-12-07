@@ -44,7 +44,7 @@ final class RuleSetsTest extends TestCase
 
         foreach ($sets as $name => $set) {
             static::assertIsString($name);
-            static::assertTrue('@' === $name[0]);
+            static::assertStringStartsWith('@', $name);
             static::assertIsArray($set->getRules());
             static::assertSame($set, RuleSets::getSetDefinition($name));
         }

@@ -1995,24 +1995,6 @@ use const some\a\{ConstA, ConstB, ConstC};
                 ',
                 true,
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideGetImportUseIndexesPHP72Cases
-     * @requires PHP 7.2
-     */
-    public function testGetImportUseIndexesPHP72(array $expected, string $input, bool $perNamespace = false): void
-    {
-        $tokens = Tokens::fromCode($input);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        static::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
-    }
-
-    public function provideGetImportUseIndexesPHP72Cases(): array
-    {
-        return [
             [
                 [1, 23, 43],
                 '<?php

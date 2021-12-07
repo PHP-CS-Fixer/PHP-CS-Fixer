@@ -140,6 +140,15 @@ final class Token
      */
     public function equals($other, bool $caseSensitive = true): bool
     {
+        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition with new MAJOR release 4.0
+            if ('&' === $other) {
+                return '&' === $this->content && (null === $this->id || $this->isGivenKind([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+            }
+            if (null === $this->id && '&' === $this->content) {
+                return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+            }
+        }
+
         if ($other instanceof self) {
             // Inlined getPrototype() on this very hot path.
             // We access the private properties of $other directly to save function call overhead.

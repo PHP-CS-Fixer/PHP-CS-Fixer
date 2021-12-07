@@ -27,7 +27,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
 {
     /**
-     * This is new test method, to replace old one one day.
+     * This is new test method, to replace old one some day.
      *
      * @dataProvider provideFixNewCases
      */
@@ -178,6 +178,7 @@ final class PsrAutoloadingFixerTest extends AbstractFixerTestCase
     {
         $fileProphecy = $this->prophesize();
         $fileProphecy->willExtend(\SplFileInfo::class);
+        $fileProphecy->willBeConstructedWith(['']);
         $fileProphecy->getBasename('.php')->willReturn('Bar');
         $fileProphecy->getExtension()->willReturn('php');
         $fileProphecy->getRealPath()->willReturn(__DIR__.\DIRECTORY_SEPARATOR.'Psr'.\DIRECTORY_SEPARATOR.'Foo'.\DIRECTORY_SEPARATOR.'Bar.php');

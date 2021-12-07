@@ -47,6 +47,15 @@ fsync($fp);
 // https://wiki.php.net/rfc/explicit_octal_notation
 0o16 === 14;
 
+// https://wiki.php.net/rfc/new_in_initializers
+class TestNewWithInitialiers
+{
+    public function __construct(
+        private Logger $logger = new NullLogger(),
+    ) {
+    }
+}
+
 --INPUT--
 <?php
 
@@ -85,3 +94,12 @@ FSYNC($fp);
 
 // https://wiki.php.net/rfc/explicit_octal_notation
 0O16 === 14;
+
+// https://wiki.php.net/rfc/new_in_initializers
+class TestNewWithInitialiers
+{
+    public function __construct(
+        private Logger $logger = new NullLogger,
+    ) {
+    }
+}
