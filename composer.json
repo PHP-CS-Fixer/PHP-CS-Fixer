@@ -40,7 +40,7 @@
         "php-cs-fixer/accessible-object": "^1.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.2",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.2.1",
-        "phpspec/prophecy": "^1.10.3",
+        "phpspec/prophecy": "^1.15",
         "phpspec/prophecy-phpunit": "^1.1 || ^2.0",
         "phpunit/phpunit": "^8.5.21 || ^9.5",
         "phpunitgoodpractices/polyfill": "^1.5",
