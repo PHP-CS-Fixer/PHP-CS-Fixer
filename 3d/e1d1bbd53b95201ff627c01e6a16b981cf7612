@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-05T10:44:01Z
+
+[![Coverage Status](https://coveralls.io/builds/44874881/badge)](https://coveralls.io/builds/44874881)
+
+Coverage increased (+0.007%) to 92.854% when pulling **853384557562c7802c7e197e6ec82ec778802e9a on werlos:fix_OperatorLinebreakFixer** into **075082e586a21fbf9faf35a2e4257f1a18ece6fe on FriendsOfPHP:master**.
