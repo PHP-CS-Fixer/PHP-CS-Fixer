@@ -63,14 +63,13 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                         function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-EOT
-                ,
+EOT,
                 <<<'EOT'
                     <?php
                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                         function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-EOT
+EOT,
             ],
             [
                 '<?php function foo ($bar /* a */  /* b */ , $c) {}',
@@ -97,8 +96,7 @@ EOT
                             $c, // abc
                             $d
                         ) {}
-EOT
-                ,
+EOT,
                 <<<'EOT'
                     <?php
                         function foo(
@@ -107,7 +105,7 @@ EOT
                             $c = null, // abc
                             $d
                         ) {}
-EOT
+EOT,
             ],
             [
                 '<?php function foo($foo, $bar) {}',
@@ -192,6 +190,48 @@ $bar) {}',
                 '<?php $fn = fn ($a, $b) => null;',
                 '<?php $fn = fn ($a = 1, $b) => null;',
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield 'handle trailing comma' => [
+            '<?php function foo($x, $y = 42, $z = 42 ) {}',
+        ];
+
+        yield 'handle attributes without arguments' => [
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y,
+                #[Attribute3] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y = 42,
+                #[Attribute3] $z
+            ) {}',
+        ];
+
+        yield 'handle attributes with argumentsaaa' => [
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y,
+                #[Attribute3(5, 6)] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y = 42,
+                #[Attribute3(5, 6)] $z
+            ) {}',
         ];
     }
 
