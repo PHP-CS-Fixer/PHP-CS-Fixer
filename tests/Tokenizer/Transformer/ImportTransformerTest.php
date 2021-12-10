@@ -89,6 +89,12 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
                 ],
             ],
             [
+                '<?php function & foo() {}',
+                [
+                    1 => T_FUNCTION,
+                ],
+            ],
+            [
                 '<?php use function Foo\\bar;',
                 [
                     3 => CT::T_FUNCTION_IMPORT,
