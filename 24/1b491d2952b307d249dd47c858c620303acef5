@@ -1,0 +1,73 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-07T15:48:00Z
+
+[![Coverage Status](https://coveralls.io/builds/44907936/badge)](https://coveralls.io/builds/44907936)
+
+Coverage increased (+0.2%) to 93.028% when pulling **01fc92b528cf116fb8a03b186256985eb16dc0ea on SpacePossum:master_81_in_bin** into **4ab8dc5a52e6bdf183865cc6093780ac6774c1fa on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-08T15:39:36Z
+
+@Ocramius we had tons of ppl crying that they cannot update their project to use new PHP because PHP CS Fixer is not yet compatible. EVERY SINGLE TIME new PHP is out. Same time, not so many ppl are eager to help making PHP CS Fixer understanding new PHP syntax or be compatible with modified tokenizer.
+We don't like either of those situations, yet we decided to go with one in the end - runtime check. Feel free to check previous discussions around this topic.
+
+---------------------------------------------------------------------------
+
+by Ocramius at 2021-12-08T17:00:34Z
+
+I tell them to wait: having a tool that you install (then crashes at startup) is really no better, and it just gives false confidence (and introduces instability in the overall ecosystem).
+
+The fact that dependency ranges don't match actual compatibility is mostly something that **some communities** have erroneously started advocating for, because solving the compatibility is less important than having users upgrade (and experience instability) :shrug:
+
+See also https://github.com/laminas/technical-steering-committee/blob/c7f6babfb1773d9cb9371208102cbb8b27980bd5/meetings/minutes/2021-08-02-TSC-Minutes.md#locked-dependencies-for-all-supported-php-versions for more context, previously discussed by the @laminas TSC.
+
+In practice, for my own packages:
+
+ * I pin to minor PHP: `{"require": {"php": "~7.4.0 || ~8.0.0 || ~8.1.0"}}` (**no `~8.2.0` until I've tested it in RC!!!**)
+ * I tell users that they are free to shoot themselves in the foot with `composer update --ignore-platform-req=php`
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-08T17:34:33Z
+
+Unfortunately, while we were following the approach you described, we faced many issues/complaints.
+
+Anyway, feel free to open a new discussion, as this is not the blocker for this PR (as we have a current practice in place for a year) and I would prefer to not hijack this thread but focus on 8.1 here.
+
+<details>
+<summary>unfortunate note</summary>
+
+I also spent quite a time discussing all pros and cons about having ~8.0 vs ^8 vs >=8. TBH, I rather prefer to spend time ensuring PHP8.x compatibility rather than spending time in a discussion that year ago started to be similar to tabs vs spaces.
+</details>
+
+---------------------------------------------------------------------------
+
+by Bilge at 2021-12-09T22:27:06Z
+
+Waiting on this. Guess we'll have to disable PHP-CS-Fixer for now.
+
+---------------------------------------------------------------------------
+
+by vbasky at 2021-12-09T22:31:08Z
+
+> @Ocramius we had tons of ppl crying that they cannot update their project to use new PHP because PHP CS Fixer is not yet compatible. EVERY SINGLE TIME new PHP is out. Same time, not so many ppl are eager to help making PHP CS Fixer understanding new PHP syntax or be compatible with modified tokenizer.
+> We don't like either of those situations, yet we decided to go with one in the end - runtime check. Feel free to check previous discussions around this topic.
+
+My project is also held up too, I'd love to help/contribute but unsure where to start on the repo
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-10T08:43:16Z
+
+Thanks so much @kubawerlos :+1:
+
+I think that is it, all feedback processed. If the tests are green I plan on merging. If anyone sees some related issue still open please comment :)
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-10T09:16:04Z
+
+kudos for executing the regression, @kubawerlos !
+@SpacePossum , we are good to go ;)
