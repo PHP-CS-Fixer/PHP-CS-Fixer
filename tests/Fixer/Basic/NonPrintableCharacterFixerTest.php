@@ -103,6 +103,18 @@ echo "Hello'.pack('H*', 'e280af').'World'.pack('H*', 'c2a0').'!";',
                 '<?php echo \'12345\';?>abc<?php ?>',
                 '<?php echo \'123'.pack('H*', 'e2808b').'45\';?>a'.pack('H*', 'e2808b').'bc<?php ?>',
             ],
+            [
+                '<?php echo "${foo'.pack('H*', 'c2a0').'bar} is great!";',
+            ],
+            [
+                '<?php echo $foo'.pack('H*', 'c2a0').'bar;',
+            ],
+            [
+                '<?php /* foo *'.pack('H*', 'e2808b').'/ bar */',
+            ],
+            [
+                '<?php /** foo *'.pack('H*', 'e2808b').'/ bar */',
+            ],
         ];
     }
 
