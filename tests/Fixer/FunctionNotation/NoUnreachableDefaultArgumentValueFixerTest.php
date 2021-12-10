@@ -63,13 +63,14 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                         function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-EOT,
+EOT
+                ,
                 <<<'EOT'
                     <?php
                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                         function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-EOT,
+EOT
             ],
             [
                 '<?php function foo ($bar /* a */  /* b */ , $c) {}',
@@ -96,7 +97,8 @@ EOT,
                             $c, // abc
                             $d
                         ) {}
-EOT,
+EOT
+                ,
                 <<<'EOT'
                     <?php
                         function foo(
@@ -105,7 +107,7 @@ EOT,
                             $c = null, // abc
                             $d
                         ) {}
-EOT,
+EOT
             ],
             [
                 '<?php function foo($foo, $bar) {}',
@@ -221,7 +223,7 @@ $bar) {}',
             ) {}',
         ];
 
-        yield 'handle attributes with argumentsaaa' => [
+        yield 'handle attributes with arguments' => [
             '<?php function foo(
                 #[Attribute1(1, 2)] $x,
                 #[Attribute2(3, 4)] $y,
