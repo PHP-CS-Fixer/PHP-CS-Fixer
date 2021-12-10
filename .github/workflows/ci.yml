@@ -37,18 +37,17 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
+
+          - operating-system: 'ubuntu-20.04'
+            php-version: '8.1'
             job-description: 'with migration rules'
             execute-migration-rules: 'yes' # should be checked on highest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '8.0'
+            php-version: '8.1'
             job-description: 'with calculating code coverage'
             calculate-code-coverage: 'yes'
             phpunit-flags: '--testsuite coverage --exclude-group covers-nothing --coverage-clover build/logs/clover.xml'
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '8.1'
-            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: 'windows-latest'
             php-version: '7.4'
