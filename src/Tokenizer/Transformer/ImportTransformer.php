@@ -51,12 +51,17 @@ final class ImportTransformer extends AbstractTransformer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if ($prevToken->isGivenKind(T_USE)) {
-            $tokens[$index] = new Token([
-                $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
-                $token->getContent(),
-            ]);
+        if (!$prevToken->isGivenKind(T_USE)) {
+            $nextToken = $tokens[$tokens->getNextTokenOfKind($index, ['=', '(', ';', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])];
+            if (!$nextToken->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
+                return;
+            }
         }
+
+        $tokens[$index] = new Token([
+            $token->isGivenKind(T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
+            $token->getContent(),
+        ]);
     }
 
     /**
