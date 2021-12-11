@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.4.0
+--------------------
+
+* bug #6117 SingleSpaceAfterConstruct - handle before destructuring close brace (liquid207)
+* bug #6122 NoMultilineWhitespaceAroundDoubleArrowFixer - must run before MethodArgumentSpaceFixer (kubawerlos)
+* bug #6130 StrictParamFixer - must run before MethodArgumentSpaceFixer (kubawerlos)
+* bug #6137 NewWithBracesFixer - must run before ClassDefinitionFixer (kubawerlos)
+* bug #6139 PhpdocLineSpanFixer - must run before NoSuperfluousPhpdocTagsFixer (kubawerlos)
+* bug #6143 OperatorLinebreakFixer - fix for alternative syntax (kubawerlos)
+* bug #6159 ImportTransformer - fix for grouped constant and function imports (kubawerlos)
+* bug #6161 NoUnreachableDefaultArgumentValueFixer - fix for attributes (kubawerlos)
+* feature #5776 DX: test on PHP 8.1 (kubawerlos)
+* feature #6152 PHP8.1 support (SpacePossum)
+* minor #6095 Allow Symfony 6 (derrabus, keradus)
+* minor #6107 Drop support of PHPUnit v7 dependency (keradus)
+* minor #6109 Add return type to `DummyTestSplFileInfo::getRealPath()` (derrabus)
+* minor #6115 Remove PHP 7.2 polyfill (derrabus)
+* minor #6116 CI: remove installation of mbstring polyfill in build script, it's required dependency now (keradus)
+* minor #6119 OrderedClassElementsFixer - PHPUnit assert(Pre|Post)Conditions methods support (meyerbaptiste)
+* minor #6121 Use Tokens::ensureWhitespaceAtIndex to simplify code (kubawerlos)
+* minor #6127 Remove 2nd parameter to XdebugHandler constructor (phil-davis)
+* minor #6129 clean ups (SpacePossum)
+* minor #6138 PHP8.1 - toString cannot return type hint void (SpacePossum)
+* minor #6146 PHP 8.1: add new_in_initializers to PHP 8.1 integration test (keradus)
+* minor #6147 DX: update composer-normalize (keradus)
+* minor #6156 DX: drop hack for Prophecy incompatibility (keradus)
+
 Changelog for v3.3.1
 --------------------
 
