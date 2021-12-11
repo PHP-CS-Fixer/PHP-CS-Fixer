@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-10T09:39:20Z
+
+[![Coverage Status](https://coveralls.io/builds/44920574/badge)](https://coveralls.io/builds/44920574)
+
+Coverage increased (+0.2%) to 93.029% when pulling **da1cbb1e082624632086248f37f73796bf663203 on werlos:fix_ImportTransformer** into **3de1d1bbd53b95201ff627c01e6a16b981cf7612 on FriendsOfPHP:master**.
