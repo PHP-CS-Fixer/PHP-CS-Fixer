@@ -49,6 +49,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
             ['<?php interface Test { public function foo($param); }'],
             ['<?php function foo($param) { return function($a) use ($param): string {}; }'],
             ['<?php abstract class Test { abstract public function foo($param); }'],
+            ['<?php use Foo\ { function Bar }; function test() { return Bar(); }'],
             ['<?php
                 /**
                  * @return array
