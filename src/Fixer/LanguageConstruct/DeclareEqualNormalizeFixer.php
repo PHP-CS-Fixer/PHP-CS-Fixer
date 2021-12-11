@@ -88,9 +88,14 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            while (!$tokens[++$index]->equals('='));
+            $openParenthesisIndex = $tokens->getNextMeaningfulToken($index);
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
 
-            $this->{$callback}($tokens, $index);
+            for ($i = $closeParenthesisIndex; $i > $openParenthesisIndex; --$i) {
+                if ($tokens[$i]->equals('=')) {
+                    $this->{$callback}($tokens, $i);
+                }
+            }
         }
     }
 

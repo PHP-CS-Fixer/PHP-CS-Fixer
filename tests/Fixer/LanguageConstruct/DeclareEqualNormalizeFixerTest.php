@@ -87,6 +87,16 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
                 null,
                 ['space' => 'none'],
             ],
+            'declare having multiple directives, single' => [
+                '<?php declare(strict_types=1, ticks=1);',
+                '<?php declare(strict_types = 1, ticks = 1);',
+                [],
+            ],
+            'declare having multiple directives, none' => [
+                '<?php declare(strict_types = 1, ticks = 1);',
+                '<?php declare(strict_types=1, ticks=1);',
+                ['space' => 'single'],
+            ],
         ];
     }
 
