@@ -196,6 +196,48 @@ $bar) {}',
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield 'handle trailing comma' => [
+            '<?php function foo($x, $y = 42, $z = 42 ) {}',
+        ];
+
+        yield 'handle attributes without arguments' => [
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y,
+                #[Attribute3] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1] $x,
+                #[Attribute2] $y = 42,
+                #[Attribute3] $z
+            ) {}',
+        ];
+
+        yield 'handle attributes with arguments' => [
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y,
+                #[Attribute3(5, 6)] $z
+            ) {}',
+            '<?php function foo(
+                #[Attribute1(1, 2)] $x,
+                #[Attribute2(3, 4)] $y = 42,
+                #[Attribute3(5, 6)] $z
+            ) {}',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
