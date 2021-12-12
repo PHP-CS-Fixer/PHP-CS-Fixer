@@ -583,6 +583,50 @@ FOO = 9000; }',
                 '<?php class Foo { const /* foo */FOO = 9000; }',
                 '<?php class Foo { const  /* foo */FOO = 9000; }',
             ],
+            ['<?php class Foo {
+    const
+        FOO = 9000,
+        BAR = 10000;
+}',
+            ],
+            [
+                '<?php
+const
+    A = 3,
+    B = 3
+?>',
+            ],
+            [
+                '<?php
+const A = 3 ?>
+
+<?php
+[ ,
+,
+,$z
+] = foo()  ;',
+                '<?php
+const     A = 3 ?>
+
+<?php
+[ ,
+,
+,$z
+] = foo()  ;',
+            ],
+            [
+                '<?php
+    const A
+    =
+    1;
+',
+                '<?php
+    const
+    A
+    =
+    1;
+',
+            ],
         ];
     }
 

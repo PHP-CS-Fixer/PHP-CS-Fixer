@@ -250,6 +250,10 @@ yield  from  baz();
                 continue;
             }
 
+            if ($token->isGivenKind(T_CONST) && $this->isMultilineConstant($tokens, $index)) {
+                continue;
+            }
+
             if ($token->isComment() || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                     continue;
@@ -338,5 +342,13 @@ yield  from  baz();
         }
 
         return false;
+    }
+
+    private function isMultilineConstant(Tokens $tokens, int $index): bool
+    {
+        $scopeEnd = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]) - 1;
+        $hasMoreThanOneConstant = null !== $tokens->findSequence([new Token(',')], $index + 1, $scopeEnd);
+
+        return $hasMoreThanOneConstant && $tokens->isPartialCodeMultiline($index, $scopeEnd);
     }
 }
