@@ -127,19 +127,19 @@ if (strpos($haystack, $needle) === false) {}
         }
     }
 
-    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndexes): void
+    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices): void
     {
         foreach (self::REPLACEMENTS as $replacement) {
-            if (!$tokens[$operatorIndexes['operator_index']]->equals($replacement['operator'])) {
+            if (!$tokens[$operatorIndices['operator_index']]->equals($replacement['operator'])) {
                 continue;
             }
 
-            if (!$tokens[$operatorIndexes['operand_index']]->equals($replacement['operand'], false)) {
+            if (!$tokens[$operatorIndices['operand_index']]->equals($replacement['operand'], false)) {
                 continue;
             }
 
-            $tokens->clearTokenAndMergeSurroundingWhitespace($operatorIndexes['operator_index']);
-            $tokens->clearTokenAndMergeSurroundingWhitespace($operatorIndexes['operand_index']);
+            $tokens->clearTokenAndMergeSurroundingWhitespace($operatorIndices['operator_index']);
+            $tokens->clearTokenAndMergeSurroundingWhitespace($operatorIndices['operand_index']);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionIndex);
 
             if ($replacement['negate']) {

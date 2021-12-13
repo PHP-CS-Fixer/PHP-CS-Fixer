@@ -141,19 +141,19 @@ echo 1;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $location = $this->configuration['location'];
-        $locationIndexes = [];
+        $locationIndices = [];
 
         foreach (['after_open', 'after_declare_strict'] as $possibleLocation) {
             $locationIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
 
-            if (!isset($locationIndexes[$locationIndex]) || $possibleLocation === $location) {
-                $locationIndexes[$locationIndex] = $possibleLocation;
+            if (!isset($locationIndices[$locationIndex]) || $possibleLocation === $location) {
+                $locationIndices[$locationIndex] = $possibleLocation;
 
                 continue;
             }
         }
 
-        foreach (array_values($locationIndexes) as $possibleLocation) {
+        foreach (array_values($locationIndices) as $possibleLocation) {
             // figure out where the comment should be placed
             $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
 

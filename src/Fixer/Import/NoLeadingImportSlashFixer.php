@@ -64,9 +64,9 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $usesIndexes = $tokensAnalyzer->getImportUseIndexes();
+        $usesIndices = $tokensAnalyzer->getImportUseIndexes();
 
-        foreach ($usesIndexes as $idx) {
+        foreach ($usesIndices as $idx) {
             $nextTokenIdx = $tokens->getNextMeaningfulToken($idx);
             $nextToken = $tokens[$nextTokenIdx];
 

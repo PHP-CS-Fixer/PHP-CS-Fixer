@@ -182,29 +182,29 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
             return null;
         }
 
-        $sequenceIndexes = array_keys($sequence);
+        $sequenceIndices = array_keys($sequence);
 
-        if (!$functionsAnalyzer->isTheSameClassCall($tokens, $sequenceIndexes[0])) {
+        if (!$functionsAnalyzer->isTheSameClassCall($tokens, $sequenceIndices[0])) {
             return null;
         }
 
-        $sequenceIndexes[2] = $tokens->getNextMeaningfulToken($sequenceIndexes[1]);
-        $firstParameterToken = $tokens[$sequenceIndexes[2]];
+        $sequenceIndices[2] = $tokens->getNextMeaningfulToken($sequenceIndices[1]);
+        $firstParameterToken = $tokens[$sequenceIndices[2]];
 
         if (!$firstParameterToken->isNativeConstant()) {
-            return $sequenceIndexes[2];
+            return $sequenceIndices[2];
         }
 
-        $sequenceIndexes[3] = $tokens->getNextMeaningfulToken($sequenceIndexes[2]);
+        $sequenceIndices[3] = $tokens->getNextMeaningfulToken($sequenceIndices[2]);
 
         // return if first method argument is an expression, not value
-        if (!$tokens[$sequenceIndexes[3]]->equals(',')) {
-            return $sequenceIndexes[3];
+        if (!$tokens[$sequenceIndices[3]]->equals(',')) {
+            return $sequenceIndices[3];
         }
 
-        $tokens[$sequenceIndexes[0]] = new Token([T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
-        $tokens->clearRange($sequenceIndexes[2], $tokens->getNextNonWhitespace($sequenceIndexes[3]) - 1);
+        $tokens[$sequenceIndices[0]] = new Token([T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
+        $tokens->clearRange($sequenceIndices[2], $tokens->getNextNonWhitespace($sequenceIndices[3]) - 1);
 
-        return $sequenceIndexes[3];
+        return $sequenceIndices[3];
     }
 }

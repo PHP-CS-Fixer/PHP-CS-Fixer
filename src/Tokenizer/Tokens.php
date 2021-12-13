@@ -145,13 +145,13 @@ class Tokens extends \SplFixedArray
      * Create token collection from array.
      *
      * @param Token[] $array       the array to import
-     * @param ?bool   $saveIndexes save the numeric indexes used in the original array, default is yes
+     * @param ?bool   $saveIndices save the numeric indices used in the original array, default is yes
      */
-    public static function fromArray($array, $saveIndexes = null): self
+    public static function fromArray($array, $saveIndices = null): self
     {
         $tokens = new self(\count($array));
 
-        if (null === $saveIndexes || $saveIndexes) {
+        if (null === $saveIndices || $saveIndices) {
             foreach ($array as $key => $val) {
                 $tokens[$key] = $val;
             }
@@ -478,7 +478,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Generate code from tokens between given indexes.
+     * Generate code from tokens between given indices.
      *
      * @param int $start start index
      * @param int $end   end index
@@ -832,7 +832,7 @@ class Tokens extends \SplFixedArray
      * - should we deprecate `insertAt` method ?
      *
      * The `$slices` parameter is an assoc array, in which:
-     * - index: starting point for inserting of individual slice, with indexes being relatives to original array collection before any Token inserted
+     * - index: starting point for inserting of individual slice, with indices being relatives to original array collection before any Token inserted
      * - value under index: a slice of Tokens to be inserted
      *
      * @internal

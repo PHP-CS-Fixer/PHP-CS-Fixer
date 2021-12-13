@@ -77,17 +77,17 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
         foreach ((new NamespacesAnalyzer())->getDeclarations($tokens) as $namespace) {
             $currentNamespaceUseDeclarations = [];
-            $currentNamespaceUseDeclarationIndexes = [];
+            $currentNamespaceUseDeclarationIndices = [];
 
             foreach ($useDeclarations as $useDeclaration) {
                 if ($useDeclaration->getStartIndex() >= $namespace->getScopeStartIndex() && $useDeclaration->getEndIndex() <= $namespace->getScopeEndIndex()) {
                     $currentNamespaceUseDeclarations[] = $useDeclaration;
-                    $currentNamespaceUseDeclarationIndexes[$useDeclaration->getStartIndex()] = $useDeclaration->getEndIndex();
+                    $currentNamespaceUseDeclarationIndices[$useDeclaration->getStartIndex()] = $useDeclaration->getEndIndex();
                 }
             }
 
             foreach ($currentNamespaceUseDeclarations as $useDeclaration) {
-                if (!$this->isImportUsed($tokens, $namespace, $useDeclaration, $currentNamespaceUseDeclarationIndexes)) {
+                if (!$this->isImportUsed($tokens, $namespace, $useDeclaration, $currentNamespaceUseDeclarationIndices)) {
                     $this->removeUseDeclaration($tokens, $useDeclaration);
                 }
             }
@@ -97,9 +97,9 @@ final class NoUnusedImportsFixer extends AbstractFixer
     }
 
     /**
-     * @param array<int, int> $ignoredIndexes indexes of the use statements themselves that should not be checked as being "used"
+     * @param array<int, int> $ignoredIndices indices of the use statements themselves that should not be checked as being "used"
      */
-    private function isImportUsed(Tokens $tokens, NamespaceAnalysis $namespace, NamespaceUseAnalysis $import, array $ignoredIndexes): bool
+    private function isImportUsed(Tokens $tokens, NamespaceAnalysis $namespace, NamespaceUseAnalysis $import, array $ignoredIndices): bool
     {
         $analyzer = new TokensAnalyzer($tokens);
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
@@ -130,8 +130,8 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if (isset($ignoredIndexes[$index])) {
-                $index = $ignoredIndexes[$index];
+            if (isset($ignoredIndices[$index])) {
+                $index = $ignoredIndices[$index];
 
                 continue;
             }

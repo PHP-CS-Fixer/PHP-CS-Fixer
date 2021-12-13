@@ -36,7 +36,7 @@ final class ArgumentsAnalyzer
     }
 
     /**
-     * Returns start and end token indexes of arguments.
+     * Returns start and end token indices of arguments.
      *
      * Returns an array with each key being the first token of an
      * argument and the value the last. Including non-function tokens

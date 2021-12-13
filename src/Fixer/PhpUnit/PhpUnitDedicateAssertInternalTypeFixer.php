@@ -129,8 +129,9 @@ final class MyTest extends \PHPUnit\Framework\TestCase
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $anonymousClassIndexes = [];
+        $anonymousClassIndices = [];
         $tokenAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             if (!$tokens[$index]->isClassy() || !$tokenAnalyzer->isAnonymousClass($index)) {
                 continue;
@@ -139,12 +140,12 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             $openingBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
             $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingBraceIndex);
 
-            $anonymousClassIndexes[$closingBraceIndex] = $openingBraceIndex;
+            $anonymousClassIndices[$closingBraceIndex] = $openingBraceIndex;
         }
 
         for ($index = $endIndex - 1; $index > $startIndex; --$index) {
-            if (isset($anonymousClassIndexes[$index])) {
-                $index = $anonymousClassIndexes[$index];
+            if (isset($anonymousClassIndices[$index])) {
+                $index = $anonymousClassIndices[$index];
 
                 continue;
             }
