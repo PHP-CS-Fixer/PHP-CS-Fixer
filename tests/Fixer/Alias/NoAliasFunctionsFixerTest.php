@@ -255,6 +255,7 @@ abstract class A
     private function provideAllCases(): \Generator
     {
         $reflectionConstant = new \ReflectionClassConstant(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class, 'SETS');
+
         /** @var array<string, string[]> $allAliases */
         $allAliases = $reflectionConstant->getValue();
 
