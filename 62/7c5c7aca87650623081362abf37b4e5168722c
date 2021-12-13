@@ -1,0 +1,138 @@
+---------------------------------------------------------------------------
+
+by addiks at 2019-10-07T19:23:18Z
+
+Is there currently some issue with the CI?
+
+```
+λλλ phive packages
+
+Phive 0.13.0 - Copyright (C) 2015-2019 by Arne Blankerts, Sebastian Heuer and Contributors
+
+Fetching repository list
+
+Downloading https://phar.io/data/repositories.xml
+
+[ERROR]    Failed to download load https://api.github.com/repos/maglnet/ComposerRequireChecker/releases: HTTP Code 403
+
+The command "./dev-tools/install.sh" failed and exited with 4 during .
+
+Your build has been stopped.
+```
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-08T14:39:32Z
+
+Hi and thanks for the PR!
+
+Looking at the code I'm afraid the approach of using the fixer might not work because of how the tool /software was designed. I really like to have the functionality in, however we need to get it in in a different way.
+The `BlankLineBeforeStatementFixer` has been designed about a very basic principle; for the given token type make sure there is a blank line before/above it. This is good and all and I like to keep it that way. However this simple principle makes it not fitting for when additional rules should be applied.
+
+In this case, we like to have empty like above a PHPDoc, however there are some exceptions.
+For example:
+
+```
+final class CombineConsecutiveIssetsFixer extends AbstractFixer
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+```
+
+In this case we don't want to have the empty line (there are a few more exceptions).
+
+So in order to get the fixing we want, I think it would be best to create a new one and not re-utilize the current one. WDYT?
+
+---------------------------------------------------------------------------
+
+by addiks at 2019-10-08T14:58:57Z
+
+I just tested it for exactly this use-case. It did not add a blank line on the first doc-comment of the class.
+
+Before:
+```php
+final class CombineConsecutiveIssetsFixer extends AbstractFixer{
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+    }
+    /** @var def */
+    protected $asd;
+    /** @var abc */
+    protected $qwe;
+}
+```
+
+After:
+```php
+final class CombineConsecutiveIssetsFixer extends AbstractFixer{
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinition()
+    {
+    }
+
+    /** @var def */
+    protected $asd;
+
+    /** @var abc */
+    protected $qwe;
+}
+```
+
+The same behavior appears when the opening curly-brackets are on it's own line.
+Is this not exactly the behavior that you want? Under which circumstances does it behave wrong?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-09T18:31:26Z
+
+Looking into this a bit more, this fixer will only insert the empty line if the previous line ends with `}` or `;`, so it just might work after all. This makes sense for statements, not sure for PHPDocs.
+I still think it makes sense to make a dedicated fixer for this, like to hear input on this though. Even if we got to copy-paste relevant parts to a new fixer; it still looks like a nice feature and very promising solution.
+
+---------------------------------------------------------------------------
+
+by addiks at 2019-10-09T21:16:25Z
+
+Honestly i don't know if this is the best solution or not. I do not have enough experience with this project to judge that. Currently i like it because it creates a feature i want just by adding one very simple line. That seems elegant to me.
+
+Maybe i am more motivated to write a new fixer for this when someone more experienced crushes my hopes by showing how this simple solution fails in some situation i do not yet see. ;-)
+
+In the meantime i write one or two actual new fixers for other features that i would like and explore the project that way...
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2019-10-10T08:02:44Z
+
+I try to keep an eye out on the overall responsibilities for each fixer because we have/had a lot of issues with fixer doing to much, making these less flexible for later extension and adding configuration, causing priority issues we can't resolve and the only way out are BC changes on a next major which no one like because these ship rarely, causing issues and PR's to stale for months.
+
+So...no, I didn't spot an issue with your code and I don't want to crush your hopes, sorry if it feels that
+way. What I did say about your code ` it still looks like a nice feature and very promising solution.` .
+
+---------------------------------------------------------------------------
+
+by localheinz at 2021-02-01T20:46:32Z
+
+@addiks
+
+Can you take another look, and ideally resolve conflicts?
+
+---------------------------------------------------------------------------
+
+by addiks at 2021-04-16T07:24:29Z
+
+I have now reverted the changes to `logo.png`. This was a tricky one because git thought it was a text file and changed a CRLF to LF in that file, corrupting it in the process. The line `* text=auto eol=lf`in `.gitattributes` defines that all files are text files and that the mentioned automatic replacement must happen for all files, including PNG files. I have added an exception for PNG files to the `.gitattributes` files so that it stops corrupting the PNG file(s).
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-04-16T07:44:41Z
+
+[![Coverage Status](https://coveralls.io/builds/38876467/badge)](https://coveralls.io/builds/38876467)
+
+Coverage remained the same at 91.896% when pulling **5206fb346a7b39d97c7abed106509c65e220a238 on addiks:feature-blankline-before-doccomment** into **72dd15d4d836707d8f1d9a135e8351ce46739241 on FriendsOfPHP:master**.
