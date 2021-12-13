@@ -201,8 +201,7 @@ if (count($x)) {
         }
 
         $analyzer = new TokensAnalyzer($tokens);
-
-        $indexes = [];
+        $indices = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -237,10 +236,10 @@ if (count($x)) {
                 continue;
             }
 
-            $indexes[] = $index;
+            $indices[] = $index;
         }
 
-        return $this->prepareImports($tokens, $indexes, $global, $other, true);
+        return $this->prepareImports($tokens, $indices, $global, $other, true);
     }
 
     /**
@@ -259,8 +258,7 @@ if (count($x)) {
         }
 
         $analyzer = new FunctionsAnalyzer();
-
-        $indexes = [];
+        $indices = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -288,10 +286,10 @@ if (count($x)) {
                 continue;
             }
 
-            $indexes[] = $index;
+            $indices[] = $index;
         }
 
-        return $this->prepareImports($tokens, $indexes, $global, $other, false);
+        return $this->prepareImports($tokens, $indices, $global, $other, false);
     }
 
     /**
@@ -339,8 +337,7 @@ if (count($x)) {
         }
 
         $analyzer = new ClassyAnalyzer();
-
-        $indexes = [];
+        $indices = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -372,7 +369,7 @@ if (count($x)) {
                 continue;
             }
 
-            $indexes[] = $index;
+            $indices[] = $index;
         }
 
         $imports = [];
@@ -404,21 +401,21 @@ if (count($x)) {
             }
         }
 
-        return $imports + $this->prepareImports($tokens, $indexes, $global, $other, false);
+        return $imports + $this->prepareImports($tokens, $indices, $global, $other, false);
     }
 
     /**
-     * Removes the leading slash at the given indexes (when the name is not already used).
+     * Removes the leading slash at the given indices (when the name is not already used).
      *
-     * @param int[] $indexes
+     * @param int[] $indices
      *
      * @return array array keys contain the names that must be imported
      */
-    private function prepareImports(Tokens $tokens, array $indexes, array $global, array $other, bool $caseSensitive): array
+    private function prepareImports(Tokens $tokens, array $indices, array $global, array $other, bool $caseSensitive): array
     {
         $imports = [];
 
-        foreach ($indexes as $index) {
+        foreach ($indices as $index) {
             $name = $tokens[$index]->getContent();
             $checkName = $caseSensitive ? $name : strtolower($name);
 

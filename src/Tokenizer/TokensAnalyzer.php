@@ -47,7 +47,7 @@ final class TokensAnalyzer
     }
 
     /**
-     * Get indexes of methods and properties in classy code (classes, interfaces and traits).
+     * Get indices of methods and properties in classy code (classes, interfaces and traits).
      *
      * @return array[]
      */
@@ -68,7 +68,7 @@ final class TokensAnalyzer
     }
 
     /**
-     * Get indexes of namespace uses.
+     * Get indices of namespace uses.
      *
      * @param bool $perNamespace Return namespace uses per namespace
      *

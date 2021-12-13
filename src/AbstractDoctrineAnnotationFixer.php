@@ -47,7 +47,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // fetch indexes one time, this is safe as we never add or remove a token during fixing
+        // fetch indices one time, this is safe as we never add or remove a token during fixing
         $analyzer = new TokensAnalyzer($tokens);
         $this->classyElements = $analyzer->getClassyElements();
 

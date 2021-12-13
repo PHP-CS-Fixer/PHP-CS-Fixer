@@ -31,9 +31,9 @@ final class NamespaceUsesAnalyzer
     public function getDeclarationsFromTokens(Tokens $tokens): array
     {
         $tokenAnalyzer = new TokensAnalyzer($tokens);
-        $useIndexes = $tokenAnalyzer->getImportUseIndexes();
+        $useIndices = $tokenAnalyzer->getImportUseIndexes();
 
-        return $this->getDeclarations($tokens, $useIndexes);
+        return $this->getDeclarations($tokens, $useIndices);
     }
 
     /**
@@ -55,11 +55,11 @@ final class NamespaceUsesAnalyzer
     /**
      * @return NamespaceUseAnalysis[]
      */
-    private function getDeclarations(Tokens $tokens, array $useIndexes): array
+    private function getDeclarations(Tokens $tokens, array $useIndices): array
     {
         $uses = [];
 
-        foreach ($useIndexes as $index) {
+        foreach ($useIndices as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
             $analysis = $this->parseDeclaration($tokens, $index, $endIndex);
 

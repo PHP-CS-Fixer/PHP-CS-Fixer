@@ -119,11 +119,11 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                     continue;
                 }
 
-                $indexesToClear = array_keys($sequenceFound);
-                array_pop($indexesToClear); // Preserve last semicolon
-                rsort($indexesToClear);
+                $indicesToClear = array_keys($sequenceFound);
+                array_pop($indicesToClear); // Preserve last semicolon
+                rsort($indicesToClear);
 
-                foreach ($indexesToClear as $index) {
+                foreach ($indicesToClear as $index) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($index);
                 }
 

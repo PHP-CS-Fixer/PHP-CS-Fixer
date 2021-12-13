@@ -221,7 +221,7 @@ class Foo
             ], $classStart, $classEnd, [2 => false]);
 
             if (null !== $parentSeq) {
-                // we only need indexes
+                // we only need indices
                 $parentSeq = array_keys($parentSeq);
 
                 // match either of the possibilities
@@ -242,7 +242,7 @@ class Foo
                 ], $classStart, $classEnd, [2 => false]);
 
                 if (null !== $parentSeq) {
-                    // we only need indexes
+                    // we only need indices
                     $parentSeq = array_keys($parentSeq);
 
                     // replace call with parent::__construct()
@@ -378,7 +378,7 @@ class Foo
             return null;
         }
 
-        // keep only the indexes
+        // keep only the indices
         $function = array_keys($function);
 
         // find previous block, saving method modifiers for later use
