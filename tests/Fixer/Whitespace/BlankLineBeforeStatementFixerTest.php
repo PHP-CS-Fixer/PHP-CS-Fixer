@@ -1494,4 +1494,54 @@ enum UserStatus: string {
 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFixWithDocCommentCases
+     */
+    public function testFixWithDocCommentCases(string $expected, string $input = null): void
+    {
+        $this->fixer->configure([
+            'statements' => ['phpdoc'],
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFixWithDocCommentCases(): iterable
+    {
+        yield [
+            '<?php
+/** @var int $foo */
+$foo = 123;
+
+/** @var float $bar */
+$bar = 45.6;
+
+/** @var string */
+$baz = "789";
+',
+            '<?php
+/** @var int $foo */
+$foo = 123;
+/** @var float $bar */
+$bar = 45.6;
+/** @var string */
+$baz = "789";
+',
+        ];
+
+        yield [
+            '<?php
+/* header */
+
+/**
+ * Class description
+ */
+class Foo {
+    /** test */
+    public function bar() {}
+}
+',
+        ];
+    }
 }

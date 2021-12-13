@@ -38,6 +38,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                     'goto',
                     'include',
                     'include_once',
+                    'phpdoc',
                     'require',
                     'require_once',
                     'return',

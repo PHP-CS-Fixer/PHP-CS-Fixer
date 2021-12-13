@@ -464,6 +464,7 @@ class FooBar
 }
 PHP;
         $tokens = Tokens::fromCode($source);
+
         /** @var Token[] $found */
         $found = $tokens->findGivenKind(T_CLASS);
         static::assertCount(1, $found);
