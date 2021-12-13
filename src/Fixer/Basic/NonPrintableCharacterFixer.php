@@ -165,7 +165,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
 
                 if ($swapQuotes) {
                     $content = str_replace('"', '\"', $content);
-                    $content = Preg::replace('/^\'(.*)\'$/', '"$1"', $content);
+                    $content = Preg::replace('/^\'(.*)\'$/s', '"$1"', $content);
                 }
 
                 $tokens[$index] = new Token([$token->getId(), strtr($content, $escapeSequences)]);
