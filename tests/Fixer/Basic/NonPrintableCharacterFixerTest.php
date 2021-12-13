@@ -303,6 +303,11 @@ EXPECTED
 INPUT
                  , pack('H*', 'e2808b')),
             ],
+            [
+//                "<?php \"String in single quotes, having non-breaking space: \\u{a0}, linebreak: \n, and single quote inside: ' is a dangerous mix.\";", // <- this is expected result
+                "<?php 'String in single quotes, having non-breaking space: \\u{a0}, linebreak: \n, and single quote inside: ' is a dangerous mix.';", // <- this is current result, which is broken PHP syntax
+                "<?php 'String in single quotes, having non-breaking space: " . pack('H*', 'c2a0') . ", linebreak: \n, and single quote inside: \\' is a dangerous mix.';",
+            ],
         ];
     }
 }
