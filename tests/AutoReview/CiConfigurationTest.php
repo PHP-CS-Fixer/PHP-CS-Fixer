@@ -63,7 +63,7 @@ final class CiConfigurationTest extends TestCase
     {
         $ciVersionsForDeployments = $this->getAllPhpVersionsUsedByCiForDeployments();
         $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
-        $expectedPhp = '7.4'; // can't run dev-tools on 8.0 yet; $this->getMaxPhpVersionFromEntryFile();
+        $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
             // last version of used PHP is snapshot. we should test against previous one, that is stable
