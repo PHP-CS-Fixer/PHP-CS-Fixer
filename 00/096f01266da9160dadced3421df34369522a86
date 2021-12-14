@@ -1,0 +1,29 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-09-04T16:16:46Z
+
+[![Coverage Status](https://coveralls.io/builds/44984332/badge)](https://coveralls.io/builds/44984332)
+
+Coverage increased (+0.01%) to 93.039% when pulling **ee541a6d305c9c0a3509bf65e130c72af6858ec5 on paulbalandan:get-class-to-class-keyword** into **ea5a185f2a298068b584884a58fe18900cb459aa on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-09-05T10:03:02Z
+
+I always considered accessing class constants via object instances a hacky/bad practice, is it not?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-09-05T14:46:45Z
+
+I would agree if we talk about class constant defined as part of class.
+I would rather treat `::class` as language keyword in this context.
+- you cannot create `class` constant inside class (`Fatal error: A class constant must not be called 'class'; it is reserved for class`)
+- calling `::class` is also one extra opCode tan calling regular class-level constant (showing it's slightly different concept under the hood) [ref](https://3v4l.org/RkvYS/vld)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-11T05:16:59Z
+
+looking good! :+1:
+ currently blocked by https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/6058
