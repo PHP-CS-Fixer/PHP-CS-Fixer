@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: get_class_to_class_keyword,multiline_whitespace_before_semicolons.
+--RULESET--
+{"get_class_to_class_keyword": true, "multiline_whitespace_before_semicolons": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+echo $bar::class;
+
+--INPUT--
+<?php
+
+echo get_class(
+    $bar
+);

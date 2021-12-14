@@ -25,6 +25,7 @@ final class PHP80MigrationRiskySet extends AbstractMigrationSetDescription
     {
         return [
             '@PHP74Migration:risky' => true,
+            'get_class_to_class_keyword' => true,
             'modernize_strpos' => true,
             'no_alias_functions' => [
                 'sets' => [

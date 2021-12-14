@@ -8,6 +8,7 @@ Rules
 -----
 
 - `@PHP74Migration:risky <./PHP74MigrationRisky.rst>`_
+- `get_class_to_class_keyword <./../rules/language_construct/get_class_to_class_keyword.rst>`_
 - `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
 - `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_
   config:

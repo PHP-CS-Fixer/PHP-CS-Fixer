@@ -429,6 +429,9 @@ Language Construct
 - `function_to_constant <./language_construct/function_to_constant.rst>`_ *(risky)*
 
   Replace core functions calls returning constants with the constants.
+- `get_class_to_class_keyword <./language_construct/get_class_to_class_keyword.rst>`_ *(risky)*
+
+  Replace ``get_class`` calls on object variables with class keyword syntax.
 - `is_null <./language_construct/is_null.rst>`_ *(risky)*
 
   Replaces ``is_null($var)`` expression with ``null === $var``.
