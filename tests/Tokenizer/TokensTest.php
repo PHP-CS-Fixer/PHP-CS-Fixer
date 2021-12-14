@@ -1387,8 +1387,7 @@ EOF;
             16 => $slices,
             6 => $slices,
         ]);
-
-        static::assertSame($expected, $tokens->generateCode());
+        static::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
     public function provideInsertSlicesAtMultiplePlacesCases(): \Generator
@@ -1397,11 +1396,11 @@ EOF;
             <<<'EOF'
 <?php
 
-$after =  get_class($after);
-$before =  get_class($before);
+$after = /*foo*/get_class($after);
+$before = /*foo*/get_class($before);
 EOF
             ,
-            [new Token([T_WHITESPACE, ' '])],
+            [new Token([T_COMMENT, '/*foo*/'])],
         ];
 
         yield 'two slice count' => [

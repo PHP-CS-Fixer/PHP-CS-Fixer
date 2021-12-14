@@ -858,14 +858,14 @@ class Tokens extends \SplFixedArray
         $this->setSize($oldSize + $itemsCount);
 
         krsort($slices);
+        $farthestSliceIndex = key($slices);
 
-        $firstIndex = key($slices);
-
-        if (!\is_int($firstIndex) || $firstIndex > $oldSize) {
-            throw new \OutOfBoundsException(sprintf('Invalid index "%s".', $firstIndex));
+        // We check only the farthest index, if it's within the size of collection, other indices will be valid too.
+        if (!\is_int($farthestSliceIndex) || $farthestSliceIndex > $oldSize) {
+            throw new \OutOfBoundsException(sprintf('Cannot insert index "%s" outside of collection.', $farthestSliceIndex));
         }
 
-        $insertBound = $oldSize - 1;
+        $previousSliceIndex = $oldSize;
 
         // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
         // that way we get around additional overhead this class adds with overridden offset* methods.
@@ -877,12 +877,11 @@ class Tokens extends \SplFixedArray
             $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
             $sliceCount = \count($slice);
 
-            for ($i = $insertBound; $i >= $index; --$i) {
+            for ($i = $previousSliceIndex - 1; $i >= $index; --$i) {
                 parent::offsetSet($i + $itemsCount, parent::offsetGet($i));
             }
 
-            // adjust $insertBound as tokens between this index and the next index in loop
-            $insertBound = $index - 1;
+            $previousSliceIndex = $index;
             $itemsCount -= $sliceCount;
 
             foreach ($slice as $indexItem => $item) {
