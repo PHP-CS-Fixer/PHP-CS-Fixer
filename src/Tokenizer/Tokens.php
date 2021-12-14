@@ -314,9 +314,6 @@ class Tokens extends \SplFixedArray
      */
     public function offsetSet($index, $newval): void
     {
-        $this->blockStartCache = [];
-        $this->blockEndCache = [];
-
         if (!isset($this[$index]) || !$this[$index]->equals($newval)) {
             $this->changed = true;
             $this->namespaceDeclarations = null;
