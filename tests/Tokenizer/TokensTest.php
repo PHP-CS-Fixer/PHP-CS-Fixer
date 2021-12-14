@@ -1368,6 +1368,190 @@ $bar;',
         yield [null, 0, -1, '<?php /**/ foo();'];
     }
 
+    /**
+     * @dataProvider provideInsertSlicesAtMultiplePlacesCases
+     *
+     * @param array<int, Token> $slices
+     */
+    public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
+    {
+        $input = <<<'EOF'
+<?php
+
+$after = get_class($after);
+$before = get_class($before);
+EOF;
+
+        $tokens = Tokens::fromCode($input);
+        $tokens->insertSlices([
+            16 => $slices,
+            6 => $slices,
+        ]);
+
+        static::assertSame($expected, $tokens->generateCode());
+    }
+
+    public function provideInsertSlicesAtMultiplePlacesCases(): \Generator
+    {
+        yield 'one slice count' => [
+            <<<'EOF'
+<?php
+
+$after =  get_class($after);
+$before =  get_class($before);
+EOF
+            ,
+            [new Token([T_WHITESPACE, ' '])],
+        ];
+
+        yield 'two slice count' => [
+            <<<'EOF'
+<?php
+
+$after = (string) get_class($after);
+$before = (string) get_class($before);
+EOF
+            ,
+            [new Token([T_STRING_CAST, '(string)']), new Token([T_WHITESPACE, ' '])],
+        ];
+
+        yield 'three slice count' => [
+            <<<'EOF'
+<?php
+
+$after = !(bool) get_class($after);
+$before = !(bool) get_class($before);
+EOF
+            ,
+            [new Token('!'), new Token([T_BOOL_CAST, '(bool)']), new Token([T_WHITESPACE, ' '])],
+        ];
+    }
+
+    public function testInsertSlicesChangesState(): void
+    {
+        $tokens = Tokens::fromCode('<?php echo 1234567890;');
+
+        static::assertFalse($tokens->isChanged());
+        static::assertFalse($tokens->isTokenKindFound(T_COMMENT));
+        static::assertSame(5, $tokens->getSize());
+
+        $tokens->insertSlices([1 => new Token([T_COMMENT, '/* comment */'])]);
+
+        static::assertTrue($tokens->isChanged());
+        static::assertTrue($tokens->isTokenKindFound(T_COMMENT));
+        static::assertSame(6, $tokens->getSize());
+    }
+
+    /**
+     * @dataProvider provideInsertSlicesCases
+     */
+    public function testInsertSlices(Tokens $expected, Tokens $tokens, array $slices): void
+    {
+        $tokens->insertSlices($slices);
+        static::assertTokens($expected, $tokens);
+    }
+
+    public function provideInsertSlicesCases(): iterable
+    {
+        // basic insert of single token at 3 different locations including appending as new token
+
+        $template = "<?php\n%s\n/* single token test header */%s\necho 1;\n%s";
+        $commentContent = '/* test */';
+        $commentToken = new Token([T_COMMENT, $commentContent]);
+        $from = Tokens::fromCode(sprintf($template, '', '', ''));
+
+        yield 'single insert @ 1' => [
+            Tokens::fromCode(sprintf($template, $commentContent, '', '')),
+            clone $from,
+            [1 => $commentToken],
+        ];
+
+        yield 'single insert @ 3' => [
+            Tokens::fromCode(sprintf($template, '', $commentContent, '')),
+            clone $from,
+            [3 => Tokens::fromArray([$commentToken])],
+        ];
+
+        yield 'single insert @ 9' => [
+            Tokens::fromCode(sprintf($template, '', '', $commentContent)),
+            clone $from,
+            [9 => [$commentToken]],
+        ];
+
+        // basic tests for single token, array of that token and tokens object with that token
+
+        $openTagToken = new Token([T_OPEN_TAG, "<?php\n"]);
+        $expected = Tokens::fromArray([$openTagToken]);
+
+        $slices = [
+            [0 => $openTagToken],
+            [0 => [$openTagToken]],
+            [0 => Tokens::fromArray([$openTagToken])],
+        ];
+
+        foreach ($slices as $i => $slice) {
+            yield 'insert open tag @ 0 into empty collection '.$i => [$expected, new Tokens(), $slice];
+        }
+
+        // test insert lists of tokens, index out of order
+
+        $setOne = [
+            new Token([T_ECHO, 'echo']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_CONSTANT_ENCAPSED_STRING, '"new"']),
+            new Token(';'),
+        ];
+
+        $setTwo = [
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_COMMENT, '/* new comment */']),
+        ];
+
+        $setThree = Tokens::fromArray([
+            new Token([T_VARIABLE, '$new']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token('='),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_LNUMBER, '8899']),
+            new Token(';'),
+            new Token([T_WHITESPACE, "\n"]),
+        ]);
+
+        $template = "<?php\n%s\n/* header */%s\necho 789;\n%s";
+        $expected = Tokens::fromCode(
+            sprintf(
+                $template,
+                'echo "new";',
+                ' /* new comment */',
+                "\$new = 8899;\n"
+            )
+        );
+        $from = Tokens::fromCode(sprintf($template, '', '', ''));
+
+        yield 'insert 3 token collections' => [$expected, $from, [9 => $setThree, 1 => $setOne, 3 => $setTwo]];
+
+        $sets = [];
+
+        for ($j = 0; $j < 4; ++$j) {
+            $set = ['tokens' => [], 'content' => ''];
+
+            for ($i = 0; $i < 10; ++$i) {
+                $content = sprintf('/* new %d|%s */', $j, $i);
+
+                $set['tokens'][] = new Token([T_COMMENT, $content]);
+                $set['content'] .= $content;
+            }
+
+            $sets[$j] = $set;
+        }
+
+        yield 'overlapping inserts of bunch of comments ' => [
+            Tokens::fromCode(sprintf("<?php\n%s/* line 1 */\n%s/* line 2 */\n%s/* line 3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
+            Tokens::fromCode("<?php\n/* line 1 */\n/* line 2 */\n/* line 3 */"),
+            [1 => $sets[0]['tokens'], 3 => $sets[1]['tokens'], 5 => $sets[2]['tokens'], 6 => $sets[3]['tokens']],
+        ];
+    }
+
     private static function assertFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         Tokens::clearCache();

@@ -842,6 +842,7 @@ class Tokens extends \SplFixedArray
     public function insertSlices(array $slices): void
     {
         $itemsCount = 0;
+
         foreach ($slices as $slice) {
             $itemsCount += \is_array($slice) || $slice instanceof self ? \count($slice) : 1;
         }
@@ -858,20 +859,28 @@ class Tokens extends \SplFixedArray
 
         krsort($slices);
 
+        if (array_key_first($slices) > $oldSize) {
+            throw new \OutOfBoundsException('Cannot insert outside of collection.');
+        }
+
         $insertBound = $oldSize - 1;
 
         // since we only move already existing items around, we directly call into SplFixedArray::offset* methods.
         // that way we get around additional overhead this class adds with overridden offset* methods.
         foreach ($slices as $index => $slice) {
+            if (!\is_int($index) || $index < 0) {
+                throw new \OutOfBoundsException(sprintf('Invalid index "%s".', $index));
+            }
+
             $slice = \is_array($slice) || $slice instanceof self ? $slice : [$slice];
             $sliceCount = \count($slice);
 
             for ($i = $insertBound; $i >= $index; --$i) {
-                $oldItem = parent::offsetExists($i) ? parent::offsetGet($i) : new Token('');
-                parent::offsetSet($i + $itemsCount, $oldItem);
+                parent::offsetSet($i + $itemsCount, parent::offsetGet($i));
             }
 
-            $insertBound = $index - $sliceCount;
+            // adjust $insertBound as tokens between this index and the next index in loop
+            $insertBound = $index - 1;
             $itemsCount -= $sliceCount;
 
             foreach ($slice as $indexItem => $item) {
@@ -880,8 +889,8 @@ class Tokens extends \SplFixedArray
                 }
 
                 $this->registerFoundToken($item);
-                $newOffset = $index + $itemsCount + $indexItem;
-                parent::offsetSet($newOffset, $item);
+
+                parent::offsetSet($index + $itemsCount + $indexItem, $item);
             }
         }
     }
@@ -891,11 +900,7 @@ class Tokens extends \SplFixedArray
      */
     public function isChanged(): bool
     {
-        if ($this->changed) {
-            return true;
-        }
-
-        return false;
+        return $this->changed;
     }
 
     public function isEmptyAt(int $index): bool
