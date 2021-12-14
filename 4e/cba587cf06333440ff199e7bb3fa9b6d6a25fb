@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-07T04:03:15Z
+
+[![Coverage Status](https://coveralls.io/builds/44981045/badge)](https://coveralls.io/builds/44981045)
+
+Coverage increased (+0.2%) to 93.023% when pulling **085af4eae00337ff52176e607fa106507354dedd on paulbalandan:tokens-insert-slices-multiple** into **0708baf6ad6e22ce3a5d8af75bfa42916866e90e on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-11T05:06:27Z
+
+looks promising,yet like to have @keradus to take look if he has time
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-13T14:08:21Z
+
+reviewed, left some suggestions here https://github.com/paulbalandan/PHP-CS-Fixer/pull/1
