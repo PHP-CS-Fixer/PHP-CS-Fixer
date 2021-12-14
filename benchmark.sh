@@ -10,7 +10,7 @@ BRANCH2=${2:-''}
 
 if [ "" = "$BRANCH1" ] || [ "" = "$BRANCH2" ];
 then
-    echo "Usage: bash benchmark.sh BRANCH1 BRANCH2 ...BRANCHN"
+    echo "Usage: ./benchmark.sh BRANCH1 BRANCH2 ...BRANCHN"
     exit 1;
 fi
 
