@@ -518,7 +518,6 @@ EOF;
     }
 
     /**
-     * @requires PHP 7.1
      * @dataProvider provideFixClassConstCases
      */
     public function testFixClassConst(string $expected, string $input): void

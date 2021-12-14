@@ -859,8 +859,10 @@ class Tokens extends \SplFixedArray
 
         krsort($slices);
 
-        if (array_key_first($slices) > $oldSize) {
-            throw new \OutOfBoundsException('Cannot insert outside of collection.');
+        $firstIndex = key($slices);
+
+        if (!\is_int($firstIndex) || $firstIndex > $oldSize) {
+            throw new \OutOfBoundsException(sprintf('Invalid index "%s".', $firstIndex));
         }
 
         $insertBound = $oldSize - 1;
