@@ -1227,17 +1227,17 @@ final class Sample
                 ['tags' => ['property', 'property-read', 'property-write']],
                 '<?php
 /**
- * @property       string $myMagicProperty
- * @property-read  string $myMagicReadyProperty
- * @property-write string $myMagicWriteProperty
+ * @property       string $myMagicProperty      magic property
+ * @property-read  string $myMagicReadProperty  magic read-only property
+ * @property-write string $myMagicWriteProperty magic write-only property
  */
 class Foo {}
 ',
                 '<?php
 /**
- * @property string $myMagicProperty
- * @property-read string $myMagicReadyProperty
- * @property-write string $myMagicWriteProperty
+ * @property string $myMagicProperty magic property
+ * @property-read string $myMagicReadProperty magic read-only property
+ * @property-write string $myMagicWriteProperty magic write-only property
  */
 class Foo {}
 ',
