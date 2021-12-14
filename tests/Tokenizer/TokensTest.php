@@ -1485,8 +1485,8 @@ EOF
 
         $slices = [
             [0 => $openTagToken],
-            [0 => [$openTagToken]],
-            [0 => Tokens::fromArray([$openTagToken])],
+            [0 => [clone $openTagToken]],
+            [0 => clone Tokens::fromArray([$openTagToken])],
         ];
 
         foreach ($slices as $i => $slice) {
