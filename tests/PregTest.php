@@ -98,7 +98,7 @@ final class PregTest extends TestCase
         }
 
         if (!$setup()) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
         }
     }
 
@@ -139,7 +139,7 @@ final class PregTest extends TestCase
         }
 
         if (!$setup()) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
         }
     }
 

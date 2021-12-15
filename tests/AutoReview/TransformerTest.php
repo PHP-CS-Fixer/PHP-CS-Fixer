@@ -49,7 +49,7 @@ final class TransformerTest extends TestCase
         $priority = $transformer->getPriority();
 
         if (0 === $priority) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
@@ -60,7 +60,7 @@ final class TransformerTest extends TestCase
             [$first, $second] = $pair;
 
             if ($name === $first->getName() || $name === $second->getName()) {
-                $this->addToAssertionCount(1);
+                $this->expectNotToPerformAssertions();
 
                 return;
             }

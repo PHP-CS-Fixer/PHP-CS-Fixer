@@ -248,7 +248,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         // if there is no `insertAt`, it's not a candidate
         if (!\in_array('insertAt', $usedMethods, true)) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
@@ -304,13 +304,13 @@ abstract class AbstractFixerTestCase extends TestCase
             static::fail(sprintf('Fixer "%s" shall be optimized to use `Tokens::insertSlices` instead of `%s`.', $fixerName, implode(', ', $allowedMethods)));
         }
 
-        $this->addToAssertionCount(1);
+        $this->expectNotToPerformAssertions();
     }
 
     final public function testFixerConfigurationDefinitions(): void
     {
         if (!$this->fixer instanceof ConfigurableFixerInterface) {
-            $this->addToAssertionCount(1); // not applied to the fixer without configuration
+            $this->expectNotToPerformAssertions(); // not applied to the fixer without configuration
 
             return;
         }

@@ -79,7 +79,7 @@ final class RuleSetTest extends TestCase
         $fixer = current($factory->getFixers());
 
         if (!$fixer instanceof ConfigurableFixerInterface || \is_bool($ruleConfig)) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
@@ -376,7 +376,7 @@ final class RuleSetTest extends TestCase
 
             static::fail($message);
         } else {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
         }
     }
 

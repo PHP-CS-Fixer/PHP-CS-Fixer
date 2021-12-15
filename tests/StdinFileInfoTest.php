@@ -222,6 +222,6 @@ final class StdinFileInfoTest extends TestCase
         $fileInfo->setFileClass('foo1');
         $fileInfo->setInfoClass('foo2');
 
-        $this->addToAssertionCount(1);
+        $this->expectNotToPerformAssertions();
     }
 }

@@ -229,7 +229,7 @@ final class ProjectCodeTest extends TestCase
         );
 
         if ([] === $publicMethods) {
-            $this->addToAssertionCount(1); // no methods to test, all good!
+            $this->expectNotToPerformAssertions(); // no methods to test, all good!
 
             return;
         }
@@ -261,7 +261,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         if (0 === $asserts) {
-            $this->addToAssertionCount(1); // no data providers to test, all good!
+            $this->expectNotToPerformAssertions(); // no data providers to test, all good!
         }
     }
 
@@ -281,7 +281,7 @@ final class ProjectCodeTest extends TestCase
         );
 
         if ([] === $definedDataProviders) {
-            $this->addToAssertionCount(1); // no methods to test, all good!
+            $this->expectNotToPerformAssertions(); // no methods to test, all good!
 
             return;
         }
@@ -309,7 +309,7 @@ final class ProjectCodeTest extends TestCase
         $reflectionClass = new \ReflectionClass($testClassName);
 
         if ($reflectionClass->isAbstract() || $reflectionClass->isInterface()) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
@@ -318,7 +318,7 @@ final class ProjectCodeTest extends TestCase
         static::assertNotFalse($doc);
 
         if (1 === Preg::match('/@coversNothing/', $doc, $matches)) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
@@ -333,7 +333,7 @@ final class ProjectCodeTest extends TestCase
 
         foreach ($matches as $match) {
             if ($match === $class || $parentClassName === $match) {
-                $this->addToAssertionCount(1);
+                $this->expectNotToPerformAssertions();
 
                 continue;
             }
@@ -389,7 +389,7 @@ final class ProjectCodeTest extends TestCase
         );
 
         if ([] === $publicMethods) {
-            $this->addToAssertionCount(1); // no methods to test, all good!
+            $this->expectNotToPerformAssertions(); // no methods to test, all good!
 
             return;
         }
@@ -399,7 +399,7 @@ final class ProjectCodeTest extends TestCase
             $parameters = $method->getParameters();
 
             if (\count($parameters) < 2) {
-                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+                $this->expectNotToPerformAssertions(); // not enough parameters to test, all good!
 
                 continue;
             }
@@ -420,7 +420,7 @@ final class ProjectCodeTest extends TestCase
             $expected = array_filter($expected, static function ($item): bool { return false !== $item; });
 
             if (\count($expected) < 2) {
-                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+                $this->expectNotToPerformAssertions(); // not enough parameters to test, all good!
 
                 continue;
             }
@@ -493,7 +493,7 @@ final class ProjectCodeTest extends TestCase
     public function testThereIsNoTriggerErrorUsedDirectly(string $className): void
     {
         if (Utils::class === $className) {
-            $this->addToAssertionCount(1); // This is where "trigger_error" should be
+            $this->expectNotToPerformAssertions(); // This is where "trigger_error" should be
 
             return;
         }
@@ -710,7 +710,7 @@ final class ProjectCodeTest extends TestCase
         $reflectionClassConstants = $rc->getReflectionConstants();
 
         if (\count($reflectionClassConstants) < 1) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
