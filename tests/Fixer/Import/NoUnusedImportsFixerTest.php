@@ -1482,4 +1482,27 @@ const D = new Foo7(1,2);
 ',
         ];
     }
+
+    /**
+     * @requires PHP 8.1
+     * @dataProvider provideFixPhp81Cases
+     */
+    public function testFixPhp81(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFixPhp81Cases(): iterable
+    {
+        yield [
+            '<?php
+                enum Foo: string
+                {
+                    use Bar;
+
+                    case Test1 = "a";
+                }
+            ',
+        ];
+    }
 }

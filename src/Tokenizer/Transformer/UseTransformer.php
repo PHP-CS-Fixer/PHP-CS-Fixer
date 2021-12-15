@@ -61,11 +61,17 @@ final class UseTransformer extends AbstractTransformer
         // Only search inside class/trait body for `T_USE` for traits.
         // Cannot import traits inside interfaces or anywhere else
 
-        if (!$token->isGivenKind([T_CLASS, T_TRAIT])) {
-            return;
+        $classTypes = [T_TRAIT];
+
+        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
+            $classTypes[] = T_ENUM;
         }
 
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_DOUBLE_COLON)) {
+        if ($token->isGivenKind(T_CLASS)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_DOUBLE_COLON)) {
+                return;
+            }
+        } elseif (!$token->isGivenKind($classTypes)) {
             return;
         }
 
