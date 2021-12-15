@@ -1,0 +1,15 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-14T09:47:25Z
+
+Hi @YAhiru ,
+
+Thanks for making the PR! I left some minors to consider, please have a look :+1:
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-14T10:07:37Z
+
+[![Coverage Status](https://coveralls.io/builds/44998832/badge)](https://coveralls.io/builds/44998832)
+
+Coverage increased (+0.01%) to 93.041% when pulling **924086aba4706a54206913422e2a99c1c2e659ab on YAhiru:bugfix-6113** into **56d83994b67d384d4809637b4bce2a5a6d71d15b on FriendsOfPHP:master**.
