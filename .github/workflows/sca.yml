@@ -28,6 +28,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          coverage: none # without this Xdebug will be enabled
+          tools: cs2pr
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -70,7 +72,7 @@ jobs:
         run: ./dev-tools/check_trailing_spaces.sh
 
       - name: Check - phpstan
-        run: ./dev-tools/vendor/bin/phpstan analyse
+        run: ./dev-tools/vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr
 
       - name: Check - composer-require-checker
         run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
