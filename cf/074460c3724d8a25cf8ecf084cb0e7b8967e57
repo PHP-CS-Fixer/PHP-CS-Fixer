@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-14T15:35:59Z
+
+Hi and thanks for this PR,
+
+The tests are running, if all green than RTM from me :)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-14T15:56:16Z
+
+[![Coverage Status](https://coveralls.io/builds/44997608/badge)](https://coveralls.io/builds/44997608)
+
+Coverage remained the same at 93.039% when pulling **2c345b4f95698996a20f87d8704d6aad31c1f0b9 on antichris:phpdoc-align-property-read-and-write-with-name** into **00096f01266da9160dadced3421df34369522a86 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by antichris at 2021-12-15T11:34:19Z
+
+Regarding the `kind/enhancement` label, this PR is in fact more of a `kind/bug` fix.
+
+It fixes the missing descriptions in [`@property(...)`][prop] tags test case. Once that test case exposes that the descriptions of `@property-read` and `@property-write` really don't get aligned, this also fixes that issue.
+
+I just spared the time and didn't open a separate issue on the bug, instead I just went ahead and fixed the thing.
+
+[prop]: https://docs.phpdoc.org/guide/references/phpdoc/tags/property.html
+(@property, @property-read, @property-write - phpDocumentor)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-15T14:36:22Z
+
+I do like that the rule is now fixing more cases correctly, however previously it was not making incorrect changes to the code, it just didn't handle the cases. I can see both labeling; bug and enhancement, however since it didn't effect users with false negatives I prefer to tag it as enhancement. Since we'll release a new version with everything in it it doesn't matter that much in terms of release, everyone will get the fix.
+
+---------------------------------------------------------------------------
+
+by antichris at 2021-12-15T15:08:54Z
+
+> previously it was not making incorrect changes to the code, it just didn't handle the cases
+
+Users may be getting some (unexpected) diff churn now when those cases start being handled.
+
+> it doesn't matter that much in terms of release, everyone will get the fix
+
+Yeah, I agree. The labeling really is NBD, what really matters is that the project improves.
