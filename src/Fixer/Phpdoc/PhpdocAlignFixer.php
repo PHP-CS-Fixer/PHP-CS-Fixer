@@ -64,6 +64,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     private const TAGS_WITH_NAME = [
         'param',
         'property',
+        'property-read',
+        'property-write',
     ];
 
     private const TAGS_WITH_METHOD_SIGNATURE = [
