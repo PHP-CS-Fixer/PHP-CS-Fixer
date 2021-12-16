@@ -58,7 +58,7 @@ final class DiffConsoleFormatter
                         if ($isDecorated) {
                             $count = 0;
                             $line = Preg::replaceCallback(
-                                '/^([+-@].*)/',
+                                '/^([+\-@].*)/',
                                 static function (array $matches): string {
                                     if ('+' === $matches[0][0]) {
                                         $colour = 'green';
