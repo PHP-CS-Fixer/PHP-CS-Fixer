@@ -125,7 +125,7 @@ final class PregTest extends TestCase
 
         try {
             $buffer = "The quick brown \xFF\x00\\xXX jumps over the lazy dog\n";
-            $actual = $buffer !== Preg::replace((array) $pattern, 'abc', $buffer);
+            $actual = $buffer !== Preg::replace($pattern, 'abc', $buffer);
         } catch (\Exception $ex) {
             $setup();
 
@@ -176,7 +176,6 @@ final class PregTest extends TestCase
      * @param string|string[] $subject
      *
      * @dataProvider provideCommonCases
-     * @dataProvider provideArrayOfPatternsCases
      */
     public function testReplace($pattern, $subject): void
     {
@@ -199,7 +198,6 @@ final class PregTest extends TestCase
      * @param string|string[] $subject
      *
      * @dataProvider provideCommonCases
-     * @dataProvider provideArrayOfPatternsCases
      */
     public function testReplaceCallback($pattern, $subject): void
     {
@@ -219,14 +217,6 @@ final class PregTest extends TestCase
             ['/./', \chr(224).'bc'],
             ['/à/', 'àbc'],
             ['/'.\chr(224).'|í/', 'àbc'],
-        ];
-    }
-
-    public function provideArrayOfPatternsCases(): array
-    {
-        return [
-            [['/à/', '/í/'], 'Tàíl'],
-            [['/'.\chr(174).'/', '/'.\chr(224).'/'], 'foo'],
         ];
     }
 
