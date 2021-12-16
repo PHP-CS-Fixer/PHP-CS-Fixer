@@ -6,12 +6,12 @@
         "ergebnis/composer-normalize": "^2.17.0",
         "humbug/box": "^3.8",
         "humbug/php-scoper": "dev-master#0a4e329 as 0.14.2",
-        "jangregor/phpstan-prophecy": "^0.8.1",
+        "jangregor/phpstan-prophecy": "^1.0",
         "maglnet/composer-require-checker": "3.3.0",
         "mi-schi/phpmd-extension": "^4.3",
         "phpmd/phpmd": "^2.10.2",
-        "phpstan/phpstan": "0.12.96",
-        "phpstan/phpstan-phpunit": "0.12.21"
+        "phpstan/phpstan": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "config": {
         "optimize-autoloader": true,
