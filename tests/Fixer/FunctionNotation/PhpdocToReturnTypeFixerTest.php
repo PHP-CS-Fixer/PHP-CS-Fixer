@@ -313,6 +313,24 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
                 '<?php /** @return string[]|int[] */ function my_foo(): array {}',
                 '<?php /** @return string[]|int[] */ function my_foo() {}',
             ],
+            'intersection types' => [
+                '<?php
+                    /** @return Bar&Baz */
+                    function bar() {}
+                ',
+            ],
+            'very long class name before ampersand' => [
+                '<?php
+                    /** @return Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */
+                    function bar() {}
+                ',
+            ],
+            'very long class name after ampersand' => [
+                '<?php
+                    /** @return Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */
+                    function bar() {}
+                ',
+            ],
         ];
     }
 

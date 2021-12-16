@@ -29,7 +29,7 @@ final class TypeExpression
      * @internal
      */
     public const REGEX_TYPES = '
-    (?<types> # alternation of several types separated by `|`
+    (?<types> # several types separated by `|` or `&`
         (?<type> # single type
             \?? # optionally nullable
             (?:
@@ -88,13 +88,9 @@ final class TypeExpression
                     [\\\\\w-]++
                 )
             )
-            (?: # intersection
-                \h*&\h*
-                (?&type)
-            )*
         )
         (?:
-            \h*\|\h*
+            \h*[|&]\h*
             (?&type)
         )*
     )
@@ -129,7 +125,7 @@ final class TypeExpression
 
             $this->types[] = $matches['type'];
             $value = Preg::replace(
-                '/^'.preg_quote($matches['type'], '/').'(\h*\|\h*)?/',
+                '/^'.preg_quote($matches['type'], '/').'(\h*[|&]\h*)?/',
                 '',
                 $value
             );

@@ -69,8 +69,8 @@ final class TypeExpressionTest extends TestCase
         yield ['null|true|false|1|1.5|\'a\'|"b"', ['null', 'true', 'false', '1', '1.5', "'a'", '"b"']];
         yield ['int | "a" | A<B<C, D>, E<F::*|G[]>>', ['int', '"a"', 'A<B<C, D>, E<F::*|G[]>>']];
         yield ['class-string<Foo>', ['class-string<Foo>']];
-        yield ['A&B', ['A&B']];
-        yield ['A & B', ['A & B']];
+        yield ['A&B', ['A', 'B']];
+        yield ['A & B', ['A', 'B']];
         yield ['array{1: bool, 2: bool}', ['array{1: bool, 2: bool}']];
         yield ['array{a: int|string, b?: bool}', ['array{a: int|string, b?: bool}']];
         yield ['array{\'a\': "a", "b"?: \'b\'}', ['array{\'a\': "a", "b"?: \'b\'}']];
