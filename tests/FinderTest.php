@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @internal
@@ -30,5 +31,24 @@ final class FinderTest extends TestCase
 
         $finder = Finder::create();
         $finder->getIterator();
+    }
+
+    public function testThatFinderFindsDotFilesWhenConfigured(): void
+    {
+        $finder = Finder::create()
+            ->in(__DIR__.'/..')
+            ->depth(0)
+            ->ignoreDotFiles(false)
+        ;
+
+        static::assertContains(
+            realpath(__DIR__.'/../.php-cs-fixer.dist.php'),
+            array_map(
+                function (SplFileInfo $file): string {
+                    return $file->getRealPath();
+                },
+                iterator_to_array($finder->getIterator())
+            )
+        );
     }
 }
