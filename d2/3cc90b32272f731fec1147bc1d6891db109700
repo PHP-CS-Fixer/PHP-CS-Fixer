@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-12-16T07:22:27Z
+
+please rebase :)
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-16T08:40:59Z
+
+[![Coverage Status](https://coveralls.io/builds/45053458/badge)](https://coveralls.io/builds/45053458)
+
+Coverage decreased (-0.01%) to 93.037% when pulling **b610b9219bf9e3d62064921f23beaee9868c105b on werlos:do_not_support_arrays_in_Preg_methods** into **b4b6d134947dbafe109584beadeb7c6131dbc188 on FriendsOfPHP:master**.
