@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-15T18:56:58Z
+
+[![Coverage Status](https://coveralls.io/builds/45054081/badge)](https://coveralls.io/builds/45054081)
+
+Coverage remained the same at 93.037% when pulling **566197934d472544f593fb91aa4084fd97d5a99c on werlos:upgrade_phpstan** into **d23cc90b32272f731fec1147bc1d6891db109700 on FriendsOfPHP:master**.
