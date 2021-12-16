@@ -382,11 +382,11 @@ final class AnnotationTest extends TestCase
                 '/** @var class-string<Foo> */',
             ],
             [
-                ['A&B'],
+                ['A', 'B'],
                 '/** @var A&B */',
             ],
             [
-                ['A & B'],
+                ['A', 'B'],
                 '/** @var A & B */',
             ],
             [
