@@ -416,6 +416,24 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     }
                 ',
             ],
+            'intersection types' => [
+                '<?php
+                    /** @param Bar&Baz $x */
+                    function bar($x) {}
+                ',
+            ],
+            'very long class name before ampersand' => [
+                '<?php
+                    /** @param Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz $x */
+                    function bar($x) {}
+                ',
+            ],
+            'very long class name after ampersand' => [
+                '<?php
+                    /** @param Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz $x */
+                    function bar($x) {}
+                ',
+            ],
         ];
     }
 }
