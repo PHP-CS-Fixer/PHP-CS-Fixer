@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-15T18:40:20Z
+
+[![Coverage Status](https://coveralls.io/builds/45037038/badge)](https://coveralls.io/builds/45037038)
+
+Coverage remained the same at 93.048% when pulling **cf4dcc4c8d5d181f8771b5d6d75774e62bd6646b on werlos:simplify_DiffConsoleFormatter** into **24999a07c3f5ccb9e0c69613817af161e41236b2 on FriendsOfPHP:master**.
