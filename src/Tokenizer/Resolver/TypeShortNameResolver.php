@@ -45,6 +45,9 @@ final class TypeShortNameResolver
         $namespaces = $this->getNamespacesFromTokens($tokens);
         if (1 === \count($namespaces)) {
             foreach ($namespaces as $fullName) {
+                if ('' === $fullName && str_starts_with($typeName, '\\')) {
+                    return $typeName;
+                }
                 $matches = [];
                 $regex = '/^\\\\?'.preg_quote($fullName, '/').'\\\\(?P<className>.+)$/';
                 if (Preg::match($regex, $typeName, $matches)) {

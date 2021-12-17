@@ -79,6 +79,16 @@ final class TypeShortNameResolverTest extends TestCase
                 'Foo\\SomeUse\\Bar',
                 'SomeAlias\\Bar',
             ],
+            [
+                '<?php use Foo\\DateTime;',
+                '\DateTime',
+                '\DateTime',
+            ],
+            [
+                '<?php use DateTime;',
+                '\DateTime',
+                'DateTime',
+            ],
         ];
     }
 }
