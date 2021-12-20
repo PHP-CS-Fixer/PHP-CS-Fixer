@@ -88,8 +88,6 @@ final class Cache implements CacheInterface
 
     /**
      * @throws \InvalidArgumentException
-     *
-     * @return Cache
      */
     public static function fromJson(string $json): self
     {
