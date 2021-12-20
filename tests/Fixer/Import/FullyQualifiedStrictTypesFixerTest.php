@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\Fixer\Import;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author VeeWee <toonverwerft@gmail.com>
  *
  * @internal
  *
@@ -25,6 +25,86 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @dataProvider provideNewLogicCases
+     */
+    public function testNewLogic(string $expected, ?string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideNewLogicCases(): iterable
+    {
+        yield 'namespace === type name' => [
+            '<?php
+namespace Foo\Bar;
+function test(\Foo\Bar $x) {}',
+            null,
+        ];
+
+        yield 'namespace cases' => [
+            '<?php
+
+namespace A\B\C\D
+{
+    class Foo {}
+}
+
+namespace A\B\C\D\E
+{
+    class Bar {}
+}
+
+namespace A\B\C\D
+{
+    function A(Foo $fix, \X\B\C\D\E\Bar $doNotFix) {}
+}
+',
+            '<?php
+
+namespace A\B\C\D
+{
+    class Foo {}
+}
+
+namespace A\B\C\D\E
+{
+    class Bar {}
+}
+
+namespace A\B\C\D
+{
+    function A(\A\B\C\D\Foo $fix, \X\B\C\D\E\Bar $doNotFix) {}
+}
+',
+        ];
+
+        yield 'simple use' => [
+            '<?php use A\Exception; function foo(Exception $e) {}',
+            '<?php use A\Exception; function foo(\A\Exception $e) {}',
+        ];
+
+        yield 'simple use with global' => [
+            '<?php use A\Exception; function foo(Exception $e, \Exception $e2) {}',
+            '<?php use A\Exception; function foo(\A\Exception $e, \Exception $e2) {}',
+        ];
+
+        yield 'simple use as' => [
+            '<?php use A\Exception as C; function foo(C $e) {}',
+            '<?php use A\Exception as C; function foo(\A\Exception $e) {}',
+        ];
+
+        yield 'simple use as casing' => [
+            '<?php use A\Exception as C; function foo(C $e) {}',
+            '<?php use A\Exception as C; function foo(\A\EXCEPTION $e) {}',
+        ];
+
+        yield 'simple use 2' => [
+            '<?php use \A\Exception; function foo(Exception $e) {}',
+            '<?php use \A\Exception; function foo(\A\Exception $e) {}',
+        ];
+    }
+
     /**
      * @dataProvider provideCodeWithReturnTypesCases
      * @dataProvider provideCodeWithReturnTypesCasesWithNullableCases
@@ -34,19 +114,10 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    /**
-     * @dataProvider provideCodeWithoutReturnTypesCases
-     */
-    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null): void
+    public function provideCodeWithReturnTypesCases(): iterable
     {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideCodeWithReturnTypesCases(): array
-    {
-        return [
-            'Import common strict types' => [
-                '<?php
+        yield 'Import common strict types' => [
+            '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -57,7 +128,7 @@ class SomeClass
     {
     }
 }',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -68,9 +139,10 @@ class SomeClass
     {
     }
 }',
-            ],
-            'Test namespace fixes' => [
-                '<?php
+        ];
+
+        yield 'Test namespace fixes' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -78,11 +150,11 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar6): Baz
     {
     }
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -90,13 +162,14 @@ use Foo\Bar\Baz;
 
 class SomeClass
 {
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar6): \Foo\Bar\Baz
     {
     }
 }',
-            ],
-            'Partial class name looks like FQCN' => [
-                '<?php
+        ];
+
+        yield 'Partial class name looks like FQCN' => [
+            '<?php
 
 namespace One;
 
@@ -115,9 +188,10 @@ class Two
     {
     }
 }',
-            ],
-            'Test multi namespace fixes' => [
-                '<?php
+        ];
+
+        yield 'Test multi namespace fixes' => [
+            '<?php
 namespace Foo\Other {
 }
 
@@ -126,14 +200,29 @@ namespace Foo\Bar {
 
     class SomeClass
     {
-        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): Baz
+        public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar5): Baz
         {
         }
     }
 }',
-            ],
-            'Test fixes in interface' => [
-                '<?php
+            '<?php
+namespace Foo\Other {
+}
+
+namespace Foo\Bar {
+    use Foo\Bar\Baz;
+
+    class SomeClass
+    {
+        public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar5): Baz
+        {
+        }
+    }
+}',
+        ];
+
+        yield 'Test fixes in interface' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -141,9 +230,9 @@ use Foo\Bar\Baz;
 
 interface SomeClass
 {
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz;
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar4): Baz;
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -151,11 +240,12 @@ use Foo\Bar\Baz;
 
 interface SomeClass
 {
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz;
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar4): \Foo\Bar\Baz;
 }',
-            ],
-            'Test fixes in trait' => [
-                '<?php
+        ];
+
+        yield 'Test fixes in trait' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -163,11 +253,11 @@ use Foo\Bar\Baz;
 
 trait SomeClass
 {
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar3): Baz
     {
     }
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -175,33 +265,35 @@ use Foo\Bar\Baz;
 
 trait SomeClass
 {
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar3): \Foo\Bar\Baz
     {
     }
 }',
-            ],
-            'Test fixes in regular functions' => [
-                '<?php
+        ];
+
+        yield 'Test fixes in regular functions' => [
+            '<?php
 
 namespace Foo\Bar;
 
 use Foo\Bar\Baz;
 
-function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz): Baz
+function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar2): Baz
 {
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
 use Foo\Bar\Baz;
 
-function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz): \Foo\Bar\Baz
+function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar2): \Foo\Bar\Baz
 {
 }',
-            ],
-            'Import common strict types with reserved' => [
-                '<?php
+        ];
+
+        yield 'Import common strict types with reserved' => [
+            '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -212,7 +304,7 @@ class SomeClass
     {
     }
 }',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 use Foo\Bar\Baz;
@@ -223,15 +315,34 @@ class SomeClass
     {
     }
 }',
-            ],
         ];
     }
 
-    public function provideCodeWithoutReturnTypesCases(): array
+    /**
+     * @dataProvider provideCodeWithoutReturnTypesCases
+     */
+    public function testCodeWithoutReturnTypes(string $expected, ?string $input = null): void
     {
-        return [
-            'Import common strict types' => [
-                '<?php
+        $this->doTest($expected, $input);
+    }
+
+    public function provideCodeWithoutReturnTypesCases(): iterable
+    {
+        yield 'import from namespace and global' => [
+            '<?php
+use App\DateTime;
+
+class TestBar
+{
+    public function bar(\DateTime $dateTime)
+    {
+    }
+}
+',
+        ];
+
+        yield 'Import common strict types' => [
+            '<?php
 
 use Foo\Bar;
 
@@ -241,7 +352,7 @@ class SomeClass
     {
     }
 }',
-                '<?php
+            '<?php
 
 use Foo\Bar;
 
@@ -251,31 +362,33 @@ class SomeClass
     {
     }
 }',
-            ],
-            'Test namespace fixes' => [
-                '<?php
+        ];
+
+        yield 'Test namespace fixes' => [
+            '<?php
 
 namespace Foo\Bar;
 
 class SomeClass
 {
-    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+    public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $bar1)
     {
     }
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
 class SomeClass
 {
-    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $bar1)
     {
     }
 }',
-            ],
-            'Partial class name looks like FQCN' => [
-                '<?php
+        ];
+
+        yield 'Partial class name looks like FQCN' => [
+            '<?php
 
 namespace One;
 
@@ -294,10 +407,22 @@ class Two
     {
     }
 }',
-            ],
+        ];
 
-            'Test multi namespace fixes' => [
-                '<?php
+        yield 'Test multi namespace fixes' => [
+            '<?php
+namespace Foo\Other {
+}
+
+namespace Foo\Bar {
+    class SomeClass
+    {
+        public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
+        {
+        }
+    }
+}',
+            '<?php
 namespace Foo\Other {
 }
 
@@ -309,9 +434,10 @@ namespace Foo\Bar {
         }
     }
 }',
-            ],
-            'Test fixes in interface' => [
-                '<?php
+        ];
+
+        yield 'Test fixes in interface' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -321,7 +447,7 @@ interface SomeClass
 {
     public function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz);
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -331,9 +457,10 @@ interface SomeClass
 {
     public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz);
 }',
-            ],
-            'Test fixes in trait' => [
-                '<?php
+        ];
+
+        yield 'Test fixes in trait' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -345,7 +472,7 @@ trait SomeClass
     {
     }
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -357,9 +484,10 @@ trait SomeClass
     {
     }
 }',
-            ],
-            'Test fixes in regular functions' => [
-                '<?php
+        ];
+
+        yield 'Test fixes in regular functions' => [
+            '<?php
 
 namespace Foo\Bar;
 
@@ -368,7 +496,7 @@ use Foo\Bar\Baz;
 function doSomething(SomeClass $foo, Buz $buz, Zoof\Buz $barbuz)
 {
 }',
-                '<?php
+            '<?php
 
 namespace Foo\Bar;
 
@@ -377,29 +505,10 @@ use Foo\Bar\Baz;
 function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, \Foo\Bar\Zoof\Buz $barbuz)
 {
 }',
-            ],
-            'Test partial namespace and use imports' => [
-                '<?php
+        ];
 
-namespace Ping\Pong;
-
-use Foo\Bar;
-use Ping;
-use Ping\Pong\Pang;
-use Ping\Pong\Pyng\Pung;
-
-class SomeClass
-{
-    public function doSomething(
-        Ping\Something $something,
-        Pung\Pang $pungpang,
-        Pung $pongpung,
-        Pang\Pung $pangpung,
-        Pyng\Pung\Pong $pongpyngpangpang,
-        Bar\Baz\Buz $bazbuz
-    ){}
-}',
-                '<?php
+        yield 'Test partial namespace and use imports' => [
+            '<?php
 
 namespace Ping\Pong;
 
@@ -412,20 +521,55 @@ class SomeClass
 {
     public function doSomething(
         \Ping\Something $something,
-        \Ping\Pong\Pung\Pang $pungpang,
-        \Ping\Pong\Pung $pongpung,
-        \Ping\Pong\Pang\Pung $pangpung,
-        \Ping\Pong\Pyng\Pung\Pong $pongpyngpangpang,
-        \Foo\Bar\Baz\Buz $bazbuz
+        Pung\Pang $other,
+        Pung $other1,
+        Pang\Pung $other2,
+        Pyng\Pung\Pong $other3,
+        \Foo\Bar\Baz\Buz $other4
     ){}
 }',
-            ],
-            'Test reference' => [
-                '<?php
+            '<?php
+
+namespace Ping\Pong;
+
+use Foo\Bar;
+use Ping;
+use Ping\Pong\Pang;
+use Ping\Pong\Pyng\Pung;
+
+class SomeClass
+{
+    public function doSomething(
+        \Ping\Something $something,
+        \Ping\Pong\Pung\Pang $other,
+        \Ping\Pong\Pung $other1,
+        \Ping\Pong\Pang\Pung $other2,
+        \Ping\Pong\Pyng\Pung\Pong $other3,
+        \Foo\Bar\Baz\Buz $other4
+    ){}
+}',
+        ];
+
+        yield 'Test reference' => [
+            '<?php
 function withReference(Exception &$e) {}',
-                '<?php
+            '<?php
 function withReference(\Exception &$e) {}',
-            ],
+        ];
+
+        yield 'Test reference with use' => [
+            '<?php
+use A\exception;
+function withReference(\Exception &$e) {}',
+        ];
+
+        yield 'Test reference with use different casing' => [
+            '<?php
+namespace {
+    use A\EXCEPTION;
+    function withReference(\Exception &$e) {}
+    }
+',
         ];
     }
 
@@ -530,6 +674,29 @@ class Two
         yield [
             '<?php function f(): Foo&Bar & A\B\C {}',
             '<?php function f(): Foo&\Bar & \A\B\C {}',
+        ];
+
+        yield [
+            '<?php
+use Foo\Bar;
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(Bar $foo): Foo\Bar\Ba3{}
+    public function doSomethingMore(Bar|B $foo): Baz{}
+    public function doSomethingElse(Bar&A\Z $foo): Baz{}
+}',
+            '<?php
+use Foo\Bar;
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar $foo): \Foo\Bar\Ba3{}
+    public function doSomethingMore(\Foo\Bar|B $foo): \Foo\Bar\Baz{}
+    public function doSomethingElse(\Foo\Bar&\A\Z $foo): \Foo\Bar\Baz{}
+}',
         ];
     }
 }
