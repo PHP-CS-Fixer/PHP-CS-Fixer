@@ -28,7 +28,7 @@ class Finder extends BaseFinder
 
         $this
             ->files()
-            ->name('*.php')
+            ->name('/\.php$/')
             ->exclude('vendor')
         ;
     }
