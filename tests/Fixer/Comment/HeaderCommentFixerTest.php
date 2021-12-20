@@ -30,7 +30,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(array $configuration, string $expected, string $input): void
+    public function testFix(array $configuration, string $expected, ?string $input = null): void
     {
         $this->fixer->configure($configuration);
 
@@ -548,6 +548,55 @@ declare(strict_types=1) ?>',
                 '<?php
 declare(strict_types=1) ?>',
             ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ],
+                '#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+                '#!/usr/bin/env php
+<?php
+declare(strict_types=1);namespace A\B;
+
+echo 1;',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_open',
+                ],
+                'Short mixed file A
+Hello<?php echo "World!"; ?>',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_open',
+                ],
+                'Short mixed file B
+<?php echo "Hello"; ?>World!',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_open',
+                ],
+                'File with anything at the beginning and with multiple opening tags are not supported
+<?php
+echo 1;
+?>Hello World!<?php
+script_continues_here();',
+            ],
         ];
     }
 
@@ -679,6 +728,7 @@ echo 1;'
             ['<?= 1?>'],
             ["<?= 1?><?php\n"],
             ["<?= 1?>\n<?php\n"],
+            ["<?php\n// comment 1\n?><?php\n// comment 2\n"],
         ];
     }
 
