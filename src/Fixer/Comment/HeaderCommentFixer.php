@@ -148,12 +148,10 @@ echo 1;
 
             if (!isset($locationIndices[$locationIndex]) || $possibleLocation === $location) {
                 $locationIndices[$locationIndex] = $possibleLocation;
-
-                continue;
             }
         }
 
-        foreach (array_values($locationIndices) as $possibleLocation) {
+        foreach ($locationIndices as $possibleLocation) {
             // figure out where the comment should be placed
             $headerNewIndex = $this->findHeaderCommentInsertionIndex($tokens, $possibleLocation);
 

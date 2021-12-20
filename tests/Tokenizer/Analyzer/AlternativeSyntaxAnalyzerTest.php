@@ -37,7 +37,8 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             static::assertSame(
                 \in_array($index, $expectedPositives, true),
-                (new AlternativeSyntaxAnalyzer())->belongsToAlternativeSyntax($tokens, $index)
+                (new AlternativeSyntaxAnalyzer())->belongsToAlternativeSyntax($tokens, $index),
+                '@ index: '.$index
             );
         }
     }
@@ -59,9 +60,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
             '<?php foreach([1, 2, 3] as $i): echo $i; endforeach;',
         ];
 
-        yield 'if' => [
-            [6, 14],
-            '<?php if ($condition): echo 1; else: echo 2; endif;',
+        yield 'if, elseif, else' => [
+            [6, 17, 25],
+            '<?php if ($condition): echo 1; elseif($a): echo 2; else: echo 3; endif;',
         ];
 
         yield 'switch' => [
