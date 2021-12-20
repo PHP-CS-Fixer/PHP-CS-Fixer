@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-20T16:31:03Z
+
+[![Coverage Status](https://coveralls.io/builds/45135568/badge)](https://coveralls.io/builds/45135568)
+
+Coverage decreased (-0.002%) to 93.031% when pulling **b7c315f61ad8599ee0b00bf62de3a131dd5a4b3e on werlos:fix_SquareBraceTransformer** into **80e7ca19ddfc3778de7815bcd9b3569b5d298238 on FriendsOfPHP:master**.
