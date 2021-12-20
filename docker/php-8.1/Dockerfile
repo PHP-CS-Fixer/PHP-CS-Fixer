@@ -1,4 +1,4 @@
-FROM php:7.1-cli-alpine3.10
+FROM php:8.1-cli-alpine3.15
 
 ARG DOCKER_USER_ID
 ARG DOCKER_GROUP_ID
@@ -9,19 +9,18 @@ RUN if ! getent group "${DOCKER_GROUP_ID}" > /dev/null; \
   && if ! getent passwd "${DOCKER_USER_ID}" > /dev/null; \
     then adduser -S -u "${DOCKER_USER_ID}" -G "$(getent group "${DOCKER_GROUP_ID}" | awk -F: '{printf $1}')" dev; \
   fi \
-  && apk add --no-cache git libxml2-dev openssh-client \
-  && apk add --no-cache --virtual .build-deps autoconf g++ make \
-  # xdebug
-  && pecl install xdebug-2.9.8 \
-  && docker-php-ext-enable xdebug \
+  # php extensions
+  && curl --location --output /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
+  && chmod +x /usr/local/bin/install-php-extensions \
+  && sync \
+  && install-php-extensions \
+    xdebug-3.1.2 \
   # composer
   && curl --output composer-setup.php https://getcomposer.org/installer \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
   && rm composer-setup.php \
   # xdebug command
-  && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v1.1.0/xdebug \
-  && chmod +x /usr/local/bin/xdebug \
-  # clean up
-  && apk del .build-deps
+  && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
+  && chmod +x /usr/local/bin/xdebug
 
 COPY xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
