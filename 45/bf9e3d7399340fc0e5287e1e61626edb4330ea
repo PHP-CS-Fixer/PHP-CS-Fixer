@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-16T14:39:54Z
+
+[![Coverage Status](https://coveralls.io/builds/45062779/badge)](https://coveralls.io/builds/45062779)
+
+Coverage remained the same at 93.037% when pulling **678a82e25628b90abcc94c867de0429e5bf5c063 on werlos:improve_PhpCsFixer_Finder** into **1f4f55aa17fa6e3dbff66708d76c932cb074bd0e on FriendsOfPHP:master**.
