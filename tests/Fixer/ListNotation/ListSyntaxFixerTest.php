@@ -88,6 +88,11 @@ class Test
         ];
 
         yield ['<?php [$b[$a]] = $foo();'];
+
+        yield [
+            '<?php [$iHaveList => list($x, $y) = getList()];',
+            '<?php [$iHaveList => [$x, $y] = getList()];',
+        ];
     }
 
     /**
