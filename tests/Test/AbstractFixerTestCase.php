@@ -304,7 +304,7 @@ abstract class AbstractFixerTestCase extends TestCase
             static::fail(sprintf('Fixer "%s" shall be optimized to use `Tokens::insertSlices` instead of `%s`.', $fixerName, implode(', ', $allowedMethods)));
         }
 
-        $this->expectNotToPerformAssertions();
+        $this->addToAssertionCount(1);
     }
 
     final public function testFixerConfigurationDefinitions(): void

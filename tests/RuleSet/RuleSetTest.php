@@ -376,7 +376,7 @@ final class RuleSetTest extends TestCase
 
             static::fail($message);
         } else {
-            $this->expectNotToPerformAssertions();
+            $this->addToAssertionCount(1);
         }
     }
 

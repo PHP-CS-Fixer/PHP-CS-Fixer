@@ -540,7 +540,7 @@ final class FixerFactoryTest extends TestCase
 
             static::assertSame($sortedDescription, $casesDescription);
         } else {
-            $this->expectNotToPerformAssertions();
+            $this->addToAssertionCount(1);
         }
     }
 
@@ -619,7 +619,7 @@ final class FixerFactoryTest extends TestCase
         }
 
         if (0 === \count($fixersPhpDocIssues)) {
-            $this->expectNotToPerformAssertions();
+            $this->addToAssertionCount(1);
         } else {
             $message = sprintf("There are %d priority PHPDoc issues found.\n", \count($fixersPhpDocIssues));
 

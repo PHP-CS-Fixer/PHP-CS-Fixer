@@ -91,15 +91,7 @@ final class PregTest extends TestCase
             throw $ex;
         }
 
-        if (null !== $expected) {
-            static::assertSame($expected, $actual);
-
-            return;
-        }
-
-        if (!$setup()) {
-            $this->expectNotToPerformAssertions();
-        }
+        static::assertSame($expected, $actual);
     }
 
     /**
@@ -132,15 +124,7 @@ final class PregTest extends TestCase
             throw $ex;
         }
 
-        if (null !== $expected) {
-            static::assertSame((bool) $expected, $actual);
-
-            return;
-        }
-
-        if (!$setup()) {
-            $this->expectNotToPerformAssertions();
-        }
+        static::assertSame((bool) $expected, $actual);
     }
 
     public function testMatchAllFailing(): void

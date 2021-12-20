@@ -95,7 +95,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
         $this->fixer->configure(['include' => $include]);
 
         if (null === $expectedExceptionClass) {
-            $this->expectNotToPerformAssertions();
+            $this->addToAssertionCount(1);
         }
     }
 
