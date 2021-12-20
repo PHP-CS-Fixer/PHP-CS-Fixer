@@ -325,6 +325,38 @@ class Test
                     13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ],
             ],
+            [
+                '<?php foreach ($a as $key => [$x, $y]) {}',
+                [
+                    12 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    17 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php [$key => [$x, $y]];',
+                [
+                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    6 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    11 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                    12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php array($key => [$x, $y]);',
+                [
+                    7 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    12 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ],
+            ],
+            [
+                '<?php [$key => [$x, $y] = foo()];',
+                [
+                    1 => CT::T_ARRAY_SQUARE_BRACE_OPEN,
+                    6 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+                    11 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+                    18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+                ],
+            ],
         ];
     }
 
