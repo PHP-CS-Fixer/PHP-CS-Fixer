@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of PHP CS Fixer.
@@ -45,6 +45,7 @@ $config
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => ['header' => $header],
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
+        'declare_equal_normalize' => ['space' => 'single'],
     ])
     ->setFinder($finder)
 ;
