@@ -548,6 +548,28 @@ declare(strict_types=1) ?>',
                 '<?php
 declare(strict_types=1) ?>',
             ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ],
+                '#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+                '#!/usr/bin/env php
+<?php
+declare(strict_types=1);namespace A\B;
+
+echo 1;',
+            ],
         ];
     }
 
@@ -679,6 +701,7 @@ echo 1;'
             ['<?= 1?>'],
             ["<?= 1?><?php\n"],
             ["<?= 1?>\n<?php\n"],
+            ["<?php\n// comment 1\n?><?php\n// comment 2\n"],
         ];
     }
 
