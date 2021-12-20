@@ -78,7 +78,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
             ['<?php $x = "foo"[$x];'],
             ['<?php $text = "foo ${aaa[123]} bar $bbb[0] baz";'],
             ['<?php foreach ($array as [$x, $y]) {}'],
-            'iWillFail' => ['<?php foreach ($array as $key => [$x, $y]) {}'],
+            ['<?php foreach ($array as $key => [$x, $y]) {}'],
         ];
     }
 

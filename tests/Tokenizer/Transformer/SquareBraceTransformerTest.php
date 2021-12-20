@@ -325,7 +325,7 @@ class Test
                     13 => CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
                 ],
             ],
-            'iWillFail' => [
+            [
                 '<?php foreach ($a as $key => [$x, $y]) {}',
                 [
                     12 => CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
