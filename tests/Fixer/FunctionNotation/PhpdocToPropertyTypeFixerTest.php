@@ -449,6 +449,15 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
                 '<?php new class { /** @var int */ private int $foo; };',
                 '<?php new class { /** @var int */ private $foo; };',
             ],
+            'intersection types' => [
+                '<?php class Foo { /** @var Bar&Baz */ private $x; }',
+            ],
+            'very long class name before ampersand' => [
+                '<?php class Foo { /** @var Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar&Baz */ private $x; }',
+            ],
+            'very long class name after ampersand' => [
+                '<?php class Foo { /** @var Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */ private $x; }',
+            ],
         ];
     }
 
