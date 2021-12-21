@@ -39,10 +39,10 @@ set_error_handler(static function ($severity, $message, $file, $line) {
 
         exit(1);
     } elseif (
-        \PHP_VERSION_ID < 70205
+        \PHP_VERSION_ID < 70400
         || \PHP_VERSION_ID >= 80200
     ) {
-        fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.2.5 and maximum version of PHP 8.1.*.\n");
+        fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.1.*.\n");
         fwrite(STDERR, 'Current PHP version: '.PHP_VERSION.".\n");
 
         if (getenv('PHP_CS_FIXER_IGNORE_ENV')) {

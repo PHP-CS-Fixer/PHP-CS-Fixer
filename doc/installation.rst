@@ -5,7 +5,7 @@ Installation
 Requirements
 ------------
 
-PHP needs to be a minimum version of PHP 7.2.5.
+PHP needs to be a minimum version of PHP 7.4.
 
 Installation
 ------------
