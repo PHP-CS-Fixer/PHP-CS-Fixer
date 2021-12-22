@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-21T15:09:09Z
+
+cc @localheinz @julienfalque @kubawerlos @SpacePossum
+
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-21T15:22:35Z
+
+[![Coverage Status](https://coveralls.io/builds/45163143/badge)](https://coveralls.io/builds/45163143)
+
+Coverage remained the same at 93.031% when pulling **1c103d1619aae705100af469c161d7f0c029e5bf on keradus:php74** into **fe85adad7b9a7248600cc0c11190bc4f16bf7c2c on FriendsOfPHP:master**.
