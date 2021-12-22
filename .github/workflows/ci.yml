@@ -11,22 +11,19 @@ jobs:
       matrix:
         include:
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.2'
+            php-version: '7.4'
             job-description: 'with lowest deps'
             composer-flags: '--prefer-stable --prefer-lowest' # should be checked on lowest supported PHP version
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.2'
+            php-version: '7.4'
             job-description: 'with Sf ^4'
             execute-flex-with-symfony-version: '^4' # Explicit check for Sf 4.x compatibility
 
           - operating-system: 'ubuntu-20.04'
-            php-version: '7.3'
+            php-version: '7.4'
             job-description: 'with Sf ^5'
             execute-flex-with-symfony-version: '^5' # Explicit check for Sf 5.x compatibility
-
-          - operating-system: 'ubuntu-20.04'
-            php-version: '7.4'
 
           - operating-system: 'ubuntu-20.04'
             php-version: '8.0'
