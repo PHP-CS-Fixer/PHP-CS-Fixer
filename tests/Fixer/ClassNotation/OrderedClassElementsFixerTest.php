@@ -1338,6 +1338,27 @@ class TestClass
     public function provideFix80Cases(): \Generator
     {
         yield [
+            '<?php
+
+trait TestTrait
+{
+    abstract static public function abstractStaticPublic();
+    abstract private function abstractPrivate();
+    abstract static private function abstractStaticPrivate();
+}
+',
+            '<?php
+
+trait TestTrait
+{
+    abstract private function abstractPrivate();
+    abstract static private function abstractStaticPrivate();
+    abstract static public function abstractStaticPublic();
+}
+',
+        ];
+
+        yield [
             '<?php class Foo
             {
 
