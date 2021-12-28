@@ -78,4 +78,94 @@ final class TypeAnalysisTest extends TestCase
             ['void', true],
         ];
     }
+
+    /**
+     * @dataProvider provideIsNullableCases
+     */
+    public function testIsNullable(bool $expected, string $input): void
+    {
+        $analysis = new TypeAnalysis($input, 1, 2);
+        self::assertSame($expected, $analysis->isNullable());
+    }
+
+    public static function provideIsNullableCases(): iterable
+    {
+        yield [false, 'string'];
+
+        yield [true, '?string'];
+
+        yield [false, '\foo\bar'];
+
+        yield [true, '?\foo\bar'];
+
+        if (\PHP_VERSION_ID >= 8_00_00) {
+            yield [false, 'string|int'];
+
+            yield [true, 'string|null'];
+
+            yield [true, 'null|string'];
+
+            yield [true, 'string|NULL'];
+
+            yield [true, 'NULL|string'];
+
+            yield [true, 'string|int|null'];
+
+            yield [true, 'null|string|int'];
+
+            yield [true, 'string|null|int'];
+
+            yield [true, 'string|int|NULL'];
+
+            yield [true, 'NULL|string|int'];
+
+            yield [true, 'string|NULL|int'];
+
+            yield [false, 'string|\foo\bar'];
+
+            yield [true, 'string|\foo\bar|null'];
+
+            yield [true, 'null|string|\foo\bar'];
+
+            yield [true, 'string|null|\foo\bar'];
+
+            yield [true, 'string |null| int'];
+
+            yield [true, 'string| null |int'];
+
+            yield [true, 'string | null | int'];
+
+            yield [false, 'Null2|int'];
+
+            yield [false, 'string|Null2'];
+
+            yield [false, 'string |Null2'];
+
+            yield [false, 'Null2| int'];
+
+            yield [false, 'string | Null2 | int'];
+        }
+
+        if (\PHP_VERSION_ID >= 8_01_00) {
+            yield [false, '\foo\bar&\foo\baz'];
+
+            yield [false, '\foo\bar & \foo\baz'];
+
+            yield [false, '\foo\bar&Null2'];
+        }
+
+        if (\PHP_VERSION_ID >= 8_02_00) {
+            yield [true, '(\foo\bar&\foo\baz)|null'];
+
+            yield [true, '(\foo\bar&\foo\baz) | null'];
+
+            yield [false, '(\foo\bar&\foo\baz)|Null2'];
+
+            yield [true, 'null'];
+
+            yield [true, 'Null'];
+
+            yield [true, 'NULL'];
+        }
+    }
 }
