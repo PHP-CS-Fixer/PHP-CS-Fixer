@@ -24,26 +24,14 @@ use PHPUnitGoodPractices\Traits\ProphesizeOnlyInterfaceTrait;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
-// To ensure compatibility for different PHPUnit versions, we may need to inject the ProphecyTrait, if it's present.
-if (trait_exists(ProphecyTrait::class)) {
-    /**
-     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-     *
-     * @internal
-     */
-    abstract class InterimTestCase extends BaseTestCase
-    {
-        use ProphecyTrait;
-    }
-} else {
-    /**
-     * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
-     *
-     * @internal
-     */
-    abstract class InterimTestCase extends BaseTestCase
-    {
-    }
+/**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
+ */
+abstract class InterimTestCase extends BaseTestCase
+{
+    use ProphecyTrait;
 }
 
 /**
