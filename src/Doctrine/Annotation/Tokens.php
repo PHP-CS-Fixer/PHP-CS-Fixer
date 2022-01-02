@@ -36,7 +36,7 @@ final class Tokens extends \SplFixedArray
             throw new \InvalidArgumentException('Input must be a T_DOC_COMMENT token.');
         }
 
-        $tokens = new self();
+        $tokens = [];
 
         $content = $input->getContent();
         $ignoredTextPosition = 0;
@@ -125,6 +125,31 @@ final class Tokens extends \SplFixedArray
 
         if ($ignoredTextPosition < \strlen($content)) {
             $tokens[] = new Token(DocLexer::T_NONE, substr($content, $ignoredTextPosition));
+        }
+
+        return self::fromArray($tokens);
+    }
+
+    /**
+     * Create token collection from array.
+     *
+     * @param Token[] $array       the array to import
+     * @param ?bool   $saveIndices save the numeric indices used in the original array, default is yes
+     */
+    public static function fromArray($array, $saveIndices = null): self
+    {
+        $tokens = new self(\count($array));
+
+        if (null === $saveIndices || $saveIndices) {
+            foreach ($array as $key => $val) {
+                $tokens[$key] = $val;
+            }
+        } else {
+            $index = 0;
+
+            foreach ($array as $val) {
+                $tokens[$index++] = $val;
+            }
         }
 
         return $tokens;
@@ -271,11 +296,6 @@ final class Tokens extends \SplFixedArray
                 'Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, %s given.',
                 $type
             ));
-        }
-
-        if (null === $index) {
-            $index = \count($this);
-            $this->setSize($this->getSize() + 1);
         }
 
         parent::offsetSet($index, $token);
