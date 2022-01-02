@@ -74,8 +74,10 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'method_private' => ['method', 'private'],
         'method_public_abstract' => ['method_abstract', 'method_public'],
         'method_protected_abstract' => ['method_abstract', 'method_protected'],
+        'method_private_abstract' => ['method_abstract', 'method_private'],
         'method_public_abstract_static' => ['method_abstract', 'method_static', 'method_public'],
         'method_protected_abstract_static' => ['method_abstract', 'method_static', 'method_protected'],
+        'method_private_abstract_static' => ['method_abstract', 'method_static', 'method_private'],
         'method_public_static' => ['method_static', 'method_public'],
         'method_protected_static' => ['method_static', 'method_protected'],
         'method_private_static' => ['method_static', 'method_private'],
@@ -105,6 +107,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
 
         $this->typePosition = [];
         $pos = 0;
+
         foreach ($this->configuration['order'] as $type) {
             $this->typePosition[$type] = $pos++;
         }
@@ -132,12 +135,13 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         }
 
         $lastPosition = \count($this->configuration['order']);
+
         foreach ($this->typePosition as &$pos) {
             if (null === $pos) {
                 $pos = $lastPosition;
             }
-            // last digit is used by phpunit method ordering
-            $pos *= 10;
+
+            $pos *= 10; // last digit is used by phpunit method ordering
         }
     }
 
@@ -342,6 +346,7 @@ class Example
                 }
 
                 $type = $this->detectElementType($tokens, $i);
+
                 if (\is_array($type)) {
                     $element['type'] = $type[0];
                     $element['name'] = $type[1];
@@ -411,10 +416,7 @@ class Example
             return ['phpunit', strtolower($nameToken->getContent())];
         }
 
-        return str_starts_with($nameToken->getContent(), '__')
-            ? 'magic'
-            : 'method'
-        ;
+        return str_starts_with($nameToken->getContent(), '__') ? 'magic' : 'method';
     }
 
     private function findElementEnd(Tokens $tokens, int $index): int
@@ -458,6 +460,7 @@ class Example
             if (\array_key_exists($type, self::$specialTypes)) {
                 if (isset($this->typePosition[$type])) {
                     $element['position'] = $this->typePosition[$type];
+
                     if ('phpunit' === $type) {
                         $element['position'] += $phpunitPositions[$element['name']];
                     }
@@ -470,12 +473,15 @@ class Example
 
             if (\in_array($type, ['constant', 'property', 'method'], true)) {
                 $type .= '_'.$element['visibility'];
+
                 if ($element['abstract']) {
                     $type .= '_abstract';
                 }
+
                 if ($element['static']) {
                     $type .= '_static';
                 }
+
                 if ($element['readonly']) {
                     $type .= '_readonly';
                 }
@@ -483,6 +489,7 @@ class Example
 
             $element['position'] = $this->typePosition[$type];
         }
+
         unset($element);
 
         usort($elements, function (array $a, array $b): int {
