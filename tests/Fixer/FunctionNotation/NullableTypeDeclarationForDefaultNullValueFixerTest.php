@@ -395,7 +395,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->doTest($expected);
+        $this->doTest($expected, $input);
     }
 
     /**
