@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  * A list of Doctrine annotation tokens.
  *
  * @internal
+ *
+ * @extends \SplFixedArray<Token>
  */
 final class Tokens extends \SplFixedArray
 {
@@ -172,26 +174,6 @@ final class Tokens extends \SplFixedArray
     }
 
     /**
-     * Returns the index of the closest next token of the given type.
-     *
-     * @param string|string[] $type
-     */
-    public function getNextTokenOfType($type, int $index): ?int
-    {
-        return $this->getTokenOfTypeSibling($index, $type, 1);
-    }
-
-    /**
-     * Returns the index of the closest previous token of the given type.
-     *
-     * @param string|string[] $type
-     */
-    public function getPreviousTokenOfType($type, int $index): ?int
-    {
-        return $this->getTokenOfTypeSibling($index, $type, -1);
-    }
-
-    /**
      * Returns the index of the last token that is part of the annotation at the given index.
      */
     public function getAnnotationEnd(int $index): ?int
@@ -229,27 +211,6 @@ final class Tokens extends \SplFixedArray
         }
 
         return $index + 1;
-    }
-
-    /**
-     * Returns the index of the close brace that matches the open brace at the given index.
-     */
-    public function getArrayEnd(int $index): ?int
-    {
-        $level = 1;
-        for (++$index, $max = \count($this); $index < $max; ++$index) {
-            if ($this[$index]->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
-                ++$level;
-            } elseif ($this[$index]->isType($index, DocLexer::T_CLOSE_CURLY_BRACES)) {
-                --$level;
-            }
-
-            if (0 === $level) {
-                return $index;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -333,26 +294,6 @@ final class Tokens extends \SplFixedArray
             }
 
             if (!$this[$index]->isType(DocLexer::T_NONE)) {
-                return $index;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param string|string[] $type
-     */
-    private function getTokenOfTypeSibling(int $index, $type, int $direction): ?int
-    {
-        while (true) {
-            $index += $direction;
-
-            if (!$this->offsetExists($index)) {
-                break;
-            }
-
-            if ($this[$index]->isType($type)) {
                 return $index;
             }
         }
