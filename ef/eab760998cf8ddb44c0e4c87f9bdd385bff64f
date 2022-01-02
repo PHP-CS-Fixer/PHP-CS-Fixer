@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-02T21:44:14Z
+
+[![Coverage Status](https://coveralls.io/builds/45324089/badge)](https://coveralls.io/builds/45324089)
+
+Coverage decreased (-0.01%) to 93.027% when pulling **d52cff8d178d6096a9c11bd106e792d678d89b26 on keradus:phpstan_fix** into **22f0eb496d371d4b6914f0fd7a74fe0bbf57b8ae on FriendsOfPHP:master**.
