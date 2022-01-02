@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-28T02:57:51Z
+
+[![Coverage Status](https://coveralls.io/builds/45255778/badge)](https://coveralls.io/builds/45255778)
+
+Coverage remained the same at 93.042% when pulling **b61175d2a98308d3be03226f56fe545096e0e1ad on HypeMC:nullable-type-declaration-tests-fix** into **e67580b5cf1664b0e80cc313e556b9a2cb26491b on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-29T10:42:46Z
+
+> Bug caused by #5925
+
+The change proposed in this PR is good, but it was rather introduced in
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/6034/files#diff-9606d9edb53ba9be8b1ae84ff57d80593a59c0b079c33e5e3049f610fe537cbcR396-R398
+than in
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/pull/5925/files#diff-9606d9edb53ba9be8b1ae84ff57d80593a59c0b079c33e5e3049f610fe537cbcL400-L404
