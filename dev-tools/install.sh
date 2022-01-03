@@ -42,5 +42,5 @@ fi
 bin/shellcheck --version
 
 echo λλλ composer packages
-composer update -v
+composer install -v
 composer info -D | sort

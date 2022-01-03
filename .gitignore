@@ -2,7 +2,6 @@
 /.phpunit.result.cache
 /box.json
 /composer.lock
-/dev-tools/composer.lock
 /dev-tools/bin/
 /dev-tools/phpstan/cache/
 /dev-tools/vendor/
