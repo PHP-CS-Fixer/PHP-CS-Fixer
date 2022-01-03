@@ -38,7 +38,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Whitespace around the keywords of a class, trait or interfaces definition should be one space.',
+            'Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.',
             [
                 new CodeSample(
                     '<?php

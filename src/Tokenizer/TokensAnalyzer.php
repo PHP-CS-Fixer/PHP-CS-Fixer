@@ -763,6 +763,12 @@ final class TokensAnalyzer
                     'token' => $token,
                     'type' => 'trait_import',
                 ];
+            } elseif ($token->isGivenKind(T_CASE)) {
+                $elements[$index] = [
+                    'classIndex' => $classIndex,
+                    'token' => $token,
+                    'type' => 'case',
+                ];
             }
         }
 

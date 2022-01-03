@@ -553,6 +553,36 @@ class Foo
 }
             ',
         ];
+
+        yield 'enum' => [
+            [
+                10 => [
+                    'classIndex' => 1,
+                    'type' => 'case',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'case',
+                ],
+                28 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+            ],
+            '<?php
+enum Foo: string
+{
+    case Bar = "bar";
+    case Baz = "baz";
+
+    function qux() {
+        switch (true) {
+            case "x": break;
+        }
+    }
+}
+            ',
+        ];
     }
 
     /**

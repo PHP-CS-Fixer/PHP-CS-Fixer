@@ -656,6 +656,33 @@ $a = new class implements
     }
 
     /**
+     * @dataProvider providePHP81Cases
+     * @requires PHP 8.1
+     */
+    public function testFixPHP81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([]);
+        $this->doTest($expected, $input);
+    }
+
+    public function providePHP81Cases(): array
+    {
+        return [
+            [
+                "<?php enum Foo\n{}",
+                '<?php enum   Foo   {}',
+            ],
+            [
+                "<?php enum Foo : int\n{}",
+                '<?php enum   Foo  :  int   {}',
+            ],
+            [
+                "<?php enum Foo: string\n{}",
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideMessyWhitespacesCases
      */
     public function testMessyWhitespaces(string $expected, ?string $input = null): void

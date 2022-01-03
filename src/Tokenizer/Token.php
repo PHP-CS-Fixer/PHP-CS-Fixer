@@ -106,7 +106,15 @@ final class Token
      */
     public static function getClassyTokenKinds(): array
     {
-        static $classTokens = [T_CLASS, T_TRAIT, T_INTERFACE];
+        static $classTokens;
+
+        if (null === $classTokens) {
+            $classTokens = [T_CLASS, T_TRAIT, T_INTERFACE];
+
+            if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
+                $classTokens[] = T_ENUM;
+            }
+        }
 
         return $classTokens;
     }
