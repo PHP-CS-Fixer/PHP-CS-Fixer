@@ -166,17 +166,16 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $aboutSubpattern = Application::VERSION_CODENAME
-            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/').' by Fabien Potencier and Dariusz Ruminski'
-            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' by Fabien Potencier and Dariusz Ruminski';
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier and Dariusz Ruminski.\nPHP runtime: ".PHP_VERSION
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier and Dariusz Ruminski.\nPHP runtime: ".PHP_VERSION;
 
         $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
-            preg_quote(sprintf('Runtime: PHP %s', PHP_VERSION), '/'),
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
