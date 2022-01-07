@@ -30,7 +30,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(array $configuration, string $expected, string $input): void
+    public function testFix(array $configuration, string $expected, ?string $input = null): void
     {
         $this->fixer->configure($configuration);
 
@@ -569,6 +569,41 @@ echo 1;',
 declare(strict_types=1);namespace A\B;
 
 echo 1;',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ],
+                'File with anything at the beginning, but only single opening tag are supported
+<?php
+declare(strict_types=1);
+
+/*
+ * tmp
+ */
+
+namespace A\B;
+
+echo 1;',
+                'File with anything at the beginning, but only single opening tag are supported
+<?php
+declare(strict_types=1);namespace A\B;
+
+echo 1;',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_declare_strict',
+                ],
+                'File with anything at the beginning and with multiple opening tags are not supported
+<?php
+declare(strict_types=1);namespace A\B;
+
+echo 1;
+?>Hello World!<?php
+script_continues_here();',
             ],
         ];
     }
