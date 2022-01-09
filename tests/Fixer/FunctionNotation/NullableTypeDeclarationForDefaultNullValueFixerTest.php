@@ -500,4 +500,27 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         yield [$cases[0], $cases[1]];
         yield [$cases[1], $cases[0], ['use_nullable_type_declaration' => false]];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected): void
+    {
+        $this->doTest($expected);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php
+class Foo
+{
+    public function __construct(
+        protected readonly ?bool $nullable = null,
+    ) {}
+}
+',
+        ];
+    }
 }

@@ -98,8 +98,8 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
-
         $tokenKinds = [T_FUNCTION];
+
         if (\PHP_VERSION_ID >= 70400) {
             $tokenKinds[] = T_FN;
         }
@@ -112,7 +112,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             }
 
             $arguments = $functionsAnalyzer->getFunctionArguments($tokens, $index);
-
             $this->fixFunctionParameters($tokens, $arguments);
         }
     }

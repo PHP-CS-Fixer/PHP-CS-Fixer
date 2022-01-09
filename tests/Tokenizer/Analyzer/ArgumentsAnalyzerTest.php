@@ -86,16 +86,14 @@ final class ArgumentsAnalyzerTest extends TestCase
         static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
-    public function provideArguments73Cases(): array
+    public function provideArguments73Cases(): iterable
     {
-        return [
-            ['<?php foo($a,);', 2, 5, [3 => 3]],
-            ['<?php foo($a,/**/);', 2, 6, [3 => 3]],
-            ['<?php foo($a(1,2,3,4,5),);', 2, 16, [3 => 14]],
-            ['<?php foo($a(1,2,3,4,5,),);', 2, 17, [3 => 15]],
-            ['<?php foo($a(1,2,3,4,5,),);', 4, 15, [5 => 5, 7 => 7, 9 => 9, 11 => 11, 13 => 13]],
-            ['<?php bar($a, $b , ) ;', 2, 10, [3 => 3, 5 => 7]],
-        ];
+        yield ['<?php foo($a,);', 2, 5, [3 => 3]];
+        yield ['<?php foo($a,/**/);', 2, 6, [3 => 3]];
+        yield ['<?php foo($a(1,2,3,4,5),);', 2, 16, [3 => 14]];
+        yield ['<?php foo($a(1,2,3,4,5,),);', 2, 17, [3 => 15]];
+        yield ['<?php foo($a(1,2,3,4,5,),);', 4, 15, [5 => 5, 7 => 7, 9 => 9, 11 => 11, 13 => 13]];
+        yield ['<?php bar($a, $b , ) ;', 2, 10, [3 => 3, 5 => 7]];
     }
 
     /**
@@ -146,10 +144,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        static::assertSame(
-            serialize($expected),
-            serialize($analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex))
-        );
+        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
     public function provideArgumentsInfoCases(): \Generator
@@ -284,10 +279,7 @@ final class ArgumentsAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
         $analyzer = new ArgumentsAnalyzer();
 
-        static::assertSame(
-            serialize($expected),
-            serialize($analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex))
-        );
+        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
     }
 
     public function provideArgumentsInfo80Cases(): \Generator
@@ -325,5 +317,67 @@ final class ArgumentsAnalyzerTest extends TestCase
                 ),
             ];
         }
+    }
+
+    /**
+     * @requires PHP 8.1
+     * @dataProvider provideArgumentsInfo81Cases
+     */
+    public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
+    {
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new ArgumentsAnalyzer();
+
+        self::assertArgumentAnalysis($expected, $analyzer->getArgumentInfo($tokens, $openIndex, $closeIndex));
+    }
+
+    public function provideArgumentsInfo81Cases(): \Generator
+    {
+        yield [
+            '<?php
+class Foo
+{
+    public function __construct(
+        protected readonly ?bool $nullable = true,
+    ) {}
+}
+',
+            13,
+            25,
+            new ArgumentAnalysis(
+                '$nullable',
+                21,
+                'true',
+                new TypeAnalysis(
+                    '?bool',
+                    18,
+                    19
+                )
+            ),
+        ];
+    }
+
+    private static function assertArgumentAnalysis(ArgumentAnalysis $expected, ArgumentAnalysis $actual): void
+    {
+        static::assertSame($expected->getDefault(), $actual->getDefault(), 'Default.');
+        static::assertSame($expected->getName(), $actual->getName(), 'Name.');
+        static::assertSame($expected->getNameIndex(), $actual->getNameIndex(), 'Name index.');
+        static::assertSame($expected->hasDefault(), $actual->hasDefault(), 'Has default.');
+        static::assertSame($expected->hasTypeAnalysis(), $actual->hasTypeAnalysis(), 'Has type analysis.');
+
+        if ($expected->hasTypeAnalysis()) {
+            $expectedTypeAnalysis = $expected->getTypeAnalysis();
+            $actualTypeAnalysis = $actual->getTypeAnalysis();
+
+            static::assertSame($expectedTypeAnalysis->getEndIndex(), $actualTypeAnalysis->getEndIndex(), 'Type analysis end index.');
+            static::assertSame($expectedTypeAnalysis->getName(), $actualTypeAnalysis->getName(), 'Type analysis name.');
+            static::assertSame($expectedTypeAnalysis->getStartIndex(), $actualTypeAnalysis->getStartIndex(), 'Type analysis start index.');
+            static::assertSame($expectedTypeAnalysis->isNullable(), $actualTypeAnalysis->isNullable(), 'Type analysis nullable.');
+            static::assertSame($expectedTypeAnalysis->isReservedType(), $actualTypeAnalysis->isReservedType(), 'Type analysis reserved type.');
+        } else {
+            static::assertNull($actual->getTypeAnalysis());
+        }
+
+        static::assertSame(serialize($expected), serialize($actual));
     }
 }
