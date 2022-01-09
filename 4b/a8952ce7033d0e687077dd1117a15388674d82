@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-03T22:39:19Z
+
+[![Coverage Status](https://coveralls.io/builds/45354990/badge)](https://coveralls.io/builds/45354990)
+
+Coverage remained the same at 93.027% when pulling **4a2a7c8a264f2a8c3f3a0876cb725c85bb391bed on gharlan:xdebug-handler** into **efeab760998cf8ddb44c0e4c87f9bdd385bff64f on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by stof at 2022-01-05T14:09:57Z
+
+To reduce the risk of dependency conflicts, I suggest supporting both 2 and 3, as there does not seem to be any change needed in php-cs-fixer between those versions.
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-01-07T08:27:20Z
+
+I'm happy to merge v3 only and reconsider support for v2 if we would see complaints and ppl not updating because of that. ultimately, upcoming shim package would solve the dependencies conflicts once and for all
