@@ -353,9 +353,12 @@ PHP;
     {
         yield [true, "<?php\n"];
         yield [true, "<?php\n?>"];
+        yield [true, "#!/usr/bin/php\n<?php\n"];
+        yield [true, "#!/usr/bin/env php\n<?php\n"];
+        yield [true, "#!/usr/bin/env php7.4\n<?php\n"];
+        yield [true, "#!/usr/bin/env this-is\ntoo-much\n<?php\n"];
         yield [false, ''];
         yield [false, ' '];
-        yield [false, "#!/usr/bin/env php\n<?php\n"];
         yield [false, " <?php\n"];
         yield [false, "<?php\n?> "];
         yield [false, "<?php\n?><?php\n"];
