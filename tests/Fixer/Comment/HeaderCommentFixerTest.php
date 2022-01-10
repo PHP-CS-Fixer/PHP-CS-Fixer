@@ -593,6 +593,22 @@ echo 1;',
                     'header' => 'tmp',
                     'location' => 'after_open',
                 ],
+                'Short mixed file A
+Hello<?php echo "World!"; ?>',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_open',
+                ],
+                'Short mixed file B
+<?php echo "Hello"; ?>World!',
+            ],
+            [
+                [
+                    'header' => 'tmp',
+                    'location' => 'after_open',
+                ],
                 'File with anything at the beginning and with multiple opening tags are not supported
 <?php
 echo 1;
