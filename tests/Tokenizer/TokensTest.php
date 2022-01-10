@@ -343,74 +343,40 @@ PHP;
     /**
      * @dataProvider provideMonolithicPhpDetectionCases
      */
-    public function testMonolithicPhpDetection(string $source, bool $isMonolithic): void
+    public function testMonolithicPhpDetection(bool $isMonolithic, string $source): void
     {
         $tokens = Tokens::fromCode($source);
         static::assertSame($isMonolithic, $tokens->isMonolithicPhp());
     }
 
-    public function provideMonolithicPhpDetectionCases(): array
+    public function provideMonolithicPhpDetectionCases(): iterable
     {
-        return [
-            ["<?php\n", true],
-            ["<?php\n?>", true],
-            ['', false],
-            [' ', false],
-            ["#!/usr/bin/env php\n<?php\n", false],
-            [" <?php\n", false],
-            ["<?php\n?> ", false],
-            ["<?php\n?><?php\n", false],
-        ];
-    }
-
-    /**
-     * @dataProvider provideShortOpenTagMonolithicPhpDetectionCases
-     */
-    public function testShortOpenTagMonolithicPhpDetection(string $source, bool $monolithic): void
-    {
-        if (!ini_get('short_open_tag')) {
-            $monolithic = false;
-        }
-
-        $tokens = Tokens::fromCode($source);
-        static::assertSame($monolithic, $tokens->isMonolithicPhp());
-    }
-
-    public function provideShortOpenTagMonolithicPhpDetectionCases(): array
-    {
-        return [
-            ["<?\n", true],
-            ["<?\n?>", true],
-            [" <?\n", false],
-            ["<?\n?> ", false],
-            ["<?\n?><?\n", false],
-            ["<?\n?><?php\n", false],
-            ["<?\n?><?=' ';\n", false],
-            ["<?php\n?><?\n", false],
-            ["<?=' '\n?><?\n", false],
-        ];
-    }
-
-    /**
-     * @dataProvider provideShortOpenTagEchoMonolithicPhpDetectionCases
-     */
-    public function testShortOpenTagEchoMonolithicPhpDetection(string $source, bool $monolithic): void
-    {
-        $tokens = Tokens::fromCode($source);
-        static::assertSame($monolithic, $tokens->isMonolithicPhp());
-    }
-
-    public function provideShortOpenTagEchoMonolithicPhpDetectionCases(): array
-    {
-        return [
-            ["<?=' ';\n", true],
-            ["<?=' '?>", true],
-            [" <?=' ';\n", false],
-            ["<?=' '?> ", false],
-            ["<?php\n?><?=' ';\n", false],
-            ["<?=' '\n?><?php\n", false],
-            ["<?=' '\n?><?=' ';\n", false],
-        ];
+        yield [true, "<?php\n"];
+        yield [true, "<?php\n?>"];
+        yield [false, ''];
+        yield [false, ' '];
+        yield [false, "#!/usr/bin/env php\n<?php\n"];
+        yield [false, " <?php\n"];
+        yield [false, "<?php\n?> "];
+        yield [false, "<?php\n?><?php\n"];
+        // short open tag
+        yield [(bool) ini_get('short_open_tag'), "<?\n"];
+        yield [(bool) ini_get('short_open_tag'), "<?\n?>"];
+        yield [false, " <?\n"];
+        yield [false, "<?\n?> "];
+        yield [false, "<?\n?><?\n"];
+        yield [false, "<?\n?><?php\n"];
+        yield [false, "<?\n?><?=' ';\n"];
+        yield [false, "<?php\n?><?\n"];
+        yield [false, "<?=' '\n?><?\n"];
+        // short open tag echo
+        yield [true, "<?=' ';\n"];
+        yield [true, "<?=' '?>"];
+        yield [false, " <?=' ';\n"];
+        yield [false, "<?=' '?> "];
+        yield [false, "<?php\n?><?=' ';\n"];
+        yield [false, "<?=' '\n?><?php\n"];
+        yield [false, "<?=' '\n?><?=' ';\n"];
     }
 
     public function testTokenKindsFound(): void
