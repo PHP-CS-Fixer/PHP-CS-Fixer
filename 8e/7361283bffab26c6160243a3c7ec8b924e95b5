@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-10T21:36:23Z
+
+[![Coverage Status](https://coveralls.io/builds/45508297/badge)](https://coveralls.io/builds/45508297)
+
+Coverage remained the same at 93.101% when pulling **18cc2b9ac74c2ba853b0d844dc5db4c3d675bc91 on werlos:simplify_Tokens_isMonolithicPhp_tests** into **f4b0017d04967bd4b5ad5d74701866e22e1df3c6 on FriendsOfPHP:master**.
