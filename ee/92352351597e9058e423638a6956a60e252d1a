@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-12T10:06:28Z
+
+[![Coverage Status](https://coveralls.io/builds/45560235/badge)](https://coveralls.io/builds/45560235)
+
+Coverage remained the same at 93.101% when pulling **2b03444c6a7403f17950c21f49b35a338088c36c on SpacePossum:master_addToAssertionCount_expectNotToPerformAssertions** into **3f7a35d2affb024a1b1716a96a9504bfb7519be2 on FriendsOfPHP:master**.
