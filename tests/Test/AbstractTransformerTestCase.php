@@ -92,7 +92,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     public function testTransformDoesNotChangeSimpleCode(): void
     {
         if (\PHP_VERSION_ID < $this->transformer->getRequiredPhpVersionId()) {
-            $this->addToAssertionCount(1);
+            $this->expectNotToPerformAssertions();
 
             return;
         }
