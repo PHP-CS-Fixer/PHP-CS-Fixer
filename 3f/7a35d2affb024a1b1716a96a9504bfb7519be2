@@ -1,0 +1,36 @@
+---------------------------------------------------------------------------
+
+by keradus at 2022-01-03T20:53:14Z
+
+cc @localheinz @julienfalque @kubawerlos @SpacePossum
+
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-03T21:08:05Z
+
+[![Coverage Status](https://coveralls.io/builds/45355717/badge)](https://coveralls.io/builds/45355717)
+
+Coverage remained the same at 93.027% when pulling **e9a48fa82d7d4504e97c01544bc590d4efeffad5 on keradus:dev-tools-lock** into **efeab760998cf8ddb44c0e4c87f9bdd385bff64f on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-01-04T09:00:21Z
+
+> I'd vote for removing ^ from dev-tools/composer.json instead of having dev-tools/composer.lock committed
+
+it won't lock the deep-deps (dependencies of dependency)
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2022-01-04T21:32:44Z
+
+> it won't lock the deep-deps (dependencies of dependency)
+
+Obviously, but why do we need to lock them? If some dependency needs to be locked that mean it should be explicitly added to `composer.json`.
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-01-04T22:18:26Z
+
+I wouldn't share that claim, myself.
+You don't know which dependency needs to be locked until you explicitly experience issue because of it (like first-time contributor creates a PR and it failed on SCA for nothing related to given PR). Locking all SCA deps with lock-file prevents that, locking only 1st level dependencies (not using lock file) will only minimise the risk
