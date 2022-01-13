@@ -353,10 +353,12 @@ PHP;
     {
         yield [true, "<?php\n"];
         yield [true, "<?php\n?>"];
+        yield [false, "#!\n<?php\n"];
         yield [false, "#!/usr/bin/bash\ncat <?php\n"];
         yield [false, "#!/usr/bin/env bash\ncat <?php\n"];
         yield [true, "#!/usr/bin/php\n<?php\n"];
         yield [true, "#!/usr/bin/php7.4-cli\n<?php\n"];
+        yield [false, "#!/usr/bin/php\n\n<?php\n"]; // empty line after shebang would be printed to console before PHP executes
         yield [true, "#!/usr/bin/php8\n<?php\n"];
         yield [true, "#!/usr/bin/env php\n<?php\n"];
         yield [true, "#!/usr/bin/env php7.4\n<?php\n"];
