@@ -1100,7 +1100,7 @@ class Tokens extends \SplFixedArray
             return 1 === Preg::match('/^#!.*$/', $this[0]->getContent());
         }
 
-        return 1 >= ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
+        return 1 === ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO));
     }
 
     /**
