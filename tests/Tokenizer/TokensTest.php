@@ -362,6 +362,8 @@ PHP;
         yield [false, " <?php\n"];
         yield [false, "<?php\n?> "];
         yield [false, "<?php\n?><?php\n"];
+        yield [false, 'Hello<?php echo "World!"; ?>'];
+        yield [false, '<?php echo "Hello"; ?> World!'];
         // short open tag
         yield [(bool) ini_get('short_open_tag'), "<?\n"];
         yield [(bool) ini_get('short_open_tag'), "<?\n?>"];
