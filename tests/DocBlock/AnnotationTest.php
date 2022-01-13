@@ -570,5 +570,15 @@ final class AnnotationTest extends TestCase
         yield ['* @var int $foo some description', '$foo'];
         yield ['/** @var int $foo*/', '$foo'];
         yield ['* @var int', null];
+        yield ['* @param $foo', '$foo'];
+        yield ['* @param &$foo', '$foo'];
+        yield ['* @param & $foo', '$foo'];
+        yield ['* @param int &$foo', '$foo'];
+        yield ['* @param int & $foo', '$foo'];
+        yield ['* @param int ...$foo', '$foo'];
+        yield ['* @param int ... $foo', '$foo'];
+        yield ['* @param int &...$foo', '$foo'];
+        yield ['* @param int & ...$foo', '$foo'];
+        yield ['* @param int & ... $foo', '$foo'];
     }
 }
