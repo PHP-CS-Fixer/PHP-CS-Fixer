@@ -503,7 +503,7 @@ final class AnnotationTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('This tag does not support types');
 
-        $tag = new Annotation([new Line(' * @deprecated since 1.2')]);
+        $tag = new Annotation([new Line(' * @deprecated since Symfony 1.2')]);
 
         $tag->getTypes();
     }
