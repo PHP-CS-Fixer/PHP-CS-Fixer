@@ -353,12 +353,26 @@ PHP;
     {
         yield [true, "<?php\n"];
         yield [true, "<?php\n?>"];
+        yield [false, "#!\n<?php\n"];
+        yield [false, "#!/usr/bin/bash\ncat <?php\n"];
+        yield [false, "#!/usr/bin/env bash\ncat <?php\n"];
+        yield [true, "#!/usr/bin/php\n<?php\n"];
+        yield [true, "#!/usr/bin/php7.4-cli\n<?php\n"];
+        yield [false, "#!/usr/bin/php\n\n<?php\n"]; // empty line after shebang would be printed to console before PHP executes
+        yield [true, "#!/usr/bin/php8\n<?php\n"];
+        yield [true, "#!/usr/bin/env php\n<?php\n"];
+        yield [true, "#!/usr/bin/env php7.4\n<?php\n"];
+        yield [true, "#!/usr/bin/env php7.4-cli\n<?php\n"];
+        yield [false, "#!/usr/bin/env this-is\ntoo-much\n<?php\n"];
+        yield [false, "#!/usr/bin/php\nFoo bar<?php\n"];
+        yield [false, "#!/usr/bin/env php -n \nFoo bar\n<?php\n"];
         yield [false, ''];
         yield [false, ' '];
-        yield [false, "#!/usr/bin/env php\n<?php\n"];
         yield [false, " <?php\n"];
         yield [false, "<?php\n?> "];
         yield [false, "<?php\n?><?php\n"];
+        yield [false, 'Hello<?php echo "World!"; ?>'];
+        yield [false, '<?php echo "Hello"; ?> World!'];
         // short open tag
         yield [(bool) ini_get('short_open_tag'), "<?\n"];
         yield [(bool) ini_get('short_open_tag'), "<?\n?>"];
