@@ -3,6 +3,52 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.5.0
+--------------------
+
+* bug #6058 Fix `Tokens::insertSlices` not moving around all affected tokens (paulbalandan, SpacePossum)
+* bug #6160 NonPrintableCharacterFixer - fix for when removing non-printable character break PHP syntax (kubawerlos)
+* bug #6165 DeclareEqualNormalizeFixer - fix for declare having multiple directives (kubawerlos)
+* bug #6170 NonPrintableCharacterFixer - fix for string in single quotes, having non-breaking space, linebreak, and single quote inside (kubawerlos)
+* bug #6181 UseTransformer - Trait import in enum fix (PHP8.1) (SpacePossum)
+* bug #6188 PhpdocTo(Param|Property|Return)TypeFixer - fix for type intersections (kubawerlos)
+* bug #6202 SquareBraceTransformer - fix for destructing square brace after double arrow (kubawerlos)
+* bug #6209 OrderedClassElementsFixer - PHP8.0 support abstract private methods in traits (SpacePossum)
+* bug #6224 ArgumentsAnalyzer - support PHP8.1 readonly (SpacePossum)
+* feature #4571 BlankLineBeforeStatementFixer - can now add blank lines before doc-comments (addiks, SpacePossum)
+* feature #5953 GetClassToClassKeywordFixer - introduction (paulbalandan)
+* minor #6108 Drop support for Symfony v4 (keradus)
+* minor #6163 CI: update used PHP version (keradus)
+* minor #6167 SingleSpaceAfterConstructFixer - allow multiline const (y_ahiru, SpacePossum)
+* minor #6168 indexes -> indices (SpacePossum)
+* minor #6171 Fix tests and CS (SpacePossum)
+* minor #6172 DX: Tokens::insertSlices - groom code and fix tests (keradus)
+* minor #6174 PhpdocAlignFixer: fix property-read/property-write descriptions not getting aligned (antichris)
+* minor #6177 DX: chmod +x for benchmark.sh file (keradus)
+* minor #6180 gitlab reporter - add fixed severity to match format (cbourreau)
+* minor #6183 Simplify DiffConsoleFormatter (kubawerlos)
+* minor #6184 Do not support array of patterns in Preg methods (kubawerlos)
+* minor #6185 Upgrade PHPStan (kubawerlos)
+* minor #6189 Finder - fix usage of ignoreDotFiles (kubawerlos)
+* minor #6190 DX: DiffConsoleFormatter - escape - (keradus)
+* minor #6194 Update Docker setup (julienfalque)
+* minor #6196 clean ups (SpacePossum)
+* minor #6198 DX: format dot files (kubawerlos)
+* minor #6200 DX: Composer's branch-alias leftovers cleanup (kubawerlos)
+* minor #6203 Bump required PHP to 7.4 (keradus)
+* minor #6205 DX: bump PHPUnit to v9, PHPUnit bridge to v6 and Prophecy-PHPUnit to v2 (keradus)
+* minor #6210 NullableTypeDeclarationForDefaultNullValueFixer - fix tests (HypeMC)
+* minor #6212 bump year 2021 -> 2022 (SpacePossum)
+* minor #6215 DX: Doctrine\Annotation\Tokens - fix phpstan violations (keradus)
+* minor #6216 DX: Doctrine\Annotation\Tokens - drop unused methods (keradus)
+* minor #6217 DX: lock SCA tools for PR builds (keradus)
+* minor #6218 Use composer/xdebug-handler v3 (gharlan)
+* minor #6222 Show runtime on version command (SpacePossum)
+* minor #6229 Simplify Tokens::isMonolithicPhp tests (kubawerlos)
+* minor #6232 Use expectNotToPerformAssertions where applicable (SpacePossum)
+* minor #6233 Update Tokens::isMonolithicPhp (kubawerlos)
+* minor #6236 Annotation - improve getting variable name (kubawerlos)
+
 Changelog for v3.4.0
 --------------------
 
