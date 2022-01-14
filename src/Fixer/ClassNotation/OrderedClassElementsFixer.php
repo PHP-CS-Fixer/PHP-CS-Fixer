@@ -89,6 +89,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     private static $specialTypes = [
         'construct' => null,
         'destruct' => null,
+        'invoke' => null,
         'magic' => null,
         'phpunit' => null,
     ];
@@ -356,7 +357,7 @@ class Example
 
                 if ('property' === $element['type']) {
                     $element['name'] = $tokens[$i]->getContent();
-                } elseif (\in_array($element['type'], ['use_trait', 'constant', 'method', 'magic', 'construct', 'destruct'], true)) {
+                } elseif (\in_array($element['type'], ['use_trait', 'constant', 'method', 'magic', 'construct', 'destruct', 'invoke'], true)) {
                     $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
@@ -397,6 +398,10 @@ class Example
 
         if ($nameToken->equals([T_STRING, '__destruct'], false)) {
             return 'destruct';
+        }
+
+        if ($nameToken->equals([T_STRING, '__invoke'], false)) {
+            return 'invoke';
         }
 
         if (

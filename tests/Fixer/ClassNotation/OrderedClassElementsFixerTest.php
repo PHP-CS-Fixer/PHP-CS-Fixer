@@ -537,6 +537,7 @@ EOT
                     'property_public',
                     'property_protected',
                     'property_private',
+                    'invoke',
                     'construct',
                     'destruct',
                     'magic',
@@ -565,6 +566,7 @@ class Foo
     public $pubProp3;
     protected $protProp;
     private $privProp;
+    public function __invoke() {}
     protected function __construct() {}
     public function __destruct() {}
     public function __toString() {}
@@ -612,6 +614,7 @@ class Foo
     public static function pubStatFunc3() {}
     public $pubProp3;
     protected static function protStatFunc() {}
+    public function __invoke() {}
 }
 EOT
                 ,
