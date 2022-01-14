@@ -305,6 +305,10 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
                 '<?php /** @param \Foo|Bar */',
             ],
             [
+                '<?php /** @param Bar&\Foo */',
+                '<?php /** @param \Foo&Bar */',
+            ],
+            [
                 '<?php /** @property-read \Bar|Foo */',
                 '<?php /** @property-read Foo|\Bar */',
             ],
