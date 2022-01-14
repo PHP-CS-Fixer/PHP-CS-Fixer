@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixer: phpdoc_types_order
+--RULESET--
+{
+    "phpdoc_types_order": {
+        "null_adjustment": "always_last",
+        "sort_algorithm": "alpha"
+    }
+}
+--EXPECT--
+<?php
+
+/** @var Foo & Bar */
+$intersection;
+--INPUT--
+<?php
+
+/** @var Foo & Bar */
+$intersection;
