@@ -55,8 +55,11 @@ final class PharTest extends AbstractSmokeTest
 
     public function testVersion(): void
     {
+        /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
+        $shouldExpectCodename = Application::VERSION_CODENAME ? 1 : 0;
+
         static::assertMatchesRegularExpression(
-            sprintf("/^.* %s(?: %s)? by .*\nPHP runtime: \\d\\.\\d+\\..*\$/", Application::VERSION, Application::VERSION_CODENAME),
+            sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
             self::executePharCommand('--version')->getOutput()
         );
     }
