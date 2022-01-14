@@ -575,24 +575,6 @@ echo 1;',
                     'header' => 'tmp',
                     'location' => 'after_open',
                 ],
-                'File with anything at the beginning, but only single opening tag are supported
-<?php
-
-/*
- * tmp
- */
-
-echo 1;',
-                'File with anything at the beginning, but only single opening tag are supported
-<?php
-
-echo 1;',
-            ],
-            [
-                [
-                    'header' => 'tmp',
-                    'location' => 'after_open',
-                ],
                 'Short mixed file A
 Hello<?php echo "World!"; ?>',
             ],

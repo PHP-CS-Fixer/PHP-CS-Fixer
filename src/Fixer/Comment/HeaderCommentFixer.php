@@ -118,7 +118,7 @@ echo 1;
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return 1 === $tokens->countTokenKind(T_OPEN_TAG);
+        return $tokens->isMonolithicPhp();
     }
 
     /**
@@ -279,6 +279,10 @@ echo 1;
     private function findHeaderCommentInsertionIndex(Tokens $tokens, string $location): int
     {
         $openTagIndex = $tokens[0]->isGivenKind(T_OPEN_TAG) ? 0 : $tokens->getNextTokenOfKind(0, [[T_OPEN_TAG]]);
+
+        if (null === $openTagIndex) {
+            return 1;
+        }
 
         if ('after_open' === $location) {
             return $openTagIndex + 1;
