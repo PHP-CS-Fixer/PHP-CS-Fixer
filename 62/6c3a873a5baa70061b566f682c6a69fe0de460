@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-15T18:48:32Z
+
+[![Coverage Status](https://coveralls.io/builds/45354670/badge)](https://coveralls.io/builds/45354670)
+
+Coverage remained the same at 93.027% when pulling **08b6194fadcaa1f2649399796a151fe499a9d4d8 on keradus:sf4** into **efeab760998cf8ddb44c0e4c87f9bdd385bff64f on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-11-18T18:47:45Z
+
+Do we have an idea how many users are "stuck" on SF4 that (still) use the tool as a direct (dev) dependency in their composer.json?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-11-19T08:04:02Z
+
+very good question, @SpacePossum .
+I already run "experimental" releases (published together) to collect the numbers
+```
+3.3.0 - regular release
+3.3.1 - PHP 7.2 required
+3.3.2 - PHP 7.2 required + Symfony 5 required
+```
+
+[so far...](https://packagist.org/packages/friendsofphp/php-cs-fixer/stats#v3.3.0)
+```
+3.3.0 -   65 installations
+3.3.1 -  140 installations
+3.3.2 - 2300 installations
+```
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-12-05T01:29:07Z
+
+I'm not sure dropping this adds much value. We don't have any 4.x specific work arounds in the codebase?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-11T16:39:53Z
+
+during the last call, we decided to not include it in newest release that is adding support for PHP 8.1.
+I would like to include it in next release.
+
+---------------------------------------------------------------------------
+
+by 94noni at 2021-12-23T12:59:49Z
+
+Hi, Symfony v4.4 is an LTS and will be [supported](https://symfony.com/releases/4.4) until EO 2022 (2023)
+Will this be released for a csfixer v4? or v3.x? thank you
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-12-23T14:00:44Z
+
+v3
