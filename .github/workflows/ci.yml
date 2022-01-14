@@ -17,8 +17,6 @@ jobs:
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
-            job-description: 'with Sf ^4'
-            execute-flex-with-symfony-version: '^4' # Explicit check for Sf 4.x compatibility
 
           - operating-system: 'ubuntu-20.04'
             php-version: '7.4'
