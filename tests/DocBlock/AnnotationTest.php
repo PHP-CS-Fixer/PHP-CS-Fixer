@@ -503,7 +503,7 @@ final class AnnotationTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('This tag does not support types');
 
-        $tag = new Annotation([new Line(' * @deprecated since 1.2')]);
+        $tag = new Annotation([new Line(' * @deprecated since Symfony 1.2')]);
 
         $tag->getTypes();
     }
@@ -529,14 +529,13 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @param Line[]                 $lines
      * @param NamespaceUseAnalysis[] $namespaceUses
      *
      * @dataProvider provideTypeExpressionCases
      */
-    public function testGetTypeExpression(array $lines, ?NamespaceAnalysis $namespace, array $namespaceUses, ?string $expectedCommonType): void
+    public function testGetTypeExpression(string $line, ?NamespaceAnalysis $namespace, array $namespaceUses, ?string $expectedCommonType): void
     {
-        $annotation = new Annotation($lines, $namespace, $namespaceUses);
+        $annotation = new Annotation([new Line($line)], $namespace, $namespaceUses);
         $result = $annotation->getTypeExpression();
 
         static::assertSame($expectedCommonType, $result->getCommonType());
@@ -547,31 +546,39 @@ final class AnnotationTest extends TestCase
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
 
-        yield [[new Line('* @param array|Traversable $foo')], null, [], 'iterable'];
-        yield [[new Line('* @param array|Traversable $foo')], $appNamespace, [], null];
-        yield [[new Line('* @param array|Traversable $foo')], $appNamespace, [$useTraversable], 'iterable'];
+        yield ['* @param array|Traversable $foo', null, [], 'iterable'];
+        yield ['* @param array|Traversable $foo', $appNamespace, [], null];
+        yield ['* @param array|Traversable $foo', $appNamespace, [$useTraversable], 'iterable'];
     }
 
     /**
-     * @param Line[] $lines
-     *
      * @dataProvider provideGetVariableCases
      */
-    public function testGetVariableName(array $lines, ?string $expectedVariableName): void
+    public function testGetVariableName(string $line, ?string $expectedVariableName): void
     {
-        $annotation = new Annotation($lines);
+        $annotation = new Annotation([new Line($line)]);
         static::assertSame($expectedVariableName, $annotation->getVariableName());
     }
 
     public function provideGetVariableCases(): \Generator
     {
-        yield [[new Line('* @param int $foo')], '$foo'];
-        yield [[new Line('* @param int $foo some description')], '$foo'];
-        yield [[new Line('/** @param int $foo*/')], '$foo'];
-        yield [[new Line('* @param int')], null];
-        yield [[new Line('* @var int $foo')], '$foo'];
-        yield [[new Line('* @var int $foo some description')], '$foo'];
-        yield [[new Line('/** @var int $foo*/')], '$foo'];
-        yield [[new Line('* @var int')], null];
+        yield ['* @param int $foo', '$foo'];
+        yield ['* @param int $foo some description', '$foo'];
+        yield ['/** @param int $foo*/', '$foo'];
+        yield ['* @param int', null];
+        yield ['* @var int $foo', '$foo'];
+        yield ['* @var int $foo some description', '$foo'];
+        yield ['/** @var int $foo*/', '$foo'];
+        yield ['* @var int', null];
+        yield ['* @param $foo', '$foo'];
+        yield ['* @param &$foo', '$foo'];
+        yield ['* @param & $foo', '$foo'];
+        yield ['* @param int &$foo', '$foo'];
+        yield ['* @param int & $foo', '$foo'];
+        yield ['* @param int ...$foo', '$foo'];
+        yield ['* @param int ... $foo', '$foo'];
+        yield ['* @param int &...$foo', '$foo'];
+        yield ['* @param int & ...$foo', '$foo'];
+        yield ['* @param int & ... $foo', '$foo'];
     }
 }
