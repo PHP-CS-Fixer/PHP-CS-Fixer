@@ -495,6 +495,13 @@ final class AnnotationTest extends TestCase
             [['null', 'string'], '* @param StRiNg|NuLl $foo'],
             [['void'], '* @return Void'],
             [['bar', 'baz', 'foo', 'null', 'qux'], '* @return Foo|Bar|Baz|Qux|null'],
+            [['bool', 'int'], '* @param bool|int $foo'],
+            [['bool', 'int'], '* @param bool|int ...$foo'],
+            [['bool', 'int'], '* @param bool|int &$foo'],
+            [['bool', 'int'], '* @param bool|int &...$foo'],
+            [['bool', 'int'], '* @param bool|int&$foo'],
+            [['bool', 'int'], '* @param bool|int&...$foo'],
+            [['bar', 'baz', 'foo'], '* @param Foo|Bar&Baz&$param'],
         ];
     }
 
@@ -577,6 +584,7 @@ final class AnnotationTest extends TestCase
         yield ['* @param int & $foo', '$foo'];
         yield ['* @param int ...$foo', '$foo'];
         yield ['* @param int ... $foo', '$foo'];
+        yield ['* @param int&...$foo', '$foo'];
         yield ['* @param int &...$foo', '$foo'];
         yield ['* @param int & ...$foo', '$foo'];
         yield ['* @param int & ... $foo', '$foo'];
