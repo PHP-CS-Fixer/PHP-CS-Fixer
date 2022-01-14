@@ -208,7 +208,7 @@ final class Annotation
     {
         $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
 
-        $this->lines[0]->setContent(Preg::replace($pattern, implode('|', $types), $this->lines[0]->getContent(), 1));
+        $this->lines[0]->setContent(Preg::replace($pattern, implode($this->getTypeExpression()->getTypesGlue(), $types), $this->lines[0]->getContent(), 1));
 
         $this->clearCache();
     }

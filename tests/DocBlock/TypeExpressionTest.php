@@ -87,6 +87,22 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
+     * @dataProvider provideGetTypesGlueCases
+     */
+    public function testGetTypesGlue(string $expectedTypesGlue, string $typesExpression): void
+    {
+        $expression = new TypeExpression($typesExpression, null, []);
+        static::assertSame($expectedTypesGlue, $expression->getTypesGlue());
+    }
+
+    public static function provideGetTypesGlueCases(): iterable
+    {
+        yield ['|', 'string']; // for backward behaviour
+        yield ['|', 'bool|string'];
+        yield ['&', 'Foo&Bar'];
+    }
+
+    /**
      * @param NamespaceUseAnalysis[] $namespaceUses
      *
      * @dataProvider provideCommonTypeCases
@@ -181,20 +197,20 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideSortUnionTypesCases
+     * @dataProvider provideSortTypesCases
      */
-    public function testSortUnionTypes(string $typesExpression, string $expectResult): void
+    public function testSortTypes(string $typesExpression, string $expectResult): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
 
-        $expression->sortUnionTypes(static function (TypeExpression $a, TypeExpression $b): int {
+        $expression->sortTypes(static function (TypeExpression $a, TypeExpression $b): int {
             return strcasecmp($a->toString(), $b->toString());
         });
 
         static::assertSame($expectResult, $expression->toString());
     }
 
-    public function provideSortUnionTypesCases(): iterable
+    public function provideSortTypesCases(): iterable
     {
         yield 'not a union type' => [
             'int',
@@ -263,6 +279,14 @@ final class TypeExpressionTest extends TestCase
         yield 'nullable array shape' => [
             '?array{0: Foo|Bar}',
             '?array{0: Bar|Foo}',
+        ];
+        yield 'simple types alternation' => [
+            'array<Foo&Bar>',
+            'array<Bar&Foo>',
+        ];
+        yield 'nesty stuff' => [
+            'array<Level11&array<Level2|array<Level31&Level32>>>',
+            'array<array<array<Level31&Level32>|Level2>&Level11>',
         ];
     }
 }
