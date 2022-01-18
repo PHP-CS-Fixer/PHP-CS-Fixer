@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-14T01:16:11Z
+
+[![Coverage Status](https://coveralls.io/builds/45713349/badge)](https://coveralls.io/builds/45713349)
+
+Coverage increased (+0.0004%) to 93.149% when pulling **74a4108f65dfb33c0f696d222de61c258f67d4dc on keradus:app_ver** into **333f15e07c866e33e2765e84ba1e0b88e6a3af3b on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-01-14T08:13:24Z
+
+looks good, but the smoke test need updating as well now ; )
