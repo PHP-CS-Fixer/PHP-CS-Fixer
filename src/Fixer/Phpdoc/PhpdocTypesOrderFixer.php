@@ -142,7 +142,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 $types = $annotation->getTypes();
 
                 // fix main types
-                $annotation->setTypes($this->sortTypes($types));
+                $annotation->setTypes($this->sortTypes($types), str_contains($annotation->getContent(), '&') ? '&' : '|');
 
                 // fix @method parameters types
                 $line = $doc->getLine($annotation->getStart());

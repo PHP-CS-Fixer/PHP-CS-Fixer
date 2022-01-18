@@ -204,11 +204,11 @@ final class Annotation
      *
      * @param string[] $types
      */
-    public function setTypes(array $types): void
+    public function setTypes(array $types, string $unionType = '|'): void
     {
         $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
 
-        $this->lines[0]->setContent(Preg::replace($pattern, implode('|', $types), $this->lines[0]->getContent(), 1));
+        $this->lines[0]->setContent(Preg::replace($pattern, implode($unionType, $types), $this->lines[0]->getContent(), 1));
 
         $this->clearCache();
     }

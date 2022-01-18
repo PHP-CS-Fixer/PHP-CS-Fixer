@@ -159,6 +159,9 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
             ],
+            [
+                '<?php /** @return ContainerInterface&SymfonyContainerInterface */',
+            ],
         ];
     }
 
