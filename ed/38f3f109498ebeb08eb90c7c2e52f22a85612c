@@ -1,0 +1,47 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-10-09T10:41:07Z
+
+[![Coverage Status](https://coveralls.io/builds/45656463/badge)](https://coveralls.io/builds/45656463)
+
+Coverage increased (+0.02%) to 93.17% when pulling **0c76fe5ccef30c18f4b2b6659bcfbad02a8f230c on julienfalque:phpdoc-order-type-nested** into **333f15e07c866e33e2765e84ba1e0b88e6a3af3b on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by drupol at 2021-11-21T19:35:02Z
+
+I tested this branch on a project and I can't wait for this to be merged.
+
+What's left to do ? I might dedicate some time to get this in asap! Thanks
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-11-22T12:37:05Z
+
+Maybe more review would be nice to be more confident this won't break things, any help is welcome :)
+
+@keradus did you review this fully?
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-13T11:50:02Z
+
+unfortunately not at all, was focusing on PHP8.1/Symfony6 reviews. maybe someone else can review this PR?
+
+---------------------------------------------------------------------------
+
+by julienfalque at 2021-12-13T13:53:11Z
+
+@kubawerlos already did. Given that several people reported the changes in this PR fixed the issue for them, I consider this can be merged.
+
+---------------------------------------------------------------------------
+
+by mollierobbert at 2022-01-10T14:22:06Z
+
+Please do merge it! :-) Our team is waiting for this change as well.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-01-12T09:37:31Z
+
+@julienfalque please resolve the conflict, squash and than tag this PR RTM when the tests are green, thanks :+1:  : )
