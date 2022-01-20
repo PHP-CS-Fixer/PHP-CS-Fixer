@@ -1496,6 +1496,104 @@ final class Bar{}
  */
 class Foo {
 }', ],
+            'remove when used with reference' => [
+                '<?php class Foo {
+                    /**
+                     */
+                     function f1(string &$x) {}
+                    /**
+                     */
+                     function f2(string &$x) {}
+                    /**
+                     */
+                     function f3(string &$x) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string $x
+                     */
+                     function f1(string &$x) {}
+                    /**
+                     * @param string &$x
+                     */
+                     function f2(string &$x) {}
+                    /**
+                     * @param string $y Description
+                     */
+                     function f3(string &$x) {}
+                }',
+            ],
+            'dont remove when used with reference' => [
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x Description
+                     */
+                     function f(string ...$x) {}
+                }',
+            ],
+            'remove when used with splat operator' => [
+                '<?php class Foo {
+                    /**
+                     */
+                     function f1(string ...$x) {}
+                    /**
+                     */
+                     function f2(string ...$x) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x
+                     */
+                     function f1(string ...$x) {}
+                    /**
+                     * @param string ...$y Description
+                     */
+                     function f2(string ...$x) {}
+                }',
+            ],
+            'dont remove when used with splat operator' => [
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x Description
+                     */
+                     function f(string ...$x) {}
+                }',
+            ],
+            'remove when used with reference and splat operator' => [
+                '<?php class Foo {
+                    /**
+                     */
+                     function f1(string &...$x) {}
+                    /**
+                     */
+                     function f2(string &...$x) {}
+                    /**
+                     */
+                     function f3(string &...$x) {}
+                }',
+                '<?php class Foo {
+                    /**
+                     * @param string ...$x
+                     */
+                     function f1(string &...$x) {}
+                    /**
+                     * @param string &...$x
+                     */
+                     function f2(string &...$x) {}
+                    /**
+                     * @param string ...$y Description
+                     */
+                     function f3(string &...$x) {}
+                }',
+            ],
+            'dont remove when used with reference and splat operator' => [
+                '<?php class Foo {
+                    /**
+                     * @param string &...$x Description
+                     */
+                     function f(string &...$x) {}
+                }',
+            ],
         ];
     }
 
