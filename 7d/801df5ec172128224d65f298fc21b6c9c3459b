@@ -1,0 +1,96 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-12-20T13:52:53Z
+
+[![Coverage Status](https://coveralls.io/builds/45644312/badge)](https://coveralls.io/builds/45644312)
+
+Coverage increased (+0.001%) to 93.15% when pulling **6af55edfa55af8e924c76a79e320d65315e3e71f on werlos:HeaderCommentFixer_support_non_monolitic_files** into **333f15e07c866e33e2765e84ba1e0b88e6a3af3b on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by keradus at 2021-12-29T12:41:32Z
+
+@kubawerlos , do I understand right that you don't want to support all non-monolithic files, but support monolithic scripts that are having a shebang?
+
+---------------------------------------------------------------------------
+
+by kubawerlos at 2022-01-03T21:14:24Z
+
+> @kubawerlos , do I understand right that you don't want to support all non-monolithic files, but support monolithic scripts that are having a shebang?
+
+@keradus well I might named the PR wrong, I meant to support what is changed in `isCandidate` here:
+```php
+1 === $tokens->countTokenKind(T_OPEN_TAG);
+```
+
+and actually it could be exactly what `Tokens::isMonolithicPhp` is checking, which would mean removing this: `$tokens[0]->isGivenKind(T_OPEN_TAG)` part - that way with this PR all monolithic files would be supported, inclduding "monolithic scripts that are having a shebang".
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-01-04T08:57:35Z
+
+let's change the name of PR then, as we are still not supporting all non-monolithic files (and we shouldn't)
+
+Why not changing the implementation of `isMonolithic` then, instead of changing `isCandidate` of single rule?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-01-05T17:37:47Z
+
+In theory, a file like the following is not monolithic:
+
+```php
+some leading text that is echo'd and not a hash/shebang
+
+<?php   // single PHP open tag
+echo 123;
+```
+
+as such keeping the method to detect it stating it is not monolithic seems good to me.
+For the header fixer to start fixing files like that is good to me (might be a nice test to add),
+even though the intended candidate would be like:
+```php
+#!/usr/bin/env php
+<?php
+
+echo 1;
+```
+
+I think it was HHVM that would tokenize a hashbang to a different type than an T_INLINE_HTML, but PHP doesn't.
+
+Since for us here we only care about this for the header fixer I'm +1 as PHP templates are rare and templates not starting an open tag even more rare.
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-01-10T14:21:38Z
+
+I believe we should:
+
+*fix regular files*
+```
+<?php
+
+echo 1;
+```
+
+*fix scripts with shebang*:
+```php
+#!/usr/bin/env php
+<?php
+
+echo 1;
+```
+
+*NOT fix non-monolithic and non-script files, eg*
+```php
+foo bar
+<?PHP
+echo "baz"
+```
+
+```php
+<?PHP
+echo "foo bar"
+?>
+baz
+```
