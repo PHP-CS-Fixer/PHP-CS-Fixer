@@ -154,7 +154,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 while ($interfaceTokens->offsetExists($actualInterfaceIndex)) {
                     $token = $interfaceTokens[$actualInterfaceIndex];
 
-                    if (null === $token || $token->isComment() || $token->isWhitespace()) {
+                    if ($token->isComment() || $token->isWhitespace()) {
                         break;
                     }
 
