@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-05T12:52:41Z
+
+[![Coverage Status](https://coveralls.io/builds/45851508/badge)](https://coveralls.io/builds/45851508)
+
+Coverage decreased (-0.0008%) to 93.17% when pulling **a81adf56bafa38f7a0058a6360c86dbb229949bf on SpacePossum:master_4726** into **5a463a5e25231bac1e3b9ac1e772dfc7b4d62f47 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-01-05T12:59:05Z
+
+note to self; make coverage report of the fixer to see if all paths are covered
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-01-22T15:41:58Z
+
+nice edge-case, thanks :+1:  , patched
