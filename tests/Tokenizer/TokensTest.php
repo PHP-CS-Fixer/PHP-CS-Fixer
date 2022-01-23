@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -1529,6 +1530,71 @@ EOF
             Tokens::fromCode("<?php\n/* line 1 */\n/* line 2 */\n/* line 3 */"),
             [1 => $sets[0]['tokens'], 3 => $sets[1]['tokens'], 5 => $sets[2]['tokens'], 6 => $sets[3]['tokens']],
         ];
+    }
+
+    public function testBlockEdgeCachingOffsetSet(): void
+    {
+        $tokens = $this->getBlockEdgeCachingTestTokens();
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->offsetSet(5, new Token('('));
+        $tokens->offsetSet(9, new Token('('));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid param $startIndex - not a proper block "start".');
+
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+    }
+
+    public function testBlockEdgeCachingClearAt(): void
+    {
+        $tokens = $this->getBlockEdgeCachingTestTokens();
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->clearAt(7); // note: offsetUnset doesn't work here
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->clearEmptyTokens();
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(8, $endIndex);
+    }
+
+    public function testBlockEdgeCachingInsertSlices(): void
+    {
+        $tokens = $this->getBlockEdgeCachingTestTokens();
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(9, $endIndex);
+
+        $tokens->insertSlices([6 => [new Token([T_COMMENT, '/* A */'])], new Token([T_COMMENT, '/* B */'])]);
+
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        static::assertSame(11, $endIndex);
+    }
+
+    private function getBlockEdgeCachingTestTokens(): Tokens
+    {
+        Tokens::clearCache();
+
+        return Tokens::fromArray([
+            new Token([T_OPEN_TAG, '<?php ']),
+            new Token([T_VARIABLE, '$a']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token('='),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([T_COMMENT, '/* foo */']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token(';'),
+            new Token([T_WHITESPACE, "\n"]),
+        ]);
     }
 
     private static function assertFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
