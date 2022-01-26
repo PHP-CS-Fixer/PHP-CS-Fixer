@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 
 /**
