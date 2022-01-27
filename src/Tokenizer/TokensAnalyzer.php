@@ -300,6 +300,22 @@ final class TokensAnalyzer
     }
 
     /**
+     * Check if the function under given index is a short arrow lambda.
+     */
+    public function isShortLambda(int $index): bool
+    {
+        $isShortArrow = $this->tokens[$index]->isGivenKind(T_FN);
+        if (
+            !$isShortArrow
+            && \PHP_VERSION_ID < 70400
+        ) {
+            throw new \LogicException(sprintf('No T_FN at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
+        }
+
+        return $isShortArrow;
+    }
+
+    /**
      * Check if the T_STRING under given index is a constant invocation.
      */
     public function isConstantInvocation(int $index): bool

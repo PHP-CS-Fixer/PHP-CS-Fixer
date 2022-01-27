@@ -12,7 +12,7 @@ Configuration
 
 Spacing to use before open parenthesis for closures.
 
-Allowed values: ``'none'``, ``'one'``
+Allowed values: ``'none'``, ``'none_short_arrow_only'``, ``'one'``
 
 Default value: ``'one'``
 
@@ -70,6 +70,21 @@ With configuration: ``['closure_function_spacing' => 'none']``.
     <?php
    -$f = fn () => null;
    +$f = fn() => null;
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['closure_function_spacing' => 'none_short_arrow_only']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$f = fn () => null;
+   -$f = function() {};
+   +$f = fn() => null;
+   +$f = function () {};
 
 Rule sets
 ---------

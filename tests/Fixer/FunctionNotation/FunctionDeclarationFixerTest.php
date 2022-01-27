@@ -32,12 +32,13 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
      * @var array<string,string>
      */
     private static $configurationClosureSpacingNone = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE];
+    private static $configurationClosureSpacingNoneShortArrowOnly = ['closure_function_spacing' => FunctionDeclarationFixer::SPACING_NONE_SHORT_ARROW_ONLY];
 
     public function testInvalidConfigurationClosureFunctionSpacing(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(
-            '#^\[function_declaration\] Invalid configuration: The option "closure_function_spacing" with value "neither" is invalid\. Accepted values are: "none", "one"\.$#'
+            '#^\[function_declaration\] Invalid configuration: The option "closure_function_spacing" with value "neither" is invalid\. Accepted values are: "none", "one", "none_short_arrow_only"\.$#'
         );
 
         $this->fixer->configure(['closure_function_spacing' => 'neither']);
@@ -364,6 +365,14 @@ foo#
             ['<?php use function Foo\bar; bar ( 1 );', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::$configurationClosureSpacingNone],
+
+            // ensure short_arrow_only adds space
+            // could use tests for more variations
+            [
+                '<?php $foo = function ($foo) use ($bar, $baz) {};',
+                '<?php $foo = function($foo) use($bar, $baz) {};',
+                self::$configurationClosureSpacingNoneShortArrowOnly,
+            ],
         ];
     }
 
@@ -435,6 +444,39 @@ foo#
                 '<?php $b = static fn($a) => $a;',
                 '<?php $b = static     fn ( $a )   => $a;',
                 self::$configurationClosureSpacingNone,
+            ],
+            // short arrow only tests
+            [
+                '<?php fn($i) => null;',
+                '<?php fn ($i) => null;',
+                self::$configurationClosureSpacingNoneShortArrowOnly,
+            ],
+
+            // this test ensures function () has space
+            [
+                '<?php $function = function () {};',
+                '<?php $function = function(){};',
+                self::$configurationClosureSpacingNoneShortArrowOnly,
+            ],
+            [
+                '<?php fn($a) => null;',
+                '<?php fn ($a)     => null;',
+                self::$configurationClosureSpacingNoneShortArrowOnly,
+            ],
+            [
+                '<?php $fn = fn() => null;',
+                '<?php $fn = fn()=> null;',
+                self::$configurationClosureSpacingNoneShortArrowOnly,
+            ],
+            [
+                '<?php fn&($a) => null;',
+                '<?php fn& (  $a   ) => null;',
+                self::$configurationClosureSpacingNoneShortArrowOnly,
+            ],
+            [
+                '<?php fn($i) => null;',
+                null,
+                self::$configurationClosureSpacingNoneShortArrowOnly,
             ],
         ];
     }

@@ -728,7 +728,7 @@ List of Available Rules
 
    - | ``closure_function_spacing``
      | Spacing to use before open parenthesis for closures.
-     | Allowed values: ``'none'``, ``'one'``
+     | Allowed values: ``'none'``, ``'none_short_arrow_only'``, ``'one'``
      | Default value: ``'one'``
 
 

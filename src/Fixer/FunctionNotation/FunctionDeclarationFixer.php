@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -45,7 +46,12 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
      */
     public const SPACING_ONE = 'one';
 
-    private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
+    /**
+     * @internal
+     */
+    public const SPACING_NONE_SHORT_ARROW_ONLY = 'none_short_arrow_only';
+
+    private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE, self::SPACING_NONE_SHORT_ARROW_ONLY];
 
     /**
      * @var string
@@ -97,6 +103,14 @@ $f = fn () => null;
 ',
                     new VersionSpecification(70400),
                     ['closure_function_spacing' => self::SPACING_NONE]
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+$f = fn () => null;
+$f = function() {};
+',
+                    new VersionSpecification(70400),
+                    ['closure_function_spacing' => self::SPACING_NONE_SHORT_ARROW_ONLY]
                 ),
             ]
         );
@@ -173,6 +187,7 @@ $f = fn () => null;
             // remove single-line edge whitespaces inside parameters list parentheses
             $this->fixParenthesisInnerEdge($tokens, $startParenthesisIndex, $endParenthesisIndex);
             $isLambda = $tokensAnalyzer->isLambda($index);
+            $isShortLambda = $tokensAnalyzer->isShortLambda($index);
 
             // remove whitespace before (
             // eg: `function foo () {}` => `function foo() {}`
@@ -180,11 +195,26 @@ $f = fn () => null;
                 $tokens->clearAt($startParenthesisIndex - 1);
             }
 
-            if ($isLambda && self::SPACING_NONE === $this->configuration['closure_function_spacing']) {
+            if (
+                ($isLambda && self::SPACING_NONE === $this->configuration['closure_function_spacing'])
+                || ($isShortLambda && self::SPACING_NONE_SHORT_ARROW_ONLY === $this->configuration['closure_function_spacing'])
+            ) {
+                /** @var Token $nextToken */
+                $nextToken = $tokens[$index + 1];
+
                 // optionally remove whitespace after T_FUNCTION of a closure
                 // eg: `function () {}` => `function() {}`
-                if ($tokens[$index + 1]->isWhitespace()) {
+                if ($nextToken->isWhitespace()) {
                     $tokens->clearAt($index + 1);
+                }
+
+                // if using `fn() & => null` this will ensure it converts to `fn&() => null`
+                if ('&' === $nextToken->getContent()) {
+                    /** @var Token $nextNextToken */
+                    $nextNextToken = $tokens[$index + 2];
+                    if ($nextNextToken->isWhitespace()) {
+                        $tokens->clearAt($index + 2);
+                    }
                 }
             } else {
                 // otherwise, enforce whitespace after T_FUNCTION
