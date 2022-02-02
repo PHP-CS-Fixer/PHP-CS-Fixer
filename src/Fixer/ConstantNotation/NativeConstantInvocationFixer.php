@@ -188,7 +188,7 @@ namespace {
         // 'scope' is 'namespaced' here
         /** @var NamespaceAnalysis $namespace */
         foreach (array_reverse($namespaces) as $namespace) {
-            if ('' === $namespace->getFullName()) {
+            if ($namespace->isGlobalNamespace()) {
                 continue;
             }
 

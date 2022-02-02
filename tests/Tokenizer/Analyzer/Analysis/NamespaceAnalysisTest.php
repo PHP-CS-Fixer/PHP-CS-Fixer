@@ -36,6 +36,7 @@ final class NamespaceAnalysisTest extends TestCase
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame('NamespaceName', $analysis->getShortName());
+        static::assertFalse($analysis->isGlobalNamespace());
     }
 
     public function testStartIndex(): void
@@ -60,5 +61,11 @@ final class NamespaceAnalysisTest extends TestCase
     {
         $analysis = new NamespaceAnalysis('Full\NamespaceName', 'NamespaceName', 1, 2, 1, 10);
         static::assertSame(10, $analysis->getScopeEndIndex());
+    }
+
+    public function testGlobal(): void
+    {
+        $analysis = new NamespaceAnalysis('', '', 1, 2, 1, 10);
+        static::assertTrue($analysis->isGlobalNamespace());
     }
 }

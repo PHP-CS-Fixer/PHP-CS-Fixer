@@ -100,4 +100,9 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
     {
         return $this->scopeEndIndex;
     }
+
+    public function isGlobalNamespace(): bool
+    {
+        return '' === $this->getFullName();
+    }
 }
