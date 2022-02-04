@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by drupol at 2022-01-25T11:21:41Z
+
+@SpacePossum Here you go, let me know if there is something left to do.
+
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-25T11:32:26Z
+
+[![Coverage Status](https://coveralls.io/builds/45937738/badge)](https://coveralls.io/builds/45937738)
+
+Coverage remained the same at 93.171% when pulling **16e2d22748c22acd44f5e0908469504bfcd430b3 on drupol:6179-do-not-replace-is_resource** into **b0a9fcac80336ac7c3854419d315570d72b5347b on FriendsOfPHP:master**.
