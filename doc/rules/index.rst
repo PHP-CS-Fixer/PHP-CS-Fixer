@@ -386,6 +386,9 @@ Import
 - `no_leading_import_slash <./import/no_leading_import_slash.rst>`_
 
   Remove leading slashes in ``use`` clauses.
+- `no_unneeded_import_alias <./import/no_unneeded_import_alias.rst>`_
+
+  Imports should not be aliased as the same name.
 - `no_unused_imports <./import/no_unused_imports.rst>`_
 
   Unused ``use`` statements must be removed.

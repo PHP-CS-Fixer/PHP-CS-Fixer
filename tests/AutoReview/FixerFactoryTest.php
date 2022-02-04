@@ -553,6 +553,9 @@ final class FixerFactoryTest extends TestCase
                 'return_assignment',
                 'simplified_if_return',
             ],
+            'no_unneeded_import_alias' => [
+                'no_singleline_whitespace_before_semicolons',
+            ],
             'no_unset_cast' => [
                 'binary_operator_spaces',
             ],
