@@ -4,10 +4,14 @@ Rule ``comment_to_phpdoc``
 
 Comments with annotation should be docblock when used on structural elements.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky as new docblocks might mean more, e.g. a Doctrine entity might have a
-   new column in database.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky as new docblocks might mean more, e.g. a Doctrine entity might have a new
+column in database.
 
 Configuration
 -------------

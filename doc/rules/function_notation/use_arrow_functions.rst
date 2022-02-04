@@ -4,10 +4,14 @@ Rule ``use_arrow_functions``
 
 Anonymous functions with one-liner return statement must use arrow functions.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when using ``isset()`` on outside variables that are not imported with
-   ``use ()``.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when using ``isset()`` on outside variables that are not imported with
+``use ()``.
 
 Examples
 --------

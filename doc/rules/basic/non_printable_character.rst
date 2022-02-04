@@ -5,9 +5,13 @@ Rule ``non_printable_character``
 Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible
 unicode symbols.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when strings contain intended invisible characters.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when strings contain intended invisible characters.
 
 Configuration
 -------------

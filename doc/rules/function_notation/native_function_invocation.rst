@@ -4,9 +4,13 @@ Rule ``native_function_invocation``
 
 Add leading ``\`` before function invocation to speed up resolving.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when any of the functions are overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when any of the functions are overridden.
 
 Configuration
 -------------

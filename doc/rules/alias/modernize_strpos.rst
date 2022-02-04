@@ -5,10 +5,14 @@ Rule ``modernize_strpos``
 Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if
 possible.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
-   overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky if ``strpos``, ``str_starts_with`` or ``str_contains`` functions are
+overridden.
 
 Examples
 --------

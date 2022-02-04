@@ -4,10 +4,14 @@ Rule ``set_type_to_cast``
 
 Cast shall be used, not ``settype``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the ``settype`` function is overridden or when used as the 2nd or
-   3rd expression in a ``for`` loop .
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the ``settype`` function is overridden or when used as the 2nd or 3rd
+expression in a ``for`` loop .
 
 Examples
 --------

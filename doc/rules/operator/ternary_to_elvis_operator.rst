@@ -4,9 +4,13 @@ Rule ``ternary_to_elvis_operator``
 
 Use the Elvis operator ``?:`` where possible.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when relying on functions called on both sides of the ``?`` operator.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when relying on functions called on both sides of the ``?`` operator.
 
 Examples
 --------

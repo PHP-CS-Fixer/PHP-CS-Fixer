@@ -5,9 +5,13 @@ Rule ``combine_nested_dirname``
 Replace multiple nested calls of ``dirname`` by only one call with second
 ``$level`` parameter. Requires PHP >= 7.0.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``dirname`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``dirname`` is overridden.
 
 Examples
 --------

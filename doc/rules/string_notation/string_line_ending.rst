@@ -4,10 +4,14 @@ Rule ``string_line_ending``
 
 All multi-line strings must use correct line ending.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Changing the line endings of multi-line strings might affect string
-   comparisons and outputs.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changing the line endings of multi-line strings might affect string comparisons
+and outputs.
 
 Examples
 --------

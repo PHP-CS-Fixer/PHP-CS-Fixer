@@ -10,10 +10,14 @@ Description
 The functions "array_keys", "array_search", "base64_decode", "in_array" and
 "mb_detect_encoding" should be used with $strict param.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the fixed function is overridden or if the code relies on
-   non-strict usage.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the fixed function is overridden or if the code relies on non-strict
+usage.
 
 Examples
 --------
