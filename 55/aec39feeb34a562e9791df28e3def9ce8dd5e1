@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-01-14T19:36:28Z
+
+[![Coverage Status](https://coveralls.io/builds/45807289/badge)](https://coveralls.io/builds/45807289)
+
+Coverage increased (+0.0007%) to 93.172% when pulling **0a19733dc2603059c7ec15615d5c715c1baadd4a on werlos:fix_PhpdocTypesOrderFixer** into **5a463a5e25231bac1e3b9ac1e772dfc7b4d62f47 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-01-20T09:20:56Z
+
+@kubawerlos please rebase, lets see how the changes of https://github.com/FriendsOfPHP/PHP-CS-Fixer/commit/0c76fe5ccef30c18f4b2b6659bcfbad02a8f230c effect/compliment your work here, thanks :+1:
