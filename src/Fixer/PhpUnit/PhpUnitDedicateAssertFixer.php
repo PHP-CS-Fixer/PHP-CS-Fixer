@@ -144,7 +144,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
                 'is_numeric',
                 'is_object',
                 'is_real',
-                'is_resource',
                 'is_scalar',
                 'is_string',
             ]);

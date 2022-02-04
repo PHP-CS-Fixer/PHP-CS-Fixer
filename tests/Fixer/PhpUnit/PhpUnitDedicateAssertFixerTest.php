@@ -159,7 +159,7 @@ $this->assertTrue(is_readable($a));
             ],
         ];
 
-        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'resource', 'real', 'scalar', 'string'] as $type) {
+        foreach (['array', 'bool', 'callable', 'double', 'float', 'int', 'integer', 'long', 'numeric', 'object', 'real', 'scalar', 'string'] as $type) {
             yield [
                 self::generateTest(sprintf('$this->assertInternalType(\'%s\', $a);', $type)),
                 self::generateTest(sprintf('$this->assertTrue(is_%s($a));', $type)),
@@ -306,6 +306,13 @@ $a#
 
         yield 'not in class' => [
             '<?php self::assertTrue(is_null($a));',
+        ];
+
+        // Do not replace is_resource() by assertIsResource().
+        // is_resource() also checks if the resource is open or closed,
+        // while assertIsResource() does not.
+        yield 'Do not replace is_resource' => [
+            self::generateTest('self::assertTrue(is_resource($resource));'),
         ];
     }
 
