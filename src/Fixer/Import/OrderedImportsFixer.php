@@ -200,11 +200,12 @@ use Bar;
         }
 
         $usesOrder = [];
+
         foreach ($namespacesImports as $uses) {
             $usesOrder[] = $this->getNewOrder(array_reverse($uses), $tokens);
         }
-        $usesOrder = array_replace(...$usesOrder);
 
+        $usesOrder = array_replace(...$usesOrder);
         $usesOrder = array_reverse($usesOrder, true);
         $mapStartToEnd = [];
 
@@ -227,6 +228,7 @@ use Bar;
             $declarationTokens->clearEmptyTokens();
 
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
+
             if ($use['group']) {
                 // a group import must start with `use` and cannot be part of comma separated import list
                 $prev = $tokens->getPrevMeaningfulToken($index);
@@ -348,6 +350,7 @@ use Bar;
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
             $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
+
             if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;
                 $index = $tokens->getNextNonWhitespace($startIndex);

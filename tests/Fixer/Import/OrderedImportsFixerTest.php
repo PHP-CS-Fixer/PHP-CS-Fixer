@@ -1071,6 +1071,10 @@ use function some\a\{fn_a, fn_b, fn_c,};
                 'imports_order' => [OrderedImportsFixer::IMPORT_TYPE_CLASS, OrderedImportsFixer::IMPORT_TYPE_CONST, OrderedImportsFixer::IMPORT_TYPE_FUNCTION],
             ],
         ];
+
+        yield [
+            '<?php use function U\V\W\FX  , U\V\W\FY  ;'
+        ];
     }
 
     public function testUnknownOrderTypes(): void
