@@ -411,6 +411,22 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @return array<int, callable(array<string, null|string> , DateTime): bool> */',
             ],
+            [
+                '<?php /** @return A&B&C */',
+                '<?php /** @return A&C&B */',
+            ],
+            [
+                '<?php /** @return array<A&B&C> */',
+                '<?php /** @return array<A&C&B> */',
+            ],
+            [
+                '<?php /** @return array<A&B&C>|bool|string */',
+                '<?php /** @return bool|array<A&B&C>|string */',
+            ],
+            [
+                '<?php /** @return A&B<X|Y|Z>&C&D */',
+                '<?php /** @return A&D&B<X|Y|Z>&C */',
+            ],
         ];
     }
 

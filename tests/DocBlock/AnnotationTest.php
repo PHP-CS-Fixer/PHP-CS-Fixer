@@ -473,6 +473,7 @@ final class AnnotationTest extends TestCase
             [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
             [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
             [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
+            [['Foo', 'Bar'], ['Bar', 'Foo'], ' * @param Foo&Bar $x', ' * @param Bar&Foo $x'],
         ];
     }
 
