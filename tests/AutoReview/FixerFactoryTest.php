@@ -62,7 +62,7 @@ final class FixerFactoryTest extends TestCase
                 foreach ($edges as $edge) {
                     $second = $fixers[$edge];
 
-                    static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', $fixerName, $edge));
+                    static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', $edge, $fixerName));
                 }
             }
         }
@@ -232,7 +232,7 @@ final class FixerFactoryTest extends TestCase
             ksort($fixersPhpDocIssues);
 
             foreach ($fixersPhpDocIssues as $fixerName => $issue) {
-                $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixerName, $issue);
+                $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixers[$fixerName]['short_classname'], $issue);
             }
 
             static::fail($message);
