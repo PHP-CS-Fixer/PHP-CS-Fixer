@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-04T13:41:05Z
+
+[![Coverage Status](https://coveralls.io/builds/46234379/badge)](https://coveralls.io/builds/46234379)
+
+Coverage decreased (-0.007%) to 93.165% when pulling **8ea666d457de1b689503b6d9dac2fe9e2330c4ad on SpacePossum:master_NoUnneededImportAliasFixer_intro** into **b61622c06e21123fe5f7ca59e50f7ded69b996a6 on FriendsOfPHP:master**.
