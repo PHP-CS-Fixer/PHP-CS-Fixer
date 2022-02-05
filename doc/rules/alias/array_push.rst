@@ -4,9 +4,13 @@ Rule ``array_push``
 
 Converts simple usages of ``array_push($x, $y);`` to ``$x[] = $y;``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``array_push`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``array_push`` is overridden.
 
 Examples
 --------

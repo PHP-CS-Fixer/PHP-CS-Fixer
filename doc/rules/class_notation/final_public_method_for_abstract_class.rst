@@ -10,9 +10,13 @@ Description
 Enforce API encapsulation in an inheritance architecture. If you want to
 override a method, use the Template method pattern.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when overriding ``public`` methods of ``abstract`` classes.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when overriding ``public`` methods of ``abstract`` classes.
 
 Examples
 --------

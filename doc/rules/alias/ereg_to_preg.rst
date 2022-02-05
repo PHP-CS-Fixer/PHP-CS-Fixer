@@ -4,9 +4,13 @@ Rule ``ereg_to_preg``
 
 Replace deprecated ``ereg`` regular expression functions with ``preg``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky if the ``ereg`` function is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky if the ``ereg`` function is overridden.
 
 Examples
 --------

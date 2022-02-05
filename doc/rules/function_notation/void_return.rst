@@ -5,9 +5,13 @@ Rule ``void_return``
 Add ``void`` return type to functions with missing or empty return statements,
 but priority is given to ``@return`` annotations. Requires PHP >= 7.1.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Modifies the signature of functions.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Modifies the signature of functions.
 
 Examples
 --------

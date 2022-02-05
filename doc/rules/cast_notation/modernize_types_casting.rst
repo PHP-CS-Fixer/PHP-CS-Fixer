@@ -5,10 +5,14 @@ Rule ``modernize_types_casting``
 Replaces ``intval``, ``floatval``, ``doubleval``, ``strval`` and ``boolval``
 function calls with according type casting operator.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky if any of the functions ``intval``, ``floatval``, ``doubleval``,
-   ``strval`` or ``boolval`` are overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky if any of the functions ``intval``, ``floatval``, ``doubleval``,
+``strval`` or ``boolval`` are overridden.
 
 Examples
 --------

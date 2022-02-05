@@ -4,9 +4,13 @@ Rule ``strict_comparison``
 
 Comparisons should be strict.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Changing comparisons to strict might change code behavior.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changing comparisons to strict might change code behavior.
 
 Examples
 --------

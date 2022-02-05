@@ -4,9 +4,13 @@ Rule ``is_null``
 
 Replaces ``is_null($var)`` expression with ``null === $var``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``is_null`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``is_null`` is overridden.
 
 Examples
 --------

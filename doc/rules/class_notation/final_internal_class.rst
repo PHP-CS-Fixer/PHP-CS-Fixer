@@ -4,9 +4,13 @@ Rule ``final_internal_class``
 
 Internal classes should be ``final``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Changing classes to ``final`` might cause code execution to break.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changing classes to ``final`` might cause code execution to break.
 
 Configuration
 -------------

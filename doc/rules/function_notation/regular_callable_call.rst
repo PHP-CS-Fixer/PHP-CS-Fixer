@@ -4,12 +4,16 @@ Rule ``regular_callable_call``
 
 Callables must be called without using ``call_user_func*`` when possible.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the ``call_user_func`` or ``call_user_func_array`` function is
-   overridden or when are used in constructions that should be avoided, like
-   ``call_user_func_array('foo', ['bar' => 'baz'])`` or ``call_user_func($foo,
-   $foo = 'bar')``.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the ``call_user_func`` or ``call_user_func_array`` function is
+overridden or when are used in constructions that should be avoided, like
+``call_user_func_array('foo', ['bar' => 'baz'])`` or ``call_user_func($foo, $foo
+= 'bar')``.
 
 Examples
 --------

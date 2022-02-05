@@ -4,9 +4,13 @@ Rule ``fopen_flag_order``
 
 Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``fopen`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``fopen`` is overridden.
 
 Examples
 --------

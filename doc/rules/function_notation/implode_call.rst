@@ -4,9 +4,13 @@ Rule ``implode_call``
 
 Function ``implode`` must be called with 2 arguments in the documented order.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``implode`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``implode`` is overridden.
 
 Examples
 --------
