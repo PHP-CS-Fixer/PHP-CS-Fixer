@@ -1586,6 +1586,13 @@ List of Available Rules
    Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
+-  `no_unneeded_import_alias <./rules/import/no_unneeded_import_alias.rst>`_
+
+   Imports should not be aliased as the same name.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Import\\NoUnneededImportAliasFixer <./../src/Fixer/Import/NoUnneededImportAliasFixer.php>`_
 -  `no_unreachable_default_argument_value <./rules/function_notation/no_unreachable_default_argument_value.rst>`_
 
    In function arguments there must not be arguments with default values before non-default ones.

@@ -144,7 +144,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->equals([T_AS])) {
+                if ($tokens[$j]->isGivenKind(T_AS)) {
                     $statement .= ' as ';
                     $i += 2;
                 } elseif ($tokens[$j]->isGivenKind(CT::T_FUNCTION_IMPORT)) {

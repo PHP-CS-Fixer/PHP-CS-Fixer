@@ -75,6 +75,7 @@ Rules
 - `no_unneeded_curly_braces <./../rules/control_structure/no_unneeded_curly_braces.rst>`_
   config:
   ``['namespaces' => true]``
+- `no_unneeded_import_alias <./../rules/import/no_unneeded_import_alias.rst>`_
 - `no_unset_cast <./../rules/cast_notation/no_unset_cast.rst>`_
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
