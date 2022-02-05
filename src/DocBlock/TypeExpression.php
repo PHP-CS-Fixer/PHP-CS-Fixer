@@ -449,7 +449,7 @@ final class TypeExpression
             }
         }
 
-        if (null === $this->namespace || '' === $this->namespace->getShortName()) {
+        if (null === $this->namespace || $this->namespace->isGlobalNamespace()) {
             return $type;
         }
 

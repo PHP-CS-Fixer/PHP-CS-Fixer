@@ -86,6 +86,9 @@ Basic
 Casing
 ------
 
+- `class_reference_name_casing <./casing/class_reference_name_casing.rst>`_
+
+  When referencing a class it must be written using the correct casing.
 - `constant_case <./casing/constant_case.rst>`_
 
   The PHP constants ``true``, ``false``, and ``null`` MUST be written using the correct casing.

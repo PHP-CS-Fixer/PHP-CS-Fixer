@@ -24,6 +24,7 @@ Rules
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
   ``['single_line' => true]``
+- `class_reference_name_casing <./../rules/casing/class_reference_name_casing.rst>`_
 - `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_

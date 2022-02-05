@@ -120,7 +120,7 @@ if (count($x)) {
     {
         $namespaceAnalyses = (new NamespacesAnalyzer())->getDeclarations($tokens);
 
-        if (1 !== \count($namespaceAnalyses) || '' === $namespaceAnalyses[0]->getFullName()) {
+        if (1 !== \count($namespaceAnalyses) || $namespaceAnalyses[0]->isGlobalNamespace()) {
             return;
         }
 

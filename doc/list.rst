@@ -208,6 +208,13 @@ List of Available Rules
    *warning deprecated*
 
    `Source PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
+-  `class_reference_name_casing <./rules/casing/class_reference_name_casing.rst>`_
+
+   When referencing a class it must be written using the correct casing.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Casing\\ClassReferenceNameCasingFixer <./../src/Fixer/Casing/ClassReferenceNameCasingFixer.php>`_
 -  `clean_namespace <./rules/namespace_notation/clean_namespace.rst>`_
 
    Namespace must not contain spacing, comments or PHPDoc.
