@@ -176,6 +176,11 @@ namespace Foo {
             '<?php use Exception as baR;',
             '<?php use exception as baR;',
         ];
+
+        yield [
+            '<?php try { foo(); } catch(\LogicException $e) {}',
+            '<?php try { foo(); } catch(\logicexception $e) {}',
+        ];
     }
 
     /**
@@ -197,6 +202,16 @@ namespace Foo {
             '<?php enum Foo {
                 case exception;
             }',
+        ];
+
+        yield 'multiple type catch with variable' => [
+            '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException $e) {}',
+            '<?php try { foo(); } catch(\INVALIDARGUMENTEXCEPTION|\logicexception $e) {}',
+        ];
+
+        yield 'multiple type catch without variable 3' => [
+            '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}',
+            '<?php try { foo(); } catch(\INVALIDARGUMENTEXCEPTION|\logicexception) {}',
         ];
     }
 }
