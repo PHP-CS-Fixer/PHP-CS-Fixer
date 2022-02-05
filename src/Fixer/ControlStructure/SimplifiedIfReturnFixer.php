@@ -96,10 +96,12 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
-            $ifToken = $tokens[$ifIndex];
-
-            if (!$ifToken->isGivenKind([T_IF, T_ELSEIF])) {
+            if (!$tokens[$ifIndex]->isGivenKind([T_IF, T_ELSEIF])) {
                 continue;
+            }
+
+            if ($tokens[$tokens->getPrevMeaningfulToken($ifIndex)]->equals(')')) {
+                continue; // in a loop without braces
             }
 
             $startParenthesisIndex = $tokens->getNextTokenOfKind($ifIndex, ['(']);
