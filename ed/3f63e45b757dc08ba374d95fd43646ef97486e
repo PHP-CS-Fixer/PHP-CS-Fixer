@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-04T11:03:28Z
+
+[![Coverage Status](https://coveralls.io/builds/46229956/badge)](https://coveralls.io/builds/46229956)
+
+Coverage increased (+0.0007%) to 93.172% when pulling **eac350483da59131a24184833b735a3437fb0614 on SpacePossum:master_bug_TokensAnalyzerisConstantInvocation** into **b0a9fcac80336ac7c3854419d315570d72b5347b on FriendsOfPHP:master**.
