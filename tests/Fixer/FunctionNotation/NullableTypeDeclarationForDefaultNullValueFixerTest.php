@@ -505,8 +505,12 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected): void
+    public function testFix81(string $expected, ?array $config): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected);
     }
 
@@ -521,6 +525,19 @@ class Foo
     ) {}
 }
 ',
+            null,
+        ];
+
+        yield [
+            '<?php
+
+            class Foo {
+                public function __construct(
+                   public readonly ?string $readonlyString = null,
+                   readonly public ?int $readonlyInt = null,
+                ) {}
+            }',
+            ['use_nullable_type_declaration' => false],
         ];
     }
 }
