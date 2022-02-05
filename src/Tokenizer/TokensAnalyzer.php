@@ -381,6 +381,11 @@ final class TokensAnalyzer
         }
 
         // check for non-capturing catches
+
+        while ($this->tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, T_NS_SEPARATOR, T_STRING, CT::T_TYPE_ALTERNATION])) {
+            $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
+        }
+
         if ($this->tokens[$prevIndex]->equals('(')) {
             $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
 

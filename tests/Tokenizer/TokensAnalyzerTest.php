@@ -1082,6 +1082,26 @@ abstract class Baz
             [3 => false, 5 => false, 12 => false],
             '<?php #[\A\Foo()] function foo() {}',
         ];
+
+        yield 'multiple type catch with variable' => [
+            [5 => false, 15 => false, 18 => false],
+            '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException $e) {}',
+        ];
+
+        yield 'multiple type catch without variable 1' => [
+            [5 => false, 15 => false, 18 => false],
+            '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}',
+        ];
+
+        yield 'multiple type catch without variable 2' => [
+            [5 => false, 15 => false, 17 => false, 19 => false, 21 => false, 24 => false, 27 => false],
+            '<?php try { foo(); } catch(\D|Z|A\B|\InvalidArgumentException|\LogicException) {}',
+        ];
+
+        yield 'multiple type catch without variable 3' => [
+            [5 => false, 14 => false, 16 => false, 19 => false, 22 => false],
+            '<?php try { foo(); } catch(A\B|\InvalidArgumentException|\LogicException) {}',
+        ];
     }
 
     /**
