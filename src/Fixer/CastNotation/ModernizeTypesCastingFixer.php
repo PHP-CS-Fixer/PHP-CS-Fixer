@@ -101,7 +101,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 $countParamTokens = 0;
 
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $paramContentEnd; ++$paramContentIndex) {
-                    //not a space, means some sensible token
+                    // not a space, means some sensible token
                     if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
                         ++$countParamTokens;
                     }

@@ -36,17 +36,17 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
     public function provideFixCases(): array
     {
         return [
-            //old style array
+            // old style array
             [
                 '<?php $x = array(1, "2",3);',
                 '<?php $x = array(1 , "2",3);',
             ],
-            //old style array with comments
+            // old style array with comments
             [
                 '<?php $x = array /* comment */ (1,  "2", 3);',
                 '<?php $x = array /* comment */ (1  ,  "2", 3);',
             ],
-            //old style array with comments
+            // old style array with comments
             [
                 '<?php $x = array(1#
 ,#
@@ -56,7 +56,7 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
 "2"  , 3);',
             ],
 
-            //short array
+            // short array
             [
                 '<?php $x = [1,  "2", 3,$y];',
                 '<?php $x = [1 ,  "2", 3 ,$y];',
