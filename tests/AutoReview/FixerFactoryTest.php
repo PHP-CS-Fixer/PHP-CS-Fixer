@@ -692,6 +692,7 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_to_comment' => [
                 'no_empty_comment',
                 'phpdoc_no_useless_inheritdoc',
+                'single_line_comment_spacing',
                 'single_line_comment_style',
             ],
             'phpdoc_to_param_type' => [
