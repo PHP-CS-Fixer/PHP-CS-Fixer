@@ -380,17 +380,22 @@ $c = get_class($d);
             'is_object',
             'is_real',
             'is_resource',
+            'is_scalar',
             'is_string',
             'ord',
+            'sizeof',
             'strlen',
             'strval',
             // @see https://github.com/php/php-src/blob/php-7.2.6/ext/opcache/Optimizer/pass1_5.c
+            // @see https://github.com/php/php-src/blob/PHP-8.1.2/Zend/Optimizer/block_pass.c
+            // @see https://github.com/php/php-src/blob/php-8.1.3/Zend/Optimizer/zend_optimizer.c
             'constant',
             'define',
             'dirname',
             'extension_loaded',
             'function_exists',
             'is_callable',
+            'ini_get',
         ]);
     }
 
