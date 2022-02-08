@@ -51,7 +51,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
      */
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->equals([T_NEW])) {
+        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_NEW)) {
             return;
         }
 
