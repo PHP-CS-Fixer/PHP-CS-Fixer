@@ -36,7 +36,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
      */
     public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
-        if (!ini_get('short_open_tag')) {
+        if (!\ini_get('short_open_tag')) {
             static::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
