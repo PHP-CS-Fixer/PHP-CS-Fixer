@@ -2625,6 +2625,13 @@ List of Available Rules
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+-  `single_line_comment_spacing <./rules/comment/single_line_comment_spacing.rst>`_
+
+   Single-line comments must have proper spacing.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Comment\\SingleLineCommentSpacingFixer <./../src/Fixer/Comment/SingleLineCommentSpacingFixer.php>`_
 -  `single_line_comment_style <./rules/comment/single_line_comment_style.rst>`_
 
    Single-line comments and multi-line comments with only one line of actual content should use the ``//`` syntax.

@@ -66,7 +66,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
             );
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
-                sprintf('%s Test file: "%s".', $e->getMessage(), $file->getRelativePathname()),
+                sprintf('%s Test file: "%s".', $e->getMessage(), $file->getPathname()),
                 $e->getCode(),
                 $e
             );

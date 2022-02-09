@@ -219,6 +219,9 @@ Comment
 - `no_trailing_whitespace_in_comment <./comment/no_trailing_whitespace_in_comment.rst>`_
 
   There MUST be no trailing spaces inside comment or PHPDoc.
+- `single_line_comment_spacing <./comment/single_line_comment_spacing.rst>`_
+
+  Single-line comments must have proper spacing.
 - `single_line_comment_style <./comment/single_line_comment_style.rst>`_
 
   Single-line comments and multi-line comments with only one line of actual content should use the ``//`` syntax.
