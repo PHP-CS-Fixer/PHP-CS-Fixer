@@ -56,7 +56,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
 
         $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-        if ($tokens[$prevPrevTokenIndex]->isGivenKind([T_CATCH])) {
+        if ($tokens[$prevPrevTokenIndex]->isGivenKind(T_CATCH)) {
             $this->replaceToken($tokens, $index);
 
             return;

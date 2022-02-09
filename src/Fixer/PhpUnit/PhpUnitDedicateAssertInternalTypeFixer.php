@@ -169,7 +169,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             $expectedTypeTokenIndex = $tokens->getNextMeaningfulToken($bracketTokenIndex);
             $expectedTypeToken = $tokens[$expectedTypeTokenIndex];
 
-            if (!$expectedTypeToken->equals([T_CONSTANT_ENCAPSED_STRING])) {
+            if (!$expectedTypeToken->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 

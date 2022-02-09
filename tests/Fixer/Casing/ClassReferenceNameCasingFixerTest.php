@@ -138,6 +138,10 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php $foo = ["const" => exception];',
+        ];
+
+        yield [
             '<?php
 namespace {
     $a = new Exception;
@@ -180,6 +184,23 @@ namespace Foo {
         yield [
             '<?php try { foo(); } catch(\LogicException $e) {}',
             '<?php try { foo(); } catch(\logicexception $e) {}',
+        ];
+
+        yield [
+            '<?php
+                Closure::bind(fn () => null, null, new class {});
+                \Closure::bind(fn () => null, null, new class {});
+
+                Foo\Bar::bind(fn () => null, null, new class {});
+                \A\B\\Bar::bind(fn () => null, null, new class {});
+            ',
+            '<?php
+                CLOSURE::bind(fn () => null, null, new class {});
+                \CLOSURE::bind(fn () => null, null, new class {});
+
+                Foo\Bar::bind(fn () => null, null, new class {});
+                \A\B\\Bar::bind(fn () => null, null, new class {});
+            ',
         ];
     }
 

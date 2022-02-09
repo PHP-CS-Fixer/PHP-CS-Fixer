@@ -78,6 +78,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 T_CASE, // PHP 8.1 trait enum-case
                 T_CLASS,
                 T_CONST,
+                T_DOUBLE_ARROW,
                 T_DOUBLE_COLON,
                 T_FUNCTION,
                 T_INTERFACE,
@@ -120,7 +121,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$prevIndex]->isGivenKind([T_NEW]) && $tokens[$nextIndex]->equals('(')) {
+            if (!$tokens[$prevIndex]->isGivenKind(T_NEW) && $tokens[$nextIndex]->equals('(')) {
                 continue;
             }
 
