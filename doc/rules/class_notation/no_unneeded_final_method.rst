@@ -2,8 +2,7 @@
 Rule ``no_unneeded_final_method``
 =================================
 
-A ``final`` class must not have ``final`` methods and ``private`` methods must
-not be ``final``.
+Removes ``final`` from methods where possible.
 
 Warning
 -------

@@ -58,6 +58,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                 $docCommentToken,
                 $this->configuration['ignored_tags']
             );
+
             $this->fixAnnotations($doctrineAnnotationTokens);
             $tokens[$index] = new Token([T_DOC_COMMENT, $doctrineAnnotationTokens->getCode()]);
         }
@@ -211,7 +212,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             }
         } while ($tokens[$index]->isGivenKind([T_ABSTRACT, T_FINAL]));
 
-        if ($tokens[$index]->isClassy()) {
+        if ($tokens[$index]->isGivenKind(T_CLASS)) {
             return true;
         }
 
@@ -225,6 +226,10 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
-        return isset($this->classyElements[$index]);
+        if (!isset($this->classyElements[$index])) {
+            return false;
+        }
+
+        return $tokens[$this->classyElements[$index]['classIndex']]->isGivenKind(T_CLASS); // interface, enums and traits cannot have doctrine annotations
     }
 }

@@ -110,6 +110,16 @@ final class TokenTest extends TestCase
     }
 
     /**
+     * @requires PHP 8.1
+     */
+    public function testEnumIsClassy(): void
+    {
+        $enumToken = new Token([T_ENUM, 'enum', 1]);
+
+        static::assertTrue($enumToken->isClassy());
+    }
+
+    /**
      * @dataProvider provideIsCommentCases
      */
     public function testIsComment(Token $token, bool $isComment): void
@@ -552,6 +562,15 @@ final class TokenTest extends TestCase
                 'changed' => false,
             ],
         ];
+    }
+
+    public function testGetClassyTokenKinds(): void
+    {
+        if (\defined('T_ENUM')) {
+            static::assertSame([T_CLASS, T_TRAIT, T_INTERFACE, T_ENUM], Token::getClassyTokenKinds());
+        } else {
+            static::assertSame([T_CLASS, T_TRAIT, T_INTERFACE], Token::getClassyTokenKinds());
+        }
     }
 
     private function getBraceToken(): Token

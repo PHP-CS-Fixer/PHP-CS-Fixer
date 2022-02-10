@@ -150,7 +150,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT, T_INTERFACE]);   // FIXME use Token::getClassyTokenKinds(false)
     }
 
     /**
@@ -237,7 +237,7 @@ class Example
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
-            if (!$tokens[$i]->isClassy()) {
+            if (!$tokens[$i]->isGivenKind([T_CLASS, T_TRAIT, T_INTERFACE])) { // FIXME use "isClassy"
                 continue;
             }
 

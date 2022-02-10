@@ -391,5 +391,9 @@ Class MyAnnotation3 {}'],
                 final public const Y = "i";
             }',
         ];
+
+        yield 'enum' => [
+            '<?php /* Before enum */ enum Foo {}',
+        ];
     }
 }

@@ -102,7 +102,7 @@ class Sample
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \count($tokens) > 10 && $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]);
+        return \count($tokens) > 10 && $tokens->isAllTokenKindsFound([T_DOC_COMMENT, T_FUNCTION]) && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**

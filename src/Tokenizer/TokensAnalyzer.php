@@ -653,7 +653,7 @@ final class TokensAnalyzer
                 continue;
             }
 
-            if ($token->isClassy()) { // anonymous class in class
+            if ($token->isGivenKind(T_CLASS)) { // anonymous class in class
                 // check for nested anonymous classes inside the new call of an anonymous class,
                 // for example `new class(function (){new class(function (){new class(function (){}){};}){};}){};` etc.
                 // if class(XYZ) {} skip till `(` as XYZ might contain functions etc.
@@ -686,7 +686,7 @@ final class TokensAnalyzer
                             continue;
                         }
 
-                        if ($token->isClassy()) { // anonymous class in class
+                        if ($token->isGivenKind(T_CLASS)) { // anonymous class in class
                             [$index, $newElements] = $this->findClassyElements($index, $index);
                             $elements += $newElements;
                         }
@@ -758,6 +758,12 @@ final class TokensAnalyzer
                     'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'trait_import',
+                ];
+            } elseif ($token->isGivenKind(T_CASE)) {
+                $elements[$index] = [
+                    'classIndex' => $classIndex,
+                    'token' => $token,
+                    'type' => 'case',
                 ];
             }
         }

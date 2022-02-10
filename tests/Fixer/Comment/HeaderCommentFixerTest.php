@@ -802,4 +802,38 @@ echo 1;'
             'comment_type' => HeaderCommentFixer::HEADER_PHPDOC,
         ]);
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(array $configuration, string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure($configuration);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield [
+            ['header' => 'tmp'],
+            '<?php
+
+/*
+ * tmp
+ */
+
+/**
+ * Foo class doc.
+ */
+enum Foo {}',
+            '<?php
+
+/**
+ * Foo class doc.
+ */
+enum Foo {}',
+        ];
+    }
 }

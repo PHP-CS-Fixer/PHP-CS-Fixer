@@ -873,5 +873,22 @@ class Foo
 }
 ',
         ];
+
+        yield [
+            '<?php
+enum Foo {
+    case CAT;
+    public function test(): self { return $this; }
+}
+
+var_dump(Foo::CAT->test());',
+            '<?php
+enum Foo {
+    case CAT;
+    function test(): self { return $this; }
+}
+
+var_dump(Foo::CAT->test());',
+        ];
     }
 }

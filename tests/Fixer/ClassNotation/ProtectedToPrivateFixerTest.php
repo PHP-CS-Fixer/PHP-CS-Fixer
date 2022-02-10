@@ -178,7 +178,7 @@ final class Foo2 {
             ',
         ];
 
-        yield [
+        yield 'protected final const' => [
             // '<?php final class Foo { final private const Y = "i"; }', 'Fatal error: Private constant Foo::Y cannot be final as it is not visible to other classes on line 1.
             '<?php
                 final class Foo1 { final protected const Y = "abc"; }
@@ -187,8 +187,47 @@ final class Foo2 {
         ];
 
         yield [
+            '<?php final class Foo2 { private const X = "tty"; }',
+            '<?php final class Foo2 { protected const X = "tty"; }',
+        ];
+
+        yield [
             '<?php final class Foo { private Foo1&Bar $foo; }',
             '<?php final class Foo { protected Foo1&Bar $foo; }',
+        ];
+
+        // https://wiki.php.net/rfc/enumerations
+        // Methods may be public, private, or protected, although in practice private and protected are equivalent as inheritance is not allowed.
+
+        yield 'enum' => [
+            '<?php
+enum Foo: string
+{
+    private const Spades = 123;
+
+    case Hearts = "H";
+
+    private function test() {
+        echo 123;
+    }
+}
+
+Foo::Hearts->test();
+            ',
+            '<?php
+enum Foo: string
+{
+    protected const Spades = 123;
+
+    case Hearts = "H";
+
+    protected function test() {
+        echo 123;
+    }
+}
+
+Foo::Hearts->test();
+            ',
         ];
     }
 

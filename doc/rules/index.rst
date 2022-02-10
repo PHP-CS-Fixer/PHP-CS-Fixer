@@ -144,7 +144,7 @@ Class Notation
   Class, trait and interface elements must be separated with one or none blank line.
 - `class_definition <./class_notation/class_definition.rst>`_
 
-  Whitespace around the keywords of a class, trait or interfaces definition should be one space.
+  Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
 - `final_class <./class_notation/final_class.rst>`_ *(risky)*
 
   All classes must be final, except abstract ones and Doctrine entities.
@@ -165,7 +165,7 @@ Class Notation
   Convert PHP4-style constructors to ``__construct``.
 - `no_unneeded_final_method <./class_notation/no_unneeded_final_method.rst>`_ *(risky)*
 
-  A ``final`` class must not have ``final`` methods and ``private`` methods must not be ``final``.
+  Removes ``final`` from methods where possible.
 - `ordered_class_elements <./class_notation/ordered_class_elements.rst>`_
 
   Orders the elements of classes/interfaces/traits.

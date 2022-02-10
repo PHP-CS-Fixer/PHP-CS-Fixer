@@ -1030,4 +1030,63 @@ class Bar
 }'
         );
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure([
+            'import_constants' => true,
+            'import_functions' => true,
+        ]);
+
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield 'ignore enum methods' => [
+            <<<'EXPECTED'
+<?php
+namespace Test;
+use function foo;
+enum Bar {
+    function foo() {}
+}
+foo();
+EXPECTED
+            ,
+            <<<'INPUT'
+<?php
+namespace Test;
+enum Bar {
+    function foo() {}
+}
+\foo();
+INPUT
+        ];
+
+        yield 'ignore enum constants' => [
+            <<<'EXPECTED'
+<?php
+namespace Test;
+use const FOO;
+enum Bar {
+    const FOO = 1;
+}
+echo FOO;
+EXPECTED
+            ,
+            <<<'INPUT'
+<?php
+namespace Test;
+enum Bar {
+    const FOO = 1;
+}
+echo \FOO;
+INPUT
+        ];
+    }
 }

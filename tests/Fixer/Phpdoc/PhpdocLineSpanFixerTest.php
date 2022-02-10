@@ -649,5 +649,24 @@ class Foo
 }
 ',
         ];
+
+        yield [
+            '<?php
+                enum Foo
+                {
+                    /**
+                     * @return void
+                     */
+                    public function hello() {}
+                }
+            ',
+            '<?php
+                enum Foo
+                {
+                    /** @return void */
+                    public function hello() {}
+                }
+            ',
+        ];
     }
 }

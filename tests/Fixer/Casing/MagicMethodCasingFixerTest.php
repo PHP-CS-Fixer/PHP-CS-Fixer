@@ -369,5 +369,20 @@ function __Tostring() {}',
             '<?php $a->__isset(...);',
             '<?php $a->__ISSET(...);',
         ];
+
+        yield 'enum' => [
+            '<?php
+enum Foo
+{
+    public static function __callStatic(string $method, array $parameters){ echo $method;}
+}
+Foo::test();',
+            '<?php
+enum Foo
+{
+    public static function __CALLStatic(string $method, array $parameters){ echo $method;}
+}
+Foo::test();',
+        ];
     }
 }
