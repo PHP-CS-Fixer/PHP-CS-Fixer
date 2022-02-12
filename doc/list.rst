@@ -210,7 +210,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
 -  `class_reference_name_casing <./rules/casing/class_reference_name_casing.rst>`_
 
-   When referencing a class it must be written using the correct casing.
+   When referencing an internal class it must be written using the correct casing.
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 

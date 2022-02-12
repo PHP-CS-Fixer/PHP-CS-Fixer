@@ -2,7 +2,7 @@
 Rule ``class_reference_name_casing``
 ====================================
 
-When referencing a class it must be written using the correct casing.
+When referencing an internal class it must be written using the correct casing.
 
 Examples
 --------

@@ -33,7 +33,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'When referencing a class it must be written using the correct casing.',
+            'When referencing an internal class it must be written using the correct casing.',
             [
                 new CodeSample("<?php\nthrow new \\exception();\n"),
             ]
