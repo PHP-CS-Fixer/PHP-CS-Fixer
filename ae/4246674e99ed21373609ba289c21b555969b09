@@ -1,0 +1,140 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-11-16T11:05:43Z
+
+[![Coverage Status](https://coveralls.io/builds/46350048/badge)](https://coveralls.io/builds/46350048)
+
+Coverage increased (+0.002%) to 93.141% when pulling **e35eb8b6be627804dc99c010d48227487c3f76bf on VincentLanglet:fixEqual** into **dbd830dff9c3e61d2059ee049bc968ba611012c9 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2021-12-13T11:21:32Z
+
+@SpacePossum @keradus Hi, would you have time to take a look to this fix ? Does something need to be improved ?
+Thanks :)
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2022-01-14T09:16:35Z
+
+Friendly ping @keradus @SpacePossum. Is something wrong/missing with my PR ?
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2022-02-07T23:43:32Z
+
+Friendly ping @keradus @SpacePossum ; would you mind taking a look at this bugfix ? :)
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-02-08T14:47:55Z
+
+Hi and thanks for the PR!
+
+This rule is kind of notorious complex and a good candidate for complete rewrite some day. As such, reviewing is also complex.
+
+~~The first change seems to aim to never align what is inside the `(` `)` of a function signature. This seems good to me, I think we can extend with also `fn`, for example `$fn1 = fn($x = 1) => $x + 3;`. However the need for skip is because of the second change;~~
+
+~~The second change I'm not 100% I follow, why only skip alignment in those new cases and not always in any `(` ?~~
+
+Can you update the sample to the more simple one:
+
+```php
+            [
+                '<?php
+m(
+    function ()
+    {
+        $d["a"]   = 1;
+        $d["abc"] = 2;
+    }
+);
+',
+                '<?php
+m(
+    function ()
+    {
+        $d["a"] = 1;
+        $d["abc"] = 2;
+    }
+);
+',
+            ],
+```
+
+we also need a test with `$fn1 = fn($x = 1) => $x + 3;`
+
+I need some more time to check some cases
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2022-02-08T19:08:14Z
+
+> Can you update the sample to the more simple one:
+
+Sure, done.
+
+> we also need a test with $fn1 = fn($x = 1) => $x + 3;
+
+I don't understand what should be tested.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-02-08T19:49:18Z
+
+Thanks for updating/simplify the sample, much appreciated :+1:
+
+I'm thinking along these lines,
+lets say we have
+
+```
+<?php
+
+fn ($x = 1) => $x + 3;
+$f = 123;
+```
+
+it will get fixed to:
+
+```diff
+--- test.php
++++ test.php
+@@ -13,4 +13,4 @@
+  fn ($x = 1) => $x + 3;
+-$f = 123;
++$f     = 123;
+```
+
+which I think is not correct
+
+The change to `if ($token->isGivenKind(T_FUNCTION)) {` should be extended not to just test for function signatures but also for these cases, i.e. `if ($token->isGivenKind([T_FUNCTION, T_FN])) {`
+
+---------------------------------------------------------------------------
+
+by VincentLanglet at 2022-02-08T20:35:19Z
+
+> I'm thinking along these lines, lets say we have
+>
+> ```
+> <?php
+>
+> fn ($x = 1) => $x + 3;
+> $f = 123;
+> ```
+>
+> it will get fixed to:
+>
+> ```diff
+> --- test.php
+> +++ test.php
+> @@ -13,4 +13,4 @@
+>   fn ($x = 1) => $x + 3;
+> -$f = 123;
+> +$f     = 123;
+> ```
+>
+> which I think is not correct
+>
+> The change to `if ($token->isGivenKind(T_FUNCTION)) {` should be extended not to just test for function signatures but also for these cases, i.e. `if ($token->isGivenKind([T_FUNCTION, T_FN])) {`
+
+You were right, it was fixing. I added the test and the fix.
