@@ -313,6 +313,9 @@ Function Notation
 - `combine_nested_dirname <./function_notation/combine_nested_dirname.rst>`_ *(risky)*
 
   Replace multiple nested calls of ``dirname`` by only one call with second ``$level`` parameter. Requires PHP >= 7.0.
+- `date_time_create_from_format_call <./function_notation/date_time_create_from_format_call.rst>`_
+
+  The first argument of ``DateTime::createFromFormat`` method must start with ``!``.
 - `fopen_flag_order <./function_notation/fopen_flag_order.rst>`_ *(risky)*
 
   Order the flags in ``fopen`` calls, ``b`` and ``t`` must be last.
