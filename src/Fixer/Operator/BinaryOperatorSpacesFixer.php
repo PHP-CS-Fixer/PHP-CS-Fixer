@@ -531,6 +531,11 @@ $array = [
 
     private function injectAlignmentPlaceholders(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
     {
+        $functionKind = [T_FUNCTION];
+        if (\PHP_VERSION_ID >= 70400) {
+            $functionKind[] = T_FN;
+        }
+
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
@@ -545,13 +550,16 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
+            if ($token->isGivenKind($functionKind)) {
                 ++$this->deepestLevel;
+                $index = $tokens->getNextTokenOfKind($index, ['(']);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
-            if ($token->equals('(')) {
+            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
+                $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
