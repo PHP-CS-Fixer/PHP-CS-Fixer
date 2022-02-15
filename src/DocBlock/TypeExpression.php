@@ -118,7 +118,7 @@ final class TypeExpression
     /**
      * @var list<array{start_index: int, expression: self}>
      */
-    private $innerTypeExpressions = [];
+    private array $innerTypeExpressions = [];
 
     private string $typesGlue = '|';
 

@@ -1311,7 +1311,6 @@ class TestClass
     public function %s(){}
 }';
         $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA]);
-
         $this->doTest(
             sprintf($template, $methodName2, $methodName1),
             sprintf($template, $methodName1, $methodName2)

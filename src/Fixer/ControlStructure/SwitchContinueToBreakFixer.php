@@ -27,7 +27,7 @@ final class SwitchContinueToBreakFixer extends AbstractFixer
     /**
      * @var int[]
      */
-    private $switchLevels = [];
+    private array $switchLevels = [];
 
     /**
      * {@inheritdoc}

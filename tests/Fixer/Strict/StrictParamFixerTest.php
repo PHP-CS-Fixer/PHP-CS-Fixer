@@ -176,28 +176,14 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
                 '<?php
     in_array(1, foo() /* 1 *//* 2 *//* 3 */);',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): \Generator
-    {
-        yield [
-            '<?php in_array($b, $c, true, );',
-            '<?php in_array($b, $c, );',
-        ];
-
-        yield [
-            '<?php in_array($b, $c/* 0 *//* 1 */, true,/* 2 *//* 3 */);',
-            '<?php in_array($b, $c/* 0 *//* 1 */,/* 2 *//* 3 */);',
+            [
+                '<?php in_array($b, $c, true, );',
+                '<?php in_array($b, $c, );',
+            ],
+            [
+                '<?php in_array($b, $c/* 0 *//* 1 */, true,/* 2 *//* 3 */);',
+                '<?php in_array($b, $c/* 0 *//* 1 */,/* 2 *//* 3 */);',
+            ],
         ];
     }
 }

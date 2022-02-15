@@ -110,7 +110,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var string[]
      */
-    private $functions = [];
+    private array $functions = [];
 
     /**
      * {@inheritdoc}

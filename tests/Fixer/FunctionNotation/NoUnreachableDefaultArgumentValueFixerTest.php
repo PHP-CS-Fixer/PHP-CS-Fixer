@@ -173,21 +173,6 @@ $bar) {}',
             [
                 '<?php function foo (?Foo $bar = null, ?Baz $baz = null) {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php $fn = fn ($a, $b) => null;',
                 '<?php $fn = fn ($a = 1, $b) => null;',

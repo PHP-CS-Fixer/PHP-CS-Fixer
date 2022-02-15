@@ -88,7 +88,7 @@ SAMPLE
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70300 && $tokens->isTokenKindFound(T_START_HEREDOC);
+        return $tokens->isTokenKindFound(T_START_HEREDOC);
     }
 
     /**

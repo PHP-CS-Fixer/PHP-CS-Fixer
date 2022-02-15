@@ -45,10 +45,8 @@ final class Token
 
     /**
      * Flag is token was changed.
-     *
-     * @var bool
      */
-    private $changed = false;
+    private bool $changed = false;
 
     /**
      * @param array|string $token token prototype

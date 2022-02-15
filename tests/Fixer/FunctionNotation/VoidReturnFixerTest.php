@@ -213,21 +213,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                     abstract protected function foo($param);
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             [
                 '<?php fn($a) => null;',
             ],

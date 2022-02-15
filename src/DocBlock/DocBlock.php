@@ -32,7 +32,7 @@ final class DocBlock
      *
      * @var Line[]
      */
-    private $lines = [];
+    private array $lines = [];
 
     /**
      * The array of annotations.

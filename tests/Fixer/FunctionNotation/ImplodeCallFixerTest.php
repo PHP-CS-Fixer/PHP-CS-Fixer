@@ -144,19 +144,7 @@ implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
 implode($a);implode($a);implode($a);implode($a);implode($a);implode($a);
 ',
         ];
-    }
 
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): \Generator
-    {
         yield [
             '<?php implode("", $foo, );',
             '<?php implode($foo, "", );',

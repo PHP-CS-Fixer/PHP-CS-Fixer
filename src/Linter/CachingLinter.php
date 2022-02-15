@@ -29,7 +29,7 @@ final class CachingLinter implements LinterInterface
     /**
      * @var array<int, LintingResultInterface>
      */
-    private $cache = [];
+    private array $cache = [];
 
     public function __construct(LinterInterface $linter)
     {

@@ -62,11 +62,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             return false;
         }
 
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
-            return true;
-        }
-
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
     /**
@@ -98,11 +94,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
-        $tokenKinds = [T_FUNCTION];
-
-        if (\PHP_VERSION_ID >= 70400) {
-            $tokenKinds[] = T_FN;
-        }
+        $tokenKinds = [T_FUNCTION, T_FN];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];

@@ -64,27 +64,6 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     $c = 1 ?: [];
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideProcess74Cases
-     * @requires PHP 7.4
-     */
-    public function testProcess74(string $source, array $expectedTokens = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
-    }
-
-    public function provideProcess74Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { private ?string $foo; }',
                 [

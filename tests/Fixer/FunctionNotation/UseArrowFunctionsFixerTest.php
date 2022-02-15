@@ -26,16 +26,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP <7.4
-     */
-    public function testDoNotFix(): void
-    {
-        $this->doTest('<?php foo(function () { return 1; });');
-    }
-
-    /**
      * @dataProvider provideFixCases
-     * @requires PHP 7.4
      */
     public function testFix(string $expected, ?string $input = null): void
     {

@@ -475,24 +475,20 @@ return $foo === count($bar);
 
         if (null === $tokens) {
             $tokens = [
-                T_AND_EQUAL,    // &=
-                T_CONCAT_EQUAL, // .=
-                T_DIV_EQUAL,    // /=
-                T_MINUS_EQUAL,  // -=
-                T_MOD_EQUAL,    // %=
-                T_MUL_EQUAL,    // *=
-                T_OR_EQUAL,     // |=
-                T_PLUS_EQUAL,   // +=
-                T_POW_EQUAL,    // **=
-                T_SL_EQUAL,     // <<=
-                T_SR_EQUAL,     // >>=
-                T_XOR_EQUAL,    // ^=
+                T_AND_EQUAL,      // &=
+                T_CONCAT_EQUAL,   // .=
+                T_DIV_EQUAL,      // /=
+                T_MINUS_EQUAL,    // -=
+                T_MOD_EQUAL,      // %=
+                T_MUL_EQUAL,      // *=
+                T_OR_EQUAL,       // |=
+                T_PLUS_EQUAL,     // +=
+                T_POW_EQUAL,      // **=
+                T_SL_EQUAL,       // <<=
+                T_SR_EQUAL,       // >>=
+                T_XOR_EQUAL,      // ^=
+                T_COALESCE_EQUAL, // ??=
             ];
-
-            // @TODO: drop condition when PHP 7.4+ is required
-            if (\defined('T_COALESCE_EQUAL')) {
-                $tokens[] = T_COALESCE_EQUAL; // ??=
-            }
         }
 
         return $token->equals('=') || $token->isGivenKind($tokens);

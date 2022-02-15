@@ -120,15 +120,8 @@ bar
 EOD;
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $expected = '
+            [
+                '
 <?php
     $a = <<<\'EOD\'
       foo
@@ -136,8 +129,8 @@ EOD;
 
        baz
     EOD;
-';
-        $input = '
+',
+                '
 <?php
     $a = <<<\'EOD\'
       foo  '.'
@@ -145,8 +138,8 @@ EOD;
         '.'
        baz  '.'
     EOD;
-';
-
-        $this->doTest($expected, $input);
+',
+            ],
+        ];
     }
 }

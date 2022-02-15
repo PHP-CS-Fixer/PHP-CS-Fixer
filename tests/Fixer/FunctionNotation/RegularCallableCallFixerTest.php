@@ -204,19 +204,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
             '<?php \pack(...$args);',
             '<?php \CALL_USER_FUNC_ARRAY("\\\\pack", $args);',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix73Cases
-     * @requires PHP 7.3
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): \Generator
-    {
         yield [
             '<?php foo(1,);',
             '<?php call_user_func("foo", 1,);',

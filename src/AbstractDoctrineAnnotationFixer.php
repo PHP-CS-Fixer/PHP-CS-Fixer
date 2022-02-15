@@ -29,10 +29,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var array
-     */
-    private $classyElements;
+    private array $classyElements;
 
     /**
      * {@inheritdoc}

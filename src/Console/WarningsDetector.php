@@ -32,7 +32,7 @@ final class WarningsDetector
     /**
      * @var string[]
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     public function __construct(ToolInfoInterface $toolInfo)
     {

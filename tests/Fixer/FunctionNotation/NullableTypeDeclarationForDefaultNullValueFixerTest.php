@@ -105,7 +105,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function testFixInverse(string $expected, string $input): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
-
         $this->doTest($expected, $input);
     }
 
@@ -343,7 +342,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function testFixInversePhp74(string $expected, string $input): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
-
         $this->doTest($expected, $input);
     }
 
@@ -405,7 +403,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function testFixInverse80(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
-
         $this->doTest($expected, $input);
     }
 

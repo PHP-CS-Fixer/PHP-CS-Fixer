@@ -115,10 +115,7 @@ final class ConfigurationResolver
      */
     private $toolInfo;
 
-    /**
-     * @var array
-     */
-    private $options = [
+    private array $options = [
         'allow-risky' => null,
         'cache-file' => null,
         'config' => null,

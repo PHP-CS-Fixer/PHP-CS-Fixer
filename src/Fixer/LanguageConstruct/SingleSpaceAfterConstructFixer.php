@@ -102,7 +102,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     /**
      * @var array<string, int>
      */
-    private $fixTokenMap = [];
+    private array $fixTokenMap = [];
 
     /**
      * {@inheritdoc}

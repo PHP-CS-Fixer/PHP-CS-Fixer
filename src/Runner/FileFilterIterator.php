@@ -40,7 +40,7 @@ final class FileFilterIterator extends \FilterIterator
     /**
      * @var array<string,bool>
      */
-    private $visitedElements = [];
+    private array $visitedElements = [];
 
     public function __construct(
         \Traversable $iterator,

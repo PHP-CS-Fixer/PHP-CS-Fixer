@@ -54,7 +54,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testFixingAnonymousClasses(string $expected, string $input, array $config = []): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -64,7 +63,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testFixingClasses(string $expected, string $input): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
@@ -74,7 +72,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testFixingClassesWithConfig(string $expected, string $input, array $config): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -84,7 +81,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testFixingInterfaces(string $expected, string $input): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
@@ -94,7 +90,6 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     public function testFixingTraits(string $expected, string $input): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
@@ -587,7 +582,6 @@ namespace {
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
@@ -624,22 +618,6 @@ $a = new class implements
 {
 }?>',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider providePHP73Cases
-     * @requires PHP 7.3
-     */
-    public function testFixPHP73(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([]);
-        $this->doTest($expected, $input);
-    }
-
-    public function providePHP73Cases(): array
-    {
-        return [
             [
                 '<?php new class(1, 2, 3, ) {};',
                 '<?php new class(1, 2, 3,) {};',
@@ -662,7 +640,6 @@ $a = new class implements
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 

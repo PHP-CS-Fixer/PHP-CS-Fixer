@@ -38,15 +38,12 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
 {
     private const BOOLEAN_OPERATORS = [[T_BOOLEAN_AND], [T_BOOLEAN_OR], [T_LOGICAL_AND], [T_LOGICAL_OR], [T_LOGICAL_XOR]];
 
-    /**
-     * @var string
-     */
-    private $position = 'beginning';
+    private string $position = 'beginning';
 
     /**
      * @var array<array<int|string>|string>
      */
-    private $operators = [];
+    private array $operators = [];
 
     /**
      * {@inheritdoc}

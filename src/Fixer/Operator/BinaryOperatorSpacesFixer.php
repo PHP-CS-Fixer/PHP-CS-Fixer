@@ -151,12 +151,12 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @var array<string, string>
      */
-    private $alignOperatorTokens = [];
+    private array $alignOperatorTokens = [];
 
     /**
      * @var array<string, string>
      */
-    private $operators = [];
+    private array $operators = [];
 
     /**
      * {@inheritdoc}
@@ -466,11 +466,6 @@ $array = [
             } else {
                 $operators[$operator] = $value;
             }
-        }
-
-        // @TODO: drop condition when PHP 7.4+ is required
-        if (!\defined('T_COALESCE_EQUAL')) {
-            unset($operators['??=']);
         }
 
         return $operators;

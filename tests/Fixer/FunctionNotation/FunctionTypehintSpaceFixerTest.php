@@ -185,21 +185,6 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
             ],
             ['<?php use function some\test\{fn_a, fn_b, fn_c};'],
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>'],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php $foo = fn(Bar\Baz $param) => null;',
                 '<?php $foo = fn(Bar\Baz$param) => null;',

@@ -31,7 +31,6 @@ final class EscapeImplicitBackslashesFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 

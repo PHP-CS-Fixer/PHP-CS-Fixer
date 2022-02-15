@@ -26,7 +26,7 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input): void
+    public function testFix(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -47,19 +47,7 @@ final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
             '<?php $foo = 0b1101;',
             '<?php $foo = 0B1101;',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix74Cases(): \Generator
-    {
         yield [
             '<?php $A = 1_234_567;',
         ];

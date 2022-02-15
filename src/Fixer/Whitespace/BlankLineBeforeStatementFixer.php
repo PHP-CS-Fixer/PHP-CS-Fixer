@@ -63,10 +63,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         'yield_from' => T_YIELD_FROM,
     ];
 
-    /**
-     * @var array
-     */
-    private $fixTokenMap = [];
+    private array $fixTokenMap = [];
 
     /**
      * {@inheritdoc}

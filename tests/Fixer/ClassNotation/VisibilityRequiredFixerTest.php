@@ -668,7 +668,6 @@ AB# <- this is the name
     public function testKeepingComment(): void
     {
         $this->fixer->configure(['elements' => ['property', 'method', 'const']]);
-
         $this->doTest(
             '<?php
                 class Foo

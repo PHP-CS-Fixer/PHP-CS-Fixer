@@ -169,6 +169,18 @@ OVERRIDDEN;
                 '<?php $foo = ((string) ($x + $y))[0];',
                 '<?php $foo = strval($x + $y)[0];',
             ],
+            [
+                '<?php $a = (int) $b;',
+                '<?php $a = intval($b, );',
+            ],
+            [
+                '<?php $a = (int) $b;',
+                '<?php $a = intval($b , );',
+            ],
+            [
+                '<?php $a = (string) ($b . $c);',
+                '<?php $a = strval($b . $c, );',
+            ],
         ];
     }
 
@@ -186,33 +198,6 @@ OVERRIDDEN;
         yield [
             '<?php $foo = ((string) ($x + $y)){0};',
             '<?php $foo = strval($x + $y){0};',
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
-            [
-                '<?php $a = (int) $b;',
-                '<?php $a = intval($b, );',
-            ],
-            [
-                '<?php $a = (int) $b;',
-                '<?php $a = intval($b , );',
-            ],
-            [
-                '<?php $a = (string) ($b . $c);',
-                '<?php $a = strval($b . $c, );',
-            ],
         ];
     }
 

@@ -512,22 +512,6 @@ class Foo
                     'property' => 'single',
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.4
-     * @dataProvider provideFixPhp74Cases
-     */
-    public function testFixPhp74(string $expected, string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             'It can handle properties with type declaration' => [
                 '<?php
 

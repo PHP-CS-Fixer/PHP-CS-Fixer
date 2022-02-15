@@ -40,31 +40,16 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
             ['<?php foreach(array(1, 2, 3) as $val) {}', '<?php FOREACH(array(1, 2, 3) AS $val) {}'],
             ['<?php echo "GOOD AS NEW";'],
             ['<?php echo X::class ?>', '<?php echo X::ClASs ?>'],
+            [
+                '<?php $fn = fn() => true;',
+                '<?php $fn = FN() => true;',
+            ],
         ];
     }
 
     public function testHaltCompiler(): void
     {
         $this->doTest('<?php __HALT_COMPILER();');
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
-            [
-                '<?php $fn = fn() => true;',
-                '<?php $fn = FN() => true;',
-            ],
-        ];
     }
 
     /**

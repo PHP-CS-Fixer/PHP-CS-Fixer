@@ -46,11 +46,7 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
-            return true;
-        }
-
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
     /**
@@ -63,10 +59,7 @@ final class FunctionTypehintSpaceFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (
-                !$token->isGivenKind(T_FUNCTION)
-                && (\PHP_VERSION_ID < 70400 || !$token->isGivenKind(T_FN))
-            ) {
+            if (!$token->isGivenKind([T_FUNCTION, T_FN])) {
                 continue;
             }
 

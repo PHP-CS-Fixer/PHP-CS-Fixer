@@ -300,27 +300,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     ')',
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @param array<int, string> $expectedTokens
-     * @param string[]           $observedKinds
-     *
-     * @dataProvider provideProcessPhp70Cases
-     */
-    public function testProcessPhp70(string $source, array $expectedTokens, array $observedKinds = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            $observedKinds
-        );
-    }
-
-    public function provideProcessPhp70Cases(): array
-    {
-        return [
             [
                 '<?php $foo = new class(new \stdClass()) {};',
                 [
@@ -345,28 +324,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
                     CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @param array<int, string> $expectedTokens
-     * @param string[]           $observedKinds
-     *
-     * @dataProvider provideProcessPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testProcessPhp74(string $source, array $expectedTokens, array $observedKinds = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            $observedKinds
-        );
-    }
-
-    public function provideProcessPhp74Cases(): array
-    {
-        return [
             [
                 '<?php $fn = fn() => null;',
                 [

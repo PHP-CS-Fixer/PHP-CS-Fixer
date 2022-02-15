@@ -833,6 +833,24 @@ $array = [
 INPUT
                 ,
             ],
+            [
+                <<<'EXPECTED'
+<?php
+$foo = [
+    ...$foo,
+    ...$bar,
+];
+EXPECTED
+                ,
+                <<<'INPUT'
+<?php
+$foo = [
+  ...$foo,
+        ...$bar,
+ ];
+INPUT
+                ,
+            ],
         ]);
     }
 
@@ -885,39 +903,6 @@ INPUT
                 ,
             ],
         ]);
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
-            [
-                <<<'EXPECTED'
-<?php
-$foo = [
-    ...$foo,
-    ...$bar,
-];
-EXPECTED
-                ,
-                <<<'INPUT'
-<?php
-$foo = [
-  ...$foo,
-        ...$bar,
- ];
-INPUT
-                ,
-            ],
-        ];
     }
 
     private function withLongArraySyntaxCases(array $cases): array
