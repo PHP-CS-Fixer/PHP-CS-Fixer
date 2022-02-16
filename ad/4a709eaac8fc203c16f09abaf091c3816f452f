@@ -1,0 +1,18 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-09T08:17:13Z
+
+[![Coverage Status](https://coveralls.io/builds/46603310/badge)](https://coveralls.io/builds/46603310)
+
+Coverage decreased (-0.005%) to 93.172% when pulling **37ef9af66f73bffa5515811babdb5ab7bbb7859f on SpacePossum:master_CommentsAnalyzer_enum_support** into **c753f742b21240da6abb6bb33a802a0b41a6296d on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-02-10T15:32:17Z
+
+`Inheritance is not supported. Enums may not extend or be extended.`
+
+however we are allowed to make the methods `final` ..  so wondering what to do with the `NoUnneededFinalMethodFixer`
+https://3v4l.org/hUYen#v8.1.2
+
+PHP also allows for `protected` methods on enums ..hmm...
