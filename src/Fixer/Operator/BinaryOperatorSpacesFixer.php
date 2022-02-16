@@ -468,11 +468,6 @@ $array = [
             }
         }
 
-        // @TODO: drop condition when PHP 7.4+ is required
-        if (!\defined('T_COALESCE_EQUAL')) {
-            unset($operators['??=']);
-        }
-
         return $operators;
     }
 

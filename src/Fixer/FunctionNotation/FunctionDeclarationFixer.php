@@ -57,7 +57,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_FUNCTION) || (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN));
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
     /**
@@ -123,10 +123,7 @@ $f = fn () => null;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (
-                !$token->isGivenKind(T_FUNCTION)
-                && (\PHP_VERSION_ID < 70400 || !$token->isGivenKind(T_FN))
-            ) {
+            if (!$token->isGivenKind([T_FUNCTION, T_FN])) {
                 continue;
             }
 

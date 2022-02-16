@@ -71,13 +71,7 @@ final class TypeColonTransformer extends AbstractTransformer
             $prevToken = $tokens[$prevIndex];
         }
 
-        $prevKinds = [T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA];
-
-        if (\defined('T_FN')) { // @TODO: drop condition when PHP 7.4+ is required
-            $prevKinds[] = T_FN;
-        }
-
-        if ($prevToken->isGivenKind($prevKinds)) {
+        if ($prevToken->isGivenKind([T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA, T_FN])) {
             $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
         }
     }

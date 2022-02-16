@@ -76,7 +76,7 @@ class Foo {
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(T_DOC_COMMENT);
     }
 
     /**

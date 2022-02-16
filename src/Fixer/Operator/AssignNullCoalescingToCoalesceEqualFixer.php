@@ -58,7 +58,7 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractFixer
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return \defined('T_COALESCE_EQUAL') && $tokens->isTokenKindFound(T_COALESCE);
+        return $tokens->isTokenKindFound(T_COALESCE);
     }
 
     /**

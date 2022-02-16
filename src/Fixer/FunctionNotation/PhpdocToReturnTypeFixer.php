@@ -110,11 +110,7 @@ final class Foo {
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\PHP_VERSION_ID >= 70400 && $tokens->isTokenKindFound(T_FN)) {
-            return true;
-        }
-
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
     }
 
     /**
@@ -143,10 +139,7 @@ final class Foo {
         }
 
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (
-                !$tokens[$index]->isGivenKind(T_FUNCTION)
-                && (\PHP_VERSION_ID < 70400 || !$tokens[$index]->isGivenKind(T_FN))
-            ) {
+            if (!$tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
                 continue;
             }
 

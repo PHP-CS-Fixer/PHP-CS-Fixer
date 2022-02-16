@@ -62,11 +62,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
             return;
         }
 
-        $functionKinds = [[T_FUNCTION]];
-        if (\defined('T_FN')) {
-            $functionKinds[] = [T_FN];
-        }
-
+        $functionKinds = [[T_FUNCTION], [T_FN]];
         $functionIndex = $tokens->getPrevTokenOfKind($prevIndex, $functionKinds);
 
         if (null === $functionIndex) {
