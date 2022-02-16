@@ -21,15 +21,9 @@ namespace PhpCsFixer\FixerDefinition;
  */
 final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
 {
-    /**
-     * @var CodeSampleInterface
-     */
-    private $codeSample;
+    private CodeSampleInterface $codeSample;
 
-    /**
-     * @var \SplFileInfo
-     */
-    private $splFileInfo;
+    private \SplFileInfo $splFileInfo;
 
     public function __construct(
         string $code,

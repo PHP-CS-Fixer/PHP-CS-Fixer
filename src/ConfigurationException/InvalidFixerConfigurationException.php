@@ -24,10 +24,7 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
  */
 class InvalidFixerConfigurationException extends InvalidConfigurationException
 {
-    /**
-     * @var string
-     */
-    private $fixerName;
+    private string $fixerName;
 
     public function __construct(string $fixerName, string $message, ?\Throwable $previous = null)
     {
@@ -36,6 +33,7 @@ class InvalidFixerConfigurationException extends InvalidConfigurationException
             FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG,
             $previous
         );
+
         $this->fixerName = $fixerName;
     }
 

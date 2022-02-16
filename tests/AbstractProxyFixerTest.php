@@ -139,7 +139,7 @@ final class AbstractProxyFixerTest extends TestCase
             /**
              * @var FixerInterface[]
              */
-            private $fixers;
+            private array $fixers;
 
             public function __construct(array $fixers)
             {

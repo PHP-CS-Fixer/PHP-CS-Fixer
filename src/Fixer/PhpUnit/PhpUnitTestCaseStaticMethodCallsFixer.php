@@ -52,7 +52,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     /**
      * @var array<string,bool>
      */
-    private $allowedValues = [
+    private array $allowedValues = [
         self::CALL_TYPE_THIS => true,
         self::CALL_TYPE_SELF => true,
         self::CALL_TYPE_STATIC => true,
@@ -61,7 +61,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     /**
      * @var array<string,true>
      */
-    private $staticMethods = [
+    private array $staticMethods = [
         // Assert methods
         'anything' => true,
         'arrayHasKey' => true,
@@ -300,7 +300,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'throwException' => true,
     ];
 
-    private $conversionMap = [
+    private array $conversionMap = [
         self::CALL_TYPE_THIS => [[T_OBJECT_OPERATOR, '->'], [T_VARIABLE, '$this']],
         self::CALL_TYPE_SELF => [[T_DOUBLE_COLON, '::'], [T_STRING, 'self']],
         self::CALL_TYPE_STATIC => [[T_DOUBLE_COLON, '::'], [T_STATIC, 'static']],

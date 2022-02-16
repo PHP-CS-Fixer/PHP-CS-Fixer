@@ -45,10 +45,8 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
      *
      * This is not the complete list of unicode homographs, but limited
      * to those you are more likely to have typed/copied by accident
-     *
-     * @var array
      */
-    private static $replacements = [
+    private static array $replacements = [
         'O' => '0',
         '０' => '0',
         'I' => '1',

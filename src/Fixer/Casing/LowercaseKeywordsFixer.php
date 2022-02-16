@@ -31,7 +31,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     /**
      * @var int[]
      */
-    private static $excludedTokens = [T_HALT_COMPILER];
+    private static array $excludedTokens = [T_HALT_COMPILER];
 
     /**
      * {@inheritdoc}

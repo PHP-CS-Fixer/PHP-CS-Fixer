@@ -31,10 +31,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var array
-     */
-    private $typeToDedicatedAssertMap = [
+    private array $typeToDedicatedAssertMap = [
         'array' => 'assertIsArray',
         'boolean' => 'assertIsBool',
         'bool' => 'assertIsBool',

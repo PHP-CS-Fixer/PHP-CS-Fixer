@@ -54,7 +54,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     /**
      * @var array<string, string>
      */
-    private $classElementTypes = [];
+    private array $classElementTypes = [];
 
     /**
      * {@inheritdoc}

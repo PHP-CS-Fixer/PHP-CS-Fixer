@@ -56,10 +56,7 @@ final class DescribeCommand extends Command
      */
     private $setNames;
 
-    /**
-     * @var FixerFactory
-     */
-    private $fixerFactory;
+    private FixerFactory $fixerFactory;
 
     /**
      * @var array<string, FixerInterface>

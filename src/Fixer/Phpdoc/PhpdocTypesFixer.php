@@ -69,10 +69,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
         ],
     ];
 
-    /**
-     * @var string
-     */
-    private $patternToFix = '';
+    private string $patternToFix = '';
 
     /**
      * {@inheritdoc}

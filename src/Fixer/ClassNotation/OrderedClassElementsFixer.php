@@ -46,7 +46,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
      */
-    private static $typeHierarchy = [
+    private static array $typeHierarchy = [
         'use_trait' => null,
         'public' => null,
         'protected' => null,
@@ -86,7 +86,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var array Array containing special method types
      */
-    private static $specialTypes = [
+    private static array $specialTypes = [
         'construct' => null,
         'destruct' => null,
         'magic' => null,

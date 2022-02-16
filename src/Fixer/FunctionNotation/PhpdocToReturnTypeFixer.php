@@ -32,7 +32,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     /**
      * @var array<int, array<int, int|string>>
      */
-    private $excludeFuncNames = [
+    private array $excludeFuncNames = [
         [T_STRING, '__construct'],
         [T_STRING, '__destruct'],
         [T_STRING, '__clone'],
@@ -41,7 +41,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     /**
      * @var array<string, true>
      */
-    private $skippedTypes = [
+    private array $skippedTypes = [
         'mixed' => true,
         'resource' => true,
         'null' => true,

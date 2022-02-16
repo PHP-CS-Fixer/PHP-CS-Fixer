@@ -19,15 +19,9 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  */
 final class DefaultAnalysis
 {
-    /**
-     * @var int
-     */
-    private $index;
+    private int $index;
 
-    /**
-     * @var int
-     */
-    private $colonIndex;
+    private int $colonIndex;
 
     public function __construct(int $index, int $colonIndex)
     {

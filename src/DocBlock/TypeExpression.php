@@ -110,15 +110,12 @@ final class TypeExpression
      */
     private $value;
 
-    /**
-     * @var bool
-     */
-    private $isUnionType = false;
+    private bool $isUnionType = false;
 
     /**
      * @var list<array{start_index: int, expression: self}>
      */
-    private $innerTypeExpressions = [];
+    private array $innerTypeExpressions = [];
 
     private string $typesGlue = '|';
 

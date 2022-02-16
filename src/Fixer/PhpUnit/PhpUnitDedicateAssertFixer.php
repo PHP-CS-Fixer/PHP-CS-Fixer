@@ -35,7 +35,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var array<string,array|true>
      */
-    private static $fixMap = [
+    private static array $fixMap = [
         'array_key_exists' => [
             'positive' => 'assertArrayHasKey',
             'negative' => 'assertArrayNotHasKey',
@@ -110,7 +110,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var string[]
      */
-    private $functions = [];
+    private array $functions = [];
 
     /**
      * {@inheritdoc}

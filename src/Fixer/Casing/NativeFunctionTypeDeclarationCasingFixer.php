@@ -46,12 +46,9 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractFixer
      *
      * @var array<string, true>
      */
-    private $hints;
+    private array $hints;
 
-    /**
-     * @var FunctionsAnalyzer
-     */
-    private $functionsAnalyzer;
+    private FunctionsAnalyzer $functionsAnalyzer;
 
     public function __construct()
     {

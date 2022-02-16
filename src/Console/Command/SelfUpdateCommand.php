@@ -39,20 +39,11 @@ final class SelfUpdateCommand extends Command
      */
     protected static $defaultName = 'self-update';
 
-    /**
-     * @var NewVersionCheckerInterface
-     */
-    private $versionChecker;
+    private NewVersionCheckerInterface $versionChecker;
 
-    /**
-     * @var ToolInfoInterface
-     */
-    private $toolInfo;
+    private ToolInfoInterface $toolInfo;
 
-    /**
-     * @var PharCheckerInterface
-     */
-    private $pharChecker;
+    private PharCheckerInterface $pharChecker;
 
     public function __construct(
         NewVersionCheckerInterface $versionChecker,

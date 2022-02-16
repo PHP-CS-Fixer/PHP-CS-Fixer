@@ -20,25 +20,21 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 final class ArgumentAnalysis
 {
     /**
+     * The name of the argument.
+     */
+    private string $name;
+
+    /**
+     * The index where the name is located in the supplied Tokens object.
+     */
+    private int $nameIndex;
+
+    /**
      * The default value of the argument.
      *
      * @var null|string
      */
     private $default;
-
-    /**
-     * The name of the argument.
-     *
-     * @var string
-     */
-    private $name;
-
-    /**
-     * The index where the name is located in the supplied Tokens object.
-     *
-     * @var int
-     */
-    private $nameIndex;
 
     /**
      * The type analysis of the argument.

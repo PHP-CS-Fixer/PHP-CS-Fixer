@@ -38,10 +38,7 @@ final class FixerFileProcessedEvent extends Event
     public const STATUS_EXCEPTION = 5;
     public const STATUS_LINT = 6;
 
-    /**
-     * @var int
-     */
-    private $status;
+    private int $status;
 
     public function __construct(int $status)
     {

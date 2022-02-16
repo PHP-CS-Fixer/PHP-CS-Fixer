@@ -38,12 +38,12 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
     /**
      * @var array<string, true>
      */
-    private $constantsToEscape = [];
+    private array $constantsToEscape = [];
 
     /**
      * @var array<string, true>
      */
-    private $caseInsensitiveConstantsToEscape = [];
+    private array $caseInsensitiveConstantsToEscape = [];
 
     /**
      * {@inheritdoc}

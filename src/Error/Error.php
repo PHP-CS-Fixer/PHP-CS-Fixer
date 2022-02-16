@@ -38,25 +38,16 @@ final class Error
      */
     public const TYPE_LINT = 3;
 
-    /**
-     * @var int
-     */
-    private $type;
+    private int $type;
 
-    /**
-     * @var string
-     */
-    private $filePath;
+    private string $filePath;
 
     /**
      * @var null|\Throwable
      */
     private $source;
 
-    /**
-     * @var array
-     */
-    private $appliedFixers;
+    private array $appliedFixers;
 
     /**
      * @var null|string

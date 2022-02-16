@@ -19,10 +19,7 @@ namespace PhpCsFixer\FixerDefinition;
  */
 final class CodeSample implements CodeSampleInterface
 {
-    /**
-     * @var string
-     */
-    private $code;
+    private string $code;
 
     /**
      * @var null|array

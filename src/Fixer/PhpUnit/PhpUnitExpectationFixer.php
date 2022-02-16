@@ -36,7 +36,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
     /**
      * @var array<string, string>
      */
-    private $methodMap = [];
+    private array $methodMap = [];
 
     /**
      * {@inheritdoc}

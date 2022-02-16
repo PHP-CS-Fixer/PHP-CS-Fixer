@@ -37,15 +37,9 @@ use PhpCsFixer\Utils;
  */
 final class FixerDocumentGenerator
 {
-    /**
-     * @var DocumentationLocator
-     */
-    private $locator;
+    private DocumentationLocator $locator;
 
-    /**
-     * @var FullDiffer
-     */
-    private $differ;
+    private FullDiffer $differ;
 
     public function __construct(DocumentationLocator $locator)
     {

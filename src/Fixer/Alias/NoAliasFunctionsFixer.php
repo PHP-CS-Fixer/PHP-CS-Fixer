@@ -155,8 +155,10 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
         ],
     ];
 
-    /** @var array<string, array<int|string>|string> stores alias (key) - master (value) functions mapping */
-    private $aliases = [];
+    /**
+     * @var array<string, array<int|string>|string> stores alias (key) - master (value) functions mapping
+     */
+    private array $aliases = [];
 
     public function configure(array $configuration): void
     {

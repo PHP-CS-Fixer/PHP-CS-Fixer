@@ -26,7 +26,7 @@ final class MagicMethodCasingFixer extends AbstractFixer
     /**
      * @var array<string,string>
      */
-    private static $magicNames = [
+    private static array $magicNames = [
         '__call' => '__call',
         '__callstatic' => '__callStatic',
         '__clone' => '__clone',

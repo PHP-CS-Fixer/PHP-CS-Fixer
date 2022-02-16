@@ -37,7 +37,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @var string[]
      */
-    private $ignoredTags = [];
+    private array $ignoredTags = [];
 
     /**
      * {@inheritdoc}

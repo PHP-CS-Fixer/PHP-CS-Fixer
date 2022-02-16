@@ -74,7 +74,6 @@ final class ProcessLinter implements LinterInterface
         }
 
         $this->processBuilder = new ProcessLinterProcessBuilder($executable);
-
         $this->fileRemoval = new FileRemoval();
     }
 
