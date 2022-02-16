@@ -260,7 +260,9 @@ private $d = 123;
     public static function provideInvalidElementsCases(): iterable
     {
         yield 'numeric keys' => [['method', 'property']];
+
         yield 'wrong key name' => [['methods' => 'one']];
+
         yield 'wrong key value' => [['method' => 'two']];
     }
 

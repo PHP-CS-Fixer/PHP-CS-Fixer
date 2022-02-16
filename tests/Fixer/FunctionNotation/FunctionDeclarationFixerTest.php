@@ -49,7 +49,6 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 
@@ -364,23 +363,6 @@ foo#
             ['<?php use function Foo\bar; bar ( 1 );', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::$configurationClosureSpacingNone],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function test74(string $expected, ?string $input = null, array $configuration = []): void
-    {
-        $this->fixer->configure($configuration);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php fn ($i) => null;',
                 '<?php fn($i) => null;',
@@ -446,7 +428,6 @@ foo#
     public function testFixPhp80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 

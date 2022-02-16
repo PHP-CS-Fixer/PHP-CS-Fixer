@@ -64,7 +64,6 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -171,31 +170,15 @@ class srand extends SrandClass{
                 null,
                 ['replacements' => ['rand' => 'rand']],
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input, array $config = []): void
-    {
-        $this->fixer->configure($config);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): \Generator
-    {
-        yield [
-            '<?php $a = random_int(1,2,) + random_int(3,4,);',
-            '<?php $a = rand(1,2,) + mt_rand(3,4,);',
-            ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
-        ];
-
-        yield [
-            '<?php mt_srand($a,);',
-            '<?php srand($a,);',
+            [
+                '<?php $a = random_int(1,2,) + random_int(3,4,);',
+                '<?php $a = rand(1,2,) + mt_rand(3,4,);',
+                ['replacements' => ['rand' => 'random_int', 'mt_rand' => 'random_int']],
+            ],
+            [
+                '<?php mt_srand($a,);',
+                '<?php srand($a,);',
+            ],
         ];
     }
 

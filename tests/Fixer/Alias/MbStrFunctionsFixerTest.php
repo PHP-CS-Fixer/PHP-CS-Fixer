@@ -36,7 +36,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases(): array
     {
-        $cases = [
+        return [
             ['<?php $x = "strlen";'],
             ['<?php $x = Foo::strlen("bar");'],
             ['<?php $x = new strlen("bar");'],
@@ -60,31 +60,10 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
                     public function strtolower($a);
                 }',
             ],
-        ];
-
-        if (\PHP_VERSION_ID < 70400) {
-            $cases[] = [
+            [
+                '<?php $a = mb_str_split($a);',
                 '<?php $a = str_split($a);',
-            ];
-        }
-
-        return $cases;
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): \Generator
-    {
-        yield [
-            '<?php $a = mb_str_split($a);',
-            '<?php $a = str_split($a);',
+            ],
         ];
     }
 }

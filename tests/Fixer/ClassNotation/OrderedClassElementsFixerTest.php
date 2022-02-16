@@ -1270,6 +1270,7 @@ EOT
                 var ? Foo\Bar $qux;
             }',
         ];
+
         yield [
             '<?php
             class Foo {
@@ -1311,7 +1312,6 @@ class TestClass
     public function %s(){}
 }';
         $this->fixer->configure(['order' => ['use_trait'], 'sort_algorithm' => OrderedClassElementsFixer::SORT_ALPHA]);
-
         $this->doTest(
             sprintf($template, $methodName2, $methodName1),
             sprintf($template, $methodName1, $methodName2)
@@ -1321,8 +1321,11 @@ class TestClass
     public function provideWithConfigWithNoCandidateCases(): \Generator
     {
         yield ['z', '__construct'];
+
         yield ['z', '__destruct'];
+
         yield ['z', '__sleep'];
+
         yield ['z', 'abc'];
     }
 

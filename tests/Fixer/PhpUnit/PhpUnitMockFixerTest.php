@@ -31,7 +31,10 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
-        $this->fixer->configure($config);
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -103,16 +106,8 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
         }
     }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php
+            [
+                '<?php
     class FooTest extends TestCase
     {
         public function testFoo()
@@ -129,7 +124,7 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["bbb", ], ["argument", ], );
         }
     }',
-            '<?php
+                '<?php
     class FooTest extends TestCase
     {
         public function testFoo()
@@ -145,8 +140,9 @@ final class PhpUnitMockFixerTest extends AbstractFixerTestCase
             $this->getMock("Foo", ["aaa"], ["argument"], );
             $this->getMock("Foo", ["bbb", ], ["argument", ], );
         }
-    }'
-        );
+    }',
+            ],
+        ];
     }
 
     /**

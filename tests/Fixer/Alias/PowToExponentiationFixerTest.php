@@ -222,6 +222,18 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
             [
                 '<?php pow($b, ...$a);',
             ],
+            [
+                '<?php echo +$a** 2;',
+                '<?php echo pow(+$a, 2,);',
+            ],
+            [
+                '<?php echo +$a** 2/*1*//*2*/;',
+                '<?php echo pow(+$a, 2/*1*/,/*2*/);',
+            ],
+            [
+                '<?php echo 10_0** 2;',
+                '<?php echo pow(10_0, 2);',
+            ],
         ];
     }
 
@@ -264,48 +276,6 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
             ],
             [
                 '<?php \a\pow(4,3); ++$a;++$a;++$a;++$a;++$a;++$a;/** pow(1,2); */',
-            ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
-            [
-                '<?php echo +$a** 2;',
-                '<?php echo pow(+$a, 2,);',
-            ],
-            [
-                '<?php echo +$a** 2/*1*//*2*/;',
-                '<?php echo pow(+$a, 2/*1*/,/*2*/);',
-            ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.4
-     * @dataProvider provideFix74Cases
-     */
-    public function testFix74(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
-            [
-                '<?php echo 10_0** 2;',
-                '<?php echo pow(10_0, 2);',
             ],
         ];
     }

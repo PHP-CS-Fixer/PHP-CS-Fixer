@@ -80,27 +80,6 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
                     $c = 1 ?: [];
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideProcessPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testProcessPhp74(string $source, array $expectedTokens = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_TYPE_COLON,
-            ]
-        );
-    }
-
-    public function provideProcessPhp74Cases(): array
-    {
-        return [
             [
                 '<?php fn(): array => [];',
                 [

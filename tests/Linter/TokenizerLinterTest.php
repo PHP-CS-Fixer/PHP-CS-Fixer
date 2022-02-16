@@ -22,7 +22,6 @@ use PhpCsFixer\Linter\TokenizerLinter;
  *
  * @internal
  *
- * @requires PHP 7.3
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
  */

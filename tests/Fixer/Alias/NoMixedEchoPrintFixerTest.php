@@ -34,7 +34,6 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testFixEchoToPrint(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'print']);
-
         $this->doTest($expected, $input);
     }
 
@@ -152,7 +151,6 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     public function testFixPrintToEcho(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use' => 'echo']);
-
         $this->doTest($expected, $input);
     }
 

@@ -258,6 +258,11 @@ class Foo extends Bar
             $a->__UnSet($foo); // fix
             ',
         ];
+
+        yield [
+            '<?php $foo->__invoke(1, );',
+            '<?php $foo->__INVOKE(1, );',
+        ];
     }
 
     /**
@@ -331,17 +336,6 @@ function __Tostring() {}',
                 '<?php A\B\__callstatic(); echo $a->b;',
             ],
         ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php $foo->__invoke(1, );',
-            '<?php $foo->__INVOKE(1, );'
-        );
     }
 
     /**

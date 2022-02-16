@@ -28,8 +28,12 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, string $input = null, array $config = null): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -137,22 +141,6 @@ EOF
 EOF
                     );",
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix73Cases
-     * @requires PHP 7.3
-     */
-    public function testFix73(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
             [
                 "<?php \$x = array(<<<'EOF'
 <?php \$a = '\\foo\\bar\\\\';
@@ -169,21 +157,6 @@ EOF
                     );",
                 ['after_heredoc' => true],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             [
                 '<?php $x = array(...$foo, ...$bar);',
                 '<?php $x = array(...$foo , ...$bar);',

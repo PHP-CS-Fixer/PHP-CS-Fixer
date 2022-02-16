@@ -72,6 +72,7 @@ final class PhpUnitTestCaseIndicator
             }
 
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+
             yield [$startIndex, $endIndex];
         }
     }

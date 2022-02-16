@@ -307,7 +307,6 @@ $bar;',
 
     /**
      * @dataProvider providePhpdocCandidatePhp74Cases
-     * @requires PHP 7.4
      */
     public function testPhpdocCandidatePhp74(string $code): void
     {

@@ -57,17 +57,14 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @param ?int $openIndex
-     * @param ?int $closeIndex
-     *
      * @dataProvider provideNonBlocksCases
      */
-    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex): void
+    public function testNonBlocks(string $code, ?int $openIndex, ?int $closeIndex, bool $isBlock = false): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new BlocksAnalyzer();
 
-        static::assertFalse($analyzer->isBlock($tokens, $openIndex, $closeIndex));
+        static::assertSame($isBlock, $analyzer->isBlock($tokens, $openIndex, $closeIndex));
     }
 
     public function provideNonBlocksCases(): array
@@ -82,25 +79,7 @@ final class BlocksAnalyzerTest extends TestCase
             ['<?php foo(1);', 2, 3],
             ['<?php foo((1));', 2, 5],
             ['<?php foo((1));', 3, 6],
-        ];
-    }
-
-    /**
-     * @dataProvider provideBlocksPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testBlocksPhp74(string $code, int $openIndex, int $closeIndex): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new BlocksAnalyzer();
-
-        static::assertTrue($analyzer->isBlock($tokens, $openIndex, $closeIndex));
-    }
-
-    public function provideBlocksPhp74Cases(): array
-    {
-        return [
-            ['<?php $fn = fn($x) => $x + 10;', 6, 8],
+            ['<?php $fn = fn($x) => $x + 10;', 6, 8, true],
         ];
     }
 }

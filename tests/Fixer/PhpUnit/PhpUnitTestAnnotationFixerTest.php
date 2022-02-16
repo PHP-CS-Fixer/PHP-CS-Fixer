@@ -984,7 +984,6 @@ class Test extends \PhpUnit\FrameWork\TestCase
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 

@@ -37,60 +37,71 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function provideTestFixCases(): array
+    public function provideTestFixCases(): iterable
     {
-        $cases = [
-            ['<?php $self->foo();'],
-            [self::generateTest('$self->foo();')],
-        ];
+        yield ['<?php $self->foo();'];
+
+        yield [self::generateTest('$self->foo();')];
 
         foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
-            $cases[] = [self::generateTest("\$sth->{$methodBefore}(1, 1);")];
-            $cases[] = [self::generateTest("\$sth->{$methodAfter}(1, 1);")];
-            $cases[] = [self::generateTest("\$this->{$methodBefore}(1, 2, 'message', \$toMuch);")];
+            yield [self::generateTest("\$sth->{$methodBefore}(1, 1);")];
 
-            $cases[] = [
+            yield [self::generateTest("\$sth->{$methodAfter}(1, 1);")];
+
+            yield [self::generateTest("\$this->{$methodBefore}(1, 2, 'message', \$toMuch);")];
+
+            yield [
                 self::generateTest("\$this->{$methodAfter}(1, 2);"),
                 self::generateTest("\$this->{$methodBefore}(1, 2);"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("\$this->{$methodAfter}(1, 2); \$this->{$methodAfter}(1, 2);"),
                 self::generateTest("\$this->{$methodBefore}(1, 2); \$this->{$methodBefore}(1, 2);"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("\$this->{$methodAfter}(1, 2, 'description');"),
                 self::generateTest("\$this->{$methodBefore}(1, 2, 'description');"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("\$this->/*aaa*/{$methodAfter} \t /**bbb*/  ( /*ccc*/1  , 2);"),
                 self::generateTest("\$this->/*aaa*/{$methodBefore} \t /**bbb*/  ( /*ccc*/1  , 2);"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("\$this->{$methodAfter}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');"),
                 self::generateTest("\$this->{$methodBefore}(\$expectedTokens->count() + 10, \$tokens->count() ? 10 : 20 , 'Test');"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("self::{$methodAfter}(1, 2);"),
                 self::generateTest("self::{$methodBefore}(1, 2);"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("static::{$methodAfter}(1, 2);"),
                 self::generateTest("static::{$methodBefore}(1, 2);"),
             ];
 
-            $cases[] = [
+            yield [
                 self::generateTest("STATIC::{$methodAfter}(1, 2);"),
                 self::generateTest("STATIC::{$methodBefore}(1, 2);"),
             ];
         }
 
-        return $cases;
+        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
+            yield [
+                self::generateTest("static::{$methodAfter}(1, 2,);"),
+                self::generateTest("static::{$methodBefore}(1, 2,);"),
+            ];
+
+            yield [
+                self::generateTest("self::{$methodAfter}(1, \$a, '', );"),
+                self::generateTest("self::{$methodBefore}(1, \$a, '', );"),
+            ];
+        }
     }
 
     /**
@@ -135,30 +146,6 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         $this->expectExceptionMessageMatches('/^\[php_unit_strict\] Invalid configuration: The option "assertions" .*\.$/');
 
         $this->fixer->configure(['assertions' => ['__TEST__']]);
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): \Generator
-    {
-        foreach ($this->getMethodsMap() as $methodBefore => $methodAfter) {
-            yield [
-                self::generateTest("static::{$methodAfter}(1, 2,);"),
-                self::generateTest("static::{$methodBefore}(1, 2,);"),
-            ];
-
-            yield [
-                self::generateTest("self::{$methodAfter}(1, \$a, '', );"),
-                self::generateTest("self::{$methodBefore}(1, \$a, '', );"),
-            ];
-        }
     }
 
     /**

@@ -143,21 +143,6 @@ FIXED;
                     $x = dirname(dirname("a".__FILE__."a"));
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
             [
                 '<?php $x = __DIR__.".dist";',
                 '<?php $x = dirname(__FILE__,   ).".dist";',

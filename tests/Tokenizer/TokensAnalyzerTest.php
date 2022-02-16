@@ -191,9 +191,6 @@ PHP
         ];
     }
 
-    /**
-     * @requires PHP 7.4
-     */
     public function testGetClassyElementsWithNullableProperties(): void
     {
         $source = <<<'PHP'
@@ -1604,7 +1601,6 @@ $b;',
 
     /**
      * @dataProvider provideIsBinaryOperator71Cases
-     * @requires PHP 7.1
      */
     public function testIsBinaryOperator71(array $expected, string $source): void
     {
@@ -1626,28 +1622,7 @@ $b;',
             [11 => false],
             '<?php try {} catch (A | B $e) {}',
         ];
-    }
 
-    /**
-     * @dataProvider provideIsBinaryOperator74Cases
-     * @requires PHP 7.4
-     */
-    public function testIsBinaryOperator74(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
-            if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public function provideIsBinaryOperator74Cases(): \Generator
-    {
         yield [
             [3 => true],
             '<?php $a ??= $b;',

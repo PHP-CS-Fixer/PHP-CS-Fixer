@@ -1291,7 +1291,6 @@ function foo() {
     public function testFixWithMultipleConfigStatements(array $statements, string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['statements' => $statements]);
-
         $this->doTest($expected, $input);
     }
 

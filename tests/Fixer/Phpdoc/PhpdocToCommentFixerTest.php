@@ -30,9 +30,12 @@ final class PhpdocToCommentFixerTest extends AbstractFixerTestCase
      * @dataProvider provideTraitsCases
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = null): void
     {
-        $this->fixer->configure($config);
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -739,21 +742,6 @@ $first = true;// needed because by default first docblock is never fixed.
 [$a] = $b;
                 ',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php
                 class Foo {

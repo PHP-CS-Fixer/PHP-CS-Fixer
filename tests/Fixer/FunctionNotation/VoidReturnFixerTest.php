@@ -213,21 +213,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                     abstract protected function foo($param);
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             [
                 '<?php fn($a) => null;',
             ],
@@ -266,21 +251,37 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     {
         // List: https://www.php.net/manual/en/language.oop5.magic.php
         yield ['__construct'];
+
         yield ['__destruct'];
+
         yield ['__call', 2];
+
         yield ['__callStatic', 2, true];
+
         yield ['__get', 1];
+
         yield ['__set', 2];
+
         yield ['__isset', 1];
+
         yield ['__unset', 1];
+
         yield ['__sleep'];
+
         yield ['__wakeup'];
+
         yield ['__serialize'];
+
         yield ['__unserialize', 1];
+
         yield ['__toString'];
+
         yield ['__invoke'];
+
         yield ['__set_state', 1, true];
+
         yield ['__clone'];
+
         yield ['__debugInfo'];
     }
 }
