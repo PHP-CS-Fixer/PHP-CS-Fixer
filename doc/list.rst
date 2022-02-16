@@ -166,9 +166,9 @@ List of Available Rules
    Configuration options:
 
    - | ``elements``
-     | Dictionary of `const|method|property|trait_import` => `none|one|only_if_meta` values.
+     | Dictionary of `const|method|property|trait_import|case` => `none|one|only_if_meta` values.
      | Allowed types: ``array``
-     | Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']``
+     | Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -176,7 +176,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
 -  `class_definition <./rules/class_notation/class_definition.rst>`_
 
-   Whitespace around the keywords of a class, trait or interfaces definition should be one space.
+   Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
 
    Configuration options:
 
@@ -1578,7 +1578,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
 -  `no_unneeded_final_method <./rules/class_notation/no_unneeded_final_method.rst>`_
 
-   A ``final`` class must not have ``final`` methods and ``private`` methods must not be ``final``.
+   Removes ``final`` from methods where possible.
 
    *warning risky* Risky when child class overrides a ``private`` method.
 

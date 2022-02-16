@@ -917,5 +917,27 @@ class Foo
 }
 ',
         ];
+
+        yield [
+            "<?php
+
+enum Foo: string {
+    public const A = 'A';
+    public const B = 'B';
+    case Hearts = 'H';
+    case Spades = 'S';
+}
+
+var_dump(Foo::A.Foo::B);",
+            "<?php
+
+enum Foo: string {
+    public const A = 'A', B = 'B';
+    case Hearts = 'H';
+    case Spades = 'S';
+}
+
+var_dump(Foo::A.Foo::B);",
+        ];
     }
 }

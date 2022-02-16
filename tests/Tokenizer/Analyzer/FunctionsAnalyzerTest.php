@@ -262,6 +262,11 @@ A();
             [],
         ];
 
+        yield [
+            '<?php foo("bar"); class A { function Foo(){ foo(); } }',
+            [1, 20],
+        ];
+
         if (\PHP_VERSION_ID < 80000) {
             yield [
                 '<?php
@@ -351,6 +356,11 @@ $b = new class(){};
 $a = new #[foo]
 class(){};
 ',
+        ];
+
+        yield [
+            [1, 20],
+            '<?php foo("bar"); enum A { function Foo(){ foo(); } }',
         ];
     }
 

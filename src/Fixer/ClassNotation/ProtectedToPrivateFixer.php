@@ -68,6 +68,10 @@ final class Sample
      */
     public function isCandidate(Tokens $tokens): bool
     {
+        if (\defined('T_ENUM') && $tokens->isAllTokenKindsFound([T_ENUM, T_PROTECTED])) { // @TODO: drop condition when PHP 8.1+ is required
+            return true;
+        }
+
         return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL, T_PROTECTED]);
     }
 
@@ -84,6 +88,7 @@ final class Sample
         }
 
         $classesCandidate = [];
+        $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
 
         foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];
@@ -93,7 +98,11 @@ final class Sample
             }
 
             if (false === $classesCandidate[$classIndex]) {
-                continue; // not "final" class, "extends", is "anonymous" or uses trait
+                continue; // not "final" class, "extends", is "anonymous", enum or uses trait
+            }
+
+            if (!isset($classElementTypes[$element['type']])) {
+                continue;
             }
 
             $previous = $index;
@@ -125,6 +134,10 @@ final class Sample
 
     private function isClassCandidate(Tokens $tokens, int $classIndex): bool
     {
+        if (\defined('T_ENUM') && $tokens[$classIndex]->isGivenKind(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
+            return true;
+        }
+
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classIndex)];
 
         if (!$prevToken->isGivenKind(T_FINAL)) {

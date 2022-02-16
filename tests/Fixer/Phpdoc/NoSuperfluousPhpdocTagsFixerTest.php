@@ -1997,6 +1997,7 @@ function foo(string|int $foo) {}',
      */
     public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -2072,6 +2073,20 @@ function foo(A & B & C $foo, A|array $bar) {}',
  * @param A|string[] $bar
  */
 function foo(A & B & C $foo, A|array $bar) {}',
+        ];
+
+        yield 'remove_enum_inheritdoc' => [
+            '<?php
+/**
+ *
+ */
+enum Foo {}',
+            '<?php
+/**
+ * @inheritDoc
+ */
+enum Foo {}',
+            ['remove_inheritdoc' => true],
         ];
     }
 }

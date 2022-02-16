@@ -487,6 +487,22 @@ class A
 }
 ',
             ],
+            'trait' => [
+                '<?php
+ trait StaticExample {
+    /**
+     * @var string Hello!
+     */
+    public static $static = "foo";
+}',
+                '<?php
+ trait StaticExample {
+    /**
+     * @var string $static Hello!
+     */
+    public static $static = "foo";
+}',
+            ],
         ];
     }
 

@@ -297,7 +297,7 @@ class Foo
 
     private function fixIndents(Tokens $tokens): void
     {
-        $classyTokens = Token::getClassyTokenKinds();
+        $classyTokens = [T_CLASS, T_TRAIT, T_INTERFACE]; // FIXME use Token::getClassyTokenKinds() when ENUM tests are made
         $classyAndFunctionTokens = array_merge([T_FUNCTION], $classyTokens);
         $controlTokens = $this->getControlTokens();
         $indentTokens = array_filter(

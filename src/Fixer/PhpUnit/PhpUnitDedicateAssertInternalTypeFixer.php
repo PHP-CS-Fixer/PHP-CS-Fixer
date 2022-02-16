@@ -130,7 +130,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
         $tokenAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isClassy() || !$tokenAnalyzer->isAnonymousClass($index)) {
+            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
 

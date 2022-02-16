@@ -439,5 +439,32 @@ final class Foo81 {
 }
             ',
         ];
+
+        yield 'enum' => [
+            '<?php
+
+enum Foo: string
+{
+    case Hearts = "H";
+
+    public function test() {
+        echo 123;
+    }
+}
+
+var_dump(Foo::Spades);',
+            '<?php
+
+enum Foo: string
+{
+    case Hearts = "H";
+
+    final public function test() {
+        echo 123;
+    }
+}
+
+var_dump(Foo::Spades);',
+        ];
     }
 }

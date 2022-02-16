@@ -653,6 +653,33 @@ $a = new class implements
         ];
     }
 
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield [
+            "<?php enum SomeEnum implements SomeInterface, D\n{};",
+            "<?php enum SomeEnum \timplements    SomeInterface, D {};",
+        ];
+
+        yield [
+            "<?php enum SomeEnum : int\n{}",
+            '<?php enum   SomeEnum  :  int   {}',
+        ];
+
+        yield [
+            "<?php enum SomeEnum\n{}",
+            "<?php enum\tSomeEnum{}",
+        ];
+    }
+
     private static function assertConfigurationSame(array $expected, ClassDefinitionFixer $fixer): void
     {
         $reflectionProperty = new \ReflectionProperty($fixer, 'configuration');
