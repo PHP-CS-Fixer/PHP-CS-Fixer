@@ -46,18 +46,6 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 
     public static function provideInvalidConfigurationCases(): \Generator
     {
-        if (\PHP_VERSION_ID < 70300) {
-            yield [
-                '[trailing_comma_in_multiline] Invalid configuration for env: "after_heredoc" option can only be enabled with PHP 7.3+.',
-                ['after_heredoc' => true],
-            ];
-
-            yield [
-                '[trailing_comma_in_multiline] Invalid configuration for env: "arguments" option can only be enabled with PHP 7.3+.',
-                ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_ARGUMENTS]],
-            ];
-        }
-
         yield [
             '[trailing_comma_in_multiline] Invalid configuration for env: "parameters" option can only be enabled with PHP 8.0+.',
             ['elements' => [TrailingCommaInMultilineFixer::ELEMENTS_PARAMETERS]],
@@ -67,8 +55,12 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, array $config = null): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -397,23 +389,8 @@ while(
 $a
 )
 )
-) {}'],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix73Cases
-     * @requires PHP 7.3
-     */
-    public function testFix73(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix73Cases(): array
-    {
-        return [
+) {}',
+            ],
             [
                 "<?php foo('a', 'b', 'c', 'd', 'q', 'z');",
                 null,

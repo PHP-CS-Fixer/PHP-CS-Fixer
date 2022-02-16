@@ -42,7 +42,6 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
     public function testFixWithDefaultConfiguration(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([]);
-
         $this->doTest($expected, $input);
     }
 
@@ -109,6 +108,10 @@ string {}',
                     function foo9(int $a):string {}
                 ',
             ],
+            [
+                '<?php fn(): int => 1;',
+                '<?php fn():int => 1;',
+            ],
         ];
     }
 
@@ -144,25 +147,6 @@ string {}',
             ],
             [
                 '<?php function fooE(int $a) /**/ : /**/ string {}',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixWithSpaceBeforeNonePhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixWithDefaultConfigurationPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixWithSpaceBeforeNonePhp74Cases(): array
-    {
-        return [
-            [
-                '<?php fn(): int => 1;',
-                '<?php fn():int => 1;',
             ],
         ];
     }

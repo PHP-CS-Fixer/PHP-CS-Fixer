@@ -37,53 +37,95 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function provideDoNotFixCases(): \Generator
     {
         yield ['<?php function foo($param = null) {}'];
+
         yield ['<?php function foo($param1 = null, $param2 = null) {}'];
+
         yield ['<?php function foo(&$param = null) {}'];
+
         yield ['<?php function foo(& $param = null) {}'];
+
         yield ['<?php function foo(/**int*/ $param = null) {}'];
+
         yield ['<?php function foo(/**int*/ &$param = null) {}'];
+
         yield ['<?php $foo = function ($param = null) {};'];
+
         yield ['<?php $foo = function (&$param = null) {};'];
 
         yield ['<?php function foo(?string $param = null) {}'];
+
         yield ['<?php function foo(?string $param= null) {}'];
+
         yield ['<?php function foo(?string $param =null) {}'];
+
         yield ['<?php function foo(?string $param=null) {}'];
+
         yield ['<?php function foo(?string $param1 = null, ?string $param2 = null) {}'];
+
         yield ['<?php function foo(?string &$param = null) {}'];
+
         yield ['<?php function foo(?string & $param = null) {}'];
+
         yield ['<?php function foo(?string /*comment*/$param = null) {}'];
+
         yield ['<?php function foo(?string /*comment*/&$param = null) {}'];
+
         yield ['<?php function foo(? string $param = null) {}'];
+
         yield ['<?php function foo(?/*comment*/string $param = null) {}'];
+
         yield ['<?php function foo(? /*comment*/ string $param = null) {}'];
+
         yield ['<?php $foo = function (?string $param = null) {};'];
+
         yield ['<?php $foo = function (?string &$param = null) {};'];
 
         yield ['<?php function foo(?Baz $param = null) {}'];
+
         yield ['<?php function foo(?\Baz $param = null) {}'];
+
         yield ['<?php function foo(?Bar\Baz $param = null) {}'];
+
         yield ['<?php function foo(?\Bar\Baz $param = null) {}'];
+
         yield ['<?php function foo(?Baz &$param = null) {}'];
+
         yield ['<?php function foo(?\Baz &$param = null) {}'];
+
         yield ['<?php function foo(?Bar\Baz &$param = null) {}'];
+
         yield ['<?php function foo(?\Bar\Baz &$param = null) {}'];
+
         yield ['<?php function foo(?Baz & $param = null) {}'];
+
         yield ['<?php function foo(?\Baz & $param = null) {}'];
+
         yield ['<?php function foo(?Bar\Baz & $param = null) {}'];
+
         yield ['<?php function foo(?\Bar\Baz & $param = null) {}'];
+
         yield ['<?php function foo(?array &$param = null) {}'];
+
         yield ['<?php function foo(?array & $param = null) {}'];
+
         yield ['<?php function foo(?callable &$param = null) {}'];
+
         yield ['<?php function foo(?callable & $param = null) {}'];
+
         yield ['<?php $foo = function (?Baz $param = null) {};'];
+
         yield ['<?php $foo = function (?Baz &$param = null) {};'];
+
         yield ['<?php $foo = function (?Baz & $param = null) {};'];
+
         yield ['<?php class Test { public function foo(?Bar\Baz $param = null) {} }'];
+
         yield ['<?php class Test { public function foo(?self $param = null) {} }'];
 
         yield ['<?php function foo(...$param) {}'];
+
         yield ['<?php function foo(array ...$param) {}'];
+
         yield ['<?php function foo(?array ...$param) {}'];
 
         yield ['<?php function foo(mixed $param = null) {}'];
@@ -105,7 +147,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function testFixInverse(string $expected, string $input): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
-
         $this->doTest($expected, $input);
     }
 
@@ -343,7 +384,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function testFixInversePhp74(string $expected, string $input): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
-
         $this->doTest($expected, $input);
     }
 
@@ -405,7 +445,6 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
     public function testFixInverse80(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['use_nullable_type_declaration' => false]);
-
         $this->doTest($expected, $input);
     }
 
@@ -498,6 +537,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixerTest extends Abstract
         ];
 
         yield [$cases[0], $cases[1]];
+
         yield [$cases[1], $cases[0], ['use_nullable_type_declaration' => false]];
     }
 

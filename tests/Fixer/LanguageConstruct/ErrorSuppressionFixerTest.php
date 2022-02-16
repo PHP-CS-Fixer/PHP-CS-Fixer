@@ -33,7 +33,6 @@ final class ErrorSuppressionFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -114,6 +113,10 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
                 '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED); @trigger_error("This is not a deprecation warning.", E_USER_WARNING); ?>',
                 [ErrorSuppressionFixer::OPTION_MUTE_DEPRECATION_ERROR => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES => true, ErrorSuppressionFixer::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['trigger_error']],
             ],
+            [
+                '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
+                '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
+            ],
         ];
     }
 
@@ -131,17 +134,6 @@ Trigger_Error/**/("This is a deprecation warning.", E_USER_DEPRECATED/***/); ?>'
         yield [
             '<?php \A\B/* */\trigger_error("This is not a deprecation warning.", E_USER_DEPRECATED); ?>',
         ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php @trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );',
-            '<?php trigger_error("This is a deprecation warning.", E_USER_DEPRECATED, );'
-        );
     }
 
     /**

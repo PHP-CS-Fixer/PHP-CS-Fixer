@@ -668,7 +668,6 @@ AB# <- this is the name
     public function testKeepingComment(): void
     {
         $this->fixer->configure(['elements' => ['property', 'method', 'const']]);
-
         $this->doTest(
             '<?php
                 class Foo
@@ -720,15 +719,14 @@ AB# <- this is the name
     }
 
     /**
-     * @requires PHP 7.4
-     * @dataProvider provideFix74Cases
+     * @dataProvider provideFixCases
      */
-    public function testFix74(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix74Cases(): \Generator
+    public function provideFixCases(): \Generator
     {
         yield [
             '<?php class Foo { private int $foo; }',

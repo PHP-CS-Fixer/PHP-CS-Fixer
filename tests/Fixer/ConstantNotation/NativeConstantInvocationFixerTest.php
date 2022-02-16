@@ -448,7 +448,6 @@ EOT;
     public function testFixStrictOption(): void
     {
         $this->fixer->configure(['strict' => true]);
-
         $this->doTest(
             '<?php
                 echo \PHP_VERSION . \PHP_EOL; // built-in constants to have backslash

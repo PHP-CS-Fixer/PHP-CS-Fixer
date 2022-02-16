@@ -252,6 +252,10 @@ strlen($foo);
 strlen($foo);
 ',
             ],
+            [
+                '<?php $name = \get_class($foo, );',
+                '<?php $name = get_class($foo, );',
+            ],
         ];
     }
 
@@ -467,7 +471,6 @@ namespace {
     public function testFixWithConfiguredInclude(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 
@@ -583,17 +586,6 @@ namespace {
                 ],
             ];
         }
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php $name = \get_class($foo, );',
-            '<?php $name = get_class($foo, );'
-        );
     }
 
     /**

@@ -555,7 +555,9 @@ final class AnnotationTest extends TestCase
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
 
         yield ['* @param array|Traversable $foo', null, [], 'iterable'];
+
         yield ['* @param array|Traversable $foo', $appNamespace, [], null];
+
         yield ['* @param array|Traversable $foo', $appNamespace, [$useTraversable], 'iterable'];
     }
 
@@ -571,23 +573,41 @@ final class AnnotationTest extends TestCase
     public function provideGetVariableCases(): \Generator
     {
         yield ['* @param int $foo', '$foo'];
+
         yield ['* @param int $foo some description', '$foo'];
+
         yield ['/** @param int $foo*/', '$foo'];
+
         yield ['* @param int', null];
+
         yield ['* @var int $foo', '$foo'];
+
         yield ['* @var int $foo some description', '$foo'];
+
         yield ['/** @var int $foo*/', '$foo'];
+
         yield ['* @var int', null];
+
         yield ['* @param $foo', '$foo'];
+
         yield ['* @param &$foo', '$foo'];
+
         yield ['* @param & $foo', '$foo'];
+
         yield ['* @param int &$foo', '$foo'];
+
         yield ['* @param int & $foo', '$foo'];
+
         yield ['* @param int ...$foo', '$foo'];
+
         yield ['* @param int ... $foo', '$foo'];
+
         yield ['* @param int&...$foo', '$foo'];
+
         yield ['* @param int &...$foo', '$foo'];
+
         yield ['* @param int & ...$foo', '$foo'];
+
         yield ['* @param int & ... $foo', '$foo'];
     }
 }

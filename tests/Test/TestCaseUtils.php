@@ -29,6 +29,7 @@ final class TestCaseUtils
             }
 
             [$case[0], $case[1]] = [$case[1], $case[0]];
+
             yield $case;
         }
     }

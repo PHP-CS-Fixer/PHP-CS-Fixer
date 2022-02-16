@@ -110,6 +110,21 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                 ',
             ],
         ];
+
+        yield 'provideNoFix7Cases' => [
+            '<?php
+                    use some\a\{ClassA, ClassB, ClassC as C};
+                    use function some\a\{fn_a, fn_b, fn_c};
+                    use const some\a\{ConstA, ConstB, ConstC};
+                    use some\x\{ClassD, function CC as C, function D, const E, function A\B};
+                    class Foo
+                    {
+                        public function getBar(): array
+                        {
+                        }
+                    }
+                ',
+        ];
     }
 
     /**
@@ -128,36 +143,6 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
                     echo ${$a};
                     echo $a{1};
                 ',
-        ];
-    }
-
-    /**
-     * @requires PHP 7
-     *
-     * @dataProvider provideNoFix7Cases
-     */
-    public function testNoFix7(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public function provideNoFix7Cases(): array
-    {
-        return [
-            [
-                '<?php
-                    use some\a\{ClassA, ClassB, ClassC as C};
-                    use function some\a\{fn_a, fn_b, fn_c};
-                    use const some\a\{ConstA, ConstB, ConstC};
-                    use some\x\{ClassD, function CC as C, function D, const E, function A\B};
-                    class Foo
-                    {
-                        public function getBar(): array
-                        {
-                        }
-                    }
-                ',
-            ],
         ];
     }
 

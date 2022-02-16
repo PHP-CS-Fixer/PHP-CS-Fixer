@@ -103,7 +103,6 @@ EOF;
     public function testWithConfig(array $lineNumberRemoved, array $config): void
     {
         $this->fixer->configure(['tokens' => $config]);
-
         $this->doTest($this->removeLinesFromString($this->template, $lineNumberRemoved), $this->template);
     }
 
@@ -665,7 +664,6 @@ $a = new Qux();',
     {
         $this->expectDeprecation('Option "tokens: use_trait" used in `no_extra_blank_lines` rule is deprecated, use the rule `class_attributes_separation` with `elements: trait_import` instead.');
         $this->fixer->configure(['tokens' => ['use_trait']]);
-
         $this->doTest($expected, $input);
     }
 
@@ -917,7 +915,6 @@ class Foo
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -1092,7 +1089,6 @@ class Foo {}'
     public function testFix80(string $expected): void
     {
         $this->fixer->configure(['tokens' => ['throw']]);
-
         $this->doTest($expected);
     }
 

@@ -244,16 +244,6 @@ final class FunctionsAnalyzerTest extends TestCase
             [1, 6, 11, 16, 21, 26],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield [
-                '<?php
-                    use function \  str_repeat;
-                    str_repeat($a, $b);
-                ',
-                [11],
-            ];
-        }
-
         yield [
             '<?php
 $z = new class(
@@ -266,25 +256,21 @@ A();
                 ',
             [46],
         ];
-    }
 
-    /**
-     * @param int[] $indices
-     *
-     * @dataProvider provideIsGlobalFunctionCallPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testIsGlobalFunctionCallPhp74(string $code, array $indices): void
-    {
-        self::assertIsGlobalFunctionCall($indices, $code);
-    }
-
-    public function provideIsGlobalFunctionCallPhp74Cases(): \Generator
-    {
         yield [
             '<?php $foo = fn() => false;',
             [],
         ];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield [
+                '<?php
+                    use function \  str_repeat;
+                    str_repeat($a, $b);
+                ',
+                [11],
+            ];
+        }
     }
 
     /**
@@ -475,48 +461,6 @@ class(){};
             ]],
         ];
 
-        if (\PHP_VERSION_ID < 80000) {
-            yield ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
-                '$a' => new ArgumentAnalysis(
-                    '$a',
-                    9,
-                    null,
-                    new TypeAnalysis(
-                        '\Foo\Bar',
-                        3,
-                        7
-                    )
-                ),
-            ]];
-        }
-    }
-
-    public function provideFunctionReturnTypeInfoCases(): \Generator
-    {
-        yield ['<?php function(){};', 1, null];
-        yield ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)];
-        yield ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
-        yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];
-
-        if (\PHP_VERSION_ID < 80000) {
-            yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
-        }
-    }
-
-    /**
-     * @dataProvider provideFunctionsWithArgumentsPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFunctionArgumentInfoPhp74(string $code, int $methodIndex, array $expected): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-
-        static::assertSame(serialize($expected), serialize($analyzer->getFunctionArguments($tokens, $methodIndex)));
-    }
-
-    public function provideFunctionsWithArgumentsPhp74Cases(): \Generator
-    {
         yield from [
             ['<?php fn() => null;', 1, []],
             ['<?php fn($a) => null;', 1, [
@@ -612,6 +556,34 @@ class(){};
                     )
                 ),
             ]];
+
+            yield ['<?php function(\Foo/** TODO: change to something else */\Bar $a){};', 1, [
+                '$a' => new ArgumentAnalysis(
+                    '$a',
+                    9,
+                    null,
+                    new TypeAnalysis(
+                        '\Foo\Bar',
+                        3,
+                        7
+                    )
+                ),
+            ]];
+        }
+    }
+
+    public function provideFunctionReturnTypeInfoCases(): \Generator
+    {
+        yield ['<?php function(){};', 1, null];
+
+        yield ['<?php function($a): array {};', 1, new TypeAnalysis('array', 7, 7)];
+
+        yield ['<?php function($a): \Foo\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
+
+        yield ['<?php function($a): /* not sure if really an array */array {};', 1, new TypeAnalysis('array', 8, 8)];
+
+        if (\PHP_VERSION_ID < 80000) {
+            yield ['<?php function($a): \Foo/** TODO: change to something else */\Bar {};', 1, new TypeAnalysis('\Foo\Bar', 7, 11)];
         }
     }
 
@@ -631,9 +603,13 @@ class(){};
     public function provideFunctionsWithReturnTypePhp74Cases(): \Generator
     {
         yield ['<?php fn() => null;', 1, null];
+
         yield ['<?php fn(array $a) => null;', 1, null];
+
         yield ['<?php fn($a): array => null;', 1, new TypeAnalysis('array', 7, 7)];
+
         yield ['<?php fn($a): \Foo\Bar => null;', 1, new TypeAnalysis('\Foo\Bar', 7, 10)];
+
         yield ['<?php fn($a): /* not sure if really an array */array => null;', 1, new TypeAnalysis('array', 8, 8)];
 
         if (\PHP_VERSION_ID < 80000) {

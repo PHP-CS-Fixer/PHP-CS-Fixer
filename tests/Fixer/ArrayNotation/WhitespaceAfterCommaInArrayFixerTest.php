@@ -112,21 +112,6 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
                     123,
                 );',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             [
                 '<?php $x = array(...$foo, ...$bar);',
                 '<?php $x = array(...$foo,...$bar);',

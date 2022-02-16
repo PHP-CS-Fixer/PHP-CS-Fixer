@@ -118,33 +118,18 @@ final class Foo
             [
                 '<?php $a = new class{protected function A(){ echo 123; }};',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function test74Fix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): \Generator
-    {
-        yield [
-            '<?php final class Foo { private int $foo; }',
-            '<?php final class Foo { protected int $foo; }',
-        ];
-
-        yield [
-            '<?php final class Foo { private ?string $foo; }',
-            '<?php final class Foo { protected ?string $foo; }',
-        ];
-
-        yield [
-            '<?php final class Foo { private array $foo; }',
-            '<?php final class Foo { protected array $foo; }',
+            [
+                '<?php final class Foo { private int $foo; }',
+                '<?php final class Foo { protected int $foo; }',
+            ],
+            [
+                '<?php final class Foo { private ?string $foo; }',
+                '<?php final class Foo { protected ?string $foo; }',
+            ],
+            [
+                '<?php final class Foo { private array $foo; }',
+                '<?php final class Foo { protected array $foo; }',
+            ],
         ];
     }
 

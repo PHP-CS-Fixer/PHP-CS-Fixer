@@ -842,33 +842,21 @@ $example = function () use ($message1,$message2) {
     }
 
     /**
-     * @dataProvider provideFix56Cases
+     * @dataProvider provideFix2Cases
      */
-    public function testFix56(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix56Cases(): \Generator
-    {
-        yield [
-            '<?php function A($c, ...$a){}',
-            '<?php function A($c ,...$a){}',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix73Cases
-     * @requires PHP 7.3
-     */
-    public function testFix73(string $expected, ?string $input = null, array $config = []): void
+    public function testFix2(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
-    public function provideFix73Cases(): \Generator
+    public function provideFix2Cases(): \Generator
     {
+        yield [
+            '<?php function A($c, ...$a){}',
+            '<?php function A($c ,...$a){}',
+        ];
+
         yield [
             <<<'EXPECTED'
 <?php
@@ -928,20 +916,7 @@ functionCall(
             '<?php foo(1, 2, 3, );',
             '<?php foo(1,2,3,);',
         ];
-    }
 
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): \Generator
-    {
         yield [
             '<?php
 $fn = fn(

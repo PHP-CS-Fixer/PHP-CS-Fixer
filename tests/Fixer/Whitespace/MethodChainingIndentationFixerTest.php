@@ -235,6 +235,23 @@ $foo
                     ->setY();
 ',
             ],
+            [
+                '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+        ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+        ->setEmailConfirmationCode("123456",    );
+',
+                '<?php
+
+    $user->setEmail("voff.web@gmail.com", )
+
+     ->setPassword("233434" ,)
+        ->setEmailConfirmed(false , )
+->setEmailConfirmationCode("123456",    );
+',
+            ],
         ];
     }
 
@@ -255,30 +272,6 @@ $foo
                 "<?php\r\n\$user->setEmail('voff.web@gmail.com')\r\n\r\n     ->setPassword('233434')\r\n\t\t\t->setEmailConfirmed(false)\r\n\t\t      ->setEmailConfirmationCode('123456')\r\n->setHashsalt('1234')\r\n\t\t->setTncAccepted(true);",
             ],
         ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-        ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-        ->setEmailConfirmationCode("123456",    );
-',
-            '<?php
-
-    $user->setEmail("voff.web@gmail.com", )
-
-     ->setPassword("233434" ,)
-        ->setEmailConfirmed(false , )
-->setEmailConfirmationCode("123456",    );
-'
-        );
     }
 
     /**

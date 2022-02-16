@@ -1923,28 +1923,6 @@ function bar() {} }',
                 '<?php class Foo { private /* foo */function bar() {} }',
                 '<?php class Foo { private  /* foo */function bar() {} }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     *
-     * @dataProvider provideFixWithPrivatePhp71Cases
-     */
-    public function testFixWithPrivatePhp71(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'constructs' => [
-                'private',
-            ],
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixWithPrivatePhp71Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { private CONST BAR = 9000; }',
                 '<?php class Foo { private  CONST BAR = 9000; }',
@@ -2023,28 +2001,6 @@ function bar() {} }',
                 '<?php class Foo { protected /* foo */function bar() {} }',
                 '<?php class Foo { protected  /* foo */function bar() {} }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.1
-     *
-     * @dataProvider provideFixWithProtectedPhp71Cases
-     */
-    public function testFixWithProtectedPhp71(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure([
-            'constructs' => [
-                'protected',
-            ],
-        ]);
-
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixWithProtectedPhp71Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { protected CONST BAR = 9000; }',
                 '<?php class Foo { protected  CONST BAR = 9000; }',

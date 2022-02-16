@@ -26,14 +26,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFix71Cases
+     * @dataProvider provideFixCases
      */
-    public function testFix71(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function provideFix71Cases(): array
+    public function provideFixCases(): array
     {
         return [
             [
@@ -106,21 +106,6 @@ final class CompactNullableTypehintFixerTest extends AbstractFixerTestCase
                 '<?php function foo(?array ...$param): ?array {}',
                 '<?php function foo(? array ...$param): ? array {}',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php class Foo { private ?string $foo; }',
                 '<?php class Foo { private ? string $foo; }',

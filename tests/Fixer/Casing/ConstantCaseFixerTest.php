@@ -57,8 +57,11 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
             ];
 
             yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+
             yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+
             yield [sprintf('<?php $x = "%s story";', $case)];
+
             yield [sprintf('<?php $x = "%s";', $case)];
         }
     }
@@ -77,8 +80,11 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
             ];
 
             yield [sprintf('<?php $x = new %s;', ucfirst($case))];
+
             yield [sprintf('<?php $x = new %s;', strtoupper($case))];
+
             yield [sprintf('<?php $x = "%s story";', $case)];
+
             yield [sprintf('<?php $x = "%s";', $case)];
         }
     }

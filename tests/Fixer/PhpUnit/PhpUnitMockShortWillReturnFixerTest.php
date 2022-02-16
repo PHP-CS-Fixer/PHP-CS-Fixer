@@ -249,28 +249,21 @@ class FooTest extends TestCase {
     }
 }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php
+            [
+                '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->willReturn( 10 , );
     }
 }',
-            '<?php
+                '<?php
 class FooTest extends TestCase {
     public function testFoo() {
         $someMock->method("someMethod")->will($this->returnValue( 10 , ));
     }
-}'
-        );
+}',
+            ],
+        ];
     }
 
     /**

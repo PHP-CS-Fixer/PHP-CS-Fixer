@@ -276,38 +276,24 @@ null;#13
             [
                 '<?php class Foo { public const FOO = null; }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): \Generator
-    {
-        yield [
-            '<?php class Foo { protected ?int $bar = null; }',
-        ];
-        yield [
-            '<?php class Foo { protected ? string $bar = null; }',
-        ];
-        yield [
-            '<?php class Foo { protected ? array $bar = null; }',
-        ];
-
-        yield [
-            '<?php class Foo { protected static ?int $bar = null; }',
-        ];
-        yield [
-            '<?php class Foo { protected static ? string $bar = null; }',
-        ];
-        yield [
-            '<?php class Foo { protected static ? array $bar = null; }',
+            [
+                '<?php class Foo { protected ?int $bar = null; }',
+            ],
+            [
+                '<?php class Foo { protected ? string $bar = null; }',
+            ],
+            [
+                '<?php class Foo { protected ? array $bar = null; }',
+            ],
+            [
+                '<?php class Foo { protected static ?int $bar = null; }',
+            ],
+            [
+                '<?php class Foo { protected static ? string $bar = null; }',
+            ],
+            [
+                '<?php class Foo { protected static ? array $bar = null; }',
+            ],
         ];
     }
 

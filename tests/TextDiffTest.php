@@ -73,12 +73,14 @@ TEST;
 
         foreach (['txt', 'xml', 'junit'] as $format) {
             yield [$expected, $format, true];
+
             yield [$expected, $format, false];
         }
 
         $expected = substr(json_encode($expected), 1, -1);
 
         yield [$expected, 'json', true];
+
         yield [$expected, 'json', false];
     }
 

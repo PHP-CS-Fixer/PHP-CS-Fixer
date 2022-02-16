@@ -162,21 +162,6 @@ final class NativeFunctionCasingFixerTest extends AbstractFixerTestCase
                         }
                     }',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
             [
                 '<?php
                     echo \sqrt(4 , );

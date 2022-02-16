@@ -218,21 +218,6 @@ $foo#5
             'unknown type II' => [
                 '<?php settype($foo, "stringX");',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
             'null cast' => [
                 '<?php $foo = null;',
                 '<?php settype($foo, "null");',
