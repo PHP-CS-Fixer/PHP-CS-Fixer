@@ -36,15 +36,9 @@ final class ListFilesCommand extends Command
      */
     protected static $defaultName = 'list-files';
 
-    /**
-     * @var ConfigInterface
-     */
-    private $defaultConfig;
+    private ConfigInterface $defaultConfig;
 
-    /**
-     * @var ToolInfoInterface
-     */
-    private $toolInfo;
+    private ToolInfoInterface $toolInfo;
 
     public function __construct(ToolInfoInterface $toolInfo)
     {

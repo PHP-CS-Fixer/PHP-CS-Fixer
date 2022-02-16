@@ -42,10 +42,7 @@ final class Application extends BaseApplication
     public const VERSION = '3.6.1-DEV';
     public const VERSION_CODENAME = 'Roe Deer';
 
-    /**
-     * @var ToolInfo
-     */
-    private $toolInfo;
+    private ToolInfo $toolInfo;
 
     public function __construct()
     {

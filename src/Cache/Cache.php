@@ -21,15 +21,12 @@ namespace PhpCsFixer\Cache;
  */
 final class Cache implements CacheInterface
 {
-    /**
-     * @var SignatureInterface
-     */
-    private $signature;
+    private SignatureInterface $signature;
 
     /**
      * @var array<string, int>
      */
-    private $hashes = [];
+    private array $hashes = [];
 
     public function __construct(SignatureInterface $signature)
     {

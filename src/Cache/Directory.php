@@ -21,10 +21,7 @@ namespace PhpCsFixer\Cache;
  */
 final class Directory implements DirectoryInterface
 {
-    /**
-     * @var string
-     */
-    private $directoryName;
+    private string $directoryName;
 
     public function __construct(string $directoryName)
     {

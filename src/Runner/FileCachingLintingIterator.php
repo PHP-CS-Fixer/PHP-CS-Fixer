@@ -29,10 +29,7 @@ final class FileCachingLintingIterator extends \CachingIterator
      */
     private $currentResult;
 
-    /**
-     * @var LinterInterface
-     */
-    private $linter;
+    private LinterInterface $linter;
 
     /**
      * @var LintingResultInterface

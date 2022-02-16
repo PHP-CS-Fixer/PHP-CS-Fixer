@@ -31,7 +31,7 @@ final class Annotation
      *
      * @var string[]
      */
-    private static $tags = [
+    private static array $tags = [
         'method',
         'param',
         'property',
@@ -93,7 +93,7 @@ final class Annotation
     /**
      * @var NamespaceUseAnalysis[]
      */
-    private $namespaceUses;
+    private array $namespaceUses;
 
     /**
      * Create a new line instance.

@@ -28,7 +28,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
     /**
      * @var array<string, true>
      */
-    private $skippedTypes = [
+    private array $skippedTypes = [
         'mixed' => true,
         'resource' => true,
         'null' => true,

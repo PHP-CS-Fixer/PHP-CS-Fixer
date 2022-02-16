@@ -38,17 +38,13 @@ final class Token
 
     /**
      * If token prototype is an array.
-     *
-     * @var bool
      */
-    private $isArray;
+    private bool $isArray;
 
     /**
      * Flag is token was changed.
-     *
-     * @var bool
      */
-    private $changed = false;
+    private bool $changed = false;
 
     /**
      * @param array|string $token token prototype

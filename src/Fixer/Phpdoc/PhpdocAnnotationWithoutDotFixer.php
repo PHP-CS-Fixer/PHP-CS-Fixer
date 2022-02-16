@@ -31,7 +31,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     /**
      * @var string[]
      */
-    private $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
+    private array $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
     /**
      * {@inheritdoc}

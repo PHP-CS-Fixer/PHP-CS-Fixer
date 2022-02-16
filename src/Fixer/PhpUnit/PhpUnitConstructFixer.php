@@ -35,7 +35,7 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
     /**
      * @var array<string,string>
      */
-    private static $assertionFixers = [
+    private static array $assertionFixers = [
         'assertSame' => 'fixAssertPositive',
         'assertEquals' => 'fixAssertPositive',
         'assertNotEquals' => 'fixAssertNegative',

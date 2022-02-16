@@ -24,7 +24,7 @@ final class WordMatcher
     /**
      * @var string[]
      */
-    private $candidates;
+    private array $candidates;
 
     /**
      * @param string[] $candidates

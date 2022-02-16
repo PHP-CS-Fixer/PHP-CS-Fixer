@@ -59,7 +59,7 @@ abstract class AbstractFixerTestCase extends TestCase
      *
      * @var array<string,array>
      */
-    private $allowedRequiredOptions = [
+    private array $allowedRequiredOptions = [
         'header_comment' => ['header' => true],
     ];
 
@@ -68,7 +68,7 @@ abstract class AbstractFixerTestCase extends TestCase
      *
      * @var array<string,bool>
      */
-    private $allowedFixersWithoutDefaultCodeSample = [
+    private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
         'general_phpdoc_tag_rename' => true,
     ];

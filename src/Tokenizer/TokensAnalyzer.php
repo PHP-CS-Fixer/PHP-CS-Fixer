@@ -31,10 +31,8 @@ final class TokensAnalyzer
 {
     /**
      * Tokens collection instance.
-     *
-     * @var Tokens
      */
-    private $tokens;
+    private Tokens $tokens;
 
     /**
      * @var ?GotoLabelAnalyzer

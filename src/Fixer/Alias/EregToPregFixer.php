@@ -33,7 +33,7 @@ final class EregToPregFixer extends AbstractFixer
      * @var array the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
      *            all condensed in an array of arrays
      */
-    private static $functions = [
+    private static array $functions = [
         ['ereg', 'preg_match', ''],
         ['eregi', 'preg_match', 'i'],
         ['ereg_replace', 'preg_replace', ''],
@@ -45,7 +45,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * @var array the list of preg delimiters, in order of preference
      */
-    private static $delimiters = ['/', '#', '!'];
+    private static array $delimiters = ['/', '#', '!'];
 
     /**
      * {@inheritdoc}

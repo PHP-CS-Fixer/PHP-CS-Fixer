@@ -26,14 +26,13 @@ final class ReportSummary
     /**
      * @var RuleSetDescriptionInterface[]
      */
-    private $sets;
+    private array $sets;
 
     /**
      * @param RuleSetDescriptionInterface[] $sets
      */
-    public function __construct(
-        array $sets
-    ) {
+    public function __construct(array $sets)
+    {
         $this->sets = $sets;
     }
 

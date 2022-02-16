@@ -19,15 +19,12 @@ namespace PhpCsFixer\Console\Command;
  */
 final class DescribeNameNotFoundException extends \InvalidArgumentException
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
-     * @var string 'rule'|'set'
+     * 'rule'|'set'.
      */
-    private $type;
+    private string $type;
 
     public function __construct(string $name, string $type)
     {

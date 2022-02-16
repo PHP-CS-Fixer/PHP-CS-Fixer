@@ -32,15 +32,12 @@ final class FileFilterIterator extends \FilterIterator
      */
     private $eventDispatcher;
 
-    /**
-     * @var CacheManagerInterface
-     */
-    private $cacheManager;
+    private CacheManagerInterface $cacheManager;
 
     /**
      * @var array<string,bool>
      */
-    private $visitedElements = [];
+    private array $visitedElements = [];
 
     public function __construct(
         \Traversable $iterator,

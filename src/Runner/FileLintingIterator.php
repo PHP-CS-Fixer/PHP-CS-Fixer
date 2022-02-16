@@ -29,10 +29,7 @@ final class FileLintingIterator extends \IteratorIterator
      */
     private $currentResult;
 
-    /**
-     * @var null|LinterInterface
-     */
-    private $linter;
+    private LinterInterface $linter;
 
     public function __construct(\Iterator $iterator, LinterInterface $linter)
     {

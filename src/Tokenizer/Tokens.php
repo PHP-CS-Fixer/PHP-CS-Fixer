@@ -45,24 +45,22 @@ class Tokens extends \SplFixedArray
 
     /**
      * Static class cache.
-     *
-     * @var array
      */
-    private static $cache = [];
+    private static array $cache = [];
 
     /**
      * Cache of block starts. Any change in collection will invalidate it.
      *
      * @var array<int, int>
      */
-    private $blockStartCache = [];
+    private array $blockStartCache = [];
 
     /**
      * Cache of block ends. Any change in collection will invalidate it.
      *
      * @var array<int, int>
      */
-    private $blockEndCache = [];
+    private array $blockEndCache = [];
 
     /**
      * crc32 hash of code string.
@@ -75,10 +73,8 @@ class Tokens extends \SplFixedArray
      * Flag is collection was changed.
      *
      * It doesn't know about change of collection's items. To check it run `isChanged` method.
-     *
-     * @var bool
      */
-    private $changed = false;
+    private bool $changed = false;
 
     /**
      * Set of found token kinds.
@@ -89,7 +85,7 @@ class Tokens extends \SplFixedArray
      *
      * @var array<int|string, int>
      */
-    private $foundTokenKinds = [];
+    private array $foundTokenKinds = [];
 
     /**
      * Clone tokens collection.
@@ -1218,6 +1214,7 @@ class Tokens extends \SplFixedArray
         if ($findEnd && isset($this->blockStartCache[$searchIndex])) {
             return $this->blockStartCache[$searchIndex];
         }
+
         if (!$findEnd && isset($this->blockEndCache[$searchIndex])) {
             return $this->blockEndCache[$searchIndex];
         }

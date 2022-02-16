@@ -24,15 +24,12 @@ use PhpCsFixer\ToolInfoInterface;
  */
 final class WarningsDetector
 {
-    /**
-     * @var ToolInfoInterface
-     */
-    private $toolInfo;
+    private ToolInfoInterface $toolInfo;
 
     /**
      * @var string[]
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     public function __construct(ToolInfoInterface $toolInfo)
     {

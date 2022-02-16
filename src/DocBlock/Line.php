@@ -25,10 +25,8 @@ final class Line
 {
     /**
      * The content of this line.
-     *
-     * @var string
      */
-    private $content;
+    private string $content;
 
     /**
      * Create a new line instance.

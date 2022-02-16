@@ -28,7 +28,7 @@ final class Tag
      *
      * @var string[]
      */
-    private static $tags = [
+    private static array $tags = [
         'api', 'author', 'category', 'copyright', 'deprecated', 'example',
         'global', 'internal', 'license', 'link', 'method', 'package', 'param',
         'property', 'property-read', 'property-write', 'return', 'see',
@@ -37,10 +37,8 @@ final class Tag
 
     /**
      * The line containing the tag.
-     *
-     * @var Line
      */
-    private $line;
+    private Line $line;
 
     /**
      * The cached tag name.

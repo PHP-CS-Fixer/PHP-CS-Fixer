@@ -30,10 +30,7 @@ use PhpCsFixer\Utils;
  */
 final class ListDocumentGenerator
 {
-    /**
-     * @var DocumentationLocator
-     */
-    private $locator;
+    private DocumentationLocator $locator;
 
     public function __construct(DocumentationLocator $locator)
     {

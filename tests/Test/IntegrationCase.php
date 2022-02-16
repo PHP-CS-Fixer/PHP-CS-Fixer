@@ -23,20 +23,11 @@ use PhpCsFixer\RuleSet\RuleSet;
  */
 final class IntegrationCase
 {
-    /**
-     * @var array
-     */
-    private $config;
+    private array $config;
 
-    /**
-     * @var string
-     */
-    private $expectedCode;
+    private string $expectedCode;
 
-    /**
-     * @var string
-     */
-    private $fileName;
+    private string $fileName;
 
     /**
      * @var null|string
@@ -45,27 +36,17 @@ final class IntegrationCase
 
     /**
      * Env requirements (possible keys: php).
-     *
-     * @var array
      */
-    private $requirements;
+    private array $requirements;
 
-    /**
-     * @var RuleSet
-     */
-    private $ruleset;
+    private RuleSet $ruleset;
 
     /**
      * Settings how to perform the test (possible keys: none in base class, use as extension point for custom IntegrationTestCase).
-     *
-     * @var array
      */
-    private $settings;
+    private array $settings;
 
-    /**
-     * @var string
-     */
-    private $title;
+    private string $title;
 
     public function __construct(
         string $fileName,

@@ -23,15 +23,9 @@ use Composer\Semver\VersionParser;
  */
 final class NewVersionChecker implements NewVersionCheckerInterface
 {
-    /**
-     * @var GithubClientInterface
-     */
-    private $githubClient;
+    private GithubClientInterface $githubClient;
 
-    /**
-     * @var VersionParser
-     */
-    private $versionParser;
+    private VersionParser $versionParser;
 
     /**
      * @var null|string[]

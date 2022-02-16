@@ -82,6 +82,7 @@ final class FixerOption implements FixerOptionInterface
         $this->default = $default;
         $this->allowedTypes = $allowedTypes;
         $this->allowedValues = $allowedValues;
+
         if (null !== $normalizer) {
             $this->normalizer = $this->unbind($normalizer);
         }

@@ -31,15 +31,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var string
-     */
-    private $classRegex = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*$/';
+    private const CLASS_REGEX = '/^\\\\?[a-zA-Z_\\x7f-\\xff](?:\\\\?[a-zA-Z0-9_\\x7f-\\xff]+)*$/';
 
     /**
      * @var array<string, int>
      */
-    private $versionSpecificTypes = [
+    private array $versionSpecificTypes = [
         'void' => 70100,
         'iterable' => 70100,
         'object' => 70200,
@@ -49,7 +46,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     /**
      * @var array<string, bool>
      */
-    private $scalarTypes = [
+    private array $scalarTypes = [
         'bool' => true,
         'float' => true,
         'int' => true,
@@ -59,7 +56,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     /**
      * @var array<string, bool>
      */
-    private static $syntaxValidationCache = [];
+    private static array $syntaxValidationCache = [];
 
     /**
      * {@inheritdoc}
@@ -202,7 +199,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             if (false === $this->configuration['scalar_types']) {
                 return null;
             }
-        } elseif (1 !== Preg::match($this->classRegex, $commonType)) {
+        } elseif (1 !== Preg::match(self::CLASS_REGEX, $commonType)) {
             return null;
         }
 

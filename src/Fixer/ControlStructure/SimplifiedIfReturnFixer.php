@@ -29,7 +29,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     /**
      * @var array[]
      */
-    private $sequences = [
+    private array $sequences = [
         [
             'isNegative' => false,
             'sequence' => [

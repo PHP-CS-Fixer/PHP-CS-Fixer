@@ -34,10 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var array
-     */
-    private static $loops = [
+    private static array $loops = [
         'break' => ['lookupTokens' => T_BREAK, 'neededSuccessors' => [';']],
         'clone' => ['lookupTokens' => T_CLONE, 'neededSuccessors' => [';', ':', ',', ')'], 'forbiddenContents' => ['?', ':', [T_COALESCE, '??']]],
         'continue' => ['lookupTokens' => T_CONTINUE, 'neededSuccessors' => [';']],
