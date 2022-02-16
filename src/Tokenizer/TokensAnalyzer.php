@@ -280,10 +280,7 @@ final class TokensAnalyzer
      */
     public function isLambda(int $index): bool
     {
-        if (
-            !$this->tokens[$index]->isGivenKind(T_FUNCTION)
-            && (\PHP_VERSION_ID < 70400 || !$this->tokens[$index]->isGivenKind(T_FN))
-        ) {
+        if (!$this->tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
             throw new \LogicException(sprintf('No T_FUNCTION or T_FN at given index %d, got "%s".', $index, $this->tokens[$index]->getName()));
         }
 
@@ -563,12 +560,8 @@ final class TokensAnalyzer
                 T_XOR_EQUAL => true,            // ^=
                 T_SPACESHIP => true,            // <=>
                 T_COALESCE => true,             // ??
+                T_COALESCE_EQUAL => true,       // ??=
             ];
-
-            // @TODO: drop condition when PHP 7.4+ is required
-            if (\defined('T_COALESCE_EQUAL')) {
-                $arrayOperators[T_COALESCE_EQUAL] = true;  // ??=
-            }
         }
 
         $tokens = $this->tokens;
