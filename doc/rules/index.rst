@@ -504,7 +504,7 @@ Operator
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 - `new_with_braces <./operator/new_with_braces.rst>`_
 
-  All instances created with new keyword must be followed by braces.
+  All instances created with ``new`` keyword must (not) be followed by braces.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
