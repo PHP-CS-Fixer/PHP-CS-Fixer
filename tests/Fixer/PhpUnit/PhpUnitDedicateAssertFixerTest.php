@@ -440,8 +440,12 @@ $a# 5
 )# 7
 ;# 8'),
             ],
-            'do not fix 1' => [
+            [
+                self::generateTest('$this->assertCount($b, $a);'),
                 self::generateTest('$this->assertSame($b, %s($a));'),
+            ],
+            'do not fix 1' => [
+                self::generateTest('$this->assertSame($b[1], %s($a));'),
             ],
             'do not fix 2' => [
                 self::generateTest('$this->assertSame(b(), %s($a));'),
