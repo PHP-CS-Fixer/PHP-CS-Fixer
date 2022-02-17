@@ -273,11 +273,11 @@ abstract class Test
 /**
  * @small
  */
-class Test
+class Test extends TestCase
 {
 }
 
-abstract class Test
+abstract class Test2 extends TestCase
 {
 }
 
@@ -288,17 +288,17 @@ class FooBar
 /**
  * @small
  */
-class Test extends TestCase
+class Test3 extends TestCase
 {
 }
 ',
                 '<?php
 
-class Test
+class Test extends TestCase
 {
 }
 
-abstract class Test
+abstract class Test2 extends TestCase
 {
 }
 
@@ -306,7 +306,7 @@ class FooBar
 {
 }
 
-class Test extends TestCase
+class Test3 extends TestCase
 {
 }
 ',

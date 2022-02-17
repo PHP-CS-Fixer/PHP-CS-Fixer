@@ -34,6 +34,12 @@ final class PhpUnitTestCaseIndicator
             return false;
         }
 
+        $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [T_EXTENDS]]);
+
+        if (!$tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {
+            return false;
+        }
+
         if (0 !== Preg::match('/(?:Test|TestCase)$/', $tokens[$index]->getContent())) {
             return true;
         }
