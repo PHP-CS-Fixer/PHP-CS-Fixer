@@ -28,7 +28,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      * @see https://php.net/manual/en/reserved.other-reserved-words.php
      * @see https://php.net/manual/en/language.pseudo-types.php
      *
-     * @var string[]
+     * @var list<string>
      */
     private static array $reservedTypes = [
         'array',

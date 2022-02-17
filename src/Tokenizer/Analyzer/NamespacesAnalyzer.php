@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NamespacesAnalyzer
 {
     /**
-     * @return NamespaceAnalysis[]
+     * @return list<NamespaceAnalysis>
      */
     public function getDeclarations(Tokens $tokens): array
     {

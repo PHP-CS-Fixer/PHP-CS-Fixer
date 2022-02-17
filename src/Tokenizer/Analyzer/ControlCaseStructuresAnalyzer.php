@@ -25,7 +25,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ControlCaseStructuresAnalyzer
 {
     /**
-     * @param int[] $types Token types of interest of which analyzes must be returned
+     * @param list<int> $types Token types of interest of which analyzes must be returned
+     *
+     * @return \Generator<int, AbstractControlCaseStructuresAnalysis>
      */
     public static function findControlStructures(Tokens $tokens, array $types): \Generator
     {
@@ -267,6 +269,9 @@ final class ControlCaseStructuresAnalyzer
         throw new \InvalidArgumentException(sprintf('Unexpected default for type "%d".', $kind));
     }
 
+    /**
+     * @return list<int>
+     */
     private static function getTypesWithCaseOrDefault(): array
     {
         $supportedTypes = [T_SWITCH];
