@@ -1,0 +1,84 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2021-08-23T11:38:22Z
+
+[![Coverage Status](https://coveralls.io/builds/46636565/badge)](https://coveralls.io/builds/46636565)
+
+Coverage increased (+0.008%) to 93.181% when pulling **877624a40d9e2bab18283a1cdd6e30f8cd17fb5a on jrmajor:new-with-braces-anonymous** into **0999168015192a3483821b473faa566734c4a537 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by mvorisek at 2021-08-26T21:25:28Z
+
+> Although PSR-12 states that “when instantiating a new class, parentheses MUST always be present”, this rule clearly does not apply to anonymous classes, as there are three examples of anonymous classes in PSR-12 and none of them has parentheses.
+
+I belive the parentheses MUST be present even for anonymous classes and the PSR-12 should receive an errata :)
+
+The parentheses stress that a constructor is called and even needed when one or more arguments need to be passed.
+
+---------------------------------------------------------------------------
+
+by jrmajor at 2021-09-01T12:54:16Z
+
+@mvorisek @kubawerlos @keradus Thank you for linking to this discussion in php-fig, I wasn't aware of that. Would you be OK with adding these options without changing the PSR-12 rule set configuration then?
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-01T15:14:50Z
+
+If the changes are not following PSR12 (even if the spec was confusing and cannot be amended now because of reasons) than these should be coming from some other standard and/or supported/used by a bigger PHP community (this is a requirement for any rule or option).
+I suspect these are not, so I think this would fit better in a 3rd party fixer and maintained by that 3rd party.
+
+---------------------------------------------------------------------------
+
+by jrmajor at 2021-09-01T15:54:02Z
+
+@SpacePossum I think Laravel does not use parentheses when there are no arguments, although I'm not sure whether it's a formal rule or they just use them randomly.
+
+---------------------------------------------------------------------------
+
+by jrmajor at 2021-09-09T19:31:58Z
+
+Sorry for force pushing, didn't know fabbot doesn't like merge commits.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-09-19T18:18:43Z
+
+@GrahamCampbell do you know if this CS is part of the style of laravel?
+
+---------------------------------------------------------------------------
+
+by GrahamCampbell at 2021-09-19T19:11:08Z
+
+Laravel doesn't use this fixer, or particularly care about the code style here. There is no interest from the Laravel core team to normalize the code style in either direction, as far as I'm aware.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2021-10-27T06:05:31Z
+
+Thanks Graham.
+
+As this is not part of style defined by a popular standard or used in a bigger (F)OSS project I'm not in favor of adding this feature, I think a 3rd party fixer would be a better fit.
+
+(also, would be better to utilize `TokensAnalyzer::isAnonymousClass` and not rewrite logic in the fixer)
+
+---------------------------------------------------------------------------
+
+by jrmajor at 2021-11-17T00:18:48Z
+
+@SpacePossum After seeing [this](https://github.com/sebastianbergmann/phpunit/pull/4818#discussion_r747225327) comment by @sebastianbergmann, I think PHPUnit may be interested in using these options.
+
+---------------------------------------------------------------------------
+
+by jrmajor at 2021-12-02T16:32:42Z
+
+> Also, would be better to utilize `TokensAnalyzer::isAnonymousClass` and not rewrite logic in the fixer
+
+The `$nextToken->isGivenKind(T_CLASS)` check was there before. I'm not sure how to replace it, as `TokensAnalyzer::isAnonymousClass()` checks whether `T_CLASS` is preceded by `T_NEW`, and we need to check the opposite (whether `T_NEW` is followed by `T_CLASS`).
+
+---------------------------------------------------------------------------
+
+by sebastianbergmann at 2022-01-24T08:20:28Z
+
+I lack the expertise to comment on its implementation, but I would like to be able to use this fixer in my projects.
