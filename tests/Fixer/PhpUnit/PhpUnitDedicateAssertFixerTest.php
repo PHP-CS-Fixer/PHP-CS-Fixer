@@ -267,6 +267,55 @@ $a#
             self::generateTest('self::assertStringEndsNotWith($needle, $haystack);'),
             self::generateTest('self::assertFalse(str_ends_with($haystack, $needle));'),
         ];
+
+        yield '$a instanceof class' => [
+            self::generateTest('
+                $this->assertInstanceOf(SomeClass::class, $x);
+                $this->assertInstanceOf(SomeClass::class, $y, $message);
+            '),
+            self::generateTest('
+                $this->assertTrue($x instanceof SomeClass);
+                $this->assertTrue($y instanceof SomeClass, $message);
+            '),
+        ];
+
+        yield '$a instanceof class\a\b' => [
+            self::generateTest('
+                $this->assertInstanceOf(\PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer::class, $ii);
+            '),
+            self::generateTest('
+                $this->assertTrue($ii instanceof \PhpCsFixer\Tests\Fixtures\Test\AbstractFixerTest\SimpleFixer);
+            '),
+        ];
+
+        yield '$a instanceof $b' => [
+            self::generateTest('
+                $this->assertInstanceOf($tty, $abc/* 1 *//* 2 */);
+                $this->assertInstanceOf($oo, $def, $message);
+            '),
+            self::generateTest('
+                $this->assertTrue($abc instanceof /* 1 */$tty /* 2 */);
+                $this->assertTrue($def instanceof $oo, $message);
+            '),
+        ];
+
+        yield 'do not fix instance of' => [
+            self::generateTest('
+                $this->assertTrue($gg instanceof $ijl . "X", $something);
+                $this->assertTrue($ff instanceof $klh . $b(1,2,$message), $noMsg);
+            '),
+        ];
+
+        yield '!$a instanceof class' => [
+            self::generateTest('
+                $this->assertNotInstanceOf(SomeClass::class, $x);
+                $this->assertNotInstanceOf(SomeClass::class, $y, $message);
+            '),
+            self::generateTest('
+                $this->assertTrue(!$x instanceof SomeClass);
+                $this->assertTrue(!$y instanceof SomeClass, $message);
+            '),
+        ];
     }
 
     /**
