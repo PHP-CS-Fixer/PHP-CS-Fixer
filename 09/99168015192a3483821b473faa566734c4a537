@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-17T08:42:34Z
+
+[![Coverage Status](https://coveralls.io/builds/46631634/badge)](https://coveralls.io/builds/46631634)
+
+Coverage increased (+0.001%) to 93.173% when pulling **c7987c2c5810a954330ee50eb3729895c0910a33 on SpacePossum:master_PhpUnitDedicateAssertFixer_more_cases** into **ad4a709eaac8fc203c16f09abaf091c3816f452f on FriendsOfPHP:master**.
