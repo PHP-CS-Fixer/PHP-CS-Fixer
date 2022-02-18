@@ -31,17 +31,13 @@ final class ArgumentAnalysis
 
     /**
      * The default value of the argument.
-     *
-     * @var null|string
      */
-    private $default;
+    private ?string $default;
 
     /**
      * The type analysis of the argument.
-     *
-     * @var ?TypeAnalysis
      */
-    private $typeAnalysis;
+    private ?TypeAnalysis $typeAnalysis;
 
     public function __construct(string $name, int $nameIndex, ?string $default, ?TypeAnalysis $typeAnalysis = null)
     {

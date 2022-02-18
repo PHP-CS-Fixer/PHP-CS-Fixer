@@ -348,7 +348,7 @@ final class ConfigurationResolver
     public function getLinter(): LinterInterface
     {
         if (null === $this->linter) {
-            $this->linter = new Linter($this->getConfig()->getPhpExecutable());
+            $this->linter = new Linter();
         }
 
         return $this->linter;
