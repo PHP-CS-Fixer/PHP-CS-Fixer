@@ -45,7 +45,6 @@ TEST
 
     /**
      * @dataProvider provideFixCases
-     * @requires PHP 7.3
      */
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
@@ -307,9 +306,6 @@ INPUT
         ];
     }
 
-    /**
-     * @requires PHP 7.3
-     */
     public function testFixWithTabIndentation(): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));

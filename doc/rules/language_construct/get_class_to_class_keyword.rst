@@ -4,9 +4,13 @@ Rule ``get_class_to_class_keyword``
 
 Replace ``get_class`` calls on object variables with class keyword syntax.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky if the ``get_class`` function is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky if the ``get_class`` function is overridden.
 
 Examples
 --------

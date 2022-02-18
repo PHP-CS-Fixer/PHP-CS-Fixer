@@ -24,10 +24,7 @@ use PhpCsFixer\Diff\Output\StrictUnifiedDiffOutputBuilder;
  */
 final class FullDiffer implements DifferInterface
 {
-    /**
-     * @var Differ
-     */
-    private $differ;
+    private Differ $differ;
 
     public function __construct()
     {

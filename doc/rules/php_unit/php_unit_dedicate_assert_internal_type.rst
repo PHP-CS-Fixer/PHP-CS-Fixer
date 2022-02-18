@@ -5,10 +5,14 @@ Rule ``php_unit_dedicate_assert_internal_type``
 PHPUnit assertions like ``assertIsArray`` should be used over
 ``assertInternalType``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when PHPUnit methods are overridden or when project has PHPUnit
-   incompatibilities.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when PHPUnit methods are overridden or when project has PHPUnit
+incompatibilities.
 
 Configuration
 -------------

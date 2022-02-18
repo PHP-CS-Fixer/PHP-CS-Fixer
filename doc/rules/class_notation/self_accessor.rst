@@ -5,10 +5,13 @@ Rule ``self_accessor``
 Inside class or interface element ``self`` should be preferred to the class name
 itself.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when using dynamic calls like get_called_class() or late static
-   binding.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when using dynamic calls like get_called_class() or late static binding.
 
 Examples
 --------

@@ -25,17 +25,6 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
-     * @dataProvider provideFixDeprecatedCases
-     * @requires PHP < 7.4
-     */
-    public function testFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @dataProvider provideFixCases
-     * @requires PHP 7.4
      */
     public function testFix74(string $expected, ?string $input = null): void
     {
@@ -44,7 +33,6 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 
     /**
      * @dataProvider provideFixDeprecatedCases
-     * @requires PHP 7.4
      * @group legacy
      */
     public function testFix74Deprecated(string $expected, ?string $input = null): void
@@ -105,18 +93,22 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
             sprintf('<?php echo ( %s  )$a;', $to),
             sprintf('<?php echo ( %s  )$a;', $from),
         ];
+
         yield [
             sprintf('<?php $b=(%s) $d;', $to),
             sprintf('<?php $b=(%s) $d;', $from),
         ];
+
         yield [
             sprintf('<?php $b= (%s)$d;', $to),
             sprintf('<?php $b= (%s)$d;', strtoupper($from)),
         ];
+
         yield [
             sprintf('<?php $b=( %s) $d;', $to),
             sprintf('<?php $b=( %s) $d;', ucfirst($from)),
         ];
+
         yield [
             sprintf('<?php $b=(%s ) $d;', $to),
             sprintf('<?php $b=(%s ) $d;', ucfirst($from)),

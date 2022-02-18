@@ -39,7 +39,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     /**
      * @var string[]
      */
-    private static $availableTokens = [
+    private static array $availableTokens = [
         'break',
         'case',
         'continue',

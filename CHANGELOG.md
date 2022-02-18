@@ -3,6 +3,28 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.6.0
+--------------------
+
+* bug #6063 PhpdocTypesOrderFixer - Improve nested types support (ruudk, julienfalque)
+* bug #6197 FullyQualifiedStrictTypesFixer - fix same classname is imported from … (SpacePossum)
+* bug #6241 NoSuperfluousPhpdocTagsFixer - fix for reference and splat operator (kubawerlos)
+* bug #6243 PhpdocTypesOrderFixer - fix for intersection types (kubawerlos)
+* bug #6254 PhpUnitDedicateAssertFixer - remove `is_resource`. (drupol)
+* bug #6264 TokensAnalyzer - fix isConstantInvocation detection for mulitple exce… (SpacePossum)
+* bug #6265 NullableTypeDeclarationForDefaultNullValueFixer - handle "readonly" a… (SpacePossum)
+* bug #6266 SimplifiedIfReturnFixer - handle statement in loop without braces (SpacePossum)
+* feature #6262 ClassReferenceNameCasingFixer - introduction (SpacePossum)
+* feature #6267 NoUnneededImportAliasFixer - Introduction (SpacePossum)
+* minor #6199 HeaderCommentFixer - support monolithic files with shebang (kubawerlos, keradus)
+* minor #6231 Fix priority descriptions and tests. (SpacePossum)
+* minor #6237 DX: Application - better display version when displaying gitSha (keradus)
+* minor #6242 Annotation - improve on recognising types with reference and splat operator (kubawerlos)
+* minor #6250 Tokens - optimize cache clear (SpacePossum)
+* minor #6269 Docs: redo warnings in RST docs to fix issue on website docs (keradus)
+* minor #6270 ClassReferenceNameCasingFixer - Add missing test cases for catch (SpacePossum)
+* minor #6273 Add priority test (SpacePossum)
+
 Changelog for v3.5.0
 --------------------
 

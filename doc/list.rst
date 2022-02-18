@@ -166,9 +166,9 @@ List of Available Rules
    Configuration options:
 
    - | ``elements``
-     | Dictionary of `const|method|property|trait_import` => `none|one|only_if_meta` values.
+     | Dictionary of `const|method|property|trait_import|case` => `none|one|only_if_meta` values.
      | Allowed types: ``array``
-     | Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']``
+     | Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']``
 
 
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -176,7 +176,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
 -  `class_definition <./rules/class_notation/class_definition.rst>`_
 
-   Whitespace around the keywords of a class, trait or interfaces definition should be one space.
+   Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
 
    Configuration options:
 
@@ -208,6 +208,13 @@ List of Available Rules
    *warning deprecated*
 
    `Source PhpCsFixer\\Fixer\\LanguageConstruct\\ClassKeywordRemoveFixer <./../src/Fixer/LanguageConstruct/ClassKeywordRemoveFixer.php>`_
+-  `class_reference_name_casing <./rules/casing/class_reference_name_casing.rst>`_
+
+   When referencing an internal class it must be written using the correct casing.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Casing\\ClassReferenceNameCasingFixer <./../src/Fixer/Casing/ClassReferenceNameCasingFixer.php>`_
 -  `clean_namespace <./rules/namespace_notation/clean_namespace.rst>`_
 
    Namespace must not contain spacing, comments or PHPDoc.
@@ -1174,7 +1181,19 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
 -  `new_with_braces <./rules/operator/new_with_braces.rst>`_
 
-   All instances created with new keyword must be followed by braces.
+   All instances created with ``new`` keyword must (not) be followed by braces.
+
+   Configuration options:
+
+   - | ``named_class``
+     | Whether named classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+   - | ``anonymous_class``
+     | Whether anonymous classes should be followed by parentheses.
+     | Allowed types: ``bool``
+     | Default value: ``true``
+
 
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
@@ -1571,7 +1590,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\ControlStructure\\NoUnneededCurlyBracesFixer <./../src/Fixer/ControlStructure/NoUnneededCurlyBracesFixer.php>`_
 -  `no_unneeded_final_method <./rules/class_notation/no_unneeded_final_method.rst>`_
 
-   A ``final`` class must not have ``final`` methods and ``private`` methods must not be ``final``.
+   Removes ``final`` from methods where possible.
 
    *warning risky* Risky when child class overrides a ``private`` method.
 
@@ -1586,6 +1605,13 @@ List of Available Rules
    Part of rule sets `@PHP80Migration:risky <./ruleSets/PHP80MigrationRisky.rst>`_ `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
+-  `no_unneeded_import_alias <./rules/import/no_unneeded_import_alias.rst>`_
+
+   Imports should not be aliased as the same name.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Import\\NoUnneededImportAliasFixer <./../src/Fixer/Import/NoUnneededImportAliasFixer.php>`_
 -  `no_unreachable_default_argument_value <./rules/function_notation/no_unreachable_default_argument_value.rst>`_
 
    In function arguments there must not be arguments with default values before non-default ones.
@@ -2611,6 +2637,13 @@ List of Available Rules
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Import\\SingleLineAfterImportsFixer <./../src/Fixer/Import/SingleLineAfterImportsFixer.php>`_
+-  `single_line_comment_spacing <./rules/comment/single_line_comment_spacing.rst>`_
+
+   Single-line comments must have proper spacing.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Comment\\SingleLineCommentSpacingFixer <./../src/Fixer/Comment/SingleLineCommentSpacingFixer.php>`_
 -  `single_line_comment_style <./rules/comment/single_line_comment_style.rst>`_
 
    Single-line comments and multi-line comments with only one line of actual content should use the ``//`` syntax.

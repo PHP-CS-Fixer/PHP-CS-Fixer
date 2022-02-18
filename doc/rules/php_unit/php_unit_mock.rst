@@ -5,10 +5,14 @@ Rule ``php_unit_mock``
 Usages of ``->getMock`` and ``->getMockWithoutInvokingTheOriginalConstructor``
 methods MUST be replaced by ``->createMock`` or ``->createPartialMock`` methods.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when PHPUnit classes are overridden or not accessible, or when project
-   has PHPUnit incompatibilities.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when PHPUnit classes are overridden or not accessible, or when project has
+PHPUnit incompatibilities.
 
 Configuration
 -------------

@@ -34,7 +34,6 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         }
 
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 

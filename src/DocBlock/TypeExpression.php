@@ -99,7 +99,7 @@ final class TypeExpression
             )
         )
         (?:
-            \h*[|&]\h*
+            \h*(?<glue>[|&])\h*
             (?&type)
         )*
     )
@@ -110,15 +110,14 @@ final class TypeExpression
      */
     private $value;
 
-    /**
-     * @var bool
-     */
-    private $isUnionType = false;
+    private bool $isUnionType = false;
 
     /**
      * @var list<array{start_index: int, expression: self}>
      */
-    private $innerTypeExpressions = [];
+    private array $innerTypeExpressions = [];
+
+    private string $typesGlue = '|';
 
     /**
      * @var null|NamespaceAnalysis
@@ -165,7 +164,7 @@ final class TypeExpression
     /**
      * @param callable(self $a, self $b): int $compareCallback
      */
-    public function sortUnionTypes(callable $compareCallback): void
+    public function sortTypes(callable $compareCallback): void
     {
         foreach (array_reverse($this->innerTypeExpressions) as [
             'start_index' => $startIndex,
@@ -173,7 +172,7 @@ final class TypeExpression
         ]) {
             $initialValueLength = \strlen($inner->toString());
 
-            $inner->sortUnionTypes($compareCallback);
+            $inner->sortTypes($compareCallback);
 
             $this->value = substr_replace(
                 $this->value,
@@ -190,8 +189,13 @@ final class TypeExpression
                 $compareCallback
             );
 
-            $this->value = implode('|', $this->getTypes());
+            $this->value = implode($this->getTypesGlue(), $this->getTypes());
         }
+    }
+
+    public function getTypesGlue(): string
+    {
+        return $this->typesGlue;
     }
 
     public function getCommonType(): ?string
@@ -253,6 +257,8 @@ final class TypeExpression
         if ([] === $matches) {
             return;
         }
+
+        $this->typesGlue = $matches['glue'] ?? $this->typesGlue;
 
         $index = '' !== $matches['nullable'] ? 1 : 0;
 
@@ -440,7 +446,7 @@ final class TypeExpression
             }
         }
 
-        if (null === $this->namespace || '' === $this->namespace->getShortName()) {
+        if (null === $this->namespace || $this->namespace->isGlobalNamespace()) {
             return $type;
         }
 

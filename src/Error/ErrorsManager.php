@@ -26,7 +26,7 @@ final class ErrorsManager
     /**
      * @var Error[]
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * Returns errors reported during linting before fixing.

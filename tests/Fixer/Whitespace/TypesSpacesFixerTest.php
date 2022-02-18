@@ -73,6 +73,7 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
             '<?php function foo(TypeA|TypeB $x) {}',
             '<?php function foo(TypeA | TypeB $x) {}',
         ];
+
         yield [
             '<?php function foo(TypeA|TypeB|TypeC|TypeD $x, TypeE|TypeF $y, TypeA|TypeB $z) {}',
             '<?php function foo(TypeA | TypeB    |    TypeC | TypeD $x, TypeE    |    TypeF $y, TypeA| TypeB $z) {}',

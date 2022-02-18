@@ -6,9 +6,13 @@ Add leading ``\`` before constant invocation of internal constant to speed up
 resolving. Constant name match is case-sensitive, except for ``null``, ``false``
 and ``true``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when any of the constants are namespaced or overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when any of the constants are namespaced or overridden.
 
 Configuration
 -------------

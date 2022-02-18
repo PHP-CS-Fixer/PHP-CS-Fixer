@@ -32,7 +32,7 @@ final class InstallViaComposerTest extends AbstractSmokeTest
     /**
      * @var string[]
      */
-    private $stepsToVerifyInstallation = [
+    private array $stepsToVerifyInstallation = [
         // Confirm we can install.
         'composer install -q',
         // Ensure that autoloader works.

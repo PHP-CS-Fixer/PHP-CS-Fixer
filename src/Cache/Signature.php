@@ -21,30 +21,15 @@ namespace PhpCsFixer\Cache;
  */
 final class Signature implements SignatureInterface
 {
-    /**
-     * @var string
-     */
-    private $phpVersion;
+    private string $phpVersion;
 
-    /**
-     * @var string
-     */
-    private $fixerVersion;
+    private string $fixerVersion;
 
-    /**
-     * @var string
-     */
-    private $indent;
+    private string $indent;
 
-    /**
-     * @var string
-     */
-    private $lineEnding;
+    private string $lineEnding;
 
-    /**
-     * @var array
-     */
-    private $rules;
+    private array $rules;
 
     public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
     {

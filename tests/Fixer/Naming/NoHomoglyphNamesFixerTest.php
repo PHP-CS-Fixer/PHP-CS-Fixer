@@ -98,21 +98,6 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
                 '<?php $first_name = "a";',
                 '<?php $first＿name = "a";', // Weird underscore symbol
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             [
                 '<?php class A { private string $name; }',
                 '<?php class A { private string $nаmе; }',

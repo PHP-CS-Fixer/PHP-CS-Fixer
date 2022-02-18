@@ -21,35 +21,17 @@ namespace PhpCsFixer\Console\Report\FixReport;
  */
 final class ReportSummary
 {
-    /**
-     * @var bool
-     */
-    private $addAppliedFixers;
+    private array $changed;
 
-    /**
-     * @var array
-     */
-    private $changed;
+    private int $time;
 
-    /**
-     * @var bool
-     */
-    private $isDecoratedOutput;
+    private int $memory;
 
-    /**
-     * @var bool
-     */
-    private $isDryRun;
+    private bool $addAppliedFixers;
 
-    /**
-     * @var int
-     */
-    private $memory;
+    private bool $isDryRun;
 
-    /**
-     * @var int
-     */
-    private $time;
+    private bool $isDecoratedOutput;
 
     /**
      * @param int $time   duration in milliseconds

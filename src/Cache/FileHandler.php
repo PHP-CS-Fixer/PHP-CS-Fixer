@@ -23,10 +23,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class FileHandler implements FileHandlerInterface
 {
-    /**
-     * @var string
-     */
-    private $file;
+    private string $file;
 
     public function __construct(string $file)
     {

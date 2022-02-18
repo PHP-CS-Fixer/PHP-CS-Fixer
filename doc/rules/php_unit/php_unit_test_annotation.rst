@@ -4,10 +4,14 @@ Rule ``php_unit_test_annotation``
 
 Adds or removes @test annotations from tests, following configuration.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   This fixer may change the name of your tests, and could cause incompatibility
-   with abstract classes or interfaces.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This fixer may change the name of your tests, and could cause incompatibility
+with abstract classes or interfaces.
 
 Configuration
 -------------

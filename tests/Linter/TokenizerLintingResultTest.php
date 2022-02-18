@@ -55,9 +55,6 @@ final class TokenizerLintingResultTest extends TestCase
         $result->check();
     }
 
-    /**
-     * @requires PHP 7.3
-     */
     public function testTokenizerLintingResultFailCompileError(): void
     {
         $error = new \CompileError('Multiple access type modifiers are not allowed');

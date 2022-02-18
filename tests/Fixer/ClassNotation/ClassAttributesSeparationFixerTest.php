@@ -260,7 +260,9 @@ private $d = 123;
     public static function provideInvalidElementsCases(): iterable
     {
         yield 'numeric keys' => [['method', 'property']];
+
         yield 'wrong key name' => [['methods' => 'one']];
+
         yield 'wrong key value' => [['method' => 'two']];
     }
 
@@ -2179,8 +2181,12 @@ class Foo
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input, array $config = null): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -2250,6 +2256,100 @@ class Foo
                 private Bar & Something & Baz $c;
                 private Bar & Something & Baz $d;
             }',
+        ];
+
+        $input = '<?php
+enum Cards: string
+{
+    protected const Deck = "d.d";
+
+
+
+    protected const Pack = "p.p";
+
+    case Hearts = "H";
+
+
+    case Spades = "S";
+
+
+
+
+    case Diamonds = "D";
+
+
+    case Clubs = "C";
+    protected function test() {
+        echo 1;
+    }
+
+
+    protected function test2() {
+        echo 2;
+    }
+}
+            ';
+
+        yield [
+            '<?php
+enum Cards: string
+{
+    protected const Deck = "d.d";
+
+    protected const Pack = "p.p";
+
+    case Hearts = "H";
+
+    case Spades = "S";
+
+    case Diamonds = "D";
+
+    case Clubs = "C";
+
+    protected function test() {
+        echo 1;
+    }
+
+    protected function test2() {
+        echo 2;
+    }
+}
+            ',
+            $input,
+            ['elements' => [
+                'const' => 'one',
+                'method' => 'one',
+                'case' => 'one',
+            ]],
+        ];
+
+        yield [
+            '<?php
+enum Cards: string
+{
+    protected const Deck = "d.d";
+    protected const Pack = "p.p";
+
+    case Hearts = "H";
+    case Spades = "S";
+    case Diamonds = "D";
+    case Clubs = "C";
+
+    protected function test() {
+        echo 1;
+    }
+
+    protected function test2() {
+        echo 2;
+    }
+}
+            ',
+            $input,
+            ['elements' => [
+                'const' => 'none',
+                'method' => 'one',
+                'case' => 'none',
+            ]],
         ];
     }
 }

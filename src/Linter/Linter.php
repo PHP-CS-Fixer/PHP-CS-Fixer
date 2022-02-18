@@ -23,21 +23,11 @@ namespace PhpCsFixer\Linter;
  */
 final class Linter implements LinterInterface
 {
-    /**
-     * @var LinterInterface
-     */
-    private $sublinter;
+    private LinterInterface $subLinter;
 
-    /**
-     * @param null|string $executable PHP executable, null for autodetection
-     */
-    public function __construct(?string $executable = null)
+    public function __construct()
     {
-        try {
-            $this->sublinter = new TokenizerLinter();
-        } catch (UnavailableLinterException $e) {
-            $this->sublinter = new ProcessLinter($executable);
-        }
+        $this->subLinter = new TokenizerLinter();
     }
 
     /**
@@ -45,7 +35,7 @@ final class Linter implements LinterInterface
      */
     public function isAsync(): bool
     {
-        return $this->sublinter->isAsync();
+        return $this->subLinter->isAsync();
     }
 
     /**
@@ -53,7 +43,7 @@ final class Linter implements LinterInterface
      */
     public function lintFile(string $path): LintingResultInterface
     {
-        return $this->sublinter->lintFile($path);
+        return $this->subLinter->lintFile($path);
     }
 
     /**
@@ -61,6 +51,6 @@ final class Linter implements LinterInterface
      */
     public function lintSource(string $source): LintingResultInterface
     {
-        return $this->sublinter->lintSource($source);
+        return $this->subLinter->lintSource($source);
     }
 }

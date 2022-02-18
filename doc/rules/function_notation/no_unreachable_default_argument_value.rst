@@ -5,11 +5,14 @@ Rule ``no_unreachable_default_argument_value``
 In function arguments there must not be arguments with default values before
 non-default ones.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Modifies the signature of functions; therefore risky when using systems (such
-   as some Symfony components) that rely on those (for example through
-   reflection).
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Modifies the signature of functions; therefore risky when using systems (such as
+some Symfony components) that rely on those (for example through reflection).
 
 Examples
 --------

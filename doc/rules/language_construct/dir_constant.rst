@@ -4,9 +4,13 @@ Rule ``dir_constant``
 
 Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__`` constant.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``dirname`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``dirname`` is overridden.
 
 Examples
 --------

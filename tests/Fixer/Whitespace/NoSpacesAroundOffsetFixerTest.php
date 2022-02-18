@@ -355,6 +355,24 @@ EOT
 
             yield $index => $test;
         }
+
+        yield 'Config "default".' => [
+            ['inside', 'outside'],
+            '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b[0];
+',
+            '<?php [ $a ] = $a;
+if ($controllerName = $request->attributes->get(1)) {
+    return false;
+}
+[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
+$a = $b   [0];
+',
+        ];
     }
 
     public function testWrongConfig(): void
@@ -363,38 +381,5 @@ EOT
         $this->expectExceptionMessageMatches('/^\[no_spaces_around_offset\] Invalid configuration: The option "positions" .*\.$/');
 
         $this->fixer->configure(['positions' => ['foo']]);
-    }
-
-    /**
-     * @dataProvider providePHP71Cases
-     * @requires PHP 7.1
-     */
-    public function testPHP71(array $configuration, string $expected, string $input): void
-    {
-        $this->fixer->configure($configuration);
-        $this->doTest($expected, $input);
-    }
-
-    public function providePHP71Cases(): array
-    {
-        return [
-            'Config "default".' => [
-                ['positions' => ['inside', 'outside']],
-                '<?php [ $a ] = $a;
-if ($controllerName = $request->attributes->get(1)) {
-    return false;
-}
-[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
-$a = $b[0];
-',
-                '<?php [ $a ] = $a;
-if ($controllerName = $request->attributes->get(1)) {
-    return false;
-}
-[  $class  ,   $method  ] = $this->splitControllerClassAndMethod($controllerName);
-$a = $b   [0];
-',
-            ],
-        ];
     }
 }

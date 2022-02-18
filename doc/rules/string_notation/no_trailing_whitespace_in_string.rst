@@ -4,10 +4,13 @@ Rule ``no_trailing_whitespace_in_string``
 
 There must be no trailing whitespace in strings.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Changing the whitespaces in strings might affect string comparisons and
-   outputs.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changing the whitespaces in strings might affect string comparisons and outputs.
 
 Examples
 --------

@@ -415,22 +415,6 @@ case $b:
                     continue;
             }
             ',
-        ];
-    }
-
-    /**
-     * @requires PHP 7.4
-     *
-     * @dataProvider provideFix74Cases
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix74Cases(): array
-    {
-        return [
             'numeric literal separator' => [
                 '<?php
 switch ($a) {

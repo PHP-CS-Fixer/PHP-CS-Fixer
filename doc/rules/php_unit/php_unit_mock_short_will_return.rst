@@ -5,10 +5,14 @@ Rule ``php_unit_mock_short_will_return``
 Usage of PHPUnit's mock e.g. ``->will($this->returnValue(..))`` must be replaced
 by its shorter equivalent such as ``->willReturn(...)``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when PHPUnit classes are overridden or not accessible, or when project
-   has PHPUnit incompatibilities.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when PHPUnit classes are overridden or not accessible, or when project has
+PHPUnit incompatibilities.
 
 Examples
 --------

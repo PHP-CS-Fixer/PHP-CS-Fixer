@@ -35,7 +35,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var array<string,array|true>
      */
-    private static $fixMap = [
+    private static array $fixMap = [
         'array_key_exists' => [
             'positive' => 'assertArrayHasKey',
             'negative' => 'assertArrayNotHasKey',
@@ -110,7 +110,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     /**
      * @var string[]
      */
-    private $functions = [];
+    private array $functions = [];
 
     /**
      * {@inheritdoc}
@@ -144,7 +144,6 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
                 'is_numeric',
                 'is_object',
                 'is_real',
-                'is_resource',
                 'is_scalar',
                 'is_string',
             ]);
@@ -380,7 +379,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         // let $a = [1,2]; $b = "2";
         // "$this->assertEquals("2", count($a)); $this->assertEquals($b, count($a)); $this->assertEquals(2.1, count($a));"
 
-        if (!$tokens[$expectedIndex]->isGivenKind(T_LNUMBER)) {
+        if ($tokens[$expectedIndex]->isGivenKind([T_VARIABLE])) {
+            if (!$tokens[$tokens->getNextMeaningfulToken($expectedIndex)]->equals(',')) {
+                return;
+            }
+        } elseif (!$tokens[$expectedIndex]->isGivenKind([T_LNUMBER, T_VARIABLE])) {
             return;
         }
 

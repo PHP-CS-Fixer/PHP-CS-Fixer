@@ -4,9 +4,13 @@ Rule ``declare_strict_types``
 
 Force strict types declaration in all files. Requires PHP >= 7.0.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Forcing strict types will stop non strict code from working.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Forcing strict types will stop non strict code from working.
 
 Examples
 --------

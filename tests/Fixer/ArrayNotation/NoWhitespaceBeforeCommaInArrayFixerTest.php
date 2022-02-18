@@ -28,25 +28,29 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, string $input = null, array $config = null): void
     {
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
     public function provideFixCases(): array
     {
         return [
-            //old style array
+            // old style array
             [
                 '<?php $x = array(1, "2",3);',
                 '<?php $x = array(1 , "2",3);',
             ],
-            //old style array with comments
+            // old style array with comments
             [
                 '<?php $x = array /* comment */ (1,  "2", 3);',
                 '<?php $x = array /* comment */ (1  ,  "2", 3);',
             ],
-            //old style array with comments
+            // old style array with comments
             [
                 '<?php $x = array(1#
 ,#
@@ -56,7 +60,7 @@ final class NoWhitespaceBeforeCommaInArrayFixerTest extends AbstractFixerTestCas
 "2"  , 3);',
             ],
 
-            //short array
+            // short array
             [
                 '<?php $x = [1,  "2", 3,$y];',
                 '<?php $x = [1 ,  "2", 3 ,$y];',
@@ -137,22 +141,6 @@ EOF
 EOF
                     );",
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix73Cases
-     * @requires PHP 7.3
-     */
-    public function testFix73(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
             [
                 "<?php \$x = array(<<<'EOF'
 <?php \$a = '\\foo\\bar\\\\';
@@ -169,21 +157,6 @@ EOF
                     );",
                 ['after_heredoc' => true],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             [
                 '<?php $x = array(...$foo, ...$bar);',
                 '<?php $x = array(...$foo , ...$bar);',

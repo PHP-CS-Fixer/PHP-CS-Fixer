@@ -31,7 +31,7 @@ final class Transformers
      *
      * @var TransformerInterface[]
      */
-    private $items = [];
+    private array $items = [];
 
     /**
      * Register built in Transformers.

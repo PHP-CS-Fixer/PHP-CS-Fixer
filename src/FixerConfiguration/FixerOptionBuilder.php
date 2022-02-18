@@ -16,25 +16,16 @@ namespace PhpCsFixer\FixerConfiguration;
 
 final class FixerOptionBuilder
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     /**
      * @var mixed
      */
     private $default;
 
-    /**
-     * @var bool
-     */
-    private $isRequired = true;
+    private bool $isRequired = true;
 
     /**
      * @var null|string[]

@@ -1129,7 +1129,6 @@ EOF;
     public function testVariadicParams(array $config, string $expected, string $input): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 
@@ -1251,7 +1250,6 @@ class Foo {}
     public function testInvalidPhpdocsAreUnchanged(array $config, string $input): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($input);
     }
 

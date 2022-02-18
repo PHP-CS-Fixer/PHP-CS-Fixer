@@ -36,18 +36,18 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
     public function provideFixCases(): array
     {
         return [
-            //old style array
+            // old style array
             [
                 '<?php $x = array( 1 , "2", 3);',
                 '<?php $x = array( 1 ,"2",3);',
             ],
-            //old style array with comments
+            // old style array with comments
             [
                 '<?php $x = array /* comment */ ( 1 ,  "2", 3);',
                 '<?php $x = array /* comment */ ( 1 ,  "2",3);',
             ],
 
-            //short array
+            // short array
             [
                 '<?php $x = [ 1 ,  "2", 3 , $y];',
                 '<?php $x = [ 1 ,  "2",3 ,$y];',
@@ -112,21 +112,6 @@ final class WhitespaceAfterCommaInArrayFixerTest extends AbstractFixerTestCase
                     123,
                 );',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             [
                 '<?php $x = array(...$foo, ...$bar);',
                 '<?php $x = array(...$foo,...$bar);',

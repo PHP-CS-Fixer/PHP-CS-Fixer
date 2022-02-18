@@ -4,9 +4,13 @@ Rule ``no_alias_functions``
 
 Master functions shall be used instead of aliases.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when any of the alias functions are overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when any of the alias functions are overridden.
 
 Configuration
 -------------

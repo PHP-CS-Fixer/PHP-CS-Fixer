@@ -258,6 +258,11 @@ class Foo extends Bar
             $a->__UnSet($foo); // fix
             ',
         ];
+
+        yield [
+            '<?php $foo->__invoke(1, );',
+            '<?php $foo->__INVOKE(1, );',
+        ];
     }
 
     /**
@@ -334,17 +339,6 @@ function __Tostring() {}',
     }
 
     /**
-     * @requires PHP 7.3
-     */
-    public function testFix73(): void
-    {
-        $this->doTest(
-            '<?php $foo->__invoke(1, );',
-            '<?php $foo->__INVOKE(1, );'
-        );
-    }
-
-    /**
      * @requires PHP 8.0
      */
     public function testFix80(): void
@@ -374,6 +368,21 @@ function __Tostring() {}',
         yield 'isset' => [
             '<?php $a->__isset(...);',
             '<?php $a->__ISSET(...);',
+        ];
+
+        yield 'enum' => [
+            '<?php
+enum Foo
+{
+    public static function __callStatic(string $method, array $parameters){ echo $method;}
+}
+Foo::test();',
+            '<?php
+enum Foo
+{
+    public static function __CALLStatic(string $method, array $parameters){ echo $method;}
+}
+Foo::test();',
         ];
     }
 }

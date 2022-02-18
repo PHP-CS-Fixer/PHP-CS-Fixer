@@ -4,9 +4,13 @@ Rule ``pow_to_exponentiation``
 
 Converts ``pow`` to the ``**`` operator.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when the function ``pow`` is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when the function ``pow`` is overridden.
 
 Examples
 --------

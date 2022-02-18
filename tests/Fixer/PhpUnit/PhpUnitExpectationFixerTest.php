@@ -30,9 +30,12 @@ final class PhpUnitExpectationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideTestFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $config = []): void
+    public function testFix(string $expected, ?string $input = null, array $config = null): void
     {
-        $this->fixer->configure($config);
+        if (null !== $config) {
+            $this->fixer->configure($config);
+        }
+
         $this->doTest($expected, $input);
     }
 
@@ -343,6 +346,54 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 }',
                 ['target' => PhpUnitTargetVersion::VERSION_NEWEST],
             ],
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this->expectException("RuntimeException");
+            $this->expectExceptionMessage("msg"/*B*/);
+            $this->expectExceptionCode(/*C*/123);
+            zzz();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, );
+            zzz();
+        }
+    }',
+            ],
+            [
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this->expectException("RuntimeException");
+            $this->expectExceptionMessage("msg"/*B*/);
+            $this->expectExceptionCode(/*C*/123/*D*/);
+            zzz();
+        }
+    }',
+                '<?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        function testFnc()
+        {
+            aaa();
+            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, /*D*/);
+            zzz();
+        }
+    }',
+            ],
         ];
     }
 
@@ -398,69 +449,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $input .= "\n}";
 
         return [[$expected, $input]];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
-            [
-                '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->expectException("RuntimeException");
-            $this->expectExceptionMessage("msg"/*B*/);
-            $this->expectExceptionCode(/*C*/123);
-            zzz();
-        }
-    }',
-                '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, );
-            zzz();
-        }
-    }',
-            ],
-            [
-                '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->expectException("RuntimeException");
-            $this->expectExceptionMessage("msg"/*B*/);
-            $this->expectExceptionCode(/*C*/123/*D*/);
-            zzz();
-        }
-    }',
-                '<?php
-    final class MyTest extends \PHPUnit_Framework_TestCase
-    {
-        function testFnc()
-        {
-            aaa();
-            $this->setExpectedException("RuntimeException", "msg"/*B*/, /*C*/123, /*D*/);
-            zzz();
-        }
-    }',
-            ],
-        ];
     }
 
     /**

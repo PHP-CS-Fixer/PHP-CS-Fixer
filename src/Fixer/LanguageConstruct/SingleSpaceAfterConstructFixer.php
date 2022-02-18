@@ -36,7 +36,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     /**
      * @var array<string, null|int>
      */
-    private static $tokenMap = [
+    private static array $tokenMap = [
         'abstract' => T_ABSTRACT,
         'as' => T_AS,
         'attribute' => CT::T_ATTRIBUTE_CLOSE,
@@ -102,7 +102,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractFixer implements Conf
     /**
      * @var array<string, int>
      */
-    private $fixTokenMap = [];
+    private array $fixTokenMap = [];
 
     /**
      * {@inheritdoc}

@@ -4,9 +4,13 @@ Rule ``function_to_constant``
 
 Replace core functions calls returning constants with the constants.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when any of the configured functions to replace are overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when any of the configured functions to replace are overridden.
 
 Configuration
 -------------

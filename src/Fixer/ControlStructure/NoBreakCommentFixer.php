@@ -154,7 +154,7 @@ switch ($foo) {
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_THROW])) {
+            if ($tokens[$i]->isGivenKind(T_THROW)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
                 if ($previousIndex === $casePosition || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [T_OPEN_TAG]])) {

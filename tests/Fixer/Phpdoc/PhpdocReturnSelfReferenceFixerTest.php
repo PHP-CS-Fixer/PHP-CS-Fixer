@@ -53,6 +53,30 @@ final class PhpdocReturnSelfReferenceFixerTest extends AbstractFixerTestCase
             [
                 '<?php /** @return this */ require_once($a);echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1;echo 1; class E {}',
             ],
+            [
+                '<?php
+
+trait SomeTrait
+{
+    /** @return $this */
+    public function someTest(): self
+    {
+        return $this;
+    }
+}
+// class Foo { use Bla; } $a = (new Foo())->someTest();',
+                '<?php
+
+trait SomeTrait
+{
+    /** @return this */
+    public function someTest(): self
+    {
+        return $this;
+    }
+}
+// class Foo { use Bla; } $a = (new Foo())->someTest();',
+            ],
         ];
     }
 
@@ -207,5 +231,44 @@ class F
                 }
             '
         );
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield [
+            '<?php
+enum Foo {
+    case CAT;
+
+    /** @return $this */
+    public function test(): self {
+        return $this;
+    }
+}
+
+var_dump(Foo::CAT->test());
+',
+            '<?php
+enum Foo {
+    case CAT;
+
+    /** @return this */
+    public function test(): self {
+        return $this;
+    }
+}
+
+var_dump(Foo::CAT->test());
+',
+        ];
     }
 }

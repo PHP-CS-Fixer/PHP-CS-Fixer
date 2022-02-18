@@ -117,24 +117,20 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
      * Keep track of the deepest level ever achieved while
      * parsing the code. Used later to replace alignment
      * placeholders with spaces.
-     *
-     * @var int
      */
-    private $deepestLevel;
+    private int $deepestLevel;
 
     /**
      * Level counter of the current nest level.
      * So one level alignments are not mixed with
      * other level ones.
-     *
-     * @var int
      */
-    private $currentLevel;
+    private int $currentLevel;
 
     /**
      * @var array<null|string>
      */
-    private static $allowedValues = [
+    private static array $allowedValues = [
         self::ALIGN,
         self::ALIGN_SINGLE_SPACE,
         self::ALIGN_SINGLE_SPACE_MINIMAL,
@@ -143,20 +139,17 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
         null,
     ];
 
-    /**
-     * @var TokensAnalyzer
-     */
-    private $tokensAnalyzer;
+    private TokensAnalyzer $tokensAnalyzer;
 
     /**
      * @var array<string, string>
      */
-    private $alignOperatorTokens = [];
+    private array $alignOperatorTokens = [];
 
     /**
      * @var array<string, string>
      */
-    private $operators = [];
+    private array $operators = [];
 
     /**
      * {@inheritdoc}
@@ -468,11 +461,6 @@ $array = [
             }
         }
 
-        // @TODO: drop condition when PHP 7.4+ is required
-        if (!\defined('T_COALESCE_EQUAL')) {
-            unset($operators['??=']);
-        }
-
         return $operators;
     }
 
@@ -531,6 +519,8 @@ $array = [
 
     private function injectAlignmentPlaceholders(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
     {
+        $functionKind = [T_FUNCTION, T_FN];
+
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
@@ -545,13 +535,16 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
+            if ($token->isGivenKind($functionKind)) {
                 ++$this->deepestLevel;
+                $index = $tokens->getNextTokenOfKind($index, ['(']);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;
             }
 
-            if ($token->equals('(')) {
+            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
+                $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                 continue;

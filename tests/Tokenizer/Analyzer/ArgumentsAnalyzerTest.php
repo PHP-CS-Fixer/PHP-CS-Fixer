@@ -71,28 +71,17 @@ final class ArgumentsAnalyzerTest extends TestCase
         yield ['<?php $a = function(array ... $a){};', 6, 12, [7 => 11]];
 
         yield ['<?php $a = function(\Foo\Bar $a, \Foo\Bar $b){};', 6, 21, [7 => 12, 14 => 20]];
-    }
 
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideArguments73Cases
-     */
-    public function testArguments73(string $code, int $openIndex, int $closeIndex, array $arguments): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new ArgumentsAnalyzer();
-
-        static::assertSame(\count($arguments), $analyzer->countArguments($tokens, $openIndex, $closeIndex));
-        static::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
-    }
-
-    public function provideArguments73Cases(): iterable
-    {
         yield ['<?php foo($a,);', 2, 5, [3 => 3]];
+
         yield ['<?php foo($a,/**/);', 2, 6, [3 => 3]];
+
         yield ['<?php foo($a(1,2,3,4,5),);', 2, 16, [3 => 14]];
+
         yield ['<?php foo($a(1,2,3,4,5,),);', 2, 17, [3 => 15]];
+
         yield ['<?php foo($a(1,2,3,4,5,),);', 4, 15, [5 => 5, 7 => 7, 9 => 9, 11 => 11, 13 => 13]];
+
         yield ['<?php bar($a, $b , ) ;', 2, 10, [3 => 3, 5 => 7]];
     }
 
@@ -112,9 +101,13 @@ final class ArgumentsAnalyzerTest extends TestCase
     public function provideArguments80Cases(): \Generator
     {
         yield ['<?php class Foo { public function __construct(public ?string $param = null) {} }', 12, 23, [13 => 22]];
+
         yield ['<?php class Foo { public function __construct(protected ?string $param = null) {} }', 12, 23, [13 => 22]];
+
         yield ['<?php class Foo { public function __construct(private ?string $param = null) {} }', 12, 23, [13 => 22]];
+
         yield ['<?php $a = function(?\Foo\Bar $a, ?\Foo\Bar $b){};', 6, 23, [7 => 13, 15 => 22]];
+
         yield ['<?php function setFoo(null|int $param1, ?int $param2){}', 4, 16, [5 => 9, 11 => 15]];
     }
 

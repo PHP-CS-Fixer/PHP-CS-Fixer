@@ -473,6 +473,7 @@ final class AnnotationTest extends TestCase
             [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*\t@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*\t@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
             [['RUNTIMEEEEeXCEPTION'], [\Throwable::class], "*@throws\t  \t RUNTIMEEEEeXCEPTION\t\t\t\t\t\t\t\n\n\n", "*@throws\t  \t Throwable\t\t\t\t\t\t\t\n\n\n"],
             [['string'], ['string', 'null'], ' * @method string getString()', ' * @method string|null getString()'],
+            [['Foo', 'Bar'], ['Bar', 'Foo'], ' * @param Foo&Bar $x', ' * @param Bar&Foo $x'],
         ];
     }
 
@@ -495,6 +496,13 @@ final class AnnotationTest extends TestCase
             [['null', 'string'], '* @param StRiNg|NuLl $foo'],
             [['void'], '* @return Void'],
             [['bar', 'baz', 'foo', 'null', 'qux'], '* @return Foo|Bar|Baz|Qux|null'],
+            [['bool', 'int'], '* @param bool|int $foo'],
+            [['bool', 'int'], '* @param bool|int ...$foo'],
+            [['bool', 'int'], '* @param bool|int &$foo'],
+            [['bool', 'int'], '* @param bool|int &...$foo'],
+            [['bool', 'int'], '* @param bool|int&$foo'],
+            [['bool', 'int'], '* @param bool|int&...$foo'],
+            [['bar', 'baz', 'foo'], '* @param Foo|Bar&Baz&$param'],
         ];
     }
 
@@ -547,7 +555,9 @@ final class AnnotationTest extends TestCase
         $useTraversable = new NamespaceUseAnalysis('Traversable', 'Traversable', false, 0, 999, NamespaceUseAnalysis::TYPE_CLASS);
 
         yield ['* @param array|Traversable $foo', null, [], 'iterable'];
+
         yield ['* @param array|Traversable $foo', $appNamespace, [], null];
+
         yield ['* @param array|Traversable $foo', $appNamespace, [$useTraversable], 'iterable'];
     }
 
@@ -563,22 +573,41 @@ final class AnnotationTest extends TestCase
     public function provideGetVariableCases(): \Generator
     {
         yield ['* @param int $foo', '$foo'];
+
         yield ['* @param int $foo some description', '$foo'];
+
         yield ['/** @param int $foo*/', '$foo'];
+
         yield ['* @param int', null];
+
         yield ['* @var int $foo', '$foo'];
+
         yield ['* @var int $foo some description', '$foo'];
+
         yield ['/** @var int $foo*/', '$foo'];
+
         yield ['* @var int', null];
+
         yield ['* @param $foo', '$foo'];
+
         yield ['* @param &$foo', '$foo'];
+
         yield ['* @param & $foo', '$foo'];
+
         yield ['* @param int &$foo', '$foo'];
+
         yield ['* @param int & $foo', '$foo'];
+
         yield ['* @param int ...$foo', '$foo'];
+
         yield ['* @param int ... $foo', '$foo'];
+
+        yield ['* @param int&...$foo', '$foo'];
+
         yield ['* @param int &...$foo', '$foo'];
+
         yield ['* @param int & ...$foo', '$foo'];
+
         yield ['* @param int & ... $foo', '$foo'];
     }
 }

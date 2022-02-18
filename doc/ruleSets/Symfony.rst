@@ -24,6 +24,7 @@ Rules
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
   config:
   ``['single_line' => true]``
+- `class_reference_name_casing <./../rules/casing/class_reference_name_casing.rst>`_
 - `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_
@@ -75,6 +76,7 @@ Rules
 - `no_unneeded_curly_braces <./../rules/control_structure/no_unneeded_curly_braces.rst>`_
   config:
   ``['namespaces' => true]``
+- `no_unneeded_import_alias <./../rules/import/no_unneeded_import_alias.rst>`_
 - `no_unset_cast <./../rules/cast_notation/no_unset_cast.rst>`_
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
@@ -110,6 +112,7 @@ Rules
 - `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `single_class_element_per_statement <./../rules/class_notation/single_class_element_per_statement.rst>`_
+- `single_line_comment_spacing <./../rules/comment/single_line_comment_spacing.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
   config:
   ``['comment_types' => ['hash']]``

@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: phpdoc_to_comment,single_line_comment_spacing.
+--RULESET--
+{"phpdoc_to_comment": true, "single_line_comment_spacing": true}
+--EXPECT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/* Test */
+echo 1;
+
+--INPUT--
+<?php
+
+$first = true;// needed because by default first docblock is never fixed.
+
+/** Test*/
+echo 1;

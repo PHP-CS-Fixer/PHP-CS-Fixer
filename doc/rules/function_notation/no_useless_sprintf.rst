@@ -4,9 +4,13 @@ Rule ``no_useless_sprintf``
 
 There must be no ``sprintf`` calls with only the first argument.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when if the ``sprintf`` function is overridden.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when if the ``sprintf`` function is overridden.
 
 Examples
 --------

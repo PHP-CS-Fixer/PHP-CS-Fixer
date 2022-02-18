@@ -62,7 +62,7 @@ final class FixerFactoryTest extends TestCase
                 foreach ($edges as $edge) {
                     $second = $fixers[$edge];
 
-                    static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', $fixerName, $edge));
+                    static::assertLessThan($first->getPriority(), $second->getPriority(), sprintf('"%s" should have less priority than "%s"', $edge, $fixerName));
                 }
             }
         }
@@ -184,27 +184,44 @@ final class FixerFactoryTest extends TestCase
             $fixers[$name] = ['reflection' => $reflection, 'short_classname' => $reflection->getShortName()];
         }
 
-        $graph = array_merge_recursive(
+        $mergedGraph = array_merge_recursive(
             self::getFixersPriorityGraph(),
             self::getPhpDocFixersPriorityGraph()
         );
 
-        foreach ($graph as $fixerName => $edges) {
-            $after = [];
+        // expend $graph
 
-            foreach ($graph as $candidateFixer => $candidateEdges) {
+        $graph = [];
+
+        foreach ($mergedGraph as $fixerName => $edges) {
+            if (!isset($graph[$fixerName]['before'])) {
+                $graph[$fixerName] = ['before' => []];
+            }
+
+            foreach ($mergedGraph as $candidateFixer => $candidateEdges) {
                 if (\in_array($fixerName, $candidateEdges, true)) {
-                    $after[] = $candidateFixer;
+                    $graph[$fixerName]['after'][$candidateFixer] = true;
                 }
             }
 
+            foreach ($edges as $edge) {
+                if (!isset($graph[$edge]['after'])) {
+                    $graph[$edge] = ['after' => []];
+                }
+
+                $graph[$edge]['after'][$fixerName] = true;
+                $graph[$fixerName]['before'][$edge] = true;
+            }
+        }
+
+        foreach ($graph as $fixerName => $edges) {
             $expectedMessage = "/**\n     * {@inheritdoc}\n     *";
 
-            foreach (['before' => $edges, 'after' => $after] as $label => $others) {
+            foreach ($edges as $label => $others) {
                 if (\count($others) > 0) {
                     $shortClassNames = [];
 
-                    foreach ($others as $other) {
+                    foreach ($others as $other => $foo) {
                         $shortClassNames[$other] = $fixers[$other]['short_classname'];
                     }
 
@@ -232,7 +249,7 @@ final class FixerFactoryTest extends TestCase
             ksort($fixersPhpDocIssues);
 
             foreach ($fixersPhpDocIssues as $fixerName => $issue) {
-                $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixerName, $issue);
+                $message .= sprintf("\n--------------------------------------------------\n%s\n%s", $fixers[$fixerName]['short_classname'], $issue);
             }
 
             static::fail($message);
@@ -553,6 +570,9 @@ final class FixerFactoryTest extends TestCase
                 'return_assignment',
                 'simplified_if_return',
             ],
+            'no_unneeded_import_alias' => [
+                'no_singleline_whitespace_before_semicolons',
+            ],
             'no_unset_cast' => [
                 'binary_operator_spaces',
             ],
@@ -672,6 +692,8 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_to_comment' => [
                 'no_empty_comment',
                 'phpdoc_no_useless_inheritdoc',
+                'single_line_comment_spacing',
+                'single_line_comment_style',
             ],
             'phpdoc_to_param_type' => [
                 'no_superfluous_phpdoc_tags',

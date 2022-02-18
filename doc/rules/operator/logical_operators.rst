@@ -4,10 +4,14 @@ Rule ``logical_operators``
 
 Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky, because you must double-check if using and/or with lower precedence
-   was intentional.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky, because you must double-check if using and/or with lower precedence was
+intentional.
 
 Examples
 --------

@@ -30,7 +30,6 @@ final class FunctionToConstantFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->configure($config);
-
         $this->doTest($expected, $input);
     }
 

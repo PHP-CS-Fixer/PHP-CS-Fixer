@@ -240,23 +240,21 @@ final class Tokens extends \SplFixedArray
         $this[$index] = $token;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
-     */
     public function offsetSet($index, $token): void
     {
+        // @phpstan-ignore-next-line as we type checking here
+        if (null === $token) {
+            throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "null" given.');
+        }
+
         if (!$token instanceof Token) {
             $type = \gettype($token);
+
             if ('object' === $type) {
                 $type = \get_class($token);
             }
 
-            throw new \InvalidArgumentException(sprintf(
-                'Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, %s given.',
-                $type
-            ));
+            throw new \InvalidArgumentException(sprintf('Token must be an instance of PhpCsFixer\\Doctrine\\Annotation\\Token, "%s" given.', $type));
         }
 
         parent::offsetSet($index, $token);

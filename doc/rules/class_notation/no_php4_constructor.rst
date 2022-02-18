@@ -4,10 +4,14 @@ Rule ``no_php4_constructor``
 
 Convert PHP4-style constructors to ``__construct``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when old style constructor being fixed is overridden or overrides
-   parent one.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when old style constructor being fixed is overridden or overrides parent
+one.
 
 Examples
 --------

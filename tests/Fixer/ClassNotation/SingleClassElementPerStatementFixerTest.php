@@ -35,9 +35,9 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
-    public function provideFixCases(): array
+    public function provideFixCases(): iterable
     {
-        return [
+        yield from [
             [
                 '<?php
 class Foo
@@ -634,6 +634,56 @@ echo Foo::A, Foo::B;
                 ',
             ],
         ];
+
+        yield [
+            '<?php class Foo {
+                private int $foo;
+                private int $bar;
+            }',
+            '<?php class Foo {
+                private int $foo, $bar;
+            }',
+        ];
+
+        yield [
+            '<?php class Foo {
+                protected ?string $foo;
+                protected ?string $bar;
+            }',
+            '<?php class Foo {
+                protected ?string $foo, $bar;
+            }',
+        ];
+
+        yield [
+            '<?php class Foo {
+                public ? string $foo;
+                public ? string $bar;
+            }',
+            '<?php class Foo {
+                public ? string $foo, $bar;
+            }',
+        ];
+
+        yield [
+            '<?php class Foo {
+                var ? Foo\Bar $foo;
+                var ? Foo\Bar $bar;
+            }',
+            '<?php class Foo {
+                var ? Foo\Bar $foo, $bar;
+            }',
+        ];
+
+        yield [
+            '<?php class Foo {
+                var array $foo;
+                var array $bar;
+            }',
+            '<?php class Foo {
+                var array $foo, $bar;
+            }',
+        ];
     }
 
     /**
@@ -774,68 +824,6 @@ EOT
     }
 
     /**
-     * @dataProvider provideTestFix74Cases
-     * @requires PHP 7.4
-     */
-    public function testFix74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideTestFix74Cases(): \Generator
-    {
-        yield [
-            '<?php class Foo {
-                private int $foo;
-                private int $bar;
-            }',
-            '<?php class Foo {
-                private int $foo, $bar;
-            }',
-        ];
-
-        yield [
-            '<?php class Foo {
-                protected ?string $foo;
-                protected ?string $bar;
-            }',
-            '<?php class Foo {
-                protected ?string $foo, $bar;
-            }',
-        ];
-
-        yield [
-            '<?php class Foo {
-                public ? string $foo;
-                public ? string $bar;
-            }',
-            '<?php class Foo {
-                public ? string $foo, $bar;
-            }',
-        ];
-
-        yield [
-            '<?php class Foo {
-                var ? Foo\Bar $foo;
-                var ? Foo\Bar $bar;
-            }',
-            '<?php class Foo {
-                var ? Foo\Bar $foo, $bar;
-            }',
-        ];
-
-        yield [
-            '<?php class Foo {
-                var array $foo;
-                var array $bar;
-            }',
-            '<?php class Foo {
-                var array $foo, $bar;
-            }',
-        ];
-    }
-
-    /**
      * @dataProvider provideFix80Cases
      * @requires PHP 8.0
      */
@@ -928,6 +916,28 @@ class Foo
     private Foo&Bar $prop1, $prop2;
 }
 ',
+        ];
+
+        yield [
+            "<?php
+
+enum Foo: string {
+    public const A = 'A';
+    public const B = 'B';
+    case Hearts = 'H';
+    case Spades = 'S';
+}
+
+var_dump(Foo::A.Foo::B);",
+            "<?php
+
+enum Foo: string {
+    public const A = 'A', B = 'B';
+    case Hearts = 'H';
+    case Spades = 'S';
+}
+
+var_dump(Foo::A.Foo::B);",
         ];
     }
 }

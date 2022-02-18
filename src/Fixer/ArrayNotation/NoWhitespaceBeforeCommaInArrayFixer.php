@@ -19,7 +19,6 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
-use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -91,10 +90,6 @@ SAMPLE
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->setNormalizer(static function (Options $options, $value) {
-                    if (\PHP_VERSION_ID < 70300 && $value) {
-                        throw new InvalidOptionsForEnvException('"after_heredoc" option can only be enabled with PHP 7.3+.');
-                    }
-
                     return $value;
                 })
                 ->getOption(),
@@ -121,7 +116,7 @@ SAMPLE
 
             if (
                 $currentToken->equals(',') && !$tokens[$prevIndex]->isComment()
-                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->equals([T_END_HEREDOC]))
+                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
             ) {
                 $tokens->removeLeadingWhitespace($i);
             }

@@ -31,7 +31,7 @@ final class Annotation
      *
      * @var string[]
      */
-    private static $tags = [
+    private static array $tags = [
         'method',
         'param',
         'property',
@@ -93,7 +93,7 @@ final class Annotation
     /**
      * @var NamespaceUseAnalysis[]
      */
-    private $namespaceUses;
+    private array $namespaceUses;
 
     /**
      * Create a new line instance.
@@ -208,7 +208,7 @@ final class Annotation
     {
         $pattern = '/'.preg_quote($this->getTypesContent(), '/').'/';
 
-        $this->lines[0]->setContent(Preg::replace($pattern, implode('|', $types), $this->lines[0]->getContent(), 1));
+        $this->lines[0]->setContent(Preg::replace($pattern, implode($this->getTypeExpression()->getTypesGlue(), $types), $this->lines[0]->getContent(), 1));
 
         $this->clearCache();
     }
@@ -285,7 +285,7 @@ final class Annotation
             }
 
             $matchingResult = Preg::match(
-                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.TypeExpression::REGEX_TYPES.'(?:[*\h\v].*)?\r?$}sx',
+                '{^(?:\s*\*|/\*\*)\s*@'.$name.'\s+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&[\.\$]).*)?\r?$}sx',
                 $this->lines[0]->getContent(),
                 $matches
             );

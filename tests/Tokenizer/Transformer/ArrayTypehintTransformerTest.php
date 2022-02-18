@@ -55,28 +55,6 @@ function foo (array /** @type array */ $bar)
                     22 => CT::T_ARRAY_TYPEHINT,
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideProcessPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testProcessPhp74(string $source, array $expectedTokens = []): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_ARRAY,
-                CT::T_ARRAY_TYPEHINT,
-            ]
-        );
-    }
-
-    public function provideProcessPhp74Cases(): array
-    {
-        return [
             [
                 '<?php
 $a = array(1, 2, 3);

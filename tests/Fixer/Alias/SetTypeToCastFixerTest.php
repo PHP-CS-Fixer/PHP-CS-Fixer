@@ -74,7 +74,7 @@ $foo# 5
                 '<?php $foo = (bool) $foo;',
                 '<?php settype  (  $foo  , "Bool");',
             ],
-            'boolean' => [
+            'boolean with extra space' => [
                 '<?php $foo = (bool) $foo;',
                 '<?php settype  (  $foo  , "boolean");',
             ],
@@ -218,30 +218,11 @@ $foo#5
             'unknown type II' => [
                 '<?php settype($foo, "stringX");',
             ],
-        ];
-    }
-
-    /**
-     * @requires PHP 7.3
-     * @dataProvider provideFix73Cases
-     */
-    public function testFix73(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFix73Cases(): array
-    {
-        return [
-            'null cast' => [
-                '<?php $foo = null;',
-                '<?php settype($foo, "null");',
-            ],
             'boolean' => [
                 '<?php $foo = (bool) $foo;',
                 '<?php settype($foo, "boolean", );',
             ],
-            'comments with line breaks' => [
+            'comments with line breaks II' => [
                 '<?php #0
 #1
 $foo = (int) $foo#2

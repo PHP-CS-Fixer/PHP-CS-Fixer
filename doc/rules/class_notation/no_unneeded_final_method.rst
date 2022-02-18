@@ -2,12 +2,15 @@
 Rule ``no_unneeded_final_method``
 =================================
 
-A ``final`` class must not have ``final`` methods and ``private`` methods must
-not be ``final``.
+Removes ``final`` from methods where possible.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when child class overrides a ``private`` method.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when child class overrides a ``private`` method.
 
 Configuration
 -------------

@@ -191,9 +191,6 @@ PHP
         ];
     }
 
-    /**
-     * @requires PHP 7.4
-     */
     public function testGetClassyElementsWithNullableProperties(): void
     {
         $source = <<<'PHP'
@@ -553,6 +550,120 @@ class Foo
 }
             ',
         ];
+
+        yield 'enum final const' => [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'const', // A
+                ],
+                24 => [
+                    'classIndex' => 1,
+                    'type' => 'const', // B
+                ],
+            ],
+            '<?php
+enum Foo
+{
+    final public const A = "1";
+    public final const B = "2";
+}
+            ',
+        ];
+
+        yield 'enum case' => [
+            [
+                12 => [
+                    'classIndex' => 1,
+                    'type' => 'const', // Spades
+                ],
+                21 => [
+                    'classIndex' => 1,
+                    'type' => 'case', // Hearts
+                ],
+                32 => [
+                    'classIndex' => 1,
+                    'type' => 'method', // function tests
+                ],
+                81 => [
+                    'classIndex' => 75,
+                    'type' => 'method', // function bar123
+                ],
+                135 => [
+                    'classIndex' => 127,
+                    'type' => 'method', // function bar7
+                ],
+            ],
+            '<?php
+enum Foo: string
+{
+    private const Spades = 123;
+
+    case Hearts = "H";
+
+    private function test($foo) {
+        switch ($foo) {
+            case 1:
+            // case 2
+            case 3:
+                echo 123;
+            break;
+        }
+
+        return new class {
+            public function bar123($foo) {
+                switch ($foo) {
+                    case 1:
+                    // case 2
+                    case 3:
+                        echo 123;
+                };
+            }
+        };
+    }
+}
+
+class Bar {
+    public function bar7($foo) {
+        switch ($foo) {
+            case 1:
+            // case 2
+            case 3:
+                echo 123;
+        };
+    }
+}
+',
+        ];
+
+        yield 'enum' => [
+            [
+                10 => [
+                    'classIndex' => 1,
+                    'type' => 'case',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'case',
+                ],
+                28 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+            ],
+            '<?php
+enum Foo: string
+{
+    case Bar = "bar";
+    case Baz = "baz";
+    function qux() {
+        switch (true) {
+            case "x": break;
+        }
+    }
+}
+            ',
+        ];
     }
 
     /**
@@ -608,6 +719,13 @@ class Foo
             yield [
                 [27 => true],
                 '<?php $object = new #[A] #[B] #[C]#[D]/* */ /** */#[E]class(){};',
+            ];
+        }
+
+        if (\PHP_VERSION_ID >= 80100) {
+            yield [
+                [1 => false],
+                '<?php enum foo {}',
             ];
         }
     }
@@ -1081,6 +1199,26 @@ abstract class Baz
         yield [
             [3 => false, 5 => false, 12 => false],
             '<?php #[\A\Foo()] function foo() {}',
+        ];
+
+        yield 'multiple type catch with variable' => [
+            [5 => false, 15 => false, 18 => false],
+            '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException $e) {}',
+        ];
+
+        yield 'multiple type catch without variable 1' => [
+            [5 => false, 15 => false, 18 => false],
+            '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}',
+        ];
+
+        yield 'multiple type catch without variable 2' => [
+            [5 => false, 15 => false, 17 => false, 19 => false, 21 => false, 24 => false, 27 => false],
+            '<?php try { foo(); } catch(\D|Z|A\B|\InvalidArgumentException|\LogicException) {}',
+        ];
+
+        yield 'multiple type catch without variable 3' => [
+            [5 => false, 14 => false, 16 => false, 19 => false, 22 => false],
+            '<?php try { foo(); } catch(A\B|\InvalidArgumentException|\LogicException) {}',
         ];
     }
 
@@ -1584,7 +1722,6 @@ $b;',
 
     /**
      * @dataProvider provideIsBinaryOperator71Cases
-     * @requires PHP 7.1
      */
     public function testIsBinaryOperator71(array $expected, string $source): void
     {
@@ -1606,28 +1743,7 @@ $b;',
             [11 => false],
             '<?php try {} catch (A | B $e) {}',
         ];
-    }
 
-    /**
-     * @dataProvider provideIsBinaryOperator74Cases
-     * @requires PHP 7.4
-     */
-    public function testIsBinaryOperator74(array $expected, string $source): void
-    {
-        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
-
-        foreach ($expected as $index => $isBinary) {
-            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
-
-            if ($isBinary) {
-                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
-                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
-            }
-        }
-    }
-
-    public function provideIsBinaryOperator74Cases(): \Generator
-    {
         yield [
             [3 => true],
             '<?php $a ??= $b;',

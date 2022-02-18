@@ -54,7 +54,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     /**
      * @var array<string, string>
      */
-    private $classElementTypes = [];
+    private array $classElementTypes = [];
 
     /**
      * {@inheritdoc}
@@ -204,11 +204,11 @@ class Sample
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import` => `none|one|only_if_meta` values.'))
+            (new FixerOptionBuilder('elements', 'Dictionary of `const|method|property|trait_import|case` => `none|one|only_if_meta` values.'))
                 ->setAllowedTypes(['array'])
                 ->setAllowedValues([static function (array $option): bool {
                     foreach ($option as $type => $spacing) {
-                        $supportedTypes = ['const', 'method', 'property', 'trait_import'];
+                        $supportedTypes = ['const', 'method', 'property', 'trait_import', 'case'];
 
                         if (!\in_array($type, $supportedTypes, true)) {
                             throw new InvalidOptionsException(
@@ -241,6 +241,7 @@ class Sample
                     'method' => self::SPACING_ONE,
                     'property' => self::SPACING_ONE,
                     'trait_import' => self::SPACING_NONE,
+                    'case' => self::SPACING_NONE,
                 ])
                 ->getOption(),
         ]);
@@ -542,7 +543,7 @@ class Sample
             if (!$tokens[$elementEndIndex]->equals(';')) {
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
             }
-        } else { // const or property
+        } else { // 'const', 'property', enum-'case', or 'method' of an interface
             $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);
         }
 

@@ -977,7 +977,9 @@ else?><?php echo 5;',
         ;
 
         yield [sprintf($ifTemplate, $statement)];
+
         yield [sprintf($ifElseTemplate, $statement)];
+
         yield [sprintf($ifElseIfTemplate, $statement)];
     }
 

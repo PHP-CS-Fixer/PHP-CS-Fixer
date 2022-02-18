@@ -26,7 +26,7 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input): void
+    public function testFix(string $expected, string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -53,6 +53,73 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
             [
                 '<?php $a  /**/  =   /**/static function(){};',
                 '<?php $a  /**/  =   /**/function(){};',
+            ],
+            [
+                '<?php $a=static fn() => null;$b=static fn() => null;',
+                '<?php $a=fn() => null;$b=fn() => null;',
+            ],
+            [
+                '<?php $a  /**/  =   /**/     static fn() => null;',
+                '<?php $a  /**/  =   /**/     fn() => null;',
+            ],
+            [
+                '<?php $a  /**/  =   /**/ static fn() => null;',
+                '<?php $a  /**/  =   /**/ fn() => null;',
+            ],
+            [
+                '<?php $a  /**/  =   /**/static fn() => null; echo $this->foo();',
+                '<?php $a  /**/  =   /**/fn() => null; echo $this->foo();',
+            ],
+            [
+                '<?php $a  /**/  =   /**/ static fn() => null ?> <?php echo $this->foo();',
+                '<?php $a  /**/  =   /**/ fn() => null ?> <?php echo $this->foo();',
+            ],
+            [
+                '<?php
+                    class B
+                    {
+                        public function C()
+                        {
+                            $a = fn () => var_dump($this);
+                            $a();
+                        }
+                    }
+                ',
+            ],
+            [
+                '<?php static fn($a = ["foo" => "bar"]) => [];',
+                '<?php fn($a = ["foo" => "bar"]) => [];',
+            ],
+            [
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            static fn ($item) => $item->getName(),
+                            $this->getItems()
+                        );
+                    }
+                }',
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            fn ($item) => $item->getName(),
+                            $this->getItems()
+                        );
+                    }
+                }',
+            ],
+            [
+                '<?php class Foo {
+                    public function getNames()
+                    {
+                        return \array_map(
+                            fn ($item) => $item->getName(1, $this->foo()),
+                            $this->getItems()
+                        );
+                    }
+                }',
             ],
         ];
     }
@@ -232,88 +299,6 @@ $b->abc();
                         $c = function () {
                             return parent::foo();
                         };
-                    }
-                }',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
-            [
-                '<?php $a=static fn() => null;$b=static fn() => null;',
-                '<?php $a=fn() => null;$b=fn() => null;',
-            ],
-            [
-                '<?php $a  /**/  =   /**/     static fn() => null;',
-                '<?php $a  /**/  =   /**/     fn() => null;',
-            ],
-            [
-                '<?php $a  /**/  =   /**/ static fn() => null;',
-                '<?php $a  /**/  =   /**/ fn() => null;',
-            ],
-            [
-                '<?php $a  /**/  =   /**/static fn() => null; echo $this->foo();',
-                '<?php $a  /**/  =   /**/fn() => null; echo $this->foo();',
-            ],
-            [
-                '<?php $a  /**/  =   /**/ static fn() => null ?> <?php echo $this->foo();',
-                '<?php $a  /**/  =   /**/ fn() => null ?> <?php echo $this->foo();',
-            ],
-            [
-                '<?php
-                    class B
-                    {
-                        public function C()
-                        {
-                            $a = fn () => var_dump($this);
-                            $a();
-                        }
-                    }
-                ',
-            ],
-            [
-                '<?php static fn($a = ["foo" => "bar"]) => [];',
-                '<?php fn($a = ["foo" => "bar"]) => [];',
-            ],
-            [
-                '<?php class Foo {
-                    public function getNames()
-                    {
-                        return \array_map(
-                            static fn ($item) => $item->getName(),
-                            $this->getItems()
-                        );
-                    }
-                }',
-                '<?php class Foo {
-                    public function getNames()
-                    {
-                        return \array_map(
-                            fn ($item) => $item->getName(),
-                            $this->getItems()
-                        );
-                    }
-                }',
-            ],
-            [
-                '<?php class Foo {
-                    public function getNames()
-                    {
-                        return \array_map(
-                            fn ($item) => $item->getName(1, $this->foo()),
-                            $this->getItems()
-                        );
                     }
                 }',
             ],

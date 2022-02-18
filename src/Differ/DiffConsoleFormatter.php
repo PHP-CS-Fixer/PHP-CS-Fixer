@@ -24,15 +24,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  */
 final class DiffConsoleFormatter
 {
-    /**
-     * @var bool
-     */
-    private $isDecoratedOutput;
+    private bool $isDecoratedOutput;
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
     public function __construct(bool $isDecoratedOutput, string $template = '%s')
     {

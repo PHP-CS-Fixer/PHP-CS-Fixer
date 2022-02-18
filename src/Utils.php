@@ -29,7 +29,7 @@ final class Utils
     /**
      * @var array<string,true>
      */
-    private static $deprecations = [];
+    private static array $deprecations = [];
 
     private function __construct()
     {

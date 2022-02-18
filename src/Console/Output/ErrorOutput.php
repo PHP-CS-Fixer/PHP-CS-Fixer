@@ -25,10 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class ErrorOutput
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
+    private OutputInterface $output;
 
     /**
      * @var bool

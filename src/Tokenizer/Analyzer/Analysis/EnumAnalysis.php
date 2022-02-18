@@ -22,7 +22,7 @@ final class EnumAnalysis extends AbstractControlCaseStructuresAnalysis
     /**
      * @var CaseAnalysis[]
      */
-    private $cases;
+    private array $cases;
 
     /**
      * @param CaseAnalysis[] $cases

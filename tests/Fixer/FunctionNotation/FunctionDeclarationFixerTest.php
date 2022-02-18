@@ -50,7 +50,6 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 
@@ -365,7 +364,6 @@ foo#
             ['<?php use function Foo\bar; bar ( 1 );', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c};', null, self::$configurationClosureSpacingNone],
             ['<?php use function some\test\{fn_a, fn_b, fn_c} ?>', null, self::$configurationClosureSpacingNone],
-
             // ensure short_arrow_only adds space
             // could use tests for more variations
             [
@@ -488,7 +486,6 @@ foo#
     public function testFixPhp80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
-
         $this->doTest($expected, $input);
     }
 

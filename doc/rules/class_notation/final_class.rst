@@ -17,9 +17,13 @@ need to extend a standalone class, create an interface and use the Composite
 pattern. If you aren't ready yet for serious OOP, go with
 FinalInternalClassFixer, it's fine.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when subclassing non-abstract classes.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when subclassing non-abstract classes.
 
 Examples
 --------

@@ -466,4 +466,21 @@ class extends stdClass {};
 ',
         ];
     }
+
+    /**
+     * @requires PHP 8.1
+     * @dataProvider providePhp81Cases
+     */
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input, $this->getTestFile(__FILE__));
+    }
+
+    public function providePhp81Cases(): \Generator
+    {
+        yield 'enum with wrong casing' => [
+            '<?php enum PsrAutoloadingFixerTest {}',
+            '<?php enum psrautoloadingfixertest {}',
+        ];
+    }
 }

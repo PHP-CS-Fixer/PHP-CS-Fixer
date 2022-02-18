@@ -23,7 +23,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
 {
     public function getRules(): array
     {
-        $rules = [
+        return [
             '@PHP56Migration:risky' => true,
             '@PSR12:risky' => true,
             'array_push' => true,
@@ -67,10 +67,6 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'string_line_ending' => true,
             'ternary_to_elvis_operator' => true,
         ];
-
-        ksort($rules);
-
-        return $rules;
     }
 
     public function getDescription(): string

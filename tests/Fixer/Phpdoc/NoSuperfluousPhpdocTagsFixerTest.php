@@ -1594,22 +1594,6 @@ class Foo {
                      function f(string &...$x) {}
                 }',
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixPhp74Cases
-     * @requires PHP 7.4
-     */
-    public function testFixPhp74(string $expected, ?string $input = null, array $config = []): void
-    {
-        $this->fixer->configure($config);
-        $this->doTest($expected, $input);
-    }
-
-    public function provideFixPhp74Cases(): array
-    {
-        return [
             'some typed static public property' => [
                 '<?php
 class Foo {
@@ -1825,7 +1809,7 @@ class Foo {
                 null,
                 ['allow_mixed' => false],
             ],
-            'allow_mixed=>true' => [
+            'allow_mixed=>true ||' => [
                 '<?php
 class Foo {
     /**
@@ -2013,6 +1997,7 @@ function foo(string|int $foo) {}',
      */
     public function testFix81(string $expected, ?string $input = null, array $config = []): void
     {
+        $this->fixer->configure($config);
         $this->doTest($expected, $input);
     }
 
@@ -2088,6 +2073,20 @@ function foo(A & B & C $foo, A|array $bar) {}',
  * @param A|string[] $bar
  */
 function foo(A & B & C $foo, A|array $bar) {}',
+        ];
+
+        yield 'remove_enum_inheritdoc' => [
+            '<?php
+/**
+ *
+ */
+enum Foo {}',
+            '<?php
+/**
+ * @inheritDoc
+ */
+enum Foo {}',
+            ['remove_inheritdoc' => true],
         ];
     }
 }

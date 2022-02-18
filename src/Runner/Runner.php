@@ -37,40 +37,22 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class Runner
 {
-    /**
-     * @var DifferInterface
-     */
-    private $differ;
+    private DifferInterface $differ;
 
-    /**
-     * @var DirectoryInterface
-     */
-    private $directory;
+    private ?DirectoryInterface $directory;
 
     /**
      * @var null|EventDispatcherInterface
      */
     private $eventDispatcher;
 
-    /**
-     * @var ErrorsManager
-     */
-    private $errorsManager;
+    private ErrorsManager $errorsManager;
 
-    /**
-     * @var CacheManagerInterface
-     */
-    private $cacheManager;
+    private CacheManagerInterface $cacheManager;
 
-    /**
-     * @var bool
-     */
-    private $isDryRun;
+    private bool $isDryRun;
 
-    /**
-     * @var LinterInterface
-     */
-    private $linter;
+    private LinterInterface $linter;
 
     /**
      * @var \Traversable
@@ -80,12 +62,9 @@ final class Runner
     /**
      * @var FixerInterface[]
      */
-    private $fixers;
+    private array $fixers;
 
-    /**
-     * @var bool
-     */
-    private $stopOnViolation;
+    private bool $stopOnViolation;
 
     public function __construct(
         $finder,

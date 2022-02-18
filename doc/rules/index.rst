@@ -86,6 +86,9 @@ Basic
 Casing
 ------
 
+- `class_reference_name_casing <./casing/class_reference_name_casing.rst>`_
+
+  When referencing an internal class it must be written using the correct casing.
 - `constant_case <./casing/constant_case.rst>`_
 
   The PHP constants ``true``, ``false``, and ``null`` MUST be written using the correct casing.
@@ -141,7 +144,7 @@ Class Notation
   Class, trait and interface elements must be separated with one or none blank line.
 - `class_definition <./class_notation/class_definition.rst>`_
 
-  Whitespace around the keywords of a class, trait or interfaces definition should be one space.
+  Whitespace around the keywords of a class, trait, enum or interfaces definition should be one space.
 - `final_class <./class_notation/final_class.rst>`_ *(risky)*
 
   All classes must be final, except abstract ones and Doctrine entities.
@@ -162,7 +165,7 @@ Class Notation
   Convert PHP4-style constructors to ``__construct``.
 - `no_unneeded_final_method <./class_notation/no_unneeded_final_method.rst>`_ *(risky)*
 
-  A ``final`` class must not have ``final`` methods and ``private`` methods must not be ``final``.
+  Removes ``final`` from methods where possible.
 - `ordered_class_elements <./class_notation/ordered_class_elements.rst>`_
 
   Orders the elements of classes/interfaces/traits.
@@ -216,6 +219,9 @@ Comment
 - `no_trailing_whitespace_in_comment <./comment/no_trailing_whitespace_in_comment.rst>`_
 
   There MUST be no trailing spaces inside comment or PHPDoc.
+- `single_line_comment_spacing <./comment/single_line_comment_spacing.rst>`_
+
+  Single-line comments must have proper spacing.
 - `single_line_comment_style <./comment/single_line_comment_style.rst>`_
 
   Single-line comments and multi-line comments with only one line of actual content should use the ``//`` syntax.
@@ -386,6 +392,9 @@ Import
 - `no_leading_import_slash <./import/no_leading_import_slash.rst>`_
 
   Remove leading slashes in ``use`` clauses.
+- `no_unneeded_import_alias <./import/no_unneeded_import_alias.rst>`_
+
+  Imports should not be aliased as the same name.
 - `no_unused_imports <./import/no_unused_imports.rst>`_
 
   Unused ``use`` statements must be removed.
@@ -495,7 +504,7 @@ Operator
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
 - `new_with_braces <./operator/new_with_braces.rst>`_
 
-  All instances created with new keyword must be followed by braces.
+  All instances created with ``new`` keyword must (not) be followed by braces.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).

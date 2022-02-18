@@ -27,10 +27,8 @@ final class ProcessOutput implements ProcessOutputInterface
 {
     /**
      * File statuses map.
-     *
-     * @var array
      */
-    private static $eventStatusMap = [
+    private static array $eventStatusMap = [
         FixerFileProcessedEvent::STATUS_UNKNOWN => ['symbol' => '?', 'format' => '%s', 'description' => 'unknown'],
         FixerFileProcessedEvent::STATUS_INVALID => ['symbol' => 'I', 'format' => '<bg=red>%s</bg=red>', 'description' => 'invalid file syntax (file ignored)'],
         FixerFileProcessedEvent::STATUS_SKIPPED => ['symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'skipped (cached or empty file)'],
@@ -40,25 +38,13 @@ final class ProcessOutput implements ProcessOutputInterface
         FixerFileProcessedEvent::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
     ];
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private OutputInterface $output;
 
-    /**
-     * @var OutputInterface
-     */
-    private $output;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var int
-     */
-    private $files;
+    private int $files;
 
-    /**
-     * @var int
-     */
-    private $processedFiles = 0;
+    private int $processedFiles = 0;
 
     /**
      * @var int
@@ -72,7 +58,7 @@ final class ProcessOutput implements ProcessOutputInterface
         $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$this, 'onFixerFileProcessed']);
         $this->files = $nbFiles;
 
-        //   max number of characters per line
+        // max number of characters per line
         // - total length x 2 (e.g. "  1 / 123" => 6 digits and padding spaces)
         // - 11               (extra spaces, parentheses and percentage characters, e.g. " x / x (100%)")
         $this->symbolsPerLine = max(1, $width - \strlen((string) $this->files) * 2 - 11);

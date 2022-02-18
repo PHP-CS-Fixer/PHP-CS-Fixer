@@ -24,8 +24,10 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 final class ReporterFactory
 {
-    /** @var ReporterInterface[] */
-    private $reporters = [];
+    /**
+     * @var ReporterInterface[]
+     */
+    private array $reporters = [];
 
     public function registerBuiltInReporters(): self
     {

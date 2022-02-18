@@ -5,10 +5,14 @@ Rule ``psr_autoloading``
 Classes must be in a path that matches their namespace, be at least one
 namespace deep and the class name should match the file name.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   This fixer may change your class name, which will break the code that depends
-   on the old name.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This fixer may change your class name, which will break the code that depends on
+the old name.
 
 Configuration
 -------------

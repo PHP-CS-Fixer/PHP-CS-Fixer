@@ -46,7 +46,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var array Array containing all class element base types (keys) and their parent types (values)
      */
-    private static $typeHierarchy = [
+    private static array $typeHierarchy = [
         'use_trait' => null,
         'public' => null,
         'protected' => null,
@@ -86,7 +86,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     /**
      * @var array Array containing special method types
      */
-    private static $specialTypes = [
+    private static array $specialTypes = [
         'construct' => null,
         'destruct' => null,
         'magic' => null,
@@ -150,7 +150,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT, T_INTERFACE]);   // FIXME use Token::getClassyTokenKinds(false)
     }
 
     /**
@@ -237,7 +237,7 @@ class Example
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
-            if (!$tokens[$i]->isClassy()) {
+            if (!$tokens[$i]->isGivenKind([T_CLASS, T_TRAIT, T_INTERFACE])) { // FIXME use "isClassy"
                 continue;
             }
 

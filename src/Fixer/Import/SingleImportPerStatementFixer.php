@@ -130,7 +130,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
         for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->equals([CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
+            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 continue;
             }
 
@@ -144,7 +144,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements White
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->equals([T_AS])) {
+                if ($tokens[$j]->isGivenKind(T_AS)) {
                     $statement .= ' as ';
                     $i += 2;
                 } elseif ($tokens[$j]->isGivenKind(CT::T_FUNCTION_IMPORT)) {

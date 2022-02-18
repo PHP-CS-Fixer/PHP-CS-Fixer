@@ -4,10 +4,14 @@ Rule ``string_length_to_empty``
 
 String tests for empty must be done against ``''``, not with ``strlen``.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   Risky when ``strlen`` is overridden, when called using a ``stringable``
-   object, also no longer triggers warning when called using non-string(able).
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Risky when ``strlen`` is overridden, when called using a ``stringable`` object,
+also no longer triggers warning when called using non-string(able).
 
 Examples
 --------

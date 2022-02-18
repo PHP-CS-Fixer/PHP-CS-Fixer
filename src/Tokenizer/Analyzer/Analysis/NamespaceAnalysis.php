@@ -21,45 +21,33 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
 {
     /**
      * The fully qualified namespace name.
-     *
-     * @var string
      */
-    private $fullName;
+    private string $fullName;
 
     /**
      * The short version of the namespace.
-     *
-     * @var string
      */
-    private $shortName;
+    private string $shortName;
 
     /**
      * The start index of the namespace declaration in the analyzed Tokens.
-     *
-     * @var int
      */
-    private $startIndex;
+    private int $startIndex;
 
     /**
      * The end index of the namespace declaration in the analyzed Tokens.
-     *
-     * @var int
      */
-    private $endIndex;
+    private int $endIndex;
 
     /**
      * The start index of the scope of the namespace in the analyzed Tokens.
-     *
-     * @var int
      */
-    private $scopeStartIndex;
+    private int $scopeStartIndex;
 
     /**
      * The end index of the scope of the namespace in the analyzed Tokens.
-     *
-     * @var int
      */
-    private $scopeEndIndex;
+    private int $scopeEndIndex;
 
     public function __construct(string $fullName, string $shortName, int $startIndex, int $endIndex, int $scopeStartIndex, int $scopeEndIndex)
     {
@@ -99,5 +87,10 @@ final class NamespaceAnalysis implements StartEndTokenAwareAnalysis
     public function getScopeEndIndex(): int
     {
         return $this->scopeEndIndex;
+    }
+
+    public function isGlobalNamespace(): bool
+    {
+        return '' === $this->getFullName();
     }
 }

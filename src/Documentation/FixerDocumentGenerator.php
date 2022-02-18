@@ -37,15 +37,9 @@ use PhpCsFixer\Utils;
  */
 final class FixerDocumentGenerator
 {
-    /**
-     * @var DocumentationLocator
-     */
-    private $locator;
+    private DocumentationLocator $locator;
 
-    /**
-     * @var FullDiffer
-     */
-    private $differ;
+    private FullDiffer $differ;
 
     public function __construct(DocumentationLocator $locator)
     {
@@ -59,18 +53,6 @@ final class FixerDocumentGenerator
         $title = "Rule ``{$name}``";
         $titleLine = str_repeat('=', \strlen($title));
         $doc = "{$titleLine}\n{$title}\n{$titleLine}";
-
-        if ($fixer instanceof DeprecatedFixerInterface) {
-            $doc .= "\n\n.. warning:: This rule is deprecated and will be removed on next major version.";
-            $alternatives = $fixer->getSuccessorsNames();
-
-            if (0 !== \count($alternatives)) {
-                $doc .= RstUtils::toRst(sprintf(
-                    "\n\nYou should use %s instead.",
-                    Utils::naturalLanguageJoinWithBackticks($alternatives)
-                ), 3);
-            }
-        }
 
         $definition = $fixer->getDefinition();
         $doc .= "\n\n".RstUtils::toRst($definition->getSummary());
@@ -89,18 +71,54 @@ Description
 RST;
         }
 
-        $riskyDescription = $definition->getRiskyDescription();
+        $deprecationDescription = '';
 
-        if (null !== $riskyDescription) {
-            $riskyDescription = RstUtils::toRst($riskyDescription, 3);
+        if ($fixer instanceof DeprecatedFixerInterface) {
+            $deprecationDescription = <<<'RST'
 
-            $doc .= <<<RST
-
-
-.. warning:: Using this rule is risky.
-
-   {$riskyDescription}
+This rule is deprecated and will be removed on next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 RST;
+            $alternatives = $fixer->getSuccessorsNames();
+
+            if (0 !== \count($alternatives)) {
+                $deprecationDescription .= RstUtils::toRst(sprintf(
+                    "\n\nYou should use %s instead.",
+                    Utils::naturalLanguageJoinWithBackticks($alternatives)
+                ), 0);
+            }
+        }
+
+        $riskyDescription = '';
+        $riskyDescriptionRaw = $definition->getRiskyDescription();
+
+        if (null !== $riskyDescriptionRaw) {
+            $riskyDescriptionRaw = RstUtils::toRst($riskyDescriptionRaw, 0);
+            $riskyDescription = <<<RST
+
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+{$riskyDescriptionRaw}
+RST;
+        }
+
+        if ($deprecationDescription || $riskyDescription) {
+            $warningsHeader = 'Warning';
+            $warningsSeparator = '';
+
+            if ($deprecationDescription && $riskyDescription) {
+                $warningsHeader = 'Warnings';
+                $warningsSeparator = "\n";
+            }
+
+            $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
+            $doc .= "\n\n".implode("\n", array_filter([
+                $warningsHeader,
+                $warningsHeaderLine,
+                $deprecationDescription,
+                $riskyDescription,
+            ]));
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {

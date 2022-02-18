@@ -307,7 +307,6 @@ $bar;',
 
     /**
      * @dataProvider providePhpdocCandidatePhp74Cases
-     * @requires PHP 7.4
      */
     public function testPhpdocCandidatePhp74(string $code): void
     {
@@ -391,6 +390,10 @@ Class MyAnnotation3 {}'],
                 /* */
                 final public const Y = "i";
             }',
+        ];
+
+        yield 'enum' => [
+            '<?php /* Before enum */ enum Foo {}',
         ];
     }
 }

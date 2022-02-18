@@ -5,10 +5,14 @@ Rule ``php_unit_set_up_tear_down_visibility``
 Changes the visibility of the ``setUp()`` and ``tearDown()`` functions of
 PHPUnit to ``protected``, to match the PHPUnit TestCase.
 
-.. warning:: Using this rule is risky.
+Warning
+-------
 
-   This fixer may change functions named ``setUp()`` or ``tearDown()`` outside
-   of PHPUnit tests, when a class is wrongly seen as a PHPUnit test.
+Using this rule is risky
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This fixer may change functions named ``setUp()`` or ``tearDown()`` outside of
+PHPUnit tests, when a class is wrongly seen as a PHPUnit test.
 
 Examples
 --------
