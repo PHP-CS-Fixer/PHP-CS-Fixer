@@ -1809,7 +1809,7 @@ class Foo {
                 null,
                 ['allow_mixed' => false],
             ],
-            'allow_mixed=>true' => [
+            'allow_mixed=>true ||' => [
                 '<?php
 class Foo {
     /**

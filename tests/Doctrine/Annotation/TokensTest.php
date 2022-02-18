@@ -35,4 +35,34 @@ final class TokensTest extends TestCase
         static::assertCount(1, $tokens);
         static::assertSame($docComment, $tokens->getCode());
     }
+
+    /**
+     * @dataProvider provideOffSetOtherThanTokenCases
+     */
+    public function testOffSetOtherThanToken(string $message, ?string $wrongType): void
+    {
+        $docComment = '/** */';
+
+        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $tokens = Tokens::createFromDocComment($token);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
+
+        // @phpstan-ignore-next-line as we are testing the type error
+        $tokens[1] = $wrongType;
+    }
+
+    public function provideOffSetOtherThanTokenCases(): iterable
+    {
+        yield [
+            'Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "null" given.',
+            null,
+        ];
+
+        yield [
+            'Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "string" given.',
+            'foo',
+        ];
+    }
 }

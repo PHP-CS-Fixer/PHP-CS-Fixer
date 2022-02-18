@@ -47,10 +47,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
         'void',
     ];
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     private int $startIndex;
 

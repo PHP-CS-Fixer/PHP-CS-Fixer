@@ -282,10 +282,11 @@ final class TokensTest extends TestCase
      */
     public function testFindSequenceException(string $message, array $sequence): void
     {
+        $tokens = Tokens::fromCode('<?php $x = 1;');
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($message);
 
-        $tokens = Tokens::fromCode('<?php $x = 1;');
         $tokens->findSequence($sequence);
     }
 
@@ -732,21 +733,23 @@ PHP;
 
     public function testFindBlockEndInvalidType(): void
     {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php ');
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param type: "-1"\.$/');
 
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(-1, 0);
     }
 
     public function testFindBlockEndInvalidStart(): void
     {
+        Tokens::clearCache();
+        $tokens = Tokens::fromCode('<?php ');
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
 
-        Tokens::clearCache();
-        $tokens = Tokens::fromCode('<?php ');
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 0);
     }
 
