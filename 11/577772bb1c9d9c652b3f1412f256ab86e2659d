@@ -1,0 +1,40 @@
+---------------------------------------------------------------------------
+
+by keradus at 2022-02-18T11:42:42Z
+
+sorry, `Update devscript location` vs content of PR is confusing. what location we gonna change + reasoning, can you share?
+
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-18T11:54:44Z
+
+[![Coverage Status](https://coveralls.io/builds/46679989/badge)](https://coveralls.io/builds/46679989)
+
+Coverage increased (+0.03%) to 93.211% when pulling **abd054ffb393bf0ac5a1da5bc9d26667523c9524 on SpacePossum:master_fix_SCA** into **51c8146236ef4911a216b03d729d39d26cdf4a6a on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by jrmajor at 2022-02-18T12:02:05Z
+
+@keradus The changed variable `VERSION_CB` is used in `wget -qO- "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_${VERSION_CB}.tar.xz"`. For the old value, it returns 404, so it looks like the location from which the script is downloaded will be changed.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-02-18T12:04:13Z
+
+all PR's are currently failing SCA set, for example:
+https://github.com/FriendsOfPHP/PHP-CS-Fixer/runs/5232717511?check_suite_focus=true
+
+this is because the location:
+
+>https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_2.21.7.tar.xz
+
+returns 404
+
+the updated location
+
+>https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_2.21.7~bpo11+1.tar.xz
+
+works
+
+However, since the install script of the SCA exits on the first error it hasn't run all the other tooling, like stan and psalm, either, which is what is the rest of the PR will be about.
