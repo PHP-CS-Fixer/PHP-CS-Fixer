@@ -206,7 +206,7 @@ namespace {
                 if (!\is_string($constantName) || '' === trim($constantName) || trim($constantName) !== $constantName) {
                     throw new InvalidOptionsException(sprintf(
                         'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                        \is_object($constantName) ? \get_class($constantName) : \gettype($constantName)
+                        get_debug_type($constantName)
                     ));
                 }
             }
