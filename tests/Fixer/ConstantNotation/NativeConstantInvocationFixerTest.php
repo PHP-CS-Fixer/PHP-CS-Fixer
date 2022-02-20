@@ -48,7 +48,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            \is_object($element) ? \get_class($element) : \gettype($element)
+            get_debug_type($element)
         ));
 
         $this->fixer->configure([
@@ -68,7 +68,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessage(sprintf(
             'Each element must be a non-empty, trimmed string, got "%s" instead.',
-            \is_object($element) ? \get_class($element) : \gettype($element)
+            get_debug_type($element)
         ));
 
         $this->fixer->configure([

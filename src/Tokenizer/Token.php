@@ -55,14 +55,14 @@ final class Token
             if (!\is_int($token[0])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Id must be an int, got "%s".',
-                    \is_object($token[0]) ? \get_class($token[0]) : \gettype($token[0])
+                    get_debug_type($token[0])
                 ));
             }
 
             if (!\is_string($token[1])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Content must be a string, got "%s".',
-                    \is_object($token[1]) ? \get_class($token[1]) : \gettype($token[1])
+                    get_debug_type($token[1])
                 ));
             }
 
@@ -77,11 +77,7 @@ final class Token
             $this->isArray = false;
             $this->content = $token;
         } else {
-            throw new \InvalidArgumentException(sprintf(
-                'Cannot recognize input value as valid Token prototype, got "%s".',
-                // @phpstan-ignore-next-line due to lack of strong typing of method parameter
-                \is_object($token) ? \get_class($token) : \gettype($token)
-            ));
+            throw new \InvalidArgumentException(sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
         }
     }
 

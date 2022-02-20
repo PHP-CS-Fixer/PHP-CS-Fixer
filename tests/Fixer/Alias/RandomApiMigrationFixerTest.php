@@ -38,7 +38,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     public function testConfigureCheckReplacementType(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "NULL" given\.$#');
+        $this->expectExceptionMessageMatches('#^\[random_api_migration\] Invalid configuration: Replacement for function "rand" must be a string, "null" given\.$#');
 
         $this->fixer->configure(['replacements' => ['rand' => null]]);
     }
