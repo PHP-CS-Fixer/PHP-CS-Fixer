@@ -1443,5 +1443,36 @@ class A
 ',
             ['order' => ['property_public_readonly', 'property_public', 'property_protected_readonly', 'property_private_readonly'], 'sort_algorithm' => 'alpha'],
         ];
+
+        yield [
+            '<?php
+
+ enum A: int
+ {
+     case Foo = 1;
+     case Bar = 2;
+     private const C1 = 1;
+     function qux() {
+         switch (true) {
+             case 1: break;
+         }
+     }
+ }
+ ',
+            '<?php
+
+ enum A: int
+ {
+     private const C1 = 1;
+     case Foo = 1;
+     function qux() {
+         switch (true) {
+             case 1: break;
+         }
+     }
+     case Bar = 2;
+ }
+ ',
+        ];
     }
 }
