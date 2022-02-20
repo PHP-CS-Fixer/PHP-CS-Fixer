@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-20T12:07:51Z
+
+[![Coverage Status](https://coveralls.io/builds/46711544/badge)](https://coveralls.io/builds/46711544)
+
+Coverage increased (+0.0008%) to 93.106% when pulling **05fe704e1c1865512597ccc6171e02c1120fe2ce on gharlan:OrderedClassElementsFixer-enums** into **11577772bb1c9d9c652b3f1412f256ab86e2659d on FriendsOfPHP:master**.
