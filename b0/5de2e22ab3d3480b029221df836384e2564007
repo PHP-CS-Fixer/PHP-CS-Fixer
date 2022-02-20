@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-20T12:28:24Z
+
+[![Coverage Status](https://coveralls.io/builds/46711672/badge)](https://coveralls.io/builds/46711672)
+
+Coverage remained the same at 93.105% when pulling **61a5df72523e19e99fab454637f5106fdb344c25 on gharlan:BracesFixer-enums** into **11577772bb1c9d9c652b3f1412f256ab86e2659d on FriendsOfPHP:master**.
