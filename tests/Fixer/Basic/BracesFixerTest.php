@@ -5428,4 +5428,47 @@ if ($a) foreach ($b as $c): ?>
 };',
         ];
     }
+
+    /**
+     * @requires PHP 8.1
+     *
+     * @dataProvider provideFix81Cases
+     */
+    public function testFix81(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases()
+    {
+        yield 'enum' => [
+            '<?php
+ enum Foo
+ {
+     case Bar;
+
+     public function abc()
+     {
+     }
+ }',
+            '<?php
+ enum Foo {
+     case Bar;
+
+     public function abc() {
+     }
+ }',
+        ];
+
+        yield 'backed-enum' => [
+            '<?php
+ enum Foo: string
+ {
+     case Bar = "bar";
+ }',
+            '<?php
+ enum Foo: string {
+ case Bar = "bar";}',
+        ];
+    }
 }
