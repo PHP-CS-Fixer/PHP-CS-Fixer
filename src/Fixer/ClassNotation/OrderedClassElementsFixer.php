@@ -51,6 +51,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'public' => null,
         'protected' => null,
         'private' => null,
+        'case' => ['public'],
         'constant' => null,
         'constant_public' => ['constant', 'public'],
         'constant_protected' => ['constant', 'protected'],
@@ -150,7 +151,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
      */
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT, T_INTERFACE]);   // FIXME use Token::getClassyTokenKinds(false)
+        return $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**
@@ -159,7 +160,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Orders the elements of classes/interfaces/traits.',
+            'Orders the elements of classes/interfaces/traits/enums.',
             [
                 new CodeSample(
                     '<?php
@@ -237,7 +238,7 @@ class Example
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($i = 1, $count = $tokens->count(); $i < $count; ++$i) {
-            if (!$tokens[$i]->isGivenKind([T_CLASS, T_TRAIT, T_INTERFACE])) { // FIXME use "isClassy"
+            if (!$tokens[$i]->isClassy()) {
                 continue;
             }
 
@@ -270,6 +271,7 @@ class Example
                 ->setAllowedValues([new AllowedValueSubset(array_keys(array_merge(self::$typeHierarchy, self::$specialTypes)))])
                 ->setDefault([
                     'use_trait',
+                    'case',
                     'constant_public',
                     'constant_protected',
                     'constant_private',
@@ -297,7 +299,7 @@ class Example
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CONST, T_VARIABLE, T_FUNCTION];
+        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CASE, T_CONST, T_VARIABLE, T_FUNCTION];
 
         ++$startIndex;
         $elements = [];
@@ -356,7 +358,7 @@ class Example
 
                 if ('property' === $element['type']) {
                     $element['name'] = $tokens[$i]->getContent();
-                } elseif (\in_array($element['type'], ['use_trait', 'constant', 'method', 'magic', 'construct', 'destruct'], true)) {
+                } elseif (\in_array($element['type'], ['use_trait', 'case', 'constant', 'method', 'magic', 'construct', 'destruct'], true)) {
                     $element['name'] = $tokens[$tokens->getNextMeaningfulToken($i)]->getContent();
                 }
 
@@ -379,6 +381,10 @@ class Example
 
         if ($token->isGivenKind(CT::T_USE_TRAIT)) {
             return 'use_trait';
+        }
+
+        if ($token->isGivenKind(T_CASE)) {
+            return 'case';
         }
 
         if ($token->isGivenKind(T_CONST)) {

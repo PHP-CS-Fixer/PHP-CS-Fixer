@@ -168,7 +168,7 @@ Class Notation
   Removes ``final`` from methods where possible.
 - `ordered_class_elements <./class_notation/ordered_class_elements.rst>`_
 
-  Orders the elements of classes/interfaces/traits.
+  Orders the elements of classes/interfaces/traits/enums.
 - `ordered_interfaces <./class_notation/ordered_interfaces.rst>`_ *(risky)*
 
   Orders the interfaces in an ``implements`` or ``interface extends`` clause.
