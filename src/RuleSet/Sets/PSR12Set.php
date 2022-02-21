@@ -29,7 +29,10 @@ final class PSR12Set extends AbstractRuleSetDescription
             'braces' => [
                 'allow_single_line_anonymous_class_with_empty_body' => true,
             ],
-            'class_definition' => ['space_before_parenthesis' => true], // defined in PSR12 ¶8. Anonymous Classes
+            'class_definition' => [
+                'inline_constructor_arguments' => false, // handled by method_argument_space fixer
+                'space_before_parenthesis' => true, // defined in PSR12 ¶8. Anonymous Classes
+            ],
             'compact_nullable_typehint' => true,
             'declare_equal_normalize' => true,
             'lowercase_cast' => true,
