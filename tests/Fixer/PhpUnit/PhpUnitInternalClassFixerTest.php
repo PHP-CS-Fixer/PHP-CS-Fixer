@@ -276,7 +276,7 @@ class Test extends TestCase
             'By default it will not mark an abstract class as internal' => [
                 '<?php
 
-abstract class Test
+abstract class Test extends TestCase
 {
 }
 ',
@@ -287,13 +287,13 @@ abstract class Test
 /**
  * @internal
  */
-abstract class Test
+abstract class Test extends TestCase
 {
 }
 ',
                 '<?php
 
-abstract class Test
+abstract class Test extends TestCase
 {
 }
 ',
@@ -304,7 +304,7 @@ abstract class Test
             'If final is not added as an option, final classes will not be marked internal' => [
                 '<?php
 
-final class Test
+final class Test extends TestCase
 {
 }
 ',
@@ -316,7 +316,7 @@ final class Test
             'If normal is not added as an option, normal classes will not be marked internal' => [
                 '<?php
 
-class Test
+class Test extends TestCase
 {
 }
 ',
@@ -331,11 +331,11 @@ class Test
 /**
  * @internal
  */
-class Test
+class Test extends TestCase
 {
 }
 
-abstract class Test
+abstract class Test2 extends TestCase
 {
 }
 
@@ -352,11 +352,11 @@ class Test extends TestCase
 ',
                 '<?php
 
-class Test
+class Test extends TestCase
 {
 }
 
-abstract class Test
+abstract class Test2 extends TestCase
 {
 }
 

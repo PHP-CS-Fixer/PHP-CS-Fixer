@@ -4,7 +4,7 @@ Integration of fixers: php_unit_test_annotation,php_unit_method_casing.
 {"php_unit_test_annotation": true, "php_unit_method_casing" :  {"case": "snake_case"}}
 --EXPECT--
 <?php
-class Test
+class Test extends TestCase
 {
     /**
      * It does thing for foo and bar
@@ -15,7 +15,7 @@ class Test
 
 --INPUT--
 <?php
-class Test
+class Test extends TestCase
 {
     /**
      * It does thing for foo and bar
