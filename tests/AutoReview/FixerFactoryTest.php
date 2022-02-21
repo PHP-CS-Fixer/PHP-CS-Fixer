@@ -561,6 +561,9 @@ final class FixerFactoryTest extends TestCase
                 'no_empty_phpdoc',
                 'void_return',
             ],
+            'no_trailing_comma_in_singleline_function_call' => [
+                'no_spaces_inside_parenthesis',
+            ],
             'no_unneeded_control_parentheses' => [
                 'no_trailing_whitespace',
             ],

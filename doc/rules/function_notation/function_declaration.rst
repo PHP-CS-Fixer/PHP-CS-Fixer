@@ -16,6 +16,15 @@ Allowed values: ``'none'``, ``'one'``
 
 Default value: ``'one'``
 
+``trailing_comma_single_line``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether trailing commas are allowed in single line signatures.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 

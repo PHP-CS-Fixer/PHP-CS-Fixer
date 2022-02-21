@@ -340,6 +340,9 @@ Function Notation
 - `no_spaces_after_function_name <./function_notation/no_spaces_after_function_name.rst>`_
 
   When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
+- `no_trailing_comma_in_singleline_function_call <./function_notation/no_trailing_comma_in_singleline_function_call.rst>`_
+
+  When making a method or function call on a single line there MUST NOT be a trailing comma after the last argument.
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
 
   In function arguments there must not be arguments with default values before non-default ones.

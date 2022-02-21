@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: no_trailing_comma_in_singleline_function_call,no_spaces_inside_parenthesis.
+--RULESET--
+{"no_trailing_comma_in_singleline_function_call": true, "no_spaces_inside_parenthesis": true}
+--EXPECT--
+<?php
+foo(1);
+
+--INPUT--
+<?php
+foo(1 ,);

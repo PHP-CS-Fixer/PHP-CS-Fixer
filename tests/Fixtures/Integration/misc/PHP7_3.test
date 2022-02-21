@@ -48,41 +48,41 @@ foo(
 );
 __DIR__; // `dir_constant` rule
 dirname($path, 3); // `combine_nested_dirname` rule
-$foo->__invoke(1, ); // `magic_method_casing` rule
-implode('', $pieces, ); // `implode_call` rule
-implode('', $pieces, ); // `implode_call` rule
+$foo->__invoke(1); // `magic_method_casing` rule
+implode('', $pieces); // `implode_call` rule
+implode('', $pieces); // `implode_call` rule
 null === $var; // `is_null` rule
-mb_strpos($a, $b, ); // `mb_str_functions` rule
-sample('foo', 'foobarbaz', 'baz', ); // `method_argument_space` rule
-$user->setEmail('voff.web@gmail.com', ) // `method_chaining_indentation` rule
-    ->setPassword('233434', );
+mb_strpos($a, $b); // `mb_str_functions` rule
+sample('foo', 'foobarbaz', 'baz'); // `method_argument_space` rule
+$user->setEmail('voff.web@gmail.com') // `method_chaining_indentation` rule
+    ->setPassword('233434');
 $a = (int) $b; // `modernize_types_casting` rule
 $this->method1() // `multiline_whitespace_before_semicolons` rule
-    ->method2(3, );
-mb_strlen($str, ); // `native_function_casing` rule
-$c = \get_class($d, ); // `native_function_invocation` rule
-$a = rtrim($b, ); // `no_alias_functions` rule
-$foo->bar($arg1, $arg2, ); // `no_spaces_inside_parenthesis` rule
+    ->method2(3);
+mb_strlen($str); // `native_function_casing` rule
+$c = \get_class($d); // `native_function_invocation` rule
+$a = rtrim($b); // `no_alias_functions` rule
+$foo->bar($arg1, $arg2); // `no_spaces_inside_parenthesis` rule
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     public function testFoo(): void
     {
-        $this->assertTrue($a, ); // `php_unit_construct` rule
-        $this->assertNan($a, ); // `php_unit_dedicate_assert` rule
+        $this->assertTrue($a); // `php_unit_construct` rule
+        $this->assertNan($a); // `php_unit_dedicate_assert` rule
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Msg');
         $this->expectExceptionCode(123); // `php_unit_expectation` rule
-        $this->createMock('Foo', ); // `php_unit_mock` rule
-        $this->assertSame(1, 2, ); // `php_unit_test_case_static_method_calls` rule
-        $this->assertSame(1, $a, '', ); // `php_unit_strict` rule
+        $this->createMock('Foo'); // `php_unit_mock` rule
+        $this->assertSame(1, 2); // `php_unit_test_case_static_method_calls` rule
+        $this->assertSame(1, $a, ''); // `php_unit_strict` rule
     }
 }
 $a ** 1; // `pow_to_exponentiation` rule
-random_int($a, $b, ); // `random_api_migration` rule
+random_int($a, $b); // `random_api_migration` rule
 $foo = (int) $foo; // `set_type_to_cast` rule
-in_array($b, $c, true, ); // `strict_param` rule
-@trigger_error('Warning.', \E_USER_DEPRECATED, ); // `error_suppression` rule
-foo(null === $a, ); // `yoda_style` rule
+in_array($b, $c, true); // `strict_param` rule
+@trigger_error('Warning.', \E_USER_DEPRECATED); // `error_suppression` rule
+foo(null === $a); // `yoda_style` rule
 $a = null; // `no_unset_cast` rule
 $foo->bar = null; // `no_unset_on_property` rule
 

@@ -47,10 +47,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
 
     private const SUPPORTED_SPACINGS = [self::SPACING_NONE, self::SPACING_ONE];
 
-    /**
-     * @var string
-     */
-    private $singleLineWhitespaceOptions = " \t";
+    private string $singleLineWhitespaceOptions = " \t";
 
     /**
      * {@inheritdoc}
@@ -134,6 +131,17 @@ $f = fn () => null;
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+
+            if (false === $this->configuration['trailing_comma_single_line']
+                && !$tokens->isPartialCodeMultiline($index, $endParenthesisIndex)
+            ) {
+                $commaIndex = $tokens->getPrevMeaningfulToken($endParenthesisIndex);
+
+                if ($tokens[$commaIndex]->equals(',')) {
+                    $tokens->clearTokenAndMergeSurroundingWhitespace($commaIndex);
+                }
+            }
+
             $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{', [T_DOUBLE_ARROW]]);
 
             // fix single-line whitespace before { or =>
@@ -159,6 +167,16 @@ $f = fn () => null;
 
                 $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
                 $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+
+                if (false === $this->configuration['trailing_comma_single_line']
+                    && !$tokens->isPartialCodeMultiline($index, $useEndParenthesisIndex)
+                ) {
+                    $commaIndex = $tokens->getPrevMeaningfulToken($useEndParenthesisIndex);
+
+                    if ($tokens[$commaIndex]->equals(',')) {
+                        $tokens->clearTokenAndMergeSurroundingWhitespace($commaIndex);
+                    }
+                }
 
                 // remove single-line edge whitespaces inside use parentheses
                 $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);
@@ -211,14 +229,22 @@ $f = fn () => null;
                 ->setDefault(self::SPACING_ONE)
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),
+            (new FixerOptionBuilder('trailing_comma_single_line', 'Whether trailing commas are allowed in single line signatures.'))
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
     private function fixParenthesisInnerEdge(Tokens $tokens, int $start, int $end): void
     {
+        do {
+            --$end;
+        } while ($tokens->isEmptyAt($end));
+
         // remove single-line whitespace before `)`
-        if ($tokens[$end - 1]->isWhitespace($this->singleLineWhitespaceOptions)) {
-            $tokens->clearAt($end - 1);
+        if ($tokens[$end]->isWhitespace($this->singleLineWhitespaceOptions)) {
+            $tokens->clearAt($end);
         }
 
         // remove single-line whitespace after `(`

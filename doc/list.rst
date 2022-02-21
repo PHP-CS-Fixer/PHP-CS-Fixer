@@ -741,6 +741,10 @@ List of Available Rules
      | Spacing to use before open parenthesis for closures.
      | Allowed values: ``'none'``, ``'one'``
      | Default value: ``'one'``
+   - | ``trailing_comma_single_line``
+     | Whether trailing commas are allowed in single line signatures.
+     | Allowed types: ``bool``
+     | Default value: ``false``
 
 
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
@@ -1538,6 +1542,13 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer <./../src/Fixer/ArrayNotation/NoTrailingCommaInSinglelineArrayFixer.php>`_
+-  `no_trailing_comma_in_singleline_function_call <./rules/function_notation/no_trailing_comma_in_singleline_function_call.rst>`_
+
+   When making a method or function call on a single line there MUST NOT be a trailing comma after the last argument.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer <./../src/Fixer/FunctionNotation/NoTrailingCommaInSinglelineFunctionCallFixer.php>`_
 -  `no_trailing_whitespace <./rules/whitespace/no_trailing_whitespace.rst>`_
 
    Remove trailing whitespace at the end of non-blank lines.
