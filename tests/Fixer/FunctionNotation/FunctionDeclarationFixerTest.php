@@ -434,13 +434,39 @@ foo#
     public function provideFixPhp80Cases(): \Generator
     {
         yield [
-            '<?php function ($i,) {};',
+            '<?php function ($i) {};',
             '<?php function(   $i,   ) {};',
         ];
 
         yield [
+            '<?php function (
+                $a,
+                $b,
+                $c,
+            ) {};',
+            '<?php function(
+                $a,
+                $b,
+                $c,
+            ) {};',
+        ];
+
+        yield [
+            '<?php function foo(
+                $a,
+                $b,
+                $c,
+            ) {}',
+            '<?php function foo    (
+                $a,
+                $b,
+                $c,
+            ){}',
+        ];
+
+        yield [
             '<?php
-                    $b = static function ($a,$b,) {
+                    $b = static function ($a,$b) {
                         echo $a;
                     };
                 ',
@@ -452,9 +478,32 @@ foo#
         ];
 
         yield [
-            '<?php fn&($a,$b,) => null;',
+            '<?php fn&($a,$b) => null;',
             '<?php fn &(  $a,$b,   ) => null;',
             self::$configurationClosureSpacingNone,
+        ];
+
+        yield [
+            '<?php
+                function ($a) use ($b) {};
+                function ($y) use (
+                    $b,
+                    $c,
+                ) {};
+            ',
+            '<?php
+                function ($a) use ($b  ,  )     {};
+                function ($y) use (
+                    $b,
+                    $c,
+                ) {};
+            ',
+        ];
+
+        yield [
+            '<?php function ($i,) {};',
+            '<?php function(   $i,   ) {};',
+            ['trailing_comma_single_line' => true],
         ];
     }
 }

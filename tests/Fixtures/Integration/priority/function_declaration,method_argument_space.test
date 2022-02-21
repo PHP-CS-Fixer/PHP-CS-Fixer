@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: function_declaration,method_argument_space.
 --RULESET--
-{"function_declaration": true, "method_argument_space": true}
+{"function_declaration": {"trailing_comma_single_line": true}, "method_argument_space": true}
 --REQUIREMENTS--
 {"php": 80000}
 --EXPECT--
