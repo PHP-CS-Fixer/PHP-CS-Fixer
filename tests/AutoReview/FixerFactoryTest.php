@@ -496,6 +496,12 @@ final class FixerFactoryTest extends TestCase
                 'binary_operator_spaces',
                 'ternary_operator_spaces',
             ],
+            'long_to_shorthand_operator' => [
+                'binary_operator_spaces',
+                'no_extra_blank_lines',
+                'no_singleline_whitespace_before_semicolons',
+                'standardize_increment',
+            ],
             'method_argument_space' => [
                 'array_indentation',
                 'statement_indentation',

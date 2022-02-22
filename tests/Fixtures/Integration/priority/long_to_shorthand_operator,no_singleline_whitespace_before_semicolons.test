@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: long_to_shorthand_operator,no_singleline_whitespace_before_semicolons.
+--RULESET--
+{"long_to_shorthand_operator": true, "no_singleline_whitespace_before_semicolons": true}
+--EXPECT--
+<?php
+
+$options *= $query;
+
+--INPUT--
+<?php
+
+$options = $query * $options;
