@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: long_to_shorthand_operator,no_extra_blank_lines.
+--RULESET--
+{"long_to_shorthand_operator": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+
+$a +=
+
+2
+;
+
+--INPUT--
+<?php
+
+$a =
+$a
++
+2
+;
