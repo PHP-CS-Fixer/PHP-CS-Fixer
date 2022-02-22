@@ -207,7 +207,7 @@ EOF;
         $pos = $first->getEnd();
         $final = $second->getStart();
 
-        for ($pos = $pos + 1; $pos < $final; ++$pos) {
+        for (++$pos; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }
@@ -227,7 +227,7 @@ EOF;
             return;
         }
 
-        for ($pos = $pos + 1; $pos < $final; ++$pos) {
+        for (++$pos; $pos < $final; ++$pos) {
             $doc->getLine($pos)->remove();
         }
     }

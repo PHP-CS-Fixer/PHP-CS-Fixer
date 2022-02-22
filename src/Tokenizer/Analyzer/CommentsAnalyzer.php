@@ -224,7 +224,7 @@ final class CommentsAnalyzer
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
         $docsContent = $docsToken->getContent();
 
-        for ($index = $index + 1; $index < $endIndex; ++$index) {
+        for (++$index; $index < $endIndex; ++$index) {
             $token = $tokens[$index];
 
             if (
