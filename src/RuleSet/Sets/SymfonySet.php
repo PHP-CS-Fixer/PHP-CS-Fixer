@@ -75,6 +75,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'no_alternative_syntax' => true,
             'no_binary_string' => true,
             'no_blank_lines_after_phpdoc' => true,
+            'no_duplicate_imports' => true,
             'no_empty_comment' => true,
             'no_empty_phpdoc' => true,
             'no_empty_statement' => true,

@@ -503,6 +503,11 @@ final class FixerFactoryTest extends TestCase
             'no_blank_lines_after_phpdoc' => [
                 'header_comment',
             ],
+            'no_duplicate_imports' => [
+                'no_extra_blank_lines',
+                'no_trailing_whitespace',
+                'no_whitespace_in_blank_line',
+            ],
             'no_empty_comment' => [
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
@@ -571,6 +576,7 @@ final class FixerFactoryTest extends TestCase
                 'simplified_if_return',
             ],
             'no_unneeded_import_alias' => [
+                'no_duplicate_imports',
                 'no_singleline_whitespace_before_semicolons',
             ],
             'no_unset_cast' => [

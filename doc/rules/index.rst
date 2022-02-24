@@ -389,6 +389,9 @@ Import
 - `group_import <./import/group_import.rst>`_
 
   There MUST be group use for the same namespaces.
+- `no_duplicate_imports <./import/no_duplicate_imports.rst>`_
+
+  The should be duplicate ``use`` imports.
 - `no_leading_import_slash <./import/no_leading_import_slash.rst>`_
 
   Remove leading slashes in ``use`` clauses.

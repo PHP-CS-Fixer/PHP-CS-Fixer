@@ -53,6 +53,7 @@ Rules
 - `no_alternative_syntax <./../rules/control_structure/no_alternative_syntax.rst>`_
 - `no_binary_string <./../rules/string_notation/no_binary_string.rst>`_
 - `no_blank_lines_after_phpdoc <./../rules/phpdoc/no_blank_lines_after_phpdoc.rst>`_
+- `no_duplicate_imports <./../rules/import/no_duplicate_imports.rst>`_
 - `no_empty_comment <./../rules/comment/no_empty_comment.rst>`_
 - `no_empty_phpdoc <./../rules/phpdoc/no_empty_phpdoc.rst>`_
 - `no_empty_statement <./../rules/semicolon/no_empty_statement.rst>`_
