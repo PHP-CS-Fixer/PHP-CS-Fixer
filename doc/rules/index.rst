@@ -42,6 +42,9 @@ Alias
 Array Notation
 --------------
 
+- `array_single_multi_line <./array_notation/array_single_multi_line.rst>`_
+
+  Single line arrays that are long or contain many elements must be multiline.
 - `array_syntax <./array_notation/array_syntax.rst>`_
 
   PHP arrays should be declared using the configured syntax.

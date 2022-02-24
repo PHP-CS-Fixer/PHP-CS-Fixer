@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: whitespace_after_comma_in_array,array_single_multi_line.
+--RULESET--
+{"whitespace_after_comma_in_array": true, "array_single_multi_line": {"inner_length": 4}}
+--EXPECT--
+<?php
+function foo(): array
+{
+    $z789 = array(
+1,
+2
+);
+
+    return $z789;
+}
+
+--INPUT--
+<?php
+function foo(): array
+{
+    $z789 = array(1,2);
+
+    return $z789;
+}

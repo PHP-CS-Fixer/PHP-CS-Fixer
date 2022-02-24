@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: trim_array_spaces,array_single_multi_line.
+--RULESET--
+{"trim_array_spaces": true, "array_single_multi_line": {"inner_length": 10}}
+--EXPECT--
+<?php
+function foo(): array
+{
+    $z88547 = array('a', 'b');
+
+    return $z88547;
+}
+
+--INPUT--
+<?php
+function foo(): array
+{
+    $z88547 = array( 'a', 'b' );
+
+    return $z88547;
+}

@@ -33,15 +33,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var null|int
-     */
-    private $candidateTokenKind;
+    private int $candidateTokenKind;
 
-    /**
-     * @var null|string
-     */
-    private $fixCallback;
+    private string $fixCallback;
 
     /**
      * {@inheritdoc}

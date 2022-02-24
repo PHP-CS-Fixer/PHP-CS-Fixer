@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: declare_strict_types,declare_equal_normalize.
 --RULESET--
-{"declare_strict_types": true, "declare_equal_normalize": {"space":"single"}}
+{"declare_strict_types": true, "declare_equal_normalize": {"space": "single"}}
 --EXPECT--
 <?php declare(strict_types = 1);
 
