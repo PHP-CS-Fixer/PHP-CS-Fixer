@@ -24,7 +24,6 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
-use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\PhpunitConstraintIsIdenticalString\Constraint\IsIdenticalString;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
@@ -63,15 +62,9 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
-    /**
-     * @var null|LinterInterface
-     */
-    protected $linter;
+    protected ?LinterInterface $linter = null;
 
-    /**
-     * @var null|FileRemoval
-     */
-    private static $fileRemoval;
+    private static ?FileRemoval $fileRemoval = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -359,9 +352,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
         static $linter = null;
 
         if (null === $linter) {
-            $linter = new CachingLinter(
-                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
-            );
+            $linter = new CachingLinter(new Linter()); // use the same linter as the "fix" command uses
         }
 
         return $linter;

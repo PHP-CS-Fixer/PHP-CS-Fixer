@@ -1345,6 +1345,13 @@ List of Available Rules
    Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PSR2 <./ruleSets/PSR2.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\PhpTag\\NoClosingTagFixer <./../src/Fixer/PhpTag/NoClosingTagFixer.php>`_
+-  `no_duplicated_imports <./rules/import/no_duplicated_imports.rst>`_
+
+   The should be duplicate ``use`` imports.
+
+   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+
+   `Source PhpCsFixer\\Fixer\\Import\\NoDuplicatedImportsFixer <./../src/Fixer/Import/NoDuplicatedImportsFixer.php>`_
 -  `no_empty_comment <./rules/comment/no_empty_comment.rst>`_
 
    There should not be any empty comments.
