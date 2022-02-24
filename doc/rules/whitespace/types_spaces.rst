@@ -16,6 +16,16 @@ Allowed values: ``'none'``, ``'single'``
 
 Default value: ``'none'``
 
+``space_multiple_catch``
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+spacing to apply around type operator when catching exceptions of multiple
+types, use ``null`` to follow the value configured for ``space``.
+
+Allowed values: ``'none'``, ``'single'``, ``null``
+
+Default value: ``null``
+
 Examples
 --------
 
