@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: void_return,return_type_declaration.
 --RULESET--
-{"void_return": true, "return_type_declaration": {"space_before":"one"}}
+{"void_return": true, "return_type_declaration": {"space_before": "one"}}
 --EXPECT--
 <?php
 function test() : void {}

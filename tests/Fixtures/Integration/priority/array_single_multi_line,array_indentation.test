@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: array_single_multi_line,array_indentation.
+--RULESET--
+{"array_single_multi_line": {"element_count": 3}, "array_indentation": true}
+--EXPECT--
+<?php
+function foo(): array
+{
+    $a = [
+        1,
+        2,
+        3,
+        4
+    ];
+
+    return $a;
+}
+
+--INPUT--
+<?php
+function foo(): array
+{
+    $a = [1,2,3,4];
+
+    return $a;
+}

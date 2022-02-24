@@ -26,11 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /** @var int */
-    private $newlineTokenIndexCache;
+    private int $newlineTokenIndexCache;
 
-    /** @var int */
-    private $newlineTokenPositionCache;
+    private ?int $newlineTokenPositionCache;
 
     /**
      * {@inheritdoc}
@@ -57,7 +55,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
      * {@inheritdoc}
      *
      * Must run before AlignMultilineCommentFixer, BinaryOperatorSpacesFixer.
-     * Must run after BracesFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
+     * Must run after ArraySingleMultiLineFixer, BracesFixer, MethodArgumentSpaceFixer, MethodChainingIndentationFixer.
      */
     public function getPriority(): int
     {

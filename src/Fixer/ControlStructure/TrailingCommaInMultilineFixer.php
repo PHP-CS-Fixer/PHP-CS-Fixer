@@ -87,7 +87,7 @@ SAMPLE
     /**
      * {@inheritdoc}
      *
-     * Must run after NoMultilineWhitespaceAroundDoubleArrowFixer.
+     * Must run after ArraySingleMultiLineFixer, NoMultilineWhitespaceAroundDoubleArrowFixer.
      */
     public function getPriority(): int
     {

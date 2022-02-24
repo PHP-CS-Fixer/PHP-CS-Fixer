@@ -33,6 +33,27 @@ List of Available Rules
    Part of rule sets `@PhpCsFixer:risky <./ruleSets/PhpCsFixerRisky.rst>`_ `@Symfony:risky <./ruleSets/SymfonyRisky.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../src/Fixer/Alias/ArrayPushFixer.php>`_
+-  `array_single_multi_line <./rules/array_notation/array_single_multi_line.rst>`_
+
+   Big arrays must be multiline.
+
+   Configuration options:
+
+   - | ``element_count``
+     | Threshold: # of elements an array must have be be written multiline.
+     | Allowed types: ``int``
+     | Default value: ``25``
+   - | ``inner_length``
+     | Threshold: # of characters there must be between the braces of an array for it to be made multiline.
+     | Allowed types: ``int``
+     | Default value: ``120``
+   - | ``conditions``
+     | How the thresholds must be evaluated combined.
+     | Allowed values: ``'all'``, ``'any'``
+     | Default value: ``'any'``
+
+
+   `Source PhpCsFixer\\Fixer\\ArrayNotation\\ArraySingleMultiLineFixer <./../src/Fixer/ArrayNotation/ArraySingleMultiLineFixer.php>`_
 -  `array_syntax <./rules/array_notation/array_syntax.rst>`_
 
    PHP arrays should be declared using the configured syntax.

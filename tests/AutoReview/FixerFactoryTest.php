@@ -321,6 +321,10 @@ final class FixerFactoryTest extends TestCase
                 'align_multiline_comment',
                 'binary_operator_spaces',
             ],
+            'array_single_multi_line' => [
+                'array_indentation',
+                'trailing_comma_in_multiline',
+            ],
             'array_syntax' => [
                 'binary_operator_spaces',
                 'ternary_operator_spaces',
@@ -782,6 +786,9 @@ final class FixerFactoryTest extends TestCase
             'ternary_to_null_coalescing' => [
                 'assign_null_coalescing_to_coalesce_equal',
             ],
+            'trim_array_spaces' => [
+                'array_single_multi_line',
+            ],
             'unary_operator_spaces' => [
                 'not_operator_with_space',
                 'not_operator_with_successor_space',
@@ -789,6 +796,9 @@ final class FixerFactoryTest extends TestCase
             'void_return' => [
                 'phpdoc_no_empty_return',
                 'return_type_declaration',
+            ],
+            'whitespace_after_comma_in_array' => [
+                'array_single_multi_line',
             ],
         ];
     }

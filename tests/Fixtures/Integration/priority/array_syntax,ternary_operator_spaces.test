@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: array_syntax,ternary_operator_spaces.
 --RULESET--
-{"array_syntax": {"syntax":"short"}, "ternary_operator_spaces":true}
+{"array_syntax": {"syntax": "short"}, "ternary_operator_spaces": true}
 --EXPECT--
 <?php
 $a = $b ? [ ] : 1;

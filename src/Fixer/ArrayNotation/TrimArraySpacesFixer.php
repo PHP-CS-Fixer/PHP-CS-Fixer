@@ -39,6 +39,16 @@ final class TrimArraySpacesFixer extends AbstractFixer
 
     /**
      * {@inheritdoc}
+     *
+     * Must run before ArraySingleMultiLineFixer.
+     */
+    public function getPriority(): int
+    {
+        return 31;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isCandidate(Tokens $tokens): bool
     {
