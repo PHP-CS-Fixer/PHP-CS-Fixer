@@ -1792,6 +1792,32 @@ $b;',
     }
 
     /**
+     * @dataProvider provideIsBinaryOperator81Cases
+     * @requires PHP 8.1
+     */
+    public function testIsBinaryOperator81(array $expected, string $source): void
+    {
+        $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
+
+        foreach ($expected as $index => $isBinary) {
+            static::assertSame($isBinary, $tokensAnalyzer->isBinaryOperator($index));
+
+            if ($isBinary) {
+                static::assertFalse($tokensAnalyzer->isUnarySuccessorOperator($index));
+                static::assertFalse($tokensAnalyzer->isUnaryPredecessorOperator($index));
+            }
+        }
+    }
+
+    public static function provideIsBinaryOperator81Cases(): iterable
+    {
+        yield 'intersection is not a binary operator' => [
+            [6 => false],
+            '<?php function test(A&B $var): void {}',
+        ];
+    }
+
+    /**
      * @dataProvider provideArrayExceptionsCases
      */
     public function testIsNotArray(string $source, int $tokenIndex): void

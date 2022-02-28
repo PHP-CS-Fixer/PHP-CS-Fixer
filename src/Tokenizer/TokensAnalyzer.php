@@ -565,7 +565,7 @@ final class TokensAnalyzer
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
-        if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+        if ($token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, CT::T_TYPE_INTERSECTION])) {
             return false;
         }
 

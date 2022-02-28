@@ -2061,4 +2061,20 @@ $f = 123;
             }'
         );
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     * @requires PHP 8.1
+     */
+    public function testFix81(string $expected, string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix81Cases(): iterable
+    {
+        yield 'intersections are not touched' => [
+            '<?php function test(A&B $var): void {}',
+        ];
+    }
 }
