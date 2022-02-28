@@ -746,6 +746,7 @@ else?><?php echo 5;',
         ];
 
         yield from $this->generateConditionsWithoutBracesCase('throw new class extends Exception{};');
+
         yield from $this->generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
     }
 

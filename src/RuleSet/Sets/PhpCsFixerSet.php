@@ -46,6 +46,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                     'throw',
                     'try',
                     'yield',
+                    'yield_from',
                 ],
             ],
             'combine_consecutive_issets' => true,
