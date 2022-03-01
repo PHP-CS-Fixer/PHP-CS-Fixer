@@ -1437,6 +1437,14 @@ abstract class Baz
                 [10 => true],
                 '<?php $foo = function($a, ...$b) {};',
             ],
+            [
+                [10 => false],
+                '<?php function test($var = A&B) {}',
+            ],
+            [
+                [6 => false],
+                '<?php $var &= A&B;',
+            ],
         ];
     }
 
@@ -1459,6 +1467,11 @@ abstract class Baz
 
     public function provideIsBinaryOperatorCases(): \Generator
     {
+        yield [
+            [10 => true],
+            '<?php function test($var = A&B) {}',
+        ];
+
         yield from [
             [
                 [8 => true],
@@ -1587,7 +1600,7 @@ $b;',
 
         $operators = [
             '+', '-', '*', '/', '%', '<', '>', '|', '^', '&=', '&&', '||', '.=', '/=', '==', '>=', '===', '!=',
-            '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=', '^',
+            '<>', '!==', '<=', 'and', 'or', 'xor', '-=', '%=', '*=', '|=', '+=', '<<', '<<=', '>>', '>>=', '^', '<=>', '??',
         ];
 
         foreach ($operators as $operator) {
@@ -1598,13 +1611,13 @@ $b;',
         }
 
         yield [
-            [3 => true],
-            '<?php $a <=> $b;',
+            [4 => true],
+            '<?php test(A&B);',
         ];
 
         yield [
-            [3 => true],
-            '<?php $a ?? $b;',
+            [10 => true],
+            '<?php function test($var = A&B) {}',
         ];
     }
 

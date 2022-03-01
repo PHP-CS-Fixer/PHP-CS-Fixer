@@ -34,10 +34,7 @@ final class TokensAnalyzer
      */
     private Tokens $tokens;
 
-    /**
-     * @var ?GotoLabelAnalyzer
-     */
-    private $gotoLabelAnalyzer;
+    private ?GotoLabelAnalyzer $gotoLabelAnalyzer = null;
 
     public function __construct(Tokens $tokens)
     {
@@ -464,8 +461,7 @@ final class TokensAnalyzer
             ];
         }
 
-        $tokens = $this->tokens;
-        $token = $tokens[$index];
+        $token = $this->tokens[$index];
 
         if ($token->isGivenKind($potentialSuccessorOperator)) {
             return !$this->isUnarySuccessorOperator($index);
@@ -479,7 +475,7 @@ final class TokensAnalyzer
             return false;
         }
 
-        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+        $prevToken = $this->tokens[$this->tokens->getPrevMeaningfulToken($index)];
 
         if (!$prevToken->equalsAny($disallowedPrevTokens)) {
             return true;
@@ -493,11 +489,13 @@ final class TokensAnalyzer
             ';',
             '{',
             '}',
+            '=',
             [T_FUNCTION],
             [T_OPEN_TAG],
             [T_OPEN_TAG_WITH_ECHO],
         ];
-        $prevToken = $tokens[$tokens->getPrevTokenOfKind($index, $searchTokens)];
+
+        $prevToken = $this->tokens[$this->tokens->getPrevTokenOfKind($index, $searchTokens)];
 
         return $prevToken->isGivenKind(T_FUNCTION);
     }
@@ -562,8 +560,7 @@ final class TokensAnalyzer
             ];
         }
 
-        $tokens = $this->tokens;
-        $token = $tokens[$index];
+        $token = $this->tokens[$index];
 
         if ($token->isGivenKind([T_ENCAPSED_AND_WHITESPACE, CT::T_TYPE_INTERSECTION])) {
             return false;
