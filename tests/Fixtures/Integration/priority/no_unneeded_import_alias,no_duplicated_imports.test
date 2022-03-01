@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_unneeded_import_alias,no_duplicated_imports.
+--RULESET--
+{"no_unneeded_import_alias": true, "no_duplicated_imports": true}
+--EXPECT--
+<?php
+use D;
+         // foo
+
+--INPUT--
+<?php
+use D;
+use D    as   D; // foo

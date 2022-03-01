@@ -45,7 +45,7 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoDuplicateImportsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
+     * Must run before NoDuplicatedImportsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
      */
     public function getPriority(): int
     {

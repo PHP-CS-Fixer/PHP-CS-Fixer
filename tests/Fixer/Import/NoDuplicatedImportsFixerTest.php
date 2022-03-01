@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\NoDuplicateImportsFixer
+ * @covers \PhpCsFixer\Fixer\Import\NoDuplicatedImportsFixer
  */
-final class NoDuplicateImportsFixerTest extends AbstractFixerTestCase
+final class NoDuplicatedImportsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases

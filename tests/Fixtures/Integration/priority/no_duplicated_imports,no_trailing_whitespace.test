@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_duplicated_imports,no_trailing_whitespace.
+--RULESET--
+{"no_duplicated_imports": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php
+use B;
+/* */
+
+--INPUT--
+<?php
+use B;
+/* */use B    ;

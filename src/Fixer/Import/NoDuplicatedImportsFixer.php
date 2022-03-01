@@ -23,7 +23,7 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
-final class NoDuplicateImportsFixer extends AbstractFixer
+final class NoDuplicatedImportsFixer extends AbstractFixer
 {
     /**
      * {@inheritdoc}
