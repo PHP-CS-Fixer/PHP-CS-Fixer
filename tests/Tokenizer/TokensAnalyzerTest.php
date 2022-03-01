@@ -1438,12 +1438,20 @@ abstract class Baz
                 '<?php $foo = function($a, ...$b) {};',
             ],
             [
+                [6 => false],
+                '<?php $var &= A&B;',
+            ],
+            [
                 [10 => false],
                 '<?php function test($var = A&B) {}',
             ],
             [
-                [6 => false],
-                '<?php $var &= A&B;',
+                [23 => true],
+                '<?php function replace(string $pattern, int $limit = -1, ?int &$count = null): string{}',
+            ],
+            [
+                [8 => true],
+                '<?php function replace(?int &$count){}',
             ],
         ];
     }
@@ -1467,11 +1475,6 @@ abstract class Baz
 
     public function provideIsBinaryOperatorCases(): \Generator
     {
-        yield [
-            [10 => true],
-            '<?php function test($var = A&B) {}',
-        ];
-
         yield from [
             [
                 [8 => true],
@@ -1618,6 +1621,16 @@ $b;',
         yield [
             [10 => true],
             '<?php function test($var = A&B) {}',
+        ];
+
+        yield [
+            [3 => false],
+            '<?php function & lambda() { return static function () {};}',
+        ];
+
+        yield [
+            [23 => false],
+            '<?php function replace(string $pattern, int $limit = -1, ?int &$count = null): string{}',
         ];
     }
 
