@@ -34,15 +34,41 @@ final class ReferenceAnalyzerTest extends TestCase
         static::assertFalse($analyzer->isReference(Tokens::fromCode('<?php $foo;$bar;$baz;'), 3));
     }
 
-    public function testReferenceAndNonReferenceTogether(): void
+    /**
+     * @param int[] $expected
+     *
+     * @dataProvider provideReferenceAndNonReferenceTogetherCases
+     */
+    public function testReferenceAndNonReferenceTogether(array $expected, string $source): void
     {
         $analyzer = new ReferenceAnalyzer();
+        $tokens = Tokens::fromCode($source);
 
-        $tokens = Tokens::fromCode('<?php function foo(&$bar = BAZ & QUX & H) {};');
+        foreach ($tokens as $index => $token) {
+            if ('&' === $token->getContent()) {
+                static::assertSame($expected[$index], $analyzer->isReference($tokens, $index), sprintf('At index %d.', $index));
+            }
+        }
+    }
 
-        static::assertTrue($analyzer->isReference($tokens, 5));
-        static::assertFalse($analyzer->isReference($tokens, 12));
-        static::assertFalse($analyzer->isReference($tokens, 16));
+    public function provideReferenceAndNonReferenceTogetherCases(): iterable
+    {
+        yield [
+            [
+                5 => true,
+                12 => false,
+                16 => false,
+            ],
+            '<?php function foo(&$bar = BAZ & QUX & H) {};',
+        ];
+
+        yield [
+            [
+                10 => true,
+                22 => false,
+            ],
+            '<?php $a = [static function(&$a){}][1](FOO & $bar);',
+        ];
     }
 
     /**
@@ -53,7 +79,7 @@ final class ReferenceAnalyzerTest extends TestCase
         $this->doTestCode(true, $code);
     }
 
-    public static function provideReferenceCases(): \Generator
+    public static function provideReferenceCases(): iterable
     {
         yield ['<?php $foo =& $bar;'];
 
@@ -87,6 +113,10 @@ class Foo {
 
         yield ['<?php $foo = fn (&$v) => $v;'];
 
+        yield ['<?php $foo = fn & (&$v) => $v;'];
+
+        yield ['<?php $foo = fn & ():bool => true;'];
+
         yield ['<?php function foo(string &$bar) {};'];
 
         yield ['<?php foreach($foos as &$foo) {}'];
@@ -109,9 +139,13 @@ class Foo {
 
         yield ['<?php function A(\A\B\C\FOO & $bar){}'];
 
-        yield 'multiple references' => ['<?php function foo(&$a, array &$b, Bar &$c, \Bar &$d, \A\B &$e, A\B &$f) {}'];
+        yield 'multiple references' => [
+            '<?php function foo(&$a, array &$b, Bar &$c, \Bar &$d, \A\B &$e, A\B &$f) {}',
+        ];
 
-        yield 'multiple (not) references' => ['<?php function foo(&$a, array $b, Bar &$c, \Bar $d, \A\B &$e, A\B $f) {}'];
+        yield 'multiple references and without references' => [
+            '<?php function foo(&$a, array $b, Bar &$c, \Bar $d, \A\B &$e, A\B $f) {}',
+        ];
 
         yield 'const `int`' => [
             '<?php
@@ -149,7 +183,7 @@ namespace {
         $this->doTestCode(false, $code);
     }
 
-    public static function provideNonReferenceCases(): \Generator
+    public static function provideNonReferenceCases(): iterable
     {
         yield ['<?php $foo & $bar;'];
 
@@ -210,6 +244,12 @@ namespace {
         yield ['<?php foo($a, FOO & $bar);'];
 
         yield ['<?php foo(FOO & $bar);'];
+
+        yield ['<?php (FOO & $bar) ?>'];
+
+        yield ['<?php {FOO & $bar;}'];
+
+        yield ['<?php $a[FOO & $bar];'];
 
         yield ['<?php foo(\FOO & $bar);'];
 
