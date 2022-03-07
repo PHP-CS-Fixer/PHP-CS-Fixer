@@ -39,8 +39,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 final class Application extends BaseApplication
 {
-    public const VERSION = '3.7.0';
-    public const VERSION_CODENAME = '#StandWithUkraine️';
+    public const VERSION = '3.7.1-DEV';
+    public const VERSION_CODENAME = '';
 
     private ToolInfo $toolInfo;
 
