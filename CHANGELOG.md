@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.7.0
+--------------------
+
+* bug #6112 [BinaryOperatorSpacesFixer] Fix align of `=` inside calls of methods (VincentLanglet)
+* bug #6279 ClassReferenceNameCasingFixer - Fix for double arrow (SpacePossum)
+* bug #6280 Fix bunch of enum issus (SpacePossum)
+* bug #6283 ClassReferenceNameCasingFixer - detect imports (SpacePossum)
+* feature #5892 NewWithBracesFixer - option to remove braces (jrmajor)
+* feature #6081 Allow multiline constructor arguments in an anonymous classes (jrmajor, SpacePossum)
+* feature #6274 SingleLineCommentSpacingFixer - Introduction (SpacePossum)
+* feature #6300 OrderedClassElementsFixer - handle enums (gharlan)
+* feature #6304 NoTrailingCommaInSinglelineFunctionCallFixer - Introduction (SpacePossum)
+* minor #6277 Add `is_scalar`, `sizeof`, `ini_get` in list of compiled functions (jderusse)
+* minor #6284 ClassReferenceNameCasingFixer - Update doc (SpacePossum)
+* minor #6289 PHP7.4 - clean up tests (SpacePossum)
+* minor #6290 PHP7.4 - properties types (SpacePossum)
+* minor #6291 PHP7.4 - remove run time checks (SpacePossum)
+* minor #6292 PhpUnitDedicateAssertFixer - Fix more count cases (SpacePossum)
+* minor #6294 PhpUnitDedicateAssertFixer - add assertInstanceOf support (SpacePossum)
+* minor #6295 PhpUnitTestCaseIndicator - Check if PHPUnit-test class extends anothe… (SpacePossum)
+* minor #6298 Fix checkbashisms download ans SCA violations (SpacePossum)
+* minor #6301 BracesFixer - handle enums (gharlan)
+* minor #6302 Bump checkbashisms version (kubawerlos)
+* minor #6303 PHP8 - Utilize "get_debug_type" (SpacePossum)
+* minor #6316 bump xdebug-handler (SpacePossum)
+* minor #6327 bump polyfills (SpacePossum)
+
 Changelog for v3.6.0
 --------------------
 
