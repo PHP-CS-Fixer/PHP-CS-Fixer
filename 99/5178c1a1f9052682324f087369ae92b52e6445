@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-28T09:59:00Z
+
+[![Coverage Status](https://coveralls.io/builds/46924687/badge)](https://coveralls.io/builds/46924687)
+
+Coverage increased (+0.06%) to 93.194% when pulling **eb72facb9994270f561a2866902839ccfd425cac on SpacePossum:master_update_set_BlankLineBeforeStatementFixer** into **f45c5a08595b5d09b1aec3b284a5fc854fc9eeb2 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-02-28T11:11:36Z
+
+fabbot is false hit
