@@ -27,8 +27,8 @@
         "symfony/finder": "^5.4 || ^6.0",
         "symfony/options-resolver": "^5.4 || ^6.0",
         "symfony/polyfill-mbstring": "^1.23",
-        "symfony/polyfill-php80": "^1.23",
-        "symfony/polyfill-php81": "^1.23",
+        "symfony/polyfill-php80": "^1.25",
+        "symfony/polyfill-php81": "^1.25",
         "symfony/process": "^5.4 || ^6.0",
         "symfony/stopwatch": "^5.4 || ^6.0"
     },
