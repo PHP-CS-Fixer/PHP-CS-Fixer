@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-03-02T18:30:13Z
+
+[![Coverage Status](https://coveralls.io/builds/47021334/badge)](https://coveralls.io/builds/47021334)
+
+Coverage increased (+0.07%) to 93.199% when pulling **ccb953e06b403e994c419e699b5d7d7b2d9b802d on werlos:fix_PhpdocTypesFixer_case_sensitivity** into **f45c5a08595b5d09b1aec3b284a5fc854fc9eeb2 on FriendsOfPHP:master**.
