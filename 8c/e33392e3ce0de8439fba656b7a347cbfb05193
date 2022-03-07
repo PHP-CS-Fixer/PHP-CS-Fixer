@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-03-02T18:30:13Z
+
+[![Coverage Status](https://coveralls.io/builds/47021334/badge)](https://coveralls.io/builds/47021334)
+
+Coverage increased (+0.07%) to 93.199% when pulling **ccb953e06b403e994c419e699b5d7d7b2d9b802d on werlos:fix_PhpdocTypesFixer_case_sensitivity** into **f45c5a08595b5d09b1aec3b284a5fc854fc9eeb2 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-03-07T06:15:47Z
+
+```
+  The command "git push origin "master" refs/notes/github-comments" failed.
+
+  Exit Code: 1(General error)
+
+  Working directory: /home/possum/work/master/PHP-CS-Fixer
+
+  Output:
+  ================
+
+  Error Output:
+  ================
+  remote: error: GH006: Protected branch update failed for refs/heads/master.
+  remote: error: At least 1 approving review is required by reviewers with write access.
+  To github.com:FriendsOfPHP/PHP-CS-Fixer.git
+     db0eb49f9..138157281  refs/notes/github-comments -> refs/notes/github-comments
+   ! [remote rejected]     master -> master (protected branch hook declined)
+  error: failed to push some refs to 'git@github.com:FriendsOfPHP/PHP-CS-Fixer.git'
+
+```
+
+@keradus I can no longer merge because of the new rules, so someone else has to take over
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-03-07T20:10:59Z
+
+can you try again, @SpacePossum ?
+
+yet another strong point to finalise getting out of `gh` tool, imho
