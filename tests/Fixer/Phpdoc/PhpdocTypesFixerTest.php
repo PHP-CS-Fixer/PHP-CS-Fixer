@@ -28,6 +28,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class PhpdocTypesFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
     public function testWindowsLinebreaks(): void
     {
         $this->doTest(
@@ -282,6 +290,20 @@ EOF;
              * @return ARRAY<INT, ARRAY<STRING, ARRAY<INT, DoNotChangeThisAsThisIsAClass>>>
              */'
         );
+    }
+
+    public static function provideFixCases(): iterable
+    {
+        yield 'callable' => [
+            '<?php /**
+                    * @param callable(): void $b
+                    * @param callable(bool, int, string): float $c
+                    */',
+            '<?php /**
+                    * @param Callable(): VOID $b
+                    * @param CALLABLE(BOOL, INT, STRING): FLOAT $c
+                    */',
+        ];
     }
 
     public function testWrongConfig(): void

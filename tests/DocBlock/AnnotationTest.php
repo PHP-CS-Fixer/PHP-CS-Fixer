@@ -438,6 +438,10 @@ final class AnnotationTest extends TestCase
                 '/** @param Closure(string) $function',
             ],
             [
+                ['closure()'],
+                '/** @param closure() $function',
+            ],
+            [
                 ['array  <  int   , callable  (  string  )  :   bool  >'],
                 '/** @param   array  <  int   , callable  (  string  )  :   bool  > $function',
             ],
