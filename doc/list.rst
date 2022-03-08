@@ -35,7 +35,7 @@ List of Available Rules
    `Source PhpCsFixer\\Fixer\\Alias\\ArrayPushFixer <./../src/Fixer/Alias/ArrayPushFixer.php>`_
 -  `array_single_multi_line <./rules/array_notation/array_single_multi_line.rst>`_
 
-   Big arrays must be multiline.
+   Single line arrays that are long or contain many elements must be multiline.
 
    Configuration options:
 

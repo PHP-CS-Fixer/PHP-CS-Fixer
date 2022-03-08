@@ -34,7 +34,7 @@ final class ArraySingleMultiLineFixer extends AbstractFixer implements Configura
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Big arrays must be multiline.',
+            'Single line arrays that are long or contain many elements must be multiline.',
             [
                 new CodeSample(
                     "<?php\n\$a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];\n"

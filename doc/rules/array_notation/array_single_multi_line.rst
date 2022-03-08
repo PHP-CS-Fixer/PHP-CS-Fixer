@@ -2,7 +2,7 @@
 Rule ``array_single_multi_line``
 ================================
 
-Big arrays must be multiline.
+Single line arrays that are long or contain many elements must be multiline.
 
 Configuration
 -------------
