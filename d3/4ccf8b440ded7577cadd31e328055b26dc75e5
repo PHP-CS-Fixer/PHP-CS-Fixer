@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-03-04T08:52:03Z
+
+[![Coverage Status](https://coveralls.io/builds/47114791/badge)](https://coveralls.io/builds/47114791)
+
+Coverage remained the same at 93.199% when pulling **1bb8bb2b610d4e1ec83afe97f9a7d18c1be97f3e on SpacePossum:master_bump_migration_to_74sets** into **6e9f993bcd8dfccabfcea8cbeaf448502ceede7d on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-03-07T06:49:35Z
+
+I've reduced the diff size and the config, please review again.
