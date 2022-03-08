@@ -78,10 +78,12 @@ final class SingleQuoteFixerTest extends AbstractFixerTestCase
                 '<?php $a = \'foo "bar"\';',
                 '<?php $a = "foo \"bar\"";',
             ],
-            [<<<'EOF'
+            [
+                <<<'EOF'
 <?php $a = '\\foo\\bar\\\\';
 EOF
-                , <<<'EOF'
+                ,
+                <<<'EOF'
 <?php $a = "\\foo\\bar\\\\";
 EOF
             ],
