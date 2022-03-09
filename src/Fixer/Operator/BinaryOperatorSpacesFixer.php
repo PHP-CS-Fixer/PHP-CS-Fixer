@@ -523,8 +523,8 @@ $array = [
 
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
-
             $content = $token->getContent();
+
             if (
                 strtolower($content) === $tokenContent
                 && $this->tokensAnalyzer->isBinaryOperator($index)
