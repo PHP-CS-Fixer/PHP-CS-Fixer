@@ -1427,6 +1427,24 @@ fn ($x = 1) => $x + 3;
 $f = 123;
 ',
             ],
+            [
+                '<?php
+if (($c = count($array)) > 100) {
+    $_data = \'100+\';
+} elseif (($c = count($array)) > 0) {
+    $_data = \'0+\';
+}
+',
+            ],
+            [
+                '<?php
+if (($c = count($array)) > 100) {
+    $closure = fn ($x = 1) => $x + 3;
+} elseif (($c = count($array)) > 0) {
+    $closure = fn ($x = 1) => $x ** 3;
+}
+',
+            ],
         ];
     }
 
