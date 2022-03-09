@@ -2051,6 +2051,74 @@ $b = [1 => function() {
     }}, 2 => 3];
 ',
             ],
+            [
+                '<?php
+                    $result = $this->test1(fn () => $this->test2($a, $b));
+                    foreach ($result as $k => $v)
+                    {
+                        $bv = [
+                            $b  => 2,
+                            $cc => 3,
+                        ];
+                    }
+                    fn ($x) => $x + 1 ?>',
+                '<?php
+                    $result = $this->test1(fn () => $this->test2($a, $b));
+                    foreach ($result as $k => $v)
+                    {
+                        $bv = [
+                            $b => 2,
+                            $cc => 3,
+                        ];
+                    }
+                    fn ($x) => $x + 1 ?>',
+            ],
+            [
+                '<?php
+                $zzzzzz
+                    ->rtrim()
+                    ->filter(fn (string $foo) => $foo."1")
+                    ->reduce(fn (string $bar123) => $foo - 1)
+                ;
+
+                $array = [
+                    \'foo\'     => 123,
+                    \'longkey\' => \'test\',
+                    \'baz\'     => fn () => \'value\',
+                ];
+
+                function share(Request $request): array
+                    {
+                        return array_merge(parend::share($request), [
+                            \'flashNotifications\' => fn () => Session::get(\'flash_notification\'),
+                            \'currentUser\'        => fn () => $thiz->getCurrentUser($request->user()),
+                            \'menuItems\'          => fn () => $thiz->getMenuItems($request->user()),
+                        ]);
+                    }
+                ',
+                '<?php
+                $zzzzzz
+                    ->rtrim()
+                    ->filter(fn (string $foo) => $foo."1")
+                    ->reduce(fn (string $bar123) => $foo - 1)
+                ;
+
+                $array = [
+                    \'foo\' => 123,
+                    \'longkey\' => \'test\',
+                    \'baz\' => fn () => \'value\',
+                ];
+
+                function share(Request $request): array
+                    {
+                        return array_merge(parend::share($request), [
+                            \'flashNotifications\' => fn () => Session::get(\'flash_notification\'),
+                            \'currentUser\' => fn () => $thiz->getCurrentUser($request->user()),
+                            \'menuItems\' => fn () => $thiz->getMenuItems($request->user()),
+                        ]);
+                    }
+                ',
+            ],
         ];
     }
 
