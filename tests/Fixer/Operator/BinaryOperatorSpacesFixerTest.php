@@ -129,7 +129,7 @@ $a//
             ],
             [
                 '<?php
-    $var = [];
+    $var = [1 => 2];
     foreach ([
                 1 => 2,
                 2 => 3,
@@ -137,7 +137,7 @@ $a//
         $var[] = [$i => $bar];
     }',
                 '<?php
-    $var = [];
+    $var = [1=>2];
     foreach ([
                 1=> 2,
                 2   =>3,
@@ -798,7 +798,7 @@ $b;
 
     for ($i = 0; $i < 10; $i++) {
         $aa = 2;
-        $a[$b] = array();
+        $a[$b] = array(12);
     }',
                 '<?php
     $ccc = 1;
@@ -845,7 +845,7 @@ $b;
 
     for ($i = 0; $i < 10; $i++) {
         $aa    = 2;
-        $a[$b] = array();
+        $a[$b] = array(12);
     }',
             ],
         ];
@@ -1344,7 +1344,7 @@ $b;
         $abc[$bcd = 1] = 1;
     }
 
-    while (false) {
+    while ($i = 1) {
         $aa    = 2;
         $a[$b] = array();
     }
@@ -1352,7 +1352,27 @@ $b;
     for ($i = 0; $i < 10; $i++) {
         $aa    = 2;
         $a[$b] = array();
-    }',
+    }
+
+    $z = 1;
+    switch($a = 0) {
+        case 1:
+            $b  = 1;
+            $cc = 3;
+        break;
+    }
+
+    foreach ($a as $b) {
+        $aa    = 2;
+        $a[$b] = array();
+    }
+
+    do {
+        $aa    = 23;
+        $a[$b] = array(66);
+    } while ($i = 1);
+    $a = 3;
+    ',
                 '<?php
     $ccc = 1;
     $bb = 1;
@@ -1391,7 +1411,7 @@ $b;
         $abc[$bcd = 1] = 1;
     }
 
-    while (false) {
+    while ($i = 1) {
         $aa = 2;
         $a[$b] = array();
     }
@@ -1399,7 +1419,27 @@ $b;
     for ($i = 0; $i < 10; $i++) {
         $aa = 2;
         $a[$b] = array();
-    }',
+    }
+
+    $z = 1;
+    switch($a = 0) {
+        case 1:
+            $b = 1;
+            $cc = 3;
+        break;
+    }
+
+    foreach ($a as $b) {
+        $aa    = 2;
+        $a[$b] = array();
+    }
+
+    do {
+        $aa = 23;
+        $a[$b] = array(66);
+    } while ($i = 1);
+    $a = 3;
+    ',
             ],
             [
                 '<?php
@@ -1425,6 +1465,24 @@ m(
                 '<?php
 fn ($x = 1) => $x + 3;
 $f = 123;
+',
+            ],
+            [
+                '<?php
+if (($c = count($array)) > 100) {
+    $_data = \'100+\';
+} elseif (($c = count($array)) > 0) {
+    $_data = \'0+\';
+}
+',
+            ],
+            [
+                '<?php
+if (($c = count($array)) > 100) {
+    $closure = fn ($x = 1) => $x + 3;
+} elseif (($c = count($array)) > 0) {
+    $closure = fn ($x = 1) => $x ** 3;
+}
 ',
             ],
         ];
@@ -1972,6 +2030,26 @@ $f = 123;
         self::STATUS_UNKNOWN_7 => [(1+11)=> "?", "description" => "unknown"],
         self::STATUS_INVALID_7    => [(2+3)=> "III", "description" => "invalid file syntax, file ignored"],
     ];',
+            ],
+            [
+                '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b  => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
+                '<?php
+$b = [1 => function() {
+    foreach([$a => 2] as $b) {
+        $bv = [
+            $b => 2,
+            $cc => 3,
+        ];
+    }}, 2 => 3];
+',
             ],
         ];
     }

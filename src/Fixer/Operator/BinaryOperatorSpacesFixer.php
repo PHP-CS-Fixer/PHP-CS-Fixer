@@ -523,8 +523,8 @@ $array = [
 
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
-
             $content = $token->getContent();
+
             if (
                 strtolower($content) === $tokenContent
                 && $this->tokensAnalyzer->isBinaryOperator($index)
@@ -543,7 +543,7 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
+            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
@@ -569,7 +569,7 @@ $array = [
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
+            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
