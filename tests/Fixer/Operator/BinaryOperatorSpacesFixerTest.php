@@ -1427,6 +1427,24 @@ fn ($x = 1) => $x + 3;
 $f = 123;
 ',
             ],
+            [
+                '<?php
+if ($statement) {
+    $string = \'Some thing\';
+} elseif (($error = file_get_contents($file)) !== false) {
+    throw Exception();
+}
+'
+            ],
+            [
+                '<?php
+if ($statement) {
+    throw Exception();
+} elseif (($error = file_get_contents($file)) !== false) {
+    $string = \'Some thing\';
+}
+'
+            ]
         ];
     }
 

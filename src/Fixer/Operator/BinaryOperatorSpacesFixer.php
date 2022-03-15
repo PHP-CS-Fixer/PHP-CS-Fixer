@@ -520,6 +520,7 @@ $array = [
     private function injectAlignmentPlaceholders(Tokens $tokens, int $startAt, int $endAt, string $tokenContent): void
     {
         $functionKind = [T_FUNCTION, T_FN];
+        $blockKind    = [T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH, T_ELSEIF];
 
         for ($index = $startAt; $index < $endAt; ++$index) {
             $token = $tokens[$index];
@@ -543,7 +544,7 @@ $array = [
                 continue;
             }
 
-            if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE, T_IF, T_SWITCH])) {
+            if ($token->isGivenKind($blockKind)) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
