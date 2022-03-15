@@ -1,0 +1,21 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-03-07T17:28:35Z
+
+[![Coverage Status](https://coveralls.io/builds/47341924/badge)](https://coveralls.io/builds/47341924)
+
+Coverage remained the same at 93.116% when pulling **db13f0a9c98fb2f8f11b338dcf437c01cbddaaa3 on keradus:gitig** into **d34ccf8b440ded7577cadd31e328055b26dc75e5 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-03-07T21:11:34Z
+
+Out of curiosity; what tool or process generate such asc file?
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-03-14T16:57:09Z
+
+@SpacePossum GPG, file is available as asset in the releases https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/tag/v3.7.0
+
+@GrahamCampbell damn, so i also accidentally committed it earlier to repo :(
