@@ -296,10 +296,12 @@ EOF;
     {
         yield 'callable' => [
             '<?php /**
+                    * @param callable() $a
                     * @param callable(): void $b
                     * @param callable(bool, int, string): float $c
                     */',
             '<?php /**
+                    * @param CALLABLE() $a
                     * @param Callable(): VOID $b
                     * @param CALLABLE(BOOL, INT, STRING): FLOAT $c
                     */',

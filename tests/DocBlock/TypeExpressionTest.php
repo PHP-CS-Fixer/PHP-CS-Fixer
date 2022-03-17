@@ -125,6 +125,8 @@ final class TypeExpressionTest extends TestCase
 
         yield ['TheCollection<callable(Foo, Bar,Baz): Foo[]>|string[]|null', ['TheCollection<callable(Foo, Bar,Baz): Foo[]>', 'string[]', 'null']];
 
+        yield ['Closure()', ['Closure()']];
+
         yield ['Closure(string)', ['Closure(string)']];
 
         yield ['array  <  int   , callable  (  string  )  :   bool  >', ['array  <  int   , callable  (  string  )  :   bool  >']];
