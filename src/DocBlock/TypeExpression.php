@@ -306,7 +306,7 @@ final class TypeExpression
         if ('' !== ($matches['callable'] ?? '')) {
             $this->parseCommaSeparatedInnerTypes(
                 $index + \strlen($matches['callable_start']),
-                $matches['callable_arguments']
+                $matches['callable_arguments'] ?? ''
             );
 
             $return = $matches['callable_return'] ?? null;
