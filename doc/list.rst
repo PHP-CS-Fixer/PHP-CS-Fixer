@@ -319,6 +319,18 @@ List of Available Rules
 
 
    `Source PhpCsFixer\\Fixer\\ControlStructure\\ControlStructureContinuationPositionFixer <./../src/Fixer/ControlStructure/ControlStructureContinuationPositionFixer.php>`_
+-  `date_time_create_from_format_call <./rules/function_notation/date_time_create_from_format_call.rst>`_
+
+   The first argument of ``DateTime::createFromFormat`` method must start with ``!``.
+
+   Consider this code:
+       ``DateTime::createFromFormat('Y-m-d', '2022-02-11')``.
+       What value will be returned? '2022-01-11 00:00:00.0'? No, actual return
+   value has 'H:i:s' section like '2022-02-11 16:55:37.0'.
+       Change 'Y-m-d' to '!Y-m-d', return value will be '2022-01-11 00:00:00.0'.
+       So, adding ``!`` to format string will make return value more intuitive.
+
+   `Source PhpCsFixer\\Fixer\\FunctionNotation\\DateTimeCreateFromFormatCallFixer <./../src/Fixer/FunctionNotation/DateTimeCreateFromFormatCallFixer.php>`_
 -  `date_time_immutable <./rules/class_usage/date_time_immutable.rst>`_
 
    Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
