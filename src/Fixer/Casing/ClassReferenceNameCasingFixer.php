@@ -78,6 +78,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
     private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): \Generator
     {
         static $notBeforeKinds;
+        static $blockKinds;
 
         if (null === $notBeforeKinds) {
             $notBeforeKinds = [
@@ -99,6 +100,15 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
             }
         }
 
+        if (null === $blockKinds) {
+            $blockKinds = ['before' => [','], 'after' => [',']];
+
+            foreach (Tokens::getBlockEdgeDefinitions() as $definition) {
+                $blockKinds['before'][] = $definition['start'];
+                $blockKinds['after'][] = $definition['end'];
+            }
+        }
+
         $namespaceIsGlobal = $namespace->isGlobalNamespace();
 
         for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
@@ -113,6 +123,8 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+
             $isNamespaceSeparator = $tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR);
 
             if (!$isNamespaceSeparator && !$namespaceIsGlobal) {
@@ -129,7 +141,11 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$prevIndex]->isGivenKind(T_NEW) && $tokens[$nextIndex]->equals('(')) {
+            if ($tokens[$prevIndex]->equalsAny($blockKinds['before']) && $tokens[$nextIndex]->equalsAny($blockKinds['after'])) {
+                continue;
+            }
+
+            if (!$tokens[$prevIndex]->isGivenKind(T_NEW) && $tokens[$nextIndex]->equalsAny(['(', ';', [T_CLOSE_TAG]])) {
                 continue;
             }
 

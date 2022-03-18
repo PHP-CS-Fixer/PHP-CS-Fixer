@@ -187,6 +187,11 @@ namespace Foo {
         ];
 
         yield [
+            '<?php try { foo(); } catch(LogicException $e) {}',
+            '<?php try { foo(); } catch(logicexception $e) {}',
+        ];
+
+        yield [
             '<?php
                 Closure::bind(fn () => null, null, new class {});
                 \Closure::bind(fn () => null, null, new class {});
@@ -210,6 +215,35 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
 \$services->set('sonata.exporter.writer.xml', EXCEPTION::class);
 ",
         ];
+
+        yield [
+            '<?php
+                const error = 1;
+                foo(error);
+                $b2 = $a[error];
+                $b21 = [1,error];
+                $b22 = [error,2];
+                $b23 = [1,error,2];
+                $b24 = [1,error,2,];
+                $b3 = [error];
+                $b4 = $a->{error};
+            ',
+        ];
+
+        yield [
+            '<?php
+                foo(\error);
+                $b2 = $a[\error];
+                $b21 = [1,\error];
+                $b22 = [\error,2];
+                $b23 = [1,\error,2];
+                $b24 = [1,\error,2,];
+                $b3 = [\error];
+                $b4 = $a->{\error};
+            ',
+        ];
+
+        yield ['<?php echo error ?><?php echo error;'];
     }
 
     /**
