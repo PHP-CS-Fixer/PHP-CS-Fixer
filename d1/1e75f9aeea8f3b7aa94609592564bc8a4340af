@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-14T07:01:37Z
+
+[![Coverage Status](https://coveralls.io/builds/47264110/badge)](https://coveralls.io/builds/47264110)
+
+Coverage decreased (-0.003%) to 93.113% when pulling **1cda359b5c8ed3244bcf4cbbd29ef6cf907ef608 on liquid207:feature-add-create-from-format-fixer** into **d34ccf8b440ded7577cadd31e328055b26dc75e5 on FriendsOfPHP:master**.
+
+---------------------------------------------------------------------------
+
+by liquid207 at 2022-02-28T10:16:42Z
+
+@keradus Very helpful reviews, thanks.
+
+---------------------------------------------------------------------------
+
+by keradus at 2022-03-05T21:14:20Z
+
+Please avoid force-pushes next time. Now, I have to review everything instead of checking the changes only
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-03-09T08:28:33Z
+
+@liquid207
+Not sure about the force push, but now all the fixes here https://github.com/liquid207/PHP-CS-Fixer/pull/2 are in conflict.
+Is there anything you want me to help with the PR? As it sits now it cannot be merged IMHO  given the namespace issue.
+
+---------------------------------------------------------------------------
+
+by liquid207 at 2022-03-10T02:18:52Z
+
+@SpacePossum
+Sorry for my force push..  I resolve the conflicts and merged your PR to my branch, and fix a little bug, now all changes in here.
+
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-03-10T17:10:51Z
+
+One last little minor, can you squash into one commit with you as author and committer? It will make a nice single commit new feature and the PR will be marked as `merged` and not as `closed`.
+
+---------------------------------------------------------------------------
+
+by liquid207 at 2022-03-11T01:51:39Z
+
+squashed, @keradus @SpacePossum Thanks for your help.
