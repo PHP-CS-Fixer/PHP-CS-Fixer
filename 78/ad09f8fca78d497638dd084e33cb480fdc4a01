@@ -1,0 +1,7 @@
+---------------------------------------------------------------------------
+
+by coveralls at 2022-03-17T20:34:10Z
+
+[![Coverage Status](https://coveralls.io/builds/47472002/badge)](https://coveralls.io/builds/47472002)
+
+Coverage remained the same at 93.116% when pulling **c7fa56bb4eb932c225ff5dbae261112f48bb234e on werlos:fix_PhpdocTypesFixer** into **f503d39765f255e3c2ed5a89fae03b3a707d0af6 on FriendsOfPHP:master**.
