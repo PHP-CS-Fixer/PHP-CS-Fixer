@@ -55,6 +55,36 @@ final class TypesSpacesFixerTest extends AbstractFixerTestCase
             '<?php try {} catch (ErrorA    |    ErrorB $e) {}',
             ['space' => 'single'],
         ];
+
+        yield [
+            '<?php
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+            ',
+            '<?php
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            ['space' => 'single'],
+        ];
     }
 
     /**
@@ -144,6 +174,94 @@ TypeB $x) {}',
                     private int   |   string $c
                 ) {}
             }',
+        ];
+
+        yield [
+            '<?php
+                function foo(TypeA | TypeB $x) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            '<?php
+                function foo(TypeA |TypeB $x) {}
+                try {} catch (ErrorA| ErrorB $e) {}
+            ',
+            [
+                'space' => 'single',
+                'space_multiple_catch' => 'none',
+            ],
+        ];
+
+        yield [
+            '<?php
+                function foo(TypeA|TypeB $x) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+            ',
+            '<?php
+                function foo(TypeA | TypeB $x) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            [
+                'space' => 'none',
+                'space_multiple_catch' => 'single',
+            ],
+        ];
+
+        yield [
+            '<?php
+                function foo(TypeA|TypeB $x) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            '<?php
+                function foo(TypeA| TypeB $x) {}
+                try {} catch (ErrorA |ErrorB $e) {}
+            ',
+            [
+                'space' => 'none',
+                'space_multiple_catch' => 'none',
+            ],
+        ];
+
+        yield [
+            '<?php
+                function foo(TypeA | TypeB $x) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+            ',
+            '<?php
+                function foo(TypeA |TypeB $x) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            [
+                'space' => 'single',
+                'space_multiple_catch' => 'single',
+            ],
+        ];
+
+        yield [
+            '<?php
+                function foo(TypeA | TypeB $x) {}
+                try {} catch (ErrorA | ErrorB $e) {}
+            ',
+            '<?php
+                function foo(TypeA|TypeB $x) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            [
+                'space' => 'single',
+            ],
+        ];
+
+        yield [
+            '<?php
+                function foo(TypeA|TypeB $x) {}
+                try {} catch (ErrorA|ErrorB $e) {}
+            ',
+            '<?php
+                function foo(TypeA  | TypeB $x) {}
+                try {} catch (ErrorA  | ErrorB $e) {}
+            ',
+            [
+                'space' => 'none',
+            ],
         ];
     }
 
