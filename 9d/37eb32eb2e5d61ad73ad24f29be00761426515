@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by SpacePossum at 2022-02-24T07:16:06Z
+
+false SCA fail on server load
+
+---------------------------------------------------------------------------
+
+by coveralls at 2022-02-24T07:24:32Z
+
+[![Coverage Status](https://coveralls.io/builds/46837179/badge)](https://coveralls.io/builds/46837179)
+
+Coverage increased (+0.07%) to 93.199% when pulling **3df410fc51322a61c5597048176f6c120832f161 on SpacePossum:master_TypesSpacesFixer_catch** into **f45c5a08595b5d09b1aec3b284a5fc854fc9eeb2 on FriendsOfPHP:master**.
