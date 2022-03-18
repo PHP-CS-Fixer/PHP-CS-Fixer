@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.8.0
+--------------------
+
+* bug #6322 PhpdocTypesFixer - fix recognizing callable (kubawerlos)
+* bug #6331 ClassReferenceNameCasingFixer - Fix false hits (SpacePossum)
+* bug #6333 BinaryOperatorSpacesFixer - Fix for alignment in `elseif` (paulbalandan, SpacePossum)
+* bug #6337 PhpdocTypesFixer - fix recognising callable without return type (kubawerlos)
+* feature #6286 DateTimeCreateFromFormatCallFixer - Introduction (liquid207)
+* feature #6312 TypesSpacesFixer - add option for CS of catching multiple types of exceptions (SpacePossum)
+* minor #6326 Bump migration sets used to PHP7.4 (SpacePossum)
+* minor #6328 DX: .gitignore ASC file (keradus)
+
 Changelog for v3.7.0
 --------------------
 
