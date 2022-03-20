@@ -2894,7 +2894,7 @@ List of Available Rules
      | Default value: ``null``
 
 
-   Part of rule sets `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
+   Part of rule sets `@PSR12 <./ruleSets/PSR12.rst>`_ `@PhpCsFixer <./ruleSets/PhpCsFixer.rst>`_ `@Symfony <./ruleSets/Symfony.rst>`_
 
    `Source PhpCsFixer\\Fixer\\Whitespace\\TypesSpacesFixer <./../src/Fixer/Whitespace/TypesSpacesFixer.php>`_
 -  `unary_operator_spaces <./rules/operator/unary_operator_spaces.rst>`_

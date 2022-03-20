@@ -83,6 +83,11 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+@PSR12
+  Using the `@PSR12 <./../../ruleSets/PSR12.rst>`_ rule set will enable the ``types_spaces`` rule with the config below:
+
+  ``['space_multiple_catch' => 'single']``
+
 @PhpCsFixer
   Using the `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ rule set will enable the ``types_spaces`` rule with the default config.
 
