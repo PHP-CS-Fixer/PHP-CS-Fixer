@@ -558,6 +558,151 @@ class Foo
     }
 
     /**
+     * @dataProvider provideFix80Cases
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, string $input = null, array $config = []): void
+    {
+        $this->fixer->configure($config);
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix80Cases(): \Generator
+    {
+        yield 'It detects attributes between docblock and token' => [
+            '<?php
+
+class Foo
+{
+    /** @var string[] */
+    #[Attribute1]
+    private readonly array $foo1;
+
+    /** @var string[] */
+    #[Attribute1]
+    #[Attribute2]
+    readonly private array $foo2;
+
+    /** @var string[] */
+    #[Attribute1, Attribute2]
+    readonly array $foo3;
+}',
+            '<?php
+
+class Foo
+{
+    /**
+     * @var string[]
+     */
+    #[Attribute1]
+    private readonly array $foo1;
+
+    /**
+     * @var string[]
+     */
+    #[Attribute1]
+    #[Attribute2]
+    readonly private array $foo2;
+
+    /**
+     * @var string[]
+     */
+    #[Attribute1, Attribute2]
+    readonly array $foo3;
+}',
+            [
+                'property' => 'single',
+            ],
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    /**
+     * 0
+     */
+    #[Attribute1]
+    const B0 = "0";
+
+    /**
+     * 1
+     */
+    #[Attribute1]
+    #[Attribute2]
+    final public const B1 = "1";
+
+    /**
+     * 2
+     */
+    #[Attribute1, Attribute2]
+    public final const B2 = "2";
+}
+',
+            '<?php
+class Foo
+{
+    /** 0 */
+    #[Attribute1]
+    const B0 = "0";
+
+    /** 1 */
+    #[Attribute1]
+    #[Attribute2]
+    final public const B1 = "1";
+
+    /** 2 */
+    #[Attribute1, Attribute2]
+    public final const B2 = "2";
+}
+',
+        ];
+
+        yield [
+            '<?php
+                enum Foo
+                {
+                    /**
+                     * @return void
+                     */
+                    #[Attribute1]
+                    public function hello1() {}
+
+                    /**
+                     * @return void
+                     */
+                    #[Attribute1]
+                    #[Attribute2]
+                    public function hello2() {}
+
+                    /**
+                     * @return void
+                     */
+                    #[Attribute1, Attribute2]
+                    public function hello3() {}
+                }
+            ',
+            '<?php
+                enum Foo
+                {
+                    /** @return void */
+                    #[Attribute1]
+                    public function hello1() {}
+
+                    /** @return void */
+                    #[Attribute1]
+                    #[Attribute2]
+                    public function hello2() {}
+
+                    /** @return void */
+                    #[Attribute1, Attribute2]
+                    public function hello3() {}
+                }
+            ',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      * @requires PHP 8.1
      */
