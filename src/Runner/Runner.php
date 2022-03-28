@@ -41,10 +41,7 @@ final class Runner
 
     private ?DirectoryInterface $directory;
 
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private ?EventDispatcherInterface $eventDispatcher;
 
     private ErrorsManager $errorsManager;
 

@@ -21,10 +21,7 @@ final class CodeSample implements CodeSampleInterface
 {
     private string $code;
 
-    /**
-     * @var null|array
-     */
-    private $configuration;
+    private ?array $configuration;
 
     public function __construct(string $code, ?array $configuration = null)
     {

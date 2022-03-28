@@ -75,10 +75,7 @@ final class ConfigurationResolver
      */
     private $configFile;
 
-    /**
-     * @var string
-     */
-    private $cwd;
+    private string $cwd;
 
     private ConfigInterface $defaultConfig;
 

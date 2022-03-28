@@ -24,12 +24,12 @@ use PhpCsFixer\Linter\LintingResultInterface;
  */
 final class FileCachingLintingIterator extends \CachingIterator
 {
+    private LinterInterface $linter;
+
     /**
      * @var LintingResultInterface
      */
     private $currentResult;
-
-    private LinterInterface $linter;
 
     /**
      * @var LintingResultInterface

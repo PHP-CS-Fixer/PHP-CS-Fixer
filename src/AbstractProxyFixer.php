@@ -28,7 +28,7 @@ abstract class AbstractProxyFixer extends AbstractFixer
     /**
      * @var array<string, FixerInterface>
      */
-    protected $proxyFixers;
+    protected array $proxyFixers = [];
 
     public function __construct()
     {
