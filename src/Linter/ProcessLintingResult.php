@@ -23,20 +23,14 @@ use Symfony\Component\Process\Process;
  */
 final class ProcessLintingResult implements LintingResultInterface
 {
+    private Process $process;
+
+    private ?string $path;
+
     /**
      * @var bool
      */
     private $isSuccessful;
-
-    /**
-     * @var Process
-     */
-    private $process;
-
-    /**
-     * @var null|string
-     */
-    private $path;
 
     public function __construct(Process $process, ?string $path = null)
     {

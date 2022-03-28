@@ -19,10 +19,7 @@ namespace PhpCsFixer\FixerConfiguration;
  */
 final class AllowedValueSubset
 {
-    /**
-     * @var array
-     */
-    private $allowedValues;
+    private array $allowedValues;
 
     public function __construct(array $allowedValues)
     {

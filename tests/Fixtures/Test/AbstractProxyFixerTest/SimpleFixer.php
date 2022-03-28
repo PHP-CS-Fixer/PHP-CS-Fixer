@@ -23,32 +23,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SimpleFixer implements FixerInterface
 {
-    /**
-     * @var bool
-     */
-    private $isCandidate;
+    private bool $isCandidate;
 
-    /**
-     * @var bool
-     */
-    private $isRisky;
+    private bool $isRisky;
 
-    /**
-     * @var bool
-     */
-    private $supports;
+    private bool $supports;
 
-    /**
-     * @var int
-     */
-    private $priority;
+    private int $priority;
 
-    /**
-     * @var int
-     */
-    private $fixCalled = 0;
+    private int $fixCalled = 0;
 
-    private static $callCount = 1;
+    private static int $callCount = 1;
 
     public function __construct(
         bool $isCandidate,

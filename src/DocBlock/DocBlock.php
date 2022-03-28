@@ -41,10 +41,7 @@ final class DocBlock
      */
     private $annotations;
 
-    /**
-     * @var null|NamespaceAnalysis
-     */
-    private $namespace;
+    private ?NamespaceAnalysis $namespace;
 
     /**
      * @var NamespaceUseAnalysis[]

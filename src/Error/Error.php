@@ -42,17 +42,11 @@ final class Error
 
     private string $filePath;
 
-    /**
-     * @var null|\Throwable
-     */
-    private $source;
+    private ?\Throwable $source;
 
     private array $appliedFixers;
 
-    /**
-     * @var null|string
-     */
-    private $diff;
+    private ?string $diff;
 
     public function __construct(int $type, string $filePath, ?\Throwable $source = null, array $appliedFixers = [], ?string $diff = null)
     {

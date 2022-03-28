@@ -48,7 +48,7 @@ final class Annotation
      *
      * @var Line[]
      */
-    private $lines;
+    private array $lines;
 
     /**
      * The position of the first line of the annotation in the docblock.

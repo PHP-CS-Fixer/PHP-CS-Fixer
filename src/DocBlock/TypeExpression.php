@@ -105,10 +105,7 @@ final class TypeExpression
     )
     ';
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
     private bool $isUnionType = false;
 
@@ -119,15 +116,12 @@ final class TypeExpression
 
     private string $typesGlue = '|';
 
-    /**
-     * @var null|NamespaceAnalysis
-     */
-    private $namespace;
+    private ?NamespaceAnalysis $namespace;
 
     /**
      * @var NamespaceUseAnalysis[]
      */
-    private $namespaceUses;
+    private array $namespaceUses;
 
     /**
      * @param NamespaceUseAnalysis[] $namespaceUses

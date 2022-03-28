@@ -24,10 +24,7 @@ final class SwitchAnalysis extends AbstractControlCaseStructuresAnalysis
      */
     private array $cases;
 
-    /**
-     * @var null|DefaultAnalysis
-     */
-    private $defaultAnalysis;
+    private ?DefaultAnalysis $defaultAnalysis;
 
     /**
      * @param CaseAnalysis[] $cases
