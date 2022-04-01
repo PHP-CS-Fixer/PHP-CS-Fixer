@@ -32,94 +32,99 @@ final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase
 
     public function provideFixCases(): \Generator
     {
-        yield [
-            '<?php \DateTime::createFromFormat(\'!Y-m-d\', \'2022-02-11\');',
-            '<?php \DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');',
-        ];
+        foreach (['DateTime', 'DateTimeImmutable'] as $class) {
+            $lowerCaseClass = strtolower($class);
+            $upperCaseClass = strtoupper($class);
 
-        yield [
-            '<?php use DateTime; DateTime::createFromFormat(\'!Y-m-d\', \'2022-02-11\');',
-            '<?php use DateTime; DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat('!Y-m-d', '2022-02-11');",
+                "<?php \\{$class}::createFromFormat('Y-m-d', '2022-02-11');",
+            ];
 
-        yield [
-            '<?php DateTime::createFromFormat(\'!Y-m-d\', \'2022-02-11\');',
-            '<?php DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');',
-        ];
+            yield [
+                "<?php use {$class}; {$class}::createFromFormat('!Y-m-d', '2022-02-11');",
+                "<?php use {$class}; {$class}::createFromFormat('Y-m-d', '2022-02-11');",
+            ];
 
-        yield [
-            '<?php use \Example\DateTime; DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');',
-        ];
+            yield [
+                "<?php {$class}::createFromFormat('!Y-m-d', '2022-02-11');",
+                "<?php {$class}::createFromFormat('Y-m-d', '2022-02-11');",
+            ];
 
-        yield [
-            '<?php use \Example\datetime; DATETIME::createFromFormat(\'Y-m-d\', \'2022-02-11\');',
-        ];
+            yield [
+                "<?php use \\Example\\{$class}; {$class}::createFromFormat('Y-m-d', '2022-02-11');",
+            ];
 
-        yield [
-            '<?php \DateTime::createFromFormat("!Y-m-d", \'2022-02-11\');',
-            '<?php \DateTime::createFromFormat("Y-m-d", \'2022-02-11\');',
-        ];
+            yield [
+                "<?php use \\Example\\{$lowerCaseClass}; {$upperCaseClass}::createFromFormat('Y-m-d', '2022-02-11');",
+            ];
 
-        yield [
-            '<?php \DateTime::createFromFormat($foo, \'2022-02-11\');',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat(\"!Y-m-d\", '2022-02-11');",
+                "<?php \\{$class}::createFromFormat(\"Y-m-d\", '2022-02-11');",
+            ];
 
-        yield [
-            '<?php \DATETIME::createFromFormat( "!Y-m-d", \'2022-02-11\');',
-            '<?php \DATETIME::createFromFormat( "Y-m-d", \'2022-02-11\');',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat(\$foo, '2022-02-11');",
+            ];
 
-        yield [
-            '<?php \DateTime::createFromFormat(/* aaa */ \'!Y-m-d\', \'2022-02-11\');',
-            '<?php \DateTime::createFromFormat(/* aaa */ \'Y-m-d\', \'2022-02-11\');',
-        ];
+            yield [
+                "<?php \\{$upperCaseClass}::createFromFormat( \"!Y-m-d\", '2022-02-11');",
+                "<?php \\{$upperCaseClass}::createFromFormat( \"Y-m-d\", '2022-02-11');",
+            ];
 
-        yield [
-            '<?php /*1*//*2*/DateTime/*3*/::/*4*/createFromFormat/*5*/(/*6*/"!Y-m-d"/*7*/,/*8*/"2022-02-11"/*9*/)/*10*/ ?>',
-            '<?php /*1*//*2*/DateTime/*3*/::/*4*/createFromFormat/*5*/(/*6*/"Y-m-d"/*7*/,/*8*/"2022-02-11"/*9*/)/*10*/ ?>',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat(/* aaa */ '!Y-m-d', '2022-02-11');",
+                "<?php \\{$class}::createFromFormat(/* aaa */ 'Y-m-d', '2022-02-11');",
+            ];
 
-        yield [
-            '<?php \DateTime::createFromFormat(\'Y-m-d\');',
-        ];
+            yield [
+                "<?php /*1*//*2*/{$class}/*3*/::/*4*/createFromFormat/*5*/(/*6*/\"!Y-m-d\"/*7*/,/*8*/\"2022-02-11\"/*9*/)/*10*/ ?>",
+                "<?php /*1*//*2*/{$class}/*3*/::/*4*/createFromFormat/*5*/(/*6*/\"Y-m-d\"/*7*/,/*8*/\"2022-02-11\"/*9*/)/*10*/ ?>",
+            ];
 
-        yield [
-            '<?php \DateTime::createFromFormat($a, $b);',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat('Y-m-d');",
+            ];
 
-        yield [
-            '<?php \DateTime::createFromFormat(\'Y-m-d\', $b, $c);',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat(\$a, \$b);",
+            ];
 
-        yield [
-            '<?php A\DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');',
-        ];
+            yield [
+                "<?php \\{$class}::createFromFormat('Y-m-d', \$b, \$c);",
+            ];
 
-        yield [
-            '<?php A\DateTime::createFromFormat(\'Y-m-d\'."a", \'2022-02-11\');',
-        ];
+            yield [
+                "<?php A\\{$class}::createFromFormat('Y-m-d', '2022-02-11');",
+            ];
 
-        yield ['<?php \DateTime::createFromFormat(123, \'2022-02-11\');'];
+            yield [
+                "<?php A\\{$class}::createFromFormat('Y-m-d'.\"a\", '2022-02-11');",
+            ];
 
-        yield [
-            '<?php namespace {
-    \DateTime::createFromFormat(\'!Y-m-d\', \'2022-02-11\');
+            yield ["<?php \\{$class}::createFromFormat(123, '2022-02-11');"];
+
+            yield [
+                "<?php namespace {
+    \\{$class}::createFromFormat('!Y-m-d', '2022-02-11');
 }
 
 namespace Bar {
-    class DateTime extends Foo {}
-    DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');
+    class {$class} extends Foo {}
+    {$class}::createFromFormat('Y-m-d', '2022-02-11');
 }
-',
-            '<?php namespace {
-    \DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');
+",
+                "<?php namespace {
+    \\{$class}::createFromFormat('Y-m-d', '2022-02-11');
 }
 
 namespace Bar {
-    class DateTime extends Foo {}
-    DateTime::createFromFormat(\'Y-m-d\', \'2022-02-11\');
+    class {$class} extends Foo {}
+    {$class}::createFromFormat('Y-m-d', '2022-02-11');
 }
-',
-        ];
+",
+            ];
+        }
     }
 }
